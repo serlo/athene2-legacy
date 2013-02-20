@@ -4,7 +4,10 @@ return array(
     'modules' => array(
         'Application',
         'AsseticBundle',
-        'Helloworld'
+        'DoctrineModule',
+        'DoctrineORMModule',
+        'ZfcBase',
+        'Auth',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
