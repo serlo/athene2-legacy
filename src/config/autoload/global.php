@@ -10,25 +10,6 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
+
 return array(
-    'doctrine' => array(
-        'connection' => array(
-            'orm_default' => array(
-                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
-                'params' => function ($sm)
-                {
-                    var_dump($sm);
-                    $config = $sm->get('Config');
-                    $dbParams = $config['dbParams'];
-                    return array(
-                        'host' => $dbParams['host'],
-                        'port' => $dbParams['port'],
-                        'user' => $dbParams['user'],
-                        'password' => $dbParams['password'],
-                        'dbname' => $dbParams['dbname']
-                    );
-                }
-            )
-        )
-    )
 );

@@ -3,7 +3,6 @@ namespace Auth\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Auth\Service\AuthServiceInterface;
 
 class AuthController extends AbstractActionController
 {
@@ -12,9 +11,13 @@ class AuthController extends AbstractActionController
 
     public function loginAction ()
     {
+        $this->title()->set('Anmelden');
+        
         if (! $this->loginForm)
             throw new \BadMethodCallException('Login Form not yet set!');
         
+        if ($this->auth()->loggedIn())
+            $this->redirect()->toRoute('home');
         
         if ($this->getRequest()->isPost()) {
             $this->loginForm->setData($this->getRequest()
@@ -23,18 +26,19 @@ class AuthController extends AbstractActionController
             if ($this->loginForm->isValid()) {
                 $data = $this->loginForm->getData();
                 
-                $authResult = $this->auth()->login($data['username'], $data['password']);
+                $authResult = $this->auth()->login($data['email'], $data['password']);
                 
                 if (! $authResult->isValid()) {
                     return new ViewModel(array(
                         'form' => $this->loginForm,
                         'loginError' => true
                     ));
-                } else
+                } else {
+                    $this->flashMessenger()->addSuccessMessage("Login erfolgreich!");
+                    $this->redirect()->toRoute('home');
                     return new ViewModel(array(
-                        'loginSuccess' => true,
-                        'userLoggedIn' => $authResult->getIdentity()
-                    ));
+                        'form' => $this->loginForm,));
+                }
             } else {
                 return new ViewModel(array(
                     'form' => $this->loginForm
@@ -48,7 +52,18 @@ class AuthController extends AbstractActionController
         }
     }
 
-	public function setLoginForm ($loginForm)
+    public function logoutAction ()
+    {
+        $this->auth()->logout();
+        if(!$this->auth()->loggedIn())
+            $this->flashMessenger()->addMessage("Logout erfolgreich!");
+        else 
+            $this->flashMessenger()->addErrorMessage("Logout fehlgeschlagen. Bitte probiere es nochmal!");
+            
+        $this->redirect()->toRoute('home');
+    }
+
+    public function setLoginForm ($loginForm)
     {
         $this->loginForm = $loginForm;
     }

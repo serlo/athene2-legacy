@@ -4,7 +4,6 @@ namespace Helloworld\Service;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-
 class GreetingServiceFactory implements FactoryInterface
 {
 
@@ -16,7 +15,9 @@ class GreetingServiceFactory implements FactoryInterface
         
         $loggingService = $serviceLocator->get('loggingService');
         
-        $greetingService->getEventManager()->attach('getGreeting', array(
+        $greetingService->getEventManager()->attach(
+            'getGreeting'
+            , array(
             $loggingService,
             'onGetGreeting'
         ));

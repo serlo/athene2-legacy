@@ -11,7 +11,7 @@ class AuthServiceFactory implements FactoryInterface
 {
 
     const TABLE_NAME = "user";
-    const IDENTITY_COLUMN = "username";
+    const IDENTITY_COLUMN = "email";
     const CREDENTIAL_COLUMN = "password";
 
     public function createService (ServiceLocatorInterface $serviceLocator)

@@ -52,8 +52,11 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory'
-        )
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+        ),
+        'aliases' => array(
+            'EntityManager' => 'doctrine.entitymanager.orm_default'
+        ),
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -68,6 +71,11 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController'
+        )
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'title' => 'Application\Controller\Plugin\Title'
         )
     ),
     'view_manager' => array(
@@ -119,9 +127,10 @@ return array(
                     
                     'base_css' => array(
                         'assets' => array(
+                            'css/bootstrap.min.css',
                             'css/bootstrap-responsive.min.css',
-                            'css/style.css',
-                            'css/bootstrap.min.css'
+                            'css/generic.css',
+                            'css/style.css'
                         ),
                         'filters' => array(
                             'CssRewriteFilter' => array(
@@ -148,6 +157,22 @@ return array(
                             'move_raw' => true
                         )
                     )
+                )
+            )
+        )
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
             )
         )

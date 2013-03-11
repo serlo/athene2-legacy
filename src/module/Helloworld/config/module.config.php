@@ -10,7 +10,7 @@ return array(
             'sayhello' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route' => '/sayhello',
+                    'route' => '/sayhello1',
                     'defaults' => array(
                         'controller' => 'Helloworld\Controller\Index',
                         'action' => 'index'
@@ -30,7 +30,7 @@ return array(
             'loggingService' => 'Helloworld\Service\LoggingService'
         ),
         'factories' => array(
-            'greetingService'=> 'Helloworld\Service\GreetingServiceFactory'
+            'greetingService123'=> 'Helloworld\Service\GreetingServiceFactory'
         ),
     )
 );
