@@ -1,0 +1,32 @@
+<?php
+$dbParams = array(
+		'host' => 'localhost',
+		'port' => '3306',
+		'user' => 'root',
+		'password' => '____',
+		'database' => 'serlo'
+);
+
+return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host' => $dbParams['host'],
+                    'port' => $dbParams['port'],
+                    'user' => $dbParams['user'],
+                    'password' => $dbParams['password'],
+                    'dbname' => $dbParams['database']
+                )
+            )
+        )
+    ),
+    'dbParams' => array(
+        'host' => $dbParams['host'],
+        'port' => $dbParams['port'],
+        'user' => $dbParams['user'],
+        'password' => $dbParams['password'],
+        'database' => $dbParams['database']
+    )
+);
