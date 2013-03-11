@@ -10,7 +10,7 @@ class LoginFilter extends InputFilter
     public function __construct ()
     {
         $this->add(array(
-            'name' => 'username',
+            'name' => 'email',
             'required' => true
         ));
         

@@ -1,5 +1,4 @@
 <?php
-use Helloworld;
 return array(
     'router' => array(
         'routes' => array(
@@ -12,6 +11,26 @@ return array(
                         'action' => 'login'
                     )
                 )
+            ),
+            'logout' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/logout',
+                    'defaults' => array(
+                        'controller' => 'Auth\Controller\Auth',
+                        'action' => 'logout'
+                    )
+                )
+            ),
+            'register' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/register',
+                    'defaults' => array(
+                        'controller' => 'Auth\Controller\Register',
+                        'action' => 'index'
+                    )
+                )
             )
         )
     ),
@@ -20,9 +39,32 @@ return array(
             'auth' => 'Auth\Controller\Plugin\Auth'
         )
     ),
+    'view_helpers' => array(
+        'factories' => array(
+        		'auth' => function  ($sm)
+        		{
+        
+        			$helper = new \Auth\View\Helper\Auth();
+        			$helper->setAuthService($sm->getServiceLocator()->get('Auth\Service\AuthService'));
+        			return $helper;
+        		}
+        )
+    ),
     'controllers' => array(
         'factories' => array(
-            'Auth\Controller\Auth' => 'Auth\Controller\AuthControllerFactory'
+            'Auth\Controller\Auth' => 'Auth\Controller\AuthControllerFactory',
+            'Auth\Controller\Register' => function($sm) {
+                $ct = new \Auth\Controller\RegisterController();
+                
+                $ct->getEventManager()->attach('signUpComplete', array(
+                		$sm->getServiceLocator()->get('UserService'),
+                		'createListener'
+                ));
+                
+                return $ct;
+            }
+        ),
+        'invokables' => array(
         )
     ),
     'view_manager' => array(
@@ -47,6 +89,6 @@ return array(
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
             'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory'
-        ),
+        )
     )
 );

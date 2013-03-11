@@ -14,12 +14,12 @@ class Login extends Form
         $this->setInputFilter(new \Auth\Form\LoginFilter());
         
         $this->add(array(
-            'name' => 'username',
+            'name' => 'email',
             'attributes' => array(
                 'type' => 'text'
             ),
             'options' => array(
-                'label' => 'Benutzername:'
+                'label' => 'E-Mail-Adresse:'
             )
         ));
         $this->add(array(

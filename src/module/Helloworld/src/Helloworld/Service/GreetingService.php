@@ -16,7 +16,7 @@ class GreetingService
             return "Good morning, world!";
         else 
             if (date("H") > 11 && date("H") < 17)
-                return "Hello, world! 12";
+                return "Hello, w123orld! 12";
             else
                 return "Good evening, world!";
     }

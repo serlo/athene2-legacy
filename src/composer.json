@@ -11,6 +11,8 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
         "widmogrod/zf2-assetic-module": "dev-master",
+        "twitter/bootstrap": "dev-master",
+	    "neilime/zf2-twb-bundle": "dev-master",
         "doctrine/doctrine-orm-module": "dev-master",
         "zf-commons/zfc-base": "0.*",
 		"zf-commons/zfc-user": "0.*"

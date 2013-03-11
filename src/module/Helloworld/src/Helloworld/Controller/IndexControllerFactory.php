@@ -12,7 +12,7 @@ class IndexControllerFactory implements FactoryInterface
         $ctr = new IndexController();
         
         $ctr->setGreetingService($serviceLocator->getServiceLocator()
-            ->get('greetingService'));
+            ->get('greetingService123'));
         return $ctr;
     }
 }

@@ -20,23 +20,23 @@ class AuthService implements AuthServiceInterface
 		$this->adapter = $adapter;
 	}
 
-	public function login ($username, $password)
+	public function login ($email, $password)
     {
-        $salt = '';
-        
         $hostTable = new \Zend\Db\TableGateway\TableGateway('user', $this->adapter);
         $results = $hostTable->select(array(
-            'username' => $username
+            'email' => $email
         ));
         
+        $hashedPassword = '';
         foreach ($results as $result)
             $hashedPassword = $result["password"];
         
-        $salt = $this->hashService->find_salt($hashedPassword);
+        $password = $this->hashService->hash_password(
+            $password, 
+            $this->hashService->find_salt($hashedPassword)
+        );
         
-        $password = $this->hashService->hash_password($password, $salt);
-        
-        $this->authService->getAdapter()->setIdentity($username);
+        $this->authService->getAdapter()->setIdentity($email);
         $this->authService->getAdapter()->setCredential($password);
         return $this->authService->authenticate();
     }

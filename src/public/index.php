@@ -3,10 +3,10 @@
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
-error_reporting(-1);
-ini_set('display_errors', true);
-
 chdir(dirname(__DIR__));
+
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', true);
 
 // Setup autoloading
 require 'init_autoloader.php';
