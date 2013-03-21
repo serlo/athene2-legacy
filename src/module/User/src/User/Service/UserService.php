@@ -60,7 +60,7 @@ class UserService implements UserServiceInterface {
 	    
 	}
 	
-	public function read($id){
+	public function receive($id){
 	    
 	}
 }

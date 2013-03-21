@@ -89,6 +89,9 @@ return array(
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
             'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory'
-        )
+        ),
+        'invokables' => array(
+            'Zend\Permissions\Acl\Acl' => 'Zend\Permissions\Acl\Acl',
+        ),
     )
 );
