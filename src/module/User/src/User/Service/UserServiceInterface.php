@@ -1,8 +1,9 @@
 <?php
 namespace User\Service;
 
-interface UserServiceInterface {
-    
+use Core\Service\CrudServiceInterface;
+
+interface UserServiceInterface extends CrudServiceInterface {
     /**
      * Listener for creating users
      * 
@@ -19,8 +20,12 @@ interface UserServiceInterface {
      * @return \User\Entity\User
      */
     public function create(array $data, $form);
+    
     public function delete($id);
+    
     public function updateListener($e);
+    
     public function update(array $data, $form);
-    public function read($id);
+    
+    public function receive($id);
 }
