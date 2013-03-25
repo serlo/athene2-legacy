@@ -26,6 +26,9 @@ interface AuthServiceInterface
      */
     public function loggedIn();
     
+
+    public function hasRole ($role);
+    
     /**
      * is our user allowed to access a specific resource?
      * 
@@ -36,7 +39,7 @@ interface AuthServiceInterface
      * @param string $subject
      * @return true if yes, false if no
      */
-    public function isAllowed($role, $resource = NULL, $privilege = NULL, $language = NULL, $subject = NULL);
+    public function isAllowed($role, $resource = NULL, $privilege = NULL);
 }
 
 ?>

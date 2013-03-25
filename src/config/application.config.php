@@ -8,6 +8,7 @@ return array(
         'DoctrineORMModule',
         'TwbBundle',
         'ZfcBase',
+        'Core',
         'Auth',
         'User',
     ),

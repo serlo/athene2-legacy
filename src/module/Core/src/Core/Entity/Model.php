@@ -1,8 +1,18 @@
 <?php
+
 namespace Core\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 abstract class Model
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
     /**
      * Magic getter to expose protected properties.
      *
@@ -36,6 +46,14 @@ abstract class Model
     {
         return get_object_vars($this);
     }
-}
 
-?>
+    /**
+     * does the associated element exist?
+     * 
+     * @return boolean
+     */
+    public function exists ($association)
+    {
+        return $this->$association !== NULL;
+    }
+}

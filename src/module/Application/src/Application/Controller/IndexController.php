@@ -16,6 +16,10 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $this->permissions('Application\Controller\IndexController\IndexAction', array(
+            'login' => 'deny',
+        ));
+        
         return new ViewModel();
     }
 }

@@ -2,25 +2,19 @@
 namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Core\Entity\Model;
+use Core\Entity\Language;
+use Core\Entity\Subject;
 
 /**
  * A role.
  * 
  * @ORM\Entity
- * @ORM\Table(name="rike")
+ * @ORM\Table(name="role")
  */
-class User
+class Role extends Model
 {
-
-    private $inputFilter;
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
     /**
      * @ORM\Column(type="string") *
      */
@@ -30,4 +24,13 @@ class User
      * @ORM\Column(type="string", nullable=true) *
      */
     protected $description;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="RoleUser", mappedBy="role")
+     **/
+    private $roleUsers;
+
+    public function __construct() {
+    	$this->roleUsers = new ArrayCollection();
+    }
 }

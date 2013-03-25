@@ -2,74 +2,148 @@
 namespace Auth\Service;
 
 use Zend\Permissions\Acl\Acl;
-use User\Entity\User;
+use User\Service\UserServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Zend\Permissions\Acl\Role\RoleInterface;
+use Core\Service\LanguageService;
+use Core\Service\SubjectService;
 
 class AuthService implements AuthServiceInterface
 {
 
-    private $authService, $hashService, $adapter, $authResult, $aclService;
+    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $languageService, $subjectService;
+
     private $entityManager;
+
     private $user;
 
     /**
-	 * @return the $user
-	 */
-	public function getUser() {
-		return $this->user;
-	}
+     *
+     * @return the $languageService
+     */
+    public function getLanguageService ()
+    {
+        return $this->languageService;
+    }
 
-	/**
-	 * @param User $user
-	 */
-	public function setUser(User $user) {
-		$this->user = $user;
-	}
+    /**
+     *
+     * @return the $subjectService
+     */
+    public function getSubjectService ()
+    {
+        return $this->subjectService;
+    }
 
-	/**
-	 * @return the $entityManager
-	 */
-	public function getEntityManager() {
-		return $this->entityManager;
-	}
+    /**
+     *
+     * @param LanguageService $languageService            
+     */
+    public function setLanguageService (LanguageService $languageService)
+    {
+        $this->languageService = $languageService;
+    }
 
-	/**
-	 * @param EntityManager $entityManager
-	 */
-	public function setEntityManager(EntityManager $entityManager) {
-		$this->entityManager = $entityManager;
-	}
+    /**
+     *
+     * @param SubjectService $subjectService            
+     */
+    public function setSubjectService (SubjectService $subjectService)
+    {
+        $this->subjectService = $subjectService;
+    }
 
-	/**
-	 * @return the $acl
-	 */
-	public function getAclService() {
-		return $this->aclService;
-	}
+    /**
+     *
+     * @return the $userService
+     */
+    public function getUserService ()
+    {
+        return $this->userService;
+    }
 
-	/**
-	 * @param Acl $acl
-	 */
-	public function setAclService(Acl $aclService) {
-		$this->aclService = $aclService;
-	}
+    /**
+     *
+     * @param field_type $userService            
+     */
+    public function setUserService (UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
 
-	/**
-	 * @return the $adapter
-	 */
-	public function getAdapter() {
-		return $this->adapter;
-	}
+    /**
+     *
+     * @return the $user
+     */
+    public function getUser ()
+    {
+        return $this->user;
+    }
 
-	/**
-	 * @param field_type $adapter
-	 */
-	public function setAdapter($adapter) {
-		$this->adapter = $adapter;
-	}
+    /**
+     *
+     * @param User $user            
+     */
+    public function setUser ($user = NULL)
+    {
+        $this->user = $user;
+    }
 
-	public function login ($email, $password)
+    /**
+     *
+     * @return the $entityManager
+     */
+    public function getEntityManager ()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     *
+     * @param EntityManager $entityManager            
+     */
+    public function setEntityManager (EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     *
+     * @return the $acl
+     */
+    public function getAclService ()
+    {
+        return $this->aclService;
+    }
+
+    /**
+     *
+     * @param Acl $acl            
+     */
+    public function setAclService (Acl $aclService)
+    {
+        $this->aclService = $aclService;
+    }
+
+    /**
+     *
+     * @return the $adapter
+     */
+    public function getAdapter ()
+    {
+        return $this->adapter;
+    }
+
+    /**
+     *
+     * @param field_type $adapter            
+     */
+    public function setAdapter ($adapter)
+    {
+        $this->adapter = $adapter;
+    }
+
+    public function login ($email, $password)
     {
         $hostTable = new \Zend\Db\TableGateway\TableGateway('user', $this->adapter);
         $results = $hostTable->select(array(
@@ -80,21 +154,18 @@ class AuthService implements AuthServiceInterface
         foreach ($results as $result)
             $hashedPassword = $result["password"];
         
-        $password = $this->hashService->hash_password(
-            $password, 
-            $this->hashService->find_salt($hashedPassword)
-        );
+        $password = $this->hashService->hash_password($password, $this->hashService->find_salt($hashedPassword));
         
         $this->authService->getAdapter()->setIdentity($email);
         $this->authService->getAdapter()->setCredential($password);
         
-        if($this->authService->authenticate()){
-            $user = $this->getEntityManager()->find('User\Entity\User', array('email' => $email, 'password' => $password));
-            $this->setUser($user);
-            return true;
+        $result = $this->authService->authenticate();
+        
+        if ($result->isValid()) {
+            $this->setUser($this->getUserService()->get($email));
         }
         
-        return false;
+        return $result;
     }
 
     public function logout ()
@@ -108,21 +179,33 @@ class AuthService implements AuthServiceInterface
         return $this->authService->hasIdentity();
     }
 
-    private final function hasRole ($role, $language = NULL, $subject = NULL)
+    public function hasRole ($role)
     {
-        // is our user authentificated?
-        if(!$this->loggedIn() || $this->getUser() === NULL){
-            // only return true, if we requested the guest role
-            return $role === 'guest';
-        }
-        
+        return array_search($role, $this->getRoles()) !== FALSE;
     }
 
-    public final function isAllowed($role, $resource = NULL, $privilege = NULL, $language = null, $subject = null){
-        return $this->hasRole($role, $language, $subject) && $this->aclService->isAllowed($role, $resource, $privilege);
+    public function getRoles ()
+    {
+        return array_merge(array(
+            'guest'
+        ), $this->getUserService()->getRoles($this->getUser(), $this->getLanguageService()
+            ->get(), $this->getSubjectService()
+            ->get()));
     }
-    
-    
+
+    public function isAllowed ($role, $resource = NULL, $privilege = NULL)
+    {
+        $return = false;
+        $roles = $this->getRoles();
+        
+        foreach ($roles as $role) {
+            $return = $this->getAclService()->isAllowed($role, $resource, $privilege);
+            if ($return)
+                return $return;
+        }
+        return false;
+    }
+
     /**
      *
      * @return the $authService
@@ -158,15 +241,15 @@ class AuthService implements AuthServiceInterface
     {
         $this->hashService = $hashService;
     }
-    
-    
+
     /**
      * Prepares the roles
-     * 
+     *
      * @see https://github.com/serlo-org/v2.serlo.org/wiki/Roles
-     * @param RoleInterface $role
+     * @param RoleInterface $role            
      */
-    public function prepareRoles(RoleInterface $role){
+    public function prepareRoles ($role)
+    {
         $acl = $this->getAclService();
         $acl->addRole(new $role('guest'));
         $acl->addRole(new $role('login'), 'guest');
