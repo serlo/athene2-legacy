@@ -1,9 +1,7 @@
 <?php
 namespace User\Service;
 
-use Core\Service\CrudServiceInterface;
-
-interface UserServiceInterface extends CrudServiceInterface {
+interface UserServiceInterface {
     /**
      * Listener for creating users
      * 
@@ -28,4 +26,8 @@ interface UserServiceInterface extends CrudServiceInterface {
     public function update(array $data, $form);
     
     public function receive($id);
+    
+	public function hasRole($user, $role, $language = NULL, $subject = NULL);
+	
+	public function getRoles ($user, $language = NULL, $subject = NULL);
 }

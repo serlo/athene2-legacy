@@ -6,7 +6,7 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 class Acl extends AbstractPlugin
 {
     /**
-     * @return AuthServiceInterface
+     * @return \Zend\Permissions\Acl\Acl
      */
 	public function __invoke()
 	{

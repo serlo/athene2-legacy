@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use User\Form\UserFilter;
 use Core\Entity\Model;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * A user.
@@ -14,7 +15,7 @@ use Core\Entity\Model;
  */
 class User extends Model
 {
-
+    
     private $inputFilter;
 
     /**
@@ -23,6 +24,11 @@ class User extends Model
      * @ORM\GeneratedValue
      */
     protected $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RoleUser", mappedBy="user")
+     **/
+    private $userRoles;
 
     /**
      * @ORM\Column(type="string", unique=true) *
@@ -79,6 +85,17 @@ class User extends Model
      */
     protected $removed;
 
+    /**
+	 * @return the $userRoles
+	 */
+	public function getUserRoles() {
+		return $this->userRoles;
+	}
+
+	public function __construct() {
+    	$this->userRoles = new ArrayCollection();
+    }
+    
     /**
      * Populate from an array.
      *
