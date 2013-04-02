@@ -62,7 +62,7 @@ return array(
                 
                 $ct->getEventManager()->attach('signUpComplete', array(
                     $sm->getServiceLocator()
-                        ->get('UserService'),
+                        ->get('User\Service\UserService'),
                     'createListener'
                 ));
                 
@@ -99,10 +99,10 @@ return array(
                 ));
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
-            'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory'
+            'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory',
         ),
         'invokables' => array(
-            'Zend\Permissions\Acl\Acl' => 'Zend\Permissions\Acl\Acl'
+            'Zend\Permissions\Acl\Acl' => 'Zend\Permissions\Acl\Acl',
         )
     )
 );

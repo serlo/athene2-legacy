@@ -4,7 +4,7 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use User\Form\UserFilter;
-use Core\Entity\Model;
+use Core\Entity\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
-class User extends Model
+class User extends AbstractEntity
 {
     
     private $inputFilter;

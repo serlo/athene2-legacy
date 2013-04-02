@@ -24,7 +24,7 @@ class Module
     
     public function init(ModuleManager $moduleManager)
     {
-    	//$moduleManager->getEventManager()->getSharedManager()->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', array($this, 'mvcPreDispatch'), 100);
+    	$moduleManager->getEventManager()->getSharedManager()->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', array($this, 'mvcPreDispatch'), 100);
     }
     
     public function mvcPreDispatch($event)
@@ -41,12 +41,16 @@ class Module
 
     	$auth = $sm->get('Auth\Service\AuthService');
     	$acl = $sm->get('ACL');
+
+    	$auth->setController($event->getTarget());
+    	$resource = $controller . 'Controller';
+    	$privilege = $action.'Action';
     	
-    	echo strtolower($controller . 'Controller\\' . $action.'Action<br />');
+    	$config = $sm->get('config');
+    	$auth->addPermissions($config['acl']);
     	
-    	if ( $acl->hasResource( strtolower($controller . 'Controller\\' . $action.'Action') ) ) {
-    	    echo "hurr?";
-    	    $response = $event->getResponse()->setHttpResponseCode(403);
+    	if ( $acl->hasResource( $resource ) ) {
+    	    $auth->hasAccess($resource, $privilege);
     	}
     }
 }
