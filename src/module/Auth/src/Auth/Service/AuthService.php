@@ -7,17 +7,32 @@ use Doctrine\ORM\EntityManager;
 use Zend\Permissions\Acl\Role\RoleInterface;
 use Core\Service\LanguageService;
 use Core\Service\SubjectService;
+use Zend\Permissions\Acl\Resource\GenericResource as AclResource;
 
 class AuthService implements AuthServiceInterface
 {
 
-    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $languageService, $subjectService;
+    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $languageService, $subjectService, $controller;
 
     private $entityManager;
 
     private $user;
 
     /**
+	 * @return the $controller
+	 */
+	public function getController() {
+		return $this->controller;
+	}
+
+	/**
+	 * @param field_type $controller
+	 */
+	public function setController($controller) {
+		$this->controller = $controller;
+	}
+
+	/**
      *
      * @return the $languageService
      */
@@ -189,21 +204,8 @@ class AuthService implements AuthServiceInterface
         return array_merge(array(
             'guest'
         ), $this->getUserService()->getRoles($this->getUser(), $this->getLanguageService()
-            ->get(), $this->getSubjectService()
-            ->get()));
-    }
-
-    public function isAllowed ($role, $resource = NULL, $privilege = NULL)
-    {
-        $return = false;
-        $roles = $this->getRoles();
-        
-        foreach ($roles as $role) {
-            $return = $this->getAclService()->isAllowed($role, $resource, $privilege);
-            if ($return)
-                return $return;
-        }
-        return false;
+            ->getId(), $this->getSubjectService()
+            ->getId()));
     }
 
     /**
@@ -257,6 +259,72 @@ class AuthService implements AuthServiceInterface
         $acl->addRole(new $role('moderator'), 'helper');
         $acl->addRole(new $role('admin'), 'moderator');
         $acl->addRole(new $role('sysadmin'), 'admin');
+    }
+    
+    public function addPermissions(array $config){
+        $acl = $this->getAclService();
+        
+        foreach($config as $resource => $permissions){
+            $resource = $this->_createResource($resource);
+            $acl->addResource( $resource );
+            foreach ($permissions as $role => $value) {
+                if(is_array($value)){
+                    foreach($value as $privilege => $rule){
+                        $this->_iterPermission($role, $resource, $rule, $privilege);                   
+                    }
+                } else {    
+                    $this->_iterPermission($role, $resource, $value);        
+                }
+            }
+        }
+    }
+    
+    public function hasAccess($resource, $permission = NULL){
+        $resource = $this->_resource($resource);
+        if(! $this->_isAllowed($resource, $permission) ) {
+        	if($this->loggedIn()){
+        		$this->getController()->getResponse()->setStatusCode(403);
+        		throw new \Exception('Du hast nicht die erforderlichen Rechte, um diese Seite zu sehen.');
+        	} else {
+        		$this->getController()->flashMessenger()->addSuccessMessage("Um diese Aktion auszuführen, musst du eingeloggt sein!");
+        		$this->getController()->redirect()->toRoute('login');
+        	}
+        }
+    }
+
+    public function _isAllowed ($role, $resource = NULL, $privilege = NULL)
+    {
+        $return = false;
+        $roles = $this->getRoles();
+        
+        foreach ($roles as $role) {
+            $return = $this->getAclService()->isAllowed($role, $resource, $privilege);
+            if ($return)
+                return $return;
+        }
+        return false;
+    }
+    
+    private function _createResource($resource){
+        return new AclResource($this->_resource($resource));
+    }
+    
+    private function _resource($resource){
+        return strtolower($resource);
+    }
+    
+    private function _iterPermission($role, $resource, $rule, $privilege = NULL){
+        $allowedRules = array(
+            'allow',
+            'deny'
+        );      
+        $acl = $this->getAclService();
+        
+        if (! in_array($rule, $allowedRules)) {
+            throw new \Exception('Unallowed method `' . $rule . '`. Use `allow` or `deny` only.');
+        } else {
+            $acl->$rule($role, $resource, $privilege);
+        }
     }
 }
 ?>

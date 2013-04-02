@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="subject") 
  */
-class Subject extends Model
+class Subject extends AbstractEntity
 {
     function __construct ()
     {

@@ -26,20 +26,11 @@ interface AuthServiceInterface
      */
     public function loggedIn();
     
-
     public function hasRole ($role);
+
+    public function addPermissions(array $config);
     
-    /**
-     * is our user allowed to access a specific resource?
-     * 
-     * @param string $role
-     * @param string $resource
-     * @param string $privilege
-     * @param string $language
-     * @param string $subject
-     * @return true if yes, false if no
-     */
-    public function isAllowed($role, $resource = NULL, $privilege = NULL);
+    public function hasAccess($resource, $permission = NULL);
 }
 
 ?>

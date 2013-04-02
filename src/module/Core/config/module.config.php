@@ -8,6 +8,12 @@ return array(
             'Core\Service\SubjectService' => 'Core\Service\SubjectService'
         ),
     ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'getParam' => 'Core\Controller\Plugin\GetParam',
+            'getParams' => 'Core\Controller\Plugin\GetParams',
+        )
+    ),
     'doctrine' => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(

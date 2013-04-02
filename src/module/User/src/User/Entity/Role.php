@@ -3,7 +3,7 @@ namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Core\Entity\Model;
+use Core\Entity\AbstractEntity;
 use Core\Entity\Language;
 use Core\Entity\Subject;
 
@@ -13,7 +13,7 @@ use Core\Entity\Subject;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role extends Model
+class Role extends AbstractEntity
 {
     /**
      * @ORM\Column(type="string") *

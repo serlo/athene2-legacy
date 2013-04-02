@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="language")  
  */
-class Language extends Model
+class Language extends AbstractEntity
 {
     function __construct ()
     {
