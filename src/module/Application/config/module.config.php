@@ -55,7 +55,8 @@ return array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ),
         'aliases' => array(
-            'EntityManager' => 'doctrine.entitymanager.orm_default'
+            'EntityManager' => 'doctrine.entitymanager.orm_default',
+            'Doctrine\ORM\EntityManager' => 'EntityManager'
         ),
     ),
     'translator' => array(

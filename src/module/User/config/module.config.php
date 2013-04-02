@@ -9,7 +9,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'UserService' => function  ($sm)
+            'User\Service\UserService' => function  ($sm)
             {
                 $srv = new \User\Service\UserService();
                 $srv->setEntityManager($sm->get('EntityManager'));                
