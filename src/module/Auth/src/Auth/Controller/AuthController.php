@@ -36,6 +36,7 @@ class AuthController extends AbstractActionController
                 } else {
                     $this->flashMessenger()->addSuccessMessage("Login erfolgreich!");
                     $this->redirect()->toRoute('home');
+                    
                     return new ViewModel(array(
                         'form' => $this->loginForm,));
                 }

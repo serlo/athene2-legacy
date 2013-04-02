@@ -4,6 +4,8 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
 use User\Form\UserFilter;
+use Core\Entity\AbstractEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * A user.
@@ -11,9 +13,9 @@ use User\Form\UserFilter;
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
-class User
+class User extends AbstractEntity
 {
-
+    
     private $inputFilter;
 
     /**
@@ -22,6 +24,11 @@ class User
      * @ORM\GeneratedValue
      */
     protected $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RoleUser", mappedBy="user")
+     **/
+    private $userRoles;
 
     /**
      * @ORM\Column(type="string", unique=true) *
@@ -79,39 +86,16 @@ class User
     protected $removed;
 
     /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property            
-     * @return mixed
-     *
-     */
-    public function __get ($property)
-    {
-        return $this->$property;
-    }
+	 * @return the $userRoles
+	 */
+	public function getUserRoles() {
+		return $this->userRoles;
+	}
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property            
-     * @param mixed $value            
-     *
-     */
-    public function __set ($property, $value)
-    {
-        $this->$property = $value;
+	public function __construct() {
+    	$this->userRoles = new ArrayCollection();
     }
-
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy ()
-    {
-        return get_object_vars($this);
-    }
-
+    
     /**
      * Populate from an array.
      *
