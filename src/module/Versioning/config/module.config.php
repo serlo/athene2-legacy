@@ -2,10 +2,10 @@
 return array(
     'service_manager' => array(
         'factories' => array(
-            'Versioning\RepositoryManager' => 'Versioning\RepositoryManager'        
+            'Versioning\RepositoryManager' => 'Versioning\RepositoryManager'
         ),
         'invokables' => array(
-            'Versioning\Service\RepositoryService' => 'Versioning\Service\RepositoryService',
+            'Versioning\Service\RepositoryService' => 'Versioning\Service\RepositoryService'
         ),
         'shared' => array(
             'Versioning\Service\RepositoryService' => 'false'
@@ -17,8 +17,16 @@ return array(
                 'Versioning\Service\RepositoryService' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
+                    ),
+                    'setAuthService' => array(
+                        'required' => 'true'
                     )
-                ),          
+                )
+            ),
+            'instance' => array(
+                'preferences' => array(
+                    'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService'
+                )
             )
         )
     )

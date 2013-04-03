@@ -2,6 +2,7 @@
 namespace Versioning\Entity;
 
 use Core\Entity\EntityInterface;
+use User\Entity\User;
 
 interface RepositoryInterface
 {

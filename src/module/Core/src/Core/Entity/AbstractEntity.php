@@ -34,4 +34,8 @@ abstract class AbstractEntity implements EntityInterface
     {
         return $this->$association !== NULL;
     }
+    
+    public function populate(array $data){
+        return $this->setFieldValues($data);
+    }
 }

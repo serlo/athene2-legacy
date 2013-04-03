@@ -2,7 +2,7 @@
 namespace Versioning\Entity;
 
 interface RevisionInterface
-{
+{    
     /**
      * @return int
      */
@@ -53,4 +53,6 @@ interface RevisionInterface
      * @return $this
      */
     public function trash();
+    public function setConfirmer(User $user);
+    public function setConfirmDate($date);
 }
