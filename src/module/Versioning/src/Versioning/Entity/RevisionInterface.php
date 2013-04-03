@@ -53,6 +53,4 @@ interface RevisionInterface
      * @return $this
      */
     public function trash();
-    public function setConfirmer(User $user);
-    public function setConfirmDate($date);
 }

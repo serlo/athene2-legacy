@@ -2,6 +2,7 @@
 namespace Page\Entity;
 
 use Core\Entity\AbstractEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A user.
@@ -12,7 +13,7 @@ use Core\Entity\AbstractEntity;
 class Page extends AbstractEntity {
 
     /**
-     * @OneToMany(targetEntity="PageRepository", mappedBy="page")
+     * @ORM\OneToMany(targetEntity="PageRepository", mappedBy="page")
      **/
     protected $translations;
     

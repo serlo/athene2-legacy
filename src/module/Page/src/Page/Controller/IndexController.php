@@ -1,7 +1,9 @@
 <?php
 namespace Page\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController, Page\Service\PageServiceInterface, Zend\View\Helper\ViewModel;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+use Page\Service\PageServiceInterface;
 
 class IndexController extends AbstractActionController
 {
@@ -32,9 +34,9 @@ class IndexController extends AbstractActionController
         $id = $this->getParam('slug');
         $ps = $this->getPageService();
 
-        return new ViewModel(array(
-            'title' => 'herp',
-            'content' => 'derp'
+        $return = new ViewModel(array(
+            'title' => $ps->getFieldValue($id, 'title'),
+            'content' => $ps->getFieldValue($id, 'content')
         ));
     }
 }
