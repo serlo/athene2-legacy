@@ -19,7 +19,7 @@ class PageRevision extends AbstractEntity {
     /**
      * @ManyToOne(targetEntity="User")
      **/
-    protected $confirmer;
+    protected $administrator;
     
     /**
      * @ManyToOne(targetEntity="User")
@@ -32,10 +32,16 @@ class PageRevision extends AbstractEntity {
     /** @Column(type="text") */
     protected $content;
 
-    /** @Column(type="datetime") */
+    /** @Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"}) 
+     */
     protected $date;
     
     /** @Column(type="datetime") */
-    protected $confirmation_date;
+    protected $administration_date;
     
+	public function populate(array $data) {	
+    	$this->title = $data['title'];
+    	$this->content = $data['content'];
+    	return $this;
+	}
 }

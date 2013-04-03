@@ -23,6 +23,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
     public function setFieldValues(array $data){
         foreach($data as $key => $value)
             $this->setFieldValue($key, $value);
+        return $this;
     }
     
     public function getFieldValue($field){
@@ -38,7 +39,5 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
         return $this->getEntity()->get('id');
     }
     
-    abstract public function delete(){
-        return $this;
-    }
+    abstract public function delete();
 }

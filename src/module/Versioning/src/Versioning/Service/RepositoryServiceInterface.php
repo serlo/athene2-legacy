@@ -94,4 +94,11 @@ interface RepositoryServiceInterface
      * @return RevisionInterface
      */
     public function mergeRevisions(RevisionInterface $revision, RevisionInterface $base);
+    
+    /**
+     * 
+     * @param RevisionInterface $revision
+     * @return $this
+     */
+    public function persistRevision(RevisionInterface $revision);
 }

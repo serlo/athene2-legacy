@@ -46,7 +46,6 @@ class AuthController extends AbstractActionController
                 ));
             }
         } else {
-            
             return new ViewModel(array(
                 'form' => $this->loginForm
             ));

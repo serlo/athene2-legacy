@@ -1,6 +1,11 @@
 <?php
+namespace Page;
+
 return array(
     'di' => array(
+        'allowed_controllers' => array(
+            'Page\Controller\IndexController'
+        ),
         'definition' => array(
             'class' => array(
                 'Page\Service\PageService' => array(
@@ -12,13 +17,23 @@ return array(
                     ),
                     'setLaunguageService' => array(
                         'required' => 'true'
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Page\Controller\IndexController' => array(
+                    'setPageService' => array(
+                        'required' => 'true'
                     )
                 )
-            ),
-            'instance' => array(
-                'preferences' => array(
-                    'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
-                ),
+            )
+        ),
+        'instance' => array(
+            'preferences' => array(
+                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
+                'Page\Service\PageServiceInterface' => 'Page\Service\PageService',
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
             )
         )
     ),
@@ -36,11 +51,11 @@ return array(
     'router' => array(
         'routes' => array(
             'page' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/page/',
+                    'route' => '/page[/[:slug]]',
                     'defaults' => array(
-                        'controller' => 'Page\Controller\Index',
+                        'controller' => 'Page\Controller\IndexController',
                         'action' => 'index'
                     )
                 )
@@ -59,13 +74,14 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Page\Controller\Index' => 'Page\Controller\IndexController',
+            // moved to di
+            // 'Page\Controller\Index' => 'Page\Controller\IndexController',
             'Page\Controller\Restricted' => 'Page\Controller\RestrictedController'
         )
     ),
     'service_manager' => array(
         'factories' => array(
-            'Page\Service\PageService' => 'Page\Service\PageService'
+            //'Page\Service\PageService' => 'Page\Service\PageService'
         )
     )
 );

@@ -4,6 +4,8 @@ namespace Versioning\Service;
 use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\ORM\EntityManager;
+use Auth\Service\AuthServiceInterface;
+use Core\Entity\AbstractEntityAdapter;
 
 class RepositoryService implements RepositoryServiceInterface
 {
@@ -21,8 +23,24 @@ class RepositoryService implements RepositoryServiceInterface
     private $trashedRevisions;
 
     private $currentRevision;
+    
+    private $authService;
 
     /**
+	 * @return AuthServiceInterface
+	 */
+	public function getAuthService() {
+		return $this->authService;
+	}
+
+	/**
+	 * @param AuthServiceInterface $authService
+	 */
+	public function setAuthService(AuthServiceInterface $authService) {
+		$this->authService = $authService;
+	}
+
+	/**
      *
      * @return the $entityManager
      */
@@ -75,8 +93,8 @@ class RepositoryService implements RepositoryServiceInterface
             throw new \Exception("A revision with the ID `$revision->getId()` already exists in this repository.");
         
         $this->getRevisions()[$revision->getId()] = $revision;
-        $revision->setFieldValue('repository', $this->repository->getId());
-        $this->_persistEntity($revision);
+        $revision->setFieldValue('repository', $this->repository);
+        $this->persistRevision($revision);
         return $this;
     }
 
@@ -118,7 +136,7 @@ class RepositoryService implements RepositoryServiceInterface
     private function _trashRevision (RevisionInterface $revision)
     {
         $revision->trash();
-        $this->_persistEntity($revision);
+        $this->persistRevision($revision);
     }
 
     public function hasRevision (RevisionInterface $revision)
@@ -152,8 +170,11 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function checkoutRevision (RevisionInterface $revision)
     {
-        $this->currentRevision = $revision;
-        return $this;
+        
+        $this->repository->setFieldValue('currentRevision', $revision);
+        $revision->setConfirmer($this->getAuthService()->getUser());
+        $revision->setConfirmDate(date('Y-m-d H:i'));
+        return $this->persist();
     }
 
     public function getCurrentRevision ()
@@ -164,5 +185,23 @@ class RepositoryService implements RepositoryServiceInterface
     public function mergeRevisions (RevisionInterface $revision, RevisionInterface $base)
     {
         throw new \Exception("Not implemented yet");
+    }
+    
+    public function persistRevision(AbstractEntityAdapter $revision){
+        $em = $this->getEntityManager();
+        $em->persist($revision->getAdaptee());
+        $em->flush();
+        return $this;
+    }
+    
+    public function persist(){
+        return $this->persist($this->getAdaptee());
+    }
+    
+    public function persistRepository(AbstractEntityAdapter $repository){
+        $em = $this->getEntityManager();
+        $em->persist($repository->getAdaptee());
+        $em->flush();
+        return $this;
     }
 }
