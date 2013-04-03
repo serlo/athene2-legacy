@@ -172,7 +172,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
             $ls = $this->getLanguageService();
         
         if(!$page instanceof Page)
-            $page = $this->getPage($page);
+            $page = $this->_getPage($page);
         
         return 'Page\Entity\PageRepository(' . $page->getId() . ', '.$ls->getId().')';
     }

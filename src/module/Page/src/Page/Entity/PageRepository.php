@@ -2,6 +2,7 @@
 namespace Page\Entity;
 
 use Core\Entity\AbstractEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A user.
@@ -11,29 +12,29 @@ use Core\Entity\AbstractEntity;
  */
 class PageRepository extends AbstractEntity {
     /**
-     * @ManyToOne(targetEntity="Page", inversedBy="PageTranslations")
+     * @ORM\ManyToOne(targetEntity="Page", inversedBy="PageTranslations")
      **/
     protected $page;
     
     /**
-     * @ManyToOne(targetEntity="Language")
+     * @ORM\ManyToOne(targetEntity="Language")
      **/
     protected $language;
     
     /**
-     * @OneToMany(targetEntity="PageRevision", mappedBy="PageRepository")
+     * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="PageRepository")
      **/
     protected $revisions;
     
     /**
-     * @OneToOne(targetEntity="PageRevision")
+     * @ORM\OneToOne(targetEntity="PageRevision")
      **/
     protected $currentRevision;
 
-    /** @Column(type="text",length=255) */
+    /** @ORM\Column(type="text",length=255) */
     protected $uri;
 
-    /** @Column(type="text",length=255) */
+    /** @ORM\Column(type="text",length=255) */
     protected $name;
 
     public function __construct() {

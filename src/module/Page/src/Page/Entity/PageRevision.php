@@ -2,6 +2,7 @@
 namespace Page\Entity;
 
 use Core\Entity\AbstractEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A user.
@@ -12,31 +13,31 @@ use Core\Entity\AbstractEntity;
 class PageRevision extends AbstractEntity {
     
     /**
-     * @ManyToOne(targetEntity="PageRepository", inversedBy="PageRevisions")
+     * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="PageRevisions")
      **/
     protected $translation;
 
     /**
-     * @ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      **/
     protected $administrator;
     
     /**
-     * @ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      **/
     protected $author;
 
-    /** @Column(type="text",length=255) */
+    /** @ORM\Column(type="text",length=255) */
     protected $title;
 
-    /** @Column(type="text") */
+    /** @ORM\Column(type="text") */
     protected $content;
 
-    /** @Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"}) 
+    /** @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"}) 
      */
     protected $date;
     
-    /** @Column(type="datetime") */
+    /** @ORM\Column(type="datetime") */
     protected $administration_date;
     
 	public function populate(array $data) {	
