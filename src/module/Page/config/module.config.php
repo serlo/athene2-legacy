@@ -15,7 +15,7 @@ return array(
                     'setRepositoryManager' => array(
                         'required' => 'true'
                     ),
-                    'setLaunguageService' => array(
+                    'setLanguageService' => array(
                         'required' => 'true'
                     ),
                     'setServiceLocator' => array(
@@ -31,19 +31,13 @@ return array(
                     )
                 )
             ),
-            'instance' => array(
-                'preferences' => array(
-        			'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
-        			'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-        			'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
-        		),
-        	)
         ),
         'instance' => array(
             'preferences' => array(
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
                 'Page\Service\PageServiceInterface' => 'Page\Service\PageService',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService'
             )
         )
     ),

@@ -10,4 +10,5 @@ class RevisionWithTitleAndContent extends AbstractRevision
             'content' => $this->getEntity()->content
         );
     }
+    
 }

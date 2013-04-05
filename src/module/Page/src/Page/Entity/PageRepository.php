@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * A user.
  *
  * @ORM\Entity
- * @ORM\Table(name="page_translation")
+ * @ORM\Table(name="page_repository")
  */
 class PageRepository extends AbstractEntity {
     /**
@@ -29,6 +29,7 @@ class PageRepository extends AbstractEntity {
     
     /**
      * @ORM\OneToOne(targetEntity="PageRevision")
+     * @ORM\JoinColumn(name="current_revision_id", referencedColumnName="id")
      **/
     protected $currentRevision;
 

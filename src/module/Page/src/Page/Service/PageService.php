@@ -6,12 +6,12 @@ use Versioning\RepositoryManagerAwareInterface;
 use Versioning\Service\RepositoryServiceInterface;
 use Versioning\Entity\RevisionWithTitleAndContent;
 use Doctrine\ORM\EntityManager;
-use Core\Service\LanguageService;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Page\Entity\Page;
 use Page\Entity\PageRevision;
 use Auth\Service\AuthServiceInterface;
+use Core\Service\LanguageService;
 
 class PageService implements PageServiceInterface, RepositoryManagerAwareInterface, ServiceLocatorAwareInterface
 {
@@ -85,7 +85,6 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
      */
     public function setLanguageService (LanguageService $languageService)
     {
-    	echo "Ok";
         $this->languageService = $languageService;
     }
 
@@ -141,13 +140,11 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
             } else {
                 $id = $this->slugToId[$id];
             }
-        }
+        }   
         
         if (! in_array($id, $this->pages)) {
             $page = $em->find('Page\Entity\Page', $id);
-            $this->pages = array_merge(array(
-                $page->getId() => $page
-            ), $this->pages);
+            $this->pages[$page->getId()] = $page;
             $this->_loadRepository($page);
         }
         
@@ -158,15 +155,13 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         if($ls == NULL)
             $ls = $this->getLanguageService();
         
-        var_dump($ls);
-        
         $rm = $this->getRepositoryManager();
         $em = $this->getEntityManager();
         $entity = $em->getRepository('Page\Entity\PageRepository')->findOneBy(array(
             'language' => $ls->getId(),
             'page' => $page,
         ));
-        $name = $this->_nameRepository($page, $ls);   
+        $name = $this->_nameRepository($page, $ls);
         $repository = $rm->addRepository($name, $entity);
     }
     
@@ -196,10 +191,15 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         return $repository->getCurrentRevision()->getFieldValues();
     }
 
+    public function get ($id, $field)
+    {
+    	$repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));
+    	return $repository->getCurrentRevision()->get($field);
+    }
+    
     public function getFieldValue ($id, $field)
     {
-        $repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));   
-        return $repository->getCurrentRevision()->getFieldValue($field);
+        return $this->get($id, $field);
     }
 
     public function setFieldValues ($id, $rid, array $data)

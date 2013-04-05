@@ -14,16 +14,12 @@ class PageRevision extends AbstractEntity {
     
     /**
      * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="PageRevisions")
+     * @ORM\JoinColumn(name="page_repository_id", referencedColumnName="id")
      **/
-    protected $translation;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     **/
-    protected $administrator;
+    protected $repository;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User\Entity\User")
      **/
     protected $author;
 
@@ -36,9 +32,6 @@ class PageRevision extends AbstractEntity {
     /** @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"}) 
      */
     protected $date;
-    
-    /** @ORM\Column(type="datetime") */
-    protected $administration_date;
     
 	public function populate(array $data) {	
     	$this->title = $data['title'];
