@@ -20,6 +20,9 @@ return array(
                     ),
                     'setServiceLocator' => array(
                         'required' => 'true'
+                    ),
+                    'setAuthService' => array(
+                        'required' => 'true'
                     )
                 ),
                 'Page\Controller\IndexController' => array(
@@ -27,7 +30,14 @@ return array(
                         'required' => 'true'
                     )
                 )
-            )
+            ),
+            'instance' => array(
+                'preferences' => array(
+        			'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
+        			'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+        			'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
+        		),
+        	)
         ),
         'instance' => array(
             'preferences' => array(
