@@ -85,6 +85,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
      */
     public function setLanguageService (LanguageService $languageService)
     {
+    	echo "Ok";
         $this->languageService = $languageService;
     }
 
@@ -130,7 +131,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
     {
         $em = $this->getEntityManager();
         
-        if (is_string($id)) {
+        if (!is_numeric($id)) {
             if (! in_array($id, $this->slugToId)) {
                 $page = $em->getRepository('Page\Entity\Page')->findOneBy(array(
                     'slug' => $id
@@ -154,8 +155,10 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
     }
     
     private function _loadRepository(Page $page, LanguageService $ls = NULL){
-        if($ls === NULL)
+        if($ls == NULL)
             $ls = $this->getLanguageService();
+        
+        var_dump($ls);
         
         $rm = $this->getRepositoryManager();
         $em = $this->getEntityManager();

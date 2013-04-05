@@ -2,6 +2,7 @@
 namespace Page\Entity;
 
 use Core\Entity\AbstractEntity;
+use Core\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +18,7 @@ class PageRepository extends AbstractEntity {
     protected $page;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
      **/
     protected $language;
     
@@ -32,7 +33,7 @@ class PageRepository extends AbstractEntity {
     protected $currentRevision;
 
     /** @ORM\Column(type="text",length=255) */
-    protected $uri;
+    protected $slug;
 
     /** @ORM\Column(type="text",length=255) */
     protected $name;
