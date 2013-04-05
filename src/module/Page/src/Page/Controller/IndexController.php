@@ -30,13 +30,12 @@ class IndexController extends AbstractActionController
 
     public function indexAction ()
     {
-        $this->title()->set('Static');
         $id = $this->getParam('slug');
         $ps = $this->getPageService();
-
-        $return = new ViewModel(array(
-            'title' => $ps->getFieldValue($id, 'title'),
-            'content' => $ps->getFieldValue($id, 'content')
+        $this->title()->set($ps->get($id, 'title'));
+        
+        return new ViewModel(array(
+            'content' => $ps->get($id, 'content')
         ));
     }
 }

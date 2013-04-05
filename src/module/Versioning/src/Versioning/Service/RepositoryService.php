@@ -26,6 +26,7 @@ class RepositoryService implements RepositoryServiceInterface
     
     private $authService;
 
+    
     /**
 	 * @return AuthServiceInterface
 	 */
@@ -62,6 +63,8 @@ class RepositoryService implements RepositoryServiceInterface
     {
         $this->identifier = $identifier;
         $this->repository = $repository;
+        $this->currentRevision = $repository->getFieldValue('currentRevision');
+        $this->currentRevisions = $repository->getFieldValue('revisions');
     }
 
     public function setIdentifier ($identifier)
@@ -92,7 +95,8 @@ class RepositoryService implements RepositoryServiceInterface
         if ($this->hasRevision($revision))
             throw new \Exception("A revision with the ID `$revision->getId()` already exists in this repository.");
         
-        $this->getRevisions()[$revision->getId()] = $revision;
+        $revisions = $this->getRevisions();
+        $revisions[$revision->getId()] = $revision;
         $revision->setFieldValue('repository', $this->repository);
         $this->persistRevision($revision);
         return $this;
@@ -172,13 +176,16 @@ class RepositoryService implements RepositoryServiceInterface
     {
         
         $this->repository->setFieldValue('currentRevision', $revision);
-        $revision->setConfirmer($this->getAuthService()->getUser());
-        $revision->setConfirmDate(date('Y-m-d H:i'));
+        //$revision->setConfirmer($this->getAuthService()->getUser());
+        // $revision->setConfirmDate(date('Y-m-d H:i'));
         return $this->persist();
     }
 
     public function getCurrentRevision ()
     {
+        if($this->currentRevision == NULL)
+            throw new \Exception('No Revision set!');
+        
         return $this->currentRevision;
     }
 

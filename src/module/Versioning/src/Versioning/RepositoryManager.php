@@ -6,6 +6,7 @@ use Versioning\Service\RepositoryService;
 use Core\Creation\AbstractSingleton;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
+use Versioning\Entity\Repository;
 
 class RepositoryManager extends AbstractSingleton implements RepositoryManagerInterface, FactoryInterface
 {
@@ -23,21 +24,21 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
     public function addRepository ($repository, $entity = NULL)
     {
         if ($repository instanceof RepositoryServiceInterface) {
-            if ($this->has($repository->getIdentifier()))
+            if ($this->_hasRepository($repository->getIdentifier()))
                 throw new \Exception("There is already a repository with the identifier: " . $repository->getIdentifier());
             $this->repositories[$repository->getIdentifier()] = $repository;
             $repository = $repository->getIdentifier();
         } else {
-            if ($this->has($repository))
+            if ($this->_hasRepository($repository))
                 throw new \Exception("There is already a repository with the identifier: " . $repository);
-            $this->repositories[$repository] = new RepositoryService($repository, $entity);
+            $this->repositories[$repository] = new RepositoryService($repository, new Repository($entity));
         }
         return $this->getRepository($repository);
     }
 
     private function _hasRepository ($id)
     {
-        return in_array($id, $this->$repositories);
+        return ($this->repositories !== NULL) ? in_array($id, $this->repositories) : FALSE;
     }
     
     /*
@@ -45,7 +46,7 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
      */
     public function removeRepository ($repository)
     {
-        if ($this->has($repository))
+        if ($this->_hasRepository($repository))
             throw new \Exception("There is no repository with the identifier: " . $repository);
         return $this;
     }
@@ -66,7 +67,7 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
      */
     public function getRepository ($repository)
     {
-        if ($this->has($repository))
+        if ($this->_hasRepository($repository))
             throw new \Exception("There is no repository with the identifier: " . $repository);
         return $this->repositories[$repository];
     }

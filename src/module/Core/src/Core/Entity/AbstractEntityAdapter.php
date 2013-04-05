@@ -18,7 +18,9 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
         return $this->getAdaptee();
     }
     
-    public abstract function getFieldValues();
+    public function getFieldValues(){
+        throw new \Exception('Declare me first!');
+    }
     
     public function setFieldValues(array $data){
         foreach($data as $key => $value)
@@ -31,7 +33,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
     }
     
     public function setFieldValue($field, $value){
-        $this->getEntity()->set($field) = $value;
+        $this->getEntity()->set($field, $value);
         return $this;
     }
     
