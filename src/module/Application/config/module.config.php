@@ -52,12 +52,12 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory'
         ),
         'aliases' => array(
             'EntityManager' => 'doctrine.entitymanager.orm_default',
             'Doctrine\ORM\EntityManager' => 'EntityManager'
-        ),
+        )
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -90,14 +90,7 @@ return array(
         )
     ),
     'assetic_configuration' => array(
-        'routes' => array(
-            'home' => array(
-                // Is disabled because 'default' option key will mix with this configuration section
-                // and provide @base_css assets.
-                // '@base_css',
-                '@base_js'
-            )
-        ),
+        //'routes' => array(),
         
         'default' => array(
             'assets' => array(
@@ -109,10 +102,7 @@ return array(
         ),
         
         'modules' => array(
-    				/*
-    				 * Application moodule - assets configuration
-    */
-    				'application' => array(
+            'application' => array(
                 
                 // module root path for yout css and js files
                 'root_path' => __DIR__ . '/../assets',

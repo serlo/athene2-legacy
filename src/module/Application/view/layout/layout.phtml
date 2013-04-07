@@ -12,6 +12,9 @@
         echo $this->plugin('HeadLink');
         echo $this->plugin('HeadStyle');
         echo $this->plugin('HeadScript');
+        echo $this->headScript()
+            ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array(
+        ));
         ?>
     
     </head>
@@ -20,7 +23,7 @@
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span2" id="logo">
-				    <strong>serlo.org</strong>
+					<strong>serlo.org</strong>
 				</div>
 				<div class="span7">
 					<nav>
@@ -33,19 +36,23 @@
 					<nav>
 						<div id="navRight" class="btn-group right">
 				            <?php if($this->auth()->loggedIn()) { ?>
-				                <a class="btn btn-mini" href="<?php echo $this->url('logout'); ?>"><?php echo $this->translate('Logout'); ?></a>
-				                <button class="btn btn-mini"><?php echo $this->translate('Einstellungen'); ?></button>
-                                <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Benachrichtigungen</a></li>
-                                    <li><a href="#">Benachrichtigungen</a></li>
-                                    <li><a href="#">Benachrichtigungen</a></li>
-                                </ul>
+				                <a class="btn btn-mini"
+								href="<?php echo $this->url('logout'); ?>"><?php echo $this->translate('Logout'); ?></a>
+							<button class="btn btn-mini"><?php echo $this->translate('Einstellungen'); ?></button>
+							<button class="btn btn-mini dropdown-toggle"
+								data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="#">Benachrichtigungen</a></li>
+								<li><a href="#">Benachrichtigungen</a></li>
+								<li><a href="#">Benachrichtigungen</a></li>
+							</ul>
 			                <?php } else { ?>
-								<a class="btn btn-mini btn" href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
-				            	<a class="btn btn-mini btn-info" href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
+								<a class="btn btn-mini btn"
+								href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
+							<a class="btn btn-mini btn-info"
+								href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
 			                <?php }?>
 		                </div>
 					</nav>
@@ -63,12 +70,12 @@
 					<li class=""><a href="#">a234</a></li>
 				</ul>
 				<div id="webEdu">
-				    <h4>Bildung im Netz</h4>
-				    <small>Hier steht nützliches Zeug</small>
+					<h4>Bildung im Netz</h4>
+					<small>Hier steht nützliches Zeug</small>
 				</div>
 			</div>
 			<div class="span9" id="application">
-        	    <div class="flasher">
+				<div class="flasher">
                     <?php
                     if ($this->flashMessenger()->hasSuccessMessages()) {
                         echo '<div class="alert alert-success">';
