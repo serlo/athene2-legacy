@@ -12,7 +12,7 @@ interface RepositoryServiceInterface
      * @param string $identifier
      * @return $this
      */
-    public function __construct($identifier, RepositoryInterface $repository);
+    public function setup($identifier, RepositoryInterface $repository, $revisionClass);
 
     /**
      * @param string $identifier
@@ -59,10 +59,10 @@ interface RepositoryServiceInterface
     public function getRevision($revisionId);
     
     /**
-     * @param RevisionInterface $revision
+     * @param RevisionInterface|int $revision
      * @return bool
      */
-    public function hasRevision(RevisionInterface $revision);
+    public function hasRevision($revision);
         
     /**
      * @return array

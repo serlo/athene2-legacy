@@ -32,10 +32,12 @@ class IndexController extends AbstractActionController
     {
         $id = $this->getParam('slug');
         $ps = $this->getPageService();
-        $this->title()->set($ps->get($id, 'title'));
-        
+        $ps->prepareRevision($id);
+        $this->title()->set($ps->get('title'));
+
+        //$ps->checkoutRevision(1, 3);
         return new ViewModel(array(
-            'content' => $ps->get($id, 'content')
+            'content' => $ps->get('content')
         ));
     }
 }

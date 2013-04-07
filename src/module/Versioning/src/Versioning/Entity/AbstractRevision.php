@@ -17,10 +17,6 @@ abstract class AbstractRevision extends AbstractEntityAdapter implements Revisio
         return $this;        
     }
     
-    public function delete(){
-        return $this;
-    }
-    
     public function trash(){
         $this->getEntity()->set('trashed',TRUE);
         return $this;

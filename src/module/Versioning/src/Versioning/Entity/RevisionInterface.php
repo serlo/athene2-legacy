@@ -9,17 +9,6 @@ interface RevisionInterface
     public function getId();
     
     /**
-     * @param object $entity
-     * @return $this
-     */
-    public function setEntity($entity);
-    
-    /**
-     * @return $entity
-     */
-    public function getEntity();
-    
-    /**
      * @return array
      */
     public function getFieldValues();

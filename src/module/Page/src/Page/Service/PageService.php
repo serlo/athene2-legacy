@@ -12,6 +12,7 @@ use Page\Entity\Page;
 use Page\Entity\PageRevision;
 use Auth\Service\AuthServiceInterface;
 use Core\Service\LanguageService;
+use Page\Entity\PageRepository;
 
 class PageService implements PageServiceInterface, RepositoryManagerAwareInterface, ServiceLocatorAwareInterface
 {
@@ -24,9 +25,11 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
 
     private $serviceLocator;
 
-    private $pages;
+    private $pages = array();
 
-    private $slugToId;
+    private $slugToId = array();
+    
+    private $reivison;
 
     /**
      *
@@ -44,12 +47,6 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
     public function setAuthService (AuthServiceInterface $authService)
     {
         $this->authService = $authService;
-    }
-
-    public function __construct ()
-    {
-        $this->pages = array();
-        $this->slugToId = array();
     }
 
     /**
@@ -106,21 +103,12 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         $this->entityManager = $entityManager;
     }
 
-    public function create ($data)
-    {
-        return $this;
+    public function checkoutRevision($id, $rid, LanguageService $ls = NULL){
+    	$repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));        
+    	$revision = $repository->getRevision($rid);
+        $repository->checkoutRevision($revision);
     }
-
-    public function delete ($id)
-    {
-        return $this;
-    }
-
-    public function update ($data)
-    {
-        return $this;
-    }
-
+    
     /**
      *
      * @param int|string $id            
@@ -128,41 +116,44 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
      */
     private function _getPage ($id)
     {
+        if($id instanceof PageRepository)
+            return $id;
+            
         $em = $this->getEntityManager();
-        
-        if (!is_numeric($id)) {
-            if (! in_array($id, $this->slugToId)) {
-                $page = $em->getRepository('Page\Entity\Page')->findOneBy(array(
+
+        if (! is_numeric($id)) {
+            if (! array_key_exists($id, $this->slugToId)) {
+                $pageRepo = $em->getRepository('Page\Entity\PageRepository')->findOneBy(array(
                     'slug' => $id
                 ));
-                $this->slugToId[$id] = $page->getId();
+                if($pageRepo == NULL) throw new \Exception('Not found');
+                $this->slugToId[$id] = $pageRepo->getId();
                 $id = $this->slugToId[$id];
             } else {
                 $id = $this->slugToId[$id];
             }
         }   
-        
-        if (! in_array($id, $this->pages)) {
-            $page = $em->find('Page\Entity\Page', $id);
-            $this->pages[$page->getId()] = $page;
-            $this->_loadRepository($page);
+
+        if (! array_key_exists($id, $this->pages)) {
+            $pageRepo = $em->getRepository('Page\Entity\PageRepository')->findOneBy(array(
+                'page' => $id,
+                'language' => $this->getLanguageService()->getId()
+            ));
+            $this->pages[$pageRepo->getId()] = $pageRepo;
+            $this->_loadRepository($pageRepo);
         }
-        
+
         return $this->pages[$id];
     }
     
-    private function _loadRepository(Page $page, LanguageService $ls = NULL){
+    private function _loadRepository(PageRepository $pageRepo, LanguageService $ls = NULL){
         if($ls == NULL)
             $ls = $this->getLanguageService();
         
         $rm = $this->getRepositoryManager();
         $em = $this->getEntityManager();
-        $entity = $em->getRepository('Page\Entity\PageRepository')->findOneBy(array(
-            'language' => $ls->getId(),
-            'page' => $page,
-        ));
-        $name = $this->_nameRepository($page, $ls);
-        $repository = $rm->addRepository($name, $entity);
+        $name = $this->_nameRepository($pageRepo, $ls);
+        $repository = $rm->addRepository($name, $pageRepo, 'Versioning\Entity\RevisionWithTitleAndContent');
     }
     
     private function _nameRepository($page, LanguageService $ls = NULL){
@@ -171,7 +162,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         
         if(!$page instanceof Page)
             $page = $this->_getPage($page);
-        
+
         return 'Page\Entity\PageRepository(' . $page->getId() . ', '.$ls->getId().')';
     }
 
@@ -186,15 +177,13 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
     }
 
     public function getFieldValues ($id)
-    {
-        $repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));   
-        return $repository->getCurrentRevision()->getFieldValues();
+    { 
+        return $this->revision->getFieldValues();
     }
 
-    public function get ($id, $field)
+    public function get ($field)
     {
-    	$repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));
-    	return $repository->getCurrentRevision()->get($field);
+    	return $this->revision->get($field);
     }
     
     public function getFieldValue ($id, $field)
@@ -202,16 +191,28 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         return $this->get($id, $field);
     }
 
-    public function setFieldValues ($id, $rid, array $data)
+    public function setFieldValues (array $data)
     {
-        $repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));   
-        return $repository->getRevision($rid)->setFieldValues($data);
+        return $this->revision->setFieldValues($data);
     }
 
-    public function setFieldValue ($id, $rid, $field, $value)
+    public function setFieldValue ($field, $value)
     {
-        $repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));   
-        return $repository->getRevision($rid)->setFieldValue($field, $value);
+    	return $this->set($field, $value);
+    }
+    
+    public function set ($field, $value)
+    {
+        return $this->revision->set($field, $value);
+    }
+    
+    public function prepareRevision($id, $rid = NULL){
+        $repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));
+        if($rid == NULL){
+            $this->revision = $repository->getCurrentRevision();
+        } else {
+            $this->revision = $repository->getRevision($rid);
+        }
     }
 
     public function addRevision ($id, array $data)

@@ -21,7 +21,7 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
     /*
      * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::addRepository()
      */
-    public function addRepository ($repository, $entity = NULL)
+    public function addRepository ($repository, $entity = NULL, $revisionClass = NULL)
     {
         if ($repository instanceof RepositoryServiceInterface) {
             if ($this->_hasRepository($repository->getIdentifier()))
@@ -31,7 +31,9 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
         } else {
             if ($this->_hasRepository($repository))
                 throw new \Exception("There is already a repository with the identifier: " . $repository);
-            $this->repositories[$repository] = new RepositoryService($repository, new Repository($entity));
+            $rs = $this->serviceLocator->get('Versioning\Service\RepositoryService');
+            $rs->setup($repository, new Repository($entity), $revisionClass);
+            $this->repositories[$repository] = $rs;//new RepositoryService();
         }
         return $this->getRepository($repository);
     }

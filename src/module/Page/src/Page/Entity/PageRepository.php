@@ -4,6 +4,7 @@ namespace Page\Entity;
 use Core\Entity\AbstractEntity;
 use Core\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
+use Page\Entity\PageRevision;
 
 /**
  * A user.
@@ -23,7 +24,7 @@ class PageRepository extends AbstractEntity {
     protected $language;
     
     /**
-     * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="PageRepository")
+     * @ORM\OneToMany(targetEntity="Page\Entity\PageRevision", mappedBy="repository")
      **/
     protected $revisions;
     

@@ -29,10 +29,20 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
     }
     
     public function getFieldValue($field){
-        return $this->getEntity()->get($field);
+        return $this->get($field);
     }
     
     public function setFieldValue($field, $value){
+        $this->set($field, $value);
+        return $this;
+    }
+    
+    
+    public function get($field){
+        return $this->getEntity()->get($field);
+    }
+    
+    public function set($field, $value){
         $this->getEntity()->set($field, $value);
         return $this;
     }
@@ -41,5 +51,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
         return $this->getEntity()->get('id');
     }
     
-    abstract public function delete();
+    public function delete(){
+        return $this;
+    }
 }

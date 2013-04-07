@@ -13,4 +13,6 @@ interface RepositoryInterface
     public function getFieldValue($field);
     public function setFieldValue($field, $value);
     public function getId();
+    public function get($field);
+    public function set($field, $value);    
 }
