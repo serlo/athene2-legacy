@@ -4,6 +4,7 @@ namespace Page\Entity;
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * A user.
  *
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PageRevision extends AbstractEntity {
     
     /**
-     * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="PageRevisions")
+     * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="revisions")
      * @ORM\JoinColumn(name="page_repository_id", referencedColumnName="id")
      **/
     protected $repository;
