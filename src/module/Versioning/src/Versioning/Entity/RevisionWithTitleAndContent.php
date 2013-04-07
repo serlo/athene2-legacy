@@ -3,7 +3,6 @@ namespace Versioning\Entity;
 
 class RevisionWithTitleAndContent extends AbstractRevision
 {
-    
     public function getFieldValues(){
         return array(
 	        'id' => $this->getId(),
@@ -11,4 +10,5 @@ class RevisionWithTitleAndContent extends AbstractRevision
             'content' => $this->getEntity()->content
         );
     }
+    
 }

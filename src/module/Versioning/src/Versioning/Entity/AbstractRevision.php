@@ -2,6 +2,7 @@
 namespace Versioning\Entity;
 
 use Core\Entity\AbstractEntityAdapter;
+use User\Entity\User;
 
 abstract class AbstractRevision extends AbstractEntityAdapter implements RevisionInterface
 {
@@ -16,12 +17,18 @@ abstract class AbstractRevision extends AbstractEntityAdapter implements Revisio
         return $this;        
     }
     
-    public function delete(){
+    public function trash(){
+        $this->getEntity()->set('trashed',TRUE);
+        return $this;
+    }
+
+    public function setAdministrator(User $user){
+        $this->getEntity()->set('administrator', $user);
         return $this;
     }
     
-    public function trash(){
-        $this->getEntity()->set('trashed',TRUE);
+    public function setAdministrationDate($date){
+        $this->getEntity()->set('administration_date', $date);
         return $this;
     }
 }

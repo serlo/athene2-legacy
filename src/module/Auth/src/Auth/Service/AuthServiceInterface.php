@@ -1,6 +1,8 @@
 <?php
 namespace Auth\Service;
 
+use User\Entity\User;
+
 interface AuthServiceInterface
 {
     /**
@@ -31,6 +33,11 @@ interface AuthServiceInterface
     public function addPermissions(array $config);
     
     public function hasAccess($resource, $permission = NULL);
+    
+    /**
+     * @return User;
+     */
+    public function getUser();
 }
 
 ?>

@@ -38,6 +38,14 @@ interface EntityInterface
      * @return int
      */
     public function getId();
+    
+    /**
+     * populates the entity
+     * 
+     * @param array $data
+     * @return $this
+     */
+    public function populate(array $data);
 }
 
 ?>

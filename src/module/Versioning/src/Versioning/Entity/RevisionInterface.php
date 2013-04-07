@@ -2,22 +2,11 @@
 namespace Versioning\Entity;
 
 interface RevisionInterface
-{
+{    
     /**
      * @return int
      */
     public function getId();
-    
-    /**
-     * @param object $entity
-     * @return $this
-     */
-    public function setEntity($entity);
-    
-    /**
-     * @return $entity
-     */
-    public function getEntity();
     
     /**
      * @return array
