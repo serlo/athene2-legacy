@@ -4,6 +4,8 @@ namespace Versioning\Service;
 use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\ORM\EntityManager;
+use Auth\Service\AuthServiceInterface;
+use Core\Entity\AbstractEntityAdapter;
 
 class RepositoryService implements RepositoryServiceInterface
 {
@@ -12,17 +14,49 @@ class RepositoryService implements RepositoryServiceInterface
 
     private $identifier;
 
-    private $prototype;
+    private $revisionClass;
 
-    private $revisions;
+    private $revisions = array();
 
     private $repository;
     
-    private $trashedRevisions;
+    private $trashedRevisions = array();
 
     private $currentRevision;
-
+    
+    private $authService;
+    
+    
     /**
+	 * @param RepositoryInterface $repository
+	 */
+	public function setRepository(RepositoryInterface $repository) {
+		$this->repository = $repository;
+	}
+
+	/**
+	 * @param string $revisionClass
+	 */
+	public function setRevisionClass($revisionClass) {
+		$this->revisionClass = $revisionClass;
+		return $this;
+	}
+
+	/**
+	 * @return AuthServiceInterface
+	 */
+	public function getAuthService() {
+		return $this->authService;
+	}
+
+	/**
+	 * @param AuthServiceInterface $authService
+	 */
+	public function setAuthService(AuthServiceInterface $authService) {
+		$this->authService = $authService;
+	}
+
+	/**
      *
      * @return the $entityManager
      */
@@ -40,10 +74,28 @@ class RepositoryService implements RepositoryServiceInterface
         $this->entityManager = $entityManager;
     }
 
-    public function __construct ($identifier, RepositoryInterface $repository)
+    public function setup ($identifier, RepositoryInterface $repository, $revisionClass)
     {
         $this->identifier = $identifier;
         $this->repository = $repository;
+        $this->revisionClass = $revisionClass;
+        $this->currentRevision = $this->_adaptRevision($repository->get('currentRevision'));  
+        $this->trashedRevisions = $this->_getRevisions();
+        $this->revisions = $this->_getRevisions();
+    }
+    
+    private function _adaptRevision($adaptee){
+        if($adaptee == NULL)
+            return NULL;
+        return new $this->revisionClass($adaptee);
+    }
+    
+    private function _getRevisions($trashed = false){
+        $return = array();
+        foreach($this->repository->get('revisions')->toArray() as $revision){
+            $return[$revision->getId()] = $this->_adaptRevision($revision);
+        }
+        return $return;
     }
 
     public function setIdentifier ($identifier)
@@ -74,9 +126,10 @@ class RepositoryService implements RepositoryServiceInterface
         if ($this->hasRevision($revision))
             throw new \Exception("A revision with the ID `$revision->getId()` already exists in this repository.");
         
-        $this->getRevisions()[$revision->getId()] = $revision;
-        $revision->setFieldValue('repository', $this->repository->getId());
-        $this->_persistEntity($revision);
+        $revisions = $this->getRevisions();
+        $revisions[$revision->getId()] = $revision;
+        $revision->setFieldValue('repository', $this->repository);
+        $this->persistRevision($revision);
         return $this;
     }
 
@@ -118,12 +171,16 @@ class RepositoryService implements RepositoryServiceInterface
     private function _trashRevision (RevisionInterface $revision)
     {
         $revision->trash();
-        $this->_persistEntity($revision);
+        $this->persistRevision($revision);
     }
 
-    public function hasRevision (RevisionInterface $revision)
+    public function hasRevision ($revision)
     {
-        return in_array($revision->getId(), $this->getRevisions()) || in_array($revision->getId(), $this->getTrashedRevisions());
+        if($revision instanceof RevisionInterface){
+            return array_key_exists($revision->getId(), $this->getRevisions()) || array_key_exists($revision->getId(), $this->getTrashedRevisions());
+        } else {
+            return array_key_exists($revision, $this->getRevisions()) || array_key_exists($revision, $this->getTrashedRevisions());            
+        }
     }
 
     public function getRevision ($revisionId)
@@ -132,7 +189,10 @@ class RepositoryService implements RepositoryServiceInterface
         if (! $this->hasRevision($revisionId))
             throw new \Exception("A revision with the ID `$revisionId` does not exist in this repository.");
         
-        return (in_array($revisionId, $this->getRevisions())) ? $this->revisions[$revisionId] : $this->trashedRevisions[$revisionId];
+        if($revisionId instanceof RevisionInterface)
+            $revisionId = $revisionId->getId();
+        
+        return (array_key_exists($revisionId, $this->getRevisions())) ? $this->revisions[$revisionId] : $this->trashedRevisions[$revisionId];
     }
 
     public function getTrashedRevisions ()
@@ -152,17 +212,42 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function checkoutRevision (RevisionInterface $revision)
     {
+        if(! $this->hasRevision($revision))
+            throw new \Exception('Revision '.$revision->getId().' not existent in this repository');
+            
+        $this->repository->setFieldValue('currentRevision', $revision->getAdaptee());
         $this->currentRevision = $revision;
-        return $this;
+        return $this->persist();
     }
 
     public function getCurrentRevision ()
     {
+        if($this->currentRevision == NULL)
+            throw new \Exception('No Revision set!');
+        
         return $this->currentRevision;
     }
 
     public function mergeRevisions (RevisionInterface $revision, RevisionInterface $base)
     {
         throw new \Exception("Not implemented yet");
+    }
+    
+    public function persistRevision(AbstractEntityAdapter $revision){
+        $em = $this->getEntityManager();
+        $em->persist($revision->getAdaptee());
+        $em->flush();
+        return $this;
+    }
+    
+    public function persist(){
+        return $this->persistRepository($this->repository);
+    }
+    
+    public function persistRepository(AbstractEntityAdapter $repository){
+        $em = $this->getEntityManager();
+        $em->persist($repository->getAdaptee());
+        $em->flush();
+        return $this;
     }
 }

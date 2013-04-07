@@ -2,16 +2,24 @@
 namespace Core;
 
 return array(
+    'di' => array(
+        'instance' => array(
+            'alias' => array(
+                'ServiceManager' => 'Zend\ServiceManager\ServiceManager'
+            )
+        )
+    ),
     'service_manager' => array(
         'invokables' => array(
             'Core\Service\LanguageService' => 'Core\Service\LanguageService',
             'Core\Service\SubjectService' => 'Core\Service\SubjectService'
-        ),
+        )
     ),
     'controller_plugins' => array(
         'invokables' => array(
             'getParam' => 'Core\Controller\Plugin\GetParam',
             'getParams' => 'Core\Controller\Plugin\GetParams',
+            'title' => 'Core\Controller\Plugin\Title'
         )
     ),
     'doctrine' => array(

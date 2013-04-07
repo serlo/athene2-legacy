@@ -8,7 +8,7 @@ class IndexController extends AbstractActionController
 {
 
     private $greetingService;
-
+    
     public function indexAction ()
     {
         return new ViewModel(array(
