@@ -11,6 +11,7 @@ return array(
         'Core',
         'Auth',
         'User',
+        'Versioning',
         'Page',
     ),
 

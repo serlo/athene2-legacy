@@ -18,19 +18,32 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
         return $this->getAdaptee();
     }
     
-    public abstract function getFieldValues();
+    public function getFieldValues(){
+        throw new \Exception('Declare me first!');
+    }
     
     public function setFieldValues(array $data){
         foreach($data as $key => $value)
             $this->setFieldValue($key, $value);
+        return $this;
     }
     
     public function getFieldValue($field){
-        return $this->getEntity()->get($field);
+        return $this->get($field);
     }
     
     public function setFieldValue($field, $value){
-        $this->getEntity()->set($field) = $value;
+        $this->set($field, $value);
+        return $this;
+    }
+    
+    
+    public function get($field){
+        return $this->getEntity()->get($field);
+    }
+    
+    public function set($field, $value){
+        $this->getEntity()->set($field, $value);
         return $this;
     }
     
@@ -38,7 +51,7 @@ abstract class AbstractEntityAdapter extends AbstractAdapter
         return $this->getEntity()->get('id');
     }
     
-    abstract public function delete(){
+    public function delete(){
         return $this;
     }
 }

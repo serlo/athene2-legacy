@@ -8,7 +8,7 @@ interface RepositoryManagerInterface
     /**
      * @param string|RepositoryServiceInterface $repository
      * @throws \Exception
-     * @return $this
+     * @return RepositoryServiceInterface
      */
     public function addRepository($repository);
     
@@ -27,7 +27,7 @@ interface RepositoryManagerInterface
     public function addRepositories(array $repositories);
 
     /**
-     * @param string|RepositoryServiceInterface $repository
+     * @param string $repository
      * @throws \Exception
      * @return RepositoryInterface
      */

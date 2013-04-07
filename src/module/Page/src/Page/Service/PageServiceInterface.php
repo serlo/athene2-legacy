@@ -4,5 +4,3 @@ namespace Page\Service;
 interface PageServiceInterface
 {
 }
-
-?>

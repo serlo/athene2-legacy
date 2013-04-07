@@ -2,38 +2,42 @@
 namespace Page\Entity;
 
 use Core\Entity\AbstractEntity;
+use Core\Entity\Language;
+use Doctrine\ORM\Mapping as ORM;
+use Page\Entity\PageRevision;
 
 /**
  * A user.
  *
  * @ORM\Entity
- * @ORM\Table(name="page_translation")
+ * @ORM\Table(name="page_repository")
  */
 class PageRepository extends AbstractEntity {
     /**
-     * @ManyToOne(targetEntity="Page", inversedBy="PageTranslations")
+     * @ORM\ManyToOne(targetEntity="Page", inversedBy="PageTranslations")
      **/
     protected $page;
     
     /**
-     * @ManyToOne(targetEntity="Language")
+     * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
      **/
     protected $language;
     
     /**
-     * @OneToMany(targetEntity="PageRevision", mappedBy="PageRepository")
+     * @ORM\OneToMany(targetEntity="Page\Entity\PageRevision", mappedBy="repository")
      **/
     protected $revisions;
     
     /**
-     * @OneToOne(targetEntity="PageRevision")
+     * @ORM\OneToOne(targetEntity="PageRevision")
+     * @ORM\JoinColumn(name="current_revision_id", referencedColumnName="id")
      **/
     protected $currentRevision;
 
-    /** @Column(type="text",length=255) */
-    protected $uri;
+    /** @ORM\Column(type="text",length=255) */
+    protected $slug;
 
-    /** @Column(type="text",length=255) */
+    /** @ORM\Column(type="text",length=255) */
     protected $name;
 
     public function __construct() {

@@ -2,6 +2,8 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
+use Versioning\Entity\RepositoryInterface;
+use Core\Entity\AbstractEntityAdapter;
 
 interface RepositoryServiceInterface
 {
@@ -10,7 +12,7 @@ interface RepositoryServiceInterface
      * @param string $identifier
      * @return $this
      */
-    public function __construct($identifier);
+    public function setup($identifier, RepositoryInterface $repository, $revisionClass);
 
     /**
      * @param string $identifier
@@ -57,10 +59,10 @@ interface RepositoryServiceInterface
     public function getRevision($revisionId);
     
     /**
-     * @param RevisionInterface $revision
+     * @param RevisionInterface|int $revision
      * @return bool
      */
-    public function hasRevision(RevisionInterface $revision);
+    public function hasRevision($revision);
         
     /**
      * @return array
@@ -94,4 +96,11 @@ interface RepositoryServiceInterface
      * @return RevisionInterface
      */
     public function mergeRevisions(RevisionInterface $revision, RevisionInterface $base);
+    
+    /**
+     * 
+     * @param RevisionInterface $revision
+     * @return $this
+     */
+    public function persistRevision(AbstractEntityAdapter $revision);
 }
