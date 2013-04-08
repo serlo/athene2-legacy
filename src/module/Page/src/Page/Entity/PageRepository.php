@@ -37,9 +37,6 @@ class PageRepository extends AbstractEntity {
     /** @ORM\Column(type="text",length=255) */
     protected $slug;
 
-    /** @ORM\Column(type="text",length=255) */
-    protected $name;
-
     public function __construct() {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
     }
