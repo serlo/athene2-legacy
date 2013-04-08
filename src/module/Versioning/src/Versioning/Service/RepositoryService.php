@@ -26,6 +26,9 @@ class RepositoryService implements RepositoryServiceInterface
     
     private $authService;
     
+    public function getEntity(){
+        return $this->repository->getEntity();
+    }
     
     /**
 	 * @param RepositoryInterface $repository
@@ -79,7 +82,11 @@ class RepositoryService implements RepositoryServiceInterface
         $this->identifier = $identifier;
         $this->repository = $repository;
         $this->revisionClass = $revisionClass;
-        $this->currentRevision = $this->_adaptRevision($repository->get('currentRevision'));  
+        $this->_load();
+    }
+    
+    private function _load(){
+        $this->currentRevision = $this->_adaptRevision($this->repository->get('currentRevision'));
         $this->trashedRevisions = $this->_getRevisions();
         $this->revisions = $this->_getRevisions();
     }
@@ -127,9 +134,9 @@ class RepositoryService implements RepositoryServiceInterface
             throw new \Exception("A revision with the ID `$revision->getId()` already exists in this repository.");
         
         $revisions = $this->getRevisions();
-        $revisions[$revision->getId()] = $revision;
-        $revision->setFieldValue('repository', $this->repository);
+        $revision->setFieldValue('repository', $this->repository->getEntity());
         $this->persistRevision($revision);
+        $this->revisions[$revision->getId()] = $revision;
         return $this;
     }
 
@@ -184,10 +191,9 @@ class RepositoryService implements RepositoryServiceInterface
     }
 
     public function getRevision ($revisionId)
-    {
-        // TODO Auto-generated method stub
+    {      
         if (! $this->hasRevision($revisionId))
-            throw new \Exception("A revision with the ID `$revisionId` does not exist in this repository.");
+            throw new \Exception("A revision with the ID `$revisionId` does not exist in the repository `$this->identifier`.");
         
         if($revisionId instanceof RevisionInterface)
             $revisionId = $revisionId->getId();

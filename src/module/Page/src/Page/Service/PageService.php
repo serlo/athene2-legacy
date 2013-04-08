@@ -29,7 +29,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
 
     private $slugToId = array();
     
-    private $reivison;
+    private $revision;
 
     /**
      *
@@ -104,8 +104,8 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
     }
 
     public function checkoutRevision($id, $rid, LanguageService $ls = NULL){
-    	$repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));        
-    	$revision = $repository->getRevision($rid);
+    	$repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));
+    	$revision = $repository->getRevision($rid);  
         $repository->checkoutRevision($revision);
     }
     
@@ -116,8 +116,9 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
      */
     private function _getPage ($id)
     {
-        if($id instanceof PageRepository)
+        if($id instanceof PageRepository){
             return $id;
+        }
             
         $em = $this->getEntityManager();
 
@@ -127,22 +128,22 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
                     'slug' => $id
                 ));
                 if($pageRepo == NULL) throw new \Exception('Not found');
-                $this->slugToId[$id] = $pageRepo->getId();
+                $this->slugToId[$id] = $pageRepo->get('page')->getId();
                 $id = $this->slugToId[$id];
             } else {
                 $id = $this->slugToId[$id];
             }
         }   
-
+        
         if (! array_key_exists($id, $this->pages)) {
             $pageRepo = $em->getRepository('Page\Entity\PageRepository')->findOneBy(array(
                 'page' => $id,
                 'language' => $this->getLanguageService()->getId()
             ));
-            $this->pages[$pageRepo->getId()] = $pageRepo;
+            $this->pages[$id] = $pageRepo;
             $this->_loadRepository($pageRepo);
         }
-
+        
         return $this->pages[$id];
     }
     
@@ -162,7 +163,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         
         if(!$page instanceof Page)
             $page = $this->_getPage($page);
-
+        
         return 'Page\Entity\PageRepository(' . $page->getId() . ', '.$ls->getId().')';
     }
 
@@ -214,18 +215,42 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
             $this->revision = $repository->getRevision($rid);
         }
     }
+    
+    public function create(array $data, LanguageService $ls = NULL){
+        if($ls === NULL)
+            $ls = $this->getLanguageService();
+        
+        $em = $this->getEntityManager();
+        $page = new Page();
+        $repository = new PageRepository();
+        
+        $em->persist($page);
+        $em->flush();
+        
+        $repository->set('page',$page);
+        $repository->set('language',$ls->getEntity());
+        $repository->set('slug',$data['slug']);
+        
+        $em->persist($repository);
+        $em->flush();
+        $this->_getPage($page->getId());
+        
+        return $page;
+    }
 
     public function addRevision ($id, array $data)
     {
         $repository = $this->getRepositoryManager()->getRepository($this->_nameRepository($id));   
         
         $entity = new PageRevision();
-        $entity->repository = $repository->getEntity();
-        $entity->author = $this->getAuthService()->getUser();
-        
+        $entity->set('author', $this->getAuthService()->getUser());
+        $entity->set('content', $data['content']);
+        $entity->set('title', $data['title']);
+
         $revision = new RevisionWithTitleAndContent($entity);
         $repository->addRevision($revision);
         $repository->persistRevision($revision);
+        return $revision;
     }
     
     public function removeRevision($pageId, $revisionId){
