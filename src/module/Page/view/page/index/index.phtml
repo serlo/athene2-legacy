@@ -1,3 +1,29 @@
-<article class="page" <?php echo $this->editor(); ?>>
-	<?php echo $this->content; ?>
+<article class="page row-fluid">
+	<div class="span12">
+	    <header class="page-header row-fluid">
+	        <div class="span8">
+	            <h1><?php echo $this->title;?></h1>
+	        </div>
+			<div class="span4 controls">
+			    <div class="right">
+    				<a href="<?php echo $this->hrefs['update'];?>"
+    					class="btn btn-mini"><?php echo $this->translate('Bearbeiten')?></a>
+    				<a href="<?php echo $this->hrefs['administrate'];?>"
+    					class="btn btn-mini"><?php echo $this->translate('Verwalten')?></a>
+        			<?php echo $this->modal()->delete('Löschen', $this->hrefs['delete'], 'btn-mini'); ?>
+    			</div>
+    		</div>
+		</header>
+	</div>
+	<section class="row-fluid">
+		<div class="span12">
+	        <?php echo $this->content; ?>
+	    </div>
+	</section>
+	<hr>
+	<footer class="row-fluid">
+		<div class="span12">
+	        <?php echo sprintf($this->translate('Zuletzt am <i>%s</i> von <b>%s</b> bearbeitet.'), $this->date, $this->author);?>
+	    </div>
+	</footer>
 </article>

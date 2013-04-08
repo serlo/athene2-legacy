@@ -37,7 +37,15 @@ class IndexController extends AbstractActionController
 
         //$ps->checkoutRevision(1, 3);
         return new ViewModel(array(
-            'content' => $ps->get('content')
+            'title' => $ps->get('title'),
+            'content' => $ps->get('content'),
+            'date' => $ps->get('date')->format($this->dateFormat()),
+            'author' => $ps->get('author')->get('username'),
+            'hrefs' => array(
+                'delete' => $this->url()->fromRoute('pageDelete', array("id" => $id)),
+                'administrate' => $this->url()->fromRoute('pageAdministrate', array("id" => $id)),
+                'update' => $this->url()->fromRoute('pageUpdate', array("id" => $id))
+            )
         ));
     }
 }

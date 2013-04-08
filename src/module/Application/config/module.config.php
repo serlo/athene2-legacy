@@ -90,11 +90,14 @@ return array(
         )
     ),
     'assetic_configuration' => array(
-        //'routes' => array(),
+        // 'routes' => array(),
         
         'default' => array(
             'assets' => array(
-                '@base_css'
+                '@base_css',
+                '@html5',
+                '@jquery',
+                '@bootstrap',
             ),
             'options' => array(
                 'mixin' => true
@@ -125,10 +128,20 @@ return array(
                         'options' => array()
                     ),
                     
-                    'base_js' => array(
+                    'html5' => array(
                         'assets' => array(
-                            'js/html5.js',
-                            'js/jquery.min.js',
+                            'js/html5.js'
+                        )
+                    ),
+                    
+                    'jquery' => array(
+                        'assets' => array(
+                            'js/jquery.min.js'
+                        )
+                    ),
+                    
+                    'bootstrap' => array(
+                        'assets' => array(
                             'js/bootstrap.min.js'
                         )
                     ),
