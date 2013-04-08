@@ -2,7 +2,22 @@
 namespace Core;
 
 return array(
+    'view_helpers' => array(
+        'invokables' => array(
+            'modal' => __NAMESPACE__ . '\View\Helper\Modal',
+            'renderTitle' => __NAMESPACE__ . '\View\Helper\Title'
+        )
+    ),
     'di' => array(
+        'definition' => array(
+            'class' => array(
+                'Core\Service\LanguageService' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    )
+                )
+            )
+        ),
         'instance' => array(
             'alias' => array(
                 'ServiceManager' => 'Zend\ServiceManager\ServiceManager'
@@ -11,7 +26,7 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => array(
-            'Core\Service\LanguageService' => 'Core\Service\LanguageService',
+            //'Core\Service\LanguageService' => 'Core\Service\LanguageService',
             'Core\Service\SubjectService' => 'Core\Service\SubjectService'
         )
     ),
@@ -19,6 +34,8 @@ return array(
         'invokables' => array(
             'getParam' => 'Core\Controller\Plugin\GetParam',
             'getParams' => 'Core\Controller\Plugin\GetParams',
+            'dateFormat' => 'Core\Controller\Plugin\DateFormat',
+            'translate' => 'Core\Controller\Plugin\Translate',
             'title' => 'Core\Controller\Plugin\Title'
         )
     ),

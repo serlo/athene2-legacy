@@ -52,12 +52,12 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory'
         ),
         'aliases' => array(
             'EntityManager' => 'doctrine.entitymanager.orm_default',
             'Doctrine\ORM\EntityManager' => 'EntityManager'
-        ),
+        )
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -90,18 +90,14 @@ return array(
         )
     ),
     'assetic_configuration' => array(
-        'routes' => array(
-            'home' => array(
-                // Is disabled because 'default' option key will mix with this configuration section
-                // and provide @base_css assets.
-                // '@base_css',
-                '@base_js'
-            )
-        ),
+        // 'routes' => array(),
         
         'default' => array(
             'assets' => array(
-                '@base_css'
+                '@base_css',
+                '@html5',
+                '@jquery',
+                '@bootstrap',
             ),
             'options' => array(
                 'mixin' => true
@@ -109,10 +105,7 @@ return array(
         ),
         
         'modules' => array(
-    				/*
-    				 * Application moodule - assets configuration
-    */
-    				'application' => array(
+            'application' => array(
                 
                 // module root path for yout css and js files
                 'root_path' => __DIR__ . '/../assets',
@@ -135,10 +128,20 @@ return array(
                         'options' => array()
                     ),
                     
-                    'base_js' => array(
+                    'html5' => array(
                         'assets' => array(
-                            'js/html5.js',
-                            'js/jquery.min.js',
+                            'js/html5.js'
+                        )
+                    ),
+                    
+                    'jquery' => array(
+                        'assets' => array(
+                            'js/jquery.min.js'
+                        )
+                    ),
+                    
+                    'bootstrap' => array(
+                        'assets' => array(
                             'js/bootstrap.min.js'
                         )
                     ),

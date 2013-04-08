@@ -13,6 +13,8 @@ return array(
         'User',
         'Versioning',
         'Page',
+        'Editor',
+        'TwbBundle',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

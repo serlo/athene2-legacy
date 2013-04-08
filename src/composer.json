@@ -9,7 +9,7 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*",
+        "zendframework/zendframework": "2.1.*",
         "widmogrod/zf2-assetic-module": "dev-master",
         "twitter/bootstrap": "dev-master",
 	    "neilime/zf2-twb-bundle": "dev-master",
