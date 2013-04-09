@@ -8,3 +8,6 @@ v2.serlo.org
 * Run `php composer.phar update` in `/src/`
 
 Now you are ready to go!
+
+============
+Please read the Wiki: https://github.com/serlo-org/v2.serlo.org/wiki
