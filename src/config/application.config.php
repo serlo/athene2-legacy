@@ -14,6 +14,7 @@ return array(
         'Versioning',
         'Page',
         'Editor',
+        'Log',
         'TwbBundle',
     ),
 

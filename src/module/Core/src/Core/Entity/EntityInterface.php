@@ -1,24 +1,10 @@
 <?php
 namespace Core\Entity;
 
-interface EntityInterface
-{
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property            
-     * @return mixed          
-     */
-    public function get($property);
+use Core\Entity\ModelInterface;
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property            
-     * @param mixed $value            
-     * @return $this
-     */    
-    public function set($property, $value);
+interface EntityInterface extends ModelInterface
+{
     
     /**
      * Convert the object to an array.

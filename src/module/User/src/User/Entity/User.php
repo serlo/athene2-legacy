@@ -26,6 +26,11 @@ class User extends AbstractEntity
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="UserLog", mappedBy="user")
+     **/
+    protected $logs;
+
+    /**
      * @ORM\OneToMany(targetEntity="RoleUser", mappedBy="user")
      **/
     private $userRoles;
@@ -94,6 +99,7 @@ class User extends AbstractEntity
 
 	public function __construct() {
     	$this->userRoles = new ArrayCollection();
+        $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**

@@ -9,13 +9,18 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'User\Service\UserService' => function  ($sm)
+            'User\Service\UserLogService' => function ($sm){
+                $srv = new Service\UserLogService();
+                $srv->setEntityManager($sm->get('EntityManager'));
+                return $srv;
+            },
+            'User\Service\UserService' => function ($sm)
             {
-                $srv = new \User\Service\UserService();
-                $srv->setEntityManager($sm->get('EntityManager'));                
+                $srv = new Service\UserService();
+                $srv->setEntityManager($sm->get('EntityManager'));
                 return $srv;
             }
-        )
+        ),      
     ),
     'doctrine' => array(
         'driver' => array(
