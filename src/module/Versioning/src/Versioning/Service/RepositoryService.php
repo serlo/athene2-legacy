@@ -2,12 +2,17 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Auth\Service\AuthServiceInterface;
 use Core\Entity\AbstractEntityAdapter;
+use Log\Service\LogServiceInterface;
+use Log\Service\LoggerInterface;
 
-class RepositoryService implements RepositoryServiceInterface
+class RepositoryService implements RepositoryServiceInterface, EventManagerAwareInterface
 {
 
     private $entityManager;
@@ -25,6 +30,26 @@ class RepositoryService implements RepositoryServiceInterface
     private $currentRevision;
     
     private $authService;
+    
+    protected $events;
+    
+	public function setEventManager(EventManagerInterface $events)
+    {
+    	$events->setIdentifiers(array(
+    			__CLASS__,
+    			get_called_class(),
+    	));
+    	$this->events = $events;
+    	return $this;
+    }
+    
+    public function getEventManager()
+    {
+    	if (null === $this->events) {
+    		$this->setEventManager(new EventManager());
+    	}
+    	return $this->events;
+    }
     
     public function getEntity(){
         return $this->repository->getEntity();
@@ -137,6 +162,14 @@ class RepositoryService implements RepositoryServiceInterface
         $revision->setFieldValue('repository', $this->repository->getEntity());
         $this->persistRevision($revision);
         $this->revisions[$revision->getId()] = $revision;
+        
+        $this->getEventManager()->trigger(__CLASS__.'::'.__FUNCTION__, $this, array(
+        		'action' => 'create',
+        		'ref' => get_class($revision->getEntity()),
+        		'refId' => $revision->getId(),
+        		'user' => $this->getAuthService()->getUser(),
+        ));
+        
         return $this;
     }
 
@@ -148,6 +181,15 @@ class RepositoryService implements RepositoryServiceInterface
         unset($revisions[$revision->getId()]);
         $this->_deleteRevision($revision);
         $revisions = $this->getRevisions();
+        
+
+        $this->getEventManager()->trigger(__CLASS__.'::'.__FUNCTION__, $this, array(
+        		'action' => 'delete',
+        		'ref' => get_class($revision->getEntity()),
+        		'refId' => $revision->getId(),
+        		'user' => $this->getAuthService()->getUser(),
+        ));
+        
         return $this;
     }
     
@@ -171,6 +213,13 @@ class RepositoryService implements RepositoryServiceInterface
         
         $revisions = $this->getTrashedRevisions();
         $revisions[$revision->getId()] = $revision;
+
+        $this->getEventManager()->trigger(__CLASS__.'::'.__FUNCTION__, $this, array(
+        		'action' => 'trash',
+        		'ref' => get_class($revision->getEntity()),
+        		'refId' => $revision->getId(),
+        		'user' => $this->getAuthService()->getUser(),
+        ));
         
         return $this;
     }
@@ -220,10 +269,20 @@ class RepositoryService implements RepositoryServiceInterface
     {
         if(! $this->hasRevision($revision))
             throw new \Exception('Revision '.$revision->getId().' not existent in this repository');
-            
+
+        
         $this->repository->setFieldValue('currentRevision', $revision->getAdaptee());
         $this->currentRevision = $revision;
-        return $this->persist();
+        $this->persist();
+        
+        $this->getEventManager()->trigger(__CLASS__.'::'.__FUNCTION__, $this, array(
+            'action' => 'checkout',
+            'ref' => get_class($revision->getEntity()),
+            'refId' => $revision->getId(),
+            'user' => $this->getAuthService()->getUser(),
+        ));
+        
+        return $this;
     }
 
     public function getCurrentRevision ()

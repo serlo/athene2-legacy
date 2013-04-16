@@ -34,7 +34,6 @@ class IndexController extends AbstractActionController
         $ps = $this->getPageService();
         $ps->prepareRevision($id);
         $this->title()->set($ps->get('title'));
-
         //$ps->checkoutRevision(1, 3);
         return new ViewModel(array(
             'title' => $ps->get('title'),
