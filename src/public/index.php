@@ -7,6 +7,7 @@ chdir(dirname(__DIR__));
 
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', true);
+date_default_timezone_set('Europe/Berlin');
 
 // Setup autoloading
 require 'init_autoloader.php';

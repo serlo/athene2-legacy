@@ -10,7 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_type")
  */
-class EntityType extends AbstractEntity {    
+class EntityType extends AbstractEntity {   
+
+	/**
+	 * @OneToMany(targetEntity="Entity", mappedBy="component")
+	 **/
+	protected $entities;
+	
     public function __construct() {
+        $this->entities = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
