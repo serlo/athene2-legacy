@@ -3,14 +3,11 @@ namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
 use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Auth\Service\AuthServiceInterface;
 use Core\Entity\AbstractEntityAdapter;
-use Log\Service\LogServiceInterface;
-use Log\Service\LoggerInterface;
 
 class RepositoryService implements RepositoryServiceInterface, EventManagerAwareInterface
 {
@@ -45,9 +42,6 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     
     public function getEventManager()
     {
-    	if (null === $this->events) {
-    		$this->setEventManager(new EventManager());
-    	}
     	return $this->events;
     }
     

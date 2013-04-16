@@ -6,7 +6,13 @@ interface RepositoryManagerAwareInterface
     /**
      * Set repository manager
      *
-     * @param RepositoryManager $repositoryManager
+     * @param RepositoryManagerInterface $repositoryManager
      */
     public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
+    
+
+    /**
+     * @return RepositoryManagerInterface
+     */
+    public function getRepositoryManager();
 }
