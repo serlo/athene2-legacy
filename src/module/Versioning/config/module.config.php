@@ -24,23 +24,4 @@ return array(
             'Versioning\Service\RepositoryService' => 'false'
         )
     ),
-    /*'di' => array(
-        'definition' => array(
-            'class' => array(
-                'Versioning\Service\RepositoryService' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setAuthService' => array(
-                        'required' => 'true'
-                    )
-                )
-            ),
-            'instance' => array(
-                'preferences' => array(
-                    'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService'
-                )
-            )
-        )
-    )*/
 );
