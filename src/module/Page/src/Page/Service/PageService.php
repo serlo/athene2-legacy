@@ -154,7 +154,7 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         $rm = $this->getRepositoryManager();
         $em = $this->getEntityManager();
         $name = $this->_nameRepository($pageRepo, $ls);
-        $repository = $rm->addRepository($name, $pageRepo, 'Versioning\Entity\RevisionWithTitleAndContent');
+        $repository = $rm->addRepository($name, $pageRepo);
     }
     
     private function _nameRepository($page, LanguageService $ls = NULL){
@@ -177,29 +177,9 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         );
     }
 
-    public function getFieldValues ($id)
-    { 
-        return $this->revision->getFieldValues();
-    }
-
     public function get ($field)
     {
     	return $this->revision->get($field);
-    }
-    
-    public function getFieldValue ($id, $field)
-    {
-        return $this->get($id, $field);
-    }
-
-    public function setFieldValues (array $data)
-    {
-        return $this->revision->setFieldValues($data);
-    }
-
-    public function setFieldValue ($field, $value)
-    {
-    	return $this->set($field, $value);
     }
     
     public function set ($field, $value)

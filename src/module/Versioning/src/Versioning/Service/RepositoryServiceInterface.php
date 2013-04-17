@@ -2,7 +2,7 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
-use Versioning\Entity\RepositoryInterface;
+use Core\Entity\AbstractEntity;
 use Core\Entity\AbstractEntityAdapter;
 
 interface RepositoryServiceInterface
@@ -12,7 +12,7 @@ interface RepositoryServiceInterface
      * @param string $identifier
      * @return $this
      */
-    public function setup($identifier, RepositoryInterface $repository, $revisionClass);
+    public function setup($identifier, AbstractEntity $repository);
 
     /**
      * @param string $identifier
@@ -24,12 +24,6 @@ interface RepositoryServiceInterface
      * $return string $identifier
      */
     public function getIdentifier();
-    
-    /**
-     * @param RevisionInterface $prototype
-     * @return $this
-     */
-    public function setPrototype(RevisionInterface $prototype);
     
     /**
      * 

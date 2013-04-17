@@ -1,12 +1,30 @@
 <?php
-namespace Object;
+namespace Entity;
 
+use Versioning;
 return array(
     'di' => array(
         'definition' => array(
             'class' => array(
                 'Entity\EntityManager' => array(
+                    'setServiceManager' => array(
+                        'required' => 'true'
+                    )
                 ),
+                'Entity\Service\EntityService' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setRepositoryManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setLanguageService' => array(
+                        'required' => 'true'
+                    ),
+                    'setAuthService' => array(
+                        'required' => 'true'
+                    )
+                )
             )
         ),
         'instance' => array(
@@ -14,16 +32,29 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
-            ),
-            'Entity\SharedEntityManager' => array(
-                'shared' => false,
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Entity\Service\EntityServiceInterface' => 'EventManager',
+                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager'
             ),
             'Entity\Service\EntityService' => array(
-                'shared' => false,
-            ),
-            'alias' => array(
-                'Entity\SharedEntityManager' => __NAMESPACE__.'\EntityManager',
+                'shared' => false
             )
         )
     ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
+    )
 );

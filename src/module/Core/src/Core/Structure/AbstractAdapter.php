@@ -19,7 +19,7 @@ abstract class AbstractAdapter
 		$this->adaptee = $adaptee;
 	}
 
-	public function __construct($adaptee){
+	public function __construct($adaptee = NULL){
         $this->adaptee = $adaptee;
     }
 }

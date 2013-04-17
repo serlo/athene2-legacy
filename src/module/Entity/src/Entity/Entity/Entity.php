@@ -18,9 +18,10 @@ class Entity extends AbstractEntity {
 	protected $repositories;
 	
 	/**
-	 * @ManyToOne(targetEntity="Component", inversedBy="entities")
+	 * @ManyToOne(targetEntity="EntityFactory", inversedBy="entities")
+	 * @JoinColumn(name="entity_factory_id", referencedColumnName="id")
 	 **/
-	protected $component;
+	protected $factory;
 
 	/**
 	 * @ManyToOne(targetEntity="EntityType", inversedBy="entities")
