@@ -5,7 +5,7 @@ use Core\Structure\AbstractAdapter;
 
 abstract class AbstractEntityAdapter extends AbstractAdapter
 {
-    public function __construct(EntityInterface $entity){
+    public function __construct(EntityInterface $entity = NULL){
         $this->setAdaptee($entity);
     }
     

@@ -4,10 +4,10 @@ namespace Versioning\Service;
 use Versioning\Entity\RevisionInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManagerAwareInterface;
-use Versioning\Entity\RepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Auth\Service\AuthServiceInterface;
 use Core\Entity\AbstractEntityAdapter;
+use Core\Entity\AbstractEntity;
 
 class RepositoryService implements RepositoryServiceInterface, EventManagerAwareInterface
 {
@@ -15,8 +15,6 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     private $entityManager;
 
     private $identifier;
-
-    private $revisionClass;
 
     private $revisions = array();
 
@@ -50,18 +48,10 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     }
     
     /**
-	 * @param RepositoryInterface $repository
+	 * @param AbstractEntity $repository
 	 */
-	public function setRepository(RepositoryInterface $repository) {
+	public function setRepository(AbstractEntity $repository) {
 		$this->repository = $repository;
-	}
-
-	/**
-	 * @param string $revisionClass
-	 */
-	public function setRevisionClass($revisionClass) {
-		$this->revisionClass = $revisionClass;
-		return $this;
 	}
 
 	/**
@@ -96,16 +86,15 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         $this->entityManager = $entityManager;
     }
 
-    public function setup ($identifier, RepositoryInterface $repository, $revisionClass)
+    public function setup ($identifier, AbstractEntity $repository)
     {
         $this->identifier = $identifier;
         $this->repository = $repository;
-        $this->revisionClass = $revisionClass;
         $this->_load();
     }
     
     private function _load(){
-        $this->currentRevision = $this->_adaptRevision($this->repository->get('currentRevision'));
+        $this->currentRevision = $this->repository->get('currentRevision');
         $this->trashedRevisions = $this->_getRevisions();
         $this->revisions = $this->_getRevisions();
     }
@@ -119,7 +108,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     private function _getRevisions($trashed = false){
         $return = array();
         foreach($this->repository->get('revisions')->toArray() as $revision){
-            $return[$revision->getId()] = $this->_adaptRevision($revision);
+            $return[$revision->getId()] = $revision;
         }
         return $return;
     }

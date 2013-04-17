@@ -15,6 +15,8 @@ return array(
         'Page',
         'Editor',
         'Log',
+        'Entity',
+        'Math',
         'TwbBundle',
     ),
 

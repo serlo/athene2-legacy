@@ -21,11 +21,6 @@ interface EntityInterface extends ModelInterface
     public function exists ($association);
     
     /**
-     * @return int
-     */
-    public function getId();
-    
-    /**
      * populates the entity
      * 
      * @param array $data
@@ -33,5 +28,3 @@ interface EntityInterface extends ModelInterface
      */
     public function populate(array $data);
 }
-
-?>
