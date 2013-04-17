@@ -1,0 +1,13 @@
+.right {
+	float: right;
+}
+.left {
+	float: left;
+}
+.bottom {
+	position: relative;
+	bottom: 0px;
+}
+.absolute {
+	position: absolute;
+}
