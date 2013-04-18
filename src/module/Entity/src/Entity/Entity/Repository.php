@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Repository extends AbstractEntity {
 	/**
-	 * @ManyToOne(targetEntity="Entity", inversedBy="repositories")
+	 * @ORM\ManyToOne(targetEntity="Entity", inversedBy="repositories")
 	 **/
 	protected $entity;
 }

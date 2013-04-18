@@ -13,35 +13,53 @@ use Doctrine\ORM\Mapping as ORM;
 class Entity extends AbstractEntity {
 
 	/**
-	 * @OneToMany(targetEntity="Repository", mappedBy="entity")
+     * @ORM\ManyToMany(targetEntity="Entity")
+     * @ORM\JoinTable(name="link",
+     *      joinColumns={
+     *      	@JoinColumn(name="child_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *      	@JoinColumn(name="parent_id", referencedColumnName="id")
+     *      }
+     * )
+	 */
+	protected $parents;
+	
+	/**
+     * @ORM\ManyToMany(targetEntity="Entity")
+     * @ORM\JoinTable(
+     * 		name="link",
+     *      joinColumns={
+     *      	@JoinColumn(name="child_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *      	@JoinColumn(name="parent_id", referencedColumnName="id")
+     *      }
+     * )
+	 */
+	protected $children;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Repository", mappedBy="entity")
 	 **/
 	protected $repositories;
 	
 	/**
-	 * @ManyToOne(targetEntity="EntityFactory", inversedBy="entities")
-	 * @JoinColumn(name="entity_factory_id", referencedColumnName="id")
+	 * @ORM\ManyToOne(targetEntity="EntityFactory", inversedBy="entities")
+	 * @ORM\JoinColumn(name="entity_factory_id", referencedColumnName="id")
 	 **/
 	protected $factory;
 
 	/**
-	 * @ManyToOne(targetEntity="EntityType", inversedBy="entities")
-	 * @JoinColumn(name="entity_type_id", referencedColumnName="id")
+	 * @ORM\ManyToOne(targetEntity="EntityType", inversedBy="entities")
+	 * @ORM\JoinColumn(name="entity_type_id", referencedColumnName="id")
 	 **/
 	protected $type;
 
 	/**
-	 * @ManyToOne(targetEntity="Core\Entity\Subject", inversedBy="entities")
-	 **/
-	protected $subject;
-
-	/**
-	 * @ManyToOne(targetEntity="Core\Entity\Language", inversedBy="entities")
+	 * @ORM\ManyToOne(targetEntity="Core\Entity\Language", inversedBy="entities")
 	 **/
 	protected $language;
-	
-	/* protected $period;
-	protected $license;
-	protected $localization; */
 	
 	/** @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
 	 */
