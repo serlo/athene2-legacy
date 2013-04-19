@@ -4,6 +4,7 @@ namespace Entity\Factory;
 use Entity\Service\EntityServiceInterface;
 use Core\Entity\AbstractEntityAdapter;
 use Entity\Component\RenderComponent;
+use Entity\Component\RenderService;
 
 abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	
@@ -14,20 +15,23 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	
 	protected $ormClassNames = array();
 	
+
+	public function __construct(EntityServiceInterface $adaptee){
+		$this->setAdaptee($adaptee);
+	}
+	
 	/**
 	 * @param EntityServiceInterface $prototype
 	 * @return $this
 	 */
-	public function __construct(EntityServiceInterface $adaptee){
-		$this->adaptee = $adaptee;
-	    $this->setAdaptee($adaptee);
+	public function build(){
 	    $this->uniqueName = 'Entity('.$this->getId().')';
 	    $this->ormClassNames = array(
 	        'entity' => 'Entity\Entity\Entity',
 	        'repository' => 'Entity\Entity\Repository'
 	    );
-	    $this._loadComponents();
-		return this;
+	    $this->_loadComponents();
+		return $this;
 	}
 	
 	abstract protected function _loadComponents();
@@ -38,7 +42,7 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	 */
 	public function setAdaptee(EntityServiceInterface $adaptee = NULL){
 		$this->adaptee = $adaptee;		
-		return this;
+		return $this;
 	}
 	
 	/**
@@ -53,7 +57,7 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	
 	public function addRepositoryComponent(){
         $entityService = $this->getAdaptee();
-	    $repository = $entityService->get('repository');
+	    $repository = $entityService->getEntity();
 	    $repository = $this->getRepositoryManager()->addRepository($this->uniqueName, $repository);
 	    $entityService->addComponent('repository', $repository);
 	    return $this;
@@ -61,7 +65,7 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	
 	public function addRenderComponent($template){
         $entityService = $this->getAdaptee();
-        $render = new RenderComponent($template);
+        $render = new RenderService($template);
 	    $entityService->addComponent('render', $render);
 	    return $this;	    
 	}
