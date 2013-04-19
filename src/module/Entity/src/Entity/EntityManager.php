@@ -30,7 +30,7 @@ class EntityManager implements EntityManagerInterface
 		return $this;
 	}
 
-	public function find($id){
+	private function _find($id){
         $sm = $this->getServiceManager();
         $entityService = $sm->get('Entity\Service\EntityService');
         $this->_entities[$id] = $entityService->load($id);
@@ -38,7 +38,7 @@ class EntityManager implements EntityManagerInterface
     
     public function get($id){
         if(!isset($this->_entities[$id]))
-            $this->find($id);
+            $this->_find($id);
         
         return $this->_entities[$id];
     }
