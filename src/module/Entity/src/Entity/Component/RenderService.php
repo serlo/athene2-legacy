@@ -21,7 +21,7 @@ class RenderService
         return $this;        
     }
     
-    public function get(){
+    public function render(){
         $this->_view;
     }
 }

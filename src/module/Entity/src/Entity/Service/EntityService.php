@@ -58,6 +58,10 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 		return $this->factory;
 	}
 	
+	
+	public function __call($name, $arguments){
+	    return $this->factory->$name($arguments);
+	}
 
 	/**
 	 * @param AbstractEntityInterface $factory

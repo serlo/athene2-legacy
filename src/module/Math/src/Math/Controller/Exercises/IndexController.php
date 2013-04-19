@@ -40,8 +40,8 @@ class IndexController extends AbstractActionController
     {
         $id = $this->getParam('id');
         $entity = $this->getEntityManager()->get($id);
-        $repository = $entity->getComponent('repository');
-        $revision = $repository->getCurrentRevision();
+        $revision = $entity->getComponent('repository')->getCurrentRevision();
+        
         $view = new ViewModel(array(
             'id' => $revision->get('content')
         ));
