@@ -1,6 +1,3 @@
-v2.serlo.org
-============
-
 # Installation Notes
 * Always use the Develop branch as initial branch
 * Rename `/src/config/autoload/local.php.dist` to `/src/config/autoload/local.php`
@@ -10,4 +7,6 @@ v2.serlo.org
 Now you are ready to go!
 
 ============
-Please read the Wiki: https://github.com/serlo-org/v2.serlo.org/wiki
+
+# Wiki
+**Please read the Wiki: https://github.com/serlo-org/v2.serlo.org/wiki**
