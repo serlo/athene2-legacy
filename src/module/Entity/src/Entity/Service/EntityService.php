@@ -177,8 +177,11 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 		
 		// read factory class from db
 		$factoryClassName = $this->getEntity()->get('factory')->get('class_name');
-		$factory = new $factoryClassName();
-		$factory->create($this);
+		if(substr($factoryClassName,0,1) != '\\'){
+			$factoryClassName = '\\Entity\\'.$factoryClassName;
+		}
+		$factory = new $factoryClassName($this);
+		$factory->build();
 		$this->setFactory($factory);
 		
 		return $this;
