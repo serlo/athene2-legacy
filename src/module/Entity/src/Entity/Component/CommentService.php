@@ -1,5 +1,5 @@
 <?php
-namespace module\Entity\src\Entity\Component;
+namespace Entity\Component;
 
 class CommentService
 {
@@ -7,5 +7,3 @@ class CommentService
     function __construct ()
     {}
 }
-
-?>

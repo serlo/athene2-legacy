@@ -4,9 +4,12 @@ namespace Entity\Factory\Exercise;
 use Entity\Factory\AbstractEntityFactory;
 use Entity\Factory\EntityFactoryInterface;
 
-class Text extends AbstractEntityFactory implements EntityFactoryInterface {
+class Text extends AbstractExercise implements EntityFactoryInterface {
     protected function _loadComponents(){
-        $this->addRepositoryComponent()
-        ->addRenderComponent('some/file/torender');
+        parent::_loadComponents();
+    }
+
+    public function getSolution(){
+    	$this->getComponent('link')->find('Factory\Solution\Solution');
     }
 }
