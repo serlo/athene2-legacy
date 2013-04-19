@@ -14,13 +14,11 @@ class IndexController extends AbstractActionController
 {
 
     /**
-     *
      * @var EntityManagerInterface
      */
     private $_entityManager;
 
     /**
-     *
      * @return \Entity\EntityManagerInterface $_entityManager
      */
     public function getEntityManager ()
@@ -29,7 +27,6 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     *
      * @param \Entity\EntityManagerInterface $_entityManager            
      * @return $this
      */
@@ -42,11 +39,13 @@ class IndexController extends AbstractActionController
     public function indexAction ()
     {
         $id = $this->getParam('id');
-        $entity = $this->getEntityManager()->find($id);
+        $entity = $this->getEntityManager()->get($id);
+        $repository = $entity->getComponent('repository');
+        $revision = $repository->getCurrentRevision();
         $view = new ViewModel(array(
-            'id' => $id
+            'id' => $revision->get('content')
         ));
-        $view->setTEmplate('math/exercises/index/index');
+        $view->setTemplate('math/exercises/index/index');
         return $view;
     }
 }

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_factory")
  */
-class EntityFactory extends AbstractEntity {   
+class Factory extends AbstractEntity {   
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Entity", mappedBy="factory")
