@@ -3,6 +3,7 @@ namespace Entity;
 
 use Entity\Service\EntityServiceInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\EntityManager as OrmManager;
 
 class EntityManager implements EntityManagerInterface
 {    
@@ -12,7 +13,27 @@ class EntityManager implements EntityManagerInterface
      */
     protected $_serviceManager;
     
+    /**
+     * @var OrmManager
+     */
+    protected $_entityManager;
+    
     protected $_entities;
+
+	/**
+	 * @return OrmManager
+	 */
+	public function getEntityManager() {
+		return $this->_entityManager;
+	}
+
+	/**
+	 * @param OrmManager $_entityManager
+	 */
+	public function setEntityManager(OrmManager $_entityManager) {
+		$this->_entityManager = $_entityManager;
+		return $this;
+	}
 
 	/**
 	 * @return ServiceLocatorInterface $_serviceManager
@@ -33,7 +54,8 @@ class EntityManager implements EntityManagerInterface
 	private function _find($id){
         $sm = $this->getServiceManager();
         $entityService = $sm->get('Entity\Service\EntityService');
-        $this->_entities[$id] = $entityService->load($id);
+		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
+        $this->_entities[$id] = $entityService->build();
     }
     
     public function get($id){

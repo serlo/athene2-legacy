@@ -15,16 +15,13 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	
 	protected $ormClassNames = array();
 	
-
-	public function __construct(EntityServiceInterface $adaptee){
-		$this->setAdaptee($adaptee);
-	}
-	
 	/**
 	 * @param EntityServiceInterface $prototype
 	 * @return $this
 	 */
-	public function build(){
+	public function build(EntityServiceInterface $adaptee){
+		$this->setAdaptee($adaptee);
+		
 	    $this->uniqueName = 'Entity('.$this->getId().')';
 	    $this->ormClassNames = array(
 	        'entity' => 'Entity\Entity\Entity',

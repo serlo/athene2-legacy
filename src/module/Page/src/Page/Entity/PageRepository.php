@@ -14,7 +14,7 @@ use Page\Entity\PageRevision;
  */
 class PageRepository extends AbstractEntity {
     /**
-     * @ORM\ManyToOne(targetEntity="Page", inversedBy="PageTranslations")
+     * @ORM\ManyToOne(targetEntity="Page", inversedBy="translations")
      **/
     protected $page;
     

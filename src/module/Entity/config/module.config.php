@@ -7,6 +7,9 @@ return array(
         'definition' => array(
             'class' => array(
                 'Entity\EntityManager' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    ),
                     'setServiceManager' => array(
                         'required' => 'true'
                     )
