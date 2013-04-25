@@ -45,11 +45,9 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	protected $entity;
 	
 	/**
-	 * @var AbstractEntityInterface
+	 * @var EntityFactoryInterface
 	 */
 	protected $factory;
-	
-	protected $entityName = '\Entity\Entity\Entity';
 	
 	/**
 	 * @return the $factory
@@ -64,7 +62,7 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	}
 
 	/**
-	 * @param AbstractEntityInterface $factory
+	 * @param EntityFactoryInterface $factory
 	 * @return $this
 	 */
 	public function setFactory(EntityFactoryInterface $factory) {
@@ -176,16 +174,17 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	    
 	}
 	
-	public function load($id) {
-		$this->setEntity($this->getEntityManager()->find($this->entityName, $id));
-		
+	public function build() {
 		// read factory class from db
 		$factoryClassName = $this->getEntity()->get('factory')->get('class_name');
 		if(substr($factoryClassName,0,1) != '\\'){
-			$factoryClassName = '\\Entity\\'.$factoryClassName;
+			$factoryClassName = '\\Entity\\Factory\\'.$factoryClassName;
 		}
-		$factory = new $factoryClassName($this);
-		$factory->build();
+		$factory = new $factoryClassName();
+		if(!$factory instanceof EntityFactoryInterface)
+			throw new \Exception('Something somewhere went terribly wrong.');
+			
+		$factory->build($this);
 		$this->setFactory($factory);
 		
 		return $this;

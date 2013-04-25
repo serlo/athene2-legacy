@@ -5,7 +5,7 @@ use Entity\Factory\AbstractEntityFactory;
 
 abstract class AbstractExercise extends AbstractEntityFactory
 {
-    public function _loadComponents(){
+    protected function _loadComponents(){
         $this->addRepositoryComponent()
         ->addRenderComponent('some/file/torender');
     }
