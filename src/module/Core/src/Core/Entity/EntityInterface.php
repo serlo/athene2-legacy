@@ -2,6 +2,7 @@
 namespace Core\Entity;
 
 use Core\Entity\ModelInterface;
+use Core\Exception\UnstatisfiedException;
 
 interface EntityInterface extends ModelInterface
 {
@@ -23,6 +24,7 @@ interface EntityInterface extends ModelInterface
     /**
      * populates the entity
      * 
+     * @throws UnstatisfiedException
      * @param array $data
      * @return $this
      */

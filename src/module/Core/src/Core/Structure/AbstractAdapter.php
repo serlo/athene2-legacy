@@ -1,20 +1,14 @@
 <?php
 namespace Core\Structure;
 
-abstract class AbstractAdapter
+abstract class AbstractAdapter implements AdapterInterface
 {
     protected $adaptee;
-
-    /**
-	 * @return the $adaptee
-	 */
+    
 	public function getAdaptee() {
 		return $this->adaptee;
 	}
-
-	/**
-	 * @param field_type $adaptee
-	 */
+	
 	public function setAdaptee($adaptee) {
 		$this->adaptee = $adaptee;
 	}
