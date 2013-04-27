@@ -13,6 +13,8 @@ abstract class AbstractEntity implements EntityInterface
      */
     protected $id;
     
+    
+    
     public function getId(){
         return $this->id;
     }
@@ -36,6 +38,8 @@ abstract class AbstractEntity implements EntityInterface
     }
     
     public function populate(array $data){
+    	// TODO check for NOT NULL tables and force to populate them (or throw UnstatisfiedException)
+    	
         foreach($data as $field => $value)
         	$this->set($field, $value);
         

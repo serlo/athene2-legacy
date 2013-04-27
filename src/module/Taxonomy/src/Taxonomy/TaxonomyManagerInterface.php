@@ -2,30 +2,34 @@
 
 namespace Taxonomy;
 
-use Taxonomy\Service\TaxonomyServiceInterface;
-use Core\Entity\AbstractEntity;
+use Core\Service\LanguageService;
+use Core\Entity\EntityAdapterInterface;
+use Core\Entity\EntityInterface;
 
 interface TaxonomyManagerInterface {
-
 	/**
-	 * @param string $id
-	 * @param AbstractEntity $entity
-	 * @return TaxonomyServiceInterface
-	 */
-	public function add($id, AbstractEntity $entity);
-	
-	/**
+	 * Finds an TermManager, by its type and language
 	 * 
-	 * @param int|string $arg
-	 * @param string $slug
-	 * @param TaxonomyServiceInterface $parent
-	 * @return TaxonomyServiceInterface
+	 * @param unknown $type
+	 * @param LanguageService $languageService
+	 * @return TermManagerInterface
 	 */
-	public function find($arg, $slug = NULL, TaxonomyServiceInterface $parent = NULL);
+	public function find($type, LanguageService $languageService = NULL);
 	
 	/**
-	 * @param string $id
-	 * @return TaxonomyServiceInterface
+	 * Sets a default Language Service
+	 * 
+	 * @param LanguageService $languageService
+	 * @return this
 	 */
-	public function get($id);
+	public function setLanguageService(LanguageService $languageService);
+	
+	/**
+	 * Adds a termManager
+	 * 
+	 * @param EntityInterface $entity
+	 * @param TermManagerInterface $termManager
+	 * @return $this
+	 */
+	public function add(EntityInterface $entity, TermManagerInterface $termManager);
 }

@@ -4,23 +4,54 @@ namespace Taxonomy;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Taxonomy\Service\TaxonomyServiceInterface;
 use Doctrine\ORM\EntityManager;
-use Core\Entity\AbstractEntity;
-use Taxonomy\Exception\NotFoundException;
+use Core\Service\LanguageService;
+use Core\Entity\EntityInterface;
 
-class TaxonomyManager implements ServiceLocatorAwareInterface {
+class TaxonomyManager implements ServiceLocatorAwareInterface, TaxonomyManagerInterface {
+	/**
+	 * @var ServiceLocatorInterface
+	 */
 	protected $_serviceManager;
 	
 	/**
 	 * @var EntityManager
 	 */
 	protected $_entityManager;
+	
+	/**
+	 * 
+	 * @var array
+	 */
 	protected $_instances = array();
 	
-	protected $_termClassName = 'Taxonomy\Entity\TaxonomyTerm';
+	/**
+	 * 
+	 * @var string
+	 */
 	protected $_taxonomyClassName = 'Taxonomy\Entity\Taxonomy';
 	
+	/**
+	 * 
+	 * @var LanguageService
+	 */
+	protected $_languageService;
+	
+	/**
+	 * @return LanguageService $_languageService
+	 */
+	public function getLanguageService() {
+		return $this->_languageService;
+	}
+
+	/**
+	 * @param \Core\Service\LanguageService $_languageService
+	 */
+	public function setLanguageService($_languageService) {
+		$this->_languageService = $_languageService;
+		return $this;
+	}
+
 	/**
 	 * @return EntityManager
 	 */
@@ -35,46 +66,6 @@ class TaxonomyManager implements ServiceLocatorAwareInterface {
 		$this->_entityManager = $_entityManager;
 		return $this;
 	}
-
-	public function add($id, AbstractEntity $entity){
-		$service = $this->getServiceLocator()->get('Taxonomy\Service\TaxonomyService');
-		$service->setEntity($entity);
-		$this->_instances[$id] = $service;
-		return $this;
-	}
-	
-	public function find($id){
-		$entity = $this->getEntityManager()->find($this->_termClassName, $id);
-		if($entity === NULL)
-			throw new NotFoundException('Not found');
-		
-		return $this->add($entity->getId(), $entity)->get($entity->getId());
-	}	
-	
-	private function _findType($type){
-		
-	}
-	
-	public function findBySlugs($type, array $slugs){
-		$entity = "";
-		if($entity === NULL)
-			throw new NotFoundException('Not found');
-		return $this->add($entity->getId(), $entity)->get($entity->getId());
-	}
-	
-	public function findByParent($slug, TaxonomyServiceInterface $parent){
-		$entity = $this->getEntityManager()->getRepository($this->_termClassName)->findOneBy(array(
-			'slug' => $slug,
-			'taxonomy' => $parent->getEntity()->get('taxonomy'),
-			'parent' => $parent->getEntity(),
-		));
-		
-		if($entity === NULL)
-			throw new NotFoundException('Not found');
-		
-		return $this->add($entity->getId(), $entity)->get($entity->getId());
-	}
-	
 	
 	/* (non-PHPdoc)
 	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
@@ -90,5 +81,36 @@ class TaxonomyManager implements ServiceLocatorAwareInterface {
 	 */
 	public function getServiceLocator() {
 		return $this->_serviceManager;
+	}
+	
+	
+	/* (non-PHPdoc)
+	 * @see \Taxonomy\TaxonomyManagerInterface::find()
+	*/
+	public function find($type, LanguageService $languageService = NULL) {
+		if($languageService === NULL && $this->getLanguageService() === NULL)
+			throw new \Exception('Set a languageService first!');
+		
+		if($languageService === NULL)
+			$languageService = $this->getLanguageService();
+		
+		$em = $this->getEntityManager();
+		$entity = $em->getRepository($this->_taxonomyClassName)->findOneBy(array(
+			'name' => $type,
+			'language' => $languageService->getEntity()
+		));
+		
+		$tm = $this->getServiceLocator()->get('Taxonomy\TermManager');
+		$this->add($entity, $tm);
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Taxonomy\TaxonomyManagerInterface::add()
+	*/
+	public function add(EntityInterface $entity, TermManagerInterface $termManager){
+		$termManager->setEntity($entity);
+		$termManager->setTaxonomyManager($this);
+		$this->_instances[$entity->getId()] = $termManager;
+		return $this;
 	}
 }
