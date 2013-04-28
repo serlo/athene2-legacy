@@ -3,8 +3,8 @@
 namespace Taxonomy;
 
 use Core\Service\LanguageService;
-use Core\Entity\EntityAdapterInterface;
 use Core\Entity\EntityInterface;
+use Taxonomy\Service\TermServiceInterface;
 
 interface TaxonomyManagerInterface {
 	/**
@@ -32,4 +32,14 @@ interface TaxonomyManagerInterface {
 	 * @return $this
 	 */
 	public function add(EntityInterface $entity, TermManagerInterface $termManager);
+	
+	public function getAllTerms();
+	
+	public function addTerm(TermServiceInterface $term);
+	public function removeTerm(TermServiceInterface $term);
+	
+	public function getTermsByLink($with, EntityInterface $entity);
+	
+	public function getTerm($id);
+	public function getTermBySlugs(array $slug);
 }
