@@ -56,6 +56,7 @@ class EntityManager implements EntityManagerInterface
         $entityService = $sm->get('Entity\Service\EntityService');
 		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
         $this->_entities[$id] = $entityService->build();
+        return $this;
     }
     
     public function get($id){

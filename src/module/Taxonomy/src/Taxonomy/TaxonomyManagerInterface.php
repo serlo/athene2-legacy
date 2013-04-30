@@ -19,4 +19,9 @@ interface TaxonomyManagerInterface {
 	
 	public function setTemplate($template);
 	public function setTermTemplate($template);
+	
+
+	public function enableLink($targetField, \Closure $callback);
+	
+	public function linkingAllowed($targetField);
 }

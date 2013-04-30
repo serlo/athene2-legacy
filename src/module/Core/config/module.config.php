@@ -20,7 +20,7 @@ return array(
         ),
         'instance' => array(
             'alias' => array(
-                'ServiceManager' => 'Zend\ServiceManager\ServiceManager'
+                'ServiceManager' => 'Zend\ServiceManager\ServiceManager',
             )
         )
     ),

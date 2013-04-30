@@ -87,14 +87,14 @@ class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxon
 	/*
 	 * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerInterface::get()
 	 */
-	public function get($name) {
+	public function get($name, $languageService = NULL) {
 		if (! isset ( $this->_instances [$name] )) {
 			$this->add($name, $this->_find ( $name ));
 		}
 		return $this->_instances [$name];
 	}
 	
-	private function _find($name) {
+	private function _find($name, $languageService = NULL) {
 		$language = $this->getLanguageService();
 		$entity = $this->getEntityManager ()->getRepository ( 'Taxonomy\Entity\Taxonomy' )->findOneBy ( array (
 				'name' => $name,
@@ -108,4 +108,6 @@ class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxon
 		$tm->setEntity($entity);
 		return $tm;
 	}
+	
+	
 }

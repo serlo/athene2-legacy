@@ -7,6 +7,7 @@ use Taxonomy\TaxonomyManagerInterface;
 use Core\Entity\EntityInterface;
 use Taxonomy\Exception\LinkNotAllowedException;
 use Core\Entity\AbstractEntityAdapter;
+use Doctrine\ORM\EntityManager;
 
 class TermService extends AbstractEntityAdapter implements TermServiceInterface {
 	/**
@@ -15,10 +16,31 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface 
 	 */
 	protected $_taxonomyManager;
 	
+	/**
+	 * 
+	 * @var EntityManager
+	 */
+	protected $_entityManager;
+	
 	protected $_template;
 	
 	protected $_allowedLinks;
 	
+	/**
+	 * @return EntityManager
+	 */
+	public function getEntityManager() {
+		return $this->_entityManager;
+	}
+
+	/**
+	 * @param EntityManager $_entityManager
+	 */
+	public function setEntityManager(EntityManager $_entityManager) {
+		$this->_entityManager = $_entityManager;
+		return $this;
+	}
+
 	/**
 	 * @return TaxonomyManagerInterface
 	 */
@@ -76,14 +98,6 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface 
 	}
 
 	/* (non-PHPdoc)
-	 * @see \Taxonomy\Service\TermServiceInterface::enableLink()
-	 */
-	public function enableLink($targetField, \Closure $callback) {
-		$this->_allowedLinks[$targetField] = $callback;
-		return $this;
-	}
-
-	/* (non-PHPdoc)
 	 * @see \Taxonomy\Service\TermServiceInterface::getAllLinks()
 	 */
 	public function getAllLinks() {
@@ -98,7 +112,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface 
 	 * @see \Taxonomy\Service\TermServiceInterface::getLinks()
 	 */
 	public function getLinks($targetField) {
-		$this->_isLinkingAllowed($targetField);
+		$this->_linkingAllowedWithException($targetField);
 		$services = array();
 		foreach($this->get($targetField)->toArray() as $entity){
 			$service[] = $this->_allowedLinks[$targetField]($entity);
@@ -110,7 +124,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface 
 	 * @see \Taxonomy\Service\TermServiceInterface::addLink()
 	 */
 	public function addLink($targetField, EntityInterface $target) {
-		$this->_isLinkingAllowed($targetField);
+		$this->_linkingAllowedWithException($targetField);
 		$entity = $this->getEntity();
 		$entity->get($targetField)->add($target);
 		$this->persist();
@@ -121,15 +135,25 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface 
 	 * @see \Taxonomy\Service\TermServiceInterface::removeLink()
 	 */
 	public function removeLink($targetField, EntityInterface $target) {
-		$this->_isLinkingAllowed($targetField);
+		$this->_linkingAllowedWithException($targetField);
 		$entity = $this->getEntity();
 		$entity->get($targetField)->remove($target);
 		$this->persist();
 		return $this;	
 	}
 	
-	protected function _isLinkingAllowed($targetField){
-		if(!isset($this->_allowedLinks[$targetField]))
+	public function hasLink($targetField, EntityInterface $target){
+		$this->_linkingAllowedWithException($targetField);
+		$entity = $this->getEntity();
+		return $entity->get($targetField)->containsKey($target->getId());
+	}
+	
+	public function linkingAllowed($targetField){
+		return $this->getTaxonomyManager()->linkingAllowed($targetField);
+	}
+	
+	protected function _linkingAllowedWithException($targetField){
+		if(!$this->linkingAllowed($targetField))
 			throw new LinkNotAllowedException();
 	}
 

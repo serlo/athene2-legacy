@@ -3,7 +3,7 @@
 namespace Taxonomy;
 
 interface SharedTaxonomyManagerInterface {
-	public function get($id);
+	public function get($name, $languageService = NULL);
 	
 	/**
 	 * @param TaxonomyManagerInterface

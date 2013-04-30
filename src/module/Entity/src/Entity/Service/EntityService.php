@@ -10,6 +10,7 @@ use Core\Service\LanguageService;
 use Core\Service\SubjectService;
 use Entity\Factory\EntityFactoryInterface;
 use Versioning\RepositoryManagerInterface;
+use Taxonomy\SharedTaxonomyManagerInterface;
 
 class EntityService extends AbstractEntityAdapter implements EntityServiceInterface, EventManagerAwareInterface {
     
@@ -27,6 +28,12 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
      * @var EntityManager
      */
     protected $entityManager;
+    
+    /**
+     * 
+     * @var SharedTaxonomyManagerInterface
+     */
+    protected $_sharedTaxonomyManager;
 
     /**
      * @var LanguageService
@@ -49,6 +56,22 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	 */
 	protected $factory;
 	
+	/**
+	 * @return SharedTaxonomyManagerInterface
+	 */
+	public function getSharedTaxonomyManager() {
+		return $this->_sharedTaxonomyManager;
+	}
+
+	/**
+	 * @param SharedTaxonomyManagerInterface $_sharedTaxonomyManager
+	 */
+	public function setSharedTaxonomyManager(SharedTaxonomyManagerInterface $_sharedTaxonomyManager) {
+		die('working');
+		$this->_sharedTaxonomyManager = $_sharedTaxonomyManager;
+		return $this;
+	}
+
 	/**
 	 * @return the $factory
 	 */

@@ -2,8 +2,9 @@
 
 namespace Core\Entity;
 
-interface EntityAdapterInterface {
-	public function __construct(EntityInterface $entity = NULL);
+use Core\Structure\AdapterInterface;
+
+interface EntityAdapterInterface extends AdapterInterface {
 	public function setEntity(EntityInterface $entity);
 	public function getEntity();
 }

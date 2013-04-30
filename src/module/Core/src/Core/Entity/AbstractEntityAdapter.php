@@ -1,23 +1,25 @@
 <?php
 namespace Core\Entity;
 
-abstract class AbstractEntityAdapter implements EntityAdapterInterface
+use Core\Structure\AbstractAdapter;
+
+abstract class AbstractEntityAdapter extends AbstractAdapter implements EntityAdapterInterface
 {
 	private $_entity;
 	
-    public function __construct(EntityInterface $entity = NULL){
+    public function __construct($entity = NULL){
     	if($entity){
         	$this->setEntity($entity);
     	}
     }
     
 	public function setEntity(EntityInterface $entity){
-        $this->_entity = $entity;
+        $this->setAdaptee($entity);
         return $this;
     }
     
     public function getEntity(){
-        return $this->_entity;
+        return $this->getAdaptee();
     }
     
     public function get($field){

@@ -1,7 +1,7 @@
 <?php
 namespace Taxonomy;
 
-use module\Taxonomy\src\Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Service\TermServiceInterface;
 use Taxonomy\Exception\BadTypeException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Criteria;
@@ -26,7 +26,9 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 	protected $_terms = array();
 	protected $_template;
 	protected $_termTemplate;
+	protected $_allowedLinks = array();
 
+	
 
 	/**
 	 *
@@ -106,6 +108,10 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 		return $return;
 	}
 	
+	public function getTermByLink($targetField, EntityInterface $target){
+		
+	}
+	
 	protected function _getTermByEntity(EntityInterface $entity){
 		$id = $entity->getId();
 		if(isset($this->_terms[$id])){
@@ -171,5 +177,21 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 	public function setTermTemplate($template) {
 		$this->_termTemplate = $template;
 		return $this;
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Taxonomy\TaxonomyManagerInterface::enableLink()
+	*/
+	public function enableLink($targetField, \Closure $callback) {
+		$this->_allowedLinks[$targetField] = $callback;
+		return $this;
+	}
+
+
+	/* (non-PHPdoc)
+	 * @see \Taxonomy\TaxonomyManagerInterface::linkingAllowed()
+	*/
+	public function linkingAllowed($targetField){
+		return isset($this->_allowedLinks[$targetField]);
 	}
 }
