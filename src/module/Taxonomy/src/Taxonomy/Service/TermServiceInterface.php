@@ -1,9 +1,11 @@
 <?php
 
-namespace module\Taxonomy\src\Taxonomy\Service;
+namespace Taxonomy\Service;
 
 use Core\Entity\EntityInterface;
-interface TermServiceInterface {
+use Core\Entity\EntityAdapterInterface;
+
+interface TermServiceInterface extends EntityAdapterInterface {
 	public function setTemplate($template);
 	public function getViewModel();
 	
@@ -18,6 +20,4 @@ interface TermServiceInterface {
 	public function getLinks($targetField);
 	public function addLink($targetField, EntityInterface $entity);
 	public function removeLink($targetField, EntityInterface $entity);
-	
-	public function build();
 }
