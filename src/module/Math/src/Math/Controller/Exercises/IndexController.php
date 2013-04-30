@@ -39,6 +39,7 @@ class IndexController extends AbstractActionController
     public function indexAction ()
     {
         $id = $this->getParam('id');
+        //die('luluz');
         $entity = $this->getEntityManager()->get($id);
         $revision = $entity->getComponent('repository')->getCurrentRevision();
         

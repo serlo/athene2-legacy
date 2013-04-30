@@ -7,10 +7,15 @@ abstract class AbstractExercise extends AbstractEntityFactory
 {
     protected function _loadComponents(){
         $this->addRepositoryComponent()
-        ->addRenderComponent('some/file/torender');
+        //->addRenderComponent('some/file/torender')
+        ->addSubjectComponent()
+        //->addTopicComponent()
+        ;
     }
         
     public function render(){
-        $this->getComponent('render')->render();
+        //$this->getComponent('render')->render();
     }
+    
+    
 }

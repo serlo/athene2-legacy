@@ -26,7 +26,10 @@ return array(
                     ),
                     'setAuthService' => array(
                         'required' => 'true'
-                    )
+                    ),
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    ),
                 )
             )
         ),
@@ -37,7 +40,8 @@ return array(
                 'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
-                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager'
+                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
+            	'SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             ),
             'Entity\Service\EntityService' => array(
                 'shared' => false

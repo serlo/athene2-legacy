@@ -18,6 +18,7 @@ return array(
         'Entity',
         'Math',
         'TwbBundle',
+    	'Taxonomy',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -13,34 +13,19 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	 */
 	protected $adaptee;
 	
-	protected $ormClassNames = array();
-	
 	/**
-	 * @param EntityServiceInterface $prototype
+	 * @param EntityServiceInterface $adaptee
 	 * @return $this
 	 */
 	public function build(EntityServiceInterface $adaptee){
 		$this->setAdaptee($adaptee);
 		
 	    $this->uniqueName = 'Entity('.$this->getId().')';
-	    $this->ormClassNames = array(
-	        'entity' => 'Entity\Entity\Entity',
-	        'repository' => 'Entity\Entity\Repository'
-	    );
 	    $this->_loadComponents();
 		return $this;
 	}
 	
 	abstract protected function _loadComponents();
-
-	/**
-	 * @param EntityServiceInterface $prototype
-	 * @return $this
-	 */
-	public function setAdaptee(EntityServiceInterface $adaptee = NULL){
-		$this->adaptee = $adaptee;		
-		return $this;
-	}
 	
 	/**
 	 * @return EntityServiceInterface
@@ -67,8 +52,31 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	    return $this;	    
 	}
 	
+	public function addSubjectComponent(){
+        $entityService = $this->getAdaptee();
+        $languageManager = $this->getLanguageManager();
+        $languageService = $languageManager->get($this->get('language'));
+        $sharedTaxonomyManager = $this->getSharedTaxonomyManager();
+        $taxonomyManager = $sharedTaxonomyManager->get('subject', $languageService);
+	    $entityService->addComponent('subjectTaxonomy', $taxonomyManager);
+        return $this;
+	}
+	
+	public function getSubject(){
+		$taxonomyManager = $this->getComponent('subjectTaxonomy');
+		$taxonomyManager->getTerm($this->getEntity());
+	}
+	
+	public function setSubject(){
+		
+	}
+	
 	public function getComponent($name){
 	    return $this->getAdaptee()->getComponent($name);
+	}
+	
+	public function getSharedTaxonomyManager(){
+		return $this->getAdaptee()->getSharedTaxonomyManager();
 	}
 	
 	public function getRepositoryManager(){

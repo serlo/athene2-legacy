@@ -14,7 +14,7 @@ interface TermServiceInterface extends EntityAdapterInterface {
 	
 	public function toArray();
 	
-	public function enableLink($targetField, $callback);
+	public function linkingAllowed($targetField);
 	
 	public function getAllLinks();
 	public function getLinks($targetField);
