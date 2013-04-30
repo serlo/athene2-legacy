@@ -13,6 +13,11 @@ interface EntityInterface extends ModelInterface
      * @return array
      */
     public function getArrayCopy ();
+    
+    /**
+     * @return array
+     */
+    public function toArray();
 
     /**
      * does the associated element exist?

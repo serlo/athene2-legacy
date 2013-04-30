@@ -19,12 +19,15 @@ abstract class AbstractEntity implements EntityInterface
         return $this->id;
     }
 
+    public function toArray(){
+    	return $this->getArrayCopy();
+    }
 
     /**
      * Gets a value. If a method `get$property` exists, it will be called:
      *
      * 		$entity->get('test');
-     * 		$entity->getTest('); // equal to the above
+     * 		$entity->getTest(); // equal to the above
      *
      * @see \Core\Entity\ModelInterface::get()
      */
