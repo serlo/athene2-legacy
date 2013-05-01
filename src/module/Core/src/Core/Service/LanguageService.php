@@ -47,9 +47,10 @@ class LanguageService extends AbstractEntityAdapter
 	}*/
 	
     public function getEntity(){
-    	if($this->entity === NULL){
+    	/*if($this->entity === NULL){
 	        $this->setEntity($this->getEntityManager()->find('Core\Entity\Language', $this->fallBackLanguage));
     	}
-    	return $this->entity;
+    	return $this->entity;*/
+    	return $this->getEntityManager()->find('Core\Entity\Language', $this->fallBackLanguage);
     }
 }
