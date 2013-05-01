@@ -55,16 +55,18 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	public function addSubjectComponent(){
         $entityService = $this->getAdaptee();
         $languageManager = $this->getLanguageManager();
-        $languageService = $languageManager->get($this->get('language'));
+        //$languageService = $languageManager->get($this->get('language'));
         $sharedTaxonomyManager = $this->getSharedTaxonomyManager();
-        $taxonomyManager = $sharedTaxonomyManager->get('subject', $languageService);
+        
+        // TODO: Write Language Manager!
+        $taxonomyManager = $sharedTaxonomyManager->get('subject', $this->get('language'));
 	    $entityService->addComponent('subjectTaxonomy', $taxonomyManager);
         return $this;
 	}
 	
 	public function getSubject(){
 		$taxonomyManager = $this->getComponent('subjectTaxonomy');
-		$taxonomyManager->getTerm($this->getEntity());
+		return $taxonomyManager->getTermByLink('entities', $this->getEntity()->getEntity());
 	}
 	
 	public function setSubject(){
@@ -81,6 +83,10 @@ abstract class AbstractEntityFactory extends AbstractEntityAdapter {
 	
 	public function getRepositoryManager(){
 	    return $this->getAdaptee()->getRepositoryManager();
+	}
+
+	public function getLanguageManager(){
+		return $this->getAdaptee()->getLanguageManager();
 	}
 	
 	public function getEventManager(){

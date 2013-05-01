@@ -30,6 +30,9 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     ),
+                    /*'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),*/
                 )
             )
         ),
@@ -38,10 +41,11 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
+                //'Core\Service\LanguageManagerInterface' => 'Core\Service\LanguageManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
-            	'SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
+            	'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             ),
             'Entity\Service\EntityService' => array(
                 'shared' => false

@@ -2,6 +2,5 @@
 
 namespace Taxonomy\Factory;
 
-class EntityTree {
-
+class EntityTree extends EntityTaxonomy implements FactoryInterface {
 }

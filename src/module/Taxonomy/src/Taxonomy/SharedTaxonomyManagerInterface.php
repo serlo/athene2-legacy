@@ -8,5 +8,5 @@ interface SharedTaxonomyManagerInterface {
 	/**
 	 * @param TaxonomyManagerInterface
 	 */
-	public function add(TaxonomyManagerInterface $manager);
+	public function add($name, TaxonomyManagerInterface $manager);
 }

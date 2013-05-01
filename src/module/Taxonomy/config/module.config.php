@@ -33,7 +33,7 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceLocator',
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 //'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 //'Entity\Service\EntityServiceInterface' => 'EventManager',
                 //'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',

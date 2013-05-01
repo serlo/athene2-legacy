@@ -21,14 +21,24 @@ return array(
         'instance' => array(
             'alias' => array(
                 'ServiceManager' => 'Zend\ServiceManager\ServiceManager',
-            )
+           		//'Core\Service\LanguageManager' => 'Core\Service\LanguageService',
+            ),
         )
     ),
     'service_manager' => array(
         'invokables' => array(
             //'Core\Service\LanguageService' => 'Core\Service\LanguageService',
             'Core\Service\SubjectService' => 'Core\Service\SubjectService'
-        )
+        ),
+    	'factories' => array(
+    		'Core\Service\LanguageManager' => function ($sm){
+    			die('lalz');
+    			$service = clone $sm->get('Core\Service\LanguageService');
+    			$service->unsetEntity();
+    			$service->isCloned();
+    			return $service;
+    		}
+    	)
     ),
     'controller_plugins' => array(
         'invokables' => array(

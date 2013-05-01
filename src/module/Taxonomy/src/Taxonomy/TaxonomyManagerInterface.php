@@ -2,10 +2,12 @@
 
 namespace Taxonomy;
 
+use Taxonomy\Service\TermServiceInterface;
+use Doctrine\Common\Collections\Criteria;
 interface TaxonomyManagerInterface {
-	public function addTerm();
+	public function addTerm(TermServiceInterface $ts);
 	public function createTerm();
-	public function hasTerm();
+	public function hasTerm($val);
 	
 	/**
 	 * 
@@ -13,7 +15,7 @@ interface TaxonomyManagerInterface {
 	 */
 	public function getTerm($id);
 	
-	public function getTerms($filter = NULL);
+	public function getTerms(Criteria $filter = NULL);
 	
 	public function toArray();
 	

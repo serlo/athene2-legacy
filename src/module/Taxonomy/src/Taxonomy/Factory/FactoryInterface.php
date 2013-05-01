@@ -2,8 +2,8 @@
 
 namespace Taxonomy\Factory;
 
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\TaxonomyManagerInterface;
 
 interface FactoryInterface {
-	public function build(TermServiceInterface $adaptee);
+	public function build(TaxonomyManagerInterface $adaptee);
 }

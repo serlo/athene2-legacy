@@ -4,6 +4,7 @@ namespace Entity;
 use Entity\Service\EntityServiceInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager as OrmManager;
+use Core\Entity\EntityInterface;
 
 class EntityManager implements EntityManagerInterface
 {    
@@ -51,7 +52,7 @@ class EntityManager implements EntityManagerInterface
 		return $this;
 	}
 
-	private function _find($id){
+	private function _getById($id){
         $sm = $this->getServiceManager();
         $entityService = $sm->get('Entity\Service\EntityService');
 		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
@@ -59,11 +60,27 @@ class EntityManager implements EntityManagerInterface
         return $this;
     }
     
+    public function _getByEntity(EntityInterface $entity){
+        $sm = $this->getServiceManager();
+        $entityService = $sm->get('Entity\Service\EntityService');
+		$entityService->setEntity($entity);
+        $this->_entities[$entity->getId()] = $entityService->build();
+        return $this;
+    	
+    }
+    
     public function get($id){
-        if(!isset($this->_entities[$id]))
-            $this->_find($id);
-        
-        return $this->_entities[$id];
+    	if(is_numeric($id)){
+	        if(!isset($this->_entities[$id])){
+	            $this->_getById($id);
+	        }
+        	return $this->_entities[$id];
+    	} else if ($id instanceof EntityInterface) {
+	        if(!isset($this->_entities[$id->getId()])){
+	            $this->_getByEntity($id->getId());
+	        }
+        	return $this->_entities[$id->getId()];
+    	}
     }
     
     public function add(EntityServiceInterface $entityService){

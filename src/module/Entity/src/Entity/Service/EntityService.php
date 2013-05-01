@@ -7,6 +7,7 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Auth\Service\AuthServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Core\Service\LanguageService;
+use Core\Service\LanguageManagerInterface;
 use Core\Service\SubjectService;
 use Entity\Factory\EntityFactoryInterface;
 use Versioning\RepositoryManagerInterface;
@@ -28,6 +29,12 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
      * @var EntityManager
      */
     protected $entityManager;
+    
+    /**
+     * 
+     * @var LanguageManagerInterface
+     */
+    protected $languageManager;
     
     /**
      * 
@@ -57,6 +64,22 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	protected $factory;
 	
 	/**
+	 * @return LanguageManagerInterface
+	 */
+	public function getLanguageManager() {
+		return $this->languageManager;
+	}
+
+	/**
+	 * @param LanguageManagerInterface $languageManager
+	 * @return $this
+	 */
+	public function setLanguageManager(LanguageManagerInterface $languageManager) {
+		$this->languageManager = $languageManager;
+		return $this;
+	}
+
+	/**
 	 * @return SharedTaxonomyManagerInterface
 	 */
 	public function getSharedTaxonomyManager() {
@@ -67,7 +90,6 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	 * @param SharedTaxonomyManagerInterface $_sharedTaxonomyManager
 	 */
 	public function setSharedTaxonomyManager(SharedTaxonomyManagerInterface $_sharedTaxonomyManager) {
-		die('working');
 		$this->_sharedTaxonomyManager = $_sharedTaxonomyManager;
 		return $this;
 	}
