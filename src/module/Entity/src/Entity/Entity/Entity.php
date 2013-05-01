@@ -57,7 +57,7 @@ class Entity extends AbstractEntity {
 	protected $factory;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Core\Entity\Language", inversedBy="entities")
+	 * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
 	 **/
 	protected $language;
 	

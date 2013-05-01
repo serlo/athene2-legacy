@@ -10,6 +10,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\Common\Collections\Collection;
 use Core\Entity\EntityInterface;
+use Taxonomy\Factory\FactoryInterface;
 
 class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerInterface, ServiceLocatorAwareInterface {
 
@@ -28,6 +29,10 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 	protected $_termTemplate;
 	protected $_allowedLinks = array();
 
+	/**
+	 * @var FactoryInterface
+	 */
+	protected $_factory;
 	
 
 	/**
@@ -36,6 +41,22 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 	 */
 	protected $_languageService;
 	
+	/**
+	 * @return FactoryInterface
+	 */
+	public function getFactory() {
+		return $this->_factory;
+	}
+
+	/**
+	 * @param FactoryInterface $_factory
+	 * @return $this
+	 */
+	public function setFactory(FactoryInterface $_factory) {
+		$this->_factory = $_factory;
+		return $this;
+	}
+
 	/* (non-PHPdoc)
 	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
 	*/
@@ -109,7 +130,28 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 	}
 	
 	public function getTermByLink($targetField, EntityInterface $target){
+		// TODO
+		//if(!$this->linkingAllowed($targetField))
+		//	throw new \Exception();
 		
+		// TODO check if linking multiple entities is allowed
+		
+		// TODO security stuff
+		
+		$query = $this->getEntityManager()->createQuery("
+				SELECT taxonomy, terms FROM 
+					".get_class($this->getEntity())." taxonomy
+					JOIN taxonomy.terms terms
+					JOIN terms.".$targetField." associations
+				WHERE
+					taxonomy.id = ".$this->getId()."
+				AND
+					associations.id = ".$target->getId());
+		
+		//$query->setParameter(1, $this->getId());
+		//$query->setParameter(2, $target->getId());
+		
+		return $this->_getTermByEntity(current($query->getResult())->get('terms')->current());
 	}
 	
 	protected function _getTermByEntity(EntityInterface $entity){
@@ -149,6 +191,23 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
 		return $ts;
 	}
 
+
+	public function build() {
+		// read factory class from db
+		$factoryClassName = $this->getEntity()->get('factory')->get('className');
+		if(substr($factoryClassName,0,1) != '\\'){
+			$factoryClassName = '\\Taxonomy\\Factory\\'.$factoryClassName;
+		}
+		$factory = new $factoryClassName();
+		if(!$factory instanceof FactoryInterface)
+			throw new \Exception('Something somewhere went terribly wrong.');
+		
+		$factory->build($this);
+		$this->setFactory($factory);
+	
+		return $this;
+	}
+	
 	/* (non-PHPdoc)
 	 * @see \Taxonomy\TaxonomyManagerInterface::getTerms()
 	 */

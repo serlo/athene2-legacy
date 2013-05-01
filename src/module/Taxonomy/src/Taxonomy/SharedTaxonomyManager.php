@@ -89,23 +89,26 @@ class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxon
 	 */
 	public function get($name, $languageService = NULL) {
 		if (! isset ( $this->_instances [$name] )) {
-			$this->add($name, $this->_find ( $name ));
+			$this->add($name, $this->_find ( $name, $languageService ));
 		}
 		return $this->_instances [$name];
 	}
 	
 	private function _find($name, $languageService = NULL) {
-		$language = $this->getLanguageService();
+		if($languageService === NULL)
+			$languageService = $this->getLanguageService();
+		
 		$entity = $this->getEntityManager ()->getRepository ( 'Taxonomy\Entity\Taxonomy' )->findOneBy ( array (
 				'name' => $name,
-				'language' => $language->getEntity () 
+				'language' => $languageService->getId () 
 		) );
 		
 		if($entity === NULL)
-			throw new NotFoundException('Taxonomy not found. Using name `'.$name.'` and language `'.$language->getId().'`');
-		
+			throw new NotFoundException('Taxonomy not found. Using name `'.$name.'` and language `'.$languageService->getId().'`');
+
 		$tm = $this->getServiceLocator()->get('Taxonomy\TaxonomyManager');
 		$tm->setEntity($entity);
+		$tm->build();
 		return $tm;
 	}
 	
