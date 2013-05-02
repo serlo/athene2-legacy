@@ -1,5 +1,11 @@
 <?php
-
+/**
+ *
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @copyright 2013 by www.serlo.org
+ * @license LGPL
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ */
 namespace Taxonomy\Entity;
 
 use Core\Entity\AbstractEntity;
@@ -12,34 +18,44 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy_term")
  */
-class TaxonomyTerm extends AbstractEntity {
-	/**
-	 * @ORM\ManyToOne(targetEntity="Taxonomy", inversedBy="terms")
-	 **/
-	protected $taxonomy;
+class TaxonomyTerm extends AbstractEntity
+{
 
-	protected $parent;	
-	protected $children;
-	
-    /** @ORM\Column(type="integer") */
-	protected $order;
+    /**
+     * @ORM\ManyToOne(targetEntity="Taxonomy", inversedBy="terms")
+     */
+    protected $taxonomy;
 
-	/** @ORM\Column(type="text",length=255,name="term") */
-	protected $name;
+    protected $parent;
 
-	/** @ORM\Column(type="text",length=255) */
-	protected $slug;
-	
-	/**
-	 * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
-	 * @ORM\JoinTable(name="entity_taxonomy_term",
-	 *      joinColumns={@ORM\JoinColumn(name="taxonomy_term_id", referencedColumnName="id")},
-	 *      inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
-	 *      )
-	 */
-	protected $entities;
-	
-	public function __construct(){
-		$this->children = new ArrayCollection();
-	}
+    protected $children;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $order;
+
+    /**
+     * @ORM\Column(type="text",length=255,name="term")
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="text",length=255)
+     */
+    protected $slug;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
+     * @ORM\JoinTable(name="entity_taxonomy_term",
+     * joinColumns={@ORM\JoinColumn(name="taxonomy_term_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
+     * )
+     */
+    protected $entities;
+
+    public function __construct ()
+    {
+        $this->children = new ArrayCollection();
+    }
 }

@@ -227,10 +227,9 @@ class PageService implements PageServiceInterface, RepositoryManagerAwareInterfa
         $entity->set('content', $data['content']);
         $entity->set('title', $data['title']);
 
-        $revision = new RevisionWithTitleAndContent($entity);
-        $repository->addRevision($revision);
-        $repository->persistRevision($revision);
-        return $revision;
+        $repository->addRevision($entity);
+        $repository->persistRevision($entity);
+        return $entity;
     }
     
     public function removeRevision($pageId, $revisionId){

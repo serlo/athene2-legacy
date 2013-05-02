@@ -39,10 +39,10 @@ return array(
                 //'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
             	//'SharedTaxonomyManagerInterface' => 'SharedTaxonomyManager'
             ),
-            'Taxonomy\Taxonomy\TermService' => array(
+            'Taxonomy\TaxonomyManager' => array(
                 'shared' => false
             ),
-            'Taxonomy\TaxonomyManager' => array(
+            'Taxonomy\Service\TermService' => array(
                 'shared' => false
             ),
         )

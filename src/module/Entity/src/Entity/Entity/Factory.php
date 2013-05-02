@@ -16,9 +16,9 @@ class Factory extends AbstractEntity {
 	 * @ORM\OneToMany(targetEntity="Entity", mappedBy="factory")
 	 **/
 	protected $entities;
-
-	/** @ORM\Column(type="text",length=255) */
-	protected $class_name;
+	
+	/** @ORM\Column(type="text",length=255,name="class_name") */
+	protected $className;
 	
     public function __construct() {
         $this->entities = new \Doctrine\Common\Collections\ArrayCollection();

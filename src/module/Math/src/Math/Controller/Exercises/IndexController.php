@@ -41,12 +41,15 @@ class IndexController extends AbstractActionController
         $id = $this->getParam('id');
         //die('luluz');
         $entity = $this->getEntityManager()->get($id);
-        $revision = $entity->getComponent('repository')->getCurrentRevision();
-        
+        //$revision = $entity->getComponent('repository')->getCurrentRevision();
         
         $view = new ViewModel(array(
-            'subject' => $entity->getSubject()->get('name'),
-        	'content' => $revision->get('content'),
+            'subject' => $entity->getSubject(),
+        	'topic' => $entity->getTopic(),
+        	'content' => $entity->getContent(),
+        	'solution' => array(
+        		'content' => $entity->getSolution()->getContent()
+        	)
         ));
         $view->setTemplate('math/exercises/index/index');
         return $view;

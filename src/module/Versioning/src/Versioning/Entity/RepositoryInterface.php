@@ -1,18 +1,17 @@
 <?php
+/**
+ * 
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @copyright 2013 by www.serlo.org
+ * @license LGPL
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ */
 namespace Versioning\Entity;
 
 use Core\Entity\EntityInterface;
-use User\Entity\User;
 
-interface RepositoryInterface
+interface RepositoryInterface extends EntityInterface
 {
-	public function setEntity(EntityInterface $entity);
-    public function getEntity();
-    public function getFieldValues();
-    public function setFieldValues(array $data);
-    public function getFieldValue($field);
-    public function setFieldValue($field, $value);
-    public function getId();
-    public function get($field);
-    public function set($field, $value);    
+
+    public function getRevisions ();
 }
