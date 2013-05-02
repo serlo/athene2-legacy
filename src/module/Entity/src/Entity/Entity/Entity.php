@@ -3,6 +3,8 @@ namespace Entity\Entity;
 
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Versioning\Entity\RepositoryInterface;
+use Link\Entity\LinkEntityInterface;
 
 /**
  * An entity.
@@ -10,37 +12,56 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends AbstractEntity {
-
-	/**
-	 * @OneToMany(targetEntity="Repository", mappedBy="entity")
-	 **/
-	protected $repositories;
+class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityInterface {
 	
 	/**
-	 * @ManyToOne(targetEntity="Component", inversedBy="entities")
+     * @ORM\ManyToMany(targetEntity="Entity", mappedBy="children")
+     * @ORM\JoinTable(name="entity_link",
+     *      joinColumns={
+     *      	@ORM\JoinColumn(name="child_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *      	@ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *      }
+     * )
+	 */
+	protected $parents;
+	
+	/**
+     * @ORM\ManyToMany(targetEntity="Entity", mappedBy="parents")
+     * @ORM\JoinTable(
+     * 		name="entity_link",
+     *      joinColumns={
+     *      	@ORM\JoinColumn(name="child_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *      	@ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *      }
+     * )
+	 */
+	protected $children;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
 	 **/
-	protected $component;
+	protected $revisions;
 
 	/**
-	 * @ManyToOne(targetEntity="EntityType", inversedBy="entities")
-	 * @JoinColumn(name="entity_type_id", referencedColumnName="id")
+	 * @ORM\OneToOne(targetEntity="Revision")
+	 * @ORM\JoinColumn(name="current_revision_id", referencedColumnName="id")
 	 **/
-	protected $type;
+	protected $currentRevision;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Factory", inversedBy="entities")
+	 * @ORM\JoinColumn(name="entity_factory_id", referencedColumnName="id")
+	 **/
+	protected $factory;
 
 	/**
-	 * @ManyToOne(targetEntity="Core\Entity\Subject", inversedBy="entities")
-	 **/
-	protected $subject;
-
-	/**
-	 * @ManyToOne(targetEntity="Core\Entity\Language", inversedBy="entities")
+	 * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
 	 **/
 	protected $language;
-	
-	/* protected $period;
-	protected $license;
-	protected $localization; */
 	
 	/** @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
 	 */
@@ -50,12 +71,28 @@ class Entity extends AbstractEntity {
 	protected $killed;
 	
     /** @ORM\Column(type="text",length=255) */
-	protected $title;
-	
-    /** @ORM\Column(type="text",length=255) */
 	protected $slug;
 	
 	public function __construct() {
-        $this->repositories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	public function getRevisions(){
+		return $this->revisions;
+	}
+	/* (non-PHPdoc)
+	 * @see \Link\Entity\LinkEntityInterface::getChildren()
+	 */
+	public function getChildren() {
+		return $this->children;
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Link\Entity\LinkEntityInterface::getParents()
+	 */
+	public function getParents() {
+		return $this->parents;		
 	}
 }
