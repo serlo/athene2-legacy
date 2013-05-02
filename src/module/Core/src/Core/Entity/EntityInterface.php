@@ -2,6 +2,7 @@
 namespace Core\Entity;
 
 use Core\Entity\ModelInterface;
+use Core\Exception\UnstatisfiedException;
 
 interface EntityInterface extends ModelInterface
 {
@@ -12,6 +13,11 @@ interface EntityInterface extends ModelInterface
      * @return array
      */
     public function getArrayCopy ();
+    
+    /**
+     * @return array
+     */
+    public function toArray();
 
     /**
      * does the associated element exist?
@@ -21,17 +27,11 @@ interface EntityInterface extends ModelInterface
     public function exists ($association);
     
     /**
-     * @return int
-     */
-    public function getId();
-    
-    /**
      * populates the entity
      * 
+     * @throws UnstatisfiedException
      * @param array $data
      * @return $this
      */
     public function populate(array $data);
 }
-
-?>

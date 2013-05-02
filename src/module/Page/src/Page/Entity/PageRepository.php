@@ -5,6 +5,7 @@ use Core\Entity\AbstractEntity;
 use Core\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 use Page\Entity\PageRevision;
+use Versioning\Entity\RepositoryInterface;
 
 /**
  * A user.
@@ -12,9 +13,9 @@ use Page\Entity\PageRevision;
  * @ORM\Entity
  * @ORM\Table(name="page_repository")
  */
-class PageRepository extends AbstractEntity {
+class PageRepository extends AbstractEntity implements RepositoryInterface {
     /**
-     * @ORM\ManyToOne(targetEntity="Page", inversedBy="PageTranslations")
+     * @ORM\ManyToOne(targetEntity="Page", inversedBy="translations")
      **/
     protected $page;
     
@@ -40,4 +41,12 @@ class PageRepository extends AbstractEntity {
     public function __construct() {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RepositoryInterface::getRevisions()
+	 */
+	public function getRevisions() {
+		return $this->revisions;
+	}
+
 }

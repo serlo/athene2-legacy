@@ -1,5 +1,5 @@
 <?php
-namespace Object;
+namespace Entity;
 
 class Module
 {

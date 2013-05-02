@@ -11,24 +11,31 @@ return array(
     'di' => array(
         'definition' => array(
             'class' => array(
-                'Core\Service\LanguageService' => array(
+                'Core\Service\NonDefaultLanguageService' => array(
+                ),
+                'Core\Service\LanguageManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
-                    )
+                    ),
                 )
             )
         ),
         'instance' => array(
             'alias' => array(
-                'ServiceManager' => 'Zend\ServiceManager\ServiceManager'
-            )
+                'ServiceManager' => 'Zend\ServiceManager\ServiceManager',
+            ),
         )
     ),
     'service_manager' => array(
         'invokables' => array(
-            //'Core\Service\LanguageService' => 'Core\Service\LanguageService',
             'Core\Service\SubjectService' => 'Core\Service\SubjectService'
-        )
+        ),
+    	'factories' => array(
+            'Core\Service\LanguageService' => function($sm){
+            	$lm = $sm->get('Core\Service\LanguageManager');
+            	return $lm->getRequestLanguage();
+            }
+    	)
     ),
     'controller_plugins' => array(
         'invokables' => array(
