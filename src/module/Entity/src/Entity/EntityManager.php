@@ -53,20 +53,25 @@ class EntityManager implements EntityManagerInterface
 	}
 
 	private function _getById($id){
-        $sm = $this->getServiceManager();
-        $entityService = $sm->get('Entity\Service\EntityService');
+        $entityService = $this->_getService();
 		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
-        $this->_entities[$id] = $entityService->build();
+        $this->add($entityService);
         return $this;
     }
     
-    public function _getByEntity(EntityInterface $entity){
-        $sm = $this->getServiceManager();
-        $entityService = $sm->get('Entity\Service\EntityService');
+    private function _getByEntity(EntityInterface $entity){
+        $entityService = $this->_getService();
 		$entityService->setEntity($entity);
-        $this->_entities[$entity->getId()] = $entityService->build();
+        $this->add($entityService);
         return $this;
-    	
+    }
+    
+    private function _getService(){
+        $sm = $this->getServiceManager();
+        
+        //TODO [DI] remove
+        $sm->setShared('Entity\Service\EntityService', false);
+        return $sm->get('Entity\Service\EntityService');
     }
     
     public function get($id){
@@ -77,13 +82,14 @@ class EntityManager implements EntityManagerInterface
         	return $this->_entities[$id];
     	} else if ($id instanceof EntityInterface) {
 	        if(!isset($this->_entities[$id->getId()])){
-	            $this->_getByEntity($id->getId());
+	            $this->_getByEntity($id);
 	        }
         	return $this->_entities[$id->getId()];
     	}
     }
     
     public function add(EntityServiceInterface $entityService){
-        $this->_entities[$entityService->getId()] = $entityService;
+        $entityService->setManager($this);
+        $this->_entities[$entityService->getId()] = $entityService->build();
     }
 }

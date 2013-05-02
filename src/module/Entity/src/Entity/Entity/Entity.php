@@ -3,6 +3,8 @@ namespace Entity\Entity;
 
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Versioning\Entity\RepositoryInterface;
+use Link\Entity\LinkEntityInterface;
 
 /**
  * An entity.
@@ -10,11 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends AbstractEntity {
-
+class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityInterface {
+	
 	/**
      * @ORM\ManyToMany(targetEntity="Entity", mappedBy="children")
-     * @ORM\JoinTable(name="link",
+     * @ORM\JoinTable(name="entity_link",
      *      joinColumns={
      *      	@ORM\JoinColumn(name="child_id", referencedColumnName="id")
      *      },
@@ -28,7 +30,7 @@ class Entity extends AbstractEntity {
 	/**
      * @ORM\ManyToMany(targetEntity="Entity", mappedBy="parents")
      * @ORM\JoinTable(
-     * 		name="link",
+     * 		name="entity_link",
      *      joinColumns={
      *      	@ORM\JoinColumn(name="child_id", referencedColumnName="id")
      *      },
@@ -75,5 +77,22 @@ class Entity extends AbstractEntity {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	public function getRevisions(){
+		return $this->revisions;
+	}
+	/* (non-PHPdoc)
+	 * @see \Link\Entity\LinkEntityInterface::getChildren()
+	 */
+	public function getChildren() {
+		return $this->children;
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Link\Entity\LinkEntityInterface::getParents()
+	 */
+	public function getParents() {
+		return $this->parents;		
 	}
 }

@@ -7,13 +7,16 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Auth\Service\AuthServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Core\Service\LanguageService;
-use Core\Service\LanguageManagerInterface;
+//use Core\Service\LanguageManagerInterface;
 use Core\Service\SubjectService;
 use Entity\Factory\EntityFactoryInterface;
 use Versioning\RepositoryManagerInterface;
 use Taxonomy\SharedTaxonomyManagerInterface;
+use Core\Service\LanguageManager;
+use Core\OrmEntityManagerAwareInterface;
+use Link\LinkManagerInterface;
 
-class EntityService extends AbstractEntityAdapter implements EntityServiceInterface, EventManagerAwareInterface {
+class EntityService extends AbstractEntityAdapter implements EntityServiceInterface, EventManagerAwareInterface, OrmEntityManagerAwareInterface {
     
 	/**
 	 * @var AuthServiceInterface
@@ -26,15 +29,14 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
     protected $repositoryManager;
     
     /**
+     * @var LinkManagerInterface
+     */
+    protected $linkManager;
+    
+    /**
      * @var EntityManager
      */
     protected $entityManager;
-    
-    /**
-     * 
-     * @var LanguageManagerInterface
-     */
-    protected $languageManager;
     
     /**
      * 
@@ -48,6 +50,11 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
     protected $languageService;
     
     /**
+     * @var LanguageManager
+     */
+    protected $languageManager;
+    
+    /**
      * @var SubjectService
      */
     protected $subjectService;
@@ -59,22 +66,62 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	protected $entity;
 	
 	/**
+	 * 
+	 * @var \Entity\EntityManagerInterface
+	 */
+	protected $manager;
+	
+	/**
 	 * @var EntityFactoryInterface
 	 */
 	protected $factory;
-	
+
 	/**
-	 * @return LanguageManagerInterface
+     * @return \Entity\EntityManagerInterface $manager
+     */
+    public function getManager ()
+    {
+        return $this->manager;
+    }
+
+	/**
+     * @param \Entity\EntityManagerInterface $manager
+     * @return $this
+     */
+    public function setManager (\Entity\EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+	/**
+	 * @return LinkManagerInterface $linkManager
+	 */
+	public function getLinkManager() {
+		return $this->linkManager;
+	}
+
+	/**
+	 * @param LinkManagerInterface $linkManager
+	 * @return $this
+	 */
+	public function setLinkManager(LinkManagerInterface $linkManager) {
+		$this->linkManager = $linkManager;
+		return $this;
+	}
+
+	/**
+	 * @return LanguageManager
 	 */
 	public function getLanguageManager() {
 		return $this->languageManager;
 	}
 
 	/**
-	 * @param LanguageManagerInterface $languageManager
+	 * @param LanguageManager $languageManager
 	 * @return $this
 	 */
-	public function setLanguageManager(LanguageManagerInterface $languageManager) {
+	public function setLanguageManager(LanguageManager $languageManager) {
 		$this->languageManager = $languageManager;
 		return $this;
 	}
@@ -221,18 +268,18 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	
 	public function build() {
 		// read factory class from db
-		$factoryClassName = $this->getEntity()->get('factory')->get('class_name');
+		$factoryClassName = $this->getEntity()->get('factory')->get('className');
 		if(substr($factoryClassName,0,1) != '\\'){
-			$factoryClassName = '\\Entity\\Factory\\'.$factoryClassName;
+			$factoryClassName = '\\Entity\\Factory\\LearningObjects\\'.$factoryClassName;
 		}
-		$factory = new $factoryClassName();
+		$factory = new $factoryClassName($this);
 		if(!$factory instanceof EntityFactoryInterface)
 			throw new \Exception('Something somewhere went terribly wrong.');
 			
 		$factory->build($this);
 		$this->setFactory($factory);
 		
-		return $this;
+		return $factory;
 	}
 	
 	public function kill() {

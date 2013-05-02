@@ -3,6 +3,7 @@
 namespace Core\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Core\Exception\UnknownPropertyException;
 
 abstract class AbstractEntity implements EntityInterface
 {
@@ -36,6 +37,9 @@ abstract class AbstractEntity implements EntityInterface
     	if(method_exists($this, $method)){
     		return $this->$method();
     	}
+    	if(!isset($this->$property))
+    		throw new UnknownPropertyException('Property `'.$property.'` not found.');
+    	
         return $this->$property;
     }
     
@@ -52,6 +56,8 @@ abstract class AbstractEntity implements EntityInterface
     	if(method_exists($this, $method)){
     		$this->$method($value);
     	} else {
+	    	if(!isset($this->$property))
+	    		throw new UnknownPropertyException('Property `'.$property.'` not found.');
         	$this->$property = $value;
     	}
         return $this;

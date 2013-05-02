@@ -5,6 +5,7 @@ namespace Entity\Entity;
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity link.
@@ -12,7 +13,7 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends AbstractEntity {
+class Revision extends AbstractEntity implements RevisionInterface {
 	/**
 	 * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
 	 */
@@ -35,5 +36,29 @@ class Revision extends AbstractEntity {
 	}
 	
 	public function set($field, $key) {
+	}
+	
+	
+	
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RevisionInterface::delete()
+	 */
+	public function delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RevisionInterface::trash()
+	 */
+	public function trash() {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RevisionInterface::getRepository()
+	 */
+	public function getRepository() {
+		return $this->repository;
 	}
 }

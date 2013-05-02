@@ -7,94 +7,104 @@ use Core\Entity\AbstractEntityAdapter;
 
 interface RepositoryServiceInterface
 {
-    
-    /**
-     * @param string $identifier
-     * @return $this
-     */
-    public function setup($identifier, AbstractEntity $repository);
 
     /**
-     * @param string $identifier
+     *
+     * @param string $identifier            
      * @return $this
      */
-    public function setIdentifier($identifier);
+    public function setup ($identifier, AbstractEntity $repository);
+
+    /**
+     *
+     * @param string $identifier            
+     * @return $this
+     */
+    public function setIdentifier ($identifier);
 
     /**
      * $return string $identifier
      */
-    public function getIdentifier();
-    
-    /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
-     */
-    public function addRevision(RevisionInterface $revision);
-    
-    /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
-     */
-    public function deleteRevision(RevisionInterface $revision);
-    
+    public function getIdentifier ();
+
     /**
      *
-     * @param RevisionInterface $revision
+     * @param RevisionInterface $revision            
      * @return $this
      */
-    public function trashRevision(RevisionInterface $revision);
-    
+    public function addRevision (RevisionInterface $revision);
+
     /**
-     * @param int $revisionId
+     *
+     * @param RevisionInterface $revision            
+     * @return $this
+     */
+    public function deleteRevision (RevisionInterface $revision);
+
+    /**
+     *
+     * @param RevisionInterface $revision            
+     * @return $this
+     */
+    public function trashRevision (RevisionInterface $revision);
+
+    /**
+     *
+     * @param int $revisionId            
      * @return RevisionInterface $revision
      */
-    public function getRevision($revisionId);
-    
+    public function getRevision ($revisionId);
+
     /**
-     * @param RevisionInterface|int $revision
+     *
+     * @param RevisionInterface|int $revision            
      * @return bool
      */
-    public function hasRevision($revision);
-        
-    /**
-     * @return array
-     */
-    public function getTrashedRevisions();
-    
-    /**
-     * @return array
-     */
-    public function getRevisions();
+    public function hasRevision ($revision);
 
     /**
+     *
+     * @return array
+     */
+    public function getTrashedRevisions ();
+
+    /**
+     *
+     * @return array
+     */
+    public function getRevisions ();
+
+    /**
+     *
      * @return RevisionInterface $revision
      */
-    public function getHead();
-    
+    public function getHead ();
+
     /**
-     * @param RevisionInterface $revision
+     *
+     * @param RevisionInterface $revision            
      * @return $this
      */
-    public function checkoutRevision(RevisionInterface $revision);
+    public function checkoutRevision (RevisionInterface $revision);
 
     /**
+     *
      * @return RevisionInterface $revision
      */
-    public function getCurrentRevision();
-    
+    public function getCurrentRevision ();
+
     /**
-     * @param RevisionInterface $revision
-     * @param RevisionInterface $base
+     *
+     * @param RevisionInterface $revision            
+     * @param RevisionInterface $base            
      * @return RevisionInterface
      */
-    public function mergeRevisions(RevisionInterface $revision, RevisionInterface $base);
-    
+    public function mergeRevisions (RevisionInterface $revision, RevisionInterface $base);
+
     /**
-     * 
-     * @param RevisionInterface $revision
+     *
+     * @param RevisionInterface $revision            
      * @return $this
      */
-    public function persistRevision(AbstractEntityAdapter $revision);
+    public function persistRevision (RevisionInterface $revision);
 }

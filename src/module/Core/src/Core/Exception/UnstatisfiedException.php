@@ -2,5 +2,5 @@
 
 namespace Core\Exception;
 
-class UnstatisfiedException extends \Exception implements ExceptionInterface {
+class UnstatisfiedException extends \Exception {
 }

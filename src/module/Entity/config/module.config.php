@@ -1,7 +1,6 @@
 <?php
 namespace Entity;
 
-use Versioning;
 return array(
     'di' => array(
         'definition' => array(
@@ -30,9 +29,12 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     ),
-                    /*'setLanguageManager' => array(
+                    'setLanguageManager' => array(
                         'required' => 'true'
-                    ),*/
+                    ),
+                    'setLinkManager' => array(
+                        'required' => 'true'
+                    ),
                 )
             )
         ),
@@ -45,6 +47,7 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
+                'Link\LinkManagerInterface' => 'Link\LinkManager',
             	'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             ),
             'Entity\Service\EntityService' => array(
