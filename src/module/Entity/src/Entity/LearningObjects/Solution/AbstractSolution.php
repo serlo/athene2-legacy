@@ -1,10 +1,10 @@
 <?php
-namespace Entity\Factory\LearningObjects\Solution;
+namespace Entity\LearningObjects\Solution;
 
-use Entity\Factory\AbstractEntityFactory;
+use Entity\Factory\AbstractEntityBuilder;
 use Entity\Factory\Components\RepositoryComponent;
 
-abstract class AbstractSolution extends AbstractEntityFactory
+abstract class AbstractSolution extends AbstractEntityBuilder
 {
 	
 	/**

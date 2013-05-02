@@ -13,7 +13,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Entity\Service\EntityService' => array(
+                'Entity\Factory\EntityFactory' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -42,7 +42,7 @@ return array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
-                'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
+                'Entity\Factory\EntityFactoryInterface' => 'Entity\Factory\EntityFactory',
                 //'Core\Service\LanguageManagerInterface' => 'Core\Service\LanguageManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
@@ -50,7 +50,7 @@ return array(
                 'Link\LinkManagerInterface' => 'Link\LinkManager',
             	'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             ),
-            'Entity\Service\EntityService' => array(
+            'Entity\Factory\EntityFactory' => array(
                 'shared' => false
             )
         )

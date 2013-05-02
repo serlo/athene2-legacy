@@ -1,8 +1,9 @@
 <?php
 namespace Entity\Factory;
 
-use Entity\Service\EntityServiceInterface;
+use Core\Entity\ModelInterface;
 
-interface EntityFactoryInterface {
-	public function build(EntityServiceInterface $entityService);
+interface EntityFactoryInterface extends ModelInterface
+{
+    public function getClassName($name);
 }

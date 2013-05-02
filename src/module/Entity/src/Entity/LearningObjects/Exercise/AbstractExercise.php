@@ -1,15 +1,14 @@
 <?php
-namespace Entity\Factory\LearningObjects\Exercise;
+namespace Entity\LearningObjects\Exercise;
 
-use Entity\Factory\AbstractEntityFactory;
+use Entity\Factory\AbstractEntityBuilder;
 use Entity\Factory\Components\SubjectComponentInterface;
 use Entity\Factory\Components\SubjectComponent;
-use Entity\Factory\Components\ComponentInterface;
 use Entity\Factory\Components\TopicComponent;
 use Entity\Factory\Components\TopicComponentInterface;
 use Entity\Factory\Components\LinkComponent;
 
-abstract class AbstractExercise extends AbstractEntityFactory implements SubjectComponentInterface, TopicComponentInterface
+abstract class AbstractExercise extends AbstractEntityBuilder implements SubjectComponentInterface, TopicComponentInterface
 {
 	/**
 	 * @var SubjectComponent

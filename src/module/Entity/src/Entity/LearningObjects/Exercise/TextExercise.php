@@ -1,9 +1,7 @@
 <?php
-namespace Entity\Factory\LearningObjects\Exercise;
+namespace Entity\LearningObjects\Exercise;
 
 use Entity\Factory\Components\RepositoryComponent;
-use Doctrine\Common\Collections\Criteria;
-use Entity\Factory\EntityFactoryInterface;
 
 class TextExercise extends AbstractExercise implements TextExerciseInterface
 {
