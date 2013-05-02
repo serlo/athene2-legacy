@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Language extends AbstractEntity
 {
-	/**
-	 * @OneToMany(targetEntity="Entity\Entity\Entity", mappedBy="language")
+	/*
+	 * @ORM\OneToMany(targetEntity="Entity\Entity\Entity", mappedBy="language")
 	 **/
 	protected $entities;
 	

@@ -3,6 +3,7 @@ namespace Page\Entity;
 
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Versioning\Entity\RevisionInterface;
 
 
 /**
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="page_revision")
  */
-class PageRevision extends AbstractEntity {
+class PageRevision extends AbstractEntity implements RevisionInterface {
     
     /**
      * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="revisions")
@@ -39,4 +40,26 @@ class PageRevision extends AbstractEntity {
     	$this->content = $data['content'];
     	return $this;
 	}
+	
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RevisionInterface::delete()
+	 */
+	public function delete() {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RevisionInterface::trash()
+	 */
+	public function trash() {
+		// TODO Auto-generated method stub
+	}
+	/* (non-PHPdoc)
+	 * @see \Versioning\Entity\RevisionInterface::getRepository()
+	 */
+	public function getRepository() {
+		return $this->repository;
+	}
+
+	
 }

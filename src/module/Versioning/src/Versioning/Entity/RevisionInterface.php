@@ -1,45 +1,29 @@
 <?php
+/**
+ *
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @copyright 2013 by www.serlo.org
+ * @license LGPL
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ */
 namespace Versioning\Entity;
 
-interface RevisionInterface
-{    
+use Core\Entity\EntityInterface;
+
+interface RevisionInterface extends EntityInterface
+{
+
     /**
-     * @return int
-     */
-    public function getId();
-    
-    /**
-     * @return array
-     */
-    public function getFieldValues();
-    
-    /**
-     * 
-     * @param array $data
-     */
-    public function setFieldValues(array $data);
-    
-    /**
-     * 
-     * @param string $field
-     * @return mixed
-     */
-    public function getFieldValue($field);
-    
-    /**
-     * 
-     * @param string $field
-     * @param mixed $value
-     */
-    public function setFieldValue($field, $value);
-    
-    /**
+     *
      * @return void
      */
-    public function delete();
-    
+    public function delete ();
+
     /**
+     *
      * @return $this
      */
-    public function trash();
+    public function trash ();
+
+    public function getRepository ();
 }
