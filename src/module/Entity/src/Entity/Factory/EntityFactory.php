@@ -1,5 +1,5 @@
 <?php
-namespace Entity\Service;
+namespace Entity\Factory;
 
 use Core\Entity\AbstractEntityAdapter;
 use Zend\EventManager\EventManagerInterface;
@@ -9,14 +9,14 @@ use Doctrine\ORM\EntityManager;
 use Core\Service\LanguageService;
 //use Core\Service\LanguageManagerInterface;
 use Core\Service\SubjectService;
-use Entity\Factory\EntityFactoryInterface;
+use Entity\Factory\EntityBuilderInterface;
 use Versioning\RepositoryManagerInterface;
 use Taxonomy\SharedTaxonomyManagerInterface;
 use Core\Service\LanguageManager;
 use Core\OrmEntityManagerAwareInterface;
 use Link\LinkManagerInterface;
 
-class EntityService extends AbstractEntityAdapter implements EntityServiceInterface, EventManagerAwareInterface, OrmEntityManagerAwareInterface {
+class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterface, EventManagerAwareInterface, OrmEntityManagerAwareInterface {
     
 	/**
 	 * @var AuthServiceInterface
@@ -154,10 +154,10 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 	}
 
 	/**
-	 * @param EntityFactoryInterface $factory
+	 * @param EntityBuilderInterface $factory
 	 * @return $this
 	 */
-	public function setFactory(EntityFactoryInterface $factory) {
+	public function setFactory(EntityBuilderInterface $factory) {
 		$this->factory = $factory;
 		return $this;
 	}
@@ -270,10 +270,10 @@ class EntityService extends AbstractEntityAdapter implements EntityServiceInterf
 		// read factory class from db
 		$factoryClassName = $this->getEntity()->get('factory')->get('className');
 		if(substr($factoryClassName,0,1) != '\\'){
-			$factoryClassName = '\\Entity\\Factory\\LearningObjects\\'.$factoryClassName;
+			$factoryClassName = '\\Entity\\LearningObjects\\'.$factoryClassName;
 		}
 		$factory = new $factoryClassName($this);
-		if(!$factory instanceof EntityFactoryInterface)
+		if(!$factory instanceof EntityBuilderInterface)
 			throw new \Exception('Something somewhere went terribly wrong.');
 			
 		$factory->build($this);

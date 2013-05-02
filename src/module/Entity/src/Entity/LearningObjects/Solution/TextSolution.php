@@ -1,5 +1,5 @@
 <?php
-namespace Entity\Factory\LearningObjects\Solution;
+namespace Entity\LearningObjects\Solution;
 
 class TextSolution extends AbstractSolution
 {    
