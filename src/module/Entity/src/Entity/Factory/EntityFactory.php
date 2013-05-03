@@ -1,22 +1,27 @@
 <?php
+/**
+ * 
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @copyright 2013 by www.serlo.org
+ * @license LGPL
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ */
 namespace Entity\Factory;
 
 use Core\Entity\AbstractEntityAdapter;
 use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\EventManagerAwareInterface;
 use Auth\Service\AuthServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Core\Service\LanguageService;
-//use Core\Service\LanguageManagerInterface;
 use Core\Service\SubjectService;
 use Entity\Factory\EntityBuilderInterface;
 use Versioning\RepositoryManagerInterface;
 use Taxonomy\SharedTaxonomyManagerInterface;
 use Core\Service\LanguageManager;
-use Core\OrmEntityManagerAwareInterface;
 use Link\LinkManagerInterface;
+use Entity\Entity\Revision;
 
-class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterface, EventManagerAwareInterface, OrmEntityManagerAwareInterface {
+class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterface  {
     
 	/**
 	 * @var AuthServiceInterface
@@ -260,10 +265,6 @@ class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterf
 	
 	public function getComponent($name){
 	    return $this->components[$name];
-	}	
-
-	public function getClassName($name){
-	    
 	}
 	
 	public function build() {

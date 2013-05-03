@@ -9,6 +9,7 @@ use Auth\Service\AuthServiceInterface;
 use Core\Entity\AbstractEntityAdapter;
 use Core\Entity\AbstractEntity;
 use Versioning\Entity\RepositoryInterface;
+use Core\Entity\EntityInterface;
 
 class RepositoryService implements RepositoryServiceInterface, EventManagerAwareInterface
 {
@@ -94,7 +95,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         $this->entityManager = $entityManager;
     }
 
-    public function setup ($identifier, AbstractEntity $repository)
+    public function setup ($identifier, EntityInterface $repository)
     {
         $this->identifier = $identifier;
         $this->repository = $repository;
@@ -154,7 +155,10 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
             throw new \Exception("A revision with the ID `$revision->getId()` already exists in this repository.");
         
         $revisions = $this->getRevisions();
+        
         $revision->set('repository', $this->repository);
+        $this->repository->getRevisions()->add($revision);
+        
         $this->persistRevision($revision);
         $this->revisions[$revision->getId()] = $revision;
         

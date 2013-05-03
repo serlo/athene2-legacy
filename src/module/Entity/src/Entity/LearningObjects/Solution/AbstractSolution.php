@@ -13,8 +13,7 @@ abstract class AbstractSolution extends AbstractEntityBuilder
 	protected $_repository;
 	
     protected function _loadComponents(){
-                
         $repository = new RepositoryComponent($this->getSource());
-        $this->_repository = $repository->build();
+        $this->_repository = $repository->build()->getRepository();
     }
 }

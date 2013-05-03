@@ -26,7 +26,7 @@
 					<strong>serlo.org</strong>
 				</div>
 				<div class="span7">
-					<nav>
+					<nav class="nav-collapse collapse">
 						<ul id="navTop" class="nav nav-tabs">
 							<li class="active"><a href="/">Serlo</a></li>
 							<li><a href="/math/">Mathe</a></li>
@@ -35,27 +35,36 @@
 				</div>
 				<div class="span3">
 					<nav>
-						<div id="navRight" class="btn-group right">
-				            <?php if($this->auth()->loggedIn()) { ?>
-				                <a class="btn btn-mini"
-								href="<?php echo $this->url('logout'); ?>"><?php echo $this->translate('Logout'); ?></a>
-							<button class="btn btn-mini"><?php echo $this->translate('Einstellungen'); ?></button>
-							<button class="btn btn-mini dropdown-toggle"
-								data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li><a href="#">Benachrichtigungen</a></li>
-								<li><a href="#">Benachrichtigungen</a></li>
-								<li><a href="#">Benachrichtigungen</a></li>
-							</ul>
-			                <?php } else { ?>
-								<a class="btn btn-mini btn"
-								href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
-							<a class="btn btn-mini btn-info"
-								href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
-			                <?php }?>
-		                </div>
+			            <?php if($this->auth()->loggedIn()) { ?>
+		                    <ul class="nav nav-pills pull-right">
+                                <li class="dropdown">
+								    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-envelope icon-white"></i><b class="caret"></b></a>
+								     <ul class="dropdown-menu">
+                                        <li class="disabled"><a tabindex="-1" href="#">Deine Benachrichtigungen</a></li>
+								        <li class="divider"></li>
+								        <li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
+								        <li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+								    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b class="caret"></b></a>
+								     <ul class="dropdown-menu">
+                                    </ul>
+                                </li>
+                                <li>
+								    <a href="<?php echo $this->url('logout'); ?>"><i class="icon-off icon-white"></i></a>
+                                </li>
+                            </ul>
+		                <?php } else { ?>
+		                    <ul class="nav nav-pills pull-right">
+                                <li>
+								    <a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
+                                </li>
+                                <li>
+								    <a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
+                                </li>
+                            </ul>
+		                <?php }?>
 					</nav>
 				</div>
 			</div>

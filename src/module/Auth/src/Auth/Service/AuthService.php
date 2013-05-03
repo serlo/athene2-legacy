@@ -19,20 +19,24 @@ class AuthService implements AuthServiceInterface
     private $user;
 
     /**
-	 * @return the $controller
-	 */
-	public function getController() {
-		return $this->controller;
-	}
+     *
+     * @return the $controller
+     */
+    public function getController ()
+    {
+        return $this->controller;
+    }
 
-	/**
-	 * @param field_type $controller
-	 */
-	public function setController($controller) {
-		$this->controller = $controller;
-	}
+    /**
+     *
+     * @param field_type $controller            
+     */
+    public function setController ($controller)
+    {
+        $this->controller = $controller;
+    }
 
-	/**
+    /**
      *
      * @return the $languageService
      */
@@ -177,7 +181,8 @@ class AuthService implements AuthServiceInterface
         $result = $this->authService->authenticate();
         
         if ($result->isValid()) {
-            $this->setUser($this->getUserService()->get($email));
+            $this->setUser($this->getUserService()
+                ->get($email));
         }
         
         return $result;
@@ -260,39 +265,52 @@ class AuthService implements AuthServiceInterface
         $acl->addRole(new $role('admin'), 'moderator');
         $acl->addRole(new $role('sysadmin'), 'admin');
     }
-    
-    public function addPermissions(array $config){
+
+    public function addPermissions (array $config)
+    {
         $acl = $this->getAclService();
         
-        foreach($config as $resource => $permissions){
+        foreach ($config as $resource => $permissions) {
             $resource = $this->_createResource($resource);
-            $acl->addResource( $resource );
+            $acl->addResource($resource);
             foreach ($permissions as $role => $value) {
-                if(is_array($value)){
-                    foreach($value as $privilege => $rule){
-                        $this->_iterPermission($role, $resource, $rule, $privilege);                   
+                if (is_array($value)) {
+                    foreach ($value as $privilege => $rule) {
+                        $this->_iterPermission($role, $resource, $rule, $privilege);
                     }
-                } else {    
-                    $this->_iterPermission($role, $resource, $value);        
+                } else {
+                    $this->_iterPermission($role, $resource, $value);
                 }
             }
         }
     }
-    
-    public function hasAccess($resource, $permission = NULL){
+
+    public function hasResource($resource){
+        $acl = $this->getAclService();
+        return $acl->hasResource($this->_resource($resource));
+    }
+
+    public function hasAccess ($resource, $permission = NULL)
+    {
         $resource = $this->_resource($resource);
-        if(! $this->_isAllowed($resource, $permission) ) {
-        	if($this->loggedIn()){
-        		$this->getController()->getResponse()->setStatusCode(403);
-        		throw new \Exception('Du hast nicht die erforderlichen Rechte, um diese Seite zu sehen.');
-        	} else {
-        		$this->getController()->flashMessenger()->addSuccessMessage("Um diese Aktion auszuführen, musst du eingeloggt sein!");
-        		$this->getController()->redirect()->toRoute('login');
-        	}
+        if (! $this->_isAllowed($resource, $permission)) {
+            if ($this->loggedIn()) {
+                $this->getController()
+                    ->getResponse()
+                    ->setStatusCode(403);
+                throw new \Exception('Du hast nicht die erforderlichen Rechte, um diese Seite zu sehen.');
+            } else {
+                $this->getController()
+                    ->flashMessenger()
+                    ->addSuccessMessage("Um diese Aktion auszuführen, musst du eingeloggt sein!");
+                $this->getController()
+                    ->redirect()
+                    ->toRoute('login');
+            }
         }
     }
 
-    public function _isAllowed ($role, $resource = NULL, $privilege = NULL)
+    public function _isAllowed ($resource = NULL, $privilege = NULL)
     {
         $return = false;
         $roles = $this->getRoles();
@@ -304,27 +322,29 @@ class AuthService implements AuthServiceInterface
         }
         return false;
     }
-    
-    private function _createResource($resource){
+
+    private function _createResource ($resource)
+    {
         return new AclResource($this->_resource($resource));
     }
-    
-    private function _resource($resource){
+
+    private function _resource ($resource)
+    {
         return strtolower($resource);
     }
-    
-    private function _iterPermission($role, $resource, $rule, $privilege = NULL){
+
+    private function _iterPermission ($role, $resource, $rule, $privilege = NULL)
+    {
         $allowedRules = array(
             'allow',
             'deny'
-        );      
+        );
         $acl = $this->getAclService();
         
-        if (! in_array($rule, $allowedRules)) {
+        if (! in_array($rule, $allowedRules))
             throw new \Exception('Unallowed method `' . $rule . '`. Use `allow` or `deny` only.');
-        } else {
-            $acl->$rule($role, $resource, $privilege);
-        }
+        
+        $acl->$rule($role, $resource, $privilege);
     }
 }
 ?>
