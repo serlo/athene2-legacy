@@ -1,0 +1,23 @@
+<article class="exercise exercise-text exercise-editor">
+    <?php echo $this->renderTitle( ($this->id) ? $this->translate('Textaufgabe bearbeiten') : $this->translate('Textaufgabe erstellen'), 'row-fluid');?>
+    <section>
+        <?php
+        $this->form->prepare();
+        echo $this->form()->openTag($this->form);
+        echo $this->formRow($this->form->get('content'));
+        ?>
+        <div class="control-group">
+        	<div class="controls">
+        		<div class="span4"><?php
+        echo $this->forminput($this->form->get('submit'));
+        ?> <?php
+        echo $this->forminput($this->form->get('reset'));
+        ?></div>
+        		<div class="span8"></div>
+        	</div>
+        </div>
+        <?php
+        echo $this->form()->closeTag();
+        ?>
+    </section>
+</article>

@@ -149,6 +149,7 @@ return array(
                     'base_images' => array(
                         'assets' => array(
                             'images/*.png',
+                            'img/*.png',
                             'images/*.ico'
                         ),
                         'options' => array(

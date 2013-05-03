@@ -1,11 +1,46 @@
 <?php
-
+/**
+ * 
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @copyright 2013 by www.serlo.org
+ * @license LGPL
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ */
 namespace Entity\Factory;
 
 use Core\Structure\AbstractProxy;
 use Entity\Service\EntityService;
+use Core\Entity\EntityInterface;
 
 class EntityServiceProxy extends AbstractProxy {
+    
+    /**
+     * (non-PHPdoc)
+     * @see \Core\Structure\AbstractProxy::setSource()
+     */
+    public function setSource($source){
+        return $this->_setSource($source);
+    }
+    
+    /**
+     * Sets the source
+     * 
+     * @param EntityFactoryInterface $entity
+     * @return $this;
+     */
+    private function _setSource(EntityFactoryInterface $entity){
+        $this->source = $entity;
+        return $this;
+    }
+    
+    protected function persist(EntityInterface $entity){
+        return $this->getEntityManager()->persist($entity);
+    }
+    
+    protected function flush(){
+        return $this->getEntityManager()->flush();
+    }
+    
 	/**
 	 * @see \Entity\Service\EntityService::addComponent()
 	 */
@@ -88,5 +123,12 @@ class EntityServiceProxy extends AbstractProxy {
 	 */
 	public function getLinkManager(){
 		return $this->getSource()->getLinkManager();
+	}
+
+	/**
+	 * @see \Entity\Service\EntityService::getEntity()
+	 */
+	public function getEntity(){
+	    return $this->getSource()->getEntity();
 	}
 }

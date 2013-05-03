@@ -79,6 +79,10 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	public function newRevision(){
+	    return new Revision();
+	}
+	
 	public function getRevisions(){
 		return $this->revisions;
 	}

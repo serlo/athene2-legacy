@@ -1,26 +1,10 @@
 <?php
-namespace Auth;
+namespace Core;
 
 use Zend\ModuleManager\ModuleManager;
 
-class Module
+abstract class AbstractModuleWithAcl
 {
-
-    public function getConfig ()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
-    public function getAutoloaderConfig ()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                )
-            )
-        );
-    }
     
     public function init(ModuleManager $moduleManager)
     {
@@ -40,6 +24,7 @@ class Module
     	$action = $route->getParam('action');
 
     	$auth = $sm->get('Auth\Service\AuthService');
+    	$acl = $sm->get('ACL');
 
     	$auth->setController($event->getTarget());
     	$resource = $controller.'Controller';
@@ -48,9 +33,9 @@ class Module
     	$config = $sm->get('config');
     	$auth->addPermissions($config['acl']);
     	
-    	if ( $auth->hasResource( $controller ) ) {
+    	if ( $acl->hasResource( $controller ) ) {
     	    $auth->hasAccess($controller, $privilege);
-    	} else if ( $auth->hasResource( $resource ) ) {
+    	} else if ( $acl->hasResource( $resource ) ) {
     	    $auth->hasAccess($resource, $privilege);
     	}
     }

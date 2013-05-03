@@ -2,18 +2,17 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
-use Core\Entity\AbstractEntity;
-use Core\Entity\AbstractEntityAdapter;
+use Core\Entity\EntityInterface;
 
 interface RepositoryServiceInterface
 {
-
     /**
-     *
-     * @param string $identifier            
+     * 
+     * @param unknown $identifier
+     * @param EntityInterface $repository     
      * @return $this
      */
-    public function setup ($identifier, AbstractEntity $repository);
+    public function setup ($identifier, EntityInterface $repository);
 
     /**
      *
