@@ -1,29 +1,24 @@
 <?php
 namespace Entity\LearningObjects\Exercise;
 
-use Entity\Factory\Components\RepositoryComponent;
 use Entity\LearningObjects\Exercise\Form\TextExerciseForm;
+use Zend\View\Model\ViewModel;
 
 class TextExercise extends AbstractExercise implements TextExerciseInterface
-{
-
-    protected $_repository;
-
-    protected function _loadComponents ()
+{    
+    public function toViewModel()
     {
-        parent::_loadComponents();
-        
-        $repository = new RepositoryComponent($this->getSource());
-        $this->_repository = $repository->build()->getRepository();
-        
-        $this->setTemplate('display', 'entity/learning-objects/exercise/text/display');
-        $this->setTemplate('form', 'entity/learning-objects/exercise/text/form');
-        $this->setForm(new TextExerciseForm());
+        if(!$this->_viewModel){
+            $this->_viewModel = new ViewModel(array('entity' => $this));
+        }
+        $this->_viewModel->setTemplate('entity/learning-objects/exercise/text/display');
+        $this->_viewModel->addChild($this->getSolution()->toViewModel(), 'solution');
+        return $this->_viewModel;
     }
 
     public function getContent ()
     {
-        return $this->_repository->getCurrentRevision()->get('content');
+        return $this->_repositoryComponent->getRepository()->getCurrentRevision()->get('content');
     }
     
     public function getSolution ()
@@ -31,29 +26,25 @@ class TextExercise extends AbstractExercise implements TextExerciseInterface
         return $this->_link->findChild('Solution\TextSolution');
     }
     
-    protected function _getViewModelData(){
+    public function getFormObject(){
+        return new TextExerciseForm();
+    }
+    
+    public function getData(){
         return array(
-            'id' => $this->getSource()->getId(),
+            'id' => $this->getId(),
             'subject' => $this->getSubject(),
             'topic' => $this->getTopic(),
             'content' => $this->getContent(),
-            'solution' => $this->getSolution()->toViewModel('display'),
         );
     }
     
-    protected function _getJsonModelData(){
+    public function getFormData(){
         return array(
-            'id' => $this->getSource()->getId(),
-            'subject' => $this->getSubject(),
-            'topic' => $this->getTopic(),
-            'content' => $this->getContent(),
-            'solution' => $this->getSolution()->toJsonModel('display'),
-        );
-    }
-    
-    protected function _getFormData(){
-        return array(
-            'content' => $this->getContent(),
+            'id' => $this->getId(),
+            'revision' => array(
+                'content' => $this->getContent(),
+            )
         );
     }
 }

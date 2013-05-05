@@ -70,6 +70,8 @@ class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterf
 	
 	protected $entity;
 	
+	protected $_factoryClassName;
+	
 	/**
 	 * 
 	 * @var \Entity\EntityManagerInterface
@@ -87,6 +89,10 @@ class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterf
     public function getManager ()
     {
         return $this->manager;
+    }
+    
+    public function getFactoryClassName(){
+        return $this->_factoryClassName;
     }
 
 	/**
@@ -270,15 +276,17 @@ class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterf
 	public function build() {
 		// read factory class from db
 		$factoryClassName = $this->getEntity()->get('factory')->get('className');
+		$fullFactoryClassName = $factoryClassName;
 		if(substr($factoryClassName,0,1) != '\\'){
-			$factoryClassName = '\\Entity\\LearningObjects\\'.$factoryClassName;
+			$fullFactoryClassName = '\\Entity\\LearningObjects\\'.$factoryClassName;
 		}
-		$factory = new $factoryClassName($this);
+		$factory = new $fullFactoryClassName($this);
 		if(!$factory instanceof EntityBuilderInterface)
 			throw new \Exception('Something somewhere went terribly wrong.');
 			
 		$factory->build($this);
 		$this->setFactory($factory);
+		$this->_factoryClassName = $this->getEntity()->get('factory')->get('className');
 		
 		return $factory;
 	}

@@ -43,9 +43,4 @@ class RoleUser extends AbstractEntity
      * @ORM\OneToOne(targetEntity="Core\Entity\Language")
      **/
     protected $language;
-    
-    /**
-     * @ORM\OneToOne(targetEntity="Core\Entity\Subject")
-     **/
-    protected $subject;
 }

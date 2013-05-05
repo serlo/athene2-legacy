@@ -6,6 +6,8 @@ use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Versioning\Entity\RepositoryInterface;
 
 /**
  * An entity link.
@@ -43,15 +45,17 @@ class Revision extends AbstractEntity implements RevisionInterface {
 		$data = $this->revisionValues->matching($criteria);
 		if(count($data) == 0)
 			throw new \Exception('Field `'.$field.'` not found');
+
 		return $data[0]->set('value', $key);
 	}
 
-	public function newValue($field){
-	    $value = new RevisionValue();
-	    $value->set('field', $field);
-	    $value->set('revision', $this);
-	    $this->revisionValues->add($value);
-	    return $value;
+	public function addValue($field, $value){
+	    $entity = new RevisionValue($field, $this->getId());
+	    $entity->set('field', $field);
+	    $entity->set('revision', $this);
+	    $entity->set('value', $value);
+	    $this->revisionValues->add($entity);
+	    return $entity;
 	}
 	
 	/* (non-PHPdoc)
@@ -70,10 +74,19 @@ class Revision extends AbstractEntity implements RevisionInterface {
 		
 	}
 	
+	public function setRepository(RepositoryInterface $repository){
+	    $this->repository = $repository;
+	    return $this;
+	}
+	
 	/* (non-PHPdoc)
 	 * @see \Versioning\Entity\RevisionInterface::getRepository()
 	 */
 	public function getRepository() {
 		return $this->repository;
+	}
+	
+	public function __construct(){
+        $this->revisionValues = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 }

@@ -156,7 +156,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         
         $revisions = $this->getRevisions();
         
-        $revision->set('repository', $this->repository);
+        $revision->setRepository($this->repository);
         $this->repository->getRevisions()->add($revision);
         
         $this->persistRevision($revision);

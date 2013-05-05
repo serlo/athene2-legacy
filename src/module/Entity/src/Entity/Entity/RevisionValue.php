@@ -13,17 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 class RevisionValue {
 	
     /** @ORM\Id @ORM\Column(type="integer", name="entity_revision_id") */
-    private $entityRevisionId;
+    protected $entityRevisionId;
     
     /** @ORM\Id @ORM\Column(type="string") */
-    private $field;
+    protected $field;
     
     /** @ORM\Column(type="string") */
-    private $value;
+    protected $value;
 
-    public function __construct($entityRevisionId, $field)
+    public function __construct($revision, $field)
     {
-        $this->entityRevisionId = $entityRevisionId;
+        $this->entityRevisionId = $revision;
         $this->field = $field;
     }
     

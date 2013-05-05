@@ -271,8 +271,10 @@ class AuthService implements AuthServiceInterface
         $acl = $this->getAclService();
         
         foreach ($config as $resource => $permissions) {
-            $resource = $this->_createResource($resource);
-            $acl->addResource($resource);
+            if(!$acl->hasResource($resource)){
+                $resource = $this->_createResource($resource);
+                $acl->addResource($resource);
+            }
             foreach ($permissions as $role => $value) {
                 if (is_array($value)) {
                     foreach ($value as $privilege => $rule) {
@@ -314,8 +316,8 @@ class AuthService implements AuthServiceInterface
     {
         $return = false;
         $roles = $this->getRoles();
-        
         foreach ($roles as $role) {
+            
             $return = $this->getAclService()->isAllowed($role, $resource, $privilege);
             if ($return)
                 return $return;
