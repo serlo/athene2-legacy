@@ -53,25 +53,26 @@ class EntityManager implements EntityManagerInterface
 	}
 
 	private function _getById($id){
-        $entityService = $this->_getService();
+        $entityService = $this->_createService();
 		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
         $this->add($entityService);
         return $this;
     }
     
     private function _getByEntity(EntityInterface $entity){
-        $entityService = $this->_getService();
+        $entityService = $this->_createService();
 		$entityService->setEntity($entity);
         $this->add($entityService);
         return $this;
     }
     
-    private function _getService(){
+    private function _createService(){
         $sm = $this->getServiceManager();
         
         //TODO [DI] remove
         $sm->setShared('Entity\Factory\EntityFactory', false);
-        return $sm->get('Entity\Factory\EntityFactory');
+        $service = $sm->get('Entity\Factory\EntityFactory');
+        return $service;
     }
     
     public function get($id){

@@ -15,52 +15,6 @@ interface EntityBuilderInterface {
 	public function build(EntityFactoryInterface $entityService);
 	
 	/**
-	 * Returns a hydrated ViewModel
-	 * 
-	 * @param string $name
-	 * @return ViewModel
-	 */
-	public function toViewModel($name);
-	
-	/**
-	 * Returns a hydrated JsonModel
-	 * 
-	 * @return JsonModel
-	 */
-	public function toJsonModel();
-	
-	/**
-	 * @param JsonModel $_jsonModel
-	 * @return $this
-	 */
-	public function setJsonModel (JsonModel $_jsonModel);
-	
-	/**
-	 * Returns the JsonModel
-	 * 
-	 * @return JsonModel
-	 */
-	public function getJsonModel();
-	
-	/**
-	 * Returns the ViewModel
-	 * 
-	 * @return ViewModel
-	 */
-	public function getViewModel();
-	
-	/**
-	 * @param ViewModel $_viewModel
-	 * @return $this
-	 */
-	public function setViewModel (ViewModel $_viewModel);
-	
-	/**
-	 * @return string $_template
-	 */
-	public function getTemplate ($name);
-	
-	/**
 	 * Returns the Form
 	 * 
 	 * @return Form $_form
@@ -74,17 +28,6 @@ interface EntityBuilderInterface {
 	 */
 	public function hasForm();
 	
-	public function hasTemplate($name);
-	
-	/**
-	 * Sets a template
-	 * 
-	 * @param string $name
-	 * @param string $_template
-	 * @return $this
-	 */
-	public function setTemplate ($name, $template);
-	
 	/**
 	 * Sets the Form
 	 * 
@@ -92,4 +35,11 @@ interface EntityBuilderInterface {
 	 * @return $this
 	 */
 	public function setForm (Form $_form);
+	
+	/**
+	 * @return ViewModel
+	 */
+	public function toViewModel();
+	
+	public function getRepositoryComponent();
 }

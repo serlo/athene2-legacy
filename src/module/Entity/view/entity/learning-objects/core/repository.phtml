@@ -1,0 +1,24 @@
+<div class="revisions">
+    <?php 
+    foreach($this->revisions as $revision){
+        ?>
+        <article class="revision">
+            <div class="toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-small"><?php echo $this->translate('akzeptieren');?></button>
+                    <button class="btn btn-small"><?php echo $this->translate('verwerfen');?></button>
+                </div>
+            </div>
+            <?php
+            foreach($revision as $key => $value){
+            ?>
+                <section class="<?php echo $key; ?>">
+                    <?php echo $value; ?>
+                </section>
+            <?php
+            }
+            ?>
+        </article>
+        <?php }
+    ?>
+</div>

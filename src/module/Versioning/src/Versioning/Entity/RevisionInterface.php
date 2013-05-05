@@ -26,4 +26,6 @@ interface RevisionInterface extends EntityInterface
     public function trash ();
 
     public function getRepository ();
+    
+    public function setRepository(RepositoryInterface $repository);
 }

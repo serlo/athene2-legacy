@@ -9,6 +9,11 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                'Entity\LearningObjects\Solution\Controller\TextSolutionController' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    ),                
+                ),
                 'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
@@ -65,26 +70,36 @@ return array(
             )
         )
     ),
-    'acl' => array(
+    /*'acl' => array(
         'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
             'guest' => array(
-                'update' => 'deny',
-                'show' => 'allow',
+                'updateAction' => 'deny',
+                'showAction' => 'allow',
             ),
             'login' => array(
-                'update' => 'allow',
-                'show' => 'allow',
+                'updateAction' => 'allow',
+                'showAction' => 'allow',
             )
         )
-    ),
+    ),*/
     'router' => array(
         'routes' => array(
-            'entityTextExercise' => array(
+            'Entity\LearningObjects\Exercise\TextExercise' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/entity/text-exercise/:action/:id',
+                    'route' => '/entity/exercise/text/:action/:id',
                     'defaults' => array(
                         'controller' => 'Entity\LearningObjects\Exercise\Controller\TextExerciseController',
+                        'action' => 'index'
+                    ),
+                ),
+            ),
+            'Entity\LearningObjects\Solution\TextSolution' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/entity/solution/text/:action/:id',
+                    'defaults' => array(
+                        'controller' => 'Entity\LearningObjects\Solution\Controller\TextSolutionController',
                         'action' => 'index'
                     ),
                 )

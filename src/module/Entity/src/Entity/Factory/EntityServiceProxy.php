@@ -33,14 +33,6 @@ class EntityServiceProxy extends AbstractProxy {
         return $this;
     }
     
-    protected function persist(EntityInterface $entity){
-        return $this->getEntityManager()->persist($entity);
-    }
-    
-    protected function flush(){
-        return $this->getEntityManager()->flush();
-    }
-    
 	/**
 	 * @see \Entity\Service\EntityService::addComponent()
 	 */
@@ -130,5 +122,19 @@ class EntityServiceProxy extends AbstractProxy {
 	 */
 	public function getEntity(){
 	    return $this->getSource()->getEntity();
+	}
+
+	/**
+	 * @see \Entity\Service\EntityService::getFactoryClassName()
+	 */
+	public function getFactoryClassName(){
+	    return $this->getSource()->getFactoryClassName();	    
+	}
+	
+	/**
+	 * @see \Entity\Service\EntityService::getId()
+	 */
+	public function getId(){
+	    return $this->getSource()->getId();
 	}
 }

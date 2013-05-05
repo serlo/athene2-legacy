@@ -6,11 +6,11 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace Entity\LearningObjects\Exercise\Filter;
+namespace Entity\LearningObjects\Form;
 
 use Zend\InputFilter\InputFilter;
 
-class TextExerciseFilter extends InputFilter
+class ContentFilter extends InputFilter
 {
 
     function __construct ()

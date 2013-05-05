@@ -1,17 +1,17 @@
 <article class="solution solution-text solution-editor">
-    <?php echo $this->renderTitle( ($this->id) ? $this->translate('Lösung bearbeiten') : $this->translate('Lösung erstellen'), 'row-fluid');?>
+    <?php echo $this->renderTitle( isset($this->entity) ? $this->translate('Lösung bearbeiten') : $this->translate('Lösung erstellen'), 'row-fluid');?>
     <section>
         <?php
         $this->form->prepare();
         echo $this->form()->openTag($this->form);
-        echo $this->formRow($this->form->get('content'));
+        echo $this->formRow($this->form->get('revision')->get('content'));
         ?>
         <div class="control-group">
         	<div class="controls">
         		<div class="span4"><?php
-        echo $this->forminput($this->form->get('submit'));
+        echo $this->forminput($this->form->get('editor')->get('submit'));
         ?> <?php
-        echo $this->forminput($this->form->get('reset'));
+        echo $this->forminput($this->form->get('editor')->get('reset'));
         ?></div>
         		<div class="span8"></div>
         	</div>

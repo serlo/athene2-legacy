@@ -91,7 +91,7 @@ class UserService implements UserServiceInterface
         
         foreach($this->getEntityManager()->getRepository('User\Entity\Role')->findAll() as $role){
             
-            $roleCriteria = Criteria::create()->where(Criteria::expr()->eq("role", $role->id));
+            $roleCriteria = Criteria::create()->where(Criteria::expr()->eq("role", $role->getId()));
             $userRoles = $userRolesCollection->matching($roleCriteria);
             
             foreach($userRoles as $userRole){                
@@ -107,7 +107,7 @@ class UserService implements UserServiceInterface
                         ) || (
                             $language === NULL
                         )
-                    ) && (
+                    )/* && (
                         (
                             (
                                 $userRole->exists('subject') && $subject !== NULL
@@ -119,9 +119,9 @@ class UserService implements UserServiceInterface
                         ) || (
                             $language === NULL
                         )
-                    ))
+                    )*/)
                     {
-                        $return[] = $role->__get('name');    
+                        $return[] = $role->get('name');    
                     }
             }
         }

@@ -7,6 +7,7 @@ use Entity\Factory\Components\SubjectComponent;
 use Entity\Factory\Components\TopicComponent;
 use Entity\Factory\Components\TopicComponentInterface;
 use Entity\Factory\Components\LinkComponent;
+use Entity\Factory\Components\RepositoryComponent;
 
 abstract class AbstractExercise extends AbstractEntityBuilder implements SubjectComponentInterface, TopicComponentInterface
 {
@@ -19,7 +20,7 @@ abstract class AbstractExercise extends AbstractEntityBuilder implements Subject
 	 * @var TopicComponent
 	 */
 	protected $_topic;
-
+	
 	/**
 	 * @var LinkComponent
 	 */

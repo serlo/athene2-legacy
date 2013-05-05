@@ -6,14 +6,12 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace Versioning\Entity;
+namespace Entity\LearningObjects\Solution\Form;
 
-use Core\Entity\EntityInterface;
+use Zend\InputFilter\InputFilter;
+use Entity\LearningObjects\Form\ContentFilter;
+use Entity\LearningObjects\Form\CoreFilter;
 
-interface RepositoryInterface extends EntityInterface
+class TextSolutionFilter extends InputFilter
 {
-
-    public function getRevisions ();
-    
-    public function addRevision();
 }

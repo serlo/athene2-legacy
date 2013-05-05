@@ -6,20 +6,21 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace Entity\LearningObjects\Exercise\Form;
+namespace Entity\LearningObjects\Solution\Form;
 
 use Zend\Form\Form;
 use Entity\LearningObjects\Form\EditorFieldset;
+use Entity\LearningObjects\Form\RevisionFieldset;
 use Entity\LearningObjects\Form\Revision\RevisionWithContentFieldset;
 
-class TextExerciseForm extends Form
+class TextSolutionForm extends Form
 {
 
     function __construct ()
     {
-        parent::__construct('textExercise');
+        parent::__construct('textSolution');
         $this->setAttribute('method', 'post');
-        $this->setInputFilter(new TextExerciseFilter());
+        $this->setInputFilter(new TextSolutionFilter());
         
         $editorFieldset = new EditorFieldset();
         

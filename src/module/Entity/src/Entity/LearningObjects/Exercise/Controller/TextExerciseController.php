@@ -9,35 +9,42 @@
 namespace Entity\LearningObjects\Exercise\Controller;
 
 use Entity\LearningObjects\Controller\AbstractController;
+use Zend\View\Model\ViewModel;
 
 class TextExerciseController extends AbstractController
 {
-
-    public function indexAction ()
-    {
-        $id = $this->getParam('id');
-        $entity = $this->getEntityManager()->get($id);
-        return $entity->toViewModel('display');        
+    
+    protected function _getAllowedEntityFactories(){
+        return array(
+            'Exercise\TextExercise'
+        );
     }
-
-    public function showAction ()
-    {
-        $id = $this->getParam('id');
-        $entity = $this->getEntityManager()->get($id);
-        return $entity->toViewModel('display');
+    
+    public function historyAction(){
+        $entity = $this->_getEntity();
+        $repository = new ViewModel();
+        $revisions = array();
+        $repository->setTemplate('entity/learning-objects/core/repository');
+        foreach($entity->getRepositoryComponent()->getAllRevisions() as $revisionEntity){
+            $revisions[] = array(
+                'content' => $revisionEntity->get('content')
+            );
+        }
+        $repository->setVariable('revisions', $revisions);
+        return $repository;
     }
-
-    public function updateAction ()
-    {
-        $id = $this->getParam('id');
-        $entity = $this->getEntityManager()->get($id);
-        return $entity->toViewModel('form');
-    }
-
-    public function createAction ()
-    {
-        /*
-         * $id = $this->getParam('id'); $entity = $this->getEntityManager()->get($id); return $entity->toViewModel('form');
-         */
+    
+    public function updateAction(){
+        $entity = $this->_getEntity();
+        
+        $view = new ViewModel(array('entity' => $entity));
+        $view->setTemplate('entity/learning-objects/exercise/text/form');
+        $view->setVariable('form', $entity->getForm());
+        
+        if($this->getRequest()->isPost()){
+            $this->_commitRevision($entity);
+        }
+        
+        return $view;
     }
 }
