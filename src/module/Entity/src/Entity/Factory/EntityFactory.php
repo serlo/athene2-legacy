@@ -19,7 +19,6 @@ use Versioning\RepositoryManagerInterface;
 use Taxonomy\SharedTaxonomyManagerInterface;
 use Core\Service\LanguageManager;
 use Link\LinkManagerInterface;
-use Entity\Entity\Revision;
 
 class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterface  {
     
@@ -278,8 +277,11 @@ class EntityFactory extends AbstractEntityAdapter implements EntityFactoryInterf
 		$factoryClassName = $this->getEntity()->get('factory')->get('className');
 		$fullFactoryClassName = $factoryClassName;
 		if(substr($factoryClassName,0,1) != '\\'){
-			$fullFactoryClassName = '\\Entity\\LearningObjects\\'.$factoryClassName;
+			$fullFactoryClassName = "\\Entity\\LearningObjects\\".$factoryClassName;
 		}
+		if(!class_exists($fullFactoryClassName))
+			throw new \Exception('Class: ´'.$fullFactoryClassName.'´ not found');
+		
 		$factory = new $fullFactoryClassName($this);
 		if(!$factory instanceof EntityBuilderInterface)
 			throw new \Exception('Something somewhere went terribly wrong.');

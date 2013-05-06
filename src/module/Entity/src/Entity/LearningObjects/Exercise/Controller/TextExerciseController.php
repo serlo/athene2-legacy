@@ -22,15 +22,10 @@ class TextExerciseController extends AbstractController
     
     public function historyAction(){
         $entity = $this->_getEntity();
-        $repository = new ViewModel();
+        $repository = new ViewModel(array('entity' => $entity));
         $revisions = array();
         $repository->setTemplate('entity/learning-objects/core/repository');
-        foreach($entity->getRepositoryComponent()->getAllRevisions() as $revisionEntity){
-            $revisions[] = array(
-                'content' => $revisionEntity->get('content')
-            );
-        }
-        $repository->setVariable('revisions', $revisions);
+        $repository->setVariable('revisions', $entity->getRepositoryComponent()->getAllRevisions());
         return $repository;
     }
     

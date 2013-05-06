@@ -97,7 +97,7 @@ return array(
                 '@base_css',
                 '@html5',
                 '@jquery',
-                '@bootstrap',
+                //'@bootstrap',
             ),
             'options' => array(
                 'mixin' => true

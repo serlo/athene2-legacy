@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry kind="src" path="src"/>
+	<buildpathentry kind="con" path="org.zend.php.framework.v2.CONTAINER"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.USER_LIBRARY/v2.serlo.org"/>
+	<buildpathentry excluding="vendor/" kind="src" path="src"/>
 </buildpath>
