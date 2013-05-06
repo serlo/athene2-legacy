@@ -13,8 +13,8 @@
         echo $this->plugin('HeadStyle');
         echo $this->plugin('HeadScript');
         echo $this->headScript()
-            ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array(
-        ));
+            ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
+            ->prependFile($this->basePath() . '/fuelux/dist/all.min.js', 'text/javascript', array());
         ?>
     
     </head>
@@ -37,33 +37,32 @@
 					<nav>
 			            <?php if($this->auth()->loggedIn()) { ?>
 		                    <ul class="nav nav-pills pull-right">
-                                <li class="dropdown">
-								    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-envelope icon-white"></i><b class="caret caret-white"></b></a>
-								     <ul class="dropdown-menu">
-                                        <li class="disabled"><a tabindex="-1" href="#">Deine Benachrichtigungen</a></li>
-								        <li class="divider"></li>
-								        <li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
-								        <li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-								    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b class="caret caret-white"></b></a>
-								     <ul class="dropdown-menu">
-                                    </ul>
-                                </li>
-                                <li>
-								    <a href="<?php echo $this->url('logout'); ?>"><i class="icon-off icon-white"></i></a>
-                                </li>
-                            </ul>
+							<li class="dropdown"><a class="dropdown-toggle"
+								data-toggle="dropdown" href="#"><i
+									class="icon-envelope icon-white"></i><b
+									class="caret caret-white"></b></a>
+								<ul class="dropdown-menu">
+									<li class="disabled"><a tabindex="-1" href="#">Deine
+											Benachrichtigungen</a></li>
+									<li class="divider"></li>
+									<li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
+									<li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
+								</ul></li>
+							<li class="dropdown"><a class="dropdown-toggle"
+								data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b
+									class="caret caret-white"></b></a>
+								<ul class="dropdown-menu">
+								</ul></li>
+							<li><a href="<?php echo $this->url('logout'); ?>"><i
+									class="icon-off icon-white"></i></a></li>
+						</ul>
 		                <?php } else { ?>
 		                    <ul class="nav nav-pills pull-right">
-                                <li>
-								    <a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
-                                </li>
-                                <li>
-								    <a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
-                                </li>
-                            </ul>
+							<li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
+							</li>
+							<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
+							</li>
+						</ul>
 		                <?php }?>
 					</nav>
 				</div>
