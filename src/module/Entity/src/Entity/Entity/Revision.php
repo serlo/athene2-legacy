@@ -25,7 +25,56 @@ class Revision extends AbstractEntity implements RevisionInterface {
 	 * @ORM\OneToMany(targetEntity="RevisionValue", mappedBy="revision")
 	 */
 	protected $revisionValues;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="User\Entity\User")
+     **/
+    protected $author;
+    
+    /** @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"}) 
+     */
+    protected $date;
+    
+    /** @ORM\Column(type="boolean", options={"default"="FALSE"}) 
+     */
+    protected $trashed;	
 	
+	/**
+     * @return field_type $date
+     */
+    public function getDate ()
+    {
+        return $this->date;
+    }
+
+	/**
+     * @param field_type $date
+     * @return $this
+     */
+    public function setDate ($date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+	/**
+     * @return field_type $author
+     */
+    public function getAuthor ()
+    {
+        return $this->author;
+    }
+
+	/**
+     * @param field_type $author
+     * @return $this
+     */
+    public function setAuthor ($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
 	public function get($field) {
 		$criteria = Criteria::create()
 		    ->where(Criteria::expr()->eq("field", $field))

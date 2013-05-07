@@ -8,35 +8,44 @@
  */
 namespace Entity\LearningObjects\Exercise\Controller;
 
-use Entity\LearningObjects\Controller\AbstractController;
+use Entity\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
+use Versioning\Exception\RevisionNotFoundException;
+use Versioning\Entity\RevisionInterface;
 
 class TextExerciseController extends AbstractController
 {
-    
-    protected function _getAllowedEntityFactories(){
+
+    protected function _getAllowedEntityFactories()
+    {
         return array(
             'Exercise\TextExercise'
         );
     }
     
-    public function historyAction(){
-        $entity = $this->_getEntity();
-        $repository = new ViewModel(array('entity' => $entity));
-        $revisions = array();
-        $repository->setTemplate('entity/learning-objects/core/repository');
-        $repository->setVariable('revisions', $entity->getRepositoryComponent()->getAllRevisions());
-        return $repository;
+    protected function _getRevisionView(RevisionInterface $revision = NULL){
+        if($revision === NULL)
+            return NULL;
+        
+        $revisionView = new ViewModel(array(
+            'revision' => $revision
+        ));
+        
+        $revisionView->setTemplate('entity/learning-objects/exercise/text/revision');
+        return $revisionView;
     }
-    
-    public function updateAction(){
+
+    public function updateAction()
+    {
         $entity = $this->_getEntity();
         
-        $view = new ViewModel(array('entity' => $entity));
+        $view = new ViewModel(array(
+            'entity' => $entity
+        ));
         $view->setTemplate('entity/learning-objects/exercise/text/form');
         $view->setVariable('form', $entity->getForm());
         
-        if($this->getRequest()->isPost()){
+        if ($this->getRequest()->isPost()) {
             $this->_commitRevision($entity);
         }
         
