@@ -14,4 +14,6 @@ interface RepositoryInterface extends EntityInterface
 {
 
     public function getRevisions ();
+    
+    public function addRevision();
 }

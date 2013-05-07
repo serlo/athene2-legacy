@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use Entity\Service\EntityServiceInterface;
+use Entity\Factory\EntityFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager as OrmManager;
 use Core\Entity\EntityInterface;
@@ -53,25 +53,26 @@ class EntityManager implements EntityManagerInterface
 	}
 
 	private function _getById($id){
-        $entityService = $this->_getService();
+        $entityService = $this->_createService();
 		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
         $this->add($entityService);
         return $this;
     }
     
     private function _getByEntity(EntityInterface $entity){
-        $entityService = $this->_getService();
+        $entityService = $this->_createService();
 		$entityService->setEntity($entity);
         $this->add($entityService);
         return $this;
     }
     
-    private function _getService(){
+    private function _createService(){
         $sm = $this->getServiceManager();
         
         //TODO [DI] remove
-        $sm->setShared('Entity\Service\EntityService', false);
-        return $sm->get('Entity\Service\EntityService');
+        $sm->setShared('Entity\Factory\EntityFactory', false);
+        $service = $sm->get('Entity\Factory\EntityFactory');
+        return $service;
     }
     
     public function get($id){
@@ -88,7 +89,7 @@ class EntityManager implements EntityManagerInterface
     	}
     }
     
-    public function add(EntityServiceInterface $entityService){
+    public function add(EntityFactoryInterface $entityService){
         $entityService->setManager($this);
         $this->_entities[$entityService->getId()] = $entityService->build();
     }
