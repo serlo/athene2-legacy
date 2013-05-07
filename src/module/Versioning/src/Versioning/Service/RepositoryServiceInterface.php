@@ -38,7 +38,7 @@ interface RepositoryServiceInterface
      * @param RevisionInterface $revision            
      * @return $this
      */
-    public function deleteRevision (RevisionInterface $revision);
+    public function removeRevision (RevisionInterface $revision);
 
     /**
      *

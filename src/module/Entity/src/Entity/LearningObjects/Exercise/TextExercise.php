@@ -12,7 +12,9 @@ class TextExercise extends AbstractExercise implements TextExerciseInterface
             $this->_viewModel = new ViewModel(array('entity' => $this));
         }
         $this->_viewModel->setTemplate('entity/learning-objects/exercise/text/display');
-        $this->_viewModel->addChild($this->getSolution()->toViewModel(), 'solution');
+        if($this->getSolution()){
+            $this->_viewModel->addChild($this->getSolution()->toViewModel(), 'solution');
+        }
         return $this->_viewModel;
     }
 

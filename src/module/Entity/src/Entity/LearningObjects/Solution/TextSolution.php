@@ -17,6 +17,7 @@ class TextSolution extends AbstractSolution
             'content' => $this->getContent()
         );
     }
+    
     public function toViewModel()
     {
         if(!$this->_viewModel){

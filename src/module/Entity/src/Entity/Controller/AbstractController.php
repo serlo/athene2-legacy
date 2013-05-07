@@ -170,4 +170,22 @@ abstract class AbstractController extends AbstractActionController
         $entity = $this->_getEntity();
         return $entity->toViewModel();
     }
+    
+    public function purgeRevisionAction(){
+        $entity = $this->_getEntity();
+        $entity->getRepositoryComponent()->removeRevision($this->getParam('revisionId'));
+        $this->redirect()->toRoute(get_class($entity), array(
+            'action' => 'history',
+            'id' => $entity->getId()
+        ));        
+    }
+    
+    public function trashRevisionAction(){
+        $entity = $this->_getEntity();
+        $entity->getRepositoryComponent()->trashRevision($this->getParam('revisionId'));
+        $this->redirect()->toRoute(get_class($entity), array(
+            'action' => 'history',
+            'id' => $entity->getId()
+        ));              
+    }
 }
