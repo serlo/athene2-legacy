@@ -1,8 +1,17 @@
 body>header {
-	background-color: #004A4A;
+	background-color: black;
 	height: 37px;
 	width: 100%;
 	margin-bottom: 30px;
+	color: white;
+}
+body>header a {
+	color: white;
+}
+.caret-white
+{
+	border-top-color: white !important;
+	border-bottom-color: white !important;
 }
 #logo {
 	color: white;

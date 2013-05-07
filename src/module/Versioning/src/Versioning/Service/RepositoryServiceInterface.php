@@ -2,18 +2,17 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
-use Core\Entity\AbstractEntity;
-use Core\Entity\AbstractEntityAdapter;
+use Core\Entity\EntityInterface;
 
 interface RepositoryServiceInterface
 {
-
     /**
-     *
-     * @param string $identifier            
+     * 
+     * @param unknown $identifier
+     * @param EntityInterface $repository     
      * @return $this
      */
-    public function setup ($identifier, AbstractEntity $repository);
+    public function setup ($identifier, EntityInterface $repository);
 
     /**
      *
@@ -39,14 +38,7 @@ interface RepositoryServiceInterface
      * @param RevisionInterface $revision            
      * @return $this
      */
-    public function deleteRevision (RevisionInterface $revision);
-
-    /**
-     *
-     * @param RevisionInterface $revision            
-     * @return $this
-     */
-    public function trashRevision (RevisionInterface $revision);
+    public function removeRevision (RevisionInterface $revision);
 
     /**
      *
@@ -61,12 +53,6 @@ interface RepositoryServiceInterface
      * @return bool
      */
     public function hasRevision ($revision);
-
-    /**
-     *
-     * @return array
-     */
-    public function getTrashedRevisions ();
 
     /**
      *

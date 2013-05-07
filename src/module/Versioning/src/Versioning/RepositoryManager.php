@@ -39,6 +39,7 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
         } else {
             if ($this->_hasRepository($repository))
                 throw new \Exception("There is already a repository with the identifier: " . $repository);
+            $this->serviceLocator->setShared('Versioning\Service\RepositoryService', false);
             $rs = $this->serviceLocator->get('Versioning\Service\RepositoryService');
             $rs->setup($repository, $entity);
             $this->repositories[$repository] = $rs; // new RepositoryService();

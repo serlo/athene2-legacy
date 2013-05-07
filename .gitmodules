@@ -1,0 +1,9 @@
+[submodule "public/src/fuelux"]
+	path = public/src/fuelux
+	url = git://github.com/ExactTarget/fuelux.git
+[submodule "/src/public/fuelfx/"]
+	path = /src/public/fuelfx/
+	url = https://github.com/ExactTarget/fuelux.git
+[submodule "src/public/fuelux"]
+	path = src/public/fuelux
+	url = https://github.com/ExactTarget/fuelux.git
