@@ -67,13 +67,27 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
     {
         $repository = $this->getRepository();
         $revision = $this->getEntity()->addRevision();
+        $revision->setAuthor($this->getAuthService()->getUser());
         $repository->addRevision($revision);
-        $this->getEntityManager()->persist($revision);
-        
+        $this->getEntityManager()->persist($revision);        
         foreach ($data as $key => $value) {
             $this->getEntityManager()->persist($revision->addValue($key, $value));
         }
         $this->getEntityManager()->flush();
         return $this;
+    }
+    
+    public function removeRevision($revisionId){
+       $revision = $this->getRepository()->getRevision($revisionId);
+       $this->getRepository()->removeRevision($revision);
+       return $this;
+    }
+    
+    public function trashRevision($revisionId){
+        $revision = $this->getRepository()->getRevision($revisionId);
+        $revision->toggleTrashed();
+        $this->getEntityManager()->persist($revision);
+        $this->getEntityManager()->flush($revision);
+        return $this;        
     }
 }

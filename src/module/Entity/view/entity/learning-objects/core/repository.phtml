@@ -2,9 +2,7 @@
 
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#revision" data-toggle="tab"><?php echo $this->translate('Revisionen'); ?> (<?php echo $this->revisions->count();?>)</a></li>
-	<?php if($this->currentRevision){ ?>
 	<li><a href="#trashed" data-toggle="tab"><?php echo $this->translate('Papierkorb'); ?> (<?php echo $this->trashedRevisions->count();?>)</a></li>
-	<?php } ?>
 </ul>
 <div class="tab-content">
 	<div class="tab-pane active" id="revision">

@@ -170,19 +170,19 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this;
     }
 
-    public function deleteRevision (RevisionInterface $revision)
+    public function removeRevision (RevisionInterface $revision)
     {
         if (! $this->hasRevision($revision))
             throw new RevisionNotFoundException("A revision with the ID `$revision->getId()` does not exist in this repository.");
         
-        unset($revisions[$revision->getId()]);
+        $id = $revision->getId();
         $this->_deleteRevision($revision);
-        $revisions = $this->getRevisions();
+        $revisions = $this->getRevisions()->removeElement($revision);
         
         $this->getEventManager()->trigger(__CLASS__ . '::' . __FUNCTION__, $this, array(
             'action' => 'delete',
-            'ref' => get_class($revision->getEntity()),
-            'refId' => $revision->getId(),
+            'ref' => get_class($revision),
+            'refId' => $id,
             'user' => $this->getAuthService()
                 ->getUser()
         ));
@@ -193,7 +193,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     private function _deleteRevision (RevisionInterface $revision)
     {
         $em = $this->getEntityManager();
-        $em->remove($revision->getEntity());
+        $em->remove($revision);
         $em->flush();
     }
 

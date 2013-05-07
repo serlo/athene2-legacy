@@ -13,7 +13,7 @@
 			<footer>
 				<div class="btn-group">
 					<a class="btn btn-success btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'checkout', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Akzeptieren')?></a>
-					<a class="btn btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'delete-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Verwerfen')?></a>
+					<a class="btn btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'trash-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Verwerfen')?></a>
 					<a class="btn btn-danger btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'purge-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Löschen')?></a>
 				</div>
 			</footer>
