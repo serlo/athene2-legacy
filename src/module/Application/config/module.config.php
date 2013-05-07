@@ -97,7 +97,7 @@ return array(
                 '@base_css',
                 '@html5',
                 '@jquery',
-                '@bootstrap',
+                //'@bootstrap',
             ),
             'options' => array(
                 'mixin' => true
@@ -149,6 +149,7 @@ return array(
                     'base_images' => array(
                         'assets' => array(
                             'images/*.png',
+                            'img/*.png',
                             'images/*.ico'
                         ),
                         'options' => array(

@@ -22,8 +22,7 @@ return array(
                     ->LogOn($class->getEventManager(), 'Versioning\Service\RepositoryService', array(
                     'checkoutRevision',
                     'addRevision',
-                    'trashRevision',
-                    'deleteRevision'
+                    'removeRevision'
                 ));
                 
                 return $class;

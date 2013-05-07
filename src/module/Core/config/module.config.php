@@ -5,7 +5,8 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'modal' => __NAMESPACE__ . '\View\Helper\Modal',
-            'renderTitle' => __NAMESPACE__ . '\View\Helper\Title'
+            'renderTitle' => __NAMESPACE__ . '\View\Helper\Title',
+            'getRequestDateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
         )
     ),
     'di' => array(

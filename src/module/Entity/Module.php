@@ -1,6 +1,8 @@
 <?php
 namespace Entity;
 
+use Zend\ModuleManager\ModuleManager;
+
 class Module
 {
 
@@ -19,5 +21,4 @@ class Module
             )
         );
     }
-    //
 }
