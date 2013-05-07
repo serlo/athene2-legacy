@@ -18,8 +18,8 @@
             ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
         echo $this->headScript()
             ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
-            ->prependFile($this->basePath() . '/fuelux/dist/all.min.js', 'text/javascript', array())
-            ->prependFile($this->basePath() . '/fuelux/dist/loader.min.js', 'text/javascript', array());
+            ->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
+            //->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
         ?>
     
     </head>

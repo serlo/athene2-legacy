@@ -125,8 +125,10 @@ abstract class AbstractController extends AbstractActionController
             'currentRevision' => $currentRevision
         ));
         $revisions = array();
+        
         $repository->setTemplate('entity/learning-objects/core/repository');
         $repository->setVariable('revisions', $rc->getAllRevisions());
+        $repository->setVariable('trashedRevisions', $rc->getTrashedRevisions());
         return $repository;
     }
 

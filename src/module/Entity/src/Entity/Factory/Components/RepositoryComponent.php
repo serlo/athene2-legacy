@@ -40,7 +40,7 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
 
     public function getAllRevisions()
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", "false"))
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", false))
             ->orderBy(array(
             "id" => "desc"
         ));
@@ -49,7 +49,7 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
 
     public function getTrashedRevisions()
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", "true"))
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", true))
             ->orderBy(array(
             "id" => "desc"
         ));

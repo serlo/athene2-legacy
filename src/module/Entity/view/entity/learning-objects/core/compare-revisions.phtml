@@ -8,6 +8,7 @@
 	<div class="tab-pane active" id="display">
 		<article>
             <?php echo $this->revisionView; ?>
+            <?php if($this->revision !== $this->currentRevision){?>
 			<hr>
 			<footer>
 				<div class="btn-group">
@@ -16,6 +17,7 @@
 					<a class="btn btn-danger btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'purge-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Löschen')?></a>
 				</div>
 			</footer>
+			<?php } ?>
 		</article>
 
 	</div>
