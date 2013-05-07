@@ -1,14 +1,22 @@
-<table id="versioningHistoryGrid" class="table table-bordered datagrid revisions">
-	<thead>
-		<tr>
-			<th><span class="datagrid-header-title"><?php echo $this->translate('Revisionsgeschichte'); ?></span></th>
-		</tr>
-	</thead>
-	<tfoot>
-		<tr>
-			<th></th>
-			<th></th>
-			<th></th>
-		</tr>
-	</tfoot>
+<?php echo $this->renderTitle($this->translate('Versionsgeschichte')); ?>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><?php echo $this->translate('#'); ?></th>
+            <th><?php echo $this->translate('Gesetzt'); ?></th>
+            <th><?php echo $this->translate('Author'); ?></th>
+            <th><?php echo $this->translate('Erstelldatum'); ?></th>
+        </tr>
+    </thead>
+    <?php
+    foreach($this->revisions as $revision){ 
+        $isCurrentRevision = $revision == $this->currentRevision;
+        ?>
+        <tr class="revision <?php echo $isCurrentRevision ? 'success' : ''; ?>">
+            <td><?php echo $revision->getId(); ?> (<a href="<?php echo $this->url(get_class($this->entity),array('action' => 'show-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('anzeigen'); ?></a>)</td>
+            <td><?php echo ($isCurrentRevision) ? '<i class="icon-ok"></i>' : ''; ?></td>
+            <td><?php echo $revision->getAuthor()->get('username'); ?></td>
+            <td><?php echo $this->dateFormat($revision->getDate(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT);?></td>
+        </tr>
+    <?php } ?>
 </table>

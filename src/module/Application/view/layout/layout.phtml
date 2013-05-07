@@ -12,9 +12,10 @@
         echo $this->plugin('HeadLink');
         echo $this->plugin('HeadStyle');
         echo $this->plugin('HeadScript');
+        echo $this->inlineScript();
         echo $this->headlink()
-            ->appendStylesheet($this->basePath() . '/fuelfx/dist/css/fuelux.min.css')
-            ->appendStylesheet($this->basePath() . '/fuelfx/dist/css/fuelux-responsive.min.css');
+            ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css')
+            ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
         echo $this->headScript()
             ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
             ->prependFile($this->basePath() . '/fuelux/dist/all.min.js', 'text/javascript', array())
@@ -111,6 +112,5 @@
 
 	<footer> </footer>
 	<!-- /container -->
-            <?php echo $this->inlineScript()?>
     </body>
 </html>

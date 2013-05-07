@@ -295,21 +295,7 @@ class AuthService implements AuthServiceInterface
     public function hasAccess ($resource, $permission = NULL)
     {
         $resource = $this->_resource($resource);
-        if (! $this->_isAllowed($resource, $permission)) {
-            if ($this->loggedIn()) {
-                $this->getController()
-                    ->getResponse()
-                    ->setStatusCode(403);
-                throw new \Exception('Du hast nicht die erforderlichen Rechte, um diese Seite zu sehen.');
-            } else {
-                $this->getController()
-                    ->flashMessenger()
-                    ->addSuccessMessage("Um diese Aktion auszuführen, musst du eingeloggt sein!");
-                $this->getController()
-                    ->redirect()
-                    ->toRoute('login');
-            }
-        }
+         return $this->_isAllowed($resource, $permission);
     }
 
     public function _isAllowed ($resource = NULL, $privilege = NULL)

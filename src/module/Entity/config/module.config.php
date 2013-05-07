@@ -70,24 +70,18 @@ return array(
             )
         )
     ),
-    /*'acl' => array(
+    'acl' => array(
         'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
-            'guest' => array(
-                'updateAction' => 'deny',
-                'showAction' => 'allow',
-            ),
-            'login' => array(
-                'updateAction' => 'allow',
-                'showAction' => 'allow',
-            )
+            'guest' => 'deny',
+            'login' => 'allow',
         )
-    ),*/
+    ),
     'router' => array(
         'routes' => array(
             'Entity\LearningObjects\Exercise\TextExercise' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/entity/exercise/text/:action/:id',
+                    'route' => '/entity/exercise/text/:action/:id[/:revisionId]',
                     'defaults' => array(
                         'controller' => 'Entity\LearningObjects\Exercise\Controller\TextExerciseController',
                         'action' => 'index'
@@ -97,7 +91,7 @@ return array(
             'Entity\LearningObjects\Solution\TextSolution' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/entity/solution/text/:action/:id',
+                    'route' => '/entity/solution/text/:action/:id[/:revisionId]',
                     'defaults' => array(
                         'controller' => 'Entity\LearningObjects\Solution\Controller\TextSolutionController',
                         'action' => 'index'

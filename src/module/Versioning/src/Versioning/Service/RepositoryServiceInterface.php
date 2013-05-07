@@ -42,13 +42,6 @@ interface RepositoryServiceInterface
 
     /**
      *
-     * @param RevisionInterface $revision            
-     * @return $this
-     */
-    public function trashRevision (RevisionInterface $revision);
-
-    /**
-     *
      * @param int $revisionId            
      * @return RevisionInterface $revision
      */
@@ -60,12 +53,6 @@ interface RepositoryServiceInterface
      * @return bool
      */
     public function hasRevision ($revision);
-
-    /**
-     *
-     * @return array
-     */
-    public function getTrashedRevisions ();
 
     /**
      *
