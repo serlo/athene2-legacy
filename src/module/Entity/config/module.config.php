@@ -3,8 +3,22 @@ namespace Entity;
 
 return array(
     'di' => array(
+        'allowed_controllers' => array(
+            'Entity\LearningObjects\Exercise\Controller\TextExerciseController',
+            'Entity\LearningObjects\Solution\Controller\TextSolutionController',
+        ),
         'definition' => array(
             'class' => array(
+                'Entity\LearningObjects\Solution\Controller\TextSolutionController' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    ),                
+                ),
+                'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    ),                
+                ),
                 'Entity\EntityManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
@@ -13,7 +27,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Entity\Service\EntityService' => array(
+                'Entity\Factory\EntityFactory' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -34,7 +48,7 @@ return array(
                     ),
                     'setLinkManager' => array(
                         'required' => 'true'
-                    ),
+                    )
                 )
             )
         ),
@@ -42,17 +56,53 @@ return array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
-                'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
-                //'Core\Service\LanguageManagerInterface' => 'Core\Service\LanguageManager',
+                'Entity\Factory\EntityFactoryInterface' => 'Entity\Factory\EntityFactory',
+                // 'Core\Service\LanguageManagerInterface' => 'Core\Service\LanguageManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
                 'Link\LinkManagerInterface' => 'Link\LinkManager',
-            	'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
+                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
+                'Entity\EntityManagerInterface' => 'Entity\EntityManager'
             ),
-            'Entity\Service\EntityService' => array(
+            'Entity\Factory\EntityFactory' => array(
                 'shared' => false
             )
+        )
+    ),
+    'acl' => array(
+        'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
+            'guest' => 'deny',
+            'login' => 'allow',
+        )
+    ),
+    'router' => array(
+        'routes' => array(
+            'Entity\LearningObjects\Exercise\TextExercise' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/entity/exercise/text/:action/:id[/:revisionId]',
+                    'defaults' => array(
+                        'controller' => 'Entity\LearningObjects\Exercise\Controller\TextExerciseController',
+                        'action' => 'index'
+                    ),
+                ),
+            ),
+            'Entity\LearningObjects\Solution\TextSolution' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/entity/solution/text/:action/:id[/:revisionId]',
+                    'defaults' => array(
+                        'controller' => 'Entity\LearningObjects\Solution\Controller\TextSolutionController',
+                        'action' => 'index'
+                    ),
+                )
+            ),
+        )
+    ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../view'
         )
     ),
     'doctrine' => array(
