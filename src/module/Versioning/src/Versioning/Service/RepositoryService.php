@@ -12,6 +12,7 @@ use Versioning\Entity\RepositoryInterface;
 use Core\Entity\EntityInterface;
 use Versioning\Exception\OutOfSynchException;
 use Versioning\Exception\RevisionNotFoundException;
+use Doctrine\Common\Collections\Criteria;
 
 class RepositoryService implements RepositoryServiceInterface, EventManagerAwareInterface
 {
@@ -204,7 +205,9 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
             $id = $revision;
         }
         
-        return $this->getRevisions()->containsKey($id);
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $id))
+        ->setMaxResults(1);
+        return $revision = $this->getRevisions()->matching($criteria)->count() === 1;
     }
 
     public function getRevision ($revisionId)
@@ -215,17 +218,20 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         if ($revisionId instanceof RevisionInterface)
             $revisionId = $revisionId->getId();
         
-        return  $this->revisions->get($revisionId);
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $revisionId))
+        ->setMaxResults(1);
+        $revision = $this->getRevisions()->matching($criteria)->current();
+        return $revision;
     }
 
     public function getRevisions ()
     {
-        return $this->revisions;
+        return $this->repository->getRevisions();
     }
 
     public function getHead ()
     {
-        return current($this->getRevisions());
+        return $this->getRevisions()->current();
     }
 
     public function checkoutRevision (RevisionInterface $revision)
