@@ -9,15 +9,29 @@ class AuthController extends AbstractActionController
 
     private $loginForm;
 
-    public function loginAction ()
+    public function loginAction()
     {
         $this->title()->set('Anmelden');
         
         if (! $this->loginForm)
             throw new \BadMethodCallException('Login Form not yet set!');
         
-        if ($this->auth()->loggedIn())
-            $this->redirect()->toRoute('home');
+        
+        $from = $this->params()->fromQuery('ref', false);
+        
+        if ($from) {
+            $this->loginForm->setAttribute('action', '/login?ref='.$from);
+        } else {
+            $this->loginForm->setAttribute('action', '/login');
+        }
+        
+        if ($this->auth()->loggedIn()) {
+            if ($from) {
+                $this->redirect()->toUrl($from);
+            } else {
+                $this->redirect()->toRoute('home');
+            }
+        }
         
         if ($this->getRequest()->isPost()) {
             $this->loginForm->setData($this->getRequest()
@@ -35,10 +49,16 @@ class AuthController extends AbstractActionController
                     ));
                 } else {
                     $this->flashMessenger()->addSuccessMessage("Login erfolgreich!");
-                    $this->redirect()->toRoute('home');
+                    
+                    if ($from) {
+                        $this->redirect()->toUrl($from);
+                    } else {
+                        $this->redirect()->toRoute('home');
+                    }
                     
                     return new ViewModel(array(
-                        'form' => $this->loginForm,));
+                        'form' => $this->loginForm
+                    ));
                 }
             } else {
                 return new ViewModel(array(
@@ -52,23 +72,23 @@ class AuthController extends AbstractActionController
         }
     }
 
-    public function logoutAction ()
+    public function logoutAction()
     {
         $this->auth()->logout();
-        if(!$this->auth()->loggedIn())
+        if (! $this->auth()->loggedIn())
             $this->flashMessenger()->addMessage("Logout erfolgreich!");
-        else 
+        else
             $this->flashMessenger()->addErrorMessage("Logout fehlgeschlagen. Bitte probiere es nochmal!");
-            
+        
         $this->redirect()->toRoute('home');
     }
 
-    public function setLoginForm ($loginForm)
+    public function setLoginForm($loginForm)
     {
         $this->loginForm = $loginForm;
     }
 
-    public function getLoginForm ()
+    public function getLoginForm()
     {
         return $this->loginForm;
     }
