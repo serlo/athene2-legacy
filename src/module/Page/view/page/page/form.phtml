@@ -1,7 +1,5 @@
 <article>
-    <?php echo $this->renderTitle($this->title, 'row-fluid');?>
-    </header>
-    <?php
+    <?php echo $this->renderTitle($this->title, 'row-fluid');
     $this->form->prepare();
     echo $this->form()->openTag($this->form);
     echo $this->formRow($this->form->get('title'));

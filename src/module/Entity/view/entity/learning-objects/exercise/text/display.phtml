@@ -1,0 +1,21 @@
+<article class="exercise exercise-text">
+	<div class="row-fluid">
+		<section class="content span10">
+            <?php echo $this->entity->getContent(); ?>
+        </section>
+		<div class="span2">
+			<div class="btn-group">
+				<a class="btn"
+					href="<?php echo $this->url(get_class($this->entity), array('action' => 'update', 'id' => $this->entity->getId())) ?>"><i
+					class="icon-edit"></i></a> <a class="btn dropdown-toggle"
+					data-toggle="dropdown" href="#"> <span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a
+						href="<?php echo $this->url(get_class($this->entity), array('action' => 'history', 'id' => $this->entity->getId())) ?>"><?php echo $this->translate('Versionsgeschichte')?></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+    <?php echo $this->solution; ?>
+</article>
