@@ -22,7 +22,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $controller
      */
-    public function getController ()
+    public function getController()
     {
         return $this->controller;
     }
@@ -31,7 +31,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param field_type $controller            
      */
-    public function setController ($controller)
+    public function setController($controller)
     {
         $this->controller = $controller;
     }
@@ -40,7 +40,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $languageService
      */
-    public function getLanguageService ()
+    public function getLanguageService()
     {
         return $this->languageService;
     }
@@ -49,7 +49,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $subjectService
      */
-    public function getSubjectService ()
+    public function getSubjectService()
     {
         return $this->subjectService;
     }
@@ -58,7 +58,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param LanguageService $languageService            
      */
-    public function setLanguageService (LanguageService $languageService)
+    public function setLanguageService(LanguageService $languageService)
     {
         $this->languageService = $languageService;
     }
@@ -67,7 +67,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param SubjectService $subjectService            
      */
-    public function setSubjectService (SubjectService $subjectService)
+    public function setSubjectService(SubjectService $subjectService)
     {
         $this->subjectService = $subjectService;
     }
@@ -76,7 +76,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $userService
      */
-    public function getUserService ()
+    public function getUserService()
     {
         return $this->userService;
     }
@@ -85,7 +85,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param field_type $userService            
      */
-    public function setUserService (UserServiceInterface $userService)
+    public function setUserService(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }
@@ -94,7 +94,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $user
      */
-    public function getUser ()
+    public function getUser()
     {
         return $this->user;
     }
@@ -103,7 +103,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param User $user            
      */
-    public function setUser ($user = NULL)
+    public function setUser($user = NULL)
     {
         $this->user = $user;
     }
@@ -112,7 +112,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $entityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->entityManager;
     }
@@ -121,7 +121,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param EntityManager $entityManager            
      */
-    public function setEntityManager (EntityManager $entityManager)
+    public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
@@ -130,7 +130,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $acl
      */
-    public function getAclService ()
+    public function getAclService()
     {
         return $this->aclService;
     }
@@ -139,7 +139,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param Acl $acl            
      */
-    public function setAclService (Acl $aclService)
+    public function setAclService(Acl $aclService)
     {
         $this->aclService = $aclService;
     }
@@ -148,7 +148,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $adapter
      */
-    public function getAdapter ()
+    public function getAdapter()
     {
         return $this->adapter;
     }
@@ -157,12 +157,12 @@ class AuthService implements AuthServiceInterface
      *
      * @param field_type $adapter            
      */
-    public function setAdapter ($adapter)
+    public function setAdapter($adapter)
     {
         $this->adapter = $adapter;
     }
 
-    public function login ($email, $password)
+    public function login($email, $password)
     {
         $hostTable = new \Zend\Db\TableGateway\TableGateway('user', $this->adapter);
         $results = $hostTable->select(array(
@@ -188,36 +188,40 @@ class AuthService implements AuthServiceInterface
         return $result;
     }
 
-    public function logout ()
+    public function logout()
     {
         if ($this->authService->hasIdentity())
             $this->authService->clearIdentity();
     }
 
-    public function loggedIn ()
+    public function loggedIn()
     {
         return $this->authService->hasIdentity();
     }
 
-    public function hasRole ($role)
+    public function hasRole($role)
     {
         return array_search($role, $this->getRoles()) !== FALSE;
     }
 
-    public function getRoles ()
+    public function getRoles()
     {
+        if($this->loggedIn()){
         return array_merge(array(
             'guest'
         ), $this->getUserService()->getRoles($this->getUser(), $this->getLanguageService()
             ->getId(), $this->getSubjectService()
             ->getId()));
+        } else {
+            return array('guest');
+        }
     }
 
     /**
      *
      * @return the $authService
      */
-    public function getAuthService ()
+    public function getAuthService()
     {
         return $this->authService;
     }
@@ -226,7 +230,7 @@ class AuthService implements AuthServiceInterface
      *
      * @return the $hashService
      */
-    public function getHashService ()
+    public function getHashService()
     {
         return $this->hashService;
     }
@@ -235,7 +239,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param field_type $authService            
      */
-    public function setAuthService (\Zend\Authentication\AuthenticationService $authService)
+    public function setAuthService(\Zend\Authentication\AuthenticationService $authService)
     {
         $this->authService = $authService;
     }
@@ -244,7 +248,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param field_type $hashService            
      */
-    public function setHashService (HashServiceInterface $hashService)
+    public function setHashService(HashServiceInterface $hashService)
     {
         $this->hashService = $hashService;
     }
@@ -255,7 +259,7 @@ class AuthService implements AuthServiceInterface
      * @see https://github.com/serlo-org/v2.serlo.org/wiki/Roles
      * @param RoleInterface $role            
      */
-    public function prepareRoles ($role)
+    public function prepareRoles($role)
     {
         $acl = $this->getAclService();
         $acl->addRole(new $role('guest'));
@@ -266,12 +270,12 @@ class AuthService implements AuthServiceInterface
         $acl->addRole(new $role('sysadmin'), 'admin');
     }
 
-    public function addPermissions (array $config)
+    public function addPermissions(array $config)
     {
         $acl = $this->getAclService();
         
         foreach ($config as $resource => $permissions) {
-            if(!$acl->hasResource($resource)){
+            if (! $acl->hasResource($resource)) {
                 $resource = $this->_createResource($resource);
                 $acl->addResource($resource);
             }
@@ -287,23 +291,27 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    public function hasResource($resource){
+    public function hasResource($resource)
+    {
         $acl = $this->getAclService();
         return $acl->hasResource($this->_resource($resource));
     }
 
-    public function hasAccess ($resource, $permission = NULL)
+    public function hasAccess($resource, $permission = NULL)
     {
         $resource = $this->_resource($resource);
-         return $this->_isAllowed($resource, $permission);
+        if (! $this->hasResource($resource)) {
+            return true;
+        } else {
+            return $this->_isAllowed($resource, $permission);
+        }
     }
 
-    public function _isAllowed ($resource = NULL, $privilege = NULL)
+    public function _isAllowed($resource = NULL, $privilege = NULL)
     {
         $return = false;
         $roles = $this->getRoles();
         foreach ($roles as $role) {
-            
             $return = $this->getAclService()->isAllowed($role, $resource, $privilege);
             if ($return)
                 return $return;
@@ -311,17 +319,17 @@ class AuthService implements AuthServiceInterface
         return false;
     }
 
-    private function _createResource ($resource)
+    private function _createResource($resource)
     {
         return new AclResource($this->_resource($resource));
     }
 
-    private function _resource ($resource)
+    private function _resource($resource)
     {
         return strtolower($resource);
     }
 
-    private function _iterPermission ($role, $resource, $rule, $privilege = NULL)
+    private function _iterPermission($role, $resource, $rule, $privilege = NULL)
     {
         $allowedRules = array(
             'allow',

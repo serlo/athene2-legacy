@@ -6,6 +6,7 @@ return array(
         'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
+        'ZfcRbac',
         'TwbBundle',
         'ZfcBase',
         'Core',

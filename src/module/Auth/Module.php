@@ -24,12 +24,12 @@ class Module
 
     public function init(ModuleManager $moduleManager)
     {
-        $moduleManager->getEventManager()
+        /*$moduleManager->getEventManager()
             ->getSharedManager()
             ->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', array(
             $this,
             'mvcPreDispatch'
-        ), 100);
+        ), 100);*/
     }
 
     public function mvcPreDispatch($event)

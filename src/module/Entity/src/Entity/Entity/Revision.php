@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RepositoryInterface;
+use Core\Entity\EntityInterface;
 
 /**
  * An entity link.
@@ -76,7 +77,7 @@ class Revision extends AbstractEntity implements RevisionInterface
      * @param field_type $author            
      * @return $this
      */
-    public function setAuthor($author)
+    public function setAuthor(EntityInterface $author)
     {
         $this->author = $author;
         return $this;
@@ -145,7 +146,7 @@ class Revision extends AbstractEntity implements RevisionInterface
 
     public function toggleTrashed()
     {
-        $this->trashed = !$this->isTrashed();
+        $this->trashed = ! $this->isTrashed();
     }
 
     public function setRepository(RepositoryInterface $repository)
