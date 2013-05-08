@@ -15,6 +15,7 @@
 	    "neilime/zf2-twb-bundle": "dev-master",
         "doctrine/doctrine-orm-module": "0.*",
         "zf-commons/zfc-base": "0.*",
-		"zf-commons/zfc-user": "0.*"
+		"zf-commons/zfc-user": "0.*",
+        "zf-commons/zfc-rbac": "dev-master"
     }
 }
