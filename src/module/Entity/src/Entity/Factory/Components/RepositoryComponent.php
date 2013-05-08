@@ -28,11 +28,21 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
         return $this->getComponent('repository');
     }
 
+    /**
+     * (non-PHPdoc)
+     * 
+     * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
+     */
     public function getCurrentRevision()
     {
         return $this->getRepository()->getCurrentRevision();
     }
 
+    /**
+     * (non-PHPdoc)
+     * 
+     * @see \Versioning\Service\RepositoryServiceInterface::getRevision()
+     */
     public function getRevision($id)
     {
         return $this->getRepository()->getRevision($id);
@@ -44,7 +54,9 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
             ->orderBy(array(
             "id" => "desc"
         ));
-        return $this->getRepository()->getRevisions()->matching($criteria);
+        return $this->getRepository()
+            ->getRevisions()
+            ->matching($criteria);
     }
 
     public function getTrashedRevisions()
@@ -53,9 +65,16 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
             ->orderBy(array(
             "id" => "desc"
         ));
-        return $this->getRepository()->getRevisions()->matching($criteria);
+        return $this->getRepository()
+            ->getRevisions()
+            ->matching($criteria);
     }
 
+    /**
+     * (non-PHPdoc)
+     * 
+     * @see \Versioning\Service\RepositoryServiceInterface::checkoutRevision()
+     */
     public function checkout($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
@@ -66,28 +85,36 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
     public function commitRevision(array $data)
     {
         $repository = $this->getRepository();
-        $revision = $this->getEntity()->addRevision();
-        $revision->setAuthor($this->getAuthService()->getUser());
+        $revision = $this->getEntity()->addNewRevision();
+        $revision->setAuthor($this->getAuthService()
+            ->getUser());
         $repository->addRevision($revision);
-        $this->getEntityManager()->persist($revision);        
+        $this->getEntityManager()->persist($revision);
         foreach ($data as $key => $value) {
             $this->getEntityManager()->persist($revision->addValue($key, $value));
         }
         $this->getEntityManager()->flush();
         return $this;
     }
-    
-    public function removeRevision($revisionId){
-       $revision = $this->getRepository()->getRevision($revisionId);
-       $this->getRepository()->removeRevision($revision);
-       return $this;
+
+    /**
+     * (non-PHPdoc)
+     * 
+     * @see \Versioning\Service\RepositoryServiceInterface::removeRevision()
+     */
+    public function removeRevision($revisionId)
+    {
+        $revision = $this->getRepository()->getRevision($revisionId);
+        $this->getRepository()->removeRevision($revision);
+        return $this;
     }
-    
-    public function trashRevision($revisionId){
+
+    public function trashRevision($revisionId)
+    {
         $revision = $this->getRepository()->getRevision($revisionId);
         $revision->toggleTrashed();
         $this->getEntityManager()->persist($revision);
         $this->getEntityManager()->flush($revision);
-        return $this;        
+        return $this;
     }
 }

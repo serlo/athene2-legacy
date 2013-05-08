@@ -2,6 +2,31 @@
 namespace Math;
 
 return array(
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Mathe',
+                'route' => 'math',
+                'subpages' => array(
+                    array(
+                        'label' => 'Nach Themen',
+                        'route' => 'home',
+                        'action' => 'add'
+                    ),
+                    array(
+                        'label' => 'Nach Lehrplan (?)',
+                        'route' => 'home',
+                        'action' => 'edit'
+                    ),
+                    array(
+                        'label' => 'Archiv',
+                        'route' => 'home',
+                        'action' => 'delete'
+                    )
+                )
+            )
+        )
+    ),
     'di' => array(
         'allowed_controllers' => array(
             'Math\Controller\Exercises\IndexController'
@@ -34,20 +59,10 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'mathExerciseShow' => array(
+            'math' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/math/exercises[/[:id]]',
-                    'defaults' => array(
-                        'controller' => 'Math\Controller\Exercises\IndexController',
-                        'action' => 'index'
-                    )
-                )
-            ),
-            'mathHome' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/math[/]',
+                    'route' => '/math[/[home]]',
                     'defaults' => array(
                         'controller' => 'Math\Controller\IndexController',
                         'action' => 'index'

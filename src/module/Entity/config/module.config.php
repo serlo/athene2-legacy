@@ -74,6 +74,9 @@ return array(
         'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
             'guest' => 'deny',
             'login' => 'allow',
+            'login' => array(
+                'purge-revisions' => 'deny',
+            ),
         )
     ),
     'router' => array(

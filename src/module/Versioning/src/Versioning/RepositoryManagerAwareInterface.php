@@ -19,6 +19,7 @@ interface RepositoryManagerAwareInterface
     public function setRepositoryManager (RepositoryManagerInterface $repositoryManager);
 
     /**
+     * Returns the RepositoryManager
      *
      * @return RepositoryManagerInterface
      */

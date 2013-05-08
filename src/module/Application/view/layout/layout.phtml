@@ -19,7 +19,7 @@
         echo $this->headScript()
             ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
             ->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
-            //->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
+        // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
         ?>
     
     </head>
@@ -32,10 +32,22 @@
 				</div>
 				<div class="span7">
 					<nav class="nav-collapse collapse">
+						<!-- 
 						<ul id="navTop" class="nav nav-tabs">
 							<li class="active"><a href="/">Serlo</a></li>
 							<li><a href="/math/">Mathe</a></li>
-						</ul>
+						</ul> -->
+						<?php
+    
+echo $this->navigation('navigation')
+        ->menu()
+        ->setOnlyActiveBranch(false)
+        ->setMinDepth(0)
+        ->setMaxDepth(3)
+        ->setUlClass('nav nav-tabs')
+        ->render();
+    ;
+    ?>
 					</nav>
 				</div>
 				<div class="span3">
@@ -112,5 +124,5 @@
 
 	<footer> </footer>
 	<!-- /container -->
-    </body>
+</body>
 </html>

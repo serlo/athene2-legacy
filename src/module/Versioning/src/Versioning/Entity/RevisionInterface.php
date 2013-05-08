@@ -13,17 +13,47 @@ use Core\Entity\EntityInterface;
 interface RevisionInterface extends EntityInterface
 {
     /**
-     *
-     * @return void
+     * Returns the repository
+     * 
+     * @return RepositoryInterface
      */
-    public function delete ();
-
     public function getRepository ();
     
+    /**
+     * Sets the repository
+     * 
+     * @param RepositoryInterface $repository
+     * @return $this
+     */
     public function setRepository(RepositoryInterface $repository);
     
+    /**
+     * Gets the date´
+     * 
+     * @return mixed
+     */
     public function getDate();
+    
+    /**
+     * Gets the author
+     * 
+     * @return EntityInterface
+     */
     public function getAuthor();
+    
+    /**
+     * Sets the date
+     * 
+     * @param mixed $date
+     * @return $this
+     */
     public function setDate($date);
-    public function setAuthor($user);
+    
+    /**
+     * Sets the author
+     * 
+     * @param EntityInterface $user
+     * @return $this
+     */
+    public function setAuthor(EntityInterface $user);
 }

@@ -31,7 +31,11 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
 
     protected $events;
 
-    public function setEventManager (EventManagerInterface $events)
+    /**
+     * (non-PHPdoc)
+     * @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
+     */
+    public function setEventManager(EventManagerInterface $events)
     {
         $events->setIdentifiers(array(
             __CLASS__,
@@ -41,12 +45,16 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this;
     }
 
-    public function getEventManager ()
+    /**
+     * (non-PHPdoc)
+     * @see \Zend\EventManager\EventsCapableInterface::getEventManager()
+     */
+    public function getEventManager()
     {
         return $this->events;
     }
 
-    public function getEntity ()
+    public function getEntity()
     {
         return $this->repository->getEntity();
     }
@@ -55,7 +63,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      *
      * @param AbstractEntity $repository            
      */
-    public function setRepository (AbstractEntity $repository)
+    public function setRepository(AbstractEntity $repository)
     {
         $this->repository = $repository;
     }
@@ -64,7 +72,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      *
      * @return AuthServiceInterface
      */
-    public function getAuthService ()
+    public function getAuthService()
     {
         return $this->authService;
     }
@@ -73,7 +81,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      *
      * @param AuthServiceInterface $authService            
      */
-    public function setAuthService (AuthServiceInterface $authService)
+    public function setAuthService(AuthServiceInterface $authService)
     {
         $this->authService = $authService;
     }
@@ -82,7 +90,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      *
      * @return the $entityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->entityManager;
     }
@@ -91,62 +99,101 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      *
      * @param EntityManager $entityManager            
      */
-    public function setEntityManager (EntityManager $entityManager)
+    public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    public function setup ($identifier, EntityInterface $repository)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::setup()
+     */
+    public function setup($identifier, EntityInterface $repository)
     {
         $this->identifier = $identifier;
         $this->repository = $repository;
         $this->_load();
     }
 
-    private function _load ()
+    /**
+     * 
+     */
+    private function _load()
     {
         $this->currentRevision = $this->repository->get('currentRevision');
         $this->revisions = $this->_getRevisions();
     }
 
-    private function _adaptRevision ($adaptee)
+    /**
+     * 
+     * @param unknown $adaptee
+     * @return NULL|unknown
+     */
+    private function _adaptRevision($adaptee)
     {
         if ($adaptee == NULL)
             return NULL;
         return new $this->revisionClass($adaptee);
     }
 
-    private function _getRevisions ($trashed = false)
+    /**
+     * 
+     * @param string $trashed
+     * @return unknown
+     */
+    private function _getRevisions($trashed = false)
     {
         $return = $this->repository->get('revisions');
         return $return;
     }
 
-    public function setIdentifier ($identifier)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::setIdentifier()
+     */
+    public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
         return $this;
     }
 
-    public function getIdentifier ()
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::getIdentifier()
+     */
+    public function getIdentifier()
     {
         return $this->identifier;
     }
 
-    public function setPrototype (RevisionInterface $prototype)
+    /**
+     * 
+     * @param RevisionInterface $prototype
+     * @return \Versioning\Service\RepositoryService
+     */
+    public function setPrototype(RevisionInterface $prototype)
     {
         $this->prototype = $prototype;
         return $this;
     }
 
-    private function _persistEntity ($entity)
+    /**
+     * 
+     * @param unknown $entity
+     * @return \Versioning\Service\RepositoryService
+     */
+    private function _persistEntity($entity)
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
         return $this;
     }
 
-    public function addRevision (RevisionInterface $revision)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::addRevision()
+     */
+    public function addRevision(RevisionInterface $revision)
     {
         if ($this->hasRevision($revision))
             throw new OutOfSynchException("A revision with the ID `$revision->getId()` already exists in this repository.");
@@ -155,7 +202,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         
         $revision->setRepository($this->repository);
         $this->repository->getRevisions()->add($revision);
-
+        
         $this->revisions->add($revision);
         $this->persistRevision($revision);
         
@@ -170,7 +217,11 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this;
     }
 
-    public function removeRevision (RevisionInterface $revision)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::removeRevision()
+     */
+    public function removeRevision(RevisionInterface $revision)
     {
         if (! $this->hasRevision($revision))
             throw new RevisionNotFoundException("A revision with the ID `$revision->getId()` does not exist in this repository.");
@@ -190,14 +241,22 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this;
     }
 
-    private function _deleteRevision (RevisionInterface $revision)
+    /**
+     * 
+     * @param RevisionInterface $revision
+     */
+    private function _deleteRevision(RevisionInterface $revision)
     {
         $em = $this->getEntityManager();
         $em->remove($revision);
         $em->flush();
     }
 
-    public function hasRevision ($revision)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::hasRevision()
+     */
+    public function hasRevision($revision)
     {
         if ($revision instanceof RevisionInterface) {
             $id = $revision->getId();
@@ -206,11 +265,17 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         }
         
         $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $id))
-        ->setMaxResults(1);
-        return $revision = $this->getRevisions()->matching($criteria)->count() === 1;
+            ->setMaxResults(1);
+        return $revision = $this->getRevisions()
+            ->matching($criteria)
+            ->count() === 1;
     }
 
-    public function getRevision ($revisionId)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::getRevision()
+     */
+    public function getRevision($revisionId)
     {
         if (! $this->hasRevision($revisionId))
             throw new RevisionNotFoundException("A revision with the ID `$revisionId` does not exist in the repository `$this->identifier`.");
@@ -219,22 +284,36 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
             $revisionId = $revisionId->getId();
         
         $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $revisionId))
-        ->setMaxResults(1);
-        $revision = $this->getRevisions()->matching($criteria)->current();
+            ->setMaxResults(1);
+        $revision = $this->getRevisions()
+            ->matching($criteria)
+            ->current();
         return $revision;
     }
 
-    public function getRevisions ()
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::getRevisions()
+     */
+    public function getRevisions()
     {
         return $this->repository->getRevisions();
     }
 
-    public function getHead ()
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::getHead()
+     */
+    public function getHead()
     {
         return $this->getRevisions()->current();
     }
 
-    public function checkoutRevision (RevisionInterface $revision)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::checkoutRevision()
+     */
+    public function checkoutRevision(RevisionInterface $revision)
     {
         if (! $this->hasRevision($revision))
             throw new RevisionNotFoundException('Revision ' . $revision->getId() . ' not existent in this repository');
@@ -254,7 +333,11 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this;
     }
 
-    public function getCurrentRevision ()
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
+     */
+    public function getCurrentRevision()
     {
         if ($this->currentRevision == NULL)
             throw new RevisionNotFoundException();
@@ -262,12 +345,20 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this->currentRevision;
     }
 
-    public function mergeRevisions (RevisionInterface $revision, RevisionInterface $base)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::mergeRevisions()
+     */
+    public function mergeRevisions(RevisionInterface $revision, RevisionInterface $base)
     {
         throw new \Exception("Not implemented yet");
     }
 
-    public function persistRevision (RevisionInterface $revision)
+    /**
+     * (non-PHPdoc)
+     * @see \Versioning\Service\RepositoryServiceInterface::persistRevision()
+     */
+    public function persistRevision(RevisionInterface $revision)
     {
         $em = $this->getEntityManager();
         $em->persist($revision);
@@ -275,12 +366,21 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this;
     }
 
-    public function persist ()
+    /**
+     * 
+     * @return \Versioning\Service\RepositoryService
+     */
+    public function persist()
     {
         return $this->persistRepository($this->repository);
     }
 
-    public function persistRepository (RepositoryInterface $repository)
+    /**
+     * 
+     * @param RepositoryInterface $repository
+     * @return \Versioning\Service\RepositoryService
+     */
+    public function persistRepository(RepositoryInterface $repository)
     {
         $em = $this->getEntityManager();
         $em->persist($repository);

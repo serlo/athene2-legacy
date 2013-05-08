@@ -7,6 +7,14 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 return array(
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home',
+                )
+            )
+        ),
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -52,7 +60,18 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory'
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'MailMan' => function ($sm)
+            {
+                $config = $sm->get('Config');
+                $smtpParams = $config['smtpParams'];
+                
+                $transport = new \Zend\Mail\Transport\Smtp();
+                $options = new \Zend\Mail\Transport\SmtpOptions($smtpParams);
+                $transport->setOptions($options);
+                return $transport;
+            },
+            'Navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory'
         ),
         'aliases' => array(
             'EntityManager' => 'doctrine.entitymanager.orm_default',
@@ -96,9 +115,9 @@ return array(
             'assets' => array(
                 '@base_css',
                 '@html5',
-                '@jquery',
-                //'@bootstrap',
-            ),
+                '@jquery'
+            // '@bootstrap',
+                        ),
             'options' => array(
                 'mixin' => true
             )
