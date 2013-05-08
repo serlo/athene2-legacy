@@ -20,6 +20,7 @@ return array(
         'Math',
         'TwbBundle',
     	'Taxonomy',
+    	'Navigation',
     	'Link',
     ),
 

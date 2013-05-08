@@ -22,7 +22,7 @@ class Taxonomy extends AbstractEntity
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="TaxonomyTerm", mappedBy="taxonomy")
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="taxonomy")
      */
     protected $terms;
 
@@ -42,7 +42,79 @@ class Taxonomy extends AbstractEntity
      */
     protected $language;
 
-    public function __construct ()
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection $terms
+     */
+    public function getTerms ()
+    {
+        return $this->terms;
+    }
+
+	/**
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+	/**
+     * @return field_type $factory
+     */
+    public function getFactory ()
+    {
+        return $this->factory;
+    }
+
+	/**
+     * @return field_type $language
+     */
+    public function getLanguage ()
+    {
+        return $this->language;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $terms
+     * @return $this
+     */
+    public function setTerms ($terms)
+    {
+        $this->terms = $terms;
+        return $this;
+    }
+
+	/**
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+	/**
+     * @param field_type $factory
+     * @return $this
+     */
+    public function setFactory ($factory)
+    {
+        $this->factory = $factory;
+        return $this;
+    }
+
+	/**
+     * @param field_type $language
+     * @return $this
+     */
+    public function setLanguage ($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+	public function __construct ()
     {
         $this->terms = new ArrayCollection();
     }

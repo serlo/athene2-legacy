@@ -12,12 +12,27 @@ return array(
                         'label' => 'Startseite',
                         'route' => 'math'
                     ),
-                    array(
-                        'label' => 'Themen',
-                        'route' => 'math',
+                    'dynamic' => array(
                         'provider' => 'Navigation\Provider\TaxonomyProvider',
-                        'options' => array()
+                        'options' => array(
+                            'name' => 'math:topic',
+                        )
                     )
+                    /*
+                    array(
+                        'label' => 'Thema',
+                        'uri' => '#',
+                        'pages' => array(
+                            array(
+                                'label' => 'Thema1',
+                                'route' => 'register'
+                            ),
+                            array(
+                                'label' => 'Thema2',
+                                'route' => 'register'
+                            )
+                        )
+                    ),*/
                 )
             )
         )
@@ -55,7 +70,6 @@ return array(
     'router' => array(
         'routes' => array(
             'math' => array(
-                'may_terminate' => true,
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/math[/[home]]',
@@ -63,24 +77,9 @@ return array(
                         'controller' => 'Math\Controller\IndexController',
                         'action' => 'index'
                     )
-                ),
-                'child_routes' => array(
-                    'topic' => array(
-                        'may_terminate' => true,
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/math/topic[/[:slug]]',
-                            'defaults' => array(
-                                'controller' => 'Math\Controller\TopicController',
-                                'action' => 'index'
-                            )
-                        )
-                    )
                 )
             )
         )
     )
 );
-
-
 

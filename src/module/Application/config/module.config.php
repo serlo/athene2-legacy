@@ -1,10 +1,13 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
+ * 
+ * Athene2 - Advanced Learning Resources Manager
  *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
     'navigation' => array(
@@ -71,7 +74,7 @@ return array(
                 $transport->setOptions($options);
                 return $transport;
             },
-            'Navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory'
+            'navigation' => 'Navigation\Service\DynamicNavigationFactory',
         ),
         'aliases' => array(
             'EntityManager' => 'doctrine.entitymanager.orm_default',

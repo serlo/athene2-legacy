@@ -119,11 +119,11 @@ class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxon
             'name' => $name,
             'language' => $languageService->getId()
         ));
-        
-        if ($entity === NULL)
+            
+        if ($entity == NULL)
             throw new NotFoundException('Taxonomy not found. Using name `' . $name . '` and language `' . $languageService->getId() . '`');
             
-            // TODO REMOVE
+            // TODO REMOVE ONCE FIXED BY ZF
         $this->getServiceLocator()->setShared('Taxonomy\TaxonomyManager', false);
         
         $tm = $this->getServiceLocator()->get('Taxonomy\TaxonomyManager');

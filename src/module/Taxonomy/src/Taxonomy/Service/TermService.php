@@ -99,7 +99,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
      */
     public function getParent ()
     {
-        return $this->getTaxonomyManager()->getTerm($this->getEntity()
+        return $this->getTaxonomyManager()->getTermByEntity($this->getEntity()
             ->get('parent'));
     }
     
@@ -108,7 +108,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
      */
     public function getChildren ()
     {
-        return $this->getTaxonomyManager()->getTerms($this->getEntity()
+        return $this->getTaxonomyManager()->getTermsByEntities($this->getEntity()
             ->get('children'));
     }
     
@@ -192,5 +192,13 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
         $em = $this->getEntityManager();
         $em->persist($this->getEntity());
         $em->flush();
+    }
+    
+    public function getName(){
+        return $this->getEntity()->get('term');
+    }
+    
+    public function getSlug(){
+        return $this->getEntity()->get('slug');
     }
 }
