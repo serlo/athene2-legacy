@@ -9,4 +9,4 @@ Now you are ready to go!
 ============
 
 # Wiki
-**Please read the Wiki: https://github.com/serlo-org/v2.serlo.org/wiki**
+**Please read the Wiki: https://github.com/serlo-org/athene2/wiki**
