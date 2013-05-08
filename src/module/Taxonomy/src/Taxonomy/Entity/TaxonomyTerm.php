@@ -26,9 +26,16 @@ class TaxonomyTerm extends AbstractEntity
      */
     protected $taxonomy;
 
-    protected $parent;
-
-    protected $children;
+    /**
+     * @ORM\OneToMany(targetEntity="TaxonomyTerm", mappedBy="parent")
+     */
+    private $children;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="TaxonomyTerm", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $parent;
 
     /**
      * @ORM\Column(type="integer")
@@ -54,7 +61,133 @@ class TaxonomyTerm extends AbstractEntity
      */
     protected $entities;
 
-    public function __construct ()
+    /**
+     * @return field_type $taxonomy
+     */
+    public function getTaxonomy ()
+    {
+        return $this->taxonomy;
+    }
+
+	/**
+     * @return \Doctrine\Common\Collections\ArrayCollection $children
+     */
+    public function getChildren ()
+    {
+        return $this->children;
+    }
+
+	/**
+     * @return field_type $parent
+     */
+    public function getParent ()
+    {
+        return $this->parent;
+    }
+
+	/**
+     * @return field_type $order
+     */
+    public function getOrder ()
+    {
+        return $this->order;
+    }
+
+	/**
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+	/**
+     * @return field_type $slug
+     */
+    public function getSlug ()
+    {
+        return $this->slug;
+    }
+
+	/**
+     * @return field_type $entities
+     */
+    public function getEntities ()
+    {
+        return $this->entities;
+    }
+
+	/**
+     * @param field_type $taxonomy
+     * @return $this
+     */
+    public function setTaxonomy ($taxonomy)
+    {
+        $this->taxonomy = $taxonomy;
+        return $this;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $children
+     * @return $this
+     */
+    public function setChildren ($children)
+    {
+        $this->children = $children;
+        return $this;
+    }
+
+	/**
+     * @param field_type $parent
+     * @return $this
+     */
+    public function setParent ($parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+	/**
+     * @param field_type $order
+     * @return $this
+     */
+    public function setOrder ($order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+	/**
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+	/**
+     * @param field_type $slug
+     * @return $this
+     */
+    public function setSlug ($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+	/**
+     * @param field_type $entities
+     * @return $this
+     */
+    public function setEntities ($entities)
+    {
+        $this->entities = $entities;
+        return $this;
+    }
+
+	public function __construct ()
     {
         $this->children = new ArrayCollection();
     }

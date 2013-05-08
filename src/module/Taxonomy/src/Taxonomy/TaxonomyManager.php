@@ -190,6 +190,11 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
             ->current());
     }
 
+    public function getTermByEntity ($entity)
+    {
+        return $this->_getTermByEntity($entity);
+    }
+    
     protected function _getTermByEntity (EntityInterface $entity)
     {
         $id = $entity->getId();
@@ -224,6 +229,11 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
         return $return;
     }
 
+    public function getTermsByEntities (Collection $entities)
+    {
+        return $this->_entitiesToServices($entities);
+    }
+
     protected function _entityToService ($entity)
     {
         // TODO REMOVE
@@ -237,15 +247,25 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     public function build ()
     {
         // read factory class from db
+        
         $factoryClassName = $this->getEntity()
-            ->get('factory')
-            ->get('className');
+            ->getFactory();
+        
+        if(!$factoryClassName)
+            throw new \Exception('Factory not set');
+            
+        $factoryClassName = $factoryClassName->get('className');
         if (substr($factoryClassName, 0, 1) != '\\') {
             $factoryClassName = '\\Taxonomy\\Factory\\' . $factoryClassName;
         }
+        
+        if(!class_exists($factoryClassName))
+            throw new \Exception('Something somewhere went terribly wrong.');
+        
         $factory = new $factoryClassName();
         if (! $factory instanceof FactoryInterface)
             throw new \Exception('Something somewhere went terribly wrong.');
+        
         
         $factory->build($this);
         $this->setFactory($factory);
@@ -258,7 +278,11 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
      */
     public function getTerms (Criteria $filter = NULL)
     {
-        return $this->get('terms')->matching($filter);
+        if(!$filter){
+            return $this->get('terms');
+        } else {
+            return $this->get('terms')->matching($filter);
+        }
     }
     
     /*

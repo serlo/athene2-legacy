@@ -41,10 +41,11 @@
     
 echo $this->navigation('navigation')
         ->menu()
-        ->setOnlyActiveBranch(false)
+        ->setOnlyActiveBranch(true)
         ->setMinDepth(0)
         ->setMaxDepth(3)
         ->setUlClass('nav nav-tabs')
+        ->setPartial('navigation/partials/horizontal.phtml')
         ->render();
     ;
     ?>
