@@ -24,7 +24,7 @@ class SubjectComponent extends EntityServiceProxy implements ComponentInterface 
 	
 	public function getSubject(){
 		$taxonomyManager = $this->getComponent('subjectTaxonomy');
-		return $taxonomyManager->getTermByLink('entities', $this->getSource()->getEntity())->get('name');
+		return $taxonomyManager->getTermByLink('entities', $this->getSource()->getEntity());
 	}
 	
 	public function hasSubject($subjectName){

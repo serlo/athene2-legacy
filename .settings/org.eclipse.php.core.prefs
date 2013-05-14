@@ -1,3 +1,7 @@
 eclipse.preferences.version=1
-include_path=
+include_path=0;/v2.serlo.org/src\u00055;org.zend.php.framework.v2.CONTAINER\u00055;org.eclipse.dltk.USER_LIBRARY/serlo.org
+org.eclipse.php.core.phpDoc=false
+org.eclipse.php.core.phpForamtterIndentationSize=4
+org.eclipse.php.core.phpForamtterTabSize=4
+org.eclipse.php.core.phpForamtterUseTabs=false
 use_asp_tags_as_php=false

@@ -9,8 +9,5 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Navigation\Provider;
-
-class DefaultProvider extends TaxonomyProvider
-{
-}
+?>
+Default entity view

@@ -5,7 +5,13 @@ use Entity\LearningObjects\Solution\Form\TextSolutionForm;
 use Zend\View\Model\ViewModel;
 
 class TextSolution extends AbstractSolution
-{        
+{       
+
+    protected function _loadComponents(){
+        parent::_loadComponents();
+        $this->setTemplate('entity/learning-objects/solution/text/display');
+    }
+     
     public function getContent ()
     {
         return $this->_repositoryComponent->getCurrentRevision()->get('content');
@@ -23,7 +29,7 @@ class TextSolution extends AbstractSolution
         if(!$this->_viewModel){
             $this->_viewModel = new ViewModel(array('entity' => $this));
         }
-        $this->_viewModel->setTemplate('entity/learning-objects/solution/text/display');
+        $this->_viewModel->setTemplate($this->getTemplate());
         return $this->_viewModel;
     }
     

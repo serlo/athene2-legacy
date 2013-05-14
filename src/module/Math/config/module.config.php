@@ -69,7 +69,10 @@ return array(
                         'may_terminate' => true,
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/math/topic[/[:slug]]',
+                            'route' => '/math/topic[/[:path]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z0-9_-/]+'
+                            ),
                             'defaults' => array(
                                 'controller' => 'Math\Controller\TopicController',
                                 'action' => 'index'

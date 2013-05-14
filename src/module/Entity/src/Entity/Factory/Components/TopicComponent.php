@@ -22,6 +22,6 @@ class TopicComponent extends EntityServiceProxy implements ComponentInterface {
 	
 	public function getTopic(){
 		$taxonomyManager = $this->getComponent('topicTaxonomy');
-		return $taxonomyManager->getTermByLink('entities', $this->getSource()->getEntity())->get('name');
+		return $taxonomyManager->getTermByLink('entities', $this->getSource()->getEntity());
 	}
 }
