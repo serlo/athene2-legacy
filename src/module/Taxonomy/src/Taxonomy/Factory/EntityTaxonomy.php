@@ -19,10 +19,9 @@ abstract class EntityTaxonomy extends AbstractAdapter implements FactoryInterfac
     public function build (TaxonomyManagerInterface $adaptee)
     {
         $this->setAdaptee($adaptee);
-        
         $sm = $this->getServiceLocator();
         $em = $sm->get('Entity\EntityManager');
-        $this->getAdaptee()->enableLink('entities', function  ($entity) use( $em)
+        $this->getAdaptee()->enableLink('entities', function ($entity) use($em)
         {
             return $em->get($entity);
         });

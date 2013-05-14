@@ -17,11 +17,11 @@ return array(
         'Editor',
         'Log',
         'Entity',
-        'Math',
         'TwbBundle',
     	'Taxonomy',
     	'Navigation',
     	'Link',
+        'Subject',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -1,85 +1,47 @@
 <?php
-namespace Math;
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+namespace Subject;
 
 return array(
-    'navigation' => array(
-        'default' => array(
-            array(
-                'label' => 'Mathe',
-                'uri' => '#',
-                'pages' => array(
-                    array(
-                        'label' => 'Startseite',
-                        'route' => 'math'
-                    ),
-                    'dynamic' => array(
-                        'provider' => 'Navigation\Provider\TaxonomyProvider',
-                        'options' => array(
-                            'name' => 'math:topic',
-                        )
-                    )
-                    /*
-                    array(
-                        'label' => 'Thema',
-                        'uri' => '#',
-                        'pages' => array(
-                            array(
-                                'label' => 'Thema1',
-                                'route' => 'register'
-                            ),
-                            array(
-                                'label' => 'Thema2',
-                                'route' => 'register'
-                            )
-                        )
-                    ),*/
-                )
-            )
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
-            'Math\Controller\Exercises\IndexController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Math\Controller\Exercises\IndexController' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Entity\EntityManagerInterface' => 'Entity\EntityManager',
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager'
-            )
-        )
-    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
         )
     ),
-    'controllers' => array(
-        'invokables' => array(
-            'Math\Controller\IndexController' => 'Math\Controller\IndexController'
+    'di' => array(
+        'instance' => array(
+            'preferences' => array(
+                'Entity\EntityManagerInterface' => 'Entity\EntityManager',
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
+                'Subject\Core\SubjectManagerInterface' => 'Subject\Core\SubjectManager',
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
+            )
         )
     ),
-    'router' => array(
-        'routes' => array(
-            'math' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/math[/[home]]',
-                    'defaults' => array(
-                        'controller' => 'Math\Controller\IndexController',
-                        'action' => 'index'
-                    )
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
             )
         )
     )
 );
-

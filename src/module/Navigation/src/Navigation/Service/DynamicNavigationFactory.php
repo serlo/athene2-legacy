@@ -1,4 +1,14 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Navigation\Service;
 
 use Zend\Navigation\Service\AbstractNavigationFactory;
@@ -13,13 +23,13 @@ use Zend\Navigation\Exception;
 class DynamicNavigationFactory extends AbstractNavigationFactory
 {
 
-    protected $_serviceLocator;
+    protected $serviceLocator;
 
-    protected $_provider;
+    protected $provider;
 
     protected function getPages(ServiceLocatorInterface $serviceLocator)
     {
-        $this->_serviceLocator = $serviceLocator;
+        $this->serviceLocator = $serviceLocator;
         return parent::getPages($serviceLocator);
     }
 
@@ -52,7 +62,7 @@ class DynamicNavigationFactory extends AbstractNavigationFactory
                 }
                 
                 $className = $page['provider'];
-                $provider = new $className($options, $this->_serviceLocator);
+                $provider = new $className($options, $this->serviceLocator);
                 
                 if(isset($page['pages'])){
                     $page['pages'] = array_merge($page['pages'], $this->injectComponentsFromProvider($provider, $routeMatch, $router));

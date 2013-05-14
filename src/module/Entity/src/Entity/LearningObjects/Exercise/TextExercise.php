@@ -6,12 +6,18 @@ use Zend\View\Model\ViewModel;
 
 class TextExercise extends AbstractExercise implements TextExerciseInterface
 {    
+
+    protected function _loadComponents(){
+        parent::_loadComponents();
+        $this->setTemplate('entity/learning-objects/exercise/text/display');
+    }
+    
     public function toViewModel()
     {
         if(!$this->_viewModel){
             $this->_viewModel = new ViewModel(array('entity' => $this));
         }
-        $this->_viewModel->setTemplate('entity/learning-objects/exercise/text/display');
+        $this->_viewModel->setTemplate($this->getTemplate());
         if($this->getSolution()){
             $this->_viewModel->addChild($this->getSolution()->toViewModel(), 'solution');
         }

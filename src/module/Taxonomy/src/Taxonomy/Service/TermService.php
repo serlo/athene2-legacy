@@ -31,8 +31,10 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
     protected $_entityManager;
 
     protected $_template;
-
-    protected $_allowedLinks;
+    
+    public function getAllowedLinks(){
+        return $this->getTaxonomyManager()->getAllowedLinks();
+    }
 
     /**
      *
@@ -103,6 +105,10 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
             ->get('parent'));
     }
     
+    public function hasParent(){
+        return is_object($this->getEntity()->get('parent'));
+    }
+    
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getChildren()
      */
@@ -126,7 +132,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
     public function getAllLinks ()
     {
         $return = array();
-        foreach ($this->_allowedLinks as $targetField => $callback) {
+        foreach ($this->getAllowedLinks() as $targetField => $callback) {
             $return[$targetField] = $this->getLinks($targetField);
         }
         return $return;
@@ -138,9 +144,10 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
     public function getLinks ($targetField)
     {
         $this->_linkingAllowedWithException($targetField);
+        $links = $this->getAllowedLinks();
         $services = array();
         foreach ($this->get($targetField)->toArray() as $entity) {
-            $service[] = $this->_allowedLinks[$targetField]($entity);
+            $service[] = $links[$targetField]($entity);
         }
         return $service;
     }
@@ -195,10 +202,23 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
     }
     
     public function getName(){
-        return $this->getEntity()->get('term');
+        return $this->getEntity()->get('name');
     }
     
     public function getSlug(){
         return $this->getEntity()->get('slug');
+    }
+    
+    public function getPath(){
+        $path = array();
+        $term = $this;
+        $exit = false;
+        while(!$exit){
+            $exit = !$term->hasParent();
+            $path[] = $term->getSlug();
+            if($exit) break;
+            $term = $term->getParent();
+        }
+        return array_reverse($path);
     }
 }

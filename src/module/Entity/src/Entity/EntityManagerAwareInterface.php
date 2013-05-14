@@ -9,8 +9,22 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Navigation\Provider;
+namespace Entity;
 
-class DefaultProvider extends TaxonomyProvider
+interface EntityManagerAwareInterface
 {
+    /**
+     * Sets the EntityManager
+     * 
+     * @param EntityManagerInterface $manager
+     * @return $this
+     */
+    public function setEntityManager(EntityManagerInterface $manager);
+    
+    /**
+     * Returns the EntityManager
+     * 
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager();
 }

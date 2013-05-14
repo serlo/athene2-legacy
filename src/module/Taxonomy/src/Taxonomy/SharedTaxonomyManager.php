@@ -13,6 +13,8 @@ use Core\Service\LanguageService;
 use Taxonomy\Exception\NotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Taxonomy\Factory\EntityTaxonomy;
+use Taxonomy\Entity\Taxonomy;
 
 class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxonomyManagerInterface
 {
@@ -102,10 +104,32 @@ class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxon
      */
     public function get ($name, $languageService = NULL)
     {
-        if (! isset($this->_instances[$name])) {
-            $this->add($name, $this->_find($name, $languageService));
+        if(is_string($name)){
+            if (! isset($this->_instances[$name])) {
+                $this->add($name, $this->_find($name, $languageService));
+            }
+            return $this->_instances[$name];
+        } else if (is_object($name)) {
+            if($name instanceof Taxonomy){
+                $entity = $name;
+                $name = $entity->getName();
+                if (! isset($this->_instances[$name])) {
+                    $this->add($name, $this->toService($entity));
+                }
+                return $this->_instances[$name];
+            }
         }
-        return $this->_instances[$name];
+        throw new \InvalidArgumentException();
+    }
+    
+    private function toService(Taxonomy $entity){
+            // TODO REMOVE ONCE FIXED BY ZF
+        $this->getServiceLocator()->setShared('Taxonomy\TaxonomyManager', false);
+        $tm = $this->getServiceLocator()->get('Taxonomy\TaxonomyManager');
+        $tm->setEntity($entity);
+        $tm->build();
+        return $tm;
+        
     }
 
     private function _find ($name, $languageService = NULL)
@@ -123,12 +147,6 @@ class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxon
         if ($entity == NULL)
             throw new NotFoundException('Taxonomy not found. Using name `' . $name . '` and language `' . $languageService->getId() . '`');
             
-            // TODO REMOVE ONCE FIXED BY ZF
-        $this->getServiceLocator()->setShared('Taxonomy\TaxonomyManager', false);
-        
-        $tm = $this->getServiceLocator()->get('Taxonomy\TaxonomyManager');
-        $tm->setEntity($entity);
-        $tm->build();
-        return $tm;
+        return $this->toService($entity);
     }
 }

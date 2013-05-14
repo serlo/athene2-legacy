@@ -23,6 +23,13 @@ abstract class AbstractEntityBuilder extends EntityServiceProxy implements Entit
      * @var Form
      */
     protected $_form;
+    
+    /**
+     * The default template for the View
+     * 
+     * @var string
+     */
+    protected $template = 'entity/learning-objects/core/default';
 
     /**
      *
@@ -34,6 +41,24 @@ abstract class AbstractEntityBuilder extends EntityServiceProxy implements Entit
      * @var ViewModel
      */
     protected $_viewModel;
+
+	/**
+     * @return string $template
+     */
+    public function getTemplate ()
+    {
+        return $this->template;
+    }
+
+	/**
+     * @param string $template
+     * @return $this
+     */
+    public function setTemplate ($template)
+    {
+        $this->template = $template;
+        return $this;
+    }
 
 	/**
      * (non-PHPdoc)
