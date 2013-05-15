@@ -16,9 +16,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * A Taxonomy.
  *
  * @ORM\Entity
- * @ORM\Table(name="taxonomy_term")
+ * @ORM\Table(name="term_taxonomy")
  */
-class TaxonomyTerm extends AbstractEntity
+class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
 {
 
     /**
@@ -27,12 +27,17 @@ class TaxonomyTerm extends AbstractEntity
     protected $taxonomy;
 
     /**
-     * @ORM\OneToMany(targetEntity="TaxonomyTerm", mappedBy="parent")
+     * @ORM\ManyToOne(targetEntity="Term\Entity\Term", inversedBy="termTaxonomies")
+     */
+    protected $term;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TermTaxonomy", mappedBy="parent")
      */
     private $children;
     
     /**
-     * @ORM\ManyToOne(targetEntity="TaxonomyTerm", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="TermTaxonomy", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
@@ -41,16 +46,6 @@ class TaxonomyTerm extends AbstractEntity
      * @ORM\Column(type="integer")
      */
     protected $order;
-
-    /**
-     * @ORM\Column(type="text",length=255,name="term")
-     */
-    protected $name;
-
-    /**
-     * @ORM\Column(type="text",length=255)
-     */
-    protected $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
@@ -98,7 +93,7 @@ class TaxonomyTerm extends AbstractEntity
      */
     public function getName ()
     {
-        return $this->name;
+        return $this->getTerm()->getName();
     }
 
 	/**
@@ -106,7 +101,7 @@ class TaxonomyTerm extends AbstractEntity
      */
     public function getSlug ()
     {
-        return $this->slug;
+        return $this->getTerm()->getSlug();
     }
 
 	/**
@@ -163,7 +158,7 @@ class TaxonomyTerm extends AbstractEntity
      */
     public function setName ($name)
     {
-        $this->name = $name;
+        $this->getTerm()->setName($name);
         return $this;
     }
 
@@ -173,7 +168,25 @@ class TaxonomyTerm extends AbstractEntity
      */
     public function setSlug ($slug)
     {
-        $this->slug = $slug;
+        $this->getTerm()->setSlug($slug);
+        return $this;
+    }
+
+	/**
+     * @return field_type $term
+     */
+    public function getTerm ()
+    {
+        return $this->term;
+    }
+
+	/**
+     * @param field_type $term
+     * @return $this
+     */
+    public function setTerm ($term)
+    {
+        $this->term = $term;
         return $this;
     }
 

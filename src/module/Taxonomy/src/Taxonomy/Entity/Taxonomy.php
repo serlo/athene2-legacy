@@ -18,11 +18,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy")
  */
-class Taxonomy extends AbstractEntity
+class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="taxonomy")
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
      */
     protected $terms;
 
@@ -36,6 +36,11 @@ class Taxonomy extends AbstractEntity
      * @ORM\JoinColumn(name="taxonomy_factory_id", referencedColumnName="id")
      */
     protected $factory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Subject\Entity\Subject", inversedBy="taxonomies")
+     */
+    protected $subject;
 
     /**
      * @ORM\ManyToOne(targetEntity="Core\Entity\Language")

@@ -13,8 +13,10 @@ namespace Core;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\Validator\IsInstanceOf;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceManager;
 
-abstract class AbstractManager implements ServiceLocatorAwareInterface
+abstract class AbstractManager implements ServiceManagerAwareInterface
 {
 
     /**
@@ -22,7 +24,7 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      * 
      * @var array
      */
-    protected $instances = array();
+    private $instances = array();
 
     /**
      * 
@@ -41,20 +43,22 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      *
      * @var \Zend\ServiceManager\ServiceLocatorInterface
      */
-    protected $serviceLocator;
+    private $serviceLocator;
     
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
+    /**
+     * (non-PHPdoc)
+     * @see \Zend\ServiceManager\ServiceManagerAwareInterface::getServiceManager()
      */
-    public function getServiceLocator()
+    public function getServiceManager()
     {
         return $this->serviceLocator;
     }
     
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
+    /**
+     * (non-PHPdoc)
+     * @see \Zend\ServiceManager\ServiceManagerAwareInterface::setServiceManager()
      */
-    public function setServiceLocator(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
+    public function setServiceManager(ServiceManager $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
         return $this;
@@ -85,12 +89,16 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
     protected function addInstance($name, $instance)
     {
         if (! is_object($instance))
-            throw new \Exception('Please pass only instances.');
+            throw new \Exception('Please pass only objects.');
         
         if ($this->hasInstance($name)) {
-            $instance = $this->instances[$name];
-            unset($instance);
-            unset($this->instances[$name]);
+            if($this->instances[$name] !== $instance){
+                $instance = $this->instances[$name];
+                unset($instance);
+                unset($this->instances[$name]);
+            } else {
+                return $this;
+            }
         }
         
         $this->instances[$name] = $instance;
@@ -145,13 +153,27 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      * @throws \InvalidArgumentException
      * @return $instanceClassName
      */
-    protected function createInstance($instanceClassName = 'managing')
+    protected function createInstance($instanceClassName = 'manages')
     {
         $instanceClassName = $this->resolve($managing);
-        $this->getServiceLocator()->setShared($instanceClassName, false);
-        $instance = $this->getServiceLocator()->get($instanceClassName);
+        $this->getServiceManager()->setShared($instanceClassName, false);
+        $instance = $this->getServiceManager()->get($instanceClassName);
         if (! $instance instanceof $instanceClassName)
             throw new \InvalidArgumentException('Expeted ' . $instanceClassName . ' but got ' . get_class($instance));
         return $instance;
     }
+    
+    public function getInstances(){
+        return $this->instances;
+    }
+    
+    /**
+     * @return string $name
+     */
+    public abstract function add();
+    
+    /**
+     * @return mixed
+     */
+    public abstract function get();
 }

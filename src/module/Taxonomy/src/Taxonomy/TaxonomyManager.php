@@ -251,54 +251,6 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
         return $service;
     }
 
-    protected function _getTermByPath(array $path)
-    {
-        if(!isset($path[0]))
-            throw new \InvalidArgumentException('Path requires at least one element');
-            
-        $i = 0;
-        $join = "";
-        $where = "";
-        $select = array();
-        $root = $path[0];
-        unset($path[0]);
-        foreach($path as $element){
-            $i++;
-            $y = $i-1;
-            $select[] = "term{$i}";
-            $join .= "JOIN term{$y}.children term{$i}\n";
-            $where .= "AND term{$i}.slug = '".$element."'
-                      AND term{$i}.parent = term{$y}.id";
-        }
-        if(count($path)){
-            $select = array_reverse($select);
-            $select = ", " . implode(", ",$select);
-        } else {
-            $select = '';
-        }
-        $query = "
-				SELECT taxonomy, term0{$select} FROM 
-					" . get_class($this->getEntity()) . " taxonomy
-					JOIN taxonomy.terms term0
-                    ".$join."
-				WHERE
-					taxonomy.id = " . $this->getId() . "
-				AND term0.slug = '" . $root . "'
-					".$where."";
-        $query = $this->getEntityManager()->createQuery($query);
-        //echo $query->getSQL();
-        $result = current($query->getResult());
-        
-        if(!is_object($result))
-            throw new NotFoundException();
-
-        $result = $result->getTerms()->first();
-        for($x = 1; $x <= $i; $x++){
-            $result = $result->getChildren()->first();
-        }
-        return $this->_getTermByEntity($result);
-    }
-
     protected function _entitiesToServices(Collection $entities)
     {
         $return = array();

@@ -9,13 +9,9 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Service\Core;
+namespace Taxonomy;
 
-use Core\Entity\AbstractEntityAdapter;
-use Subject\SubjectServiceInterface;
-
-abstract class AbstractSubjectService extends AbstractEntityAdapter implements SubjectServiceInterface
+interface TermManagerInterface
 {
-    protected $name;
-    protected $aliases;
+    
 }

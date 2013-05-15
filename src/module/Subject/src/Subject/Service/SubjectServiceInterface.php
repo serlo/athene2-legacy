@@ -9,21 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Core\Structure;
+namespace Subject\Service;
 
-abstract class AbstractAdapter implements AdapterInterface
+interface SubjectServiceInterface
 {
-    protected $adaptee;
-    
-	public function getAdaptee() {
-		return $this->adaptee;
-	}
-	
-	public function setAdaptee($adaptee) {
-		$this->adaptee = $adaptee;
-	}
-
-	public function __construct($adaptee = NULL){
-        $this->adaptee = $adaptee;
-    }
+    public function addAlias();
+    public function hasAlias();
+    public function getAliases();
+    public function getName();
+    public function setName();
 }

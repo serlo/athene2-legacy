@@ -10,13 +10,18 @@ namespace Taxonomy;
 
 interface SharedTaxonomyManagerInterface
 {
-
-    public function get ($name, $languageService = NULL);
+    /**
+     * 
+     * @param unknown $name
+     * @param mixed $languageService
+     * @return TaxonomyManagerInterface
+     */
+    public function get ($taxonomy, $languageService = NULL);
 
     /**
      *
-     * @param
-     *            TaxonomyManagerInterface
+     * @param TaxonomyManagerInterface
+     * @return $this
      */
-    public function add ($name, TaxonomyManagerInterface $manager);
+    public function add (TaxonomyManagerInterface $manager);
 }

@@ -11,13 +11,12 @@
  */
 namespace Term\Manager;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Taxonomy\Service\TermServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Core\AbstractManager;
 use Term\Exception\TermNotFoundException;
 
-class TermManager extends AbstractManager implements ServiceLocatorAwareInterface, ObjectManagerAwareInterface, TermManagerInterface
+class TermManager extends AbstractManager implements ObjectManagerAwareInterface, TermManagerInterface
 {
 
     protected $defaultOptions = array(
@@ -51,35 +50,13 @@ class TermManager extends AbstractManager implements ServiceLocatorAwareInterfac
     }
 
     /**
-     *
-     * @var \Zend\ServiceManager\ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-    
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
-
-    /**
      * 
      * @param TermServiceInterface $termService
      */
     public function add(TermServiceInterface $termService)
     {
         $this->addInstance($termService->getName(), $termService);
+        return $termService->getName();
     }
     
     public function get($term)

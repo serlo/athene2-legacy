@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class TaxonomyFactory extends AbstractEntity
 {
-
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy", mappedBy="factory")
      */

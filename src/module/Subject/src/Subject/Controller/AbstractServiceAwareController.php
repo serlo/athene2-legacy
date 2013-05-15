@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Core\Controller;
+namespace Subject\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -22,7 +22,7 @@ use Subject\Core\SubjectManagerInterface;
 use Taxonomy\SharedTaxonomyManagerAwareInterface;
 use Taxonomy\SharedTaxonomyManagerInterface;
 
-abstract class AbstractSubjectController extends AbstractActionController implements SubjectManagerAwareInterface, EntityManagerAwareInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface
+abstract class AbstractServiceAwareController extends AbstractActionController implements SubjectManagerAwareInterface, EntityManagerAwareInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface
 {
     
     /**

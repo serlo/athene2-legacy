@@ -15,138 +15,94 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Taxonomy\Factory\EntityTaxonomy;
 use Taxonomy\Entity\Taxonomy;
+use Core\AbstractManager;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
-class SharedTaxonomyManager implements ServiceLocatorAwareInterface, SharedTaxonomyManagerInterface
+class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface, ObjectManagerAwareInterface
 {
-
-    protected $_instances = array();
-
     /**
-     *
-     * @var EntityManager
-     */
-    protected $_entityManager;
-
-    protected $_serviceLocator;
-
-    /**
-     *
      * @var LanguageService
      */
-    protected $_languageService;
+    protected $languageService;
     
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
-    {
-        $this->_serviceLocator = $serviceLocator;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator ()
-    {
-        return $this->_serviceLocator;
-    }
-
     /**
-     *
-     * @return LanguageService $_languageService
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected $objectManager;
+    
+    protected $defaultOptions = array(
+        'instance' => array(
+            'manages' => 'Taxonomy\TaxonomyManagerInterface',
+            'TaxonomyEntityInterface' => 'Taxonomy\Entity\TaxonomyInterface',
+            'TermManagerInterface' => 'Taxonomy\TermManagerInteface'
+        )
+    );
+    
+    /**
+     * @return \Core\Service\LanguageService $languageService
      */
     public function getLanguageService ()
     {
-        return $this->_languageService;
+        return $this->languageService;
     }
 
-    /**
-     *
-     * @param LanguageService $_languageService            
+	/**
+     * @param \Core\Service\LanguageService $languageService
+     * @return $this
      */
-    public function setLanguageService (LanguageService $_languageService)
+    public function setLanguageService (LanguageService $languageService)
     {
-        $this->_languageService = $_languageService;
+        $this->languageService = $languageService;
         return $this;
     }
 
-    /**
-     *
-     * @return EntityManager $_entityManager
+	/* (non-PHPdoc)
+     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
      */
-    public function getEntityManager ()
+    public function getObjectManager ()
     {
-        return $this->_entityManager;
+        return $this->objectManager;
     }
 
-    /**
-     *
-     * @param EntityManager $_entityManager            
+	/* (non-PHPdoc)
+     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
      */
-    public function setEntityManager (EntityManager $_entityManager)
+    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
     {
-        $this->_entityManager = $_entityManager;
+        $this->objectManager = $objectManager;
         return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerInterface::add()
-     */
-    public function add ($name, TaxonomyManagerInterface $manager)
-    {
-        $this->_instances[$name] = $manager;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerInterface::get()
-     */
-    public function get ($name, $languageService = NULL)
-    {
-        if(is_string($name)){
-            if (! isset($this->_instances[$name])) {
-                $this->add($name, $this->_find($name, $languageService));
-            }
-            return $this->_instances[$name];
-        } else if (is_object($name)) {
-            if($name instanceof Taxonomy){
-                $entity = $name;
-                $name = $entity->getName();
-                if (! isset($this->_instances[$name])) {
-                    $this->add($name, $this->toService($entity));
-                }
-                return $this->_instances[$name];
-            }
-        }
-        throw new \InvalidArgumentException();
-    }
-    
-    private function toService(Taxonomy $entity){
-            // TODO REMOVE ONCE FIXED BY ZF
-        $this->getServiceLocator()->setShared('Taxonomy\TaxonomyManager', false);
-        $tm = $this->getServiceLocator()->get('Taxonomy\TaxonomyManager');
-        $tm->setEntity($entity);
-        $tm->build();
-        return $tm;
-        
     }
 
-    private function _find ($name, $languageService = NULL)
-    {
-        if ($languageService === NULL)
+	public function add(TermManagerInterface $taxonomyManager){
+        $this->addInstance($taxonomyManager->getId(), $taxonomyManager);
+        return $taxonomy->getId();
+    }
+    
+    public function get($taxonomy, $languageService = NULL, $subjectService = NULL){
+        if(!$languageService)
             $languageService = $this->getLanguageService();
         
-        $entity = $this->getEntityManager()
-            ->getRepository('Taxonomy\Entity\Taxonomy')
-            ->findOneBy(array(
-            'name' => $name,
-            'language' => $languageService->getId()
-        ));
-            
-        if ($entity == NULL)
-            throw new NotFoundException('Taxonomy not found. Using name `' . $name . '` and language `' . $languageService->getId() . '`');
-            
-        return $this->toService($entity);
+        $className = $this->resolve('manages');
+        if(is_numeric($taxonomy)){
+            $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'),taxonomy);
+            $name = $this->add($this->createInstance($entity));
+        } else if (is_string($taxonomy)){ 
+            $entity = $this->getObjectManager()->getRepository($this->resolve('TaxonomyEntityInterface'))->findOneBy(array('name' => taxonomy, 'language' => $languageService->getEntity(), 'subject' => $subjectService->getEntity()));
+            $name = $this->add($this->createInstance($entity));
+        } else if (!$taxonomy instanceof $className) {
+            $name = $this->add($taxonomy);
+        } else {
+            throw new \Exception();
+        }
+        if(!$this->hasInstance($taxonomy)){
+            throw new \Exception();            
+        }
+        return $this->getInstance($name);
+    }
+    
+    protected function createInstance($entity){
+        $instance = parent::createInstance();
+        $instance->setEntity($entity);
+        return $instance;
     }
 }
