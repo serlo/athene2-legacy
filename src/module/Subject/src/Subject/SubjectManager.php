@@ -17,18 +17,22 @@ use Core\AbstractManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface, ObjectManagerAwareInterface
-{
-    protected $subjects;
-    
+{    
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $objectManager;
     
-    protected $defaultOptions = array(
-        'manages' => 'Subject\Service\SubjectService',
-        'SubjectEntityInterface' => 'Subject\Entity\SubjectEntity'
+    protected $options = array(
+        'instances' => array(
+            'manages' => 'Subject\Service\SubjectService',
+            'SubjectEntityInterface' => 'Subject\Entity\Subject'
+        ),
     );
+    
+    public function __construct(){
+        parent::__construct($this->options);
+    }
     
     /* (non-PHPdoc)
      * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
@@ -55,10 +59,18 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface,
     
     public function get ($subject)
     {
-        if(empty($this->getInstances())){
+        $array = $this->getInstances();
+        if(empty($array)){
             $this->injectInstances();
         }
         return $this->getInstance($subject);
+    }
+    
+    public function getAllSubjects(){
+        if(empty($array)){
+            $this->injectInstances();
+        }
+        return $this->getInstances();
     }
 
 	public function has($subject){

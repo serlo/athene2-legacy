@@ -56,7 +56,34 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
      */
     protected $entities;
 
-    /**
+    /* (non-PHPdoc)
+     * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::getDescription()
+     */
+    public function getDescription ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::hasParent()
+     */
+    public function hasParent ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::setDescription()
+     */
+    public function setDescription ($description)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/**
      * @return field_type $taxonomy
      */
     public function getTaxonomy ()

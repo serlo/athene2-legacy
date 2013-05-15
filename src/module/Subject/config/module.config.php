@@ -18,13 +18,46 @@ return array(
         )
     ),
     'di' => array(
+        'definition' => array(
+            'class' => array(
+                'Subject\Hydrator\RouteStack' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Subject\Hydrator\Route' => array(
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Subject\SubjectManager' => array(
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                ),
+                'Subject\Service\SubjectService' => array(
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                )
+            )
+        ),
         'instance' => array(
             'preferences' => array(
                 'Entity\EntityManagerInterface' => 'Entity\EntityManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
-                'Subject\Core\SubjectManagerInterface' => 'Subject\Core\SubjectManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
+                'Subject\SubjectManagerInterface' => 'Subject\SubjectManager',
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
             )
         )
     ),
@@ -45,3 +78,4 @@ return array(
         )
     )
 );
+

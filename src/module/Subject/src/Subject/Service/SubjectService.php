@@ -11,11 +11,9 @@
  */
 namespace Subject\Service;
 
-use Core\Entity\AbstractEntityAdapter;
-use Subject\SubjectServiceInterface;
+use Core\Service\AbstractEntityDecorator;
 
-abstract class AbstractSubjectService extends AbstractEntityAdapter implements SubjectServiceInterface
+class SubjectService extends AbstractEntityDecorator implements SubjectServiceInterface
 {
-    protected $name;
-    protected $aliases;
+    
 }

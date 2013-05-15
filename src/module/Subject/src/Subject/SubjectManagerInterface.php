@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Core;
+namespace Subject;
 
 use Subject\Service\SubjectServiceInterface;
 
@@ -37,4 +37,9 @@ interface SubjectManagerInterface
      * @return SubjectServiceInterface
      */
     public function has($id);
+    
+    /**
+     * @return array
+     */
+    public function getAllSubjects();
 }
