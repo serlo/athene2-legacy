@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="subject_factory")
  */
-class SubjectFactory extends AbstractEntity implements TermEntityInterface
+class SubjectFactory extends AbstractEntity
 {
     /**
      * @ORM\Column(type="text",length=255)

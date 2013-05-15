@@ -13,9 +13,4 @@ namespace Subject\Service;
 
 interface SubjectServiceInterface
 {
-    public function addAlias();
-    public function hasAlias();
-    public function getAliases();
-    public function getName();
-    public function setName();
 }

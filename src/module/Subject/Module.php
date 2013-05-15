@@ -3,19 +3,9 @@ namespace Subject;
 
 class Module
 {
-
-    protected $subModules = array(
-        'Math'
-    );
-
     public function getConfig()
     {
-        $return = include __DIR__ . '/config/module.config.php';
-        foreach ($this->subModules as $subModule) {
-            $config = include __DIR__ . '/config/'.$subModule.'.config.php';
-            $return = array_merge($return, $config);
-        }
-        return $return;
+        return include __DIR__ . '/config/module.config.php';
     }
 
     public function getAutoloaderConfig()
@@ -29,5 +19,13 @@ class Module
                 )
             )
         );
+    }
+    
+    public function onBootstrap($e)
+    {
+        $app      = $e->getTarget();
+        $serviceManager       = $app->getServiceManager();
+        $listener = $serviceManager->get('Subject\Hydrator\Route');
+        $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
     }
 }

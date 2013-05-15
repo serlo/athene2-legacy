@@ -32,10 +32,10 @@ abstract class AbstractDecorator
 
 	public function __call ($method, $args)
     {
-        return call_user_func_array($this->concreteComponent, $method, $args);
+        return call_user_func_array(array($this->concreteComponent, $method), $args);
     }
 
-    public function __construct ($concreteComponent)
+    public function __construct ($concreteComponent = NULL)
     {
         $this->concreteComponent = $concreteComponent;
     }

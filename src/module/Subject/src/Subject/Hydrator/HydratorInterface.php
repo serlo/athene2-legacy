@@ -9,16 +9,14 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Entity;
+namespace Subject\Hydrator;
 
-interface TermTaxonomyEntityInterface
+use Zend\Mvc\Router\RouteInterface;
+
+interface HydratorInterface
 {
-    public function getParent();
-    public function hasParent();
-    public function getChildren();
-    public function getTerm();
-    public function getDescription();
-    public function setDescription($description);
-    public function setOrder($order);
-    public function getOrder();
+    /**
+     * @param object $object
+     */
+    public function hydrate($object);
 }

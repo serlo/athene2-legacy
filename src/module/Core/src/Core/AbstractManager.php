@@ -30,14 +30,7 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
      * 
      * @var array
      */
-    protected $options = array();
-
-
-    /**
-     *
-     * @var array
-     */
-    protected abstract $defaultOptions;
+    private $options = array();
 
     /**
      *
@@ -72,9 +65,7 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
     public function __construct($options = NULL)
     {
         if (is_array($options)) {
-            $this->options = array_merge($defaultOptions, $options);
-        } else {
-            $this->options = $this->defaultOptions;
+            $this->options = array_merge($this->options, $options);
         }
     }
 
@@ -140,10 +131,10 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
      */
     protected function resolve($interface)
     {
-        if (! isset($this->options['instance'][$interface]))
+        if (! isset($this->options['instances'][$interface]))
             throw new \Exception("Class for interface `{$interface}` not set.");
         
-        return $this->options['instance'][$interface];
+        return $this->options['instances'][$interface];
     }
 
     /**
@@ -155,7 +146,7 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
      */
     protected function createInstance($instanceClassName = 'manages')
     {
-        $instanceClassName = $this->resolve($managing);
+        $instanceClassName = $this->resolve($instanceClassName);
         $this->getServiceManager()->setShared($instanceClassName, false);
         $instance = $this->getServiceManager()->get($instanceClassName);
         if (! $instance instanceof $instanceClassName)
@@ -166,14 +157,4 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
     public function getInstances(){
         return $this->instances;
     }
-    
-    /**
-     * @return string $name
-     */
-    public abstract function add();
-    
-    /**
-     * @return mixed
-     */
-    public abstract function get();
 }

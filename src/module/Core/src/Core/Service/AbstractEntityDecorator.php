@@ -22,11 +22,6 @@ class AbstractEntityDecorator extends AbstractDecorator implements ObjectManager
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $objectManager;
-    
-    /**
-     * @var EntityInterface
-     */
-    protected $entity;
 
     /* (non-PHPdoc)
      * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
@@ -51,7 +46,7 @@ class AbstractEntityDecorator extends AbstractDecorator implements ObjectManager
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->getConcreteComponent();
     }
 
     /**
@@ -64,7 +59,7 @@ class AbstractEntityDecorator extends AbstractDecorator implements ObjectManager
         if(!is_object($entity))
             throw new \Exception('Not an object.');
         
-        $this->entity = $entity;
+        $this->setConcreteComponent($entity);
         return $this;
     }
 
