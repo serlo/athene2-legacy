@@ -13,16 +13,39 @@ namespace Core\Service;
 
 use Core\Structure\AbstractDecorator;
 use Core\Entity\EntityInterface;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
-class AbstractEntityDecorator extends AbstractDecorator
+class AbstractEntityDecorator extends AbstractDecorator implements ObjectManagerAwareInterface
 {
     /**
-     *
+     * 
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected $objectManager;
+    
+    /**
      * @var EntityInterface
      */
     protected $entity;
 
-    /**
+    /* (non-PHPdoc)
+     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
+     */
+    public function getObjectManager ()
+    {
+        return $this->objectManager;
+    }
+
+	/* (non-PHPdoc)
+     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
+     */
+    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+        return $this;
+    }
+
+	/**
      *
      * @return \Core\Entity\EntityInterface $entity
      */
@@ -38,7 +61,34 @@ class AbstractEntityDecorator extends AbstractDecorator
      */
     public function setEntity(EntityInterface $entity)
     {
+        if(!is_object($entity))
+            throw new \Exception('Not an object.');
+        
         $this->entity = $entity;
+        return $this;
+    }
+
+    /**
+     * Persist the entity
+     * 
+     * @return $this
+     */
+    public function persist ()
+    {
+        $om = $this->getObjectManager();
+        $$om->persist($this->getEntity());
+        return $this;
+    }
+    
+    /**
+     * Persists the entity and flushes the ObjectManager
+     * 
+     * @return $this
+     */
+    public function persistAndFlush(){
+        $om = $this->getObjectManager();
+        $this->persist();
+        $om->flush();
         return $this;
     }
 }

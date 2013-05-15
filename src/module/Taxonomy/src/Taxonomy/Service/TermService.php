@@ -8,105 +8,43 @@
  */
 namespace Taxonomy\Service;
 
-use Zend\View\Model\ViewModel;
 use Taxonomy\TaxonomyManagerInterface;
 use Core\Entity\EntityInterface;
 use Taxonomy\Exception\LinkNotAllowedException;
-use Core\Entity\AbstractEntityAdapter;
-use Doctrine\ORM\EntityManager;
+use Core\Service\AbstractEntityDecorator;
+use Taxonomy\TermManagerAwareInterface;
 
-class TermService extends AbstractEntityAdapter implements TermServiceInterface
+class TermService extends AbstractEntityDecorator implements TermServiceInterface, TermManagerAwareInterface
 {
-
     /**
-     *
-     * @var TaxonomyManagerInterface
+     * 
+     * @var \Taxonomy\TermManagerInterface
      */
-    protected $_taxonomyManager;
-
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $_entityManager;
-
-    protected $_template;
+    protected $termManager;
     
-    public function getAllowedLinks(){
-        return $this->getTaxonomyManager()->getAllowedLinks();
+    /* (non-PHPdoc)
+     * @see \Taxonomy\TermManagerAwareInterface::getTermManager()
+     */
+    public function getTermManager ()
+    {
+        return $this->termManager;
     }
 
-    /**
-     *
-     * @return EntityManager
+	/* (non-PHPdoc)
+     * @see \Taxonomy\TermManagerAwareInterface::setTermManager()
      */
-    public function getEntityManager ()
+    public function setTermManager (\Taxonomy\TermManagerInterface $termManager)
     {
-        return $this->_entityManager;
-    }
-
-    /**
-     *
-     * @param EntityManager $_entityManager            
-     */
-    public function setEntityManager (EntityManager $_entityManager)
-    {
-        $this->_entityManager = $_entityManager;
+        $this->termManager = $termManager;
         return $this;
     }
 
-    /**
-     *
-     * @return TaxonomyManagerInterface
-     */
-    public function getTaxonomyManager ()
-    {
-        return $this->_taxonomyManager;
-    }
-
-    /**
-     *
-     * @param TaxonomyManagerInterface $_taxonomyManager            
-     * @return $this
-     */
-    public function setTaxonomyManager (TaxonomyManagerInterface $_taxonomyManager)
-    {
-        $this->_taxonomyManager = $_taxonomyManager;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::setTemplate()
-     */
-    public function setTemplate ($template)
-    {
-        $this->_template = $template;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getViewModel()
-     */
-    public function getViewModel ()
-    {
-        $view = new ViewModel(array()
-
-        );
-        $view->setTemplate($this->_template);
-        return $view;
-    }
-    
-    /*
+	/*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getParent()
      */
     public function getParent ()
     {
-        return $this->getTaxonomyManager()->getTermByEntity($this->getEntity()
-            ->get('parent'));
-    }
-    
-    public function hasParent(){
-        return is_object($this->getEntity()->get('parent'));
+        return $this->getTermManager()->get($this->getEntity()->etParent());
     }
     
     /*
@@ -114,16 +52,8 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
      */
     public function getChildren ()
     {
-        return $this->getTaxonomyManager()->getTermsByEntities($this->getEntity()
+        return $this->getTaxonomyManager()->get($this->getEntity()
             ->get('children'));
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::toArray()
-     */
-    public function toArray ()
-    {
-        return $this->getEntity()->toArray();
     }
     
     /*
@@ -143,7 +73,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
      */
     public function getLinks ($targetField)
     {
-        $this->_linkingAllowedWithException($targetField);
+        $this->linkAllowedWithException($targetField);
         $links = $this->getAllowedLinks();
         $services = array();
         foreach ($this->get($targetField)->toArray() as $entity) {
@@ -157,7 +87,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
      */
     public function addLink ($targetField, EntityInterface $target)
     {
-        $this->_linkingAllowedWithException($targetField);
+        $this->linkAllowedWithException($targetField);
         $entity = $this->getEntity();
         $entity->get($targetField)->add($target);
         $this->persist();
@@ -169,7 +99,7 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
      */
     public function removeLink ($targetField, EntityInterface $target)
     {
-        $this->_linkingAllowedWithException($targetField);
+        $this->linkAllowedWithException($targetField);
         $entity = $this->getEntity();
         $entity->get($targetField)->remove($target);
         $this->persist();
@@ -178,35 +108,20 @@ class TermService extends AbstractEntityAdapter implements TermServiceInterface
 
     public function hasLink ($targetField, EntityInterface $target)
     {
-        $this->_linkingAllowedWithException($targetField);
+        $this->linkAllowedWithException($targetField);
         $entity = $this->getEntity();
         return $entity->get($targetField)->containsKey($target->getId());
     }
 
-    public function linkingAllowed ($targetField)
+    public function linkAllowed ($targetField)
     {
-        return $this->getTaxonomyManager()->linkingAllowed($targetField);
+        return $this->getTermManager()->linkAllowed($targetField);
     }
 
-    protected function _linkingAllowedWithException ($targetField)
+    protected function linkAllowedWithException ($targetField)
     {
-        if (! $this->linkingAllowed($targetField))
+        if (! $this->linkAllowed($targetField))
             throw new LinkNotAllowedException();
-    }
-
-    public function persist ()
-    {
-        $em = $this->getEntityManager();
-        $em->persist($this->getEntity());
-        $em->flush();
-    }
-    
-    public function getName(){
-        return $this->getEntity()->get('name');
-    }
-    
-    public function getSlug(){
-        return $this->getEntity()->get('slug');
     }
     
     public function getPath(){

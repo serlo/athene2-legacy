@@ -11,22 +11,30 @@
  */
 namespace Subject\Core;
 
-use Subject\Core\Service\SubjectServiceInterface;
+use Subject\Service\SubjectServiceInterface;
 
-interface SubjectManagerAwareInterface
+interface SubjectManagerInterface
 {
+
     /**
-     * Gets the SubjectManager
-     * 
-     * @return SubjectManagerInterface
+     *
+     * @param int|string
+     * @return SubjectServiceInterface
      */
-    public function getSubjectManager();
-    
+    public function get($id);
+
     /**
-     * Sets the SubjectManager
-     * 
-     * @param SubjectManagerInterface $subject
-     * @return $this
+     *
+     * @param SubjectServiceInterface $subject            
+     * @return $his
      */
-    public function setSubjectManager(SubjectManagerInterface $subject);
+    public function add(SubjectServiceInterface $subject);
+
+    /**
+     *
+     * @param
+     *            int|string|SubjectServiceInterface
+     * @return SubjectServiceInterface
+     */
+    public function has($id);
 }

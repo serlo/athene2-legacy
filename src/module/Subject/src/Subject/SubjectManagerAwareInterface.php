@@ -9,28 +9,22 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Core;
+namespace Subject;
 
-interface SubjectManagerInterface
+interface SubjectManagerAwareInterface
 {
     /**
+     * Gets the SubjectManager
      * 
-     * @param int|string
-     * @return SubjectServiceInterface
+     * @return SubjectManagerInterface
      */
-    public function get($id);
+    public function getSubjectManager();
     
     /**
+     * Sets the SubjectManager
      * 
      * @param SubjectManagerInterface $subject
-     * @return $his
+     * @return $this
      */
-    public function add(SubjectManagerInterface $subject);
-    
-    /**
-     * 
-     * @param int|string|SubjectManagerInterface
-     * @return SubjectServiceInterface
-     */
-    public function has($id);
+    public function setSubjectManager(SubjectManagerInterface $subject);
 }

@@ -9,21 +9,16 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Core\Structure;
+namespace Taxonomy\Entity;
 
-abstract class AbstractAdapter implements AdapterInterface
+interface TermTaxonomyEntityInterface
 {
-    protected $adaptee;
-    
-	public function getAdaptee() {
-		return $this->adaptee;
-	}
-	
-	public function setAdaptee($adaptee) {
-		$this->adaptee = $adaptee;
-	}
-
-	public function __construct($adaptee = NULL){
-        $this->adaptee = $adaptee;
-    }
+    public function getParent();
+    public function hasParent();
+    public function getChildren();
+    public function getTerm();
+    public function getDescription();
+    public function setDescription($description);
+    public function setOrder($order);
+    public function getOrder($order);
 }

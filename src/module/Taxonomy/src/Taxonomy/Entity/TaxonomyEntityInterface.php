@@ -9,22 +9,9 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy;
+namespace Taxonomy\Entity;
 
-interface TaxonomyManagerAwareInterface
+interface TaxonomyEntityInterface
 {
-    /**
-     * Sets a TaxonomyManager
-     * 
-     * @param TaxonomyManagerAwareInterface $taxonomyManager
-     * @return $this
-     */
-    public function setTaxonomyManager(TaxonomyManagerAwareInterface $taxonomyManager);
     
-    /**
-     * Gets a SharedTaxonomyManager
-     * 
-     * @return TaxonomyManagerAwareInterface
-     */
-    public function getTaxonomyManager();
 }
