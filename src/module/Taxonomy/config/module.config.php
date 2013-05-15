@@ -5,7 +5,7 @@ return array(
     'di' => array(
         'definition' => array(
             'class' => array(
-                'Taxonomy\TaxonomyManager' => array(
+                'Taxonomy\TermManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -39,7 +39,7 @@ return array(
                 //'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
             	//'SharedTaxonomyManagerInterface' => 'SharedTaxonomyManager'
             ),
-            'Taxonomy\TaxonomyManager' => array(
+            'Taxonomy\TermManager' => array(
                 'shared' => false
             ),
             'Taxonomy\Service\TermService' => array(

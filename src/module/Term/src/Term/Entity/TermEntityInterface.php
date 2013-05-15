@@ -8,5 +8,5 @@ interface TermEntityInterface
     public function getName();
     public function setName($name);
     public function getSlug();
-    public function setSlug();
+    public function setSlug($slug);
 }

@@ -43,11 +43,6 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     protected $subject;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
-     */
-    protected $language;
-
-    /**
      * @return \Doctrine\Common\Collections\ArrayCollection $terms
      */
     public function getTerms ()
@@ -69,14 +64,6 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     public function getFactory ()
     {
         return $this->factory;
-    }
-
-	/**
-     * @return field_type $language
-     */
-    public function getLanguage ()
-    {
-        return $this->language;
     }
 
 	/**
@@ -106,16 +93,6 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     public function setFactory ($factory)
     {
         $this->factory = $factory;
-        return $this;
-    }
-
-	/**
-     * @param field_type $language
-     * @return $this
-     */
-    public function setLanguage ($language)
-    {
-        $this->language = $language;
         return $this;
     }
 

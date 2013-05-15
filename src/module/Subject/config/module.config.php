@@ -12,6 +12,18 @@
 namespace Subject;
 
 return array(
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Mathe',
+                'uri' => '#',
+                'provider' => 'Subject\Provider\SubjectProvider',
+                'options' => array(
+                    'subject' => 'math'
+                )
+            )
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
@@ -39,7 +51,7 @@ return array(
                     ),
                     'setServiceLocator' => array(
                         'required' => 'true'
-                    ),
+                    )
                 ),
                 'Subject\Service\SubjectService' => array(
                     'setObjectManager' => array(
@@ -47,7 +59,7 @@ return array(
                     ),
                     'setServiceLocator' => array(
                         'required' => 'true'
-                    ),
+                    )
                 )
             )
         ),
@@ -76,6 +88,8 @@ return array(
                 )
             )
         )
-    )
+    ),
 );
+
+
 

@@ -20,8 +20,8 @@ interface SharedTaxonomyManagerInterface
 
     /**
      *
-     * @param TaxonomyManagerInterface
+     * @param TermManagerInterface
      * @return $this
      */
-    public function add (TaxonomyManagerInterface $manager);
+    public function add(TermManagerInterface $manager);
 }
