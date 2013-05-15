@@ -60,9 +60,13 @@ abstract class AbstractManagerAndEntityDecorator extends AbstractManager impleme
         $this->concreteComponent = $concreteComponent;
     }
 
-    public function __call($method, $args)
+    public function __call ($method, $args)
     {
-        return call_user_func_array($this->concreteComponent, $method, $args);
+        if(method_exists($this->concreteComponent, $method)){
+            return call_user_func_array(array($this->concreteComponent, $method), $args);
+        } else {
+            throw new \Exception("Method {$method} does not exist in `".get_class($this->concreteComponent)."`");
+        }
     }
 
     public function __construct($concreteComponent)
@@ -87,7 +91,7 @@ abstract class AbstractManagerAndEntityDecorator extends AbstractManager impleme
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->getConcreteComponent();
     }
 
     /**
@@ -100,7 +104,7 @@ abstract class AbstractManagerAndEntityDecorator extends AbstractManager impleme
         if (! is_object($entity))
             throw new \Exception('Not an object.');
         
-        $this->entity = $entity;
+        $this->setConcreteComponent($entity);
         return $this;
     }
 

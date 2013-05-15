@@ -40,18 +40,19 @@ class DynamicNavigationFactory extends AbstractNavigationFactory
      */
     protected function injectComponents(array $pages, RouteMatch $routeMatch = null, Router $router = null)
     {
+        $merge = array();
         foreach ($pages as &$page) {
             $hasMvc = isset($page['action']) || isset($page['controller']) || isset($page['route']);
             if ($hasMvc) {
                 if (! isset($page['routeMatch']) && $routeMatch) {
-                    $page['routeMatch'] = $routeMatch;
+                   $page['routeMatch'] = $routeMatch;
                 }
                 if (! isset($page['router'])) {
                     $page['router'] = $router;
                 }
             }
             
-            if (isset($page['pages'])) {
+            if (isset($page['pages']) && is_array($page['pages'])) {                
                 $page['pages'] = $this->injectComponents($page['pages'], $routeMatch, $router);
             }
 
@@ -70,14 +71,16 @@ class DynamicNavigationFactory extends AbstractNavigationFactory
                     $page['pages'] = $this->injectComponentsFromProvider($provider, $routeMatch, $router);
                 }
                 
-                unset($page['options']);
-                unset($page['provider']);
+                if(isset($page['options']))
+                    unset($page['options']);
+                if(isset($page['provider']))
+                    unset($page['provider']);
             }
         }
         return $pages;
     }
     
-    protected function injectComponentsFromProvider(ProviderInterface $provider, $routeMatch, $router){
+    protected function injectComponentsFromProvider(ProviderInterface $provider,RouteMatch $routeMatch = null, Router $router = null){
         $array = $provider->provideArray();
         $return = $this->injectComponents($array, $routeMatch, $router);
         return $return;

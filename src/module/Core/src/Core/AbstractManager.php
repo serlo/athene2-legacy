@@ -84,8 +84,8 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
         
         if ($this->hasInstance($name)) {
             if($this->instances[$name] !== $instance){
-                $instance = $this->instances[$name];
-                unset($instance);
+                $unsetInstance = $this->instances[$name];
+                unset($unsetInstance);
                 unset($this->instances[$name]);
             } else {
                 return $this;

@@ -20,87 +20,104 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface, ObjectManagerAwareInterface
 {
+
     /**
+     *
      * @var LanguageService
      */
     protected $languageService;
-    
+
     /**
+     *
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $objectManager;
-    
-    protected $defaultOptions = array(
-        'instance' => array(
-            'manages' => 'Taxonomy\TaxonomyManagerInterface',
-            'TaxonomyEntityInterface' => 'Taxonomy\Entity\TaxonomyInterface',
-            'TermManagerInterface' => 'Taxonomy\TermManagerInteface'
+
+    protected $options = array(
+        'instances' => array(
+            'manages' => 'Taxonomy\TermManager',
+            'TaxonomyEntityInterface' => 'Taxonomy\Entity\Taxonomy',
+            'TermManagerInterface' => 'Taxonomy\TermManager'
         )
     );
-    
+
+    public function __construct()
+    {
+        parent::__construct($this->options);
+    }
+
     /**
+     *
      * @return \Core\Service\LanguageService $languageService
      */
-    public function getLanguageService ()
+    public function getLanguageService()
     {
         return $this->languageService;
     }
 
-	/**
-     * @param \Core\Service\LanguageService $languageService
+    /**
+     *
+     * @param \Core\Service\LanguageService $languageService            
      * @return $this
      */
-    public function setLanguageService (LanguageService $languageService)
+    public function setLanguageService(LanguageService $languageService)
     {
         $this->languageService = $languageService;
         return $this;
     }
-
-	/* (non-PHPdoc)
-     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
+    
+    /*
+     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
      */
-    public function getObjectManager ()
+    public function getObjectManager()
     {
         return $this->objectManager;
     }
-
-	/* (non-PHPdoc)
-     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
+    
+    /*
+     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
      */
-    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
+    public function setObjectManager(\Doctrine\Common\Persistence\ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
         return $this;
     }
 
-	public function add(TermManagerInterface $taxonomyManager){
-        $this->addInstance($taxonomyManager->getId(), $taxonomyManager);
-        return $taxonomy->getId();
+    public function add(TermManagerInterface $termManager)
+    {
+        $this->addInstance($termManager->getId(), $termManager);
+        return $termManager->getId();
     }
-    
-    public function get($taxonomy, $languageService = NULL, $subjectService = NULL){
-        if(!$languageService)
-            $languageService = $this->getLanguageService();
-        
+
+    public function get($taxonomy, $subjectService = NULL)
+    {
         $className = $this->resolve('manages');
-        if(is_numeric($taxonomy)){
-            $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'),taxonomy);
+        if (is_numeric($taxonomy)) {
+            $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'), taxonomy);
             $name = $this->add($this->createInstance($entity));
-        } else if (is_string($taxonomy)){ 
-            $entity = $this->getObjectManager()->getRepository($this->resolve('TaxonomyEntityInterface'))->findOneBy(array('name' => taxonomy, 'language' => $languageService->getEntity(), 'subject' => $subjectService->getEntity()));
-            $name = $this->add($this->createInstance($entity));
-        } else if (!$taxonomy instanceof $className) {
-            $name = $this->add($taxonomy);
-        } else {
+        } else 
+            if (is_string($taxonomy)) {
+                $entity = $this->getObjectManager()
+                    ->getRepository($this->resolve('TaxonomyEntityInterface'))
+                    ->findOneBy(array(
+                    'name' => $taxonomy,
+                    //'subject' => $subjectService ? $subjectService->getEntity() : $subjectService
+                ));
+                $name = $this->add($this->createInstance($entity));
+            } else 
+                if (! $taxonomy instanceof $className) {
+                    $name = $this->add($taxonomy);
+                } else {
+                    throw new \Exception();
+                }
+        if (! $this->hasInstance($name)) {
             throw new \Exception();
-        }
-        if(!$this->hasInstance($taxonomy)){
-            throw new \Exception();            
         }
         return $this->getInstance($name);
     }
-    
-    protected function createInstance($entity){
+
+    protected function createInstance($entity)
+    {
         $instance = parent::createInstance();
         $instance->setEntity($entity);
         return $instance;

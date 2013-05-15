@@ -22,6 +22,7 @@ return array(
     	'Navigation',
     	'Link',
         'Subject',
+        'Term',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Factory\FactoryInterface;
 
-class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface
+class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
 {
 
     /**
@@ -30,21 +30,24 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     protected $termManager;
 
     protected $allowedLinks = array();
-    
-    public function getAllowedLinks(){
-        return $this->allowedLinks;
-    }
+
     /**
      *
      * @var FactoryInterface
      */
     protected $factory;
+
+    protected $options = array(
+        'instances' => array(
+            'manages' => 'Term\Service\TermServiceInterface',
+            'TermEntityInterface' => 'Term\Entity\TermTaxonomy'
+        )
+    );
     
 
-    protected $defaultOptions = array(
-        'manages' => 'Term\Service\TermServiceInterface',
-        'TermEntityInterface' => 'Term\Entity\TermTaxonomy'
-    );
+    public function __construct(){
+        parent::__construct($this->options);
+    }
     
     /*
      * (non-PHPdoc) @see \Term\Manager\TermManagerAwareInterface::getTermManager()
@@ -85,7 +88,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
             $id = $this->add($term);
         } elseif ($term instanceof Collection) {
             $return = array();
-            foreach($term as $entity){
+            foreach ($term as $entity) {
                 $return[] = $this->get($entity);
             }
             return $return;
@@ -131,7 +134,9 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
 					taxonomy.id = " . $this->getId() . "
 				AND term0.slug = '" . $root . "'
 					" . $where . "";
-        $query = $this->getEntityManager()->createQuery($query)->setMaxResults(1);
+        $query = $this->getEntityManager()
+            ->createQuery($query)
+            ->setMaxResults(1);
         
         echo $query->getSQL();
         die(TermManager);
@@ -160,15 +165,16 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         $instance->setENtity($entity);
         return $instance;
     }
-    
-    public function getAllowedLinks(){
+
+    public function getAllowedLinks()
+    {
         return $this->allowedLinks;
     }
     
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::enableLink()
      */
-    public function enableLink($targetField, \Closure $callback)
+    public function enableLink($targetField,\Closure $callback)
     {
         $this->allowedLinks[$targetField] = $callback;
         return $this;
@@ -181,30 +187,30 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     {
         return isset($this->allowedLinks[$targetField]);
     }
-    
+
     public function build()
     {
         // read factory class from db
         $factoryClassName = $this->getEntity()->getFactory();
-    
+        
         if (! $factoryClassName)
             throw new \Exception('Factory not set');
-    
+        
         $factoryClassName = $factoryClassName->get('className');
         if (substr($factoryClassName, 0, 1) != '\\') {
             $factoryClassName = '\\Taxonomy\\Factory\\' . $factoryClassName;
         }
-    
+        
         if (! class_exists($factoryClassName))
             throw new \Exception('Something somewhere went terribly wrong.');
-    
+        
         $factory = new $factoryClassName();
         if (! $factory instanceof FactoryInterface)
             throw new \Exception('Something somewhere went terribly wrong.');
-    
+        
         $factory->build($this);
         $this->setFactory($factory);
-    
+        
         return $this;
     }
 }

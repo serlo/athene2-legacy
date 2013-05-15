@@ -15,7 +15,7 @@ return array(
         'may_terminate' => true,
         'type' => 'Zend\Mvc\Router\Http\Segment',
         'options' => array(
-            'route' => '/math[/]',
+            'route' => 'math[/]',
             'defaults' => array(
                 'controller' => 'Subject\Math\Controller\IndexController',
                 'action' => 'index'
