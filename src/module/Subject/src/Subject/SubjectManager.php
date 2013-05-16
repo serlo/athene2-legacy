@@ -86,9 +86,14 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface,
         return $this;
     }
     
+    public function getSubjectFromRequest(){
+        
+    }
+    
     protected function createInstance($entity){
         $instance = parent::createInstance();
         $instance->setEntity($entity);
+        $instance = $instance->build();
         return $instance;
     }
 }

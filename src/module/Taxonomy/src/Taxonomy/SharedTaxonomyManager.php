@@ -92,6 +92,8 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     public function get($taxonomy, $subjectService = NULL)
     {
         $className = $this->resolve('manages');
+        $entityClassName = $this->resolve('TaxonomyEntityInterface');
+        
         if (is_numeric($taxonomy)) {
             $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'), taxonomy);
             $name = $this->add($this->createInstance($entity));
@@ -105,8 +107,10 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
                 ));
                 $name = $this->add($this->createInstance($entity));
             } else 
-                if (! $taxonomy instanceof $className) {
+                if ( $taxonomy instanceof $className) {
                     $name = $this->add($taxonomy);
+                } elseif ($taxonomy instanceof $entityClassName) {
+                    $name = $this->add($this->createInstance($taxonomy));
                 } else {
                     throw new \Exception();
                 }

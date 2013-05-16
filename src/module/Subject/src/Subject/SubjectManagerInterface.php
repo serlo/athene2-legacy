@@ -39,6 +39,7 @@ interface SubjectManagerInterface
     public function has($id);
     
     /**
+     * 
      * @return array
      */
     public function getAllSubjects();

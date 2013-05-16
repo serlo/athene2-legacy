@@ -18,7 +18,8 @@ return array(
             'route' => 'math[/]',
             'defaults' => array(
                 'controller' => 'Subject\Math\Controller\IndexController',
-                'action' => 'index'
+                'action' => 'index',
+                'subject' => 'math'
             )
         ),
         'child_routes' => array(
@@ -28,7 +29,7 @@ return array(
                 'options' => array(
                     'route' => 'topic/:path',
                     'defaults' => array(
-                        'controller' => 'Subject\Math\Controller\TopicController',
+                        'controller' => 'Subject\Application\DefaultSubject\Controller\TopicController',
                         'action' => 'index'
                     ),
                     'constraints' => array(

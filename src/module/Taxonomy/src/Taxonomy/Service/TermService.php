@@ -8,7 +8,6 @@
  */
 namespace Taxonomy\Service;
 
-use Taxonomy\TaxonomyManagerInterface;
 use Core\Entity\EntityInterface;
 use Taxonomy\Exception\LinkNotAllowedException;
 use Core\Service\AbstractEntityDecorator;
@@ -122,18 +121,5 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     {
         if (! $this->linkAllowed($targetField))
             throw new LinkNotAllowedException();
-    }
-    
-    public function getPath(){
-        $path = array();
-        $term = $this;
-        $exit = false;
-        while(!$exit){
-            $exit = !$term->hasParent();
-            $path[] = $term->getSlug();
-            if($exit) break;
-            $term = $term->getParent();
-        }
-        return array_reverse($path);
     }
 }

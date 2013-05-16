@@ -9,10 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Applications\DefaultSubject;
+namespace Subject\Application\DefaultSubject;
 
-use Subject\Applications\FactoryInterface;
+use Subject\Application\Decorator\DecoratorInterface;
+use Subject\Application\Decorator\AbstractDecorator;
 
-class Factory implements FactoryInterface
+class Decorator extends AbstractDecorator implements DecoratorInterface
 {
+    
 }

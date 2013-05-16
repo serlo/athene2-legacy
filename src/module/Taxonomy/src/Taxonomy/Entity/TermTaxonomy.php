@@ -231,4 +231,17 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     {
         $this->children = new ArrayCollection();
     }
+    
+    public function getPath(){
+        $path = array();
+        $term = $this;
+        $exit = false;
+        while(!$exit){
+            $exit = !$term->hasParent();
+            $path[] = $term->getSlug();
+            if($exit) break;
+            $term = $term->getParent();
+        }
+        return array_reverse($path);
+    }
 }

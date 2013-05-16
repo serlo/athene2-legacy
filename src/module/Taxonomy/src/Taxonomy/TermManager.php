@@ -19,6 +19,8 @@ use Taxonomy\Entity\TaxonomyEntityInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Factory\FactoryInterface;
+use Term\Entity\TermEntityInterface;
+use Taxonomy\Entity\TermTaxonomyEntityInterface;
 
 class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
 {
@@ -39,7 +41,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
 
     protected $options = array(
         'instances' => array(
-            'manages' => 'Term\Service\TermServiceInterface',
+            'manages' => 'Taxonomy\Service\TermService',
             'TermEntityInterface' => 'Term\Entity\TermTaxonomy'
         )
     );
@@ -98,7 +100,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         return $this->getInstance($id);
     }
 
-    protected function getTermByPath(array $path)
+    protected function getEntityByPath(array $path)
     {
         if (! isset($path[0]))
             throw new \InvalidArgumentException('Path requires at least one element');
@@ -134,12 +136,9 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
 					taxonomy.id = " . $this->getId() . "
 				AND term0.slug = '" . $root . "'
 					" . $where . "";
-        $query = $this->getEntityManager()
+        $query = $this->getObjectManager()
             ->createQuery($query)
             ->setMaxResults(1);
-        
-        echo $query->getSQL();
-        die(TermManager);
         
         $result = current($query->getResult());
         
@@ -159,10 +158,10 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         return $termService->getId();
     }
 
-    public function createInstance(TaxonomyEntityInterface $entity)
+    public function createInstance(TermTaxonomyEntityInterface $entity)
     {
-        $instance = parent::construct();
-        $instance->setENtity($entity);
+        $instance = parent::createInstance();
+        $instance->setEntity($entity);
         return $instance;
     }
 

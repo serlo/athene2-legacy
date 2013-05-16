@@ -68,12 +68,7 @@ abstract class AbstractManagerAndEntityDecorator extends AbstractManager impleme
             throw new \Exception("Method {$method} does not exist in `".get_class($this->concreteComponent)."`");
         }
     }
-
-    public function __construct($concreteComponent)
-    {
-        $this->concreteComponent = $concreteComponent;
-    }
-
+    
     public function providesMethod($method)
     {
         if (method_exists($this, $method)) {
