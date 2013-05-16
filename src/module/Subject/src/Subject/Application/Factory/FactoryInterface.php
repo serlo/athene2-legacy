@@ -9,23 +9,15 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Term\Manager;
+namespace Subject\Application\Factory;
 
-use Term\Service\TermServiceInterface;
+use Subject\Service\SubjectServiceInterface;
 
-interface TermManagerInterface
+interface FactoryInterface
 {
     /**
-     * 
-     * @param TermServiceInterface $termService
-     * @return $this
+     * @param SubjectServiceInterface $subjectService
+     * @return DecoratorInterface
      */
-    public function add(TermServiceInterface $termService);
-
-    /**
-     * 
-     * @param TermServiceInterface|int|string $term
-     * @return TermServiceInterface
-     */
-    public function get($term);
+    public function build(SubjectServiceInterface $subjectService);
 }

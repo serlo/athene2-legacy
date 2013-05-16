@@ -30,8 +30,24 @@ return array(
         )
     ),
     'di' => array(
+        'allowed_controllers' => array(
+            'Subject\Application\DefaultSubject\Controller\TopicController'
+        ),
         'definition' => array(
             'class' => array(
+                /*
+                 * Controller
+                 *  .DefaultSubject
+                 */
+                'Subject\Application\DefaultSubject\Controller\TopicController' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                
+                /*
+                 * Core
+                 */
                 'Subject\Hydrator\RouteStack' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
@@ -59,7 +75,16 @@ return array(
                     ),
                     'setServiceLocator' => array(
                         'required' => 'true'
-                    )
+                    ),
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    ),
                 )
             )
         ),
@@ -88,7 +113,7 @@ return array(
                 )
             )
         )
-    ),
+    )
 );
 
 

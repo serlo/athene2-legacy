@@ -9,22 +9,27 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Math\Controller;
+namespace Subject\Application\DefaultSubject\Controller;
 
 use Zend\View\Model\ViewModel;
-use Subject\Core\Controller\AbstractSubjectController;
-use Subject\Controller\AbstractServiceAwareController;
+use Subject\Controller\AbstractController;
 
-class TopicController extends AbstractServiceAwareController {
+class TopicController extends AbstractController {
     public function indexAction(){
-        $tm = $this->getSharedTaxonomyManager()->get('topic');
+        
+        $subjectService = $this->getSubjectService();
+        //$view = new ViewModel;
+        
+        //$subjectService->getTopics();
+        //;
+        
+/*        $tm = $this->getSharedTaxonomyManager()->get('topic');
         $path = explode('/', $this->getParam('path'));
         $term = $tm->getTerm($path);
-        
-        
+        */
         $view = new ViewModel(array(
-            'topics' => $term->getChildren(),
-            'topic' => $term,
+            'topics' =>  $subjectService->getTopics(),
+            'topic' => $subjectService->getTopic(explode('/', $this->getParam('path'))),
         ));
 
         /*if($term->linkingAllowed('entities')){

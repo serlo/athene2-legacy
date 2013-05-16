@@ -40,6 +40,11 @@ class Term extends AbstractEntity implements TermEntityInterface
     protected $slug;
 
     /**
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="term")
+     */
+    private $termTaxonomies;
+
+    /**
      *
      * @return field_type $language
      */

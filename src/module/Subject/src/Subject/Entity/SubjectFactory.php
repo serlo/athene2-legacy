@@ -22,13 +22,53 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SubjectFactory extends AbstractEntity
 {
-    /**
-     * @ORM\Column(type="text",length=255)
-     */
+	/** @ORM\Column(type="text",length=255,name="class_name") */
     protected $name;
     
     /**
      * @ORM\OneToMany(targetEntity="Subject", mappedBy="factory")
      **/
     protected $subjects;
+
+    public function __construct()
+    {
+        $this->subjects = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+	/**
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+	/**
+     * @return field_type $subjects
+     */
+    public function getSubjects ()
+    {
+        return $this->subjects;
+    }
+
+	/**
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+	/**
+     * @param field_type $subjects
+     * @return $this
+     */
+    public function setSubjects ($subjects)
+    {
+        $this->subjects = $subjects;
+        return $this;
+    }
+
 }

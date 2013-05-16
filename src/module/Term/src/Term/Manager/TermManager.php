@@ -11,7 +11,7 @@
  */
 namespace Term\Manager;
 
-use Taxonomy\Service\TermServiceInterface;
+use Term\Service\TermServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Core\AbstractManager;
 use Term\Exception\TermNotFoundException;

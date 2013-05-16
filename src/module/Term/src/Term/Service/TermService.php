@@ -11,8 +11,8 @@
  */
 namespace Term\Service;
 
-use Core\Service\AbstractEntityFacade;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Core\Service\AbstractEntityDecorator;
 
 class TermService extends AbstractEntityDecorator implements TermServiceInterface, ObjectManagerAwareInterface
 {

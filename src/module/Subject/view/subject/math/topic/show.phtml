@@ -21,7 +21,7 @@ foreach ($topics as $topic) {
 		<div class="accordion-heading">
     		<?php if(1 != 0){ /* $children->count() */?>
     			<a class="accordion-toggle"
-				href="<?php echo $this->url('math/topic', array('path' => implode('/', $topic->getPath()))); ?>"><?php echo $topic->getName(); ?></a>
+				href="<?php echo $this->url('subject/math/topic', array('path' => implode('/', $topic->getPath()))); ?>"><?php echo $topic->getName(); ?></a>
             <?php } else {?>
 			<a class="accordion-toggle" data-toggle="collapse"
 				data-parent="#accordion"
@@ -35,7 +35,7 @@ foreach ($topics as $topic) {
 			class="accordion-body collapse in">
 			<div class="accordion-inner">
 				<a class="accordion-toggle"
-					href="<?php echo $this->url('math/topic', array('path' => implode('/', $child->getPath()))); ?>"><?php echo $child->getName(); ?></a>
+					href="<?php echo $this->url('subject/math/topic', array('path' => implode('/', $child->getPath()))); ?>"><?php echo $child->getName(); ?></a>
 			</div>
 		</div>
         <?php
