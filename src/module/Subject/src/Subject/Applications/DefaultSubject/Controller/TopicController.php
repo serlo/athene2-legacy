@@ -13,10 +13,11 @@ namespace Subject\Math\Controller;
 
 use Zend\View\Model\ViewModel;
 use Subject\Core\Controller\AbstractSubjectController;
+use Subject\Controller\AbstractServiceAwareController;
 
-class TopicController extends AbstractSubjectController {
+class TopicController extends AbstractServiceAwareController {
     public function indexAction(){
-        $tm = $this->getSharedTaxonomyManager()->get('math:topic');
+        $tm = $this->getSharedTaxonomyManager()->get('topic');
         $path = explode('/', $this->getParam('path'));
         $term = $tm->getTerm($path);
         
@@ -26,9 +27,9 @@ class TopicController extends AbstractSubjectController {
             'topic' => $term,
         ));
 
-        if($term->linkingAllowed('entities')){
+        /*if($term->linkingAllowed('entities')){
             $view->setVariable('entities', $term->getLinks('entities'));
-        }
+        }*/
         
         $view->setTemplate('subject/math/topic/show');
         return $view;

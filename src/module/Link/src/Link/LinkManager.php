@@ -13,13 +13,13 @@ class LinkManager extends AbstractManager implements LinkManagerInterface, Servi
 	/**
 	 * @var ServiceLocatorInterface
 	 */
-	protected $_serviceLocator;
+	protected $serviceLocator;
 	
 	/* (non-PHPdoc)
 	 * @see \Link\LinkManagerInterface::get()
 	 */
 	public function get($id) {
-		return $this->_getInstance($id);
+		return $this->getInstance($id);
 	}
 
 	public function create(LinkEntityInterface $entity){
@@ -39,7 +39,7 @@ class LinkManager extends AbstractManager implements LinkManagerInterface, Servi
 	 * @see \Link\LinkManagerInterface::add()
 	 */
 	public function add(LinkServiceInterface $linkService) {
-		$this->_addInstance($linkService->getId(), $linkService);
+		$this->addInstance($linkService->getId(), $linkService);
 		return $this;
 	}
 
@@ -47,14 +47,14 @@ class LinkManager extends AbstractManager implements LinkManagerInterface, Servi
 	 * @see \Link\LinkManagerInterface::has()
 	 */
 	public function has($name) {
-		return $this->_hasInstance($name);
+		return $this->hasInstance($name);
 	}
 	
 	/* (non-PHPdoc)
 	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
 	 */
 	public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
-		$this->_serviceLocator = $serviceLocator;
+		$this->serviceLocator = $serviceLocator;
 		return $this;
 	}
 
@@ -62,6 +62,6 @@ class LinkManager extends AbstractManager implements LinkManagerInterface, Servi
 	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
 	 */
 	public function getServiceLocator() {
-		return $this->_serviceLocator;
+		return $this->serviceLocator;
 	}
 }

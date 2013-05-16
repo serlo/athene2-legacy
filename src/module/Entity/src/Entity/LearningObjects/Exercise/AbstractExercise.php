@@ -32,11 +32,11 @@ abstract class AbstractExercise extends AbstractEntityBuilder implements Subject
         //->addRenderComponent('some/file/torender')
         //->addSubjectComponent();
         
-    	$subject = new SubjectComponent($this->getSource());
-    	$this->_subject = $subject->build();
+    	//$subject = new SubjectComponent($this->getSource());
+    	//$this->_subject = $subject->build();
     	
-    	$topic = new TopicComponent($this->getSource());
-    	$this->_topic = $topic->build();
+    	//$topic = new TopicComponent($this->getSource());
+    	//$this->_topic = $topic->build();
     	
     	$link = new LinkComponent($this->getSource());
     	$this->_link = $link->build();
