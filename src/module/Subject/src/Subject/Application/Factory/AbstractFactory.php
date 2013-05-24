@@ -12,12 +12,12 @@
 namespace Subject\Application\Factory;
 
 use Subject\Service\SubjectServiceInterface;
-use Subject\Application\Decorator\DecoratorInterface;
+use Core\Structure\GraphDecorator;
 
 class AbstractFactory
 {
-    public function build(DecoratorInterface $decorator, SubjectServiceInterface $subjectService){
-        if($subjectService instanceof DecoratorInterface)
+    public function build(GraphDecorator $decorator, SubjectServiceInterface $subjectService){
+        if($subjectService instanceof GraphDecorator)
             throw new \Exception('Ouch, this could get really really messy. Stop whatever you are doing and go to bed.');
             
         $decorator->setConcreteComponent($subjectService);

@@ -12,7 +12,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Entity\EntityManagerInterface;
 use Zend\View\Model\ViewModel;
 use Entity\Factory\EntityBuilderInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Versioning\Entity\RevisionInterface;
 use Versioning\Exception\RevisionNotFoundException;
 
@@ -29,7 +28,7 @@ abstract class AbstractController extends AbstractActionController
      *
      * @return EntityManagerInterface $_entityManager
      */
-    public function getEntityManager()
+    public function getEntityManager ()
     {
         return $this->_entityManager;
     }
@@ -39,27 +38,27 @@ abstract class AbstractController extends AbstractActionController
      * @param EntityManagerInterface $_entityManager            
      * @return $this
      */
-    public function setEntityManager(EntityManagerInterface $_entityManager)
+    public function setEntityManager (EntityManagerInterface $_entityManager)
     {
         $this->_entityManager = $_entityManager;
         return $this;
     }
 
-    protected abstract function _getAllowedEntityFactories();
+    protected abstract function _getAllowedEntityFactories ();
 
-    public function indexAction()
+    public function indexAction ()
     {
         return $this->receiveAction();
     }
 
-    protected function _getEntity()
+    protected function getEntity ()
     {
         $id = $this->getParam('id');
         $entity = $this->getEntityManager()->get($id);
         $controllerName = $this->params('controller');
         $actionName = $this->params('action');
         
-        if (! in_array($entity->getFactoryClassName(), $this->_getAllowedEntityFactories())) {
+        if (! in_array(get_class($entity), $this->_getAllowedEntityFactories())) {
             // $this->redirect()->toRoute(get_class($entity),array('action' => $actionName, 'id' => $entity->getId()));
             throw new \Exception('This controller can\'t handle the requested entity.');
         }
@@ -67,14 +66,14 @@ abstract class AbstractController extends AbstractActionController
         return $entity;
     }
 
-    protected function _commitRevision(EntityBuilderInterface $entity)
+    protected function commitRevision (EntityBuilderInterface $entity)
     {
         $form = $entity->getForm();
         $form->setData($this->getRequest()
             ->getPost());
         if ($form->isValid()) {
             $data = $form->getData();
-            $entity->getRepositoryComponent()->commitRevision($data['revision']);
+            $entity->getRepository()->commitRevision($data['revision']);
             
             $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
             $this->redirect()->toRoute(get_class($entity), array(
@@ -84,12 +83,12 @@ abstract class AbstractController extends AbstractActionController
         }
     }
 
-    protected abstract function _getRevisionView(RevisionInterface $revision = NULL);
+    protected abstract function _getRevisionView (RevisionInterface $revision = NULL);
 
-    public function showRevisionAction()
+    public function showRevisionAction ()
     {
-        $entity = $this->_getEntity();
-        $repository = $entity->getRepositoryComponent();
+        $entity = $this->getEntity();
+        $repository = $entity->getRepository();
         $revision = $this->_getRevision($this->getParam('revisionId'), false);
         $currentRevision = $this->_getRevision();
         
@@ -111,12 +110,11 @@ abstract class AbstractController extends AbstractActionController
         return $view;
     }
 
-    public function historyAction()
+    public function historyAction ()
     {
-        $entity = $this->_getEntity();
-        $rc = $entity->getRepositoryComponent();
+        $entity = $this->getEntity();
         try {
-            $currentRevision = $rc->getCurrentRevision();
+            $currentRevision = $entity->getCurrentRevision();
         } catch (RevisionNotFoundException $e) {
             $currentRevision = NULL;
         }
@@ -127,14 +125,16 @@ abstract class AbstractController extends AbstractActionController
         $revisions = array();
         
         $repository->setTemplate('entity/learning-objects/core/repository');
-        $repository->setVariable('revisions', $rc->getAllRevisions());
-        $repository->setVariable('trashedRevisions', $rc->getTrashedRevisions());
+        $repository->setVariable('revisions', $entity->getAllRevisions());
+        
+        $repository->setVariable('trashedRevisions', $entity->getTrashedRevisions());
         return $repository;
     }
 
-    protected function _getRevision($id = NULL, $catch = TRUE)
+    protected function _getRevision ($id = NULL, $catch = TRUE)
     {
-        $repository = $this->_getEntity()->getRepositoryComponent();
+        $entity = $this->getEntity();
+        $repository = $entity;
         if ($catch) {
             try {
                 if ($id === NULL) {
@@ -154,10 +154,11 @@ abstract class AbstractController extends AbstractActionController
         }
     }
 
-    public function checkoutAction()
+    public function checkoutAction ()
     {
-        $entity = $this->_getEntity();
-        $repository = $entity->getRepositoryComponent();
+        $entity = $this->getEntity();
+        $entity = $this->getEntity();
+        $repository = $entity;
         $repository->checkout($this->getParam('revisionId'));
         $this->redirect()->toRoute(get_class($entity), array(
             'action' => 'history',
@@ -165,27 +166,31 @@ abstract class AbstractController extends AbstractActionController
         ));
     }
 
-    public function showAction()
+    public function showAction ()
     {
-        $entity = $this->_getEntity();
+        $entity = $this->getEntity();
+        $entity = $this->getEntity();
         return $entity->toViewModel();
     }
-    
-    public function purgeRevisionAction(){
-        $entity = $this->_getEntity();
-        $entity->getRepositoryComponent()->removeRevision($this->getParam('revisionId'));
+
+    public function purgeRevisionAction ()
+    {
+        $entity = $this->getEntity();
+        $entity = $this->getEntity();
+        $entity->removeRevision($this->getParam('revisionId'));
         $this->redirect()->toRoute(get_class($entity), array(
             'action' => 'history',
             'id' => $entity->getId()
-        ));        
+        ));
     }
-    
-    public function trashRevisionAction(){
-        $entity = $this->_getEntity();
-        $entity->getRepositoryComponent()->trashRevision($this->getParam('revisionId'));
+
+    public function trashRevisionAction ()
+    {
+        $entity = $this->getEntity();
+        $entity->trashRevision($this->getParam('revisionId'));
         $this->redirect()->toRoute(get_class($entity), array(
             'action' => 'history',
             'id' => $entity->getId()
-        ));              
+        ));
     }
 }

@@ -9,12 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Application\Decorator;
+namespace Core\Structure;
 
-use Subject\Service\SubjectServiceInterface;
-use Subject\Application\Component\ComponentInterface;
+use Core\Component\ComponentInterface;
 
-abstract class AbstractDecorator implements SubjectServiceInterface
+class GraphDecorator
 {
     protected $components;
     
@@ -30,7 +29,7 @@ abstract class AbstractDecorator implements SubjectServiceInterface
 	/**
 	 * @param field_type $concreteComponent
 	 */
-	public function setConcreteComponent(SubjectServiceInterface $concreteComponent) {
+	public function setConcreteComponent($concreteComponent) {
 		$this->concreteComponent = $concreteComponent;
 		return $this;
 	}
@@ -86,7 +85,11 @@ abstract class AbstractDecorator implements SubjectServiceInterface
         return false;
     }
     
-    public function isImplementing($classname){
-        // @TODO
+    public function isInstanceOf($object){
+        $return = ($this instanceof $object) || ($this->concreteComponent instanceof $object);
+        foreach($this->components as $component){
+            $return = $return || $component instanceof $object;
+        }
+        return $return;
     }
 }

@@ -27,7 +27,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Entity\Factory\EntityFactory' => array(
+                'Entity\Service\EntityService' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -81,7 +81,7 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'Entity\LearningObjects\Exercise\TextExercise' => array(
+            'Entity\LearningObjects\Exercise\TextExerciseDecorator' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route' => '/entity/exercise/text/:action/:id[/:revisionId]',

@@ -1,4 +1,14 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Entity\Entity;
 
 use Core\Entity\AbstractEntity;
@@ -12,7 +22,7 @@ use Link\Entity\LinkEntityInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityInterface
+class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
 
     /**
@@ -79,7 +89,145 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
      */
     protected $slug;
 
-    public function __construct()
+    /**
+     * @return field_type $currentRevision
+     */
+    public function getCurrentRevision ()
+    {
+        return $this->currentRevision;
+    }
+
+	/**
+     * @return field_type $factory
+     */
+    public function getFactory ()
+    {
+        return $this->factory;
+    }
+
+	/**
+     * @return field_type $language
+     */
+    public function getLanguage ()
+    {
+        return $this->language;
+    }
+
+	/**
+     * @return field_type $date
+     */
+    public function getDate ()
+    {
+        return $this->date;
+    }
+
+	/**
+     * @return field_type $killed
+     */
+    public function getKilled ()
+    {
+        return $this->killed;
+    }
+
+	/**
+     * @return field_type $slug
+     */
+    public function getSlug ()
+    {
+        return $this->slug;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $parents
+     * @return $this
+     */
+    public function setParents ($parents)
+    {
+        $this->parents = $parents;
+        return $this;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $children
+     * @return $this
+     */
+    public function setChildren ($children)
+    {
+        $this->children = $children;
+        return $this;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $revisions
+     * @return $this
+     */
+    public function setRevisions ($revisions)
+    {
+        $this->revisions = $revisions;
+        return $this;
+    }
+
+	/**
+     * @param field_type $currentRevision
+     * @return $this
+     */
+    public function setCurrentRevision ($currentRevision)
+    {
+        $this->currentRevision = $currentRevision;
+        return $this;
+    }
+
+	/**
+     * @param field_type $factory
+     * @return $this
+     */
+    public function setFactory ($factory)
+    {
+        $this->factory = $factory;
+        return $this;
+    }
+
+	/**
+     * @param field_type $language
+     * @return $this
+     */
+    public function setLanguage ($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+	/**
+     * @param field_type $date
+     * @return $this
+     */
+    public function setDate ($date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+	/**
+     * @param field_type $killed
+     * @return $this
+     */
+    public function setKilled ($killed)
+    {
+        $this->killed = $killed;
+        return $this;
+    }
+
+	/**
+     * @param field_type $slug
+     * @return $this
+     */
+    public function setSlug ($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+	public function __construct()
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();

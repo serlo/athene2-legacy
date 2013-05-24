@@ -55,5 +55,5 @@ interface RevisionInterface extends EntityInterface
      * @param EntityInterface $user
      * @return $this
      */
-    public function setAuthor(EntityInterface $user);
+    public function setAuthor($user);
 }

@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RepositoryInterface;
-use Core\Entity\EntityInterface;
 
 /**
  * An entity link.
@@ -77,7 +76,7 @@ class Revision extends AbstractEntity implements RevisionInterface
      * @param field_type $author            
      * @return $this
      */
-    public function setAuthor(EntityInterface $author)
+    public function setAuthor($author)
     {
         $this->author = $author;
         return $this;

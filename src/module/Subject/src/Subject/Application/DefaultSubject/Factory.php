@@ -21,7 +21,7 @@ class Factory extends AbstractFactory
      * 
      * @param SubjectServiceInterface $subjectService
      * @throws \InvalidArgumentException
-     * @returns Decorator;
+     * @returns SubjectServiceInterface;
      */
     public function build(SubjectServiceInterface $subjectService){        
         $decorator = new Decorator();

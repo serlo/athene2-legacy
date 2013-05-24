@@ -12,12 +12,13 @@
 namespace Subject\Application\Factory;
 
 use Subject\Service\SubjectServiceInterface;
+use Core\Structure\GraphDecorator;
 
 interface FactoryInterface
 {
     /**
-     * @param SubjectServiceInterface $subjectService
-     * @return DecoratorInterface
+     * @param GraphDecorator $subjectService
+     * @return GraphDecorator
      */
-    public function build(SubjectServiceInterface $subjectService);
+    public function build(GraphDecorator $subjectService);
 }

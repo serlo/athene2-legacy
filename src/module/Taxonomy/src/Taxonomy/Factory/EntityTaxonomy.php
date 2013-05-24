@@ -8,20 +8,20 @@
  */
 namespace Taxonomy\Factory;
 
-use Taxonomy\TaxonomyManagerInterface;
-use Core\Structure\AbstractAdapter;
+use Taxonomy\Service\TermServiceInterface;
+use Core\Structure\AbstractDecorator;
 
-abstract class EntityTaxonomy extends AbstractAdapter implements FactoryInterface
+abstract class EntityTaxonomy extends AbstractDecorator implements FactoryInterface
 {
     /*
      * (non-PHPdoc) @see \Taxonomy\Factory\FactoryInterface::build()
      */
-    public function build (TaxonomyManagerInterface $adaptee)
+    public function build (TermServiceInterface $adaptee)
     {
-        $this->setAdaptee($adaptee);
+        $this->setConcreteComponent($adaptee);
         $sm = $this->getServiceLocator();
         $em = $sm->get('Entity\EntityManager');
-        $this->getAdaptee()->enableLink('entities', function ($entity) use($em)
+        $this->enableLink('entities', function ($entity) use($em)
         {
             return $em->get($entity);
         });
@@ -31,5 +31,14 @@ abstract class EntityTaxonomy extends AbstractAdapter implements FactoryInterfac
     public function getServiceLocator ()
     {
         return $this->getAdaptee()->getServiceLocator();
+    }
+    
+    public function getEntities(){
+        return $this->getLinks('entities');
+    }
+    
+    public function addEntity($entity){
+        $this->addLink('entities',$entity);
+        return $this;
     }
 }

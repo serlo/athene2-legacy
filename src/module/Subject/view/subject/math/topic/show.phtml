@@ -32,7 +32,7 @@ foreach ($topics as $topic) {
     foreach ($children as $child) {
         ?> 
 		<div id="collapse<?php echo $topic->getId(); ?>"
-			class="accordion-body collapse in">1
+			class="accordion-body collapse in">
 			<div class="accordion-inner">
 				<a class="accordion-toggle"
 					href="<?php echo $this->url('subject/math/topic', array('path' => implode('/', $child->getPath()))); ?>"><?php echo $child->getName(); ?></a>
