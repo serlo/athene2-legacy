@@ -19,7 +19,7 @@ class TextExerciseController extends AbstractController
     protected function _getAllowedEntityFactories()
     {
         return array(
-            'Exercise\TextExercise'
+            'Entity\LearningObjects\Exercise\TextExerciseDecorator'
         );
     }
     
@@ -46,7 +46,7 @@ class TextExerciseController extends AbstractController
         $view->setVariable('form', $entity->getForm());
         
         if ($this->getRequest()->isPost()) {
-            $this->_commitRevision($entity);
+            $this->commitRevision($entity);
         }
         
         return $view;

@@ -27,9 +27,10 @@ class TopicController extends AbstractController {
         $path = explode('/', $this->getParam('path'));
         $term = $tm->getTerm($path);
         */
+        $topic = $subjectService->getTopic(explode('/', $this->getParam('path')));
         $view = new ViewModel(array(
-            'topics' =>  $subjectService->getTopics(),
-            'topic' => $subjectService->getTopic(explode('/', $this->getParam('path'))),
+            'topics' =>  $topic->getChildren(),
+            'topic' => $topic,
         ));
 
         /*if($term->linkingAllowed('entities')){

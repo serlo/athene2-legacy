@@ -23,4 +23,40 @@ class Factory extends AbstractEntity {
     public function __construct() {
         $this->entities = new \Doctrine\Common\Collections\ArrayCollection();
     }
+	/**
+     * @return \Doctrine\Common\Collections\ArrayCollection $entities
+     */
+    public function getEntities ()
+    {
+        return $this->entities;
+    }
+
+	/**
+     * @return field_type $className
+     */
+    public function getName ()
+    {
+        return $this->className;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $entities
+     * @return $this
+     */
+    public function setEntities ($entities)
+    {
+        $this->entities = $entities;
+        return $this;
+    }
+
+	/**
+     * @param field_type $className
+     * @return $this
+     */
+    public function setName ($className)
+    {
+        $this->className = $className;
+        return $this;
+    }
+
 }

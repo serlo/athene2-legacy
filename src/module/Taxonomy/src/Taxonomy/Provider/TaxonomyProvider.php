@@ -9,13 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Navigation\Provider;
+namespace Taxonomy\Provider;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Taxonomy\TaxonomyManagerInterface;
 use Doctrine\ORM\EntityManager;
-use Taxonomy\Service\TermServiceInterface;
 use Doctrine\Common\Collections\Criteria;
+use Navigation\Provider\ProviderInterface;
 
 
 class TaxonomyProvider implements ProviderInterface
@@ -58,10 +58,13 @@ class TaxonomyProvider implements ProviderInterface
     
     public function provideArray($maxDepth = 1){
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("parent", NULL))
+            ->where(Criteria::expr()->isNull("parent"))
             ->setFirstResult(0)
             ->setMaxResults(20);
-        $terms = $this->taxonomyManager->getTerms();
+        if($this->entityManager->isOpen())
+            $this->entityManager->refresh($this->taxonomyManager->getEntity());
+        
+        $terms = $this->taxonomyManager->getTerms()->matching($criteria);
         $return = $this->_iterTerms($terms, $maxDepth);
         return $return;
     }

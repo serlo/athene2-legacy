@@ -86,6 +86,8 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
                 ->matching($criteria)
                 ->first();
             $id = $this->add($this->createInstance($entity));
+        } elseif ($term instanceof TermTaxonomyEntityInterface) {
+            $id = $this->add($this->createInstance($term));
         } elseif ($term instanceof \Taxonomy\Service\TermServiceInterface) {
             $id = $this->add($term);
         } elseif ($term instanceof Collection) {
@@ -116,7 +118,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
             $y = $i - 1;
             $select[] = "termTaxonomy{$i}";
             $join .= "JOIN termTaxonomy{$y}.children termTaxonomy{$i}
-                      JOIN termTaxonomy{$i}.term term{i}\n";
+                      JOIN termTaxonomy{$i}.term term{$i}\n";
             $where .= "AND term{$i}.slug = '" . $element . "'
                       AND termTaxonomy{$i}.parent = termTaxonomy{$y}.id";
         }
@@ -162,54 +164,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     {
         $instance = parent::createInstance();
         $instance->setEntity($entity);
+        $instance->setTermManager($this);
         return $instance;
-    }
-
-    public function getAllowedLinks()
-    {
-        return $this->allowedLinks;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::enableLink()
-     */
-    public function enableLink($targetField,\Closure $callback)
-    {
-        $this->allowedLinks[$targetField] = $callback;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::linkingAllowed()
-     */
-    public function linkAllowed($targetField)
-    {
-        return isset($this->allowedLinks[$targetField]);
-    }
-
-    public function build()
-    {
-        // read factory class from db
-        $factoryClassName = $this->getEntity()->getFactory();
-        
-        if (! $factoryClassName)
-            throw new \Exception('Factory not set');
-        
-        $factoryClassName = $factoryClassName->get('className');
-        if (substr($factoryClassName, 0, 1) != '\\') {
-            $factoryClassName = '\\Taxonomy\\Factory\\' . $factoryClassName;
-        }
-        
-        if (! class_exists($factoryClassName))
-            throw new \Exception('Something somewhere went terribly wrong.');
-        
-        $factory = new $factoryClassName();
-        if (! $factory instanceof FactoryInterface)
-            throw new \Exception('Something somewhere went terribly wrong.');
-        
-        $factory->build($this);
-        $this->setFactory($factory);
-        
-        return $this;
     }
 }

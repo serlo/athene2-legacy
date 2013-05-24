@@ -70,8 +70,7 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
      */
     public function hasParent ()
     {
-        // TODO Auto-generated method stub
-        
+        return (is_object($this->getParent()));
     }
 
 	/* (non-PHPdoc)

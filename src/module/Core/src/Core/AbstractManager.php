@@ -30,7 +30,7 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
      * 
      * @var array
      */
-    private $options = array();
+    private $options;
 
     /**
      *
@@ -60,13 +60,14 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
     /**
      * Constructor
      *
-     * @param string $options            
+     * @param array $options            
      */
-    public function __construct($options = NULL)
+    public function __construct(array $options)
     {
-        if (is_array($options)) {
-            $this->options = array_merge($this->options, $options);
-        }
+        if(!is_array($this->options))
+            $this->options = array();
+        
+        $this->options = array_merge($this->options, $options);
     }
 
     /**
@@ -131,6 +132,9 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
      */
     protected function resolve($interface)
     {
+        if(!is_array($this->options))
+            throw new \Exception('Please provide a configuration via `__construct($options)`!');
+        
         if (! isset($this->options['instances'][$interface]))
             throw new \Exception("Class for interface `{$interface}` not set.");
         

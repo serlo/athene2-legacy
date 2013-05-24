@@ -1,21 +1,49 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Entity\Factory\Components;
 
-use Entity\Factory\Components\ComponentInterface;
-use Entity\Factory\EntityServiceProxy;
 use Versioning\Service\RepositoryServiceInterface;
-use Versioning\Exception\RevisionNotFoundException;
 use Doctrine\Common\Collections\Criteria;
+use Entity\Service\EntityServiceInterface;
+use Core\Component\ComponentInterface;
 
-class RepositoryComponent extends EntityServiceProxy implements ComponentInterface
+class RepositoryComponent extends AbstractComponent implements ComponentInterface
 {
-
-    public function build()
+    /**
+     * 
+     * @var RepositoryServiceInterface
+     */
+    protected $repository;
+    
+    /**
+     * 
+     * @var EntityServiceInterface
+     */
+    protected $entityService;
+    
+    /**
+     * @param \Versioning\Service\RepositoryServiceInterface $repository
+     * @return $this
+     */
+    public function setRepository (\Versioning\Service\RepositoryServiceInterface $repository)
     {
-        $entityService = $this->getSource();
+        $this->repository = $repository;
+        return $this;
+    }
+
+	public function __construct (EntityServiceInterface $entityService){
+	    $this->entityService = $entityService;
         $repository = $entityService->getEntity();
-        $repository = $this->getRepositoryManager()->addRepository('Entity(' . $entityService->getId() . ')', $repository);
-        $entityService->addComponent('repository', $repository);
+        $this->setRepository($entityService->getRepositoryManager()->addRepository('Entity(' . $entityService->getId() . ')', $repository));
         return $this;
     }
 
@@ -25,7 +53,7 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
      */
     public function getRepository()
     {
-        return $this->getComponent('repository');
+        return $this->repository;
     }
 
     /**
@@ -79,7 +107,7 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->checkoutRevision($revision);
-        return $this;
+        return $this->entityService;
     }
 
     public function commitRevision(array $data)
@@ -94,7 +122,7 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
             $this->getEntityManager()->persist($revision->addValue($key, $value));
         }
         $this->getEntityManager()->flush();
-        return $this;
+        return $this->entityService;
     }
 
     /**
@@ -106,7 +134,7 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->removeRevision($revision);
-        return $this;
+        return $this->entityService;
     }
 
     public function trashRevision($revisionId)
@@ -115,6 +143,6 @@ class RepositoryComponent extends EntityServiceProxy implements ComponentInterfa
         $revision->toggleTrashed();
         $this->getEntityManager()->persist($revision);
         $this->getEntityManager()->flush($revision);
-        return $this;
+        return $this->entityService;
     }
 }

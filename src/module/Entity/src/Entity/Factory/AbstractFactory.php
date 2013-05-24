@@ -9,11 +9,18 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Application\DefaultSubject;
+namespace Entity\Factory;
 
-use Subject\Service\SubjectServiceInterface;
 use Core\Structure\GraphDecorator;
+use Entity\Service\EntityServiceInterface;
 
-class Decorator extends GraphDecorator implements SubjectServiceInterface
+class AbstractFactory
 {
+    public function build(GraphDecorator $decorator, EntityServiceInterface $entityService){
+        if($entityService instanceof GraphDecorator)
+            throw new \Exception('Ouch, this could get really really messy. Stop whatever you are doing and go to bed.');
+            
+        $decorator->setConcreteComponent($entityService);
+        return $decorator;
+    }
 }

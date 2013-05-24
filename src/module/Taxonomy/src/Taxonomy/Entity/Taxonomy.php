@@ -11,6 +11,7 @@ namespace Taxonomy\Entity;
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * A Taxonomy.
@@ -43,6 +44,7 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     protected $subject;
 
     /**
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection $terms
      */
     public function getTerms ()
@@ -50,7 +52,8 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
         return $this->terms;
     }
 
-	/**
+    /**
+     *
      * @return field_type $name
      */
     public function getName ()
@@ -58,7 +61,8 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
         return $this->name;
     }
 
-	/**
+    /**
+     *
      * @return field_type $factory
      */
     public function getFactory ()
@@ -66,8 +70,9 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
         return $this->factory;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $terms
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $terms            
      * @return $this
      */
     public function setTerms ($terms)
@@ -76,8 +81,9 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param field_type $name
+    /**
+     *
+     * @param field_type $name            
      * @return $this
      */
     public function setName ($name)
@@ -86,8 +92,9 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param field_type $factory
+    /**
+     *
+     * @param field_type $factory            
      * @return $this
      */
     public function setFactory ($factory)
@@ -96,7 +103,7 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
         return $this;
     }
 
-	public function __construct ()
+    public function __construct ()
     {
         $this->terms = new ArrayCollection();
     }

@@ -12,6 +12,7 @@
 namespace Subject\Application\Component;
 
 use Subject\Service\SubjectServiceInterface;
+use Core\Component\ComponentInterface;
 
 class TopicComponent extends AbstractComponent implements ComponentInterface
 {
@@ -35,6 +36,8 @@ class TopicComponent extends AbstractComponent implements ComponentInterface
 
     public function getTopics ()
     {
-        return $this->subjectService->getTaxonomy('topic')->getTerms();
+        $terms = $this->subjectService->getTaxonomy('topic');
+        $terms = $terms->getTerms();
+        return $terms;
     }
 }
