@@ -5,7 +5,6 @@ use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RepositoryInterface;
 
 /**

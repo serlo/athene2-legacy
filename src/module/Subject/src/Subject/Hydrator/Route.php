@@ -21,6 +21,8 @@ class Route extends RouteStack implements ServiceLocatorAwareInterface
      */
     protected $serviceLocator;
     
+    protected $path;
+    
     /* (non-PHPdoc)
      * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
      */
@@ -40,5 +42,9 @@ class Route extends RouteStack implements ServiceLocatorAwareInterface
     {
         $this->serviceLocator = $serviceLocator;
         return $this;
+    }
+    
+    public function setPath($path){
+        $this->path = $path;
     }
 }

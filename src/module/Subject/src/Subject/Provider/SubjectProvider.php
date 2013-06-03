@@ -26,6 +26,7 @@ class SubjectProvider implements ProviderInterface
     
     public function provideArray(){
         $subject = $this->serviceLocator->get('Subject\SubjectManager')->get($this->options['subject']);
-        return include __DIR__ . '/../../../config/navigation/' . $subject->getName() . '.config.php';
+        $path = $this->options['path'];
+        return include $path . '/' . $subject->getName() . '/navigation.config.php';
     }
 }

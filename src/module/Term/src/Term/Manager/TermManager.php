@@ -19,12 +19,17 @@ use Term\Exception\TermNotFoundException;
 class TermManager extends AbstractManager implements ObjectManagerAwareInterface, TermManagerInterface
 {
 
-    protected $defaultOptions = array(
-        'instance' => array(
+    protected $options = array(
+        'instances' => array(
             'TermEntityInterface' => 'Term\Entity\Term',
             'manages' => 'Term\Service\TermServiceInterface'
         )
     );
+    
+
+    public function __construct(){
+        parent::__construct($this->options);
+    }
 
     /**
      *
@@ -78,9 +83,9 @@ class TermManager extends AbstractManager implements ObjectManagerAwareInterface
 
     protected function getById($id)
     {
-        $entity = $this->getObjectManager()->find($this->resolve('TermEntityInterface'), $id);
-        if (! is_object($entity))
-            throw new TermNotFoundException($name);
+        $term = $this->getObjectManager()->find($this->resolve('TermEntityInterface'), $id);
+        if (! is_object($term))
+            throw new TermNotFoundException($id);
         
         if(!$this->hasInstance($term->getName())){
             $this->add($this->createInstance($term));
@@ -94,26 +99,38 @@ class TermManager extends AbstractManager implements ObjectManagerAwareInterface
         if (! $this->hasInstance($term->getName())) {
             $this->add($term);
         }
-        return $this->getInstance($name);
+        return $this->getInstance($term->getName());
     }
 
-    protected function getByString($name)
+    protected function getByString($name, $slug = NULL)
     {
+        // TODO: get request language (!)
+        
         if (! $this->hasInstance($name)) {
             $entity = $this->getObjectManager()
-                ->getRepository($this->resolve('TermServiceInterface'))
+                ->getRepository($this->resolve('TermEntityInterface'))
                 ->findOneBy(array(
                 'name' => $name
             ));
             if (! is_object($entity)) {
                 $entity = $this->getObjectManager()
-                    ->getRepository($this->resolve('TermServiceInterface'))
+                    ->getRepository($this->resolve('TermEntityInterface'))
                     ->findOneBy(array(
                     'slug' => $name
                 ));
             }
-            if (! is_object($entity))
-                throw new TermNotFoundException($name);
+            if (! is_object($entity)){
+                $entity = $this->resolve('TermEntityInterface', true);
+                $entity->setName($name);
+                $entity->setSlug(
+                    ($slug ? $slug : 
+                        strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $name), '-'))
+                    )    
+                );
+                $em = $this->getObjectManager();
+                $em->persist($entity);
+                $em->flush();
+            }
             $this->add($this->createInstance($entity));
         }
         return $this->getInstance($name);

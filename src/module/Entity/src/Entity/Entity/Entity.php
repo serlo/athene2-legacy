@@ -64,6 +64,15 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     protected $currentRevision;
 
     /**
+     * @ORM\ManyToMany(targetEntity="\Taxonomy\Entity\TermTaxonomy")
+     * @ORM\JoinTable(name="term_taxonomy_entity",
+     * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
+     * joinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
+     * )
+     */
+    protected $terms;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Factory", inversedBy="entities")
      * @ORM\JoinColumn(name="entity_factory_id", referencedColumnName="id")
      */
@@ -83,6 +92,11 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
      * @ORM\Column(type="boolean")
      */
     protected $killed;
+
+    /**
+     * @ORM\Column(type="text",length=255,unique=true)
+     */
+    protected $uuid;
 
     /**
      * @ORM\Column(type="text",length=255)

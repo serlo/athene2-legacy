@@ -21,11 +21,11 @@ class Module
         );
     }
     
-    public function onBootstrap($e)
+    /*public function onBootstrap($e)
     {
         $app      = $e->getTarget();
         $serviceManager       = $app->getServiceManager();
         $listener = $serviceManager->get('Subject\Hydrator\Route');
         $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
-    }
+    }*/
 }

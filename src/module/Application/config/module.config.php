@@ -14,10 +14,10 @@ return array(
         'default' => array(
             array(
                 'label' => 'Home',
-                'route' => 'home',
-                )
+                'route' => 'home'
             )
-        ),
+        )
+    ),
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -27,6 +27,28 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
                         'action' => 'index'
+                    )
+                )
+            ),
+            'taxonomy' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/taxonomy/',
+                    'defaults' => array(
+                        'controller' => 'Application\Taxonomy\Controller\404',
+                        'action' => 'index'
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'term' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'term/:action/[:id]',
+                            'defaults' => array(
+                                'controller' => 'Application\Taxonomy\Controller\TermController'
+                            )
+                        )
                     )
                 )
             ),
@@ -64,7 +86,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-            'MailMan' => function ($sm)
+            'MailMan' => function  ($sm)
             {
                 $config = $sm->get('Config');
                 $smtpParams = $config['smtpParams'];
@@ -74,7 +96,7 @@ return array(
                 $transport->setOptions($options);
                 return $transport;
             },
-            'navigation' => 'Navigation\Service\DynamicNavigationFactory',
+            'navigation' => 'Navigation\Service\DynamicNavigationFactory'
         ),
         'aliases' => array(
             'EntityManager' => 'doctrine.entitymanager.orm_default',
@@ -195,6 +217,26 @@ return array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
+            )
+        )
+    ),
+    'di' => array(
+        'allowed_controllers' => array(
+            'Application\Taxonomy\Controller\TermController'
+        ),
+        'definition' => array(
+            'class' => array(
+                'Application\Taxonomy\Controller\TermController' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    )
+                )
+            )
+        ),
+        'instance' => array(
+            'preferences' => array(
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             )
         )
     )

@@ -49,8 +49,8 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
-     * @ORM\JoinTable(name="entity_taxonomy_term",
-     * joinColumns={@ORM\JoinColumn(name="taxonomy_term_id", referencedColumnName="id")},
+     * @ORM\JoinTable(name="term_taxonomy_entity",
+     * joinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
      * inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
      * )
      */
@@ -80,6 +80,10 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     {
         // TODO Auto-generated method stub
         
+    }
+    
+    public function getFactory(){
+        return $this->getTaxonomy()->getFactory();
     }
 
 	/**
@@ -128,14 +132,6 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     public function getSlug ()
     {
         return $this->getTerm()->getSlug();
-    }
-
-	/**
-     * @return field_type $entities
-     */
-    public function getEntities ()
-    {
-        return $this->entities;
     }
 
 	/**
@@ -216,16 +212,6 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param field_type $entities
-     * @return $this
-     */
-    public function setEntities ($entities)
-    {
-        $this->entities = $entities;
-        return $this;
-    }
-
 	public function __construct ()
     {
         $this->children = new ArrayCollection();
@@ -242,5 +228,15 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
             $term = $term->getParent();
         }
         return array_reverse($path);
+    }
+    
+    public function getArrayCopy(){
+        return array(
+            'term' => $this->getTerm()->toArray(),
+            'id' => $this->getId(),
+            'slug' => $this->getSlug(),
+            'order' => $this->getOrder(),
+            'description' => $this->getDescription(),
+        );
     }
 }

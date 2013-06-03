@@ -13,10 +13,13 @@ namespace Subject\Application\Component;
 
 use Subject\Service\SubjectServiceInterface;
 use Core\Component\ComponentInterface;
+use Core\Component\AbstractComponent;
 
 class TopicComponent extends AbstractComponent implements ComponentInterface
 {
 
+    protected $publicMethods = array('getTopic', 'getTopics');
+    
     /**
      *
      * @var SubjectServiceInterface
@@ -26,7 +29,6 @@ class TopicComponent extends AbstractComponent implements ComponentInterface
     public function __construct (SubjectServiceInterface $subjectService)
     {
         $this->subjectService = $subjectService;
-        
     }
 
     public function getTopic ($topic)

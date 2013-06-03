@@ -30,7 +30,43 @@ class TaxonomyFactory extends AbstractEntity
      */
     protected $className;
 
-    public function __construct ()
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection $taxonomies
+     */
+    public function getTaxonomies ()
+    {
+        return $this->taxonomies;
+    }
+
+	/**
+     * @return field_type $className
+     */
+    public function getName ()
+    {
+        return $this->className;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $taxonomies
+     * @return $this
+     */
+    public function setTaxonomies ($taxonomies)
+    {
+        $this->taxonomies = $taxonomies;
+        return $this;
+    }
+
+	/**
+     * @param field_type $className
+     * @return $this
+     */
+    public function setName ($className)
+    {
+        $this->className = $className;
+        return $this;
+    }
+
+	public function __construct ()
     {
         $this->taxonomies = new ArrayCollection();
     }

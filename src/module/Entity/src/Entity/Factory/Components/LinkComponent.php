@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Link\LinkManagerInterface;
 use Entity\Service\EntityServiceInterface;
 use Core\Component\ComponentInterface;
+use Core\Component\AbstractComponent;
 
 class LinkComponent extends AbstractComponent implements ComponentInterface {
     

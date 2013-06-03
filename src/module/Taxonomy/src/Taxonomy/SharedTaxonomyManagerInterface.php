@@ -8,15 +8,16 @@
  */
 namespace Taxonomy;
 
+use Taxonomy\Service\TermServiceInterface;
+
 interface SharedTaxonomyManagerInterface
 {
     /**
      * 
      * @param unknown $name
-     * @param mixed $languageService
      * @return TaxonomyManagerInterface
      */
-    public function get ($taxonomy, $languageService = NULL);
+    public function get ($taxonomy);
 
     /**
      *
@@ -24,4 +25,11 @@ interface SharedTaxonomyManagerInterface
      * @return $this
      */
     public function add(TermManagerInterface $manager);
+    
+    /**
+     * returns a term by it's unique id
+     * 
+     * @return TermServiceInterface
+     */
+    public function getTerm($id);
 }

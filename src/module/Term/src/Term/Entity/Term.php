@@ -103,4 +103,12 @@ class Term extends AbstractEntity implements TermEntityInterface
         $this->slug = $slug;
         return $this;
     }
+    
+    public function getArrayCopy(){
+        return array(
+            'name' => $this->getName(),
+            'id' => $this->getId(),
+            'slug' => $this->getSlug(),
+        );
+    }
 }

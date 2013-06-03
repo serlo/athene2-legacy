@@ -18,15 +18,28 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        // Load translator
         $e->getApplication()->getServiceManager()->get('translator');
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
+        // Load Subjects
+        $app      = $e->getTarget();
+        $serviceManager       = $app->getServiceManager();
+        $listener = $serviceManager->get('Subject\Hydrator\Route');
+        $listener->setPath(__DIR__ . '/config/subject/');
+        $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
     }
 
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        $config = array_merge_recursive(
+            include __DIR__ . '/config/module.config.php',
+            include __DIR__ . '/config/subject/module.config.php',
+            include __DIR__ . '/config/learning-object/module.config.php'
+        );
+        return $config; 
     }
 
     public function getAutoloaderConfig()

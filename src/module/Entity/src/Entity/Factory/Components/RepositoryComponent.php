@@ -15,9 +15,13 @@ use Versioning\Service\RepositoryServiceInterface;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Service\EntityServiceInterface;
 use Core\Component\ComponentInterface;
+use Core\Component\AbstractComponent;
 
-class RepositoryComponent extends AbstractComponent implements ComponentInterface
+class RepositoryComponent extends AbstractComponent implements RepositoryComponentInterface, ComponentInterface
 {
+
+    protected $publicMethods = array('isCheckedOut', 'checkout', 'commitRevision', 'getAllRevisions', 'getCurrentRevision', 'getRepository', 'getRevision', 'getTrashedRevisions', 'removeRevision', 'trashRevision');
+    
     /**
      * 
      * @var RepositoryServiceInterface
@@ -113,15 +117,15 @@ class RepositoryComponent extends AbstractComponent implements ComponentInterfac
     public function commitRevision(array $data)
     {
         $repository = $this->getRepository();
-        $revision = $this->getEntity()->addNewRevision();
-        $revision->setAuthor($this->getAuthService()
+        $revision = $this->entityService->getEntity()->addNewRevision();
+        $revision->setAuthor($this->entityService->getAuthService()
             ->getUser());
         $repository->addRevision($revision);
-        $this->getEntityManager()->persist($revision);
+        $this->entityService->getObjectManager()->persist($revision);
         foreach ($data as $key => $value) {
-            $this->getEntityManager()->persist($revision->addValue($key, $value));
+            $this->entityService->getObjectManager()->persist($revision->addValue($key, $value));
         }
-        $this->getEntityManager()->flush();
+        $this->entityService->getObjectManager()->flush();
         return $this->entityService;
     }
 
@@ -144,5 +148,14 @@ class RepositoryComponent extends AbstractComponent implements ComponentInterfac
         $this->getEntityManager()->persist($revision);
         $this->getEntityManager()->flush($revision);
         return $this->entityService;
+    }
+    
+    public function isCheckedOut(){
+        try{
+            $this->getCurrentRevision();
+            return true;
+        } catch (\Versioning\Exception\RevisionNotFoundException $e) {
+            return null;
+        }
     }
 }

@@ -21,6 +21,12 @@ use Subject\SubjectManagerInterface;
 
 class AbstractController extends AbstractActionController
 {
+    protected $viewPath;
+    
+    public function getViewPath(){
+        return $this->viewPath;
+    }
+    
     /**
      * @var SubjectManagerInterface
      */

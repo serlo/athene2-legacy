@@ -24,6 +24,7 @@ use Core\Service\LanguageService;
 use Versioning\RepositoryManagerInterface;
 use Core\Service\SubjectService;
 use Core\Service\AbstractEntityDecorator;
+use Core\Entity\EntityInterface;
 
 class EntityService extends AbstractEntityDecorator implements EntityServiceInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface, EventManagerAwareInterface
 {
@@ -245,9 +246,7 @@ class EntityService extends AbstractEntityDecorator implements EntityServiceInte
         
         $className = $this->getEntity()->getFactory()->getName();
 		$fullFactoryClassName = $className;
-		if(substr($className,0,1) != '\\'){
-			$fullFactoryClassName = "\\Entity\\LearningObjects\\".$className;
-		}
+		
 		if(!class_exists($fullFactoryClassName))
 			throw new \Exception('Class: ´'.$fullFactoryClassName.'´ not found');
 		

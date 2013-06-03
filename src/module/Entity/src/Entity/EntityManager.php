@@ -11,11 +11,8 @@
  */
 namespace Entity;
 
-use Entity\Factory\EntityFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager as OrmManager;
 use Core\AbstractManager;
-use Zend\ServiceManager\ServiceManager;
 use Entity\Entity\EntityInterface;
 use Entity\Exception\InvalidArgumentException;
 use Entity\Service\EntityServiceInterface;
@@ -38,6 +35,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface
         'instances' => array(
 	       'manages' => 'Entity\Service\EntityService',
 	       'EntityInterface' => 'Entity\Entity\Entity',
+	       'EntityFactoryInterface' => 'Entity\Entity\Factory',
         ),
     );
     
@@ -77,6 +75,29 @@ class EntityManager extends AbstractManager implements EntityManagerInterface
     	    $this->_getById($id);
     	}
     	return $this->getInstance($id);
+    }
+    
+    public function create($factoryClass){
+        
+        $em = $this->getEntityManager();
+        $factory = $em->getRepository($this->resolve('EntityFactoryInterface'))->findOneByClassName($factoryClass);
+
+        if(!is_object($factory))
+            throw new \Exception("Factory `{$factoryClass}` not found."); 
+               
+        $class = $this->resolve('EntityInterface');
+        $entity = new $class();
+        $entity->populate(array(
+            'killed' => false,
+            'language' => $this->getServiceManager()->get('Core\Service\LanguageManager')->getRequestLanguage()->getEntity(),
+            'factory' => $factory,
+            'uuid' => uniqid('entity_',true)
+        ));
+        $entity->setFactory($factory);
+        $em->persist($entity);
+        $em->flush();
+        
+        return $this->get($entity->getId());
     }
     
     public function add(EntityServiceInterface $entityService){
