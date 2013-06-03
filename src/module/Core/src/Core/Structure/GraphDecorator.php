@@ -13,7 +13,7 @@ namespace Core\Structure;
 
 use Core\Component\ComponentInterface;
 
-class GraphDecorator
+class GraphDecorator implements DecoratorInterface
 {
     protected $components;
     
@@ -53,22 +53,27 @@ class GraphDecorator
 
     public function providesMethod ($method)
     {
-        if (method_exists($this, $method)) {
-            return true;
-        }
+        $return = false;
+        $return = (method_exists($this, $method));
+        
         if ($this->concreteComponent instanceof AbstractDecorator) {
-            return $this->concreteComponent->providesMethod($method);
+            $return = $return || $this->concreteComponent->providesMethod($method);
         }
+        
         foreach($this->components as $component){
-            if($component->providesMethod($method))
-                return true;
+            $return = $return || $component->providesMethod($method);
         }
-        return false;
+        
+        return $return;
     }
     
     public function addComponent(ComponentInterface $component){
         if($this->hasComponent($component))
             throw new \Exception('Component `'.get_class($component).'` already registered.');
+        
+        foreach(get_class_methods($component) as $method)
+            if($component->isMethodPublic($method) && $this->providesMethod($method))
+                throw new \Exception("Fatal: Can't redeclare components `".get_class($component)."` method {$method}.");
         
         $this->components[$component->identify()] = $component;
     }
@@ -88,7 +93,7 @@ class GraphDecorator
     public function isInstanceOf($object){
         $return = ($this instanceof $object) || ($this->concreteComponent instanceof $object);
         foreach($this->components as $component){
-            $return = $return || $component instanceof $object;
+            $return = $return || ($component instanceof $object);
         }
         return $return;
     }

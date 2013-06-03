@@ -12,18 +12,6 @@
 namespace Subject;
 
 return array(
-    'navigation' => array(
-        'default' => array(
-            array(
-                'label' => 'Mathe',
-                'uri' => '#',
-                'provider' => 'Subject\Provider\SubjectProvider',
-                'options' => array(
-                    'subject' => 'math'
-                )
-            )
-        )
-    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
@@ -39,11 +27,11 @@ return array(
                  * Controller
                  *  .DefaultSubject
                  */
-                'Subject\Application\DefaultSubject\Controller\TopicController' => array(
+                /*'Subject\Application\DefaultSubject\Controller\TopicController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )
-                ),
+                ),*/
                 
                 /*
                  * Core
@@ -98,6 +86,17 @@ return array(
             )
         )
     ),
+    'view_helpers' => array(
+        'factories' => array(
+            'url' => function ($sm){
+                $service = new \Subject\View\Url();
+                $service->setRouteMatch($sm->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch());
+                $service->setRouter($sm->getServiceLocator()->get('Router'));
+                $service->setSubjectService($sm->getServiceLocator()->get('Subject\SubjectManager')->getSubjectFromRequest());
+                return $service;
+            },
+        )
+    ),
     'doctrine' => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(
@@ -115,6 +114,3 @@ return array(
         )
     )
 );
-
-
-

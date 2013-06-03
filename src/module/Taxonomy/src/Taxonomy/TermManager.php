@@ -11,16 +11,12 @@
  */
 namespace Taxonomy;
 
-use Core\AbstractManager;
 use Core\AbstractManagerAndEntityDecorator;
-use Term\Manager\TermManagerAwareInterface;
-use Core\Entity\EntityInterface;
-use Taxonomy\Entity\TaxonomyEntityInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Factory\FactoryInterface;
-use Term\Entity\TermEntityInterface;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Taxonomy\Exception\NotFoundException;
 
 class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
 {
@@ -42,7 +38,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     protected $options = array(
         'instances' => array(
             'manages' => 'Taxonomy\Service\TermService',
-            'TermEntityInterface' => 'Term\Entity\TermTaxonomy'
+            'TermEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
         )
     );
     
@@ -117,9 +113,9 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
             $i ++;
             $y = $i - 1;
             $select[] = "termTaxonomy{$i}";
-            $join .= "JOIN termTaxonomy{$y}.children termTaxonomy{$i}
+            $join .= " JOIN termTaxonomy{$y}.children termTaxonomy{$i}
                       JOIN termTaxonomy{$i}.term term{$i}\n";
-            $where .= "AND term{$i}.slug = '" . $element . "'
+            $where .= " AND term{$i}.slug = '" . $element . "'
                       AND termTaxonomy{$i}.parent = termTaxonomy{$y}.id";
         }
         if (count($path)) {
@@ -153,6 +149,16 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         }
         return $result;
     }
+    
+    public function create($name, $parent = NULL){
+        $entity = $this->resolve('TermEntityInterface', true);
+        $term = $this->getTermManager()->get($name);
+        $entity->setTerm($term->getEntity());
+        $entity->setParent($parent);
+        $instance = $this->createInstance($entity);
+        $instance->persistAndFlush();
+        return $instance;        
+    }
 
     public function add(\Taxonomy\Service\TermServiceInterface $termService)
     {
@@ -164,7 +170,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     {
         $instance = parent::createInstance();
         $instance->setEntity($entity);
-        $instance->setTermManager($this);
-        return $instance;
+        $instance->setManager($this);
+        return $instance->build();
     }
 }

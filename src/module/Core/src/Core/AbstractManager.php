@@ -11,8 +11,6 @@
  */
 namespace Core;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\Validator\IsInstanceOf;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 
@@ -128,9 +126,9 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
      *
      * @param string $interface            
      * @throws \Exception
-     * @return string
+     * @return string|Object
      */
-    protected function resolve($interface)
+    protected function resolve($interface, $createInstance = false)
     {
         if(!is_array($this->options))
             throw new \Exception('Please provide a configuration via `__construct($options)`!');
@@ -138,7 +136,12 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
         if (! isset($this->options['instances'][$interface]))
             throw new \Exception("Class for interface `{$interface}` not set.");
         
-        return $this->options['instances'][$interface];
+        if($createInstance){
+            $className = $this->options['instances'][$interface];
+            return new $className();
+        } else {
+            return $this->options['instances'][$interface];
+        }
     }
 
     /**

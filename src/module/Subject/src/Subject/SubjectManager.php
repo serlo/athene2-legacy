@@ -87,7 +87,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface,
     }
     
     public function getSubjectFromRequest(){
-        
+        return $this->get('math');
     }
     
     protected function createInstance($entity){

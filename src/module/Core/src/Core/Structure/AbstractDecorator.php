@@ -11,7 +11,7 @@
  */
 namespace Core\Structure;
 
-abstract class AbstractDecorator
+abstract class AbstractDecorator implements DecoratorInterface
 {
 
     protected $concreteComponent;
@@ -60,5 +60,9 @@ abstract class AbstractDecorator
             }
         }
         return false;
+    }
+    
+    public function isInstanceOf($class){
+        return (($this instanceof $class) || ($this->concreteComponent instanceof $class));
     }
 }

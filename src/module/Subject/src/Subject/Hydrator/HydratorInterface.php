@@ -11,8 +11,6 @@
  */
 namespace Subject\Hydrator;
 
-use Zend\Mvc\Router\RouteInterface;
-
 interface HydratorInterface
 {
     /**

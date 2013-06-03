@@ -29,11 +29,11 @@ class RouteStack implements HydratorInterface, SubjectManagerAwareInterface
     public function hydrate($router)
     {
         if (! $router instanceof RouteStackInterface)
-            throw new \InvalidArgumentException('Requires `RouteStackInterface` but got' . get_class($object));
+            throw new \InvalidArgumentException('Requires `RouteStackInterface` but got' . get_class($router));
         
         $routes = array();
         foreach ($this->getSubjectManager()->getAllSubjects() as $subject) {
-            $routes = array_merge($routes, include __DIR__ . '/../../../config/routes/' . $subject->getName() . '.config.php');
+            $routes = array_merge($routes, include $this->path . $subject->getName() . '/routes.config.php');
         }
         $routes = array(
             'subject' => array(

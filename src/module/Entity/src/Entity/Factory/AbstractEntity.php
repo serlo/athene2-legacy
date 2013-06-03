@@ -14,12 +14,11 @@ use Core\Structure\GraphDecorator;
 
 abstract class AbstractEntity extends GraphDecorator
 {
-
     /**
      *
      * @var Form
      */
-    protected $_form;
+    protected $form;
     
     /**
      * The default template for the View
@@ -31,7 +30,7 @@ abstract class AbstractEntity extends GraphDecorator
     /**
      * @var ViewModel
      */
-    protected $_viewModel;
+    protected $viewModel;
 
 	/**
      * @return string $template
@@ -64,7 +63,7 @@ abstract class AbstractEntity extends GraphDecorator
             $this->setForm($form);
         }
         
-        return $this->_form;
+        return $this->form;
     }
 
     /**
@@ -74,7 +73,7 @@ abstract class AbstractEntity extends GraphDecorator
      */
     public function hasForm ()
     {
-        return $this->_form !== NULL;
+        return $this->form !== NULL;
     }
 
     /**
@@ -82,20 +81,9 @@ abstract class AbstractEntity extends GraphDecorator
      *
      * @see \Entity\Factory\EntityBuilderInterface::setForm()
      */
-    public function setForm (Form $_form)
+    public function setForm (Form $form)
     {
-        $this->_form = $_form;
+        $this->form = $form;
         return $this;
     }
-
-    /**
-     * Returns an array with data for the ViewModel
-     *
-     * @return array
-     */
-   /* abstract public function getData ();
-
-    abstract public function getFormData ();
-
-    abstract public function getFormObject ();*/
 }

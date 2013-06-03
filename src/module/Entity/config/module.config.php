@@ -4,21 +4,9 @@ namespace Entity;
 return array(
     'di' => array(
         'allowed_controllers' => array(
-            'Entity\LearningObjects\Exercise\Controller\TextExerciseController',
-            'Entity\LearningObjects\Solution\Controller\TextSolutionController',
         ),
         'definition' => array(
             'class' => array(
-                'Entity\LearningObjects\Solution\Controller\TextSolutionController' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),                
-                ),
-                'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),                
-                ),
                 'Entity\EntityManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
@@ -68,39 +56,6 @@ return array(
             'Entity\Factory\EntityFactory' => array(
                 'shared' => false
             )
-        )
-    ),
-    'acl' => array(
-        'Entity\LearningObjects\Exercise\Controller\TextExerciseController' => array(
-            'guest' => 'deny',
-            'login' => 'allow',
-            'login' => array(
-                'purge-revisions' => 'deny',
-            ),
-        )
-    ),
-    'router' => array(
-        'routes' => array(
-            'Entity\LearningObjects\Exercise\TextExerciseDecorator' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/entity/exercise/text/:action/:id[/:revisionId]',
-                    'defaults' => array(
-                        'controller' => 'Entity\LearningObjects\Exercise\Controller\TextExerciseController',
-                        'action' => 'index'
-                    ),
-                ),
-            ),
-            'Entity\LearningObjects\Solution\TextSolution' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/entity/solution/text/:action/:id[/:revisionId]',
-                    'defaults' => array(
-                        'controller' => 'Entity\LearningObjects\Solution\Controller\TextSolutionController',
-                        'action' => 'index'
-                    ),
-                )
-            ),
         )
     ),
     'view_manager' => array(

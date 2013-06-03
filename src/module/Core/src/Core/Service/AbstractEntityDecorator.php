@@ -71,7 +71,7 @@ class AbstractEntityDecorator extends AbstractDecorator implements ObjectManager
     public function persist ()
     {
         $om = $this->getObjectManager();
-        $$om->persist($this->getEntity());
+        $om->persist($this->getEntity());
         return $this;
     }
     

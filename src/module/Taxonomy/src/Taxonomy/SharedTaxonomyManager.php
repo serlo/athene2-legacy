@@ -37,6 +37,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         'instances' => array(
             'manages' => 'Taxonomy\TermManager',
             'TaxonomyEntityInterface' => 'Taxonomy\Entity\Taxonomy',
+            'TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy',
             'TermManagerInterface' => 'Taxonomy\TermManager'
         )
     );
@@ -89,13 +90,13 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $termManager->getId();
     }
 
-    public function get($taxonomy, $subjectService = NULL)
+    public function get($taxonomy)
     {
         $className = $this->resolve('manages');
         $entityClassName = $this->resolve('TaxonomyEntityInterface');
         
         if (is_numeric($taxonomy)) {
-            $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'), taxonomy);
+            $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'), $taxonomy);
             $name = $this->add($this->createInstance($entity));
         } else 
             if (is_string($taxonomy)) {
@@ -118,6 +119,21 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             throw new \Exception();
         }
         return $this->getInstance($name);
+    }
+    
+    public function getTerm($id){
+        if(!is_numeric($id))
+            throw new \InvalidArgumentException();
+        
+        $entity = $this->getObjectManager()->find($this->resolve('TermTaxonomyEntityInterface'), (int) $id);
+        
+        if(!is_object($entity))
+            throw new NotFoundException();
+        
+        $entity = $entity->getTaxonomy();
+        
+        $name = $this->add($this->createInstance($entity));
+        return $this->getInstance($name)->get($id);
     }
 
     protected function createInstance($entity)
