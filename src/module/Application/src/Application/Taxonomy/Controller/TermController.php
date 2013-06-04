@@ -13,6 +13,8 @@ namespace Application\Taxonomy\Controller;
 
 use Zend\View\Model\ViewModel;
 use Taxonomy\Controller\AbstractController;
+use Taxonomy\Entity\TaxonomyFactory;
+use Application\Taxonomy\Form\TaxonomyForm;
 
 class TermController extends AbstractController
 {
@@ -23,20 +25,27 @@ class TermController extends AbstractController
         $term = $this->getTerm($id);
         
         $view = new ViewModel(array(
-            'id' => $id,
-            'ref' => $this->getRequest()->getHeader('Referer')->getUri()
+            'id' => $id
         ));
         
         $form = $term->getForm();
         $view->setVariable('form', $form);
+        $this->form->setAttribute('action', $this->url('taxonomy/term', array(
+            'action' => 'update'
+        )) . '?ref=' . rawurlencode($this->getRequest()
+            ->getHeader('Referer')
+            ->getUri()));
+        
         $view->setTemplate('taxonomy/default/update');
         
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
-            if($form->isValid()){
+            $form->setData($this->getRequest()
+                ->getPost());
+            if ($form->isValid()) {
                 $term->update($form->getData());
                 $this->flashMessenger()->addSuccessMessage('Bearbeitung erfoglreich gespeichert!');
-                $this->redirect()->toUrl($this->params()->fromQuery('ref'));
+                $this->redirect()->toUrl($this->params()
+                    ->fromQuery('ref'));
             }
         }
         
@@ -45,15 +54,55 @@ class TermController extends AbstractController
 
     public function createAction ()
     {
+        $taxonomyId = $this->params()->fromQuery('taxonomy');
+        $parentId = $this->params()->fromQuery('parent');
         
+        $form = new TaxonomyForm();
+        $form->setData(array(
+            'taxonomy' => $taxonomyId,
+            'parent' => $parentId
+        ));
+        $form->setAttribute('action', $this->url()
+            ->fromRoute('taxonomy/term', array(
+            'action' => 'create'
+        )) . '?ref=' . rawurlencode($this->getRequest()
+            ->getHeader('Referer')
+            ->getUri()));
+        
+        $view = new ViewModel();
+        
+        $view->setTemplate('taxonomy/default/update');
+        $view->setVariable('form', $form);
+        
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $this->getSharedTaxonomyManager()
+                    ->get($data['taxonomy'])
+                    ->create($form->getData());
+                
+                $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich hinzugefügt!');
+                $this->redirect()->toUrl($this->params()
+                    ->fromQuery('ref'));
+            }
+        }
+        return $view;
     }
 
     public function deleteAction ()
-    {}
+    {
+        $this->getSharedTaxonomyManager()->deleteTerm($this->getParam('id'));
+        
+        $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich gelöscht!');
+        $this->redirect()->toUrl($this->getRequest()
+            ->getHeader('Referer')
+            ->getUri());
+    }
 
     protected function getTerm ($id = 0)
     {
-        if($id){
+        if ($id) {
             return $this->getSharedTaxonomyManager()->getTerm($id);
         }
         return $this->getSharedTaxonomyManager()->getTerm($this->getParam('id'));

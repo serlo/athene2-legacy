@@ -17,10 +17,11 @@ use Doctrine\Common\Collections\Collection;
 use Taxonomy\Factory\FactoryInterface;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Exception\NotFoundException;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
 class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
 {
-
+    
     /**
      *
      * @var \Term\Manager\TermManagerInterface
@@ -41,16 +42,16 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
             'TermEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
         )
     );
-    
 
-    public function __construct(){
+    public function __construct ()
+    {
         parent::__construct($this->options);
     }
     
     /*
      * (non-PHPdoc) @see \Term\Manager\TermManagerAwareInterface::getTermManager()
      */
-    public function getTermManager()
+    public function getTermManager ()
     {
         return $this->termManager;
     }
@@ -58,13 +59,13 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     /*
      * (non-PHPdoc) @see \Term\Manager\TermManagerAwareInterface::setTermManager()
      */
-    public function setTermManager(\Term\Manager\TermManagerInterface $termManager)
+    public function setTermManager (\Term\Manager\TermManagerInterface $termManager)
     {
         $this->termManager = $termManager;
         return $this;
     }
 
-    public function get($term)
+    public function get ($term)
     {
         if (is_numeric($term)) {
             $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $term))
@@ -98,7 +99,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         return $this->getInstance($id);
     }
 
-    protected function getEntityByPath(array $path)
+    protected function getEntityByPath (array $path)
     {
         if (! isset($path[0]))
             throw new \InvalidArgumentException('Path requires at least one element');
@@ -149,24 +150,48 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         }
         return $result;
     }
-    
-    public function create($name, $parent = NULL){
+
+    public function create (array $data)
+    {
         $entity = $this->resolve('TermEntityInterface', true);
-        $term = $this->getTermManager()->get($name);
+        
+        $term = $this->getTermManager()->get($data['term']['name']);
+        
         $entity->setTerm($term->getEntity());
-        $entity->setParent($parent);
+        unset($data['term']);
+        
+        $hydrator = new DoctrineObject(
+            $this->getObjectManager(),
+            $this->resolve('TermEntityInterface')
+        );
+        $entity = $hydrator->hydrate($data, $entity);
+        
+        $this->getObjectManager()->persist($entity);
+        $this->getObjectManager()->flush();
+        
         $instance = $this->createInstance($entity);
-        $instance->persistAndFlush();
-        return $instance;        
+        return $instance;
+    }
+    
+    public function delete($term){
+        $id = $term->getId();
+        $this->getObjectManager()->remove($term->getEntity());
+        $this->getObjectManager()->flush();
+        $this->removeInstance($id);
+        unset($term);
+        return $this;
     }
 
-    public function add(\Taxonomy\Service\TermServiceInterface $termService)
+    public function add (\Taxonomy\Service\TermServiceInterface $termService)
     {
         $this->addInstance($termService->getId(), $termService);
         return $termService->getId();
     }
+    
+    
+    // INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `order`) VALUES (NULL, '2', '7', '10', NULL, NULL);
 
-    public function createInstance(TermTaxonomyEntityInterface $entity)
+    public function createInstance (TermTaxonomyEntityInterface $entity)
     {
         $instance = parent::createInstance();
         $instance->setEntity($entity);

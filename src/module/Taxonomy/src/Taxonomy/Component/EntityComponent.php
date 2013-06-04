@@ -19,6 +19,10 @@ class EntityComponent extends AbstractComponent implements ComponentInterface
 {
     protected $publicMethods = array('getEntities', 'addEntity');
     
+    /**
+     * 
+     * @var TermServiceInterface
+     */
     protected $termService;
     
     /*

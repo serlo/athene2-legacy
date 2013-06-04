@@ -12,6 +12,9 @@ return array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
                 ),
                 'Term\Service\TermService' => array(
                     'setObjectManager' => array(
