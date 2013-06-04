@@ -1,14 +1,38 @@
 <?php
-$id = uniqid('sortable_');
+$id = uniqid ( 'sortable_' );
 ?>
 <ol id="<?php echo $id; ?>" class="sortable">
     <?php echo $this->taxonomy; ?>
 </ol>
 <script type="text/javascript">
-$(function() {
+var termsort = 
   $("#<?php echo $id; ?>").sortable({
 	  handle: 'i.icon-resize-vertical',
 	  group: 'nested',
+      serialize: function ($parent, $children, parentIsContainer) {
+          //var result = $.extend({id: $parent.attr('id')}, $parent.data())
+          var result = $.extend({id: $parent.attr('id'), parent: $parent.attr('parent')}, $parent.data());
+          if(parentIsContainer)
+              return $children
+          else if ($children[0]) 
+              result.children = $children
+          delete result.sortable
+          delete result.subContainer
+          return result
+      },
+	  onDrop: function (item, container, _super) {
+          var dataToSend = {terms: $("#<?php echo $id; ?>").sortable("serialize").get()};
+          
+          $.ajax({
+              url: "<?php echo $this->url('taxonomy/term',array('action' => 'order'));?>",
+              type: "post",
+              data: dataToSend,
+              cache: false,
+              dataType: "json",
+              success: function () {}
+          });
+
+		  _super(item, container)
+	  },
 	});
-})
 </script>
