@@ -2,7 +2,7 @@
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
- *
+ *http://dev/
  * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
@@ -15,19 +15,43 @@ use Term\Service\TermServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Core\AbstractManager;
 use Term\Exception\TermNotFoundException;
+use Core\Service\LanguageManager;
+
 
 class TermManager extends AbstractManager implements ObjectManagerAwareInterface, TermManagerInterface
 {
+    /**
+     * @var LanguageManager
+     */
+    protected $languageManager;
 
     protected $options = array(
         'instances' => array(
             'TermEntityInterface' => 'Term\Entity\Term',
-            'manages' => 'Term\Service\TermServiceInterface'
+            'manages' => 'Term\Service\TermService'
         )
     );
     
 
-    public function __construct(){
+    /**
+     * @return \Core\Service\LanguageManager $languageManager
+     */
+    public function getLanguageManager ()
+    {
+        return $this->languageManager;
+    }
+
+	/**
+     * @param \Core\Service\LanguageManager $languageManager
+     * @return $this
+     */
+    public function setLanguageManager (LanguageManager $languageManager)
+    {
+        $this->languageManager = $languageManager;
+        return $this;
+    }
+
+	public function __construct(){
         parent::__construct($this->options);
     }
 
@@ -122,6 +146,7 @@ class TermManager extends AbstractManager implements ObjectManagerAwareInterface
             if (! is_object($entity)){
                 $entity = $this->resolve('TermEntityInterface', true);
                 $entity->setName($name);
+                $entity->setLanguage($this->getLanguageManager()->getRequestLanguage()->getEntity());
                 $entity->setSlug(
                     ($slug ? $slug : 
                         strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $name), '-'))

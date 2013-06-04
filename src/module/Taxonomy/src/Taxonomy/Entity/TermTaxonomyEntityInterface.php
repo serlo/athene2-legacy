@@ -19,6 +19,6 @@ interface TermTaxonomyEntityInterface
     public function getTerm();
     public function getDescription();
     public function setDescription($description);
-    public function setOrder($order);
-    public function getOrder();
+    public function setWeight($order);
+    public function getWeight();
 }

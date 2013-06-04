@@ -140,11 +140,13 @@ return array(
             'assets' => array(
                 '@base_css',
                 '@html5',
-                '@jquery'
-            // '@bootstrap',
-                        ),
+                '@jquery',
+                '@bootstrap',
+                '@sortable',
+                '@sortable_css',
+            ),
             'options' => array(
-                'mixin' => true
+                'mixin' => false
             )
         ),
         
@@ -189,6 +191,18 @@ return array(
                             'js/bootstrap.min.js'
                         )
                     ),
+                    
+                    'sortable' => array(
+                        'assets' => array(
+                            'js/jquery-sortable.js',
+                        )
+                    ),
+                    'sortable_css' => array(
+                        'assets' => array(
+                            'css/jquery-sortable.css',
+                        )
+                    ),
+                    
                     
                     'base_images' => array(
                         'assets' => array(

@@ -164,4 +164,9 @@ abstract class AbstractManager implements ServiceManagerAwareInterface
     public function getInstances(){
         return $this->instances;
     }
+    
+    public function removeInstance($name){
+        unset($this->instances[$name]);
+        return $this;
+    }
 }

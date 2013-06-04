@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
 {
-
     /**
      * @ORM\ManyToOne(targetEntity="Taxonomy", inversedBy="terms")
      */
@@ -45,7 +44,7 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     /**
      * @ORM\Column(type="integer")
      */
-    protected $order;
+    protected $weight;
 
     /**
      * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
@@ -93,6 +92,10 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     {
         return $this->taxonomy;
     }
+    
+    public function countEntities(){
+        return $this->get('entities')->count();
+    }
 
 	/**
      * @return \Doctrine\Common\Collections\ArrayCollection $children
@@ -108,14 +111,6 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     public function getParent ()
     {
         return $this->parent;
-    }
-
-	/**
-     * @return field_type $order
-     */
-    public function getOrder ()
-    {
-        return $this->order;
     }
 
 	/**
@@ -165,12 +160,20 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
     }
 
 	/**
-     * @param field_type $order
+     * @return field_type $weight
+     */
+    public function getWeight ()
+    {
+        return $this->weight;
+    }
+
+	/**
+     * @param field_type $weight
      * @return $this
      */
-    public function setOrder ($order)
+    public function setWeight ($weight)
     {
-        $this->order = $order;
+        $this->weight = $weight;
         return $this;
     }
 

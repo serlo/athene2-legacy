@@ -29,10 +29,19 @@ class TopicController extends AbstractController
             'subject' => $subjectService
         ));
         
+
+        $taxonomyView = new ViewModel(array(
+            'topic' => $topic,
+            'subject' => $subjectService
+        ));
+        
         $taxonomy = array();
+        $taxonomyView->setTemplate('taxonomy/default/tree');
         foreach($topic->getChildren() as $child){
-            $view->addChild($child->render(), 'taxonomy', true);
+            $taxonomyView->addChild($child->render(), 'taxonomy', true);
         }
+        $view->addChild($taxonomyView, 'taxonomy');
+        
         
         $entityView = new ViewModel(array(
             'taxonomy' => $topic,
