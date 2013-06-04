@@ -238,7 +238,7 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
             'term' => $this->getTerm()->toArray(),
             'id' => $this->getId(),
             'slug' => $this->getSlug(),
-            'order' => $this->getOrder(),
+            'weight' => $this->getWeight(),
             'description' => $this->getDescription(),
         );
     }

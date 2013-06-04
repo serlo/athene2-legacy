@@ -24,12 +24,12 @@ class ExerciseController extends TextExerciseController
     }
     
     public function createAction(){
-        $taxonomy = $this->params()->fromQuery('taxonomy');
-        if(!$taxonomy)
+        $term = $this->params()->fromQuery('term');
+        if(!$term)
             throw new \InvalidArgumentException();
         
         $entity = $this->getEntityManager()->create($this->getEntityFactory());
-        $term = $this->getSharedTaxonomyManager()->getTerm($taxonomy);
+        $term = $this->getSharedTaxonomyManager()->getTerm($term);
         
         $term->addEntity($entity);
         

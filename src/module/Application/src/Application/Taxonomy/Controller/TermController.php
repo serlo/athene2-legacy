@@ -30,7 +30,7 @@ class TermController extends AbstractController
         
         $form = $term->getForm();
         $view->setVariable('form', $form);
-        $this->form->setAttribute('action', $this->url('taxonomy/term', array(
+        $form->setAttribute('action', $this->url()->fromRoute('taxonomy/term', array(
             'action' => 'update'
         )) . '?ref=' . rawurlencode($this->getRequest()
             ->getHeader('Referer')
@@ -98,6 +98,29 @@ class TermController extends AbstractController
         $this->redirect()->toUrl($this->getRequest()
             ->getHeader('Referer')
             ->getUri());
+    }
+    
+    public function orderAction(){
+    	$data = $this->params()->fromPost('terms');
+    	print_r($data);
+    	$this->iterWeight($data);
+    	return $this->response;
+    }
+    
+    protected function iterWeight($terms, $parent = NULL){
+    	foreach($terms as $weight => $term){
+    		$entity = $this->getTerm($term['id']);
+    		if($parent){
+    			$entity->setParent($this->getTerm($parent));
+    		}
+    		$parent = $this->getTerm();
+    		$entity->setWeight($weight);
+    		$entity->persistAndFlush();
+    		if(isset($term['children'])){
+    			$this->iterWeight($term['children'], $term['id']);
+    		}
+    	}
+    	return true;
     }
 
     protected function getTerm ($id = 0)
