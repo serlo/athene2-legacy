@@ -1,0 +1,14 @@
+<?php
+$id = uniqid('sortable_');
+?>
+<ol id="<?php echo $id; ?>" class="sortable">
+    <?php echo $this->taxonomy; ?>
+</ol>
+<script type="text/javascript">
+$(function() {
+  $("#<?php echo $id; ?>").sortable({
+	  handle: 'i.icon-resize-vertical',
+	  group: 'nested',
+	});
+})
+</script>
