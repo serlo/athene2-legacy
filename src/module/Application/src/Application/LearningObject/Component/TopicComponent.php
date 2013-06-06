@@ -20,7 +20,7 @@ class TopicComponent  extends AbstractComponent implements ComponentInterface
 {
 
    
-    protected $publicMethods = array('getTopicTree');
+    protected $publicMethods = array('getTopicTree', 'getTopic');
     
     /**
      * 
@@ -66,5 +66,9 @@ class TopicComponent  extends AbstractComponent implements ComponentInterface
             $return[] = $this->getTermManager()->createInstance($term);
         }
         return $return;
+    }
+    
+    function getTopic() {
+        return $this->getTermManager()->get($this->entityService->get('terms')->get(0));
     }
 }

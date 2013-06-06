@@ -10,7 +10,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<li class="term" data-id="<?php echo $this->term->getId(); ?>">
+<li class="term" class="<?php echo ($this->term->getId() == $this->entity->getTopic()->getId()) ? '' : 'present'; ?>" data-id="<?php echo $this->term->getId(); ?>">
 	<div class="" style="margin: 5px 0;">
 	    <?php if ($this->term->linkAllowed('entities')): ?>
 		<?php echo $this->partial('learning-object/partials/taxonomy/toolbar', array('term' => $this->term, 'entity' => $this->entity)); ?>
