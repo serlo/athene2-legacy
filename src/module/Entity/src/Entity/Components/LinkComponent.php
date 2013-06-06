@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Factory\Components;
+namespace Entity\Components;
 
 use Core\Entity\EntityInterface;
 use Doctrine\Common\Collections\Collection;

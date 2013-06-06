@@ -142,6 +142,9 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
 
     protected function createInstance ($entity)
     {
+        if(!is_object($entity))
+            throw new NotFoundException();
+        
         $instance = parent::createInstance();
         $instance->setEntity($entity);
         return $instance;

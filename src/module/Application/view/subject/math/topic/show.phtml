@@ -13,7 +13,7 @@ $subtitle = is_object($this->topic) ? $this->topic->getName() : NULL;
 $this->renderTitle($this->translate('Themenübersicht'), NULL, $subtitle);
 //$this->partial('taxonomy/default/partial', array('term' => $topic, 'children' => $topic->getChildren()))
 ?>
-<div class="accordion" id="accordion">
+<div class="">
     <?php if($this->topic->hasParent()): ?>
     <a class="btn btn-small" href="<?php echo rawurldecode($this->url()->buildWithSubject('topic', array('path' => implode('/', $this->topic->getParent()->getPath())))); ?>"><i class="icon-chevron-left"></i></a>
     <?php else: ?>

@@ -110,4 +110,10 @@ class EntityManager extends AbstractManager implements EntityManagerInterface
         $instance->setEntity($entity);
         return $instance->build();
     }
+    
+    public function delete(EntityServiceInterface $entityService){
+        $entityService->trash();
+        $entityService->persistAndFlush();
+        return $this;
+    }
 }

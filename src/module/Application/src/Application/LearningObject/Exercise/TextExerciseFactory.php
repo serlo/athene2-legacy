@@ -13,8 +13,9 @@ namespace Application\LearningObject\Exercise;
 
 use Entity\Factory\AbstractFactory;
 use Entity\Service\EntityServiceInterface;
-use Entity\Factory\Components\LinkComponent;
-use Entity\Factory\Components\RepositoryComponent;
+use Entity\Components\LinkComponent;
+use Entity\Components\RepositoryComponent;
+use Application\LearningObject\Component\TopicComponent;
 
 class TextExerciseFactory extends AbstractFactory
 {
@@ -28,6 +29,7 @@ class TextExerciseFactory extends AbstractFactory
         $decorator = new TextExercise();
         $decorator->addComponent(new LinkComponent($entityService));
         $decorator->addComponent(new RepositoryComponent($entityService));
+        $decorator->addComponent(new TopicComponent($entityService));
         return parent::build($decorator, $entityService);
     }
 }

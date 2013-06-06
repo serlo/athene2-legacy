@@ -101,29 +101,29 @@ class TermController extends AbstractController
     }
     
     public function orderAction(){
-    	$data = $this->params()->fromPost('terms');
-    	print_r($data);
-    	$this->iterWeight($data);
+    	$data = $this->params()->fromPost('sortables');
+    	$this->iterWeight($data['children'], $data['id']);
     	return $this->response;
     }
     
     protected function iterWeight($terms, $parent = NULL){
-    	foreach($terms as $weight => $term){
+        $weight = 0;
+    	foreach($terms as $term){
     		$entity = $this->getTerm($term['id']);
     		if($parent){
-    			$entity->setParent($this->getTerm($parent));
+    			$entity->setParent($this->getTerm($parent)->getEntity());
     		}
-    		$parent = $this->getTerm();
     		$entity->setWeight($weight);
     		$entity->persistAndFlush();
     		if(isset($term['children'])){
     			$this->iterWeight($term['children'], $term['id']);
     		}
+    		$weight++;
     	}
     	return true;
     }
 
-    protected function getTerm ($id = 0)
+    protected function getTerm ($id = NULL)
     {
         if ($id) {
             return $this->getSharedTaxonomyManager()->getTerm($id);

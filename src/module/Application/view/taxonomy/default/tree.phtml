@@ -1,7 +1,7 @@
 <?php
 $id = uniqid ( 'sortable_' );
 ?>
-<ol id="<?php echo $id; ?>" class="sortable">
+<ol id="<?php echo $id; ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
     <?php echo $this->taxonomy; ?>
 </ol>
 <script type="text/javascript">
@@ -11,7 +11,7 @@ var termsort =
 	  group: 'nested',
       serialize: function ($parent, $children, parentIsContainer) {
           //var result = $.extend({id: $parent.attr('id')}, $parent.data())
-          var result = $.extend({id: $parent.attr('id'), parent: $parent.attr('parent')}, $parent.data());
+          var result = $.extend({id: $parent.attr('id')}, $parent.data());
           if(parentIsContainer)
               return $children
           else if ($children[0]) 
@@ -21,8 +21,8 @@ var termsort =
           return result
       },
 	  onDrop: function (item, container, _super) {
-          var dataToSend = {terms: $("#<?php echo $id; ?>").sortable("serialize").get()};
-          
+          var dataToSend = {sortables: {id: $("#<?php echo $id; ?>").attr('data-id'), children: $("#<?php echo $id; ?>").sortable("serialize").get()}};
+          console.dir(dataToSend);
           $.ajax({
               url: "<?php echo $this->url('taxonomy/term',array('action' => 'order'));?>",
               type: "post",

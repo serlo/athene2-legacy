@@ -65,4 +65,9 @@ class TextExerciseController extends RevisionController
         
         return $view;
     }
+    
+    public function setTopicAction(){
+        $entity = $this->getEntity();
+        $topicId = $this->params()->fromQuery('term');
+    }
 }

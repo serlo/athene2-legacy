@@ -131,7 +131,7 @@ abstract class RevisionController extends AbstractController
 
     protected function commitRevision (GraphDecorator $entity)
     {
-        if (! $entity->isInstanceOf('\Entity\Factory\Components\RepositoryComponentInterface'))
+        if (! $entity->isInstanceOf('\Entity\Components\RepositoryComponentInterface'))
             throw new \InvalidArgumentException();
         
         $form = $entity->getForm();
