@@ -32,6 +32,7 @@ class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
 
     /**
      * @ORM\OneToMany(targetEntity="TermTaxonomy", mappedBy="parent")
+     * @ORM\OrderBy({"weight" = "ASC"})
      */
     private $children;
     

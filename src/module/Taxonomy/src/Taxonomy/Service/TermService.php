@@ -18,6 +18,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Core\Structure\DecoratorInterface;
 use Taxonomy\Exception\InvalidArgumentException;
 use Term\Manager\TermManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class TermService extends AbstractEntityDecorator implements TermServiceInterface, ServiceLocatorAwareInterface
 {
@@ -111,11 +112,13 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     {
         $this->linkAllowedWithException($targetField);
         $links = $this->getAllowedLinks();
-        $services = array();
+        $services = new ArrayCollection();
+        $closure = $links[$targetField];
         foreach ($this->get($targetField) as $entity) {
-            $get = $links[$targetField]($entity);
-            if ($get !== NULL)
-                $services[] = $get;
+            $get = $closure($entity);
+            if ($get !== NULL){
+                $services->add($get);
+            }
         }
         return $services;
     }

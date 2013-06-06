@@ -45,7 +45,8 @@ class EntityComponent extends AbstractComponent implements ComponentInterface
     }
     
     public function getEntities(){
-        return $this->termService->getLinks('entities');
+        $entities = $this->termService->getLinks('entities');
+        return $entities;
     }
     
     public function addEntity($entity){

@@ -22,19 +22,24 @@ class TopicController extends AbstractController
         $subjectService = $this->getSubjectService();
         
         $topic = $subjectService->getTopic(explode('/', $this->getParam('path')));
-        $entities = $topic->getEntities();
+        
+        $entities = array();
+        if($topic->linkAllowed('entities')){
+            foreach($topic->getEntities() as $entity){
+                if(!$entity->isTrashed()){
+                    $entities[] = $entity;
+                }
+            }
+        }
         
         $view = new ViewModel(array(
             'topic' => $topic,
             'subject' => $subjectService
         ));
         
-
         $taxonomyView = new ViewModel(array(
-            'topic' => $topic,
-            'subject' => $subjectService
+            'term' => $topic,
         ));
-        
         $taxonomy = array();
         $taxonomyView->setTemplate('taxonomy/default/tree');
         foreach($topic->getChildren() as $child){
@@ -50,17 +55,18 @@ class TopicController extends AbstractController
         ));
         $entityView->setTemplate($this->getViewPath() . 'topic/entities');
         
-        $exerciseView = new ViewModel(array(
-            'exercises' => '',
-        ));
-        $exerciseView->setTemplate($this->getViewPath() . 'topic/exercises');
-        
+        $exercises = array();
         if (is_array($entities)) {
-            foreach ($entities as $entity) {
-                if ($entity instanceof ExerciseInterface)
-                    $exerciseView->addChild($entity->toViewModel(), 'exercises', true);
+            foreach ($entities as $exercise) {
+                if ($exercise instanceof ExerciseInterface){
+                    $exercises[] = $exercise;
+                }
             }
         }
+        $exerciseView = new ViewModel(array(
+            'exercises' => $exercises,
+        ));
+        $exerciseView->setTemplate($this->getViewPath() . 'topic/exercises');
         
         $entityView->addChild($exerciseView, 'entities');
         $view->addChild($entityView, 'entities');

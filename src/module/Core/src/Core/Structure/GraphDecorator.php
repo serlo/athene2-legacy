@@ -45,6 +45,8 @@ class GraphDecorator implements DecoratorInterface
                 }
             }
         }
+        
+        throw new \Exception('Method `'.$method.'` not found.');
     }
 
     public function __construct (){

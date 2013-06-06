@@ -13,5 +13,30 @@ namespace Taxonomy\Entity;
 
 interface TaxonomyEntityInterface
 {
+    /**
+     *
+     * @return field_type $factory
+     */
+    public function getFactory ();
     
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $terms
+     * @return $this
+     */
+    public function setTerms ($terms);
+    
+    /**
+     *
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name);
+    
+    /**
+     *
+     * @param field_type $factory
+     * @return $this
+     */
+    public function setFactory ($factory);
 }

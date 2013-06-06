@@ -9,8 +9,9 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Factory\Components;
-
-class FormComponent
-{
-}
+?>
+<div class="right btn-group">
+	<a
+		href="<?php echo $this->url('taxonomy/term',array('action' => 'set-topic', 'id' => $this->entity->getId() )) . '?term='.$this->term->getId(); ?>"
+		class="btn btn-mini"><i class="icon-download-alt"></i></a>
+</div>

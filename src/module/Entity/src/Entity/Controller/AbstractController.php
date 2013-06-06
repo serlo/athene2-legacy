@@ -34,7 +34,7 @@ abstract class AbstractController extends AbstractActionController
 
     /**
      *
-     * @param EntityManagerInterface $_entityManager
+     * @param EntityManagerInterface $_entityManager            
      * @return $this
      */
     public function setEntityManager (EntityManagerInterface $_entityManager)
@@ -44,13 +44,14 @@ abstract class AbstractController extends AbstractActionController
     }
 
     protected abstract function getEntityFactory ();
+
     protected abstract function getEntityClass ();
 
     public function indexAction ()
     {
         return $this->receiveAction();
     }
-    
+
     public function createAction ()
     {
         $entity = $this->getEntityManager()->create($this->getEntityFactory());
@@ -60,18 +61,39 @@ abstract class AbstractController extends AbstractActionController
         ));
     }
 
+    public function deleteAction ()
+    {
+        $entity = $this->getEntity();
+        $entity->getManager()->delete($entity);
+        
+        $this->flashMessenger()->addSuccessMessage('Löschung erfolgreich!');
+        $ref = $this->getRequest()
+            ->getHeader('Referer')
+            ->getUri();
+        $ref = $ref ? $ref : '/';
+        $this->redirect()->toUrl($ref);
+        
+        return null;
+    }
+
+    public function purgeAction ()
+    {
+        throw new \Exception('Not implemented');
+        // TODO
+    }
+
     protected function getEntity ()
     {
         $id = $this->getParam('id');
         $entity = $this->getEntityManager()->get($id);
         $controllerName = $this->params('controller');
         $actionName = $this->params('action');
-
+        
         if (get_class($entity) != $this->getEntityClass()) {
             // $this->redirect()->toRoute(get_class($entity),array('action' => $actionName, 'id' => $entity->getId()));
             throw new \Exception('This controller can\'t handle the requested entity.');
         }
-
+        
         return $entity;
     }
 }

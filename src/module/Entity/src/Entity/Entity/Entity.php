@@ -136,14 +136,6 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     }
 
 	/**
-     * @return field_type $killed
-     */
-    public function getKilled ()
-    {
-        return $this->killed;
-    }
-
-	/**
      * @return field_type $slug
      */
     public function getSlug ()
@@ -222,16 +214,6 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     }
 
 	/**
-     * @param field_type $killed
-     * @return $this
-     */
-    public function setKilled ($killed)
-    {
-        $this->killed = $killed;
-        return $this;
-    }
-
-	/**
      * @param field_type $slug
      * @return $this
      */
@@ -282,5 +264,20 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     public function getParents()
     {
         return $this->parents;
+    }
+    
+    public function trash()
+    {
+        $this->killed = true;
+        return $this;
+    }
+    
+    public function unTrash(){
+        $this->killed = false;
+        returN $this;
+    }
+    
+    public function isTrashed(){
+        return $this->killed;
     }
 }

@@ -22,6 +22,8 @@ class TextExercise extends AbstractEntity implements EntityServiceInterface, Tex
     
     public function toViewModel()
     {
+        throw new \Exception('DEPRECATED');
+        
         if(!$this->viewModel){
             $this->viewModel = new ViewModel(array('entity' => $this));
         }
@@ -50,9 +52,6 @@ class TextExercise extends AbstractEntity implements EntityServiceInterface, Tex
     public function getData(){
         return array(
             'id' => $this->getId(),
-            //'subject' => $this->getSubject(),
-            //'topic' => $this->getTopic(),
-            //'content' => $this->getContent(),
         );
     }
     

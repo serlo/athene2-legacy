@@ -1,0 +1,27 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<li class="term" data-id="<?php echo $this->term->getId(); ?>">
+	<div class="" style="margin: 5px 0;">
+	    <?php if ($this->term->linkAllowed('entities')): ?>
+		<?php echo $this->partial('learning-object/partials/taxonomy/toolbar', array('term' => $this->term, 'entity' => $this->entity)); ?>
+		<?php endif; ?>
+		<div>
+            <?php echo $this->term->getName(); ?> (<?php echo $this->term->countEntities(); ?>)
+		</div>
+	</div>
+	<ul>
+        <?php foreach($this->term->getChildren() as $child):?>
+            <?php echo $this->partial('learning-object/partials/taxonomy/term', array('term' => $child, 'entity' => $this->entity)); ?>
+        <?php endforeach; ?>
+    </ul>
+</li>

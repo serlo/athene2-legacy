@@ -24,7 +24,6 @@ use Core\Service\LanguageService;
 use Versioning\RepositoryManagerInterface;
 use Core\Service\SubjectService;
 use Core\Service\AbstractEntityDecorator;
-use Core\Entity\EntityInterface;
 
 class EntityService extends AbstractEntityDecorator implements EntityServiceInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface, EventManagerAwareInterface
 {
@@ -252,5 +251,12 @@ class EntityService extends AbstractEntityDecorator implements EntityServiceInte
 		
 		$factory = new $fullFactoryClassName();
 		return $factory->build($this);
+    }
+    
+    public function refresh(){
+        if($this->getObjectManager()->isOpen()){
+            $this->getObjectManager()->refresh($this->getEntity());
+        }
+        return $this;
     }
 }

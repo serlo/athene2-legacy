@@ -10,6 +10,13 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<section class="content">
-    <?php echo $this->revision->get('content'); ?>
-</section>
+<ul>
+<?php
+foreach ($this->terms as $term) {
+    echo $this->partial('learning-object/partials/taxonomy/term', array(
+        'term' => $term,
+        'entity' => $entity,
+    ));
+}
+?>
+</ul>

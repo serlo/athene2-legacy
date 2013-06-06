@@ -53,7 +53,7 @@ return array(
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
                 'Entity\EntityManagerInterface' => 'Entity\EntityManager'
             ),
-            'Entity\Factory\EntityFactory' => array(
+            'Entity\Service\EntityService' => array(
                 'shared' => false
             )
         )
