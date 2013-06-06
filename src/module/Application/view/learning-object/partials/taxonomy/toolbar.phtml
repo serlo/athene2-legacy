@@ -13,5 +13,5 @@
 <div class="right btn-group">
 	<a
 		href="<?php echo $this->url('taxonomy/term',array('action' => 'set-topic', 'id' => $this->entity->getId() )) . '?term='.$this->term->getId(); ?>"
-		class="btn btn-mini"><i class="icon-download-alt"></i></a>
+		class="btn btn-mini<?php echo ($this->term->getId() == $this->entity->getTopic()->getId()) ? ' disabled' : ' '; ?>"><i class="icon-download-alt"></i></a>
 </div>
