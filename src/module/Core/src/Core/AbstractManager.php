@@ -14,7 +14,7 @@ namespace Core;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 
-abstract class AbstractManager implements ServiceManagerAwareInterface
+abstract class AbstractManager implements ServiceManagerAwareInterface, Manager
 {
 
     /**

@@ -69,6 +69,17 @@ class TopicComponent  extends AbstractComponent implements ComponentInterface
     }
     
     function getTopic() {
-        return $this->getTermManager()->get($this->entityService->get('terms')->get(0));
+        return $this->entityService->getTerms()->first();
+    }
+    
+    function setTopic($term){
+    	$current = $this->getTopic();
+        $this->entityService->getTerms()->remove($current);
+        
+        $term = $this->getTermManager()->get($term);
+        $this->entityService->getTerms()->add($term);
+        $this->entityService->persistAndFlush();
+        
+        return $this;
     }
 }
