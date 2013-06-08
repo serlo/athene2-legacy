@@ -24,6 +24,7 @@ use Core\Service\LanguageService;
 use Versioning\RepositoryManagerInterface;
 use Core\Service\SubjectService;
 use Core\Service\AbstractEntityDecorator;
+use Core\Collection\DecoratorCollection;
 
 class EntityService extends AbstractEntityDecorator implements EntityServiceInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface, EventManagerAwareInterface
 {
@@ -154,6 +155,11 @@ class EntityService extends AbstractEntityDecorator implements EntityServiceInte
 	public function getFactory() {
 		return $this->factory;
 	}
+	
+	public function getTerms() {
+		return new DecoratorCollection($this->getEntity()->get('terms'), $this->getManager());
+	}
+	
 	/**
 	 * @param EntityBuilderInterface $factory
 	 * @return $this
