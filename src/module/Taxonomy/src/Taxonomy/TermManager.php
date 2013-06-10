@@ -68,11 +68,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     public function get ($term)
     {
         if (is_numeric($term)) {
-            $criteria = Criteria::create()->where(Criteria::expr()->eq("id", $term))
-                ->setMaxResults(1);
-            $entity = $this->getTerms()
-                ->matching($criteria)
-                ->first();
+            $entity = $this->getObjectManager()->find($this->resolve('TermEntityInterface'), (int) $term);
             $id = $this->add($this->createInstance($entity));
         } elseif (is_array($term)) {
             $id = $this->add($this->createInstance($this->getEntityByPath($term)));

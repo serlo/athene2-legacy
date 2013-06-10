@@ -12,11 +12,11 @@
 namespace Subject;
 
 use Subject\Service\SubjectServiceInterface;
-use Zend\ServiceManager\FactoryInterface;
 use Core\AbstractManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Core\Manager;
 
-class SubjectManager extends AbstractManager implements SubjectManagerInterface, ObjectManagerAwareInterface
+class SubjectManager extends AbstractManager implements SubjectManagerInterface, ObjectManagerAwareInterface, Manager
 {    
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager

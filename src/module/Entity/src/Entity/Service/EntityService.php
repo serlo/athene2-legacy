@@ -157,7 +157,7 @@ class EntityService extends AbstractEntityDecorator implements EntityServiceInte
 	}
 	
 	public function getTerms() {
-		return new DecoratorCollection($this->getEntity()->get('terms'), $this->getManager());
+		return new DecoratorCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
 	}
 	
 	/**

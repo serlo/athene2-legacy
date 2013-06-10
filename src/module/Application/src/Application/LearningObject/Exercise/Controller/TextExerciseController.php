@@ -55,7 +55,6 @@ class TextExerciseController extends RevisionController
                     'id' => $entity->getId()
                 ));
             } catch (\Versioning\Exception\RevisionNotFoundException $e) {
-                echo "yuno";
                 $this->redirect()->toRoute(get_class($entity), array(
                     'action' => 'history',
                     'id' => $entity->getId()
@@ -69,5 +68,11 @@ class TextExerciseController extends RevisionController
     public function setTopicAction(){
         $entity = $this->getEntity();
         $topicId = $this->params()->fromQuery('term');
+        $entity->setTopic($topicId);
+
+        
+        $this->redirect()->toUrl($this->getRequest()
+            ->getHeader('Referer')
+            ->getUri());
     }
 }
