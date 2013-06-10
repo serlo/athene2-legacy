@@ -36,6 +36,10 @@ abstract class AbstractManager implements ServiceManagerAwareInterface, Manager
      */
     private $serviceLocator;
     
+    public function get($name){
+        return $this->getInstance($name);
+    }
+    
     /**
      * (non-PHPdoc)
      * @see \Zend\ServiceManager\ServiceManagerAwareInterface::getServiceManager()

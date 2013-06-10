@@ -20,7 +20,7 @@ class TopicComponent  extends AbstractComponent implements ComponentInterface
 {
 
    
-    protected $publicMethods = array('getTopicTree', 'getTopic');
+    protected $publicMethods = array('getTopicTree', 'getTopic', 'setTopic');
     
     /**
      * 
@@ -69,12 +69,14 @@ class TopicComponent  extends AbstractComponent implements ComponentInterface
     }
     
     function getTopic() {
-        return $this->entityService->getTerms()->first();
+        return $this->entityService->getTerms()->getFromManager(0);
     }
     
     function setTopic($term){
     	$current = $this->getTopic();
-        $this->entityService->getTerms()->remove($current);
+        $this->entityService->getTerms()->removeElement($current);
+        $current->get('entities')->removeElement($this->entityService->getEntity());
+        $current->persist();
         
         $term = $this->getTermManager()->get($term);
         $this->entityService->getTerms()->add($term);

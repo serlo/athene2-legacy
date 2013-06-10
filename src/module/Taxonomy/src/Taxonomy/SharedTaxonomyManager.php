@@ -94,6 +94,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     {
         $className = $this->resolve('manages');
         $entityClassName = $this->resolve('TaxonomyEntityInterface');
+        $termEntityClassName = $this->resolve('TermTaxonomyEntityInterface');
         
         if (is_numeric($taxonomy)) {
             $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'), $taxonomy);
@@ -110,6 +111,8 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             $name = $this->add($taxonomy);
         } elseif ($taxonomy instanceof $entityClassName) {
             $name = $this->add($this->createInstance($taxonomy));
+        } elseif ($taxonomy instanceof $termEntityClassName) {
+            return $this->getTerm($taxonomy);
         } else {
             throw new \Exception();
         }
@@ -119,30 +122,32 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getInstance($name);
     }
 
-    public function getTerm ($id)
+    public function getTerm ($element)
     {
-        if (! is_numeric($id))
+        $termEntityClassName = $this->resolve('TermTaxonomyEntityInterface');
+        if (is_numeric($element)) {
+            $entity = $this->getObjectManager()->find($this->resolve('TermTaxonomyEntityInterface'), (int) $element);
+            if (! is_object($entity))
+                throw new NotFoundException();
+            $entity = $entity->getTaxonomy();
+            $name = $this->add($this->createInstance($entity));
+        } elseif ($element instanceof $termEntityClassName) {
+            $name = $this->add($this->createInstance($element->getTaxonomy()));
+        } else {
             throw new \InvalidArgumentException();
-        
-        $entity = $this->getObjectManager()->find($this->resolve('TermTaxonomyEntityInterface'), (int) $id);
-        
-        if (! is_object($entity))
-            throw new NotFoundException();
-        
-        $entity = $entity->getTaxonomy();
-        
-        $name = $this->add($this->createInstance($entity));
-        return $this->getInstance($name)->get($id);
+        }
+        return $this->getInstance($name)->get($element);
     }
-    
-    public function deleteTerm($id){
+
+    public function deleteTerm ($id)
+    {
         $term = $this->getTerm($id);
         $term->getManager()->delete($term);
     }
 
     protected function createInstance ($entity)
     {
-        if(!is_object($entity))
+        if (! is_object($entity))
             throw new NotFoundException();
         
         $instance = parent::createInstance();
