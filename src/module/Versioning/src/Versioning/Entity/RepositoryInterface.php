@@ -9,11 +9,21 @@
 namespace Versioning\Entity;
 
 use Core\Entity\EntityInterface;
+use Doctrine\ORM\PersistentCollection;
 
 interface RepositoryInterface extends EntityInterface
 {
-
+    /**
+     * Returns the revisions
+     * 
+     * @return PersistentCollection
+     */
     public function getRevisions ();
     
-    public function addRevision();
+    /**
+     * Adds a new revision to the repository
+     * 
+     * @return RevisionInterface
+     */
+    public function addNewRevision();
 }

@@ -1,0 +1,37 @@
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#display" data-toggle="tab"><?php echo $this->translate('Revision'); ?> (#<?php echo $this->revision->getId();?>)</a></li>
+	<?php if($this->currentRevision){ ?>
+	<li><a href="#current" data-toggle="tab"><?php echo $this->translate('Aktuelle Revision'); ?> (#<?php echo $this->currentRevision->getId();?>)</a></li>
+	<?php } ?>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="display">
+		<article>
+            <?php echo $this->revisionView; ?>
+            <?php if($this->revision !== $this->currentRevision){?>
+			<hr>
+			<footer>
+				<div class="btn-group">					
+				    <?php if($this->isGranted('VIEW_ENTITY_REVISION_CHECKOUT')) { ?>
+					   <a class="btn btn-success btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'checkout', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Akzeptieren')?></a>
+				    <?php } ?>
+					<?php if($this->isGranted('VIEW_ENTITY_REVISION_TRASH')) { ?>
+					   <a class="btn btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'trash-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Verwerfen')?></a>
+				    <?php } ?>
+					<?php if($this->isGranted('VIEW_ENTITY_REVISION_PURGE')) { ?>
+					   <a class="btn btn-danger btn-small" href="<?php echo $this->url(get_class($this->entity),array('action' => 'purge-revision', 'id' => $this->entity->getId(), 'revisionId' => $revision->getId())); ?>"><?php echo $this->translate('Löschen')?></a>
+				    <?php } ?>
+				</div>
+			</footer>
+			<?php } ?>
+		</article>
+
+	</div>
+	<?php if($this->currentRevisionView){ ?>
+	<div class="tab-pane" id="current">
+		<article class="current">
+            <?php echo $this->currentRevisionView; ?>
+		</article>
+	</div>
+	<?php } ?>
+</div>

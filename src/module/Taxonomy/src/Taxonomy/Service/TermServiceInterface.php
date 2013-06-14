@@ -8,13 +8,11 @@
  */
 namespace Taxonomy\Service;
 
-use Core\Entity\EntityInterface;
-use Core\Entity\EntityAdapterInterface;
 
-interface TermServiceInterface extends EntityAdapterInterface
+interface TermServiceInterface
 {
 
-    public function setTemplate ($template);
+    /*public function setTemplate ($template);
 
     public function getViewModel ();
 
@@ -32,5 +30,5 @@ interface TermServiceInterface extends EntityAdapterInterface
 
     public function addLink ($targetField, EntityInterface $entity);
 
-    public function removeLink ($targetField, EntityInterface $entity);
+    public function removeLink ($targetField, EntityInterface $entity);*/
 }

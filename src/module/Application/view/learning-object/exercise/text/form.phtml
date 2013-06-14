@@ -1,0 +1,35 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<article class="exercise exercise-text exercise-editor">
+    <?php echo $this->renderTitle( isset($this->entity) ? $this->translate('Textaufgabe bearbeiten') : $this->translate('Textaufgabe erstellen'), 'row-fluid');?>
+    <section>
+        <?php
+        $this->form->prepare();
+        echo $this->form()->openTag($this->form);
+        echo $this->formRow($this->form->get('revision')->get('content'));
+        ?>
+        <div class="control-group">
+        	<div class="controls">
+        		<div class="span4"><?php
+        echo $this->forminput($this->form->get('editor')->get('submit'));
+        ?> <?php
+        echo $this->forminput($this->form->get('editor')->get('reset'));
+        ?></div>
+        		<div class="span8"></div>
+        	</div>
+        </div>
+        <?php
+        echo $this->form()->closeTag();
+        ?>
+    </section>
+</article>

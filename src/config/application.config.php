@@ -6,6 +6,7 @@ return array(
         'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
+        'ZfcRbac',
         'TwbBundle',
         'ZfcBase',
         'Core',
@@ -16,10 +17,12 @@ return array(
         'Editor',
         'Log',
         'Entity',
-        'Math',
         'TwbBundle',
     	'Taxonomy',
+    	'Navigation',
     	'Link',
+        'Subject',
+        'Term',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

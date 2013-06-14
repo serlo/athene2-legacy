@@ -20,6 +20,7 @@ return array(
             'User\Service\UserLogService' => function ($sm){
                 $srv = new Service\UserLogService();
                 $srv->setEntityManager($sm->get('EntityManager'));
+                $srv->setAuthService($sm->get('Auth\Service\AuthService'));
                 return $srv;
             },
             'User\Service\UserService' => function ($sm)

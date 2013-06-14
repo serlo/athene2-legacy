@@ -28,5 +28,14 @@ return array(
         'user' => $dbParams['user'],
         'password' => $dbParams['password'],
         'database' => $dbParams['database']
-    )
+    ),
+    'smtpParams' => array(
+    	'name' => 'localhost.localdomain',
+		'host' => '127.0.0.1',
+		'connection_class' => 'login',
+		'connection_config' => array(
+			'username' => 'user',
+			'password' => 'pass'
+		)
+	),
 );

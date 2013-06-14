@@ -1,25 +1,28 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Entity;
 
-use Entity\Factory\EntityFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager as OrmManager;
-use Core\Entity\EntityInterface;
+use Core\AbstractManager;
+use Entity\Entity\EntityInterface;
+use Entity\Exception\InvalidArgumentException;
+use Entity\Service\EntityServiceInterface;
 
-class EntityManager implements EntityManagerInterface
+class EntityManager extends AbstractManager implements EntityManagerInterface
 {    
-    /**
-     * 
-     * @var ServiceLocatorInterface
-     */
-    protected $_serviceManager;
-    
     /**
      * @var OrmManager
      */
     protected $_entityManager;
-    
-    protected $_entities;
 
 	/**
 	 * @return OrmManager
@@ -27,6 +30,18 @@ class EntityManager implements EntityManagerInterface
 	public function getEntityManager() {
 		return $this->_entityManager;
 	}
+    
+    protected $options = array(
+        'instances' => array(
+	       'manages' => 'Entity\Service\EntityService',
+	       'EntityInterface' => 'Entity\Entity\Entity',
+	       'EntityFactoryInterface' => 'Entity\Entity\Factory',
+        ),
+    );
+    
+    public function __construct(){
+        parent::__construct($this->options);
+    }
 
 	/**
 	 * @param OrmManager $_entityManager
@@ -36,61 +51,69 @@ class EntityManager implements EntityManagerInterface
 		return $this;
 	}
 
-	/**
-	 * @return ServiceLocatorInterface $_serviceManager
-	 */
-	public function getServiceManager() {
-		return $this->_serviceManager;
-	}
-
-	/**
-	 * @param ServiceLocatorInterface $_serviceManager
-	 * @return $this
-	 */
-	public function setServiceManager(ServiceLocatorInterface $_serviceManager) {
-		$this->_serviceManager = $_serviceManager;
-		return $this;
-	}
-
 	private function _getById($id){
-        $entityService = $this->_createService();
-		$entityService->setEntity($this->getEntityManager()->find('Entity\Entity\Entity', $id));
+	    $entity = $this->getEntityManager()->find($this->resolve('EntityInterface'), $id);
+        $entityService = $this->createInstance($entity);
         $this->add($entityService);
         return $this;
     }
     
     private function _getByEntity(EntityInterface $entity){
-        $entityService = $this->_createService();
-		$entityService->setEntity($entity);
+        $entityService = $this->createInstance($entity);
         $this->add($entityService);
         return $this;
     }
     
-    private function _createService(){
-        $sm = $this->getServiceManager();
-        
-        //TODO [DI] remove
-        $sm->setShared('Entity\Factory\EntityFactory', false);
-        $service = $sm->get('Entity\Factory\EntityFactory');
-        return $service;
-    }
-    
     public function get($id){
     	if(is_numeric($id)){
-	        if(!isset($this->_entities[$id])){
-	            $this->_getById($id);
-	        }
-        	return $this->_entities[$id];
     	} else if ($id instanceof EntityInterface) {
-	        if(!isset($this->_entities[$id->getId()])){
-	            $this->_getByEntity($id);
-	        }
-        	return $this->_entities[$id->getId()];
+    	    $id = $id->getId();
+    	} else {
+    	    throw new InvalidArgumentException();
     	}
+    	if(!$this->hasInstance($id)){
+    	    $this->_getById($id);
+    	}
+    	return $this->getInstance($id);
     }
     
-    public function add(EntityFactoryInterface $entityService){
-        $entityService->setManager($this);
-        $this->_entities[$entityService->getId()] = $entityService->build();
+    public function create($factoryClass){
+        
+        $em = $this->getEntityManager();
+        $factory = $em->getRepository($this->resolve('EntityFactoryInterface'))->findOneByClassName($factoryClass);
+
+        if(!is_object($factory))
+            throw new \Exception("Factory `{$factoryClass}` not found."); 
+               
+        $class = $this->resolve('EntityInterface');
+        $entity = new $class();
+        $entity->populate(array(
+            'killed' => false,
+            'language' => $this->getServiceManager()->get('Core\Service\LanguageManager')->getRequestLanguage()->getEntity(),
+            'factory' => $factory,
+            'uuid' => uniqid('entity_',true)
+        ));
+        $entity->setFactory($factory);
+        $em->persist($entity);
+        $em->flush();
+        
+        return $this->get($entity->getId());
+    }
+    
+    public function add(EntityServiceInterface $entityService){
+        return $this->addInstance($entityService->getId(), $entityService);
+    }
+    
+    public function createInstance($entity){
+        $instance = parent::createInstance();
+        $instance->setManager($this);
+        $instance->setEntity($entity);
+        return $instance->build();
+    }
+    
+    public function delete(EntityServiceInterface $entityService){
+        $entityService->trash();
+        $entityService->persistAndFlush();
+        return $this;
     }
 }

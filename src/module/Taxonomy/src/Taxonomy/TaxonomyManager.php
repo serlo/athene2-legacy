@@ -18,6 +18,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\Common\Collections\Collection;
 use Core\Entity\EntityInterface;
 use Taxonomy\Factory\FactoryInterface;
+use Taxonomy\Exception\NotFoundException;
+use Taxonomy\Entity\TaxonomyTerm;
+use Zend\EventManager\SharedEventManager;
 
 class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerInterface, ServiceLocatorAwareInterface
 {
@@ -41,6 +44,10 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     protected $_termTemplate;
 
     protected $_allowedLinks = array();
+    
+    public function getAllowedLinks(){
+        return $this->_allowedLinks;
+    }
 
     /**
      *
@@ -53,12 +60,35 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
      * @var LanguageService
      */
     protected $_languageService;
+    
+    /**
+     * @var SharedTaxonomyManagerInterface
+     */
+    protected $sharedTaxonomyManager;
 
     /**
+     * @return \Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager
+     */
+    public function getSharedTaxonomyManager ()
+    {
+        return $this->sharedTaxonomyManager;
+    }
+
+	/**
+     * @param \Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager
+     * @return $this
+     */
+    public function setSharedTaxonomyManager (SharedTaxonomyManagerInterface $sharedTaxonomyManager)
+    {
+        $this->sharedTaxonomyManager = $sharedTaxonomyManager;
+        return $this;
+    }
+
+	/**
      *
      * @return FactoryInterface
      */
-    public function getFactory ()
+    public function getFactory()
     {
         return $this->_factory;
     }
@@ -68,13 +98,13 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
      * @param FactoryInterface $_factory            
      * @return $this
      */
-    public function setFactory (FactoryInterface $_factory)
+    public function setFactory(FactoryInterface $_factory)
     {
         $this->_factory = $_factory;
         return $this;
     }
 
-    public function __construct ($adaptee = NULL)
+    public function __construct($adaptee = NULL)
     {
         // echo "creating";
         $this->setAdaptee($adaptee);
@@ -83,7 +113,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
      */
-    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->_serviceLocator = $serviceLocator;
         return $this;
@@ -92,7 +122,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
      */
-    public function getServiceLocator ()
+    public function getServiceLocator()
     {
         return $this->_serviceLocator;
     }
@@ -101,7 +131,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
      *
      * @return EntityManager $_entityManager
      */
-    public function getEntityManager ()
+    public function getEntityManager()
     {
         return $this->_entityManager;
     }
@@ -111,7 +141,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
      * @param EntityManager $_entityManager            
      * @return $this
      */
-    public function setEntityManager (EntityManager $_entityManager)
+    public function setEntityManager(EntityManager $_entityManager)
     {
         $this->_entityManager = $_entityManager;
         return $this;
@@ -120,7 +150,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::addTerm()
      */
-    public function addTerm (TermServiceInterface $ts)
+    public function addTerm(TermServiceInterface $ts)
     {
         $this->_terms[$ts->getId()] = $ts;
         return $this;
@@ -129,7 +159,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::createTerm()
      */
-    public function createTerm ()
+    public function createTerm()
     {
         // TODO Auto-generated method stub
         $ts = '';
@@ -140,7 +170,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::hasTerm()
      */
-    public function hasTerm ($val)
+    public function hasTerm($val)
     {
         // TODO do me
     }
@@ -148,7 +178,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::getTerm()
      */
-    public function getTerm ($val)
+    public function getTerm($val)
     {
         if (is_numeric($val)) {
             $return = $this->_getTermById($val);
@@ -159,12 +189,16 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
                 if ($val instanceof EntityInterface) {
                     $return = $this->_getTermByEntity($val);
                 } else {
-                    throw new BadTypeException();
+                    throw new \InvalidArgumentException();
                 }
+        
+        if (! $return instanceof TermServiceInterface)
+            throw new NotFoundException('Not found');
+        
         return $return;
     }
 
-    public function getTermByLink ($targetField, EntityInterface $target)
+    public function getTermByLink($targetField, EntityInterface $target)
     {
         // TODO
         // if(!$this->linkingAllowed($targetField))
@@ -190,7 +224,12 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
             ->current());
     }
 
-    protected function _getTermByEntity (EntityInterface $entity)
+    public function getTermByEntity($entity)
+    {
+        return $this->_getTermByEntity($entity);
+    }
+
+    protected function _getTermByEntity(EntityInterface $entity)
     {
         $id = $entity->getId();
         if (isset($this->_terms[$id])) {
@@ -201,7 +240,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
         return $service;
     }
 
-    protected function _getTermById ($id)
+    protected function _getTermById($id)
     {
         if (isset($this->_terms[$id])) {
             return $this->_terms[$id];
@@ -212,10 +251,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
         return $service;
     }
 
-    protected function _getTermByPath (array $path)
-    {}
-
-    protected function _entitiesToServices (Collection $entities)
+    protected function _entitiesToServices(Collection $entities)
     {
         $return = array();
         foreach ($entities->toArray() as $entity) {
@@ -224,25 +260,45 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
         return $return;
     }
 
-    protected function _entityToService ($entity)
+    public function getTermsByEntities(Collection $entities)
     {
+        return $this->_entitiesToServices($entities);
+    }
+
+    protected function _entityToService($entity)
+    {
+        if(!$entity instanceof TaxonomyTerm)
+            throw new \InvalidArgumentException();
+        
+        if($entity == NULL)
+            throw new NotFoundException();
+        
         // TODO REMOVE
         $this->getServiceLocator()->setShared('Taxonomy\Service\TermService', false);
         
         $ts = $this->getServiceLocator()->get('Taxonomy\Service\TermService');
+        $ts->setTaxonomyManager($this->getSharedTaxonomyManager()->get($entity->getTaxonomy()));
+        
         $ts->setEntity($entity);
         return $ts;
     }
 
-    public function build ()
+    public function build()
     {
         // read factory class from db
-        $factoryClassName = $this->getEntity()
-            ->get('factory')
-            ->get('className');
+        $factoryClassName = $this->getEntity()->getFactory();
+        
+        if (! $factoryClassName)
+            throw new \Exception('Factory not set');
+        
+        $factoryClassName = $factoryClassName->get('className');
         if (substr($factoryClassName, 0, 1) != '\\') {
             $factoryClassName = '\\Taxonomy\\Factory\\' . $factoryClassName;
         }
+        
+        if (! class_exists($factoryClassName))
+            throw new \Exception('Something somewhere went terribly wrong.');
+        
         $factory = new $factoryClassName();
         if (! $factory instanceof FactoryInterface)
             throw new \Exception('Something somewhere went terribly wrong.');
@@ -256,15 +312,19 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::getTerms()
      */
-    public function getTerms (Criteria $filter = NULL)
+    public function getTerms(Criteria $filter = NULL)
     {
-        return $this->get('terms')->matching($filter);
+        if (! $filter) {
+            return $this->get('terms');
+        } else {
+            return $this->get('terms')->matching($filter);
+        }
     }
     
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::toArray()
      */
-    public function toArray ()
+    public function toArray()
     {
         $this->getEntity()->toArray();
     }
@@ -272,7 +332,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::setTemplate()
      */
-    public function setTemplate ($template)
+    public function setTemplate($template)
     {
         $this->_template = $template;
         return $this;
@@ -281,7 +341,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::setTermTemplate()
      */
-    public function setTermTemplate ($template)
+    public function setTermTemplate($template)
     {
         $this->_termTemplate = $template;
         return $this;
@@ -290,7 +350,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::enableLink()
      */
-    public function enableLink ($targetField,\Closure $callback)
+    public function enableLink($targetField, \Closure $callback)
     {
         $this->_allowedLinks[$targetField] = $callback;
         return $this;
@@ -299,7 +359,7 @@ class TaxonomyManager extends AbstractEntityAdapter implements TaxonomyManagerIn
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::linkingAllowed()
      */
-    public function linkingAllowed ($targetField)
+    public function linkingAllowed($targetField)
     {
         return isset($this->_allowedLinks[$targetField]);
     }

@@ -1,12 +1,23 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
+ * 
+ * Athene2 - Advanced Learning Resources Manager
  *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home'
+            )
+        )
+    ),
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -16,6 +27,28 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
                         'action' => 'index'
+                    )
+                )
+            ),
+            'taxonomy' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/taxonomy/',
+                    'defaults' => array(
+                        'controller' => 'Application\Taxonomy\Controller\404',
+                        'action' => 'index'
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'term' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'term/:action/[:id]',
+                            'defaults' => array(
+                                'controller' => 'Application\Taxonomy\Controller\TermController'
+                            )
+                        )
                     )
                 )
             ),
@@ -52,7 +85,18 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory'
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'MailMan' => function  ($sm)
+            {
+                $config = $sm->get('Config');
+                $smtpParams = $config['smtpParams'];
+                
+                $transport = new \Zend\Mail\Transport\Smtp();
+                $options = new \Zend\Mail\Transport\SmtpOptions($smtpParams);
+                $transport->setOptions($options);
+                return $transport;
+            },
+            'navigation' => 'Navigation\Service\DynamicNavigationFactory'
         ),
         'aliases' => array(
             'EntityManager' => 'doctrine.entitymanager.orm_default',
@@ -97,10 +141,12 @@ return array(
                 '@base_css',
                 '@html5',
                 '@jquery',
-                //'@bootstrap',
+                '@bootstrap',
+                '@sortable',
+                '@sortable_css',
             ),
             'options' => array(
-                'mixin' => true
+                'mixin' => false
             )
         ),
         
@@ -146,6 +192,18 @@ return array(
                         )
                     ),
                     
+                    'sortable' => array(
+                        'assets' => array(
+                            'js/jquery-sortable.js',
+                        )
+                    ),
+                    'sortable_css' => array(
+                        'assets' => array(
+                            'css/jquery-sortable.css',
+                        )
+                    ),
+                    
+                    
                     'base_images' => array(
                         'assets' => array(
                             'images/*.png',
@@ -173,6 +231,26 @@ return array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
+            )
+        )
+    ),
+    'di' => array(
+        'allowed_controllers' => array(
+            'Application\Taxonomy\Controller\TermController'
+        ),
+        'definition' => array(
+            'class' => array(
+                'Application\Taxonomy\Controller\TermController' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    )
+                )
+            )
+        ),
+        'instance' => array(
+            'preferences' => array(
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             )
         )
     )
