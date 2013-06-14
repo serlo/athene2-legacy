@@ -5,7 +5,6 @@ use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RepositoryInterface;
 
 /**
@@ -145,7 +144,7 @@ class Revision extends AbstractEntity implements RevisionInterface
 
     public function toggleTrashed()
     {
-        $this->trashed = !$this->isTrashed();
+        $this->trashed = ! $this->isTrashed();
     }
 
     public function setRepository(RepositoryInterface $repository)

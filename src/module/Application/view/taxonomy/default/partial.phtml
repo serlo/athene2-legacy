@@ -1,0 +1,44 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+$id = uniqid('sort_', true);
+
+$options = array(
+    'list' => array(
+        'class' => 'sortable'
+    ),
+    'toolbar' => array(
+        'template' => 'taxonomy/default/actions'
+    ),
+    'children' => array(
+        'template' => 'taxonomy/default/partial'
+    )
+);
+
+if (isset($this->options)) {
+    $options = array_merge($options, $this->options);
+}
+?>
+<li class="term" data-id="<?php echo $this->term->getId(); ?>">
+	<div class="" style="margin: 5px 0;">
+		<?php echo $this->partial(($options['toolbar']['template']), array('term' => $this->term)); ?>
+		<div>
+			<a class=""
+				href="<?php echo rawurldecode($this->url()->buildWithSubject('topic', array('path' => implode('/', $this->term->getPath())))); ?>"><?php echo $this->term->getName(); ?></a>
+				(<?php echo $this->term->countEntities(); ?>)
+		</div>
+	</div>
+	<ol class="<?php echo $options['list']['class']; ?>">
+        <?php foreach($this->term->getChildren() as $child):?>
+            <?php echo $this->partial($options['children']['template'], array('term' => $child, 'options' => $options)); ?>
+        <?php endforeach; ?>
+    </ol>
+</li>

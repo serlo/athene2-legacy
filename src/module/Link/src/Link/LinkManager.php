@@ -8,38 +8,39 @@ use Link\Service\LinkServiceInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class LinkManager extends AbstractManager implements LinkManagerInterface, ServiceLocatorAwareInterface {
+class LinkManager extends AbstractManager implements LinkManagerInterface {
 
 	/**
 	 * @var ServiceLocatorInterface
 	 */
-	protected $_serviceLocator;
+	protected $serviceLocator;
+	
+	protected $options = array('instances' => array('manages' => 'Link\Service\LinkService'));
+	
+	
+	public function __construct(){
+	    parent::__construct($this->options);
+	}
 	
 	/* (non-PHPdoc)
 	 * @see \Link\LinkManagerInterface::get()
 	 */
 	public function get($id) {
-		return $this->_getInstance($id);
+		return $this->getInstance($id);
 	}
 
 	public function create(LinkEntityInterface $entity){
-		
-		$sl = $this->getServiceLocator();
-		
-		// TODO !dirty !di Remove
-		$sl->setShared('Link\Service\LinkService',false);
-		$ls = $this->getServiceLocator()->get('Link\Service\LinkService');
-		$ls->setEntity($entity);
-		$this->add($ls);
-		
-		return $ls;
+		$isntance = parent::createInstance();
+		$isntance->setEntity($entity);
+		$this->add($isntance);
+		return $isntance;
 	}
 	
 	/* (non-PHPdoc)
 	 * @see \Link\LinkManagerInterface::add()
 	 */
 	public function add(LinkServiceInterface $linkService) {
-		$this->_addInstance($linkService->getId(), $linkService);
+		$this->addInstance($linkService->getId(), $linkService);
 		return $this;
 	}
 
@@ -47,21 +48,6 @@ class LinkManager extends AbstractManager implements LinkManagerInterface, Servi
 	 * @see \Link\LinkManagerInterface::has()
 	 */
 	public function has($name) {
-		return $this->_hasInstance($name);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-	 */
-	public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
-		$this->_serviceLocator = $serviceLocator;
-		return $this;
-	}
-
-	/* (non-PHPdoc)
-	 * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-	 */
-	public function getServiceLocator() {
-		return $this->_serviceLocator;
+		return $this->hasInstance($name);
 	}
 }

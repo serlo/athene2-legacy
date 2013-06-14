@@ -2,6 +2,26 @@
 namespace Math;
 
 return array(
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Mathe',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Startseite',
+                        'route' => 'math'
+                    ),
+                    array(
+                        'label' => 'Themen',
+                        'route' => 'math',
+                        'provider' => 'Navigation\Provider\TaxonomyProvider',
+                        'options' => array()
+                    )
+                )
+            )
+        )
+    ),
     'di' => array(
         'allowed_controllers' => array(
             'Math\Controller\Exercises\IndexController'
@@ -34,27 +54,36 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'mathExerciseShow' => array(
+            'math' => array(
+                'may_terminate' => true,
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/math/exercises[/[:id]]',
-                    'defaults' => array(
-                        'controller' => 'Math\Controller\Exercises\IndexController',
-                        'action' => 'index'
-                    )
-                )
-            ),
-            'mathHome' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/math[/]',
+                    'route' => '/math[/[home]]',
                     'defaults' => array(
                         'controller' => 'Math\Controller\IndexController',
                         'action' => 'index'
+                    )
+                ),
+                'child_routes' => array(
+                    'topic' => array(
+                        'may_terminate' => true,
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/math/topic[/[:path]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z0-9_-/]+'
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Math\Controller\TopicController',
+                                'action' => 'index'
+                            )
+                        )
                     )
                 )
             )
         )
     )
 );
+
+
 

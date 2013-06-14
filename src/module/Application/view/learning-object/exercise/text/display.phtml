@@ -1,0 +1,45 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<article class="exercise exercise-text">
+	<div class="row-fluid">
+		<section class="content span10">
+            <?php echo $this->entity->getContent(); ?>
+        </section>
+		<div class="span2 btn-group">
+			<div class="btn-group">
+				<a class="btn btn-mini"
+					href="<?php echo $this->url(get_class($this->entity), array('action' => 'update', 'id' => $this->entity->getId())) ?>"><i
+					class="icon-pencil"></i></a> <a class="btn btn-mini dropdown-toggle"
+					data-toggle="dropdown" href="#"><i class="icon-wrench"></i> <span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a
+						href="<?php echo $this->url(get_class($this->entity), array('action' => 'history', 'id' => $this->entity->getId())) ?>"><i class="icon-time"></i> <?php echo $this->translate('Versionsgeschichte');?></a></li>
+					<li>
+					   <?php echo $this->modal()->update(
+					       '<i class="icon-tag"></i> '.$this->translate('Zuordnung ändern'),
+    					    'someurl',
+    					    $this->translate('Zuordnung ändern'),
+    					    '<ul>' . $this->partial('learning-object/partials/taxonomy/update', array('terms' => $this->entity->getTopicTree(), 'entity' => $this->entity)) . '</ul>',
+					        ''
+				       ); ?>
+					</li>	
+					<li>
+					   <?php echo $this->modal()->delete('<i class="icon-remove"></i> '.$this->translate('Löschen'),  $this->url(get_class($this->entity), array('action' => 'delete', 'id' => $this->entity->getId())), '');?>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+    <?php echo $this->solution; ?>
+</article>

@@ -1,31 +1,48 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Core\Structure;
 
-abstract class AbstractDecorator
+abstract class AbstractDecorator implements DecoratorInterface
 {
 
     protected $concreteComponent;
 
     /**
-	 * @return the $concreteComponent
-	 */
-	public function getConcreteComponent() {
-		return $this->concreteComponent;
-	}
-
-	/**
-	 * @param field_type $concreteComponent
-	 */
-	public function setConcreteComponent($concreteComponent) {
-		$this->concreteComponent = $concreteComponent;
-	}
-
-	public function __call ($method, $args)
+     *
+     * @return the $concreteComponent
+     */
+    public function getConcreteComponent ()
     {
-        return call_user_func_array($this->concreteComponent, $method, $args);
+        return $this->concreteComponent;
     }
 
-    public function __construct ($concreteComponent)
+    /**
+     *
+     * @param field_type $concreteComponent            
+     */
+    public function setConcreteComponent ($concreteComponent)
+    {
+        $this->concreteComponent = $concreteComponent;
+    }
+
+    public function __call ($method, $args)
+    {
+        return call_user_func_array(array(
+            $this->concreteComponent,
+            $method
+        ), $args);
+    }
+
+    public function __construct ($concreteComponent = NULL)
     {
         $this->concreteComponent = $concreteComponent;
     }
@@ -37,7 +54,15 @@ abstract class AbstractDecorator
         }
         if ($this->concreteComponent instanceof AbstractDecorator) {
             return $this->concreteComponent->providesMethod($method);
+        } else {
+            if (method_exists($this->concreteComponent, $method)) {
+                return true;
+            }
         }
         return false;
+    }
+    
+    public function isInstanceOf($class){
+        return (($this instanceof $class) || ($this->concreteComponent instanceof $class));
     }
 }

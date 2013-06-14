@@ -2,10 +2,22 @@
 namespace Taxonomy;
 
 return array(
+    'router' => array(
+        'routes' => array(
+        )
+    ),
     'di' => array(
+        'allowed_controllers' => array(
+            'Taxonomy\Controller\TermController'
+        ),
         'definition' => array(
             'class' => array(
-                'Taxonomy\TaxonomyManager' => array(
+                'Taxonomy\Controller\TermController' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    ),
+                ),
+                'Taxonomy\TermManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -24,8 +36,11 @@ return array(
                         'required' => 'true'
                     ),
                 ),
-                'Taxonomy\Taxonomy\TermService' => array(
-                    'setEntityManager' => array(
+                'Taxonomy\Service\TermService' => array(
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setTermManager' => array(
                         'required' => 'true'
                     ),
                 ),
@@ -34,12 +49,14 @@ return array(
         'instance' => array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
+                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager'
                 //'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 //'Entity\Service\EntityServiceInterface' => 'EventManager',
                 //'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
             	//'SharedTaxonomyManagerInterface' => 'SharedTaxonomyManager'
             ),
-            'Taxonomy\TaxonomyManager' => array(
+            'Taxonomy\TermManager' => array(
                 'shared' => false
             ),
             'Taxonomy\Service\TermService' => array(
