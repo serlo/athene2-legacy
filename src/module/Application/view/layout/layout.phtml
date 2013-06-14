@@ -13,33 +13,31 @@
         echo $this->plugin('HeadStyle');
         echo $this->plugin('HeadScript');
         echo $this->inlineScript();
-        echo $this->headlink()
+        /*echo $this->headlink()
             ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css')
-            ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
+            ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');*/
         echo $this->headScript()
             ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
-            ->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
-            //->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
+            //->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
+        // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
         ?>
     
     </head>
 <body>
 	<header>
 		<div class="container">
-			<div class="row-fluid">
-				<div class="span2" id="logo">
-					<strong>serlo.org</strong>
-				</div>
-				<div class="span7">
-					<nav class="nav-collapse collapse">
-						<ul id="navTop" class="nav nav-tabs">
-							<li class="active"><a href="/">Serlo</a></li>
-							<li><a href="/math/">Mathe</a></li>
-						</ul>
-					</nav>
-				</div>
-				<div class="span3">
-					<nav>
+					<div class="navbar navbar-fixed-top navbar-inverse">
+					   <div class="navbar-inner">
+    						<?php
+                            echo $this->navigation('navigation')
+                                    ->menu()
+                                    ->setOnlyActiveBranch(true)
+                                    ->setMinDepth(0)
+                                    ->setMaxDepth(3)
+                                    ->setUlClass('nav nav-tabs')
+                                    ->setPartial('navigation/partials/horizontal.phtml')
+                                    ->render();
+                            ?>      
 			            <?php if($this->auth()->loggedIn()) { ?>
 		                    <ul class="nav nav-pills pull-right">
 							<li class="dropdown"><a class="dropdown-toggle"
@@ -68,11 +66,10 @@
 							<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
 							</li>
 						</ul>
-		                <?php }?>
-					</nav>
-				</div>
+		                <?php }?>            
+                        </div>
+					</div>
 			</div>
-		</div>
 	</header>
 
 	<div class="container">
@@ -111,6 +108,7 @@
 	</div>
 
 	<footer> </footer>
+	<?php echo $this->modal()->renderDialogues(); ?>
 	<!-- /container -->
-    </body>
+</body>
 </html>

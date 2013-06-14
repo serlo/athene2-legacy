@@ -19,7 +19,7 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return RepositoryServiceInterface
      */
-    public function addRepository ($repository);
+    public function addRepository($repository);
 
     /**
      *
@@ -27,7 +27,7 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return $this
      */
-    public function removeRepository ($repository);
+    public function removeRepository($repository);
 
     /**
      *
@@ -35,7 +35,7 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return $this
      */
-    public function addRepositories (array $repositories);
+    public function addRepositories(array $repositories);
 
     /**
      *
@@ -43,11 +43,12 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return RepositoryInterface
      */
-    public function getRepository ($repository);
+    public function getRepository($repository);
 
     /**
+     * Returns all registered repositories
      *
      * @return array
      */
-    public function getRepositories ();
+    public function getRepositories();
 }

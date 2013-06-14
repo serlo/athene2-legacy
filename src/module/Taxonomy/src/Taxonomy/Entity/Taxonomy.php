@@ -11,6 +11,7 @@ namespace Taxonomy\Entity;
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * A Taxonomy.
@@ -18,11 +19,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy")
  */
-class Taxonomy extends AbstractEntity
+class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
 {
 
     /**
-     * @ORM\OneToMany(targetEntity="TaxonomyTerm", mappedBy="taxonomy")
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
      */
     protected $terms;
 
@@ -38,9 +39,69 @@ class Taxonomy extends AbstractEntity
     protected $factory;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="Subject\Entity\Subject", inversedBy="taxonomies")
      */
-    protected $language;
+    protected $subject;
+
+    /**
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection $terms
+     */
+    public function getTerms ()
+    {
+        return $this->terms;
+    }
+
+    /**
+     *
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+    /**
+     *
+     * @return field_type $factory
+     */
+    public function getFactory ()
+    {
+        return $this->factory;
+    }
+
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $terms            
+     * @return $this
+     */
+    public function setTerms ($terms)
+    {
+        $this->terms = $terms;
+        return $this;
+    }
+
+    /**
+     *
+     * @param field_type $name            
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     *
+     * @param field_type $factory            
+     * @return $this
+     */
+    public function setFactory ($factory)
+    {
+        $this->factory = $factory;
+        return $this;
+    }
 
     public function __construct ()
     {
