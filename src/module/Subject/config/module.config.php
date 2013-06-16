@@ -49,6 +49,11 @@ return array(
                         'required' => 'true'
                     )
                 ),
+                'Subject\Hydrator\Navigation' => array(
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                ),
                 'Subject\SubjectManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'

@@ -53,7 +53,7 @@ return array(
                 'options' => array(
                     'route' => 'exercise/:action[/:id[/:revisionId]]',
                     'defaults' => array(
-                        'controller' => 'Application\Subject\DefaultSubject\Controller\ExerciseController',
+                        'controller' => 'Application\Subject\DefaultSubject\Controller\TextExerciseController',
                         'action' => 'index'
                     )
                 )
@@ -61,6 +61,3 @@ return array(
         )
     )
 );
-
-
-

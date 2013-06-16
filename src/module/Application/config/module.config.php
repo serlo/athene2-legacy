@@ -30,28 +30,6 @@ return array(
                     )
                 )
             ),
-            'taxonomy' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/taxonomy/',
-                    'defaults' => array(
-                        'controller' => 'Application\Taxonomy\Controller\404',
-                        'action' => 'index'
-                    )
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'term' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => 'term/:action/[:id]',
-                            'defaults' => array(
-                                'controller' => 'Application\Taxonomy\Controller\TermController'
-                            )
-                        )
-                    )
-                )
-            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -143,7 +121,7 @@ return array(
                 '@jquery',
                 '@bootstrap',
                 '@sortable',
-                '@sortable_css',
+                '@sortable_css'
             ),
             'options' => array(
                 'mixin' => false
@@ -194,15 +172,14 @@ return array(
                     
                     'sortable' => array(
                         'assets' => array(
-                            'js/jquery-sortable.js',
+                            'js/jquery-sortable.js'
                         )
                     ),
                     'sortable_css' => array(
                         'assets' => array(
-                            'css/jquery-sortable.css',
+                            'css/jquery-sortable.css'
                         )
                     ),
-                    
                     
                     'base_images' => array(
                         'assets' => array(
@@ -236,21 +213,14 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'Application\Taxonomy\Controller\TermController'
         ),
         'definition' => array(
             'class' => array(
-                'Application\Taxonomy\Controller\TermController' => array(
-                    'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
-                    )
-                )
             )
         ),
         'instance' => array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager'
             )
         )
     )

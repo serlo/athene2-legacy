@@ -24,6 +24,7 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
+     * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $terms;
 

@@ -30,13 +30,18 @@ class TermController extends AbstractController
         
         $form = $term->getForm();
         $view->setVariable('form', $form);
+        $from = '/';
+        if (is_object($this->getRequest()->getHeader('Referer')))
+            $from = rawurlencode($this->getRequest()
+                ->getHeader('Referer')
+                ->getUri());
+        
         $form->setAttribute('action', $this->url()->fromRoute('taxonomy/term', array(
             'action' => 'update'
-        )) . '?ref=' . rawurlencode($this->getRequest()
-            ->getHeader('Referer')
-            ->getUri()));
+        )) . '?ref=' . $from)
+        ;
         
-        $view->setTemplate('taxonomy/default/update');
+        $view->setTemplate('taxonomy/term/update');
         
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
@@ -71,7 +76,7 @@ class TermController extends AbstractController
         
         $view = new ViewModel();
         
-        $view->setTemplate('taxonomy/default/update');
+        $view->setTemplate('taxonomy/term/update');
         $view->setVariable('form', $form);
         
         if ($this->getRequest()->isPost()) {
@@ -99,28 +104,35 @@ class TermController extends AbstractController
             ->getHeader('Referer')
             ->getUri());
     }
-    
-    public function orderAction(){
-    	$data = $this->params()->fromPost('sortables');
-    	$this->iterWeight($data['children'], $data['id']);
-    	return $this->response;
+
+    public function orderAction ()
+    {
+        $data = $this->params()->fromPost('sortables');
+        $this->iterWeight($data['children']);
+        return $this->response;
     }
-    
-    protected function iterWeight($terms, $parent = NULL){
-        $weight = 0;
-    	foreach($terms as $term){
-    		$entity = $this->getTerm($term['id']);
-    		if($parent){
-    			$entity->setParent($this->getTerm($parent)->getEntity());
-    		}
-    		$entity->setWeight($weight);
-    		$entity->persistAndFlush();
-    		if(isset($term['children'])){
-    			$this->iterWeight($term['children'], $term['id']);
-    		}
-    		$weight++;
-    	}
-    	return true;
+
+    protected function iterWeight ($terms, $parent = NULL)
+    {
+        $weight = 1;
+        foreach ($terms as $term) {
+            if( (integer) $term['id'] != -1){
+                $entity = $this->getTerm($term['id']);
+                if ($parent) {
+                    $entity->setParent($this->getTerm($parent)
+                        ->getEntity());
+                } else {
+                    $entity->setParent(NULL);                    
+                }
+                $entity->setWeight($weight);
+                $entity->persistAndFlush();
+                if (isset($term['children'])) {
+                    $this->iterWeight($term['children'], $term['id']);
+                }
+                $weight++;
+            }
+        }
+        return true;
     }
 
     protected function getTerm ($id = NULL)
