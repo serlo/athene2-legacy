@@ -22,15 +22,5 @@ $this->renderTitle($this->translate('Themenübersicht'), NULL, $subtitle);
         <?php endif; ?>
     </div>
 -->
-<div class="row-fluid">
-    <div class="span3">
-        <ul class="nav nav-list nav-stacked affix">
-            <?php echo $this->activeTaxonomy; ?>
-        </ul>
-    </div>
-    <div class="span9">
-        <?php echo $this->taxonomy; ?>
-        
-        <?php echo $this->entities; ?>
-    </div>
-</div>
+<?php echo $this->taxonomy; ?>
+<?php echo $this->entities; ?>
