@@ -41,9 +41,11 @@ class TopicController extends AbstractController
             'term' => $topic,
         ));
         $taxonomy = array();
-        $taxonomyView->setTemplate('taxonomy/default/tree');
+        $taxonomyView->setTemplate('subject/math/taxonomy/topic');
         foreach($topic->getChildren() as $child){
-            $taxonomyView->addChild($child->render(), 'taxonomy', true);
+            $taxView = new ViewModel(array('term' => $child));
+            $taxonomyView->addChild($taxView->setTemplate('subject/math/taxonomy/term/topic/partial'), 'taxonomy', true);
+            //$taxonomyView->addChild($child->render(), 'taxonomy', true);
         }
         $view->addChild($taxonomyView, 'taxonomy');
         

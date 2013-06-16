@@ -25,9 +25,17 @@ use Versioning\RepositoryManagerInterface;
 use Core\Service\SubjectService;
 use Core\Service\AbstractEntityDecorator;
 use Core\Collection\DecoratorCollection;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-class EntityService extends AbstractEntityDecorator implements EntityServiceInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface, EventManagerAwareInterface
+class EntityService extends AbstractEntityDecorator implements ServiceLocatorAwareInterface, EntityServiceInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface, EventManagerAwareInterface
 {
+    /**
+     * 
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+    
     
 	/**
 	 * @var AuthServiceInterface
@@ -265,4 +273,21 @@ class EntityService extends AbstractEntityDecorator implements EntityServiceInte
         }
         return $this;
     }
+	/* (non-PHPdoc)
+     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
+     */
+    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+	/* (non-PHPdoc)
+     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
+     */
+    public function getServiceLocator ()
+    {
+        return $this->serviceLocator;
+    }
+
 }

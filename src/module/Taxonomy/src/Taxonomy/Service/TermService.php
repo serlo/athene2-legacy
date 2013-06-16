@@ -19,6 +19,7 @@ use Core\Structure\DecoratorInterface;
 use Taxonomy\Exception\InvalidArgumentException;
 use Term\Manager\TermManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Taxonomy\Entity\TermTaxonomyEntityInterface;
 
 class TermService extends AbstractEntityDecorator implements TermServiceInterface, ServiceLocatorAwareInterface
 {
@@ -258,5 +259,56 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
         $term = $this->getTermManager()->get($name);
         $this->getEntity()->set('term', $term->getEntity());
         return $this;
+    }
+    
+    protected $allowedParentFactories = array();
+    protected $allowedParentTaxonomy = array();
+    protected $radix = false;
+    
+    public function parentNodeAllowed(TermTaxonomyEntityInterface $term){
+        return array_key_exists($term->getTaxonomy()->getId(), $this->allowedParentTaxonomy) ||
+               array_key_exists($term->getTaxonomy()->getFactory()->getId(), $this->allowedParentFactories);
+    }
+    
+    public function allowParentNodesByFactory($id){
+        $this->allowedParentFactories[$id] = true;
+        return $this;
+    }
+    
+    public function allowParentNodesByTaxonomy($id){
+        $this->allowedParentTaxonomy[$id] = true;
+        return $this;
+    }
+    
+    public function radixEnabled(){
+        return $this->radix;
+    }
+    
+    public function enableRadix(){
+        $this->radix = true;
+        return $this;
+    }
+    
+    public function disableRadix(){
+        $this->radix = false;
+        return $this;
+    }
+    
+    public function setParent ($parent)
+    {
+        $entity = $this->getEntity();
+        if($parent == NULL){
+            if($this->radixEnabled()){
+                $entity->setParent($parent);
+            } else {
+                throw new InvalidArgumentException('Radix not allowed.');
+            }
+        } else {
+            if($this->parentNodeAllowed($parent)){
+                $entity->setParent($parent);                
+            } else {
+                throw new InvalidArgumentException('Parent `'.$parent->getId().'` not allowed for `'.$entity->getId().'`.');
+            }
+        }
     }
 }
