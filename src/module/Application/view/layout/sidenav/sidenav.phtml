@@ -18,14 +18,14 @@
             <?php endforeach;?>   
         <?php
             
-                            echo $this->navigation('navigation')
-                                    ->menu()
-                                    ->setOnlyActiveBranch(true)
-                                    ->setMinDepth(1)
-                                    ->setMaxDepth(1)
-                                    ->setUlClass('nav nav-tabs')
-                                    ->setPartial('layout/sidenav/vertical-nav')
-                                    ->render();
+	                            echo $this->navigation('navigation')
+	                                    ->menu()
+	                                    ->setOnlyActiveBranch(true)
+	                                    ->setMinDepth(1)
+	                                    ->setMaxDepth(2)
+	                                    ->setUlClass('nav nav-tabs')
+	                                    ->setPartial('layout/sidenav/vertical-nav')
+	                                    ->render();
             ?>
         </ul>
 	</div>
