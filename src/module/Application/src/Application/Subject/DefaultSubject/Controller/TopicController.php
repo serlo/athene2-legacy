@@ -14,7 +14,7 @@ namespace Application\Subject\DefaultSubject\Controller;
 use Zend\View\Model\ViewModel;
 use Application\LearningObject\Exercise\ExerciseInterface;
 
-class TopicController extends AbstractController
+class TopicController extends SideNavigationController
 {
 
     public function indexAction ()
@@ -45,7 +45,7 @@ class TopicController extends AbstractController
         foreach($topic->getChildren() as $child){
             $taxView = new ViewModel(array('term' => $child));
             $taxonomyView->addChild($taxView->setTemplate('subject/math/taxonomy/term/topic/partial'), 'taxonomy', true);
-            //$taxonomyView->addChild($child->render(), 'taxonomy', true);
+            $this->addItem(false, $this->url()->fromRoute('subject/math/topic', array('path' => implode('/', $child->getPath()))), $child->getName());
         }
         $view->addChild($taxonomyView, 'taxonomy');
         
@@ -74,6 +74,8 @@ class TopicController extends AbstractController
         $view->addChild($entityView, 'entities');
         
         $view->setTemplate($this->getViewPath() . 'topic/show');
-        return $view;
+        
+        // TODO: USE EVENTS
+        return $this->inject($view);
     }
 }
