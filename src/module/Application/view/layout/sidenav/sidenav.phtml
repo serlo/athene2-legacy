@@ -13,10 +13,20 @@
 <div class="row-fluid">
 	<div class="span3">
         <ul class="nav nav-list nav-stacked affix">
-            <?php echo $this->activeTaxonomy; ?>
             <?php foreach($this->items as $item):?>
-
-            <?php endforeach;?>
+	        <?php echo $this->partial('layout/sidenav/partial',array('item' => $item)); ?>
+            <?php endforeach;?>   
+        <?php
+            
+                            echo $this->navigation('navigation')
+                                    ->menu()
+                                    ->setOnlyActiveBranch(true)
+                                    ->setMinDepth(1)
+                                    ->setMaxDepth(1)
+                                    ->setUlClass('nav nav-tabs')
+                                    ->setPartial('layout/sidenav/vertical-nav')
+                                    ->render();
+            ?>
         </ul>
 	</div>
 	<div class="span9">

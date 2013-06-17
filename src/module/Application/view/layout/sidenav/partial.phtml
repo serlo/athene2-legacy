@@ -13,6 +13,6 @@
 <li class="<?php if($this->item['active']) echo 'active'; ?>"><a href="<?php echo $this->item['href']; ?>"><?php echo $this->item['content']; ?></a>
 	<?php if($this->item['children']): ?>
 	<?php foreach($this->item['children'] as $child): ?>
-	<?php echo ?>
+	<?php echo $this->partial('layout/sidenav/partial',array('item' => $child));?>
 	<?php endforeach; endif; ?>
 </li>
