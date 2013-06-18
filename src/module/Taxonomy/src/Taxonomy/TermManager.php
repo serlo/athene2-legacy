@@ -191,6 +191,15 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         return $return;
     }*/
     
+    public function getRootTerms(){
+        $return = array();
+        foreach($this->getEntity()->getTerms() as $entity){
+            if(!$entity->hasParent())
+                $return[] = $this->createInstance($entity);
+        }
+        return $return;
+    }
+    
     // INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `order`) VALUES (NULL, '2', '7', '10', NULL, NULL);
 
     public function createInstance (TermTaxonomyEntityInterface $entity)

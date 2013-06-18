@@ -30,6 +30,9 @@ class Module
         $listener = $serviceManager->get('Subject\Hydrator\Route');
         $listener->setPath(__DIR__ . '/config/subject/');
         $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
+        
+        $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
+        $hydrator->setPath(__DIR__ . '/config/subject/');
     }
 
     public function getConfig()
@@ -37,6 +40,7 @@ class Module
         $config = array_merge_recursive(
             include __DIR__ . '/config/module.config.php',
             include __DIR__ . '/config/subject/module.config.php',
+            include __DIR__ . '/config/taxonomy/module.config.php',
             include __DIR__ . '/config/learning-object/module.config.php'
         );
         return $config; 

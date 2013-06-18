@@ -14,6 +14,21 @@ use Core\Structure\GraphDecorator;
 
 abstract class AbstractEntity extends GraphDecorator
 {
+    protected $controller;
+    
+    public function setController($controller){
+        $this->controller = $controller;
+        return $this;
+    }
+    
+    public function getController(){
+        return $this->controller;
+    }
+    
+    public function getRoute(){
+        return $this->controller->getRoute();
+    }
+    
     /**
      *
      * @var Form
