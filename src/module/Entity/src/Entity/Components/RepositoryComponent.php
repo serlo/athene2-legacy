@@ -44,6 +44,10 @@ class RepositoryComponent extends AbstractComponent implements RepositoryCompone
         $this->repository = $repository;
         return $this;
     }
+    
+    public function getObjectManager(){
+        return $this->entityService->getObjectManager();
+    }
 
 	public function __construct (EntityServiceInterface $entityService){
 	    $this->entityService = $entityService;
@@ -146,8 +150,8 @@ class RepositoryComponent extends AbstractComponent implements RepositoryCompone
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $revision->toggleTrashed();
-        $this->getEntityManager()->persist($revision);
-        $this->getEntityManager()->flush($revision);
+        $this->getObjectManager()->persist($revision);
+        $this->getObjectManager()->flush($revision);
         return $this->entityService;
     }
     

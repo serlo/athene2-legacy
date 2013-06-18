@@ -24,6 +24,14 @@ class TextExerciseController extends RevisionController
         return 'Application\LearningObject\Exercise\TextExercise';
     }
     
+    public function getRoute(){
+        return 'entity/exercise/text';
+    }
+    
+    public function getView(){
+        return 'learning-object/exercise/text/show';
+    }
+    
     protected function _getRevisionView(RevisionInterface $revision = NULL){
         if($revision === NULL)
             return NULL;
@@ -50,12 +58,12 @@ class TextExerciseController extends RevisionController
             try {
                 $this->commitRevision($entity);
                 $entity->getContent();
-                $this->redirect()->toRoute(get_class($entity), array(
+                $this->redirect()->toRoute($entity->getRoute(), array(
                     'action' => 'show',
                     'id' => $entity->getId()
                 ));
             } catch (\Versioning\Exception\RevisionNotFoundException $e) {
-                $this->redirect()->toRoute(get_class($entity), array(
+                $this->redirect()->toRoute($entity->getRoute(), array(
                     'action' => 'history',
                     'id' => $entity->getId()
                 ));
@@ -74,5 +82,11 @@ class TextExerciseController extends RevisionController
         $this->redirect()->toUrl($this->getRequest()
             ->getHeader('Referer')
             ->getUri());
+    }
+    
+    public function getEntity(){
+        $entity = parent::getEntity();
+        $entity->setController($this);
+        return $entity;
     }
 }

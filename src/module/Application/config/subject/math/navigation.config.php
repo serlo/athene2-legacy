@@ -11,16 +11,66 @@
  */
 return array(
     array(
-        'label' => 'Startseite',
-        'route' => 'subject/math'
+        'label' => 'Mathe',
+        'uri' => '#',
+        'pages' => array(
+            array(
+                'label' => 'Suchen',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'Prüfungsvorbereitung',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'Lehrplan',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'Lernen',
+                'route' => 'subject/math',
+                'provider' => 'Taxonomy\Provider\TaxonomyProvider',
+                'options' => array(
+                    'name' => 'topic',
+                    'route' => 'subject/math/topic'
+                )
+            )
+        )
     ),
     array(
-        'label' => 'Themen',
-        'route' => 'subject/math',
-        'provider' => 'Taxonomy\Provider\TaxonomyProvider',
-        'options' => array(
-            'name' => 'topic',
-            'route' => 'subject/math/topic'
+        'label' => 'Mitmachen',
+        'uri' => '#',
+        'pages' => array(
+            array(
+                'label' => 'Mathe',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Aufgaben verwalten',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Artikel verwalten',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Prüfungen verwalten',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Lehrplan verwalten',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Themen verwalten',
+                        'route' => 'taxonomy/taxonomy',
+                        'params' => array(
+                            'action' => 'show',
+                            'id' => '1'
+                        ),
+                    ),
+                )
+            )
         )
     )
 );

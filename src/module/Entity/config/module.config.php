@@ -19,6 +19,9 @@ return array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
                     'setRepositoryManager' => array(
                         'required' => 'true'
                     ),

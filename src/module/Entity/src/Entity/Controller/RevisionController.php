@@ -96,7 +96,7 @@ abstract class RevisionController extends AbstractController
         $entity = $this->getEntity();
         $repository = $entity;
         $repository->checkout($this->getParam('revisionId'));
-        $this->redirect()->toRoute(get_class($entity), array(
+        $this->redirect()->toRoute($entity->getRoute(), array(
             'action' => 'history',
             'id' => $entity->getId()
         ));
@@ -105,7 +105,11 @@ abstract class RevisionController extends AbstractController
     public function showAction ()
     {
         $entity = $this->getEntity();
-        return $entity->toViewModel();
+        
+        $view = new ViewModel(array('entity' => $entity));
+        $view->setTemplate($entity->getTemplate());
+        
+        return $view;
     }
 
     public function purgeRevisionAction ()
@@ -113,7 +117,7 @@ abstract class RevisionController extends AbstractController
         $entity = $this->getEntity();
         $entity = $this->getEntity();
         $entity->removeRevision($this->getParam('revisionId'));
-        $this->redirect()->toRoute(get_class($entity), array(
+        $this->redirect()->toRoute($entity->getRoute(), array(
             'action' => 'history',
             'id' => $entity->getId()
         ));
@@ -123,7 +127,7 @@ abstract class RevisionController extends AbstractController
     {
         $entity = $this->getEntity();
         $entity->trashRevision($this->getParam('revisionId'));
-        $this->redirect()->toRoute(get_class($entity), array(
+        $this->redirect()->toRoute($entity->getRoute(), array(
             'action' => 'history',
             'id' => $entity->getId()
         ));

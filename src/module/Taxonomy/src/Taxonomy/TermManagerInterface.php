@@ -11,14 +11,20 @@
  */
 namespace Taxonomy;
 
-use Taxonomy\Entity\TaxonomyEntityInterface;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 
-interface TermManagerInterface //extends TaxonomyEntityInterface
+interface TermManagerInterface // extends TaxonomyEntityInterface
 {
+
     public function get ($term);
+
     public function create (array $data);
+
     public function delete ($term);
-    public function add (\Taxonomy\Service\TermServiceInterface $termService);    
+
+    public function add (\Taxonomy\Service\TermServiceInterface $termService);
+
     public function createInstance (TermTaxonomyEntityInterface $entity);
+
+    public function getRootTerms ();
 }
