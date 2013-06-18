@@ -30,6 +30,7 @@ class TextExerciseFactory extends AbstractFactory
         $decorator->addComponent(new LinkComponent($entityService));
         $decorator->addComponent(new RepositoryComponent($entityService));
         $decorator->addComponent(new TopicComponent($entityService));
+        $decorator->setController($entityService->getServiceLocator()->get('Application\LearningObject\Exercise\Controller\TextExerciseController'));
         return parent::build($decorator, $entityService);
     }
 }

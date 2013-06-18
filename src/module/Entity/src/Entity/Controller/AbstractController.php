@@ -52,10 +52,36 @@ abstract class AbstractController extends AbstractActionController
         return $this->receiveAction();
     }
 
-    public function createAction ()
+    /*public function createAction ()
     {
         $entity = $this->getEntityManager()->create($this->getEntityFactory());
         $this->redirect()->toRoute(get_class($entity), array(
+            'action' => 'update',
+            'id' => $entity->getId()
+        ));
+    }*/
+
+    public function getSharedTaxonomyManager(){
+        return $this->getServiceLocator()->get('Taxonomy\SharedTaxonomyManager');
+    }
+    
+    public function getObjectManager(){
+        return $this->getServiceLocator()->get('EntityManager');
+    }
+    
+    public function createAction(){
+        $term = $this->params()->fromQuery('term');
+        if(!$term)
+            throw new \InvalidArgumentException();
+    
+        $entity = $this->getEntityManager()->create($this->getEntityFactory());
+        $term = $this->getSharedTaxonomyManager()->getTerm($term);
+    
+        $term->addEntity($entity);
+    
+        $this->getObjectManager()->flush();
+    
+        $this->redirect()->toRoute($entity->getRoute(), array(
             'action' => 'update',
             'id' => $entity->getId()
         ));
