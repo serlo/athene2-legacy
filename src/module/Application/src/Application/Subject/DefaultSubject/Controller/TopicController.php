@@ -45,7 +45,7 @@ class TopicController extends SideNavigationController
         foreach($topic->getChildren() as $child){
             $taxView = new ViewModel(array('term' => $child));
             $taxonomyView->addChild($taxView->setTemplate('subject/math/taxonomy/term/topic/partial'), 'taxonomy', true);
-            $this->addItem(false, $this->url()->fromRoute('subject/math/topic', array('path' => implode('/', $child->getPath()))), $child->getName());
+            $this->addItem(false, rawurldecode($this->url()->fromRoute('subject/math/topic', array('path' => implode('/', $child->getPath())))), $child->getName());
         }
         $view->addChild($taxonomyView, 'taxonomy');
         
