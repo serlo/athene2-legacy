@@ -12,6 +12,7 @@ return array(
         'Core',
         'Auth',
         'User',
+        'Issue',
         'Versioning',
         'Page',
         'Editor',
@@ -23,6 +24,7 @@ return array(
     	'Link',
         'Subject',
         'Term',
+        'Uuid',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

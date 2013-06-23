@@ -95,7 +95,7 @@ return array(
         'factories' => array(
             'url' => function ($sm){
                 $service = new \Subject\View\Url();
-                $service->setRouteMatch($sm->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch());
+                //$service->setRouteMatch($sm->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch());
                 $service->setRouter($sm->getServiceLocator()->get('Router'));
                 $service->setSubjectService($sm->getServiceLocator()->get('Subject\SubjectManager')->getSubjectFromRequest());
                 return $service;

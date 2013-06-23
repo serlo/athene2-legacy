@@ -8,13 +8,8 @@
  */
 namespace Taxonomy;
 
-use Doctrine\ORM\EntityManager;
 use Core\Service\LanguageService;
 use Taxonomy\Exception\NotFoundException;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Taxonomy\Factory\EntityTaxonomy;
-use Taxonomy\Entity\Taxonomy;
 use Core\AbstractManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 

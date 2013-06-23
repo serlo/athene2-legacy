@@ -8,9 +8,9 @@
  */
 namespace Taxonomy\Entity;
 
-use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Uuid\Entity\UuidEntity;
 
 /**
  * A Taxonomy.
@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
-class TermTaxonomy extends AbstractEntity implements TermTaxonomyEntityInterface
+class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="Taxonomy", inversedBy="terms")

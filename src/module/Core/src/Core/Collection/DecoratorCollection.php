@@ -20,7 +20,6 @@ use Core\Structure\DecoratorInterface;
 
 final class DecoratorCollection extends AbstractDecorator implements Collection, Selectable
 {
-
     /**
      *
      * @var Manager
@@ -60,7 +59,7 @@ final class DecoratorCollection extends AbstractDecorator implements Collection,
 
     /**
      *
-     * @return \Doctrine\ORM\PersistentCollection $collection
+     * @return new Collections $collection
      */
     public function getCollection ()
     {
@@ -69,10 +68,10 @@ final class DecoratorCollection extends AbstractDecorator implements Collection,
 
     /**
      *
-     * @param \Doctrine\ORM\PersistentCollection $collection            
+     * @param new Collections\ArrayCollection( $collection            
      * @return $this
      */
-    public function setCollection (PersistentCollection $collection)
+    public function setCollection (Collection $collection)
     {
         $this->collection = $collection;
         return $this;
@@ -336,6 +335,9 @@ final class DecoratorCollection extends AbstractDecorator implements Collection,
      */
     public function matching (\Doctrine\Common\Collections\Criteria $criteria)
     {
+        if($this->getCollection() instanceof PersistentCollection)
+            throw new \Exception('Collection is not a PersistentCollection.');
+        
         return $this->getCollection()->matching($criteria);
     }
 }

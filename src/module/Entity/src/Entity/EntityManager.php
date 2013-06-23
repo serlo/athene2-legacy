@@ -16,9 +16,30 @@ use Core\AbstractManager;
 use Entity\Entity\EntityInterface;
 use Entity\Exception\InvalidArgumentException;
 use Entity\Service\EntityServiceInterface;
+use Uuid\Manager\UuidManagerAware;
 
-class EntityManager extends AbstractManager implements EntityManagerInterface
-{    
+class EntityManager extends AbstractManager implements EntityManagerInterface, UuidManagerAware
+{
+    
+    protected $uuidManager;
+    
+	/* (non-PHPdoc)
+     * @see \Uuid\Manager\UuidManagerAware::getUuidManager()
+     */
+    public function getUuidManager ()
+    {
+        return $this->uuidManager;
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Manager\UuidManagerAware::setUuidManager()
+     */
+    public function setUuidManager (\Uuid\Manager\UuidManagerInterface $manager)
+    {
+        $this->uuidManager = $manager;
+        return $this;
+    }
+    
     /**
      * @var OrmManager
      */
@@ -86,14 +107,15 @@ class EntityManager extends AbstractManager implements EntityManagerInterface
             throw new \Exception("Factory `{$factoryClass}` not found."); 
                
         $class = $this->resolve('EntityInterface');
-        $entity = new $class();
+        
+        $entity = $this->getUuidManager()->factory($class);  
+              
         $entity->populate(array(
-            'killed' => false,
             'language' => $this->getServiceManager()->get('Core\Service\LanguageManager')->getRequestLanguage()->getEntity(),
-            'factory' => $factory,
-            'uuid' => uniqid('entity_',true)
+            'factory' => $factory
         ));
         $entity->setFactory($factory);
+        echo $entity->getId();
         $em->persist($entity);
         $em->flush();
         

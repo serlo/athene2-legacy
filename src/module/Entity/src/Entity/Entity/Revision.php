@@ -164,6 +164,7 @@ class Revision extends AbstractEntity implements RevisionInterface
     public function __construct()
     {
         $this->revisionValues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->unTrash();
+        //$this->unTrash();
+        $this->trashed = false;
     }
 }
