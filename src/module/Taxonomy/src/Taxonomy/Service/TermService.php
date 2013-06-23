@@ -12,7 +12,6 @@ use Core\Entity\EntityInterface;
 use Taxonomy\Factory\FactoryInterface;
 use Taxonomy\Exception\LinkNotAllowedException;
 use Core\Service\AbstractEntityDecorator;
-use Taxonomy\TermManagerAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Core\Structure\DecoratorInterface;
@@ -20,6 +19,7 @@ use Taxonomy\Exception\InvalidArgumentException;
 use Term\Manager\TermManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Uuid\Manager\UuidManagerAware;
 
 class TermService extends AbstractEntityDecorator implements TermServiceInterface, ServiceLocatorAwareInterface
 {
@@ -41,7 +41,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
      */
     protected $manager;
     
-    /**
+	/**
      * @return \Term\Manager\TermManagerInterface $termManager
      */
     public function getTermManager ()
@@ -311,4 +311,5 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
             }
         }
     }
+
 }

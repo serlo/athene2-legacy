@@ -27,7 +27,7 @@ return array(
     'di' => array(
         'allowed_controllers' => array(
             'Application\Subject\DefaultSubject\Controller\TopicController',
-            'Application\Subject\DefaultSubject\Controller\TextExerciseController'
+            //'Application\Subject\DefaultSubject\Controller\TextExerciseController'
         ),
         'definition' => array(
             'class' => array(

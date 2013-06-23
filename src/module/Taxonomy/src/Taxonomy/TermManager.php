@@ -18,9 +18,29 @@ use Taxonomy\Factory\FactoryInterface;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Exception\NotFoundException;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use Uuid\Manager\UuidManagerAware;
 
-class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
+class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface, UuidManagerAware
 {
+    
+    protected $uuidManager;
+    
+	/* (non-PHPdoc)
+     * @see \Uuid\Manager\UuidManagerAware::getUuidManager()
+     */
+    public function getUuidManager ()
+    {
+        return $this->uuidManager;
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Manager\UuidManagerAware::setUuidManager()
+     */
+    public function setUuidManager (\Uuid\Manager\UuidManagerInterface $manager)
+    {
+        $this->uuidManager = $manager;
+        return $this;
+    }
     
     /**
      *
@@ -160,7 +180,11 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
             $this->getObjectManager(),
             $this->resolve('TermEntityInterface')
         );
+        
+        // don't change this
         $entity = $hydrator->hydrate($data, $entity);
+        $this->getUuidManager()->inject($entity);
+        // hydrate sets uuid to NULL !
         
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush();

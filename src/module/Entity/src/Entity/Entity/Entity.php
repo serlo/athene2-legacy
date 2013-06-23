@@ -11,10 +11,10 @@
  */
 namespace Entity\Entity;
 
-use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkEntityInterface;
+use Uuid\Entity\UuidEntity;
 
 /**
  * An entity.
@@ -22,7 +22,7 @@ use Link\Entity\LinkEntityInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
+class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
 
     /**
@@ -51,6 +51,11 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
      * )
      */
     protected $children;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Issue\Entity\IssueEntity", mappedBy="entity")
+     */
+    protected $issues;
 
     /**
      * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
@@ -91,12 +96,7 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $killed;
-
-    /**
-     * @ORM\Column(type="text",length=255,unique=true)
-     */
-    protected $uuid;
+    protected $trashed;
 
     /**
      * @ORM\Column(type="text",length=255)
@@ -104,6 +104,24 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     protected $slug;
 
     /**
+     * @return field_type $issues
+     */
+    public function getIssues ()
+    {
+        return $this->issues;
+    }
+
+	/**
+     * @param field_type $issues
+     * @return $this
+     */
+    public function setIssues ($issues)
+    {
+        $this->issues = $issues;
+        return $this;
+    }
+
+	/**
      * @return field_type $currentRevision
      */
     public function getCurrentRevision ()
@@ -223,11 +241,14 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
         return $this;
     }
 
-	public function __construct()
+	public function __construct($uuid)
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->trashed = false;
+        return parent::__construct($uuid);
     }
 
     /**
@@ -268,16 +289,16 @@ class Entity extends AbstractEntity implements RepositoryInterface, LinkEntityIn
     
     public function trash()
     {
-        $this->killed = true;
+        $this->trashed = true;
         return $this;
     }
     
     public function unTrash(){
-        $this->killed = false;
+        $this->trashed = false;
         returN $this;
     }
     
     public function isTrashed(){
-        return $this->killed;
+        return $this->trashed;
     }
 }

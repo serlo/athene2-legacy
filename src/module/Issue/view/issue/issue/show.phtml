@@ -1,0 +1,40 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+$this->renderTitle($this->translate('Issue') . ' #' . $issue->getId(), NULL, $this->issue->getTitle());
+?>
+<article>
+	<header>
+		<?php if($this->issue->isClosed()):?>
+    	    <div class="alert alert-success">
+    	       <?php echo $this->translate('Dieses Ticket wurde geschlossen. Du kannst keine Änderungen mehr daran vornehmen.'); ?>
+            </div>
+        <?php endif; ?>
+	</header>
+	<section class="hero-unit">
+		<div class="pull-left">
+			<small> <i><?php echo printf($this->translate('Erstellt von %s am '), $this->issue->getAuthor()->getName(), $this->issue->getDate()->format($this->dateFormat()));?></i></small>
+		</div>
+		<div class="pull-right">
+			<small><i><?php echo $this->translate('Verknüpftes Element');?>: <a
+					href="#"><?php echo $this->issue->getOn()->getUuid(); ?></a></i></small>
+		</div>
+		<div class="clearfix"></div>
+		<div class="pull-right btn-group">
+			<a class="btn" href="<?php echo $this->url('issue',array('action' => 'update', 'id' => $this->issue->getId()));?>"><i class="icon-pencil"></i></a>
+			<a class="btn" href="#"><i class="icon-remove"></i></a>
+		</div>
+		<div class="clearfix"></div>
+       <?php echo $this->issue->getContent(); ?>	
+	</section>
+	<footer>
+	</footer>
+</article>

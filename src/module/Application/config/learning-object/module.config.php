@@ -109,7 +109,7 @@ return array(
                 ),
                 array(
                     'controller' => 'Application\LearningObject\Exercise\Controller\TextExerciseController',
-                    'actions' => array('purge-revision'),
+                    'actions' => array('purge-revision', 'create'),
                     'roles' => 'admin'
                 )
             ),

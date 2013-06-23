@@ -19,10 +19,16 @@
 			<div class="btn-group">
 				<a class="btn btn-mini"
 					href="<?php echo $this->url($entity->getRoute(), array('action' => 'update', 'id' => $this->entity->getId())) ?>"><i
-					class="icon-pencil"></i></a> <a class="btn btn-mini dropdown-toggle"
+					class="icon-pencil"></i></a>
+				<a class="btn btn-mini dropdown-toggle"
 					data-toggle="dropdown" href="#"><i class="icon-wrench"></i> <span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu">
+    				<li>
+        				<a class=""
+        					href="<?php echo $this->url('issue', array('action' => 'create', 'id' => $this->entity->getId())) ?>"><i
+        					class="icon-warning-sign"></i> <?php echo $this->translate('Fehler melden')?></a>
+    				</li>
 					<li><a
 						href="<?php echo $this->url($entity->getRoute(), array('action' => 'history', 'id' => $this->entity->getId())) ?>"><i class="icon-time"></i> <?php echo $this->translate('Versionsgeschichte');?></a></li>
 					<li>

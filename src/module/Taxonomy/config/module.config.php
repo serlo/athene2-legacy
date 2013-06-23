@@ -50,7 +50,8 @@ return array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
-                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager'
+                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager',
+                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager'
                 //'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 //'Entity\Service\EntityServiceInterface' => 'EventManager',
                 //'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',

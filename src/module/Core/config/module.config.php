@@ -6,7 +6,7 @@ return array(
         'invokables' => array(
             'modal' => __NAMESPACE__ . '\View\Helper\Modal',
             'renderTitle' => __NAMESPACE__ . '\View\Helper\Title',
-            'getRequestDateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
+            'dateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
         )
     ),
     'di' => array(
@@ -42,8 +42,9 @@ return array(
         'invokables' => array(
             'getParam' => 'Core\Controller\Plugin\GetParam',
             'getParams' => 'Core\Controller\Plugin\GetParams',
-            'dateFormat' => 'Core\Controller\Plugin\DateFormat',
+            'getDateFormat' => 'Core\Controller\Plugin\DateFormat',
             'translate' => 'Core\Controller\Plugin\Translate',
+            'goBack' => 'Core\Controller\Plugin\GoBack',
             'title' => 'Core\Controller\Plugin\Title'
         )
     ),
