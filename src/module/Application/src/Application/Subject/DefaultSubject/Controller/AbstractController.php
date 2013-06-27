@@ -12,8 +12,37 @@
 namespace Application\Subject\DefaultSubject\Controller;
 
 use Subject\Controller\AbstractController as AC;
+use Zend\View\Model\ViewModel;
+use Navigation\Controller\SideNavigationComponent;
 
 abstract class AbstractController extends AC
 {
     protected $viewPath = 'subject/math/';
+
+    protected $subNavigationComponent;
+    
+    protected function getSubNavigationComponent(){
+        if(!$this->subNavigationComponent){
+            $this->subNavigationComponent = new SideNavigationComponent();
+        }
+        return $this->subNavigationComponent;
+    }
+    
+    private $items = array();
+    
+    private function inject (ViewModel $content)
+    {
+        return $this->getSubNavigationComponent()->inject($content);
+    }
+    
+    protected function addItem ($active, $href, $content, array $children = array())
+    {
+        return $this->getSubNavigationComponent()->addItem($active, $href, $content, $children);
+    }
+    
+    public function onDispatch (\Zend\Mvc\MvcEvent $e)
+    {
+        $view = parent::onDispatch($e);
+        return $this->getSubNavigationComponent()->inject($view, $e);
+    }
 }

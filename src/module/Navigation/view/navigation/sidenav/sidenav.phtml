@@ -12,20 +12,19 @@
 ?>
 <div class="row-fluid">
 	<div class="span3">
-        <ul class="nav nav-list nav-stacked affix">
+		<ul class="nav nav-list nav-stacked affix">
             <?php foreach($this->items as $item):?>
-	        <?php echo $this->partial('layout/sidenav/partial',array('item' => $item)); ?>
+	        <?php echo $this->partial('navigation/sidenav/partial',array('item' => $item)); ?>
             <?php endforeach;?>   
-        <?php
-            
-	                            echo $this->navigation('navigation')
-	                                    ->menu()
-	                                    ->setOnlyActiveBranch(true)
-	                                    ->setMinDepth(1)
-	                                    ->setMaxDepth(2)
-	                                    ->setUlClass('nav nav-tabs')
-	                                    ->setPartial('layout/sidenav/vertical-nav')
-	                                    ->render();
+            <?php
+            echo $this->navigation('navigation')
+                ->menu()
+                ->setOnlyActiveBranch(true)
+                ->setMinDepth(1)
+                ->setMaxDepth(2)
+                ->setUlClass('nav nav-tabs')
+                ->setPartial('navigation/sidenav/vertical-nav')
+                ->render();
             ?>
         </ul>
 	</div>

@@ -19,9 +19,69 @@ abstract class AbstractController extends AbstractActionController
 
     /**
      *
+     * @var string
+     */
+    protected $route;
+
+    /**
+     *
+     * @var string
+     */
+    protected $entityClass;
+
+    /**
+     *
+     * @var string
+     */
+    protected $entityFactory;
+
+    /**
+     *
      * @var EntityManagerInterface
      */
-    protected $_entityManager;
+    protected $entityManager;
+
+    /**
+     *
+     * @return string $route
+     */
+    public function getRoute ()
+    {
+        return $this->route;
+    }
+
+    /**
+     *
+     * @param string $route            
+     * @return $this
+     */
+    public function setRoute ($route)
+    {
+        $this->route = $route;
+        return $this;
+    }
+
+    /**
+     *
+     * @param string $entityClass            
+     * @return $this
+     */
+    public function setEntityClass ($entityClass)
+    {
+        $this->entityClass = $entityClass;
+        return $this;
+    }
+
+    /**
+     *
+     * @param string $entityFactory            
+     * @return $this
+     */
+    public function setEntityFactory ($entityFactory)
+    {
+        $this->entityFactory = $entityFactory;
+        return $this;
+    }
 
     /**
      *
@@ -29,7 +89,7 @@ abstract class AbstractController extends AbstractActionController
      */
     public function getEntityManager ()
     {
-        return $this->_entityManager;
+        return $this->entityManager;
     }
 
     /**
@@ -39,48 +99,51 @@ abstract class AbstractController extends AbstractActionController
      */
     public function setEntityManager (EntityManagerInterface $_entityManager)
     {
-        $this->_entityManager = $_entityManager;
+        $this->entityManager = $_entityManager;
         return $this;
     }
 
-    protected abstract function getEntityFactory ();
+    public function getEntityFactory ()
+    {
+        return $this->entityFactory;
+    }
 
-    protected abstract function getEntityClass ();
+    public function getEntityClass ()
+    {
+        return $this->entityClass;
+    }
 
     public function indexAction ()
     {
         return $this->receiveAction();
     }
-
-    /*public function createAction ()
+    
+    /*
+     * public function createAction () { $entity = $this->getEntityManager()->create($this->getEntityFactory()); $this->redirect()->toRoute(get_class($entity), array( 'action' => 'update', 'id' => $entity->getId() )); }
+     */
+    public function getSharedTaxonomyManager ()
     {
-        $entity = $this->getEntityManager()->create($this->getEntityFactory());
-        $this->redirect()->toRoute(get_class($entity), array(
-            'action' => 'update',
-            'id' => $entity->getId()
-        ));
-    }*/
-
-    public function getSharedTaxonomyManager(){
         return $this->getServiceLocator()->get('Taxonomy\SharedTaxonomyManager');
     }
-    
-    public function getObjectManager(){
+
+    public function getObjectManager ()
+    {
         return $this->getServiceLocator()->get('EntityManager');
     }
-    
-    public function createAction(){
+
+    public function createAction ()
+    {
         $term = $this->params()->fromQuery('term');
-        if(!$term)
+        if (! $term)
             throw new \InvalidArgumentException();
-    
+        
         $entity = $this->getEntityManager()->create($this->getEntityFactory());
         $term = $this->getSharedTaxonomyManager()->getTerm($term);
-    
+        
         $term->addEntity($entity);
-    
+        
         $this->getObjectManager()->flush();
-    
+        
         $this->redirect()->toRoute($entity->getRoute(), array(
             'action' => 'update',
             'id' => $entity->getId()
@@ -108,17 +171,17 @@ abstract class AbstractController extends AbstractActionController
         // TODO
     }
 
-    protected function getEntity ()
+    protected function getEntity ($id = NULL)
     {
-        $id = $this->getParam('id');
-        $entity = $this->getEntityManager()->get($id);
-        $controllerName = $this->params('controller');
-        $actionName = $this->params('action');
+        if (! $id)
+            $id = $this->getParam('id');
         
-        if (get_class($entity) != $this->getEntityClass()) {
-            // $this->redirect()->toRoute(get_class($entity),array('action' => $actionName, 'id' => $entity->getId()));
+        $entity = $this->getEntityManager()->get($id);
+        //$entity->setController($this);
+        
+        if (get_class($entity) != $this->getEntityClass())
             throw new \Exception('This controller can\'t handle the requested entity.');
-        }
+            // $this->redirect()->toRoute(get_class($entity),array('action' => $actionName, 'id' => $entity->getId()));
         
         return $entity;
     }

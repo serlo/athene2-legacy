@@ -14,26 +14,15 @@ use Entity\Controller\RevisionController;
 
 class TextExerciseController extends RevisionController
 {
-    protected function getEntityFactory()
+    public function show($id = NULL){
+        $view = parent::show($id);
+        $view->setTemplate('learning-object/exercise/text/display');
+        return $view;
+    }
+    
+    protected function _getRevisionView (RevisionInterface $revision = NULL)
     {
-        return 'Application\LearningObject\Exercise\TextExerciseFactory';
-    }
-    
-    protected function getEntityClass()
-    {
-        return 'Application\LearningObject\Exercise\TextExercise';
-    }
-    
-    public function getRoute(){
-        return 'entity/exercise/text';
-    }
-    
-    public function getView(){
-        return 'learning-object/exercise/text/show';
-    }
-    
-    protected function _getRevisionView(RevisionInterface $revision = NULL){
-        if($revision === NULL)
+        if ($revision === NULL)
             return NULL;
         
         $revisionView = new ViewModel(array(
@@ -44,7 +33,7 @@ class TextExerciseController extends RevisionController
         return $revisionView;
     }
 
-    public function updateAction()
+    public function updateAction ()
     {
         $entity = $this->getEntity();
         
@@ -72,21 +61,15 @@ class TextExerciseController extends RevisionController
         
         return $view;
     }
-    
-    public function setTopicAction(){
+
+    public function setTopicAction ()
+    {
         $entity = $this->getEntity();
         $topicId = $this->params()->fromQuery('term');
         $entity->setTopic($topicId);
-
         
         $this->redirect()->toUrl($this->getRequest()
             ->getHeader('Referer')
             ->getUri());
-    }
-    
-    public function getEntity(){
-        $entity = parent::getEntity();
-        $entity->setController($this);
-        return $entity;
     }
 }

@@ -102,16 +102,6 @@ abstract class RevisionController extends AbstractController
         ));
     }
 
-    public function showAction ()
-    {
-        $entity = $this->getEntity();
-        
-        $view = new ViewModel(array('entity' => $entity));
-        $view->setTemplate($entity->getTemplate());
-        
-        return $view;
-    }
-
     public function purgeRevisionAction ()
     {
         $entity = $this->getEntity();
@@ -148,5 +138,21 @@ abstract class RevisionController extends AbstractController
             $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
         }
         return $entity;
+    }
+    
+    
+    /**
+     * 
+     */
+    public function showAction ()
+    {
+        return $this->show();
+    }
+    
+    public function show($id = NULL){
+        $entity = $this->getEntity($id);
+        $view = new ViewModel(array('entity' => $entity));
+        $view->setTemplate($entity->getTemplate());
+        return $view;
     }
 }
