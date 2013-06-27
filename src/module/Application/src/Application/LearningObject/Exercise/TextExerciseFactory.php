@@ -16,6 +16,7 @@ use Entity\Service\EntityServiceInterface;
 use Entity\Components\LinkComponent;
 use Entity\Components\RepositoryComponent;
 use Application\LearningObject\Component\TopicComponent;
+use Application\LearningObject\Exercise\Form\TextExerciseForm;
 
 class TextExerciseFactory extends AbstractFactory
 {
@@ -30,7 +31,23 @@ class TextExerciseFactory extends AbstractFactory
         $decorator->addComponent(new LinkComponent($entityService));
         $decorator->addComponent(new RepositoryComponent($entityService));
         $decorator->addComponent(new TopicComponent($entityService));
-        $decorator->setController($entityService->getServiceLocator()->get('Application\LearningObject\Exercise\Controller\TextExerciseController'));
+        $decorator->setForm(new TextExerciseForm());
+        
+        // Get a controller
+        $controller = $entityService->getServiceLocator()->get('Application\LearningObject\Exercise\Controller\TextExerciseController');
+        
+        // Set the route handling the controller
+        $controller->setRoute('entity/exercise/text');
+        
+        // Set the factory
+        $controller->setEntityFactory(get_class($this));
+        
+        // Set the entities decorator
+        $controller->setEntityClass(get_class($decorator));
+        
+        // Finally, after factoring the controller, we inject it into the decorator
+        $decorator->setController($controller);
+        
         return parent::build($decorator, $entityService);
     }
 }

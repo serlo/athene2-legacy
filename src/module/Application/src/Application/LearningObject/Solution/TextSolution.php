@@ -11,7 +11,6 @@
  */
 namespace Application\LearningObject\Solution;
 
-
 class TextSolution extends AbstractSolution implements TextSolutionInterface 
 {
 }

@@ -14,9 +14,8 @@ namespace Application\Subject\DefaultSubject\Controller;
 use Zend\View\Model\ViewModel;
 use Application\LearningObject\Exercise\ExerciseInterface;
 
-class TopicController extends SideNavigationController
+class TopicController extends AbstractController
 {
-
     public function indexAction ()
     {
         $subjectService = $this->getSubjectService();
@@ -57,17 +56,15 @@ class TopicController extends SideNavigationController
         ));
         $entityView->setTemplate($this->getViewPath() . 'topic/entities');
         
-        $exercises = array();
+
+        $exerciseView = new ViewModel(array('exercises' => ''));
         if (is_array($entities)) {
             foreach ($entities as $exercise) {
                 if ($exercise instanceof ExerciseInterface){
-                    $exercises[] = $exercise;
+                    $exerciseView->addChild($exercise->getViewModel('show'), 'exercises');
                 }
             }
         }
-        $exerciseView = new ViewModel(array(
-            'exercises' => $exercises,
-        ));
         $exerciseView->setTemplate($this->getViewPath() . 'topic/exercises');
         
         $entityView->addChild($exerciseView, 'entities');
@@ -76,6 +73,7 @@ class TopicController extends SideNavigationController
         $view->setTemplate($this->getViewPath() . 'topic/show');
         
         // TODO: USE EVENTS
-        return $this->inject($view);
+        //return $this->inject($view);
+        return $view;
     }
 }

@@ -1,5 +1,3 @@
 <div class="exercises">
-    <?php foreach($this->exercises as $exercise):?>
-    <?php echo $this->partial($exercise->getTemplate(), array('entity' => $exercise)); ?>
-    <?php endforeach;?>
+    <?php echo $exercises; ?>
 </div>

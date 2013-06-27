@@ -11,30 +11,11 @@
  */
 namespace Application\LearningObject\Exercise;
 
-use Zend\View\Model\ViewModel;
 use Entity\Service\EntityServiceInterface;
-use Application\LearningObject\Exercise\Form\TextExerciseForm;
 use Entity\Factory\AbstractEntity;
 
 class TextExercise extends AbstractEntity implements EntityServiceInterface, TextExerciseInterface, ExerciseInterface
-{        
-    protected $template = 'learning-object/exercise/text/display';
-    
-    public function toViewModel()
-    {
-        throw new \Exception('DEPRECATED');
-        
-        if(!$this->viewModel){
-            $this->viewModel = new ViewModel(array('entity' => $this));
-        }
-        $this->viewModel->setTemplate($this->getTemplate());
-        //if($this->getSolution()){
-        //    $this->_viewModel->addChild($this->getSolution()->toViewModel(), 'solution');
-        //}
-        return $this->viewModel;
-    }
-
-    
+{
     public function getContent ()
     {
         return $this->getRepository()->getCurrentRevision()->get('content');
@@ -43,16 +24,6 @@ class TextExercise extends AbstractEntity implements EntityServiceInterface, Tex
     public function getSolution ()
     {
         return $this->findChild('Solution\TextSolution');
-    }
-    
-    public function getFormObject(){
-        return new TextExerciseForm();
-    }
-    
-    public function getData(){
-        return array(
-            'id' => $this->getId(),
-        );
     }
     
     public function getFormData(){
