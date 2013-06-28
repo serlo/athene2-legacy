@@ -96,7 +96,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $trashed;
+    protected $killed;
 
     /**
      * @ORM\Column(type="text",length=255)
@@ -247,7 +247,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->trashed = false;
+        $this->killed = false;
         return parent::__construct($uuid);
     }
 
@@ -289,16 +289,16 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     
     public function trash()
     {
-        $this->trashed = true;
+        $this->killed = true;
         return $this;
     }
     
     public function unTrash(){
-        $this->trashed = false;
+        $this->killed = false;
         returN $this;
     }
     
     public function isTrashed(){
-        return $this->trashed;
+        return $this->killed;
     }
 }

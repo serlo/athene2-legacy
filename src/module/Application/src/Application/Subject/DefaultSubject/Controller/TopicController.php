@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -14,66 +15,66 @@ namespace Application\Subject\DefaultSubject\Controller;
 use Zend\View\Model\ViewModel;
 use Application\LearningObject\Exercise\ExerciseInterface;
 
-class TopicController extends AbstractController
-{
-    public function indexAction ()
-    {
-        $subjectService = $this->getSubjectService();
-        
-        $topic = $subjectService->getTopic(explode('/', $this->getParam('path')));
-        
-        $entities = array();
-        if($topic->linkAllowed('entities')){
-            foreach($topic->getEntities() as $entity){
-                if(!$entity->isTrashed()){
-                    $entities[] = $entity;
-                }
-            }
-        }
-        
-        $view = new ViewModel(array(
-            'topic' => $topic,
-            'subject' => $subjectService
-        ));
-        
-        $taxonomyView = new ViewModel(array(
-            'term' => $topic,
-        ));
-        $taxonomy = array();
-        $taxonomyView->setTemplate('subject/math/taxonomy/topic');
-        foreach($topic->getChildren() as $child){
-            $taxView = new ViewModel(array('term' => $child));
-            $taxonomyView->addChild($taxView->setTemplate('subject/math/taxonomy/term/topic/partial'), 'taxonomy', true);
-            $this->addItem(false, rawurldecode($this->url()->fromRoute('subject/math/topic', array('path' => implode('/', $child->getPath())))), $child->getName());
-        }
-        $view->addChild($taxonomyView, 'taxonomy');
-        
-        
-        $entityView = new ViewModel(array(
-            'taxonomy' => $topic,
-            'subject' => $subjectService,
-            'acceptsEntities' => $topic->linkAllowed('entities'),
-        ));
-        $entityView->setTemplate($this->getViewPath() . 'topic/entities');
-        
-
-        $exerciseView = new ViewModel(array('exercises' => ''));
-        if (is_array($entities)) {
-            foreach ($entities as $exercise) {
-                if ($exercise instanceof ExerciseInterface){
-                    $exerciseView->addChild($exercise->getViewModel('show'), 'exercises');
-                }
-            }
-        }
-        $exerciseView->setTemplate($this->getViewPath() . 'topic/exercises');
-        
-        $entityView->addChild($exerciseView, 'entities');
-        $view->addChild($entityView, 'entities');
-        
-        $view->setTemplate($this->getViewPath() . 'topic/show');
-        
-        // TODO: USE EVENTS
-        //return $this->inject($view);
-        return $view;
-    }
+class TopicController extends AbstractController {
+	public function indexAction() {
+		$subjectService = $this->getSubjectService ();
+		
+		$topic = $subjectService->getTopic ( explode ( '/', $this->getParam ( 'path' ) ) );
+		
+		$entities = array ();
+		if ($topic->linkAllowed ( 'entities' )) {
+			foreach ( $topic->getEntities () as $entity ) {
+				if (! $entity->isTrashed ()) {
+					$entities [] = $entity;
+				}
+			}
+		}
+		
+		$view = new ViewModel ( array (
+				'topic' => $topic,
+				'subject' => $subjectService 
+		) );
+		
+		$taxonomyView = new ViewModel ( array (
+				'term' => $topic 
+		) );
+		$taxonomy = array ();
+		$taxonomyView->setTemplate ( 'subject/math/taxonomy/topic' );
+		foreach ( $topic->getChildren () as $child ) {
+			$taxView = new ViewModel ( array (
+					'term' => $child 
+			) );
+			$taxonomyView->addChild ( $taxView->setTemplate ( 'subject/math/taxonomy/term/topic/partial' ), 'taxonomy', true );
+			$this->addItem ( false, rawurldecode ( $this->url ()->fromRoute ( 'subject/math/topic', array (
+					'path' => implode ( '/', $child->getPath () ) 
+			) ) ), $child->getName () );
+		}
+		$view->addChild ( $taxonomyView, 'taxonomy' );
+		
+		$entityView = new ViewModel ( array (
+				'taxonomy' => $topic,
+				'subject' => $subjectService,
+				'acceptsEntities' => $topic->linkAllowed ( 'entities' ) 
+		) );
+		$entityView->setTemplate ( $this->getViewPath () . 'topic/entities' );
+		
+		$exerciseView = new ViewModel ( array (
+				'exercises' => '' 
+		) );
+		if (is_array ( $entities )) {
+			foreach ( $entities as $exercise ) {
+				if ($exercise instanceof ExerciseInterface) {
+					$exerciseView->addChild ( $exercise->getViewModel ( 'show' ), 'exercises' );
+				}
+			}
+		}
+		$exerciseView->setTemplate ( $this->getViewPath () . 'topic/exercises' );
+		
+		$entityView->addChild ( $exerciseView, 'entities' );
+		$view->addChild ( $entityView, 'entities' );
+		
+		$view->setTemplate ( $this->getViewPath () . 'topic/show' );
+		
+		return $view;
+	}
 }

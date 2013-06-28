@@ -12,5 +12,10 @@ use Taxonomy\Service\TermServiceInterface;
 
 interface FactoryInterface
 {
+	/**
+	 * 
+	 * @param TermServiceInterface $adaptee
+	 * @return TermServiceInterface
+	 */
     public function build (TermServiceInterface $adaptee);
 }
