@@ -13,7 +13,7 @@ namespace Application\Subject\DefaultSubject;
 
 use Subject\Application\Factory\AbstractFactory;
 use Subject\Service\SubjectServiceInterface;
-use Subject\Application\Component\TopicComponent;
+use Application\Subject\Component\TopicComponent;
 
 class Factory extends AbstractFactory
 {

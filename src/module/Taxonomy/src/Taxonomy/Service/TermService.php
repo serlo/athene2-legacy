@@ -20,6 +20,7 @@ use Term\Manager\TermManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Uuid\Manager\UuidManagerAware;
+use Core\Collection\DecoratorCollection;
 
 class TermService extends AbstractEntityDecorator implements TermServiceInterface, ServiceLocatorAwareInterface
 {
@@ -90,8 +91,10 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
      */
     public function getChildren ()
     {
-        return $this->getManager()->get($this->getEntity()
-            ->get('children'));
+        /*return $this->getManager()->get($this->getEntity()
+            ->get('children'));*/
+    	return new DecoratorCollection($this->getEntity()
+            ->get('children'), $this->getManager());
     }
     
     /*
@@ -113,15 +116,8 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     {
         $this->linkAllowedWithException($targetField);
         $links = $this->getAllowedLinks();
-        $services = new ArrayCollection();
         $closure = $links[$targetField];
-        foreach ($this->get($targetField) as $entity) {
-            $get = $closure($entity);
-            if ($get !== NULL){
-                $services->add($get);
-            }
-        }
-        return $services;
+        return $closure($this->get($targetField));
     }
     
     /*

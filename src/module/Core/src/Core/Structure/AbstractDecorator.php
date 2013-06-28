@@ -11,7 +11,9 @@
  */
 namespace Core\Structure;
 
-abstract class AbstractDecorator implements DecoratorInterface
+use Core\Component\ComponentInterface;
+
+abstract class AbstractDecorator implements DecoratorInterface, ComponentInterface
 {
 
     protected $concreteComponent;

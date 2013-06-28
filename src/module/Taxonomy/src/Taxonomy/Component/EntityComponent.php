@@ -14,6 +14,7 @@ namespace Taxonomy\Component;
 use Core\Component\AbstractComponent;
 use Core\Component\ComponentInterface;
 use Taxonomy\Service\TermServiceInterface;
+use Core\Collection\DecoratorCollection;
 
 class EntityComponent extends AbstractComponent implements ComponentInterface
 {
@@ -33,13 +34,14 @@ class EntityComponent extends AbstractComponent implements ComponentInterface
         $this->termService = $termService;
         $sm = $termService->getServiceLocator();
         $em = $sm->get('Entity\EntityManager');
-        $termService->enableLink('entities', function ($entity) use($em)
+        $termService->enableLink('entities', function ($collection) use($em)
         {
-            $entity = $em->get($entity);
+            /*$entity = $em->get($entity);
             if(is_object($entity) && $entity->providesMethod('isCheckedOut') && !$entity->isCheckedOut()){
                 return null;
             }
-            return $entity;
+            return $entity;*/
+        	return new DecoratorCollection($collection, $em);
         });
         return $this;
     }
