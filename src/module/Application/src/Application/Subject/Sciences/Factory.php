@@ -10,22 +10,22 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Subject\DefaultSubject;
+namespace Application\Subject\Sciences;
 
 use Subject\Factory\AbstractFactory;
 use Subject\Service\SubjectServiceInterface;
-use Application\Subject\Component\TopicComponent;
+use Application\Subject\Provider\Topic\TopicProvider;
 
 class Factory extends AbstractFactory {
 	/**
 	 *
 	 * @param SubjectServiceInterface $subjectService        	
 	 * @throws \InvalidArgumentException
-	 * @return s SubjectServiceInterface;
+	 * @return SubjectServiceInterface;
 	 */
 	public function build(SubjectServiceInterface $subjectService) {
 		$decorator = new Decorator ();
-		$decorator->addComponent ( new TopicComponent ( $subjectService ), 'topic' );
+		$decorator->addComponent ( new TopicProvider ( $subjectService ), 'topic' );
 		return $this->inject ( $decorator, $subjectService );
 	}
 }

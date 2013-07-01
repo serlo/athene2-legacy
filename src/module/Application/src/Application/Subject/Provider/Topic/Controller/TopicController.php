@@ -10,14 +10,15 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Subject\DefaultSubject\Controller;
+namespace Application\Subject\Provider\Topic\Controller;
 
+use Subject\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 use Application\Entity\LearningObject\Exercise\TextExercise;
-
+// use Application\Entity\LearningObject\Exercise\TextExercise;
 class TopicController extends AbstractController {
 	public function indexAction() {
-		$subjectService = $this->getSubjectService ();
+		$subjectService = $this->getSubject ();
 		
 		$topic = $subjectService->getTopic ( explode ( '/', $this->getParam ( 'path' ) ) );
 		
@@ -39,15 +40,13 @@ class TopicController extends AbstractController {
 				'term' => $topic 
 		) );
 		$taxonomy = array ();
-		$taxonomyView->setTemplate ( 'subject/math/taxonomy/topic' );
+		$taxonomyView->setTemplate ( 'subject/provider/topic/topic' );
 		foreach ( $topic->getChildren () as $child ) {
 			$taxView = new ViewModel ( array (
-					'term' => $child 
+					'term' => $child,
+					'subject' => $subjectService 
 			) );
-			$taxonomyView->addChild ( $taxView->setTemplate ( 'subject/math/taxonomy/term/topic/partial' ), 'taxonomy', true );
-			$this->addItem ( false, rawurldecode ( $this->url ()->fromRoute ( 'subject/math/topic', array (
-					'path' => implode ( '/', $child->getPath () ) 
-			) ) ), $child->getName () );
+			$taxonomyView->addChild ( $taxView->setTemplate ( 'subject/provider/topic/partial' ), 'taxonomy', true );			
 		}
 		$view->addChild ( $taxonomyView, 'taxonomy' );
 		
@@ -56,7 +55,7 @@ class TopicController extends AbstractController {
 				'subject' => $subjectService,
 				'acceptsEntities' => $topic->linkAllowed ( 'entities' ) 
 		) );
-		$entityView->setTemplate ( $this->getViewPath () . 'topic/entities' );
+		$entityView->setTemplate ( 'subject/provider/topic/entities' );
 		
 		$exerciseView = new ViewModel ( array (
 				'exercises' => '' 
@@ -68,12 +67,12 @@ class TopicController extends AbstractController {
 				}
 			}
 		}
-		$exerciseView->setTemplate ( $this->getViewPath () . 'topic/exercises' );
+		$exerciseView->setTemplate ( 'subject/provider/topic/exercises' );
 		
 		$entityView->addChild ( $exerciseView, 'entities' );
 		$view->addChild ( $entityView, 'entities' );
 		
-		$view->setTemplate ( $this->getViewPath () . 'topic/show' );
+		$view->setTemplate ( 'subject/provider/topic/show' );
 		
 		return $view;
 	}
