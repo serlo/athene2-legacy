@@ -11,7 +11,6 @@
  */
 $subtitle = is_object($this->topic) ? $this->topic->getName() : NULL;
 $this->renderTitle($this->translate('Themenübersicht'), NULL, $subtitle);
-//$this->partial('taxonomy/default/partial', array('term' => $topic, 'children' => $topic->getChildren()))
 ?>
 <?php echo $this->taxonomy; ?>
 <?php echo $this->entities; ?>

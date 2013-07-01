@@ -11,7 +11,6 @@
  */
 namespace Subject\Controller;
 
-
 use Entity\EntityManagerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Taxonomy\SharedTaxonomyManagerInterface;
@@ -21,74 +20,55 @@ use Subject\SubjectManagerInterface;
 
 class AbstractController extends AbstractActionController
 {
-    protected $viewPath;
-    
-    public function getViewPath(){
-        return $this->viewPath;
-    }
-    
     /**
      * @var SubjectManagerInterface
      */
     protected $subjectManager;
     
+    /**
+     * 
+     * @param SubjectManagerInterface $subjectManager
+     * @return \Subject\Controller\AbstractController
+     */
     public function setSubjectManager(SubjectManagerInterface $subjectManager){
         $this->subjectManager = $subjectManager;
         return $this;
     }
     
-    public function __construct(){
+    /**
+     * 
+     * @return \Subject\SubjectManagerInterface
+     */
+    public function getSubjectManager(){
+    	return $this->subjectManager;
     }
     
     /**
-     * @var SubjectServiceInterface
+     * 
+     * @param string $identifier
+     * @return \Subject\Service\SubjectServiceInterface
      */
-    protected $subjectService;
-    
-    /**
-     * @return SubjectServiceInterface $subjectService
-     */
-    public function getSubjectService ()
-    {
-        if(!$this->subjectService){
+    public function getSubject($identifier = NULL){
+        if($identifier === NULL){
             $subject = $this->params()->fromRoute('subject');
-            $this->setSubjectService($this->subjectManager->get($subject));
-        }
-        
-        return $this->subjectService;
+            return $this->getSubjectManager()->get($subject);
+        } else {
+            return $this->getSubjectManager()->get($identifier);
+        }        	
     }
     
-    /**
-     * @param SubjectServiceInterface $subjectService
-     * @return $this
-     */
-    public function setSubjectService (SubjectServiceInterface $subjectService)
-    {
-        $this->subjectService = $subjectService;
-        return $this;
-    }
-    
-    /**
-     * @return SharedTaxonomyManagerInterface
-     */
-    public function getSharedTaxonomyManager ()
+    /*public function getSharedTaxonomyManager ()
     {
         return $this->getSubjectService()->getSharedTaxonomyManager();
     }
     
-    /**
-     * @return EntityManagerInterface
-     */
     public function getEntityManager ()
     {
         return $this->getSubjectService()->getEntityManager();
     }
     
-    /**
-     * @return ObjectManager
-     */
     public function getObjectManager ()
     {
         return $this->getSubjectService()->getObjectManager();
-    }
+    }*/
 }

@@ -9,68 +9,71 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    array(
-        'label' => 'Mathe',
-        'uri' => '#',
-        'pages' => array(
-            array(
-                'label' => 'Suchen',
-                'uri' => '#'
-            ),
-            array(
-                'label' => 'Prüfungsvorbereitung',
-                'uri' => '#'
-            ),
-            array(
-                'label' => 'Lehrplan',
-                'uri' => '#'
-            ),
-            array(
-                'label' => 'Lernen',
-                'route' => 'subject/math',
-                'provider' => 'Taxonomy\Provider\TaxonomyProvider',
-                'options' => array(
-                    'name' => 'topic',
-                    'route' => 'subject/math/topic'
-                )
-            )
-        )
-    ),
-    array(
-        'label' => 'Mitmachen',
-        'uri' => '#',
-        'pages' => array(
-            array(
-                'label' => 'Mathe',
-                'uri' => '#',
-                'pages' => array(
-                    array(
-                        'label' => 'Aufgaben verwalten',
-                        'uri' => '#'
-                    ),
-                    array(
-                        'label' => 'Artikel verwalten',
-                        'uri' => '#'
-                    ),
-                    array(
-                        'label' => 'Prüfungen verwalten',
-                        'uri' => '#'
-                    ),
-                    array(
-                        'label' => 'Lehrplan verwalten',
-                        'uri' => '#'
-                    ),
-                    array(
-                        'label' => 'Themen verwalten',
-                        'route' => 'taxonomy/taxonomy',
-                        'params' => array(
-                            'action' => 'show',
-                            'id' => '1'
-                        ),
-                    ),
-                )
-            )
-        )
-    )
+return array (
+		array (
+				'label' => 'Mathe',
+				'uri' => '#',
+				'pages' => array (
+						array (
+								'label' => 'Suchen',
+								'uri' => '#' 
+						),
+						array (
+								'label' => 'Prüfungsvorbereitung',
+								'uri' => '#' 
+						),
+						array (
+								'label' => 'Lehrplan',
+								'uri' => '#' 
+						),
+						array (
+								'label' => 'Lernen',
+								'route' => 'subject',
+								'provider' => 'Taxonomy\Provider\NavigationProvider',
+								'options' => array (
+										'name' => 'topic',
+										'route' => 'subject/provider/topic',
+										'params' => array (
+												'subject' => 'math' 
+										),
+								) 
+						) 
+				) 
+		),
+		array (
+				'label' => 'Mitmachen',
+				'uri' => '#',
+				'pages' => array (
+						array (
+								'label' => 'Mathe',
+								'uri' => '#',
+								'pages' => array (
+										array (
+												'label' => 'Aufgaben verwalten',
+												'uri' => '#' 
+										),
+										array (
+												'label' => 'Artikel verwalten',
+												'uri' => '#' 
+										),
+										array (
+												'label' => 'Prüfungen verwalten',
+												'uri' => '#' 
+										),
+										array (
+												'label' => 'Lehrplan verwalten',
+												'uri' => '#' 
+										),
+										array (
+												'label' => 'Themen verwalten',
+												'route' => 'taxonomy/taxonomy',
+												'params' => array (
+														'action' => 'show',
+														'id' => '1' 
+												) 
+										) 
+								) 
+						) 
+				) 
+		) 
 );

@@ -9,13 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Subject\Component;
+namespace Application\Subject\Provider\Topic;
 
 use Subject\Service\SubjectServiceInterface;
 use Core\Component\ComponentInterface;
 use Core\Component\AbstractComponent;
 
-class TopicComponent extends AbstractComponent implements ComponentInterface
+class TopicProvider extends AbstractComponent implements ComponentInterface
 {
     protected $publicMethods = array('getTopic', 'getTopics');
     

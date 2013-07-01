@@ -35,7 +35,7 @@ class RouteStack implements HydratorInterface, SubjectManagerAwareInterface
         foreach ($this->getSubjectManager()->getAllSubjects() as $subject) {
             $routes = array_merge($routes, include $this->path . $subject->getName() . '/routes.config.php');
         }
-        $routes = array(
+        /*$routes = array(
             'subject' => array(
                 'may_terminate' => true,
                 'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -48,7 +48,7 @@ class RouteStack implements HydratorInterface, SubjectManagerAwareInterface
                 ),
                 'child_routes' => $routes
             )
-        );
+        );*/
         $router->addRoutes($routes);
     }
 }
