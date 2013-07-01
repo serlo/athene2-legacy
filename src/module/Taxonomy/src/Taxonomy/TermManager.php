@@ -89,18 +89,18 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     {
         if (is_numeric($term)) {
             $entity = $this->getObjectManager()->find($this->resolve('TermEntityInterface'), (int) $term);
-            $id = $this->add($this->createInstance($entity));
+            $id = $this->add($this->createInstanceFromEntity($entity));
         } elseif (is_array($term)) {
-            $id = $this->add($this->createInstance($this->getEntityByPath($term)));
+            $id = $this->add($this->createInstanceFromEntity($this->getEntityByPath($term)));
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
             $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
                 ->setMaxResults(1);
             $entity = $this->getTerms()
                 ->matching($criteria)
                 ->first();
-            $id = $this->add($this->createInstance($entity));
+            $id = $this->add($this->createInstanceFromEntity($entity));
         } elseif ($term instanceof TermTaxonomyEntityInterface) {
-            $id = $this->add($this->createInstance($term));
+            $id = $this->add($this->createInstanceFromEntity($term));
         } elseif ($term instanceof \Taxonomy\Service\TermServiceInterface) {
             $id = $this->add($term);
         } elseif ($term instanceof Collection) {
@@ -189,7 +189,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush();
         
-        $instance = $this->createInstance($entity);
+        $instance = $this->createInstanceFromEntity($entity);
         return $instance;
     }
     
@@ -208,25 +208,18 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
         return $termService->getId();
     }
     
-    /*public function getTerms(){
-        foreach($this->getEntity()->getTerms() as $entity){
-            $return[] = $this->createInstance($entity);
-        }
-        return $return;
-    }*/
-    
     public function getRootTerms(){
         $return = array();
         foreach($this->getEntity()->getTerms() as $entity){
             if(!$entity->hasParent())
-                $return[] = $this->createInstance($entity);
+                $return[] = $this->createInstanceFromEntity($entity);
         }
         return $return;
     }
     
-    public function createInstance (TermTaxonomyEntityInterface $entity)
+    public function createInstanceFromEntity (TermTaxonomyEntityInterface $entity)
     {
-        $instance = parent::createInstance();
+        $instance = $this->createInstance();
         $instance->setEntity($entity);
         $instance->setManager($this);
         return $instance->build();

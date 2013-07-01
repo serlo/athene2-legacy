@@ -96,14 +96,46 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $killed;
+    protected $trashed;
 
     /**
      * @ORM\Column(type="text",length=255)
      */
     protected $slug;
+    
+    protected $route;
+    
+    protected $fieldOrder;
+    
+    public function orderFields(array $newOrder){
+    	$this->fieldOrder = $newOrder;
+    }
+    
+    public function getFieldOrder($fieldName){
+    	$return = array_search($fieldName, $this->fieldOrder);
+    	if($return === false)
+    		throw new \InvalidArgumentException('Order for `'.$fieldName.'` not set');
+    	
+    	return $return;
+    }
 
     /**
+	 * @return field_type $route
+	 */
+	public function getRoute() {
+		return $this->route;
+	}
+
+	/**
+	 * @param field_type $route
+	 * @return $this
+	 */
+	public function setRoute($route) {
+		$this->route = $route;
+		return $this;
+	}
+
+	/**
      * @return field_type $issues
      */
     public function getIssues ()
@@ -247,7 +279,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->killed = false;
+        $this->trashed = false;
         return parent::__construct($uuid);
     }
 
@@ -289,16 +321,16 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     
     public function trash()
     {
-        $this->killed = true;
+        $this->trashed = true;
         return $this;
     }
     
     public function unTrash(){
-        $this->killed = false;
+        $this->trashed = false;
         returN $this;
     }
     
     public function isTrashed(){
-        return $this->killed;
+        return $this->trashed;
     }
 }

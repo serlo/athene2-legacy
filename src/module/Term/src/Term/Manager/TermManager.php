@@ -112,7 +112,7 @@ class TermManager extends AbstractManager implements ObjectManagerAwareInterface
             throw new TermNotFoundException($id);
         
         if(!$this->hasInstance($term->getName())){
-            $this->add($this->createInstance($term));
+            $this->add($this->createInstanceFromEntity($term));
         }
         
         return $this->getInstance($term->getName());
@@ -156,12 +156,12 @@ class TermManager extends AbstractManager implements ObjectManagerAwareInterface
                 $em->persist($entity);
                 $em->flush();
             }
-            $this->add($this->createInstance($entity));
+            $this->add($this->createInstanceFromEntity($entity));
         }
         return $this->getInstance($name);
     }
 
-    protected function createInstance($entity)
+    protected function createInstanceFromEntity($entity)
     {
         $instance = parent::createInstance();
         $instance->setEntity($entity);

@@ -81,7 +81,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface,
         $em = $this->getObjectManager();
         $entities = $em->getRepository($this->resolve('SubjectEntityInterface'))->findAll();
         foreach($entities as $entity){
-            $this->add($this->createInstance($entity));
+            $this->add($this->createInstanceFromEntity($entity));
         }
         return $this;
     }
@@ -90,7 +90,9 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface,
         return $this->get('math');
     }
     
-    protected function createInstance($entity){
+    
+    
+    protected function createInstanceFromEntity($entity){
         $instance = parent::createInstance();
         $instance->setEntity($entity);
         $instance = $instance->build();

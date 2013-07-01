@@ -23,8 +23,6 @@ interface TermManagerInterface // extends TaxonomyEntityInterface
     public function delete ($term);
 
     public function add (\Taxonomy\Service\TermServiceInterface $termService);
-
-    public function createInstance (TermTaxonomyEntityInterface $entity);
-
+    
     public function getRootTerms ();
 }

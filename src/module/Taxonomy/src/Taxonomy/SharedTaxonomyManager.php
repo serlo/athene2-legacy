@@ -93,7 +93,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         
         if (is_numeric($taxonomy)) {
             $entity = $this->getObjectManager()->find($this->resolve('TaxonomyEntityInterface'), $taxonomy);
-            $name = $this->add($this->createInstance($entity));
+            $name = $this->add($this->createInstanceFromEntity($entity));
         } elseif (is_string($taxonomy)) {
             $entity = $this->getObjectManager()
                 ->getRepository($this->resolve('TaxonomyEntityInterface'))
@@ -101,11 +101,11 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
                 'name' => $taxonomy
             // 'subject' => $subjectService ? $subjectService->getEntity() : $subjectService
                         ));
-            $name = $this->add($this->createInstance($entity));
+            $name = $this->add($this->createInstanceFromEntity($entity));
         } elseif ($taxonomy instanceof $className) {
             $name = $this->add($taxonomy);
         } elseif ($taxonomy instanceof $entityClassName) {
-            $name = $this->add($this->createInstance($taxonomy));
+            $name = $this->add($this->createInstanceFromEntity($taxonomy));
         } elseif ($taxonomy instanceof $termEntityClassName) {
             return $this->getTerm($taxonomy);
         } else {
@@ -125,9 +125,9 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             if (! is_object($entity))
                 throw new NotFoundException();
             $entity = $entity->getTaxonomy();
-            $name = $this->add($this->createInstance($entity));
+            $name = $this->add($this->createInstanceFromEntity($entity));
         } elseif ($element instanceof $termEntityClassName) {
-            $name = $this->add($this->createInstance($element->getTaxonomy()));
+            $name = $this->add($this->createInstanceFromEntity($element->getTaxonomy()));
         } else {
             throw new \InvalidArgumentException();
         }
@@ -140,7 +140,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         $term->getManager()->delete($term);
     }
 
-    protected function createInstance ($entity)
+    protected function createInstanceFromEntity ($entity)
     {
         if (! is_object($entity))
             throw new NotFoundException();
