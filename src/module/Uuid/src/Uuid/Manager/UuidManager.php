@@ -47,11 +47,6 @@ class UuidManager extends AbstractManager implements ObjectManagerAwareInterface
         parent::__construct($this->options);
     }
     
-    protected function createInstance(){
-        $name = $this->resolve('manages');
-        return new $name();
-    }
-    
     public function inject(UuidHolder $entity, $uuid = NULL){
         $name = $this->resolve('manages');
         if(!$uuid instanceof $name){

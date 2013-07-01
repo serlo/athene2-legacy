@@ -16,4 +16,7 @@ use Taxonomy\Decorator\AbstractDecorator;
 
 class Term extends AbstractDecorator implements TermServiceInterface
 {
+	public function getInheritableMethods() {
+		return array();
+	}
 }

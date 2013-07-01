@@ -11,12 +11,12 @@
  */
 namespace Core\Collection;
 
-use Core\Structure\AbstractDecorator;
+use Core\Decorator\AbstractDecorator;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Selectable;
 use Core\Manager;
-use Core\Structure\DecoratorInterface;
+use Core\Decorator\DecoratorInterface;
 
 final class DecoratorCollection extends AbstractDecorator implements Collection, Selectable
 {

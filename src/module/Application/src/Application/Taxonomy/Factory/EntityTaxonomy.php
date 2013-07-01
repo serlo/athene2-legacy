@@ -21,7 +21,6 @@ class EntityTaxonomy extends AbstractFactory implements FactoryInterface, TermSe
     {
         $instance = new \Application\Taxonomy\Term($termService);
         $instance->addComponent(new EntityComponent($termService));
-        //$instance->setTemplate('taxonomy/default/partial');
-        return parent::build($instance, $termService);
+        return $this->inject($instance, $termService);
     }
 }

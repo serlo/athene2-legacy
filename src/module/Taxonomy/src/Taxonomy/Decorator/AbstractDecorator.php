@@ -14,7 +14,7 @@ namespace Taxonomy\Decorator;
 use Taxonomy\Controller\AbstractController;
 use Zend\Form\Form;
 use Taxonomy\Exception\InvalidArgumentException;
-use Core\Structure\GraphDecorator;
+use Core\Decorator\GraphDecorator;
 
 abstract class AbstractDecorator extends GraphDecorator {
 

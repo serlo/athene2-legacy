@@ -41,7 +41,7 @@ class Module
             include __DIR__ . '/config/module.config.php',
             include __DIR__ . '/config/subject/module.config.php',
             include __DIR__ . '/config/taxonomy/module.config.php',
-            include __DIR__ . '/config/learning-object/module.config.php'
+            include __DIR__ . '/config/entity/module.config.php'
         );
         return $config; 
     }

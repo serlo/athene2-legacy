@@ -11,16 +11,30 @@
  */
 namespace Entity\Factory;
 
-use Core\Structure\GraphDecorator;
+use Core\Decorator\GraphDecoratorInterface;
 use Entity\Service\EntityServiceInterface;
 
-class AbstractFactory
+abstract class AbstractFactory
 {
-    public function build(GraphDecorator $decorator, EntityServiceInterface $entityService){
-        if($entityService instanceof GraphDecorator)
+    /**
+     * 
+     * @param EntityServiceInterface $entityService
+     * @returns EntityServiceInterface;
+     */
+    abstract public function build(EntityServiceInterface $entityService);
+	
+	/**
+	 * 
+	 * @param GraphDecorator $decorator
+	 * @param EntityServiceInterface $entityService
+	 * @throws \Exception
+	 * @return GraphDecorator
+	 */
+    protected function inject(GraphDecoratorInterface $decorator, EntityServiceInterface $entityService){
+        if($entityService instanceof GraphDecoratorInterface)
             throw new \Exception('Ouch, this could get really really messy. Stop whatever you are doing and go to bed.');
             
-        $decorator->setConcreteComponent($entityService);
+        $decorator->addComponent($entityService);
         return $decorator;
     }
 }

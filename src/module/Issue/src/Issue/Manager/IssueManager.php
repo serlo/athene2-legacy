@@ -61,10 +61,10 @@ class IssueManager extends AbstractManager implements ObjectManagerAwareInterfac
             if(is_numeric($key)){
                 $key = (int) $key;
                 $entity = $this->getObjectManager()->find($this->resolve('EntityInterface'), $key);
-                $instance = $this->createInstance($entity);
+                $instance = $this->createInstanceFromEntity($entity);
                 $this->addInstance($key, $instance);
             } elseif (is_object($key) && $key instanceof IssueInterface){
-                $instance = $this->createInstance($key);
+                $instance = $this->createInstanceFromEntity($key);
                 $this->addInstance($key->getId(), $instance);
             } else {
                 throw new InvalidArgumentException();
@@ -95,7 +95,7 @@ class IssueManager extends AbstractManager implements ObjectManagerAwareInterfac
             ->findAll()), $this);
     }
 
-    protected function createInstance ($entity)
+    protected function createInstanceFromEntity ($entity)
     {
         if (! is_object($entity))
             throw new NotFoundException();
@@ -113,7 +113,7 @@ class IssueManager extends AbstractManager implements ObjectManagerAwareInterfac
         $entity->setOn($this->getUuidManager()->get($on));
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush();
-        $instance = $this->createInstance($entity);
+        $instance = $this->createInstanceFromEntity($entity);
         $this->addInstance($instance->getId(), $instance);
         return $instance;
     }

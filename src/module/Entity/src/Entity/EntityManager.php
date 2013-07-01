@@ -74,13 +74,13 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
 
 	private function _getById($id){
 	    $entity = $this->getEntityManager()->find($this->resolve('EntityInterface'), $id);
-        $entityService = $this->createInstance($entity);
+        $entityService = $this->createInstanceFromEntity($entity);
         $this->add($entityService);
         return $this;
     }
     
     private function _getByEntity(EntityInterface $entity){
-        $entityService = $this->createInstance($entity);
+        $entityService = $this->createInstanceFromEntity($entity);
         $this->add($entityService);
         return $this;
     }
@@ -126,7 +126,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         return $this->addInstance($entityService->getId(), $entityService);
     }
     
-    public function createInstance($entity){
+    public function createInstanceFromEntity($entity){
         $instance = parent::createInstance();
         $instance->setManager($this);
         $instance->setEntity($entity);
