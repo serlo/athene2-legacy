@@ -13,26 +13,42 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\I18n\Translator\Translator;
 
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
         // Load translator
-        $e->getApplication()->getServiceManager()->get('translator');
+        
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/de_DE.php', 'default', 'de_DE');
+        $translator->setLocale('de_DE');
+        
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         
-        // Load Subjects
+
         $app      = $e->getTarget();
         $serviceManager       = $app->getServiceManager();
+        
+        // Load Subjects
         $listener = $serviceManager->get('Subject\Hydrator\Route');
         $listener->setPath(__DIR__ . '/config/subject/');
         $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
         
+        // Route translator
+        $app->getEventManager()->attach('route', array($this, 'onPreRoute'), 4);
+        
         $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
         $hydrator->setPath(__DIR__ . '/config/subject/');
+    }
+    
+    public function onPreRoute($e){
+        $app      = $e->getTarget();
+        $serviceManager       = $app->getServiceManager();
+        $serviceManager->get('router')->setTranslator($serviceManager->get('translator'));
     }
 
     public function getConfig()

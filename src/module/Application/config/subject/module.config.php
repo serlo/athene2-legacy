@@ -16,7 +16,7 @@ return array (
 								'type' => 'Zend\Mvc\Router\Http\Segment',
 								'may_terminate' => true,
 								'options' => array (
-										'route' => '/subject[/:subject]',
+										'route' => '/{subject}[/:subject]',
 										'defaults' => array (
 												'controller' => 'Application\Subject\Provider\Home\Controller\HomeController',
 												'action' => 'index' 
@@ -33,7 +33,7 @@ return array (
 																'may_terminate' => true,
 																'type' => 'Zend\Mvc\Router\Http\Segment',
 																'options' => array (
-																		'route' => '/topic/:path',
+																		'route' => '/{topic}/:path',
 																		'defaults' => array (
 																				'controller' => 'Application\Subject\Provider\Topic\Controller\TopicController',
 																				'action' => 'index' 
