@@ -31,4 +31,4 @@ class TextExerciseFactory extends AbstractFactory {
 		$decorator->orderFields(array('content'));
 		return $decorator;
 	}
-}
+} 
