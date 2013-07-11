@@ -7,5 +7,5 @@ Now you are ready to go!
 
 ============
 
-# Wiki
-**Please read the Wiki: https://github.com/serlo-org/athene2/wiki**
+# Want to get involved?
+Read Wiki at https://github.com/serlo-org/athene2/wiki !
