@@ -9,34 +9,34 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Uuid\Manager;
+namespace Entity\Plugin;
 
-trait UuidManagerAware
+trait PluginManagerAware
 {
 
     /**
      *
-     * @var \Uuid\Manager\UuidManagerInterface
+     * @var PluginManagerInterface
      */
-    protected $uuidManager;
+    protected $pluginManager;
 
     /**
      *
-     * @return \Uuid\Manager\UuidManagerInterface $uuidManager
+     * @return \Entity\Plugin\PluginManagerInterface $pluginManager
      */
-    public function getUuidManager()
+    public function getPluginManager()
     {
-        return $this->uuidManager;
+        return $this->pluginManager;
     }
 
     /**
      *
-     * @param \Uuid\Manager\UuidManagerInterface $uuidManager            
+     * @param \Entity\Plugin\PluginManagerInterface $pluginManager            
      * @return $this
      */
-    public function setUuidManager(\Uuid\Manager\UuidManagerInterface $uuidManager)
+    public function setPluginManager(PluginManagerInterface $pluginManager)
     {
-        $this->uuidManager = $uuidManager;
+        $this->pluginManager = $pluginManager;
         return $this;
     }
 }
