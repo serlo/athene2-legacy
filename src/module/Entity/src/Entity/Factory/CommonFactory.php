@@ -9,7 +9,14 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Model;
+namespace Entity\Factory;
 
-interface EntityModel {
+abstract class CommonFactory extends AbstractFactory
+{
+    abstract protected function injectDecorators();
+    
+    public function build($entityService, $entity, $serviceLocator, $entityManager){
+        $entityService = parent::build($entityService, $entity, $serviceLocator, $entityManager);
+        return $entityService->injectDecorators();
+    }
 }

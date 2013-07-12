@@ -9,34 +9,36 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Uuid\Manager;
+namespace Common\Traits;
 
-trait UuidManagerAware
+use Doctrine\Common\Persistence\ObjectManager;
+
+trait ObjectManagerAware
 {
 
     /**
      *
-     * @var \Uuid\Manager\UuidManagerInterface
+     * @var ObjectManager
      */
-    protected $uuidManager;
+    protected $objectManager;
 
     /**
      *
-     * @return \Uuid\Manager\UuidManagerInterface $uuidManager
+     * @return \Doctrine\Common\Persistence\ObjectManager $objectManager
      */
-    public function getUuidManager()
+    public function getObjectManager()
     {
-        return $this->uuidManager;
+        return $this->objectManager;
     }
 
     /**
      *
-     * @param \Uuid\Manager\UuidManagerInterface $uuidManager            
+     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager            
      * @return $this
      */
-    public function setUuidManager(\Uuid\Manager\UuidManagerInterface $uuidManager)
+    public function setObjectManager(ObjectManager $objectManager)
     {
-        $this->uuidManager = $uuidManager;
+        $this->objectManager = $objectManager;
         return $this;
     }
 }

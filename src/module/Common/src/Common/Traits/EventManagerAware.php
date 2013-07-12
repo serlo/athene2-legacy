@@ -9,34 +9,36 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Uuid\Manager;
+namespace Common\Traits;
 
-trait UuidManagerAware
+use Zend\EventManager\EventManagerInterface;
+
+trait EventManagerAware
 {
 
     /**
      *
-     * @var \Uuid\Manager\UuidManagerInterface
+     * @var EventManagerInterface
      */
-    protected $uuidManager;
+    protected $eventManager;
 
     /**
      *
-     * @return \Uuid\Manager\UuidManagerInterface $uuidManager
+     * @return \Zend\EventManager\EventManagerInterface $eventManager
      */
-    public function getUuidManager()
+    public function getEventManager()
     {
-        return $this->uuidManager;
+        return $this->eventManager;
     }
 
     /**
      *
-     * @param \Uuid\Manager\UuidManagerInterface $uuidManager            
+     * @param \Zend\EventManager\EventManagerInterface $eventManager            
      * @return $this
      */
-    public function setUuidManager(\Uuid\Manager\UuidManagerInterface $uuidManager)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
-        $this->uuidManager = $uuidManager;
+        $this->eventManager = $eventManager;
         return $this;
     }
 }
