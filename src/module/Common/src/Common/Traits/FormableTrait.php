@@ -9,24 +9,34 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity;
+namespace Common\Traits;
 
-class Module
+trait FormableTrait
 {
 
-    public function getConfig()
+    /**
+     *
+     * @var \Zend\Form\FormForm
+     */
+    protected $form;
+
+    /**
+     *
+     * @return \Zend\Form\Form $form
+     */
+    public function getForm()
     {
-        return include __DIR__ . '/config/module.config.php';
+        return $this->form;
     }
 
-    public function getAutoloaderConfig()
+    /**
+     *
+     * @param \Zend\Form\Form $form            
+     * @return $this
+     */
+    public function setForm(\Zend\Form\Form $form)
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                )
-            )
-        );
+        $this->form = $form;
+        return $this;
     }
 }

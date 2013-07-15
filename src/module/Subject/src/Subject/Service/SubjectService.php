@@ -15,20 +15,15 @@ use Core\Service\AbstractEntityDecorator;
 use Taxonomy\SharedTaxonomyManagerAwareInterface;
 use Subject\SubjectManagerAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Entity\EntityManagerAwareInterface;
 use Doctrine\Common\Collections\Criteria;
-use Subject\Entity\SubjectEntityInterface;
 
-class SubjectService extends AbstractEntityDecorator implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface, SubjectManagerAwareInterface, ServiceLocatorAwareInterface, ObjectManagerAwareInterface, EntityManagerAwareInterface
+class SubjectService extends AbstractEntityDecorator implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface, SubjectManagerAwareInterface, ServiceLocatorAwareInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Entity\Manager\EntityManagerAware; //, \Common\Traits\EntityDelegatorTrait;
+    
     protected $subjectManager;
     
     protected $sharedTaxonomyManager;
-    
-    protected $serviceLocator;
-    
-    protected $entityManager;
     
 	/* (non-PHPdoc)
      * @see \Subject\SubjectManagerAwareInterface::getSubjectManager()
@@ -36,15 +31,6 @@ class SubjectService extends AbstractEntityDecorator implements SubjectServiceIn
     public function getSubjectManager ()
     {
         return $this->subjectManager;
-    }
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Core\Service\AbstractEntityDecorator::getEntity()
-     * @return SubjectEntityInterface
-     */
-    public function getEntity(){
-        return parent::getEntity();
     }
 
 	/* (non-PHPdoc)
@@ -70,40 +56,6 @@ class SubjectService extends AbstractEntityDecorator implements SubjectServiceIn
     public function setSharedTaxonomyManager (\Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager)
     {
         $this->sharedTaxonomyManager = $sharedTaxonomyManager;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator ()
-    {
-        return $this->serviceLocator;
-    }
-    
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Entity\EntityManagerAwareInterface::getEntityManager()
-     */
-    public function getEntityManager ()
-    {
-        return $this->entityManager;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Entity\EntityManagerAwareInterface::setEntityManager()
-     */
-    public function setEntityManager (\Entity\EntityManagerInterface $manager)
-    {
-        $this->entityManager = $manager;
-        return $this;
     }
     
     public function getTaxonomy($name){ 

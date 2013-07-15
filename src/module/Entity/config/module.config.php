@@ -3,18 +3,9 @@ namespace Entity;
 
 return array(
     'di' => array(
-        'allowed_controllers' => array(
-        ),
+        'allowed_controllers' => array(),
         'definition' => array(
             'class' => array(
-                'Entity\EntityManager' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setServiceManager' => array(
-                        'required' => 'true'
-                    )
-                ),
                 'Entity\Service\EntityService' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
@@ -54,11 +45,33 @@ return array(
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
                 'Link\LinkManagerInterface' => 'Link\LinkManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
-                'Entity\EntityManagerInterface' => 'Entity\EntityManager'
+                'Entity\Manager\EntityManagerInterface' => 'Entity\Manager\EntityManager'
             ),
             'Entity\Service\EntityService' => array(
                 'shared' => false
             )
+        )
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Entity\Plugin\PluginManager' => (function ($sm)
+            {
+                $config = new \Zend\ServiceManager\Config($sm->get('config')['entity']['plugins']);
+                $class = new \Entity\Plugin\PluginManager($config);
+                return $class;
+            }),
+            'Entity\Manager\EntityManager' => (function ($sm)
+            {
+                $config = $sm->get('config')['entity'];
+                $class = new \Entity\Manager\EntityManager($config);
+                
+                $class->setPluginManager($sm->get('Entity\Plugin\PluginManager'));
+                $class->setServiceLocator($sm->get('ServiceManager'));
+                $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
+                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                
+                return $class;
+            })
         )
     ),
     'view_manager' => array(

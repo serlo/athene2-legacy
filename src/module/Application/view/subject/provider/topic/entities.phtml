@@ -19,7 +19,7 @@
 				<i class="icon-plus"></i><?php echo $this->translate('hinzufügen');?> <span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
-				<li><a href="<?php echo $this->url('entity/exercise/text', array('action' => 'create'), array('query' => array( 'term' => $this->taxonomy->getId()))); ?>"><?php echo $this->translate('Aufgabe');?></a></li>
+				<li><a href="<?php echo $this->url('entity/common', array('action' => 'create'), array('query' => array( 'term' => $this->taxonomy->getId()))); ?>"><?php echo $this->translate('Aufgabe');?></a></li>
 			</ul>
 		</div>
 		<?php endif; ?>

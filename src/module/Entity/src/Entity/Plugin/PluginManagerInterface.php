@@ -13,6 +13,4 @@ namespace Entity\Plugin;
 
 interface PluginManagerInterface
 {
-    public function get();
-    public function add();
 }

@@ -9,28 +9,21 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Entity\Provider\Repository;
+namespace Application\Entity\Plugin\Repository;
 
-use Versioning\Service\RepositoryServiceInterface;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Service\EntityServiceInterface;
-use Entity\Provider\AbstractProvider;
+use Entity\Plugin\AbstractPlugin;
 
-class Provider extends AbstractProvider
+class Plugin extends AbstractPlugin
 {
-    protected $publicMethods = array('isCheckedOut', 'checkout', 'commitRevision', 'getAllRevisions', 'getCurrentRevision', 'getRepository', 'getRevision', 'getTrashedRevisions', 'removeRevision', 'trashRevision');
+    use \Common\Traits\ObjectManagerAware, \Versioning\RepositoryManagerAwareTrait;
     
     /**
      * 
      * @var RepositoryServiceInterface
      */
     protected $repository;
-    
-    /**
-     * 
-     * @var EntityServiceInterface
-     */
-    protected $entityService;
     
     /**
      * @param \Versioning\Service\RepositoryServiceInterface $repository
@@ -41,16 +34,20 @@ class Provider extends AbstractProvider
         $this->repository = $repository;
         return $this;
     }
-    
-    public function getObjectManager(){
-        return $this->entityService->getObjectManager();
-    }
 
-	public function __construct (EntityServiceInterface $entityService){
+	/*public function __construct (EntityServiceInterface $entityService){
 	    $this->entityService = $entityService;
         $repository = $entityService->getEntity();
         $this->setRepository($entityService->getRepositoryManager()->addRepository('Entity('.$entityService->getId().')', $repository));
         return $this;
+    }*/
+    
+    public function setEntityService(EntityServiceInterface $entityService){
+        
+        $repository = $entityService->getEntity();
+        $this->setRepository($entityService->getRepositoryManager()->addRepository($repository->getId(), $repository));
+        
+        return parent::setEntityService($entityService);
     }
 
     /**

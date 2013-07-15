@@ -19,19 +19,11 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class EntityManager extends AbstractManager implements EntityManagerInterface, UuidManagerAwareInterface, ObjectManagerAwareInterface
 {
-    use \Common\Traits\ObjectManagerAware, \Uuid\Manager\UuidManagerAware;
+    use \Common\Traits\ObjectManagerAware, \Uuid\Manager\UuidManagerAwareTrait, \Entity\Plugin\PluginManagerAware;
 
-    protected $options = array(
-        'instances' => array(
-            'manages' => 'Entity\Service\EntityService',
-            'EntityInterface' => 'Entity\Entity\Entity',
-            'EntityFactoryInterface' => 'Entity\Entity\Factory'
-        )
-    );
-
-    public function __construct()
+    public function __construct($config)
     {
-        parent::__construct($this->options);
+        parent::__construct($config);
     }
 
     private function getById($id)
@@ -82,6 +74,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
                 ->getEntity(),
             'factory' => $factory
         ));
+        
         $entity->setFactory($factory);
         echo $entity->getId();
         $em->persist($entity);
@@ -99,18 +92,29 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
     {
         $instance = parent::createInstance();
         
-        $factory = $entity->getFactory()->getName();
-        if(class_exists($factory))
-            throw new InvalidArgumentException('Class `'.$factory.'` not found.');
-            
-        $factory = new $factory();
-        return $factory->createService($instance, $entity, $this->getServiceManager(), $this);
+        $this->inject($instance, $entity);
+        return $instance;
+    }
+    
+    protected function inject(EntityServiceInterface $entityService, $entity){
+        $entityService->setPluginManager($this->getPluginManager());
+        $entityService->setManager($this);
+        $entityService->setEntity($entity);
+        
+        if(!array_key_exists($entity->getType()->getName(), $this->config['types'])){
+            throw new InvalidArgumentException(sprintf('Type %s not found in configuration.', $entity->getType()->getName()));
+        }
+        
+        $config = $this->config['types'][$entity->getType()->getName()];
+        
+        $entityService->setup($config);
+        return $this;
     }
 
-    public function delete(EntityServiceInterface $entityService)
+    /*public function delete(EntityServiceInterface $entityService)
     {
         $entityService->trash();
         $entityService->persistAndFlush();
         return $this;
-    }
+    }*/
 }

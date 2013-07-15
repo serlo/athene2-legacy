@@ -14,51 +14,22 @@ namespace Entity\Service;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Core\Collection\DecoratorCollection;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\Form\Form;
-use Entity\Entity\EntityInterface;
 use Entity\Plugin\PluginManagerAwareInterface;
 use Entity\Manager\EntityManagerAwareInterface;
 use Entity\Exception\InvalidArgumentException;
 
 class EntityService implements EntityServiceInterface, ServiceLocatorAwareInterface, ObjectManagerAwareInterface, PluginManagerAwareInterface, EntityManagerAwareInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAware, \Entity\Manager\EntityManagerAware;
-
-    /**
-     *
-     * @var EntityInterface
-     */
-    protected $entity;
-
-    /**
-     *
-     * @var EntityFactoryInterface
-     */
-    protected $factory;
-
-    /**
-     *
-     * @return \Entity\Entity\EntityInterface $entity
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
-
-    /**
-     *
-     * @param \Entity\Entity\EntityInterface $entity            
-     * @return $this
-     */
-    public function setEntity(EntityInterface $entity)
-    {
-        $this->entity = $entity;
-        return $this;
-    }
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAware,\Entity\Manager\EntityManagerAware,\Common\Traits\EntityDelegatorTrait,\Common\Traits\FormableTrait;
 
     public function getTerms()
     {
         return new DecoratorCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
+    }
+
+    public function getId()
+    {
+        return $this->getEntity()->getId();
     }
 
     public function refresh()
@@ -69,32 +40,41 @@ class EntityService implements EntityServiceInterface, ServiceLocatorAwareInterf
         return $this;
     }
 
-    /**
-     *
-     * @var Form
-     */
-    protected $form;
+    protected $pluginWhitelist = array();
 
-    public function setForm(Form $form = NULL)
+    protected $pluginOptions = array();
+
+    public function isPluginWhitelisted($name)
     {
-        if (! $form)
-            $form = new Form();
-        $this->form = $form;
+        return isset($this->pluginWhitelist[$name]) && $this->pluginWhitelist[$name] === TRUE;
+    }
+
+    public function whitelistPlugins($config)
+    {
+        foreach ($config as $plugin) {
+            $this->whitelistPlugin($plugin['name']);
+            if (isset($plugin['options'])) {
+                $this->setPluginOptions($plugin['options']);
+            }
+        }
+    }
+
+    public function setPluginOptions($name, $options)
+    {
+        if (isset($this->pluginOptions[$name])) {
+            $options = array_merge_recursive($this->pluginOptions[$name], $options);
+        }
+        
+        $this->pluginOptions[$name] = $options;
         return $this;
     }
+    
+    public function getPluginOptions($name){
+        return (isset($this->pluginOptions[$name])) ? $this->pluginOptions[$name] : array();
+    }
 
-    public function getForm()
+    public function whitelistPlugin($name)
     {
-        return $this->form;
-    }
-    
-    protected $pluginWhitelist = array();
-    
-    public function isPluginWhitelisted($name){
-        return isset( $this->pluginWhitelist[$name] ) && $this->pluginWhitelist[$name] === TRUE;
-    }
-    
-    public function whitelistPlugin($name){
         $this->pluginWhitelist[$name] = true;
         return $this;
     }
@@ -104,16 +84,20 @@ class EntityService implements EntityServiceInterface, ServiceLocatorAwareInterf
      *
      * @param string $name
      *            Name of plugin to return
-     * @param null|array $options
-     *            Options to pass to plugin constructor (if not already instantiated)
      * @return mixed
      */
-    public function plugin($name, array $options = null)
+    public function plugin($name)
     {
-        if(!$this->isPluginWhitelisted($name)){
+        if (! $this->isPluginWhitelisted($name)) {
             throw new InvalidArgumentException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
         }
-        return $this->getPluginManager()->get($name, $options)->injectEntityService($this);
+        
+        $pluginManager = $this->getPluginManager();
+        
+        $pluginManager->setEntityService($this);
+        $pluginManager->setPluginOptions($this->getPluginOptions($name));
+        
+        return $this->getPluginManager()->get($name);
     }
 
     /**

@@ -10,15 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_factory")
  */
-class Factory extends AbstractEntity {   
+class Type extends AbstractEntity {   
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Entity", mappedBy="factory")
+	 * @ORM\OneToMany(targetEntity="Entity", mappedBy="type")
 	 **/
 	protected $entities;
 	
-	/** @ORM\Column(type="text",length=255,name="class_name") */
-	protected $className;
+	/** @ORM\Column(type="text",length=255) */
+	protected $name;
 	
     public function __construct() {
         $this->entities = new \Doctrine\Common\Collections\ArrayCollection();
@@ -36,7 +36,7 @@ class Factory extends AbstractEntity {
      */
     public function getName ()
     {
-        return $this->className;
+        return $this->name;
     }
 
 	/**
@@ -55,7 +55,7 @@ class Factory extends AbstractEntity {
      */
     public function setName ($className)
     {
-        $this->className = $className;
+        $this->name = $className;
         return $this;
     }
 

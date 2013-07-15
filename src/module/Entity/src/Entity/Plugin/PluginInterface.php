@@ -15,5 +15,8 @@ use Entity\Service\EntityServiceInterface;
 
 interface PluginInterface
 {
-    public function injectEntityService(EntityServiceInterface $entityService);
+    public function setEntityService(EntityServiceInterface $entityService);
+    public function setOptions(array $options);
+    public function getIdentity();
+    public function setIdentity($identity);
 }

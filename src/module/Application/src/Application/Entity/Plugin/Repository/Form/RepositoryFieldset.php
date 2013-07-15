@@ -9,17 +9,25 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Entity\Provider\Repository;
+namespace Application\Entity\Plugin\Repository\Form;
 
-use Entity\Provider\ProviderFactory;
+use Zend\Form\Fieldset;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class Factory implements ProviderFactory {
-	/* (non-PHPdoc)
-	 * @see \Entity\Provider\ProviderFactory::createProvider()
+class RepositoryFieldset extends Fieldset implements InputFilterProviderInterface {
+	
+	public function __construct()
+	{
+		parent::__construct('repository');
+		$this->add(new RevisionFieldset());
+	}
+	
+	/**
+	 * @return array
 	 */
-	public function createProvider(\Entity\Service\EntityServiceInterface $entityService) {
-		$provider = new Provider($entityService);
-		$provider->setIdentity('repository');
-		return $provider;
+	public function getInputFilterSpecification()
+	{
+		return array(
+		);
 	}
 }
