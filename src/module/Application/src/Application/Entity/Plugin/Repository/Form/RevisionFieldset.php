@@ -9,25 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Entity\Provider\Repository\Form;
+namespace Application\Entity\Plugin\Repository\Form;
 
-use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Entity\Form\AbstractRevisionFieldset;
 
-class RepositoryFieldset extends Fieldset implements InputFilterProviderInterface {
-	
+class RevisionFieldset extends AbstractRevisionFieldset {
 	public function __construct()
 	{
-		parent::__construct('repository');
-		$this->add(new RevisionFieldset());
-	}
-	
-	/**
-	 * @return array
-	 */
-	public function getInputFilterSpecification()
-	{
-		return array(
-		);
+		parent::__construct('revision');
 	}
 }

@@ -11,7 +11,7 @@
  */
 namespace Uuid\Manager;
 
-trait UuidManagerAware
+trait UuidManagerAwareTrait
 {
 
     /**

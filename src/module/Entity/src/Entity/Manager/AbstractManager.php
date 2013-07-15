@@ -28,7 +28,7 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      * 
      * @var array
      */
-    private $options;
+    protected $config;
     
     public function get($name){
         return $this->getInstance($name);
@@ -41,10 +41,10 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      */
     public function __construct(array $options)
     {
-        if(!is_array($this->options))
-            $this->options = array();
+        if(!is_array($this->config))
+            $this->config = array();
         
-        $this->options = array_merge($this->options, $options);
+        $this->config = array_merge($this->config, $options);
     }
 
     /**
@@ -109,17 +109,17 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      */
     protected function resolve($interface, $createInstance = false)
     {
-        if(!is_array($this->options))
+        if(!is_array($this->config))
             throw new \Exception('Please provide a configuration via `__construct($options)`!');
         
-        if (! isset($this->options['instances'][$interface]))
+        if (! isset($this->config['instances'][$interface]))
             throw new \Exception("Class for interface `{$interface}` not set.");
         
         if($createInstance){
-            $className = $this->options['instances'][$interface];
+            $className = $this->config['instances'][$interface];
             return new $className();
         } else {
-            return $this->options['instances'][$interface];
+            return $this->config['instances'][$interface];
         }
     }
 

@@ -15,7 +15,11 @@ use Zend\ServiceManager\AbstractPluginManager;
 use Entity\Exception\InvalidArgumentException;
 
 class PluginManager extends AbstractPluginManager implements PluginManagerInterface
-{
+{    
+    use \Entity\Service\EntityServiceAwareTrait;
+    
+    protected $pluginOptions;
+    
     /*
      * (non-PHPdoc) @see \Zend\ServiceManager\AbstractPluginManager::validatePlugin()
      */
@@ -25,14 +29,33 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
             return true;
         }
         
-        throw new InvalidArgumentException(sprintf('%s does not implement %s.', get_class($plugin), __NAMESPACE__.'\PluginManager'));
+        throw new InvalidArgumentException(sprintf('%s does not implement %s.', get_class($plugin), __NAMESPACE__ . '\PluginInterface'));
     }
     
-    /*
-     * (non-PHPdoc) @see \Entity\Plugin\PluginManagerInterface::add()
-     */
-    public function add()
-    {
-        // TODO Auto-generated method stub
+    public function setPluginOptions($options){
+        $this->pluginOptions = $options;
+        return $this;
+    }
+    
+    public function clear(){
+        $this->entityService = NULL;
+        $this->pluginOptions = NULL;
+    }
+    
+    public function get($name, $options = array(), $usePeeringServiceManagers = true){
+        $plugin = parent::get($name);
+        $this->inject($plugin);
+        return $this;
+    }
+    
+    protected function inject(PluginInterface $plugin){
+        if(!$this->hasEntityService() || !$this->pluginOptions === NULL)
+            throw new \Exception('Setup plugin data first!');
+        
+        $plugin->setEntityService($this->getEntityService());
+        $plugin->setOptions($this->getPluginOptions());
+        $this->clear();
+        
+        return $plugin;
     }
 }

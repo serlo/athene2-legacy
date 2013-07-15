@@ -33,7 +33,7 @@ class EntityComponent extends AbstractComponent implements ComponentInterface
     {
         $this->termService = $termService;
         $sm = $termService->getServiceLocator();
-        $em = $sm->get('Entity\EntityManager');
+        $em = $sm->get('Entity\Manager\EntityManager');
         $termService->enableLink('entities', function ($collection) use($em)
         {
             /*$entity = $em->get($entity);

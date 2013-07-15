@@ -11,17 +11,40 @@
  */
 namespace Entity\Plugin;
 
-use Entity\Service\EntityServiceInterface;
 abstract class AbstractPlugin implements PluginInterface
 {
+    use \Entity\Service\EntityServiceAwareTrait;
+
     /**
-     * 
-     * @var EntityServiceInterface
+     * @var string
      */
-    protected $entityService;
+    protected $identity;
     
-    public function injectEntityService(EntityServiceInterface $entityService){
-        $this->entityService = $entityService;
+    /**
+     * @var array
+     */
+    protected $options;
+    
+    /**
+     * @return string $identity
+     */
+    public function getIdentity()
+    {
+        return $this->identity;
+    }
+
+	/**
+     * @param string $identity
+     * @return $this
+     */
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
+        return $this;
+    }
+
+	public function setOptions(array $options){
+        $this->options = $options;
         return $this;
     }
 }
