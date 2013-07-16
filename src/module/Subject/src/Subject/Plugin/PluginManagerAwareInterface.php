@@ -9,11 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Entity;
+namespace Subject\Plugin;
 
-interface SubjectEntityInterface
+interface PluginManagerAwareInterface
 {
-    public function getFactory();
-    public function getName();
-    public function getTaxonomies();
+    public function setPluginManager(PluginManagerInterface $pluginManager);
+    public function getPluginManager();
 }

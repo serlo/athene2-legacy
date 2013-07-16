@@ -28,7 +28,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
 
     private function getById($id)
     {
-        $entity = $this->getObjectManager()->find($this->resolve('Entity\Entity\EntityInterface'), $id);
+        $entity = $this->getObjectManager()->find($this->resolveClassName('Entity\Entity\EntityInterface'), $id);
         $entityService = $this->createInstanceFromEntity($entity);
         $this->add($entityService);
         return $this;
@@ -57,13 +57,13 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
     public function create($factoryClass)
     {
         $em = $this->getObjectManager();
-        $factory = $em->getRepository($this->resolve('Entity\Entity\TypeInterface'))
+        $factory = $em->getRepository($this->resolveClassName('Entity\Entity\TypeInterface'))
             ->findOneByClassName($factoryClass);
         
         if (! is_object($factory))
             throw new \Exception("Factory `{$factoryClass}` not found.");
         
-        $class = $this->resolve('Entity\Entity\EntityInterface');
+        $class = $this->resolveClassName('Entity\Entity\EntityInterface');
         
         $entity = $this->getUuidManager()->factory($class);
         

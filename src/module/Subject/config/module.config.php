@@ -17,25 +17,17 @@ return array(
             __DIR__ . '/../view'
         )
     ),
+    'class_resolver' => array(
+        'Subject\Service\SubjectServiceInterface' => 'Subject\Service\SubjectService',
+        'Subject\Entity\SubjectInterface' => 'Subject\Entity\Subject',
+        'Subject\Entity\SubjectTypeInterface' => 'Subject\Entity\SubjectType'
+    ),
     'di' => array(
         'allowed_controllers' => array(
             'Subject\Application\DefaultSubject\Controller\TopicController'
         ),
         'definition' => array(
             'class' => array(
-                /*
-                 * Controller
-                 *  .DefaultSubject
-                 */
-                /*'Subject\Application\DefaultSubject\Controller\TopicController' => array(
-                    'setSubjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),*/
-                
-                /*
-                 * Core
-                 */
                 'Subject\Hydrator\RouteStack' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
@@ -53,8 +45,11 @@ return array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
                 ),
-                'Subject\SubjectManager' => array(
+                'Subject\Manager\SubjectManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
@@ -77,7 +72,7 @@ return array(
                     ),
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
-                    ),
+                    )
                 )
             )
         ),
@@ -86,21 +81,13 @@ return array(
                 'Entity\EntityManagerInterface' => 'Entity\EntityManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
-                'Subject\SubjectManagerInterface' => 'Subject\SubjectManager',
+                'Subject\Manager\SubjectManagerInterface' => 'Subject\Manager\SubjectManager',
                 'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
             )
         )
     ),
     'view_helpers' => array(
-        'factories' => array(
-            /*'url' => function ($sm){
-                $service = new \Subject\View\Url();
-                //$service->setRouteMatch($sm->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch());
-                $service->setRouter($sm->getServiceLocator()->get('Router'));
-                $service->setSubjectService($sm->getServiceLocator()->get('Subject\SubjectManager')->getSubjectFromRequest());
-                return $service;
-            },*/
-        )
+        'factories' => array()
     ),
     'doctrine' => array(
         'driver' => array(

@@ -11,9 +11,7 @@
  */
 namespace Entity\Manager;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-
-abstract class AbstractManager implements ServiceLocatorAwareInterface
+abstract class AbstractManager
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait, \ClassResolver\ClassResolverAwareTrait;
     
@@ -104,11 +102,11 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      * Resolves an Interface to a Class and returns the Class name.
      *
      * @param string $class    
-     * @return string|Object
+     * @return string
      */
-    protected function resolve($interface)
+    protected function resolveClassName($class)
     {
-        return $this->getClassResolver()->resolve($interface);
+        return $this->getClassResolver()->resolveClassName($class);
     }
 
     /**
@@ -120,7 +118,7 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      */
     protected function createInstance($instanceClassName)
     {
-        $instanceClassName = $this->resolve($instanceClassName);
+        $instanceClassName = $this->resolveClassName($instanceClassName);
         $this->getServiceLocator()->setShared($instanceClassName, false);
         $instance = $this->getServiceLocator()->get($instanceClassName);
         if (! $instance instanceof $instanceClassName)

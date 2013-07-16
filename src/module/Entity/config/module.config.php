@@ -39,7 +39,6 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 'Entity\Factory\EntityFactoryInterface' => 'Entity\Factory\EntityFactory',
-                // 'Core\Service\LanguageManagerInterface' => 'Core\Service\LanguageManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
@@ -56,14 +55,15 @@ return array(
         'factories' => array(
             'Entity\Plugin\PluginManager' => (function ($sm)
             {
-                $config = new \Zend\ServiceManager\Config($sm->get('config')['entity']['plugins']);
+                $config = $sm->get('config');
+                $config = new \Zend\ServiceManager\Config($config['entity']['plugins']);
                 $class = new \Entity\Plugin\PluginManager($config);
                 return $class;
             }),
             'Entity\Manager\EntityManager' => (function ($sm)
             {
-                $config = $sm->get('config')['entity'];
-                $class = new \Entity\Manager\EntityManager($config);
+                $config = $sm->get('config');
+                $class = new \Entity\Manager\EntityManager($config['entity']);
                 
                 $class->setPluginManager($sm->get('Entity\Plugin\PluginManager'));
                 $class->setServiceLocator($sm->get('ServiceManager'));

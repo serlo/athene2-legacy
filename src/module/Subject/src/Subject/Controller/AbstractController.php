@@ -11,37 +11,11 @@
  */
 namespace Subject\Controller;
 
-use Entity\EntityManagerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Taxonomy\SharedTaxonomyManagerInterface;
-use Subject\Service\SubjectServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
-use Subject\SubjectManagerInterface;
 
 class AbstractController extends AbstractActionController
-{
-    /**
-     * @var SubjectManagerInterface
-     */
-    protected $subjectManager;
-    
-    /**
-     * 
-     * @param SubjectManagerInterface $subjectManager
-     * @return \Subject\Controller\AbstractController
-     */
-    public function setSubjectManager(SubjectManagerInterface $subjectManager){
-        $this->subjectManager = $subjectManager;
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return \Subject\SubjectManagerInterface
-     */
-    public function getSubjectManager(){
-    	return $this->subjectManager;
-    }
+{   
+    use \Subject\Manager\SubjectManagerAwareTrait;
     
     /**
      * 
@@ -56,19 +30,4 @@ class AbstractController extends AbstractActionController
             return $this->getSubjectManager()->get($identifier);
         }        	
     }
-    
-    /*public function getSharedTaxonomyManager ()
-    {
-        return $this->getSubjectService()->getSharedTaxonomyManager();
-    }
-    
-    public function getEntityManager ()
-    {
-        return $this->getSubjectService()->getEntityManager();
-    }
-    
-    public function getObjectManager ()
-    {
-        return $this->getSubjectService()->getObjectManager();
-    }*/
 }

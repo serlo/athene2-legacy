@@ -20,7 +20,7 @@ use Entity\Exception\InvalidArgumentException;
 
 class EntityService implements EntityServiceInterface, ServiceLocatorAwareInterface, ObjectManagerAwareInterface, PluginManagerAwareInterface, EntityManagerAwareInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAware,\Entity\Manager\EntityManagerAware,\Common\Traits\EntityDelegatorTrait,\Common\Traits\FormableTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAware,\Entity\Manager\EntityManagerAware,\Common\Traits\EntityDelegatorTrait;
 
     public function getTerms()
     {
@@ -68,8 +68,9 @@ class EntityService implements EntityServiceInterface, ServiceLocatorAwareInterf
         $this->pluginOptions[$name] = $options;
         return $this;
     }
-    
-    public function getPluginOptions($name){
+
+    public function getPluginOptions($name)
+    {
         return (isset($this->pluginOptions[$name])) ? $this->pluginOptions[$name] : array();
     }
 

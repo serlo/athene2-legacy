@@ -9,15 +9,22 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Factory;
+namespace Subject\Manager;
 
-use Subject\Service\SubjectServiceInterface;
-use Core\Decorator\GraphDecorator;
-
-abstract class AbstractFactory
+interface SubjectManagerAwareInterface
 {
-    protected function inject(GraphDecorator $decorator, SubjectServiceInterface $subjectService){
-        $decorator->addComponent($subjectService);
-        return $decorator;
-    }
+    /**
+     * Gets the SubjectManager
+     * 
+     * @return SubjectManagerInterface
+     */
+    public function getSubjectManager();
+    
+    /**
+     * Sets the SubjectManager
+     * 
+     * @param SubjectManagerInterface $subject
+     * @return $this
+     */
+    public function setSubjectManager(SubjectManagerInterface $subject);
 }

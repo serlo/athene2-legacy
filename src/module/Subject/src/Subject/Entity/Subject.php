@@ -20,14 +20,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="subject")
  */
-class Subject extends AbstractEntity implements SubjectEntityInterface
+class Subject extends AbstractEntity implements SubjectInterface
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="SubjectFactory", inversedBy="subjects")
-     * @ORM\JoinColumn(name="subject_factory_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SubjectType", inversedBy="subjects")
+     * @ORM\JoinColumn(name="subject_type_id", referencedColumnName="id")
      */
-    protected $factory;
+    protected $type;
 
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\Taxonomy", mappedBy="subject")
@@ -46,11 +46,11 @@ class Subject extends AbstractEntity implements SubjectEntityInterface
 
     /**
      *
-     * @return field_type $factory
+     * @return field_type $type
      */
-    public function getFactory()
+    public function getType()
     {
-        return $this->factory;
+        return $this->type;
     }
 
     /**
