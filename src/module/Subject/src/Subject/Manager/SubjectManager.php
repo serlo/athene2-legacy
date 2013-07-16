@@ -9,14 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject;
+namespace Subject\Manager;
 
 use Subject\Service\SubjectServiceInterface;
-use Core\AbstractManager;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Core\Manager;
 
-class SubjectManager extends AbstractManager implements SubjectManagerInterface, ObjectManagerAwareInterface, Manager
+class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {    
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
@@ -25,14 +22,8 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface,
     
     protected $options = array(
         'instances' => array(
-            'manages' => 'Subject\Service\SubjectService',
-            'SubjectEntityInterface' => 'Subject\Entity\Subject'
         ),
     );
-    
-    public function __construct(){
-        parent::__construct($this->options);
-    }
     
     /* (non-PHPdoc)
      * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()

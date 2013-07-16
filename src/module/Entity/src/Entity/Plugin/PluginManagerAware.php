@@ -22,7 +22,7 @@ trait PluginManagerAware
 
     /**
      *
-     * @return \Entity\Plugin\PluginManagerInterface $pluginManager
+     * @return PluginManagerInterface $pluginManager
      */
     public function getPluginManager()
     {
@@ -31,7 +31,7 @@ trait PluginManagerAware
 
     /**
      *
-     * @param \Entity\Plugin\PluginManagerInterface $pluginManager            
+     * @param PluginManagerInterface $pluginManager            
      * @return $this
      */
     public function setPluginManager(PluginManagerInterface $pluginManager)

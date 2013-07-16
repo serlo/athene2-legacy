@@ -31,7 +31,7 @@ class ClassResolver implements ClassResolverInterface
         if (! is_string($class))
             throw new \InvalidArgumentException(sprintf('Argument is not a string.'));
         
-        if (! array_key_exists($class, $this->registry))
+        if (! array_key_exists($class, $this->registry) && !in_array($class, $this->registry))
             throw new \Exception(sprintf("Can't resolve %s.", $class));
         
         if(!class_exists($this->registry[$class]))
@@ -41,6 +41,11 @@ class ClassResolver implements ClassResolverInterface
     public function resolveClassName($class){
         $this->checkClass($class);
         
+        if(in_array($class, $this->registry)){
+        	return $class;
+        }
+        
+        return $this->registry[$class];
     }
     
     /*
@@ -50,7 +55,7 @@ class ClassResolver implements ClassResolverInterface
     {
         $this->checkClass($class);
         
-        $instance = $this->getServiceLocator()->get($this->registry[$class]);
+        $instance = $this->getServiceLocator()->get($this->resolveClassName($class));
         
         if($instance instanceof $class)
             throw new \Exception(sprintf('Class %s does not implement %s', get_class($instance), $class));

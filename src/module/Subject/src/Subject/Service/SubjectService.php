@@ -13,13 +13,11 @@ namespace Subject\Service;
 
 use Core\Service\AbstractEntityDecorator;
 use Taxonomy\SharedTaxonomyManagerAwareInterface;
-use Subject\SubjectManagerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Doctrine\Common\Collections\Criteria;
 
-class SubjectService extends AbstractEntityDecorator implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface, SubjectManagerAwareInterface, ServiceLocatorAwareInterface
+class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Entity\Manager\EntityManagerAware; //, \Common\Traits\EntityDelegatorTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Entity\Manager\EntityManagerAwareTrait, \Subject\Manager\SubjectManagerAwareTrait; //, \Common\Traits\EntityDelegatorTrait;
     
     protected $subjectManager;
     
@@ -68,15 +66,4 @@ class SubjectService extends AbstractEntityDecorator implements SubjectServiceIn
     
     private $decorator;
     
-    public function build(){
-        if(is_object($this->decorator)) 
-            throw new \Exception('This Service already has been build.');       
-        
-        $className = $this->getEntity()->getFactory()->getName();
-        if(!class_exists($className))
-            throw new \Exception('Class `'.$className.'` not found');
-        
-        $instance = new $className();
-        return $instance->build($this);
-    }
 }

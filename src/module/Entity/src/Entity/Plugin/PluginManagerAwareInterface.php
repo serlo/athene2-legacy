@@ -13,6 +13,8 @@ namespace Entity\Plugin;
 
 interface PluginManagerAwareInterface
 {
+
     public function setPluginManager(PluginManagerInterface $pluginManager);
+
     public function getPluginManager();
 }

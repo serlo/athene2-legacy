@@ -13,19 +13,23 @@ namespace Subject\Provider;
 
 use Navigation\Provider\ProviderInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+
 class SubjectProvider implements ProviderInterface
 {
+
     protected $serviceLocator;
-    
+
     protected $options;
-    
-    public function __construct(array $options, ServiceLocatorInterface $serviceLocator){
+
+    public function __construct(array $options, ServiceLocatorInterface $serviceLocator)
+    {
         $this->serviceLocator = $serviceLocator;
         $this->options = $options;
     }
-    
-    public function provideArray(){
-        $subject = $this->serviceLocator->get('Subject\SubjectManager')->get($this->options['subject']);
+
+    public function provideArray()
+    {
+        $subject = $this->serviceLocator->get('Subject\Manager\SubjectManager')->get($this->options['subject']);
         $configuration = $this->serviceLocator->get('config');
         $path = $this->options['path'];
         $config = array_merge_recursive($configuration['navigation']['default'], include $path . '/' . $subject->getName() . '/navigation.config.php');

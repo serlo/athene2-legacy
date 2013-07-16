@@ -9,15 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Factory;
+namespace Subject\Entity;
 
-use Core\Decorator\GraphDecorator;
-
-interface FactoryInterface
+interface SubjectInterface
 {
-    /**
-     * @param GraphDecorator $subjectService
-     * @return GraphDecorator
-     */
-    public function build(GraphDecorator $subjectService);
+    public function getType();
+    public function getName();
+    public function getTaxonomies();
 }

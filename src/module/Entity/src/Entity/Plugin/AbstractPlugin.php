@@ -47,4 +47,8 @@ abstract class AbstractPlugin implements PluginInterface
         $this->options = $options;
         return $this;
     }
+    
+    public function getOption($name){
+        return $this->options[$name];
+    }
 }

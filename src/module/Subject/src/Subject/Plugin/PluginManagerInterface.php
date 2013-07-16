@@ -9,22 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject;
+namespace Subject\Plugin;
 
-interface SubjectManagerAwareInterface
+interface PluginManagerInterface
 {
-    /**
-     * Gets the SubjectManager
-     * 
-     * @return SubjectManagerInterface
-     */
-    public function getSubjectManager();
-    
-    /**
-     * Sets the SubjectManager
-     * 
-     * @param SubjectManagerInterface $subject
-     * @return $this
-     */
-    public function setSubjectManager(SubjectManagerInterface $subject);
 }

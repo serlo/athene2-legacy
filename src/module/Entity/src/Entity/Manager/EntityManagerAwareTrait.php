@@ -11,7 +11,7 @@
  */
 namespace Entity\Manager;
 
-trait EntityManagerAware
+trait EntityManagerAwareTrait
 {
 
     /**

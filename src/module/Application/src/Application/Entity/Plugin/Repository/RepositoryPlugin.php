@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\Criteria;
 use Entity\Service\EntityServiceInterface;
 use Entity\Plugin\AbstractPlugin;
 
-class Plugin extends AbstractPlugin
+class RepositoryPlugin extends AbstractPlugin
 {
     use \Common\Traits\ObjectManagerAware, \Versioning\RepositoryManagerAwareTrait;
     
@@ -34,13 +34,6 @@ class Plugin extends AbstractPlugin
         $this->repository = $repository;
         return $this;
     }
-
-	/*public function __construct (EntityServiceInterface $entityService){
-	    $this->entityService = $entityService;
-        $repository = $entityService->getEntity();
-        $this->setRepository($entityService->getRepositoryManager()->addRepository('Entity('.$entityService->getId().')', $repository));
-        return $this;
-    }*/
     
     public function setEntityService(EntityServiceInterface $entityService){
         
