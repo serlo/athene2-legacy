@@ -15,23 +15,30 @@ namespace Entity;
 return array(
     'entity' => array(
         'plugins' => array(
-            'factories' => array()
+            'factories' => array(
+                'repository' => 'Application\Entity\Plugin\Repository\RepositoryFactory'
+            )
         ),
         'types' => array(
             'text-exercise' => array(
                 'use_plugins' => array(
                     array(
-                        'name' => 'repository',
+                        'name' => 'repository'
+                    ),
+                    array(
+                        'name' => 'form',
+                        'options' => array(
+                            'class' => 'Application\Entity\LearningObject\Exercise\Form\TextExerciseForm'
+                        )
                     )
-                ),
-                'form' => 'Application\Entity\LearningObject\Exercise\Form\TextExerciseForm',                
+                )
             )
         ),
         'instances' => array(
-            'manages' => 'Entity\Service\EntityService',
-            'EntityInterface' => 'Entity\Entity\Entity',
-            'EntityFactoryInterface' => 'Entity\Entity\Factory'
-        ),
+            'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
+            'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
+            'Entity\Entity\TypeInterface' => 'Entity\Entity\Type'
+        )
     ),
     'di' => array(
         'allowed_controllers' => array(
@@ -134,6 +141,8 @@ return array(
         )
     )
 );
+
+
 
 
 

@@ -15,7 +15,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 abstract class AbstractManager implements ServiceLocatorAwareInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \ClassResolver\ClassResolverAwareTrait;
     
     /**
      * Array of all registered instances
@@ -103,24 +103,12 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
     /**
      * Resolves an Interface to a Class and returns the Class name.
      *
-     * @param string $interface            
-     * @throws \Exception
+     * @param string $class    
      * @return string|Object
      */
-    protected function resolve($interface, $createInstance = false)
+    protected function resolve($interface)
     {
-        if(!is_array($this->config))
-            throw new \Exception('Please provide a configuration via `__construct($options)`!');
-        
-        if (! isset($this->config['instances'][$interface]))
-            throw new \Exception("Class for interface `{$interface}` not set.");
-        
-        if($createInstance){
-            $className = $this->config['instances'][$interface];
-            return new $className();
-        } else {
-            return $this->config['instances'][$interface];
-        }
+        return $this->getClassResolver()->resolve($interface);
     }
 
     /**
@@ -130,7 +118,7 @@ abstract class AbstractManager implements ServiceLocatorAwareInterface
      * @throws \InvalidArgumentException
      * @return $instanceClassName
      */
-    protected function createInstance($instanceClassName = 'manages')
+    protected function createInstance($instanceClassName)
     {
         $instanceClassName = $this->resolve($instanceClassName);
         $this->getServiceLocator()->setShared($instanceClassName, false);
