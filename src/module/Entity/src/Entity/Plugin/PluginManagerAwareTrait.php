@@ -11,7 +11,7 @@
  */
 namespace Entity\Plugin;
 
-trait PluginManagerAware
+trait PluginManagerAwareTrait
 {
 
     /**

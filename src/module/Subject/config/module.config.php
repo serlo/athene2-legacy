@@ -22,6 +22,28 @@ return array(
         'Subject\Entity\SubjectInterface' => 'Subject\Entity\Subject',
         'Subject\Entity\SubjectTypeInterface' => 'Subject\Entity\SubjectType'
     ),
+    'service_manager' => array(
+        'factories' => array(
+            'Subject\Plugin\PluginManager' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $config = new \Zend\ServiceManager\Config($config['subject']['plugins']);
+                $class = new \Entity\Plugin\PluginManager($config);
+                return $class;
+            }),
+            'Subject\Manager\SubjectManager' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $class = new \Entity\Manager\EntityManager($config['subject']);
+                
+                $class->setPluginManager($sm->get('Subject\Plugin\PluginManager'));
+                $class->setServiceLocator($sm->get('ServiceManager'));
+                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                
+                return $class;
+            })
+        )
+    ),
     'di' => array(
         'allowed_controllers' => array(
             'Subject\Application\DefaultSubject\Controller\TopicController'

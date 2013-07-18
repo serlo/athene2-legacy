@@ -11,16 +11,12 @@
  */
 namespace Entity\Service;
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Core\Collection\DecoratorCollection;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Entity\Plugin\PluginManagerAwareInterface;
-use Entity\Manager\EntityManagerAwareInterface;
 use Entity\Exception\InvalidArgumentException;
 
-class EntityService implements EntityServiceInterface, ServiceLocatorAwareInterface, ObjectManagerAwareInterface, PluginManagerAwareInterface, EntityManagerAwareInterface
+class EntityService implements EntityServiceInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAware,\Entity\Manager\EntityManagerAware,\Common\Traits\EntityDelegatorTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
 
     public function getTerms()
     {
