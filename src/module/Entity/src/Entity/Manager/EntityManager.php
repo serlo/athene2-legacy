@@ -19,12 +19,7 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class EntityManager extends AbstractManager implements EntityManagerInterface, UuidManagerAwareInterface, ObjectManagerAwareInterface
 {
-    use \Common\Traits\ObjectManagerAware, \Uuid\Manager\UuidManagerAwareTrait, \Entity\Plugin\PluginManagerAware;
-
-    public function __construct($config)
-    {
-        parent::__construct($config);
-    }
+    use\Common\Traits\ObjectManagerAware,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAware;
 
     private function getById($id)
     {
@@ -95,13 +90,14 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         $this->inject($instance, $entity);
         return $instance;
     }
-    
-    protected function inject(EntityServiceInterface $entityService, $entity){
+
+    protected function inject(EntityServiceInterface $entityService, $entity)
+    {
         $entityService->setPluginManager($this->getPluginManager());
         $entityService->setManager($this);
         $entityService->setEntity($entity);
         
-        if(!array_key_exists($entity->getType()->getName(), $this->config['types'])){
+        if (! array_key_exists($entity->getType()->getName(), $this->config['types'])) {
             throw new InvalidArgumentException(sprintf('Type %s not found in configuration.', $entity->getType()->getName()));
         }
         
@@ -110,11 +106,8 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         $entityService->setup($config);
         return $this;
     }
-
-    /*public function delete(EntityServiceInterface $entityService)
-    {
-        $entityService->trash();
-        $entityService->persistAndFlush();
-        return $this;
-    }*/
+    
+    /*
+     * public function delete(EntityServiceInterface $entityService) { $entityService->trash(); $entityService->persistAndFlush(); return $this; }
+     */
 }

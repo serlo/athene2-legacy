@@ -14,76 +14,81 @@ namespace Subject\Manager;
 use Subject\Service\SubjectServiceInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
-{    
+{
+
     /**
+     *
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $objectManager;
-    
+
     protected $options = array(
-        'instances' => array(
-        ),
+        'instances' => array()
     );
     
-    /* (non-PHPdoc)
-     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
+    /*
+     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
      */
-    public function getObjectManager ()
+    public function getObjectManager()
     {
         return $this->objectManager;
     }
-
-	/* (non-PHPdoc)
-     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
+    
+    /*
+     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
      */
-    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
+    public function setObjectManager(\Doctrine\Common\Persistence\ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
         return $this;
     }
 
-	public function add (SubjectServiceInterface $service)
+    public function add(SubjectServiceInterface $service)
     {
         $this->addInstance($service->getName(), $service);
         return $service->getName();
     }
-    
-    public function get ($subject)
+
+    public function get($subject)
     {
         $array = $this->getInstances();
-        if(empty($array)){
+        if (empty($array)) {
             $this->injectInstances();
         }
         return $this->getInstance($subject);
     }
-    
-    public function getAllSubjects(){
-        if(empty($array)){
+
+    public function getAllSubjects()
+    {
+        if (empty($array)) {
             $this->injectInstances();
         }
         return $this->getInstances();
     }
 
-	public function has($subject){
+    public function has($subject)
+    {
         return $this->hasInstance($subject);
     }
-    
-    private function injectInstances(){
+
+    private function injectInstances()
+    {
         $em = $this->getObjectManager();
-        $entities = $em->getRepository($this->resolve('SubjectEntityInterface'))->findAll();
-        foreach($entities as $entity){
+        $entities = $em->getRepository($this->resolve('SubjectEntityInterface'))
+            ->findAll();
+        foreach ($entities as $entity) {
             $this->add($this->createInstanceFromEntity($entity));
         }
         return $this;
     }
-    
-    public function getSubjectFromRequest(){
+
+    public function getSubjectFromRequest()
+    {
         return $this->get('math');
     }
-    
-    
-    
-    protected function createInstanceFromEntity($entity){
+
+    protected function createInstanceFromEntity($entity)
+    {
         $instance = parent::createInstance();
         $instance->setEntity($entity);
         $instance = $instance->build();
