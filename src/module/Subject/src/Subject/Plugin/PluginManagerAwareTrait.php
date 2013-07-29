@@ -11,7 +11,7 @@
  */
 namespace Subject\Plugin;
 
-trait PluginManagerAware
+trait PluginManagerAwareTrait
 {
 
     /**

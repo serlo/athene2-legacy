@@ -79,6 +79,7 @@ return array(
                 $class->setServiceLocator($sm->get('ServiceManager'));
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 
                 return $class;
             })

@@ -19,7 +19,7 @@ return array(
     ),
     'class_resolver' => array(
         'Subject\Service\SubjectServiceInterface' => 'Subject\Service\SubjectService',
-        'Subject\Entity\SubjectInterface' => 'Subject\Entity\Subject',
+        'Subject\Entity\SubjectEntityInterface' => 'Subject\Entity\Subject',
         'Subject\Entity\SubjectTypeInterface' => 'Subject\Entity\SubjectType'
     ),
     'service_manager' => array(
@@ -28,17 +28,18 @@ return array(
             {
                 $config = $sm->get('config');
                 $config = new \Zend\ServiceManager\Config($config['subject']['plugins']);
-                $class = new \Entity\Plugin\PluginManager($config);
+                $class = new \Subject\Plugin\PluginManager($config);
                 return $class;
             }),
             'Subject\Manager\SubjectManager' => (function ($sm)
             {
                 $config = $sm->get('config');
-                $class = new \Entity\Manager\EntityManager($config['subject']);
+                $class = new \Subject\Manager\SubjectManager($config['subject']);
                 
                 $class->setPluginManager($sm->get('Subject\Plugin\PluginManager'));
                 $class->setServiceLocator($sm->get('ServiceManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 
                 return $class;
             })

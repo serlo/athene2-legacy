@@ -15,7 +15,7 @@ use Subject\Service\SubjectServiceInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait, \Subject\Plugin\PluginManagerAwareTrait;
 
     public function add(SubjectServiceInterface $service)
     {
@@ -48,7 +48,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
     private function injectInstances()
     {
         $em = $this->getObjectManager();
-        $entities = $em->getRepository($this->resolve('SubjectEntityInterface'))
+        $entities = $em->getRepository($this->resolveClassName('Subject\Entity\SubjectEntityInterface'))
             ->findAll();
         foreach ($entities as $entity) {
             $this->add($this->createInstanceFromEntity($entity));
