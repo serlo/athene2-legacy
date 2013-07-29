@@ -17,31 +17,7 @@ use Entity\Plugin\AbstractPlugin;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAware, \Versioning\RepositoryManagerAwareTrait;
-    
-    /**
-     * 
-     * @var RepositoryServiceInterface
-     */
-    protected $repository;
-    
-    /**
-     * @param \Versioning\Service\RepositoryServiceInterface $repository
-     * @return $this
-     */
-    public function setRepository (\Versioning\Service\RepositoryServiceInterface $repository)
-    {
-        $this->repository = $repository;
-        return $this;
-    }
-    
-    public function setEntityService(EntityServiceInterface $entityService){
-        
-        $repository = $entityService->getEntity();
-        $this->setRepository($entityService->getRepositoryManager()->addRepository($repository->getId(), $repository));
-        
-        return parent::setEntityService($entityService);
-    }
+    use \Common\Traits\ObjectManagerAwareTrait, \Versioning\RepositoryManagerAwareTrait;
 
     /**
      *
@@ -49,7 +25,8 @@ class RepositoryPlugin extends AbstractPlugin
      */
     public function getRepository()
     {
-        return $this->repository;
+        $repository = $this->getEntityService()->getEntity();
+        return $this->getRepositoryManager()->getRepository($repository->getId(), $repository);
     }
 
     /**
