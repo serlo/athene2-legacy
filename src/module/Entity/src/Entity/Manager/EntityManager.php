@@ -19,7 +19,7 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class EntityManager extends AbstractManager implements EntityManagerInterface, UuidManagerAwareInterface, ObjectManagerAwareInterface
 {
-    use\Common\Traits\ObjectManagerAware,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAware;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait;
 
     private function getById($id)
     {

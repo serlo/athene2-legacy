@@ -10,13 +10,17 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity;
+namespace Application\Entity;
 
 return array(
     'entity' => array(
         'plugins' => array(
             'factories' => array(
-                'repository' => 'Application\Entity\Plugin\Repository\RepositoryFactory'
+                'repository' => function($sm){
+                    $class = new \Application\Entity\Plugin\Repository\RepositoryPlugin();
+                    $class->setRepositoryManager($sm->get('Versioning\RepositoryManager'));
+                    return $class;
+                }
             )
         ),
         'types' => array(
@@ -141,10 +145,3 @@ return array(
         )
     )
 );
-
-
-
-
-
-
-

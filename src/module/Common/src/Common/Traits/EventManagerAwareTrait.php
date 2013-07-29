@@ -11,34 +11,34 @@
  */
 namespace Common\Traits;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Zend\EventManager\EventManagerInterface;
 
-trait ObjectManagerAware
+trait EventManagerAwareTrait
 {
 
     /**
      *
-     * @var ObjectManager
+     * @var EventManagerInterface
      */
-    protected $objectManager;
+    protected $eventManager;
 
     /**
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager $objectManager
+     * @return \Zend\EventManager\EventManagerInterface $eventManager
      */
-    public function getObjectManager()
+    public function getEventManager()
     {
-        return $this->objectManager;
+        return $this->eventManager;
     }
 
     /**
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager            
+     * @param \Zend\EventManager\EventManagerInterface $eventManager            
      * @return $this
      */
-    public function setObjectManager(ObjectManager $objectManager)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
-        $this->objectManager = $objectManager;
+        $this->eventManager = $eventManager;
         return $this;
     }
 }

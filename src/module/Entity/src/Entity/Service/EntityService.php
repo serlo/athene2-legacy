@@ -16,7 +16,7 @@ use Entity\Exception\InvalidArgumentException;
 
 class EntityService implements EntityServiceInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAware,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
 
     public function getTerms()
     {
@@ -109,11 +109,18 @@ class EntityService implements EntityServiceInterface
      */
     public function __call($method, $params)
     {
-        $plugin = $this->plugin($method);
-        if (is_callable($plugin)) {
-            return call_user_func_array($plugin, $params);
+        if($this->hasPlugin($method)){
+            $plugin = $this->plugin($method);
+            if (is_callable($plugin)) {
+                return call_user_func_array($plugin, $params);
+            }
+            
+            return $plugin;
+        } else {
+            return call_user_func_array(array(
+                $this->getEntity(),
+                $method
+            ), $params);
         }
-        
-        return $plugin;
     }
 }

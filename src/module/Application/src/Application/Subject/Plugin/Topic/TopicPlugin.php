@@ -14,30 +14,19 @@ namespace Application\Subject\Provider\Topic;
 use Subject\Service\SubjectServiceInterface;
 use Core\Component\ComponentInterface;
 use Core\Component\AbstractComponent;
+use Subject\Plugin\AbstractPlugin;
 
-class TopicProvider extends AbstractComponent implements ComponentInterface
+class TopicPlugin extends AbstractPlugin
 {
-    protected $publicMethods = array('getTopic', 'getTopics');
-    
-    /**
-     *
-     * @var SubjectServiceInterface
-     */
-    protected $subjectService;
-
-    public function __construct (SubjectServiceInterface $subjectService)
-    {
-        $this->subjectService = $subjectService;
-    }
 
     public function getTopic ($topic)
     {
-        return $this->subjectService->getTaxonomy('topic')->get($topic);
+        return $this->getSubjectService()->getTaxonomy('topic')->get($topic);
     }
 
     public function getTopics ()
     {
-        $terms = $this->subjectService->getTaxonomy('topic');
+        $terms = $this->getSubjectService()->getTaxonomy('topic');
         $terms = $terms->getTerms();
         return $terms;
     }
