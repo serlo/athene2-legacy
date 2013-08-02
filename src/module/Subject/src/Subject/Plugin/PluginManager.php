@@ -45,17 +45,29 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
     public function get($name, $options = array(), $usePeeringServiceManagers = true){
         $plugin = parent::get($name);
         $this->inject($plugin);
-        return $this;
+        return $plugin;
+    }
+    
+    protected function getPluginOptions(){
+        if(!$this->pluginOptions === NULL)
+            throw new \Exception('Setup plugin data first!');
+            
+        return $this->pluginOptions;
     }
     
     protected function inject(PluginInterface $plugin){
-        if(!$this->hasEntityService() || !$this->pluginOptions === NULL)
+        if(!$this->hasSubjectService())
             throw new \Exception('Setup plugin data first!');
         
         $plugin->setSubjectService($this->getSubjectService());
-        $plugin->setOptions($this->getPluginOptions());
+        $this->injectOptions($plugin);
         $this->clear();
         
         return $plugin;
+    }
+    
+    protected function injectOptions($service){
+        $service->setOptions($this->getPluginOptions());
+        return $this;
     }
 }

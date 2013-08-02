@@ -9,22 +9,18 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Subject\Provider\Topic;
-
-use Subject\Service\SubjectServiceInterface;
-use Core\Component\ComponentInterface;
-use Core\Component\AbstractComponent;
+namespace Application\Subject\Plugin\Topic;
 use Subject\Plugin\AbstractPlugin;
 
 class TopicPlugin extends AbstractPlugin
 {
 
-    public function getTopic ($topic)
+    public function get ($topic)
     {
         return $this->getSubjectService()->getTaxonomy('topic')->get($topic);
     }
 
-    public function getTopics ()
+    public function getAll ()
     {
         $terms = $this->getSubjectService()->getTaxonomy('topic');
         $terms = $terms->getTerms();

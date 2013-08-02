@@ -26,7 +26,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         $entity = $this->getObjectManager()->find($this->resolveClassName('Entity\Entity\EntityInterface'), $id);
         $entityService = $this->createInstanceFromEntity($entity);
         $this->add($entityService);
-        return $this;
+        return $entityService;
     }
 
     private function getByEntity(EntityInterface $entity)
@@ -44,8 +44,9 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
             throw new InvalidArgumentException();
         }
         if (! $this->hasInstance($id)) {
-            $this->getById($id);
+            return $this->getById($id);
         }
+        die("lel");
         return $this->getInstance($id);
     }
 
@@ -86,7 +87,6 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
     public function createInstanceFromEntity($entity)
     {
         $instance = parent::createInstance('Entity\Service\EntityServiceInterface');
-        
         $this->inject($instance, $entity);
         return $instance;
     }
@@ -94,7 +94,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
     protected function inject(EntityServiceInterface $entityService, $entity)
     {
         $entityService->setPluginManager($this->getPluginManager());
-        $entityService->setManager($this);
+        $entityService->setEntityManager($this);
         $entityService->setEntity($entity);
         
         if (! array_key_exists($entity->getType()->getName(), $this->config['types'])) {
@@ -102,8 +102,9 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         }
         
         $config = $this->config['types'][$entity->getType()->getName()];
-        
-        $entityService->setup($config);
+
+
+        $entityService->setOptions($config);
         return $this;
     }
     

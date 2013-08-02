@@ -25,7 +25,7 @@ return array(
         ),
         'types' => array(
             'text-exercise' => array(
-                'use_plugins' => array(
+                'plugins' => array(
                     array(
                         'name' => 'repository'
                     ),
@@ -47,7 +47,7 @@ return array(
     'di' => array(
         'allowed_controllers' => array(
             'Application\Entity\LearningObject\Exercise\Controller\TextExerciseController',
-            'Application\Entity\Provider\Repository\Controller\RepositoryController'
+            'Application\Entity\Plugin\Repository\Controller\RepositoryController'
         ),
         'definition' => array(
             'class' => array(
@@ -56,7 +56,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Application\Entity\Provider\Repository\Controller\RepositoryController' => array(
+                'Application\Entity\Plugin\Repository\Controller\RepositoryController' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     )

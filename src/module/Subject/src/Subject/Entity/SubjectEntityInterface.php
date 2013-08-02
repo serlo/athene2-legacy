@@ -11,7 +11,7 @@
  */
 namespace Subject\Entity;
 
-interface SubjectInterface
+interface SubjectEntityInterface
 {
     public function getType();
     public function getName();

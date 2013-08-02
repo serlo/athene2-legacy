@@ -17,7 +17,7 @@ use Entity\Exception\InvalidArgumentException;
 class EntityService implements EntityServiceInterface
 {
     use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
-
+    
     public function getTerms()
     {
         return new DecoratorCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
@@ -35,6 +35,10 @@ class EntityService implements EntityServiceInterface
         }
         return $this;
     }
+    
+    public function setOptions($options){
+        $this->whitelistPlugins($options['plugins']);
+    }
 
     protected $pluginWhitelist = array();
 
@@ -50,7 +54,7 @@ class EntityService implements EntityServiceInterface
         foreach ($config as $plugin) {
             $this->whitelistPlugin($plugin['name']);
             if (isset($plugin['options'])) {
-                $this->setPluginOptions($plugin['options']);
+                $this->setPluginOptions($plugin['name'], $plugin['options']);
             }
         }
     }

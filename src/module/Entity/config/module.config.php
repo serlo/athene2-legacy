@@ -12,6 +12,10 @@
 namespace Entity;
 
 return array(
+    'class_resolver' => array(
+        'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
+        'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
+    ),
     'di' => array(
         'allowed_controllers' => array(),
         'definition' => array(

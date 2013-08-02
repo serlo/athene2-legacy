@@ -38,7 +38,7 @@ class AbstractManager
      * @param array $options
      */
     public function __construct(array $options)
-    {
+    {        
         if(!is_array($this->config))
             $this->config = array();
     

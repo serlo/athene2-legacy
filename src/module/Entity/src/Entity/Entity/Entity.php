@@ -79,7 +79,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     /**
      * @ORM\ManyToOne(targetEntity="Type", inversedBy="entities")
-     * @ORM\JoinColumn(name="entity_factory_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="entity_type_id", referencedColumnName="id")
      */
     protected $type;
 

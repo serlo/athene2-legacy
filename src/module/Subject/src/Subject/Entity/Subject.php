@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="subject")
  */
-class Subject extends AbstractEntity implements SubjectInterface
+class Subject extends AbstractEntity implements SubjectEntityInterface
 {
 
     /**
@@ -69,5 +69,9 @@ class Subject extends AbstractEntity implements SubjectInterface
     public function getName()
     {
         return $this->name;
+    }
+    
+    public function getTypeName(){
+        return $this->getType()->getName();
     }
 }
