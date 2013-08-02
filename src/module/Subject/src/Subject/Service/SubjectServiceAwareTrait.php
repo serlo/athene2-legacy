@@ -18,7 +18,7 @@ trait SubjectServiceAwareTrait
      *
      * @var SubjectServiceInterface
      */
-    protected $subjectService;
+    private $subjectService;
 
     /**
      *
@@ -38,5 +38,9 @@ trait SubjectServiceAwareTrait
     {
         $this->subjectService = $subjectService;
         return $this;
+    }
+    
+    public function hasSubjectService(){
+        return is_object($this->subjectService);
     }
 }

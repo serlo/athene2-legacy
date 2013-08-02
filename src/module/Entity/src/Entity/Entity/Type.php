@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * An entity type.
  *
  * @ORM\Entity
- * @ORM\Table(name="entity_factory")
+ * @ORM\Table(name="entity_type")
  */
 class Type extends AbstractEntity implements TypeInterface {   
 

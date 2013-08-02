@@ -10,7 +10,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Plugin\Provider\Repository\Controller;
+namespace Application\Entity\Plugin\Repository\Controller;
 
 use Versioning\Exception\RevisionNotFoundException;
 use Zend\View\Model\ViewModel;

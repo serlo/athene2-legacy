@@ -17,7 +17,11 @@ use Entity\Exception\InvalidArgumentException;
 
 class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Subject\Entity\SubjectDelegatorTrait, \Subject\Plugin\PluginManagerAwareTrait;
+
+    public function getSubjectEntity(){
+        return $this->getEntity();
+    }
 
     protected $sharedTaxonomyManager;
     
@@ -47,6 +51,10 @@ class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAw
             ->current();
         return $this->getSharedTaxonomyManager()->get($taxonomy);
     }
+    
+    public function setOptions($options){
+        $this->whitelistPlugins($options['plugins']);
+    }
 
     protected $pluginWhitelist = array();
 
@@ -62,7 +70,7 @@ class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAw
         foreach ($config as $plugin) {
             $this->whitelistPlugin($plugin['name']);
             if (isset($plugin['options'])) {
-                $this->setPluginOptions($plugin['options']);
+                $this->setPluginOptions($plugin['name'], $plugin['options']);
             }
         }
     }
@@ -103,7 +111,7 @@ class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAw
         
         $pluginManager = $this->getPluginManager();
         
-        $pluginManager->setEntityService($this);
+        $pluginManager->setSubjectService($this);
         $pluginManager->setPluginOptions($this->getPluginOptions($name));
         
         return $this->getPluginManager()->get($name);

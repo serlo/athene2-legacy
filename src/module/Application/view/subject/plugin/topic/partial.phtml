@@ -16,13 +16,13 @@ $id = uniqid('sort_', true);
 		<?php //echo $this->partial('taxonomy/term/actions', array('term' => $this->term)); ?>
 		<div>
 			<a class=""
-				href="<?php echo rawurldecode($this->url('subject/provider/topic', array('subject' => $this->subject->getName(), 'path' => implode('/', $this->term->getPath())))); ?>"><?php echo $this->term->getName(); ?></a>
+				href="<?php echo rawurldecode($this->url('subject/plugin/topic', array('subject' => $this->subject->getName(), 'path' => implode('/', $this->term->getPath())))); ?>"><?php echo $this->term->getName(); ?></a>
 			(<?php echo $this->term->countEntities(); ?>)
 		</div>
 	</div>
 	<ul class="sortable">
         <?php foreach($this->term->getChildren() as $child):?>
-            <?php echo $this->partial('subject/provider/topic/partial', array('term' => $child)); ?>
+            <?php echo $this->partial('subject/plugin/topic/partial', array('term' => $child)); ?>
         <?php endforeach; ?>
     </ul>
 </li>

@@ -34,7 +34,7 @@ return array(
             'Subject\Manager\SubjectManager' => (function ($sm)
             {
                 $config = $sm->get('config');
-                $class = new \Subject\Manager\SubjectManager($config['subject']);
+                $class = new \Subject\Manager\SubjectManager($config['subject']['instances']);
                 
                 $class->setPluginManager($sm->get('Subject\Plugin\PluginManager'));
                 $class->setServiceLocator($sm->get('ServiceManager'));
@@ -95,6 +95,9 @@ return array(
                     ),
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
+                    ),
+                    'setPluginManager' => array(
+                        'required' => 'true'
                     )
                 )
             )
@@ -105,7 +108,8 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
                 'Subject\Manager\SubjectManagerInterface' => 'Subject\Manager\SubjectManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
+                'Subject\Plugin\PluginManagerInterface' => 'Subject\Plugin\PluginManager'
             )
         )
     ),

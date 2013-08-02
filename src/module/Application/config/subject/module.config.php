@@ -12,10 +12,19 @@
 return array(
     'subject' => array(
         'plugins' => array(
-            'factories' => array(
-                'topic' => 'Application\Subject\Plugin\Topic\TopicFactory'
+            'invokables' => array(
+                'topic' => 'Application\Subject\Plugin\Topic\TopicPlugin'
             )
-        )
+        ),
+        'instances' => array(
+            'math' => array(
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                    )
+                )
+            )
+        ),
     ),
     'router' => array(
         'routes' => array(
@@ -30,7 +39,7 @@ return array(
                     )
                 ),
                 'child_routes' => array(
-                    'plugins' => array(
+                    'plugin' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
                             'route' => ''
@@ -58,12 +67,12 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'Application\Subject\Provider\Topic\Controller\TopicController'
+            'Application\Subject\Plugin\Topic\Controller\TopicController'
         // 'Application\Subject\DefaultSubject\Controller\TextExerciseController'
                 ),
         'definition' => array(
             'class' => array(
-                'Application\Subject\Provider\Topic\Controller\TopicController' => array(
+                'Application\Subject\Plugin\Topic\Controller\TopicController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

@@ -16,7 +16,7 @@ use Subject\Service\SubjectServiceInterface;
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait, \Subject\Plugin\PluginManagerAwareTrait;
-
+    
     public function add(SubjectServiceInterface $service)
     {
         $this->addInstance($service->getName(), $service);
@@ -25,18 +25,13 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     public function get($subject)
     {
-        $array = $this->getInstances();
-        if (empty($array)) {
-            $this->injectInstances();
-        }
+        $this->injectInstances();
         return $this->getInstance($subject);
     }
 
     public function getAllSubjects()
     {
-        if (empty($array)) {
-            $this->injectInstances();
-        }
+        $this->injectInstances();
         return $this->getInstances();
     }
 
@@ -47,6 +42,10 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     private function injectInstances()
     {
+        if(count($this->getInstances())){
+            return $this;
+        }
+        
         $em = $this->getObjectManager();
         $entities = $em->getRepository($this->resolveClassName('Subject\Entity\SubjectEntityInterface'))
             ->findAll();
@@ -63,9 +62,13 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     protected function createInstanceFromEntity($entity)
     {
-        $instance = parent::createInstance();
-        $instance->setEntity($entity);
-        $instance = $instance->build();
+        if(!isset($this->config[$entity->getName()]))
+            throw new \Exception(sprintf('Could not find a configuration for `%s`', $entity->getType()->getName()));
+        $options = $this->config[$entity->getName()];
+        
+        $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
+        $instance->setEntity($entity);        
+        $instance->setOptions($options);
         return $instance;
     }
 }
