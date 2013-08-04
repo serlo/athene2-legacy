@@ -14,10 +14,11 @@ use Core\Creation\AbstractSingleton;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Versioning\Entity\Repository;
+use Versioning\Entity\RepositoryInterface;
 
 class RepositoryManager extends AbstractSingleton implements RepositoryManagerInterface, FactoryInterface
 {
-    protected $repositories;
+    protected $repositories = array();
 
     protected $serviceLocator;
 
@@ -31,38 +32,38 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
         return $this;
     }
     
+    protected function getUniqId(RepositoryInterface $repository){
+        return get_class($repository) . '::' . $repository->getId();
+    }
+    
     /*
      * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::addRepository()
      */
-    public function addRepository($repository, $entity = NULL)
+    public function addRepository(RepositoryInterface $repository)
     {
-        if ($repository instanceof RepositoryServiceInterface) {
-            if ($this->_hasRepository($repository->getIdentifier()))
-                throw new \Exception("There is already a repository with the identifier: " . $repository->getIdentifier());
-            $this->repositories[$repository->getIdentifier()] = $repository;
-            $repository = $repository->getIdentifier();
-        } else {
-            if ($this->_hasRepository($repository))
-                throw new \Exception("There is already a repository with the identifier: " . $repository);
+        if (!$this->hasRepository($repository)){
+            //    throw new \Exception("There is already a repository with the identifier: " . $repository->getIdentifier());
+            $uniq = $this->getUniqId($repository);      
             $this->serviceLocator->setShared('Versioning\Service\RepositoryService', false);
             $rs = $this->serviceLocator->get('Versioning\Service\RepositoryService');
-            $rs->setup($repository, $entity);
-            $this->repositories[$repository] = $rs; // new RepositoryService();
+            $rs->setup($uniq, $repository);
+            $this->repositories[$uniq] = $rs;      
         }
-        return $this->getRepository($repository);
+        return $this; //->getRepository($repository);
     }
 
-    private function _hasRepository($id)
+    public function hasRepository(RepositoryInterface $repository)
     {
-        return ($this->repositories !== NULL) ? in_array($id, $this->repositories) : FALSE;
+        $uniq = $this->getUniqId($repository);
+        return array_key_exists($uniq, $this->repositories);
     }
     
     /*
      * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::removeRepository()
      */
-    public function removeRepository($repository)
+    public function removeRepository(RepositoryInterface $repository)
     {
-        if ($this->_hasRepository($repository))
+        if ($this->hasRepository($repository))
             throw new \Exception("There is no repository with the identifier: " . $repository);
         return $this;
     }
@@ -81,11 +82,12 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
     /*
      * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::getRepository()
      */
-    public function getRepository($repository)
+    public function getRepository(RepositoryInterface $repository)
     {
-        if ($this->_hasRepository($repository))
-            throw new \Exception("There is no repository with the identifier: " . $repository);
-        return $this->repositories[$repository];
+        $uniq = $this->getUniqId($repository);
+        if (!$this->hasRepository($repository))
+            throw new \Exception("There is no repository with the identifier: " . $uniq);
+        return $this->repositories[$uniq];
     }
     
     /*

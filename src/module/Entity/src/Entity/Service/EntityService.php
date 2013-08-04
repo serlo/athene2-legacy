@@ -46,7 +46,7 @@ class EntityService implements EntityServiceInterface
 
     public function isPluginWhitelisted($name)
     {
-        return isset($this->pluginWhitelist[$name]) && $this->pluginWhitelist[$name] === TRUE;
+        return array_key_exists($name, $this->pluginWhitelist) && $this->pluginWhitelist[$name] === TRUE;
     }
 
     public function whitelistPlugins($config)
@@ -71,7 +71,7 @@ class EntityService implements EntityServiceInterface
 
     public function getPluginOptions($name)
     {
-        return (isset($this->pluginOptions[$name])) ? $this->pluginOptions[$name] : array();
+        return (array_key_exists($name, $this->pluginOptions)) ? $this->pluginOptions[$name] : array();
     }
 
     public function whitelistPlugin($name)
@@ -113,18 +113,21 @@ class EntityService implements EntityServiceInterface
      */
     public function __call($method, $params)
     {
-        if($this->hasPlugin($method)){
+        if($this->isPluginWhitelisted($method)){
             $plugin = $this->plugin($method);
             if (is_callable($plugin)) {
                 return call_user_func_array($plugin, $params);
             }
-            
             return $plugin;
         } else {
-            return call_user_func_array(array(
-                $this->getEntity(),
-                $method
-            ), $params);
+            if(method_exists($this->getEntity(), $method)){
+                return call_user_func_array(array(
+                    $this->getEntity(),
+                    $method
+                ), $params);
+            } else {
+                throw new \Exception(sprintf('Method %s not defined.', $method));
+            }
         }
     }
 }

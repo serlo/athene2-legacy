@@ -24,6 +24,10 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
     private function getById($id)
     {
         $entity = $this->getObjectManager()->find($this->resolveClassName('Entity\Entity\EntityInterface'), $id);
+
+        if(!is_object($entity))
+            throw new InvalidArgumentException(sprintf('Entity with ID %s not found.', $id));
+        
         $entityService = $this->createInstanceFromEntity($entity);
         $this->add($entityService);
         return $entityService;
@@ -46,7 +50,6 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         if (! $this->hasInstance($id)) {
             return $this->getById($id);
         }
-        die("lel");
         return $this->getInstance($id);
     }
 
@@ -87,11 +90,11 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
     public function createInstanceFromEntity($entity)
     {
         $instance = parent::createInstance('Entity\Service\EntityServiceInterface');
-        $this->inject($instance, $entity);
+        $this->inject($instance, $entity);       
         return $instance;
     }
 
-    protected function inject(EntityServiceInterface $entityService, $entity)
+    protected function inject(EntityServiceInterface $entityService, EntityInterface $entity)
     {
         $entityService->setPluginManager($this->getPluginManager());
         $entityService->setEntityManager($this);

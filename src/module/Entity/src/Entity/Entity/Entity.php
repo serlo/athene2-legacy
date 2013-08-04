@@ -105,7 +105,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     
     protected $route;
     
-    protected $fieldOrder;
+    protected $fieldOrder = array();
     
     public function orderFields(array $newOrder){
     	$this->fieldOrder = $newOrder;
@@ -114,7 +114,8 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     public function getFieldOrder($fieldName){
     	$return = array_search($fieldName, $this->fieldOrder);
     	if($return === false)
-    		throw new \InvalidArgumentException('Order for `'.$fieldName.'` not set');
+    	    $return = $this->getId();
+    	//	throw new \InvalidArgumentException('Order for `'.$fieldName.'` not set');
     	
     	return $return;
     }

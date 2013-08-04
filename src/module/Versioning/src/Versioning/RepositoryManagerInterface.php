@@ -9,6 +9,7 @@
 namespace Versioning;
 
 use Versioning\Service\RepositoryServiceInterface;
+use Versioning\Entity\RepositoryInterface;
 
 interface RepositoryManagerInterface
 {
@@ -19,7 +20,7 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return RepositoryServiceInterface
      */
-    public function addRepository($repository);
+    public function addRepository(RepositoryInterface $repository);
 
     /**
      *
@@ -27,7 +28,7 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return $this
      */
-    public function removeRepository($repository);
+    public function removeRepository(RepositoryInterface $repository);
 
     /**
      *
@@ -43,7 +44,7 @@ interface RepositoryManagerInterface
      * @throws \Exception
      * @return RepositoryInterface
      */
-    public function getRepository($repository);
+    public function getRepository(RepositoryInterface $repository);
 
     /**
      * Returns all registered repositories
