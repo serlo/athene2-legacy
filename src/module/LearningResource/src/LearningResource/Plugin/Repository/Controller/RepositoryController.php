@@ -41,7 +41,7 @@ class RepositoryController extends AbstractController
             'entity' => $entity
         ));
         
-        $view->setTemplate('entity/plugin/repository/update-revision');
+        $view->setTemplate('learning-resource/plugin/repository/update-revision');
         $view->setVariable('form', $entity->getForm());
         
         return $view;
@@ -60,7 +60,7 @@ class RepositoryController extends AbstractController
             'entity' => $entity
         ));
         
-        $view->setTemplate('entity/plugin/repository/compare-revision');
+        $view->setTemplate('learning-resource/plugin/repository/compare-revision');
         
         $revisionView = $this->getRevision($this->getParam('revision'));
         $currentRevisionView = $this->getRevision();
@@ -90,7 +90,7 @@ class RepositoryController extends AbstractController
             'currentRevision' => $currentRevision
         ));
         
-        $repositoryView->setTemplate('entity/plugin/repository/history');
+        $repositoryView->setTemplate('learning-resource/plugin/repository/history');
         return $repositoryView;
     }
 
@@ -167,7 +167,7 @@ class RepositoryController extends AbstractController
             'repository' => $repository,
             'revision' => $revision
         ));
-        $view->setTemplate('entity/plugin/repository/revision');
+        $view->setTemplate('learning-resource/plugin/repository/revision');
         return $view;
     }
 

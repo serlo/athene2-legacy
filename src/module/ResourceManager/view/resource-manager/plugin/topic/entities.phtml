@@ -28,9 +28,11 @@
 <?php if($this->acceptsEntities): ?>
 <div class="entities">
     <?php foreach($this->entities as $entity): ?>
+    <?php $repository = $entity->repository(); ?>
+    <?php $revision = $entity->getCurrentRevision(); ?>
     <?php switch($entity->getType()->getName()):
             case 'text-exercise': ?>
-            
+            <?php echo $revision->get('content') ?>
             <?php break; ?>
     <?php endswitch; ?>
 
