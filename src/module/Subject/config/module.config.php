@@ -17,25 +17,40 @@ return array(
             __DIR__ . '/../view'
         )
     ),
+    'class_resolver' => array(
+        'Subject\Service\SubjectServiceInterface' => 'Subject\Service\SubjectService',
+        'Subject\Entity\SubjectEntityInterface' => 'Subject\Entity\Subject',
+        'Subject\Entity\SubjectTypeInterface' => 'Subject\Entity\SubjectType'
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Subject\Plugin\PluginManager' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $config = new \Zend\ServiceManager\Config($config['subject']['plugins']);
+                $class = new \Subject\Plugin\PluginManager($config);
+                return $class;
+            }),
+            'Subject\Manager\SubjectManager' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $class = new \Subject\Manager\SubjectManager($config['subject']['instances']);
+                
+                $class->setPluginManager($sm->get('Subject\Plugin\PluginManager'));
+                $class->setServiceLocator($sm->get('ServiceManager'));
+                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                
+                return $class;
+            })
+        )
+    ),
     'di' => array(
         'allowed_controllers' => array(
             'Subject\Application\DefaultSubject\Controller\TopicController'
         ),
         'definition' => array(
             'class' => array(
-                /*
-                 * Controller
-                 *  .DefaultSubject
-                 */
-                /*'Subject\Application\DefaultSubject\Controller\TopicController' => array(
-                    'setSubjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),*/
-                
-                /*
-                 * Core
-                 */
                 'Subject\Hydrator\RouteStack' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
@@ -53,8 +68,11 @@ return array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
                 ),
-                'Subject\SubjectManager' => array(
+                'Subject\Manager\SubjectManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
@@ -78,6 +96,9 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     ),
+                    'setPluginManager' => array(
+                        'required' => 'true'
+                    )
                 )
             )
         ),
@@ -86,21 +107,14 @@ return array(
                 'Entity\EntityManagerInterface' => 'Entity\EntityManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
-                'Subject\SubjectManagerInterface' => 'Subject\SubjectManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
+                'Subject\Manager\SubjectManagerInterface' => 'Subject\Manager\SubjectManager',
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
+                'Subject\Plugin\PluginManagerInterface' => 'Subject\Plugin\PluginManager'
             )
         )
     ),
     'view_helpers' => array(
-        'factories' => array(
-            /*'url' => function ($sm){
-                $service = new \Subject\View\Url();
-                //$service->setRouteMatch($sm->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch());
-                $service->setRouter($sm->getServiceLocator()->get('Router'));
-                $service->setSubjectService($sm->getServiceLocator()->get('Subject\SubjectManager')->getSubjectFromRequest());
-                return $service;
-            },*/
-        )
+        'factories' => array()
     ),
     'doctrine' => array(
         'driver' => array(

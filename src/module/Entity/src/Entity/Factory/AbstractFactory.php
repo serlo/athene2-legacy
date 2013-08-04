@@ -11,30 +11,72 @@
  */
 namespace Entity\Factory;
 
-use Core\Decorator\GraphDecoratorInterface;
+use Entity\EntityManagerInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Entity\Entity\EntityInterface;
 use Entity\Service\EntityServiceInterface;
 
-abstract class AbstractFactory
+abstract class AbstractFactory implements Factory
 {
+
     /**
-     * 
-     * @param EntityServiceInterface $entityService
-     * @returns EntityServiceInterface;
+     *
+     * @var ServiceLocatorInterface
      */
-    abstract public function build(EntityServiceInterface $entityService);
-	
-	/**
-	 * 
-	 * @param GraphDecorator $decorator
-	 * @param EntityServiceInterface $entityService
-	 * @throws \Exception
-	 * @return GraphDecorator
-	 */
-    protected function inject(GraphDecoratorInterface $decorator, EntityServiceInterface $entityService){
-        if($entityService instanceof GraphDecoratorInterface)
-            throw new \Exception('Ouch, this could get really really messy. Stop whatever you are doing and go to bed.');
-            
-        $decorator->addComponent($entityService);
-        return $decorator;
+    final private $serviceLocator;
+
+    /**
+     *
+     * @var ServiceLocatorInterface
+     */
+    final private $entityService;
+
+    /**
+     *
+     * @return \Zend\ServiceManager\ServiceLocatorInterface $entityService
+     */
+    final protected function getEntityService()
+    {
+        return $this->entityService;
+    }
+
+    /**
+     *
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $entityService            
+     * @return $this
+     */
+    final protected function setEntityService($entityService)
+    {
+        $this->entityService = $entityService;
+        return $this;
+    }
+
+    /**
+     *
+     * @return \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+     */
+    final protected function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    /**
+     *
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator            
+     * @return $this
+     */
+    final protected function setServiceLocator($serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    public function build(EntityServiceInterface $entityService, EntityInterface $entity, ServiceLocatorInterface $serviceLocator, EntityManagerInterface $entityManager)
+    {
+        $this->setServiceLocator($serviceLocator);
+        $this->setEntityService($entityService);
+        $entityService->setEntity($entity);
+        $entityService->setManager($entityManager);
+        return $entityService;
     }
 }

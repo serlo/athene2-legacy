@@ -20,7 +20,7 @@ class EntityTaxonomy extends AbstractFactory implements FactoryInterface, TermSe
     public function build (TermServiceInterface $termService)
     {
         $instance = new \Application\Taxonomy\Term($termService);
-        $instance->addComponent(new EntityComponent($termService));
+        $instance->addComponent(new EntityComponent($termService), 'entity');
         return $this->inject($instance, $termService);
     }
 }

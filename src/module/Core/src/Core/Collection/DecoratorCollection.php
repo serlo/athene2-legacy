@@ -51,7 +51,7 @@ final class DecoratorCollection extends AbstractDecorator implements Collection,
      * @param \Core\Manager $manager            
      * @return $this
      */
-    public function setManager (Manager $manager)
+    public function setManager($manager)
     {
         $this->manager = $manager;
         return $this;
@@ -77,7 +77,7 @@ final class DecoratorCollection extends AbstractDecorator implements Collection,
         return $this;
     }
 
-    public function __construct ($collection, Manager $manager)
+    public function __construct ($collection, $manager)
     {
         $this->setCollection($collection);
         $this->setManager($manager);

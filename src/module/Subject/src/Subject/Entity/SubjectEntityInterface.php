@@ -13,7 +13,7 @@ namespace Subject\Entity;
 
 interface SubjectEntityInterface
 {
-    public function getFactory();
+    public function getType();
     public function getName();
     public function getTaxonomies();
 }

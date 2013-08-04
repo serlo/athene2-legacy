@@ -20,27 +20,9 @@ use Taxonomy\Exception\NotFoundException;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Uuid\Manager\UuidManagerAware;
 
-class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface, UuidManagerAware
+class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
 {
-    
-    protected $uuidManager;
-    
-	/* (non-PHPdoc)
-     * @see \Uuid\Manager\UuidManagerAware::getUuidManager()
-     */
-    public function getUuidManager ()
-    {
-        return $this->uuidManager;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Uuid\Manager\UuidManagerAware::setUuidManager()
-     */
-    public function setUuidManager (\Uuid\Manager\UuidManagerInterface $manager)
-    {
-        $this->uuidManager = $manager;
-        return $this;
-    }
+    use \Uuid\Manager\UuidManagerAwareTrait;
     
     /**
      *
