@@ -26,7 +26,9 @@ return array(
         'Term',
         'Uuid',
         'Common',
-        'ClassResolver'
+        'ClassResolver',
+        'LearningResource',
+        'ResourceManager'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
