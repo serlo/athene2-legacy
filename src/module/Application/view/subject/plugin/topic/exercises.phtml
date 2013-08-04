@@ -1,0 +1,6 @@
+<div class="exercises">
+    <?php foreach($this->exercises as $exercise): ?>
+    <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
+    <?php echo $revision->get('content'); ?>
+    <?php endforeach; ?>
+</div>

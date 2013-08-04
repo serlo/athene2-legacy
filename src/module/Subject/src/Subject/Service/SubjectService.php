@@ -11,120 +11,129 @@
  */
 namespace Subject\Service;
 
-use Core\Service\AbstractEntityDecorator;
-use Taxonomy\SharedTaxonomyManagerAwareInterface;
-use Subject\SubjectManagerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Entity\EntityManagerAwareInterface;
 use Doctrine\Common\Collections\Criteria;
-use Subject\Entity\SubjectEntityInterface;
+use Taxonomy\SharedTaxonomyManagerAwareInterface;
+use Entity\Exception\InvalidArgumentException;
 
-class SubjectService extends AbstractEntityDecorator implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface, SubjectManagerAwareInterface, ServiceLocatorAwareInterface, ObjectManagerAwareInterface, EntityManagerAwareInterface
+class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface
 {
-    protected $subjectManager;
-    
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Subject\Entity\SubjectDelegatorTrait, \Subject\Plugin\PluginManagerAwareTrait;
+
+    public function getSubjectEntity(){
+        return $this->getEntity();
+    }
+
     protected $sharedTaxonomyManager;
     
-    protected $serviceLocator;
-    
-    protected $entityManager;
-    
-	/* (non-PHPdoc)
-     * @see \Subject\SubjectManagerAwareInterface::getSubjectManager()
+    /*
+     * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerAwareInterface::getSharedTaxonomyManager()
      */
-    public function getSubjectManager ()
-    {
-        return $this->subjectManager;
-    }
-    
-    /**
-     * (non-PHPdoc)
-     * @see \Core\Service\AbstractEntityDecorator::getEntity()
-     * @return SubjectEntityInterface
-     */
-    public function getEntity(){
-        return parent::getEntity();
-    }
-
-	/* (non-PHPdoc)
-     * @see \Subject\SubjectManagerAwareInterface::setSubjectManager()
-     */
-    public function setSubjectManager (\Subject\SubjectManagerInterface $subject)
-    {
-        $this->subjectManager = $subject;
-        return $this;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Taxonomy\SharedTaxonomyManagerAwareInterface::getSharedTaxonomyManager()
-     */
-    public function getSharedTaxonomyManager ()
+    public function getSharedTaxonomyManager()
     {
         return $this->sharedTaxonomyManager;
     }
-
-	/* (non-PHPdoc)
-     * @see \Taxonomy\SharedTaxonomyManagerAwareInterface::setSharedTaxonomyManager()
+    
+    /*
+     * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerAwareInterface::setSharedTaxonomyManager()
      */
-    public function setSharedTaxonomyManager (\Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager)
+    public function setSharedTaxonomyManager(\Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager)
     {
         $this->sharedTaxonomyManager = $sharedTaxonomyManager;
     }
 
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator ()
+    public function getTaxonomy($name)
     {
-        return $this->serviceLocator;
-    }
-    
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Entity\EntityManagerAwareInterface::getEntityManager()
-     */
-    public function getEntityManager ()
-    {
-        return $this->entityManager;
-    }
-
-	/* (non-PHPdoc)
-     * @see \Entity\EntityManagerAwareInterface::setEntityManager()
-     */
-    public function setEntityManager (\Entity\EntityManagerInterface $manager)
-    {
-        $this->entityManager = $manager;
-        return $this;
-    }
-    
-    public function getTaxonomy($name){ 
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("name", $name))
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("name", $name))
             ->setMaxResults(1);
-        $taxonomy = $this->getEntity()->getTaxonomies()->matching($criteria)->current();
+        $taxonomy = $this->getEntity()
+            ->getTaxonomies()
+            ->matching($criteria)
+            ->current();
         return $this->getSharedTaxonomyManager()->get($taxonomy);
     }
     
-    private $decorator;
-    
-    public function build(){
-        if(is_object($this->decorator)) 
-            throw new \Exception('This Service already has been build.');       
+    public function setOptions($options){
+        $this->whitelistPlugins($options['plugins']);
+    }
+
+    protected $pluginWhitelist = array();
+
+    protected $pluginOptions = array();
+
+    public function isPluginWhitelisted($name)
+    {
+        return isset($this->pluginWhitelist[$name]) && $this->pluginWhitelist[$name] === TRUE;
+    }
+
+    public function whitelistPlugins($config)
+    {
+        foreach ($config as $plugin) {
+            $this->whitelistPlugin($plugin['name']);
+            if (isset($plugin['options'])) {
+                $this->setPluginOptions($plugin['name'], $plugin['options']);
+            }
+        }
+    }
+
+    public function setPluginOptions($name, $options)
+    {
+        if (isset($this->pluginOptions[$name])) {
+            $options = array_merge_recursive($this->pluginOptions[$name], $options);
+        }
         
-        $className = $this->getEntity()->getFactory()->getName();
-        if(!class_exists($className))
-            throw new \Exception('Class `'.$className.'` not found');
+        $this->pluginOptions[$name] = $options;
+        return $this;
+    }
+
+    public function getPluginOptions($name)
+    {
+        return (isset($this->pluginOptions[$name])) ? $this->pluginOptions[$name] : array();
+    }
+
+    public function whitelistPlugin($name)
+    {
+        $this->pluginWhitelist[$name] = true;
+        return $this;
+    }
+
+    /**
+     * Get plugin instance
+     *
+     * @param string $name
+     *            Name of plugin to return
+     * @return mixed
+     */
+    public function plugin($name)
+    {
+        if (! $this->isPluginWhitelisted($name)) {
+            throw new InvalidArgumentException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
+        }
         
-        $instance = new $className();
-        return $instance->build($this);
+        $pluginManager = $this->getPluginManager();
+        
+        $pluginManager->setSubjectService($this);
+        $pluginManager->setPluginOptions($this->getPluginOptions($name));
+        
+        return $this->getPluginManager()->get($name);
+    }
+
+    /**
+     * Method overloading: return/call plugins
+     *
+     * If the plugin is a functor, call it, passing the parameters provided.
+     * Otherwise, return the plugin instance.
+     *
+     * @param string $method            
+     * @param array $params            
+     * @return mixed
+     */
+    public function __call($method, $params)
+    {
+        $plugin = $this->plugin($method);
+        if (is_callable($plugin)) {
+            return call_user_func_array($plugin, $params);
+        }
+        
+        return $plugin;
     }
 }
