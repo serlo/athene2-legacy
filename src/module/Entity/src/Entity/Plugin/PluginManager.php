@@ -31,6 +31,13 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         
         throw new InvalidArgumentException(sprintf('%s does not implement %s.', get_class($plugin), __NAMESPACE__ . '\PluginInterface'));
     }
+    
+    protected function getPluginOptions(){
+        if(!$this->pluginOptions === NULL)
+            throw new \Exception('Setup plugin data first!');
+            
+        return $this->pluginOptions;
+    }
 
     public function setPluginOptions($options)
     {
@@ -48,7 +55,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
     {
         $plugin = parent::get($name);
         $this->inject($plugin);
-        return $this;
+        return $plugin;
     }
 
     protected function inject(PluginInterface $plugin)

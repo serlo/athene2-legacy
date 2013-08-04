@@ -16,159 +16,171 @@ use Versioning\Exception\RevisionNotFoundException;
 use Zend\View\Model\ViewModel;
 use Entity\Plugin\Controller\AbstractController;
 
-class RepositoryController extends AbstractController {
-	
-	public function createRevisionAction() {
-		$entity = $this->getEntity ();
-		if ($this->getRequest ()->isPost ()) {
-			$this->commitRevision ( $entity );
-			if ($entity->isCheckedOut ()) {
-				$this->redirect ()->toRoute ( $entity->getRoute (), array (
-						'action' => 'show',
-						'id' => $entity->getId () 
-				) );
-			} else {
-				$this->redirect ()->toRoute ( $entity->getRoute (), array (
-						'action' => 'history',
-						'id' => $entity->getId () 
-				) );
-			}
-		}
-		$view = new ViewModel ( array (
-				'entity' => $entity 
-		) );
-		
-		$view->setTemplate ( 'entity/provider/repository/update-revision' );
-		$view->setVariable ( 'form', $entity->getForm () );
-		
-		return $view;
-	}
-	
-	public function compareAction() {
-		$entity = $this->getEntity ();
-		$repository = $entity->getRepository ();
-		$revision = $this->_getRevision ( $entity, $this->getParam ( 'revision' ), false );
-		$currentRevision = $this->_getRevision ( $entity );
-		
-		$view = new ViewModel ( array (
-				'currentRevision' => $currentRevision,
-				'revision' => $revision,
-				'entity' => $entity 
-		) );
-		
-		$view->setTemplate ( 'entity/provider/repository/compare-revision' );
-		
-		$revisionView = $this->getRevision ( $entity, $revision );
-		$currentRevisionView = $this->getRevision ( $entity );
-		
-		$view->addChild ( $revisionView, 'revisionView' );
-		
-		if ($currentRevisionView) {
-			$view->addChild ( $currentRevisionView, 'currentRevisionView' );
-		}
-		
-		return $view;
-	}
-	
-	public function historyAction() {
-		$entity = $this->getEntity ();
-		try {
-			$currentRevision = $entity->getCurrentRevision ();
-		} catch ( RevisionNotFoundException $e ) {
-			$currentRevision = NULL;
-		}
-		$repository = new ViewModel ( array (
-				'entity' => $entity,
-				'currentRevision' => $currentRevision 
-		) );
-		$revisions = array ();
-		
-		$repository->setTemplate ( 'entity/provider/repository/history' );
-		$repository->setVariable ( 'revisions', $entity->getAllRevisions () );
-		
-		$repository->setVariable ( 'trashedRevisions', $entity->getTrashedRevisions () );
-		return $repository;
-	}
-	
-	protected function _getRevision($entity, $id = NULL, $catch = TRUE) {
-		$repository = $entity;
-		if ($catch) {
-			try {
-				if ($id === NULL) {
-					return $repository->getCurrentRevision ();
-				} else {
-					return $repository->getRevision ( $id );
-				}
-			} catch ( RevisionNotFoundException $e ) {
-				return NULL;
-			}
-		} else {
-			if ($id === NULL) {
-				return $repository->getCurrentRevision ();
-			} else {
-				return $repository->getRevision ( $id );
-			}
-		}
-	}
-	
-	public function checkoutAction() {
-		$entity = $this->getEntity ();
-		$entity = $this->getEntity ();
-		$repository = $entity;
-		$repository->checkout ( $this->getParam ( 'revision' ) );
-		$this->redirect ()->toRoute ( $entity->getRoute (), array (
-				'action' => 'history',
-				'entity' => $entity->getId () 
-		) );
-	}
-	
-	public function purgeRevisionAction() {
-		$entity = $this->getEntity ();
-		$entity = $this->getEntity ();
-		$entity->removeRevision ( $this->getParam ( 'revision' ) );
-		$this->redirect ()->toRoute ( $entity->getRoute (), array (
-				'action' => 'history',
-				'entity' => $entity->getId () 
-		) );
-	}
-	
-	public function trashRevisionAction() {
-		$entity = $this->getEntity ();
-		$entity->trashRevision ( $this->getParam ( 'revision' ) );
-		$this->redirect ()->toRoute ( $entity->getRoute (), array (
-				'action' => 'history',
-				'entity' => $entity->getId () 
-		) );
-	}
-	
-	public function getHeadAction() {
-		$entity = $this->getEntity ();
-		return $this->getRevision ( $entity );
-	}
-	
-	public function revisionAction() {
-		$entity = $this->getEntity ();
-		return $this->getRevision ( $entity, $this->params ( 'revision' ) );
-	}
-	
-	public function getRevision($entity, $revisionId = NULL) {
-		$view = new ViewModel ( array (
-				'entity' => $entity,
-				'repository' => $entity,
-				'revision' => $this->_getRevision ( $entity, $revisionId ) 
-		) );
-		$view->setTemplate ( 'entity/provider/repository/revision' );
-		return $view;
-	}
-	
-	protected function commitRevision($entity) {
-		$form = $entity->getForm ();
-		$form->setData ( $this->getRequest ()->getPost () );
-		if ($form->isValid ()) {
-			$data = $form->getData ();
-			$entity->commitRevision ( $data ['repository'] ['revision'] );
-			$this->flashMessenger ()->addSuccessMessage ( 'Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.' );
-		}
-		return $entity;
-	}
+class RepositoryController extends AbstractController
+{
+
+    public function createRevisionAction ()
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        if ($this->getRequest()->isPost()) {
+            $this->commitRevision($entity);
+            if ($entity->isCheckedOut()) {
+                $this->redirect()->toRoute('entity/plugin/repository', array(
+                    'action' => 'show',
+                    'id' => $entity->getId()
+                ));
+            } else {
+                $this->redirect()->toRoute('entity/plugin/repository', array(
+                    'action' => 'history',
+                    'id' => $entity->getId()
+                ));
+            }
+        }
+        $view = new ViewModel(array(
+            'entity' => $entity
+        ));
+        
+        $view->setTemplate('entity/plugin/repository/update-revision');
+        $view->setVariable('form', $entity->getForm());
+        
+        return $view;
+    }
+
+    public function compareAction ()
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        $revision = $this->_getRevision($repository, $this->getParam('revision'), FALSE);
+        $currentRevision = $this->_getRevision($repository);
+        
+        $view = new ViewModel(array(
+            'currentRevision' => $currentRevision,
+            'revision' => $revision,
+            'entity' => $entity
+        ));
+        
+        $view->setTemplate('entity/plugin/repository/compare-revision');
+        
+        $revisionView = $this->getRevision($this->getParam('revision'));
+        $currentRevisionView = $this->getRevision();
+        
+        $view->addChild($revisionView, 'revisionView');
+        
+        if ($currentRevisionView) {
+            $view->addChild($currentRevisionView, 'currentRevisionView');
+        }
+        
+        return $view;
+    }
+
+    public function historyAction ()
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        try {
+            $currentRevision = $entity->getCurrentRevision();
+        } catch (RevisionNotFoundException $e) {
+            $currentRevision = NULL;
+        }
+        $repositoryView = new ViewModel(array(
+            'entity' => $entity,
+            'revisions' => $repository->getAllRevisions(),
+            'trashedRevisions' => $repository->getTrashedRevisions(),
+            'currentRevision' => $currentRevision
+        ));
+        
+        $repositoryView->setTemplate('entity/plugin/repository/history');
+        return $repositoryView;
+    }
+
+    protected function _getRevision ($repository, $id = NULL, $catch = TRUE)
+    {
+        if ($catch) {
+            try {
+                if ($id === NULL) {
+                    return $repository->getCurrentRevision();
+                } else {
+                    return $repository->getRevision($id);
+                }
+            } catch (RevisionNotFoundException $e) {
+                return NULL;
+            }
+        } else {
+            if ($id === NULL) {
+                return $repository->getCurrentRevision();
+            } else {
+                return $repository->getRevision($id);
+            }
+        }
+    }
+
+    public function checkoutAction ()
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        $repository->checkout($this->getParam('revision'));
+        $this->redirect()->toRoute('entity/plugin/repository', array(
+            'action' => 'history',
+            'entity' => $entity->getId()
+        ));
+    }
+
+    public function purgeRevisionAction ()
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        $repository->removeRevision($this->getParam('revision'));
+        $this->redirect()->toRoute('entity/plugin/repository', array(
+            'action' => 'history',
+            'entity' => $entity->getId()
+        ));
+    }
+
+    public function trashRevisionAction ()
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        $repository->trashRevision($this->getParam('revision'));
+        $this->redirect()->toRoute('entity/plugin/repository', array(
+            'action' => 'history',
+            'entity' => $entity->getId()
+        ));
+    }
+
+    public function getHeadAction (){
+        return $this->getRevision();
+    }
+
+    public function revisionAction ()
+    {
+        return $this->getRevision($this->params('revision'));
+    }
+
+    public function getRevision ($revisionId = NULL)
+    {
+        $repository = $plugin = $this->getPlugin();
+        $entity = $plugin->getEntityService();
+        $revision = $this->_getRevision($repository, $revisionId);
+        $view = new ViewModel(array(
+            'entity' => $entity,
+            'repository' => $repository,
+            'revision' => $revision
+        ));
+        $view->setTemplate('entity/plugin/repository/revision');
+        return $view;
+    }
+
+    protected function commitRevision ($entity)
+    {
+        $form = $entity->getForm();
+        $form->setData($this->getRequest()
+            ->getPost());
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $entity->commitRevision($data['repository']['revision']);
+            $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
+        }
+        return $entity;
+    }
 }

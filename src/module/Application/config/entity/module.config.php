@@ -18,7 +18,8 @@ return array(
             'factories' => array(
                 'repository' => function($sm){
                     $class = new \Application\Entity\Plugin\Repository\RepositoryPlugin();
-                    $class->setRepositoryManager($sm->get('Versioning\RepositoryManager'));
+                    $class->setRepositoryManager($sm->getServiceLocator()->get('Versioning\RepositoryManager'));
+                    $class->setObjectManager($sm->getServiceLocator()->get('EntityManager'));
                     return $class;
                 }
             )
@@ -78,7 +79,7 @@ return array(
                     'defaults' => array()
                 ),
                 'child_routes' => array(
-                    'plugins' => array(
+                    'plugin' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
                             'route' => '',
@@ -91,7 +92,7 @@ return array(
                                     'route' => '/repository/:action/:entity[/:revision]',
                                     'defaults' => array(
                                         'controller' => 'Application\Entity\Plugin\Repository\Controller\RepositoryController',
-                                        'provider' => 'repository'
+                                        'plugin' => 'repository'
                                     )
                                 )
                             )

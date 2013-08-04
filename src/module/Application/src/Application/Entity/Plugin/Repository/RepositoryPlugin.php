@@ -12,7 +12,6 @@
 namespace Application\Entity\Plugin\Repository;
 
 use Doctrine\Common\Collections\Criteria;
-use Entity\Service\EntityServiceInterface;
 use Entity\Plugin\AbstractPlugin;
 
 class RepositoryPlugin extends AbstractPlugin
@@ -26,7 +25,7 @@ class RepositoryPlugin extends AbstractPlugin
     public function getRepository()
     {
         $repository = $this->getEntityService()->getEntity();
-        return $this->getRepositoryManager()->getRepository($repository->getId(), $repository);
+        return $this->getRepositoryManager()->addRepository($repository)->getRepository($repository);
     }
 
     /**

@@ -15,9 +15,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 abstract class AbstractController extends AbstractActionController
 {
-    use\Entity\Manager\EntityManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait;
 
-    protected function getEntity ($id = NULL)
+    protected function getPlugin ($id = NULL)
     {
         if (! $id) {
             $id = $this->getParam('entity');
@@ -25,9 +25,11 @@ abstract class AbstractController extends AbstractActionController
         
         $entity = $this->getEntityManager()->get($id);
         
-        if (! $entity->providesComponent($this->getParam('provider')))
-            throw new \Exception('Entity does not know provider `' . $this->getParam('provider') . '`.');
+        if (! $entity->isPluginWhitelisted($this->getParam('plugin')))
+            throw new \Exception(sprintf('Plugin %s not supported.', $this->getParam('plugin')));
         
-        return $entity;
+        $scope = $this->getParam('plugin');
+        
+        return $entity->$scope();
     }
 }
