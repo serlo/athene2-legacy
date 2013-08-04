@@ -42,13 +42,13 @@ class TopicController extends AbstractController
             'term' => $topic
         ));
         $taxonomy = array();
-        $taxonomyView->setTemplate('subject/plugin/topic/topic');
+        $taxonomyView->setTemplate('resource-manager/plugin/topic/topic');
         foreach ($topic->getChildren() as $child) {
             $taxView = new ViewModel(array(
                 'term' => $child,
                 'subject' => $subjectService
             ));
-            $taxonomyView->addChild($taxView->setTemplate('subject/plugin/topic/partial'), 'taxonomy', true);
+            $taxonomyView->addChild($taxView->setTemplate('resource-manager/plugin/topic/partial'), 'taxonomy', true);
         }
         $view->addChild($taxonomyView, 'taxonomy');
         
@@ -56,12 +56,12 @@ class TopicController extends AbstractController
             'taxonomy' => $topic,
             'subject' => $subjectService,
             'acceptsEntities' => $topic->linkAllowed('entities'),
-            'exercises' => $entities
+            'entities' => $entities
         ));
-        $entityView->setTemplate('subject/plugin/topic/entities');
+        $entityView->setTemplate('resource-manager/plugin/topic/entities');
         $view->addChild($entityView, 'entities');
         
-        $view->setTemplate('subject/plugin/topic/show');
+        $view->setTemplate('resource-manager/plugin/topic/show');
         
         return $view;
     }

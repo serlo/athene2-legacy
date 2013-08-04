@@ -19,6 +19,7 @@ class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAw
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Subject\Entity\SubjectDelegatorTrait, \Subject\Plugin\PluginManagerAwareTrait;
 
+    
     public function getSubjectEntity(){
         return $this->getEntity();
     }
