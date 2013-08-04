@@ -9,7 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Subject\Plugin\Topic;
+namespace ResourceManager\Plugin\Topic;
+
 use Subject\Plugin\AbstractPlugin;
 
 class TopicPlugin extends AbstractPlugin
@@ -17,7 +18,9 @@ class TopicPlugin extends AbstractPlugin
 
     public function get ($topic)
     {
-        return $this->getSubjectService()->getTaxonomy('topic')->get($topic);
+        return $this->getSubjectService()
+            ->getTaxonomy('topic')
+            ->get($topic);
     }
 
     public function getAll ()

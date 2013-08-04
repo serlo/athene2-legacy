@@ -7,7 +7,7 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace Application\Entity\LearningObject\Exercise\Form;
+namespace LearningResource\Form;
 
 use Zend\Form\Form;
 use Entity\Form\Fieldset;

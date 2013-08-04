@@ -27,6 +27,13 @@
 </div>
 <?php if($this->acceptsEntities): ?>
 <div class="entities">
-    <?php echo $this->entities; ?>
+    <?php foreach($this->entities as $entity): ?>
+    <?php switch($entity->getType()->getName()):
+            case 'text-exercise': ?>
+            
+            <?php break; ?>
+    <?php endswitch; ?>
+
+    <?php endforeach; ?>
 </div>
 <?php endif; ?>
