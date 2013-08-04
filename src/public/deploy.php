@@ -14,7 +14,7 @@
 		'git pull',
 		'git status',
 		'git pull origin develop',
-	    'git checkout origin develop',
+	    'git checkout origin/develop',
 		'git submodule sync',
 		'git submodule update',
 		'git submodule status',
