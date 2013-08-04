@@ -1,20 +1,25 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Entity;
 
 return array(
+    'class_resolver' => array(
+        'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
+        'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
+    ),
     'di' => array(
-        'allowed_controllers' => array(
-        ),
+        'allowed_controllers' => array(),
         'definition' => array(
             'class' => array(
-                'Entity\EntityManager' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setServiceManager' => array(
-                        'required' => 'true'
-                    )
-                ),
                 'Entity\Service\EntityService' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
@@ -48,17 +53,40 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
                 'Entity\Factory\EntityFactoryInterface' => 'Entity\Factory\EntityFactory',
-                // 'Core\Service\LanguageManagerInterface' => 'Core\Service\LanguageManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Entity\Service\EntityServiceInterface' => 'EventManager',
                 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
                 'Link\LinkManagerInterface' => 'Link\LinkManager',
                 'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
-                'Entity\EntityManagerInterface' => 'Entity\EntityManager'
+                'Entity\Manager\EntityManagerInterface' => 'Entity\Manager\EntityManager'
             ),
             'Entity\Service\EntityService' => array(
                 'shared' => false
             )
+        )
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Entity\Plugin\PluginManager' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $config = new \Zend\ServiceManager\Config($config['entity']['plugins']);
+                $class = new \Entity\Plugin\PluginManager($config);
+                return $class;
+            }),
+            'Entity\Manager\EntityManager' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $class = new \Entity\Manager\EntityManager($config['entity']);
+                
+                $class->setPluginManager($sm->get('Entity\Plugin\PluginManager'));
+                $class->setServiceLocator($sm->get('ServiceManager'));
+                $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
+                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                
+                return $class;
+            })
         )
     ),
     'view_manager' => array(

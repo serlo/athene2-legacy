@@ -11,37 +11,14 @@
  */
 namespace Subject\Hydrator;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class Route extends RouteStack implements ServiceLocatorAwareInterface
+class Route extends RouteStack
 {
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-    
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+   
     protected $path;
-    
-    /* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator ()
-    {
-        return $this->serviceLocator;
-    }
 
     public function onPreRoute(){
 	    parent::hydrate($this->getServiceLocator()->get('Router'));
-    }
-
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
     }
     
     public function setPath($path){

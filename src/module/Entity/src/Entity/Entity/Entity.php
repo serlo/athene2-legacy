@@ -78,10 +78,10 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $terms;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Factory", inversedBy="entities")
-     * @ORM\JoinColumn(name="entity_factory_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Type", inversedBy="entities")
+     * @ORM\JoinColumn(name="entity_type_id", referencedColumnName="id")
      */
-    protected $factory;
+    protected $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
@@ -105,7 +105,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     
     protected $route;
     
-    protected $fieldOrder;
+    protected $fieldOrder = array();
     
     public function orderFields(array $newOrder){
     	$this->fieldOrder = $newOrder;
@@ -114,7 +114,8 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     public function getFieldOrder($fieldName){
     	$return = array_search($fieldName, $this->fieldOrder);
     	if($return === false)
-    		throw new \InvalidArgumentException('Order for `'.$fieldName.'` not set');
+    	    $return = $this->getId();
+    	//	throw new \InvalidArgumentException('Order for `'.$fieldName.'` not set');
     	
     	return $return;
     }
@@ -162,11 +163,11 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     }
 
 	/**
-     * @return field_type $factory
+     * @return field_type $type
      */
-    public function getFactory ()
+    public function getType ()
     {
-        return $this->factory;
+        return $this->type;
     }
 
 	/**
@@ -239,7 +240,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      */
     public function setFactory ($factory)
     {
-        $this->factory = $factory;
+        $this->type = $factory;
         return $this;
     }
 

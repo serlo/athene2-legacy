@@ -11,38 +11,15 @@
 */
 namespace Subject\Hydrator;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class Navigation implements ServiceLocatorAwareInterface
+class Navigation
 {
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Subject\Manager\SubjectManagerAwareTrait;
 
     protected $path;
-
-    /* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-    */
-    public function getServiceLocator ()
-    {
-        return $this->serviceLocator;
-    }
     
-    protected function getSubjectManager() {
+    /*protected function getSubjectManager() {
         return $this->getServiceLocator()->get('Subject\SubjectManager');
-    }
-
-    /* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-    */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
+    }*/
 
     public function setPath($path){
         $this->path = $path;

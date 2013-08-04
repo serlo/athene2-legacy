@@ -1,6 +1,11 @@
 <?php
 /**
  * 
+ * 
+ * @deprecated
+ * 
+ * 
+ * 
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -23,9 +28,11 @@ class SubjectRouter implements RouteInterface
 
     /**
      * Create a new page route.
-    */
+     */
     public function __construct(array $defaults = array())
     {
+        throw new \Exception('DEPRECATED');
+        
         $this->defaults = $defaults;
     }
 
@@ -36,24 +43,23 @@ class SubjectRouter implements RouteInterface
     {
         if ($options instanceof \Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
-        } elseif (!is_array($options)) {
+        } elseif (! is_array($options)) {
             throw new InvalidArgumentException(__METHOD__ . ' expects an array or Traversable set of options');
         }
-
-        if (!isset($options['defaults'])) {
+        
+        if (! isset($options['defaults'])) {
             $options['defaults'] = array();
         }
-
+        
         return new static($options['defaults']);
     }
-
 
     /**
      * Match a given request.
      */
     public function match(Request $request, $pathOffset = null)
     {
-        //@todo test the Request object and return a \Zend\Mvc\Router\RouteMatch instance
+        // @todo test the Request object and return a \Zend\Mvc\Router\RouteMatch instance
         return null;
     }
 
@@ -62,7 +68,7 @@ class SubjectRouter implements RouteInterface
      */
     public function assemble(array $params = array(), array $options = array())
     {
-        //@todo assemple the route and return the URL as string
+        // @todo assemple the route and return the URL as string
         return '';
     }
 
@@ -73,5 +79,4 @@ class SubjectRouter implements RouteInterface
     {
         return array();
     }
-
 }
