@@ -13,9 +13,10 @@ namespace Entity\Collection;
 
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\Collection;
-use Common\ManagerInterface;
+use Entity\Manager\EntityManagerInterface;
+use Doctrine\Common\Collections\Selectable;
 
-abstract class RegistryCollection
+class EntityCollection implements Collection, Selectable
 {
     /**
      *
@@ -69,7 +70,7 @@ abstract class RegistryCollection
         return $this;
     }
 
-    public function __construct ($collection, ManagerInterface $manager)
+    public function __construct ($collection, EntityManagerInterface $manager)
     {
         $this->setCollection($collection);
         $this->setManager($manager);
@@ -299,8 +300,12 @@ abstract class RegistryCollection
      */
     public function getIterator ()
     {
-        if($this->asServices){
-            return $this->getIterator();            
+        if($this->asService){
+            $array = array();
+            foreach($this->getCollection() as $key => $element){
+                $array[$key] = $this->getManager()->get($element);
+            }
+            return new \ArrayIterator($array);      
         } else {
             return $this->getCollection()->getIterator();
         }
@@ -327,15 +332,15 @@ abstract class RegistryCollection
         return $this->getManager()->get($this->get($key));
     }
     
-    protected $asServices = false;
+    protected $asService = false;
     
-    public function asServices(){
-        $this->asServices = true;
+    public function asService(){
+        $this->asService = true;
         return $this;
     }
     
-    public function asEntities(){
-        $this->asServices = true;
+    public function asEntity(){
+        $this->asService = true;
         return $this;
     }
 
