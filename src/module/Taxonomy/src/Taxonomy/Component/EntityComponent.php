@@ -41,7 +41,7 @@ class EntityComponent extends AbstractComponent implements ComponentInterface
                 return null;
             }
             return $entity;*/
-        	return new DecoratorCollection($collection, $em);
+        	return new \Entity\Collection\EntityCollection($collection, $em);
         });
         return $this;
     }
