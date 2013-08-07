@@ -147,6 +147,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         
         $instance = parent::createInstance();
         $instance->setEntity($entity);
+        $instance->setManager($this);
         return $instance;
     }
 }

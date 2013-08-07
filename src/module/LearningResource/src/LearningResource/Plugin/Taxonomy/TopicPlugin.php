@@ -9,12 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace LearningResource\Plugin\Topic;
+namespace LearningResource\Plugin\Taxonomy;
 
 use LearningResource\Plugin\Taxonomy\TaxonomyPlugin;
 
 abstract class TopicPlugin extends TaxonomyPlugin
 {
+    
     function getTopicTree ()
     {
         $return = array();
@@ -22,6 +23,10 @@ abstract class TopicPlugin extends TaxonomyPlugin
             $return[] = $this->getTermManager()->createInstance($term);
         }
         return $return;
+    }
+    
+    function getRoots(){
+        return $this->getSharedTaxonomyManager()->get('topic')->getRootTerms();
     }
 
     function getTopic ()

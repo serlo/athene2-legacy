@@ -32,7 +32,7 @@
     <?php $revision = $entity->getCurrentRevision(); ?>
     <div class="right btn-group">
     	<a
-    		href="<?php echo $this->url('entity/plugin/topic', array('action' => 'set', 'id' => $entity->getId() )); ?>"
+    		href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set', 'entity' => $entity->getId() )); ?>"
     		class="btn btn-mini"><i class="icon-download-alt"></i></a>
     </div>
     <?php switch($entity->getType()->getName()):

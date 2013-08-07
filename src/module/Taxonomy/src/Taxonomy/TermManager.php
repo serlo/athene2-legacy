@@ -18,17 +18,16 @@ use Taxonomy\Factory\FactoryInterface;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Exception\NotFoundException;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use Uuid\Manager\UuidManagerAware;
 
-class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Manager\TermManagerAwareInterface, TermManagerInterface
+class TermManager extends AbstractManagerAndEntityDecorator implements TermManagerInterface
 {
     use \Uuid\Manager\UuidManagerAwareTrait;
     
     /**
      *
-     * @var \Term\Manager\TermManagerInterface
+     * @var SharedTaxonomyManagerInterface
      */
-    protected $termManager;
+    protected $manager;
 
     protected $allowedLinks = array();
 
@@ -53,17 +52,17 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     /*
      * (non-PHPdoc) @see \Term\Manager\TermManagerAwareInterface::getTermManager()
      */
-    public function getTermManager ()
+    public function getManager ()
     {
-        return $this->termManager;
+        return $this->manager;
     }
     
     /*
      * (non-PHPdoc) @see \Term\Manager\TermManagerAwareInterface::setTermManager()
      */
-    public function setTermManager (\Term\Manager\TermManagerInterface $termManager)
+    public function setManager (SharedTaxonomyManagerInterface $termManager)
     {
-        $this->termManager = $termManager;
+        $this->manager = $termManager;
         return $this;
     }
 
@@ -193,8 +192,9 @@ class TermManager extends AbstractManagerAndEntityDecorator implements \Term\Man
     public function getRootTerms(){
         $return = array();
         foreach($this->getEntity()->getTerms() as $entity){
-            if(!$entity->hasParent())
+            if(!$entity->hasParent() || $entity->getTaxonomy() !== $this->getEntity()){
                 $return[] = $this->createInstanceFromEntity($entity);
+            }
         }
         return $return;
     }
