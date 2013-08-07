@@ -41,7 +41,7 @@ return array(
                     return $class;
                 },
                 'topicFolder' => function($sm){
-                    $class = new \LearningResource\Plugin\Topic\TopicFolderPlugin();
+                    $class = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()->get('Taxonomy\SharedTaxonomyManager'));
                     return $class;
                 }
@@ -73,11 +73,17 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'LearningResource\Plugin\Repository\Controller\RepositoryController'
+            'LearningResource\Plugin\Repository\Controller\RepositoryController',
+            'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
         ),
         'definition' => array(
             'class' => array(
                 'LearningResource\Plugin\Repository\Controller\RepositoryController' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     )
@@ -113,6 +119,16 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                                         'plugin' => 'repository'
+                                    )
+                                )
+                            ),
+                            'topic-folder' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/topic-folder/:action/:entity[/:term]',
+                                    'defaults' => array(
+                                        'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
+                                        'plugin' => 'topicFolder'
                                     )
                                 )
                             )

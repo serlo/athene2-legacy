@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Uuid\Manager\UuidManagerAware;
 use Core\Collection\DecoratorCollection;
+use Taxonomy\Collection\TermCollection;
 
 class TermService extends AbstractEntityDecorator implements TermServiceInterface, ServiceLocatorAwareInterface
 {
@@ -93,8 +94,8 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     {
         /*return $this->getManager()->get($this->getEntity()
             ->get('children'));*/
-    	return new DecoratorCollection($this->getEntity()
-            ->get('children'), $this->getManager());
+    	return new TermCollection($this->getEntity()
+            ->get('children'), $this->getManager()->getManager());
     }
     
     /*

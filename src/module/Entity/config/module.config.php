@@ -21,7 +21,7 @@ return array(
         'definition' => array(
             'class' => array(
                 'Entity\Service\EntityService' => array(
-                    'setEntityManager' => array(
+                    'setObjectManager' => array(
                         'required' => 'true'
                     ),
                     'setServiceLocator' => array(

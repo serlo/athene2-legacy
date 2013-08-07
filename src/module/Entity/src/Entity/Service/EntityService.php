@@ -12,15 +12,31 @@
 namespace Entity\Service;
 
 use Entity\Exception\InvalidArgumentException;
-use Entity\Collection\TermCollection;
+use Taxonomy\Collection\TermCollection;
 
 class EntityService implements EntityServiceInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Taxonomy\Manager\SharedTaxonomyManagerTrait;
     
     public function getTerms()
     {
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
+    }
+    
+    public function persist(){
+        
+        $this->getObjectManager()->persist($this->getEntity());
+    }
+    
+    public function flush(){
+        $this->getObjectManager()->flush($this->getEntity());
+        return $this;
+    }
+    
+    public function persistAndFlush(){
+        $this->persist();
+        $this->flush();
+        return $this;
     }
 
     public function getId()
