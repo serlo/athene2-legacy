@@ -39,6 +39,11 @@ return array(
                     $class->setRepositoryManager($sm->getServiceLocator()->get('Versioning\RepositoryManager'));
                     $class->setObjectManager($sm->getServiceLocator()->get('EntityManager'));
                     return $class;
+                },
+                'topicFolder' => function($sm){
+                    $class = new \LearningResource\Plugin\Topic\TopicFolderPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()->get('Taxonomy\SharedTaxonomyManager'));
+                    return $class;
                 }
             )
         ),
@@ -47,6 +52,9 @@ return array(
                 'plugins' => array(
                     array(
                         'name' => 'repository'
+                    ),
+                    array(
+                        'name' => 'topicFolder'
                     ),
                     array(
                         'name' => 'form',

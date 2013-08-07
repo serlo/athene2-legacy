@@ -11,8 +11,8 @@
  */
 namespace Entity\Service;
 
-use Core\Collection\DecoratorCollection;
 use Entity\Exception\InvalidArgumentException;
+use Entity\Collection\TermCollection;
 
 class EntityService implements EntityServiceInterface
 {
@@ -20,7 +20,7 @@ class EntityService implements EntityServiceInterface
     
     public function getTerms()
     {
-        return new DecoratorCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
+        return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
 
     public function getId()
