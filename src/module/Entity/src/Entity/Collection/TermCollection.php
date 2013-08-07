@@ -11,10 +11,12 @@
  */
 namespace Entity\Collection;
 
-use Entity\Manager\EntityManagerInterface;
-class EntityCollection extends AbstractCollection
+use Taxonomy\SharedTaxonomyManagerInterface;
+
+class TermCollection extends AbstractCollection
 {
-    public function __construct ($collection, EntityManagerInterface $manager)
+
+    public function __construct ($collection, SharedTaxonomyManagerInterface $manager)
     {
         $this->setCollection($collection);
         $this->setManager($manager);

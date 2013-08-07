@@ -9,15 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Collection;
+namespace LearningResource\Plugin\Topic;
 
-use Entity\Manager\EntityManagerInterface;
-class EntityCollection extends AbstractCollection
+class TopicFolderPlugin extends TopicPlugin
 {
-    public function __construct ($collection, EntityManagerInterface $manager)
-    {
-        $this->setCollection($collection);
-        $this->setManager($manager);
-        $this->container = array();
+    public function getTermManager(){
+        return $this->getSharedTaxonomyManager()->get('topic-folder');
     }
 }

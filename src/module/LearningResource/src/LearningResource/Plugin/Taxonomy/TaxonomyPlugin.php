@@ -9,15 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Collection;
+namespace LearningResource\Plugin\Taxonomy;
 
-use Entity\Manager\EntityManagerInterface;
-class EntityCollection extends AbstractCollection
+use Entity\Plugin\AbstractPlugin;
+
+class TaxonomyPlugin extends AbstractPlugin
 {
-    public function __construct ($collection, EntityManagerInterface $manager)
-    {
-        $this->setCollection($collection);
-        $this->setManager($manager);
-        $this->container = array();
-    }
+    use \Taxonomy\Manager\SharedTaxonomyManagerTrait, \Taxonomy\Manager\TermManagerAwareTrait;
 }
