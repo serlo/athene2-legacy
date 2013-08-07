@@ -6,32 +6,34 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace Link;
 
 return array(
+    'class_resolver' => array(
+        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService'
+    ),    
     'di' => array(
         'definition' => array(
             'class' => array(
                 'Link\Service\LinkService' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
-                    ),
+                    )
                 ),
                 'Link\LinkManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
-                    ),
-                ),
+                    )
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager'
             ),
             'Link\Service\LinkService' => array(
                 'shared' => false
-            ),
+            )
         )
     ),
     'view_manager' => array(
