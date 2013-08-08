@@ -34,15 +34,29 @@ return array(
     'entity' => array(
         'plugins' => array(
             'factories' => array(
-                'repository' => function($sm){
+                'repository' => function  ($sm)
+                {
                     $class = new \LearningResource\Plugin\Repository\RepositoryPlugin();
-                    $class->setRepositoryManager($sm->getServiceLocator()->get('Versioning\RepositoryManager'));
-                    $class->setObjectManager($sm->getServiceLocator()->get('EntityManager'));
+                    $class->setRepositoryManager($sm->getServiceLocator()
+                        ->get('Versioning\RepositoryManager'));
+                    $class->setObjectManager($sm->getServiceLocator()
+                        ->get('EntityManager'));
                     return $class;
                 },
-                'topicFolder' => function($sm){
+                'topicFolder' => function  ($sm)
+                {
                     $class = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
-                    $class->setSharedTaxonomyManager($sm->getServiceLocator()->get('Taxonomy\SharedTaxonomyManager'));
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\SharedTaxonomyManager'));
+                    return $class;
+                },
+                'link' => function  ($sm)
+                {
+                    $class = new \LearningResource\Plugin\Link\LinkPlugin();
+                    $class->setLinkManager($sm->getServiceLocator()
+                        ->get('Link\LinkManager'));
+                    $class->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
                     return $class;
                 }
             )
@@ -50,16 +64,35 @@ return array(
         'types' => array(
             'text-exercise' => array(
                 'plugins' => array(
-                    array(
-                        'name' => 'repository'
+                    'repository' => array(
+                        'plugin' => 'repository'
                     ),
-                    array(
-                        'name' => 'topicFolder'
+                    'topicFolder' => array(
+                        'plugin' => 'topicFolder'
                     ),
-                    array(
-                        'name' => 'form',
+                    'solution' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'to_type' => 'text-solution'
+                        )
+                    ),
+                    'form' => array(
+                        'plugin' => 'form',
                         'options' => array(
                             'class' => 'LearningResource\Form\TextExerciseForm'
+                        )
+                    )
+                )
+            ),
+            'text-solution' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository'
+                    ),
+                    'exercise' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'foreign_type' => 'text-exercise'
                         )
                     )
                 )
@@ -74,7 +107,7 @@ return array(
     'di' => array(
         'allowed_controllers' => array(
             'LearningResource\Plugin\Repository\Controller\RepositoryController',
-            'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
+            'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController'
         ),
         'definition' => array(
             'class' => array(

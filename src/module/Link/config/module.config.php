@@ -11,7 +11,7 @@ namespace Link;
 return array(
     'class_resolver' => array(
         'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService'
-    ),    
+    ),
     'di' => array(
         'definition' => array(
             'class' => array(
@@ -23,13 +23,17 @@ return array(
                 'Link\LinkManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
                     )
                 )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager'
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver'
             ),
             'Link\Service\LinkService' => array(
                 'shared' => false
@@ -58,3 +62,4 @@ return array(
         )
     )
 );
+

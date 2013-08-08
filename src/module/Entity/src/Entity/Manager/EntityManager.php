@@ -100,12 +100,16 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         $entityService->setEntityManager($this);
         $entityService->setEntity($entity);
         
-        if (! array_key_exists($entity->getType()->getName(), $this->config['types'])) {
+        if (! array_key_exists($entity->getType()->getName(), $this->config['types']))
             throw new InvalidArgumentException(sprintf('Type %s not found in configuration.', $entity->getType()->getName()));
-        }
+        
+        
+        if(!array_key_exists('plugins', $this->config['types'][$entity->getType()->getName()]))
+            throw new \Exception('Must define plugins');
         
         $config = $this->config['types'][$entity->getType()->getName()];
 
+        
 
         $entityService->setOptions($config);
         return $this;

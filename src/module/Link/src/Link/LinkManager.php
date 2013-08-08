@@ -26,16 +26,20 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
      */
     public function get ($id)
     {
-        return $this->getInstance($id);
+        if($id instanceof LinkEntityInterface){
+            return $this->getInstance($id->getId());
+        } else {
+            return $this->getInstance($id);
+        }
     }
 
-    public function create (LinkEntityInterface $entity)
+    /*public function create (LinkEntityInterface $entity)
     {
         $instance = parent::createInstance('Link\Service\LinkServiceInterface');
         $instance->setEntity($entity);
         $this->add($instance);
         return $instance;
-    }
+    }*/
     
     /*
      *
@@ -43,10 +47,14 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
      * @see
      * \Link\LinkManagerInterface::add()
      */
-    public function add (LinkServiceInterface $linkService)
+    public function add (LinkEntityInterface $entity)
     {
-        $this->addInstance($linkService->getId(), $linkService);
-        return $this;
+        if(!$this->has($entity->getId())){
+            $instance = parent::createInstance('Link\Service\LinkServiceInterface');
+            $instance->setEntity($entity);
+            $this->addInstance($entity->getId(), $instance);
+        }
+        return $this;//->get($entity->getId());
     }
     
     /*
