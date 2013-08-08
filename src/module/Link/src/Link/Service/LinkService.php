@@ -11,7 +11,6 @@ namespace Link\Service;
 
 use Core\OrmEntityManagerAwareInterface;
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\Criteria;
 use Link\Entity\LinkEntityInterface;
 use Core\Entity\AbstractEntityAdapter;
 use Core\Entity\EntityInterface;
