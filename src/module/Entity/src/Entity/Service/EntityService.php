@@ -52,7 +52,7 @@ class EntityService implements EntityServiceInterface
         return $this;
     }
     
-    public function setOptions($options){
+    public function setOptions(array $options){
         $this->whitelistPlugins($options['plugins']);
     }
 
@@ -62,15 +62,15 @@ class EntityService implements EntityServiceInterface
 
     public function isPluginWhitelisted($name)
     {
-        return array_key_exists($name, $this->pluginWhitelist) && $this->pluginWhitelist[$name] === TRUE;
+        return array_key_exists($name, $this->pluginWhitelist) && $this->pluginWhitelist[$name] !== FALSE;
     }
 
-    public function whitelistPlugins($config)
+    public function whitelistPlugins(array $config)
     {
-        foreach ($config as $plugin) {
-            $this->whitelistPlugin($plugin['name']);
-            if (isset($plugin['options'])) {
-                $this->setPluginOptions($plugin['name'], $plugin['options']);
+        foreach ($config as $name => $data) {
+            $this->whitelistPlugin($name, $data['plugin']);
+            if (isset($data['options'])) {
+                $this->setPluginOptions($name, $data['options']);
             }
         }
     }
@@ -90,10 +90,14 @@ class EntityService implements EntityServiceInterface
         return (array_key_exists($name, $this->pluginOptions)) ? $this->pluginOptions[$name] : array();
     }
 
-    public function whitelistPlugin($name)
+    public function whitelistPlugin($name, $plugin)
     {
-        $this->pluginWhitelist[$name] = true;
+        $this->pluginWhitelist[$name] = $plugin;
         return $this;
+    }
+    
+    public function getPlugin($name){
+        return $this->pluginWhitelist[$name];
     }
 
     /**
@@ -114,7 +118,7 @@ class EntityService implements EntityServiceInterface
         $pluginManager->setEntityService($this);
         $pluginManager->setPluginOptions($this->getPluginOptions($name));
         
-        return $this->getPluginManager()->get($name);
+        return $this->getPluginManager()->get($this->getPlugin($name));
     }
 
     /**

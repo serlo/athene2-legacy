@@ -28,8 +28,6 @@
 <?php if($this->acceptsEntities): ?>
 <div class="entities">
     <?php foreach($this->entities as $entity): ?>
-    <?php $repository = $entity->repository(); ?>
-    <?php $revision = $entity->getCurrentRevision(); ?>
     <div class="right btn-group">
     	<a
     		href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set', 'entity' => $entity->getId() )); ?>"
@@ -37,7 +35,7 @@
     </div>
     <?php switch($entity->getType()->getName()):
             case 'text-exercise': ?>
-            <?php echo $revision->get('content') ?>
+            <?php echo $this->partial('resource-manager/plugin/topic/exercise', array('exercise' => $entity)); ?>
             <?php break; ?>
     <?php endswitch; ?>
 

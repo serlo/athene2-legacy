@@ -210,7 +210,7 @@ abstract class AbstractCollection implements Collection, Selectable
      */
     public function filter (\Closure $p)
     {
-        return $this->getCollection()->exists($p);
+        return $this->getCollection()->filter($p);
     }
     
     /*

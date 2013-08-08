@@ -12,11 +12,10 @@
 namespace LearningResource\Plugin\Link;
 
 use Entity\Plugin\AbstractPlugin;
-use Doctrine\Common\Collections\Criteria;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
+    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
 
     public function getEntityType ()
     {
@@ -25,16 +24,16 @@ class LinkPlugin extends AbstractPlugin
 
     public function getLinkService ()
     {
-        $this->getLinkManager()->add($this->getEntityService()
+        return $this->getLinkManager()
+            ->add($this->getEntityService()
+            ->getEntity())
+            ->get($this->getEntityService()
             ->getEntity());
-        $this->getLinkManager()->get();
     }
 
     public function getChildren ()
     {
-        $linkService = $this->getComponent('link');
-        
-        return $linkService->getChildren();
+        return $this->getLinkService()->getChildren();
     }
 
     public function getParents ()
@@ -47,23 +46,36 @@ class LinkPlugin extends AbstractPlugin
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
         
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("type", $entityType))
-            ->setFirstResult(0);
+        $manager = $this->getEntityManager();
+        
         $return = $this->getLinkService()
             ->getChildren()
-            ->matching($criteria);
+            ->map(function  ($e) use( $entityType, $manager)
+            {
+                $return = ($e->getType()
+                    ->getName() == $entityType) ? $manager->get($e) : null;
+                return $return;
+            });
+        
         return $return;
     }
 
     public function findParents ($entityType = NULL)
-    {
+    {        
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("type", $entityType))
-            ->setFirstResult(0);
+        
+        $manager = $this->getEntityManager();
+        
         $return = $this->getLinkService()
             ->getParents()
-            ->matching($criteria);
+            ->map(function  ($e) use( $entityType, $manager)
+            {
+                $return = ($e->getType()
+                    ->getName() == $entityType) ? $manager->get($e) : null;
+                return $return;
+            });
+        
         return $return;
     }
 
@@ -71,35 +83,49 @@ class LinkPlugin extends AbstractPlugin
     {
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("type", $entityType))
-            ->setFirstResult(0);
+        
+        $manager = $this->getEntityManager();
+        
         $return = $this->getLinkService()
             ->getParents()
-            ->matching($criteria)
-            ->current();
-        return $return;
+            ->map(function  ($e) use( $entityType, $manager)
+            {
+                $return = ($e->getType()
+                    ->getName() == $entityType) ? $manager->get($e) : null;
+                return $return;
+            });
+        
+        return $return->current();
     }
 
     public function findChild ($entityType = NULL)
     {
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("type", $entityType))
-            ->setFirstResult(0);
+        
+        $manager = $this->getEntityManager();
+        
         $return = $this->getLinkService()
             ->getChildren()
-            ->matching($criteria)
-            ->current();
-        return $return;
+            ->map(function  ($e) use( $entityType, $manager)
+            {
+                $return = ($e->getType()
+                    ->getName() == $entityType) ? $manager->get($e) : null;
+                return $return;
+            });
+        
+        return $return->current();
     }
     
     /*
      *
      * protected
      * function
-     * findByFactoryClassName(Collection
+     * findByFactoryClassName
+     * (Collection
      * $collection,
-     * $factoryClassName){
+     * $factoryClassName)
+     * {
      * $results
      * =
      * array();
@@ -107,13 +133,16 @@ class LinkPlugin extends AbstractPlugin
      * =
      * 1;
      * $collection->first();
-     * foreach($collection->toArray()
+     * foreach
+     * ($collection->toArray()
      * as
-     * $entity){
-     * if($entity->get('factory')->get('className')
+     * $entity)
+     * {
+     * if
+     * ($entity->get('factory')->get('className')
      * ==
-     * $factoryClassName
-     * ){
+     * $factoryClassName)
+     * {
      * $results[]
      * =
      * $this->_factory($entity);

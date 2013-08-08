@@ -15,20 +15,12 @@ interface LinkManagerInterface {
 	public function get($id);	
 	
 	/**
-	 * Creates an LinkServiceInterface compatible instance
-	 * 
-	 * @param LinkEntityInterface $entity
-	 * @return LinkServiceInterface
-	 */
-	public function create(LinkEntityInterface $entity);
-	
-	/**
 	 * Adds an LinkServiceInterface compatible instance
 	 * 
 	 * @param LinkServiceInterface $linkService
 	 * @return $this
 	 */
-	public function add(LinkServiceInterface $linkService);
+	public function add(LinkEntityInterface $linkService);
 	
 	/**
 	 * Checks if the LinkService is already registered
