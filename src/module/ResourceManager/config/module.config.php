@@ -21,10 +21,22 @@ return array(
                 'plugins' => array(
                     array(
                         'name' => 'topic',
+                        'options' => array(
+                            'entity_types' => array(
+                                'text-solution' => array(
+                                    'labels' => array(
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben',
+                                    ),
+                                    //'type' => 'text-solution',
+                                    'template' => 'some-view',
+                                )
+                            )
+                        )
                     )
                 )
             )
-        ),
+        )
     ),
     'view_manager' => array(
         'template_path_stack' => array(

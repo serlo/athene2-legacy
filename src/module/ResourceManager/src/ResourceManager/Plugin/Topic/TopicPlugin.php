@@ -16,6 +16,26 @@ use Subject\Plugin\AbstractPlugin;
 class TopicPlugin extends AbstractPlugin
 {
 
+    public function getEnabledEntityTypes ()
+    {
+        $types = $this->getOption('entity_types');
+        $return = array();
+        foreach ($types as $type => $options) {
+            $return[] = $type;
+        }
+        return $return;
+    }
+
+    public function getEntityTypeLabel ($type, $label)
+    {
+        return $this->getOption('entity_types')[$type]['label'][$label];
+    }
+
+    public function getTemplateForEntityType ($type)
+    {
+        return $this->getOption('entity_types')[$type]['template'];
+    }
+
     public function get ($topic)
     {
         return $this->getSubjectService()
