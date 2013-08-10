@@ -30,4 +30,20 @@ class AbstractController extends AbstractActionController
             return $this->getSubjectManager()->get($identifier);
         }        	
     }
+
+    protected function getPlugin ($id = NULL)
+    {
+        if (! $id) {
+            $id = $this->getParam('subject');
+        }
+        
+        $plugin = $this->getSubjectManager()->get($id);
+        
+        if (! $plugin->isPluginWhitelisted($this->getParam('plugin')))
+            throw new \Exception(sprintf('Plugin %s not supported.', $this->getParam('plugin')));
+        
+        $scope = $this->getParam('plugin');
+        
+        return $plugin->$scope();
+    }
 }

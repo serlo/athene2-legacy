@@ -28,7 +28,8 @@ return array(
         'Common',
         'ClassResolver',
         'LearningResource',
-        'ResourceManager'
+        'ResourceManager',
+        'Language'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

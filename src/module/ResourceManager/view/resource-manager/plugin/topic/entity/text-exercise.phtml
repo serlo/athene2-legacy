@@ -11,6 +11,7 @@
  */
 $exercise = $this->exercise;
 ?>
+<?php if($exercise->repository()->hasCurrentRevision()): ?>
 <article class="text-exercise">
 	<section class="scope">
         <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
@@ -20,3 +21,4 @@ $exercise = $this->exercise;
         <?php echo $exercise->solution()->findChild()->repository()->getCurrentRevision()->get('content'); ?>
     </section>
 </article>
+<?php endif; ?>

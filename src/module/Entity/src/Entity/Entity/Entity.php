@@ -107,7 +107,17 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     
     protected $fieldOrder = array();
     
-    public function orderFields(array $newOrder){
+    /**
+     * @param field_type $type
+     * @return $this
+     */
+    public function setType ($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+	public function orderFields(array $newOrder){
     	$this->fieldOrder = $newOrder;
     }
     

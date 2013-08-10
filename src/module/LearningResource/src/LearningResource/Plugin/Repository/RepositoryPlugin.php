@@ -41,6 +41,16 @@ class RepositoryPlugin extends AbstractPlugin
     /**
      * (non-PHPdoc)
      * 
+     * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
+     */
+    public function hasCurrentRevision()
+    {
+        return $this->getRepository()->hasCurrentRevision();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * 
      * @see \Versioning\Service\RepositoryServiceInterface::getRevision()
      */
     public function getRevision($id)

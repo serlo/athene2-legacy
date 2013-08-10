@@ -12,8 +12,13 @@
 return array(
     'subject' => array(
         'plugins' => array(
-            'invokables' => array(
-                'topic' => 'ResourceManager\Plugin\Topic\TopicPlugin'
+            'factories' => array(
+                'topic' => function($sm){
+                    $class = new \ResourceManager\Plugin\Topic\TopicPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\SharedTaxonomyManager'));
+                    return $class;
+                }
             )
         ),
         'instances' => array(
@@ -23,13 +28,21 @@ return array(
                         'name' => 'topic',
                         'options' => array(
                             'entity_types' => array(
-                                'text-solution' => array(
+                                'text-exercise' => array(
                                     'labels' => array(
                                         'singular' => 'Aufgabe',
                                         'plural' => 'Aufgaben',
                                     ),
                                     //'type' => 'text-solution',
-                                    'template' => 'some-view',
+                                    'template' => 'resource-manager/plugin/topic/entity/text-exercise',
+                                ),
+                                'text-solution' => array(
+                                    'labels' => array(
+                                        'singular' => 'Lösung',
+                                        'plural' => 'Lösungen',
+                                    ),
+                                    //'type' => 'text-solution',
+                                    'template' => 'resource-manager/plugin/topic/entity/text-solution',
                                 )
                             )
                         )
@@ -69,7 +82,8 @@ return array(
                                     'route' => '/{topic}/:path',
                                     'defaults' => array(
                                         'controller' => 'ResourceManager\Plugin\Topic\Controller\TopicController',
-                                        'action' => 'index'
+                                        'action' => 'index',
+                                        'plugin' => 'topic',
                                     ),
                                     'constraints' => array(
                                         'path' => '(.)+'

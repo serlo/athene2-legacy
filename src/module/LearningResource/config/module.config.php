@@ -132,11 +132,6 @@ return array(
     'router' => array(
         'routes' => array(
             'entity' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/entity',
-                    'defaults' => array()
-                ),
                 'child_routes' => array(
                     'plugin' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -167,15 +162,6 @@ return array(
                             )
                         )
                     ),
-                    'common' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/:action[/:id]',
-                            'defaults' => array(
-                                'controller' => 'LearningResource\Controller\EntityController'
-                            )
-                        )
-                    )
                 )
             )
         )

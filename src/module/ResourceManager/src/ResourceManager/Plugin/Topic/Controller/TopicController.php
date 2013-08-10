@@ -35,7 +35,8 @@ class TopicController extends AbstractController
         
         $view = new ViewModel(array(
             'topic' => $topic,
-            'subject' => $subjectService
+            'subject' => $subjectService,
+            'plugin' => $this->getPlugin()
         ));
         
         $taxonomyView = new ViewModel(array(
@@ -46,6 +47,7 @@ class TopicController extends AbstractController
         foreach ($topic->getChildren() as $child) {
             $taxView = new ViewModel(array(
                 'term' => $child,
+                'plugin' => $this->getPlugin(),
                 'subject' => $subjectService
             ));
             $taxonomyView->addChild($taxView->setTemplate('resource-manager/plugin/topic/partial'), 'taxonomy', true);
@@ -56,6 +58,7 @@ class TopicController extends AbstractController
             'taxonomy' => $topic,
             'subject' => $subjectService,
             'acceptsEntities' => $topic->linkAllowed('entities'),
+            'plugin' => $this->getPlugin(),
             'entities' => $entities
         ));
         $entityView->setTemplate('resource-manager/plugin/topic/entities');

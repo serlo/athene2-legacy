@@ -18,6 +18,10 @@ use Entity\Plugin\Controller\AbstractController;
 
 class RepositoryController extends AbstractController
 {
+    
+    public function addRevisionAction(){
+        die();
+    }
 
     public function createRevisionAction ()
     {

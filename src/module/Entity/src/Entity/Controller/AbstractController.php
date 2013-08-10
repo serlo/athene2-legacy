@@ -12,9 +12,6 @@
 namespace Entity\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Entity\EntityManagerInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Exception\DomainException;
 
 abstract class AbstractController extends AbstractActionController
 {	
