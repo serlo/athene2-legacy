@@ -15,5 +15,5 @@ use Entity\Plugin\AbstractPlugin;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerTrait, \Taxonomy\Manager\TermManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Taxonomy\Manager\TermManagerAwareTrait;
 }

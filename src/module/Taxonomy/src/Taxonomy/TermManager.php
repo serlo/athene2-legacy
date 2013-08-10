@@ -21,13 +21,8 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
 class TermManager extends AbstractManagerAndEntityDecorator implements TermManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait;
+    use \Uuid\Manager\UuidManagerAwareTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Term\Manager\TermManagerAwareTrait;
     
-    /**
-     *
-     * @var SharedTaxonomyManagerInterface
-     */
-    protected $manager;
 
     protected $allowedLinks = array();
 
@@ -54,16 +49,7 @@ class TermManager extends AbstractManagerAndEntityDecorator implements TermManag
      */
     public function getManager ()
     {
-        return $this->manager;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Term\Manager\TermManagerAwareInterface::setTermManager()
-     */
-    public function setManager (SharedTaxonomyManagerInterface $termManager)
-    {
-        $this->manager = $termManager;
-        return $this;
+        return $this->getSharedTaxonomyManager();
     }
 
     public function get ($term)
