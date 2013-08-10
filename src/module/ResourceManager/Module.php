@@ -60,15 +60,6 @@ class Module
                         ->addEntity($entity, $_GET['term']);
                     
                     $url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
-                        $response = $mvce->getResponse ();
-                        
-                        $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url . '?ref=' . $mvce->getRequest()
-                    		->getHeader('Referer')
-                    		->getUri() ));
-                        
-                        $response->setStatusCode ( 302 );
-                        $response->sendHeaders ();
-                        exit ();
                 }
             }
         }, 2);

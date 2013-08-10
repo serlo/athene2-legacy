@@ -26,7 +26,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 {
 
     /**
-     * @ORM\ManyToMany(targetEntity="Entity", mappedBy="children")
+     * @ORM\ManyToMany(targetEntity="Entity", inversedBy="children", cascade={"persist"})
      * @ORM\JoinTable(name="entity_link",
      * joinColumns={
      * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
@@ -39,7 +39,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $parents;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Entity", mappedBy="parents")
+     * @ORM\ManyToMany(targetEntity="Entity", mappedBy="parents", cascade={"persist"})
      * @ORM\JoinTable(
      * name="entity_link",
      * joinColumns={
@@ -69,7 +69,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $currentRevision;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Taxonomy\Entity\TermTaxonomy")
+     * @ORM\ManyToMany(targetEntity="\Taxonomy\Entity\TermTaxonomy", cascade={"persist"})
      * @ORM\JoinTable(name="term_taxonomy_entity",
      * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
      * joinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}

@@ -86,12 +86,15 @@ return array(
             'text-solution' => array(
                 'plugins' => array(
                     'repository' => array(
-                        'plugin' => 'repository'
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\TextSolutionForm'
+                        )
                     ),
                     'exercise' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'foreign_type' => 'text-exercise'
+                            'to_type' => 'text-exercise'
                         )
                     )
                 )

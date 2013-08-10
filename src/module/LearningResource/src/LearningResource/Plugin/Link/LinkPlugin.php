@@ -12,17 +12,18 @@
 namespace LearningResource\Plugin\Link;
 
 use Entity\Plugin\AbstractPlugin;
+use Entity\Service\EntityServiceInterface;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
+    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
 
-    public function getEntityType ()
+    public function getEntityType()
     {
         return $this->getOption('to_type');
     }
 
-    public function getLinkService ()
+    public function getLinkService()
     {
         return $this->getLinkManager()
             ->add($this->getEntityService()
@@ -31,17 +32,31 @@ class LinkPlugin extends AbstractPlugin
             ->getEntity());
     }
 
-    public function getChildren ()
+    public function addParent($entity)
+    {
+        $this->getLinkService()->addParent($entity->getEntity());
+        
+        return $this;
+    }
+
+    public function addChild($entity)
+    {
+        $this->getLinkService()->addParent($entity->getEntity());
+        
+        return $this;
+    }
+
+    public function getChildren()
     {
         return $this->getLinkService()->getChildren();
     }
 
-    public function getParents ()
+    public function getParents()
     {
         return $this->getLinkService()->getParents();
     }
 
-    public function findChildren ($entityType = NULL)
+    public function findChildren($entityType = NULL)
     {
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
@@ -50,36 +65,17 @@ class LinkPlugin extends AbstractPlugin
         
         $return = $this->getLinkService()
             ->getChildren()
-            ->map(function  ($e) use( $entityType, $manager)
-            {
-                $return = ($e->getType()
-                    ->getName() == $entityType) ? $manager->get($e) : null;
-                return $return;
-            });
+            ->map(function ($e) use($entityType, $manager)
+        {
+            $return = ($e->getType()
+                ->getName() == $entityType) ? $manager->get($e) : null;
+            return $return;
+        });
         
         return $return;
     }
 
-    public function findParents ($entityType = NULL)
-    {        
-        if ($entityType === NULL)
-            $entityType = $this->getEntityType();
-        
-        $manager = $this->getEntityManager();
-        
-        $return = $this->getLinkService()
-            ->getParents()
-            ->map(function  ($e) use( $entityType, $manager)
-            {
-                $return = ($e->getType()
-                    ->getName() == $entityType) ? $manager->get($e) : null;
-                return $return;
-            });
-        
-        return $return;
-    }
-
-    public function findParent ($entityType = NULL)
+    public function findParents($entityType = NULL)
     {
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
@@ -88,17 +84,36 @@ class LinkPlugin extends AbstractPlugin
         
         $return = $this->getLinkService()
             ->getParents()
-            ->map(function  ($e) use( $entityType, $manager)
-            {
-                $return = ($e->getType()
-                    ->getName() == $entityType) ? $manager->get($e) : null;
-                return $return;
-            });
+            ->map(function ($e) use($entityType, $manager)
+        {
+            $return = ($e->getType()
+                ->getName() == $entityType) ? $manager->get($e) : null;
+            return $return;
+        });
+        
+        return $return;
+    }
+
+    public function findParent($entityType = NULL)
+    {
+        if ($entityType === NULL)
+            $entityType = $this->getEntityType();
+        
+        $manager = $this->getEntityManager();
+        
+        $return = $this->getLinkService()
+            ->getParents()
+            ->map(function ($e) use($entityType, $manager)
+        {
+            $return = ($e->getType()
+                ->getName() == $entityType) ? $manager->get($e) : null;
+            return $return;
+        });
         
         return $return->current();
     }
 
-    public function findChild ($entityType = NULL)
+    public function findChild($entityType = NULL)
     {
         if ($entityType === NULL)
             $entityType = $this->getEntityType();
@@ -107,49 +122,17 @@ class LinkPlugin extends AbstractPlugin
         
         $return = $this->getLinkService()
             ->getChildren()
-            ->map(function  ($e) use( $entityType, $manager)
-            {
-                $return = ($e->getType()
-                    ->getName() == $entityType) ? $manager->get($e) : null;
-                return $return;
-            });
+            ->map(function ($e) use($entityType, $manager)
+        {
+            $return = ($e->getType()
+                ->getName() == $entityType) ? $manager->get($e) : null;
+            return $return;
+        });
         
         return $return->current();
     }
     
     /*
-     *
-     * protected
-     * function
-     * findByFactoryClassName
-     * (Collection
-     * $collection,
-     * $factoryClassName)
-     * {
-     * $results
-     * =
-     * array();
-     * $currentDepth
-     * =
-     * 1;
-     * $collection->first();
-     * foreach
-     * ($collection->toArray()
-     * as
-     * $entity)
-     * {
-     * if
-     * ($entity->get('factory')->get('className')
-     * ==
-     * $factoryClassName)
-     * {
-     * $results[]
-     * =
-     * $this->_factory($entity);
-     * }
-     * }
-     * return
-     * $results;
-     * }
+     * protected function findByFactoryClassName (Collection $collection, $factoryClassName) { $results = array(); $currentDepth = 1; $collection->first(); foreach ($collection->toArray() as $entity) { if ($entity->get('factory')->get('className') == $factoryClassName) { $results[] = $this->_factory($entity); } } return $results; }
      */
 }

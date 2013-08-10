@@ -73,16 +73,18 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
             'type' => $type
         ));
         
-        $entity->setType($type);
+        //$entity->setType($type);
         
         $em->persist($entity);
-        $em->flush();
+        $em->flush($entity);
+        
+        $entity = $this->get($entity->getId());
         
         $this->getEventManager()->trigger(__FUNCTION__, $this, array(
             'entity' => $entity
         ));
         
-        return $this->get($entity->getId());
+        return $entity;
     }
 
     public function add (EntityServiceInterface $entityService)
