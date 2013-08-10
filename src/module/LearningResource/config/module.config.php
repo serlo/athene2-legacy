@@ -41,6 +41,8 @@ return array(
                         ->get('Versioning\RepositoryManager'));
                     $class->setObjectManager($sm->getServiceLocator()
                         ->get('EntityManager'));
+                    $class->setAuthService($sm->getServiceLocator()
+                        ->get('Auth\Service\AuthService'));
                     return $class;
                 },
                 'topicFolder' => function  ($sm)
@@ -65,7 +67,10 @@ return array(
             'text-exercise' => array(
                 'plugins' => array(
                     'repository' => array(
-                        'plugin' => 'repository'
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\TextExerciseForm'
+                        )
                     ),
                     'topicFolder' => array(
                         'plugin' => 'topicFolder'
@@ -74,12 +79,6 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'to_type' => 'text-solution'
-                        )
-                    ),
-                    'form' => array(
-                        'plugin' => 'form',
-                        'options' => array(
-                            'class' => 'LearningResource\Form\TextExerciseForm'
                         )
                     )
                 )
@@ -161,43 +160,41 @@ return array(
                                 )
                             )
                         )
-                    ),
+                    )
                 )
             )
         )
     ),
     'zfcrbac' => array(
         'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+                array(
+                    'route' => 'entity/plugin/repository',
+                    'actions' => 'add-revision',
+                    'roles' => 'login'
+                ),
+                array(
+                    'route' => 'entity/plugin/repository',
+                    'actions' => array('checkout', 'trash-revision'),
+                    'roles' => 'helper'
+                ),
+                array(
+                    'route' => 'entity/plugin/repository',
+                    'actions' => 'purge-revision',
+                    'roles' => 'admin'
+                ),
+            ),
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'LearningResource\Exercise\Controller\TextExerciseController',
                     'actions' => 'update',
                     'roles' => 'login'
                 ),
-                array(
-                    'controller' => 'LearningResource\Exercise\Controller\TextExerciseController',
-                    'actions' => 'show',
-                    'roles' => 'guest'
-                ),
-                array(
-                    'controller' => 'Application\LearningObject\Exercise\Controller\TextExerciseController',
-                    'actions' => array(
-                        'history',
-                        'checkout',
-                        'trash-revision',
-                        'show-revision'
-                    ),
-                    'roles' => 'helper'
-                ),
-                array(
-                    'controller' => 'Application\LearningObject\Exercise\Controller\TextExerciseController',
-                    'actions' => array(
-                        'purge-revision',
-                        'create'
-                    ),
-                    'roles' => 'admin'
-                )
             )
         )
     )
+    /*'zfcrbac' => array(
+        'firewalls' => array(
+        ),
+    )*/
 );

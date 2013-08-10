@@ -298,7 +298,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * (non-PHPdoc)
      * @see \Versioning\Entity\RepositoryInterface::addRevision()
      */
-    public function addNewRevision()
+    public function newRevision()
     {
         $revision = new Revision();
         $revision->setRepository($this);

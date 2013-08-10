@@ -42,7 +42,7 @@ class Module
         ), 100);*/
     }
 
-    public function mvcPreDispatch($event)
+    /*public function mvcPreDispatch($event)
     {
         $application = $event->getParam('application');
         $modules = $event->getParam('modules');
@@ -72,6 +72,7 @@ class Module
                 $hasAccess = true;
             }
         
+            
         if ($hasAccess == FALSE) {
             if ($auth->loggedIn()) {
                 $event->getTarget()
@@ -98,5 +99,5 @@ class Module
                 exit();
             }
         }
-    }
+    }*/
 }

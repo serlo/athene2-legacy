@@ -18,35 +18,33 @@ use Entity\Plugin\Controller\AbstractController;
 
 class RepositoryController extends AbstractController
 {
-    
-    public function addRevisionAction(){
-        die();
-    }
 
-    public function createRevisionAction ()
+    public function addRevisionAction ()
     {
+        $ref = $this->params('ref');
+        if(!$ref) $ref = '/';
+                
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
-        if ($this->getRequest()->isPost()) {
-            $this->commitRevision($entity);
-            if ($entity->isCheckedOut()) {
-                $this->redirect()->toRoute('entity/plugin/repository', array(
-                    'action' => 'show',
-                    'id' => $entity->getId()
-                ));
-            } else {
-                $this->redirect()->toRoute('entity/plugin/repository', array(
-                    'action' => 'history',
-                    'id' => $entity->getId()
-                ));
-            }
-        }
+        
         $view = new ViewModel(array(
             'entity' => $entity
         ));
+
+        $form = $plugin->getRevisionForm();
+        $form->setAttribute('action', $this->url()->fromRoute('entity/plugin/repository', array('action' => 'add-revision', 'entity' => $entity->getId())) . '?ref='.$ref );
+        
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()
+                ->getPost());
+            if ($form->isValid()) {
+                $plugin->commitRevision($form);
+                $this->redirect()->toUrl($ref);
+            }
+        }
         
         $view->setTemplate('learning-resource/plugin/repository/update-revision');
-        $view->setVariable('form', $entity->getForm());
+        $view->setVariable('form', $form);
         
         return $view;
     }
@@ -152,7 +150,8 @@ class RepositoryController extends AbstractController
         ));
     }
 
-    public function getHeadAction (){
+    public function getHeadAction ()
+    {
         return $this->getRevision();
     }
 

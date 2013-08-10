@@ -6,6 +6,6 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 class GetParam extends AbstractPlugin
 {
     public function __invoke($param, $value = NULL){
-        return $this->getController()->getEvent()->getRouteMatch()->getParam($param, $value);
+        return $this->getController()->params($param, $value);
     }
 }

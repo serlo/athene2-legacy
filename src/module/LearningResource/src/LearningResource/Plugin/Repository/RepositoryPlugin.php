@@ -13,10 +13,11 @@ namespace LearningResource\Plugin\Repository;
 
 use Doctrine\Common\Collections\Criteria;
 use Entity\Plugin\AbstractPlugin;
+use Zend\Form\Form;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAwareTrait, \Versioning\RepositoryManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait, \Versioning\RepositoryManagerAwareTrait, \Auth\Service\AuthServiceAwareTrait;
 
     /**
      *
@@ -26,6 +27,14 @@ class RepositoryPlugin extends AbstractPlugin
     {
         $repository = $this->getEntityService()->getEntity();
         return $this->getRepositoryManager()->addRepository($repository)->getRepository($repository);
+    }
+    
+    public function getRevisionForm(){
+        $form = $this->getOption('revision_form');
+        if(!class_exists($form))
+            throw new \Exception(sprintf('Class %s not found!', $form));
+        $form = new $form();
+        return $form;
     }
 
     /**
@@ -92,19 +101,27 @@ class RepositoryPlugin extends AbstractPlugin
         return $this->entityService;
     }
 
-    public function commitRevision(array $data)
+    public function commitRevision(Form $form)
     {
+        
         $repository = $this->getRepository();
-        $revision = $this->entityService->getEntity()->addNewRevision();
-        $revision->setAuthor($this->entityService->getAuthService()
+        
+        $revision = $this->getEntityService()->getEntity()->newRevision();
+        
+        $revision->setAuthor($this->getAuthService()
             ->getUser());
+        
         $repository->addRevision($revision);
-        $this->entityService->getObjectManager()->persist($revision);
-        foreach ($data as $key => $value) {
-            $this->entityService->getObjectManager()->persist($revision->addValue($key, $value));
+        $repository->persist();        
+        
+        foreach ($form->getData() as $key => $value) {
+            if($key != 'submit' && $key != 'reset') // haxxy...
+                $this->getObjectManager()->persist($revision->addField($key, $value));
         }
-        $this->entityService->getObjectManager()->flush();
-        return $this->entityService;
+        
+        $this->getObjectManager()->flush();
+        
+        return $this;
     }
 
     /**
