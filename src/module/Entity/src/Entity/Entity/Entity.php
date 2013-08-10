@@ -97,11 +97,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * @ORM\Column(type="boolean")
      */
     protected $trashed;
-
-    /**
-     * @ORM\Column(type="text",length=255)
-     */
-    protected $slug;
     
     protected $route;
     
@@ -197,14 +192,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     }
 
 	/**
-     * @return field_type $slug
-     */
-    public function getSlug ()
-    {
-        return $this->slug;
-    }
-
-	/**
      * @param \Doctrine\Common\Collections\ArrayCollection $parents
      * @return $this
      */
@@ -271,16 +258,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     public function setDate ($date)
     {
         $this->date = $date;
-        return $this;
-    }
-
-	/**
-     * @param field_type $slug
-     * @return $this
-     */
-    public function setSlug ($slug)
-    {
-        $this->slug = $slug;
         return $this;
     }
 
