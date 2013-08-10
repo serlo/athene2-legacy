@@ -36,7 +36,7 @@
     		href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set', 'entity' => $entity->getId() )); ?>"
     		class="btn btn-mini"><i class="icon-download-alt"></i></a>
     </div>
-    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('exercise' => $entity)); ?>
+    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
     <?php endif; ?>
     <?php endforeach; ?>
 </div>

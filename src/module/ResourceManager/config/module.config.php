@@ -33,8 +33,14 @@ return array(
                                         'singular' => 'Aufgabe',
                                         'plural' => 'Aufgaben',
                                     ),
-                                    //'type' => 'text-solution',
                                     'template' => 'resource-manager/plugin/topic/entity/text-exercise',
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel',
+                                    ),
+                                    'template' => 'resource-manager/plugin/topic/entity/article',
                                 )
                             )
                         )
