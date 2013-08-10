@@ -11,12 +11,22 @@
  */
 namespace ResourceManager;
 
+use Zend\Mvc\MvcEvent;
+use Zend\EventManager\Event;
+
 class Module
 {
 
     public function getConfig ()
     {
         return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function onBootstrap (MvcEvent $e)
+    {
+        $sm = $e->getApplication()->getServiceManager();
+        
+        $this->addEntityManagerListener($sm, $e);
     }
 
     public function getAutoloaderConfig ()
@@ -29,5 +39,33 @@ class Module
             )
         );
     }
-    //
+
+    public function addEntityManagerListener ($sm, MvcEvent $mvce)
+    {
+        /* Adds an entity to a subject, if a term is given */
+        $sm->get('Entity\Manager\EntityManager')
+            ->getEventManager()
+            ->attach('create', function  (Event $e) use( $sm, $mvce)
+        {
+            $entity = $e->getParam('entity');
+            
+            if (isset($_GET['term']) && isset($_GET['subject'])) {
+                $subjectManager = $sm->get('Subject\Manager\SubjectManager');
+                $subject = $subjectManager->get($_GET['subject']);
+                
+                if ($subject->isPluginWhitelisted('topic')) {
+                    $subject->topic()
+                        ->addEntity($entity, $_GET['term']);
+                    
+                    $url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
+                    
+                    $response = $mvce->getResponse ();
+                        $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url ) );
+                        $response->setStatusCode ( 302 );
+                        $response->sendHeaders ();
+                        exit ();
+                }
+            }
+        }, 2);
+    }
 }

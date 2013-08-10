@@ -14,12 +14,43 @@ namespace Entity;
 return array(
     'class_resolver' => array(
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
+        'Entity\Entity\TypeInterface' => 'Entity\Entity\Type',
         'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
     ),
+    'router' => array(
+        'routes' => array(
+            'entity' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/entity',
+                    'defaults' => array()
+                ),
+                'child_routes' => array(
+                    'create' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/create/:type',
+                            'defaults' => array(
+                                'controller' => 'Entity\Controller\EntityController',
+                                'action' => 'create'
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    ),
     'di' => array(
-        'allowed_controllers' => array(),
+        'allowed_controllers' => array(
+            'Entity\Controller\EntityController'
+        ),
         'definition' => array(
             'class' => array(
+                'Entity\Controller\EntityController' => array(
+                    'setEntityManager' => array(
+                        'required' => 'true'
+                    )
+                ),
                 'Entity\Service\EntityService' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
@@ -67,14 +98,14 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Entity\Plugin\PluginManager' => (function ($sm)
+            'Entity\Plugin\PluginManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
                 $config = new \Zend\ServiceManager\Config($config['entity']['plugins']);
                 $class = new \Entity\Plugin\PluginManager($config);
                 return $class;
             }),
-            'Entity\Manager\EntityManager' => (function ($sm)
+            'Entity\Manager\EntityManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
                 $class = new \Entity\Manager\EntityManager($config['entity']);
@@ -84,6 +115,7 @@ return array(
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $class->setLanguageManager($sm->get('Core\Service\LanguageManager'));
                 
                 return $class;
             })

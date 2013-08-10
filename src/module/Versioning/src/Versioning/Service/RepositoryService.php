@@ -344,6 +344,10 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         
         return $this->currentRevision;
     }
+    
+    public function hasCurrentRevision(){
+        return is_object($this->currentRevision);
+    }
 
     /**
      * (non-PHPdoc)

@@ -44,6 +44,24 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     protected $subject;
 
     /**
+     * @return field_type $subject
+     */
+    public function getSubject ()
+    {
+        return $this->subject;
+    }
+
+	/**
+     * @param field_type $subject
+     * @return $this
+     */
+    public function setSubject ($subject)
+    {
+        $this->subject = $subject;
+        return $this;
+    }
+
+	/**
      *
      * @return \Doctrine\Common\Collections\ArrayCollection $terms
      */

@@ -31,6 +31,8 @@ interface RepositoryServiceInterface
      * $return string $identifier
      */
     public function getIdentifier ();
+    
+    public function hasCurrentRevision();
 
     /**
      * Adds a revision (makes changes persistent)

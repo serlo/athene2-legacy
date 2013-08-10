@@ -9,17 +9,17 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Subject\Sciences;
+namespace Entity\Controller;
 
-use Subject\Service\SubjectServiceInterface;
-use Core\Decorator\GraphDecorator;
+use Zend\Mvc\Controller\AbstractActionController;
 
-class Decorator extends GraphDecorator implements SubjectServiceInterface
+class EntityController extends AbstractActionController
 {
-	/* (non-PHPdoc)
-	 * @see \Core\Decorator\GraphDecorator::getInheritableMethods()
-	 */
-	public function getInheritableMethods() {
-		return array();
-	}
+    use \Entity\Manager\EntityManagerAwareTrait;
+    
+    public function createAction(){
+        $type = $this->getParam('type');
+        $entity = $this->getEntityManager()->create($type);    
+        return true;
+    }
 }

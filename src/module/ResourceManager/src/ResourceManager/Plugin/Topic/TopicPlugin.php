@@ -12,9 +12,23 @@
 namespace ResourceManager\Plugin\Topic;
 
 use Subject\Plugin\AbstractPlugin;
+use Subject\Exception\InvalidArgumentException;
 
 class TopicPlugin extends AbstractPlugin
 {
+    use \Taxonomy\Manager\SharedTaxonomyManagerTrait;
+    
+    public function addEntity($entity, $to){
+        $term = $this->getSharedTaxonomyManager()->getTerm($to);
+        
+        if($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
+            throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
+        
+        $term->addLink('entities', $entity);
+        $term->persistAndFlush();
+        
+        return $this;
+    }
 
     public function getEnabledEntityTypes ()
     {
@@ -28,11 +42,17 @@ class TopicPlugin extends AbstractPlugin
 
     public function getEntityTypeLabel ($type, $label)
     {
-        return $this->getOption('entity_types')[$type]['label'][$label];
+        if(!array_key_exists($type, $this->getOption('entity_types')))
+            throw new \Exception(sprintf('Type %s is not registered.', $type));
+        
+        return $this->getOption('entity_types')[$type]['labels'][$label];
     }
 
     public function getTemplateForEntityType ($type)
     {
+        if(!array_key_exists($type, $this->getOption('entity_types')))
+            throw new \Exception(sprintf('Type %s is not registered.', $type));
+            
         return $this->getOption('entity_types')[$type]['template'];
     }
 

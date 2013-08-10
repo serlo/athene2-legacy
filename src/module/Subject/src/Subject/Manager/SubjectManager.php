@@ -15,34 +15,41 @@ use Subject\Service\SubjectServiceInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait, \Subject\Plugin\PluginManagerAwareTrait;
-    
-    public function add(SubjectServiceInterface $service)
+    use \Common\Traits\ObjectManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait;
+
+    protected $names = array();
+
+    public function add (SubjectServiceInterface $service)
     {
-        $this->addInstance($service->getName(), $service);
-        return $service->getName();
+        $this->names[$service->getName()] = $service->getId();
+        $this->addInstance($service->getId(), $service);
+        return $this;
     }
 
-    public function get($subject)
+    public function get ($subject)
     {
         $this->injectInstances();
-        return $this->getInstance($subject);
+        if (is_numeric($subject)) {
+            return $this->getInstance($subject);
+        } else {
+            return $this->getInstance($this->names[$subject]);
+        }
     }
 
-    public function getAllSubjects()
+    public function getAllSubjects ()
     {
         $this->injectInstances();
         return $this->getInstances();
     }
 
-    public function has($subject)
+    public function has ($subject)
     {
         return $this->hasInstance($subject);
     }
 
-    private function injectInstances()
+    private function injectInstances ()
     {
-        if(count($this->getInstances())){
+        if (count($this->getInstances())) {
             return $this;
         }
         
@@ -55,19 +62,19 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $this;
     }
 
-    public function getSubjectFromRequest()
+    public function getSubjectFromRequest ()
     {
-        return $this->get('math');
+        return $this->get(1);
     }
 
-    protected function createInstanceFromEntity($entity)
+    protected function createInstanceFromEntity ($entity)
     {
-        if(!isset($this->config[$entity->getName()]))
+        if (! isset($this->config[$entity->getName()]))
             throw new \Exception(sprintf('Could not find a configuration for `%s`', $entity->getType()->getName()));
         $options = $this->config[$entity->getName()];
         
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
-        $instance->setEntity($entity);        
+        $instance->setEntity($entity);
         $instance->setOptions($options);
         return $instance;
     }

@@ -19,13 +19,13 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class EntityManager extends AbstractManager implements EntityManagerInterface, UuidManagerAwareInterface, ObjectManagerAwareInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
-    private function getById($id)
+    private function getById ($id)
     {
         $entity = $this->getObjectManager()->find($this->resolveClassName('Entity\Entity\EntityInterface'), $id);
-
-        if(!is_object($entity))
+        
+        if (! is_object($entity))
             throw new InvalidArgumentException(sprintf('Entity with ID %s not found.', $id));
         
         $entityService = $this->createInstanceFromEntity($entity);
@@ -33,14 +33,14 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         return $entityService;
     }
 
-    private function getByEntity(EntityInterface $entity)
+    private function getByEntity (EntityInterface $entity)
     {
         $entityService = $this->createInstanceFromEntity($entity);
         $this->add($entityService);
         return $this;
     }
 
-    public function get($id)
+    public function get ($id)
     {
         if (is_numeric($id)) {} elseif ($id instanceof EntityInterface) {
             $id = $id->getId();
@@ -53,48 +53,51 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         return $this->getInstance($id);
     }
 
-    public function create($factoryClass)
+    public function create ($type)
     {
         $em = $this->getObjectManager();
-        $factory = $em->getRepository($this->resolveClassName('Entity\Entity\TypeInterface'))
-            ->findOneByClassName($factoryClass);
+        $type = $em->getRepository($this->resolveClassName('Entity\Entity\TypeInterface'))
+            ->findOneByName($type);
         
-        if (! is_object($factory))
-            throw new \Exception("Factory `{$factoryClass}` not found.");
+        if (! is_object($type))
+            throw new \Exception("Type `{$type}` not found.");
         
         $class = $this->resolveClassName('Entity\Entity\EntityInterface');
         
         $entity = $this->getUuidManager()->factory($class);
         
         $entity->populate(array(
-            'language' => $this->getServiceManager()
-                ->get('Core\Service\LanguageManager')
+            'language' => $this->getLanguageManager()
                 ->getRequestLanguage()
                 ->getEntity(),
-            'factory' => $factory
+            'type' => $type
         ));
         
-        $entity->setFactory($factory);
-        echo $entity->getId();
+        $entity->setType($type);
+        
         $em->persist($entity);
         $em->flush();
+        
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array(
+            'entity' => $entity
+        ));
         
         return $this->get($entity->getId());
     }
 
-    public function add(EntityServiceInterface $entityService)
+    public function add (EntityServiceInterface $entityService)
     {
         return $this->addInstance($entityService->getId(), $entityService);
     }
 
-    public function createInstanceFromEntity($entity)
+    public function createInstanceFromEntity ($entity)
     {
         $instance = parent::createInstance('Entity\Service\EntityServiceInterface');
-        $this->inject($instance, $entity);       
+        $this->inject($instance, $entity);
         return $instance;
     }
 
-    protected function inject(EntityServiceInterface $entityService, EntityInterface $entity)
+    protected function inject (EntityServiceInterface $entityService, EntityInterface $entity)
     {
         $entityService->setPluginManager($this->getPluginManager());
         $entityService->setEntityManager($this);
@@ -103,19 +106,26 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         if (! array_key_exists($entity->getType()->getName(), $this->config['types']))
             throw new InvalidArgumentException(sprintf('Type %s not found in configuration.', $entity->getType()->getName()));
         
-        
-        if(!array_key_exists('plugins', $this->config['types'][$entity->getType()->getName()]))
+        if (! array_key_exists('plugins', $this->config['types'][$entity->getType()->getName()]))
             throw new \Exception('Must define plugins');
         
         $config = $this->config['types'][$entity->getType()->getName()];
-
         
-
         $entityService->setOptions($config);
         return $this;
     }
     
     /*
-     * public function delete(EntityServiceInterface $entityService) { $entityService->trash(); $entityService->persistAndFlush(); return $this; }
+     *
+     * public
+     * function
+     * delete(EntityServiceInterface
+     * $entityService)
+     * {
+     * $entityService->trash();
+     * $entityService->persistAndFlush();
+     * return
+     * $this;
+     * }
      */
 }
