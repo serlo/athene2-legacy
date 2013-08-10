@@ -13,7 +13,7 @@ namespace Taxonomy\Manager;
 
 use Taxonomy\SharedTaxonomyManagerInterface;
 
-trait SharedTaxonomyManagerTrait
+trait SharedTaxonomyManagerAwareTrait
 {
 
     /**

@@ -24,6 +24,12 @@ return array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
+                    'setTermManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setUuidManager' => array(
+                        'required' => 'true'
+                    ),
                 ),
                 'Taxonomy\SharedTaxonomyManager' => array(
                     'setEntityManager' => array(

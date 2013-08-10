@@ -16,7 +16,7 @@ use Subject\Exception\InvalidArgumentException;
 
 class TopicPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
     
     public function addEntity($entity, $to){
         $term = $this->getSharedTaxonomyManager()->getTerm($to);
