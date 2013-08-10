@@ -98,6 +98,16 @@ return array(
                         )
                     )
                 )
+            ),
+            'article' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\ArticleForm'
+                        )
+                    ),
+                )
             )
         ),
         'instances' => array(
