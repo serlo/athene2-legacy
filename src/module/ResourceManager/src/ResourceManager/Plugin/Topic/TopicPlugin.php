@@ -24,7 +24,7 @@ class TopicPlugin extends AbstractPlugin
         if($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
         
-        $term->addLink('entities', $entity);
+        $term->addLink('entities', $entity->getEntity());
         $term->persistAndFlush();
         
         return $this;
@@ -38,6 +38,10 @@ class TopicPlugin extends AbstractPlugin
             $return[] = $type;
         }
         return $return;
+    }
+    
+    public function isTypeEnabled($type){
+        return in_array($type, $this->getEnabledEntityTypes());
     }
 
     public function getEntityTypeLabel ($type, $label)

@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_link")
  */
-class Link extends AbstractEntity {    
-    public function __construct() {
-    }
+class Link extends AbstractEntity {
+    
 }

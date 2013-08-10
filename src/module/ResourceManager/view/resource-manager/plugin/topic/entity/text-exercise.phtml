@@ -18,7 +18,14 @@ $exercise = $this->exercise;
         <?php echo $revision->get('content'); ?>
     </section>
 	<section class="solution">
-        <?php echo $exercise->solution()->findChild()->repository()->getCurrentRevision()->get('content'); ?>
+    	<?php if(!is_object($exercise->solution()->findChild())): ?>
+    	<?php echo $this->translate(sprintf('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?', $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('scope' => 'exercise', 'to_entity' => $exercise->getId()))))); ?>
+    	<?php else: ?>
+    	<?php $solutionRepository = $exercise->solution()->findChild()->repository(); ?>
+    	<?php if($solutionRepository->hasHead()): ?>
+        <?php echo $solutionRepository->getCurrentRevision()->get('content'); ?>
+    	<?php endif; ?>
+        <?php endif; ?>
     </section>
 </article>
 <?php endif; ?>

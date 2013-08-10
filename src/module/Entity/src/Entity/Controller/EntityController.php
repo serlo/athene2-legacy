@@ -18,7 +18,7 @@ class EntityController extends AbstractActionController
     use \Entity\Manager\EntityManagerAwareTrait;
     
     public function createAction(){
-        $type = $this->getParam('type');
+        $type = $this->params('type');
         $entity = $this->getEntityManager()->create($type);    
         return true;
     }

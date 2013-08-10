@@ -42,6 +42,16 @@ class RepositoryPlugin extends AbstractPlugin
      * 
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
+    public function hasHead()
+    {
+        return $this->getRepository()->hasHead();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * 
+     * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
+     */
     public function getCurrentRevision()
     {
         return $this->getRepository()->getCurrentRevision();

@@ -16,24 +16,26 @@ use Taxonomy\Collection\TermCollection;
 
 class EntityService implements EntityServiceInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Taxonomy\Manager\SharedTaxonomyManagerTrait;
-    
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerTrait;
+
     public function getTerms()
     {
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
-    
-    public function persist(){
-        
+
+    public function persist()
+    {
         $this->getObjectManager()->persist($this->getEntity());
     }
-    
-    public function flush(){
+
+    public function flush()
+    {
         $this->getObjectManager()->flush($this->getEntity());
         return $this;
     }
-    
-    public function persistAndFlush(){
+
+    public function persistAndFlush()
+    {
         $this->persist();
         $this->flush();
         return $this;
@@ -51,18 +53,19 @@ class EntityService implements EntityServiceInterface
         }
         return $this;
     }
-    
-    public function setOptions(array $options){
+
+    public function setOptions(array $options)
+    {
         $this->whitelistPlugins($options['plugins']);
     }
 
-    protected $pluginWhitelist = array();
+    protected $whitelistedPlugins = array();
 
     protected $pluginOptions = array();
 
     public function isPluginWhitelisted($name)
     {
-        return array_key_exists($name, $this->pluginWhitelist) && $this->pluginWhitelist[$name] !== FALSE;
+        return array_key_exists($name, $this->whitelistedPlugins) && $this->whitelistedPlugins[$name] !== FALSE;
     }
 
     public function whitelistPlugins(array $config)
@@ -92,12 +95,13 @@ class EntityService implements EntityServiceInterface
 
     public function whitelistPlugin($name, $plugin)
     {
-        $this->pluginWhitelist[$name] = $plugin;
+        $this->whitelistedPlugins[$name] = $plugin;
         return $this;
     }
-    
-    public function getPlugin($name){
-        return $this->pluginWhitelist[$name];
+
+    public function getPlugin($name)
+    {
+        return $this->whitelistedPlugins[$name];
     }
 
     /**
@@ -123,9 +127,7 @@ class EntityService implements EntityServiceInterface
 
     /**
      * Method overloading: return/call plugins
-     *
-     * If the plugin is a functor, call it, passing the parameters provided.
-     * Otherwise, return the plugin instance.
+     * If the plugin is a functor, call it, passing the parameters provided. Otherwise, return the plugin instance.
      *
      * @param string $method            
      * @param array $params            
@@ -133,14 +135,14 @@ class EntityService implements EntityServiceInterface
      */
     public function __call($method, $params)
     {
-        if($this->isPluginWhitelisted($method)){
+        if ($this->isPluginWhitelisted($method)) {
             $plugin = $this->plugin($method);
             if (is_callable($plugin)) {
                 return call_user_func_array($plugin, $params);
             }
             return $plugin;
         } else {
-            if(method_exists($this->getEntity(), $method)){
+            if (method_exists($this->getEntity(), $method)) {
                 return call_user_func_array(array(
                     $this->getEntity(),
                     $method

@@ -24,13 +24,18 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
      * @see
      * \Link\LinkManagerInterface::get()
      */
-    public function get ($id)
+    public function get ($key)
     {
-        if($id instanceof LinkEntityInterface){
-            return $this->getInstance($id->getId());
-        } else {
-            return $this->getInstance($id);
+        $id = $key;
+        if($key instanceof LinkEntityInterface){
+            $id = $key->getId();
+            
+            // Lazy-Loading
+            if(!$this->has($id)){
+                $this->add($key);
+            }
         }
+        return $this->getInstance($id);
     }
 
     /*public function create (LinkEntityInterface $entity)

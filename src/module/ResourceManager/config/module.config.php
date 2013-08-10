@@ -35,14 +35,6 @@ return array(
                                     ),
                                     //'type' => 'text-solution',
                                     'template' => 'resource-manager/plugin/topic/entity/text-exercise',
-                                ),
-                                'text-solution' => array(
-                                    'labels' => array(
-                                        'singular' => 'Lösung',
-                                        'plural' => 'Lösungen',
-                                    ),
-                                    //'type' => 'text-solution',
-                                    'template' => 'resource-manager/plugin/topic/entity/text-solution',
                                 )
                             )
                         )
