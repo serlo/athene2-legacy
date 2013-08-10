@@ -1,4 +1,6 @@
 # Installation Notes
+* Make sure *PHP 5.5+* is running
+* Make sure *MySQL 5.+* is running
 * Rename `/src/config/autoload/local.php.dist` to `/src/config/autoload/local.php`
 * Edit `/src/config/autoload/local.php`
 * Run `php composer.phar install` in `/src/`
