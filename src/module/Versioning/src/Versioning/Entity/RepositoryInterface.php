@@ -25,5 +25,5 @@ interface RepositoryInterface extends EntityInterface
      * 
      * @return RevisionInterface
      */
-    public function addNewRevision();
+    public function newRevision();
 }

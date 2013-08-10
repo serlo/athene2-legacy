@@ -10,31 +10,45 @@
 namespace LearningResource\Form;
 
 use Zend\Form\Form;
-use Entity\Form\Fieldset;
-use Application\Entity\Provider\Repository\Form\RevisionFieldset;
+use Zend\InputFilter\InputFilter;
 
-class TextExerciseForm extends Form {
-	function __construct() {
-		parent::__construct ( 'text-exercise' );
-		$this->setAttribute ( 'method', 'post' );
-		
-		$editor = new Fieldset ();
-		
-		$revision = new RevisionFieldset ();
-		$revision->add ( array (
-				'name' => 'content',
-				'type' => 'Zend\Form\Element\Textarea',
-				'attributes' => array (
-						'class' => 'ckeditor' 
-				) 
-		) );
-		$revision->setInputFilter ( array (
-				'content' => array (
-						'required' => true 
-				) 
-		) );
-		
-		$this->add ( $revision );
-		$this->add ( $editor );
-	}
+class TextExerciseForm extends Form
+{
+
+    function __construct ()
+    {
+        parent::__construct('text-exercise');
+        $this->setAttribute('method', 'post');
+        $inputFilter = new InputFilter('text-exercise');
+        
+        $this->add(array(
+            'name' => 'content',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'class' => 'ckeditor'
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Speichern'
+            )
+        ));
+        $this->add(array(
+            'name' => 'reset',
+            'attributes' => array(
+                'type' => 'reset',
+                'value' => 'Zurücksetzen'
+            )
+        ));
+        
+        $inputFilter->add(array(
+                'name' => 'content',
+                'required' => true
+        ));
+        
+        $this->setInputFilter($inputFilter);
+    }
 }

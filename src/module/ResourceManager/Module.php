@@ -42,7 +42,9 @@ class Module
 
     public function addEntityManagerListener ($sm, MvcEvent $mvce)
     {
-        /* Adds an entity to a subject, if a term is given */
+        /**
+         * Adds an entity to a subject, if a term is given
+         */
         $sm->get('Entity\Manager\EntityManager')
             ->getEventManager()
             ->attach('create', function  (Event $e) use( $sm, $mvce)
@@ -58,9 +60,12 @@ class Module
                         ->addEntity($entity, $_GET['term']);
                     
                     $url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
-                    
-                    $response = $mvce->getResponse ();
-                        $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url ) );
+                        $response = $mvce->getResponse ();
+                        
+                        $response->setHeaders ( $response->getHeaders ()->addHeaderLine ( 'Location', $url . '?ref=' . $mvce->getRequest()
+                    		->getHeader('Referer')
+                    		->getUri() ));
+                        
                         $response->setStatusCode ( 302 );
                         $response->sendHeaders ();
                         exit ();
