@@ -16,7 +16,7 @@ use User\Exception\UserNotFoundException;
 
 class UserManager extends AbstractManager implements UserManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait, \Zend\EventManager\EventManagerAwareTrait;
 
     public function get ($user)
     {
@@ -44,6 +44,8 @@ class UserManager extends AbstractManager implements UserManagerInterface
         
         $this->getObjectManager()->persist($user);
         $this->getObjectManager()->flush();
+        
+        $this->getEventManager()->trigger('create', $this, array('user' => $user));
         
         return $this->createService($user);
     }
