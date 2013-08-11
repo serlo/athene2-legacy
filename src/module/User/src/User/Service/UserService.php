@@ -6,12 +6,12 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace User\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Criteria;
 use User\Entity\User;
+use Zend\Form\Form;
 
 class UserService implements UserServiceInterface
 {
@@ -26,7 +26,8 @@ class UserService implements UserServiceInterface
 
     /**
      *
-     * @return the $entityManager
+     * @return the
+     *         $entityManager
      */
     public function getEntityManager ()
     {
@@ -50,20 +51,12 @@ class UserService implements UserServiceInterface
         return $this->create($data, $form);
     }
 
-    public function create (array $data, $form)
+    public function create ($data)
     {
         $user = new User();
-        
-        $form->setInputFilter($user->getInputFilter());
-        // $form->setData($data);
-        
-        if ($form->isValid()) {
-            $user->populate($form->getData());
-            $this->getEntityManager()->persist($user);
-            $this->getEntityManager()->flush();
-        } else {
-            print_r($form->getMessages());
-        }
+        $user->populate($data);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
         
         return $user;
     }
@@ -80,34 +73,25 @@ class UserService implements UserServiceInterface
     public function receive ($id)
     {}
 
-    public function getRoles ($user, $language = NULL, $subject = NULL){
+    public function getRoles ($user, $language = NULL, $subject = NULL)
+    {
         $user = $this->get($user);
         $return = array();
         
-        if(!$user)
+        if (! $user)
             return $return;
         
         $userRolesCollection = $user->getUserRoles();
         
-        foreach($this->getEntityManager()->getRepository('User\Entity\Role')->findAll() as $role){
+        foreach ($this->getEntityManager()
+            ->getRepository('User\Entity\Role')
+            ->findAll() as $role) {
             
             $roleCriteria = Criteria::create()->where(Criteria::expr()->eq("role", $role->getId()));
             $userRoles = $userRolesCollection->matching($roleCriteria);
             
-            foreach($userRoles as $userRole){                
-                if ((
-                        (
-                            ( 
-                                $userRole->exists('language') && $language !== NULL
-                            ) && (
-                                $userRole->__get('language')->id == $language
-                            )
-                        ) || (
-                            ! $userRole->exists('language')
-                        ) || (
-                            $language === NULL
-                        )
-                    )/* && (
+            foreach ($userRoles as $userRole) {
+                if (((($userRole->exists('language') && $language !== NULL) && ($userRole->__get('language')->id == $language)) || (! $userRole->exists('language')) || ($language === NULL))/* && (
                         (
                             (
                                 $userRole->exists('subject') && $subject !== NULL
@@ -121,32 +105,32 @@ class UserService implements UserServiceInterface
                         )
                     )*/)
                     {
-                        $return[] = $role->get('name');    
-                    }
+                    $return[] = $role->get('name');
+                }
             }
         }
         
         return $return;
     }
-    
-    public function get($user){
+
+    public function get ($user)
+    {
         if (! $user instanceof User) {
-        	if(is_numeric($user)){
-        		$user = $this->getEntityManager()->find('User\Entity\User',$user);
-        	} else {
-        		$user = $this->getEntityManager()
+            if (is_numeric($user)) {
+                $user = $this->getEntityManager()->find('User\Entity\User', $user);
+            } else {
+                $user = $this->getEntityManager()
                     ->getRepository('User\Entity\User')
                     ->findOneBy(array(
-                        'email' => $user
-                        )
-                );
-        	}
+                    'email' => $user
+                ));
+            }
         }
         return $user;
     }
-    
+
     public function hasRole ($user, $role, $language = NULL, $subject = NULL)
-    {   
+    {
         return array_search($role, $this->getRoles($user, $language, $subject)) !== FALSE;
     }
 }
