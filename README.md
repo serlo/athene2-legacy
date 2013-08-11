@@ -11,5 +11,9 @@ Now you are ready to go!
 
 Goto http://serlo:d3v@dev.serlo.org
 
+# Scribbles
+
+Goto http://serlo:prototype@serlo.clients.formundcode.de/layout/
+
 # Want to get involved?
 Read Wiki at https://github.com/serlo-org/athene2/wiki !
