@@ -9,11 +9,11 @@ Now you are ready to go!
 
 # Live Demo
 
-Goto http://serlo:d3v@dev.serlo.org
+Click [here](http://serlo:d3v@dev.serlo.org)
 
 # Scribbles
 
-Goto http://serlo:prototype@serlo.clients.formundcode.de/layout/
+Click [here](http://serlo:prototype@serlo.clients.formundcode.de/layout/)
 
 # Want to get involved?
 Read Wiki at https://github.com/serlo-org/athene2/wiki !
