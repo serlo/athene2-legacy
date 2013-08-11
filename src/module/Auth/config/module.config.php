@@ -134,12 +134,6 @@ return array(
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
             'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory',
-            'standard_identity' => function  ($sm)
-            {
-                $as = $sm->get('Auth\Service\AuthService');
-                $identity = new \ZfcRbac\Identity\StandardIdentity($as->getRoles());
-                return $identity;
-            },
             'Auth\Form\SignUp' => function  ($sm)
             {
                 $class = new Auth\Form\SignUp();
@@ -156,31 +150,6 @@ return array(
             'ZfcRbac\Firewall\Route' => array(
             ),
             'ZfcRbac\Firewall\Controller' => array(
-            )
-        ),
-        'providers' => array(
-            'ZfcRbac\Provider\AdjacencyList\Role\DoctrineDbal' => array(
-                'connection' => 'doctrine.connection.orm_default',
-                'options' => array(
-                    'table' => 'role',
-                    'id_column' => 'id',
-                    'name_column' => 'name',
-                    'join_column' => 'parent_id'
-                )
-            ),
-            'ZfcRbac\Provider\Generic\Permission\DoctrineDbal' => array(
-                'connection' => 'doctrine.connection.orm_default',
-                'options' => array(
-                    'permission_table' => 'permission',
-                    'role_table' => 'role',
-                    'role_join_table' => 'role_permission',
-                    'permission_id_column' => 'id',
-                    'permission_join_column' => 'permission_id',
-                    'role_id_column' => 'id',
-                    'role_join_column' => 'role_id',
-                    'permission_name_column' => 'name',
-                    'role_name_column' => 'name'
-                )
             )
         ),
         'identity_provider' => 'standard_identity'

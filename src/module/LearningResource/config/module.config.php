@@ -180,18 +180,27 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array(
+            'ZfcRbac\Firewall\Controller' => array(
                 array(
-                    'route' => 'entity/plugin/repository/add-revision/',
+                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
+                    'actions' => 'add-revision',
                     'roles' => 'login'
                 ),
                 array(
-                    'route' => 'entity/plugin/repository/trash-revision/',
+                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
+                    'actions' => array('trash-revision', 'checkout'),
                     'roles' => 'helper'
                 ),
                 array(
-                    'route' => 'entity/plugin/repository/purge-revision/',
-                    'roles' => 'admin'
+                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
+                    'actions' => 'purge-revision',
+                    'roles' => 'administrator'
+                ),
+
+                array(
+                    'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
+                    'actions' => array('set-topic', 'topic-dialog'),
+                    'roles' => 'helper'
                 ),
             ),
         )
