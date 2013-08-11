@@ -50,6 +50,11 @@ class UserManager extends AbstractManager implements UserManagerInterface
         return $this->createService($user);
     }
 
+    public function createUser ()
+    {
+        return $this->createService($this->createUserEntity());
+    }
+
     public function createUserEntity ()
     {
         $user = $this->resolveClassName('User\Entity\UserInterface');
