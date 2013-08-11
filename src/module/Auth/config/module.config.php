@@ -160,6 +160,6 @@ return array(
                 ),
             )
         ),
-        'identity_provider' => 'standard_identity'
+        //'identity_provider' => 'standard_identity'
     )
 );

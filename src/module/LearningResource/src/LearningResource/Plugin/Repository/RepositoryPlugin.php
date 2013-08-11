@@ -119,7 +119,7 @@ class RepositoryPlugin extends AbstractPlugin
         $revision = $this->getEntityService()->getEntity()->newRevision();
         
         $revision->setAuthor($this->getAuthService()
-            ->getUser());
+            ->getUser()->getEntity());
         
         $repository->addRevision($revision);
         $repository->persist();        

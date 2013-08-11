@@ -16,17 +16,13 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface, ObjectManagerAwareInterface
 {
 
+    use \Common\Traits\ObjectManagerAwareTrait;
+    
     /**
      *
      * @var LanguageService
      */
     protected $languageService;
-
-    /**
-     *
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $objectManager;
 
     protected $options = array(
         'instances' => array(
@@ -59,23 +55,6 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     public function setLanguageService (LanguageService $languageService)
     {
         $this->languageService = $languageService;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
-     */
-    public function getObjectManager ()
-    {
-        return $this->objectManager;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
-     */
-    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
         return $this;
     }
 

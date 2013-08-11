@@ -11,7 +11,9 @@ use Zend\Permissions\Acl\Resource\GenericResource as AclResource;
 
 class AuthService implements AuthServiceInterface
 {
+    use \User\Manager\UserManagerAwareTrait;
 
+    
     private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $languageService, $subjectService, $controller;
 
     private $entityManager;
@@ -74,15 +76,6 @@ class AuthService implements AuthServiceInterface
 
     /**
      *
-     * @return the $userService
-     */
-    public function getUserService()
-    {
-        return $this->userService;
-    }
-
-    /**
-     *
      * @param field_type $userService            
      */
     public function setUserService(UserServiceInterface $userService)
@@ -103,7 +96,7 @@ class AuthService implements AuthServiceInterface
      *
      * @param User $user            
      */
-    public function setUser($user = NULL)
+    public function setUser(UserServiceInterface $user = NULL)
     {
         $this->user = $user;
     }
@@ -181,7 +174,7 @@ class AuthService implements AuthServiceInterface
         $result = $this->authService->authenticate();
         
         if ($result->isValid()) {
-            $this->setUser($this->getUserService()
+            $this->setUser($this->getUserManager()
                 ->get($email));
         }
         
@@ -207,7 +200,7 @@ class AuthService implements AuthServiceInterface
     public function getRoles()
     {
         if($this->loggedIn()){
-        return $this->getUserService()->getRoles($this->getUser(), $this->getLanguageService()
+        return $this->getUserManager()->get($this->getUser())->getRoles($this->getLanguageService()
             ->getId(), $this->getSubjectService()
             ->getId());
         } else {

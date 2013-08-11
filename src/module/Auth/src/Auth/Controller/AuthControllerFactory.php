@@ -12,7 +12,7 @@ class AuthControllerFactory implements FactoryInterface
         $ctr = new AuthController();
         $ctr->setLoginForm(new \Auth\Form\Login());
         $ctr->setObjectManager($serviceLocator->getServiceLocator()->get('EntityManager'));
-        $ctr->setUserService($serviceLocator->getServiceLocator()->get('User\Service\UserService'));
+        $ctr->setUserManager($serviceLocator->getServiceLocator()->get('User\Manager\UserManager'));
         $ctr->setHashService($serviceLocator->getServiceLocator()->get('Auth\Service\HashService'));
         return $ctr;
     }
