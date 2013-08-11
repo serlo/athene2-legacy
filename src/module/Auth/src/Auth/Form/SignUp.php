@@ -6,15 +6,16 @@ use Zend\Form\Form;
 class SignUp extends Form
 {
 
-    public function __construct ()
+    public function __construct ($objectManager)
     {
+        $filter = new \Auth\Form\SignUpFilter($objectManager);
+        
         parent::__construct('signUp');
         
         $this->setAttribute('action', '/register');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
-        $this->setInputFilter(new \Auth\Form\SignUpFilter());
-        
+        $this->setInputFilter($filter);
         
         $this->add(array(
             'name' => 'username',
@@ -108,10 +109,9 @@ class SignUp extends Form
             'attributes' => array(
                 'type' => 'reset',
                 'value' => 'Zurücksetzen',
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-danger'
             ),
-            'options' => array(
-            )
+            'options' => array()
         ));
     }
 }
