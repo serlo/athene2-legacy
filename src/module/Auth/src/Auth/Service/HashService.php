@@ -79,7 +79,6 @@ class HashService implements HashServiceInterface, FactoryInterface
     	}
     
     	// Return the password, with the remaining hash appended
-    	echo $password.$hash;
     	return $password.$hash;
     }
     

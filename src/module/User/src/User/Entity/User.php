@@ -6,7 +6,6 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,14 +15,15 @@ use Core\Entity\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * A user.
- * 
- * @ORM\Entity
+ * A
+ * user.
+ *
+ * @ORM\Entity @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user")
  */
 class User extends AbstractEntity
 {
-    
+
     private $inputFilter;
 
     /**
@@ -34,179 +34,227 @@ class User extends AbstractEntity
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserLog", mappedBy="user")
-     **/
+     * @ORM\OneToMany(targetEntity="UserLog",
+     * mappedBy="user")
+     */
     protected $logs;
 
     /**
-     * @ORM\OneToMany(targetEntity="RoleUser", mappedBy="user")
-     **/
+     * @ORM\OneToMany(targetEntity="RoleUser",
+     * mappedBy="user")
+     */
     private $userRoles;
 
     /**
-     * @ORM\Column(type="string", unique=true) *
+     * @ORM\Column(type="string",
+     * unique=true)
+     * *
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string", unique=true) *
+     * @ORM\Column(type="string",
+     * unique=true)
+     * *
      */
     protected $username;
 
     /**
-     * @ORM\Column(type="string") *
+     * @ORM\Column(type="string")
+     * *
      */
     protected $password;
 
     /**
-     * @ORM\Column(type="integer") *
+     * @ORM\Column(type="integer")
+     * *
      */
     protected $logins;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true) *
+     * @ORM\Column(type="datetime",
+     * nullable=true)
+     * *
      */
     protected $last_login;
 
     /**
-     * @ORM\Column(type="datetime") *
+     * @ORM\Column(type="datetime")
+     * *
      */
     protected $date;
 
     /**
-     * @ORM\Column(type="string", nullable=true) *
+     * @ORM\Column(type="string",
+     * nullable=true)
+     * *
      */
     protected $givenname;
 
     /**
-     * @ORM\Column(type="string", nullable=true) *
+     * @ORM\Column(type="string",
+     * nullable=true)
+     * *
      */
     protected $lastname;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true) *
+     * @ORM\Column(type="boolean",
+     * nullable=true)
+     * *
      */
     protected $gender;
 
     /**
-     * @ORM\Column(type="boolean") *
+     * @ORM\Column(type="boolean")
+     * *
      */
     protected $ads_enabled;
 
     /**
-     * @ORM\Column(type="boolean") *
+     * @ORM\Column(type="boolean")
+     * *
      */
     protected $removed;
 
     /**
-	 * @return the $userRoles
-	 */
-	public function getUserRoles() {
-		return $this->userRoles;
-	}
+     *
+     * @return the
+     *         $userRoles
+     */
+    public function getUserRoles ()
+    {
+        return $this->userRoles;
+    }
 
-	/**
-     * @return \Doctrine\Common\Collections\ArrayCollection $logs
+    /**
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     *         $logs
      */
     public function getLogs ()
     {
         return $this->logs;
     }
 
-	/**
-     * @return array $email
+    /**
+     *
+     * @return array
+     *         $email
      */
     public function getEmail ()
     {
         return $this->email;
     }
 
-	/**
-     * @return array $username
+    /**
+     *
+     * @return array
+     *         $username
      */
     public function getUsername ()
     {
         return $this->username;
     }
-    
-    public function getName(){
+
+    public function getName ()
+    {
         return $this->getUsername();
     }
 
-	/**
-     * @return array $password
+    /**
+     *
+     * @return array
+     *         $password
      */
     public function getPassword ()
     {
         return $this->password;
     }
 
-	/**
-     * @return number $logins
+    /**
+     *
+     * @return number
+     *         $logins
      */
     public function getLogins ()
     {
         return $this->logins;
     }
 
-	/**
-     * @return field_type $last_login
+    /**
+     *
+     * @return field_type
+     *         $last_login
      */
     public function getLast_login ()
     {
         return $this->last_login;
     }
 
-	/**
-     * @return field_type $date
+    /**
+     *
+     * @return field_type
+     *         $date
      */
     public function getDate ()
     {
         return $this->date;
     }
 
-	/**
-     * @return field_type $givenname
+    /**
+     *
+     * @return field_type
+     *         $givenname
      */
     public function getGivenname ()
     {
         return $this->givenname;
     }
 
-	/**
-     * @return field_type $lastname
+    /**
+     *
+     * @return field_type
+     *         $lastname
      */
     public function getLastname ()
     {
         return $this->lastname;
     }
 
-	/**
-     * @return field_type $gender
+    /**
+     *
+     * @return field_type
+     *         $gender
      */
     public function getGender ()
     {
         return $this->gender;
     }
 
-	/**
-     * @return boolean $ads_enabled
+    /**
+     *
+     * @return boolean
+     *         $ads_enabled
      */
     public function getAds_enabled ()
     {
         return $this->ads_enabled;
     }
 
-	/**
-     * @return boolean $removed
+    /**
+     *
+     * @return boolean
+     *         $removed
      */
     public function getRemoved ()
     {
         return $this->removed;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $logs
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $logs            
      * @return $this
      */
     public function setLogs ($logs)
@@ -215,8 +263,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $userRoles
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $userRoles            
      * @return $this
      */
     public function setUserRoles ($userRoles)
@@ -225,8 +274,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param array $email
+    /**
+     *
+     * @param array $email            
      * @return $this
      */
     public function setEmail ($email)
@@ -235,8 +285,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param array $username
+    /**
+     *
+     * @param array $username            
      * @return $this
      */
     public function setUsername ($username)
@@ -245,8 +296,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param array $password
+    /**
+     *
+     * @param array $password            
      * @return $this
      */
     public function setPassword ($password)
@@ -255,8 +307,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param number $logins
+    /**
+     *
+     * @param number $logins            
      * @return $this
      */
     public function setLogins ($logins)
@@ -265,8 +318,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param field_type $last_login
+    /**
+     *
+     * @param field_type $last_login            
      * @return $this
      */
     public function setLast_login ($last_login)
@@ -275,8 +329,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param field_type $date
+    /**
+     *
+     * @param field_type $date            
      * @return $this
      */
     public function setDate ($date)
@@ -285,8 +340,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param field_type $givenname
+    /**
+     *
+     * @param field_type $givenname            
      * @return $this
      */
     public function setGivenname ($givenname)
@@ -295,8 +351,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param field_type $lastname
+    /**
+     *
+     * @param field_type $lastname            
      * @return $this
      */
     public function setLastname ($lastname)
@@ -305,8 +362,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param field_type $gender
+    /**
+     *
+     * @param field_type $gender            
      * @return $this
      */
     public function setGender ($gender)
@@ -315,8 +373,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param boolean $ads_enabled
+    /**
+     *
+     * @param boolean $ads_enabled            
      * @return $this
      */
     public function setAds_enabled ($ads_enabled)
@@ -325,8 +384,9 @@ class User extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @param boolean $removed
+    /**
+     *
+     * @param boolean $removed            
      * @return $this
      */
     public function setRemoved ($removed)
@@ -335,13 +395,17 @@ class User extends AbstractEntity
         return $this;
     }
 
-	public function __construct() {
-    	$this->userRoles = new ArrayCollection();
+    public function __construct ()
+    {
+        $this->userRoles = new ArrayCollection();
         $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Populate from an array.
+     * Populate
+     * from
+     * an
+     * array.
      *
      * @param array $data            
      */

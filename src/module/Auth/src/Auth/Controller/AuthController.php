@@ -11,10 +11,30 @@ class AuthController extends AbstractActionController
     protected $userService;
 
     protected $hashService;
+    
+    private $registerForm;
 
     private $loginForm;
 
     /**
+     * @return field_type $registerForm
+     */
+    public function getRegisterForm ()
+    {
+        return $this->registerForm;
+    }
+
+	/**
+     * @param field_type $registerForm
+     * @return $this
+     */
+    public function setRegisterForm ($registerForm)
+    {
+        $this->registerForm = $registerForm;
+        return $this;
+    }
+
+	/**
      *
      * @return field_type
      *         $hashService
@@ -141,11 +161,12 @@ class AuthController extends AbstractActionController
 
     public function registerAction ()
     {
-        $form = new \Auth\Form\SignUp();
+        $form = new \Auth\Form\SignUp($this->getObjectManager());
         
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost();
             $data = $post->getArrayCopy();
+            $post->set('id',0);
             
             if (isset($data['password']))
                 $data['password'] = $this->getHashService()->hash_password($data['password']);

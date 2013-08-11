@@ -55,6 +55,7 @@ class UserService implements UserServiceInterface
     {
         $user = new User();
         $user->populate($data);
+        
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
         

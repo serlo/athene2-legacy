@@ -1,14 +1,48 @@
 <?php
 namespace Auth\Form;
 
-use User\Form\UserFilter;
 use Zend\InputFilter\InputFilter;
+use DoctrineModule\Validator\UniqueObject;
 
 class SignUpFilter extends InputFilter
 {
+    use \Common\Traits\ObjectManagerAwareTrait;
 
-    public function __construct ()
-    {
+    public function __construct ($objectManager)
+    {        
+        $this->add(array(
+            'name' => 'email',
+            'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'EmailAddress'
+                ),
+                array(
+                    'name' => 'DoctrineModule\Validator\UniqueObject',
+                    'options' => array(
+                        'object_repository' => $objectManager->getRepository('User\Entity\User'),
+                        'fields' => 'email',
+                        'object_manager' => $objectManager
+                    )
+                )
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'username',
+            'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'DoctrineModule\Validator\UniqueObject',
+                    'options' => array(
+                        'object_repository' => $objectManager->getRepository('User\Entity\User'),
+                        'fields' => 'username',
+                        'object_manager' => $objectManager
+                    )
+                )
+            )
+        ));
+        
         $this->add(array(
             'name' => 'emailConfirm',
             'required' => true,
@@ -41,7 +75,7 @@ class SignUpFilter extends InputFilter
                         'token' => 'password'
                     )
                 )
-            ),
+            )
         ));
         
         $this->add(array(

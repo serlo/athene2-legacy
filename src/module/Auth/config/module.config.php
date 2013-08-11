@@ -137,6 +137,11 @@ return array(
                 $as = $sm->get('Auth\Service\AuthService');
                 $identity = new \ZfcRbac\Identity\StandardIdentity($as->getRoles());
                 return $identity;
+            },
+            'Auth\Form\SignUp' => function ($sm) {
+                $class = new Auth\Form\SignUp();
+                $class->setObjectManager($sm->get('EntityManager'));
+                return $class;
             }
         ),
         'invokables' => array(
