@@ -41,14 +41,22 @@ class SignUpFilter extends InputFilter
                         'token' => 'password'
                     )
                 )
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'password',
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'Auth\Filter\HashFilter'
+                )
             )
         ));
         
         $this->add(array(
             'name' => 'tos',
-            'required' => true,
+            'required' => true
         ));
-        
-        
     }
 }

@@ -37,8 +37,8 @@ return array(
                 'options' => array(
                     'route' => '/register',
                     'defaults' => array(
-                        'controller' => 'Auth\Controller\Register',
-                        'action' => 'index'
+                        'controller' => 'Auth\Controller\Auth',
+                        'action' => 'register'
                     )
                 )
             )
@@ -53,7 +53,7 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
-            'auth' => function ($sm)
+            'auth' => function  ($sm)
             {
                 
                 $helper = new \Auth\View\Helper\Auth();
@@ -61,7 +61,7 @@ return array(
                     ->get('Auth\Service\AuthService'));
                 return $helper;
             },
-            'acl' => function ($sm)
+            'acl' => function  ($sm)
             {
                 
                 $helper = new \Auth\View\Helper\Auth();
@@ -71,11 +71,25 @@ return array(
             }
         )
     ),
+    'filters' => array(
+        'invokables' => array( 'passwordfilter' => 'Auth\Filter\PasswordFilter'),
+        'factories' => array(
+            'passwordfilter' => function  ($sm)
+            {
+                $class = new \Auth\Filter\PasswordFilter();
+                die(get_class($sm->getServiceLocator()->get('Auth\Service\HashService')));
+                $class->setHashService($sm->getServiceLocator()
+                    ->get('Auth\Service\HashService'));
+                return $class;
+            }
+        ),
+        'aliases' => array()
+    ),
     'controllers' => array(
         'factories' => array(
             'Auth\Controller\Auth' => 'Auth\Controller\AuthControllerFactory',
-            'Auth\Controller\Register' => function ($sm)
-            {                
+            'Auth\Controller\Register' => function  ($sm)
+            {
                 $ct = new \Auth\Controller\RegisterController();
                 
                 $ct->getEventManager()->attach('signUpComplete', array(
@@ -103,7 +117,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Zend\Db\Adapter\Adapter' => function ($sm)
+            'Zend\Db\Adapter\Adapter' => function  ($sm)
             {
                 $config = $sm->get('Config');
                 $dbParams = $config['dbParams'];
@@ -118,7 +132,7 @@ return array(
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
             'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory',
-            'standard_identity' => function ($sm)
+            'standard_identity' => function  ($sm)
             {
                 $as = $sm->get('Auth\Service\AuthService');
                 $identity = new \ZfcRbac\Identity\StandardIdentity($as->getRoles());
@@ -156,5 +170,5 @@ return array(
             )
         ),
         'identity_provider' => 'standard_identity'
-    ),
+    )
 );

@@ -6,21 +6,67 @@ use Zend\View\Model\ViewModel;
 
 class AuthController extends AbstractActionController
 {
+    use\Common\Traits\ObjectManagerAwareTrait;
+
+    protected $userService;
+
+    protected $hashService;
 
     private $loginForm;
 
-    public function loginAction()
+    /**
+     *
+     * @return field_type
+     *         $hashService
+     */
+    public function getHashService ()
+    {
+        return $this->hashService;
+    }
+
+    /**
+     *
+     * @param field_type $hashService            
+     * @return $this
+     */
+    public function setHashService ($hashService)
+    {
+        $this->hashService = $hashService;
+        return $this;
+    }
+
+    /**
+     *
+     * @return field_type
+     *         $userService
+     */
+    public function getUserService ()
+    {
+        return $this->userService;
+    }
+
+    /**
+     *
+     * @param field_type $userService            
+     * @return $this
+     */
+    public function setUserService ($userService)
+    {
+        $this->userService = $userService;
+        return $this;
+    }
+
+    public function loginAction ()
     {
         $this->title()->set('Anmelden');
         
         if (! $this->loginForm)
             throw new \BadMethodCallException('Login Form not yet set!');
         
-        
         $from = $this->params()->fromQuery('ref', false);
         
         if ($from) {
-            $this->loginForm->setAttribute('action', '/login?ref='.$from);
+            $this->loginForm->setAttribute('action', '/login?ref=' . $from);
         } else {
             $this->loginForm->setAttribute('action', '/login');
         }
@@ -72,7 +118,7 @@ class AuthController extends AbstractActionController
         }
     }
 
-    public function logoutAction()
+    public function logoutAction ()
     {
         $this->auth()->logout();
         if (! $this->auth()->loggedIn())
@@ -83,13 +129,52 @@ class AuthController extends AbstractActionController
         $this->redirect()->toRoute('home');
     }
 
-    public function setLoginForm($loginForm)
+    public function setLoginForm ($loginForm)
     {
         $this->loginForm = $loginForm;
     }
 
-    public function getLoginForm()
+    public function getLoginForm ()
     {
         return $this->loginForm;
+    }
+
+    public function registerAction ()
+    {
+        $form = new \Auth\Form\SignUp();
+        
+        if ($this->getRequest()->isPost()) {
+            $post = $this->getRequest()->getPost();
+            $data = $post->getArrayCopy();
+            
+            if (isset($data['password']))
+                $data['password'] = $this->getHashService()->hash_password($data['password']);
+            if (isset($data['passwordConfirm']))
+                $data['passwordConfirm'] = $this->getHashService()->hash_password($data['passwordConfirm']);
+            
+            $form->setData($post);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $this->getUserService()->create($form->getData());
+                
+                $params = compact(array(
+                    'data',
+                ));
+                
+                //$this->getEventManager()->trigger('signUpComplete', $this, $params);
+                $this->flashmessenger()->addMessage('Du hast dich erfolgreich registriert und kannst dich nun einloggen.');
+                
+                $this->redirect()->toRoute('home');
+                return false;
+            } else {
+                return new ViewModel(array(
+                    'form' => $form
+                ));
+            }
+        } else {
+            return new ViewModel(array(
+                'form' => $form
+            ));
+        }
     }
 }

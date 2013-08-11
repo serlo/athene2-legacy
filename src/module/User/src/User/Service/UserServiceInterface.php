@@ -9,6 +9,7 @@
 
 namespace User\Service;
 
+use Zend\Form\Form;
 interface UserServiceInterface {
     /**
      * Listener for creating users
@@ -25,7 +26,7 @@ interface UserServiceInterface {
      * @param unknown $form
      * @return \User\Entity\User
      */
-    public function create(array $data, $form);
+    public function create($form);
     
     public function delete($id);
     
