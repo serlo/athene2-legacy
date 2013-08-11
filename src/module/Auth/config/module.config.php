@@ -72,7 +72,9 @@ return array(
         )
     ),
     'filters' => array(
-        'invokables' => array( 'passwordfilter' => 'Auth\Filter\PasswordFilter'),
+        'invokables' => array(
+            'passwordfilter' => 'Auth\Filter\PasswordFilter'
+        ),
         'factories' => array(
             'passwordfilter' => function  ($sm)
             {
@@ -138,7 +140,8 @@ return array(
                 $identity = new \ZfcRbac\Identity\StandardIdentity($as->getRoles());
                 return $identity;
             },
-            'Auth\Form\SignUp' => function ($sm) {
+            'Auth\Form\SignUp' => function  ($sm)
+            {
                 $class = new Auth\Form\SignUp();
                 $class->setObjectManager($sm->get('EntityManager'));
                 return $class;
@@ -149,6 +152,12 @@ return array(
         )
     ),
     'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+            ),
+            'ZfcRbac\Firewall\Controller' => array(
+            )
+        ),
         'providers' => array(
             'ZfcRbac\Provider\AdjacencyList\Role\DoctrineDbal' => array(
                 'connection' => 'doctrine.connection.orm_default',

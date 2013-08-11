@@ -18,6 +18,12 @@ return array(
             )
         )
     ),
+    'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+            )
+        )
+    ),
     'router' => array(
         'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack',
         'routes' => array(
