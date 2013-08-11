@@ -147,9 +147,17 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array(
-            ),
             'ZfcRbac\Firewall\Controller' => array(
+                array(
+                    'controller' => 'Auth\Controller\Auth',
+                    'actions' => array('register', 'login'),
+                    'roles' => 'guest'
+                ),
+                array(
+                    'controller' => 'Auth\Controller\Auth',
+                    'actions' => array('logout'),
+                    'roles' => 'login'
+                ),
             )
         ),
         'identity_provider' => 'standard_identity'
