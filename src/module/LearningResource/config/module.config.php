@@ -183,6 +183,11 @@ return array(
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
+                    'actions' => array('compare', 'history'),
+                    'roles' => 'guest'
+                ),
+                array(
+                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                     'actions' => 'add-revision',
                     'roles' => 'login'
                 ),
@@ -194,7 +199,7 @@ return array(
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                     'actions' => 'purge-revision',
-                    'roles' => 'administrator'
+                    'roles' => 'admin'
                 ),
 
                 array(
