@@ -22,7 +22,7 @@ $id = uniqid('sort_', true);
 	</div>
 	<ul class="sortable">
         <?php foreach($this->term->getChildren() as $child):?>
-            <?php echo $this->partial('resource-manager/plugin/topic/partial', array('term' => $child)); ?>
+            <?php echo $this->partial('resource-manager/plugin/topic/partial', array('term' => $child, 'subject' => $this->subject)); ?>
         <?php endforeach; ?>
     </ul>
 </li>
