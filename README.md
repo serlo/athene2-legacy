@@ -9,5 +9,9 @@ Now you are ready to go!
 
 ============
 
+# Live Demo
+
+Goto http://serlo:d3v@dev.serlo.org
+
 # Want to get involved?
 Read Wiki at https://github.com/serlo-org/athene2/wiki !
