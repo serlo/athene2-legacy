@@ -182,28 +182,18 @@ return array(
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
                 array(
-                    'route' => 'entity/plugin/repository',
-                    'actions' => 'add-revision',
+                    'route' => 'entity/plugin/repository/add-revision/',
                     'roles' => 'login'
                 ),
                 array(
-                    'route' => 'entity/plugin/repository',
-                    'actions' => array('checkout', 'trash-revision'),
+                    'route' => 'entity/plugin/repository/trash-revision/',
                     'roles' => 'helper'
                 ),
                 array(
-                    'route' => 'entity/plugin/repository',
-                    'actions' => 'purge-revision',
+                    'route' => 'entity/plugin/repository/purge-revision/',
                     'roles' => 'admin'
                 ),
             ),
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
-                    'controller' => 'LearningResource\Exercise\Controller\TextExerciseController',
-                    'actions' => 'update',
-                    'roles' => 'login'
-                ),
-            )
         )
     )
     /*'zfcrbac' => array(
