@@ -21,9 +21,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user")
  */
-class User extends AbstractEntity
+class User extends AbstractEntity implements UserInterface
 {
-
     private $inputFilter;
 
     /**
