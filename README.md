@@ -7,8 +7,6 @@
 
 Now you are ready to go!
 
-============
-
 # Live Demo
 
 Goto http://serlo:d3v@dev.serlo.org
