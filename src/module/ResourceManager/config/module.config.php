@@ -13,10 +13,20 @@ return array(
     'subject' => array(
         'plugins' => array(
             'factories' => array(
-                'topic' => function($sm){
+                'topic' => function ($sm)
+                {
                     $class = new \ResourceManager\Plugin\Topic\TopicPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\SharedTaxonomyManager'));
+                    return $class;
+                },
+                'entity' => function ($sm)
+                {
+                    $class = new \ResourceManager\Plugin\Entity\EntityPlugin();
+                    $class->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    $class->setObjectManager($sm->getServiceLocator()
+                        ->get('EntityManager'));
                     return $class;
                 }
             )
@@ -31,19 +41,23 @@ return array(
                                 'text-exercise' => array(
                                     'labels' => array(
                                         'singular' => 'Aufgabe',
-                                        'plural' => 'Aufgaben',
+                                        'plural' => 'Aufgaben'
                                     ),
-                                    'template' => 'resource-manager/plugin/topic/entity/text-exercise',
+                                    'template' => 'resource-manager/plugin/topic/entity/text-exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
                                         'singular' => 'Artikel',
-                                        'plural' => 'Artikel',
+                                        'plural' => 'Artikel'
                                     ),
-                                    'template' => 'resource-manager/plugin/topic/entity/article',
+                                    'template' => 'resource-manager/plugin/topic/entity/article'
                                 )
                             )
                         )
+                    ),
+                    array(
+                        'name' => 'entity',
+                        'options' => array()
                     )
                 )
             )
@@ -81,11 +95,23 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'ResourceManager\Plugin\Topic\Controller\TopicController',
                                         'action' => 'index',
-                                        'plugin' => 'topic',
+                                        'plugin' => 'topic'
                                     ),
                                     'constraints' => array(
                                         'path' => '(.)+'
                                     )
+                                )
+                            ),
+                            'entity' => array(
+                                'may_terminate' => true,
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/entity/:action',
+                                    'defaults' => array(
+                                        'controller' => 'ResourceManager\Plugin\Entity\Controller\EntityController',
+                                        'action' => 'index',
+                                        'plugin' => 'entity'
+                                    ),
                                 )
                             )
                         )
@@ -96,12 +122,18 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'ResourceManager\Plugin\Topic\Controller\TopicController'
+            'ResourceManager\Plugin\Topic\Controller\TopicController',
+            'ResourceManager\Plugin\Entity\Controller\EntityController'
         // 'Application\Subject\DefaultSubject\Controller\TextExerciseController'
                 ),
         'definition' => array(
             'class' => array(
                 'ResourceManager\Plugin\Topic\Controller\TopicController' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'ResourceManager\Plugin\Entity\Controller\EntityController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

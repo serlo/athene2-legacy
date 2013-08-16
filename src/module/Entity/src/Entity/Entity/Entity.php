@@ -59,6 +59,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     /**
      * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $revisions;
 
@@ -98,10 +99,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      */
     protected $trashed;
     
-    protected $route;
-    
-    protected $fieldOrder = array();
-    
     /**
      * @param field_type $type
      * @return $this
@@ -111,35 +108,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->type = $type;
         return $this;
     }
-
-	public function orderFields(array $newOrder){
-    	$this->fieldOrder = $newOrder;
-    }
-    
-    public function getFieldOrder($fieldName){
-    	$return = array_search($fieldName, $this->fieldOrder);
-    	if($return === false)
-    	    $return = $this->getId();
-    	//	throw new \InvalidArgumentException('Order for `'.$fieldName.'` not set');
-    	
-    	return $return;
-    }
-
-    /**
-	 * @return field_type $route
-	 */
-	public function getRoute() {
-		return $this->route;
-	}
-
-	/**
-	 * @param field_type $route
-	 * @return $this
-	 */
-	public function setRoute($route) {
-		$this->route = $route;
-		return $this;
-	}
 
 	/**
      * @return field_type $issues
