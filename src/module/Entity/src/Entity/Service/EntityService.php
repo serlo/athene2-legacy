@@ -63,6 +63,10 @@ class EntityService implements EntityServiceInterface
 
     protected $pluginOptions = array();
 
+    public function hasPlugin($name){
+        return $this->isPluginWhitelisted($name);
+    }
+    
     public function isPluginWhitelisted($name)
     {
         return array_key_exists($name, $this->whitelistedPlugins) && $this->whitelistedPlugins[$name] !== FALSE;

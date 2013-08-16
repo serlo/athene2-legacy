@@ -163,4 +163,8 @@ class RepositoryPlugin extends AbstractPlugin
             return null;
         }
     }
+    
+    public function isUnrevised(){
+        return $this->getRepository()->isUnrevised();
+    }
 }

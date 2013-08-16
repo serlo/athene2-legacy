@@ -12,7 +12,7 @@
  */
 namespace ResourceManager\Plugin\Topic\Controller;
 
-use Subject\Controller\AbstractController;
+use Subject\Plugin\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 
 class TopicController extends AbstractController

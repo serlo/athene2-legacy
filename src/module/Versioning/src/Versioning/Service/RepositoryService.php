@@ -345,14 +345,14 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         return $this->currentRevision;
     }
     
-    public function hasHead(){
-        return $this->hasCurrentRevision();
-    }
-    
     public function hasCurrentRevision(){
         return is_object($this->currentRevision);
     }
 
+    public function isUnrevised(){
+        return ! ( $this->hasCurrentRevision() && $this->getCurrentRevision() === $this->getHead());
+    }
+    
     /**
      * (non-PHPdoc)
      * @see \Versioning\Service\RepositoryServiceInterface::mergeRevisions()
