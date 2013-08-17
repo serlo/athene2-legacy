@@ -12,4 +12,9 @@
 namespace Common;
 
 return array(
+    'view_helpers' => array(
+        'invokables' => array(
+            'pageHeader' => __NAMESPACE__ . '\View\Helper\PageHeader',
+        )
+    ),
 );
