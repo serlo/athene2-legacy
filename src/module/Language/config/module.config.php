@@ -27,5 +27,26 @@ return array(
                 )
             )
         )
+    ),
+    'di' => array(
+        'definition' => array(
+            'class' => array(
+                'Language\Service\LanguageService' => array(),
+                'Language\Manager\LanguageManager' => array(
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    )
+                )
+            )
+        ),
+        'instance' => array(
+            'preferences' => array(
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
+                'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver',
+            )
+        )
     )
 );
