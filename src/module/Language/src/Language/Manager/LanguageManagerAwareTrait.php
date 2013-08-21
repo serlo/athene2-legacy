@@ -11,18 +11,16 @@
  */
 namespace Language\Manager;
 
-use Core\Service\LanguageManager;
-
 trait LanguageManagerAwareTrait
 {
     /**
      * 
-     * @var LanguageManager
+     * @var LanguageManagerInterface
      */
     protected $languageManager;
     
 	/**
-     * @return \Core\Service\LanguageManager $languageManager
+     * @return LanguageManagerInterface $languageManager
      */
     public function getLanguageManager ()
     {
@@ -30,10 +28,10 @@ trait LanguageManagerAwareTrait
     }
 
 	/**
-     * @param \Core\Service\LanguageManager $languageManager
+     * @param LanguageManagerInterface $languageManager
      * @return $this
      */
-    public function setLanguageManager (LanguageManager $languageManager)
+    public function setLanguageManager (LanguageManagerInterface $languageManager)
     {
         $this->languageManager = $languageManager;
         return $this;
