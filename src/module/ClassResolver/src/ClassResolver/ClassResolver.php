@@ -65,7 +65,7 @@ class ClassResolver implements ClassResolverInterface
     {
         $instance = $this->getServiceLocator()->get($this->getClass($class));
         
-        if ($instance instanceof $class)
+        if (!$instance instanceof $class)
             throw new \Exception(sprintf('Class %s does not implement %s', get_class($instance), $class));
         
         return $instance;
