@@ -14,6 +14,7 @@ namespace Subject\Service;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\SharedTaxonomyManagerAwareInterface;
 use Entity\Exception\InvalidArgumentException;
+use Subject\Exception\PluginNotFoundException;
 
 class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface
 {
@@ -110,7 +111,7 @@ class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAw
     public function plugin($name)
     {
         if (! $this->isPluginWhitelisted($name)) {
-            throw new InvalidArgumentException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
+            throw new PluginNotFoundException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
         }
         
         $pluginManager = $this->getPluginManager();

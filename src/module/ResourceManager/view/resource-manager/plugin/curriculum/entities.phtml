@@ -1,0 +1,26 @@
+<?php
+/**
+ *
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<?php if($this->acceptsEntities): ?>
+<div class="entities">
+    <?php foreach($this->plugin->filterEntities($this->curriculum, $this->entities) as $entity): ?>
+        <?php if($this->plugin->isTypeEnabled($entity->getType()->getName())): ?>
+        <div class="right btn-group">
+        	<a
+        		href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set', 'entity' => $entity->getId() )); ?>"
+        		class="btn btn-mini"><i class="icon-download-alt"></i></a>
+        </div>
+        <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>

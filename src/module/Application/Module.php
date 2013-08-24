@@ -33,16 +33,8 @@ class Module
         $app      = $e->getTarget();
         $serviceManager       = $app->getServiceManager();
         
-        // Load Subjects
-        $listener = $serviceManager->get('Subject\Hydrator\Route');
-        $listener->setPath(__DIR__ . '/config/subject/');
-        $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
-        
         // Route translator
         $app->getEventManager()->attach('route', array($this, 'onPreRoute'), 4);
-        
-        $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
-        $hydrator->setPath(__DIR__ . '/config/subject/');
     }
     
     public function onPreRoute($e){
@@ -55,7 +47,7 @@ class Module
     {
         $config = array_merge_recursive(
             include __DIR__ . '/config/module.config.php',
-            include __DIR__ . '/config/subject/module.config.php',
+            //include __DIR__ . '/config/subject/module.config.php',
             include __DIR__ . '/config/taxonomy/module.config.php',
             include __DIR__ . '/config/entity/module.config.php'
         );

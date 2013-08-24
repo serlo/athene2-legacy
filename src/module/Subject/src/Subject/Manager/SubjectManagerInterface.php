@@ -42,5 +42,5 @@ interface SubjectManagerInterface
      * 
      * @return array
      */
-    public function getAllSubjects();
+    //public function getAllSubjects();
 }

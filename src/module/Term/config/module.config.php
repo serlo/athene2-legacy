@@ -38,8 +38,6 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
                 'Term\Service\TermServiceInterface' => 'Term\Service\TermService',
             ),
             'Term\Service\TermService' => array(

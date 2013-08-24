@@ -12,7 +12,7 @@
 namespace Term\Entity;
 
 use Core\Entity\AbstractEntity;
-use Core\Entity\Language;
+use Language\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,7 +25,7 @@ class Term extends AbstractEntity implements TermEntityInterface
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      */
     protected $language;
 

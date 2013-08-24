@@ -26,66 +26,45 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
      * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $terms;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     */
+    protected $language;
 
     /**
-     * @ORM\Column(type="text",length=255)
+     * @ORM\ManyToOne(targetEntity="TaxonomyType", inversedBy="taxonomies")
+     * @ORM\JoinColumn(name="taxonomy_type_id", referencedColumnName="id")
      */
-    protected $name;
+    protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TaxonomyFactory", inversedBy="taxonomies")
-     * @ORM\JoinColumn(name="taxonomy_factory_id", referencedColumnName="id")
+     *
+     * @return field_type $type
      */
-    protected $factory;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Subject\Entity\Subject", inversedBy="taxonomies")
-     */
-    protected $subject;
-
-    /**
-     * @return field_type $subject
-     */
-    public function getSubject ()
+    public function getType()
     {
-        return $this->subject;
+        return $this->type;
     }
 
-	/**
-     * @param field_type $subject
+    /**
+     *
+     * @param field_type $type            
      * @return $this
      */
-    public function setSubject ($subject)
+    public function setType($type)
     {
-        $this->subject = $subject;
+        $this->type = $type;
         return $this;
     }
 
-	/**
+    /**
      *
      * @return \Doctrine\Common\Collections\ArrayCollection $terms
      */
-    public function getTerms ()
+    public function getTerms()
     {
         return $this->terms;
-    }
-
-    /**
-     *
-     * @return field_type $name
-     */
-    public function getName ()
-    {
-        return $this->name;
-    }
-
-    /**
-     *
-     * @return field_type $factory
-     */
-    public function getFactory ()
-    {
-        return $this->factory;
     }
 
     /**
@@ -93,35 +72,13 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
      * @param \Doctrine\Common\Collections\ArrayCollection $terms            
      * @return $this
      */
-    public function setTerms ($terms)
+    public function setTerms($terms)
     {
         $this->terms = $terms;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
-    public function setName ($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $factory            
-     * @return $this
-     */
-    public function setFactory ($factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function __construct ()
+    public function __construct()
     {
         $this->terms = new ArrayCollection();
     }

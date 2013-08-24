@@ -12,42 +12,82 @@
 namespace Subject\Manager;
 
 use Subject\Service\SubjectServiceInterface;
+use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Subject\Exception\InvalidArgumentException;
+use Core\Service\LanguageService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Language\Service\LanguageServiceInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    
+    protected $taxonomyType = 'subject';
 
-    protected $names = array();
-
-    public function add (SubjectServiceInterface $service)
+    public function add(SubjectServiceInterface $service)
     {
-        $this->names[$service->getName()] = $service->getId();
+        //$this->names[$service->getName()] = $service->getId();
         $this->addInstance($service->getId(), $service);
         return $this;
     }
 
-    public function get ($subject)
+    public function get($subject, $language = NULL)
     {
-        $this->injectInstances();
+        //$this->injectInstances();
         if (is_numeric($subject)) {
-            return $this->getInstance($subject);
+            $subject = $this->getSharedTaxonomyManager()->getTerm((int) $subject);
+        } elseif (is_string($subject)) {
+            if(!$language)
+                $language = $this->getLanguageManager()->getRequestLanguage();
+            
+            //return $this->getInstance($this->names[$subject]);
+            //$subject = $this->getObjectManager()->getRepository($this->resolveClassName('Taxonomy\Entity\TermT'));
+            $taxonomy = $this->getSharedTaxonomyManager()->get($this->taxonomyType, $language);
+            $subject = $taxonomy->get((string) $subject);
         } else {
-            return $this->getInstance($this->names[$subject]);
+            throw new InvalidArgumentException();
         }
+
+        if(!is_object($subject))
+            throw new InvalidArgumentException(sprintf('Not Found'));
+        
+        if(!$this->hasInstance($subject->getId())){
+            $this->add($this->createInstanceFromEntity($subject));
+        }
+        return $this->getInstance($subject->getId());
+    }
+    
+    /*
+     * public function getAllSubjects () { $this->injectInstances(); return $this->getInstances(); }
+     */
+    public function getSubjectsWithLanguage($language)
+    {
+        if(is_numeric($language)){
+            $language = $this->getLanguageManager()->get($language);
+        } elseif ($language instanceof LanguageServiceInterface) {
+        } else {
+            throw new InvalidArgumentException();
+        }
+        $taxonomy = $this->getSharedTaxonomyManager()->get($this->taxonomyType, $language);
+        $collection = new ArrayCollection();
+        foreach($taxonomy->getRootTerms() as $subject){
+            if(!$this->hasInstance($subject->getId())){
+                $this->add($this->createInstanceFromEntity($subject));
+            }
+            $collection->add($this->getInstance($subject->getId()));
+        }
+        return $collection;
     }
 
-    public function getAllSubjects ()
+    public function has($subject)
     {
-        $this->injectInstances();
-        return $this->getInstances();
-    }
-
-    public function has ($subject)
-    {
+        if ($subject instanceof SubjectServiceInterface) {
+            $subject = $subject->getId();
+        }
         return $this->hasInstance($subject);
     }
 
-    private function injectInstances ()
+    /*private function injectInstances()
     {
         if (count($this->getInstances())) {
             return $this;
@@ -60,14 +100,12 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             $this->add($this->createInstanceFromEntity($entity));
         }
         return $this;
-    }
-
-    public function getSubjectFromRequest ()
-    {
-        return $this->get(1);
-    }
-
-    protected function createInstanceFromEntity ($entity)
+    }*/
+    
+    /*
+     * public function getSubjectFromRequest () { return $this->get(1); }
+     */
+    protected function createInstanceFromEntity(TermTaxonomyEntityInterface $entity)
     {
         if (! isset($this->config[$entity->getName()]))
             throw new \Exception(sprintf('Could not find a configuration for `%s`', $entity->getType()->getName()));

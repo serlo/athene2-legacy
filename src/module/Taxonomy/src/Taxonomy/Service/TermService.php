@@ -11,60 +11,33 @@ namespace Taxonomy\Service;
 use Core\Entity\EntityInterface;
 use Taxonomy\Factory\FactoryInterface;
 use Taxonomy\Exception\LinkNotAllowedException;
-use Core\Service\AbstractEntityDecorator;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Core\Structure\DecoratorInterface;
 use Taxonomy\Exception\InvalidArgumentException;
-use Term\Manager\TermManagerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
-use Uuid\Manager\UuidManagerAware;
-use Core\Collection\DecoratorCollection;
 use Taxonomy\Collection\TermCollection;
 
-class TermService extends AbstractEntityDecorator implements TermServiceInterface, ServiceLocatorAwareInterface
+class TermService implements TermServiceInterface
 {
+    
+    use\ Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait, \Common\Traits\EntityDelegatorTrait;
 
-    /**
-     * @var TermManagerInterface
-     */
-    protected $termManager;
+    protected $options = array(
+        'options' => array(
+            'allowed_parents' => array(),
+            'allowed_links' => array(),
+            'radix_enabled' => true
+        )
+    );
     
     /**
      *
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    /**
-     *
-     * @var \Taxonomy\TermManagerInterface
+     * @var \Taxonomy\Manager\TermManagerInterface
      */
     protected $manager;
     
-	/**
-     * @return \Term\Manager\TermManagerInterface $termManager
-     */
-    public function getTermManager ()
-    {
-        return $this->termManager;
-    }
-
-	/**
-     * @param \Term\Manager\TermManagerInterface $termManager
-     * @return $this
-     */
-    public function setTermManager (TermManagerInterface $termManager)
-    {
-        $this->termManager = $termManager;
-        return $this;
-    }
-
-	/*
+    /*
      * (non-PHPdoc) @see \Taxonomy\TermManagerAwareInterface::getTermManager()
      */
-    public function getManager ()
+    public function getManager()
     {
         return $this->manager;
     }
@@ -72,7 +45,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\TermManagerAwareInterface::setTermManager()
      */
-    public function setManager (\Taxonomy\TermManagerInterface $termManager)
+    public function setManager(\Taxonomy\Manager\TermManagerInterface $termManager)
     {
         $this->manager = $termManager;
         return $this;
@@ -81,7 +54,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getParent()
      */
-    public function getParent ()
+    public function getParent()
     {
         return $this->getManager()->get($this->getEntity()
             ->getParent());
@@ -90,18 +63,18 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getChildren()
      */
-    public function getChildren ()
+    public function getChildren()
     {
-        /*return $this->getManager()->get($this->getEntity()
-            ->get('children'));*/
-    	return new TermCollection($this->getEntity()
-            ->get('children'), $this->getManager()->getManager());
+        /*
+         * return $this->getManager()->get($this->getEntity() ->get('children'));
+         */
+        return new TermCollection($this->getEntity()->get('children'), $this->getManager()->getManager());
     }
     
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getAllLinks()
      */
-    public function getAllLinks ()
+    public function getAllLinks()
     {
         $return = array();
         foreach ($this->getAllowedLinks() as $targetField => $callback) {
@@ -113,7 +86,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getLinks()
      */
-    public function getLinks ($targetField)
+    public function getLinks($targetField)
     {
         $this->linkAllowedWithException($targetField);
         $links = $this->getAllowedLinks();
@@ -124,7 +97,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::addLink()
      */
-    public function addLink ($targetField, $target)
+    public function addLink($targetField, $target)
     {
         $target = $this->findEntity($target);
         $this->linkAllowedWithException($targetField);
@@ -137,7 +110,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::removeLink()
      */
-    public function removeLink ($targetField, $target)
+    public function removeLink($targetField, $target)
     {
         $target = $this->findEntity($target);
         $this->linkAllowedWithException($targetField);
@@ -147,19 +120,13 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
         return $this;
     }
 
-    private function findEntity ($target)
+    private function findEntity($target)
     {
-        if ($target instanceof EntityInterface) {
-            return $target;
-        } elseif ($target instanceof DecoratorInterface) {
-            if ($target->providesMethod('getEntity')) {
-                return $target->getEntity();
-            }
-        }
-        throw new InvalidArgumentException();
+        return $target;
+        //throw new InvalidArgumentException();
     }
 
-    public function hasLink ($targetField, $target)
+    public function hasLink($targetField, $target)
     {
         $target = $this->findEntity($target);
         $this->linkAllowedWithException($targetField);
@@ -167,13 +134,13 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
         return $entity->get($targetField)->containsKey($target->getId());
     }
 
-    protected function linkAllowedWithException ($targetField)
+    protected function linkAllowedWithException($targetField)
     {
         if (! $this->linkAllowed($targetField))
             throw new LinkNotAllowedException();
     }
 
-    public function getAllowedLinks ()
+    public function getAllowedLinks()
     {
         return $this->allowedLinks;
     }
@@ -181,7 +148,7 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::enableLink()
      */
-    public function enableLink ($targetField,\Closure $callback)
+    public function enableLink($targetField, \Closure $callback)
     {
         $this->allowedLinks[$targetField] = $callback;
         return $this;
@@ -190,12 +157,12 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
     /*
      * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::linkingAllowed()
      */
-    public function linkAllowed ($targetField)
+    public function linkAllowed($targetField)
     {
         return isset($this->allowedLinks[$targetField]);
     }
 
-    public function build ()
+    public function build()
     {
         // read factory class from db
         $factoryClassName = $this->getEntity()->getFactory();
@@ -214,25 +181,8 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
         
         return $factory->build($this);
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator ()
-    {
-        return $this->serviceLocator;
-    }
 
-    public function update (array $data)
+    public function update(array $data)
     {
         $merged = array_merge(array(
             'term' => array(
@@ -251,62 +201,77 @@ class TermService extends AbstractEntityDecorator implements TermServiceInterfac
         return $this;
     }
 
-    public function setName ($name)
+    public function setName($name)
     {
         $term = $this->getTermManager()->get($name);
         $this->getEntity()->set('term', $term->getEntity());
         return $this;
     }
-    
+
     protected $allowedParentFactories = array();
+
     protected $allowedParentTaxonomy = array();
+
     protected $radix = false;
-    
-    public function parentNodeAllowed(TermTaxonomyEntityInterface $term){
-        return array_key_exists($term->getTaxonomy()->getId(), $this->allowedParentTaxonomy) ||
-               array_key_exists($term->getTaxonomy()->getFactory()->getId(), $this->allowedParentFactories);
+
+    public function parentNodeAllowed(TermTaxonomyEntityInterface $term)
+    {
+        return array_key_exists($term->getTaxonomy()->getId(), $this->allowedParentTaxonomy) || array_key_exists($term->getTaxonomy()
+            ->getFactory()
+            ->getId(), $this->allowedParentFactories);
     }
-    
-    public function allowParentNodesByFactory($id){
+
+    public function allowParentNodesByFactory($id)
+    {
         $this->allowedParentFactories[$id] = true;
         return $this;
     }
-    
-    public function allowParentNodesByTaxonomy($id){
+
+    public function allowParentNodesByTaxonomy($id)
+    {
         $this->allowedParentTaxonomy[$id] = true;
         return $this;
     }
-    
-    public function radixEnabled(){
-        return $this->radix;
+
+    public function radixEnabled()
+    {
+        return $this->options['radix_enabled'];
     }
-    
-    public function enableRadix(){
-        $this->radix = true;
-        return $this;
-    }
-    
-    public function disableRadix(){
-        $this->radix = false;
-        return $this;
-    }
-    
-    public function setParent ($parent)
+
+    public function setParent($parent)
     {
         $entity = $this->getEntity();
-        if($parent == NULL){
-            if($this->radixEnabled()){
+        if ($parent == NULL) {
+            if ($this->radixEnabled()) {
                 $entity->setParent($parent);
             } else {
                 throw new InvalidArgumentException('Radix not allowed.');
             }
         } else {
-            if($this->parentNodeAllowed($parent)){
-                $entity->setParent($parent);                
+            if ($this->parentNodeAllowed($parent)) {
+                $entity->setParent($parent);
             } else {
-                throw new InvalidArgumentException('Parent `'.$parent->getId().'` not allowed for `'.$entity->getId().'`.');
+                throw new InvalidArgumentException('Parent `' . $parent->getId() . '` not allowed for `' . $entity->getId() . '`.');
             }
         }
     }
+	/**
+     * @return multitype:multitype:multitype: string   $options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
+	/**
+     * @param multitype:multitype:multitype: string   $options
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = array_merge_recursive($this->options, $options);
+        return $this;
+    }
+
+ 
 }

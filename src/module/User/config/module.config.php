@@ -36,8 +36,6 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService'
             ),
             'User\Service\UserService' => array(
                 'shared' => false

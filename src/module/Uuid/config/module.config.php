@@ -27,8 +27,7 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
+                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager'
             ),
         )
     ),

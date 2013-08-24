@@ -9,20 +9,29 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace ResourceManager;
+
 return array(
     'subject' => array(
         'plugins' => array(
             'factories' => array(
                 'topic' => function ($sm)
                 {
-                    $class = new \ResourceManager\Plugin\Topic\TopicPlugin();
+                    $class = new Plugin\Topic\TopicPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\SharedTaxonomyManager'));
+                    return $class;
+                },
+                'curriculum' => function ($sm)
+                {
+                    $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\SharedTaxonomyManager'));
                     return $class;
                 },
                 'entity' => function ($sm)
                 {
-                    $class = new \ResourceManager\Plugin\Entity\EntityPlugin();
+                    $class = new Plugin\Entity\EntityPlugin();
                     $class->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     $class->setObjectManager($sm->getServiceLocator()
@@ -56,8 +65,10 @@ return array(
                         )
                     ),
                     array(
-                        'name' => 'entity',
-                        'options' => array()
+                        'name' => 'entity'
+                    ),
+                    array(
+                        'name' => 'curriculum'
                     )
                 )
             )
@@ -76,7 +87,7 @@ return array(
                 'options' => array(
                     'route' => '/{subject}[/:subject]',
                     'defaults' => array(
-                        'controller' => 'ResourceManager\Provider\Home\Controller\HomeController',
+                        'controller' => __NAMESPACE__ . '\Provider\Home\Controller\HomeController',
                         'action' => 'index'
                     )
                 ),
@@ -93,7 +104,7 @@ return array(
                                 'options' => array(
                                     'route' => '/{topic}/:path',
                                     'defaults' => array(
-                                        'controller' => 'ResourceManager\Plugin\Topic\Controller\TopicController',
+                                        'controller' => __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
                                         'action' => 'index',
                                         'plugin' => 'topic'
                                     ),
@@ -108,10 +119,36 @@ return array(
                                 'options' => array(
                                     'route' => '/entity/:action',
                                     'defaults' => array(
-                                        'controller' => 'ResourceManager\Plugin\Entity\Controller\EntityController',
+                                        'controller' => __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController',
                                         'action' => 'index',
                                         'plugin' => 'entity'
-                                    ),
+                                    )
+                                )
+                            ),
+                            'curriculum' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/{curriculum}',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+                                        'plugin' => 'curriculum'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'may_terminate' => true,
+                                    'show' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/:curriculum[/:path]',
+                                            'defaults' => array(
+                                                'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+                                                'action' => 'show'
+                                            )
+                                        ),
+                                        'constraints' => array(
+                                            'path' => '(.)+'
+                                        )
+                                    )
                                 )
                             )
                         )
@@ -122,18 +159,23 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'ResourceManager\Plugin\Topic\Controller\TopicController',
-            'ResourceManager\Plugin\Entity\Controller\EntityController'
-        // 'Application\Subject\DefaultSubject\Controller\TextExerciseController'
-                ),
+            __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
+            __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+            __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController'
+        ),
         'definition' => array(
             'class' => array(
-                'ResourceManager\Plugin\Topic\Controller\TopicController' => array(
+                __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )
                 ),
-                'ResourceManager\Plugin\Entity\Controller\EntityController' => array(
+                __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

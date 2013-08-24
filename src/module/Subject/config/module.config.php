@@ -40,6 +40,8 @@ return array(
                 $class->setServiceLocator($sm->get('ServiceManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $class->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
+                $class->setSharedTaxonomyManager($sm->get('Taxonomy\SharedTaxonomyManager'));
                 
                 return $class;
             })
@@ -69,6 +71,9 @@ return array(
                         'required' => 'true'
                     ),
                     'setSubjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setLanguageManager' => array(
                         'required' => 'true'
                     )
                 ),
@@ -106,7 +111,6 @@ return array(
             'preferences' => array(
                 'Entity\EntityManagerInterface' => 'Entity\EntityManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
                 'Subject\Manager\SubjectManagerInterface' => 'Subject\Manager\SubjectManager',
                 'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
                 'Subject\Plugin\PluginManagerInterface' => 'Subject\Plugin\PluginManager'

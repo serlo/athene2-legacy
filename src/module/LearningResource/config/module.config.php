@@ -36,30 +36,30 @@ return array(
             'factories' => array(
                 'repository' => function  ($sm)
                 {
-                    $class = new \LearningResource\Plugin\Repository\RepositoryPlugin();
-                    $class->setRepositoryManager($sm->getServiceLocator()
+                    $instance = new \LearningResource\Plugin\Repository\RepositoryPlugin();
+                    $instance->setRepositoryManager($sm->getServiceLocator()
                         ->get('Versioning\RepositoryManager'));
-                    $class->setObjectManager($sm->getServiceLocator()
+                    $instance->setObjectManager($sm->getServiceLocator()
                         ->get('EntityManager'));
-                    $class->setAuthService($sm->getServiceLocator()
+                    $instance->setAuthService($sm->getServiceLocator()
                         ->get('Auth\Service\AuthService'));
-                    return $class;
+                    return $instance;
                 },
                 'topicFolder' => function  ($sm)
                 {
-                    $class = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
-                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                    $instance = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
+                    $instance->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\SharedTaxonomyManager'));
-                    return $class;
+                    return $instance;
                 },
                 'link' => function  ($sm)
                 {
-                    $class = new \LearningResource\Plugin\Link\LinkPlugin();
-                    $class->setLinkManager($sm->getServiceLocator()
+                    $instance = new \LearningResource\Plugin\Link\LinkPlugin();
+                    $instance->setLinkManager($sm->getServiceLocator()
                         ->get('Link\LinkManager'));
-                    $class->setEntityManager($sm->getServiceLocator()
+                    $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
-                    return $class;
+                    return $instance;
                 }
             )
         ),
