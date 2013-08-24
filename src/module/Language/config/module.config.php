@@ -44,9 +44,13 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
-                'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver',
+                'Language\Manager\LanguageManagerInterface' => 'Language\Manager\LanguageManager'
             )
         )
+    ),
+    'class_resolver' => array(
+        'Language\Entity\LanguageInterface' => 'Language\Entity\Language',
+        'Language\Service\LanguageServiceInterface' => 'Language\Service\LanguageService'
     )
-);
+)
+;

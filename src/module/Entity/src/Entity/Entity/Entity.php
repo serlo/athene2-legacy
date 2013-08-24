@@ -53,11 +53,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $children;
 
     /**
-     * @ORM\OneToMany(targetEntity="Issue\Entity\IssueEntity", mappedBy="entity")
-     */
-    protected $issues;
-
-    /**
      * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
      * @ORM\OrderBy({"date" = "DESC"})
      */
@@ -83,11 +78,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * @ORM\JoinColumn(name="entity_type_id", referencedColumnName="id")
      */
     protected $type;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Core\Entity\Language")
-     */
-    protected $language;
 
     /**
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})

@@ -10,7 +10,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 $subtitle = is_object($this->topic) ? $this->topic->getName() : NULL;
-$this->renderTitle($this->translate('Themenübersicht'), NULL, $subtitle);
+echo $this->pageHeader($this->translate('Themenübersicht'), $subtitle);
 ?>
 <?php echo $this->taxonomy; ?>
 <?php echo $this->entities; ?>

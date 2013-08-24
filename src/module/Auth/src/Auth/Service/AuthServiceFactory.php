@@ -47,8 +47,8 @@ class AuthServiceFactory implements FactoryInterface
         
         $authService->setUserManager($serviceLocator->get('User\Manager\UserManager'));
         
-        $authService->setLanguageService($serviceLocator->get('Core\Service\LanguageService'));
-        $authService->setSubjectService($serviceLocator->get('Core\Service\SubjectService'));
+        $authService->setLanguageManager($serviceLocator->get('Language\Manager\LanguageManager'));
+        //$authService->setSubjectService($serviceLocator->get('Core\Service\SubjectService'));
         
         try {
             try {

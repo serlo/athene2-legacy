@@ -15,16 +15,11 @@ use Term\Service\TermServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Core\AbstractManager;
 use Term\Exception\TermNotFoundException;
-use Core\Service\LanguageManager;
 
-class TermManager extends AbstractManager implements ObjectManagerAwareInterface, TermManagerInterface
+class TermManager extends AbstractManager implements TermManagerInterface
 {
 
-    /**
-     *
-     * @var LanguageManager
-     */
-    protected $languageManager;
+    use \Language\Manager\LanguageManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
 
     protected $options = array(
         'instances' => array(
@@ -33,52 +28,9 @@ class TermManager extends AbstractManager implements ObjectManagerAwareInterface
         )
     );
 
-    /**
-     *
-     * @return \Core\Service\LanguageManager $languageManager
-     */
-    public function getLanguageManager()
-    {
-        return $this->languageManager;
-    }
-
-    /**
-     *
-     * @param \Core\Service\LanguageManager $languageManager            
-     * @return $this
-     */
-    public function setLanguageManager(LanguageManager $languageManager)
-    {
-        $this->languageManager = $languageManager;
-        return $this;
-    }
-
     public function __construct()
     {
         parent::__construct($this->options);
-    }
-
-    /**
-     *
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $objectManager;
-    
-    /*
-     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
-     */
-    public function getObjectManager()
-    {
-        return $this->objectManager;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
-     */
-    public function setObjectManager(\Doctrine\Common\Persistence\ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-        return $this;
     }
 
     /**

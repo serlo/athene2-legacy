@@ -11,7 +11,7 @@
  */
 ?>
 <ul>
-    <?php foreach($this->terms as $term): ?>
+    <?php foreach($this->plugin->filterTaxonomy($this->curriculum, $this->terms) as $term): ?>
     <li class="term" data-id="<?php echo $term->getId(); ?>">
     	<div class="" style="margin: 5px 0;">
     		<?php //echo $this->partial('taxonomy/term/actions', array('term' => $term)); ?>
@@ -21,7 +21,7 @@
     			(<?php echo $term->countEntities(); ?>)
     		</div>
     	</div>
-        <?php echo $this->partial('resource-manager/plugin/topic/partial', array('terms' => $term->getChildren(), 'subject' => $this->subject)); ?>
+        <?php echo $this->partial('resource-manager/plugin/topic/partial', array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'curriculum' => $this->curriculum)); ?>
     </li>
     <?php endforeach; ?>
 </ul>

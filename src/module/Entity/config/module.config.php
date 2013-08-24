@@ -61,9 +61,6 @@ return array(
                     'setRepositoryManager' => array(
                         'required' => 'true'
                     ),
-                    'setLanguageService' => array(
-                        'required' => 'true'
-                    ),
                     'setAuthService' => array(
                         'required' => 'true'
                     ),
@@ -115,7 +112,7 @@ return array(
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $class->setLanguageManager($sm->get('Core\Service\LanguageManager'));
+                $class->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
                 
                 return $class;
             })

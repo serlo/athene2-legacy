@@ -5,16 +5,15 @@ use Zend\Permissions\Acl\Acl;
 use User\Service\UserServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Zend\Permissions\Acl\Role\RoleInterface;
-use Core\Service\LanguageService;
 use Core\Service\SubjectService;
 use Zend\Permissions\Acl\Resource\GenericResource as AclResource;
 
 class AuthService implements AuthServiceInterface
 {
-    use \User\Manager\UserManagerAwareTrait;
+    use \User\Manager\UserManagerAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
     
-    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $languageService, $subjectService, $controller;
+    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $controller;
 
     private $entityManager;
 
@@ -36,42 +35,6 @@ class AuthService implements AuthServiceInterface
     public function setController($controller)
     {
         $this->controller = $controller;
-    }
-
-    /**
-     *
-     * @return the $languageService
-     */
-    public function getLanguageService()
-    {
-        return $this->languageService;
-    }
-
-    /**
-     *
-     * @return the $subjectService
-     */
-    public function getSubjectService()
-    {
-        return $this->subjectService;
-    }
-
-    /**
-     *
-     * @param LanguageService $languageService            
-     */
-    public function setLanguageService(LanguageService $languageService)
-    {
-        $this->languageService = $languageService;
-    }
-
-    /**
-     *
-     * @param SubjectService $subjectService            
-     */
-    public function setSubjectService(SubjectService $subjectService)
-    {
-        $this->subjectService = $subjectService;
     }
 
     /**
@@ -200,8 +163,7 @@ class AuthService implements AuthServiceInterface
     public function getRoles()
     {
         if($this->loggedIn()){
-        return $this->getUserManager()->get($this->getUser())->getRoles($this->getLanguageService()
-            ->getId(), $this->getSubjectService()
+        return $this->getUserManager()->get($this->getUser())->getRoles($this->getLanguageManager()->getRequestLanguage()
             ->getId());
         } else {
             return array('guest');

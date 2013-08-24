@@ -13,22 +13,18 @@ namespace Subject\Hydrator;
 
 class Navigation
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Subject\Manager\SubjectManagerAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
     protected $path;
-    
-    /*protected function getSubjectManager() {
-        return $this->getServiceLocator()->get('Subject\SubjectManager');
-    }*/
 
     public function setPath($path){
         $this->path = $path;
     }
     
     public function inject($config){
-
-        foreach ($this->getSubjectManager()->getAllSubjects() as $subject) {
-            $config = array_merge_recursive($config, include $this->path . $subject->getName() . '/navigation.config.php');
+        $language = $this->getLanguageManager()->getRequestLanguage();
+        foreach ($this->getSubjectManager()->getSubjectsWithLanguage($language) as $subject) {
+            $config = array_merge_recursive($config, include $this->path . $language->getCode() . '/' . $subject->getName() . '.config.php');
         }
         return $config;
     }

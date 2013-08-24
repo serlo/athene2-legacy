@@ -9,35 +9,6 @@ return array(
             'dateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
         )
     ),
-    'di' => array(
-        'definition' => array(
-            'class' => array(
-                'Core\Service\NonDefaultLanguageService' => array(
-                ),
-                'Core\Service\LanguageManager' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                )
-            )
-        ),
-        'instance' => array(
-            'alias' => array(
-                'ServiceManager' => 'Zend\ServiceManager\ServiceManager',
-            ),
-        )
-    ),
-    'service_manager' => array(
-        'invokables' => array(
-            'Core\Service\SubjectService' => 'Core\Service\SubjectService'
-        ),
-    	'factories' => array(
-            'Core\Service\LanguageService' => function($sm){
-            	$lm = $sm->get('Core\Service\LanguageManager');
-            	return $lm->getRequestLanguage();
-            }
-    	)
-    ),
     'controller_plugins' => array(
         'invokables' => array(
             'getParam' => 'Core\Controller\Plugin\GetParam',

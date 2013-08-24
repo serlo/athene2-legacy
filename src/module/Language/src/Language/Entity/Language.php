@@ -27,8 +27,31 @@ class Language implements LanguageInterface
      * @ORM\GeneratedValue
      */
     protected $id;
+    
+    /**
+     * @ORM\Column(type="string", length=2)
+     */
+    protected $code;
 
-    public function getId ()
+    /**
+     * @return field_type $code
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+	/**
+     * @param field_type $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+	public function getId ()
     {
         return $this->id;
     }

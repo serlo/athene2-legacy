@@ -53,7 +53,7 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
-            'auth' => function  ($sm)
+            'auth' => function ($sm)
             {
                 
                 $helper = new \Auth\View\Helper\Auth();
@@ -61,7 +61,7 @@ return array(
                     ->get('Auth\Service\AuthService'));
                 return $helper;
             },
-            'acl' => function  ($sm)
+            'acl' => function ($sm)
             {
                 
                 $helper = new \Auth\View\Helper\Auth();
@@ -76,13 +76,13 @@ return array(
             'passwordfilter' => 'Auth\Filter\PasswordFilter'
         ),
         'factories' => array(
-            'passwordfilter' => function  ($sm)
+            'passwordfilter' => function ($sm)
             {
-                $class = new \Auth\Filter\PasswordFilter();
+                $instance = new \Auth\Filter\PasswordFilter();
                 die(get_class($sm->getServiceLocator()->get('Auth\Service\HashService')));
-                $class->setHashService($sm->getServiceLocator()
+                $instance->setHashService($sm->getServiceLocator()
                     ->get('Auth\Service\HashService'));
-                return $class;
+                return $instance;
             }
         ),
         'aliases' => array()
@@ -90,7 +90,7 @@ return array(
     'controllers' => array(
         'factories' => array(
             'Auth\Controller\Auth' => 'Auth\Controller\AuthControllerFactory',
-            'Auth\Controller\Register' => function  ($sm)
+            'Auth\Controller\Register' => function ($sm)
             {
                 $ct = new \Auth\Controller\RegisterController();
                 
@@ -112,6 +112,9 @@ return array(
     ),
     'di' => array(
         'instance' => array(
+            'preferences' => array(
+                'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService'
+            ),
             'alias' => array(
                 'ACL' => 'Zend\Permissions\Acl\Acl'
             )
@@ -119,7 +122,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Zend\Db\Adapter\Adapter' => function  ($sm)
+            'Zend\Db\Adapter\Adapter' => function ($sm)
             {
                 $config = $sm->get('Config');
                 $dbParams = $config['dbParams'];
@@ -134,11 +137,11 @@ return array(
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
             'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory',
-            'Auth\Form\SignUp' => function  ($sm)
+            'Auth\Form\SignUp' => function ($sm)
             {
-                $class = new Auth\Form\SignUp();
-                $class->setObjectManager($sm->get('EntityManager'));
-                return $class;
+                $instance = new Auth\Form\SignUp();
+                $instance->setObjectManager($sm->get('EntityManager'));
+                return $instance;
             }
         ),
         'invokables' => array(
@@ -150,16 +153,21 @@ return array(
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'Auth\Controller\Auth',
-                    'actions' => array('register', 'login'),
+                    'actions' => array(
+                        'register',
+                        'login'
+                    ),
                     'roles' => 'guest'
                 ),
                 array(
                     'controller' => 'Auth\Controller\Auth',
-                    'actions' => array('logout'),
+                    'actions' => array(
+                        'logout'
+                    ),
                     'roles' => 'login'
-                ),
+                )
             )
-        ),
-        //'identity_provider' => 'standard_identity'
-    )
+        )
+    // 'identity_provider' => 'standard_identity'
+        )
 );

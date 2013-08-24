@@ -11,7 +11,7 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\SharedTaxonomyManagerInterface;
+use Taxonomy\Manager\SharedTaxonomyManagerInterface;
 
 trait SharedTaxonomyManagerAwareTrait
 {
