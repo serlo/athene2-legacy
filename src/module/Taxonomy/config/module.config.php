@@ -61,11 +61,12 @@ return array(
             'Taxonomy\Manager\SharedTaxonomyManager' => (function ($sm)
             {
                 $config = $sm->get('config');
-                $config = new \Zend\ServiceManager\Config($config['taxonomy']);
+                $config = new \Zend\Config\Config($config['taxonomy']);
                 $instance = new \Taxonomy\Manager\SharedTaxonomyManager($config);
                 $instance->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
                 $instance->setObjectManager($sm->get('EntityManager'));
-                $instance->setServiceManager($sm);
+                $instance->setServiceLocator($sm);
+                $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 return $instance;
             })
         )
@@ -89,6 +90,9 @@ return array(
                         'required' => 'true'
                     ),
                     'setTermManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
                         'required' => 'true'
                     ),
                     'setUuidManager' => array(

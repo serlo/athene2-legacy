@@ -77,7 +77,7 @@ class TermService implements TermServiceInterface
     public function getAllLinks()
     {
         $return = array();
-        foreach ($this->getAllowedLinks() as $targetField => $callback) {
+        foreach ($this->getAllowedLinks() as $targetField => $options) {
             $return[$targetField] = $this->getLinks($targetField);
         }
         return $return;
@@ -88,10 +88,13 @@ class TermService implements TermServiceInterface
      */
     public function getLinks($targetField)
     {
-        $this->linkAllowedWithException($targetField);
-        $links = $this->getAllowedLinks();
-        $closure = $links[$targetField];
-        return $closure($this->get($targetField));
+        $this->isLinkAllowedWithException($targetField);
+        $callback = $this->getCallbackForLink($targetField);
+        return $callback($this->get($targetField));
+    }
+    
+    public function getCallbackForLink($link){
+        return $this->getAllowedLinks()[$link]['callback'];
     }
     
     /*
@@ -100,7 +103,7 @@ class TermService implements TermServiceInterface
     public function addLink($targetField, $target)
     {
         $target = $this->findEntity($target);
-        $this->linkAllowedWithException($targetField);
+        $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
         $entity->get($targetField)->add($target);
         $this->persist();
@@ -113,7 +116,7 @@ class TermService implements TermServiceInterface
     public function removeLink($targetField, $target)
     {
         $target = $this->findEntity($target);
-        $this->linkAllowedWithException($targetField);
+        $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
         $entity->get($targetField)->remove($target);
         $this->persist();
@@ -129,57 +132,25 @@ class TermService implements TermServiceInterface
     public function hasLink($targetField, $target)
     {
         $target = $this->findEntity($target);
-        $this->linkAllowedWithException($targetField);
+        $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
         return $entity->get($targetField)->containsKey($target->getId());
     }
 
-    protected function linkAllowedWithException($targetField)
+    protected function isLinkAllowedWithException($targetField)
     {
-        if (! $this->linkAllowed($targetField))
+        if (! $this->isLinkAllowed($targetField))
             throw new LinkNotAllowedException();
     }
 
     public function getAllowedLinks()
     {
-        return $this->allowedLinks;
+        return $this->options['allowed_links'];
     }
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::enableLink()
-     */
-    public function enableLink($targetField, \Closure $callback)
+    public function isLinkAllowed($targetField)
     {
-        $this->allowedLinks[$targetField] = $callback;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\TaxonomyManagerInterface::linkingAllowed()
-     */
-    public function linkAllowed($targetField)
-    {
-        return isset($this->allowedLinks[$targetField]);
-    }
-
-    public function build()
-    {
-        // read factory class from db
-        $factoryClassName = $this->getEntity()->getFactory();
-        
-        if (! $factoryClassName)
-            throw new \Exception('Factory not set');
-        
-        $factoryClassName = $factoryClassName->getName();
-        
-        if (! class_exists($factoryClassName))
-            throw new \Exception("Clas `{$factoryClassName}` not found");
-        
-        $factory = new $factoryClassName();
-        if (! $factory instanceof FactoryInterface)
-            throw new \Exception('Something somewhere went terribly wrong.');
-        
-        return $factory->build($this);
+        return in_array($targetField, $this->options['allowed_links']);
     }
 
     public function update(array $data)
@@ -216,21 +187,10 @@ class TermService implements TermServiceInterface
 
     public function parentNodeAllowed(TermTaxonomyEntityInterface $term)
     {
+        throw new \Exception('Not implemented');
         return array_key_exists($term->getTaxonomy()->getId(), $this->allowedParentTaxonomy) || array_key_exists($term->getTaxonomy()
             ->getFactory()
             ->getId(), $this->allowedParentFactories);
-    }
-
-    public function allowParentNodesByFactory($id)
-    {
-        $this->allowedParentFactories[$id] = true;
-        return $this;
-    }
-
-    public function allowParentNodesByTaxonomy($id)
-    {
-        $this->allowedParentTaxonomy[$id] = true;
-        return $this;
     }
 
     public function radixEnabled()
@@ -272,6 +232,12 @@ class TermService implements TermServiceInterface
         $this->options = array_merge_recursive($this->options, $options);
         return $this;
     }
-
- 
+    
+    public function getId(){
+        return $this->getEntity()->getId();
+    }
+    
+    public function getName(){
+        return $this->getEntity()->getName();
+    }
 }

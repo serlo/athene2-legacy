@@ -41,7 +41,7 @@ return array(
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 $class->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-                $class->setSharedTaxonomyManager($sm->get('Taxonomy\SharedTaxonomyManager'));
+                $class->setSharedTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
                 
                 return $class;
             })
@@ -114,6 +114,9 @@ return array(
                 'Subject\Manager\SubjectManagerInterface' => 'Subject\Manager\SubjectManager',
                 'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
                 'Subject\Plugin\PluginManagerInterface' => 'Subject\Plugin\PluginManager'
+            ),
+            'Subject\Service\SubjectService' => array(
+                'shared' => false
             )
         )
     ),

@@ -22,28 +22,9 @@ abstract class AbstractManager
      */
     private $instances = array();
 
-    /**
-     *
-     * @var array
-     */
-    protected $config;
-
     public function get($name)
     {
         return $this->getInstance($name);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param array $options            
-     */
-    public function __construct(array $options)
-    {
-        if (! is_array($this->config))
-            $this->config = array();
-        
-        $this->config = array_merge($this->config, $options);
     }
 
     /**

@@ -41,7 +41,7 @@ return array(
             )
         ),
         'instances' => array(
-            'math' => array(
+            'mathe' => array(
                 'plugins' => array(
                     array(
                         'name' => 'topic',
@@ -71,7 +71,8 @@ return array(
                         'name' => 'curriculum'
                     )
                 )
-            )
+            ),
+            'physik' => array('plugins' => array()),
         )
     ),
     'view_manager' => array(

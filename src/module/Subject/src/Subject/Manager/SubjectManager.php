@@ -17,6 +17,7 @@ use Subject\Exception\InvalidArgumentException;
 use Core\Service\LanguageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Service\LanguageServiceInterface;
+use Taxonomy\Service\TermServiceInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
@@ -105,11 +106,13 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
     /*
      * public function getSubjectFromRequest () { return $this->get(1); }
      */
-    protected function createInstanceFromEntity(TermTaxonomyEntityInterface $entity)
+    protected function createInstanceFromEntity(TermServiceInterface $entity)
     {
-        if (! isset($this->config[$entity->getName()]))
-            throw new \Exception(sprintf('Could not find a configuration for `%s`', $entity->getType()->getName()));
-        $options = $this->config[$entity->getName()];
+        $entity = $entity->getEntity();
+        $name = strtolower($entity->getName());
+        if (! isset($this->config[$name]))
+            throw new \Exception(sprintf('Could not find a configuration for `%s`', $name));
+        $options = $this->config[$name];
         
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
