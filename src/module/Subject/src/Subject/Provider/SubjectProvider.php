@@ -23,6 +23,12 @@ class SubjectProvider implements ProviderInterface
 
     public function __construct(array $options, ServiceLocatorInterface $serviceLocator)
     {
+        
+        
+        
+        throw new \Exception('Deprecated');
+        
+        
         $this->serviceLocator = $serviceLocator;
         $this->options = $options;
     }

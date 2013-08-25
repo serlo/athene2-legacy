@@ -233,14 +233,4 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         }
         return array_reverse($path);
     }
-    
-    public function getArrayCopy(){
-        return array(
-            'term' => $this->getTerm()->toArray(),
-            'id' => $this->getId(),
-            'slug' => $this->getSlug(),
-            'weight' => $this->getWeight(),
-            'description' => $this->getDescription(),
-        );
-    }
 }

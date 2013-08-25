@@ -12,13 +12,11 @@
 namespace Subject\Service;
 
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\SharedTaxonomyManagerAwareInterface;
-use Entity\Exception\InvalidArgumentException;
 use Subject\Exception\PluginNotFoundException;
 
-class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAwareInterface
+class SubjectService implements SubjectServiceInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Subject\Entity\SubjectDelegatorTrait, \Subject\Plugin\PluginManagerAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait, \Subject\Entity\SubjectDelegatorTrait, \Subject\Plugin\PluginManagerAwareTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     public function getId(){
         return $this->getEntity()->getId();
@@ -27,25 +25,7 @@ class SubjectService implements SubjectServiceInterface, SharedTaxonomyManagerAw
     public function getSubjectEntity(){
         return $this->getEntity();
     }
-
-    protected $sharedTaxonomyManager;
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerAwareInterface::getSharedTaxonomyManager()
-     */
-    public function getSharedTaxonomyManager()
-    {
-        return $this->sharedTaxonomyManager;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\SharedTaxonomyManagerAwareInterface::setSharedTaxonomyManager()
-     */
-    public function setSharedTaxonomyManager(\Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager)
-    {
-        $this->sharedTaxonomyManager = $sharedTaxonomyManager;
-    }
-
     public function getTaxonomy($name)
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq("name", $name))

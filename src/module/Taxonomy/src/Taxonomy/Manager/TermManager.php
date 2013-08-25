@@ -19,13 +19,38 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
 class TermManager extends AbstractManager implements TermManagerInterface
 {
-    use\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait;
+    use \Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait;
 
     protected $options = array();
 
-    public function __construct($options = NULL)
+    public function __construct($options = array())
     {
         $this->options = array_merge_recursive($this->options, $options);
+    }
+
+    public function getId()
+    {
+        return $this->getEntity()->getId();
+    }
+
+    public function getType()
+    {
+        return $this->getEntity()->getType();
+    }
+
+    public function setType($type)
+    {
+        return $this->getEntity()->setType($type);
+    }
+
+    public function getTerms()
+    {
+        return $this->getEntity()->getTerms();
+    }
+
+    public function setTerms($terms)
+    {
+        return $this->getEntity()->setTerms($terms);
     }
     
     /*
@@ -39,7 +64,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
     public function get($term)
     {
         if (is_numeric($term)) {
-            $entity = $this->getObjectManager()->find($this->resolveClassName('Term\Entity\TermEntityInterface'), (int) $term);
+            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermEntityInterface'), (int) $term);
             $id = $this->add($this->createInstanceFromEntity($entity));
         } elseif (is_array($term)) {
             $id = $this->add($this->createInstanceFromEntity($this->getEntityByPath($term)));
@@ -170,7 +195,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function createInstanceFromEntity(TermTaxonomyEntityInterface $entity)
     {
-        $instance = $this->createInstance('Term\Service\TermServiceInterface');
+        $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
         $instance->setEntity($entity);
         $instance->setManager($this);
         $instance->setOptions($this->options);

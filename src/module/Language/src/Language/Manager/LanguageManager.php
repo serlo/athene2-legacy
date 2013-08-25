@@ -13,6 +13,8 @@ namespace Language\Manager;
 
 use Language\Entity\LanguageInterface;
 use Language\Service\LanguageServiceInterface;
+use Language\Exception\LanguageNotFoundException;
+use Language\Exception\InvalidArgumentException;
 
 class LanguageManager implements LanguageManagerInterface {
     use \Common\Traits\ObjectManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait;
@@ -34,13 +36,23 @@ class LanguageManager implements LanguageManagerInterface {
 		return $this->getFallbackLanugage();
 	}
 	
-	public function get($language){
-	    if(is_numeric($language)){
+	public function get($language = NULL){
+	    $id = $language;
+	    if($language === NULL){
+	        $language = $this->getFallbackLanugage();
+	    } elseif(is_string($language)){
+	        $language = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'))->findOneByCode($language);
+	        
+	    } elseif(is_numeric($language)){
 	        $language = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'), (int) $language);
 	    } elseif ($language instanceof \Language\Entity\LanguageInterface){
+	       $id = $language->getId();
 	    } else {
-	        throw new \InvalidArgumentException();
+	        throw new InvalidArgumentException();
 	    }
+	    
+	    if(!is_object($language))
+	        throw new LanguageNotFoundException($id);
 	    
 		if(!$this->has($language)){
 		    return $this->createInstance($language);

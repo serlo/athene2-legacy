@@ -45,6 +45,9 @@ return array(
         'instance' => array(
             'preferences' => array(
                 'Language\Manager\LanguageManagerInterface' => 'Language\Manager\LanguageManager'
+            ),
+            'Language\Service\LanguageService' => array(
+                'shared' => false
             )
         )
     ),

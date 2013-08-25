@@ -13,7 +13,7 @@
 namespace Taxonomy\Provider;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Taxonomy\TaxonomyManagerInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Criteria;
 use Navigation\Provider\ProviderInterface;
@@ -56,7 +56,7 @@ class NavigationProvider implements ProviderInterface
         $this->options = array_merge($this->defaultOptions, $options);
         $this->serviceLocator = $serviceLocator;
         $this->entityManager = $serviceLocator->get('EntityManager');
-        $this->taxonomyManager = $serviceLocator->get('Taxonomy\SharedTaxonomyManager')->get($this->options['type'], $this->options['language']);
+        $this->taxonomyManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')->get($this->options['type'], $this->options['language']);
     }
 
     public function provideArray($maxDepth = 1)

@@ -9,49 +9,68 @@
 namespace Taxonomy\Manager;
 
 use Taxonomy\Exception\NotFoundException;
+use Taxonomy\Exception\InvalidArgumentException;
+use Language\Service\LanguageServiceInterface;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
-
-    use \Common\Traits\ObjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
-
-    protected $options = array();
     
-    public function __construct ($options)
+    use\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+
+    /**
+     *
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * Constructor
+     *
+     * @param array $config            
+     */
+    public function __construct(\Zend\Config\Config $config)
     {
-        $this->options = array_merge_recursive($this->options, $options);
-        parent::__construct();
+        $config = $config->toArray();
+        if (! is_array($this->config))
+            $this->config = array();
+        
+        $this->config = array_merge($this->config, $config);
     }
 
-    public function add (TermManagerInterface $termManager)
+    public function add(TermManagerInterface $termManager)
     {
         $this->addInstance($termManager->getId(), $termManager);
         return $termManager->getId();
     }
 
-    public function get ($taxonomy, $language = NULL)
+    public function get($taxonomy, $language = NULL)
     {
-        $className = $this->resolve('Taxonomy\Manager\TermManagerInterface');
-        $entityClassName = $this->resolve('Taxonomy\Entity\TaxonomyEntityInterface');
-        $termEntityClassName = $this->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface');
+        $className = $this->resolveClassName('Taxonomy\Manager\TermManagerInterface');
+        $entityClassName = $this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface');
+        $termEntityClassName = $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface');
         
-        if(!$language)
-            $language = $this->getLanguageManager()->getRequestLanguage();
+        if (!$language instanceof LanguageServiceInterface)
+            $language = $this->getLanguageManager()->get($language);
         
         if (is_numeric($taxonomy)) {
-            $entity = $this->getObjectManager()->find($this->resolve('Taxonomy\Entity\TaxonomyEntityInterface'), $taxonomy);
+            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface'), $taxonomy);
             $name = $this->add($this->createInstanceFromEntity($entity));
         } elseif (is_string($taxonomy)) {
+            
             $type = $this->getObjectManager()
-                ->getRepository($this->resolve('Taxonomy\Entity\TaxonomyTypeInterface'))
+                ->getRepository($this->resolveClassName('Taxonomy\Entity\TaxonomyTypeInterface'))
                 ->findOneBy(array(
                 'name' => $taxonomy
             ));
+            
+            if (! is_object($type))
+                throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $taxonomy));
+            
             $entity = $this->getObjectManager()
-                ->getRepository($this->resolve('Taxonomy\Entity\TaxonomyEntityInterface'))
+                ->getRepository($this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface'))
                 ->findOneBy(array(
                 'language' => $language->getId(),
-                'type' => $type->getId(),
+                'type' => $type->getId()
             ));
             
             $name = $this->add($this->createInstanceFromEntity($entity));
@@ -70,11 +89,11 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getInstance($name);
     }
 
-    public function getTerm ($element)
+    public function getTerm($element)
     {
-        $termEntityClassName = $this->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface');
+        $termEntityClassName = $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface');
         if (is_numeric($element)) {
-            $entity = $this->getObjectManager()->find($this->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $element);
+            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $element);
             if (! is_object($entity))
                 throw new NotFoundException();
             $entity = $entity->getTaxonomy();
@@ -87,13 +106,13 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getInstance($name)->get($element);
     }
 
-    public function deleteTerm ($id)
+    public function deleteTerm($id)
     {
         $term = $this->getTerm($id);
         $term->getManager()->delete($term);
     }
 
-    protected function createInstanceFromEntity ($entity)
+    protected function createInstanceFromEntity($entity)
     {
         if (! is_object($entity))
             throw new NotFoundException();
@@ -101,7 +120,8 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         $instance = parent::createInstance('Taxonomy\Manager\TermManagerInterface');
         $instance->setEntity($entity);
         $instance->setSharedTaxonomyManager($this);
-        $instance->setOptions($this->options[$entity->getType()->getName()]);
+        $instance->setOptions($this->config[$entity->getType()
+            ->getName()]);
         return $instance;
     }
 }

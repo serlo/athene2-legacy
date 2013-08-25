@@ -31,7 +31,7 @@ class Module
         $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);*/
     
         $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
-        $hydrator->setPath(__DIR__ . '/config/subject/');
+        $hydrator->setPath(__DIR__ . '/config/navigation/');
     }
     
 
