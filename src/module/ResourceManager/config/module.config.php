@@ -19,14 +19,14 @@ return array(
                 {
                     $class = new Plugin\Topic\TopicPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },
                 'curriculum' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },
                 'entity' => function ($sm)

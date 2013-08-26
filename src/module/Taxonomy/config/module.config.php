@@ -97,6 +97,9 @@ return array(
                     ),
                     'setUuidManager' => array(
                         'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
                     )
                 ),
                 'Taxonomy\Service\TermService' => array(

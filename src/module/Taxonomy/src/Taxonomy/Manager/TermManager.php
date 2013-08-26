@@ -16,10 +16,12 @@ use Doctrine\Common\Collections\Collection;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Exception\NotFoundException;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use Doctrine\Common\Collections\ArrayCollection;
+use Taxonomy\Service\TermServiceInterface;
 
 class TermManager extends AbstractManager implements TermManagerInterface
 {
-    use \Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait, \Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait;
 
     protected $options = array();
 
@@ -66,6 +68,15 @@ class TermManager extends AbstractManager implements TermManagerInterface
         if (is_numeric($term)) {
             $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermEntityInterface'), (int) $term);
             $id = $this->add($this->createInstanceFromEntity($entity));
+        } elseif (is_string($term)){
+            $term = $this->getTermManager()->get($term);
+            $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
+                ->setMaxResults(1);
+            $entity = $this->getTerms()
+                ->matching($criteria)
+                ->first();
+            $id = $this->add($this->createInstanceFromEntity($entity));
+            
         } elseif (is_array($term)) {
             $id = $this->add($this->createInstanceFromEntity($this->getEntityByPath($term)));
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
@@ -91,7 +102,29 @@ class TermManager extends AbstractManager implements TermManagerInterface
         return $this->getInstance($id);
     }
 
-    protected function getEntityByPath(array $path)
+    protected function getEntityByPath(array $path){
+        if (!count($path))
+            throw new \InvalidArgumentException('Path requires at least one element');
+        $terms = $this->getRootTerms();
+        foreach($path as $element){
+            foreach($terms as $term){
+                $found = false;
+                if(strtolower($term->getSlug()) == strtolower($element)){
+                    $terms = $term->getChildren();
+                    $found = $term;
+                    break;
+                }
+            }
+        }
+        if(!is_object($found))
+            throw new \Exception("Not found");
+        
+        if($found instanceof TermServiceInterface)
+            $found = $found->getEntity();
+        return $found;//->getEntity();
+    }
+    
+    protected function _getEntityByPath(array $path)
     {
         if (! isset($path[0]))
             throw new \InvalidArgumentException('Path requires at least one element');
@@ -127,9 +160,12 @@ class TermManager extends AbstractManager implements TermManagerInterface
 					taxonomy.id = " . $this->getId() . "
 				AND term0.slug = '" . $root . "'
 					" . $where . "";
+        
         $query = $this->getObjectManager()
             ->createQuery($query)
             ->setMaxResults(1);
+        
+        //echo $query->getSql();
         
         $result = current($query->getResult());
         
@@ -184,13 +220,14 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function getRootTerms()
     {
-        $return = array();
+        //$return = array();
+        $collection = new ArrayCollection();
         foreach ($this->getEntity()->getTerms() as $entity) {
-            if (! $entity->hasParent() || $entity->getTaxonomy() !== $this->getEntity()) {
-                $return[] = $this->createInstanceFromEntity($entity);
+            if (! $entity->hasParent() || $entity->getParent()->getTaxonomy() !== $this->getEntity()) {
+                $collection->add($this->createInstanceFromEntity($entity));
             }
         }
-        return $return;
+        return $collection;
     }
 
     public function createInstanceFromEntity(TermTaxonomyEntityInterface $entity)

@@ -28,13 +28,15 @@ class SubjectService implements SubjectServiceInterface
     
     public function getTaxonomy($name)
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("name", $name))
+        /*$criteria = Criteria::create()->where(Criteria::expr()->eq("name", $name))
             ->setMaxResults(1);
         $taxonomy = $this->getEntity()
             ->getTaxonomies()
             ->matching($criteria)
-            ->current();
-        return $this->getSharedTaxonomyManager()->get($taxonomy);
+            ->current();*/
+        //return $this->getSharedTaxonomyManager()->get($taxonomy);
+        
+        //return $this->getSharedTaxonomyManager()->get($this->getEntity()->getTaxonomy());
     }
     
     public function setOptions($options){

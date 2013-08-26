@@ -8,8 +8,6 @@
  */
 namespace Taxonomy\Service;
 
-use Core\Entity\EntityInterface;
-use Taxonomy\Factory\FactoryInterface;
 use Taxonomy\Exception\LinkNotAllowedException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
@@ -145,12 +143,12 @@ class TermService implements TermServiceInterface
 
     public function getAllowedLinks()
     {
-        return $this->options['allowed_links'];
+        return $this->options['options']['allowed_links'];
     }
     
     public function isLinkAllowed($targetField)
     {
-        return in_array($targetField, $this->options['allowed_links']);
+        return in_array($targetField, $this->options['options']['allowed_links']);
     }
 
     public function update(array $data)
@@ -195,7 +193,7 @@ class TermService implements TermServiceInterface
 
     public function radixEnabled()
     {
-        return $this->options['radix_enabled'];
+        return $this->options['options']['radix_enabled'];
     }
 
     public function setParent($parent)
@@ -239,5 +237,13 @@ class TermService implements TermServiceInterface
     
     public function getName(){
         return $this->getEntity()->getName();
+    }
+    
+    public function getTaxonomy(){
+        return $this->getEntity()->getTaxonomy();
+    }
+    
+    public function getSlug(){
+        return $this->getEntity()->getSlug();
     }
 }

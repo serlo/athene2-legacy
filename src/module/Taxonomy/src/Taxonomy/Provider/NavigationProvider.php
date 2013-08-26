@@ -17,6 +17,8 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Criteria;
 use Navigation\Provider\ProviderInterface;
+use Taxonomy\Manager\TermManager;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class NavigationProvider implements ProviderInterface
 {
@@ -35,9 +37,9 @@ class NavigationProvider implements ProviderInterface
 
     /**
      *
-     * @var TaxonomyManagerInterface
+     * @var TermManager
      */
-    protected $taxonomyManager;
+    protected $termManager;
 
     /**
      *
@@ -56,18 +58,19 @@ class NavigationProvider implements ProviderInterface
         $this->options = array_merge($this->defaultOptions, $options);
         $this->serviceLocator = $serviceLocator;
         $this->entityManager = $serviceLocator->get('EntityManager');
-        $this->taxonomyManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')->get($this->options['type'], $this->options['language']);
+        $this->termManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')->get($this->options['type'], $this->options['language']);
     }
 
     public function provideArray($maxDepth = 1)
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->isNull("parent"))
+        /*$criteria = Criteria::create()->where(Criteria::expr()->isNull("parent"))
             ->setFirstResult(0)
-            ->setMaxResults(20);
+            ->setMaxResults(20);*/
         if ($this->entityManager->isOpen())
-            $this->entityManager->refresh($this->taxonomyManager->getEntity());
+            $this->entityManager->refresh($this->termManager->getEntity());
         
-        $terms = $this->taxonomyManager->getTerms()->matching($criteria);
+        //$terms = $this->termManager->getTerms()->matching($criteria);
+        $terms = $this->termManager->getRootTerms();
         $return = $this->iterTerms($terms, $maxDepth);
         return $return;
     }

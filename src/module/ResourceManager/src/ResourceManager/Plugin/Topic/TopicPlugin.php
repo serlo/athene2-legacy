@@ -62,8 +62,8 @@ class TopicPlugin extends AbstractPlugin
 
     public function get ($topic)
     {
-        return $this->getSubjectService()
-            ->getTaxonomy('topic')
+        return $this->getSharedTaxonomyManager()
+            ->get('topic')
             ->get($topic);
     }
 
