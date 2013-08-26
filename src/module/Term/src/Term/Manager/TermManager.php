@@ -39,14 +39,16 @@ class TermManager extends AbstractManager implements TermManagerInterface
      */
     public function add(TermServiceInterface $termService)
     {
-        $this->addInstance($termService->getName(), $termService);
-        return $termService->getName();
+        $this->addInstance($termService->getId(), $termService);
+        return $this;
     }
 
     public function get($term)
     {
         if ($term instanceof TermServiceInterface) {
             $return = $this->getByService($term);
+        } elseif (is_numeric($term)){
+            $return = $this->getById($term);
         } elseif (is_string($term)) {
             $return = $this->getByString($term);
         } else {
@@ -62,25 +64,25 @@ class TermManager extends AbstractManager implements TermManagerInterface
         if (! is_object($term))
             throw new TermNotFoundException($id);
         
-        if (! $this->hasInstance($term->getName())) {
+        if (! $this->hasInstance($term->getId())) {
             $this->add($this->createInstanceFromEntity($term));
         }
         
-        return $this->getInstance($term->getName());
+        return $this->getInstance($term->getId());
     }
 
     protected function getByService(TermServiceInterface $term)
     {
-        if (! $this->hasInstance($term->getName())) {
+        if (! $this->hasInstance($term->getId())) {
             $this->add($term);
         }
-        return $this->getInstance($term->getName());
+        return $this->getInstance($term->getId());
     }
 
     protected function getByString($name, $slug = NULL)
     {
         // TODO: get request language (!)
-        if (! $this->hasInstance($name)) {
+        //if (! $this->hasInstance($name)) {
             $entity = $this->getObjectManager()
                 ->getRepository($this->resolve('TermEntityInterface'))
                 ->findOneBy(array(
@@ -105,8 +107,8 @@ class TermManager extends AbstractManager implements TermManagerInterface
                 $em->flush();
             }
             $this->add($this->createInstanceFromEntity($entity));
-        }
-        return $this->getInstance($name);
+        //}
+        return $this->getInstance($entity->getId());
     }
 
     protected function createInstanceFromEntity($entity)

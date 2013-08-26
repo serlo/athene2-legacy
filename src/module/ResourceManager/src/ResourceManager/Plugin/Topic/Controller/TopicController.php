@@ -25,7 +25,7 @@ class TopicController extends AbstractController
         $topic = $subjectService->topic()->get(explode('/', $this->getParam('path')));
         
         $entities = array();
-        if ($topic->linkAllowed('entities')) {
+        if ($topic->isLinkAllowed('entities')) {
             foreach ($topic->getEntities()->asService() as $entity) {
                 if (! $entity->isTrashed()) {
                     $entities[] = $entity;
@@ -50,7 +50,7 @@ class TopicController extends AbstractController
         $entityView = new ViewModel(array(
             'taxonomy' => $topic,
             'subject' => $subjectService,
-            'acceptsEntities' => $topic->linkAllowed('entities'),
+            'acceptsEntities' => $topic->isLinkAllowed('entities'),
             'plugin' => $this->getPlugin(),
             'entities' => $entities
         ));

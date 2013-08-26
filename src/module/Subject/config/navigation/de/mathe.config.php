@@ -32,7 +32,7 @@ return array(
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
                     'type' => 'topic',
-                    'parent' => '',
+                    'parent' => 'mathe',
                     'language' => 'de',
                     'route' => 'subject/plugin/topic',
                     'params' => array(

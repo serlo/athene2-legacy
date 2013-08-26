@@ -11,7 +11,7 @@
  */
 namespace Taxonomy\Collection;
 
-use Taxonomy\SharedTaxonomyManagerInterface;
+use Taxonomy\Manager\SharedTaxonomyManagerInterface;
 
 class TermCollection extends AbstractCollection
 {

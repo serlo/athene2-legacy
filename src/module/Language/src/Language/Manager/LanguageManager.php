@@ -61,8 +61,11 @@ class LanguageManager implements LanguageManagerInterface {
 		return $this->languages[$language->getId()];
 	}
 	
-	public function has(LanguageInterface $language){
-	    return isset($this->languages[$language->getId()]) && is_object($this->languages[$language->getId()]);
+	public function has($language){
+	    if(!is_numeric($language)){
+	        $language = $language->getId();
+	    }
+	    return isset($this->languages[$language]) && is_object($this->languages[$language]);
 	}
 	
 	public function createInstance(LanguageInterface $entity){
