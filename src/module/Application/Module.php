@@ -21,9 +21,12 @@ class Module
     {
         // Load translator
         
+        $lm = $e->getApplication()->getServiceManager()->get('Language\Manager\LanguageManager');
+        $code = $lm->getRequestLanguage()->getCode();
+        
         $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/de_DE.php', 'default', 'de_DE');
-        $translator->setLocale('de_DE');
+        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/'.$code.'.php', 'default', 'de_DE');
+        $translator->setLocale($code);
         
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();

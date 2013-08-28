@@ -26,11 +26,6 @@ class TaxonomyType extends AbstractEntity
     protected $taxonomies;
 
     /**
-     * @ORM\Column(type="text",name="factory",length=255)
-     */
-    protected $factory;
-
-    /**
      * @ORM\Column(type="text",length=45)
      */
     protected $name;
