@@ -72,7 +72,65 @@ return array(
                     )
                 )
             ),
-            'physik' => array('plugins' => array()),
+            'physik' => array(
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'options' => array(
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben'
+                                    ),
+                                    'template' => 'resource-manager/plugin/topic/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel'
+                                    ),
+                                    'template' => 'resource-manager/plugin/topic/entity/article'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity'
+                    )
+                )
+            ),
+            'math' => array(
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'options' => array(
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Exercise',
+                                        'plural' => 'Exercises'
+                                    ),
+                                    'template' => 'resource-manager/plugin/topic/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Article',
+                                        'plural' => 'Articles'
+                                    ),
+                                    'template' => 'resource-manager/plugin/topic/entity/article'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity'
+                    )
+                )
+            ),
+            'physics' => array(
+                'plugins' => array()
+            )
         )
     ),
     'view_manager' => array(

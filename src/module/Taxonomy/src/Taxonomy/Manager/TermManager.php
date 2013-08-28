@@ -67,7 +67,6 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         if (is_numeric($term)) {
             $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermEntityInterface'), (int) $term);
-            $id = $this->add($this->createInstanceFromEntity($entity));
         } elseif (is_string($term)){
             $term = $this->getTermManager()->get($term);
             $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
@@ -75,30 +74,33 @@ class TermManager extends AbstractManager implements TermManagerInterface
             $entity = $this->getTerms()
                 ->matching($criteria)
                 ->first();
-            $id = $this->add($this->createInstanceFromEntity($entity));
             
         } elseif (is_array($term)) {
-            $id = $this->add($this->createInstanceFromEntity($this->getEntityByPath($term)));
+            $entity = $this->getEntityByPath($term);
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
             $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
                 ->setMaxResults(1);
             $entity = $this->getTerms()
                 ->matching($criteria)
                 ->first();
-            $id = $this->add($this->createInstanceFromEntity($entity));
         } elseif ($term instanceof TermTaxonomyEntityInterface) {
-            $id = $this->add($this->createInstanceFromEntity($term));
+            $entity = $this->createInstanceFromEntity($term);
         } elseif ($term instanceof \Taxonomy\Service\TermServiceInterface) {
-            $id = $this->add($term);
-        } elseif ($term instanceof Collection) {
+            $entity = $term;
+        /*} elseif ($term instanceof Collection) {
             $return = array();
             foreach ($term as $entity) {
                 $return[] = $this->get($entity);
             }
-            return $return;
+            return $return;*/
         } else {
             throw new \InvalidArgumentException();
         }
+        
+        if(!is_object($entity))
+            throw new NotFoundException();//sprintf('Term %s not found', $term));
+        
+        $id = $this->add($this->createInstanceFromEntity($entity));
         return $this->getInstance($id);
     }
 
