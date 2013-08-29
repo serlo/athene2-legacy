@@ -9,12 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace ResourceManager\Plugin\Topic\Taxonomy;
+namespace Subject\Plugin\Curriculum\Taxonomy;
 
-use Application\Taxonomy\Factory\EntityTaxonomy;
 use Taxonomy\Service\TermServiceInterface;
+use Application\Taxonomy\Factory\EntityTree;
 
-class TopicFolderFactory extends EntityTaxonomy
+class CurriculumFactory extends EntityTree
 {
     /*
      * (non-PHPdoc) @see \Taxonomy\Factory\FactoryInterface::build()
@@ -22,9 +22,8 @@ class TopicFolderFactory extends EntityTaxonomy
     public function build (TermServiceInterface $termService)
     {
         $instance = parent::build($termService);
-        $instance->disableRadix();
+        $instance->enableRadix();
         $instance->allowParentNodesByTaxonomy(1);
-        $instance->allowParentNodesByTaxonomy(2);
         return $instance;
     }
 }

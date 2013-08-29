@@ -26,7 +26,6 @@ return array(
         'Common',
         'ClassResolver',
         'LearningResource',
-        'ResourceManager',
         'Language'
     ),
 

@@ -32,6 +32,33 @@ class Module
     
         $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
         $hydrator->setPath(__DIR__ . '/config/navigation/');
+        
+        $this->addEntityManagerListener($serviceManager, $e);
+    }
+
+    public function addEntityManagerListener ($sm, MvcEvent $mvce)
+    {
+        /**
+         * Adds an entity to a subject, if a term is given
+         */
+        $sm->get('Entity\Manager\EntityManager')
+            ->getEventManager()
+            ->attach('create', function  (Event $e) use( $sm, $mvce)
+        {
+            $entity = $e->getParam('entity');
+            
+            if (isset($_GET['term']) && isset($_GET['subject'])) {
+                $subjectManager = $sm->get('Subject\Manager\SubjectManager');
+                $subject = $subjectManager->get($_GET['subject']);
+                
+                if ($subject->isPluginWhitelisted('topic')) {
+                    $subject->topic()
+                        ->addEntity($entity, $_GET['term']);
+                    
+                    $url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
+                }
+            }
+        }, 2);
     }
     
 
