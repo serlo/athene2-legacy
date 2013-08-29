@@ -12,26 +12,147 @@
 namespace Subject;
 
 return array(
+    'subject' => array(
+        'plugins' => array(
+            'factories' => array(
+                'topic' => function  ($sm)
+                {
+                    $class = new Plugin\Topic\TopicPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                    return $class;
+                },
+                'curriculum' => function  ($sm)
+                {
+                    $class = new Plugin\Curriculum\CurriculumPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                    return $class;
+                },
+                'entity' => function  ($sm)
+                {
+                    $class = new Plugin\Entity\EntityPlugin();
+                    $class->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    $class->setObjectManager($sm->getServiceLocator()
+                        ->get('EntityManager'));
+                    return $class;
+                }
+            )
+        ),
+        'instances' => array(
+            'mathe' => array(
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'options' => array(
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/article'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity'
+                    ),
+                    array(
+                        'name' => 'curriculum'
+                    )
+                )
+            ),
+            'physik' => array(
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'options' => array(
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/article'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity'
+                    )
+                )
+            ),
+            'math' => array(
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'options' => array(
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Exercise',
+                                        'plural' => 'Exercises'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Article',
+                                        'plural' => 'Articles'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/article'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity'
+                    )
+                )
+            ),
+            'physics' => array(
+                'plugins' => array()
+            )
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
         )
     ),
     'class_resolver' => array(
-        'Subject\Service\SubjectServiceInterface' => 'Subject\Service\SubjectService',
-        'Subject\Entity\SubjectEntityInterface' => 'Subject\Entity\Subject',
-        'Subject\Entity\SubjectTypeInterface' => 'Subject\Entity\SubjectType'
+        __NAMESPACE__ . '\Service\SubjectServiceInterface' => __NAMESPACE__ . '\Service\SubjectService',
+        __NAMESPACE__ . '\Entity\SubjectEntityInterface' => __NAMESPACE__ . '\Entity\Subject',
+        __NAMESPACE__ . '\Entity\SubjectTypeInterface' => __NAMESPACE__ . '\Entity\SubjectType'
     ),
     'service_manager' => array(
         'factories' => array(
-            'Subject\Plugin\PluginManager' => (function ($sm)
+            __NAMESPACE__ . '\Plugin\PluginManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
                 $config = new \Zend\ServiceManager\Config($config['subject']['plugins']);
                 $class = new \Subject\Plugin\PluginManager($config);
                 return $class;
             }),
-            'Subject\Manager\SubjectManager' => (function ($sm)
+            __NAMESPACE__ . '\Manager\SubjectManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
                 $class = new \Subject\Manager\SubjectManager($config['subject']['instances']);
@@ -47,18 +168,114 @@ return array(
             })
         )
     ),
+    'router' => array(
+        'routes' => array(
+            'subject' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/{subject}[/:subject]',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Provider\Home\Controller\HomeController',
+                        'action' => 'index'
+                    )
+                ),
+                'child_routes' => array(
+                    'plugin' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => ''
+                        ),
+                        'child_routes' => array(
+                            'topic' => array(
+                                'may_terminate' => true,
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/{topic}/:path',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
+                                        'action' => 'index',
+                                        'plugin' => 'topic'
+                                    ),
+                                    'constraints' => array(
+                                        'path' => '(.)+'
+                                    )
+                                )
+                            ),
+                            'entity' => array(
+                                'may_terminate' => true,
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/entity/:action',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController',
+                                        'action' => 'index',
+                                        'plugin' => 'entity'
+                                    )
+                                )
+                            ),
+                            'curriculum' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/{curriculum}',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+                                        'plugin' => 'curriculum'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'may_terminate' => true,
+                                    'show' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/:curriculum[/:path]',
+                                            'defaults' => array(
+                                                'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+                                                'action' => 'show'
+                                            )
+                                        ),
+                                        'constraints' => array(
+                                            'path' => '(.)+'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    ),
     'di' => array(
         'allowed_controllers' => array(
-            'Subject\Application\DefaultSubject\Controller\TopicController'
+            __NAMESPACE__ . '\Application\DefaultSubject\Controller\TopicController',
+            __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
+            __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+            __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController'
         ),
         'definition' => array(
             'class' => array(
-                'Subject\Hydrator\RouteStack' => array(
+                __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )
                 ),
-                'Subject\Hydrator\Route' => array(
+                __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Hydrator\RouteStack' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Hydrator\Route' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
@@ -66,7 +283,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Subject\Hydrator\Navigation' => array(
+                __NAMESPACE__ . '\Hydrator\Navigation' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
@@ -77,7 +294,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Subject\Manager\SubjectManager' => array(
+                __NAMESPACE__ . '\Manager\SubjectManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
@@ -85,7 +302,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Subject\Service\SubjectService' => array(
+                __NAMESPACE__ . '\Service\SubjectService' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
@@ -109,13 +326,10 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Entity\EntityManagerInterface' => 'Entity\EntityManager',
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Subject\Manager\SubjectManagerInterface' => 'Subject\Manager\SubjectManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
-                'Subject\Plugin\PluginManagerInterface' => 'Subject\Plugin\PluginManager'
+                __NAMESPACE__ . '\Manager\SubjectManagerInterface' => __NAMESPACE__ . '\Manager\SubjectManager',
+                __NAMESPACE__ . '\Plugin\PluginManagerInterface' => __NAMESPACE__ . '\Plugin\PluginManager',
             ),
-            'Subject\Service\SubjectService' => array(
+            __NAMESPACE__ . '\Service\SubjectService' => array(
                 'shared' => false
             )
         )

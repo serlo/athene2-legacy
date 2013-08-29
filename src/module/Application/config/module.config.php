@@ -20,8 +20,7 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array(
-            )
+            'ZfcRbac\Firewall\Route' => array()
         )
     ),
     'router' => array(
@@ -270,7 +269,8 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager'
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
             )
         )
     )

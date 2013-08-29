@@ -11,36 +11,9 @@
  */
 namespace Taxonomy\Controller;
 
-use Taxonomy\SharedTaxonomyManagerAwareInterface;
 use Zend\Mvc\Controller\AbstractActionController;
-use Taxonomy\SharedTaxonomyManagerInterface;
 
-class AbstractController extends AbstractActionController implements SharedTaxonomyManagerAwareInterface
+class AbstractController extends AbstractActionController
 {
-    
-    /**
-     * @var SharedTaxonomyManagerInterface
-     */
-    protected $sharedTaxonomyManager;
-    
-	/**
-     * @return \Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager
-     */
-    public function getSharedTaxonomyManager ()
-    {
-        return $this->sharedTaxonomyManager;
-    }
-
-	/**
-     * @param \Taxonomy\SharedTaxonomyManagerInterface $sharedTaxonomyManager
-     * @return $this
-     */
-    public function setSharedTaxonomyManager (SharedTaxonomyManagerInterface $sharedTaxonomyManager)
-    {
-        $this->sharedTaxonomyManager = $sharedTaxonomyManager;
-        return $this;
-    }
-    
-    function __construct ()
-    {}
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 }

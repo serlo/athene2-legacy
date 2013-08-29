@@ -12,12 +12,12 @@
 namespace Taxonomy\Manager;
 
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\Collection;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Exception\NotFoundException;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Collection\TermCollection;
 
 class TermManager extends AbstractManager implements TermManagerInterface
 {
@@ -74,7 +74,6 @@ class TermManager extends AbstractManager implements TermManagerInterface
             $entity = $this->getTerms()
                 ->matching($criteria)
                 ->first();
-            
         } elseif (is_array($term)) {
             $entity = $this->getEntityByPath($term);
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
@@ -107,7 +106,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
     protected function getEntityByPath(array $path){
         if (!count($path))
             throw new \InvalidArgumentException('Path requires at least one element');
-        $terms = $this->getRootTerms();
+        $terms = $this->getRootTermEntities();
         foreach($path as $element){
             foreach($terms as $term){
                 $found = false;
@@ -121,64 +120,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         if(!is_object($found))
             throw new \Exception("Not found");
         
-        if($found instanceof TermServiceInterface)
-            $found = $found->getEntity();
         return $found;//->getEntity();
-    }
-    
-    protected function _getEntityByPath(array $path)
-    {
-        if (! isset($path[0]))
-            throw new \InvalidArgumentException('Path requires at least one element');
-        
-        $i = 0;
-        $join = "";
-        $where = "";
-        $select = array();
-        $root = $path[0];
-        unset($path[0]);
-        foreach ($path as $element) {
-            $i ++;
-            $y = $i - 1;
-            $select[] = "termTaxonomy{$i}";
-            $join .= " JOIN termTaxonomy{$y}.children termTaxonomy{$i}
-                      JOIN termTaxonomy{$i}.term term{$i}\n";
-            $where .= " AND term{$i}.slug = '" . $element . "'
-                      AND termTaxonomy{$i}.parent = termTaxonomy{$y}.id";
-        }
-        if (count($path)) {
-            $select = array_reverse($select);
-            $select = ", " . implode(", ", $select);
-        } else {
-            $select = '';
-        }
-        $query = "
-				SELECT taxonomy, termTaxonomy0, term0{$select} FROM 
-					" . get_class($this->getEntity()) . " taxonomy
-					JOIN taxonomy.terms termTaxonomy0
-					JOIN termTaxonomy0.term term0
-                    " . $join . "
-				WHERE
-					taxonomy.id = " . $this->getId() . "
-				AND term0.slug = '" . $root . "'
-					" . $where . "";
-        
-        $query = $this->getObjectManager()
-            ->createQuery($query)
-            ->setMaxResults(1);
-        
-        //echo $query->getSql();
-        
-        $result = current($query->getResult());
-        
-        if (! is_object($result))
-            throw new NotFoundException();
-        
-        $result = $result->getTerms()->first();
-        for ($x = 1; $x <= $i; $x ++) {
-            $result = $result->getChildren()->first();
-        }
-        return $result;
     }
 
     public function create(array $data)
@@ -219,10 +161,20 @@ class TermManager extends AbstractManager implements TermManagerInterface
         $this->addInstance($termService->getId(), $termService);
         return $termService->getId();
     }
+    
+    protected function getRootTermEntities() {
+        $collection = new ArrayCollection();
+        foreach ($this->getEntity()->getTerms() as $entity) {
+            if (! $entity->hasParent() || $entity->getParent()->getTaxonomy() !== $this->getEntity()) {
+                $collection->add($entity);
+            }
+        }
+        return $collection;
+    }
 
     public function getRootTerms()
     {
-        //$return = array();
+        //return new TermCollection($this->getRootTermEntities(), $this->getManager());
         $collection = new ArrayCollection();
         foreach ($this->getEntity()->getTerms() as $entity) {
             if (! $entity->hasParent() || $entity->getParent()->getTaxonomy() !== $this->getEntity()) {
