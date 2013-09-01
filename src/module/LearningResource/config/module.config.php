@@ -69,7 +69,11 @@ return array(
                     'repository' => array(
                         'plugin' => 'repository',
                         'options' => array(
-                            'revision_form' => 'LearningResource\Form\TextExerciseForm'
+                            'revision_form' => 'LearningResource\Form\TextExerciseForm',
+                            'field_order' => array(
+                                'title',
+                                'content'
+                            )
                         )
                     ),
                     'topicFolder' => array(
@@ -88,7 +92,12 @@ return array(
                     'repository' => array(
                         'plugin' => 'repository',
                         'options' => array(
-                            'revision_form' => 'LearningResource\Form\TextSolutionForm'
+                            'revision_form' => 'LearningResource\Form\TextSolutionForm',
+                            'field_order' => array(
+                                'title',
+                                'hint',
+                                'content'
+                            )
                         )
                     ),
                     'exercise' => array(
@@ -104,9 +113,13 @@ return array(
                     'repository' => array(
                         'plugin' => 'repository',
                         'options' => array(
-                            'revision_form' => 'LearningResource\Form\ArticleForm'
+                            'revision_form' => 'LearningResource\Form\ArticleForm',
+                            'field_order' => array(
+                                'title',
+                                'content'
+                            )
                         )
-                    ),
+                    )
                 )
             )
         ),
@@ -183,7 +196,10 @@ return array(
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => array('compare', 'history'),
+                    'actions' => array(
+                        'compare',
+                        'history'
+                    ),
                     'roles' => 'guest'
                 ),
                 array(
@@ -193,7 +209,10 @@ return array(
                 ),
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => array('trash-revision', 'checkout'),
+                    'actions' => array(
+                        'trash-revision',
+                        'checkout'
+                    ),
                     'roles' => 'helper'
                 ),
                 array(
@@ -201,13 +220,16 @@ return array(
                     'actions' => 'purge-revision',
                     'roles' => 'admin'
                 ),
-
+                
                 array(
                     'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
-                    'actions' => array('set-topic', 'topic-dialog'),
+                    'actions' => array(
+                        'set-topic',
+                        'topic-dialog'
+                    ),
                     'roles' => 'helper'
-                ),
-            ),
+                )
+            )
         )
     )
     /*'zfcrbac' => array(

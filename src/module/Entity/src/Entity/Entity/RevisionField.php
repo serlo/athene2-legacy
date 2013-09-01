@@ -20,11 +20,18 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="entity_revision_field")
  */
 class RevisionField {
-	
-    /** @ORM\Id @ORM\Column(type="integer", name="entity_revision_id") */
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    
+    /** @ORM\Column(type="integer", name="entity_revision_id") */
     protected $entityRevisionId;
     
-    /** @ORM\Id @ORM\Column(type="string") */
+    /** @ORM\Column(type="string") */
     protected $field;
     
     /** @ORM\Column(type="string") */
