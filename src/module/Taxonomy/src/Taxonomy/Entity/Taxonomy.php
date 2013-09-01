@@ -82,4 +82,8 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     {
         $this->terms = new ArrayCollection();
     }
+    
+    public function getName(){
+        return $this->getType()->getName();
+    }
 }

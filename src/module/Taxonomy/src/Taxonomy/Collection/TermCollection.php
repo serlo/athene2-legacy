@@ -12,14 +12,30 @@
 namespace Taxonomy\Collection;
 
 use Taxonomy\Manager\SharedTaxonomyManagerInterface;
+use Common\Collection\AbstractDelegatorCollection;
 
-class TermCollection extends AbstractCollection
+class TermCollection extends AbstractDelegatorCollection
 {
-
     public function __construct ($collection, SharedTaxonomyManagerInterface $manager)
     {
         $this->setCollection($collection);
         $this->setManager($manager);
         $this->container = array();
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
+     */
+    public function getDelegate ($delegator)
+    {
+        return $delegator->getEntity();
+    }
+
+	/* (non-PHPdoc)
+     * @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
+     */
+    public function getFromManager ($key)
+    {
+        return $this->getManager()->getTerm($key);
     }
 }

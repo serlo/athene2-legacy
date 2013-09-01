@@ -12,12 +12,30 @@
 namespace Entity\Collection;
 
 use Entity\Manager\EntityManagerInterface;
-class EntityCollection extends AbstractCollection
+use Common\Collection\AbstractDelegatorCollection;
+
+class EntityCollection extends AbstractDelegatorCollection
 {
     public function __construct ($collection, EntityManagerInterface $manager)
     {
         $this->setCollection($collection);
         $this->setManager($manager);
         $this->container = array();
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
+     */
+    public function getDelegate ($component)
+    {
+        return $component->getEntity();
+    }
+
+	/* (non-PHPdoc)
+     * @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
+     */
+    public function getFromManager ($key)
+    {
+        return $this->getManager()->get($key);
     }
 }
