@@ -88,6 +88,12 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * @ORM\Column(type="boolean")
      */
     protected $trashed;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     */
+    protected $language;
     
     /**
      * @param field_type $type

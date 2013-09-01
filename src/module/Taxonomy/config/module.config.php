@@ -26,50 +26,53 @@ return array(
         'routes' => array()
     ),
     'taxonomy' => array(
-        'entity-folder' => array(
-            'options' => array(
-                'allowed_links' => array(
-                    'entities' => array(
-                        'callback' => function  (ServiceLocatorInterface $sm, $collection)
-                        {
-                            return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
-                        }
-                    )
-                ),
-                'allowed_parents' => array(
-                    'topic'
-                ),
-                'radix_enabled' => false
-            )
+        'links' => array(
+            'entities' => function  (ServiceLocatorInterface $sm, $collection)
+            {
+                return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
+            }
         ),
-        'topic' => array(
-            'options' => array(
-                'allowed_parents' => array(
-                    'subject'
-                ),
-                'radix_enabled' => false
+        'types' => array(
+            'entity-folder' => array(
+                'options' => array(
+                    'allowed_links' => array(
+                        'entities'
+                    ),
+                    'allowed_parents' => array(
+                        'topic'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'topic' => array(
+                'options' => array(
+                    'allowed_parents' => array(
+                        'subject'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'subject' => array(
+                'options' => array(
+                    'radix_enabled' => false,
+                )
+            ),
+            'school-type' => array(
+                'options' => array(
+                    'allowed_parents' => array(
+                        'subject'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'curriculum' => array(
+                'options' => array(
+                    'allowed_parents' => array(
+                        'school-type'
+                    ),
+                    'radix_enabled' => false
+                )
             )
-        ),
-        'subject' => array(
-            'options' => array(
-                'radix_enabled' => false
-            )
-        ),
-        'school-type' => array(
-            'options' => array(
-                'allowed_parents' => array(
-                    'subject'
-                ),
-                'radix_enabled' => false
-            )
-        ),
-        'curriculum' => array(
-            'options' => array(
-                'allowed_parents' => array(
-                    'school-type'
-                ),
-                'radix_enabled' => false
-            )            
         )
     ),
     'service_manager' => array(
@@ -126,6 +129,9 @@ return array(
                         'required' => 'true'
                     ),
                     'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
                         'required' => 'true'
                     )
                 )

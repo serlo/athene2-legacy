@@ -2,6 +2,7 @@
 namespace Subject;
 
 use Zend\Mvc\MvcEvent;
+use Zend\EventManager\Event;
 // use Zend\Mvc\ModuleRouteListener;
 
 class Module
