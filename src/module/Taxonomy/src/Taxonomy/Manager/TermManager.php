@@ -30,11 +30,6 @@ class TermManager extends AbstractManager implements TermManagerInterface
             'radix_enabled' => true
         )
     );
-        
-    public function __construct($options = array())
-    {
-        $this->config = array_merge_recursive($this->config, $options);
-    }
 
     public function getId()
     {
@@ -211,7 +206,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function setConfig(array $config)
     {
-        $this->config = ($config);
+        $this->config = array_merge_recursive($this->config, $config);
         return $this;
     }
 }

@@ -346,11 +346,11 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     }
     
     public function hasCurrentRevision(){
-        return is_object($this->currentRevision);
+        return $this->currentRevision !== NULL;
     }
 
     public function isUnrevised(){
-        return ! ( $this->hasCurrentRevision() && $this->getCurrentRevision() === $this->getHead());
+        return ($this->hasCurrentRevision() && $this->getCurrentRevision() !== $this->getHead()) || (!$this->hasCurrentRevision() && $this->getRevisions()->count() > 0);
     }
     
     /**

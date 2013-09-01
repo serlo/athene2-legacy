@@ -22,7 +22,7 @@ class TopicPlugin extends AbstractPlugin
     public function addEntity($entity, $to){
         $term = $this->getSharedTaxonomyManager()->getTerm($to);
         
-        if($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
+        if(!$term->knowsAncestor($this->getSubjectService()->getTermService()))
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
         
         $term->addLink('entities', $entity->getEntity());

@@ -17,6 +17,17 @@ return array(
         'Entity\Entity\TypeInterface' => 'Entity\Entity\Type',
         'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
     ),
+    'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Controller' => array(
+                array(
+                    'controller' => 'Entity\Controller\EntityController',
+                    'actions' => array('create'),
+                    'roles' => 'login'
+                ),
+            ),
+        )
+    ),
     'router' => array(
         'routes' => array(
             'entity' => array(

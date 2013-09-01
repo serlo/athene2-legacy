@@ -22,9 +22,7 @@ class EntityPlugin extends AbstractPlugin
     use \Entity\Manager\EntityManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
     
     public function getEntities(){
-        $query = $this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
-        $collection = new ArrayCollection($query->getResult());
-        return new EntityCollection($collection, $this->getEntityManager());
+        return $this->getSubjectService()->getTermService()->getLinks('entities', true, array('topic', 'entity-folder', 'subject'));//$this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
     }
     
     public function getUnrevisedEntities(){
