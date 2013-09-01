@@ -13,6 +13,7 @@ namespace Subject\Plugin\Topic;
 
 use Subject\Plugin\AbstractPlugin;
 use Subject\Exception\InvalidArgumentException;
+use Taxonomy\Service\TermServiceInterface;
 
 class TopicPlugin extends AbstractPlugin
 {
@@ -28,6 +29,15 @@ class TopicPlugin extends AbstractPlugin
         $term->persistAndFlush();
         
         return $this;
+    }
+    
+    public function getTopicPath(TermServiceInterface $term){
+        return ($term->getTaxonomy()->getName() != 'subject') ? $this->getTopicPath($term->getParent()) . $term->getSlug() . '/' : '';
+    }
+    
+    public function getTermManager(){
+        return $this->getSharedTaxonomyManager()
+            ->get('topic');        
     }
 
     public function getEnabledEntityTypes ()

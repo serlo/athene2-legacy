@@ -10,9 +10,8 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<?php if($this->acceptsEntities): ?>
 <div class="entities">
-    <?php foreach($this->plugin->filterEntities($this->curriculum, $this->entities) as $entity): ?>
+    <?php foreach($this->entities as $entity): ?>
         <?php if($this->plugin->isTypeEnabled($entity->getType()->getName())): ?>
         <div class="right btn-group">
         	<a
@@ -23,4 +22,3 @@
         <?php endif; ?>
     <?php endforeach; ?>
 </div>
-<?php endif; ?>

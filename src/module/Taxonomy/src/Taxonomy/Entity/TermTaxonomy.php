@@ -72,6 +72,10 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
     {
         return (is_object($this->getParent()));
     }
+    
+    public function hasChildren(){
+        return $this->getChildren()->count() != 0;
+    }
 
 	/* (non-PHPdoc)
      * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::setDescription()

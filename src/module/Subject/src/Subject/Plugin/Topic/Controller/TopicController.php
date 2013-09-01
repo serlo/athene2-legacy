@@ -26,7 +26,7 @@ class TopicController extends AbstractController
         
         $entities = array();
         if ($topic->isLinkAllowed('entities')) {
-            foreach ($topic->getEntities()->asService() as $entity) {
+            foreach ($topic->getLinks('entities')->asService() as $entity) {
                 if (! $entity->isTrashed()) {
                     $entities[] = $entity;
                 }

@@ -25,7 +25,7 @@ class Module
         $code = $lm->getRequestLanguage()->getCode();
         
         $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/'.$code.'.php', 'default', 'de_DE');
+        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/'.$code.'.php', 'default', $code);
         $translator->setLocale($code);
         
         $eventManager        = $e->getApplication()->getEventManager();

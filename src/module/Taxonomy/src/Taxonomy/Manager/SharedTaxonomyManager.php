@@ -11,6 +11,7 @@ namespace Taxonomy\Manager;
 use Taxonomy\Exception\NotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Language\Service\LanguageServiceInterface;
+use Taxonomy\Exception\ConfigNotFoundException;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
@@ -93,17 +94,21 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     {
         $termEntityClassName = $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface');
         if (is_numeric($element)) {
-            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $element);
-            if (! is_object($entity))
-                throw new NotFoundException();
-            $entity = $entity->getTaxonomy();
-            $name = $this->add($this->createInstanceFromEntity($entity));
+            $entity = $this->getObjectManager()->find($termEntityClassName, (int) $element)->getTaxonomy();
         } elseif ($element instanceof $termEntityClassName) {
-            $name = $this->add($this->createInstanceFromEntity($element->getTaxonomy()));
+            $entity = $element->getTaxonomy();
         } else {
             throw new \InvalidArgumentException();
         }
-        return $this->getInstance($name)->get($element);
+        
+        if (! is_object($entity))
+            throw new NotFoundException();
+        
+        return $this->get($entity)->get($element);
+    }
+    
+    public function has($entity){
+        return $this->hasInstance($entity->getId());
     }
 
     public function deleteTerm($id)
@@ -117,10 +122,15 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         if (! is_object($entity))
             throw new NotFoundException();
         
+        if(! isset($this->config[$entity->getType()
+            ->getName()]))
+            throw new ConfigNotFoundException(sprintf('Could not find a configuration for %s', $entity->getType()
+            ->getName()));
+        
         $instance = parent::createInstance('Taxonomy\Manager\TermManagerInterface');
         $instance->setEntity($entity);
         $instance->setSharedTaxonomyManager($this);
-        $instance->setOptions($this->config[$entity->getType()
+        $instance->setConfig($this->config[$entity->getType()
             ->getName()]);
         return $instance;
     }

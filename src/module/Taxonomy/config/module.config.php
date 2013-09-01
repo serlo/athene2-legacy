@@ -30,7 +30,7 @@ return array(
             'options' => array(
                 'allowed_links' => array(
                     'entities' => array(
-                        'callback' => function (ServiceLocatorInterface $sm, $collection)
+                        'callback' => function  (ServiceLocatorInterface $sm, $collection)
                         {
                             return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
                         }
@@ -54,11 +54,27 @@ return array(
             'options' => array(
                 'radix_enabled' => false
             )
+        ),
+        'school-type' => array(
+            'options' => array(
+                'allowed_parents' => array(
+                    'subject'
+                ),
+                'radix_enabled' => false
+            )
+        ),
+        'curriculum' => array(
+            'options' => array(
+                'allowed_parents' => array(
+                    'school-type'
+                ),
+                'radix_enabled' => false
+            )            
         )
     ),
     'service_manager' => array(
         'factories' => array(
-            'Taxonomy\Manager\SharedTaxonomyManager' => (function ($sm)
+            'Taxonomy\Manager\SharedTaxonomyManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
                 $config = new \Zend\Config\Config($config['taxonomy']);
@@ -108,6 +124,9 @@ return array(
                     ),
                     'setTermManager' => array(
                         'required' => 'true'
+                    ),
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
                     )
                 )
             )
@@ -117,12 +136,20 @@ return array(
                 'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager',
                 'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
                 'Taxonomy\Manager\SharedTaxonomyManagerInterface' => 'Taxonomy\Manager\SharedTaxonomyManager'
-            // 'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
-            // 'Entity\Service\EntityServiceInterface' => 'EventManager',
-            // 'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
-            // 'SharedTaxonomyManagerInterface' => 'SharedTaxonomyManager'
+            // 'Auth\Service\AuthServiceInterface'
+            // =>
+            // 'Auth\Service\AuthService',
+            // 'Entity\Service\EntityServiceInterface'
+            // =>
+            // 'EventManager',
+            // 'Versioning\RepositoryManagerInterface'
+            // =>
+            // 'Versioning\RepositoryManager',
+            // 'SharedTaxonomyManagerInterface'
+            // =>
+            // 'SharedTaxonomyManager'
                         ),
-            'Taxonomy\TermManager' => array(
+            'Taxonomy\Manager\TermManager' => array(
                 'shared' => false
             ),
             'Taxonomy\Service\TermService' => array(

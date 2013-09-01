@@ -216,26 +216,28 @@ return array(
                             ),
                             'curriculum' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
                                 'options' => array(
-                                    'route' => '/{curriculum}',
+                                    'route' => '/{curriculum}/[:curriculum]',
                                     'defaults' => array(
                                         'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
-                                        'plugin' => 'curriculum'
+                                        'plugin' => 'curriculum',
+                                        'action' => 'index'
                                     )
                                 ),
                                 'child_routes' => array(
-                                    'may_terminate' => true,
-                                    'show' => array(
+                                    'topic' => array(
+                                        'may_terminate' => true,
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route' => '/:curriculum[/:path]',
+                                            'route' => '/{topic}/[:path]',
                                             'defaults' => array(
                                                 'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
-                                                'action' => 'show'
+                                                'action' => 'topic'
+                                            ),
+                                            'constraints' => array(
+                                                'path' => '(.)+'
                                             )
-                                        ),
-                                        'constraints' => array(
-                                            'path' => '(.)+'
                                         )
                                     )
                                 )
@@ -327,7 +329,7 @@ return array(
         'instance' => array(
             'preferences' => array(
                 __NAMESPACE__ . '\Manager\SubjectManagerInterface' => __NAMESPACE__ . '\Manager\SubjectManager',
-                __NAMESPACE__ . '\Plugin\PluginManagerInterface' => __NAMESPACE__ . '\Plugin\PluginManager',
+                __NAMESPACE__ . '\Plugin\PluginManagerInterface' => __NAMESPACE__ . '\Plugin\PluginManager'
             ),
             __NAMESPACE__ . '\Service\SubjectService' => array(
                 'shared' => false

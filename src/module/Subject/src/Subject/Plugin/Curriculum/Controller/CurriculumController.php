@@ -18,53 +18,77 @@ use Zend\View\Model\ViewModel;
 class CurriculumController extends AbstractController
 {
 
-    public function indexAction()
+    public function indexAction ()
     {
         $plugin = $this->getPlugin();
         $subjectService = $plugin->getSubjectService();
-        $curriculum = $plugin->getCurriculum($this->getParam('curriculum'));
-        $topic = $plugin->getTopic(explode('/', $this->getParam('path')));
         
-        $entities = array();
-        if ($topic->linkAllowed('entities')) {
-            foreach ($topic->getEntities()->asService() as $entity) {
-                if (! $entity->isTrashed()) {
-                    $entities[] = $entity;
+        $view = new ViewModel(array(
+            'schoolRootFolders' => $plugin->getSchoolTypeRootFolders(),
+            'subject' => $subjectService
+        ));
+        $view->setTemplate('subject/plugin/curriculum/show');
+        return $view;
+    }
+
+    public function topicAction ()
+    {
+        $plugin = $this->getPlugin();
+        $subjectService = $plugin->getSubjectService();
+        
+        $curriculum = $this->getCurriculum();
+        
+        $terms = $plugin->getRootTopics();
+        $topic = $this->getTopic();
+        if($topic){
+            $terms = $topic->getChildren();
+        }
+        
+        $view = new ViewModel(array(
+            'schoolRootFolders' => $plugin->getSchoolTypeRootFolders(),
+            'subject' => $subjectService
+        ));
+        $view->setTemplate('subject/plugin/curriculum/show');
+        
+        $topicView = new ViewModel(array(
+            'plugin' => $plugin,
+            'subject' => $subjectService,
+            'terms' => $terms,
+            'curriculum' => $curriculum,
+        ));
+        $topicView->setTemplate('subject/plugin/curriculum/topic');
+        
+        $view->addChild($topicView, 'topics');
+
+        if($topic){
+            if($topic->countLinks('entities')){
+                $entities = $this->getPlugin()->filterEntities($topic->getLinks('entities')->asService(), $topic);
+                if($entities->count()){
+                    $entityView = new ViewModel(array(
+                        'entities' => $entities,
+                        'acceptsEntities' => $topic->isLinkAllowed('entities'),
+                        'plugin' => $plugin,
+                        'subject' => $subjectService
+                    ));
+                    $entityView->setTemplate('subject/plugin/curriculum/entities');
+                    $view->addChild($entityView, 'entities');
                 }
             }
         }
         
-        $view = new ViewModel(array(
-            'topic' => $topic,
-            'curriculum' => $curriculum,
-            'subject' => $subjectService,
-            'plugin' => $this->getPlugin()
-        ));
-        
-        $taxonomyView = new ViewModel(array(
-            'terms' => $topic->getChildren(),
-            'subject' => $subjectService,
-            'curriculum' => $curriculum,
-            'plugin' => $this->getPlugin()
-        ));
-        
-        $taxonomyView->setTemplate('subject/plugin/curriculum/partial');
-        $view->addChild($taxonomyView, 'taxonomy');
-        
-        $entityView = new ViewModel(array(
-            'topic' => $topic,
-            'curriculum' => $curriculum,
-            'subject' => $subjectService,
-            'acceptsEntities' => $topic->linkAllowed('entities'),
-            'plugin' => $this->getPlugin(),
-            'entities' => $entities
-        ));
-        
-        $entityView->setTemplate('subject/plugin/curriculum/entities');
-        $view->addChild($entityView, 'entities');
-        
-        $view->setTemplate('subject/plugin/curriculum/show');
-        
         return $view;
+    }
+    
+    protected function getTopic(){
+        if(!$this->params('path', false)){
+            return null;
+        } else {
+            return $this->getPlugin()->getSharedTaxonomyManager()->get('topic')->get(explode('/',$this->params('path')));
+        }
+    }
+
+    protected function getCurriculum ()
+    {
+        return $this->getPlugin()->getCurriculum($this->getParam('curriculum'));
     }
 }

@@ -12,5 +12,9 @@
 //$subtitle = is_object($this->topic) ? $this->topic->getName() : NULL;
 echo $this->pageHeader($this->translate('Lehrplan'));
 ?>
-<?php echo $this->taxonomy; ?>
+<div class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $this->translate('Wähle einen Lehrplan');?></a>
+    <?php echo $this->partial('subject/plugin/curriculum/school-type', array('terms' => $this->schoolRootFolders, 'renderChildren' => 2, 'currentCurriculum' => $this->curriculum, 'subject' => $this->subject)); ?>
+</div>
+<?php echo $this->topics; ?>
 <?php echo $this->entities; ?>

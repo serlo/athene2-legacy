@@ -12,25 +12,45 @@ use Taxonomy\Exception\LinkNotAllowedException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Collection\TermCollection;
+use Taxonomy\Exception\NotFoundException;
+use Doctrine\Common\Collections\Criteria;
 
 class TermService implements TermServiceInterface
 {
     
-    use\ Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait, \Common\Traits\EntityDelegatorTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait, \Common\Traits\EntityDelegatorTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
-    protected $options = array(
-        'options' => array(
-            'allowed_parents' => array(),
-            'allowed_links' => array(),
-            'radix_enabled' => true
-        )
-    );
     
     /**
      *
      * @var \Taxonomy\Manager\TermManagerInterface
      */
     protected $manager;
+    
+    public function getDescendantBySlugs(array $path){
+        $term = $this;
+        $found = NULL;
+        
+        foreach($path as $part){
+            $found = false;
+            foreach($term->getChildren() as $child){
+                if($child->getSlug() == $part){
+                    $term = $child;
+                    $found = $child;
+                    break;
+                }
+            }
+            if(!$found)
+                throw new NotFoundException('Term not found');
+        }
+        return $found;
+    }
+    
+    public function getChildrenByTaxonomyName($taxonomy){
+        $tax = $this->getSharedTaxonomyManager()->get($taxonomy);
+        $collection = new TermCollection($this->getEntity()->getChildren()->matching(Criteria::create()->where(Criteria::expr()->eq('taxonomy', $tax->getId()))->setFirstResult(0)->setMaxResults(20)), $this->getSharedTaxonomyManager()); 
+        return $collection->asService();
+    }
     
     /*
      * (non-PHPdoc) @see \Taxonomy\TermManagerAwareInterface::getTermManager()
@@ -49,13 +69,16 @@ class TermService implements TermServiceInterface
         return $this;
     }
     
+    public function hasChildren(){
+        return $this->getEntity()->hasChildren();
+    }
+    
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getParent()
      */
     public function getParent()
     {
-        return $this->getManager()->get($this->getEntity()
-            ->getParent());
+        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()->getParent());
     }
     
     /*
@@ -66,7 +89,7 @@ class TermService implements TermServiceInterface
         /*
          * return $this->getManager()->get($this->getEntity() ->get('children'));
          */
-        return new TermCollection($this->getEntity()->get('children'), $this->getManager()->getManager());
+        return new TermCollection($this->getEntity()->get('children'), $this->getSharedTaxonomyManager());
     }
     
     /*
@@ -81,6 +104,21 @@ class TermService implements TermServiceInterface
         return $return;
     }
     
+    public function hasLinks($targetField){
+        if(!$this->isLinkAllowed($targetField))
+            return false;
+        
+        return $this->getEntity()->get($targetField)->count() != 0;
+    }
+    
+    
+    public function countLinks($targetField){
+        if(!$this->isLinkAllowed($targetField))
+            return 0;
+        
+        return $this->getEntity()->get($targetField)->count();
+    }
+    
     /*
      * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getLinks()
      */
@@ -88,7 +126,7 @@ class TermService implements TermServiceInterface
     {
         $this->isLinkAllowedWithException($targetField);
         $callback = $this->getCallbackForLink($targetField);
-        return $callback($this->get($targetField));
+        return $callback($this->getServiceLocator(), $this->getEntity()->get($targetField));
     }
     
     public function getCallbackForLink($link){
@@ -129,10 +167,8 @@ class TermService implements TermServiceInterface
 
     public function hasLink($targetField, $target)
     {
-        $target = $this->findEntity($target);
         $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getEntity();
-        return $entity->get($targetField)->containsKey($target->getId());
+        return $this->getEntity()->get($targetField)->matching(Criteria::create(Criteria::expr()->eq('id', $target->getId()))->setFirstResult(0)->setMaxResults(1));
     }
 
     protected function isLinkAllowedWithException($targetField)
@@ -143,12 +179,12 @@ class TermService implements TermServiceInterface
 
     public function getAllowedLinks()
     {
-        return $this->options['options']['allowed_links'];
+        return $this->getOptions()['allowed_links'];
     }
     
     public function isLinkAllowed($targetField)
     {
-        return in_array($targetField, $this->options['options']['allowed_links']);
+        return array_key_exists($targetField, $this->getOptions()['allowed_links']);
     }
 
     public function update(array $data)
@@ -193,7 +229,7 @@ class TermService implements TermServiceInterface
 
     public function radixEnabled()
     {
-        return $this->options['options']['radix_enabled'];
+        return $this->getOptions()['radix_enabled'];
     }
 
     public function setParent($parent)
@@ -218,17 +254,8 @@ class TermService implements TermServiceInterface
      */
     public function getOptions()
     {
-        return $this->options;
-    }
-
-	/**
-     * @param multitype:multitype:multitype: string   $options
-     * @return $this
-     */
-    public function setOptions($options)
-    {
-        $this->options = array_merge_recursive($this->options, $options);
-        return $this;
+        $config = $this->getManager()->getConfig();
+        return $config['options'];
     }
     
     public function getId(){
@@ -239,8 +266,16 @@ class TermService implements TermServiceInterface
         return $this->getEntity()->getName();
     }
     
+    public function getType(){
+        return $this->getEntity()->getType();
+    }
+    
     public function getTaxonomy(){
         return $this->getEntity()->getTaxonomy();
+    }
+    
+    public function getTypeName(){
+        return $this->getEntity()->getType()->getName();
     }
     
     public function getSlug(){

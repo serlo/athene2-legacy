@@ -23,11 +23,17 @@ class TermManager extends AbstractManager implements TermManagerInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait, \Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait;
 
-    protected $options = array();
-
+    protected $config = array(
+        'options' => array(
+            'allowed_parents' => array(),
+            'allowed_links' => array(),
+            'radix_enabled' => true
+        )
+    );
+        
     public function __construct($options = array())
     {
-        $this->options = array_merge_recursive($this->options, $options);
+        $this->config = array_merge_recursive($this->config, $options);
     }
 
     public function getId()
@@ -66,7 +72,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
     public function get($term)
     {
         if (is_numeric($term)) {
-            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermEntityInterface'), (int) $term);
+            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $term);
         } elseif (is_string($term)){
             $term = $this->getTermManager()->get($term);
             $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
@@ -83,24 +89,24 @@ class TermManager extends AbstractManager implements TermManagerInterface
                 ->matching($criteria)
                 ->first();
         } elseif ($term instanceof TermTaxonomyEntityInterface) {
-            $entity = $this->createInstanceFromEntity($term);
+            $entity = $term;
         } elseif ($term instanceof \Taxonomy\Service\TermServiceInterface) {
             $entity = $term;
-        /*} elseif ($term instanceof Collection) {
-            $return = array();
-            foreach ($term as $entity) {
-                $return[] = $this->get($entity);
-            }
-            return $return;*/
+            $id = $this->add($entity);
+            return $this->getInstance($id);
         } else {
             throw new \InvalidArgumentException();
         }
         
-        if(!is_object($entity))
-            throw new NotFoundException();//sprintf('Term %s not found', $term));
+        if(!$entity instanceof TermTaxonomyEntityInterface){
+            throw new NotFoundException(sprintf("Term not found, %s does not implement TermTaxonomyEntityInterface",get_class($entity)));//sprintf('Term %s not found', $term));
+        }
+            
+        if(!$this->hasInstance($entity->getId())){
+            $id = $this->add($this->createInstanceFromEntity($entity));
+        }
         
-        $id = $this->add($this->createInstanceFromEntity($entity));
-        return $this->getInstance($id);
+        return $this->getInstance($entity->getId());
     }
 
     protected function getEntityByPath(array $path){
@@ -108,19 +114,21 @@ class TermManager extends AbstractManager implements TermManagerInterface
             throw new \InvalidArgumentException('Path requires at least one element');
         $terms = $this->getRootTermEntities();
         foreach($path as $element){
-            foreach($terms as $term){
-                $found = false;
-                if(strtolower($term->getSlug()) == strtolower($element)){
-                    $terms = $term->getChildren();
-                    $found = $term;
-                    break;
+            if(is_string($element) && strlen($element) > 0){
+                foreach($terms as $term){
+                    $found = false;
+                    if(strtolower($term->getSlug()) == strtolower($element)){
+                        $terms = $term->getChildren();
+                        $found = $term;
+                        break;
+                    }
                 }
             }
         }
         if(!is_object($found))
             throw new \Exception("Not found");
         
-        return $found;//->getEntity();
+        return $found;
     }
 
     public function create(array $data)
@@ -177,7 +185,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         //return new TermCollection($this->getRootTermEntities(), $this->getManager());
         $collection = new ArrayCollection();
         foreach ($this->getEntity()->getTerms() as $entity) {
-            if (! $entity->hasParent() || $entity->getParent()->getTaxonomy() !== $this->getEntity()) {
+            if (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this->getEntity()) ){
                 $collection->add($this->createInstanceFromEntity($entity));
             }
         }
@@ -188,20 +196,22 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
         $instance->setEntity($entity);
-        $instance->setManager($this);
-        $instance->setOptions($this->options);
+        if($entity->getTaxonomy() !== $this->getEntity()){
+            $instance->setManager($this->getSharedTaxonomyManager()->get($entity->getTaxonomy()->getName()));
+        } else {
+            $instance->setManager($this);            
+        }
         return $instance;
     }
 
-    public function getOptions()
+    public function getConfig()
     {
-        return $this->options;
+        return $this->config;
     }
 
-    public function setOptions($options)
+    public function setConfig(array $config)
     {
-        $this->options = $options;
-        return $this;
+        $this->config = ($config);
         return $this;
     }
 }
