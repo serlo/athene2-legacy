@@ -26,6 +26,7 @@ class RepositoryPlugin extends AbstractPlugin
     public function getRepository()
     {
         $repository = $this->getEntityService()->getEntity();
+        $repository->setFieldOrder($this->getOption('field_order'));
         return $this->getRepositoryManager()->addRepository($repository)->getRepository($repository);
     }
     
