@@ -67,6 +67,9 @@ return array(
             ),
             'curriculum' => array(
                 'options' => array(
+                    'allowed_links' => array(
+                        'entities'
+                    ),
                     'allowed_parents' => array(
                         'school-type'
                     ),

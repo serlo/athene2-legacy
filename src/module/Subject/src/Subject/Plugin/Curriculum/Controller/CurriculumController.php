@@ -40,7 +40,7 @@ class CurriculumController extends AbstractController
         
         $terms = $plugin->getRootTopics();
         $topic = $this->getTopic();
-        if($topic){
+        if ($topic) {
             $terms = $topic->getChildren();
         }
         
@@ -54,20 +54,23 @@ class CurriculumController extends AbstractController
             'plugin' => $plugin,
             'subject' => $subjectService,
             'terms' => $terms,
-            'curriculum' => $curriculum,
+            'curriculum' => $curriculum
         ));
         $topicView->setTemplate('subject/plugin/curriculum/topic');
         
         $view->addChild($topicView, 'topics');
-
-        if($topic){
-            if($topic->countLinks('entities')){
-                $entities = $this->getPlugin()->filterEntities($topic->getLinks('entities')->asService(), $topic);
-                if($entities->count()){
+        
+        if ($topic) {
+            if ($topic->countLinks('entities')) {
+                $entities = $this->getPlugin()->filterEntities($topic->getLinks('entities')
+                    ->asService(), $topic);
+                if ($entities->count()) {
                     $entityView = new ViewModel(array(
                         'entities' => $entities,
                         'acceptsEntities' => $topic->isLinkAllowed('entities'),
                         'plugin' => $plugin,
+                        'topic' => $topic,
+                        'curriculum' => $curriculum,
                         'subject' => $subjectService
                     ));
                     $entityView->setTemplate('subject/plugin/curriculum/entities');
@@ -78,17 +81,28 @@ class CurriculumController extends AbstractController
         
         return $view;
     }
-    
-    protected function getTopic(){
-        if(!$this->params('path', false)){
-            return null;
-        } else {
-            return $this->getPlugin()->getSharedTaxonomyManager()->get('topic')->get(explode('/',$this->params('path')));
+
+    public function getPlugin ($id = NULL)
+    {
+        $plugin = parent::getPlugin($id);
+        
+        if ($this->params('path', false)) {
+            $plugin->setTopic(explode('/', $this->params('path')));
         }
+        if ($this->params('curriculum', false)) {
+            $plugin->setCurriculum($this->getParam('curriculum'));
+        }
+        
+        return $plugin;
+    }
+
+    protected function getTopic ()
+    {
+        return $this->getPlugin()->getTopic();
     }
 
     protected function getCurriculum ()
     {
-        return $this->getPlugin()->getCurriculum($this->getParam('curriculum'));
+        return $this->getPlugin()->getCurriculum();
     }
 }

@@ -27,6 +27,8 @@ return array(
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                    $class->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
                     return $class;
                 },
                 'entity' => function  ($sm)
@@ -239,6 +241,17 @@ return array(
                                                 'path' => '(.)+'
                                             )
                                         )
+                                    ),
+                                    'entity' => array(
+                                        'may_terminate' => true,
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/entity/:action/:entity',
+                                            'defaults' => array(
+                                                'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController',
+                                                'action' => 'index'
+                                            ),
+                                        )
                                     )
                                 )
                             )
@@ -253,11 +266,17 @@ return array(
             __NAMESPACE__ . '\Application\DefaultSubject\Controller\TopicController',
             __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
             __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
+            __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController',
             __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController'
         ),
         'definition' => array(
             'class' => array(
                 __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController' => array(
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

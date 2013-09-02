@@ -14,18 +14,13 @@ return array(
         'label' => 'Mathe',
         'uri' => '#',
         'pages' => array(
-            /*array(
+            array(
                 'label' => 'Lehrplan',
-                'uri' => 'subject',
-                'provider' => 'Taxonomy\Provider\NavigationProvider',
-                'options' => array(
-                    'name' => 'curriculum',
-                    'route' => 'subject/plugin/curriculum',
-                    'params' => array(
-                        'subject' => 'math'
-                    )
+                'route' => 'subject/plugin/curriculum',
+                'params' => array(
+                    'subject' => 'mathe'
                 )
-            ),*/
+            ),
             array(
                 'label' => 'Lernen',
                 'route' => 'subject',
