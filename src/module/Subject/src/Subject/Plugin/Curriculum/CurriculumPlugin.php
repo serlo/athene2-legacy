@@ -16,17 +16,49 @@ use Subject\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Service\TermServiceInterface;
-use Taxonomy\Service\TermService;
 use Entity\Service\EntityServiceInterface;
+use Entity\Entity\EntityInterface;
 
 class CurriculumPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Entity\Manager\EntityManagerAwareTrait;
     
-    protected $curriculum;
+    protected $curriculum, $topic;
     
-    public function getCurriculum($id){
-        return $this->getTermManager()->get($id);
+    public function getTopic ()
+    {
+        return $this->topic;
+    }
+
+    public function setTopic ($path)
+    {
+        $this->topic = $this->getSharedTaxonomyManager()
+                ->get('topic')
+                ->get($path);
+        return $this;
+    }
+
+	public function setCurriculum($curriculumId){
+        $this->curriculum = $this->getSharedTaxonomyManager()->getTerm($curriculumId);
+        return $this;
+    }
+    
+    public function getCurriculum(){
+        return $this->curriculum;
+    }
+    
+    public function removeEntity($entity){
+        if($entity instanceof EntityServiceInterface){
+            $entity = $entity->getEntity();
+        } elseif ($entity instanceof EntityInterface) {
+        } elseif (is_numeric($entity)) {
+            $entity = $this->getEntityManager()->get($entity)->getEntity();
+        } else {
+            throw new InvalidArgumentException('Parameter 1 expects to be numeric or implementing Entity\Service\EntityServiceInterface');
+        }
+        
+        $this->getCurriculum()->removeLink('entities', $entity);
+        return $this;
     }
     
     public function getTermManager(){
@@ -36,8 +68,9 @@ class CurriculumPlugin extends AbstractPlugin
 
     public function filterEntities(Collection $entities, TermServiceInterface $topic){
         $termManager = $this->getTermManager();
-        return $entities->filter(function ( $entity) use ($topic) {
-            return $topic->hasLink('entities', $entity);
+        $curriculum = $this->getCurriculum();
+        return $entities->filter(function ( $entity) use ($curriculum) {
+            return $curriculum->hasLink('entities', $entity);
         });
     }
     

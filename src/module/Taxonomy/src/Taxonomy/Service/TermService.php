@@ -239,29 +239,27 @@ class TermService implements TermServiceInterface
      */
     public function removeLink ($targetField, $target)
     {
-        $target = $this->findEntity($target);
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
-        $entity->get($targetField)->remove($target);
-        $this->persist();
+        
+        $entity->get($targetField)->remove($target->getId());
+        $target->getTerms()->remove($entity->getId());
+        
+        $this->getObjectManager()->flush();
         return $this;
     }
 
     private function findEntity ($target)
     {
         return $target;
-        // throw
-    // new
-    // InvalidArgumentException();
     }
 
     public function hasLink ($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
-        return $this->getEntity()
-            ->get($targetField)
-            ->matching(Criteria::create(Criteria::expr()->eq('id', $target->getId()))->setFirstResult(0)
-            ->setMaxResults(1));
+        $targets = $this->getEntity()
+            ->get($targetField);
+        return $targets->contains($target->getId());
     }
 
     protected function isLinkAllowedWithException ($targetField)
