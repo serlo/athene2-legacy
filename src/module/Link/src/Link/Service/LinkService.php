@@ -77,7 +77,7 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
             $parent = $parent->getEntity();
         
         $this->getParents()->add($parent);
-        $parent->getChildren()->add($this->getEntity());
+        //$parent->getChildren()->add($this->getEntity());
         
         return $this->flush();
     }
@@ -94,7 +94,7 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
             $child = $child->getEntity();
         
         $this->getChildren()->add($child);
-        $child->getParents()->add($this->getEntity());
+        //$child->getParents()->add($this->getEntity());
         
         return $this->flush();
     }

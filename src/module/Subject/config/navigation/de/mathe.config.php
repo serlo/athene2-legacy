@@ -26,7 +26,7 @@ return array(
                 'route' => 'subject',
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
-                    'type' => 'topic',
+                    'type' => 'subject',
                     'parent' => 'mathe',
                     'language' => 'de',
                     'route' => 'subject/plugin/topic',

@@ -11,7 +11,68 @@
  */
 namespace Subject;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Entity\Collection\EntityCollection;
 return array(
+    'taxonomy' => array(
+        'links' => array(
+            'entities' => function  (ServiceLocatorInterface $sm, $collection)
+            {
+                return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
+            }
+        ),
+        'types' => array(
+            'entity-folder' => array(
+                'options' => array(
+                    'allowed_links' => array(
+                        'entities'
+                    ),
+                    'allowed_parents' => array(
+                        'topic'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'topic' => array(
+                'options' => array(
+                    'allowed_parents' => array(
+                        'subject'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'subject' => array(
+                'options' => array(
+                    'templates' => array(
+                        'update' => 'subject/plugin/topic/taxonomy/update',
+                    ),
+                    'radix_enabled' => false,
+                )
+            ),
+            'school-type' => array(
+                'options' => array(
+                    'allowed_parents' => array(
+                        'subject'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'curriculum' => array(
+                'options' => array(
+                    'templates' => array(
+                        'update' => 'subject/plugin/curriculum/taxonomy/update',
+                    ),
+                    'allowed_links' => array(
+                        'entities'
+                    ),
+                    'allowed_parents' => array(
+                        'school-type'
+                    ),
+                    'radix_enabled' => false
+                )
+            )
+        )
+    ),
     'subject' => array(
         'plugins' => array(
             'factories' => array(
@@ -62,6 +123,13 @@ return array(
                                         'plural' => 'Artikel'
                                     ),
                                     'template' => 'subject/plugin/topic/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Gruppenaufgabe',
+                                        'plural' => 'Gruppenaufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/topic/entity/exercise-group'
                                 )
                             )
                         )
@@ -250,7 +318,7 @@ return array(
                                             'defaults' => array(
                                                 'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController',
                                                 'action' => 'index'
-                                            ),
+                                            )
                                         )
                                     )
                                 )

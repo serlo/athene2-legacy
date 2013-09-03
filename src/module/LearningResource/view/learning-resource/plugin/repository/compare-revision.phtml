@@ -12,13 +12,13 @@
 			<hr>
 			<footer>
 				<div class="btn-group">					
-				    <?php if($this->isGranted('VIEW_ENTITY_REVISION_CHECKOUT')) { ?>
+				    <?php if($this->isGranted('view/entity/plugin/repository/compare-revision::checkout')): ?>
 					   <a class="btn btn-success btn-small" href="<?php echo $this->url('entity/plugin/repository',array('action' => 'checkout', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('Akzeptieren')?></a>
-				    <?php } ?>
-					<?php if($this->isGranted('VIEW_ENTITY_REVISION_TRASH')) { ?>
+				    <?php endif; ?>
+					<?php if($this->isGranted('view/entity/plugin/repository/compare-revision::trash')) { ?>
 					   <a class="btn btn-small" href="<?php echo $this->url('entity/plugin/repository',array('action' => 'trash-revision', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('Verwerfen')?></a>
 				    <?php } ?>
-					<?php if($this->isGranted('VIEW_ENTITY_REVISION_PURGE')) { ?>
+					<?php if($this->isGranted('view/entity/plugin/repository/compare-revision::purge')) { ?>
 					   <a class="btn btn-danger btn-small" href="<?php echo $this->url('entity/plugin/repository',array('action' => 'purge-revision', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('Löschen')?></a>
 				    <?php } ?>
 				</div>

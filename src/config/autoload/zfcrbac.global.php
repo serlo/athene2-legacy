@@ -34,7 +34,6 @@ $settings = array(
 
     'firewalls' => array(
         'ZfcRbac\Firewall\Route' => array(
-            array('route' => 'member', 'roles' => 'admin')
         ),
     ),
     'providers' => array(

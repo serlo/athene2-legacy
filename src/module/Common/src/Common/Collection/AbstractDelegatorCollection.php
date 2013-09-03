@@ -370,7 +370,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
      */
     public function matching (\Doctrine\Common\Collections\Criteria $criteria)
     {
-        if($this->getCollection() instanceof PersistentCollection)
+        if(!$this->getCollection() instanceof PersistentCollection)
             throw new \Exception('Collection is not a PersistentCollection.');
 
         return $this->getCollection()->matching($criteria);

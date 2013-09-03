@@ -9,15 +9,11 @@
 * @link		https://github.com/serlo-org/athene2 for the canonical source repository
 * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
 */
-$id = uniqid ( 'sortable_' );
-$this->renderTitle($this->translate('Themenbaum anpassen'));
 ?>
-<ol id="<?php echo $id; ?>" class="sortable" data-id="-1">
-    <?php echo $this->taxonomy; ?>
-</ol>
+<?php echo $this->partial($this->term->getTemplate('update'), array('term' => $this->term)); ?>
 <script type="text/javascript">
 var termsort = 
-  $("#<?php echo $id; ?>").sortable({
+  $("#<?php echo $this->term->getId(); ?>").sortable({
 	  handle: 'i.icon-resize-vertical',
 	  group: 'nested',
       serialize: function ($parent, $children, parentIsContainer) {

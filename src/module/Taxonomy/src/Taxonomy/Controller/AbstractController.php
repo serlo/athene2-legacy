@@ -16,4 +16,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 class AbstractController extends AbstractActionController
 {
     use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    
+    public function getTerm(){
+        return $this->getSharedTaxonomyManager()->getTerm($this->params('id'));
+    }
 }

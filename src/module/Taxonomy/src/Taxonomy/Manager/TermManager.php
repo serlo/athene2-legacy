@@ -25,6 +25,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     protected $config = array(
         'options' => array(
+            'templates' => array(),
             'allowed_parents' => array(),
             'allowed_links' => array(),
             'radix_enabled' => true
@@ -48,7 +49,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function getTerms()
     {
-        return $this->getEntity()->getTerms();
+        return new TermCollection($this->getEntity()->getTerms(), $this->getSharedTaxonomyManager());
     }
 
     public function setTerms($terms)
@@ -67,25 +68,22 @@ class TermManager extends AbstractManager implements TermManagerInterface
     public function get($term)
     {
         if (is_numeric($term)) {
+            $name = $term;
             $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $term);
         } elseif (is_string($term)){
-            $term = $this->getTermManager()->get($term);
-            $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
-                ->setMaxResults(1);
-            $entity = $this->getTerms()
-                ->matching($criteria)
-                ->first();
+            $name = $term;
+            $term = $this->getTermManager()->get($term);   
+            $entity = $this->getObjectManager()->getRepository($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))->findOneBy(array('term' => $term->getId(), 'taxonomy' => $this->getEntity()->getId()));
         } elseif (is_array($term)) {
+            $name = explode(', ', $term);
             $entity = $this->getEntityByPath($term);
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
-            $criteria = Criteria::create()->where(Criteria::expr()->eq("term", $term->getId()))
-                ->setMaxResults(1);
-            $entity = $this->getTerms()
-                ->matching($criteria)
-                ->first();
+            $entity = $this->getObjectManager()->getRepository($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))->findOneBy(array('term' => $term->getId(), 'taxonomy' => $this->getEntity()->getId()));
         } elseif ($term instanceof TermTaxonomyEntityInterface) {
+            $name = explode(', ', $term->getName());
             $entity = $term;
         } elseif ($term instanceof \Taxonomy\Service\TermServiceInterface) {
+            $name = $term->getName();
             $entity = $term;
             $id = $this->add($entity);
             return $this->getInstance($id);
@@ -94,7 +92,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         }
         
         if(!$entity instanceof TermTaxonomyEntityInterface){
-            throw new NotFoundException(sprintf("Term not found, %s does not implement TermTaxonomyEntityInterface",get_class($entity)));//sprintf('Term %s not found', $term));
+            throw new NotFoundException(sprintf("Term not found, `%s` does not implement TermTaxonomyEntityInterface. Additional information: Taxonomy (%s), Name (%s)",get_class($entity), $this->getEntity()->getName(), $name));//sprintf('Term %s not found', $term));
         }
             
         if(!$this->hasInstance($entity->getId())){
@@ -166,9 +164,12 @@ class TermManager extends AbstractManager implements TermManagerInterface
     }
     
     protected function getRootTermEntities() {
+        //return $this->getEntity()->getTerms()->matching(Criteria::create(Criteria::expr()->orX(Criteria::expr()->isNull('parent'), Criteria::expr()->andX(Criteria::expr()->neq('parent', NULL), Criteria::expr()->neq('parent', $this->getEntity->)))));
+
         $collection = new ArrayCollection();
-        foreach ($this->getEntity()->getTerms() as $entity) {
-            if (! $entity->hasParent() || $entity->getParent()->getTaxonomy() !== $this->getEntity()) {
+        $terms = $this->getEntity()->getTerms();
+        foreach ($terms as $entity) {
+            if (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this->getEntity()) ){
                 $collection->add($entity);
             }
         }
@@ -178,13 +179,14 @@ class TermManager extends AbstractManager implements TermManagerInterface
     public function getRootTerms()
     {
         //return new TermCollection($this->getRootTermEntities(), $this->getManager());
-        $collection = new ArrayCollection();
-        foreach ($this->getEntity()->getTerms() as $entity) {
+        /*$collection = new ArrayCollection();
+        foreach ( as $entity) {
             if (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this->getEntity()) ){
                 $collection->add($this->createInstanceFromEntity($entity));
             }
-        }
-        return $collection;
+        }*/
+        $collection = $this->getRootTermEntities();
+        return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
     public function createInstanceFromEntity(TermTaxonomyEntityInterface $entity)
