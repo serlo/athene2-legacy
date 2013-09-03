@@ -11,13 +11,19 @@
  */
 namespace Taxonomy\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
-class AbstractController extends AbstractActionController
+class TaxonomyController extends AbstractController
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+
+    public function updateAction(){
+        $term = $this->getTerm();
+        
+        $view = new ViewModel(array(
+            'term' => $term,
+        ));
     
-    protected function getTerm(){
-        return $this->getSharedTaxonomyManager()->getTerm($this->params('id'));
+        $view->setTemplate('taxonomy/taxonomy/show');        
+        return $view;
     }
 }

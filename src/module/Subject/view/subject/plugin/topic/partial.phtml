@@ -21,7 +21,7 @@
     			(<?php echo $term->countLinks('entities'); ?>)
     		</div>
     	</div>
-        <?php echo $this->partial('subject/plugin/topic/partial', array('terms' => $term->getChildren(), 'subject' => $this->subject)); ?>
+        <?php echo $this->partial('subject/plugin/topic/partial', array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin)); ?>
     </li>
     <?php endforeach; ?>
 </ul>

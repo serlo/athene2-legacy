@@ -22,13 +22,14 @@ return array(
             }
         ),
         'types' => array(
-            'entity-folder' => array(
+            'topic-folder' => array(
                 'options' => array(
                     'allowed_links' => array(
                         'entities'
                     ),
                     'allowed_parents' => array(
-                        'topic'
+                        'topic',
+                        'topic-folder'
                     ),
                     'radix_enabled' => false
                 )
@@ -36,7 +37,8 @@ return array(
             'topic' => array(
                 'options' => array(
                     'allowed_parents' => array(
-                        'subject'
+                        'subject',
+                        'topic'
                     ),
                     'radix_enabled' => false
                 )
@@ -51,17 +53,18 @@ return array(
             ),
             'school-type' => array(
                 'options' => array(
+                    'templates' => array(
+                        'update' => 'subject/plugin/curriculum/taxonomy/school-type/update',
+                    ),
                     'allowed_parents' => array(
-                        'subject'
+                        'subject',
+                        'school-type'
                     ),
                     'radix_enabled' => false
                 )
             ),
             'curriculum' => array(
                 'options' => array(
-                    'templates' => array(
-                        'update' => 'subject/plugin/curriculum/taxonomy/update',
-                    ),
                     'allowed_links' => array(
                         'entities'
                     ),

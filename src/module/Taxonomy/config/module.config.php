@@ -11,8 +11,6 @@
  */
 namespace Taxonomy;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Entity\Collection\EntityCollection;
 return array(
     'class_resolver' => array(
         'Taxonomy\Manager\TermManagerInterface' => 'Taxonomy\Manager\TermManager',

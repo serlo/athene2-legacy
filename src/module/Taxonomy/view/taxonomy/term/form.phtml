@@ -10,12 +10,23 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 $this->form->prepare();
-echo $this->form()->openTag($this->form);
-echo $this->forminput($this->form->get('id'));
-echo $this->forminput($this->form->get('parent'));
-echo $this->forminput($this->form->get('weight'));
-echo $this->forminput($this->form->get('taxonomy'));
-echo $this->formRow($this->form->get('term')->get('name'));
-echo $this->formSubmit($this->form->get('submit'));
-echo $this->forminput($this->form->get('reset'));
-echo $this->form()->closeTag();
+?>
+<h1 class="page_header"><?php echo $this->translate('Taxonomie bearbeiten'); ?></h1>
+<div class="row-fluid">
+    <?php echo $this->form()->openTag($this->form); ?>
+    <div class="span4">
+    <?php
+        echo $this->forminput($this->form->get('id'));
+        echo $this->forminput($this->form->get('parent'));
+        echo $this->forminput($this->form->get('weight'));
+        echo $this->forminput($this->form->get('taxonomy'));
+        echo $this->formRow($this->form->get('term')->get('name'));
+    ?>
+    </div>
+    <div class="span4">
+    <?php 
+        echo $this->formSubmit($this->form->get('submit'));
+        echo $this->forminput($this->form->get('reset'));
+    ?></div>
+    <?php echo $this->form()->closeTag();?>
+</div>
