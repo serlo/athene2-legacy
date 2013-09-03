@@ -12,18 +12,30 @@
 namespace LearningResource\Plugin\Link;
 
 use Entity\Plugin\AbstractPlugin;
-use Entity\Service\EntityServiceInterface;
+use Entity\Collection\EntityCollection;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
+    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
 
-    public function getEntityType()
+    public function getDefaultConfig ()
     {
-        return $this->getOption('to_type');
+        return array(
+            'types' => array()
+        );
     }
 
-    public function getLinkService()
+    public function isOneToOne ()
+    {
+        return $this->getOption('association') == 'one-to-one';
+    }
+
+    public function getEntityTypes ()
+    {
+        return $this->getOption('types');
+    }
+
+    public function getLinkService ()
     {
         return $this->getLinkManager()
             ->add($this->getEntityService()
@@ -32,107 +44,152 @@ class LinkPlugin extends AbstractPlugin
             ->getEntity());
     }
 
-    public function addParent($entity)
+    protected function clearAssociation ()
     {
+        if ($this->isOneToOne() && $this->hasParent()) {
+            $this->getLinkService()->removeParent($this->getParent());
+        } elseif ($this->isOneToOne() && $this->hasChild()) {
+            $this->getLinkService()->removeChild($this->getChild());
+        }
+    }
+
+    public function addParent ($entity)
+    {
+        if (! in_array($entity->getType()->getName(), $this->getEntityTypes()))
+            throw new \ErrorException();
+        
+        $this->clearAssociation();
+        
         $this->getLinkService()->addParent($entity->getEntity());
         
         return $this;
     }
 
-    public function addChild($entity)
+    public function addChild ($entity)
     {
+        if (! in_array($entity->getType()->getName(), $this->getEntityTypes()))
+            throw new \ErrorException();
+        
+        $this->clearAssociation();
+        
         $this->getLinkService()->addParent($entity->getEntity());
         
         return $this;
     }
 
-    public function getChildren()
+    public function hasChild ()
     {
-        return $this->getLinkService()->getChildren();
+        return is_object($this->findChild());
     }
 
-    public function getParents()
+    public function hasChildren ()
     {
-        return $this->getLinkService()->getParents();
+        return $this->findChildren()->count();
     }
 
-    public function findChildren($entityType = NULL)
+    public function hasParents ()
     {
-        if ($entityType === NULL)
-            $entityType = $this->getEntityType();
+        return $this->findParents()->count();
+    }
+
+    public function hasParent ()
+    {
+        return is_object($this->findParent());
+    }
+
+    public function getChildrenAsEntities ()
+    {
+        if ($this->isOneToOne())
+            throw new \ErrorException('Link allows only one-to-one associations');
+    }
+
+    public function getParentsAsEntities ()
+    {
+        if ($this->isOneToOne())
+            throw new \ErrorException('Link allows only one-to-one associations');
+    }
+
+    public function findChildren (array $entityTypes = NULL)
+    {
+        if ($this->isOneToOne())
+            throw new \ErrorException('Link allows only one-to-one associations');
         
-        $manager = $this->getEntityManager();
+        if ($entityTypes === NULL)
+            $entityTypes = $this->getEntityTypes();
         
-        $return = $this->getLinkService()
+        $collection = $this->getLinkService()
             ->getChildren()
-            ->map(function ($e) use($entityType, $manager)
+            ->filter(function  ($e) use( $entityTypes)
         {
-            $return = ($e->getType()
-                ->getName() == $entityType) ? $manager->get($e) : null;
-            return $return;
+            return (in_array($e->getType()
+                ->getName(), $entityTypes));
         });
         
-        return $return;
+        return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParents($entityType = NULL)
+    public function findParents (array $entityTypes = NULL)
     {
-        if ($entityType === NULL)
-            $entityType = $this->getEntityType();
+        if ($this->isOneToOne())
+            throw new \ErrorException('Link allows only one-to-one associations');
+        
+        if ($entityTypes === NULL)
+            $entityTypes = $this->getEntityTypes();
         
         $manager = $this->getEntityManager();
         
-        $return = $this->getLinkService()
+        $collection = $this->getLinkService()
             ->getParents()
-            ->map(function ($e) use($entityType, $manager)
+            ->filter(function  ($e) use( $entityTypes)
         {
-            $return = ($e->getType()
-                ->getName() == $entityType) ? $manager->get($e) : null;
-            return $return;
+            return (in_array($e->getType()
+                ->getName(), $entityTypes));
         });
-        
-        return $return;
+
+        return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParent($entityType = NULL)
+    public function findParent ($entityTypes = NULL)
     {
-        if ($entityType === NULL)
-            $entityType = $this->getEntityType();
+        if (! $this->isOneToOne())
+            throw new \ErrorException('Link doesn\'t allow one-to-one associations');
+        
+        if ($entityTypes === NULL)
+            $entityTypes = $this->getEntityTypes();
         
         $manager = $this->getEntityManager();
         
-        $return = $this->getLinkService()
+        $collection = $this->getLinkService()
             ->getParents()
-            ->map(function ($e) use($entityType, $manager)
+            ->filter(function  ($e) use( $entityTypes)
         {
-            $return = ($e->getType()
-                ->getName() == $entityType) ? $manager->get($e) : null;
-            return $return;
+            return (in_array($e->getType()
+                ->getName(), $entityTypes));
         });
+        $collection = new EntityCollection($collection, $this->getEntityManager());
         
-        return $return->current();
+        return $collection->current();
     }
 
-    public function findChild($entityType = NULL)
+    public function findChild ($entityTypes = NULL)
     {
-        if ($entityType === NULL)
-            $entityType = $this->getEntityType();
+        if (! $this->isOneToOne())
+            throw new \ErrorException('Link doesn\'t allow one-to-one associations');
+        
+        if ($entityTypes === NULL)
+            $entityTypes = $this->getEntityTypes();
         
         $manager = $this->getEntityManager();
         
-        $return = $this->getLinkService()
+        $collection = $this->getLinkService()
             ->getChildren()
-            ->map(function ($e) use($entityType, $manager)
+            ->filter(function  ($e) use( $entityTypes)
         {
-            $return = ($e->getType()
-                ->getName() == $entityType) ? $manager->get($e) : null;
-            return $return;
+            return (in_array($e->getType()
+                ->getName(), $entityTypes));
         });
+        $collection = new EntityCollection($collection, $this->getEntityManager());
         
-        return $return->current();
+        return $collection->current();
     }
-    
-    /*
-     * protected function findByFactoryClassName (Collection $collection, $factoryClassName) { $results = array(); $currentDepth = 1; $collection->first(); foreach ($collection->toArray() as $entity) { if ($entity->get('factory')->get('className') == $factoryClassName) { $results[] = $this->_factory($entity); } } return $results; }
-     */
 }

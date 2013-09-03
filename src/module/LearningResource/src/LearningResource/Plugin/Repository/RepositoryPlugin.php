@@ -17,22 +17,33 @@ use Zend\Form\Form;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAwareTrait, \Versioning\RepositoryManagerAwareTrait, \Auth\Service\AuthServiceAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Auth\Service\AuthServiceAwareTrait;
+
+    public function getDefaultConfig ()
+    {
+        return array(
+            'revision_form' => 'FormNotFound',
+            'field_order' => array()
+        );
+    }
 
     /**
      *
      * @return RepositoryServiceInterface
      */
-    public function getRepository()
+    public function getRepository ()
     {
         $repository = $this->getEntityService()->getEntity();
         $repository->setFieldOrder($this->getOption('field_order'));
-        return $this->getRepositoryManager()->addRepository($repository)->getRepository($repository);
+        return $this->getRepositoryManager()
+            ->addRepository($repository)
+            ->getRepository($repository);
     }
-    
-    public function getRevisionForm(){
+
+    public function getRevisionForm ()
+    {
         $form = $this->getOption('revision_form');
-        if(!class_exists($form))
+        if (! class_exists($form))
             throw new \Exception(sprintf('Class %s not found!', $form));
         $form = new $form();
         return $form;
@@ -40,45 +51,45 @@ class RepositoryPlugin extends AbstractPlugin
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function hasHead()
+    public function hasHead ()
     {
         return $this->getRepository()->hasHead();
     }
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function getCurrentRevision()
+    public function getCurrentRevision ()
     {
         return $this->getRepository()->getCurrentRevision();
     }
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function hasCurrentRevision()
+    public function hasCurrentRevision ()
     {
         return $this->getRepository()->hasCurrentRevision();
     }
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \Versioning\Service\RepositoryServiceInterface::getRevision()
      */
-    public function getRevision($id)
+    public function getRevision ($id)
     {
         return $this->getRepository()->getRevision($id);
     }
 
-    public function getAllRevisions()
+    public function getAllRevisions ()
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", false))
             ->orderBy(array(
@@ -89,7 +100,7 @@ class RepositoryPlugin extends AbstractPlugin
             ->matching($criteria);
     }
 
-    public function getTrashedRevisions()
+    public function getTrashedRevisions ()
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", true))
             ->orderBy(array(
@@ -102,31 +113,33 @@ class RepositoryPlugin extends AbstractPlugin
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \Versioning\Service\RepositoryServiceInterface::checkoutRevision()
      */
-    public function checkout($revisionId)
+    public function checkout ($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->checkoutRevision($revision);
         return $this->entityService;
     }
 
-    public function commitRevision(Form $form)
+    public function commitRevision (Form $form)
     {
-        
         $repository = $this->getRepository();
         
-        $revision = $this->getEntityService()->getEntity()->newRevision();
+        $revision = $this->getEntityService()
+            ->getEntity()
+            ->newRevision();
         
         $revision->setAuthor($this->getAuthService()
-            ->getUser()->getEntity());
+            ->getUser()
+            ->getEntity());
         
         $repository->addRevision($revision);
-        $repository->persist();        
+        $repository->persist();
         
         foreach ($form->getData() as $key => $value) {
-            if($key != 'submit' && $key != 'reset') // haxxy...
+            if ($key != 'submit' && $key != 'reset') // haxxy...
                 $this->getObjectManager()->persist($revision->addField($key, $value));
         }
         
@@ -137,17 +150,17 @@ class RepositoryPlugin extends AbstractPlugin
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \Versioning\Service\RepositoryServiceInterface::removeRevision()
      */
-    public function removeRevision($revisionId)
+    public function removeRevision ($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->removeRevision($revision);
         return $this->entityService;
     }
 
-    public function trashRevision($revisionId)
+    public function trashRevision ($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $revision->toggleTrashed();
@@ -155,17 +168,19 @@ class RepositoryPlugin extends AbstractPlugin
         $this->getObjectManager()->flush($revision);
         return $this->entityService;
     }
-    
-    public function isCheckedOut(){
-        try{
+
+    public function isCheckedOut ()
+    {
+        try {
             $this->getCurrentRevision();
             return true;
         } catch (\Versioning\Exception\RevisionNotFoundException $e) {
             return null;
         }
     }
-    
-    public function isUnrevised(){
+
+    public function isUnrevised ()
+    {
         return $this->getRepository()->isUnrevised();
     }
 }

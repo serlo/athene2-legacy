@@ -44,11 +44,13 @@ abstract class AbstractPlugin implements PluginInterface
     }
 
 	public function setOptions(array $options){
-        $this->options = $options;
+        $this->options = array_merge_recursive($this->getDefaultConfig(), $options);
         return $this;
     }
     
     public function getOption($name){
         return $this->options[$name];
     }
+    
+    abstract function getDefaultConfig();
 }

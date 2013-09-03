@@ -23,60 +23,41 @@ return array(
         'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
     ),
     'router' => array(
-        'routes' => array()
-    ),
-    'taxonomy' => array(
-        'links' => array(
-            'entities' => function  (ServiceLocatorInterface $sm, $collection)
-            {
-                return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
-            }
-        ),
-        'types' => array(
-            'entity-folder' => array(
+        'routes' => array(
+            'taxonomy' => array(
+                'type' => 'Segment',
                 'options' => array(
-                    'allowed_links' => array(
-                        'entities'
+                    'route' => '/taxonomy/',
+                    'defaults' => array(
+                        'controller' => 'Taxonomy\Controller\404',
+                        'action' => 'index'
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'taxonomy' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => ':action/:id',
+                            'defaults' => array(
+                                'controller' => 'Taxonomy\Controller\TaxonomyController'
+                            )
+                        )
                     ),
-                    'allowed_parents' => array(
-                        'topic'
-                    ),
-                    'radix_enabled' => false
-                )
-            ),
-            'topic' => array(
-                'options' => array(
-                    'allowed_parents' => array(
-                        'subject'
-                    ),
-                    'radix_enabled' => false
-                )
-            ),
-            'subject' => array(
-                'options' => array(
-                    'radix_enabled' => false,
-                )
-            ),
-            'school-type' => array(
-                'options' => array(
-                    'allowed_parents' => array(
-                        'subject'
-                    ),
-                    'radix_enabled' => false
-                )
-            ),
-            'curriculum' => array(
-                'options' => array(
-                    'allowed_links' => array(
-                        'entities'
-                    ),
-                    'allowed_parents' => array(
-                        'school-type'
-                    ),
-                    'radix_enabled' => false
+                    'term' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'term/:action/[:id]',
+                            'defaults' => array(
+                                'controller' => 'Taxonomy\Controller\TermController',
+                                'action' => 'index'
+                            )
+                        )
+                    )
                 )
             )
         )
+        
     ),
     'service_manager' => array(
         'factories' => array(
@@ -95,7 +76,8 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'Taxonomy\Controller\TermController'
+            'Taxonomy\Controller\TermController',
+            'Taxonomy\Controller\TaxonomyController'
         ),
         'definition' => array(
             'class' => array(
@@ -121,6 +103,16 @@ return array(
                         'required' => 'true'
                     ),
                     'setObjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Taxonomy\Controller\TermController' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Taxonomy\Controller\TaxonomyController' => array(
+                    'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     )
                 ),

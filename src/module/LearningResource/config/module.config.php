@@ -82,10 +82,62 @@ return array(
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'to_type' => 'text-solution'
+                            'types' => array('text-solution'),
+                            'association' => 'one-to-one'
                         )
                     )
                 )
+            ),
+            'exercise-group' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\TextExerciseGroupForm',
+                            'field_order' => array(
+                                'content'
+                            )
+                        )
+                    ),
+                    'topicFolder' => array(
+                        'plugin' => 'topicFolder'
+                    ),
+                    'exercises' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'types' => array('grouped-text-exercise'),
+                            'association' => 'one-to-many'
+                        )
+                    ),
+                ),
+            ),
+            'grouped-text-exercise' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\GroupedTextExerciseForm',
+                            'field_order' => array(
+                                'hint',
+                                'content'
+                            )
+                        )
+                    ),
+                    'group' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'types' => array('exercise-group'),
+                            'association' => 'one-to-one'
+                        )
+                    ),
+                    'solution' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'types' => array('text-solution'),
+                            'association' => 'one-to-one'
+                        )
+                    )
+                ),
             ),
             'text-solution' => array(
                 'plugins' => array(
@@ -103,7 +155,8 @@ return array(
                     'exercise' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'to_type' => 'text-exercise'
+                            'types' => array('text-exercise'),
+                            'association' => 'one-to-one'
                         )
                     )
                 )

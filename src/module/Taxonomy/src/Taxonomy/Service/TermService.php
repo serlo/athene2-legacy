@@ -60,6 +60,13 @@ class TermService implements TermServiceInterface
         return $collection->asService();
     }
     
+    public function getTemplate($template){
+        if(!isset($this->getOptions()['templates'][$template]))
+            throw new InvalidArgumentException(sprintf('Template `%s` not found for taxonomy `%s`', $template, $this->getTaxonomy()->getName()));
+        
+        return $this->getOptions()['templates'][$template];
+    }
+    
     /*
      *
      * (non-PHPdoc)

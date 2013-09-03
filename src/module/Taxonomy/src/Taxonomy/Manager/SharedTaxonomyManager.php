@@ -97,17 +97,17 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     {
         $termEntityClassName = $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface');
         if (is_numeric($element)) {
-            $entity = $this->getObjectManager()->find($termEntityClassName, (int) $element)->getTaxonomy();
+            $entity = $this->getObjectManager()->find($termEntityClassName, (int) $element); //->getTaxonomy();
         } elseif ($element instanceof $termEntityClassName) {
-            $entity = $element->getTaxonomy();
+            $entity = $element;//->getTaxonomy();
         } else {
             throw new \InvalidArgumentException();
         }
         
         if (! is_object($entity))
-            throw new NotFoundException();
+            throw new NotFoundException(sprintf('That term does not exist!'));
         
-        return $this->get($entity)->get($element);
+        return $this->get($entity->getTaxonomy())->get($entity);
     }
     
     public function has($entity){

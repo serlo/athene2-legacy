@@ -22,7 +22,7 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
+
     public function getAutoloaderConfig ()
     {
         return array(
@@ -34,14 +34,19 @@ class Module
         );
     }
 
-    public function onBootstrap(MvcEvent $mvce)
+    public function onBootstrap (MvcEvent $mvce)
     {
         $sm = $mvce->getApplication()->getServiceManager();
         
-        // Links an Entity to another entity
+        // Links
+        // an
+        // Entity
+        // to
+        // another
+        // entity
         $sm->get('Entity\Manager\EntityManager')
             ->getEventManager()
-            ->attach('create', function (Event $e) use($sm, $mvce)
+            ->attach('create', function  (Event $e) use( $sm, $mvce)
         {
             if (isset($_GET['to_entity']) && isset($_GET['scope'])) {
                 $entityManager = $sm->get('Entity\Manager\EntityManager');
@@ -52,7 +57,11 @@ class Module
                 $entity = $e->getParam('entity');
                 
                 if ($entity->isPluginWhitelisted($scope)) {
-                    // Warning: Plugins shouldn't be invokable
+                    // Warning:
+                    // Plugins
+                    // shouldn't
+                    // be
+                    // invokable
                     if (is_object($entity->$scope()) && ! $entity->$scope() instanceof LinkPlugin)
                         throw new \Exception(sprintf('Scope `%s` is not an implementation of LinkPlugin', $scope));
                     
@@ -65,13 +74,15 @@ class Module
                         $entity->$scope()
                             ->addParent($toEntity);
                     }
+                } else {
+                    throw new \RuntimeException(sprintf('Scope %s is not whitelisted.', $scope));
                 }
             }
         }, 2);
         
         $sm->get('Entity\Manager\EntityManager')
             ->getEventManager()
-            ->attach('create', function (Event $e) use($sm, $mvce)
+            ->attach('create', function  (Event $e) use( $sm, $mvce)
         {
             $entity = $e->getParam('entity');
             if ($entity->isPluginWhitelisted('repository')) {
@@ -87,8 +98,7 @@ class Module
                 
                 $response->setHeaders($response->getHeaders()
                     ->addHeaderLine('Location', $url . '?ref=' . ($mvce->getRequest()
-                    ->getHeader('Referer')
-                    ->getUri())));
+                    ->getHeader('HTTP_REFERER', '/'))));
                 
                 $response->setStatusCode(302);
                 $response->sendHeaders();
