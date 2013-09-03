@@ -15,7 +15,22 @@ return array(
             array(
                 'label' => 'Home',
                 'route' => 'home'
-            )
+            ),
+
+            array(
+                'label' => 'Verwalten',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Schularten verwalten',
+                        'route' => 'taxonomy/taxonomy',
+                        'params' => array(
+                            'action' => 'update',
+                            'id' => '34'
+                        )
+                    )
+                )
+            ),
         )
     ),
     'zfcrbac' => array(

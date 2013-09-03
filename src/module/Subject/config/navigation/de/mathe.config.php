@@ -46,29 +46,17 @@ return array(
                             'subject' => 'mathe',
                             'action' => 'get-unrevised'
                         )
-                    )
-                )
-            )
-        )
-    ),
-    array(
-        'label' => 'Mitmachen',
-        'uri' => '#',
-        'pages' => array(
-            array(
-                'label' => 'Mathe',
-                'uri' => '#',
-                'pages' => array(
+                    ),
                     array(
                         'label' => 'Themen verwalten',
                         'route' => 'taxonomy/taxonomy',
                         'params' => array(
-                            'action' => 'show',
-                            'id' => '1'
+                            'action' => 'update',
+                            'id' => '25'
                         )
                     )
                 )
             )
         )
-    )
+    ),
 );

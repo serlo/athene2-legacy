@@ -328,18 +328,24 @@ class TermService implements TermServiceInterface
         return $this;
     }
 
-    protected $allowedParentFactories = array();
-
-    protected $allowedParentTaxonomy = array();
-
     protected $radix = false;
+
+    public function childNodeAllowed (TermTaxonomyEntityInterface $term)
+    {
+        return $this->allowsChildType($term->getTaxonomy()->getName());
+    }
 
     public function parentNodeAllowed (TermTaxonomyEntityInterface $term)
     {
-        throw new \Exception('Not implemented');
-        return array_key_exists($term->getTaxonomy()->getId(), $this->allowedParentTaxonomy) || array_key_exists($term->getTaxonomy()
-            ->getFactory()
-            ->getId(), $this->allowedParentFactories);
+        return $this->allowsParentType($term->getTaxonomy()->getName());
+    }
+    
+    public function allowsParentType($type){
+        return in_array($type, $this->getOptions()['allowed_parents']); //disabled: ; || $this->getTaxonomy()->getName() == $type;
+    }
+    
+    public function allowsChildType($type){
+        return $this->getSharedTaxonomyManager()->get($type)->allowsParentType($this->getTaxonomy()->getName());
     }
 
     public function radixEnabled ()
@@ -373,11 +379,7 @@ class TermService implements TermServiceInterface
      */
     public function getOptions ()
     {
-        $config = $this->getManager()->getConfig();
-        if (! array_key_exists('options', $config))
-            throw new ErrorException('No options set');
-        
-        return $config['options'];
+        return $this->getManager()->getOptions();
     }
 
     public function getId ()

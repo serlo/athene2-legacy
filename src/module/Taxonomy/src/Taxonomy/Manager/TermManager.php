@@ -18,6 +18,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Service\TermServiceInterface;
 use Taxonomy\Collection\TermCollection;
+use Taxonomy\Exception\ErrorException;
 
 class TermManager extends AbstractManager implements TermManagerInterface
 {
@@ -75,7 +76,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
             $term = $this->getTermManager()->get($term);   
             $entity = $this->getObjectManager()->getRepository($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))->findOneBy(array('term' => $term->getId(), 'taxonomy' => $this->getEntity()->getId()));
         } elseif (is_array($term)) {
-            $name = explode(', ', $term);
+            $name = implode(', ',  $term);
             $entity = $this->getEntityByPath($term);
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
             $entity = $this->getObjectManager()->getRepository($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))->findOneBy(array('term' => $term->getId(), 'taxonomy' => $this->getEntity()->getId()));
@@ -210,5 +211,18 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         $this->config = array_merge_recursive($this->config, $config);
         return $this;
+    }
+    
+    public function allowsParentType($type){
+        return in_array($type, $this->getOptions()['allowed_parents']); // disabled: || $type == $this->getEntity()->getName();
+    }
+    
+    public function getOptions ()
+    {
+        $config = $this->getConfig();
+        if (! array_key_exists('options', $config))
+            throw new ErrorException('No options set');
+        
+        return $config['options'];
     }
 }
