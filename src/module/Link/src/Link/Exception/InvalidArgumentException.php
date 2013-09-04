@@ -9,14 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Link\Entity;
+namespace Link\Exception;
 
-interface LinkingEntityInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
-    public function setWeight($weight);
-    public function getWeight();
-    public function getParent();
-    public function getChild();
-    public function setParent($parent);
-    public function setChild($child);
 }

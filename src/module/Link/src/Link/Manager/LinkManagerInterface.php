@@ -1,5 +1,5 @@
 <?php
-namespace Link;
+namespace Link\Manager;
 
 use Link\Entity\LinkEntityInterface;
 use Link\Service\LinkServiceInterface;
@@ -25,8 +25,8 @@ interface LinkManagerInterface {
 	/**
 	 * Checks if the LinkService is already registered
 	 *
-	 * @param string $name
+	 * @param int $id
 	 * @return bool
 	 */
-	public function has($name);
+	public function has($id);
 }
