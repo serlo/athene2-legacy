@@ -13,7 +13,7 @@ use User\Entity\User;
 
 class UserService implements UserServiceInterface
 {
-    use \Common\Traits\EntityAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function getRoles ($language = NULL, $subject = NULL)
     {
@@ -31,20 +31,7 @@ class UserService implements UserServiceInterface
             $userRoles = $userRolesCollection->matching($roleCriteria);
             
             foreach ($userRoles as $userRole) {
-                if (((($userRole->exists('language') && $language !== NULL) && ($userRole->__get('language')->id == $language)) || (! $userRole->exists('language')) || ($language === NULL))/* && (
-                        (
-                            (
-                                $userRole->exists('subject') && $subject !== NULL
-                            ) &&  (
-                                $userRole->__get('subject')->id == $subject
-                            )
-                        ) || (
-                            ! $userRole->exists('subject')
-                        ) || (
-                            $language === NULL
-                        )
-                    )*/)
-                    {
+                if (((($userRole->exists('language') && $language !== NULL) && ($userRole->__get('language')->id == $language)) || (! $userRole->exists('language')) || ($language === NULL))) {
                     $return[] = $role->get('name');
                 }
             }
@@ -53,10 +40,11 @@ class UserService implements UserServiceInterface
         return $return;
     }
 
-    public function getId(){
+    public function getId ()
+    {
         return $this->getEntity()->getId();
     }
-    
+
     public function hasRole ($user, $role, $language = NULL, $subject = NULL)
     {
         return array_search($role, $this->getRoles($user, $language, $subject)) !== FALSE;
