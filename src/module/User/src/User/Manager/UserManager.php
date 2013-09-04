@@ -13,6 +13,8 @@ namespace User\Manager;
 
 use User\Entity\UserInterface;
 use User\Exception\UserNotFoundException;
+use User\Collection\UserCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class UserManager extends AbstractManager implements UserManagerInterface
 {
@@ -21,20 +23,22 @@ class UserManager extends AbstractManager implements UserManagerInterface
     public function get ($user)
     {
         if ($user instanceof \User\Entity\UserInterface) {
-            $user = $user->getId();
         } elseif ($user instanceof \User\Service\UserServiceInterface){
-            $user = $user->getId();            
+            return $user;
         } elseif (is_numeric($user) || is_string($user)){
-            
+            $user = $this->find($user);
         } else {
             throw new \InvalidArgumentException();
         }
+
+        if (! is_object($user))
+            throw new UserNotFoundException(sprintf('User not found'));
         
         if (! $this->has($user) ) {
-            return $this->find($user);
+            $this->createService($user);
         }
         
-        return $this->getInstance($user);
+        return $this->getInstance($user->getId());
     }
 
     public function create ($data)
@@ -69,8 +73,18 @@ class UserManager extends AbstractManager implements UserManagerInterface
         return $this->hasInstance($entity);
     }
     
-    public function findRoles(){
+    public function findAllUsers(){
+        $collection = new ArrayCollection($this->getObjectManager()->getRepository($this->resolveClassName('User\Entity\UserInterface'))->findAll());
+        return new UserCollection($collection, $this);
+    }
+    
+    
+    public function findAllRoles(){
         return $this->getObjectManager()->getRepository($this->resolveClassName('User\Entity\RoleInterface'))->findAll();
+    }
+    
+    public function findRole($id){
+        return $this->getObjectManager()->get($this->resolveClassName('User\Entity\RoleInterface'), $id);        
     }
 
     protected function find ($id)
@@ -90,11 +104,8 @@ class UserManager extends AbstractManager implements UserManagerInterface
                     'username' => $id
                 ));
             }
-        }
-        if (! is_object($user))
-            throw new UserNotFoundException(sprintf('User `%s` not found', $id));
-        
-        return $this->createService($user);
+        }        
+        return $user;
     }
 
     protected function createService (UserInterface $entity)

@@ -39,6 +39,14 @@ class UserService implements UserServiceInterface
         
         return $return;
     }
+    
+    public function updateLoginData(){
+        $this->getEntity()->setLogins($this->getEntity()->getLogins()+1);
+        $this->getEntity()->setLastLogin(new \DateTime("now"));
+        $this->getObjectManager()->persist($this->getEntity());
+        $this->getObjectManager()->flush();
+        return $this;
+    }
 
     public function getId ()
     {
@@ -85,9 +93,9 @@ class UserService implements UserServiceInterface
         return $this->getEntity()->getLogins();
     }
 
-    public function getLast_login ()
+    public function getLastLogin ()
     {
-        return $this->getEntity()->getLast_login();
+        return $this->getEntity()->getLastLogin();
     }
 
     public function getDate ()

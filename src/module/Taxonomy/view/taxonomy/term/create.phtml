@@ -9,14 +9,6 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace module\User\src\User\Controller;
-
-use User\Controller\AbstractUserController;
-use Zend\View\Model\ViewModel;
-
-class RoleController extends AbstractUserController
-{
-    public function indexAction(){
-        
-    }
-}
+?>
+<h1 class="page_header"><?php echo $this->translate('Taxonomie erstellen'); ?></h1>
+<?php echo $this->partial('taxonomy/term/form', array('form' => $this->form)); ?>

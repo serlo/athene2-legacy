@@ -16,12 +16,13 @@ use Zend\View\Model\ViewModel;
 class UsersController extends AbstractUserController
 {
     protected function usersAction(){
-        $view = new ViewModel();
+        $users = $this->getUserManager()->findAllUsers();
+        $view = new ViewModel(array('users' => $users));
         return $view;
     }
     
-    protected function groupsAction(){
-        $view = new ViewModel();
+    protected function rolesAction(){
+        $view = new ViewModel(array('roles' => $this->getUserManager()->findAllRoles()));
         return $view;        
     }
 }

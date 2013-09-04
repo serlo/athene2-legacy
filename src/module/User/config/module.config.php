@@ -20,6 +20,11 @@ return array(
         'User\Service\UserServiceInterface' => 'User\Service\UserService'
     ),
     'di' => array(
+        'allowed_controllers' => array(
+            __NAMESPACE__ . '\Controller\UsersController',
+            __NAMESPACE__ . '\Controller\UserController',
+            __NAMESPACE__ . '\Controller\RoleController',
+        ),
         'definition' => array(
             'class' => array(
                 'User\Manager\UserManager' => array(
@@ -32,11 +37,27 @@ return array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     )
-                )
-            )
+                ),
+                __NAMESPACE__ . '\Controller\UsersController' => array(
+                    'setUserManager' => array(
+                        'required' => 'true'
+                    ),
+                ),
+                __NAMESPACE__ . '\Controller\UserController' => array(
+                    'setUserManager' => array(
+                        'required' => 'true'
+                    ),
+                ),
+                __NAMESPACE__ . '\Controller\RoleController' => array(
+                    'setUserManager' => array(
+                        'required' => 'true'
+                    ),
+                ),
+            ),
         ),
         'instance' => array(
             'preferences' => array(
+                'User\Manager\UserManagerInterface' => 'User\Manager\UserManager'
             ),
             'User\Service\UserService' => array(
                 'shared' => false
@@ -58,6 +79,66 @@ return array(
                 $srv->setObjectManager($sm->get('EntityManager'));
                 return $srv;
             }
+        )
+    ),
+    'router' => array(
+        'routes' => array(
+            'user' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/user',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\UserController',
+                        'action' => 'index'
+                    )
+                ),
+                'child_routes' => array(
+                    'role' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/role/:id',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\RoleController',
+                                'action' => 'index'
+                            )
+                        )
+                    ),
+                    'update' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/update',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UserController',
+                                'action' => 'update'
+                            )
+                        )
+                    )
+                )
+            ),
+            'users' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/users',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
+                        'action' => 'users'
+                    )
+                ),
+                'child_routes' => array(
+                    'roles' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/roles',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UsersController',
+                                'action' => 'roles'
+                            )
+                        )
+                    )
+                )
+            )
         )
     ),
     'doctrine' => array(

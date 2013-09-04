@@ -9,20 +9,23 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Collection;
+namespace User\Collection;
 
-use Entity\Manager\EntityManagerInterface;
 use Common\Collection\AbstractDelegatorCollection;
+use User\Manager\UserManagerInterface;
 
-class EntityCollection extends AbstractDelegatorCollection
+class UserCollection extends AbstractDelegatorCollection
 {
+    protected function validManager($manager){
+        return $manager instanceof UserManagerInterface;
+    }
     
 	/* (non-PHPdoc)
      * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
      */
-    public function getDelegate ($component)
+    public function getDelegate ($delegator)
     {
-        return $component->getEntity();
+        return $delegator->getEntity();
     }
 
 	/* (non-PHPdoc)
