@@ -16,6 +16,7 @@ return array(
     ),
     'class_resolver' => array(
         'User\Entity\UserInterface' => 'User\Entity\User',
+        'User\Entity\RoleInterface' => 'User\Entity\Role',
         'User\Service\UserServiceInterface' => 'User\Service\UserService'
     ),
     'di' => array(
