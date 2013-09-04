@@ -21,7 +21,7 @@ use Core\Entity\Subject;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role extends AbstractEntity
+class Role extends AbstractEntity implements RoleInterface
 {
     /**
      * @ORM\Column(type="string") *
