@@ -52,7 +52,19 @@ class AuthService implements AuthServiceInterface
      */
     public function getUser()
     {
+        if(!$this->user && $this->getAuthService()->hasIdentity()){
+            $entity = $this->getEntityManager()->getRepository('User\Entity\User')->findOneByEmail($this->getAuthService()->getIdentity());
+            if(!is_object($entity)){
+                $this->logout();
+                throw new \Exception('Identity not found');
+            }
+            $this->setUser($entity);
+        }
         return $this->user;
+    }
+    
+    public function getIdentity(){
+        return $this->getUser();
     }
 
     /**
