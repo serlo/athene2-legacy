@@ -28,6 +28,14 @@ return array(
                             'action' => 'update',
                             'id' => '34'
                         )
+                    ),
+                    array(
+                        'label' => 'Benutzer verwalten',
+                        'route' => 'users',
+                    ),
+                    array(
+                        'label' => 'Benutzerrollen verwalten',
+                        'route' => 'users/roles',
                     )
                 )
             ),
