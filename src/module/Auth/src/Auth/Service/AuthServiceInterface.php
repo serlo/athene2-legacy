@@ -38,6 +38,6 @@ interface AuthServiceInterface
      * @return User;
      */
     public function getUser();
+    
+    public function getIdentity();
 }
-
-?>
