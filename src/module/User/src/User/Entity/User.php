@@ -186,7 +186,7 @@ class User extends AbstractEntity implements UserInterface
      * @return field_type
      *         $last_login
      */
-    public function getLast_login ()
+    public function getLastLogin ()
     {
         return $this->last_login;
     }
@@ -322,7 +322,7 @@ class User extends AbstractEntity implements UserInterface
      * @param field_type $last_login            
      * @return $this
      */
-    public function setLast_login ($last_login)
+    public function setLastLogin ($last_login)
     {
         $this->last_login = $last_login;
         return $this;

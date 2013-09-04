@@ -38,7 +38,61 @@ class Role extends AbstractEntity implements RoleInterface
      **/
     private $roleUsers;
 
-    public function __construct() {
+    /**
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+	/**
+     * @return field_type $description
+     */
+    public function getDescription ()
+    {
+        return $this->description;
+    }
+
+	/**
+     * @return \Doctrine\Common\Collections\ArrayCollection $roleUsers
+     */
+    public function getRoleUsers ()
+    {
+        return $this->roleUsers;
+    }
+
+	/**
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+	/**
+     * @param field_type $description
+     * @return $this
+     */
+    public function setDescription ($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $roleUsers
+     * @return $this
+     */
+    public function setRoleUsers ($roleUsers)
+    {
+        $this->roleUsers = $roleUsers;
+        return $this;
+    }
+
+	public function __construct() {
     	$this->roleUsers = new ArrayCollection();
     }
 }

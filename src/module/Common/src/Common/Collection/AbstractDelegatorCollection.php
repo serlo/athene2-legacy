@@ -8,19 +8,31 @@ use Doctrine\Common\Collections\Selectable;
 abstract class AbstractDelegatorCollection implements Collection, Selectable
 {
     /**
-     *
-     * @var Manager
+     * @var object
      */
     protected $manager;
 
-    protected $container;
+    protected $container = array();
     
     protected $delegates = array();
-
+    
+    /**
+     * @var Collection
+     */
+    protected $collection;
+    
     abstract public function getDelegate($delegator);
-    /*{
-        return $component->getEntity();
-    }*/
+    
+    protected function validManager($manager){
+        if(!is_object($manager))
+            throw new \InvalidArgumentException('Manager must be an object');
+    }
+    
+    public function __construct ($collection, $manager)
+    {
+        $this->setCollection($collection);
+        $this->setManager($manager);
+    }
 
     /**
      *
@@ -38,6 +50,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
      */
     public function setManager($manager)
     {
+        $this->validManager($manager);
         $this->manager = $manager;
         return $this;
     }
@@ -322,6 +335,9 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
                 return $this->delegates[$key];                  
             } else {
                 $service = $this->getFromManager($this->getCollection()->get($key));
+                if($service === NULL){
+                    throw new \RuntimeException('getFromManager returned null.');
+                }
                 $this->delegates[$key] = $service;
                 return $service;  
             }          

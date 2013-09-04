@@ -9,10 +9,9 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-$this->form->prepare();
 ?>
-<h1 class="page_header"><?php echo $this->translate('Taxonomie bearbeiten'); ?></h1>
 <div class="row-fluid">
+    <?php $this->form->prepare(); ?>
     <?php echo $this->form()->openTag($this->form); ?>
     <div class="span4">
     <?php

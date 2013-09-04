@@ -151,6 +151,7 @@ class AuthService implements AuthServiceInterface
         if ($result->isValid()) {
             $this->setUser($this->getUserManager()
                 ->get($email));
+            $this->getUser()->updateLoginData();
         }
         
         return $result;
