@@ -16,7 +16,6 @@
         "doctrine/doctrine-orm-module": "0.*",
         "zf-commons/zfc-base": "0.*",
 		"zf-commons/zfc-user": "0.*",
-        "zf-commons/zfc-rbac": "dev-master",
-        "zf-commons/zfc-admin": "dev-master"
+        "zf-commons/zfc-rbac": "dev-master"
     }
 }

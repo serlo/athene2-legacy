@@ -7,6 +7,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcRbac',
+        'ZfcAdmin',
         'TwbBundle',
         'ZfcBase',
         'Core',
