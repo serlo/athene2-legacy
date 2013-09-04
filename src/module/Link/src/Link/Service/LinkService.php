@@ -8,43 +8,16 @@
  */
 namespace Link\Service;
 
-use Core\OrmEntityManagerAwareInterface;
-use Doctrine\ORM\EntityManager;
 use Link\Entity\LinkEntityInterface;
 use Core\Entity\AbstractEntityAdapter;
-use Core\Entity\EntityInterface;
+use Doctrine\Common\Collections\Criteria;
 
-class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAwareInterface, LinkServiceInterface
+class LinkService implements LinkServiceInterface
 {
-
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $_entityManager;
     
-    /*
-     * (non-PHPdoc) @see \Core\OrmEntityManagerAwareInterface::setEntityManager()
-     */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->_entityManager = $entityManager;
-    }
+    use \Common\Traits\ObjectManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait, \Link\Manager\LinkManagerAwareTrait, \Common\Traits\EntityDelegatorTrait;
     
-    /*
-     * (non-PHPdoc) @see \Core\OrmEntityManagerAwareInterface::getEntityManager()
-     */
-    public function getEntityManager()
-    {
-        return $this->_entityManager;
-    }
-
-    public function setEntity(EntityInterface $entity)
-    {
-        return $this->_setEntity($entity);
-    }
-
-    protected function _setEntity(LinkEntityInterface $entity)
+    public function setEntity(LinkEntityInterface $entity)
     {
         return parent::setEntity($entity);
     }
@@ -54,7 +27,7 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
      */
     public function getChildren()
     {
-        return $this->getEntity()->getChildren();
+        return $this->getEntity()->getChildren()->matching(Criteria::create(Criteria::expr()->eq('type', $this->getLinkManager()->getEntity()->getId())));
     }
     
     /*
@@ -62,7 +35,7 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
      */
     public function getParents()
     {
-        return $this->getEntity()->getParents();
+        return $this->getEntity()->getParents()->matching(Criteria::create(Criteria::expr()->eq('type', $this->getLinkManager()->getEntity()->getId())));
     }
     
     /*
@@ -76,8 +49,10 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
         if ($parent instanceof LinkServiceInterface)
             $parent = $parent->getEntity();
         
-        $this->getParents()->add($parent);
+        $this->getEntity()->addParent($parent, $this->getLinkManager()->getEntity());
         //$parent->getChildren()->add($this->getEntity());
+        
+        
         
         return $this->flush();
     }
@@ -93,7 +68,7 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
         if ($child instanceof LinkServiceInterface)
             $child = $child->getEntity();
         
-        $this->getChildren()->add($child);
+        $this->getEntity()->addChild($child, $this->getLinkManager()->getEntity());
         //$child->getParents()->add($this->getEntity());
         
         return $this->flush();
@@ -101,7 +76,7 @@ class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAware
 
     protected function flush()
     {
-        $this->getEntityManager()->flush();
+        $this->getObjectManager()->flush();
         return $this;
     }
 }

@@ -9,10 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Link\Manager;
+namespace Link\Exception;
 
-use Common\Manager\InstanceManager;
-
-class AbstractManager extends InstanceManager
+class TypeNotFoundException extends \Exception
 {
 }

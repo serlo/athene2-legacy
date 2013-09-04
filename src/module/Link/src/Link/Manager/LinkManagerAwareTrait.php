@@ -11,8 +11,6 @@
  */
 namespace Link\Manager;
 
-use Link\LinkManagerInterface;
-
 trait LinkManagerAwareTrait
 {
 

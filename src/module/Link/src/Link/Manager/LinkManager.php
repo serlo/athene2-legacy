@@ -9,16 +9,16 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Link;
+namespace Link\Manager;
 
-use Link\Manager\AbstractManager;
 use Link\Entity\LinkEntityInterface;
-use Link\Service\LinkServiceInterface;
+use Link\Exception\InvalidArgumentException;
 
 class LinkManager extends AbstractManager implements LinkManagerInterface
 {
-    
-    /*
+    use \Common\Traits\EntityDelegatorTrait;
+
+	/*
      *
      * (non-PHPdoc)
      * @see
@@ -34,6 +34,10 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
             if(!$this->has($id)){
                 $this->add($key);
             }
+        } elseif (is_numeric($key)) {
+            
+        } else {
+            throw new InvalidArgumentException();
         }
         return $this->getInstance($id);
     }
@@ -57,9 +61,10 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
         if(!$this->has($entity->getId())){
             $instance = parent::createInstance('Link\Service\LinkServiceInterface');
             $instance->setEntity($entity);
+            $instance->setLinkManager($this);
             $this->addInstance($entity->getId(), $instance);
         }
-        return $this;//->get($entity->getId());
+        return $this;
     }
     
     /*
@@ -68,8 +73,8 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
      * @see
      * \Link\LinkManagerInterface::has()
      */
-    public function has ($name)
+    public function has ($id)
     {
-        return $this->hasInstance($name);
+        return $this->hasInstance($id);
     }
 }
