@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkEntityInterface;
 use Uuid\Entity\UuidEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * An entity.
@@ -24,6 +25,16 @@ use Uuid\Entity\UuidEntity;
  */
 class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
+    /**
+     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child")
+     */
+    protected $parentLinks;
+    
+
+    /**
+     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="parent")
+     */
+    protected $childenLinks;
 
     /**
      * @ORM\ManyToMany(targetEntity="Entity", inversedBy="children", cascade={"persist"})
@@ -284,22 +295,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this->revisions;
     }
     
-    /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getChildren()
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getParents()
-     */
-    public function getParents()
-    {
-        return $this->parents;
-    }
-    
     public function trash()
     {
         $this->trashed = true;
@@ -313,5 +308,59 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     
     public function isTrashed(){
         return $this->trashed;
+    }
+    
+    protected $childCollection;
+    protected $parentCollection;
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getChildren()
+     */
+    public function getChildren(\Link\Entity\LinkTypeInterface $type)
+    {
+        if(!$this>childCollection)
+            $this->childCollection = new ArrayCollection();
+        
+        foreach($this->childrenLinks as $link){
+            $child = $link->getChild();
+            if(!$this->childCollection->containsKey($child->getId())){
+              $this->childCollection->set($child->getId(), $child);
+            }
+        }
+        
+        return $this->childCollection;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getParents()
+     */
+    public function getParents(\Link\Entity\LinkTypeInterface $type)
+    {
+        if(!$this>childCollection)
+            $this->parentCollection = new ArrayCollection();
+        
+        foreach($this->parentLinks as $link){
+            $child = $link->getParent();
+            if(!$this->parentCollection->containsKey($child->getId())){
+              $this->parentCollection->set($child->getId(), $child);
+            }
+        }
+        
+        return $this->parentCollection;
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkEntityInterface::addChild()
+     */
+    public function addChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    {
+    }
+
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkEntityInterface::addParent()
+     */
+    public function addParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    {
+        
     }
 }

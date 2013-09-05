@@ -18,18 +18,20 @@ interface LinkEntityInterface
      * the
      * children
      *
+     * @param LinkTypeInterface $type
      * @return Collection
      */
-    public function getChildren ();
+    public function getChildren (LinkTypeInterface $type);
 
     /**
      * Returns
      * the
      * parents
      *
+     * @param LinkTypeInterface $type
      * @return Collection
      */
-    public function getParents ();
+    public function getParents (LinkTypeInterface $type);
 
     /**
      * Adds

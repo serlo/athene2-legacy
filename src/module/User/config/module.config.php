@@ -42,6 +42,9 @@ return array(
                     'setUserManager' => array(
                         'required' => 'true'
                     ),
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
                 ),
                 __NAMESPACE__ . '\Controller\UserController' => array(
                     'setUserManager' => array(
@@ -87,7 +90,7 @@ return array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
                 'options' => array(
-                    'route' => '/user',
+                    'route' => '/user/:user',
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\UserController',
                         'action' => 'index'
@@ -97,7 +100,7 @@ return array(
                     'role' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/role/:id',
+                            'route' => '/role/:action[/:role]',
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\RoleController',
                                 'action' => 'index'
@@ -107,7 +110,7 @@ return array(
                     'update' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/update',
+                            'route' => '/update/:user',
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\UserController',
                                 'action' => 'update'
@@ -134,6 +137,16 @@ return array(
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\UsersController',
                                 'action' => 'roles'
+                            )
+                        )
+                    ),
+                    'role' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/role/:role',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UsersController',
+                                'action' => 'role'
                             )
                         )
                     )

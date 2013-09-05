@@ -49,14 +49,23 @@ return array(
                 {
                     $instance = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
                     $instance->setSharedTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $instance;
                 },
                 'link' => function  ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
                     $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\LinkManager'));
+                        ->get('Link\Manager\SharedLinkManager')->get('link', 'Entity\Entity\EntityLinkType'));
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    return $instance;
+                },
+                'dependency' => function  ($sm)
+                {
+                    $instance = new \LearningResource\Plugin\Link\LinkPlugin();
+                    $instance->setLinkManager($sm->getServiceLocator()
+                        ->get('Link\Manager\SharedLinkManager')->get('dependency', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;

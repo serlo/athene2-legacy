@@ -20,11 +20,25 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Link\LinkManager' => array(
+                'Link\Manager\LinkManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
                     'setClassResolver' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Link\Manager\SharedLinkManager' => array(
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    ),
+                    'setSharedLinkManager' => array(
                         'required' => 'true'
                     )
                 )
@@ -32,8 +46,12 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
+                'Link\Manager\SharedLinkManagerInterface' => 'Link\Manager\SharedLinkManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver'
+            ),
+            'Link\Manage\LinkManager' => array(
+                'shared' => false
             ),
             'Link\Service\LinkService' => array(
                 'shared' => false
