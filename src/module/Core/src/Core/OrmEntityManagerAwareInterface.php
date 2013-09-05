@@ -18,5 +18,5 @@ interface OrmEntityManagerAwareInterface {
 	 * 
 	 * @return EntityManager
 	 */
-	public function getEntityManager();
+	public function getObjectManager();
 }

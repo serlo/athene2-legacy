@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Core\Entity\AbstractEntity;
 use Core\Entity\Language;
 use Core\Entity\Subject;
+use Language\Entity\LanguageInterface;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * A role.
@@ -61,6 +63,17 @@ class Role extends AbstractEntity implements RoleInterface
     {
         return $this->roleUsers;
     }
+    
+    public function getUsers(LanguageInterface $language = NULL) {
+        $criteria = $language ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
+        $mn = $this->getRoleUsers()->matching($criteria);
+        $collection = new ArrayCollection();
+        foreach($mn as $key => $m){
+            $collection->set($key, $m->getUser());
+        }
+        return $collection;
+    }
+    
 
 	/**
      * @param field_type $name

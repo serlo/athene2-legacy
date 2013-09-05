@@ -13,7 +13,7 @@ namespace Link\Manager;
 
 use Link\Entity\LinkTypeInterface;
 
-class SharedLinkManager extends AbstractManager
+class SharedLinkManager extends AbstractManager implements SharedLinkManagerInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait;
     
@@ -38,8 +38,8 @@ class SharedLinkManager extends AbstractManager
         return $this->hasInstance($type->getName());
     }
     
-    protected function createInstance(LinkTypeInterface $type){
-        $instance = parent::createInstance($this->resolveClassName('Link\Service\LinkServiceInterface'));
+    protected function createService(LinkTypeInterface $type){
+        $instance = $this->createInstance($this->resolveClassName('Link\Service\LinkServiceInterface'));
         $instance->setEntity($type);
         $this->add($instance);
         return $instance;

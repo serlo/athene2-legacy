@@ -84,7 +84,7 @@ class UserManager extends AbstractManager implements UserManagerInterface
     }
     
     public function findRole($id){
-        return $this->getObjectManager()->get($this->resolveClassName('User\Entity\RoleInterface'), $id);        
+        return $this->getObjectManager()->find($this->resolveClassName('User\Entity\RoleInterface'), $id);        
     }
 
     protected function find ($id)

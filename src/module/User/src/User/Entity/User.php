@@ -13,6 +13,8 @@ use Zend\InputFilter\InputFilterInterface;
 use User\Form\UserFilter;
 use Core\Entity\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Language\Entity\LanguageInterface;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * A
@@ -398,6 +400,24 @@ class User extends AbstractEntity implements UserInterface
     {
         $this->userRoles = new ArrayCollection();
         $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function addRole(RoleInterface $role, LanguageInterface $language = NULL){
+        $e = new RoleUser();
+        $e->setLanguage($language);
+        $e->setRole($role);
+        $e->setUser($this);
+        return $this;
+    }
+    
+    public function getRoles(LanguageInterface $language = NULL) {
+        $criteria = $language ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
+        $mn = $this->getUserRoles()->matching($criteria);
+        $collection = new ArrayCollection();
+        foreach($mn as $key => $m){
+            $collection->set($key, $m->getRole());
+        }
+        return $collection;
     }
 
     /**

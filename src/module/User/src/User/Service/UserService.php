@@ -8,16 +8,29 @@
  */
 namespace User\Service;
 
-use Doctrine\Common\Collections\Criteria;
 use User\Entity\User;
+use Language\Service\LanguageServiceInterface;
 
 class UserService implements UserServiceInterface
 {
     use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
-    public function getRoles ($language = NULL, $subject = NULL)
-    {
+    public function getRoleNames(LanguageServiceInterface $language = NULL){
+        if($language) $language = $language->getEntity();
+        
         $return = array();
+        foreach($this->getEntity()->getRoles($language) as $role){
+            $return[] = $role->getName();
+        }
+        return $return;
+    }
+    
+    
+    public function getRoles ($language = NULL)
+    {
+        return $this->getEntity()->getRoles($language);
+        //throw new \ErrorException('Deprecated, use getRoleNames instead');
+        /*$return = array();
         
         $user = $this->getEntity();
         
@@ -35,9 +48,7 @@ class UserService implements UserServiceInterface
                     $return[] = $role->get('name');
                 }
             }
-        }
-        
-        return $return;
+        }*/
     }
     
     public function updateLoginData(){
