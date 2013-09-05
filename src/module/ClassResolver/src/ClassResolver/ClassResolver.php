@@ -34,12 +34,18 @@ class ClassResolver implements ClassResolverInterface
     }
     
     protected function getIndex($key){
+        if(!is_string($key))
+            throw new \InvalidArgumentException('Key is not a string');
+        
         return preg_replace('/[^a-z0-9]/i', '_', $key);
     }
 
     protected function getClass($class)
     {
         $index = $this->getIndex($class);
+        
+        if (in_array($class, $this->registry))
+            return $class;
         
         if (! is_string($class))
             throw new \InvalidArgumentException(sprintf('Argument is not a string.'));

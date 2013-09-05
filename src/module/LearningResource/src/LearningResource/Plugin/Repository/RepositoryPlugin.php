@@ -19,13 +19,10 @@ class RepositoryPlugin extends AbstractPlugin
 {
     use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Auth\Service\AuthServiceAwareTrait;
 
-    public function getDefaultConfig ()
-    {
-        return array(
-            'revision_form' => 'FormNotFound',
-            'field_order' => array()
-        );
-    }
+    protected $config = array(
+        'revision_form' => 'FormNotFound',
+        'field_order' => array()
+    );
 
     /**
      *
@@ -57,6 +54,16 @@ class RepositoryPlugin extends AbstractPlugin
     public function hasHead ()
     {
         return $this->getRepository()->hasHead();
+    }
+
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
+     */
+    public function countRevisions ()
+    {
+        return $this->getRepository()->countRevisions();
     }
 
     /**

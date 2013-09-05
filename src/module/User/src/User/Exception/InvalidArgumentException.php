@@ -9,12 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace LearningResource\Plugin\Taxonomy;
+namespace User\Exception;
 
-use Entity\Plugin\AbstractPlugin;
-
-class TaxonomyPlugin extends AbstractPlugin
+class InvalidArgumentException extends \InvalidArgumentException
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Taxonomy\Manager\TermManagerAwareTrait;
-    
 }

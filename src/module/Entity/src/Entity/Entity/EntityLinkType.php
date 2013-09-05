@@ -20,7 +20,7 @@ use Link\Entity\LinkTypeInterface;
  * link.
  *
  * @ORM\Entity
- * @ORM\Table(name="entity_link")
+ * @ORM\Table(name="entity_link_type")
  */
 class EntityLinkType implements LinkTypeInterface
 {
@@ -30,12 +30,12 @@ class EntityLinkType implements LinkTypeInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $name;
+    protected $name;
 
     /**
      *

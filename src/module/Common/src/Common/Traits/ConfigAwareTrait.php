@@ -13,7 +13,7 @@ namespace Common\Traits;
 
 trait ConfigAwareTrait
 {
-    protected $config;
+    protected $config = array();
     
 	/**
      * @return field_type $config
@@ -29,7 +29,7 @@ trait ConfigAwareTrait
      */
     public function setConfig ($config)
     {
-        $this->config = array_merge_recursive($this->config, $config);
+        $this->config = array_replace_recursive($this->config, $config);
         return $this;
     }
 

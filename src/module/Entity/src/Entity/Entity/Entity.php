@@ -16,6 +16,8 @@ use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkEntityInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * An entity.
@@ -26,15 +28,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
     /**
-     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child")
+     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist"})
      */
     protected $parentLinks;
     
 
     /**
-     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="parent", cascade={"persist"})
      */
-    protected $childenLinks;
+    protected $childLinks;
 
     /**
      * @ORM\ManyToMany(targetEntity="Entity", inversedBy="children", cascade={"persist"})
@@ -268,6 +270,8 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 	public function __construct($uuid)
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->childLinks = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parentLinks = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
@@ -318,10 +322,10 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      */
     public function getChildren(\Link\Entity\LinkTypeInterface $type)
     {
-        if(!$this>childCollection)
+        if(!$this->childCollection)
             $this->childCollection = new ArrayCollection();
         
-        foreach($this->childrenLinks as $link){
+        foreach($this->childLinks as $link){
             $child = $link->getChild();
             if(!$this->childCollection->containsKey($child->getId())){
               $this->childCollection->set($child->getId(), $child);
@@ -336,7 +340,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      */
     public function getParents(\Link\Entity\LinkTypeInterface $type)
     {
-        if(!$this>childCollection)
+        if(!$this->childCollection)
             $this->parentCollection = new ArrayCollection();
         
         foreach($this->parentLinks as $link){
@@ -348,19 +352,90 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         
         return $this->parentCollection;
     }
+
+	/**
+     * @return \Doctrine\Common\Collections\ArrayCollection $parentLinks
+     */
+    public function getParentLinks ()
+    {
+        return $this->parentLinks;
+    }
+
+	/**
+     * @return \Doctrine\Common\Collections\ArrayCollection $childLinks
+     */
+    public function getChildLinks ()
+    {
+        return $this->childLinks;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $parentLinks
+     * @return $this
+     */
+    public function setParentLinks ($parentLinks)
+    {
+        $this->parentLinks = $parentLinks;
+        return $this;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $childLinks
+     * @return $this
+     */
+    public function setChildLinks ($childLinks)
+    {
+        $this->childLinks = $childLinks;
+        return $this;
+    }
     
 	/* (non-PHPdoc)
      * @see \Link\Entity\LinkEntityInterface::addChild()
      */
-    public function addChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function addChild (\Link\Entity\LinkEntityInterface $child,\Link\Entity\LinkTypeInterface $type, $order = -1)
     {
+        if($order == -1){
+            $order = $this->getOrderOffset($this->childLinks, $child, $type, 'child') + 1;        
+        }
+        $link = $this->createLink($type, $order);
+        $link->setParent($this);
+        $link->setChild($child);
+        $this->getChildLinks()->add($link);
+        $child->getParentLinks()->add($link);
+        return $this;
     }
 
 	/* (non-PHPdoc)
      * @see \Link\Entity\LinkEntityInterface::addParent()
      */
-    public function addParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function addParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $order = -1)
     {
+        if($order == -1){
+            $order = $this->getOrderOffset($this->parentLinks, $parent, $type, 'parent') + 1;        
+        }
+        $link = $this->createLink($type, $order);
+        $link->setParent($parent);
+        $link->setChild($this);
+        $this->getParentLinks()->add($link);
+        $parent->getChildLinks()->add($link);
+        return $this;
         
     }
+    
+    protected function createLink(\Link\Entity\LinkTypeInterface $type, $order = -1){
+        $e = new EntityLink();
+        $e->setOrder($order);
+        $e->setType($type);
+        return $e;
+    }
+    
+    protected function getOrderOffset(PersistentCollection $collection, \Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $field){
+        $e = $collection->matching(Criteria::create(Criteria::expr()->andX(Criteria::expr()->eq($field, $parent->getId()), Criteria::expr()->eq('type', $type->getId()))))->last();
+        if(!is_object($e)){
+            return 0;
+        } else {
+            return $e->getOrder();       
+        }
+    }
+    
 }

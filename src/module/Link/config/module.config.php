@@ -10,7 +10,8 @@ namespace Link;
 
 return array(
     'class_resolver' => array(
-        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService'
+        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService',
+        'Link\Manager\LinkManagerInterface' => 'Link\Manager\LinkManager'
     ),
     'di' => array(
         'definition' => array(
@@ -18,10 +19,16 @@ return array(
                 'Link\Service\LinkService' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
                     )
                 ),
                 'Link\Manager\LinkManager' => array(
                     'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
                         'required' => 'true'
                     ),
                     'setClassResolver' => array(

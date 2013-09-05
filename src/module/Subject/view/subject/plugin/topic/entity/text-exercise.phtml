@@ -10,6 +10,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 $exercise = $this->entity;
+$solution = $exercise->solution()->findChild();
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
 <article class="text-exercise">
@@ -18,12 +19,16 @@ $exercise = $this->entity;
         <?php echo $revision->get('content'); ?>
     </section>
 	<section class="solution">
-    	<?php if(!is_object($exercise->solution()->findChild())): ?>
-    	<?php echo $this->translate(sprintf('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?', $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('scope' => 'exercise', 'to_entity' => $exercise->getId()))))); ?>
+    	<?php if(!is_object($solution)): ?>
+    	   <?php echo sprintf($this->translate('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?'), $this->url('entity/create', array('type' => 'text-solution'), array('query' => array('scope' => 'exercise', 'to_entity' => $exercise->getId())))); ?>
     	<?php else: ?>
-    	<?php $solutionRepository = $exercise->solution()->findChild()->repository(); ?>
+    	<?php $solutionRepository = $solution->repository(); ?>
     	<?php if($solutionRepository->hasHead()): ?>
-        <?php echo $solutionRepository->getCurrentRevision()->get('content'); ?>
+            <?php echo $solutionRepository->getCurrentRevision()->get('content'); ?>
+        <?php elseif($solutionRepository->countRevisions()): ?>
+            <?php echo $this->translate('Diese Lösung wartet noch auf Freigabe durch die Redaktion. Sie ist aber bald verfügbar!'); ?>
+        <?php else: ?>
+            <?php echo sprintf($this->translate('Diese Lösung wurde zwar angelegt, enthält aber noch keinen Inhalt. Möchtest du eine Lösung <a href="%s">einreichen</a>?'), $this->url('entity/plugin/repository', array('action' => 'add-revision', 'entity' => $solution->getId()))); ?>
     	<?php endif; ?>
         <?php endif; ?>
     </section>

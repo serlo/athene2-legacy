@@ -14,11 +14,20 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\I18n\Translator\Translator;
+use Zend\EventManager\Event;
 
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        $app      = $e->getTarget();
+        $serviceManager       = $app->getServiceManager();
+        
+        // View Exception
+        //$serviceManager->get('Zend\Mvc\View\Http\ExceptionStrategy')->attach($app->getEventManager(), 1);
+        //$serviceManager->get('Zend\Mvc\View\Http\InjectViewModelListener')->attach($app->getEventManager(), -100);
+        
+        
         // Load translator
         
         $lm = $e->getApplication()->getServiceManager()->get('Language\Manager\LanguageManager');
@@ -31,10 +40,6 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        
-
-        $app      = $e->getTarget();
-        $serviceManager       = $app->getServiceManager();
         
         // Route translator
         $app->getEventManager()->attach('route', array($this, 'onPreRoute'), 4);
@@ -56,6 +61,7 @@ class Module
         );
         return $config; 
     }
+    
 
     public function getAutoloaderConfig()
     {
