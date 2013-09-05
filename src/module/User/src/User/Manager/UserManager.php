@@ -15,6 +15,7 @@ use User\Entity\UserInterface;
 use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
 class UserManager extends AbstractManager implements UserManagerInterface
 {
@@ -44,7 +45,9 @@ class UserManager extends AbstractManager implements UserManagerInterface
     public function create ($data)
     {
         $user = $this->createUserEntity();
-        $user->populate($data);
+        
+        $hydrator = new DoctrineObject($this->getObjectManager());
+        $hydrator->hydrate($data, $user);
         
         $this->getObjectManager()->persist($user);
         $this->getObjectManager()->flush();
