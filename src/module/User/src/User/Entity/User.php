@@ -436,6 +436,8 @@ class User extends AbstractEntity implements UserInterface
         $this->logins = $this->logins ? $this->logins : 0;
         $this->ads_enabled = $this->ads_enabled ? $this->ads_enabled : true;
         $this->removed = $this->removed ? $this->removed : false;
+        
+        return $this;
     }
 
     public function setInputFilter (InputFilterInterface $inputFilter)
