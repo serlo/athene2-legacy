@@ -64,7 +64,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
             throw new \Exception('Setup plugin data first!');
         
         $plugin->setEntityService($this->getEntityService());
-        $plugin->setOptions($this->getPluginOptions());
+        $plugin->setConfig($this->getPluginOptions());
         $this->clear();
         
         return $plugin;

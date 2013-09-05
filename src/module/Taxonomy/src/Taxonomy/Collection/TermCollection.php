@@ -12,6 +12,8 @@
 namespace Taxonomy\Collection;
 
 use Common\Collection\AbstractDelegatorCollection;
+use Taxonomy\Manager\SharedTaxonomyManagerInterface;
+use Taxonomy\Exception\InvalidArgumentException;
 
 class TermCollection extends AbstractDelegatorCollection
 {
@@ -30,5 +32,10 @@ class TermCollection extends AbstractDelegatorCollection
     public function getFromManager ($key)
     {
         return $this->getManager()->getTerm($key);
+    }
+    
+    protected function validManager($manager){
+        if(!$manager instanceof SharedTaxonomyManagerInterface)
+            throw new InvalidArgumentException(sprintf('`%s` does not implement `SharedTaxonomyManagerInterface`', get_class($manager)));
     }
 }

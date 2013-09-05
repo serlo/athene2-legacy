@@ -13,6 +13,7 @@ namespace Entity\Collection;
 
 use Entity\Manager\EntityManagerInterface;
 use Common\Collection\AbstractDelegatorCollection;
+use Entity\Exception\InvalidArgumentException;
 
 class EntityCollection extends AbstractDelegatorCollection
 {
@@ -31,5 +32,10 @@ class EntityCollection extends AbstractDelegatorCollection
     public function getFromManager ($key)
     {
         return $this->getManager()->get($key);
+    }
+    
+    protected function validManager($manager){
+        if(!$manager instanceof EntityManagerInterface)
+            throw new InvalidArgumentException(sprintf('`%s` does not implement `EntityManagerInterface`', get_class($manager)));
     }
 }

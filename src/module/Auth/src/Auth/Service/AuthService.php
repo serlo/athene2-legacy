@@ -176,8 +176,7 @@ class AuthService implements AuthServiceInterface
     public function getRoles()
     {
         if($this->loggedIn()){
-            return $this->getUserManager()->get($this->getUser())->getRoleNames($this->getLanguageManager()->getRequestLanguage()
-                ->getId());
+            return $this->getUserManager()->get($this->getUser())->getRoleNames($this->getLanguageManager()->getRequestLanguage());
         } else {
             return array('guest');
         }

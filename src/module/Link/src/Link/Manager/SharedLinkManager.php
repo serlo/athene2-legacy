@@ -18,28 +18,33 @@ class SharedLinkManager extends AbstractManager implements SharedLinkManagerInte
     use \Common\Traits\ObjectManagerAwareTrait;
     
     public function get($type, $typeClassName){
-        $type = $this->getObjectManager()->getRepository($typeClassName)->findOneByName($type);
-        if(!is_object($type) || ! $type instanceof $typeClassName){
-            throw new \Link\Exception\TypeNotFoundException();
+        
+        if(!$this->containsKey($type)){
+            $typeEntity = $this->getObjectManager()->getRepository($typeClassName)->findOneByName($type);
+            if(!$typeEntity instanceof $typeClassName){
+                throw new \Link\Exception\TypeNotFoundException();
+            }
+            $this->createService($typeEntity);
         }
         
-        if($this->has($type)){
-            $this->createInstance($type);
-        }
-        
-        $this->getInstance($type->getName());
+        return $this->getInstance($type);
     }
     
     public function add(LinkManagerInterface $manager){
-        $this->addInstance($manager->getType()->getName(), $manager);
+        $this->addInstance($manager->getEntity()->getName(), $manager);
+        return $this;
+    }
+    
+    public function containsKey($key){
+        return $this->hasInstance($key);
     }
     
     public function has(LinkTypeInterface $type){
-        return $this->hasInstance($type->getName());
+        return $this->containsKey($type->getName());
     }
     
     protected function createService(LinkTypeInterface $type){
-        $instance = $this->createInstance($this->resolveClassName('Link\Service\LinkServiceInterface'));
+        $instance = $this->createInstance('Link\Manager\LinkManagerInterface');
         $instance->setEntity($type);
         $this->add($instance);
         return $instance;

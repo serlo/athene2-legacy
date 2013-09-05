@@ -16,14 +16,11 @@ use Entity\Collection\EntityCollection;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
+    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
 
-    public function getDefaultConfig ()
-    {
-        return array(
-            'types' => array()
-        );
-    }
+    protected $config = array(
+        'types' => array()
+    );
 
     public function isOneToOne ()
     {
@@ -97,18 +94,6 @@ class LinkPlugin extends AbstractPlugin
         return is_object($this->findParent());
     }
 
-    public function getChildrenAsEntities ()
-    {
-        if ($this->isOneToOne())
-            throw new \ErrorException('Link allows only one-to-one associations');
-    }
-
-    public function getParentsAsEntities ()
-    {
-        if ($this->isOneToOne())
-            throw new \ErrorException('Link allows only one-to-one associations');
-    }
-
     public function findChildren (array $entityTypes = NULL)
     {
         if ($this->isOneToOne())
@@ -145,7 +130,7 @@ class LinkPlugin extends AbstractPlugin
             return (in_array($e->getType()
                 ->getName(), $entityTypes));
         });
-
+        
         return new EntityCollection($collection, $this->getEntityManager());
     }
 

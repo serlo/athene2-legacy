@@ -13,17 +13,12 @@ namespace Entity\Plugin;
 
 abstract class AbstractPlugin implements PluginInterface
 {
-    use \Entity\Service\EntityServiceAwareTrait;
+    use \Entity\Service\EntityServiceAwareTrait, \Common\Traits\ConfigAwareTrait;
 
     /**
      * @var string
      */
     protected $identity;
-    
-    /**
-     * @var array
-     */
-    protected $options;
     
     /**
      * @return string $identity
@@ -43,14 +38,13 @@ abstract class AbstractPlugin implements PluginInterface
         return $this;
     }
 
-	public function setOptions(array $options){
-        $this->options = array_merge_recursive($this->getDefaultConfig(), $options);
-        return $this;
+	/*public function setOptions(array $config){
+        return $this->setConfig($config);        
     }
     
     public function getOption($name){
-        return $this->options[$name];
-    }
+        return $this->getConfig($name);
+    }*/
     
-    abstract function getDefaultConfig();
+    //abstract function getDefaultConfig();
 }

@@ -13,13 +13,10 @@ namespace User\Collection;
 
 use Common\Collection\AbstractDelegatorCollection;
 use User\Manager\UserManagerInterface;
+use User\Exception\InvalidArgumentException;
 
 class UserCollection extends AbstractDelegatorCollection
-{
-    protected function validManager($manager){
-        return $manager instanceof UserManagerInterface;
-    }
-    
+{    
 	/* (non-PHPdoc)
      * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
      */
@@ -34,5 +31,10 @@ class UserCollection extends AbstractDelegatorCollection
     public function getFromManager ($key)
     {
         return $this->getManager()->get($key);
+    }
+    
+    protected function validManager($manager){
+        if(!$manager instanceof UserManagerInterface)
+            throw new InvalidArgumentException(sprintf('`%s` does not implement `UserManagerInterface`', get_class($manager)));
     }
 }

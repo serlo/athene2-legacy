@@ -9,7 +9,6 @@
 namespace Link\Service;
 
 use Link\Entity\LinkEntityInterface;
-use Core\Entity\AbstractEntityAdapter;
 use Doctrine\Common\Collections\Criteria;
 
 class LinkService implements LinkServiceInterface
@@ -19,7 +18,8 @@ class LinkService implements LinkServiceInterface
     
     public function setEntity(LinkEntityInterface $entity)
     {
-        return parent::setEntity($entity);
+        $this->entity = $entity;
+        return $this;
     }
     
     /*
@@ -27,7 +27,7 @@ class LinkService implements LinkServiceInterface
      */
     public function getChildren()
     {
-        return $this->getEntity()->getChildren()->matching(Criteria::create(Criteria::expr()->eq('type', $this->getLinkManager()->getEntity()->getId())));
+        return $this->getEntity()->getChildren($this->getLinkManager()->getEntity());
     }
     
     /*
@@ -35,13 +35,13 @@ class LinkService implements LinkServiceInterface
      */
     public function getParents()
     {
-        return $this->getEntity()->getParents()->matching(Criteria::create(Criteria::expr()->eq('type', $this->getLinkManager()->getEntity()->getId())));
+        return $this->getEntity()->getParents($this->getLinkManager()->getEntity());
     }
     
     /*
      * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::addParent()
      */
-    public function addParent($parent)
+    public function addParent($parent, $order = NULL)
     {
         if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkEntityInterface))
             throw new \InvalidArgumentException();
@@ -49,10 +49,7 @@ class LinkService implements LinkServiceInterface
         if ($parent instanceof LinkServiceInterface)
             $parent = $parent->getEntity();
         
-        $this->getEntity()->addParent($parent, $this->getLinkManager()->getEntity());
-        //$parent->getChildren()->add($this->getEntity());
-        
-        
+        $this->getEntity()->addParent($parent, $this->getLinkManager()->getEntity(), $order);
         
         return $this->flush();
     }
@@ -60,7 +57,7 @@ class LinkService implements LinkServiceInterface
     /*
      * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::addChild()
      */
-    public function addChild($child)
+    public function addChild($child, $oder = NULL)
     {
         if (! ($child instanceof LinkServiceInterface || $child instanceof LinkEntityInterface))
             throw new \InvalidArgumentException();
@@ -68,8 +65,7 @@ class LinkService implements LinkServiceInterface
         if ($child instanceof LinkServiceInterface)
             $child = $child->getEntity();
         
-        $this->getEntity()->addChild($child, $this->getLinkManager()->getEntity());
-        //$child->getParents()->add($this->getEntity());
+        $this->getEntity()->addChild($child, $this->getLinkManager()->getEntity(), $oder);
         
         return $this->flush();
     }

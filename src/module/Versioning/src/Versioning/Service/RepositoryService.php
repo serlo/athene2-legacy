@@ -58,6 +58,10 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
     {
         return $this->repository->getEntity();
     }
+    
+    public function countRevisions(){
+        return $this->getRevisions()->count();
+    }
 
     /**
      *

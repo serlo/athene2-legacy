@@ -21,8 +21,7 @@ class RepositoryController extends AbstractController
 
     public function addRevisionAction ()
     {
-        $ref = $this->params()->fromQuery('ref');
-        if(!$ref) $ref = '/';
+        $ref = $this->params('ref', $this->getRequest()->getHeader('HTTP_REFERER', '/'));
                 
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
