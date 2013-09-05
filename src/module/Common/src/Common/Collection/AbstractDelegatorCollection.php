@@ -194,11 +194,11 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function current ()
     {
-        if($this->asService){
-            return $this->getFromManager($this->getCollection()->current());
-        } else {
-            return $this->getCollection()->current();            
+        $current = $this->getCollection()->current();
+        if($this->asService && $current){
+            $current = $this->getFromManager($current);
         }
+        return $current;
     }
 
     /*
