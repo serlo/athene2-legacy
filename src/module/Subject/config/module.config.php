@@ -46,7 +46,7 @@ return array(
             'subject' => array(
                 'options' => array(
                     'templates' => array(
-                        'update' => 'subject/plugin/topic/taxonomy/update',
+                        'update' => 'taxonomy/taxonomy/update',
                     ),
                     'radix_enabled' => false,
                 )
@@ -54,7 +54,7 @@ return array(
             'school-type' => array(
                 'options' => array(
                     'templates' => array(
-                        'update' => 'subject/plugin/curriculum/taxonomy/school-type/update',
+                        'update' => 'taxonomy/taxonomy/update',
                     ),
                     'allowed_parents' => array(
                         'subject',
@@ -65,11 +65,19 @@ return array(
             ),
             'curriculum' => array(
                 'options' => array(
+                    'allowed_parents' => array(
+                        'school-type'
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'curriculum-folder' => array(
+                'options' => array(
                     'allowed_links' => array(
                         'entities'
                     ),
                     'allowed_parents' => array(
-                        'school-type'
+                        'curriculum'
                     ),
                     'radix_enabled' => false
                 )
@@ -87,6 +95,13 @@ return array(
                     return $class;
                 },
                 'curriculum' => function  ($sm)
+                {
+                    $class = new Plugin\Curriculum\CurriculumPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                    return $class;
+                },
+                'taxonomyFilter' => function  ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
@@ -264,7 +279,7 @@ return array(
                                 'may_terminate' => true,
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/{topic}/:path',
+                                    'route' => '/{topic}[/:path]',
                                     'defaults' => array(
                                         'controller' => __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
                                         'action' => 'index',
@@ -288,22 +303,25 @@ return array(
                                 )
                             ),
                             'curriculum' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/{curriculum}/[:curriculum]',
+                                    'route' => '/{curriculum}[/:path]',
                                     'defaults' => array(
                                         'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
-                                        'plugin' => 'curriculum',
-                                        'action' => 'index'
+                                        'action' => 'index',
+                                        'plugin' => 'curriculum'
+                                    ),
+                                    'constraints' => array(
+                                        'path' => '(.)+'
                                     )
-                                ),
-                                'child_routes' => array(
+                                )
+                                /*'child_routes' => array(
                                     'topic' => array(
                                         'may_terminate' => true,
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route' => '/{topic}/[:path]',
+                                            'route' => '/{topic}[/:path]',
                                             'defaults' => array(
                                                 'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
                                                 'action' => 'topic'
@@ -324,7 +342,7 @@ return array(
                                             )
                                         )
                                     )
-                                )
+                                )*/
                             )
                         )
                     )

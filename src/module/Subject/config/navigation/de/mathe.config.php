@@ -48,7 +48,7 @@ return array(
                         )
                     ),
                     array(
-                        'label' => 'Themen verwalten',
+                        'label' => 'Taxonomie verwalten',
                         'route' => 'taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',

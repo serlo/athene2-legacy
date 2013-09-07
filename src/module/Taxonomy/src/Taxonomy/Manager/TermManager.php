@@ -26,7 +26,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     protected $config = array(
         'options' => array(
-            'templates' => array(),
+            'templates' => array('update' => 'taxonomy/taxonomy/update'),
             'allowed_parents' => array(),
             'allowed_links' => array(),
             'radix_enabled' => true
@@ -164,20 +164,22 @@ class TermManager extends AbstractManager implements TermManagerInterface
         return $termService->getId();
     }
     
-    protected function getRootTermEntities() {
+    protected function getRootTermEntities($type = NULL) {
         //return $this->getEntity()->getTerms()->matching(Criteria::create(Criteria::expr()->orX(Criteria::expr()->isNull('parent'), Criteria::expr()->andX(Criteria::expr()->neq('parent', NULL), Criteria::expr()->neq('parent', $this->getEntity->)))));
-
+        if($type)
+            $type = $this->getSharedTaxonomyManager()->get($type);
+        
         $collection = new ArrayCollection();
         $terms = $this->getEntity()->getTerms();
         foreach ($terms as $entity) {
-            if (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this->getEntity()) ){
+            if ((!$type || ($type && $entity->getTaxonomy() === $type->getEntity())) && (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this->getEntity()) )){
                 $collection->add($entity);
             }
         }
         return $collection;
     }
 
-    public function getRootTerms()
+    public function getRootTerms($type = NULL)
     {
         //return new TermCollection($this->getRootTermEntities(), $this->getManager());
         /*$collection = new ArrayCollection();
@@ -186,7 +188,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
                 $collection->add($this->createInstanceFromEntity($entity));
             }
         }*/
-        $collection = $this->getRootTermEntities();
+        $collection = $this->getRootTermEntities($type);
         return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 

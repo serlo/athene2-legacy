@@ -22,11 +22,11 @@ return array(
                 'uri' => '#',
                 'pages' => array(
                     array(
-                        'label' => 'Schularten verwalten',
+                        'label' => 'Taxonomie verwalten',
                         'route' => 'taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',
-                            'id' => '34'
+                            'id' => '43'
                         )
                     ),
                     array(
