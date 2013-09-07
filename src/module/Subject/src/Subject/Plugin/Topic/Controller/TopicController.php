@@ -21,11 +21,14 @@ class TopicController extends AbstractController
     public function indexAction()
     {
         $subjectService = $this->getSubject();
+        $topic = false;
         
-        $topic = $subjectService->topic()->get(explode('/', $this->getParam('path')));
+        if($this->params('path', NULL)){
+            $topic = $subjectService->topic()->get(explode('/', $this->params('path', NULL)));
+        }
         
         $entities = array();
-        if ($topic->isLinkAllowed('entities')) {
+        if ($topic && $topic->isLinkAllowed('entities')) {
             foreach ($topic->getLinks('entities')->asService() as $entity) {
                 if (! $entity->isTrashed()) {
                     $entities[] = $entity;
@@ -40,17 +43,19 @@ class TopicController extends AbstractController
         ));
         
         $taxonomyView = new ViewModel(array(
-            'terms' => $topic->getChildren(),
+            'terms' => $topic ? $topic->getChildren() : $this->getPlugin()->getRootFolders($this->params('subject', NULL)),
             'subject' => $subjectService,
-            'plugin' => $this->getPlugin()
+            'plugin' => $this->getPlugin(),
+            'pluginName' => $pluginName
         ));
+        
         $taxonomyView->setTemplate('subject/plugin/topic/partial');
         $view->addChild($taxonomyView, 'taxonomy');
         
         $entityView = new ViewModel(array(
             'taxonomy' => $topic,
             'subject' => $subjectService,
-            'acceptsEntities' => $topic->isLinkAllowed('entities'),
+            'acceptsEntities' => $topic ? $topic->isLinkAllowed('entities') : false,
             'plugin' => $this->getPlugin(),
             'entities' => $entities
         ));
@@ -58,7 +63,6 @@ class TopicController extends AbstractController
         $view->addChild($entityView, 'entities');
         
         $view->setTemplate('subject/plugin/topic/show');
-        
         return $view;
     }
 }

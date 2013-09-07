@@ -11,115 +11,28 @@
  */
 namespace Subject\Plugin\Curriculum;
 
-use Subject\Plugin\AbstractPlugin;
-use Subject\Exception\InvalidArgumentException;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Service\TermServiceInterface;
-use Entity\Service\EntityServiceInterface;
-use Entity\Entity\EntityInterface;
+use Subject\Plugin\Topic\TopicPlugin;
 
-class CurriculumPlugin extends AbstractPlugin
-{
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Entity\Manager\EntityManagerAwareTrait;
-    
-    protected $curriculum, $topic;
-    
-    public function getTopic ()
-    {
-        return $this->topic;
-    }
-
-    public function setTopic ($path)
-    {
-        $this->topic = $this->getSharedTaxonomyManager()
-                ->get('topic')
-                ->get($path);
-        return $this;
-    }
-
-	public function setCurriculum($curriculumId){
-        $this->curriculum = $this->getSharedTaxonomyManager()->getTerm($curriculumId);
-        return $this;
-    }
-    
-    public function getCurriculum(){
-        return $this->curriculum;
-    }
-    
-    public function removeEntity($entity){
-        if($entity instanceof EntityServiceInterface){
-            $entity = $entity->getEntity();
-        } elseif ($entity instanceof EntityInterface) {
-        } elseif (is_numeric($entity)) {
-            $entity = $this->getEntityManager()->get($entity)->getEntity();
-        } else {
-            throw new InvalidArgumentException('Parameter 1 expects to be numeric or implementing Entity\Service\EntityServiceInterface');
-        }
-        
-        $this->getCurriculum()->removeLink('entities', $entity);
-        return $this;
-    }
-    
+class CurriculumPlugin extends TopicPlugin
+{    
     public function getTermManager(){
         return $this->getSharedTaxonomyManager()
             ->get('curriculum');        
     }
 
-    public function filterEntities(Collection $entities, TermServiceInterface $topic){
-        $termManager = $this->getTermManager();
-        $curriculum = $this->getCurriculum();
-        return $entities->filter(function ( $entity) use ($curriculum) {
-            return $curriculum->hasLink('entities', $entity);
-        });
-    }
-    
-    public function filterTopicChildren(Collection $children){
-        $collection = new ArrayCollection();
-        foreach($children as $child){
-            if($this->filterTopic($child)) $collection->add($child);
-        }
-        return $collection;
-    }
-    
-    public function getTopicPath(TermServiceInterface $term){
-        return ($term->getTaxonomy()->getName() != 'subject') ? $this->getTopicPath($term->getParent()) . $term->getSlug() .'/' : '';
-    }
-    
-    public function get ($curriculum)
+    public function get ($folder)
     {
-            return $this->getTermManager()->get($curriculum);
+        return $this->getSharedTaxonomyManager()
+            ->get('school-type')
+            ->get($folder);
     }
-    
-    public function getRootTopics(){
-        $return = $this->getSubjectService()->getTermService()->getChildrenByTaxonomyName('topic');
-        return $return;
-    }
-    
-    protected function filterTopic(TermServiceInterface $topic){
-        if($topic->isLinkAllowed('entities') && $topic->hasLinks('entities')){
-            return true;
-        }
-        
-        if($topic->hasChildren()){
-            foreach($topic->getChildren() as $child){
-                if($this->filterTopic($child))
-                    return true;
-            }
-        }
-        return false;
-    }
-    
-    public function addEntity($entity, $to){
-        $term = $this->getSharedTaxonomyManager()->getTerm($to);
-        
-        if($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
-            throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
-        
-        $term->addLink('entities', $entity->getEntity());
-        $term->persistAndFlush();
-        
-        return $this;
+
+    public function getAll ()
+    {
+        $terms = $this->getSubjectService()->getTaxonomy('curriculum');
+        $terms = $terms->getTerms();
+        return $terms;
     }
 
     public function getEnabledEntityTypes ()
@@ -141,11 +54,7 @@ class CurriculumPlugin extends AbstractPlugin
         return $this->getSubjectService()->topic()->getTemplateForEntityType($type);
     }
 
-    public function getRootFolders (){
-        return $this->getTermManager()->getRootTerms();
-    }
-    
-    public function getSchoolTypeRootFolders(){
-        return $this->getSharedTaxonomyManager()->get('school-type')->getRootTerms();
+    public function getRootFolders ($curriculum){
+        return $this->getSharedTaxonomyManager()->get('subject')->get($curriculum)->getChildrenByTaxonomyName('school-type');
     }
 }

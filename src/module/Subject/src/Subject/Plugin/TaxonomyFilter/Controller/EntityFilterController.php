@@ -13,7 +13,7 @@ namespace Subject\Plugin\Curriculum\Controller;
 
 use Subject\Plugin\Controller\AbstractController;
 
-class EntityController extends AbstractController
+class EntityFilterController extends AbstractController
 {
 
     public function removeAction ()

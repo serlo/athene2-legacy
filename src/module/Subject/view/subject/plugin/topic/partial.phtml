@@ -17,7 +17,7 @@
     		<?php //echo $this->partial('taxonomy/term/actions', array('term' => $term)); ?>
     		<div>
     			<a class=""
-    				href="<?php echo rawurldecode($this->url('subject/plugin/topic', array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getTopicPath($term)))); ?>"><?php echo $term->getName(); ?></a>
+    				href="<?php echo rawurldecode($this->url('subject/plugin/'.$this->pluginName, array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getTopicPath($term)))); ?>"><?php echo $term->getName(); ?></a>
     			(<?php echo $term->countLinks('entities'); ?>)
     		</div>
     	</div>

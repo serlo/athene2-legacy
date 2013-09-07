@@ -16,14 +16,10 @@
 			href="#"> <i class="icon-plus"></i> <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
-		    <?php if($this->term->allowsChildType('school-type')): ?>
 			<li><a
-				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=1&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Taxonomie (zB. Bayern, G8, Sachsen, Realschule)'); ?></a></li>
-		    <?php endif; ?>
-		    <?php if($this->term->allowsChildType('curriculum')): ?>
+				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=1&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Übergeordnetes Thema'); ?></a></li>
 			<li><a
-				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=2&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Lehrplanordner (zB. 6. Klasse)'); ?></a></li>
-			<?php endif; ?>
+				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=2&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Untergeordnetes Thema'); ?></a></li>
 		</ul>
 	</div>
 	<a
