@@ -20,6 +20,16 @@ return array(
         'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService',
         'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
     ),
+    'taxonomy' => array(
+        'types' => array(
+            'root' => array(
+                'options' => array(
+                    'allowed_parents' => array(
+                    ),
+                    'radix_enabled' => true
+                )
+            ),
+            )),
     'router' => array(
         'routes' => array(
             'taxonomy' => array(

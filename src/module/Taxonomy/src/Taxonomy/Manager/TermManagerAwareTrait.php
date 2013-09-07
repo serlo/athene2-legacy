@@ -11,7 +11,7 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\TermManagerInterface;
+use Taxonomy\Manager\TermManagerInterface;
 
 trait TermManagerAwareTrait
 {
