@@ -83,4 +83,8 @@ class TopicPlugin extends AbstractPlugin
         $terms = $terms->getTerms();
         return $terms;
     }
+
+    public function getRootFolders ($subject){
+        return $this->getSharedTaxonomyManager()->get('subject')->get($subject)->getChildrenByTaxonomyName('topic');
+    }
 }
