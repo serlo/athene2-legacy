@@ -126,6 +126,16 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         
         return $this->config['links'][$link];
     }
+    
+    public function getAllowedChildrenTypes($type){
+        $return = array();
+        foreach($this->config['types'] as $name => $config){
+            if(array_key_exists('allowed_parents', $config['options']) && in_array($type, $config['options']['allowed_parents'])){
+                $return[] = $name;
+            }
+        }
+        return $return;
+    }
 
     protected function createInstanceFromEntity($entity)
     {

@@ -12,10 +12,9 @@
 namespace Uuid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Core\Entity\EntityInterface;
 use Core\Exception\UnknownPropertyException;
 
-abstract class UuidEntity implements UuidHolder, EntityInterface
+abstract class UuidEntity implements UuidHolder
 {
     /**
      * @ORM\Id
@@ -113,22 +112,12 @@ abstract class UuidEntity implements UuidHolder, EntityInterface
         return $this;
     }
 
-    public function getArrayCopy ()
-    {
-        return get_object_vars($this);
-    }
-
-    public function exists ($association)
-    {
-        return $this->$association !== NULL;
-    }
-
-    public function populate (array $data)
+    /*public function populate (array $data)
     {
         // TODO check for NOT NULL tables and force to populate them (or throw UnstatisfiedException)
-        foreach ($data as $field => $value)
-            $this->set($field, $value);
+        //foreach ($data as $field => $value)
+        //    $this->set($field, $value);
         
         return $this;
-    }
+    }*/
 }

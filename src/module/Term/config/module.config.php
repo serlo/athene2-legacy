@@ -12,6 +12,10 @@
 namespace Term;
 
 return array(
+    'class_resolver' => array(
+        'Term\Entity\TermEntityInterface' => 'Term\Entity\Term',
+        'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
+    ),
     'di' => array(
         'definition' => array(
             'class' => array(
@@ -25,6 +29,9 @@ return array(
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    )
                 ),
                 'Term\Service\TermService' => array(
                     'setObjectManager' => array(
@@ -32,17 +39,17 @@ return array(
                     ),
                     'setServiceLocator' => array(
                         'required' => 'true'
-                    ),
-                ),
+                    )
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Term\Service\TermServiceInterface' => 'Term\Service\TermService',
+                'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
             ),
             'Term\Service\TermService' => array(
                 'shared' => false
-            ),
+            )
         )
     ),
     'doctrine' => array(

@@ -11,30 +11,76 @@
  */
 namespace Term\Service;
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Core\Service\AbstractEntityDecorator;
-
-class TermService extends AbstractEntityDecorator implements TermServiceInterface, ObjectManagerAwareInterface
+class TermService implements TermServiceInterface
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $objectManager;
+    use \Common\Traits\EntityDelegatorTrait, \Common\Traits\ObjectManagerAwareTrait;
     
-	/* (non-PHPdoc)
-     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
+    /**
+     *
+     * @return field_type $language
      */
-    public function getObjectManager ()
+    public function getLanguage()
     {
-        return $this->objectManager;
+        return $this->getEntity()->getLanguage();
     }
-
-	/* (non-PHPdoc)
-     * @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
+    
+    /**
+     *
+     * @return field_type $name
      */
-    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
+    public function getName()
     {
-        $this->objectManager = $objectManager;
+        return $this->getEntity()->getName();
+    }
+    
+    /**
+     *
+     * @return field_type $slug
+     */
+    public function getId()
+    {
+        return $this->getEntity()->getId();
+    }
+    
+    /**
+     *
+     * @return field_type $slug
+     */
+    public function getSlug()
+    {
+        return $this->getEntity()->getSlug();
+    }
+    
+    /**
+     *
+     * @param field_type $language
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->getEntity()->setLanguage($language);
+        return $this;
+    }
+    
+    /**
+     *
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->getEntity()->setName($name);
+        return $this;
+    }
+    
+    /**
+     *
+     * @param field_type $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->getEntity()->setSlug($slug);
         return $this;
     }
 }

@@ -17,4 +17,6 @@ return array(
             'pageHeader' => __NAMESPACE__ . '\View\Helper\PageHeader',
         )
     ),
+    'controller_plugins' => array('invokables' => array('getRefererUrl' => 'Common\Controller\Plugin\RefererProvider'))
+    
 );
