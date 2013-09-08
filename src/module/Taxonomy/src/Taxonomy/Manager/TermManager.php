@@ -150,27 +150,27 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function create (array $data)
     {
-        $entity = $this->resolve('Term\Entity\TermTaxonomyEntityInterface');
+        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface');
         
         $term = $this->getTermManager()->get($data['term']['name']);
         
         $entity->setTerm($term->getEntity());
         unset($data['term']);
         
-        $hydrator = new DoctrineObject($this->getObjectManager(), $this->resolveClassName('Term\Entity\TermTaxonomyEntityInterface'));
+        $hydrator = new DoctrineObject($this->getObjectManager(), $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'));
         
+        $uuid = $this->getUuidManager()->create();
         // don't
         // change
         // this
         $entity = $hydrator->hydrate($data, $entity);
-        $this->getUuidManager()->inject($entity);
+        $this->getUuidManager()->inject($entity, $uuid);
         // hydrate
         // sets
         // uuid
         // to
         // NULL
         // !
-        
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush();
         
@@ -268,28 +268,34 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         return $this->config;
     }
-
-    public function setConfig (array $config)
-    {
-        $this->config = array_merge_recursive($this->config, $config);
-        return $this;
+    
+    public function getAllowedChildrenTypes(){
+        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()->getName());
     }
 
     public function allowsParentType ($type)
     {
-        return in_array($type, $this->getOptions()['allowed_parents']); // disabled:
-                                                                        // ||
-                                                                        // $type
-                                                                        // ==
-                                                                        // $this->getEntity()->getName();
+        return in_array($type, $this->getOption('allowed_parents'));
+    }
+
+    public function getAllowedParentTypes ()
+    {
+        return $this->getOption('allowed_parents');
     }
 
     public function getOptions ()
     {
         $config = $this->getConfig();
         if (! array_key_exists('options', $config))
-            throw new ErrorException('No options set');
+            throw new ErrorException('Options not set');
         
         return $config['options'];
+    }
+    
+    public function getOption($name){
+        if(!array_key_exists($name, $this->getOptions()))
+            return NULL;
+        
+        return $this->getOptions()[$name];
     }
 }

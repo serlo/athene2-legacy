@@ -16,17 +16,17 @@
 			href="#"> <i class="icon-plus"></i> <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
-			<li><a
-				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=1&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Übergeordnetes Thema'); ?></a></li>
-			<li><a
-				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=2&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Untergeordnetes Thema'); ?></a></li>
+            <?php foreach($this->term->getAllowedChildrenTypes() as $type):?>
+                <li><a
+    				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $type, 'parent' => $this->term->getId())); ?>"><?php echo $type; ?></a></li>
+            <?php endforeach;?>
 		</ul>
 	</div>
 	<a
-		href="<?php echo $this->url('taxonomy/term',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
+		href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
 		class="btn btn-mini"><i class="icon-pencil"></i></a>
 	<div class="btn btn-mini">
 		<i class="icon-resize-vertical"></i>
 	</div>
-	<?php echo $this->modal()->delete('<i class="icon-remove icon-white" role="button"></i>',  $this->url('taxonomy/term',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-mini btn-inverse'); ?>
+	<?php echo $this->modal()->delete('<i class="icon-remove icon-white" role="button"></i>',  $this->url('taxonomy/term/action',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-mini btn-inverse'); ?>
 </div>

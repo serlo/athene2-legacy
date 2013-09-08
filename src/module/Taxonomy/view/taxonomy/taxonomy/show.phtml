@@ -31,7 +31,7 @@ var termsort =
           var dataToSend = {sortables: {id: $("#<?php echo $id; ?>").attr('data-id'), children: $("#<?php echo $id; ?>").sortable("serialize").get()}};
           console.dir(dataToSend);
           $.ajax({
-              url: "<?php echo $this->url('taxonomy/term',array('action' => 'order'));?>",
+              url: "<?php echo $this->url('taxonomy/term/action',array('action' => 'order'));?>",
               type: "post",
               data: dataToSend,
               cache: false,

@@ -9,17 +9,17 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Entity;
+namespace Common\Controller\Plugin;
 
-interface TermTaxonomyEntityInterface
+use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+
+class RefererProvider extends AbstractPlugin
 {
-    public function getParent();
-    public function hasParent();
-    public function getChildren();
-    public function getTerm();
-    public function getDescription();
-    public function setDescription($description);
-    public function setWeight($order);
-    public function getWeight();
-    public function getArrayCopy();
+
+    public function __invoke ($default = NULL)
+    {
+        return $this->getController()
+            ->getRequest()
+            ->getHeader('HTTP_REFERER', $default);
+    }
 }

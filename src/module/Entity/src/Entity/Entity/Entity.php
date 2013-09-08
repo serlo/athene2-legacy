@@ -25,7 +25,7 @@ use Doctrine\ORM\PersistentCollection;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
+class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface
 {
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist"})
@@ -436,6 +436,5 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         } else {
             return $e->getOrder();       
         }
-    }
-    
+    }    
 }
