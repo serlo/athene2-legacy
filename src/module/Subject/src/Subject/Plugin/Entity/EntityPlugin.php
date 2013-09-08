@@ -21,6 +21,11 @@ class EntityPlugin extends AbstractPlugin
 {
     use \Entity\Manager\EntityManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
     
+    protected function getDefaultConfig ()
+    {
+        return array();
+    }
+    
     public function getEntities(){
         return $this->getSubjectService()->getTermService()->getLinks('entities', true, array('topic', 'entity-folder', 'subject'));//$this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
     }

@@ -20,7 +20,7 @@
 			</a>
 			<ul class="dropdown-menu">
                 <?php foreach($this->plugin->getEnabledEntityTypes() as $type):?>
-				    <li><a href="<?php echo $this->url('entity/create', array('type' => $type), array('query' => array( 'subject' => $this->plugin->getSubjectService()->getId(), 'term' => $this->taxonomy->getId()))); ?>"><?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?></a></li>
+				    <li><a href="<?php echo $this->url('entity/create', array('type' => $type), array('query' => array( 'subject' => $this->plugin->getSubjectService()->getId(), 'term' => $this->term->getId()))); ?>"><?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
@@ -29,14 +29,14 @@
 </div>
 <?php if($this->acceptsEntities): ?>
 <div class="entities">
-    <?php foreach($this->entities as $entity): ?>
-    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName())): ?>
+    <?php foreach($this->links as $link): ?>
+    <?php if($this->plugin->isTypeEnabled($link->getType()->getName())): ?>
     <div class="right btn-group">
     	<a
-    		href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set', 'entity' => $entity->getId() )); ?>"
+    		href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set', 'entity' => $link->getId() )); ?>"
     		class="btn btn-mini"><i class="icon-download-alt"></i></a>
     </div>
-    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
+    <?php echo $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
     <?php endif; ?>
     <?php endforeach; ?>
 </div>
