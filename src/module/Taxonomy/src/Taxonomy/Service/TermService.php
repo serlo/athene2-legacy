@@ -277,12 +277,12 @@ class TermService implements TermServiceInterface
 
     public function getAllowedLinks ()
     {
-        return $this->getOptions()['allowed_links'];
+        return $this->getOption('allowed_links');
     }
 
     public function isLinkAllowed ($targetField)
     {
-        return in_array($targetField, $this->getOptions()['allowed_links']);
+        return in_array($targetField, (array) $this->getOption('allowed_links'));
     }
 
     public function update (array $data)
@@ -381,6 +381,12 @@ class TermService implements TermServiceInterface
     {
         return $this->getManager()->getOptions();
     }
+    
+    public function getOption ($name)
+    {
+        return $this->getManager()->getOption($name);
+    }
+    
 
     public function getId ()
     {
