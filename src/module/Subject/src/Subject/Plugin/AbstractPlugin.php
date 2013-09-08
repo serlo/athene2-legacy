@@ -62,8 +62,6 @@ abstract class AbstractPlugin implements PluginInterface
      */
     public function setScope ($scope)
     {
-        if($scope == 'topic')
-            throw new \Exception();
         $this->scope = $scope;
         return $this;
     }
