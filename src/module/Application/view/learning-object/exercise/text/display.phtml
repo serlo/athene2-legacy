@@ -18,7 +18,7 @@
 		<div class="span2 btn-group">
 			<div class="btn-group">
 				<a class="btn btn-mini"
-					href="<?php echo $this->url($entity->getRoute(), array('action' => 'update', 'id' => $this->entity->getId())) ?>"><i
+					href="<?php echo $this->url($link->getRoute(), array('action' => 'update', 'id' => $this->entity->getId())) ?>"><i
 					class="icon-pencil"></i></a>
 				<a class="btn btn-mini dropdown-toggle"
 					data-toggle="dropdown" href="#"><i class="icon-wrench"></i> <span class="caret"></span>
@@ -30,7 +30,7 @@
         					class="icon-warning-sign"></i> <?php echo $this->translate('Fehler melden')?></a>
     				</li>
 					<li><a
-						href="<?php echo $this->url($entity->getRoute(), array('action' => 'history', 'id' => $this->entity->getId())) ?>"><i class="icon-time"></i> <?php echo $this->translate('Versionsgeschichte');?></a></li>
+						href="<?php echo $this->url($link->getRoute(), array('action' => 'history', 'id' => $this->entity->getId())) ?>"><i class="icon-time"></i> <?php echo $this->translate('Versionsgeschichte');?></a></li>
 					<li>
 					   <?php echo $this->modal()->update(
 					       '<i class="icon-tag"></i> '.$this->translate('Zuordnung ändern'),
@@ -41,7 +41,7 @@
 				       ); ?>
 					</li>	
 					<li>
-					   <?php echo $this->modal()->delete('<i class="icon-remove"></i> '.$this->translate('Löschen'),  $this->url($entity->getRoute(), array('action' => 'delete', 'id' => $this->entity->getId())), '');?>
+					   <?php echo $this->modal()->delete('<i class="icon-remove"></i> '.$this->translate('Löschen'),  $this->url($link->getRoute(), array('action' => 'delete', 'id' => $this->entity->getId())), '');?>
 					</li>
 				</ul>
 			</div>

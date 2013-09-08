@@ -19,7 +19,7 @@
 		</tr>
 	</thead>
 	<tbody>
-        <?php foreach($this->entities as $entity): ?>
+        <?php foreach($this->links as $entity): ?>
             <tr>
                 <td><a href="<?php echo $this->url('entity/plugin/repository', array('action' => 'history', 'entity' => $entity->getId())); ?>"><?php echo $entity->getUuid(); ?></a></td>
                 <td><?php echo $entity->getType()->getName(); ?></td>

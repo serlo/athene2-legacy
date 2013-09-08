@@ -11,9 +11,12 @@
  */
 namespace Subject\Plugin;
 
+use Subject\Exception\RuntimeException;
 abstract class AbstractPlugin implements PluginInterface
 {
     use \Subject\Service\SubjectServiceAwareTrait;
+    
+    protected $name, $scope;
 
     /**
      * @var string
@@ -25,7 +28,47 @@ abstract class AbstractPlugin implements PluginInterface
      */
     protected $options;
     
+    abstract protected function getDefaultConfig();
+    
     /**
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+	/**
+     * @return field_type $scope
+     */
+    public function getScope ()
+    {
+        return $this->scope;
+    }
+
+	/**
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+	/**
+     * @param field_type $scope
+     * @return $this
+     */
+    public function setScope ($scope)
+    {
+        if($scope == 'topic')
+            throw new \Exception();
+        $this->scope = $scope;
+        return $this;
+    }
+
+	/**
      * @return string $identity
      */
     public function getIdentity()
@@ -44,8 +87,22 @@ abstract class AbstractPlugin implements PluginInterface
     }
 
 	public function setOptions(array $options){
-        $this->options = $options;
+        $this->options = array_replace_recursive($this->getDefaultConfig(), $options);
         return $this;
+    }
+    
+    public function getTemplate($template){
+        if(!array_key_exists($template, $this->getOption('templates')))
+            throw new RuntimeException(sprintf('Template `%s` not found.', $template));
+        
+        return $this->getOption('templates')[$template];
+    }
+
+    public function getRoute(){
+        if(!$this->getOption('route'))
+            throw new RuntimeException(sprintf('Route to plugin not found.'));
+    
+        return $this->getOption('route');
     }
     
     public function getOption($name){

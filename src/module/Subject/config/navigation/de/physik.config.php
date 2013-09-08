@@ -29,7 +29,7 @@ return array(
                     'type' => 'subject',
                     'parent' => 'physik',
                     'language' => 'de',
-                    'route' => 'subject/plugin/topic',
+                    'route' => 'subject/plugin/taxonomy/topic',
                     'params' => array(
                         'subject' => 'physik'
                     )
