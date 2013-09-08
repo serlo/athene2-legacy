@@ -11,12 +11,11 @@
  */
 namespace Subject\Service;
 
-use Doctrine\Common\Collections\Criteria;
 use Subject\Exception\PluginNotFoundException;
 
 class SubjectService implements SubjectServiceInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     public function getId ()
     {
@@ -37,9 +36,11 @@ class SubjectService implements SubjectServiceInterface
     {
         return $this->getEntity()->getName();
     }
-    
-    public function getTermService(){
-        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()->getId());
+
+    public function getTermService ()
+    {
+        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()
+            ->getId());
     }
 
     public function setOptions ($options)
@@ -53,13 +54,13 @@ class SubjectService implements SubjectServiceInterface
 
     public function isPluginWhitelisted ($name)
     {
-        return isset($this->pluginWhitelist[$name]) && $this->pluginWhitelist[$name] === TRUE;
+        return array_key_exists($name, $this->pluginWhitelist) && $this->pluginWhitelist[$name] !== FALSE;
     }
 
     public function whitelistPlugins ($config)
     {
         foreach ($config as $plugin) {
-            $this->whitelistPlugin($plugin['name']);
+            $this->whitelistPlugin($plugin['name'], $plugin['plugin']);
             if (isset($plugin['options'])) {
                 $this->setPluginOptions($plugin['name'], $plugin['options']);
             }
@@ -81,10 +82,14 @@ class SubjectService implements SubjectServiceInterface
         return (isset($this->pluginOptions[$name])) ? $this->pluginOptions[$name] : array();
     }
 
-    public function whitelistPlugin ($name)
+    public function whitelistPlugin ($scope, $plugin)
     {
-        $this->pluginWhitelist[$name] = true;
+        $this->pluginWhitelist[$scope] = $plugin;
         return $this;
+    }
+    
+    public function getPluginByScope($scope){
+        return $this->pluginWhitelist[$scope];
     }
 
     /**
@@ -92,7 +97,7 @@ class SubjectService implements SubjectServiceInterface
      * plugin
      * instance
      *
-     * @param string $name
+     * @param string $scope
      *            Name
      *            of
      *            plugin
@@ -100,18 +105,19 @@ class SubjectService implements SubjectServiceInterface
      *            return
      * @return mixed
      */
-    public function plugin ($name)
+    public function plugin ($scope)
     {
-        if (! $this->isPluginWhitelisted($name)) {
-            throw new PluginNotFoundException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
+        if (! $this->isPluginWhitelisted($scope)) {
+            throw new PluginNotFoundException(sprintf('Plugin %s is not whitelisted for this entity.', $scope));
         }
         
         $pluginManager = $this->getPluginManager();
         
         $pluginManager->setSubjectService($this);
-        $pluginManager->setPluginOptions($this->getPluginOptions($name));
+        $pluginManager->setPluginOptions($this->getPluginOptions($scope));
+        $pluginManager->setPluginIdentification($scope, $this->getPluginByScope($scope));
         
-        return $this->getPluginManager()->get($name);
+        return $this->getPluginManager()->get($this->getPluginByScope($scope));
     }
 
     /**
