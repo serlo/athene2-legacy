@@ -46,15 +46,15 @@ return array(
             'subject' => array(
                 'options' => array(
                     'templates' => array(
-                        'update' => 'taxonomy/taxonomy/update',
+                        'update' => 'taxonomy/taxonomy/update'
                     ),
-                    'radix_enabled' => false,
+                    'radix_enabled' => false
                 )
             ),
             'school-type' => array(
                 'options' => array(
                     'templates' => array(
-                        'update' => 'taxonomy/taxonomy/update',
+                        'update' => 'taxonomy/taxonomy/update'
                     ),
                     'allowed_parents' => array(
                         'subject',
@@ -87,13 +87,20 @@ return array(
     'subject' => array(
         'plugins' => array(
             'factories' => array(
+                'taxonomy' => function  ($sm)
+                {
+                    $class = new Plugin\Taxonomy\TaxonomyPlugin();
+                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                    return $class;
+                },/*
                 'topic' => function  ($sm)
                 {
                     $class = new Plugin\Topic\TopicPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
-                },
+                },*/
                 'curriculum' => function  ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
@@ -126,37 +133,77 @@ return array(
                 'plugins' => array(
                     array(
                         'name' => 'topic',
+                        'plugin' => 'taxonomy',
                         'options' => array(
+                            'taxonomy' => 'topic',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/topic',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                            ),
                             'entity_types' => array(
                                 'text-exercise' => array(
                                     'labels' => array(
                                         'singular' => 'Aufgabe',
                                         'plural' => 'Aufgaben'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
                                         'singular' => 'Artikel',
                                         'plural' => 'Artikel'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/article'
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
                                 ),
                                 'exercise-group' => array(
                                     'labels' => array(
                                         'singular' => 'Gruppenaufgabe',
                                         'plural' => 'Gruppenaufgaben'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/exercise-group'
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
                                 )
                             )
                         )
                     ),
                     array(
-                        'name' => 'entity'
+                        'name' => 'curriculum',
+                        'plugin' => 'taxonomy',
+                        'options' => array(
+                            'taxonomy' => 'school-type',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/curriculum',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/curriculum/index'
+                            ),
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Gruppenaufgabe',
+                                        'plural' => 'Gruppenaufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
+                                )
+                            )
+                        )
                     ),
                     array(
-                        'name' => 'curriculum'
+                        'name' => 'entity',
+                        'plugin' => 'entity'
                     )
                 )
             ),
@@ -164,60 +211,79 @@ return array(
                 'plugins' => array(
                     array(
                         'name' => 'topic',
+                        'plugin' => 'taxonomy',
                         'options' => array(
+                            'taxonomy' => 'topic',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/topic',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                            ),
                             'entity_types' => array(
                                 'text-exercise' => array(
                                     'labels' => array(
                                         'singular' => 'Aufgabe',
                                         'plural' => 'Aufgaben'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
                                         'singular' => 'Artikel',
                                         'plural' => 'Artikel'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/article'
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Gruppenaufgabe',
+                                        'plural' => 'Gruppenaufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
                                 )
                             )
                         )
                     ),
                     array(
-                        'name' => 'entity'
-                    )
-                )
-            ),
-            'math' => array(
-                'plugins' => array(
-                    array(
-                        'name' => 'topic',
+                        'name' => 'curriculum',
+                        'plugin' => 'taxonomy',
                         'options' => array(
+                            'taxonomy' => 'school-type',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/curriculum',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/curriculum/index'
+                            ),
                             'entity_types' => array(
                                 'text-exercise' => array(
                                     'labels' => array(
-                                        'singular' => 'Exercise',
-                                        'plural' => 'Exercises'
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
-                                        'singular' => 'Article',
-                                        'plural' => 'Articles'
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/article'
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Gruppenaufgabe',
+                                        'plural' => 'Gruppenaufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
                                 )
                             )
                         )
                     ),
                     array(
-                        'name' => 'entity'
+                        'name' => 'entity',
+                        'plugin' => 'entity'
                     )
                 )
-            ),
-            'physics' => array(
-                'plugins' => array()
             )
         )
     ),
@@ -275,18 +341,41 @@ return array(
                             'route' => ''
                         ),
                         'child_routes' => array(
-                            'topic' => array(
-                                'may_terminate' => true,
+                            'taxonomy' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/{topic}[/:path]',
+                                    'route' => '/{taxonomy}',
                                     'defaults' => array(
-                                        'controller' => __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
-                                        'action' => 'index',
-                                        'plugin' => 'topic'
+                                        'controller' => __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
+                                        'action' => 'index'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'topic' => array(
+                                        'may_terminate' => true,
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/{topic}[/:path]',
+                                            'defaults' => array(
+                                                'plugin' => 'topic'
+                                            ),
+                                            'constraints' => array(
+                                                'path' => '(.)+'
+                                            )
+                                        )
                                     ),
-                                    'constraints' => array(
-                                        'path' => '(.)+'
+                                    'curriculum' => array(
+                                        'may_terminate' => true,
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/{curriculum}[/:path]',
+                                            'defaults' => array(
+                                                'plugin' => 'curriculum'
+                                            ),
+                                            'constraints' => array(
+                                                'path' => '(.)+'
+                                            )
+                                        )
                                     )
                                 )
                             ),
@@ -301,48 +390,6 @@ return array(
                                         'plugin' => 'entity'
                                     )
                                 )
-                            ),
-                            'curriculum' => array(
-                                'may_terminate' => true,
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route' => '/{curriculum}[/:path]',
-                                    'defaults' => array(
-                                        'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
-                                        'action' => 'index',
-                                        'plugin' => 'curriculum'
-                                    ),
-                                    'constraints' => array(
-                                        'path' => '(.)+'
-                                    )
-                                )
-                                /*'child_routes' => array(
-                                    'topic' => array(
-                                        'may_terminate' => true,
-                                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                                        'options' => array(
-                                            'route' => '/{topic}[/:path]',
-                                            'defaults' => array(
-                                                'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
-                                                'action' => 'topic'
-                                            ),
-                                            'constraints' => array(
-                                                'path' => '(.)+'
-                                            )
-                                        )
-                                    ),
-                                    'entity' => array(
-                                        'may_terminate' => true,
-                                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                                        'options' => array(
-                                            'route' => '/entity/:action/:entity',
-                                            'defaults' => array(
-                                                'controller' => __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController',
-                                                'action' => 'index'
-                                            )
-                                        )
-                                    )
-                                )*/
                             )
                         )
                     )
@@ -352,15 +399,24 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            __NAMESPACE__ . '\Application\DefaultSubject\Controller\TopicController',
-            __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController',
-            __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController',
-            __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController',
+            // __NAMESPACE__
+            // .
+            // '\Application\DefaultSubject\Controller\TopicController',
+            __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
+            // __NAMESPACE__
+            // .
+            // '\Plugin\Topic\Controller\TopicController',
+            // __NAMESPACE__
+            // .
+            // '\Plugin\Curriculum\Controller\CurriculumController',
+            // __NAMESPACE__
+            // .
+            // '\Plugin\Curriculum\Controller\EntityController',
             __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController'
         ),
         'definition' => array(
             'class' => array(
-                __NAMESPACE__ . '\Plugin\Topic\Controller\TopicController' => array(
+                __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

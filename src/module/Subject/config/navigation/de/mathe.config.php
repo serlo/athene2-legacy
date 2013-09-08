@@ -16,7 +16,7 @@ return array(
         'pages' => array(
             array(
                 'label' => 'Lehrplan',
-                'route' => 'subject/plugin/curriculum',
+                'route' => 'subject/plugin/taxonomy/curriculum',
                 'params' => array(
                     'subject' => 'mathe'
                 )
@@ -29,7 +29,7 @@ return array(
                     'type' => 'subject',
                     'parent' => 'mathe',
                     'language' => 'de',
-                    'route' => 'subject/plugin/topic',
+                    'route' => 'subject/plugin/taxonomy/topic',
                     'params' => array(
                         'subject' => 'mathe'
                     )
