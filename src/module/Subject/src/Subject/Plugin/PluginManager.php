@@ -18,7 +18,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
 {    
     use \Subject\Service\SubjectServiceAwareTrait;
     
-    protected $pluginOptions;
+    protected $pluginOptions, $pluginName, $pluginScope;
     
     /*
      * (non-PHPdoc) @see \Zend\ServiceManager\AbstractPluginManager::validatePlugin()
@@ -40,6 +40,8 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
     public function clear(){
         $this->entityService = NULL;
         $this->pluginOptions = NULL;
+        $this->pluginScope = NULL;
+        $this->pluginName = NULL;
     }
     
     public function get($name, $options = array(), $usePeeringServiceManagers = true){
@@ -66,8 +68,16 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         return $plugin;
     }
     
+    public function setPluginIdentification($scope, $name){
+        $this->pluginName = $name;
+        $this->pluginScope = $scope;
+        return $this;
+    }
+    
     protected function injectOptions($service){
         $service->setOptions($this->getPluginOptions());
+        $service->setScope($this->pluginScope);
+        $service->setName($this->pluginName);
         return $this;
     }
 }
