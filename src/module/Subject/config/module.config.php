@@ -211,22 +211,70 @@ return array(
                 'plugins' => array(
                     array(
                         'name' => 'topic',
-                        'plugin' => 'topic',
+                        'plugin' => 'taxonomy',
                         'options' => array(
+                            'taxonomy' => 'topic',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/topic',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                            ),
                             'entity_types' => array(
                                 'text-exercise' => array(
                                     'labels' => array(
                                         'singular' => 'Aufgabe',
                                         'plural' => 'Aufgaben'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/text-exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
                                         'singular' => 'Artikel',
                                         'plural' => 'Artikel'
                                     ),
-                                    'template' => 'subject/plugin/topic/entity/article'
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Gruppenaufgabe',
+                                        'plural' => 'Gruppenaufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'curriculum',
+                        'plugin' => 'taxonomy',
+                        'options' => array(
+                            'taxonomy' => 'school-type',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/curriculum',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/curriculum/index'
+                            ),
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Aufgabe',
+                                        'plural' => 'Aufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Artikel',
+                                        'plural' => 'Artikel'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Gruppenaufgabe',
+                                        'plural' => 'Gruppenaufgaben'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
                                 )
                             )
                         )
