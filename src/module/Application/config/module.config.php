@@ -136,10 +136,6 @@ return array(
             },
             'navigation' => 'Navigation\Service\DynamicNavigationFactory'
         ),
-        'aliases' => array(
-            'EntityManager' => 'doctrine.entitymanager.orm_default',
-            'Doctrine\ORM\EntityManager' => 'EntityManager'
-        )
     ),
     'translator' => array(
         'locale' => 'en_US',

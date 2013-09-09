@@ -14,9 +14,13 @@ namespace Common;
 return array(
     'view_helpers' => array(
         'invokables' => array(
-            'pageHeader' => __NAMESPACE__ . '\View\Helper\PageHeader',
+            'pageHeader' => __NAMESPACE__ . '\View\Helper\PageHeader'
         )
     ),
-    'controller_plugins' => array('invokables' => array('getRefererUrl' => 'Common\Controller\Plugin\RefererProvider'))
-    
+    'controller_plugins' => array(
+        'invokables' => array(
+            'getRefererUrl' => 'Common\Controller\Plugin\RefererProvider'
+        )
+    ),
 );
+
