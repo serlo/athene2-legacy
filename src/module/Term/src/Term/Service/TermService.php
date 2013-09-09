@@ -83,4 +83,8 @@ class TermService implements TermServiceInterface
         $this->getEntity()->setSlug($slug);
         return $this;
     }
+    
+    public function getArrayCopy(){
+        return $this->getEntity()->getArrayCopy();
+    }
 }

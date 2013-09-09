@@ -10,6 +10,17 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
-
 return array(
+    'service_manager' => array(
+        'aliases' => array(
+            'EntityManager' => 'doctrine.entitymanager.orm_default',
+            'Doctrine\ORM\EntityManager' => 'doctrine.entitymanager.orm_default',
+            'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default'
+        )
+    ),
+    'di' => array(
+        'aliases' => array(
+            'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default'
+        )
+    )
 );

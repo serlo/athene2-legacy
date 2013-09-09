@@ -25,6 +25,13 @@ class Term extends AbstractEntity implements TermEntityInterface
 {
 
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      */
     protected $language;
@@ -45,6 +52,24 @@ class Term extends AbstractEntity implements TermEntityInterface
     private $termTaxonomies;
 
     /**
+     * @return field_type $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
      *
      * @return field_type $language
      */
