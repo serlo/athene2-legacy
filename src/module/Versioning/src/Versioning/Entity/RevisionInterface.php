@@ -8,9 +8,11 @@
  */
 namespace Versioning\Entity;
 
+use User\Entity\UserInterface;
 interface RevisionInterface
 {
     /**
+     * 
      * @return int
      */
     public function getId();
@@ -40,30 +42,30 @@ interface RevisionInterface
     /**
      * Gets the date´
      * 
-     * @return mixed
+     * @return \DateTime
      */
     public function getDate();
     
     /**
      * Gets the author
      * 
-     * @return EntityInterface
+     * @return UserInterface
      */
     public function getAuthor();
     
     /**
      * Sets the date
      * 
-     * @param mixed $date
+     * @param \DateTime $date
      * @return $this
      */
-    public function setDate($date);
+    public function setDate(\DateTime $date);
     
     /**
      * Sets the author
      * 
-     * @param EntityInterface $user
+     * @param UserInterface $user
      * @return $this
      */
-    public function setAuthor($user);
+    public function setAuthor(UserInterface $user);
 }

@@ -42,15 +42,14 @@ class UserManager extends AbstractManager implements UserManagerInterface
         return $this->getInstance($user->getId());
     }
 
-    public function create ($data)
+    public function create (array $data)
     {
         $user = $this->createUserEntity();
         
-        $hydrator = new DoctrineObject($this->getObjectManager());
-        $hydrator->hydrate($data, $user);
+        $user->populate($data);
         
         $this->getObjectManager()->persist($user);
-        $this->getObjectManager()->flush();
+        $this->getObjectManager()->flush($user);
         
         $this->getEventManager()->trigger('create', $this, array('user' => $user));
         
@@ -64,7 +63,7 @@ class UserManager extends AbstractManager implements UserManagerInterface
 
     public function createUserEntity ()
     {
-        $user = $this->resolveClassName('User\Entity\UserInterface');
+        $user = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
         return new $user();
     }
 
@@ -77,32 +76,31 @@ class UserManager extends AbstractManager implements UserManagerInterface
     }
     
     public function findAllUsers(){
-        $collection = new ArrayCollection($this->getObjectManager()->getRepository($this->resolveClassName('User\Entity\UserInterface'))->findAll());
+        $collection = new ArrayCollection($this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'))->findAll());
         return new UserCollection($collection, $this);
     }
     
-    
     public function findAllRoles(){
-        return $this->getObjectManager()->getRepository($this->resolveClassName('User\Entity\RoleInterface'))->findAll();
+        return $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('User\Entity\RoleInterface'))->findAll();
     }
     
     public function findRole($id){
-        return $this->getObjectManager()->find($this->resolveClassName('User\Entity\RoleInterface'), $id);        
+        return $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('User\Entity\RoleInterface'), $id);        
     }
 
     protected function find ($id)
     {
         if (is_numeric($id)) {
-            $user = $this->getObjectManager()->find($this->resolveClassName('User\Entity\UserInterface'), $id);
+            $user = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'), $id);
         } else {
             $user = $this->getObjectManager()
-                ->getRepository($this->resolveClassName('User\Entity\UserInterface'))
+                ->getRepository($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'))
                 ->findOneBy(array(
                 'email' => $id
             ));
             if (! is_object($user)) {
                 $user = $this->getObjectManager()
-                    ->getRepository($this->resolveClassName('User\Entity\UserInterface'))
+                    ->getRepository($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'))
                     ->findOneBy(array(
                     'username' => $id
                 ));
