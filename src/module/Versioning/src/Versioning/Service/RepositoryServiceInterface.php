@@ -9,14 +9,6 @@ use Versioning\Entity\RepositoryInterface;
 
 interface RepositoryServiceInterface
 {
-    /**
-     * Setups some stuff 
-     * 
-     * @param unknown $identifier
-     * @param RepositoryInterface $repository     
-     * @return $this
-     */
-    public function setup ($identifier, RepositoryInterface $repository);
 
     /**
      * Sets the identifier
@@ -113,4 +105,8 @@ interface RepositoryServiceInterface
      * @return $this
      */
     public function persistRevision (RevisionInterface $revision);
+    
+    public function setRepository(RepositoryInterface $repository);
+    
+    
 }

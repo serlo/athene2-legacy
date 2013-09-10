@@ -13,6 +13,8 @@ namespace VersioningTest\Entity;
 
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Versioning\Entity\RevisionInterface;
 
 class RepositoryFake implements RepositoryInterface
 {
@@ -20,7 +22,7 @@ class RepositoryFake implements RepositoryInterface
     protected $id, $revisions, $currentRevision;
     
     public function __construct(){
-        $this->revisions = array();
+        $this->revisions = new ArrayCollection();
     }
     
 	/* (non-PHPdoc)
@@ -38,6 +40,7 @@ class RepositoryFake implements RepositoryInterface
     {
         $revision = new RevisionFake();
         $revision->setRepository($this);
+        $this->revisions->add($revision);
         return $revision;
     }
 
@@ -93,5 +96,9 @@ class RepositoryFake implements RepositoryInterface
     {
         return $this->getCurrentRevision() !== NULL;
     }
-
+    
+    public function addRevision(RevisionInterface $revision){
+        $this->revisions->set($revision->getId(), $revision);
+        return $this;
+    }
 }
