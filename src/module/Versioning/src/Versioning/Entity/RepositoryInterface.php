@@ -13,6 +13,7 @@ use Doctrine\ORM\PersistentCollection;
 interface RepositoryInterface
 {
     /**
+     * 
      * @return int
      */
     public function getId();
@@ -27,20 +28,33 @@ interface RepositoryInterface
     /**
      * Returns the revisions
      * 
-     * @return PersistentCollection
+     * @return PersistentCollection $revisions
      */
     public function getRevisions ();
     
     /**
-     * Adds a new revision to the repository
+     * Creates a new revision and adds it to the repository
      * 
-     * @return RevisionInterface
+     * @return RevisionInterface $revision
      */
     public function newRevision();
     
+    /**
+     * 
+     * @return RevisionInterface $revision
+     */
     public function getCurrentRevision();
-    
+
+    /**
+     *
+     * @return bool
+     */
     public function hasCurrentRevision();
-    
-    public function setCurrentRevision($revision);
+
+    /**
+     * 
+     * @param RevisionInterface $revision
+     * @return $this
+     */
+    public function setCurrentRevision(RevisionInterface $revision);
 }

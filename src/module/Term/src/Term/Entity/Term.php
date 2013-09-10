@@ -11,7 +11,6 @@
  */
 namespace Term\Entity;
 
-use Core\Entity\AbstractEntity;
 use Language\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="term")
  */
-class Term extends AbstractEntity implements TermEntityInterface
+class Term implements TermEntityInterface
 {
 
     /**
