@@ -11,8 +11,42 @@
  */
 namespace Uuid\Manager;
 
+use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 interface UuidManagerInterface
 {
+
+    /**
+     * Gets/finds a Uuid.
+     * 
+     *  $um->get('1');
+     *  $um->get('someH4ash');
+     *  $um->get($uuidEntity);
+     * 
+     * @param int|string|UuidInterface $key
+     * @return UuidInterface $uuid
+     */
     public function get($key);
+    
+    /**
+     * Creates an UuidEntity
+     * 
+     *  $uuid = $um->create();
+     *  $um->inject($entity, $uuid);
+     * 
+     * @return UuidInterface $uuid
+     */
     public function create();
+    
+    /**
+     * Injects a UuidEntity
+     * 
+     *  $um->inject($entity); // Creates a new UuidEntity and injects it into $entity
+     *  $um->inject($entity, $um->get('1')); // Injects the UuidEntity with the ID 1 into $entity
+     * 
+     * @param UuidHolder $entity
+     * @param UuidInterface $uuid
+     * @return UuidHolder $entity
+     */
+    public function inject(UuidHolder $entity, UuidInterface $uuid = NULL);
 }

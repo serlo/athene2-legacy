@@ -48,11 +48,6 @@ class UuidManager implements UuidManagerInterface
         return $entity;
     }
 
-    public function factory ($class)
-    {
-        return new $class($this->create());
-    }
-
     public function create ()
     {
         $entity = $this->createInstance('Uuid\Entity\UuidInterface');
