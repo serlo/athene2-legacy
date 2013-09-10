@@ -8,12 +8,9 @@
  */
 namespace Versioning;
 
-use Versioning\Service\RepositoryServiceInterface;
-use Versioning\Service\RepositoryService;
 use Core\Creation\AbstractSingleton;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
-use Versioning\Entity\Repository;
 use Versioning\Entity\RepositoryInterface;
 
 class RepositoryManager extends AbstractSingleton implements RepositoryManagerInterface, FactoryInterface
@@ -44,9 +41,12 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
         if (!$this->hasRepository($repository)){
             //    throw new \Exception("There is already a repository with the identifier: " . $repository->getIdentifier());
             $uniq = $this->getUniqId($repository);      
-            $this->serviceLocator->setShared('Versioning\Service\RepositoryService', false);
-            $rs = $this->serviceLocator->get('Versioning\Service\RepositoryService');
-            $rs->setup($uniq, $repository);
+            
+            $this->getServiceLocator()->setShared('Versioning\Service\RepositoryService', false);
+            $rs = $this->getServiceLocator()->get('Versioning\Service\RepositoryService');
+            
+            $rs->setRepository($repository);
+            $rs->setIdentifier($uniq);
             $this->repositories[$uniq] = $rs;      
         }
         return $this; //->getRepository($repository);

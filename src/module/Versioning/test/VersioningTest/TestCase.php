@@ -46,6 +46,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $revision->set('foo', 'bar');
         $this->revisions[] = $revision;
         
+        $repository->addRevision($revision);
+        
         $revision =  new RevisionFake();
         $revision->setId($offset+1);
         $revision->setRepository($repository);
@@ -54,6 +56,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $revision->set('foo', 'bar2');
         $this->revisions[] = $revision;
         
+        $repository->addRevision($revision);
+        
         $revision =  new RevisionFake();
         $revision->setId($offset+2);
         $revision->setRepository($repository);
@@ -61,5 +65,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $revision->setDate($this->date);
         $revision->set('foo', 'bar3');
         $this->revisions[] = $revision;
+        
+        $repository->addRevision($revision);
     }
 }
