@@ -18,9 +18,9 @@ use Versioning\Entity\RepositoryInterface;
 
 class RepositoryManager extends AbstractSingleton implements RepositoryManagerInterface, FactoryInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    
     protected $repositories = array();
-
-    protected $serviceLocator;
 
     /**
      * (non-PHPdoc)
@@ -28,7 +28,7 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->setServiceLocator($serviceLocator);
         return $this;
     }
     
@@ -63,8 +63,10 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
      */
     public function removeRepository(RepositoryInterface $repository)
     {
-        if ($this->hasRepository($repository))
-            throw new \Exception("There is no repository with the identifier: " . $repository);
+        if (!$this->hasRepository($repository))
+            throw new \Exception("There is no repository with the identifier: " . $this->getUniqId($repository));
+        
+        unset($this->repositories[$this->getUniqId($repository)]);
         return $this;
     }
     

@@ -8,11 +8,22 @@
  */
 namespace Versioning\Entity;
 
-use Core\Entity\EntityInterface;
 use Doctrine\ORM\PersistentCollection;
 
-interface RepositoryInterface extends EntityInterface
+interface RepositoryInterface
 {
+    /**
+     * @return int
+     */
+    public function getId();
+    
+    /**
+     * 
+     * @param int $id
+     * @return $this
+     */
+    public function setId($id);
+    
     /**
      * Returns the revisions
      * 
@@ -26,4 +37,10 @@ interface RepositoryInterface extends EntityInterface
      * @return RevisionInterface
      */
     public function newRevision();
+    
+    public function getCurrentRevision();
+    
+    public function hasCurrentRevision();
+    
+    public function setCurrentRevision($revision);
 }

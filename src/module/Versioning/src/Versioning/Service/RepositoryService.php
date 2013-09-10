@@ -112,7 +112,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      * (non-PHPdoc)
      * @see \Versioning\Service\RepositoryServiceInterface::setup()
      */
-    public function setup($identifier, EntityInterface $repository)
+    public function setup($identifier, RepositoryInterface $repository)
     {
         $this->identifier = $identifier;
         $this->repository = $repository;
@@ -124,7 +124,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      */
     private function _load()
     {
-        $this->currentRevision = $this->repository->get('currentRevision');
+        $this->currentRevision = $this->repository->getCurrentRevision();
         $this->revisions = $this->_getRevisions();
     }
 
@@ -147,7 +147,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
      */
     private function _getRevisions($trashed = false)
     {
-        $return = $this->repository->get('revisions');
+        $return = $this->repository->getRevisions();
         return $return;
     }
 
@@ -322,7 +322,7 @@ class RepositoryService implements RepositoryServiceInterface, EventManagerAware
         if (! $this->hasRevision($revision))
             throw new RevisionNotFoundException('Revision ' . $revision->getId() . ' not existent in this repository');
         
-        $this->repository->set('currentRevision', $revision);
+        $this->repository->setCurrentRevision($revision);
         $this->currentRevision = $revision;
         $this->persist();
         
