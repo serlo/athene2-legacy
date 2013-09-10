@@ -8,10 +8,20 @@
  */
 namespace Versioning\Entity;
 
-use Core\Entity\EntityInterface;
-
-interface RevisionInterface extends EntityInterface
+interface RevisionInterface
 {
+    /**
+     * @return int
+     */
+    public function getId();
+    
+    /**
+     * 
+     * @param int $id
+     * @return $this
+     */
+    public function setId($id);
+    
     /**
      * Returns the repository
      * 

@@ -5,6 +5,7 @@ use Versioning\Entity\RevisionInterface;
 use Core\Entity\EntityInterface;
 use Versioning\Exception\RevisionNotFoundException;
 use Doctrine\ORM\PersistentCollection;
+use Versioning\Entity\RepositoryInterface;
 
 interface RepositoryServiceInterface
 {
@@ -12,10 +13,10 @@ interface RepositoryServiceInterface
      * Setups some stuff 
      * 
      * @param unknown $identifier
-     * @param EntityInterface $repository     
+     * @param RepositoryInterface $repository     
      * @return $this
      */
-    public function setup ($identifier, EntityInterface $repository);
+    public function setup ($identifier, RepositoryInterface $repository);
 
     /**
      * Sets the identifier

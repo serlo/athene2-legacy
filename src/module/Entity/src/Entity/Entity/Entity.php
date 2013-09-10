@@ -436,5 +436,14 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         } else {
             return $e->getOrder();       
         }
-    }    
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
+     */
+    public function hasCurrentRevision ()
+    {
+        return $this->getCurrentRevision() !== NULL;
+    }
+    
 }
