@@ -83,7 +83,7 @@ class RepositoryFake implements RepositoryInterface
      * @param field_type $currentRevision
      * @return $this
      */
-    public function setCurrentRevision ($currentRevision)
+    public function setCurrentRevision (RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
         return $this;

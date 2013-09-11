@@ -12,6 +12,7 @@
 namespace UserTest;
 
 use User\Manager\UserManager;
+use AtheneTest\Bootstrap as AtheneBootstrap;
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +23,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     
     
     public function setUp(){
-        $sm = Bootstrap::getServiceManager();
+        $sm = AtheneBootstrap::getServiceManager();
         $userManager = new UserManager();
         
         $userManager->setServiceLocator($sm);

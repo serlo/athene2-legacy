@@ -13,6 +13,7 @@ namespace UuidTest;
 
 use Uuid\Manager\UuidManager;
 use Uuid\Entity\Uuid;
+use AtheneTest\Bootstrap as AtheneBootstrap;
 
 class UuidManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +22,7 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp ()
     {
-        $sm = Bootstrap::getServiceManager();
+        $sm = AtheneBootstrap::getServiceManager();
         $this->uuidManager = new UuidManager();
         
         $this->uuidManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));

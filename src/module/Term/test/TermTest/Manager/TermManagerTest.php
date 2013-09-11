@@ -11,7 +11,7 @@
  */
 namespace TermTest\Manager;
 
-use TermTest\Bootstrap;
+use AtheneTest\Bootstrap as AtheneBootstrap;
 use Term\Manager\TermManager;
 
 class TermManagerTest extends \PHPUnit_Framework_TestCase
@@ -19,7 +19,7 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
     private $termManager;
     
     public function setUp(){
-        $sm = Bootstrap::getServiceManager();
+        $sm = AtheneBootstrap::getServiceManager();
         $termManager = new TermManager(); //$sm->get('Term\Manager\TermManager');// new TermManager();        
         //$mock = $this->getMock('Term\Service\TermService');
         

@@ -14,13 +14,14 @@ namespace VersioningTest;
 use VersioningTest\Entity\RevisionFake;
 use VersioningTest\Entity\RepositoryFake;
 use Versioning\RepositoryManager;
+use AtheneTest\Bootstrap as AtheneBoostrap;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
     protected $repositoryManager, $repositories = array(), $date, $revisions = array();
     
     public function setUp(){
-        $sm = Bootstrap::getServiceManager();
+        $sm = AtheneBoostrap::getServiceManager();
         $repositoryManager = new RepositoryManager();
         
         $this->repositories[] = new RepositoryFake();

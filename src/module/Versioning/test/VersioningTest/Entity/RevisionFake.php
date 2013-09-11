@@ -12,6 +12,7 @@
 namespace VersioningTest\Entity;
 
 use Versioning\Entity\RevisionInterface;
+use User\Entity\UserInterface;
 
 class RevisionFake implements RevisionInterface
 {
@@ -53,7 +54,7 @@ class RevisionFake implements RevisionInterface
 	/* (non-PHPdoc)
      * @see \Versioning\Entity\RevisionInterface::setDate()
      */
-    public function setDate ($date)
+    public function setDate (\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -62,7 +63,7 @@ class RevisionFake implements RevisionInterface
 	/* (non-PHPdoc)
      * @see \Versioning\Entity\RevisionInterface::setAuthor()
      */
-    public function setAuthor ($user)
+    public function setAuthor (UserInterface $user)
     {
         $this->author = $user;
         return $this;
