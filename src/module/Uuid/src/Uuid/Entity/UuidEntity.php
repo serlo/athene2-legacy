@@ -30,7 +30,7 @@ abstract class UuidEntity implements UuidHolder
     
     public function getUuid ()
     {
-        return $this->_getUuid()->getUuid();
+        return $this->getUuidEntity()->getUuid();
     }
     
     public function setId ($id)
@@ -41,7 +41,7 @@ abstract class UuidEntity implements UuidHolder
     
     public function getId ()
     {
-        return $this->_getUuid()->getId();
+        return $this->getUuidEntity()->getId();
     }
     
     public function setUuid (UuidInterface $uuid = null)
@@ -50,7 +50,7 @@ abstract class UuidEntity implements UuidHolder
         return $this;
     }
     
-    protected function _getUuid(){
+    public function getUuidEntity(){
         return $this->id;
     }
 }

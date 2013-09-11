@@ -18,6 +18,7 @@ use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\PersistentCollection;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity.
@@ -231,7 +232,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * @param field_type $currentRevision
      * @return $this
      */
-    public function setCurrentRevision ($currentRevision)
+    public function setCurrentRevision (RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
         return $this;

@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use User\Entity\UserInterface;
 
 /**
  * An entity link.
@@ -89,7 +90,7 @@ class Revision implements RevisionInterface
      * @param field_type $date            
      * @return $this
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -109,7 +110,7 @@ class Revision implements RevisionInterface
      * @param field_type $author            
      * @return $this
      */
-    public function setAuthor($author)
+    public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
         return $this;

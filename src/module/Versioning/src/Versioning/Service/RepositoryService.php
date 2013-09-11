@@ -232,6 +232,7 @@ class RepositoryService implements RepositoryServiceInterface
     {
         $em = $this->getObjectManager();
         $em->persist($revision);
+        $em->flush($revision);
         return $this;
     }
 
@@ -253,6 +254,7 @@ class RepositoryService implements RepositoryServiceInterface
     {
         $em = $this->getObjectManager();
         $em->persist($repository);
+        $em->flush($repository);
         return $this;
     }
 }

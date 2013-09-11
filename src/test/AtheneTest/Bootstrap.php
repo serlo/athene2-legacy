@@ -16,19 +16,31 @@ use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
 use RuntimeException;
 use Zend\Stdlib\ArrayUtils;
-
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
 /**
- * Test bootstrap, for setting up autoloading
+ * Test
+ * bootstrap,
+ * for
+ * setting
+ * up
+ * autoloading
  */
 class Bootstrap
 {
+
     protected static $serviceManager;
-    
-    protected static $testingNamespaces = array('VersioningTest' => 'Versioning/test/VersioningTest');
-    
+
+    protected static $testingNamespaces = array(
+        'VersioningTest' => 'Versioning/test/VersioningTest',
+        'UserTest' => 'User/test/UserTest',
+        'UuidTest' => 'Uuid/test/UuidTest',
+        'TermTest' => 'Term/test/TermTest',
+    );
+
     protected static $modules = array(
         'Application',
         'AsseticBundle',
@@ -40,14 +52,14 @@ class Bootstrap
         'Core',
         'Auth',
         'User',
-        'Versioning',        
+        'Versioning',
         'Editor',
         'Log',
         'Entity',
         'TwbBundle',
-    	'Taxonomy',
-    	'Navigation',
-    	'Link',
+        'Taxonomy',
+        'Navigation',
+        'Link',
         'Subject',
         'Term',
         'Admin',
@@ -57,72 +69,78 @@ class Bootstrap
         'LearningResource',
         'Language'
     );
-    
+
     public static $dir;
 
-    public static function init()
+    public static function init ()
     {
         static::$dir = __DIR__;
         
-        $zf2ModulePaths = array(dirname(dirname(static::$dir)));
+        $zf2ModulePaths = array(
+            dirname(dirname(static::$dir))
+        );
         if (($path = static::findParentPath('vendor'))) {
             $zf2ModulePaths[] = $path;
         }
         if (($path = static::findParentPath('module')) !== $zf2ModulePaths[0]) {
             $zf2ModulePaths[] = $path;
         }
-
+        
         static::initAutoloader();
-
-        // use ModuleManager to load this module and it's dependencies
+        
+        // use
+        // ModuleManager
+        // to
+        // load
+        // this
+        // module
+        // and
+        // it's
+        // dependencies
         $config = array(
             'module_listener_options' => array(
-                'module_paths' => $zf2ModulePaths,
+                'module_paths' => $zf2ModulePaths
             ),
             'modules' => self::$modules
         );
-
+        
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
         
         static::includeAutoloadConfig($serviceManager);
         
-        $serviceManager->get('Doctrine\ORM\EntityManager')->close();
-        
         static::$serviceManager = $serviceManager;
     }
-    
-    public static function includeAutoloadConfig(ServiceManager $serviceManager){
-        // quite haxxy
+
+    public static function includeAutoloadConfig (ServiceManager $serviceManager)
+    {
+        // quite
+        // haxxy
         $serviceManager->setAllowOverride(true);
         $config = $serviceManager->get('config');
-        $config = ArrayUtils::merge($config,
-            include static::findParentPath('config/autoload').'/local.php'
-        );
-        $config = ArrayUtils::merge($config,
-            include static::findParentPath('config/autoload').'/local.php'
-        );
+        $config = ArrayUtils::merge($config, include static::findParentPath('config/autoload') . '/local.php');
+        $config = ArrayUtils::merge($config, include static::findParentPath('config/autoload') . '/local.php');
         $serviceManager->setService('config', $config);
     }
 
-    public static function chroot()
+    public static function chroot ()
     {
         $rootPath = dirname(static::findParentPath('module'));
         chdir($rootPath);
     }
 
-    public static function getServiceManager()
+    public static function getServiceManager ()
     {
         return static::$serviceManager;
     }
 
-    protected static function initAutoloader()
+    protected static function initAutoloader ()
     {
         $vendorPath = static::findParentPath('vendor');
-
+        
         $zf2Path = getenv('ZF2_PATH');
-        if (!$zf2Path) {
+        if (! $zf2Path) {
             if (defined('ZF2_PATH')) {
                 $zf2Path = ZF2_PATH;
             } elseif (is_dir($vendorPath . '/ZF2/library')) {
@@ -131,23 +149,22 @@ class Bootstrap
                 $zf2Path = $vendorPath . '/zendframework/zendframework/library';
             }
         }
-
-        if (!$zf2Path) {
-            throw new RuntimeException(
-                'Unable to load ZF2. Run `php composer.phar install` or'
-                . ' define a ZF2_PATH environment variable.'
-            );
+        
+        if (! $zf2Path) {
+            throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or' . ' define a ZF2_PATH environment variable.');
         }
-
+        
         if (file_exists($vendorPath . '/autoload.php')) {
             include $vendorPath . '/autoload.php';
         }
-
+        
         include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
         
-        $namespaces = array(__NAMESPACE__ => __DIR__ );
+        $namespaces = array(
+            __NAMESPACE__ => __DIR__
+        );
         $modulePath = self::findParentPath('module');
-        foreach(static::$testingNamespaces as $namespace => $path){
+        foreach (static::$testingNamespaces as $namespace => $path) {
             $namespaces[$namespace] = $modulePath . '/' . $path;
         }
         
@@ -155,17 +172,18 @@ class Bootstrap
             'Zend\Loader\StandardAutoloader' => array(
                 'autoregister_zf' => true,
                 'namespaces' => $namespaces
-            ),
+            )
         ));
     }
 
-    protected static function findParentPath($path)
+    protected static function findParentPath ($path)
     {
         $dir = static::$dir;
         $previousDir = '.';
-        while (!is_dir($dir . '/' . $path)) {
+        while (! is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
-            if ($previousDir === $dir) return false;
+            if ($previousDir === $dir)
+                return false;
             $previousDir = $dir;
         }
         return $dir . '/' . $path;
