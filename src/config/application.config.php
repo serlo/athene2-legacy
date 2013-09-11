@@ -39,6 +39,7 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
+            './test',
         ),
 
         // An array of paths from which to glob configuration files after
