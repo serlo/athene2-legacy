@@ -12,14 +12,14 @@
 namespace TermTest\Service;
 
 use Term\Service\TermService;
-use TermTest\Bootstrap;
+use AtheneTest\Bootstrap as AtheneBootstrap;
 
 class TermServiceTest extends \PHPUnit_Framework_TestCase
 {
     private $termService, $languageEntity;
     
     public function setUp(){
-        $sm = Bootstrap::getServiceManager();
+        $sm = AtheneBootstrap::getServiceManager();
         $termService = new TermService();
         
         $termService->setObjectManager($sm->get('doctrine.entitymanager.orm_default'));

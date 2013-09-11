@@ -23,8 +23,15 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role extends AbstractEntity implements RoleInterface
+class Role implements RoleInterface
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    
     /**
      * @ORM\Column(type="string") *
      */
@@ -41,6 +48,24 @@ class Role extends AbstractEntity implements RoleInterface
     private $roleUsers;
 
     /**
+     * @return field_type $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
      * @return field_type $name
      */
     public function getName ()

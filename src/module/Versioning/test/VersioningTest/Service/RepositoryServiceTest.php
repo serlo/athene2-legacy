@@ -13,7 +13,7 @@ namespace VersioningTest\Service;
 
 use VersioningTest\TestCase;
 use Versioning\Service\RepositoryService;
-use VersioningTest\Bootstrap;
+use AtheneTest\Bootstrap;
 use VersioningTest\Entity\UserFake;
 
 class RepositoryServiceTest extends TestCase

@@ -27,6 +27,8 @@ class Bootstrap
 {
     protected static $serviceManager;
     
+    protected static $testingNamespaces = array('VersioningTest' => 'Versioning/test/VersioningTest');
+    
     protected static $modules = array(
         'Application',
         'AsseticBundle',
@@ -55,10 +57,14 @@ class Bootstrap
         'LearningResource',
         'Language'
     );
+    
+    public static $dir;
 
     public static function init()
     {
-        $zf2ModulePaths = array(dirname(dirname(__DIR__)));
+        static::$dir = __DIR__;
+        
+        $zf2ModulePaths = array(dirname(dirname(static::$dir)));
         if (($path = static::findParentPath('vendor'))) {
             $zf2ModulePaths[] = $path;
         }
@@ -138,19 +144,24 @@ class Bootstrap
         }
 
         include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
+        
+        $namespaces = array(__NAMESPACE__ => __DIR__ );
+        $modulePath = self::findParentPath('module');
+        foreach(static::$testingNamespaces as $namespace => $path){
+            $namespaces[$namespace] = $modulePath . '/' . $path;
+        }
+        
         AutoloaderFactory::factory(array(
             'Zend\Loader\StandardAutoloader' => array(
                 'autoregister_zf' => true,
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
-                ),
+                'namespaces' => $namespaces
             ),
         ));
     }
 
     protected static function findParentPath($path)
     {
-        $dir = __DIR__;
+        $dir = static::$dir;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
@@ -160,3 +171,6 @@ class Bootstrap
         return $dir . '/' . $path;
     }
 }
+
+Bootstrap::init();
+Bootstrap::chroot();

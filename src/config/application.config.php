@@ -38,8 +38,7 @@ return array(
         // Module class.
         'module_paths' => array(
             './module',
-            './vendor',
-            './test',
+            './vendor'
         ),
 
         // An array of paths from which to glob configuration files after

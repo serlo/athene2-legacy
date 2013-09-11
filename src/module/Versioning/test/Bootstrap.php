@@ -10,9 +10,9 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-use AtheneTest\Bootstrap;
+namespace VersioningTest;
 
-chdir(__DIR__);
+class Boostrap extends \AtheneTest\Bootstrap {}
 
 Bootstrap::init();
 Bootstrap::chroot();
