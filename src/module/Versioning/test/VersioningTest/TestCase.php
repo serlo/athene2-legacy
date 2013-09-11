@@ -15,8 +15,9 @@ use VersioningTest\Entity\RevisionFake;
 use VersioningTest\Entity\RepositoryFake;
 use Versioning\RepositoryManager;
 use AtheneTest\Bootstrap as AtheneBoostrap;
+use AtheneTest\TestCase\ObjectManagerTestCase;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends ObjectManagerTestCase
 {
     protected $repositoryManager, $repositories = array(), $date, $revisions = array();
     

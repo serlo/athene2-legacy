@@ -14,19 +14,22 @@ namespace UuidTest;
 use Uuid\Manager\UuidManager;
 use Uuid\Entity\Uuid;
 use AtheneTest\Bootstrap as AtheneBootstrap;
+use AtheneTest\TestCase\ObjectManagerTestCase;
 
-class UuidManagerTest extends \PHPUnit_Framework_TestCase
+class UuidManagerTest extends ObjectManagerTestCase
 {
 
     protected $uuidManager;
 
     public function setUp ()
     {
+        parent::setUp();
+        
         $sm = AtheneBootstrap::getServiceManager();
         $this->uuidManager = new UuidManager();
         
         $this->uuidManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-        $this->uuidManager->setObjectManager($this->getEmMock());
+        $this->uuidManager->setObjectManager($sm->get('doctrine.entitymanager.orm_default'));
         $this->uuidManager->setServiceLocator($sm);
     }
 
@@ -47,34 +50,5 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
         $uuid = $this->uuidManager->create();
         $this->assertNotNull($uuid);
         $this->assertInstanceOf('\Uuid\Entity\UuidInterface', $uuid);
-    }
-
-    protected function getEmMock ()
-    {
-        $emMock = $this->getMock('\Doctrine\ORM\EntityManager', array(
-            'getRepository',
-            'getClassMetadata',
-            'persist',
-            'flush',
-            'find'
-        ), array(), '', false);
-        $emMock->expects($this->any())
-            ->method('getClassMetadata')
-            ->will($this->returnValue((object) array(
-            'name' => 'aClass'
-        )));
-        $emMock->expects($this->any())
-            ->method('persist')
-            ->will($this->returnValue(null));
-        $emMock->expects($this->any())
-            ->method('flush')
-            ->will($this->returnValue(null));
-        return $emMock; // it
-                        // tooks
-                        // 13
-                        // lines
-                        // to
-                        // achieve
-                        // mock!
     }
 }

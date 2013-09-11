@@ -13,16 +13,25 @@ namespace UserTest;
 
 use User\Manager\UserManager;
 use AtheneTest\Bootstrap as AtheneBootstrap;
+use AtheneTest\TestCase\ObjectManagerTestCase;
+use User\Entity\User;
+use AtheneTest\Bootstrap;
 
-class UserManagerTest extends \PHPUnit_Framework_TestCase
+class UserManagerTest extends ObjectManagerTestCase
 {
+
     /**
+     *
      * @var UserManager
      */
     protected $userManager;
     
-    
-    public function setUp(){
+    private $user;
+
+    public function setUp ()
+    {
+        parent::setUp();
+        
         $sm = AtheneBootstrap::getServiceManager();
         $userManager = new UserManager();
         
@@ -30,60 +39,65 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $userManager->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
         $userManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
         
+        $repository = new UserRepositoryFake();
+        $this->hydrateObjectManager();
+        $this->injectEntityRepository($repository);
+        
         $this->userManager = $userManager;
     }
-    
-    public function testGet(){
-        $this->assertEquals('1', $this->userManager->get(1)->getId());
-        $this->assertEquals('1', $this->userManager->get('aeneas@q-mail.me')->getId());
-        $this->assertEquals('1', $this->userManager->get('arekkas')->getId());
+
+    public function testGetById ()
+    {
+        $this->assertEquals('1', $this->userManager->get(1)
+            ->getId());
     }
-    
-    public function testRepositories(){
+
+    public function testGetByUsername ()
+    {
+        $this->assertEquals('1', $this->userManager->get('foobar')
+            ->getId());
+    }
+
+    public function testGetByEmail ()
+    {
+        $this->assertEquals('1', $this->userManager->get('foo@bar.de')
+            ->getId());
+    }
+
+    public function testRepositories ()
+    {
         $this->assertNotNull($this->userManager->findAllRoles());
         $this->assertNotNull($this->userManager->findAllUsers());
     }
-    
-    public function testCreate(){
-        $this->userManager->setObjectManager($this->getEmMock());
-        
+
+    public function testCreate ()
+    {        
         $entity = $this->userManager->create(array(
             'username' => 'test',
             'email' => 'test@test.de',
             'password' => 'foobar',
             'language' => 1,
-            'id' => 1
+            'id' => 2
         ));
         
         $this->assertInstanceOf('User\Service\UserServiceInterface', $entity);
     }
-
-    protected function getEmMock ()
+    
+    private function hydrateObjectManager ()
     {
-        $emMock = $this->getMock('\Doctrine\ORM\EntityManager', array(
-            'getRepository',
-            'getClassMetadata',
-            'persist',
-            'flush',
-            'find'
-        ), array(), '', false);
-        $emMock->expects($this->any())
-            ->method('getClassMetadata')
-            ->will($this->returnValue((object) array(
-            'name' => 'aClass'
-        )));
-        $emMock->expects($this->any())
-            ->method('persist')
-            ->will($this->returnValue(null));
-        $emMock->expects($this->any())
-            ->method('flush')
-            ->will($this->returnValue(null));
-        return $emMock; // it
-                        // tooks
-                        // 13
-                        // lines
-                        // to
-                        // achieve
-                        // mock!
+        Bootstrap::getServiceManager()->get('Doctrine\ORM\EntityManager')->expects($this->any())
+            ->method('find')
+            ->with($this->equalTo('User\Entity\User'), $this->equalTo(1))
+            ->will($this->returnValue($this->getUserFake()));
+    }
+
+    private function getUserFake ()
+    {
+        if (! $this->user) {
+            $user = new User();
+            $user->setId(1);
+            $this->user = $user;
+        }
+        return $this->user;
     }
 }

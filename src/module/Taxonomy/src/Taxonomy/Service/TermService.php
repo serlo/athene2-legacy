@@ -14,12 +14,9 @@ use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\NotFoundException;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Exception\ErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Zend\Form\Form;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
 
 class TermService implements TermServiceInterface
 {
@@ -129,7 +126,7 @@ class TermService implements TermServiceInterface
          * $this->getManager()->get($this->getEntity()
          * ->get('children'));
          */
-        return new TermCollection($this->getEntity()->get('children'), $this->getSharedTaxonomyManager());
+        return new TermCollection($this->getEntity()->getChildren(), $this->getSharedTaxonomyManager());
     }
     
     /*
@@ -153,7 +150,7 @@ class TermService implements TermServiceInterface
             return false;
         
         return $this->getEntity()
-            ->get($targetField)
+            ->getRelations($targetField)
             ->count() != 0;
     }
 
@@ -163,7 +160,7 @@ class TermService implements TermServiceInterface
             return 0;
         
         return $this->getEntity()
-            ->get($targetField)
+            ->getRelations($targetField)
             ->count();
     }
     
@@ -178,7 +175,7 @@ class TermService implements TermServiceInterface
         if (! $recursive) {
             $this->isLinkAllowedWithException($targetField);
             $callback = $this->getCallbackForLink($targetField);
-            return $callback($this->getServiceLocator(), $this->getEntity()->get($targetField));
+            return $callback($this->getServiceLocator(), $this->getEntity()->getRelations($targetField));
         } else {            
             $collection = new ArrayCollection();
             $collection = $this->injectLinks($collection, $this, $targetField, $allowedTaxonomies);
@@ -193,7 +190,7 @@ class TermService implements TermServiceInterface
         }
         
         if($term->isLinkAllowed($targetField)){
-            foreach ($term->getEntity()->get($targetField) as $link) {
+            foreach ($term->getEntity()->getRelations($targetField) as $link) {
                 $collection->add($link);
             }
         }
@@ -222,7 +219,7 @@ class TermService implements TermServiceInterface
         $target = $this->findEntity($target);
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
-        $entity->get($targetField)->add($target);
+        $entity->getRelations($targetField)->add($target);
         $this->persist();
         return $this;
     }
@@ -257,7 +254,7 @@ class TermService implements TermServiceInterface
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
         
-        $entity->get($targetField)->remove($target->getId());
+        $entity->getRelations($targetField)->remove($target->getId());
         $target->getTerms()->remove($entity->getId());
         
         $this->getObjectManager()->flush();
@@ -273,7 +270,7 @@ class TermService implements TermServiceInterface
     {
         $this->isLinkAllowedWithException($targetField);
         $targets = $this->getEntity()
-            ->get($targetField);
+            ->getRelations($targetField);
         return $targets->contains($target->getId());
     }
 
