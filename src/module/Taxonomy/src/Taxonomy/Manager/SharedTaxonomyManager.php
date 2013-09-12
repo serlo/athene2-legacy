@@ -52,7 +52,6 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         
         if (!$language instanceof LanguageServiceInterface)
             $language = $this->getLanguageManager()->get($language);
-        
         if (is_numeric($taxonomy)) {
             $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface'), $taxonomy);
         } elseif (is_string($taxonomy)) {
@@ -82,8 +81,8 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             throw new InvalidArgumentException();
         }
         
-        if (! is_object($entity))
-            throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $taxonomy));
+        if (! is_object($entity) )
+            throw new NotFoundException(sprintf('Taxonomy %s not found in %s', $taxonomy, $entityClassName));
         
         if(!$this->has($entity)){
             $this->add($this->createInstanceFromEntity($entity));
