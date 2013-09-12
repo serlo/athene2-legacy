@@ -39,6 +39,7 @@ class Bootstrap
         'UserTest' => 'User/test/UserTest',
         'UuidTest' => 'Uuid/test/UuidTest',
         'TermTest' => 'Term/test/TermTest',
+        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
     );
 
     protected static $modules = array(

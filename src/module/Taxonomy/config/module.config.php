@@ -22,6 +22,9 @@ return array(
     ),
     'taxonomy' => array(
         'types' => array(
+            'foobar' => array(
+                'options' => array()
+            ),
             'root' => array(
                 'options' => array(
                     'allowed_parents' => array(),
@@ -91,8 +94,7 @@ return array(
                 )
             )
         )
-    )
-    ,
+    ),
     'service_manager' => array(
         'factories' => array(
             'Taxonomy\Manager\SharedTaxonomyManager' => (function  ($sm)
@@ -101,7 +103,7 @@ return array(
                 $config = new \Zend\Config\Config($config['taxonomy']);
                 $instance = new \Taxonomy\Manager\SharedTaxonomyManager($config);
                 $instance->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-                $instance->setObjectManager($sm->get('EntityManager'));
+                $instance->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $instance->setServiceLocator($sm);
                 $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 return $instance;
