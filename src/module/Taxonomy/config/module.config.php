@@ -173,22 +173,8 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager',
-                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
                 'Taxonomy\Manager\SharedTaxonomyManagerInterface' => 'Taxonomy\Manager\SharedTaxonomyManager'
-            // 'Auth\Service\AuthServiceInterface'
-            // =>
-            // 'Auth\Service\AuthService',
-            // 'Entity\Service\EntityServiceInterface'
-            // =>
-            // 'EventManager',
-            // 'Versioning\RepositoryManagerInterface'
-            // =>
-            // 'Versioning\RepositoryManager',
-            // 'SharedTaxonomyManagerInterface'
-            // =>
-            // 'SharedTaxonomyManager'
-                        ),
+            ),
             'Taxonomy\Manager\TermManager' => array(
                 'shared' => false
             ),

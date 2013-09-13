@@ -30,7 +30,7 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager'
+                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
             )
         )
     ),
