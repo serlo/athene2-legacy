@@ -12,14 +12,43 @@
 namespace TaxonomyTest;
 
 use AtheneTest\TestCase\ObjectManagerTestCase;
+use AtheneTest\Bootstrap;
+use Doctrine\DBAL\LockMode;
+use Taxonomy\Entity\TermTaxonomy;
+use Uuid\Entity\Uuid;
+use Term\Service\TermService;
+use Taxonomy\Entity\Taxonomy;
+use Taxonomy\Entity\TaxonomyType;
+use TaxonomyTest\Fake\TermTaxonomyRepositoryFake;
+use Term\Entity\Term;
 
-class TermManagerTest extends ObjectManagerTestCase
+class TermManagerTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp(){
+
+    /**
+     *
+     * @var TermService
+     */
+    protected $termManager;
+
+    public function setUp ()
+    {
         parent::setUp();
+        $sm = Bootstrap::getServiceManager();
+        $this->termManager = $sm->get('Taxonomy\Manager\SharedTaxonomyManager')->get('topic', 1);
     }
-    
-    public function testGet(){
-        
+
+    public function testGetById ()
+    {
+        $this->assertEquals(11, $this->termManager->get(11)
+            ->getId());
     }
+
+    /*public function testGetById ()
+    {
+        $this->assertEquals(2, $this->termManager->get(2)
+            ->getId());
+        $this->assertEquals(2, $this->termManager->get('2')
+            ->getId());
+    }*/
 }

@@ -11,6 +11,8 @@
  */
 namespace TaxonomyTest\Fake;
 
+use Term\Entity\Term;
+
 class TermTaxonomyRepositoryFake extends \AtheneTest\Fake\EntityRepositoryFake
 {
 
@@ -22,17 +24,17 @@ class TermTaxonomyRepositoryFake extends \AtheneTest\Fake\EntityRepositoryFake
             array(
                 'id' => 1,
                 'type' => 1,
-                'term' => 1
+                'term' => (new Term())->setId(1)->setName('footerm1')
             ),
             array(
                 'id' => 2,
                 'type' => 2,
-                'term' => 1
+                'term' => (new Term())->setId(2)->setName('footerm2')
             ),
             array(
                 'id' => 3,
                 'type' => 1,
-                'term' => 1
+                'term' => (new Term())->setId(3)->setName('footerm3')
             )
         );
     }

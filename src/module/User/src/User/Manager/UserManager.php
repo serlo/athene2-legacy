@@ -16,6 +16,7 @@ use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use User\Service\UserServiceInterface;
 
 class UserManager extends AbstractManager implements UserManagerInterface
 {
@@ -54,6 +55,14 @@ class UserManager extends AbstractManager implements UserManagerInterface
         $this->getEventManager()->trigger('create', $this, array('user' => $user));
         
         return $this->createService($user);
+    }
+    
+    public function purge(UserServiceInterface &$user){
+        $this->removeInstance($user->getId());
+        $this->getObjectManager()->remove($user->getEntity());
+        $this->getObjectManager()->flush();
+        unset($user);
+        return $this;
     }
 
     public function createUser ()

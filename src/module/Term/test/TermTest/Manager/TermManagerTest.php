@@ -12,10 +12,9 @@
 namespace TermTest\Manager;
 
 use AtheneTest\Bootstrap as AtheneBootstrap;
-use Term\Manager\TermManager;
 use AtheneTest\TestCase\ObjectManagerTestCase;
 
-class TermManagerTest extends ObjectManagerTestCase
+class TermManagerTest extends \PHPUnit_Framework_TestCase
 {
     private $termManager;
     
@@ -23,20 +22,12 @@ class TermManagerTest extends ObjectManagerTestCase
         parent::setUp();
         
         $sm = AtheneBootstrap::getServiceManager();
-        $termManager = new TermManager();
-        
-        $termManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-        $termManager->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-        $termManager->setServiceLocator($sm);
-        $termManager->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-        
-        $repository = new TermRepositoryFake();
-        $this->injectEntityRepository($repository);
+        $termManager = $sm->get('Term\Manager\TermManager');
         
         $this->termManager = $termManager;
     }
     
     public function testGet(){
-        $this->assertEquals($this->termManager->get('foobar')->getId(), 1) ;
+        $this->assertEquals($this->termManager->get('analysis')->getId(), 1) ;
     }
 }

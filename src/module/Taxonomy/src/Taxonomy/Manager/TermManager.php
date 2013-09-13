@@ -20,7 +20,7 @@ use Taxonomy\Exception\ErrorException;
 
 class TermManager extends AbstractManager implements TermManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig ()
     {
@@ -111,11 +111,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         }
         
         if (! $entity instanceof TermTaxonomyEntityInterface) {
-            throw new NotFoundException(sprintf("Term not found, `%s` does not implement TermTaxonomyEntityInterface. Additional information: Taxonomy (%s), Name (%s)", get_class($entity), $this->getEntity()->getName(), $name)); // sprintf('Term
-                                                                                                                                                                                                                                    // %s
-                                                                                                                                                                                                                                    // not
-                                                                                                                                                                                                                                    // found',
-                                                                                                                                                                                                                                    // $term));
+            throw new NotFoundException(sprintf("Term not found, `%s` does not implement TermTaxonomyEntityInterface. Additional information: Taxonomy (%s), Name (%s)", get_class($entity), $this->getEntity()->getName(), $name));
         }
         
         if (! $this->hasInstance($entity->getId())) {
@@ -196,12 +192,6 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     protected function getRootTermEntities ($type = NULL)
     {
-        // return
-        // $this->getEntity()->getTerms()->matching(Criteria::create(Criteria::expr()->orX(Criteria::expr()->isNull('parent'),
-        // Criteria::expr()->andX(Criteria::expr()->neq('parent',
-        // NULL),
-        // Criteria::expr()->neq('parent',
-        // $this->getEntity->)))));
         if ($type)
             $type = $this->getSharedTaxonomyManager()->get($type);
         
@@ -217,35 +207,6 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function getRootTerms ($type = NULL)
     {
-        // return
-        // new
-        // TermCollection($this->getRootTermEntities(),
-        // $this->getManager());
-        /*
-         *
-         * $collection
-         * =
-         * new
-         * ArrayCollection();
-         * foreach
-         * (
-         * as
-         * $entity)
-         * {
-         * if
-         * (!
-         * $entity->hasParent()
-         * ||
-         * ($entity->hasParent()
-         * &&
-         * $entity->getParent()->getTaxonomy()
-         * !==
-         * $this->getEntity())
-         * ){
-         * $collection->add($this->createInstanceFromEntity($entity));
-         * }
-         * }
-         */
         $collection = $this->getRootTermEntities($type);
         return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
@@ -268,9 +229,11 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         return $this->config;
     }
-    
-    public function getAllowedChildrenTypes(){
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()->getName());
+
+    public function getAllowedChildrenTypes ()
+    {
+        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
+            ->getName());
     }
 
     public function allowsParentType ($type)
@@ -291,9 +254,10 @@ class TermManager extends AbstractManager implements TermManagerInterface
         
         return $config['options'];
     }
-    
-    public function getOption($name){
-        if(!array_key_exists($name, $this->getOptions()))
+
+    public function getOption ($name)
+    {
+        if (! array_key_exists($name, $this->getOptions()))
             return NULL;
         
         return $this->getOptions()[$name];
