@@ -7,7 +7,7 @@ php:
   - 5.5
 
 before_script:
-  - php src/composer.phar install -d src/ --no-dev
+  - composer install -d src/ --dev --prefer-dist
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use

@@ -26,8 +26,5 @@
 		"zendframework/zendframework" : "dev-master",
 		"twitter/bootstrap" : "dev-master"
 	},
-	"require-dev" : {
-		"phpunit/phpunit" : "3.7.*"
-	},
 	"minimum-stability" : "dev"
 }
