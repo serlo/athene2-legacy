@@ -25,7 +25,11 @@ class TaxonomyTypeRepositoryFake extends \AtheneTest\Fake\EntityRepositoryFake
             ),
             array(
                 'id' => 2,
-                'name' => 'foobar'
+                'name' => 'foobar1'
+            ),
+            array(
+                'id' => 3,
+                'name' => 'foobar2'
             )
         );
     }

@@ -15,12 +15,16 @@ use AtheneTest\Fake\EntityRepositoryFake;
 
 class TermRepositoryFake extends EntityRepositoryFake
 {
+
     protected $className = 'Term\Entity\Term';
-    
-    protected $data = array(
-        array(
-            'id' => 1,
-            'name' => 'foobar',
-        )
-    );
+
+    protected function getData ()
+    {
+        return array(
+            array(
+                'id' => 1,
+                'name' => 'foobar'
+            )
+        );
+    }
 }

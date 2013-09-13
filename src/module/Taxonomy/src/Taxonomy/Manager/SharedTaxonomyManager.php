@@ -12,6 +12,7 @@ use Taxonomy\Exception\NotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\ConfigNotFoundException;
+use Zend\Stdlib\ArrayUtils;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
@@ -25,17 +26,32 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     protected $config;
 
     /**
+     * @return multitype: $config
+     */
+    public function getConfig ()
+    {
+        return $this->config;
+    }
+
+	/**
+     * @param multitype: $config
+     * @return $this
+     */
+    public function setConfig ($config)
+    {
+        if($config instanceof \Zend\Config\Config) $config = $config->toArray();
+        $this->config = $config;
+        return $this;
+    }
+
+	/**
      * Constructor
      *
      * @param array $config            
      */
-    public function __construct(\Zend\Config\Config $config)
+    public function __construct($config)
     {
-        $config = $config->toArray();
-        if (! is_array($this->config))
-            $this->config = array();
-        
-        $this->config = array_merge($this->config, $config);
+        $this->setConfig($config);
     }
 
     public function add(TermManagerInterface $termManager)
@@ -81,8 +97,8 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             throw new InvalidArgumentException();
         }
         
-        if (! is_object($entity) )
-            throw new NotFoundException(sprintf('Taxonomy %s not found in %s', $taxonomy, $entityClassName));
+        if (! is_object($entity) || ! $entity instanceof $entityClassName )
+            throw new NotFoundException(sprintf('Taxonomy %s not found in repository %s with language set to %s', $taxonomy, $entityClassName, $language->getId()));
         
         if(!$this->has($entity)){
             $this->add($this->createInstanceFromEntity($entity));

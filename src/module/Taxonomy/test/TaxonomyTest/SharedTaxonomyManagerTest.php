@@ -38,7 +38,6 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
     {
         parent::setUp();
         
-        
         $sm = Bootstrap::getServiceManager();
         $em = $sm->get('Doctrine\Orm\EntityManager');
         
@@ -61,7 +60,8 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
                 6,
                 LockMode::NONE,
                 null,
-                (new Taxonomy())->setId(6)->setType((new TaxonomyType())->setId(6)->setName('foobar'))
+                (new Taxonomy())->setId(6)->setType((new TaxonomyType())->setId(6)
+                    ->setName('foobar'))
             )
         );
         
@@ -88,13 +88,34 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
             ->will($this->returnValueMap($map2));
         
         $this->sharedTaxonomyManager = $sm->get('Taxonomy\Manager\SharedTaxonomyManager');
+        $this->sharedTaxonomyManager->setConfig(array(
+            'types' => array(
+                'foobar' => array(
+                    'options' => array()
+                ),
+                'foobar1' => array(
+                    'options' => array()
+                ),
+                'foobar2' => array(
+                    'options' => array()
+                ),
+            )
+        ));
     }
 
-    public function testGetTaxonomyManager ()
+    public function testGet ()
     {
         $this->assertEquals(6, $this->sharedTaxonomyManager->get(6, $this->languageService)
             ->getId());
-        $this->assertEquals(6, $this->sharedTaxonomyManager->get('foobar', $this->languageService)
-            ->getId());
+    }
+    
+    public function testGetByName(){
+        $this->assertEquals(1, $this->sharedTaxonomyManager->get('foobar', $this->languageService)
+            ->getId());        
+    }
+    
+    public function testHas(){
+        $e = $this->sharedTaxonomyManager->get(6, $this->languageService);
+        $this->assertEquals(true, $e->getId());      
     }
 }

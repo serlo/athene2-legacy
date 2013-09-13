@@ -17,7 +17,7 @@ use Versioning\RepositoryManager;
 use AtheneTest\Bootstrap as AtheneBoostrap;
 use AtheneTest\TestCase\ObjectManagerTestCase;
 
-class TestCase extends ObjectManagerTestCase
+abstract class TestCase extends ObjectManagerTestCase
 {
     protected $repositoryManager, $repositories = array(), $date, $revisions = array();
     
