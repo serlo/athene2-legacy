@@ -2,15 +2,22 @@
 [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=tests)](https://magnum.travis-ci.com/serlo-org/athene2)
 
 # Installation Notes
-* Always use the Develop branch as initial branch
+* Make sure *PHP 5.5+* is running
+* Make sure *MySQL 5.+* is running
 * Rename `/src/config/autoload/local.php.dist` to `/src/config/autoload/local.php`
-* Edit `/src/config/autoload/local.php` until it fits your enviroment
-* Run `php composer.phar update` in `/src/`
+* Edit `/src/config/autoload/local.php`
+* Run `php composer.phar install` in `/src/`
 
 Now you are ready to go!
-
-============
 
 # Guide
 
 http://serlo-org.github.io/athene2-guide/
+
+# Live Demo
+
+Click http://serlo:d3v@dev.serlo.org
+
+# Scribbles
+
+http://serlo:prototype@serlo.clients.formundcode.de/layout/
