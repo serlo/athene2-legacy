@@ -17,9 +17,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
 abstract class ObjectManagerTestCase extends \PHPUnit_Framework_TestCase
 {
     public function setUp(){
-        $em = self::createEntityManagerMock();
         $sm = Bootstrap::getServiceManager();
+        $em = self::createEntityManagerMock();
         $sm->setService('Doctrine\ORM\EntityManager', $em);
+        $sm->get('Language\Manager\LanguageManager')->setObjectManager($em);
     }
     
     private $emMock;

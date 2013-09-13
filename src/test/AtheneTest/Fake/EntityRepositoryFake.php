@@ -62,7 +62,7 @@ abstract class EntityRepositoryFake implements ObjectRepository
         foreach($this->getData() as $entity){
             $add = false;
             foreach($params as $key => $value){
-                if($entity[$key] == $value){
+                if(!is_object($value) && $entity[$key] == $value){
                     $add = true;
                 } else {
                     $add = false;

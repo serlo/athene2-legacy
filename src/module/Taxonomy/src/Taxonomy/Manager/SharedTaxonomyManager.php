@@ -91,8 +91,6 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             $entity = $taxonomy->getEntity();
         } elseif ($taxonomy instanceof $entityClassName) {
             $entity = $taxonomy;
-        } elseif ($taxonomy instanceof $termEntityClassName) {
-            return $this->getTerm($taxonomy);
         } else {
             throw new InvalidArgumentException();
         }

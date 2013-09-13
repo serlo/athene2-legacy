@@ -22,8 +22,10 @@ use TaxonomyTest\Fake\TaxonomyTypeRepositoryFake;
 use Taxonomy\Entity\Taxonomy;
 use Doctrine\DBAL\LockMode;
 use Taxonomy\Entity\TaxonomyType;
+use AtheneTest\TestCase\ObjectManagerTestCase;
+use Term\Entity\Term;
 
-class SharedTaxonomyManagerTest extends TaxonomyTestCase
+class SharedTaxonomyManagerTest extends ObjectManagerTestCase
 {
 
     /**
@@ -39,7 +41,7 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
         parent::setUp();
         
         $sm = Bootstrap::getServiceManager();
-        $em = $sm->get('Doctrine\Orm\EntityManager');
+        $em = $sm->get('Doctrine\ORM\EntityManager');
         
         $languageEntity = new Language();
         $languageEntity->setId(1);
@@ -48,6 +50,13 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
         $this->languageService = $language;
         
         $map = array(
+            array(
+                'Language\Entity\Language',
+                1,
+                LockMode::NONE,
+                null,
+                (new Language())->setId(1)
+            ),
             array(
                 'Taxonomy\Entity\TermTaxonomy',
                 2,
@@ -62,6 +71,20 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
                 null,
                 (new Taxonomy())->setId(6)->setType((new TaxonomyType())->setId(6)
                     ->setName('foobar'))
+            ),
+            array(
+                'Taxonomy\Entity\TermTaxonomy',
+                3,
+                LockMode::NONE,
+                null,
+                (new TermTaxonomy())->setId((new Uuid())->setId(3))
+                    ->setTaxonomy(
+                        (new Taxonomy())->setId(6)
+                                        ->setType(
+                                                (new TaxonomyType())
+                                                ->setName('foobar'))
+                                        )
+                    ->setTerm((new Term())->setName('lulzhard'))
             )
         );
         
@@ -88,17 +111,27 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
             ->will($this->returnValueMap($map2));
         
         $this->sharedTaxonomyManager = $sm->get('Taxonomy\Manager\SharedTaxonomyManager');
+        $this->sharedTaxonomyManager->setObjectManager($em);
+        
         $this->sharedTaxonomyManager->setConfig(array(
             'types' => array(
                 'foobar' => array(
-                    'options' => array()
+                    'options' => array(
+                        'allowed_parents' => array(
+                            'foobar1'
+                        )
+                    )
                 ),
                 'foobar1' => array(
                     'options' => array()
                 ),
                 'foobar2' => array(
-                    'options' => array()
-                ),
+                    'options' => array(
+                        'allowed_parents' => array(
+                            'foobar1'
+                        )
+                    )
+                )
             )
         ));
     }
@@ -108,14 +141,40 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
         $this->assertEquals(6, $this->sharedTaxonomyManager->get(6, $this->languageService)
             ->getId());
     }
-    
-    public function testGetByName(){
+
+    public function testGetByName ()
+    {
         $this->assertEquals(1, $this->sharedTaxonomyManager->get('foobar', $this->languageService)
-            ->getId());        
+            ->getId());
     }
-    
-    public function testHas(){
+
+    public function testGetAllowedChildrenTypes ()
+    {
+        $this->assertEquals(array(
+            'foobar',
+            'foobar2'
+        ), $this->sharedTaxonomyManager->getAllowedChildrenTypes('foobar1'));
+    }
+
+    public function testGetTerm ()
+    {
+        $term = $this->sharedTaxonomyManager->getTerm(3);
+        $this->assertEquals(3, $term->getId());
+        $this->assertEquals(3, $this->sharedTaxonomyManager->getTerm($term->getEntity())
+            
+            ->getId());
+    }
+
+    public function testGetByInstance ()
+    {
+        $instance = $this->sharedTaxonomyManager->get(6, $this->languageService);
+        $this->assertEquals($instance, $this->sharedTaxonomyManager->get($instance, $this->languageService));
+        $this->assertEquals($instance, $this->sharedTaxonomyManager->get($instance->getEntity(), $this->languageService));
+    }
+
+    public function testHas ()
+    {
         $e = $this->sharedTaxonomyManager->get(6, $this->languageService);
-        $this->assertEquals(true, $e->getId());      
+        $this->assertEquals(true, $e->getId());
     }
 }

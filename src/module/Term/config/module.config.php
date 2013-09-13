@@ -45,7 +45,8 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
+                'Term\Service\TermServiceInterface' => 'Term\Service\TermService',
+                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager',
             ),
             'Term\Service\TermService' => array(
                 'shared' => false
