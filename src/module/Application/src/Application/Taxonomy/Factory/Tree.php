@@ -18,7 +18,7 @@ class Tree extends AbstractFactory implements FactoryInterface, TermServiceInter
     public function build (TermServiceInterface $termService)
     {
         $instance = new Term($termService);
-        $instance->setTemplate('taxonomy/default/partial');
-        return parent::build($instance, $termService);
+        //$instance->setTemplate('taxonomy/default/partial');
+        return $this->inject($instance, $termService);
     }
 }

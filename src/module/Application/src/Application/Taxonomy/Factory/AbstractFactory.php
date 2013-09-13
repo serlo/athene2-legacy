@@ -11,17 +11,17 @@
  */
 namespace Application\Taxonomy\Factory;
 
-use Core\Structure\GraphDecorator;
+use Core\Decorator\GraphDecorator;
 use Taxonomy\Service\TermServiceInterface;
 use Application\Taxonomy\Form\TaxonomyForm;
 
 class AbstractFactory
 {
-    public function build(GraphDecorator $decorator, TermServiceInterface $termService){
+    protected function inject(GraphDecorator $decorator, TermServiceInterface $termService){
         if($termService instanceof GraphDecorator)
             throw new \Exception('Ouch, this could get really really messy. Stop whatever you are doing and go to bed.');
     
-        $decorator->setConcreteComponent($termService);
+        $decorator->addComponent($termService);
         $decorator->setForm(new TaxonomyForm());
         return $decorator;
     }

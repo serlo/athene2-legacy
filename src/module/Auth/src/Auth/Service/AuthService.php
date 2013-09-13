@@ -5,14 +5,15 @@ use Zend\Permissions\Acl\Acl;
 use User\Service\UserServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Zend\Permissions\Acl\Role\RoleInterface;
-use Core\Service\LanguageService;
 use Core\Service\SubjectService;
 use Zend\Permissions\Acl\Resource\GenericResource as AclResource;
 
 class AuthService implements AuthServiceInterface
 {
+    use \User\Manager\UserManagerAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
-    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $languageService, $subjectService, $controller;
+    
+    private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $controller;
 
     private $entityManager;
 
@@ -38,51 +39,6 @@ class AuthService implements AuthServiceInterface
 
     /**
      *
-     * @return the $languageService
-     */
-    public function getLanguageService()
-    {
-        return $this->languageService;
-    }
-
-    /**
-     *
-     * @return the $subjectService
-     */
-    public function getSubjectService()
-    {
-        return $this->subjectService;
-    }
-
-    /**
-     *
-     * @param LanguageService $languageService            
-     */
-    public function setLanguageService(LanguageService $languageService)
-    {
-        $this->languageService = $languageService;
-    }
-
-    /**
-     *
-     * @param SubjectService $subjectService            
-     */
-    public function setSubjectService(SubjectService $subjectService)
-    {
-        $this->subjectService = $subjectService;
-    }
-
-    /**
-     *
-     * @return the $userService
-     */
-    public function getUserService()
-    {
-        return $this->userService;
-    }
-
-    /**
-     *
      * @param field_type $userService            
      */
     public function setUserService(UserServiceInterface $userService)
@@ -96,14 +52,26 @@ class AuthService implements AuthServiceInterface
      */
     public function getUser()
     {
+        if(!$this->user && $this->getAuthService()->hasIdentity()){
+            $entity = $this->getEntityManager()->getRepository('User\Entity\User')->findOneByEmail($this->getAuthService()->getIdentity());
+            if(!is_object($entity)){
+                $this->logout();
+                throw new \Exception('Identity not found');
+            }
+            $this->setUser($entity);
+        }
         return $this->user;
+    }
+    
+    public function getIdentity(){
+        return $this->getUser();
     }
 
     /**
      *
      * @param User $user            
      */
-    public function setUser($user = NULL)
+    public function setUser(UserServiceInterface $user = NULL)
     {
         $this->user = $user;
     }
@@ -181,8 +149,9 @@ class AuthService implements AuthServiceInterface
         $result = $this->authService->authenticate();
         
         if ($result->isValid()) {
-            $this->setUser($this->getUserService()
+            $this->setUser($this->getUserManager()
                 ->get($email));
+            $this->getUser()->updateLoginData();
         }
         
         return $result;
@@ -207,11 +176,7 @@ class AuthService implements AuthServiceInterface
     public function getRoles()
     {
         if($this->loggedIn()){
-        return array_merge(array(
-            'guest'
-        ), $this->getUserService()->getRoles($this->getUser(), $this->getLanguageService()
-            ->getId(), $this->getSubjectService()
-            ->getId()));
+            return $this->getUserManager()->get($this->getUser())->getRoleNames($this->getLanguageManager()->getRequestLanguage());
         } else {
             return array('guest');
         }

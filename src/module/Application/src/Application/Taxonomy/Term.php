@@ -11,71 +11,12 @@
  */
 namespace Application\Taxonomy;
 
-use Core\Structure\GraphDecorator;
 use Taxonomy\Service\TermServiceInterface;
-use Zend\View\Model\ViewModel;
-use Zend\Form\Form;
+use Taxonomy\Decorator\AbstractDecorator;
 
-class Term extends GraphDecorator implements TermServiceInterface
+class Term extends AbstractDecorator implements TermServiceInterface
 {
-    /**
-     * @var string
-     */
-    protected $template;
-    
-    /**
-     * @var Form
-     */
-    protected $form;
-    
-    /**
-     * @return \Zend\Form\Form $form
-     */
-    public function getForm ()
-    {
-        $form = $this->form;
-        $form->setData($this->toArray());
-        return $form;
-    }
-
-	/**
-     * @param \Zend\Form\Form $form
-     * @return $this
-     */
-    public function setForm ($form)
-    {
-        $this->form = $form;
-        return $this;
-    }
-
-	/**
-     * @return string $template
-     */
-    public function getTemplate ()
-    {
-        return $this->template;
-    }
-
-	/**
-     * @param string $template
-     * @return $this
-     */
-    public function setTemplate ($template)
-    {
-        $this->template = $template;
-        return $this;
-    }
-
-    /**
-     * 
-     * @return \Zend\View\Helper\ViewModel
-     */
-	public function render(){
-        $view = new ViewModel(array(
-            'term' => $this,
-            'children' => $this->getChildren()
-        ));
-        $view->setTemplate($this->template);
-        return $view;
-    }
+	public function getInheritableMethods() {
+		return array();
+	}
 }

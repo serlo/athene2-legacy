@@ -11,7 +11,7 @@
  */
 namespace Core\Service;
 
-use Core\Structure\AbstractDecorator;
+use Core\Decorator\AbstractDecorator;
 use Core\Entity\EntityInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 

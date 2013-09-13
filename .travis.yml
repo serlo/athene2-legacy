@@ -1,0 +1,19 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+
+# list any PHP version you want to test against
+php:
+  # aliased to a recent 5.5.x version
+  - 5.5
+
+before_script:
+  - php src/composer.phar install -d src/ --no-dev
+
+# omitting "script:" will default to phpunit
+# use the $DB env variable to determine the phpunit.xml to use
+script: phpunit -c src/test/AtheneTest/
+
+
+# configure notifications (email, IRC, campfire etc)
+notifications:
+  irc: "irc.freenode.org#travis"

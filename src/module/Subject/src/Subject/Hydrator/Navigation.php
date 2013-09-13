@@ -11,47 +11,21 @@
 */
 namespace Subject\Hydrator;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class Navigation implements ServiceLocatorAwareInterface
+class Navigation
 {
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
     protected $path;
-
-    /* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-    */
-    public function getServiceLocator ()
-    {
-        return $this->serviceLocator;
-    }
-    
-    protected function getSubjectManager() {
-        return $this->getServiceLocator()->get('Subject\SubjectManager');
-    }
-
-    /* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-    */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
 
     public function setPath($path){
         $this->path = $path;
     }
     
     public function inject($config){
-
-        foreach ($this->getSubjectManager()->getAllSubjects() as $subject) {
-            $config = array_merge_recursive($config, include $this->path . $subject->getName() . '/navigation.config.php');
+        $language = $this->getLanguageManager()->getRequestLanguage();
+        $subjects = $this->getSubjectManager()->getSubjectsWithLanguage($language);
+        foreach ($subjects as $subject) {
+            $config = array_merge_recursive($config, include $this->path . $language->getCode() . '/' . strtolower($subject->getName()) . '.config.php');
         }
         return $config;
     }
