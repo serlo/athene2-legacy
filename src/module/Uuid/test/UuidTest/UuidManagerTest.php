@@ -29,7 +29,7 @@ class UuidManagerTest extends ObjectManagerTestCase
         $this->uuidManager = new UuidManager();
         
         $this->uuidManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-        $this->uuidManager->setObjectManager($sm->get('doctrine.entitymanager.orm_default'));
+        $this->uuidManager->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
         $this->uuidManager->setServiceLocator($sm);
     }
 

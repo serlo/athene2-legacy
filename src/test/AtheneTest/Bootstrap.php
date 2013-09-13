@@ -109,9 +109,9 @@ class Bootstrap
         );
         
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
+        $serviceManager->setAllowOverride(true);
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
-        $serviceManager->setAllowOverride(true);
         
         static::$serviceManager = $serviceManager;
     }

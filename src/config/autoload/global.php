@@ -13,15 +13,14 @@
 return array(
     'service_manager' => array(
         'aliases' => array(
-            'EntityManager' => 'doctrine.entitymanager.orm_default',
-            'Doctrine\ORM\EntityManager' => 'doctrine.entitymanager.orm_default',
-            'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default'
+            'EntityManager' => 'Doctrine\ORM\EntityManager',
+            'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
         )
     ),
     'di' => array(
         'preferences' => array(
             'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-            'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default',
+            'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
         ),
     )
 );

@@ -11,7 +11,6 @@
  */
 namespace AtheneTest\TestCase;
 
-use Doctrine\ORM\EntityRepository;
 use AtheneTest\Bootstrap;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -20,7 +19,7 @@ abstract class ObjectManagerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp(){
         $em = self::createEntityManagerMock();
         $sm = Bootstrap::getServiceManager();
-        $sm->setService('doctrine.entitymanager.orm_default', $em);
+        $sm->setService('Doctrine\ORM\EntityManager', $em);
     }
     
     private $emMock;
