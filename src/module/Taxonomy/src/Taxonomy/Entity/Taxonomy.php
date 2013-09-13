@@ -11,7 +11,6 @@ namespace Taxonomy\Entity;
 use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 
 /**
  * A Taxonomy.
@@ -19,56 +18,96 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy")
  */
-class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
+class Taxonomy implements TaxonomyEntityInterface
 {
 
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
      * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $terms;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     */
+    protected $language;
 
     /**
-     * @ORM\Column(type="text",length=255)
+     * @ORM\ManyToOne(targetEntity="TaxonomyType", inversedBy="taxonomies")
+     * @ORM\JoinColumn(name="taxonomy_type_id", referencedColumnName="id")
      */
-    protected $name;
+    protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TaxonomyFactory", inversedBy="taxonomies")
-     * @ORM\JoinColumn(name="taxonomy_factory_id", referencedColumnName="id")
+     * @return field_type $language
      */
-    protected $factory;
+    public function getLanguage ()
+    {
+        return $this->language;
+    }
+
+	/**
+     * @param field_type $language
+     * @return $this
+     */
+    public function setLanguage ($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+	/**
+     * @return field_type $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
+     *
+     * @return field_type $type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subject\Entity\Subject", inversedBy="taxonomies")
+     *
+     * @param field_type $type            
+     * @return $this
      */
-    protected $subject;
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
 
     /**
      *
      * @return \Doctrine\Common\Collections\ArrayCollection $terms
      */
-    public function getTerms ()
+    public function getTerms()
     {
         return $this->terms;
-    }
-
-    /**
-     *
-     * @return field_type $name
-     */
-    public function getName ()
-    {
-        return $this->name;
-    }
-
-    /**
-     *
-     * @return field_type $factory
-     */
-    public function getFactory ()
-    {
-        return $this->factory;
     }
 
     /**
@@ -76,36 +115,18 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
      * @param \Doctrine\Common\Collections\ArrayCollection $terms            
      * @return $this
      */
-    public function setTerms ($terms)
+    public function setTerms($terms)
     {
         $this->terms = $terms;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
-    public function setName ($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $factory            
-     * @return $this
-     */
-    public function setFactory ($factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
-    public function __construct ()
+    public function __construct()
     {
         $this->terms = new ArrayCollection();
+    }
+    
+    public function getName(){
+        return $this->getType()->getName();
     }
 }

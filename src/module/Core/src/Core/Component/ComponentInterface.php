@@ -13,5 +13,4 @@ namespace Core\Component;
 
 interface ComponentInterface
 {
-    public function providesMethod ($method);
 }

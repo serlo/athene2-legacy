@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Core\Entity\AbstractEntity;
 use Core\Entity\Language;
 use Core\Entity\Subject;
+use Language\Entity\LanguageInterface;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * A role.
@@ -21,8 +23,15 @@ use Core\Entity\Subject;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role extends AbstractEntity
+class Role implements RoleInterface
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    
     /**
      * @ORM\Column(type="string") *
      */
@@ -38,7 +47,90 @@ class Role extends AbstractEntity
      **/
     private $roleUsers;
 
-    public function __construct() {
+    /**
+     * @return field_type $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
+     * @return field_type $name
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+	/**
+     * @return field_type $description
+     */
+    public function getDescription ()
+    {
+        return $this->description;
+    }
+
+	/**
+     * @return \Doctrine\Common\Collections\ArrayCollection $roleUsers
+     */
+    public function getRoleUsers ()
+    {
+        return $this->roleUsers;
+    }
+    
+    public function getUsers(LanguageInterface $language = NULL) {
+        $criteria = $language ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
+        $mn = $this->getRoleUsers()->matching($criteria);
+        $collection = new ArrayCollection();
+        foreach($mn as $key => $m){
+            $collection->set($key, $m->getUser());
+        }
+        return $collection;
+    }
+    
+
+	/**
+     * @param field_type $name
+     * @return $this
+     */
+    public function setName ($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+	/**
+     * @param field_type $description
+     * @return $this
+     */
+    public function setDescription ($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+	/**
+     * @param \Doctrine\Common\Collections\ArrayCollection $roleUsers
+     * @return $this
+     */
+    public function setRoleUsers ($roleUsers)
+    {
+        $this->roleUsers = $roleUsers;
+        return $this;
+    }
+
+	public function __construct() {
     	$this->roleUsers = new ArrayCollection();
     }
 }

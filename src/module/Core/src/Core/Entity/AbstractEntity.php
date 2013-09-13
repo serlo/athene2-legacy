@@ -4,7 +4,7 @@ namespace Core\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Core\Exception\UnknownPropertyException;
 
-abstract class AbstractEntity implements EntityInterface
+abstract class AbstractEntity
 {
 
     /**
@@ -17,6 +17,10 @@ abstract class AbstractEntity implements EntityInterface
     public function getId ()
     {
         return $this->id;
+    }
+    
+    public function setId($id){
+        $this->id = $id;
     }
 
     public function toArray ()
@@ -67,7 +71,7 @@ abstract class AbstractEntity implements EntityInterface
         return $this;
     }
 
-    public function getArrayCopy ()
+    /*public function getArrayCopy ()
     {
         return get_object_vars($this);
     }
@@ -84,5 +88,5 @@ abstract class AbstractEntity implements EntityInterface
             $this->set($field, $value);
         
         return $this;
-    }
+    }*/
 }

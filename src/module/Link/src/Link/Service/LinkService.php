@@ -6,78 +6,73 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace Link\Service;
 
-use Core\OrmEntityManagerAwareInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\Criteria;
 use Link\Entity\LinkEntityInterface;
-use Core\Entity\AbstractEntityAdapter;
-use Core\Entity\EntityInterface;
+use Doctrine\Common\Collections\Criteria;
 
-class LinkService extends AbstractEntityAdapter implements OrmEntityManagerAwareInterface, LinkServiceInterface {
-	/**
-	 * @var EntityManager
-	 */
-	protected $_entityManager;
-	
-	/* (non-PHPdoc)
-	 * @see \Core\OrmEntityManagerAwareInterface::setEntityManager()
-	 */
-	public function setEntityManager(EntityManager $entityManager) {
-		$this->_entityManager = $entityManager;
-	}
+class LinkService implements LinkServiceInterface
+{
+    
+    use \Common\Traits\ObjectManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait, \Link\Manager\LinkManagerAwareTrait, \Common\Traits\EntityDelegatorTrait;
+    
+    public function setEntity(LinkEntityInterface $entity)
+    {
+        $this->entity = $entity;
+        return $this;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::getChildren()
+     */
+    public function getChildren()
+    {
+        return $this->getEntity()->getChildren($this->getLinkManager()->getEntity());
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::getParents()
+     */
+    public function getParents()
+    {
+        return $this->getEntity()->getParents($this->getLinkManager()->getEntity());
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::addParent()
+     */
+    public function addParent($parent, $order = NULL)
+    {
+        if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkEntityInterface))
+            throw new \InvalidArgumentException();
+        
+        if ($parent instanceof LinkServiceInterface)
+            $parent = $parent->getEntity();
+        
+        $this->getEntity()->addParent($parent, $this->getLinkManager()->getEntity(), $order);
+        
+        return $this->flush();
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::addChild()
+     */
+    public function addChild($child, $oder = NULL)
+    {
+        if (! ($child instanceof LinkServiceInterface || $child instanceof LinkEntityInterface))
+            throw new \InvalidArgumentException();
+        
+        if ($child instanceof LinkServiceInterface)
+            $child = $child->getEntity();
+        
+        $this->getEntity()->addChild($child, $this->getLinkManager()->getEntity(), $oder);
+        
+        return $this->flush();
+    }
 
-	/* (non-PHPdoc)
-	 * @see \Core\OrmEntityManagerAwareInterface::getEntityManager()
-	 */
-	public function getEntityManager() {
-		return $this->_entityManager;		
-	}
-
-	public function setEntity(EntityInterface $entity){
-		return $this->_setEntity($entity);
-	}
-	
-	protected function _setEntity(LinkEntityInterface $entity){
-		return parent::setEntity($entity);
-	}
-	
-	/* (non-PHPdoc)
-	 * @see \Link\Service\LinkServiceInterface::getChildren()
-	 */
-	public function getChildren() {
-		return $this->getEntity()->getChildren();
-	}
-
-	/* (non-PHPdoc)
-	 * @see \Link\Service\LinkServiceInterface::getParents()
-	 */
-	public function getParents() {
-		return $this->getEntity()->getParents();
-	}
-
-	/* (non-PHPdoc)
-	 * @see \Link\Service\LinkServiceInterface::addParent()
-	 */
-	public function addParent(LinkServiceInterface $parent) {
-		$this->getParents()->add($parent);
-		$parent->getChildren()->add($this->getEntity());
-		return $this->_flush();
-	}
-
-	/* (non-PHPdoc)
-	 * @see \Link\Service\LinkServiceInterface::addChild()
-	 */
-	public function addChild(LinkServiceInterface $child) {
-		$this->getChildren()->add($child);
-		$child->getParents()->add($this->getEntity());
-		return $this->flush();
-	}
-	
-	protected function _flush(){
-		$this->getEntityManager()->flush();
-		return $this;
-	}
+    protected function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
+    }
 }

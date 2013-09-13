@@ -6,8 +6,9 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace Link\Service;
+
+use Link\Entity\LinkEntityInterface;
 
 use Doctrine\Common\Collections\Collection;
 
@@ -19,28 +20,28 @@ interface LinkServiceInterface
      *
      * @return Collection
      */
-    public function getChildren ();
+    public function getChildren();
 
     /**
      * Returns the parents
      *
      * @return Collection
      */
-    public function getParents ();
+    public function getParents();
 
     /**
      * Adds a parent
      *
-     * @param LinkServiceInterface $child            
+     * @param LinkServiceInterface|LinkEntityInterface $child            
      * @return $this
      */
-    public function addParent (LinkServiceInterface $parent);
+    public function addParent($parent);
 
     /**
      * Adds a child
      *
-     * @param LinkServiceInterface $child            
+     * @param LinkServiceInterface|LinkEntityInterface $child            
      * @return $this
      */
-    public function addChild (LinkServiceInterface $child);
+    public function addChild($child);
 }

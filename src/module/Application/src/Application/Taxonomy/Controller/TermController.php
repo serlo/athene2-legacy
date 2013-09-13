@@ -13,12 +13,10 @@ namespace Application\Taxonomy\Controller;
 
 use Zend\View\Model\ViewModel;
 use Taxonomy\Controller\AbstractController;
-use Taxonomy\Entity\TaxonomyFactory;
 use Application\Taxonomy\Form\TaxonomyForm;
 
 class TermController extends AbstractController
 {
-
     public function updateAction ()
     {
         $id = $this->params()->fromPost('id') ? $this->params()->fromPost('id') : $this->params()->fromQuery('id');

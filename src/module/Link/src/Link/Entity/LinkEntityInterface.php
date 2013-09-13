@@ -6,26 +6,50 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace Link\Entity;
 
-use Core\Entity\EntityInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface LinkEntityInterface extends EntityInterface
+interface LinkEntityInterface
 {
 
     /**
-     * Returns the children
+     * Returns
+     * the
+     * children
      *
+     * @param LinkTypeInterface $type
      * @return Collection
      */
-    public function getChildren ();
+    public function getChildren (LinkTypeInterface $type);
 
     /**
-     * Returns the parents
+     * Returns
+     * the
+     * parents
      *
+     * @param LinkTypeInterface $type
      * @return Collection
      */
-    public function getParents ();
+    public function getParents (LinkTypeInterface $type);
+
+    /**
+     * Adds
+     * a
+     * child
+     *
+     * @param LinkEntityInterface $parent            
+     * @param LinkTypeInterface $type            
+     */
+    public function addChild (LinkEntityInterface $parent, LinkTypeInterface $type);
+
+    /**
+     * Adds
+     * a
+     * parent
+     *
+     * @param LinkEntityInterface $parent            
+     * @param LinkTypeInterface $type            
+     */
+    public function addParent (LinkEntityInterface $parent, LinkTypeInterface $type);
 }
