@@ -28,7 +28,7 @@ class TermManagerTest extends ObjectManagerTestCase
         $termManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
         $termManager->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
         $termManager->setServiceLocator($sm);
-        $termManager->setObjectManager($sm->get('doctrine.entitymanager.orm_default'));
+        $termManager->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
         
         $repository = new TermRepositoryFake();
         $this->injectEntityRepository($repository);
