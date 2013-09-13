@@ -11,6 +11,14 @@
  * file.
  */
 return array(
+    'doctrine' => array(
+        'entitymanager' => array(
+            'orm_default' => array(
+                'connection'    => 'orm_default',
+                'configuration' => 'orm_default'
+            ),
+        )
+    ),
     'service_manager' => array(
         'aliases' => array(
             'EntityManager' => 'Doctrine\ORM\EntityManager'

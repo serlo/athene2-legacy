@@ -18,11 +18,14 @@ return array(
     'di' => array(
         'definition' => array(
             'class' => array(
-                'Uuid\Manager\Uuid' => array(
+                'Uuid\Manager\UuidManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
                     'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
                         'required' => 'true'
                     )
                 )
