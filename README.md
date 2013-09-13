@@ -1,3 +1,6 @@
+# Status
+[![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=tests)](https://magnum.travis-ci.com/serlo-org/athene2)
+
 # Installation Notes
 * Always use the Develop branch as initial branch
 * Rename `/src/config/autoload/local.php.dist` to `/src/config/autoload/local.php`
@@ -8,5 +11,6 @@ Now you are ready to go!
 
 ============
 
-# Wiki
-**Please read the Wiki: https://github.com/serlo-org/v2.serlo.org/wiki**
+# Guide
+
+http://serlo-org.github.io/athene2-guide/
