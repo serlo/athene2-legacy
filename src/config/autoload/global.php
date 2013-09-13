@@ -19,8 +19,9 @@ return array(
         )
     ),
     'di' => array(
-        'aliases' => array(
-            'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default'
-        )
+        'preferences' => array(
+            'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+            'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default',
+        ),
     )
 );
