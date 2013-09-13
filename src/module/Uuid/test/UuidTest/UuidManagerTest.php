@@ -11,44 +11,30 @@
  */
 namespace UuidTest;
 
-use Uuid\Manager\UuidManager;
 use Uuid\Entity\Uuid;
 use AtheneTest\Bootstrap as AtheneBootstrap;
-use AtheneTest\TestCase\ObjectManagerTestCase;
 
-class UuidManagerTest extends ObjectManagerTestCase
+class UuidManagerTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $uuidManager;
 
     public function setUp ()
     {
-        parent::setUp();
-        
         $sm = AtheneBootstrap::getServiceManager();
-        $this->uuidManager = new UuidManager();
-        
-        $this->uuidManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-        $this->uuidManager->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-        $this->uuidManager->setServiceLocator($sm);
+        $this->uuidManager = $sm->get('Uuid\Manager\UuidManager');
     }
 
     public function testGet ()
-    {
-        $this->uuidManager->getObjectManager()
-            ->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue((new Uuid())->setId(1)));
-        
-        $entity = $this->uuidManager->get(1);
-        $this->assertNotNull($entity);
-        $this->assertEquals(1, $entity->getId());
+    {        
+        $this->assertEquals(1, $this->uuidManager->get(1)->getId());
     }
 
     public function testCreate ()
     {
         $uuid = $this->uuidManager->create();
         $this->assertNotNull($uuid);
+        $this->assertNotNull($uuid->getId());
         $this->assertInstanceOf('\Uuid\Entity\UuidInterface', $uuid);
     }
 }

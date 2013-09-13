@@ -109,9 +109,11 @@ class Bootstrap
         );
         
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setAllowOverride(true);
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
+        $serviceManager->setAllowOverride(true);
+        $serviceManager->setAlias('Doctrine\ORM\EntityManager', 'doctrine.entitymanager.orm_test');
+        $serviceManager->setAllowOverride(false);
         
         static::$serviceManager = $serviceManager;
     }

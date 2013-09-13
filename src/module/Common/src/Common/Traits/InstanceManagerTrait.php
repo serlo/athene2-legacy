@@ -98,4 +98,11 @@ trait InstanceManagerTrait
     {
         return $this->instances;
     }
+    
+    public function removeInstance($name){
+        if (! $this->hasInstance($name))
+            throw new \Exception('Instance `' . $name . '` not set.');
+        unset($this->instances[$name]);
+        return $this;
+    }
 }

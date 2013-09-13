@@ -11,9 +11,7 @@
  */
 namespace TaxonomyTest;
 
-use AtheneTest\TestCase\ObjectManagerTestCase;
-
-class TermServiceTest extends ObjectManagerTestCase
+class TermServiceTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp(){
         parent::setUp();
