@@ -281,16 +281,4 @@ return array(
             )
         )
     ),
-    'di' => array(
-        'allowed_controllers' => array(),
-        'definition' => array(
-            'class' => array()
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
-            )
-        )
-    )
 );
