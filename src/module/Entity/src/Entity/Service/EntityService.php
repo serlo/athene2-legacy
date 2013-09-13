@@ -11,283 +11,149 @@
  */
 namespace Entity\Service;
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Taxonomy\SharedTaxonomyManagerAwareInterface;
-use Taxonomy\SharedTaxonomyManagerInterface;
-use Core\Service\LanguageManager;
-use Link\LinkManagerInterface;
-use Zend\EventManager\EventManagerInterface;
-use Entity\Factory\EntityBuilderInterface;
-use Zend\EventManager\EventManagerAwareInterface;
-use Auth\Service\AuthServiceInterface;
-use Core\Service\LanguageService;
-use Versioning\RepositoryManagerInterface;
-use Core\Service\SubjectService;
-use Core\Service\AbstractEntityDecorator;
-use Core\Collection\DecoratorCollection;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Entity\Exception\InvalidArgumentException;
+use Taxonomy\Collection\TermCollection;
 
-class EntityService extends AbstractEntityDecorator implements ServiceLocatorAwareInterface, EntityServiceInterface, ObjectManagerAwareInterface, SharedTaxonomyManagerAwareInterface, EventManagerAwareInterface
+class EntityService implements EntityServiceInterface
 {
-    /**
-     * 
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-    
-    
-	/**
-	 * @var AuthServiceInterface
-	 */
-    protected $authService;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
-    /**
-     * @var RepositoryManagerInterface
-     */
-    protected $repositoryManager;
-    
-    /**
-     * @var LinkManagerInterface
-     */
-    protected $linkManager;
-    
-    /**
-     * 
-     * @var SharedTaxonomyManagerInterface
-     */
-    protected $_sharedTaxonomyManager;
-
-    /**
-     * @var LanguageService
-     */
-    protected $languageService;
-    
-    /**
-     * @var LanguageManager
-     */
-    protected $languageManager;
-    
-    /**
-     * @var SubjectService
-     */
-    protected $subjectService;
-    
-    protected $events;
-	
-	protected $_factoryClassName;
-	
-	/**
-	 * 
-	 * @var \Entity\EntityManagerInterface
-	 */
-	protected $manager;
-	
-	/**
-	 * @var EntityFactoryInterface
-	 */
-	protected $factory;
-
-	/**
-     * @return \Entity\EntityManagerInterface $manager
-     */
-    public function getManager ()
+    public function getTerms()
     {
-        return $this->manager;
-    }
-    
-    public function getFactoryClassName(){
-        return $this->_factoryClassName;
+        return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
 
-	/**
-     * @param \Entity\EntityManagerInterface $manager
-     * @return $this
-     */
-    public function setManager (\Entity\EntityManagerInterface $manager)
+    public function persist()
     {
-        $this->manager = $manager;
+        $this->getObjectManager()->persist($this->getEntity());
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush($this->getEntity());
         return $this;
     }
 
-	/**
-	 * @return LinkManagerInterface $linkManager
-	 */
-	public function getLinkManager() {
-		return $this->linkManager;
-	}
-
-	/**
-	 * @param LinkManagerInterface $linkManager
-	 * @return $this
-	 */
-	public function setLinkManager(LinkManagerInterface $linkManager) {
-		$this->linkManager = $linkManager;
-		return $this;
-	}
-
-	/**
-	 * @return LanguageManager
-	 */
-	public function getLanguageManager() {
-		return $this->languageManager;
-	}
-
-	/**
-	 * @param LanguageManager $languageManager
-	 * @return $this
-	 */
-	public function setLanguageManager(LanguageManager $languageManager) {
-		$this->languageManager = $languageManager;
-		return $this;
-	}
-
-	/**
-	 * @return SharedTaxonomyManagerInterface
-	 */
-	public function getSharedTaxonomyManager() {
-		return $this->_sharedTaxonomyManager;
-	}
-
-	/**
-	 * @param SharedTaxonomyManagerInterface $_sharedTaxonomyManager
-	 */
-	public function setSharedTaxonomyManager(SharedTaxonomyManagerInterface $_sharedTaxonomyManager) {
-		$this->_sharedTaxonomyManager = $_sharedTaxonomyManager;
-		return $this;
-	}
-
-	/**
-	 * @return the $factory
-	 */
-	public function getFactory() {
-		return $this->factory;
-	}
-	
-	public function getTerms() {
-		return new DecoratorCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
-	}
-	
-	/**
-	 * @param EntityBuilderInterface $factory
-	 * @return $this
-	 */
-	public function setFactory(EntityBuilderInterface $factory) {
-		$this->factory = $factory;
-		return $this;
-	}
-	
-
-	public function setEventManager(EventManagerInterface $events)
+    public function persistAndFlush()
     {
-    	$events->setIdentifiers(array(
-    			__CLASS__,
-    			get_called_class(),
-    	));
-    	$this->events = $events;
-    	return $this;
+        $this->persist();
+        $this->flush();
+        return $this;
     }
-    
-    public function getEventManager()
+
+    public function getId()
     {
-    	return $this->events;
+        return $this->getEntity()->getId();
     }
-    
-    /**
-	 * @return RepositoryManagerInterface
-	 */
-	public function getRepositoryManager() {
-		return $this->repositoryManager;
-	}
 
-	/**
-	 * @param RepositoryManagerInterface $repositoryManager
-	 */
-	public function setRepositoryManager(RepositoryManagerInterface $repositoryManager) {
-		$this->repositoryManager = $repositoryManager;
-		return $this;
-	}
-
-	/**
-	 * @return the $languageService
-	 */
-	public function getLanguageService() {
-		return $this->languageService;
-	}
-
-	/**
-	 * @return the $subjectService
-	 */
-	public function getSubjectService() {
-		return $this->subjectService;
-	}
-
-	/**
-	 * @param LanguageService $languageService
-	 */
-	public function setLanguageService(LanguageService $languageService) {
-		$this->languageService = $languageService;
-		return $this;
-	}
-
-	/**
-	 * @param SubjectService $subjectService
-	 */
-	public function setSubjectService(SubjectService $subjectService) {
-		$this->subjectService = $subjectService;
-		return $this;
-	}
-
-    /**
-     * @return AuthServiceInterface
-     */
-    public function getAuthService() {
-    	return $this->authService;
-    }
-    
-    /**
-     * @param AuthServiceInterface $authService
-     */
-    public function setAuthService(AuthServiceInterface $authService) {
-    	$this->authService = $authService;
-		return $this;
-    }
-    
-    public function build(){
-        if(is_object($this->getFactory())) 
-            throw new \Exception('This Service already has been build.');       
-        
-        $className = $this->getEntity()->getFactory()->getName();
-		$fullFactoryClassName = $className;
-		
-		if(!class_exists($fullFactoryClassName))
-			throw new \Exception('Class: ´'.$fullFactoryClassName.'´ not found');
-		
-		$factory = new $fullFactoryClassName();
-		return $factory->build($this);
-    }
-    
-    public function refresh(){
-        if($this->getObjectManager()->isOpen()){
+    public function refresh()
+    {
+        if ($this->getObjectManager()->isOpen()) {
             $this->getObjectManager()->refresh($this->getEntity());
         }
         return $this;
     }
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
-     */
-    public function setServiceLocator (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
+
+    public function setOptions(array $options)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->whitelistPlugins($options['plugins']);
+    }
+
+    protected $whitelistedPlugins = array();
+
+    protected $pluginOptions = array();
+
+    public function hasPlugin($name){
+        return $this->isPluginWhitelisted($name);
+    }
+    
+    public function isPluginWhitelisted($name)
+    {
+        return array_key_exists($name, $this->whitelistedPlugins) && $this->whitelistedPlugins[$name] !== FALSE;
+    }
+
+    public function whitelistPlugins(array $config)
+    {
+        foreach ($config as $name => $data) {
+            $this->whitelistPlugin($name, $data['plugin']);
+            if (isset($data['options'])) {
+                $this->setPluginOptions($name, $data['options']);
+            }
+        }
+    }
+
+    public function setPluginOptions($name, $options)
+    {
+        if (isset($this->pluginOptions[$name])) {
+            $options = array_merge_recursive($this->pluginOptions[$name], $options);
+        }
+        
+        $this->pluginOptions[$name] = $options;
         return $this;
     }
 
-	/* (non-PHPdoc)
-     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
-     */
-    public function getServiceLocator ()
+    public function getPluginOptions($name)
     {
-        return $this->serviceLocator;
+        return (array_key_exists($name, $this->pluginOptions)) ? $this->pluginOptions[$name] : array();
     }
 
+    public function whitelistPlugin($name, $plugin)
+    {
+        $this->whitelistedPlugins[$name] = $plugin;
+        return $this;
+    }
+
+    public function getPlugin($name)
+    {
+        return $this->whitelistedPlugins[$name];
+    }
+
+    /**
+     * Get plugin instance
+     *
+     * @param string $name
+     *            Name of plugin to return
+     * @return mixed
+     */
+    public function plugin($name)
+    {
+        if (! $this->isPluginWhitelisted($name)) {
+            throw new InvalidArgumentException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
+        }
+        
+        $pluginManager = $this->getPluginManager();
+        
+        $pluginManager->setEntityService($this);
+        $pluginManager->setPluginOptions($this->getPluginOptions($name));
+        
+        return $this->getPluginManager()->get($this->getPlugin($name));
+    }
+
+    /**
+     * Method overloading: return/call plugins
+     * If the plugin is a functor, call it, passing the parameters provided. Otherwise, return the plugin instance.
+     *
+     * @param string $method            
+     * @param array $params            
+     * @return mixed
+     */
+    public function __call($method, $params)
+    {
+        if ($this->isPluginWhitelisted($method)) {
+            $plugin = $this->plugin($method);
+            if (is_callable($plugin)) {
+                return call_user_func_array($plugin, $params);
+            }
+            return $plugin;
+        } else {
+            if (method_exists($this->getEntity(), $method)) {
+                return call_user_func_array(array(
+                    $this->getEntity(),
+                    $method
+                ), $params);
+            } else {
+                throw new \Exception(sprintf('Method %s not defined.', $method));
+            }
+        }
+    }
 }

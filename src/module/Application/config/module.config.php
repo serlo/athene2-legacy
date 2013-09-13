@@ -15,10 +15,39 @@ return array(
             array(
                 'label' => 'Home',
                 'route' => 'home'
-            )
+            ),
+
+            array(
+                'label' => 'Verwalten',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Taxonomie verwalten',
+                        'route' => 'taxonomy/taxonomy',
+                        'params' => array(
+                            'action' => 'update',
+                            'id' => '43'
+                        )
+                    ),
+                    array(
+                        'label' => 'Benutzer verwalten',
+                        'route' => 'users',
+                    ),
+                    array(
+                        'label' => 'Benutzerrollen verwalten',
+                        'route' => 'users/roles',
+                    )
+                )
+            ),
+        )
+    ),
+    'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array()
         )
     ),
     'router' => array(
+        'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack',
         'routes' => array(
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
@@ -30,10 +59,41 @@ return array(
                     )
                 )
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+            // The
+            // following
+            // is
+            // a
+            // route
+            // to
+            // simplify
+            // getting
+            // started
+            // creating
+            // new
+            // controllers
+            // and
+            // actions
+            // without
+            // needing
+            // to
+            // create
+            // a
+            // new
+            // module.
+            // Simply
+            // drop
+            // new
+            // controllers
+            // in,
+            // and
+            // you
+            // can
+            // access
+            // them
+            // using
+            // the
+            // path
+            // /application/:controller/:action
             'application' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -76,10 +136,6 @@ return array(
             },
             'navigation' => 'Navigation\Service\DynamicNavigationFactory'
         ),
-        'aliases' => array(
-            'EntityManager' => 'doctrine.entitymanager.orm_default',
-            'Doctrine\ORM\EntityManager' => 'EntityManager'
-        )
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -112,7 +168,11 @@ return array(
         )
     ),
     'assetic_configuration' => array(
-        // 'routes' => array(),
+        // 'routes'
+        // =>
+        // array(),
+        'webPath' => realpath('public/assets'),
+        'basePath' => 'assets',
         
         'default' => array(
             'assets' => array(
@@ -131,10 +191,20 @@ return array(
         'modules' => array(
             'application' => array(
                 
-                // module root path for yout css and js files
+                // module
+                // root
+                // path
+                // for
+                // yout
+                // css
+                // and
+                // js
+                // files
                 'root_path' => __DIR__ . '/../assets',
                 
-                // collection od assets
+                // collection
+                // od
+                // assets
                 'collections' => array(
                     
                     'base_css' => array(
@@ -211,17 +281,4 @@ return array(
             )
         )
     ),
-    'di' => array(
-        'allowed_controllers' => array(
-        ),
-        'definition' => array(
-            'class' => array(
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-            )
-        )
-    )
 );

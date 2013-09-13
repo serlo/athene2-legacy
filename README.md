@@ -1,3 +1,6 @@
+# Status
+[![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=tests)](https://magnum.travis-ci.com/serlo-org/athene2)
+
 # Installation Notes
 * Make sure *PHP 5.5+* is running
 * Make sure *MySQL 5.+* is running
@@ -7,13 +10,14 @@
 
 Now you are ready to go!
 
+# Guide
+
+http://serlo-org.github.io/athene2-guide/
+
 # Live Demo
 
-Click [here](http://serlo:d3v@dev.serlo.org)
+Click http://serlo:d3v@dev.serlo.org
 
 # Scribbles
 
-Click [here](http://serlo:prototype@serlo.clients.formundcode.de/layout/)
-
-# Want to get involved?
-Read Wiki at https://github.com/serlo-org/athene2/wiki !
+http://serlo:prototype@serlo.clients.formundcode.de/layout/

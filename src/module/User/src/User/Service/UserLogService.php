@@ -58,7 +58,11 @@ class UserLogService extends AbstractLogger implements LoggerInterface
 	    $this->log($action, $ref, $refId, $note, $event, $source, $user);
 	}
 
-	public function log($action, $ref = NULL, $refId = NULL, $note = NULL, $event = NULL, $source = NULL, User $user = NULL) {
+	public function log($action, $ref = NULL, $refId = NULL, $note = NULL, $event = NULL, $source = NULL, UserServiceInterface $user = NULL) {
+	    $user = $user ? $user->getEntity() : $this->authService->getUser()->getEntity();
+	    if(!is_object($user))
+	       throw new \Exception('Ouch');
+	        
 	    $entity = new UserLogEntity();
 	    $entity->set('action', $action);
 	    $entity->set('ref', $ref);
@@ -66,7 +70,7 @@ class UserLogService extends AbstractLogger implements LoggerInterface
 	    $entity->set('note', $note);
 	    $entity->set('event', $event);
 	    $entity->set('source', $source);
-	    $entity->set('user', $user ? $user : $this->authService->getUser());
+	    $entity->set('user', $user);
 	    $this->entityManager->persist($entity);
 	    $this->entityManager->flush();
 	    return $this;

@@ -37,8 +37,8 @@ return array(
                 'options' => array(
                     'route' => '/register',
                     'defaults' => array(
-                        'controller' => 'Auth\Controller\Register',
-                        'action' => 'index'
+                        'controller' => 'Auth\Controller\Auth',
+                        'action' => 'register'
                     )
                 )
             )
@@ -71,11 +71,27 @@ return array(
             }
         )
     ),
+    'filters' => array(
+        'invokables' => array(
+            'passwordfilter' => 'Auth\Filter\PasswordFilter'
+        ),
+        'factories' => array(
+            'passwordfilter' => function ($sm)
+            {
+                $instance = new \Auth\Filter\PasswordFilter();
+                die(get_class($sm->getServiceLocator()->get('Auth\Service\HashService')));
+                $instance->setHashService($sm->getServiceLocator()
+                    ->get('Auth\Service\HashService'));
+                return $instance;
+            }
+        ),
+        'aliases' => array()
+    ),
     'controllers' => array(
         'factories' => array(
             'Auth\Controller\Auth' => 'Auth\Controller\AuthControllerFactory',
             'Auth\Controller\Register' => function ($sm)
-            {                
+            {
                 $ct = new \Auth\Controller\RegisterController();
                 
                 $ct->getEventManager()->attach('signUpComplete', array(
@@ -96,6 +112,9 @@ return array(
     ),
     'di' => array(
         'instance' => array(
+            'preferences' => array(
+                'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService'
+            ),
             'alias' => array(
                 'ACL' => 'Zend\Permissions\Acl\Acl'
             )
@@ -118,11 +137,11 @@ return array(
             },
             'Auth\Service\HashService' => 'Auth\Service\HashService',
             'Auth\Service\AuthService' => 'Auth\Service\AuthServiceFactory',
-            'standard_identity' => function ($sm)
+            'Auth\Form\SignUp' => function ($sm)
             {
-                $as = $sm->get('Auth\Service\AuthService');
-                $identity = new \ZfcRbac\Identity\StandardIdentity($as->getRoles());
-                return $identity;
+                $instance = new Auth\Form\SignUp();
+                $instance->setObjectManager($sm->get('EntityManager'));
+                return $instance;
             }
         ),
         'invokables' => array(
@@ -130,31 +149,25 @@ return array(
         )
     ),
     'zfcrbac' => array(
-        'providers' => array(
-            'ZfcRbac\Provider\AdjacencyList\Role\DoctrineDbal' => array(
-                'connection' => 'doctrine.connection.orm_default',
-                'options' => array(
-                    'table' => 'role',
-                    'id_column' => 'id',
-                    'name_column' => 'name',
-                    'join_column' => 'parent_id'
-                )
-            ),
-            'ZfcRbac\Provider\Generic\Permission\DoctrineDbal' => array(
-                'connection' => 'doctrine.connection.orm_default',
-                'options' => array(
-                    'permission_table' => 'permission',
-                    'role_table' => 'role',
-                    'role_join_table' => 'role_permission',
-                    'permission_id_column' => 'id',
-                    'permission_join_column' => 'permission_id',
-                    'role_id_column' => 'id',
-                    'role_join_column' => 'role_id',
-                    'permission_name_column' => 'name',
-                    'role_name_column' => 'name'
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Controller' => array(
+                array(
+                    'controller' => 'Auth\Controller\Auth',
+                    'actions' => array(
+                        'register',
+                        'login'
+                    ),
+                    'roles' => 'guest'
+                ),
+                array(
+                    'controller' => 'Auth\Controller\Auth',
+                    'actions' => array(
+                        'logout'
+                    ),
+                    'roles' => 'login'
                 )
             )
-        ),
-        'identity_provider' => 'standard_identity'
-    ),
+        )
+    // 'identity_provider' => 'standard_identity'
+        )
 );

@@ -1,11 +1,22 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Entity\Entity;
 
-use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use User\Entity\UserInterface;
 
 /**
  * An entity link.
@@ -13,8 +24,24 @@ use Versioning\Entity\RepositoryInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends AbstractEntity implements RevisionInterface
+class Revision implements RevisionInterface
 {
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
+    public function getId ()
+    {
+        return $this->id;
+    }
+    
+    public function setId($id){
+        $this->id = $id;
+    }
 
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
@@ -22,9 +49,9 @@ class Revision extends AbstractEntity implements RevisionInterface
     protected $repository;
 
     /**
-     * @ORM\OneToMany(targetEntity="RevisionValue", mappedBy="revision")
+     * @ORM\OneToMany(targetEntity="RevisionField", mappedBy="revision")
      */
-    protected $revisionValues;
+    protected $fields;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -40,6 +67,14 @@ class Revision extends AbstractEntity implements RevisionInterface
      * @ORM\Column(type="boolean", options={"default"})
      */
     protected $trashed;
+    
+    public function getFields(){
+    	$collection = new ArrayCollection();
+    	foreach($this->fields as $field){
+    		$collection->set($this->getRepository()->getFieldOrder($field->getName()), $field);
+    	}
+    	return $collection;
+    }
 
     /**
      *
@@ -55,7 +90,7 @@ class Revision extends AbstractEntity implements RevisionInterface
      * @param field_type $date            
      * @return $this
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -75,7 +110,7 @@ class Revision extends AbstractEntity implements RevisionInterface
      * @param field_type $author            
      * @return $this
      */
-    public function setAuthor($author)
+    public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
         return $this;
@@ -86,7 +121,7 @@ class Revision extends AbstractEntity implements RevisionInterface
         $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
             ->setFirstResult(0)
             ->setMaxResults(1);
-        $data = $this->revisionValues->matching($criteria);
+        $data = $this->fields->matching($criteria);
         if (count($data) == 0)
             throw new \Exception('Field `' . $field . '` not found');
         return $data[0]->get('value');
@@ -97,20 +132,20 @@ class Revision extends AbstractEntity implements RevisionInterface
         $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
             ->setFirstResult(0)
             ->setMaxResults(1);
-        $data = $this->revisionValues->matching($criteria);
+        $data = $this->fields->matching($criteria);
         if (count($data) == 0)
             throw new \Exception('Field `' . $field . '` not found');
         
         return $data[0]->set('value', $key);
     }
 
-    public function addValue($field, $value)
+    public function addField($name, $value)
     {
-        $entity = new RevisionValue($field, $this->getId());
-        $entity->set('field', $field);
+        $entity = new RevisionField($name, $this->getId());
+        $entity->set('field', $name);
         $entity->set('revision', $this);
         $entity->set('value', $value);
-        $this->revisionValues->add($entity);
+        $this->fields->add($entity);
         return $entity;
     }
     
@@ -163,7 +198,8 @@ class Revision extends AbstractEntity implements RevisionInterface
 
     public function __construct()
     {
-        $this->revisionValues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->unTrash();
+        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
+        //$this->unTrash();
+        $this->trashed = false;
     }
 }

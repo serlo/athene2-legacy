@@ -5,3 +5,5 @@
 .settings/*
 !.gitignore
 !.gitmodules
+!.travis.yml
+deployment.properties

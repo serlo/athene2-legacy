@@ -1,0 +1,11 @@
+<?php if(is_object($revision)): ?>
+<article class="revision">
+	<?php foreach($this->revision->getFields() as $field): ?>
+	<section class="<?php echo $field->getName(); ?>"><?php echo $field->getValue(); ?></section>
+	<?php endforeach; ?>
+</article>
+<?php else: ?>
+<article class="revision">
+    <?php echo $this->translate('Es wurde noch keine Revision gesetzt.'); ?>
+</article>
+<?php endif; ?>

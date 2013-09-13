@@ -6,44 +6,16 @@ return array(
         'invokables' => array(
             'modal' => __NAMESPACE__ . '\View\Helper\Modal',
             'renderTitle' => __NAMESPACE__ . '\View\Helper\Title',
-            'getRequestDateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
+            'dateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
         )
-    ),
-    'di' => array(
-        'definition' => array(
-            'class' => array(
-                'Core\Service\NonDefaultLanguageService' => array(
-                ),
-                'Core\Service\LanguageManager' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                )
-            )
-        ),
-        'instance' => array(
-            'alias' => array(
-                'ServiceManager' => 'Zend\ServiceManager\ServiceManager',
-            ),
-        )
-    ),
-    'service_manager' => array(
-        'invokables' => array(
-            'Core\Service\SubjectService' => 'Core\Service\SubjectService'
-        ),
-    	'factories' => array(
-            'Core\Service\LanguageService' => function($sm){
-            	$lm = $sm->get('Core\Service\LanguageManager');
-            	return $lm->getRequestLanguage();
-            }
-    	)
     ),
     'controller_plugins' => array(
         'invokables' => array(
             'getParam' => 'Core\Controller\Plugin\GetParam',
             'getParams' => 'Core\Controller\Plugin\GetParams',
-            'dateFormat' => 'Core\Controller\Plugin\DateFormat',
+            'getDateFormat' => 'Core\Controller\Plugin\DateFormat',
             'translate' => 'Core\Controller\Plugin\Translate',
+            'goBack' => 'Core\Controller\Plugin\GoBack',
             'title' => 'Core\Controller\Plugin\Title'
         )
     ),

@@ -6,10 +6,13 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace Link;
 
 return array(
+    'class_resolver' => array(
+        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService',
+        'Link\Manager\LinkManagerInterface' => 'Link\Manager\LinkManager'
+    ),
     'di' => array(
         'definition' => array(
             'class' => array(
@@ -17,21 +20,49 @@ return array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    )
                 ),
-                'Link\LinkManager' => array(
+                'Link\Manager\LinkManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    )
                 ),
+                'Link\Manager\SharedLinkManager' => array(
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    ),
+                    'setSharedLinkManager' => array(
+                        'required' => 'true'
+                    )
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
+                'Link\Manager\SharedLinkManagerInterface' => 'Link\Manager\SharedLinkManager',
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver'
+            ),
+            'Link\Manage\LinkManager' => array(
+                'shared' => false
             ),
             'Link\Service\LinkService' => array(
                 'shared' => false
-            ),
+            )
         )
     ),
     'view_manager' => array(
@@ -56,3 +87,4 @@ return array(
         )
     )
 );
+

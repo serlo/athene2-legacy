@@ -13,38 +13,55 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\I18n\Translator\Translator;
+use Zend\EventManager\Event;
 
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        $app      = $e->getTarget();
+        $serviceManager       = $app->getServiceManager();
+        
+        // View Exception
+        //$serviceManager->get('Zend\Mvc\View\Http\ExceptionStrategy')->attach($app->getEventManager(), 1);
+        //$serviceManager->get('Zend\Mvc\View\Http\InjectViewModelListener')->attach($app->getEventManager(), -100);
+        
+        
         // Load translator
-        $e->getApplication()->getServiceManager()->get('translator');
+        
+        $lm = $e->getApplication()->getServiceManager()->get('Language\Manager\LanguageManager');
+        $code = $lm->getRequestLanguage()->getCode();
+        
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/'.$code.'.php', 'default', $code);
+        $translator->setLocale($code);
+        
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         
-        // Load Subjects
+        // Route translator
+        $app->getEventManager()->attach('route', array($this, 'onPreRoute'), 4);
+    }
+    
+    public function onPreRoute($e){
         $app      = $e->getTarget();
         $serviceManager       = $app->getServiceManager();
-        $listener = $serviceManager->get('Subject\Hydrator\Route');
-        $listener->setPath(__DIR__ . '/config/subject/');
-        $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
-        
-        $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
-        $hydrator->setPath(__DIR__ . '/config/subject/');
+        $serviceManager->get('router')->setTranslator($serviceManager->get('translator'));
     }
 
     public function getConfig()
     {
         $config = array_merge_recursive(
             include __DIR__ . '/config/module.config.php',
-            include __DIR__ . '/config/subject/module.config.php',
+            //include __DIR__ . '/config/subject/module.config.php',
             include __DIR__ . '/config/taxonomy/module.config.php',
-            include __DIR__ . '/config/learning-object/module.config.php'
+            include __DIR__ . '/config/entity/module.config.php'
         );
         return $config; 
     }
+    
 
     public function getAutoloaderConfig()
     {

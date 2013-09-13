@@ -12,20 +12,19 @@ return array(
             'Versioning\RepositoryManager' => 'Versioning\RepositoryManager',
             'Versioning\Service\RepositoryService' => function  ($sm)
             {
-                $class = new Versioning\Service\RepositoryService();
-                $class->setAuthService($sm->get('Auth\Service\AuthService'));
-                $class->setEntityManager($sm->get('EntityManager'));
-                $class->setEventManager($sm->get('EventManager'));
+                $instance = new Versioning\Service\RepositoryService();
+                $instance->setAuthService($sm->get('Auth\Service\AuthService'));
+                $instance->setObjectManager($sm->get('doctrine.entitymanager.orm_default'));
                 
                 $sm->get('Log\Service\LogManager')
                     ->get('userLog')
-                    ->LogOn($class->getEventManager(), 'Versioning\Service\RepositoryService', array(
+                    ->LogOn($instance->getEventManager(), 'Versioning\Service\RepositoryService', array(
                     'checkoutRevision',
                     'addRevision',
                     'removeRevision'
                 ));
                 
-                return $class;
+                return $instance;
             }
         ),
         'shared' => array(

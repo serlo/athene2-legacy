@@ -1,7 +1,21 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Term;
 
 return array(
+    'class_resolver' => array(
+        'Term\Entity\TermEntityInterface' => 'Term\Entity\Term',
+        'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
+    ),
     'di' => array(
         'definition' => array(
             'class' => array(
@@ -15,6 +29,9 @@ return array(
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    )
                 ),
                 'Term\Service\TermService' => array(
                     'setObjectManager' => array(
@@ -22,19 +39,17 @@ return array(
                     ),
                     'setServiceLocator' => array(
                         'required' => 'true'
-                    ),
-                ),
+                    )
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
-                'Term\Service\TermServiceInterface' => 'Term\Service\TermService',
+                'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
             ),
             'Term\Service\TermService' => array(
                 'shared' => false
-            ),
+            )
         )
     ),
     'doctrine' => array(
