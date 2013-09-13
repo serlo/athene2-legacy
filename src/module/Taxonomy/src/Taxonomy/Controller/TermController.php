@@ -18,23 +18,23 @@ class TermController extends AbstractController
 {
     public function updateAction ()
     {
-        $id = $this->params()->fromPost('id') ? $this->params()->fromPost('id') : $this->params()->fromQuery('id');
+        $id = $this->params('id');
         $term = $this->getTerm($id);
         
         $view = new ViewModel(array(
             'id' => $id
         ));
         
-        $form = new TaxonomyForm(); //$term->getForm();
-        $view->setVariable('form', $form);
-        $from = '/';
-        if (is_object($this->getRequest()->getHeader('Referer')))
-            $from = rawurlencode($this->getRequest()
-                ->getHeader('Referer')
-                ->getUri());
+        $form = new TaxonomyForm();
         
-        $form->setAttribute('action', $this->url()->fromRoute('taxonomy/term', array(
-            'action' => 'update'
+        $form->setData($term->getArrayCopy());
+        $view->setVariable('form', $form);
+        
+        $from = rawurlencode($this->getRefererUrl('/'));
+        
+        $form->setAttribute('action', $this->url()->fromRoute('taxonomy/term/action', array(
+            'action' => 'update',
+            'id' => $id,
         )) . '?ref=' . $from)
         ;
         
@@ -56,7 +56,7 @@ class TermController extends AbstractController
 
     public function createAction ()
     {
-        $taxonomyId = $this->params('taxonomy', null);
+        $taxonomyId = $this->getSharedTaxonomyManager()->get($this->params('taxonomy'))->getId();
         $parentId = $this->params('parent', null);
         
         $form = new TaxonomyForm();
@@ -66,11 +66,7 @@ class TermController extends AbstractController
         ));
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('taxonomy/term', array(
-            'action' => 'create'
-        )) . '?ref=' . rawurlencode($this->getRequest()
-            ->getHeader('Referer')
-            ->getUri()));
+            ->fromRoute('taxonomy/term/create', array('parent' => $this->params('parent'), 'taxonomy' => $this->params('taxonomy'))) . '?ref=' . rawurlencode($this->getRefererUrl('/')));
         
         $view = new ViewModel();
         

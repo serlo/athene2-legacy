@@ -11,77 +11,48 @@
  */
 namespace Uuid\Manager;
 
-use Core\AbstractManager;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
-class UuidManager extends AbstractManager implements ObjectManagerAwareInterface, UuidManagerInterface
+class UuidManager implements UuidManagerInterface
 {
-    protected $options = array(
-        'instances' => array(
-            'manages' => 'Uuid\Entity\Uuid',
-        )
-    );
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
-    protected $objectManager;
-    
-    /*
-     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::setObjectManager()
-     */
-    public function setObjectManager (\Doctrine\Common\Persistence\ObjectManager $objectManager)
+    public function inject (UuidHolder $entity, UuidInterface $uuid = NULL)
     {
-        $this->objectManager = $objectManager;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \DoctrineModule\Persistence\ObjectManagerAwareInterface::getObjectManager()
-     */
-    public function getObjectManager ()
-    {
-        return $this->objectManager;
-    }
-    
-    public function __construct ()
-    {
-        parent::__construct($this->options);
-    }
-    
-    public function inject(UuidHolder $entity, $uuid = NULL){
-        $name = $this->resolve('manages');
-        if(!$uuid instanceof $name){
+        if (! $uuid) {
             $uuid = $this->create();
         }
         return $entity->setUuid($uuid);
     }
-    
-    public function get($key){
-        $className = $this->resolve('manages');
-        if(is_numeric($key)){
-            $entity = $this->getObjectManager()->find($this->resolve('manages'), (int) $key);
+
+    public function get ($key)
+    {
+        if (is_numeric($key)) {
+            $entity = $this->getObjectManager()->find($this->getClassResolver()
+                ->resolveClassName('Uuid\Entity\UuidInterface'), (int) $key);
         } elseif (is_string($key)) {
-            $entity = $this->getObjectManager()->getRepository($this->resolve('manages'))->findOneByUuid((string) $key);
-        } elseif ($key instanceof $className){
+            $entity = $this->getObjectManager()
+                ->getRepository($this->getClassResolver()
+                ->resolveClassName('Uuid\Entity\UuidInterface'))
+                ->findOneByUuid((string) $key);
+        } elseif ($key instanceof \Uuid\Entity\UuidInterface) {
             $entity = $key;
         } else
-            throw new \InvalidArgumentException(); 
+            throw new \InvalidArgumentException();
         
-        if(!is_object($entity))
+        if (! is_object($entity))
             throw new \Exception('not found');
-
+        
         $this->addInstance($entity->getId(), $entity);
         return $entity;
     }
-    
-    public function factory($class){
-        return new $class($this->create());
-    }
-    
-    public function create(){
-        $entity = $this->createInstance();
-        $em = $this->getObjectManager();
-        $em->persist($entity);
-        $em->flush($entity);
+
+    public function create ()
+    {
+        $entity = $this->createInstance('Uuid\Entity\UuidInterface');
+        $this->getObjectManager()->persist($entity);
+        $this->getObjectManager()->flush($entity);
         $this->addInstance($entity->getId(), $entity);
         return $entity;
     }

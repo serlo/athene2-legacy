@@ -22,20 +22,26 @@ return array(
     ),
     'taxonomy' => array(
         'types' => array(
+            'foobar' => array(
+                'options' => array()
+            ),
             'root' => array(
                 'options' => array(
-                    'allowed_parents' => array(
-                    ),
-                    'radix_enabled' => true
+                    'allowed_parents' => array(),
+                    'radix_enabled' => true,
+                    'templates' => array(
+                        'update' => 'taxonomy/taxonomy/update'
+                    )
                 )
-            ),
-            )),
+            )
+        )
+    ),
     'router' => array(
         'routes' => array(
             'taxonomy' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/taxonomy/',
+                    'route' => '/taxonomy',
                     'defaults' => array(
                         'controller' => 'Taxonomy\Controller\404',
                         'action' => 'index'
@@ -46,7 +52,8 @@ return array(
                     'taxonomy' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => ':action/:id',
+                            'may_terminate' => true,
+                            'route' => '/:action/:id',
                             'defaults' => array(
                                 'controller' => 'Taxonomy\Controller\TaxonomyController'
                             )
@@ -55,17 +62,38 @@ return array(
                     'term' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => 'term/:action/[:id]',
+                            'route' => '/term',
                             'defaults' => array(
                                 'controller' => 'Taxonomy\Controller\TermController',
                                 'action' => 'index'
+                            )
+                        ),
+                        'child_routes' => array(
+                            'create' => array(
+                                'may_terminate' => true,
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/create/:taxonomy/:parent',
+                                    'defaults' => array(
+                                        'action' => 'create'
+                                    )
+                                )
+                            ),
+                            'action' => array(
+                                'may_terminate' => true,
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/:action[/:id]',
+                                    'defaults' => array(
+                                        'action' => 'index'
+                                    )
+                                )
                             )
                         )
                     )
                 )
             )
         )
-        
     ),
     'service_manager' => array(
         'factories' => array(
@@ -75,7 +103,7 @@ return array(
                 $config = new \Zend\Config\Config($config['taxonomy']);
                 $instance = new \Taxonomy\Manager\SharedTaxonomyManager($config);
                 $instance->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-                $instance->setObjectManager($sm->get('EntityManager'));
+                $instance->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $instance->setServiceLocator($sm);
                 $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 return $instance;
@@ -129,6 +157,9 @@ return array(
                         'required' => 'true'
                     ),
                     'setTermManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
                         'required' => 'true'
                     ),
                     'setSharedTaxonomyManager' => array(

@@ -14,20 +14,25 @@ use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\NotFoundException;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Exception\ErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Zend\Form\Form;
 
 class TermService implements TermServiceInterface
 {
     
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
      * @var \Taxonomy\Manager\TermManagerInterface
      */
     protected $manager;
+    
+    public function injectForm(Form $form){
+        $form->bind($this->getEntity());
+        return $form;
+    }
 
     public function getDescendantBySlugs (array $path)
     {
@@ -121,7 +126,7 @@ class TermService implements TermServiceInterface
          * $this->getManager()->get($this->getEntity()
          * ->get('children'));
          */
-        return new TermCollection($this->getEntity()->get('children'), $this->getSharedTaxonomyManager());
+        return new TermCollection($this->getEntity()->getChildren(), $this->getSharedTaxonomyManager());
     }
     
     /*
@@ -145,7 +150,7 @@ class TermService implements TermServiceInterface
             return false;
         
         return $this->getEntity()
-            ->get($targetField)
+            ->getRelations($targetField)
             ->count() != 0;
     }
 
@@ -155,7 +160,7 @@ class TermService implements TermServiceInterface
             return 0;
         
         return $this->getEntity()
-            ->get($targetField)
+            ->getRelations($targetField)
             ->count();
     }
     
@@ -170,7 +175,7 @@ class TermService implements TermServiceInterface
         if (! $recursive) {
             $this->isLinkAllowedWithException($targetField);
             $callback = $this->getCallbackForLink($targetField);
-            return $callback($this->getServiceLocator(), $this->getEntity()->get($targetField));
+            return $callback($this->getServiceLocator(), $this->getEntity()->getRelations($targetField));
         } else {            
             $collection = new ArrayCollection();
             $collection = $this->injectLinks($collection, $this, $targetField, $allowedTaxonomies);
@@ -185,7 +190,7 @@ class TermService implements TermServiceInterface
         }
         
         if($term->isLinkAllowed($targetField)){
-            foreach ($term->getEntity()->get($targetField) as $link) {
+            foreach ($term->getEntity()->getRelations($targetField) as $link) {
                 $collection->add($link);
             }
         }
@@ -214,7 +219,7 @@ class TermService implements TermServiceInterface
         $target = $this->findEntity($target);
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
-        $entity->get($targetField)->add($target);
+        $entity->getRelations($targetField)->add($target);
         $this->persist();
         return $this;
     }
@@ -249,7 +254,7 @@ class TermService implements TermServiceInterface
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getEntity();
         
-        $entity->get($targetField)->remove($target->getId());
+        $entity->getRelations($targetField)->remove($target->getId());
         $target->getTerms()->remove($entity->getId());
         
         $this->getObjectManager()->flush();
@@ -265,7 +270,7 @@ class TermService implements TermServiceInterface
     {
         $this->isLinkAllowedWithException($targetField);
         $targets = $this->getEntity()
-            ->get($targetField);
+            ->getRelations($targetField);
         return $targets->contains($target->getId());
     }
 
@@ -277,29 +282,29 @@ class TermService implements TermServiceInterface
 
     public function getAllowedLinks ()
     {
-        return $this->getOptions()['allowed_links'];
+        return $this->getOption('allowed_links');
     }
 
     public function isLinkAllowed ($targetField)
     {
-        return in_array($targetField, $this->getOptions()['allowed_links']);
+        return in_array($targetField, (array) $this->getOption('allowed_links'));
     }
 
     public function update (array $data)
     {
-        $merged = array_merge(array(
+        $merged = array_replace_recursive(array(
             'term' => array(
                 'name' => $this->getName()
             ),
-            'parent' => $this->getParent(),
-            'taxonomy' => $this->getTaxonomy()
+            'parent' => $this->getParent()->getId(),
+            'taxonomy' => $this->getTaxonomy()->getId()
         ), $data);
         
         $this->setName($data['term']['name']);
         unset($data['term']);
-        try {
+        /*try {
             $this->populate($data);
-        } catch (\Core\Exception\UnknownPropertyException $e) {}
+        } catch (\Core\Exception\UnknownPropertyException $e) {}*/
         $this->persistAndFlush();
         return $this;
     }
@@ -347,10 +352,18 @@ class TermService implements TermServiceInterface
     public function allowsChildType($type){
         return $this->getSharedTaxonomyManager()->get($type)->allowsParentType($this->getTaxonomy()->getName());
     }
+    
+    public function getAllowedParentTypes(){
+        return $this->getManager()->getAllowedParentTypes();
+    }
+    
+    public function getAllowedChildrenTypes(){
+        return $this->getManager()->getAllowedChildrenTypes();
+    }
 
     public function radixEnabled ()
     {
-        return $this->getOptions()['radix_enabled'];
+        return $this->getOption('radix_enabled');
     }
 
     public function setParent ($parent)
@@ -381,6 +394,12 @@ class TermService implements TermServiceInterface
     {
         return $this->getManager()->getOptions();
     }
+    
+    public function getOption ($name)
+    {
+        return $this->getManager()->getOption($name);
+    }
+    
 
     public function getId ()
     {
@@ -412,5 +431,9 @@ class TermService implements TermServiceInterface
     public function getSlug ()
     {
         return $this->getEntity()->getSlug();
+    }
+    
+    public function getArrayCopy(){
+        return $this->getEntity()->getArrayCopy();
     }
 }

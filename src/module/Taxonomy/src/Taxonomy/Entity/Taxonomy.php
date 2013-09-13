@@ -18,9 +18,16 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy")
  */
-class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
+class Taxonomy implements TaxonomyEntityInterface
 {
 
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+    
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
      * @ORM\OrderBy({"weight" = "ASC"})
@@ -39,6 +46,42 @@ class Taxonomy extends AbstractEntity implements TaxonomyEntityInterface
     protected $type;
 
     /**
+     * @return field_type $language
+     */
+    public function getLanguage ()
+    {
+        return $this->language;
+    }
+
+	/**
+     * @param field_type $language
+     * @return $this
+     */
+    public function setLanguage ($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+	/**
+     * @return field_type $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
      *
      * @return field_type $type
      */

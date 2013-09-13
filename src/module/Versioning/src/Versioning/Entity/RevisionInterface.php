@@ -8,10 +8,22 @@
  */
 namespace Versioning\Entity;
 
-use Core\Entity\EntityInterface;
-
-interface RevisionInterface extends EntityInterface
+use User\Entity\UserInterface;
+interface RevisionInterface
 {
+    /**
+     * 
+     * @return int
+     */
+    public function getId();
+    
+    /**
+     * 
+     * @param int $id
+     * @return $this
+     */
+    public function setId($id);
+    
     /**
      * Returns the repository
      * 
@@ -30,30 +42,30 @@ interface RevisionInterface extends EntityInterface
     /**
      * Gets the date´
      * 
-     * @return mixed
+     * @return \DateTime
      */
     public function getDate();
     
     /**
      * Gets the author
      * 
-     * @return EntityInterface
+     * @return UserInterface
      */
     public function getAuthor();
     
     /**
      * Sets the date
      * 
-     * @param mixed $date
+     * @param \DateTime $date
      * @return $this
      */
-    public function setDate($date);
+    public function setDate(\DateTime $date);
     
     /**
      * Sets the author
      * 
-     * @param EntityInterface $user
+     * @param UserInterface $user
      * @return $this
      */
-    public function setAuthor($user);
+    public function setAuthor(UserInterface $user);
 }

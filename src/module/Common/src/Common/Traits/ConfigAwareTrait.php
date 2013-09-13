@@ -13,28 +13,42 @@ namespace Common\Traits;
 
 trait ConfigAwareTrait
 {
+
+    abstract protected function getDefaultConfig ();
+
     protected $config = array();
-    
-	/**
-     * @return field_type $config
+
+    /**
+     *
+     * @return field_type
+     *         $config
      */
     public function getConfig ()
     {
         return $this->config;
     }
 
-	/**
-     * @param field_type $config
+    /**
+     *
+     * @param field_type $config            
      * @return $this
      */
     public function setConfig ($config)
     {
-        $this->config = array_replace_recursive($this->config, $config);
+        $this->config = array_replace_recursive($this->getDefaultConfig(), $config);
+        
+        $array = array(
+            $this->getDefaultConfig(),
+            $config,
+            $this->config
+        );
+        
         return $this;
     }
 
-    public function getOption($key){
-        if(array_key_exists($key, $this->getConfig())){
+    public function getOption ($key)
+    {
+        if (array_key_exists($key, $this->getConfig())) {
             return $this->getConfig()[$key];
         } else {
             return NULL;
