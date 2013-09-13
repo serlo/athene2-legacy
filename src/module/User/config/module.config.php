@@ -72,14 +72,14 @@ return array(
             'User\Service\UserLogService' => function  ($sm)
             {
                 $srv = new Service\UserLogService();
-                $srv->setEntityManager($sm->get('EntityManager'));
+                $srv->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
                 $srv->setAuthService($sm->get('Auth\Service\AuthService'));
                 return $srv;
             },
             'User\Service\UserService' => function  ($sm)
             {
                 $srv = new Service\UserService();
-                $srv->setObjectManager($sm->get('EntityManager'));
+                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 return $srv;
             }
         )

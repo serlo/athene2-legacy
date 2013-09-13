@@ -18,6 +18,7 @@ use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\PersistentCollection;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity.
@@ -25,7 +26,7 @@ use Doctrine\ORM\PersistentCollection;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
+class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface
 {
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist"})
@@ -231,7 +232,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * @param field_type $currentRevision
      * @return $this
      */
-    public function setCurrentRevision ($currentRevision)
+    public function setCurrentRevision (RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
         return $this;
@@ -436,6 +437,14 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         } else {
             return $e->getOrder();       
         }
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
+     */
+    public function hasCurrentRevision ()
+    {
+        return $this->getCurrentRevision() !== NULL;
     }
     
 }

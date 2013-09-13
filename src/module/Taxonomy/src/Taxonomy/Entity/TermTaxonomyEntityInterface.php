@@ -21,4 +21,5 @@ interface TermTaxonomyEntityInterface
     public function setDescription($description);
     public function setWeight($order);
     public function getWeight();
+    public function getArrayCopy();
 }

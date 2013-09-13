@@ -1,26 +1,26 @@
 <?php
 /**
  * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Versioning;
 
-use Versioning\Service\RepositoryServiceInterface;
-use Versioning\Service\RepositoryService;
 use Core\Creation\AbstractSingleton;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
-use Versioning\Entity\Repository;
 use Versioning\Entity\RepositoryInterface;
 
 class RepositoryManager extends AbstractSingleton implements RepositoryManagerInterface, FactoryInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    
     protected $repositories = array();
-
-    protected $serviceLocator;
 
     /**
      * (non-PHPdoc)
@@ -28,7 +28,7 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->setServiceLocator($serviceLocator);
         return $this;
     }
     
@@ -44,9 +44,12 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
         if (!$this->hasRepository($repository)){
             //    throw new \Exception("There is already a repository with the identifier: " . $repository->getIdentifier());
             $uniq = $this->getUniqId($repository);      
-            $this->serviceLocator->setShared('Versioning\Service\RepositoryService', false);
-            $rs = $this->serviceLocator->get('Versioning\Service\RepositoryService');
-            $rs->setup($uniq, $repository);
+            
+            $this->getServiceLocator()->setShared('Versioning\Service\RepositoryService', false);
+            $rs = $this->getServiceLocator()->get('Versioning\Service\RepositoryService');
+            
+            $rs->setRepository($repository);
+            $rs->setIdentifier($uniq);
             $this->repositories[$uniq] = $rs;      
         }
         return $this; //->getRepository($repository);
@@ -63,8 +66,10 @@ class RepositoryManager extends AbstractSingleton implements RepositoryManagerIn
      */
     public function removeRepository(RepositoryInterface $repository)
     {
-        if ($this->hasRepository($repository))
-            throw new \Exception("There is no repository with the identifier: " . $repository);
+        if (!$this->hasRepository($repository))
+            throw new \Exception("There is no repository with the identifier: " . $this->getUniqId($repository));
+        
+        unset($this->repositories[$this->getUniqId($repository)]);
         return $this;
     }
     

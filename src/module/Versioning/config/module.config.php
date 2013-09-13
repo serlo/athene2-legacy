@@ -14,8 +14,7 @@ return array(
             {
                 $instance = new Versioning\Service\RepositoryService();
                 $instance->setAuthService($sm->get('Auth\Service\AuthService'));
-                $instance->setEntityManager($sm->get('EntityManager'));
-                $instance->setEventManager($sm->get('EventManager'));
+                $instance->setObjectManager($sm->get('doctrine.entitymanager.orm_default'));
                 
                 $sm->get('Log\Service\LogManager')
                     ->get('userLog')

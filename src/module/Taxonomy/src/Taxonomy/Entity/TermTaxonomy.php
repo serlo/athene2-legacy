@@ -11,34 +11,44 @@ namespace Taxonomy\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
+use Taxonomy\Exception\RuntimeException;
 
 /**
- * A Taxonomy.
+ * A
+ * Taxonomy.
  *
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
 class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
 {
+
     /**
-     * @ORM\ManyToOne(targetEntity="Taxonomy", inversedBy="terms")
+     * @ORM\ManyToOne(targetEntity="Taxonomy",
+     * inversedBy="terms")
      */
     protected $taxonomy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Term\Entity\Term", inversedBy="termTaxonomies")
+     * @ORM\ManyToOne(targetEntity="Term\Entity\Term",
+     * inversedBy="termTaxonomies")
      */
     protected $term;
 
     /**
-     * @ORM\OneToMany(targetEntity="TermTaxonomy", mappedBy="parent")
-     * @ORM\OrderBy({"weight" = "ASC"})
+     * @ORM\OneToMany(targetEntity="TermTaxonomy",
+     * mappedBy="parent")
+     * @ORM\OrderBy({"weight"
+     * =
+     * "ASC"})
      */
     private $children;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="TermTaxonomy", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="TermTaxonomy",
+     * inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id",
+     * referencedColumnName="id")
      */
     private $parent;
 
@@ -50,92 +60,125 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
     /**
      * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
      * @ORM\JoinTable(name="term_taxonomy_entity",
-     * joinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
+     * joinColumns={@ORM\JoinColumn(name="term_taxonomy_id",
+     * referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="entity_id",
+     * referencedColumnName="id")}
      * )
      */
     protected $entities;
 
-    /* (non-PHPdoc)
-     * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::getDescription()
+    protected $allowedRelations = array(
+        'entities'
+    );
+    
+    /*
+     *
+     * (non-PHPdoc)
+     * @see
+     * \Taxonomy\Entity\TermTaxonomyEntityInterface::getDescription()
      */
     public function getDescription ()
     {
-        // TODO Auto-generated method stub
-        
+        // TODO
+    // Auto-generated
+    // method
+    // stub
     }
-
-	/* (non-PHPdoc)
-     * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::hasParent()
+    
+    /*
+     *
+     * (non-PHPdoc)
+     * @see
+     * \Taxonomy\Entity\TermTaxonomyEntityInterface::hasParent()
      */
     public function hasParent ()
     {
         return (is_object($this->getParent()));
     }
-    
-    public function hasChildren(){
+
+    public function hasChildren ()
+    {
         return $this->getChildren()->count() != 0;
     }
-
-	/* (non-PHPdoc)
-     * @see \Taxonomy\Entity\TermTaxonomyEntityInterface::setDescription()
+    
+    /*
+     *
+     * (non-PHPdoc)
+     * @see
+     * \Taxonomy\Entity\TermTaxonomyEntityInterface::setDescription()
      */
     public function setDescription ($description)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO
+    // Auto-generated
+    // method
+    // stub
     }
-    
-    public function getFactory(){
+
+    public function getFactory ()
+    {
         return $this->getTaxonomy()->getFactory();
     }
 
-	/**
-     * @return field_type $taxonomy
+    /**
+     *
+     * @return field_type
+     *         $taxonomy
      */
     public function getTaxonomy ()
     {
         return $this->taxonomy;
     }
-    
-    public function countEntities(){
+
+    public function countEntities ()
+    {
         return $this->get('entities')->count();
     }
 
-	/**
-     * @return \Doctrine\Common\Collections\ArrayCollection $children
+    /**
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     *         $children
      */
     public function getChildren ()
     {
         return $this->children;
     }
 
-	/**
-     * @return field_type $parent
+    /**
+     *
+     * @return field_type
+     *         $parent
      */
     public function getParent ()
     {
         return $this->parent;
     }
 
-	/**
-     * @return field_type $name
+    /**
+     *
+     * @return field_type
+     *         $name
      */
     public function getName ()
     {
         return $this->getTerm()->getName();
     }
 
-	/**
-     * @return field_type $slug
+    /**
+     *
+     * @return field_type
+     *         $slug
      */
     public function getSlug ()
     {
         return $this->getTerm()->getSlug();
     }
 
-	/**
-     * @param field_type $taxonomy
+    /**
+     *
+     * @param field_type $taxonomy            
      * @return $this
      */
     public function setTaxonomy ($taxonomy)
@@ -144,8 +187,9 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $children
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $children            
      * @return $this
      */
     public function setChildren ($children)
@@ -154,8 +198,9 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param field_type $parent
+    /**
+     *
+     * @param field_type $parent            
      * @return $this
      */
     public function setParent ($parent)
@@ -164,16 +209,19 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @return field_type $weight
+    /**
+     *
+     * @return field_type
+     *         $weight
      */
     public function getWeight ()
     {
         return $this->weight;
     }
 
-	/**
-     * @param field_type $weight
+    /**
+     *
+     * @param field_type $weight            
      * @return $this
      */
     public function setWeight ($weight)
@@ -182,8 +230,9 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param field_type $name
+    /**
+     *
+     * @param field_type $name            
      * @return $this
      */
     public function setName ($name)
@@ -192,8 +241,9 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @param field_type $slug
+    /**
+     *
+     * @param field_type $slug            
      * @return $this
      */
     public function setSlug ($slug)
@@ -202,16 +252,19 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	/**
-     * @return field_type $term
+    /**
+     *
+     * @return field_type
+     *         $term
      */
     public function getTerm ()
     {
         return $this->term;
     }
 
-	/**
-     * @param field_type $term
+    /**
+     *
+     * @param field_type $term            
      * @return $this
      */
     public function setTerm ($term)
@@ -220,21 +273,43 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return $this;
     }
 
-	public function __construct ()
+    public function __construct ()
     {
         $this->children = new ArrayCollection();
     }
-    
-    public function getPath(){
+
+    public function getPath ()
+    {
         $path = array();
         $term = $this;
         $exit = false;
-        while(!$exit){
-            $exit = !$term->hasParent();
+        while (! $exit) {
+            $exit = ! $term->hasParent();
             $path[] = $term->getSlug();
-            if($exit) break;
+            if ($exit)
+                break;
             $term = $term->getParent();
         }
         return array_reverse($path);
+    }
+
+    public function getArrayCopy ()
+    {
+        return array(
+            'id' => $this->getId(),
+            'term' => array(
+                'name' => $this->getName()
+            ),
+            'taxonomy' => $this->getTaxonomy()->getId(),
+            'parent' => $this->getParent()->getId()
+        );
+    }
+
+    protected function getRelations ($field)
+    {
+        if (in_array($field, $this->allowedRelations)) {
+            return $this->$field;
+        }
+        throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
     }
 }

@@ -25,8 +25,6 @@ use Doctrine\Common\Collections\Criteria;
  */
 class User extends AbstractEntity implements UserInterface
 {
-    private $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -400,6 +398,10 @@ class User extends AbstractEntity implements UserInterface
     {
         $this->userRoles = new ArrayCollection();
         $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ads_enabled = true;
+        $this->removed = false;
+        $this->logins = 0;
+        $this->gender = 'n';
     }
     
     public function addRole(RoleInterface $role, LanguageInterface $language = NULL){
@@ -430,27 +432,23 @@ class User extends AbstractEntity implements UserInterface
      */
     public function populate (array $data = array())
     {
-        $this->email = $data['email'];
-        $this->password = $data['password'];
-        $this->username = $data['username'];
-        $this->logins = $this->logins ? $this->logins : 0;
-        $this->ads_enabled = $this->ads_enabled ? $this->ads_enabled : true;
-        $this->removed = $this->removed ? $this->removed : false;
-        
+        $this->injectFromArray('email', $data);
+        $this->injectFromArray('password', $data);
+        $this->injectFromArray('username', $data);
+        $this->injectFromArray('logins', $data);
+        $this->injectFromArray('ads_enabled', $data);
+        $this->injectFromArray('removed', $data);     
+        $this->injectFromArray('lastname', $data);
+        $this->injectFromArray('givenname', $data);
+        $this->injectFromArray('gender', $data);
         return $this;
     }
-
-    public function setInputFilter (InputFilterInterface $inputFilter)
-    {
-        throw new \Exception("Not used");
-    }
-
-    public function getInputFilter ()
-    {
-        if (! $this->inputFilter) {
-            $this->inputFilter = new UserFilter();
+    
+    private function injectFromArray($key, array $array, $default = NULL){
+        if(array_key_exists($key, $array)){
+            $this->$key = $array[$key];
+        } elseif($default !== NULL) {
+            $this->$key = $default;
         }
-        
-        return $this->inputFilter;
     }
 }
