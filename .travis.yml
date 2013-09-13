@@ -7,7 +7,7 @@ php:
   - 5.5
 
 before_script:
-  - mysql -p serlo_test < db/test.sql
+  - mysql serlo_test < db/test.sql
   - composer install -d src/ --dev --prefer-dist
 
 # omitting "script:" will default to phpunit
