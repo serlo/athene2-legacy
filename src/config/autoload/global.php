@@ -17,6 +17,22 @@ return array(
             'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
         )
     ),
+    'dbParams' => array(
+        'host' => '',
+        'port' => '',
+        'user' => '',
+        'password' => '',
+        'database' => ''
+    ),
+    'smtpParams' => array(
+    	'name' => 'smtp.serlo.org',
+		'host' => 'smtp.serlo.org',
+		'connection_class' => 'login',
+		'connection_config' => array(
+			'username' => 'aeneas.rekkas@serlo.org',
+			'password' => 'v4uf428g'
+		)
+	),
     'di' => array(
         'preferences' => array(
             'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
