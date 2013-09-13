@@ -12,6 +12,9 @@
 namespace Uuid;
 
 return array(
+    'class_resolver' => array(
+        'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
+    ),
     'di' => array(
         'definition' => array(
             'class' => array(
@@ -28,7 +31,7 @@ return array(
         'instance' => array(
             'preferences' => array(
                 'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager'
-            ),
+            )
         )
     ),
     'doctrine' => array(

@@ -11,7 +11,6 @@
  */
 namespace Term\Entity;
 
-use Core\Entity\AbstractEntity;
 use Language\Entity\Language;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,8 +20,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="term")
  */
-class Term extends AbstractEntity implements TermEntityInterface
+class Term implements TermEntityInterface
 {
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
@@ -45,6 +51,24 @@ class Term extends AbstractEntity implements TermEntityInterface
     private $termTaxonomies;
 
     /**
+     * @return field_type $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
      *
      * @return field_type $language
      */

@@ -13,6 +13,32 @@ namespace Uuid\Entity;
 
 interface UuidHolder
 {
-    public function getUuid();
-    public function setUuid(Uuid $uuid);
+    /**
+     * @return string
+     */
+    public function getUuid ();
+    
+    /**
+     * 
+     * @param UuidInterface $id
+     * @return $this
+     */
+    public function setId ($id);
+    
+    /**
+     * @return int
+     */
+    public function getId ();
+    
+    /**
+     * 
+     * @param UuidInterface $uuid
+     * @return $this
+     */
+    public function setUuid (UuidInterface $uuid = null);
+    
+    /**
+     * @return UuidInterface
+     */
+    public function getUuidEntity();
 }

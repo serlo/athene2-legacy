@@ -13,15 +13,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * A Taxonomy.
+ * A
+ * Taxonomy.
  *
  * @ORM\Entity
  * @ORM\Table(name="taxonomy_type")
  */
-class TaxonomyType extends AbstractEntity
+class TaxonomyType
 {
+
     /**
-     * @ORM\OneToMany(targetEntity="Taxonomy", mappedBy="factory")
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    protected $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Taxonomy",
+     * mappedBy="factory")
      */
     protected $taxonomies;
 
@@ -31,15 +41,39 @@ class TaxonomyType extends AbstractEntity
     protected $name;
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection $taxonomies
+     *
+     * @return field_type
+     *         $id
+     */
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @param field_type $id            
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     *         $taxonomies
      */
     public function getTaxonomies ()
     {
         return $this->taxonomies;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $taxonomies
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $taxonomies            
      * @return $this
      */
     public function setTaxonomies ($taxonomies)
@@ -48,43 +82,49 @@ class TaxonomyType extends AbstractEntity
         return $this;
     }
 
-	/**
-     * @return field_type $factory
+    /**
+     *
+     * @return field_type
+     *         $factory
      */
-    public function getFactory()
+    public function getFactory ()
     {
         return $this->factory;
     }
 
-	/**
-     * @return field_type $name
+    /**
+     *
+     * @return field_type
+     *         $name
      */
-    public function getName()
+    public function getName ()
     {
         return $this->name;
     }
 
-	/**
-     * @param field_type $factory
+    /**
+     *
+     * @param field_type $factory            
      * @return $this
      */
-    public function setFactory($factory)
+    public function setFactory ($factory)
     {
         $this->factory = $factory;
         return $this;
     }
 
-	/**
-     * @param field_type $name
+    /**
+     *
+     * @param field_type $name            
      * @return $this
      */
-    public function setName($name)
+    public function setName ($name)
     {
         $this->name = $name;
         return $this;
     }
 
-	public function __construct ()
+    public function __construct ()
     {
         $this->taxonomies = new ArrayCollection();
     }

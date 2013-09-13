@@ -136,10 +136,6 @@ return array(
             },
             'navigation' => 'Navigation\Service\DynamicNavigationFactory'
         ),
-        'aliases' => array(
-            'EntityManager' => 'doctrine.entitymanager.orm_default',
-            'Doctrine\ORM\EntityManager' => 'EntityManager'
-        )
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -285,16 +281,4 @@ return array(
             )
         )
     ),
-    'di' => array(
-        'allowed_controllers' => array(),
-        'definition' => array(
-            'class' => array()
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
-            )
-        )
-    )
 );

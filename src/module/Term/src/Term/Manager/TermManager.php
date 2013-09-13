@@ -12,26 +12,13 @@
 namespace Term\Manager;
 
 use Term\Service\TermServiceInterface;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Core\AbstractManager;
 use Term\Exception\TermNotFoundException;
 
-class TermManager extends AbstractManager implements TermManagerInterface
+class TermManager implements TermManagerInterface
 {
 
-    use \Language\Manager\LanguageManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait, \Common\Traits\EntityDelegatorTrait, \Common\Traits\InstanceManagerTrait;
 
-    protected $options = array(
-        'instances' => array(
-            'TermEntityInterface' => 'Term\Entity\Term',
-            'manages' => 'Term\Service\TermService'
-        )
-    );
-
-    public function __construct()
-    {
-        parent::__construct($this->options);
-    }
 
     /**
      *
@@ -41,6 +28,10 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         $this->addInstance($termService->getId(), $termService);
         return $this;
+    }
+    
+    public function findTermByName($name){
+        return $this->getByString($name);
     }
 
     public function get($term)
@@ -60,9 +51,11 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     protected function getById($id)
     {
-        $term = $this->getObjectManager()->find($this->resolve('TermEntityInterface'), $id);
+        $term = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'), $id);
+        
         if (! is_object($term))
             throw new TermNotFoundException($id);
+        
         
         if (! $this->hasInstance($term->getId())) {
             $this->add($this->createInstanceFromEntity($term));
@@ -84,19 +77,19 @@ class TermManager extends AbstractManager implements TermManagerInterface
         // TODO: get request language (!)
         //if (! $this->hasInstance($name)) {
             $entity = $this->getObjectManager()
-                ->getRepository($this->resolve('TermEntityInterface'))
+                ->getRepository($this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'))
                 ->findOneBy(array(
                 'name' => $name
             ));
             if (! is_object($entity)) {
                 $entity = $this->getObjectManager()
-                    ->getRepository($this->resolve('TermEntityInterface'))
+                    ->getRepository($this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'))
                     ->findOneBy(array(
                     'slug' => $name
                 ));
             }
             if (! is_object($entity)) {
-                $entity = $this->resolve('TermEntityInterface', true);
+                $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
                 $entity->setName($name);
                 $entity->setLanguage($this->getLanguageManager()
                     ->getRequestLanguage()
@@ -113,7 +106,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     protected function createInstanceFromEntity($entity)
     {
-        $instance = parent::createInstance();
+        $instance = $this->createInstance('Term\Service\TermServiceInterface');
         $instance->setEntity($entity);
         return $instance;
     }

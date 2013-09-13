@@ -55,4 +55,9 @@ class Language implements LanguageInterface
     {
         return $this->id;
     }
+    
+    public function setId($id){
+        $this->id = $id;
+        return $this;
+    }
 }
