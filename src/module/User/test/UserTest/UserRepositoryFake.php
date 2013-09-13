@@ -16,13 +16,17 @@ use User\Entity\User;
 
 class UserRepositoryFake extends EntityRepositoryFake
 {
+
     protected $className = 'User\Entity\User';
-    
-    protected $data = array(
-        array(
-            'id' => 1,
-            'username' => 'foobar',
-            'email' => 'foo@bar.de',
-        )
-    );
+
+    protected function getData ()
+    {
+        return array(
+            array(
+                'id' => 1,
+                'username' => 'foobar',
+                'email' => 'foo@bar.de'
+            )
+        );
+    }
 }

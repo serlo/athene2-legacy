@@ -39,7 +39,7 @@ class Bootstrap
         'UserTest' => 'User/test/UserTest',
         'UuidTest' => 'Uuid/test/UuidTest',
         'TermTest' => 'Term/test/TermTest',
-        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
+        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest'
     );
 
     protected static $modules = array(
@@ -100,7 +100,10 @@ class Bootstrap
         // dependencies
         $config = array(
             'module_listener_options' => array(
-                'module_paths' => $zf2ModulePaths
+                'module_paths' => $zf2ModulePaths,
+                'config_glob_paths' => array(
+                    static::findParentPath('config/autoload') . '/{,*.}{global,local}.php'
+                )
             ),
             'modules' => self::$modules
         );
@@ -108,21 +111,9 @@ class Bootstrap
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
-        
-        static::includeAutoloadConfig($serviceManager);
+        $serviceManager->setAllowOverride(true);
         
         static::$serviceManager = $serviceManager;
-    }
-
-    public static function includeAutoloadConfig (ServiceManager $serviceManager)
-    {
-        // quite
-        // haxxy
-        $serviceManager->setAllowOverride(true);
-        $config = $serviceManager->get('config');
-        $config = ArrayUtils::merge($config, include static::findParentPath('config/autoload') . '/local.php');
-        $config = ArrayUtils::merge($config, include static::findParentPath('config/autoload') . '/local.php');
-        $serviceManager->setService('config', $config);
     }
 
     public static function chroot ()

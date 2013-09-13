@@ -18,4 +18,8 @@ class TermManagerTest extends ObjectManagerTestCase
     public function setUp(){
         parent::setUp();
     }
+    
+    public function testGet(){
+        
+    }
 }

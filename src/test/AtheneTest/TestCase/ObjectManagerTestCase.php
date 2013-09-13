@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use AtheneTest\Bootstrap;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-class ObjectManagerTestCase extends \PHPUnit_Framework_TestCase
+abstract class ObjectManagerTestCase extends \PHPUnit_Framework_TestCase
 {
     public function setUp(){
         $em = self::createEntityManagerMock();
