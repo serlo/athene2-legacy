@@ -12,9 +12,10 @@
 namespace Subject\Plugin;
 
 use Subject\Exception\RuntimeException;
+use Zend\Stdlib\ArrayUtils;
 abstract class AbstractPlugin implements PluginInterface
 {
-    use \Subject\Service\SubjectServiceAwareTrait;
+    use \Subject\Service\SubjectServiceAwareTrait, \Common\Traits\ConfigAwareTrait;
     
     protected $name, $scope;
 
@@ -27,8 +28,6 @@ abstract class AbstractPlugin implements PluginInterface
      * @var array
      */
     protected $options;
-    
-    abstract protected function getDefaultConfig();
     
     /**
      * @return field_type $name
@@ -83,11 +82,6 @@ abstract class AbstractPlugin implements PluginInterface
         $this->identity = $identity;
         return $this;
     }
-
-	public function setOptions(array $options){
-        $this->options = array_replace_recursive($this->getDefaultConfig(), $options);
-        return $this;
-    }
     
     public function getTemplate($template){
         if(!array_key_exists($template, $this->getOption('templates')))
@@ -101,9 +95,5 @@ abstract class AbstractPlugin implements PluginInterface
             throw new RuntimeException(sprintf('Route to plugin not found.'));
     
         return $this->getOption('route');
-    }
-    
-    public function getOption($name){
-        return $this->options[$name];
     }
 }

@@ -15,8 +15,4 @@ use Subject\Service\SubjectServiceInterface;
 
 interface PluginInterface
 {
-    public function setSubjectService(SubjectServiceInterface $subjectService);
-    public function setOptions(array $options);
-    public function getIdentity();
-    public function setIdentity($identity);
 }

@@ -11,13 +11,27 @@
  */
 namespace TaxonomyTest;
 
+use AtheneTest\Bootstrap;
 class TermServiceTest extends \PHPUnit_Framework_TestCase
 {
+    
+    protected $termService;
+    
     public function setUp(){
         parent::setUp();
+        $termService = Bootstrap::getServiceManager()->get('Taxonomy\Manager\SharedTaxonomyManager')->get(1)->get(11, 1);
+        $this->termService = $termService;
     }
     
-    public function testGet(){
-        
+    public function testDelegation(){
+        $params = array(
+            'name' => 'Analysis',
+            'slug' => 'analysis',
+            'id' => 11
+        );
+        foreach($params as $param => $value){
+            $method = 'get'.ucfirst($param);
+            $this->assertEquals($value, $this->termService->$method());
+        }
     }
 }

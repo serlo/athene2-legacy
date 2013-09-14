@@ -305,7 +305,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         );
     }
 
-    protected function getRelations ($field)
+    public function getRelations ($field)
     {
         if (in_array($field, $this->allowedRelations)) {
             return $this->$field;

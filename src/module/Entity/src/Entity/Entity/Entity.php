@@ -26,7 +26,7 @@ use Versioning\Entity\RevisionInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface
+class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist"})
