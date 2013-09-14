@@ -35,6 +35,7 @@ class Bootstrap
     protected static $serviceManager;
 
     protected static $testingNamespaces = array(
+        'CommonTest' => 'Common/test/CommonTest',
         'VersioningTest' => 'Versioning/test/VersioningTest',
         'UserTest' => 'User/test/UserTest',
         'UuidTest' => 'Uuid/test/UuidTest',
