@@ -76,12 +76,12 @@ class TermManager extends AbstractManager implements TermManagerInterface
     {
         if (is_numeric($term)) {
             $name = $term;
-            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $term);
+            $entity = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $term);
         } elseif (is_string($term)) {
             $name = $term;
             $term = $this->getTermManager()->get($term);
             $entity = $this->getObjectManager()
-                ->getRepository($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
+                ->getRepository($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
                 ->findOneBy(array(
                 'term' => $term->getId(),
                 'taxonomy' => $this->getEntity()
@@ -92,7 +92,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
             $entity = $this->getEntityByPath($term);
         } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
             $entity = $this->getObjectManager()
-                ->getRepository($this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
+                ->getRepository($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
                 ->findOneBy(array(
                 'term' => $term->getId(),
                 'taxonomy' => $this->getEntity()
@@ -115,10 +115,14 @@ class TermManager extends AbstractManager implements TermManagerInterface
         }
         
         if (! $this->hasInstance($entity->getId())) {
-            $id = $this->add($this->createInstanceFromEntity($entity));
+            $id = $this->createInstanceFromEntity($entity);
         }
         
         return $this->getInstance($entity->getId());
+    }
+    
+    public function has($id){
+        return $this->hasInstance($id);
     }
 
     protected function getEntityByPath (array $path)
@@ -151,9 +155,10 @@ class TermManager extends AbstractManager implements TermManagerInterface
         $term = $this->getTermManager()->get($data['term']['name']);
         
         $entity->setTerm($term->getEntity());
+        if(isset($data['taxonomy'])) unset($data['taxonomy']);
         unset($data['term']);
         
-        $hydrator = new DoctrineObject($this->getObjectManager(), $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'));
+        $hydrator = new DoctrineObject($this->getObjectManager(), $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'));
         
         $uuid = $this->getUuidManager()->create();
         // don't
@@ -167,6 +172,9 @@ class TermManager extends AbstractManager implements TermManagerInterface
         // to
         // NULL
         // !
+        
+        $entity->setTaxonomy($this->getEntity());
+        
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush();
         
@@ -222,6 +230,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         } else {
             $instance->setManager($this);
         }
+        $this->add($instance);
         return $instance;
     }
 

@@ -19,10 +19,14 @@ class RepositoryPlugin extends AbstractPlugin
 {
     use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Auth\Service\AuthServiceAwareTrait;
 
-    protected $config = array(
+    protected function getDefaultConfig ()
+    { 
+        return array(
         'revision_form' => 'FormNotFound',
         'field_order' => array()
-    );
+        );
+    }
+        
 
     /**
      *

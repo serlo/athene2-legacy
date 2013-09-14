@@ -75,7 +75,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
     }
     
     protected function injectOptions($service){
-        $service->setOptions($this->getPluginOptions());
+        $service->setConfig($this->getPluginOptions());
         $service->setScope($this->pluginScope);
         $service->setName($this->pluginName);
         return $this;

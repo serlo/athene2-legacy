@@ -11,15 +11,10 @@
  */
 namespace TaxonomyTest;
 
-use AtheneTest\TestCase\ObjectManagerTestCase;
 use AtheneTest\Bootstrap;
-use Doctrine\DBAL\LockMode;
-use Taxonomy\Entity\TermTaxonomy;
 use Uuid\Entity\Uuid;
 use Term\Service\TermService;
 use Taxonomy\Entity\Taxonomy;
-use Taxonomy\Entity\TaxonomyType;
-use TaxonomyTest\Fake\TermTaxonomyRepositoryFake;
 use Term\Entity\Term;
 
 class TermManagerTest extends \PHPUnit_Framework_TestCase
@@ -44,11 +39,27 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
             ->getId());
     }
 
-    /*public function testGetById ()
+    public function testGetByPath ()
     {
-        $this->assertEquals(2, $this->termManager->get(2)
+        $this->assertEquals(13, $this->termManager->get(explode('/', 'analysis/kurvendiskussion'))
             ->getId());
-        $this->assertEquals(2, $this->termManager->get('2')
+        $this->assertEquals(13, $this->termManager->get(explode('/', 'analysis/kurvendiskussion/'))
             ->getId());
-    }*/
+    }
+    
+    public function testCreateAndDelete(){
+        $termService = $this->termManager->create(array(
+            'term' => array(
+                'name' => 'analysis'
+            ),
+            'parent' => 11,
+        ));
+        $id = $termService->getId();
+        $this->assertNotNull($id);
+        $this->assertEquals($this->termManager->getId(), $termService->getManager()->getId());
+        $this->assertEquals(true, $this->termManager->has($id));
+        $this->assertEquals($id, $this->termManager->get($id)->getId());
+        $this->termManager->delete($termService);
+        $this->assertEquals(false, $this->termManager->has($id));
+    }
 }

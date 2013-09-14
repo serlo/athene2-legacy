@@ -58,7 +58,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllowedChildrenTypes ()
     {
-        $this->sharedTaxonomyManager->setConfig(array(
+        $this->sharedTaxonomyManager->appendConfig(array(
             'types' => array(
                 'foobar' => array(
                     'options' => array()
