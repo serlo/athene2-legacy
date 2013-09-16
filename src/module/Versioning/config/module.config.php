@@ -7,28 +7,31 @@
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 return array(
-    'service_manager' => array(
-        'factories' => array(
-            'Versioning\RepositoryManager' => 'Versioning\RepositoryManager',
-            'Versioning\Service\RepositoryService' => function  ($sm)
-            {
-                $instance = new Versioning\Service\RepositoryService();
-                $instance->setAuthService($sm->get('Auth\Service\AuthService'));
-                $instance->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                
-                $sm->get('Log\Service\LogManager')
-                    ->get('userLog')
-                    ->LogOn($instance->getEventManager(), 'Versioning\Service\RepositoryService', array(
-                    'checkoutRevision',
-                    'addRevision',
-                    'removeRevision'
-                ));
-                
-                return $instance;
-            }
+    'class_resolver' => array(
+        'Versioning\Service\RepositoryServiceInterface' => 'Versioning\Service\RepositoryService'
+    ),
+    'di' => array(
+        'definition' => array(
+            'class' => array(
+                'Versioning\RepositoryManager' => array(
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setClassResolver' => array(
+                        'required' => 'true'
+                    )
+                ),
+                'Versioning\Service\RepositoryService' => array()
+            )
         ),
-        'shared' => array(
-            'Versioning\Service\RepositoryService' => 'false'
+        'instance' => array(
+            'preferences' => array(
+                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
+                'Versioning\Service\RepositoryServiceInterface' => 'Versioning\Service\RepositoryService'
+            ),
+            'Versioning\Service\RepositoryService' => array(
+                'shared' => false
+            )
         )
     )
 );

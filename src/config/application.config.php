@@ -10,6 +10,7 @@ return array(
         'TwbBundle',
         'ZfcBase',
         'Core',
+        'Common',
         'Auth',
         'User',
         'Versioning',
@@ -21,7 +22,6 @@ return array(
         'Subject',
         'Term',
         'Uuid',
-        'Common',
         'ClassResolver',
         'LearningResource',
         'Language'

@@ -11,95 +11,63 @@
  */
 namespace Versioning;
 
-use Core\Creation\AbstractSingleton;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\FactoryInterface;
 use Versioning\Entity\RepositoryInterface;
+use Versioning\Exception\RuntimeException;
 
-class RepositoryManager extends AbstractSingleton implements RepositoryManagerInterface, FactoryInterface
+class RepositoryManager implements RepositoryManagerInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-    
-    protected $repositories = array();
+    use \Common\Traits\InstanceManagerTrait;
 
-    /**
-     * (non-PHPdoc)
-     * @see \Zend\ServiceManager\FactoryInterface::createService()
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    protected static $instance;
+
+    public function __construct()
     {
-        $this->setServiceLocator($serviceLocator);
-        return $this;
+        if (isset($instance))
+            throw new RuntimeException('The RepositoryManager has already been instanciated');
+        
+        static::$instance = $this;
     }
-    
-    protected function getUniqId(RepositoryInterface $repository){
+
+    protected function getUniqId(RepositoryInterface $repository)
+    {
         return get_class($repository) . '::' . $repository->getId();
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::addRepository()
-     */
+
     public function addRepository(RepositoryInterface $repository)
     {
-        if (!$this->hasRepository($repository)){
-            //    throw new \Exception("There is already a repository with the identifier: " . $repository->getIdentifier());
-            $uniq = $this->getUniqId($repository);      
-            
-            $this->getServiceLocator()->setShared('Versioning\Service\RepositoryService', false);
-            $rs = $this->getServiceLocator()->get('Versioning\Service\RepositoryService');
-            
-            $rs->setRepository($repository);
-            $rs->setIdentifier($uniq);
-            $this->repositories[$uniq] = $rs;      
-        }
-        return $this; //->getRepository($repository);
+        $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
+        $name = $this->getUniqId($repository);
+        $instance->setIdentifier($name);
+        $instance->setRepository($repository);
+        $this->addInstance($name, $instance);
+        return $this;
     }
 
     public function hasRepository(RepositoryInterface $repository)
     {
-        $uniq = $this->getUniqId($repository);
-        return array_key_exists($uniq, $this->repositories);
+        return $this->hasInstance($this->getUniqId($repository));
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::removeRepository()
-     */
+
     public function removeRepository(RepositoryInterface $repository)
     {
-        if (!$this->hasRepository($repository))
-            throw new \Exception("There is no repository with the identifier: " . $this->getUniqId($repository));
-        
-        unset($this->repositories[$this->getUniqId($repository)]);
-        return $this;
+        return $this->removeInstance($this->getUniqId($repository));
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::addRepositories()
-     */
+
     public function addRepositories(array $repositories)
     {
-        foreach ($repositories as $repository)
+        foreach ($repositories as $repository) {
             $this->addRepository($repository);
-        
+        }
         return $this;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::getRepository()
-     */
+
     public function getRepository(RepositoryInterface $repository)
     {
-        $uniq = $this->getUniqId($repository);
-        if (!$this->hasRepository($repository))
-            throw new \Exception("There is no repository with the identifier: " . $uniq);
-        return $this->repositories[$uniq];
+        return $this->getInstance($this->getUniqId($repository));
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\RepositoryManagerInterface::getRepositories()
-     */
+
     public function getRepositories()
     {
-        return $this->repositories;
+        return $this->getInstances();
     }
 }
