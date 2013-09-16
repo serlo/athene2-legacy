@@ -20,7 +20,6 @@ return array(
     	'Link',
         'Subject',
         'Term',
-        'Admin',
         'Uuid',
         'Common',
         'ClassResolver',
