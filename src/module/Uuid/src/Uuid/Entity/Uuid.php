@@ -38,41 +38,23 @@ class Uuid implements UuidInterface
     {
         $this->uuid = hash('crc32b', uniqid('uuid.',true));
     }
-
-    /**
-     *
-     * @return field_type $id
-     */
+    
     public function getId ()
     {
         return $this->id;
     }
-
-    /**
-     *
-     * @return string $uuid
-     */
+    
     public function getUuid ()
     {
         return $this->uuid;
     }
-
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
+    
     public function setId ($id)
     {
         $this->id = $id;
         return $this;
     }
-
-    /**
-     *
-     * @param string $uuid            
-     * @return $this
-     */
+    
     public function setUuid ($uuid)
     {
         $this->uuid = $uuid;
