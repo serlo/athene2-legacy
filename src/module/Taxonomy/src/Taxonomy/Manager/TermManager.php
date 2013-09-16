@@ -167,12 +167,12 @@ class TermManager extends AbstractManager implements TermManagerInterface
         
         $hydrator = new DoctrineObject($this->getObjectManager(), $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'));
         
-        $uuid = $this->getUuidManager()->create();
+        $uuid = $this->getUuidManager()->createUuid();
         // don't
         // change
         // this
         $entity = $hydrator->hydrate($data, $entity);
-        $this->getUuidManager()->inject($entity, $uuid);
+        $this->getUuidManager()->injectUuid($entity, $uuid);
         // hydrate
         // sets
         // uuid
