@@ -9,6 +9,23 @@
 namespace User;
 
 return array(
+    'service_manager' => array(
+        'factories' => array(
+            'User\Service\UserLogService' => function  ($sm)
+            {
+                $srv = new Service\UserLogService();
+                $srv->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                $srv->setAuthService($sm->get('Auth\Service\AuthService'));
+                return $srv;
+            },
+            'User\Service\UserService' => function  ($sm)
+            {
+                $srv = new Service\UserService();
+                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                return $srv;
+            }
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
@@ -65,23 +82,6 @@ return array(
             'User\Service\UserService' => array(
                 'shared' => false
             )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'User\Service\UserLogService' => function  ($sm)
-            {
-                $srv = new Service\UserLogService();
-                $srv->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
-                $srv->setAuthService($sm->get('Auth\Service\AuthService'));
-                return $srv;
-            },
-            'User\Service\UserService' => function  ($sm)
-            {
-                $srv = new Service\UserService();
-                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                return $srv;
-            }
         )
     ),
     'router' => array(

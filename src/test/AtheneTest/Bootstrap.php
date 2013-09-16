@@ -38,10 +38,6 @@ class Bootstrap
     protected static $testingNamespaces = array(
         'CommonTest' => 'Common/test/CommonTest',
         'VersioningTest' => 'Versioning/test/VersioningTest',
-        'UserTest' => 'User/test/UserTest',
-        'UuidTest' => 'Uuid/test/UuidTest',
-        'TermTest' => 'Term/test/TermTest',
-        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest'
     );
 
     protected static $modules = array(
@@ -53,46 +49,24 @@ class Bootstrap
         'TwbBundle',
         'ZfcBase',
         'Core',
+        'Common',
         'Auth',
         'User',
         'Versioning',
-        'Editor',
         'Log',
         'Entity',
         'TwbBundle',
-        'Taxonomy',
-        'Navigation',
-        'Link',
+    	'Taxonomy',
+    	'Link',
         'Subject',
         'Term',
-        'Admin',
         'Uuid',
-        'Common',
         'ClassResolver',
         'LearningResource',
         'Language'
     );
 
-    public static $dir, $application;
-
-    /**
-     * Get the application object
-     * @return \Zend\Mvc\ApplicationInterface
-     */
-    public function getApplication()
-    {
-        if ($this->application) {
-            return $this->application;
-        }
-        $appConfig = $this->applicationConfig;
-        Console::overrideIsConsole($this->getUseConsoleRequest());
-        $this->application = Application::init($appConfig);
-
-        $events = $this->application->getEventManager();
-        $events->detach($this->application->getServiceManager()->get('SendResponseListener'));
-
-        return $this->application;
-    }
+    public static $dir;
 
     public static function init ()
     {
@@ -123,24 +97,16 @@ class Bootstrap
             'module_listener_options' => array(
                 'module_paths' => $zf2ModulePaths,
                 'config_glob_paths' => array(
-                    static::findParentPath('config/autoload') . '/{,*.}{global,local}.php'
+                    static::findParentPath('config/autoload') . '/{,*.}{global}.php'
                 ),
                 'config_cache_enabled' => false,
             ),
             'modules' => self::$modules
         );
-
-        //static::$application = $application = Application::init($config);
-        //$serviceManager = $application->getServiceManager();
-        //$serviceManager->setService('ApplicationConfig', $config);
-        //$serviceManager->get('ModuleManager')->loadModules();
         
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
-        $serviceManager->setAllowOverride(true);
-        $serviceManager->setAlias('Doctrine\ORM\EntityManager', 'doctrine.entitymanager.orm_test');
-        $serviceManager->setAllowOverride(false);
         
         static::$serviceManager = $serviceManager;
     }
