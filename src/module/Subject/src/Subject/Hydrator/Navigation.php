@@ -22,8 +22,8 @@ class Navigation
     }
     
     public function inject($config){
-        $language = $this->getLanguageManager()->getRequestLanguage();
-        $subjects = $this->getSubjectManager()->getSubjectsWithLanguage($language);
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $subjects = $this->getSubjectManager()->findSubjectsByLanguage($language);
         foreach ($subjects as $subject) {
             $config = array_merge_recursive($config, include $this->path . $language->getCode() . '/' . strtolower($subject->getName()) . '.config.php');
         }

@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -9,8 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Manager;
 
-interface TermManagerInterface
-{
-}
+namespace SubjectTest;
+
+class Boostrap extends \AtheneTest\Bootstrap {}
+
+Bootstrap::init();
+Bootstrap::chroot();

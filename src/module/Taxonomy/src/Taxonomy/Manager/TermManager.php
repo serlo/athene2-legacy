@@ -17,10 +17,12 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\ErrorException;
+use Language\Service\LanguageServiceInterface;
+use Term\Exception\TermNotFoundException;
 
 class TermManager extends AbstractManager implements TermManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait, \Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig ()
     {
@@ -79,7 +81,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
             $entity = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $term);
         } elseif (is_string($term)) {
             $name = $term;
-            $term = $this->getTermManager()->get($term);
+            $term = $this->getTermManager()->findTermByString($term, $this->getLanguageService());
             $entity = $this->getObjectManager()
                 ->getRepository($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
                 ->findOneBy(array(
@@ -148,13 +150,18 @@ class TermManager extends AbstractManager implements TermManagerInterface
         return $found;
     }
 
-    public function create (array $data)
+    public function create (array $data, LanguageServiceInterface $language)
     {
         $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface');
         
-        $term = $this->getTermManager()->get($data['term']['name']);
+        try {
+            $term = $this->getTermManager()->findTermByString($data['term']['name'], $language);
+        } catch (TermNotFoundException $e){
+            $term = $this->getTermManager()->createTerm($data['term']['name'], $language);            
+        }
         
         $entity->setTerm($term->getEntity());
+        
         if(isset($data['taxonomy'])) unset($data['taxonomy']);
         unset($data['term']);
         

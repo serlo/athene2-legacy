@@ -39,7 +39,7 @@ class UsersController extends AbstractUserController
         $role = $this->getUserManager()->findRole($this->params('role'));
         $view = new ViewModel(array(
             'role' => $role,
-            'users' => $role->getUsers($this->getLanguageManager()->getRequestLanguage()->getEntity())
+            'users' => $role->getUsers($this->getLanguageManager()->getLanguageFromRequest()->getEntity())
         ));
         return $view;
     }

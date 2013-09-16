@@ -294,7 +294,7 @@ return array(
     ),
     'class_resolver' => array(
         __NAMESPACE__ . '\Service\SubjectServiceInterface' => __NAMESPACE__ . '\Service\SubjectService',
-        __NAMESPACE__ . '\Entity\SubjectEntityInterface' => __NAMESPACE__ . '\Entity\Subject',
+        __NAMESPACE__ . '\Entity\SubjectInterface' => 'Taxonomy\Entity\TermTaxonomy',
         __NAMESPACE__ . '\Entity\SubjectTypeInterface' => __NAMESPACE__ . '\Entity\SubjectType'
     ),
     'service_manager' => array(
@@ -309,7 +309,7 @@ return array(
             __NAMESPACE__ . '\Manager\SubjectManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
-                $class = new \Subject\Manager\SubjectManager($config['subject']['instances']);
+                $class = new \Subject\Manager\SubjectManager($config['subject']);
                 
                 $class->setPluginManager($sm->get('Subject\Plugin\PluginManager'));
                 $class->setServiceLocator($sm->get('ServiceManager'));
@@ -417,21 +417,17 @@ return array(
         'definition' => array(
             'class' => array(
                 __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController' => array(
-                    'setSubjectManager' => array(
+                    'setLanguageManager' => array(
                         'required' => 'true'
-                    )
-                ),
-                __NAMESPACE__ . '\Plugin\Curriculum\Controller\EntityController' => array(
-                    'setSubjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                __NAMESPACE__ . '\Plugin\Curriculum\Controller\CurriculumController' => array(
+                    ),
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )
                 ),
                 __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController' => array(
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

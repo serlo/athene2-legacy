@@ -328,7 +328,7 @@ class TermService implements TermServiceInterface
 
     public function setName ($name)
     {
-        $term = $this->getTermManager()->get($name);
+        $term = $this->getTermManager()->getTerm($name);
         $this->getEntity()->set('term', $term->getEntity());
         return $this;
     }

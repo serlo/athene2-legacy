@@ -9,8 +9,25 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Manager;
+namespace Subject\Entity;
 
-interface TermManagerInterface
+interface SubjectInterface
 {
+    /**
+     *
+     * @return int $id
+     */
+    public function getId();
+
+    /**
+     *
+     * @return string $slug
+     */
+    public function getSlug();
+
+    /**
+     *
+     * @return string $name
+     */
+    public function getName();
 }

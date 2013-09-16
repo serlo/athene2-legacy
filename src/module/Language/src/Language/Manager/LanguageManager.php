@@ -32,7 +32,7 @@ class LanguageManager implements LanguageManagerInterface {
 		return $this;
 	}
 	
-	public function getRequestLanguage(){
+	public function getLanguageFromRequest(){
 		return $this->getFallbackLanugage();
 	}
 	

@@ -146,6 +146,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         $instance = parent::createInstance('Taxonomy\Manager\TermManagerInterface');
         $instance->setEntity($entity);
         $instance->setSharedTaxonomyManager($this);
+        $instance->setLanguageService($this->getLanguageManager()->get($entity->getLanguage()->getId()));
         $instance->setConfig($this->config['types'][$entity->getType()
             ->getName()]);
         return $instance;

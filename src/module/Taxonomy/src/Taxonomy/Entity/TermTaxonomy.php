@@ -312,4 +312,8 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         }
         throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
     }
+    
+    public function getLanguage(){
+        return $this->getTaxonomy()->getLanguage();
+    }
 }

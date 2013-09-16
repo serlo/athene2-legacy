@@ -11,18 +11,11 @@
  */
 namespace TaxonomyTest;
 
-use TaxonomyTest\Fake\TaxonomyRepositoryFake;
 use Taxonomy\Manager\SharedTaxonomyManager;
 use AtheneTest\Bootstrap;
-use Taxonomy\Entity\TermTaxonomy;
 use Language\Entity\Language;
 use Uuid\Entity\Uuid;
-use Language\Service\LanguageService;
-use TaxonomyTest\Fake\TaxonomyTypeRepositoryFake;
 use Taxonomy\Entity\Taxonomy;
-use Doctrine\DBAL\LockMode;
-use Taxonomy\Entity\TaxonomyType;
-use AtheneTest\TestCase\ObjectManagerTestCase;
 use Term\Entity\Term;
 
 class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase

@@ -9,8 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Manager;
+namespace SubjectTest\Controller;
 
-interface TermManagerInterface
+use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+
+class TaxonomyControllerTest extends AbstractHttpControllerTestCase
 {
 }
