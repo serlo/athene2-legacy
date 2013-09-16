@@ -9,13 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Navigation\Service;
+namespace Application\Navigation;
 
 use Zend\Navigation\Service\AbstractNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Navigation\Provider\DefaultProvider;
-use Navigation\Provider\ProviderInterface;
-
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Navigation\Exception; 

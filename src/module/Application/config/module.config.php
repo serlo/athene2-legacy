@@ -134,7 +134,7 @@ return array(
                 $transport->setOptions($options);
                 return $transport;
             },
-            'navigation' => 'Navigation\Service\DynamicNavigationFactory'
+            'navigation' => 'Application\Navigation\DynamicNavigationFactory'
         ),
     ),
     'translator' => array(

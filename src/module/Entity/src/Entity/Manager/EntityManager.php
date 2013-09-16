@@ -17,9 +17,9 @@ use Entity\Service\EntityServiceInterface;
 use Uuid\Manager\UuidManagerAwareInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
-class EntityManager extends AbstractManager implements EntityManagerInterface, UuidManagerAwareInterface, ObjectManagerAwareInterface
+class EntityManager extends AbstractManager implements EntityManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
 
     private function getById ($id)
     {
@@ -62,9 +62,9 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         if (! is_object($type))
             throw new \Exception("Type `{$type}` not found.");
         
-        $class = $this->resolveClassName('Entity\Entity\EntityInterface');
+        $entity = $this->getClassResolver()->resolve('Entity\Entity\EntityInterface');
         
-        $entity = $this->getUuidManager()->factory($class);
+        $this->getUuidManager()->injectUuid($entity);
         
         $entity->populate(array(
             'language' => $this->getLanguageManager()
