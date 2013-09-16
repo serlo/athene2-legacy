@@ -52,7 +52,7 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function addRevision(RevisionInterface $revision)
     {
-        if ($this->hasRevision($revision))
+        if ($this->hasRevision($revision->getId()))
             throw new OutOfSynchException("A revision with the ID `$revision->getId()` already exists in this repository.");
         
         $revisions = $this->getRevisions();
@@ -68,8 +68,8 @@ class RepositoryService implements RepositoryServiceInterface
         $revision = $this->getRevision($id);
         
         $id = $revision->getId();
-        $this->getRevisions()->remove($revision);
-        $revision->setRepository(NULL);
+        $this->getRevisions()->removeElement($revision);
+        //$revision->setRepository(NULL);
         
         return $this;
     }

@@ -11,30 +11,80 @@
  */
 namespace VersioningTest;
 
-class RepositoryManagerTest extends TestCase
-{
+use Versioning\RepositoryManager;
+use VersioningTest\Entity\RepositoryFake;
 
-    public function testAddRepository ()
+class RepositoryManagerTest extends \PHPUnit_Framework_TestCase
+{
+    protected function tearDown ()
     {
-        $this->repositoryManager->addRepository($this->repositories[0]);
-        $this->assertNotNull($this->repositoryManager->getRepository($this->repositories[0]));
+        $this->repositoryManager = null;
+        parent::tearDown();
     }
-    
-    public function testAddRepositories ()
+
+    private $repositoryManager;
+
+    public function setUp()
     {
-        $this->repositoryManager->addRepositories($this->repositories);
-        $this->assertNotNull($this->repositoryManager->getRepository($this->repositories[0]));
-        $this->assertNotNull($this->repositoryManager->getRepository($this->repositories[1]));
+        $this->repositoryManager = new RepositoryManager();
+        $this->repositoryManager->setCheckClassInheritance(false);
+        
+        $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager', array(
+            'get',
+            'setShared'
+        ));
+        $classResolverMock = $this->getMock('ClassResolver\ClassResolver', array(
+            'resolveClassName'
+        ));
+        $repositoryServiceMock = $this->getMock('Versioning\Service\RepositoryService', array(
+            'setIdentifier',
+            'setRepository'
+        ));
+        
+        $classResolverMock->expects($this->once())
+            ->method('resolveClassName')
+            ->will($this->returnValue('Versioning\Service\RepositoryService'));
+        $serviceLocatorMock->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($repositoryServiceMock));
+        $repositoryServiceMock->expects($this->once())
+            ->method('setIdentifier');
+        $repositoryServiceMock->expects($this->once())
+            ->method('setRepository');
+        
+        $this->repositoryFakes = array();
+        for ($i = 1; $i < 5; $i ++) {
+            $fake = new RepositoryFake();
+            $fake->setId($i);
+            $this->repositoryFakes[$i] = $fake;
+        }
+        
+        $this->repositoryManager->setClassResolver($classResolverMock);
+        $this->repositoryManager->setServiceLocator($serviceLocatorMock);
     }
-    
-    public function testHasRepository(){
-        $this->repositoryManager->addRepository($this->repositories[0]);
-        $this->assertEquals(true, $this->repositoryManager->hasRepository($this->repositories[0]));        
+
+    public function testAddRepository()
+    {
+        $this->repositoryManager->addRepository($this->repositoryFakes[1]);
+        $this->assertNotNull($this->repositoryManager->getRepository($this->repositoryFakes[1]));
     }
-    
-    public function testRemoveRepository(){
-        $this->repositoryManager->addRepository($this->repositories[0]);
-        $this->repositoryManager->removeRepository($this->repositories[0]);
-        $this->assertEquals(false, $this->repositoryManager->hasRepository($this->repositories[0]));              
+
+    /*public function testAddRepositories()
+    {
+        $this->repositoryManager->addRepositories($this->repositoryFakes);
+        $this->assertEquals($this->repositoryFakes, $this->repositoryManager->getRepositories());
+    }*/
+
+    public function testHasRepository()
+    {
+        $this->repositoryManager->addRepository($this->repositoryFakes[4]);
+        $this->assertEquals(true, $this->repositoryManager->hasRepository($this->repositoryFakes[4]));
+    }
+
+    public function testRemoveRepository()
+    {
+        $this->repositoryManager->addRepository($this->repositoryFakes[3]);
+        $this->repositoryManager->removeRepository($this->repositoryFakes[3]);
+        $this->assertEquals(false, $this->repositoryManager->hasRepository($this->repositoryFakes[3]));
     }
 }
