@@ -13,49 +13,49 @@ namespace Term\Manager;
 
 use Term\Service\TermServiceInterface;
 use Term\Exception\TermNotFoundException;
+use Language\Service\LanguageServiceInterface;
 
 class TermManager implements TermManagerInterface
 {
-
-    use \Language\Manager\LanguageManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait, \Common\Traits\EntityDelegatorTrait, \Common\Traits\InstanceManagerTrait;
-
+    
+    use \Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Common\Traits\InstanceManagerTrait;
 
     /**
      *
      * @param TermServiceInterface $termService            
      */
-    public function add(TermServiceInterface $termService)
+    public function add (TermServiceInterface $termService)
     {
         $this->addInstance($termService->getId(), $termService);
         return $this;
     }
-    
-    public function findTermByName($name){
-        return $this->getByString($name);
-    }
 
-    public function get($term)
+    public function getTerm ($id)
     {
-        if ($term instanceof TermServiceInterface) {
-            $return = $this->getByService($term);
-        } elseif (is_numeric($term)){
-            $return = $this->getById($term);
-        } elseif (is_string($term)) {
-            $return = $this->getByString($term);
-        } else {
+        if (is_numeric($id)) {} else {
             throw new \InvalidArgumentException();
         }
         
-        return $return;
+        if (! $this->hasInstance($id)) {
+            $instance = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Term\Entity\TermEntityInterface'), $id);
+            
+            if (! is_object($instance))
+                throw new TermNotFoundException($id);
+            
+            $this->add($this->createInstanceFromEntity($instance));
+        }
+        
+        return $this->getInstance($id);
     }
 
-    protected function getById($id)
+    protected function getById ($id)
     {
-        $term = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'), $id);
+        $term = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Term\Entity\TermEntityInterface'), $id);
         
         if (! is_object($term))
             throw new TermNotFoundException($id);
-        
         
         if (! $this->hasInstance($term->getId())) {
             $this->add($this->createInstanceFromEntity($term));
@@ -64,7 +64,7 @@ class TermManager implements TermManagerInterface
         return $this->getInstance($term->getId());
     }
 
-    protected function getByService(TermServiceInterface $term)
+    protected function getByService (TermServiceInterface $term)
     {
         if (! $this->hasInstance($term->getId())) {
             $this->add($term);
@@ -72,39 +72,51 @@ class TermManager implements TermManagerInterface
         return $this->getInstance($term->getId());
     }
 
-    protected function getByString($name, $slug = NULL)
+    public function findTermByString ($string, LanguageServiceInterface $language)
     {
-        // TODO: get request language (!)
-        //if (! $this->hasInstance($name)) {
+        $entity = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('Term\Entity\TermEntityInterface'))
+            ->findOneBy(array(
+            'name' => $string,
+            'language' => $language->getId()
+        ));
+        if (! is_object($entity)) {
             $entity = $this->getObjectManager()
-                ->getRepository($this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'))
+                ->getRepository($this->getClassResolver()
+                ->resolveClassName('Term\Entity\TermEntityInterface'))
                 ->findOneBy(array(
-                'name' => $name
+                'slug' => $string,
+                'language' => $language->getId()
             ));
-            if (! is_object($entity)) {
-                $entity = $this->getObjectManager()
-                    ->getRepository($this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'))
-                    ->findOneBy(array(
-                    'slug' => $name
-                ));
-            }
-            if (! is_object($entity)) {
-                $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
-                $entity->setName($name);
-                $entity->setLanguage($this->getLanguageManager()
-                    ->getRequestLanguage()
-                    ->getEntity());
-                $entity->setSlug(($slug ? $slug : strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $name), '-'))));
-                $em = $this->getObjectManager();
-                $em->persist($entity);
-                $em->flush();
-            }
-            $this->add($this->createInstanceFromEntity($entity));
-        //}
+        }
+        
+        if (!is_object($entity))
+            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $string, $language->getId()));
+            
+        $this->add($this->createInstanceFromEntity($entity));
         return $this->getInstance($entity->getId());
     }
 
-    protected function createInstanceFromEntity($entity)
+    public function createTerm ($name, $slug, LanguageServiceInterface $language)
+    {
+        $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
+        $entity->setName($name);
+        $entity->setLanguage($language->getEntity());
+        $entity->setSlug(($slug ? $slug : strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $name), '-'))));
+        
+        $this->getObjectManager()->persist($entity);
+    }
+    
+    public function flush(\Term\Entity\TermEntityInterface $entity = NULL){
+        $this->getObjectManager()->flush($entity);
+    }
+    
+    public function persist(\Term\Entity\TermEntityInterface $entity){
+        $this->getObjectManager()->persist($entity);
+    }
+
+    protected function createInstanceFromEntity ($entity)
     {
         $instance = $this->createInstance('Term\Service\TermServiceInterface');
         $instance->setEntity($entity);

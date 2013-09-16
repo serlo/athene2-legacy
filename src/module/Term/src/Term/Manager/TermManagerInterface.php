@@ -27,5 +27,5 @@ interface TermManagerInterface
      * @param TermServiceInterface|int|string $term
      * @return TermServiceInterface
      */
-    public function get($term);
+    public function getTerm($term);
 }

@@ -68,7 +68,7 @@ class EntityManager extends AbstractManager implements EntityManagerInterface, U
         
         $entity->populate(array(
             'language' => $this->getLanguageManager()
-                ->getRequestLanguage()
+                ->getLanguageFromRequest()
                 ->getEntity(),
             'type' => $type
         ));

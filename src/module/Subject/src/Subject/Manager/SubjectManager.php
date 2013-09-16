@@ -12,111 +12,85 @@
 namespace Subject\Manager;
 
 use Subject\Service\SubjectServiceInterface;
-use Taxonomy\Entity\TermTaxonomyEntityInterface;
 use Subject\Exception\InvalidArgumentException;
-use Core\Service\LanguageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Service\TermServiceInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
-    
-    protected $taxonomyType = 'subject';
+    use\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait;
 
-    public function add(SubjectServiceInterface $service)
+    public function __construct(array $config){
+        $this->setConfig($config);
+    }
+    
+    protected function getDefaultConfig()
     {
-        //$this->names[$service->getName()] = $service->getId();
+        return array(
+            'taxonomy' => 'subject',
+            'instances' => array(),
+            'plugins' => array(),
+        );
+    }
+
+    public function addSubject(SubjectServiceInterface $service)
+    {
         $this->addInstance($service->getId(), $service);
         return $this;
     }
 
-    public function get($subject, $language = NULL)
+    public function getSubject($id)
     {
-        //$this->injectInstances();
-        if (is_numeric($subject)) {
-            $subject = $this->getSharedTaxonomyManager()->getTerm((int) $subject);
-        } elseif (is_string($subject)) {
-            if(!$language)
-                $language = $this->getLanguageManager()->getRequestLanguage();
-            
-            //return $this->getInstance($this->names[$subject]);
-            //$subject = $this->getObjectManager()->getRepository($this->resolveClassName('Taxonomy\Entity\TermT'));
-            $taxonomy = $this->getSharedTaxonomyManager()->get($this->taxonomyType, $language);
-            $subject = $taxonomy->get((string) $subject);
-        } else {
+        if (! is_numeric($id))
             throw new InvalidArgumentException();
-        }
-
-        if(!is_object($subject))
-            throw new InvalidArgumentException(sprintf('Not Found'));
         
-        if(!$this->hasInstance($subject->getId())){
-            $this->add($this->createInstanceFromEntity($subject));
+        if (! $this->hasInstance($id)) {
+            $term = $this->getSharedTaxonomyManager()->getTerm((int) $id);
+            $this->addSubject($this->createInstanceFromEntity($term));
         }
-        return $this->getInstance($subject->getId());
+        
+        return $this->getInstance($id);
     }
-    
-    /*
-     * public function getAllSubjects () { $this->injectInstances(); return $this->getInstances(); }
-     */
-    public function getSubjectsWithLanguage($language)
+
+    public function findSubjectByString($name, LanguageServiceInterface $language)
     {
-        if(is_numeric($language)){
-            $language = $this->getLanguageManager()->get($language);
-        } elseif ($language instanceof LanguageServiceInterface) {
-        } else {
+        if (! is_string($name))
             throw new InvalidArgumentException();
-        }
-        $taxonomy = $this->getSharedTaxonomyManager()->get($this->taxonomyType, $language);
+        
+        $term = $this->getSharedTaxonomyManager()
+            ->get($this->getOption('taxonomy'), $language)
+            ->get((string) $name);
+        return $this->getSubject($term->getId());
+    }
+
+    public function findSubjectsByLanguage(LanguageServiceInterface $language)
+    {
+        $taxonomy = $this->getSharedTaxonomyManager()->get($this->getOption('taxonomy'), $language);
         $collection = new ArrayCollection();
-        foreach($taxonomy->getRootTerms() as $subject){
-            if(!$this->hasInstance($subject->getId())){
-                $this->add($this->createInstanceFromEntity($subject));
-            }
-            $collection->add($this->getInstance($subject->getId()));
+        foreach ($taxonomy->getRootTerms() as $subject) {
+            $collection->add($this->getSubject($subject->getId()));
         }
         return $collection;
     }
 
-    public function has($subject)
+    public function hasSubject($subject)
     {
-        if ($subject instanceof SubjectServiceInterface) {
-            $subject = $subject->getId();
-        }
         return $this->hasInstance($subject);
     }
 
-    /*private function injectInstances()
-    {
-        if (count($this->getInstances())) {
-            return $this;
-        }
-        
-        $em = $this->getObjectManager();
-        $entities = $em->getRepository($this->resolveClassName('Subject\Entity\SubjectEntityInterface'))
-            ->findAll();
-        foreach ($entities as $entity) {
-            $this->add($this->createInstanceFromEntity($entity));
-        }
-        return $this;
-    }*/
-    
-    /*
-     * public function getSubjectFromRequest () { return $this->get(1); }
-     */
-    protected function createInstanceFromEntity(TermServiceInterface $entity)
+    private function createInstanceFromEntity(TermServiceInterface $entity)
     {
         $entity = $entity->getEntity();
         $name = strtolower($entity->getName());
-        if (! isset($this->config[$name]))
+        
+        if (! array_key_exists($name, $this->getOption('instances')))
             throw new \Exception(sprintf('Could not find a configuration for `%s`', $name));
-        $options = $this->config[$name];
         
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
-        $instance->setOptions($options);
+        $instance->setLanguageService($this->getLanguageManager()->get($entity->getLanguage()));
+        $instance->setConfig($this->getOption('instances')[$name]);
         return $instance;
     }
 }

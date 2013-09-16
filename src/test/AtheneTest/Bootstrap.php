@@ -18,6 +18,7 @@ use RuntimeException;
 use Zend\Stdlib\ArrayUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Zend\Mvc\Application;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
@@ -72,7 +73,26 @@ class Bootstrap
         'Language'
     );
 
-    public static $dir;
+    public static $dir, $application;
+
+    /**
+     * Get the application object
+     * @return \Zend\Mvc\ApplicationInterface
+     */
+    public function getApplication()
+    {
+        if ($this->application) {
+            return $this->application;
+        }
+        $appConfig = $this->applicationConfig;
+        Console::overrideIsConsole($this->getUseConsoleRequest());
+        $this->application = Application::init($appConfig);
+
+        $events = $this->application->getEventManager();
+        $events->detach($this->application->getServiceManager()->get('SendResponseListener'));
+
+        return $this->application;
+    }
 
     public static function init ()
     {
@@ -104,10 +124,16 @@ class Bootstrap
                 'module_paths' => $zf2ModulePaths,
                 'config_glob_paths' => array(
                     static::findParentPath('config/autoload') . '/{,*.}{global,local}.php'
-                )
+                ),
+                'config_cache_enabled' => false,
             ),
             'modules' => self::$modules
         );
+
+        //static::$application = $application = Application::init($config);
+        //$serviceManager = $application->getServiceManager();
+        //$serviceManager->setService('ApplicationConfig', $config);
+        //$serviceManager->get('ModuleManager')->loadModules();
         
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);
@@ -158,6 +184,7 @@ class Bootstrap
         $namespaces = array(
             __NAMESPACE__ => __DIR__
         );
+        
         $modulePath = self::findParentPath('module');
         foreach (static::$testingNamespaces as $namespace => $path) {
             $namespaces[$namespace] = $modulePath . '/' . $path;

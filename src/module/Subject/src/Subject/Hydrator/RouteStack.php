@@ -27,9 +27,6 @@ class RouteStack implements HydratorInterface
         foreach ($this->getSubjectManager()->getAllSubjects() as $subject) {
             $routes = array_merge($routes, include $this->path . $subject->getName() . '/routes.config.php');
         }
-        /*
-         * $routes = array( 'subject' => array( 'may_terminate' => true, 'type' => 'Zend\Mvc\Router\Http\Segment', 'options' => array( 'route' => '/subject[/]', 'defaults' => array( 'controller' => 'Subject\Controller\404', 'action' => 'index' ) ), 'child_routes' => $routes ) );
-         */
         $router->addRoutes($routes);
     }
 }
