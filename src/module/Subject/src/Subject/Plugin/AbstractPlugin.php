@@ -12,7 +12,7 @@
 namespace Subject\Plugin;
 
 use Subject\Exception\RuntimeException;
-use Zend\Stdlib\ArrayUtils;
+
 abstract class AbstractPlugin implements PluginInterface
 {
     use \Subject\Service\SubjectServiceAwareTrait, \Common\Traits\ConfigAwareTrait;

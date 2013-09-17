@@ -60,8 +60,13 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         
         $term = $this->getSharedTaxonomyManager()
             ->get($this->getOption('taxonomy'), $language)
-            ->get((string) $name);
-        return $this->getSubject($term->getId());
+            ->findTermByAncestors((array) $name);
+        
+        if(!$this->hasInstance($term->getId())){
+            $this->addSubject($this->createInstanceFromEntity($term));
+        }
+        
+        return $this->getInstance($term->getId());
     }
 
     public function findSubjectsByLanguage(LanguageServiceInterface $language)

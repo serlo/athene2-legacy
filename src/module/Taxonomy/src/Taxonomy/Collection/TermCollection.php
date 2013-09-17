@@ -31,7 +31,8 @@ class TermCollection extends AbstractDelegatorCollection
      */
     public function getFromManager ($key)
     {
-        return $this->getManager()->getTerm($key);
+        $term = $this->getManager()->getTerm($key->getId());
+        return $term;
     }
     
     protected function validManager($manager){

@@ -26,7 +26,7 @@ class TaxonomyController extends AbstractController
         $entities = array();
         
         if($this->params('path', NULL)){
-            $term = $plugin->get(explode('/', $this->params('path', NULL)));
+            $term = $plugin->findTermByAncestors(explode('/', $this->params('path', NULL)));
         }
         
         if ($term && $term->isLinkAllowed('entities')) {

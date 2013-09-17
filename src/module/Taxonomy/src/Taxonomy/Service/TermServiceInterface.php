@@ -8,27 +8,85 @@
  */
 namespace Taxonomy\Service;
 
+use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Taxonomy\Manager\TermManagerInterface;
 
 interface TermServiceInterface
 {
 
-    /*public function setTemplate ($template);
+    public function getDescendantBySlugs(array $path);
 
-    public function getViewModel ();
+    public function getChildrenByTaxonomyName($taxonomy);
 
-    public function getParent ();
+    public function getTemplate($template);
 
-    public function getChildren ();
+    public function getManager();
 
-    public function toArray ();
+    public function setManager(TermManagerInterface $termManager);
 
-    public function linkingAllowed ($targetField);
+    public function hasChildren();
 
-    public function getAllLinks ();
+    public function getParent();
 
-    public function getLinks ($targetField);
+    public function getChildren();
 
-    public function addLink ($targetField, EntityInterface $entity);
+    public function getAllLinks();
 
-    public function removeLink ($targetField, EntityInterface $entity);*/
+    public function hasLinks($targetField);
+
+    public function countLinks($targetField);
+
+    public function getLinks($targetField, $recursive = false, $allowedTaxonomies = NULL);
+
+    public function getCallbackForLink($link);
+
+    public function addLink($targetField, $target);
+
+    public function removeLink($targetField, $target);
+
+    public function hasLink($targetField, $target);
+
+    public function getAllowedLinks();
+
+    public function isLinkAllowed($targetField);
+
+    public function update(array $data);
+
+    public function knowsAncestor($ancestor);
+
+    public function setName($name);
+
+    public function childNodeAllowed(TermTaxonomyEntityInterface $term);
+
+    public function parentNodeAllowed(TermTaxonomyEntityInterface $term);
+
+    public function allowsParentType($type);
+
+    public function allowsChildType($type);
+
+    public function getAllowedParentTypes();
+
+    public function getAllowedChildrenTypes();
+
+    public function radixEnabled();
+
+    public function setParent($parent);
+
+    public function getConfig();
+
+    public function getOption($name);
+
+    public function getId();
+
+    public function getName();
+
+    public function getType();
+
+    public function getTaxonomy();
+
+    public function getTypeName();
+
+    public function getSlug();
+
+    public function getArrayCopy();
 }
