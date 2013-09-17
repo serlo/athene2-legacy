@@ -11,10 +11,6 @@ namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Core\Entity\AbstractEntity;
-use Core\Entity\Language;
-use Core\Entity\Subject;
-use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\Criteria;
 
 /**
@@ -89,8 +85,8 @@ class Role implements RoleInterface
         return $this->roleUsers;
     }
     
-    public function getUsers(LanguageInterface $language = NULL) {
-        $criteria = $language ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
+    public function getUsers($languageId) {
+        $criteria = $languageId ? Criteria::create(Criteria::expr()->eq('language', $languageId)) : Criteria::create(Criteria::expr()->isNull('language'));
         $mn = $this->getRoleUsers()->matching($criteria);
         $collection = new ArrayCollection();
         foreach($mn as $key => $m){

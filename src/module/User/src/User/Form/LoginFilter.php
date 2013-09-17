@@ -9,26 +9,23 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Entity;
+namespace User\Form;
 
-interface RoleInterface
+use Zend\InputFilter\InputFilter;
+
+class LoginFilter extends InputFilter
 {
 
-    public function getId();
-
-    public function setId($id);
-
-    public function getName();
-
-    public function getDescription();
-
-    public function getRoleUsers();
-
-    public function getUsers($languageId);
-
-    public function setName($name);
-
-    public function setDescription($description);
-
-    public function setRoleUsers($roleUsers);
+    public function __construct()
+    {
+        $this->add(array(
+            'name' => 'email',
+            'required' => true
+        ));
+        
+        $this->add(array(
+            'name' => 'password',
+            'required' => true
+        ));
+    }
 }

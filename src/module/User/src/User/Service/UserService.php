@@ -26,36 +26,15 @@ class UserService implements UserServiceInterface
     }
     
     
-    public function getRoles ($language = NULL)
+    public function getRoles (LanguageServiceInterface $language = NULL)
     {
         return $this->getEntity()->getRoles($language);
-        //throw new \ErrorException('Deprecated, use getRoleNames instead');
-        /*$return = array();
-        
-        $user = $this->getEntity();
-        
-        $userRolesCollection = $user->getUserRoles();
-        
-        foreach ($this->getObjectManager()
-            ->getRepository('User\Entity\Role')
-            ->findAll() as $role) {
-            
-            $roleCriteria = Criteria::create()->where(Criteria::expr()->eq("role", $role->getId()));
-            $userRoles = $userRolesCollection->matching($roleCriteria);
-            
-            foreach ($userRoles as $userRole) {
-                if (((($userRole->exists('language') && $language !== NULL) && ($userRole->__get('language')->id == $language)) || (! $userRole->exists('language')) || ($language === NULL))) {
-                    $return[] = $role->get('name');
-                }
-            }
-        }*/
     }
     
     public function updateLoginData(){
         $this->getEntity()->setLogins($this->getEntity()->getLogins()+1);
         $this->getEntity()->setLastLogin(new \DateTime("now"));
         $this->getObjectManager()->persist($this->getEntity());
-        $this->getObjectManager()->flush();
         return $this;
     }
 
@@ -64,9 +43,15 @@ class UserService implements UserServiceInterface
         return $this->getEntity()->getId();
     }
 
-    public function hasRole ($user, $role, $language = NULL, $subject = NULL)
+    public function hasRole ($roleName, LanguageServiceInterface $language = NULL)
     {
-        return array_search($role, $this->getRoles($user, $language, $subject)) !== FALSE;
+        $roles = $this->getRoles($language);
+        foreach($roles as $roleEntity){
+            if($roleEntity->getName() == $roleName){
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getUserRoles ()
@@ -136,7 +121,7 @@ class UserService implements UserServiceInterface
 
     public function getRemoved ()
     {
-        return $this->getEntity()->removed();
+        return $this->getEntity()->getRemoved();
     }
 
     public function setLogs ($logs)

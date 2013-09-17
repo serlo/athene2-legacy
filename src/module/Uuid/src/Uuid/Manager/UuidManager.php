@@ -54,8 +54,8 @@ class UuidManager implements UuidManagerInterface
         ->getRepository($this->getClassResolver()
             ->resolveClassName('Uuid\Entity\UuidInterface'))
             ->findOneByUuid((string) $string);
-            
-        if (! is_object($entity))
+
+        if (!$entity)
             throw new NotFoundException(sprintf('Could not find %s', $string));
         
         return $this->getUuid($entity->getId());
@@ -65,7 +65,6 @@ class UuidManager implements UuidManagerInterface
     {
         $entity = $this->createInstance('Uuid\Entity\UuidInterface');
         $this->getObjectManager()->persist($entity);
-        $this->getObjectManager()->flush($entity);
         $this->addInstance($entity->getId(), $entity);
         return $entity;
     }

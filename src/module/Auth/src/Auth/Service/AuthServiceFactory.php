@@ -51,13 +51,9 @@ class AuthServiceFactory implements FactoryInterface
         //$authService->setSubjectService($serviceLocator->get('Core\Service\SubjectService'));
         
         try {
-            try {
-                $user = $authService->getUserManager()->get($zendAuthService->getIdentity());
-            } catch (\InvalidArgumentException $e) {
-                throw new UserNotFoundException();
-            }
+            $user = $authService->getUserManager()->findUserByEmail($zendAuthService->getIdentity());
         } catch (UserNotFoundException $e) {
-            $user = ($authService->getUserManager()->createUser());
+            throw new UserNotFoundException();
         }
         $authService->setUser($user);
         
