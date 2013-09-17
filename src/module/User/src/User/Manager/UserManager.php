@@ -16,11 +16,17 @@ use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Exception\InvalidArgumentException;
+use User\Service\UserServiceInterface;
 
 class UserManager implements UserManagerInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
+    public function addUser(UserServiceInterface $user){
+        $this->addInstance($user->getId(), $user);
+        return $this;
+    }
+    
     public function getUser($id)
     {
         if (! is_numeric($id))
@@ -47,6 +53,8 @@ class UserManager implements UserManagerInterface
                 $user = $this->findUserByEmail($email);
                 if($user->getRemoved() || !$user->hasRole('login')){
                     $this->getAuthenticationService()->clearIdentity();
+                } else {
+                    return $user;
                 }
             } catch(UserNotFoundException $e){
                 $this->getAuthenticationService()->clearIdentity();
@@ -136,30 +144,6 @@ class UserManager implements UserManagerInterface
     {
         return $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('User\Entity\RoleInterface'), $id);
-    }
-
-    protected function find($id)
-    {
-        if (is_numeric($id)) {
-            $user = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('User\Entity\UserInterface'), $id);
-        } else {
-            $user = $this->getObjectManager()
-                ->getRepository($this->getClassResolver()
-                ->resolveClassName('User\Entity\UserInterface'))
-                ->findOneBy(array(
-                'email' => $id
-            ));
-            if (! is_object($user)) {
-                $user = $this->getObjectManager()
-                    ->getRepository($this->getClassResolver()
-                    ->resolveClassName('User\Entity\UserInterface'))
-                    ->findOneBy(array(
-                    'username' => $id
-                ));
-            }
-        }
-        return $user;
     }
 
     protected function createService(UserInterface $entity)
