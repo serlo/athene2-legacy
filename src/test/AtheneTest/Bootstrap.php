@@ -38,7 +38,8 @@ class Bootstrap
     protected static $testingNamespaces = array(
         'CommonTest' => 'Common/test/CommonTest',
         'VersioningTest' => 'Versioning/test/VersioningTest',
-        'UserTest' => 'User/test/UserTest'
+        'UserTest' => 'User/test/UserTest',
+        'TermTest' => 'Term/test/TermTest'
     );
 
     protected static $modules = array(

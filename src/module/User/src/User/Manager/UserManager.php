@@ -148,8 +148,10 @@ class UserManager implements UserManagerInterface
 
     protected function createService(UserInterface $entity)
     {
+        /* @var $instance \User\Service\UserServiceInterface */
         $instance = $this->createInstance('User\Service\UserServiceInterface');
         $instance->setEntity($entity);
+        $instance->setManager($this);
         return $instance;
     }
 }

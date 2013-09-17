@@ -81,7 +81,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
             $entity = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $term);
         } elseif (is_string($term)) {
             $name = $term;
-            $term = $this->getTermManager()->findTermByString($term, $this->getLanguageService());
+            $term = $this->getTermManager()->findTermBySlug($term, $this->getLanguageService());
             $entity = $this->getObjectManager()
                 ->getRepository($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
                 ->findOneBy(array(
@@ -92,7 +92,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         } elseif (is_array($term)) {
             $name = implode(', ', $term);
             $entity = $this->getEntityByPath($term);
-        } elseif ($term instanceof \Term\Entity\TermEntityInterface || $term instanceof \Term\Service\TermServiceInterface) {
+        } elseif ($term instanceof \Term\Entity\TermInterface || $term instanceof \Term\Service\TermServiceInterface) {
             $entity = $this->getObjectManager()
                 ->getRepository($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'))
                 ->findOneBy(array(
@@ -155,7 +155,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface');
         
         try {
-            $term = $this->getTermManager()->findTermByString($data['term']['name'], $language);
+            $term = $this->getTermManager()->findTermBySlug($data['term']['name'], $language);
         } catch (TermNotFoundException $e){
             $term = $this->getTermManager()->createTerm($data['term']['name'], $language);            
         }
