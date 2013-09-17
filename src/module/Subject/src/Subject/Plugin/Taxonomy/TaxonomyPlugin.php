@@ -90,7 +90,11 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function get ($term)
     {
-        return $this->getTermManager()->get($term);
+        return $this->getTermManager()->getTerm($term);
+    }
+    
+    public function findTermByAncestors($ancestors){
+        return $this->getTermManager()->findTermByAncestors($ancestors);
     }
 
     public function getAll ()
@@ -102,7 +106,7 @@ class TaxonomyPlugin extends AbstractPlugin
     {
         $return = $this->getSharedTaxonomyManager()
             ->get($this->getOption('taxonomy_parent'))
-            ->get($taxonomyParentType)
+            ->findTermByAncestors((array) $taxonomyParentType)
             ->getChildrenByTaxonomyName($this->getOption('taxonomy'));
         return $return;
     }

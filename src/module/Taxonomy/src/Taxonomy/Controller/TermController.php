@@ -79,7 +79,7 @@ class TermController extends AbstractController
             if ($form->isValid()) {
                 $this->getSharedTaxonomyManager()
                     ->get($data['taxonomy'])
-                    ->create($form->getData());
+                    ->createTerm($form->getData());
                 
                 $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich hinzugefügt!');
                 $this->redirect()->toUrl($this->params()

@@ -24,8 +24,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Taxonomy",
-     * inversedBy="terms")
+     * @ORM\ManyToOne(targetEntity="Taxonomy",inversedBy="terms")
      */
     protected $taxonomy;
 
@@ -36,19 +35,14 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
     protected $term;
 
     /**
-     * @ORM\OneToMany(targetEntity="TermTaxonomy",
-     * mappedBy="parent")
-     * @ORM\OrderBy({"weight"
-     * =
-     * "ASC"})
+     * @ORM\OneToMany(targetEntity="TermTaxonomy",mappedBy="parent")
+     * @ORM\OrderBy({"weight"="ASC"})
      */
     private $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TermTaxonomy",
-     * inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id",
-     * referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="TermTaxonomy",inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id",referencedColumnName="id")
      */
     private $parent;
 
@@ -73,105 +67,91 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
     );
     
     /*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Taxonomy\Entity\TermTaxonomyEntityInterface::getDescription()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyEntityInterface::getDescription()
      */
-    public function getDescription ()
+    public function getDescription()
     {
         // TODO
-    // Auto-generated
-    // method
-    // stub
+        // Auto-generated
+        // method
+        // stub
     }
     
     /*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Taxonomy\Entity\TermTaxonomyEntityInterface::hasParent()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyEntityInterface::hasParent()
      */
-    public function hasParent ()
+    public function hasParent()
     {
         return (is_object($this->getParent()));
     }
 
-    public function hasChildren ()
+    public function hasChildren()
     {
         return $this->getChildren()->count() != 0;
     }
     
     /*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Taxonomy\Entity\TermTaxonomyEntityInterface::setDescription()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyEntityInterface::setDescription()
      */
-    public function setDescription ($description)
+    public function setDescription($description)
     {
         // TODO
-    // Auto-generated
-    // method
-    // stub
+        // Auto-generated
+        // method
+        // stub
     }
 
-    public function getFactory ()
+    public function getFactory()
     {
         return $this->getTaxonomy()->getFactory();
     }
 
     /**
      *
-     * @return field_type
-     *         $taxonomy
+     * @return field_type $taxonomy
      */
-    public function getTaxonomy ()
+    public function getTaxonomy()
     {
         return $this->taxonomy;
     }
 
-    public function countEntities ()
+    public function countEntities()
     {
         return $this->get('entities')->count();
     }
 
     /**
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     *         $children
+     * @return \Doctrine\Common\Collections\ArrayCollection $children
      */
-    public function getChildren ()
+    public function getChildren()
     {
         return $this->children;
     }
 
     /**
      *
-     * @return field_type
-     *         $parent
+     * @return field_type $parent
      */
-    public function getParent ()
+    public function getParent()
     {
         return $this->parent;
     }
 
     /**
      *
-     * @return field_type
-     *         $name
+     * @return field_type $name
      */
-    public function getName ()
+    public function getName()
     {
         return $this->getTerm()->getName();
     }
 
     /**
      *
-     * @return field_type
-     *         $slug
+     * @return field_type $slug
      */
-    public function getSlug ()
+    public function getSlug()
     {
         return $this->getTerm()->getSlug();
     }
@@ -181,7 +161,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param field_type $taxonomy            
      * @return $this
      */
-    public function setTaxonomy ($taxonomy)
+    public function setTaxonomy($taxonomy)
     {
         $this->taxonomy = $taxonomy;
         return $this;
@@ -192,7 +172,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param \Doctrine\Common\Collections\ArrayCollection $children            
      * @return $this
      */
-    public function setChildren ($children)
+    public function setChildren($children)
     {
         $this->children = $children;
         return $this;
@@ -203,7 +183,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param field_type $parent            
      * @return $this
      */
-    public function setParent ($parent)
+    public function setParent($parent)
     {
         $this->parent = $parent;
         return $this;
@@ -211,10 +191,9 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
 
     /**
      *
-     * @return field_type
-     *         $weight
+     * @return field_type $weight
      */
-    public function getWeight ()
+    public function getWeight()
     {
         return $this->weight;
     }
@@ -224,7 +203,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param field_type $weight            
      * @return $this
      */
-    public function setWeight ($weight)
+    public function setWeight($weight)
     {
         $this->weight = $weight;
         return $this;
@@ -235,7 +214,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param field_type $name            
      * @return $this
      */
-    public function setName ($name)
+    public function setName($name)
     {
         $this->getTerm()->setName($name);
         return $this;
@@ -246,7 +225,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param field_type $slug            
      * @return $this
      */
-    public function setSlug ($slug)
+    public function setSlug($slug)
     {
         $this->getTerm()->setSlug($slug);
         return $this;
@@ -254,10 +233,9 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
 
     /**
      *
-     * @return field_type
-     *         $term
+     * @return field_type $term
      */
-    public function getTerm ()
+    public function getTerm()
     {
         return $this->term;
     }
@@ -267,18 +245,18 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
      * @param field_type $term            
      * @return $this
      */
-    public function setTerm ($term)
+    public function setTerm($term)
     {
         $this->term = $term;
         return $this;
     }
 
-    public function __construct ()
+    public function __construct()
     {
         $this->children = new ArrayCollection();
     }
 
-    public function getPath ()
+    public function getPath()
     {
         $path = array();
         $term = $this;
@@ -293,7 +271,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         return array_reverse($path);
     }
 
-    public function getArrayCopy ()
+    public function getArrayCopy()
     {
         return array(
             'id' => $this->getId(),
@@ -305,15 +283,16 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyEntityInterface
         );
     }
 
-    public function getRelations ($field)
+    public function getRelations($field)
     {
         if (in_array($field, $this->allowedRelations)) {
             return $this->$field;
         }
         throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
     }
-    
-    public function getLanguage(){
+
+    public function getLanguage()
+    {
         return $this->getTaxonomy()->getLanguage();
     }
 }

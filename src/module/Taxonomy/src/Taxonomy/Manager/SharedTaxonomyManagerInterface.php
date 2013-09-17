@@ -8,28 +8,26 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Service\TermServiceInterface;
-
 interface SharedTaxonomyManagerInterface
 {
-    /**
-     * 
-     * @param unknown $name
-     * @return TaxonomyManagerInterface
-     */
-    public function get ($taxonomy, $language);
+
+    public function add(TermManagerInterface $termManager);
 
     /**
-     *
-     * @param TermManagerInterface
-     * @return $this
-     */
-    public function add(TermManagerInterface $manager);
-    
-    /**
-     * returns a term by it's unique id
      * 
-     * @return TermServiceInterface
+     * @param unknown $taxonomy
+     * @param string $language
+     * @return TermManagerInterface
      */
-    public function getTerm($id);
+    public function get($taxonomy, $language = NULL);
+
+    public function getTerm($element);
+
+    public function has($entity);
+
+    public function deleteTerm($id);
+
+    public function getCallback($link);
+
+    public function getAllowedChildrenTypes($type);
 }
