@@ -9,9 +9,20 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Manager;
+namespace User\View\Helper;
 
-abstract class AbstractManager
+use Zend\View\Helper\AbstractHelper;
+use Auth\Service\AuthServiceInterface;
+
+class Authenticator extends AbstractHelper
 {
-    use \Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\AuthenticationServiceAwareTrait;
+
+	/**
+	 * @return AuthServiceInterface
+	 */
+	public function __invoke()
+	{
+		return $this->getAuthenticationService();
+	}
 }

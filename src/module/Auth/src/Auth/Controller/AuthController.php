@@ -167,7 +167,7 @@ class AuthController extends AbstractActionController
             $form->setData($post);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->getUserManager()->create($form->getData());
+                $this->getUserManager()->createUser($form->getData());
                 
                 $params = compact(array(
                     'data'

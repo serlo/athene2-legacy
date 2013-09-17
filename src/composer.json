@@ -21,13 +21,10 @@
 		"widmogrod/zf2-assetic-module" : "dev-master",
 		"zf-commons/zfc-rbac" : "dev-master",
 		"php" : ">=5.3.3",
-		"zf-commons/zfc-base" : "0.*",
-		"zf-commons/zfc-user" : "0.*",
+		"zf-commons/zfc-base" : "dev-master",
 		"zendframework/zendframework" : "dev-master",
-		"twitter/bootstrap" : "dev-master"
+		"twitter/bootstrap" : "dev-master",
+    	"zf-commons/zfc-user": "dev-master"
 	},
-    "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
-    },
 	"minimum-stability" : "dev"
 }

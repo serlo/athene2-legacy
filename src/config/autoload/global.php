@@ -14,15 +14,15 @@ return array(
     'doctrine' => array(
         'entitymanager' => array(
             'orm_default' => array(
-                'connection'    => 'orm_default',
+                'connection' => 'orm_default',
                 'configuration' => 'orm_default'
-            ),
+            )
         )
     ),
     'service_manager' => array(
         'aliases' => array(
             'EntityManager' => 'Doctrine\ORM\EntityManager'
-                )
+        )
     ),
     'dbParams' => array(
         'host' => '',
@@ -39,6 +39,11 @@ return array(
             'username' => 'aeneas.rekkas@serlo.org',
             'password' => 'v4uf428g'
         )
+    ),
+    'session' => array(
+        'use_cookies' => true,
+        'cookie_secure' => false,
+        'remember_me_seconds' => 1800,
     ),
     'di' => array(
         'instance' => array(

@@ -12,7 +12,6 @@ class AuthService implements AuthServiceInterface
 {
     use \User\Manager\UserManagerAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
-    
     private $authService, $hashService, $adapter, $authResult, $aclService, $userService, $controller;
 
     private $entityManager;
@@ -150,7 +149,7 @@ class AuthService implements AuthServiceInterface
         
         if ($result->isValid()) {
             $this->setUser($this->getUserManager()
-                ->get($email));
+                ->findUserByEmail($email));
             $this->getUser()->updateLoginData();
         }
         
@@ -176,7 +175,7 @@ class AuthService implements AuthServiceInterface
     public function getRoles()
     {
         if($this->loggedIn()){
-            return $this->getUserManager()->get($this->getUser())->getRoleNames($this->getLanguageManager()->getLanguageFromRequest());
+            return $this->getUserManager()->get($this->getUser()->getId())->getRoleNames($this->getLanguageManager()->getLanguageFromRequest());
         } else {
             return array('guest');
         }

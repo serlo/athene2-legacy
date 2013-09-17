@@ -72,9 +72,15 @@ $settings = array(
 $serviceManager = array(
     'factories' => array(
         'standard_identity' => function ($sm) {
-                $as = $sm->get('Auth\Service\AuthService');
-                $identity = new \ZfcRbac\Identity\StandardIdentity($as->getRoles());
-                return $identity;
+                $user = $sm->get('User\Manager\UserManager')->getUserFromAuthenticator();
+                $ls = $sm->get('Language\Manager\LanguageManager')->getLanguageFromRequest();
+                
+                if(!$user){
+                    return new \ZfcRbac\Identity\StandardIdentity('guest');
+                } else {
+                    $identity = new \ZfcRbac\Identity\StandardIdentity($user->getRoleNames($ls));
+                    return $identity;
+                }
         },
     )
 );
