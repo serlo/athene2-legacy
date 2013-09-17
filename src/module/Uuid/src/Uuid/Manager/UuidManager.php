@@ -1,12 +1,14 @@
 <?php
 /**
- * 
+ *
+ *
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Uuid\Manager;
@@ -20,7 +22,7 @@ class UuidManager implements UuidManagerInterface
 {
     use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
-    public function injectUuid (UuidHolder $entity, UuidInterface $uuid = NULL)
+    public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL)
     {
         if (! $uuid) {
             $uuid = $this->createUuid();
@@ -28,12 +30,12 @@ class UuidManager implements UuidManagerInterface
         return $entity->setUuid($uuid);
     }
 
-    public function getUuid ($key)
+    public function getUuid($key)
     {
-        if (!is_numeric($key))
+        if (! is_numeric($key))
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($key)));
-            
-        if(!$this->hasInstance($key)){
+        
+        if (! $this->hasInstance($key)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
                 ->resolveClassName('Uuid\Entity\UuidInterface'), (int) $key);
             
@@ -45,23 +47,30 @@ class UuidManager implements UuidManagerInterface
         
         return $this->getInstance($key);
     }
-    
-    public function findUuidByName($string){
-        if(!is_string($string))
+
+    public function findUuidByName($string)
+    {
+        if (! is_string($string))
             throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($string)));
         
         $entity = $this->getObjectManager()
-        ->getRepository($this->getClassResolver()
+            ->getRepository($this->getClassResolver()
             ->resolveClassName('Uuid\Entity\UuidInterface'))
-            ->findOneByUuid((string) $string);
-
-        if (!$entity)
+            ->findOneBy(array(
+            'uuid' => (string) $string
+        ));
+        
+        if (! $entity)
             throw new NotFoundException(sprintf('Could not find %s', $string));
+        
+        if (! $this->hasInstance($entity->getId())) {
+            $this->addInstance($entity->getId(), $entity);
+        }
         
         return $this->getUuid($entity->getId());
     }
 
-    public function createUuid ()
+    public function createUuid()
     {
         $entity = $this->createInstance('Uuid\Entity\UuidInterface');
         $this->getObjectManager()->persist($entity);

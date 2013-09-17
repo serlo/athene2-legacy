@@ -50,7 +50,7 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue($uuidMock));
         $repositoryMock->expects($this->any())
-            ->method('findOneByUuid')
+            ->method('findOneBy')
             ->will($this->returnValue($uuidMock));
         $entityManagerMock->expects($this->any())
             ->method('getRepository')
@@ -64,7 +64,6 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateUuid ()
     {
         $uuid = $this->uuidManager->createUuid();
-        //$this->assertEquals(2, $uuid->getId());
     }
 
     public function testGetUuid ()

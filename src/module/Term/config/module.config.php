@@ -13,7 +13,7 @@ namespace Term;
 
 return array(
     'class_resolver' => array(
-        'Term\Entity\TermEntityInterface' => 'Term\Entity\Term',
+        'Term\Entity\TermInterface' => 'Term\Entity\Term',
         'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
     ),
     'di' => array(
