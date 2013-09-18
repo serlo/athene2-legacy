@@ -11,33 +11,33 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Manager\TermManagerInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 
-trait TermManagerAwareTrait
+trait TaxonomyManagerAwareTrait
 {
 
     /**
      *
-     * @var TermManagerInterface
+     * @var TaxonomyManagerInterface
      */
     protected $termManager;
 
     /**
      *
-     * @return TermManagerInterface
+     * @return TaxonomyManagerInterface
      *         $termManager
      */
-    public function getTermManager ()
+    public function getTaxonomyManager ()
     {
         return $this->termManager;
     }
 
     /**
      *
-     * @param TermManagerInterface $termManager            
+     * @param TaxonomyManagerInterface $termManager            
      * @return $this
      */
-    public function setTermManager (TermManagerInterface $termManager)
+    public function setTaxonomyManager (TaxonomyManagerInterface $termManager)
     {
         $this->termManager = $termManager;
         return $this;

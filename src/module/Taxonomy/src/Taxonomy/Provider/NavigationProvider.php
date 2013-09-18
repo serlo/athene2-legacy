@@ -15,7 +15,7 @@ namespace Taxonomy\Provider;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager;
 use Application\Navigation\ProviderInterface;
-use Taxonomy\Manager\TermManager;
+use Taxonomy\Manager\TaxonomyManager;
 
 class NavigationProvider implements ProviderInterface
 {
@@ -34,7 +34,7 @@ class NavigationProvider implements ProviderInterface
 
     /**
      *
-     * @var TermManager
+     * @var TaxonomyManager
      */
     protected $termManager;
 

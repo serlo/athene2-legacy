@@ -16,14 +16,14 @@ use Term\Manager\TermManagerInterface;
 interface TermServiceInterface
 {
     /**
-     * @param TermManagerInterface $manager
+     * @param TaxonomyManagerInterface $manager
      * @return $this
      */
     public function setManager(TermManagerInterface $manager);
     
     /**
      * 
-     * @return TermManagerInterface
+     * @return TaxonomyManagerInterface
      */
     public function getManager();
 

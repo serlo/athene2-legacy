@@ -26,7 +26,7 @@ abstract class TopicPlugin extends TaxonomyPlugin
     }
     
     function getRoots(){
-        return $this->getSharedTaxonomyManager()->get('topic')->getRootTerms();
+        return $this->getSharedTaxonomyManager()->getTaxonomy('topic')->getRootTerms();
     }
 
     function getTopic ()

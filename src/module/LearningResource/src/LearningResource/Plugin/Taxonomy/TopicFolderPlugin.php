@@ -14,6 +14,6 @@ namespace LearningResource\Plugin\Taxonomy;
 class TopicFolderPlugin extends TopicPlugin
 {
     public function getTermManager(){
-        return $this->getSharedTaxonomyManager()->get('topic-folder');
+        return $this->getSharedTaxonomyManager()->getTaxonomy('topic-folder');
     }
 }

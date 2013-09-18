@@ -13,10 +13,10 @@ namespace Taxonomy;
 
 return array(
     'class_resolver' => array(
-        'Taxonomy\Manager\TermManagerInterface' => 'Taxonomy\Manager\TermManager',
+        'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
-        'Taxonomy\Entity\TaxonomyEntityInterface' => 'Taxonomy\Entity\Taxonomy',
-        'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy',
+        'Taxonomy\Entity\TaxonomyInterface' => 'Taxonomy\Entity\Taxonomy',
+        'Taxonomy\Entity\TermTaxonomyInterface' => 'Taxonomy\Entity\TermTaxonomy',
         'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService',
         'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
     ),
@@ -94,10 +94,10 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Taxonomy\Manager\SharedTaxonomyManager' => (function  ($sm)
+            'Taxonomy\Manager\SharedTaxonomyManager' => (function ($sm)
             {
                 $config = $sm->get('config');
-                //$config = new \Zend\Config\Config($config['taxonomy']);
+                // $config = new \Zend\Config\Config($config['taxonomy']);
                 $instance = new \Taxonomy\Manager\SharedTaxonomyManager($config['taxonomy']);
                 $instance->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
                 $instance->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
@@ -119,7 +119,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Taxonomy\Manager\TermManager' => array(
+                'Taxonomy\Manager\TaxonomyManagerInterface' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),

@@ -47,7 +47,7 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
 
     public function getTermService()
     {
-        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()
+        return $this->getSharedTaxonomyManager()->getTermService($this->getEntity()
             ->getId());
     }
 

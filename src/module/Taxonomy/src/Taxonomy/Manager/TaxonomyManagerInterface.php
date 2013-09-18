@@ -12,10 +12,10 @@
 namespace Taxonomy\Manager;
 
 use Language\Service\LanguageServiceInterface;
-use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Service\TermServiceInterface;
 
-interface TermManagerInterface
+interface TaxonomyManagerInterface
 {
 
     /**

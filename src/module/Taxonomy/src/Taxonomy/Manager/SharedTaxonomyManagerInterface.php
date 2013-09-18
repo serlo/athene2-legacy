@@ -8,26 +8,58 @@
  */
 namespace Taxonomy\Manager;
 
+use Language\Service\LanguageServiceInterface;
+use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Service\TermServiceInterface;
+
 interface SharedTaxonomyManagerInterface
 {
 
-    public function add(TermManagerInterface $termManager);
-
     /**
      * 
-     * @param unknown $taxonomy
-     * @param string $language
-     * @return TermManagerInterface
+     * @param TaxonomyManagerInterface $termManager
+     * @return $this
      */
-    public function get($taxonomy, $language = NULL);
+    public function addTaxonomy(TaxonomyManagerInterface $termManager);
 
-    public function getTerm($element);
+    /**
+     *
+     * @param string $taxonomy            
+     * @param LanguageServiceInterface $language            
+     * @return TaxonomyManagerInterface
+     */
+    public function getTaxonomy($taxonomy,  $language = NULL);
 
-    public function has($entity);
+    /**
+     *
+     * @param TermTaxonomyInterface|numeric $term            
+     * @return TermServiceInterface
+     */
+    public function getTermService($term);
 
-    public function deleteTerm($id);
+    /**
+     *
+     * @param numeric $id          
+     * @return $this
+     */
+    public function hasTaxonomy($id);
 
+    /**
+     *
+     * @param int|TermTaxonomyInterface $term            
+     * @return $this
+     */
+    public function deleteTerm($term);
+
+    /**
+     *
+     * @param unknown $link            
+     */
     public function getCallback($link);
 
+    /**
+     *
+     * @param unknown $type            
+     */
     public function getAllowedChildrenTypes($type);
 }

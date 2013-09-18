@@ -46,7 +46,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             throw new InvalidArgumentException();
         
         if (! $this->hasInstance($id)) {
-            $term = $this->getSharedTaxonomyManager()->getTerm((int) $id);
+            $term = $this->getSharedTaxonomyManager()->getTermService((int) $id);
             $this->addSubject($this->createInstanceFromEntity($term));
         }
         
@@ -59,7 +59,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             throw new InvalidArgumentException();
         
         $term = $this->getSharedTaxonomyManager()
-            ->get($this->getOption('taxonomy'), $language)
+            ->getTaxonomy($this->getOption('taxonomy'), $language)
             ->findTermByAncestors((array) $name);
         
         if(!$this->hasInstance($term->getId())){
@@ -71,7 +71,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     public function findSubjectsByLanguage(LanguageServiceInterface $language)
     {
-        $taxonomy = $this->getSharedTaxonomyManager()->get($this->getOption('taxonomy'), $language);
+        $taxonomy = $this->getSharedTaxonomyManager()->getTaxonomy($this->getOption('taxonomy'), $language);
         $collection = new ArrayCollection();
         foreach ($taxonomy->getRootTerms() as $subject) {
             $collection->add($this->getSubject($subject->getId()));

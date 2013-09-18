@@ -8,7 +8,6 @@
  */
 namespace Taxonomy\Entity;
 
-use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -18,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy")
  */
-class Taxonomy implements TaxonomyEntityInterface
+class Taxonomy implements TaxonomyInterface
 {
 
     /**
@@ -27,13 +26,13 @@ class Taxonomy implements TaxonomyEntityInterface
      * @ORM\GeneratedValue
      */
     protected $id;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
      * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $terms;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      */
@@ -46,42 +45,46 @@ class Taxonomy implements TaxonomyEntityInterface
     protected $type;
 
     /**
+     *
      * @return field_type $language
      */
-    public function getLanguage ()
+    public function getLanguage()
     {
         return $this->language;
     }
 
-	/**
-     * @param field_type $language
+    /**
+     *
+     * @param field_type $language            
      * @return $this
      */
-    public function setLanguage ($language)
+    public function setLanguage($language)
     {
         $this->language = $language;
         return $this;
     }
 
-	/**
+    /**
+     *
      * @return field_type $id
      */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }
 
-	/**
-     * @param field_type $id
+    /**
+     *
+     * @param field_type $id            
      * @return $this
      */
-    public function setId ($id)
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
 
-	/**
+    /**
      *
      * @return field_type $type
      */
@@ -125,8 +128,9 @@ class Taxonomy implements TaxonomyEntityInterface
     {
         $this->terms = new ArrayCollection();
     }
-    
-    public function getName(){
+
+    public function getName()
+    {
         return $this->getType()->getName();
     }
 }

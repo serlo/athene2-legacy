@@ -18,6 +18,6 @@ class AbstractController extends AbstractActionController
     use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
     
     protected function getTerm(){
-        return $this->getSharedTaxonomyManager()->getTerm($this->params('id'));
+        return $this->getSharedTaxonomyManager()->getTermService($this->params('id'));
     }
 }
