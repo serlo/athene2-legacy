@@ -20,13 +20,13 @@ class TermService implements TermServiceInterface
 
     /**
      *
-     * @var TermManagerInterface
+     * @var TaxonomyManagerInterface
      */
     protected $manager;
 
     /**
      *
-     * @return TermManagerInterface $manager
+     * @return TaxonomyManagerInterface $manager
      */
     public function getManager()
     {
@@ -35,7 +35,7 @@ class TermService implements TermServiceInterface
 
     /**
      *
-     * @param TermManagerInterface $manager            
+     * @param TaxonomyManagerInterface $manager            
      * @return $this
      */
     public function setManager(TermManagerInterface $manager)

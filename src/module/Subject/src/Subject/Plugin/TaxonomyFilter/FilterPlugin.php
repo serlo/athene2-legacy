@@ -38,14 +38,14 @@ class FilterPlugin extends AbstractPlugin
     public function setTopic ($path)
     {
         $this->topic = $this->getSharedTaxonomyManager()
-            ->get('topic')
+            ->getTaxonomy('topic')
             ->get($path);
         return $this;
     }
 
     public function setCurriculum ($curriculumId)
     {
-        $this->curriculum = $this->getSharedTaxonomyManager()->getTerm($curriculumId);
+        $this->curriculum = $this->getSharedTaxonomyManager()->getTermService($curriculumId);
         return $this;
     }
 
@@ -72,7 +72,7 @@ class FilterPlugin extends AbstractPlugin
 
     public function getTermManager ()
     {
-        return $this->getSharedTaxonomyManager()->get('curriculum');
+        return $this->getSharedTaxonomyManager()->getTaxonomy('curriculum');
     }
 
     public function filterEntities (Collection $entities, TermServiceInterface $topic)
@@ -130,7 +130,7 @@ class FilterPlugin extends AbstractPlugin
 
     public function addEntity ($entity, $to)
     {
-        $term = $this->getSharedTaxonomyManager()->getTerm($to);
+        $term = $this->getSharedTaxonomyManager()->getTermService($to);
         
         if ($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
@@ -177,7 +177,7 @@ class FilterPlugin extends AbstractPlugin
     public function getSchoolTypeRootFolders ()
     {
         return $this->getSharedTaxonomyManager()
-            ->get('school-type')
+            ->getTaxonomy('school-type')
             ->getRootTerms();
     }
 }

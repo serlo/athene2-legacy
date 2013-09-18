@@ -35,7 +35,7 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function addEntity ($entity, $to)
     {
-        $term = $this->getSharedTaxonomyManager()->getTerm($to);
+        $term = $this->getSharedTaxonomyManager()->getTermService($to);
         
         if (! $term->knowsAncestor($this->getSubjectService()
             ->getTermService()))
@@ -54,7 +54,7 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function getTermManager ()
     {
-        return $this->getSharedTaxonomyManager()->get($this->getOption('taxonomy'));
+        return $this->getSharedTaxonomyManager()->getTaxonomy($this->getOption('taxonomy'));
     }
 
     public function getEnabledEntityTypes ()
@@ -105,9 +105,9 @@ class TaxonomyPlugin extends AbstractPlugin
     public function getRootFolders ($taxonomyParentType)
     {
         $return = $this->getSharedTaxonomyManager()
-            ->get($this->getOption('taxonomy_parent'))
+            ->getTaxonomy($this->getOption('taxonomy_parent'))
             ->findTermByAncestors((array) $taxonomyParentType)
-            ->getChildrenByTaxonomyName($this->getOption('taxonomy'));
+            ->findChildrenByTaxonomyName($this->getOption('taxonomy'));
         return $return;
     }
 }

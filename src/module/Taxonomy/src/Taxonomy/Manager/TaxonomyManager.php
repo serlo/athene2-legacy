@@ -12,7 +12,7 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Taxonomy\Entity\TermTaxonomyInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Collection\TermCollection;
 use Language\Service\LanguageServiceInterface;
@@ -21,7 +21,7 @@ use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Service\TermServiceInterface;
 
-class TermManager extends AbstractManager implements TermManagerInterface
+class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
     use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
@@ -52,7 +52,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
         
         if (! $this->hasInstance($id)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface'), (int) $id);
+                ->resolveClassName('Taxonomy\Entity\TermTaxonomyInterface'), (int) $id);
             
             if (! is_object($entity))
                 throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
@@ -102,7 +102,7 @@ class TermManager extends AbstractManager implements TermManagerInterface
 
     public function createTerm(array $data, LanguageServiceInterface $language)
     {
-        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyEntityInterface');
+        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyInterface');
         
         try {
             $term = $this->getTermManager()->findTermBySlug($data['term']['name'], $language);
@@ -141,10 +141,10 @@ class TermManager extends AbstractManager implements TermManagerInterface
         return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
-    protected function createService(TermTaxonomyEntityInterface $entity)
+    protected function createService(TermTaxonomyInterface $entity)
     {
         $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
-        $instance->setEntity($entity);
+        $instance->setTermTaxonomy($entity);
         if ($entity->getTaxonomy() !== $this->getEntity()) {
             $instance->setManager($this->getSharedTaxonomyManager()
                 ->get($entity->getTaxonomy()->getId()));

@@ -8,7 +8,6 @@
  */
 namespace Taxonomy\Entity;
 
-use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -19,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="taxonomy_type")
  */
-class TaxonomyType
+class TaxonomyType implements TaxonomyTypeInterface
 {
 
     /**
@@ -42,10 +41,9 @@ class TaxonomyType
 
     /**
      *
-     * @return field_type
-     *         $id
+     * @return field_type $id
      */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }
@@ -55,7 +53,7 @@ class TaxonomyType
      * @param field_type $id            
      * @return $this
      */
-    public function setId ($id)
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
@@ -63,10 +61,9 @@ class TaxonomyType
 
     /**
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     *         $taxonomies
+     * @return \Doctrine\Common\Collections\ArrayCollection $taxonomies
      */
-    public function getTaxonomies ()
+    public function getTaxonomies()
     {
         return $this->taxonomies;
     }
@@ -76,7 +73,7 @@ class TaxonomyType
      * @param \Doctrine\Common\Collections\ArrayCollection $taxonomies            
      * @return $this
      */
-    public function setTaxonomies ($taxonomies)
+    public function setTaxonomies($taxonomies)
     {
         $this->taxonomies = $taxonomies;
         return $this;
@@ -84,20 +81,18 @@ class TaxonomyType
 
     /**
      *
-     * @return field_type
-     *         $factory
+     * @return field_type $factory
      */
-    public function getFactory ()
+    public function getFactory()
     {
         return $this->factory;
     }
 
     /**
      *
-     * @return field_type
-     *         $name
+     * @return field_type $name
      */
-    public function getName ()
+    public function getName()
     {
         return $this->name;
     }
@@ -107,7 +102,7 @@ class TaxonomyType
      * @param field_type $factory            
      * @return $this
      */
-    public function setFactory ($factory)
+    public function setFactory($factory)
     {
         $this->factory = $factory;
         return $this;
@@ -118,13 +113,13 @@ class TaxonomyType
      * @param field_type $name            
      * @return $this
      */
-    public function setName ($name)
+    public function setName($name)
     {
         $this->name = $name;
         return $this;
     }
 
-    public function __construct ()
+    public function __construct()
     {
         $this->taxonomies = new ArrayCollection();
     }

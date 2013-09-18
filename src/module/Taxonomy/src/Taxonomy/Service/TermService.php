@@ -10,13 +10,13 @@ namespace Taxonomy\Service;
 
 use Taxonomy\Exception\LinkNotAllowedException;
 use Taxonomy\Exception\InvalidArgumentException;
-use Taxonomy\Entity\TermTaxonomyEntityInterface;
+use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\NotFoundException;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Taxonomy\Manager\TermManagerInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 
 class TermService implements TermServiceInterface
 {
@@ -24,8 +24,27 @@ class TermService implements TermServiceInterface
     use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
+     * 
+     * @param TermTaxonomyInterface $term
+     * @return $this;
+     */
+    public function setTermTaxonomy(TermTaxonomyInterface $term){
+        $this->setEntity($term);
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return TermTaxonomyInterface $term
+     */
+    public function getTermTaxonomy(){
+        return $this->getEntity();
+    }
+    
+    
+    /**
      *
-     * @var \Taxonomy\Manager\TermManagerInterface
+     * @var \Taxonomy\Manager\TaxonomyManagerInterface
      */
     protected $manager;
 
@@ -49,12 +68,12 @@ class TermService implements TermServiceInterface
         return $found;
     }
 
-    public function getChildrenByTaxonomyName($taxonomy)
+    public function findChildrenByTaxonomyName($taxonomy)
     {
-        $tax = $this->getSharedTaxonomyManager()->get($taxonomy);
-        $array = $this->getEntity()
+        $tax = $this->getSharedTaxonomyManager()->getTaxonomy($taxonomy);
+        $array = $this->getTermTaxonomy()
             ->getChildren()
-            ->matching(Criteria::create()->where(Criteria::expr()->eq('taxonomy', $tax->getEntity())));
+            ->matching(Criteria::create()->where(Criteria::expr()->eq('taxonomy', $tax->getTermTaxonomy())));
         $collection = new TermCollection($array, $this->getSharedTaxonomyManager());
         return $collection;
     }
@@ -69,32 +88,20 @@ class TermService implements TermServiceInterface
 
     public function hasChildren()
     {
-        return $this->getEntity()->hasChildren();
+        return $this->getTermTaxonomy()->hasChildren();
     }
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getParent()
-     */
     public function getParent()
     {
-        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()
+        return $this->getSharedTaxonomyManager()->getTermService($this->getTermTaxonomy()
             ->getParent());
     }
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getChildren()
-     */
     public function getChildren()
     {
-        /*
-         * return $this->getManager()->get($this->getEntity() ->get('children'));
-         */
-        return new TermCollection($this->getEntity()->getChildren(), $this->getSharedTaxonomyManager());
+        return new TermCollection($this->getTermTaxonomy()->getChildren(), $this->getSharedTaxonomyManager());
     }
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getAllLinks()
-     */
     public function getAllLinks()
     {
         $return = array();
@@ -109,8 +116,8 @@ class TermService implements TermServiceInterface
         if (! $this->isLinkAllowed($targetField))
             return false;
         
-        return $this->getEntity()
-            ->getRelations($targetField)
+        return $this->getTermTaxonomy()
+            ->getAssociatedions($targetField)
             ->count() != 0;
     }
 
@@ -119,20 +126,17 @@ class TermService implements TermServiceInterface
         if (! $this->isLinkAllowed($targetField))
             return 0;
         
-        return $this->getEntity()
-            ->getRelations($targetField)
+        return $this->getTermTaxonomy()
+            ->getAssociated($targetField)
             ->count();
     }
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::getLinks()
-     */
     public function getLinks($targetField, $recursive = false, $allowedTaxonomies = NULL)
     {
         if (! $recursive) {
             $this->isLinkAllowedWithException($targetField);
             $callback = $this->getCallbackForLink($targetField);
-            return $callback($this->getServiceLocator(), $this->getEntity()->getRelations($targetField));
+            return $callback($this->getServiceLocator(), $this->getTermTaxonomy()->getAssociated($targetField));
         } else {
             $collection = new ArrayCollection();
             $collection = $this->injectLinks($collection, $this, $targetField, $allowedTaxonomies);
@@ -148,7 +152,7 @@ class TermService implements TermServiceInterface
         }
         
         if ($term->isLinkAllowed($targetField)) {
-            foreach ($term->getEntity()->getRelations($targetField) as $link) {
+            foreach ($term->getTermTaxonomy()->getAssociated($targetField) as $link) {
                 $collection->add($link);
             }
         }
@@ -170,20 +174,17 @@ class TermService implements TermServiceInterface
     {
         $target = $this->findEntity($target);
         $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getEntity();
-        $entity->getRelations($targetField)->add($target);
+        $entity = $this->getTermTaxonomy();
+        $entity->getAssociated($targetField)->add($target);
         return $this;
     }
     
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Service\TermServiceInterface::removeLink()
-     */
     public function removeLink($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getEntity();
+        $entity = $this->getTermTaxonomy();
         
-        $entity->getRelations($targetField)->remove($target->getId());
+        $entity->getAssociated($targetField)->remove($target->getId());
         $target->getTerms()->remove($entity->getId());
         
         $this->getObjectManager()->flush();
@@ -198,7 +199,7 @@ class TermService implements TermServiceInterface
     public function hasLink($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
-        $targets = $this->getEntity()->getRelations($targetField);
+        $targets = $this->getTermTaxonomy()->getAssociated($targetField);
         return $targets->contains($target->getId());
     }
 
@@ -257,19 +258,19 @@ class TermService implements TermServiceInterface
     public function setName($name)
     {
         $term = $this->getTermManager()->getTerm($name);
-        $this->getEntity()->set('term', $term->getEntity());
+        $this->getTermTaxonomy()->set('term', $term->getTermTaxonomy());
         return $this;
     }
 
     protected $radix = false;
 
-    public function childNodeAllowed(TermTaxonomyEntityInterface $term)
+    public function childNodeAllowed(TermTaxonomyInterface $term)
     {
         return $this->allowsChildType($term->getTaxonomy()
             ->getName());
     }
 
-    public function parentNodeAllowed(TermTaxonomyEntityInterface $term)
+    public function parentNodeAllowed(TermTaxonomyInterface $term)
     {
         return $this->allowsParentType($term->getTaxonomy()
             ->getName());
@@ -277,13 +278,13 @@ class TermService implements TermServiceInterface
 
     public function allowsParentType($type)
     {
-        return in_array($type, $this->getOption('options')['allowed_parents']); // disabled: ; || $this->getTaxonomy()->getName() == $type;
+        return in_array($type, $this->getOption('options')['allowed_parents']);
     }
 
     public function allowsChildType($type)
     {
         return $this->getSharedTaxonomyManager()
-            ->get($type)
+            ->getTaxonomy($type)
             ->allowsParentType($this->getTaxonomy()
             ->getName());
     }
@@ -305,7 +306,7 @@ class TermService implements TermServiceInterface
 
     public function setParent($parent)
     {
-        $entity = $this->getEntity();
+        $entity = $this->getTermTaxonomy();
         if ($parent == NULL) {
             if ($this->radixEnabled()) {
                 $entity->setParent($parent);
@@ -333,39 +334,39 @@ class TermService implements TermServiceInterface
 
     public function getId()
     {
-        return $this->getEntity()->getId();
+        return $this->getTermTaxonomy()->getId();
     }
 
     public function getName()
     {
-        return $this->getEntity()->getName();
+        return $this->getTermTaxonomy()->getName();
     }
 
     public function getType()
     {
-        return $this->getEntity()->getType();
+        return $this->getTermTaxonomy()->getType();
     }
 
     public function getTaxonomy()
     {
-        return $this->getEntity()->getTaxonomy();
+        return $this->getTermTaxonomy()->getTaxonomy();
     }
 
     public function getTypeName()
     {
-        return $this->getEntity()
+        return $this->getTermTaxonomy()
             ->getType()
             ->getName();
     }
 
     public function getSlug()
     {
-        return $this->getEntity()->getSlug();
+        return $this->getTermTaxonomy()->getSlug();
     }
 
     public function getArrayCopy()
     {
-        return $this->getEntity()->getArrayCopy();
+        return $this->getTermTaxonomy()->getArrayCopy();
     }
 
     public function getManager()
@@ -373,7 +374,7 @@ class TermService implements TermServiceInterface
         return $this->manager;
     }
 
-    public function setManager(TermManagerInterface $termManager)
+    public function setManager(TaxonomyManagerInterface $termManager)
     {
         $this->manager = $termManager;
         return $this;

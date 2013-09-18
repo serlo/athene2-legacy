@@ -16,13 +16,13 @@ trait TermManagerAwareTrait
 
     /**
      *
-     * @var TermManagerInterface
+     * @var TaxonomyManagerInterface
      */
     protected $termManager;
 
     /**
      *
-     * @return TermManagerInterface $termManager
+     * @return TaxonomyManagerInterface $termManager
      */
     public function getTermManager()
     {
@@ -31,7 +31,7 @@ trait TermManagerAwareTrait
 
     /**
      *
-     * @param TermManagerInterface $termManager            
+     * @param TaxonomyManagerInterface $termManager            
      * @return $this
      */
     public function setTermManager(TermManagerInterface $termManager)

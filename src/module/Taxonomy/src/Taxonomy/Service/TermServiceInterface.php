@@ -8,21 +8,21 @@
  */
 namespace Taxonomy\Service;
 
-use Taxonomy\Entity\TermTaxonomyEntityInterface;
-use Taxonomy\Manager\TermManagerInterface;
+use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 
 interface TermServiceInterface
 {
 
     public function getDescendantBySlugs(array $path);
 
-    public function getChildrenByTaxonomyName($taxonomy);
+    public function findChildrenByTaxonomyName($taxonomy);
 
     public function getTemplate($template);
 
     public function getManager();
 
-    public function setManager(TermManagerInterface $termManager);
+    public function setManager(TaxonomyManagerInterface $termManager);
 
     public function hasChildren();
 
@@ -56,9 +56,9 @@ interface TermServiceInterface
 
     public function setName($name);
 
-    public function childNodeAllowed(TermTaxonomyEntityInterface $term);
+    public function childNodeAllowed(TermTaxonomyInterface $term);
 
-    public function parentNodeAllowed(TermTaxonomyEntityInterface $term);
+    public function parentNodeAllowed(TermTaxonomyInterface $term);
 
     public function allowsParentType($type);
 
