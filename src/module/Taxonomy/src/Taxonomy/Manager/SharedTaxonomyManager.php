@@ -16,6 +16,7 @@ use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Doctrine\Common\Collections\Criteria;
+use Taxonomy\Exception\RuntimeException;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
@@ -103,7 +104,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     public function getCallback($link)
     {
         if (! array_key_exists($link, $this->getOption('links')))
-            throw new InvalidArgumentException(sprintf('Callback for type %s not found', $link));
+            throw new RuntimeException(sprintf('Callback for type %s not found', $link));
         
         return $this->getOption('links')[$link];
     }
@@ -112,7 +113,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     {
         $return = array();
         foreach ($this->getOption('types') as $name => $config) {
-            if (array_key_exists('allowed_parents', (array) $this->getOption('options')) && in_array($type, $this->getOption('options')['allowed_parents'])) {
+            if (array_key_exists('allowed_parents', (array) $config['options']) && in_array($type, $config['options']['allowed_parents'])) {
                 $return[] = $name;
             }
         }
