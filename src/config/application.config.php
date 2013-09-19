@@ -9,7 +9,6 @@ return array(
         'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
-        'Core',
         'Common',
         'User',
         'Versioning',

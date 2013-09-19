@@ -9,7 +9,6 @@
 namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Core\Entity\AbstractEntity;
 
 /**
  * A
@@ -18,7 +17,7 @@ use Core\Entity\AbstractEntity;
  * @ORM\Entity
  * @ORM\Table(name="role_user")
  */
-class RoleUser extends AbstractEntity
+class RoleUser
 {
 
     /**
