@@ -13,37 +13,16 @@
 namespace Taxonomy\Manager;
 
 use Taxonomy\Entity\TermTaxonomyInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Collection\TermCollection;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Entity\TaxonomyTypeInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
     use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'options' => array(
-                'templates' => array(
-                    'update' => 'taxonomy/taxonomy/update'
-                ),
-                'allowed_parents' => array(),
-                'allowed_links' => array(),
-                'radix_enabled' => true
-            )
-        );
-    }
-
-    /**
-     *
-     * @var SharedTaxonomyManager
-     */
-    protected $manager;
 
     public function getTerm($id)
     {
@@ -57,7 +36,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
             if (! is_object($entity))
                 throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
             
-            $this->addTerm($this->createService($entity));
+            $this->addInstance($entity->getId(), $this->createService($entity));
         }
         
         return $this->getInstance($id);
@@ -68,7 +47,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         if (! count($ancestors))
             throw new RuntimeException('Ancestors are empty');
         
-        $terms = $this->getRootTermEntities();
+        $terms = $this->getEntity()->getSaplings();
         foreach ($ancestors as $element) {
             if (is_string($element) && strlen($element) > 0) {
                 foreach ($terms as $term) {
@@ -85,8 +64,8 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         if (! is_object($found))
             throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $ancestors)));
         
-        if (! $this->hasTermService($found->getId())) {
-            $this->addTerm($this->createService($found));
+        if (! $this->hasInstance($found->getId())) {
+            $this->addInstance($found->getId(), $this->createService($found));
         }
         
         return $this->getInstance($found->getId());
@@ -95,29 +74,6 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     public function hasTermService($id)
     {
         return $this->hasInstance($id);
-    }
-
-    public function updateTerm($id, array $data)
-    {}
-
-    public function createTerm(array $data, LanguageServiceInterface $language)
-    {
-        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyInterface');
-        
-        try {
-            $term = $this->getTermManager()->findTermBySlug($data['term']['name'], $language);
-        } catch (TermNotFoundException $e) {
-            $term = $this->getTermManager()->createTerm($data['term']['name'], $language);
-        }
-        
-        $this->getUuidManager()->injectUuid($entity);
-        $entity->setTerm($term->getEntity());
-        $entity->setTaxonomy($this->getEntity());
-        $this->hydrateTerm($data, $entity);
-        
-        $this->getObjectManager()->persist($entity);
-        $instance = $this->createService($entity);
-        return $instance;
     }
 
     public function deleteTerm($term)
@@ -129,30 +85,37 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
-    public function addTerm(TermServiceInterface $termService)
+    public function getSaplings()
     {
-        $this->addInstance($termService->getId(), $termService);
-        return $termService->getId();
-    }
-
-    public function getRootTerms()
-    {
-        $collection = $this->getRootTermEntities();
+        $collection = $this->getEntity()->getSaplings();
         return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
-    protected function createService(TermTaxonomyInterface $entity)
+    public function createTerm(array $data, TaxonomyManagerInterface $taxonomy, LanguageServiceInterface $language)
     {
-        $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
-        $instance->setTermTaxonomy($entity);
-        if ($entity->getTaxonomy() !== $this->getEntity()) {
-            $instance->setManager($this->getSharedTaxonomyManager()
-                ->get($entity->getTaxonomy()->getId()));
-        } else {
-            $instance->setManager($this);
+        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyInterface');
+        
+        try {
+            $term = $this->getTermManager()->findTermBySlug($data['term']['name'], $language);
+        } catch (TermNotFoundException $e) {
+            $term = $this->getTermManager()->createTerm($data['term']['name'], $language);
         }
-        $this->addTerm($instance);
+        
+        $this->getUuidManager()->injectUuid($entity);
+        $entity->setTerm($term->getEntity());
+        $this->getEntity()->addTerm($term);
+        $this->hydrateTerm($data, $entity);
+        
+        $this->getObjectManager()->persist($entity);
+        $instance = $this->createService($entity);
         return $instance;
+    }
+
+    public function updateTerm($id, array $data)
+    {
+        $term = $this->getTermService($id);
+        $this->getObjectManager()->persist($term);
+        return $this;
     }
 
     public function getAllowedChildrenTypes()
@@ -181,7 +144,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this->getEntity()->getType();
     }
 
-    public function setType($type)
+    public function setType(TaxonomyTypeInterface $type)
     {
         return $this->getEntity()->setType($type);
     }
@@ -196,39 +159,35 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this->getEntity()->setTerms($terms);
     }
 
-    /**
-     *
-     * @return SharedTaxonomyManager $manager
-     */
-    public function getManager()
+    protected function createService(TermTaxonomyInterface $entity)
     {
-        return $this->manager;
-    }
-
-    /**
-     *
-     * @param SharedTaxonomyManager $manager            
-     * @return $this
-     */
-    public function setManager(SharedTaxonomyManager $manager)
-    {
-        $this->manager = $manager;
-        return $this;
-    }
-
-    protected function getRootTermEntities()
-    {
-        $collection = new ArrayCollection();
-        $terms = $this->getEntity()->getTerms();
-        foreach ($terms as $entity) {
-            if (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this->getEntity())) {
-                $collection->add($entity);
-            }
+        $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
+        $instance->setTermTaxonomy($entity);
+        if ($entity->getTaxonomy() !== $this->getEntity()) {
+            $instance->setManager($this->getSharedTaxonomyManager()
+                ->get($entity->getTaxonomy()
+                ->getId()));
+        } else {
+            $instance->setManager($this);
         }
-        return $collection;
+        return $instance;
     }
 
-    private function hydrateTerm(array $data, TermTaxonomyEntityInterface $term)
+    protected function getDefaultConfig()
+    {
+        return array(
+            'options' => array(
+                'templates' => array(
+                    'update' => 'taxonomy/taxonomy/update'
+                ),
+                'allowed_parents' => array(),
+                'allowed_links' => array(),
+                'radix_enabled' => true
+            )
+        );
+    }
+
+    private function hydrateTerm(array $data, TermTaxonomyInterface $term)
     {
         $columns = array(
             'parent' => 'setParent',

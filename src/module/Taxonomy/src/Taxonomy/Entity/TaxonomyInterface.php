@@ -27,8 +27,6 @@ interface TaxonomyInterface
     public function setType($type);
 
     public function getTerms();
-
-    public function setTerms($terms);
-
+    
     public function getName();
 }

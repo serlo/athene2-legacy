@@ -12,68 +12,107 @@
 namespace Taxonomy\Manager;
 
 use Language\Service\LanguageServiceInterface;
-use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Collection\TermCollection;
+use Taxonomy\Entity\TaxonomyTypeInterface;
 
 interface TaxonomyManagerInterface
 {
 
     /**
      *
-     * @param int $id            
+     * @param numeric $id            
      * @return TermServiceInterface
      */
     public function getTerm($id);
 
     /**
+     * Finds a Term by its ancestors.
+     *
+     * <code>
+     * $param = array(0 => 'path', 1 => 'to', 2 => 'something');
+     * $this->findTermByAncestors(); // returns "something"
+     * </code>
+     *
+     * Note that the first array element needs to be a sapling node
      *
      * @param array $ancestors            
      * @return TermServiceInterface
      */
     public function findTermByAncestors(array $ancestors);
 
-    public function hasTermService($id);
+    /**
+     *
+     * @param int $id            
+     * @return $this
+     */
+    public function deleteTerm($id);
 
+    /**
+     * Returns the nodes on the highest level.
+     * Nodes on the highest level do either not have a parent node or do have a different taxonomy type than their parents.
+     *
+     * @return \Taxonomy\Collection\TermCollection
+     */
+    public function getSaplings();
+
+    /**
+     *
+     * @param array $data            
+     * @param TaxonomyManagerInterface $taxonomy            
+     * @param LanguageServiceInterface $language            
+     * @return TermServiceInterface
+     */
+    public function createTerm(array $data, TaxonomyManagerInterface $taxonomy, LanguageServiceInterface $language);
+
+    /**
+     *
+     * @param int $id            
+     * @param array $data            
+     * @return $this
+     */
     public function updateTerm($id, array $data);
 
-    public function createTerm(array $data, LanguageServiceInterface $language);
+    /**
+     *
+     * @return array
+     */
+    public function getAllowedChildrenTypes();
 
-    public function deleteTerm($term);
+    /**
+     *
+     * @param string $type            
+     * @return bool
+     */
+    public function allowsParentType($type);
 
-    public function addTerm(TermServiceInterface $termService);
+    /**
+     *
+     * @return array
+     */
+    public function getAllowedParentTypes();
+
+    /**
+     *
+     * @return int $id
+     */
+    public function getId();
+
+    /**
+     *
+     * @return TaxonomyTypeInterface
+     */
+    public function getType();
+
+    /**
+     *
+     * @param TaxonomyTypeInterface $type            
+     */
+    public function setType(TaxonomyTypeInterface $type);
 
     /**
      *
      * @return TermCollection
      */
-    public function getRootTerms();
-
-    public function getAllowedChildrenTypes();
-
-    public function allowsParentType($type);
-
-    public function getAllowedParentTypes();
-
-    public function getId();
-
-    public function getType();
-
-    public function setType($type);
-
     public function getTerms();
-
-    public function setTerms($terms);
-
-    /**
-     *
-     * @return SharedTaxonomyManager $manager
-     */
-    public function getManager();
-
-    /**
-     *
-     * @param SharedTaxonomyManager $manager            
-     * @return $this
-     */
-    public function setManager(SharedTaxonomyManager $manager);
 }

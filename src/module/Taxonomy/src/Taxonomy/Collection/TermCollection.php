@@ -18,25 +18,35 @@ use Taxonomy\Exception\InvalidArgumentException;
 class TermCollection extends AbstractDelegatorCollection
 {
     
-	/* (non-PHPdoc)
-     * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
+    /*
+     * (non-PHPdoc) @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
      */
-    public function getDelegate ($delegator)
+    public function getDelegate($delegator)
     {
         return $delegator->getEntity();
     }
-
-	/* (non-PHPdoc)
-     * @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
+    
+    /*
+     * (non-PHPdoc) @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
      */
-    public function getFromManager ($key)
+    public function getFromManager($key)
     {
-        $term = $this->getManager()->getTerm($key->getId());
+        $term = $this->getManager()->getTerm($key);
         return $term;
     }
-    
-    protected function validManager($manager){
-        if(!$manager instanceof SharedTaxonomyManagerInterface)
+
+    protected function validManager($manager)
+    {
+        if (! $manager instanceof SharedTaxonomyManagerInterface)
             throw new InvalidArgumentException(sprintf('`%s` does not implement `SharedTaxonomyManagerInterface`', get_class($manager)));
+    }
+
+    /**
+     *
+     * @return SharedTaxonomyManagerInterface
+     */
+    public function getManager()
+    {
+        return parent::getManager();
     }
 }

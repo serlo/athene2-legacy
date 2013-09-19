@@ -38,14 +38,14 @@ class FilterPlugin extends AbstractPlugin
     public function setTopic ($path)
     {
         $this->topic = $this->getSharedTaxonomyManager()
-            ->getTaxonomy('topic')
+            ->findTaxonomyByName('topic')
             ->get($path);
         return $this;
     }
 
     public function setCurriculum ($curriculumId)
     {
-        $this->curriculum = $this->getSharedTaxonomyManager()->getTermService($curriculumId);
+        $this->curriculum = $this->getSharedTaxonomyManager()->getTerm($curriculumId);
         return $this;
     }
 
@@ -72,7 +72,7 @@ class FilterPlugin extends AbstractPlugin
 
     public function getTermManager ()
     {
-        return $this->getSharedTaxonomyManager()->getTaxonomy('curriculum');
+        return $this->getSharedTaxonomyManager()->findTaxonomyByName('curriculum');
     }
 
     public function filterEntities (Collection $entities, TermServiceInterface $topic)
@@ -130,12 +130,12 @@ class FilterPlugin extends AbstractPlugin
 
     public function addEntity ($entity, $to)
     {
-        $term = $this->getSharedTaxonomyManager()->getTermService($to);
+        $term = $this->getSharedTaxonomyManager()->getTerm($to);
         
         if ($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
         
-        $term->addLink('entities', $entity->getEntity());
+        $term->addAssociation('entities', $entity->getEntity());
         $term->persistAndFlush();
         
         return $this;
@@ -171,13 +171,13 @@ class FilterPlugin extends AbstractPlugin
 
     public function getRootFolders ()
     {
-        return $this->getTermManager()->getRootTerms();
+        return $this->getTermManager()->getSaplings();
     }
 
     public function getSchoolTypeRootFolders ()
     {
         return $this->getSharedTaxonomyManager()
-            ->getTaxonomy('school-type')
-            ->getRootTerms();
+            ->findTaxonomyByName('school-type')
+            ->getSaplings();
     }
 }

@@ -132,8 +132,8 @@ class TermController extends AbstractController
     protected function getTerm ($id = NULL)
     {
         if ($id) {
-            return $this->getSharedTaxonomyManager()->getTermService($id);
+            return $this->getSharedTaxonomyManager()->getTerm($id);
         }
-        return $this->getSharedTaxonomyManager()->getTermService($this->getParam('id'));
+        return $this->getSharedTaxonomyManager()->getTerm($this->getParam('id'));
     }
 }

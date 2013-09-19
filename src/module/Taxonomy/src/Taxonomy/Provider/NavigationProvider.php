@@ -56,7 +56,7 @@ class NavigationProvider implements ProviderInterface
         $this->serviceLocator = $serviceLocator;
         $this->entityManager = $serviceLocator->get('EntityManager');
         $this->languageService = $serviceLocator->get('Language\Manager\LanguageManager')->get($this->options['language']);
-        $this->termManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')->get($this->options['type'], $this->languageService)->findTermByAncestors((array) $this->options['parent']);
+        $this->termManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')->findTaxonomyByName($this->options['type'], $this->languageService)->findTermByAncestors((array) $this->options['parent']);
     }
 
     public function provideArray($maxDepth = 1)

@@ -44,6 +44,11 @@ class Taxonomy implements TaxonomyInterface
      */
     protected $type;
 
+    public function __construct()
+    {
+        $this->terms = new ArrayCollection();
+    }
+
     /**
      *
      * @return field_type $language
@@ -113,24 +118,25 @@ class Taxonomy implements TaxonomyInterface
         return $this->terms;
     }
 
-    /**
-     *
-     * @param \Doctrine\Common\Collections\ArrayCollection $terms            
-     * @return $this
-     */
-    public function setTerms($terms)
+    public function addTerm($term)
     {
-        $this->terms = $terms;
-        return $this;
-    }
-
-    public function __construct()
-    {
-        $this->terms = new ArrayCollection();
+        $this->getTerms()->add($term);
     }
 
     public function getName()
     {
         return $this->getType()->getName();
+    }
+
+    public function getSaplings()
+    {
+        $collection = new ArrayCollection();
+        $terms = $this->getTerms();
+        foreach ($terms as $entity) {
+            if (! $entity->hasParent() || ($entity->hasParent() && $entity->getParent()->getTaxonomy() !== $this)) {
+                $collection->add($entity);
+            }
+        }
+        return $collection;
     }
 }
