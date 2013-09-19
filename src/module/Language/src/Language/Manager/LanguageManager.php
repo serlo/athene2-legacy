@@ -36,6 +36,10 @@ class LanguageManager implements LanguageManagerInterface {
 		return $this->getFallbackLanugage();
 	}
 	
+	public function getLanguage($language = NULL){
+	    return $this->getLanguage($language);
+	}
+	
 	public function get($language = NULL){
 	    $id = $language;
 	    if($language === NULL){

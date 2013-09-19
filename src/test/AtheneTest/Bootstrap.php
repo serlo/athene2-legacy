@@ -36,6 +36,7 @@ class Bootstrap
     protected static $serviceManager;
 
     protected static $testingNamespaces = array(
+        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
         'CommonTest' => 'Common/test/CommonTest',
         'VersioningTest' => 'Versioning/test/VersioningTest',
         'UserTest' => 'User/test/UserTest',
@@ -50,9 +51,7 @@ class Bootstrap
         'ZfcRbac',
         'TwbBundle',
         'ZfcBase',
-        'Core',
         'Common',
-        'Auth',
         'User',
         'Versioning',
         'Log',
