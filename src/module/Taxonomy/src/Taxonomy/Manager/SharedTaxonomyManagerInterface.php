@@ -16,40 +16,19 @@ interface SharedTaxonomyManagerInterface
 {
 
     /**
-     * 
-     * @param TaxonomyManagerInterface $termManager
-     * @return $this
-     */
-    public function addTaxonomy(TaxonomyManagerInterface $termManager);
-
-    /**
      *
      * @param string $taxonomy            
      * @param LanguageServiceInterface $language            
      * @return TaxonomyManagerInterface
      */
-    public function getTaxonomy($taxonomy,  $language = NULL);
+    public function findTaxonomyByName($taxonomy, LanguageServiceInterface $language);
 
     /**
      *
      * @param TermTaxonomyInterface|numeric $term            
      * @return TermServiceInterface
      */
-    public function getTermService($term);
-
-    /**
-     *
-     * @param numeric $id          
-     * @return $this
-     */
-    public function hasTaxonomy($id);
-
-    /**
-     *
-     * @param int|TermTaxonomyInterface $term            
-     * @return $this
-     */
-    public function deleteTerm($term);
+    public function getTerm($term);
 
     /**
      *

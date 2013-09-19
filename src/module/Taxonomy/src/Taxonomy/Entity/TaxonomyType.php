@@ -30,7 +30,7 @@ class TaxonomyType implements TaxonomyTypeInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy",
-     * mappedBy="factory")
+     * mappedBy="type")
      */
     protected $taxonomies;
 
@@ -81,33 +81,12 @@ class TaxonomyType implements TaxonomyTypeInterface
 
     /**
      *
-     * @return field_type $factory
-     */
-    public function getFactory()
-    {
-        return $this->factory;
-    }
-
-    /**
-     *
      * @return field_type $name
      */
     public function getName()
     {
         return $this->name;
     }
-
-    /**
-     *
-     * @param field_type $factory            
-     * @return $this
-     */
-    public function setFactory($factory)
-    {
-        $this->factory = $factory;
-        return $this;
-    }
-
     /**
      *
      * @param field_type $name            

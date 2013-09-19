@@ -17,14 +17,20 @@ use Zend\Stdlib\ArrayUtils;
 
 class SubjectService implements SubjectServiceInterface, SubjectInterface
 {
-    use \Language\Service\LanguageServiceAwareTrait, \Common\Traits\ConfigAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
-    protected function getDefaultConfig(){
+    protected function getDefaultConfig()
+    {
         return array(
             'plugins' => array()
         );
     }
-    
+
+    public function getLanguageService()
+    {
+        return $this->getTermService()->getLanguageService();
+    }
+
     public function getId()
     {
         return $this->getEntity()->getId();
@@ -47,7 +53,7 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
 
     public function getTermService()
     {
-        return $this->getSharedTaxonomyManager()->getTermService($this->getEntity()
+        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()
             ->getId());
     }
 
@@ -128,7 +134,8 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
 
     /**
      * Method overloading: return/call plugins
-     * If the plugin is a functor, call it, passing the parameters provided. Otherwise, return the plugin instance.
+     * If the plugin is a functor, call it, passing the parameters provided.
+     * Otherwise, return the plugin instance.
      *
      * @param string $method            
      * @param array $params            

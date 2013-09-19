@@ -119,7 +119,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Taxonomy\Manager\TaxonomyManagerInterface' => array(
+                'Taxonomy\Manager\TaxonomyManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -162,9 +162,6 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    )
                 )
             )
         ),
@@ -172,7 +169,7 @@ return array(
             'preferences' => array(
                 'Taxonomy\Manager\SharedTaxonomyManagerInterface' => 'Taxonomy\Manager\SharedTaxonomyManager'
             ),
-            'Taxonomy\Manager\TermManager' => array(
+            'Taxonomy\Manager\TaxonomyManager' => array(
                 'shared' => false
             ),
             'Taxonomy\Service\TermService' => array(

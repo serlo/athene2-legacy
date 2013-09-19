@@ -16,6 +16,7 @@ use Subject\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Service\TermServiceInterface;
+use Subject\Exception\RuntimeException;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
@@ -46,7 +47,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             throw new InvalidArgumentException();
         
         if (! $this->hasInstance($id)) {
-            $term = $this->getSharedTaxonomyManager()->getTermService((int) $id);
+            $term = $this->getSharedTaxonomyManager()->getTerm((int) $id);
             $this->addSubject($this->createInstanceFromEntity($term));
         }
         
@@ -59,7 +60,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             throw new InvalidArgumentException();
         
         $term = $this->getSharedTaxonomyManager()
-            ->getTaxonomy($this->getOption('taxonomy'), $language)
+            ->findTaxonomyByName($this->getOption('taxonomy'), $language)
             ->findTermByAncestors((array) $name);
         
         if(!$this->hasInstance($term->getId())){
@@ -71,9 +72,9 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     public function findSubjectsByLanguage(LanguageServiceInterface $language)
     {
-        $taxonomy = $this->getSharedTaxonomyManager()->getTaxonomy($this->getOption('taxonomy'), $language);
+        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $language);
         $collection = new ArrayCollection();
-        foreach ($taxonomy->getRootTerms() as $subject) {
+        foreach ($taxonomy->getSaplings() as $subject) {
             $collection->add($this->getSubject($subject->getId()));
         }
         return $collection;
@@ -88,14 +89,22 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
     {
         $entity = $entity->getEntity();
         $name = strtolower($entity->getName());
+        $languageService = $this->getLanguageManager()->get($entity->getLanguage());
         
-        if (! array_key_exists($name, $this->getOption('instances')))
-            throw new \Exception(sprintf('Could not find a configuration for `%s`', $name));
-        
+        $config = $this->findInstanceConfig($name, $languageService->getCode());
+            
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
-        $instance->setLanguageService($this->getLanguageManager()->get($entity->getLanguage()));
-        $instance->setConfig($this->getOption('instances')[$name]);
+        $instance->setTermService($this->getSharedTaxonomyManager()->getTerm($entity->getId()));
+        $instance->setConfig($config);
         return $instance;
+    }
+    
+    private function findInstanceConfig($name, $language){
+        foreach($this->getOption('instances') as $instance){
+            if($instance['name'] == $name && $instance['language'] == $language)
+                return $instance;
+        } 
+        throw new RuntimeException(sprintf('Could not find a configuration for `%s - %s`', $name, $language));
     }
 }

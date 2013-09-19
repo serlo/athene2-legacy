@@ -42,22 +42,9 @@ interface TaxonomyTypeInterface
 
     /**
      *
-     * @return field_type $factory
-     */
-    public function getFactory();
-
-    /**
-     *
      * @return field_type $name
      */
     public function getName();
-
-    /**
-     *
-     * @param field_type $factory            
-     * @return $this
-     */
-    public function setFactory($factory);
 
     /**
      *

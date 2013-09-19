@@ -14,15 +14,15 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 interface TermServiceInterface
 {
 
+    public function setTermTaxonomy(TermTaxonomyInterface $term);
+
+    public function getTermTaxonomy();
+
     public function getDescendantBySlugs(array $path);
 
     public function findChildrenByTaxonomyName($taxonomy);
 
     public function getTemplate($template);
-
-    public function getManager();
-
-    public function setManager(TaxonomyManagerInterface $termManager);
 
     public function hasChildren();
 
@@ -40,17 +40,15 @@ interface TermServiceInterface
 
     public function getCallbackForLink($link);
 
-    public function addLink($targetField, $target);
+    public function addAssociation($targetField, $target);
 
     public function removeLink($targetField, $target);
 
     public function hasLink($targetField, $target);
 
-    public function getAllowedLinks();
+    public function getAllowedAssociations();
 
-    public function isLinkAllowed($targetField);
-
-    public function update(array $data);
+    public function isAssociationAllowed($targetField);
 
     public function knowsAncestor($ancestor);
 
@@ -84,9 +82,13 @@ interface TermServiceInterface
 
     public function getTaxonomy();
 
+    public function getLanguageService();
+
     public function getTypeName();
 
     public function getSlug();
 
-    public function getArrayCopy();
+    public function getManager();
+
+    public function setManager(TaxonomyManagerInterface $termManager);
 }

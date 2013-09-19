@@ -129,7 +129,9 @@ return array(
             )
         ),
         'instances' => array(
-            'mathe' => array(
+            array(
+                'name' => 'mathe',
+                'language' => 'de',
                 'plugins' => array(
                     array(
                         'name' => 'topic',
@@ -207,7 +209,9 @@ return array(
                     )
                 )
             ),
-            'physik' => array(
+            array(
+                'name' => 'physik',
+                'language' => 'de',
                 'plugins' => array(
                     array(
                         'name' => 'topic',
