@@ -9,20 +9,18 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Core\Controller\Plugin;
+namespace Common\View\Helper;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Zend\View\Helper\AbstractHelper;
 
-class GoBack extends AbstractPlugin
+class Title extends AbstractHelper
 {
 
-    function __invoke ($default = '/')
+    function __invoke ($title, $class = '', $subTitle = false)
     {
-        $ref = $this->getController()->getRequest()
-            ->getHeader('Referer')
-            ->getUri();
-        if(!$ref)
-            $ref = $default;
-        $this->getController()->redirect()->toUrl($ref);
+        if($subTitle){
+            $subTitle = ' <small>'.$subTitle.'</small>';
+        }
+        echo '<header class="page-header '.$class.'"><h1>'.$title.$subTitle.'</h1></header>';
     }
 }
