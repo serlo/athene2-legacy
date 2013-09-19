@@ -14,25 +14,27 @@ namespace Subject\Plugin\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractController extends AbstractActionController
-{   
-    use \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
-    
+{
+    use\Subject\Manager\SubjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+
     /**
-     * 
-     * @param string $identifier
+     *
+     * @param string $identifier            
      * @return \Subject\Service\SubjectServiceInterface
      */
-    public function getSubject($id = NULL){
-        if($id === NULL){
+    public function getSubject($id = NULL)
+    {
+        if ($id === NULL) {
             $subject = $this->params()->fromRoute('subject');
-            return $this->getSubjectManager()->findSubjectByString($subject, $this->getLanguageManager()->getLanguageFromRequest());
+            return $this->getSubjectManager()->findSubjectByString($subject, $this->getLanguageManager()
+                ->getLanguageFromRequest());
         } else {
             return $this->getSubjectManager()->getSubject($id);
-        }        	
+        }
     }
 
-    protected function getPlugin ($id = NULL)
-    {        
+    protected function getPlugin($id = NULL)
+    {
         $subjectService = $this->getSubject($id);
         
         if (! $subjectService->isPluginWhitelisted($this->params('plugin')))
@@ -41,7 +43,7 @@ class AbstractController extends AbstractActionController
         $scope = $this->params('plugin');
         
         $plugin = $subjectService->$scope();
-
+        
         return $plugin;
     }
 }
