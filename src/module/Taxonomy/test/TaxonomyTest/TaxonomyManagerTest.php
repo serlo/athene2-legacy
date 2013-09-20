@@ -4,6 +4,7 @@ namespace TaxonomyTest;
 use Taxonomy\Manager\TaxonomyManager;
 use Zend\Stdlib\ArrayUtils;
 use Taxonomy\Service\TermService;
+use TaxonomyTest\Fake\TermFakeFactory;
 
 class TaxonomyManagerTest extends AbstractTestCase
 {
@@ -72,7 +73,8 @@ class TaxonomyManagerTest extends AbstractTestCase
         
         $this->assertEquals($this->termServiceMock, $this->taxonomyManager->getTerm(2));
         $this->assertEquals($this->termServiceMock, $this->taxonomyManager->getTerm('2'));
-        $this->assertEquals($this->taxonomyManager, $this->taxonomyManager->getTerm(2)->getManager());
+        $this->assertEquals($this->taxonomyManager, $this->taxonomyManager->getTerm(2)
+            ->getManager());
         $this->assertEquals(2, $this->taxonomyManager->getTerm(2)
             ->getId());
     }
@@ -95,7 +97,8 @@ class TaxonomyManagerTest extends AbstractTestCase
             ->method('getTaxonomy')
             ->will($this->returnValue($taxonomyManagerMock));
         
-        $this->assertEquals($taxonomyManagerMock, $this->taxonomyManager->getTerm(2)->getManager());
+        $this->assertEquals($taxonomyManagerMock, $this->taxonomyManager->getTerm(2)
+            ->getManager());
         $this->assertEquals(2, $this->taxonomyManager->getTerm(2)
             ->getId());
     }
@@ -114,5 +117,56 @@ class TaxonomyManagerTest extends AbstractTestCase
     public function testGetTermNotFoundException()
     {
         $this->taxonomyManager->getTerm(23);
+    }
+
+    /**
+     * @expectedException \Taxonomy\Exception\RuntimeException
+     */
+    public function testFindTermByAncestorsException()
+    {
+        $this->taxonomyManager->findTermByAncestors(array());
+    }
+
+    public function testFindTermByAncestors()
+    {
+        $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
+        
+        $this->taxonomyMock->expects($this->atLeastOnce())
+            ->method('getSaplings')
+            ->will($this->returnValue($terms));
+        $this->taxonomyManager->setEntity($this->taxonomyMock);
+        
+        $this->assertEquals('test', $this->taxonomyManager->findTermByAncestors(array(
+            'some',
+            'foo',
+            'test'
+        ))
+            ->getSlug());
+        
+        $this->assertEquals('bar', $this->taxonomyManager->findTermByAncestors(array(
+            'some',
+            'foo',
+            'bar'
+        ))
+            ->getSlug());
+    }
+
+    /**
+     * @expectedException \Taxonomy\Exception\TermNotFoundException
+     */
+    public function testFindTermByAncestorsNotFoundException()
+    {
+        $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
+        
+        $this->taxonomyMock->expects($this->once())
+            ->method('getSaplings')
+            ->will($this->returnValue($terms));
+        $this->taxonomyManager->setEntity($this->taxonomyMock);
+        $this->assertEquals('bar', $this->taxonomyManager->findTermByAncestors(array(
+            'some',
+            'foo',
+            'derp'
+        ))
+            ->getSlug());
     }
 }
