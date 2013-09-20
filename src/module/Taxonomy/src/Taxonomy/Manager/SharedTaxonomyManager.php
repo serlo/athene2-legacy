@@ -20,16 +20,17 @@ use Taxonomy\Exception\RuntimeException;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getDefaultConfig()
     {
         return array();
     }
 
-    public function __construct($config)
+    public function __construct(array $config = NULL)
     {
-        $this->setConfig($config);
+        if ($config)
+            $this->setConfig($config);
     }
 
     public function getTaxonomy($id)
@@ -65,8 +66,10 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         if (! is_object($type))
             throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $name));
         
-        $entity = $type->getTaxonomies()->matching(Criteria::create()->where(Criteria::expr()->eq('language', $language->getEntity()))
-            ->setMaxResults(1))->first();
+        $entity = $type->getTaxonomies()
+            ->matching(Criteria::create()->where(Criteria::expr()->eq('language', $language->getEntity()))
+            ->setMaxResults(1))
+            ->first();
         
         if (! is_object($entity))
             throw new NotFoundException(sprintf('Could not find Taxonomy %s by language %s.', $name, $language->getId()));
@@ -103,10 +106,10 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
 
     public function getCallback($link)
     {
-        if (! array_key_exists($link, $this->getOption('links')))
+        if (! array_key_exists($link, $this->getOption('associations')))
             throw new RuntimeException(sprintf('Callback for type %s not found', $link));
         
-        return $this->getOption('links')[$link];
+        return $this->getOption('associations')[$link];
     }
 
     public function getAllowedChildrenTypes($type)

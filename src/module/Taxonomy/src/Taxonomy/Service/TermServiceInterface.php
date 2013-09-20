@@ -36,15 +36,15 @@ interface TermServiceInterface
 
     public function countLinks($targetField);
 
-    public function getLinks($targetField, $recursive = false, $allowedTaxonomies = NULL);
+    public function getAssociated($targetField, $recursive = false, $allowedTaxonomies = NULL);
 
     public function getCallbackForLink($link);
 
-    public function addAssociation($targetField, $target);
+    public function associate($targetField, $target);
 
-    public function removeLink($targetField, $target);
+    public function removeAssociation($targetField, $target);
 
-    public function hasLink($targetField, $target);
+    public function isAssociated($targetField, $target);
 
     public function getAllowedAssociations();
 

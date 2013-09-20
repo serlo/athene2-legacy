@@ -15,7 +15,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Entity\Collection\EntityCollection;
 return array(
     'taxonomy' => array(
-        'links' => array(
+        'associations' => array(
             'entities' => function  (ServiceLocatorInterface $sm, $collection)
             {
                 return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
@@ -24,7 +24,7 @@ return array(
         'types' => array(
             'topic-folder' => array(
                 'options' => array(
-                    'allowed_links' => array(
+                    'allowed_associations' => array(
                         'entities'
                     ),
                     'allowed_parents' => array(
@@ -73,7 +73,7 @@ return array(
             ),
             'curriculum-folder' => array(
                 'options' => array(
-                    'allowed_links' => array(
+                    'allowed_associations' => array(
                         'entities'
                     ),
                     'allowed_parents' => array(

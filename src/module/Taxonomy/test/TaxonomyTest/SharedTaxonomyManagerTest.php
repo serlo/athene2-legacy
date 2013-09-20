@@ -32,7 +32,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $config = array(
-            'links' => array(
+            'associations' => array(
                 'footest' => function  ($sm, $collection)
                 {
                     return $collection;
@@ -41,7 +41,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             'types' => array(
                 'foobarSimple' => array(
                     'options' => array(
-                        'allowed_parents' => array(),
+                        'allowed_associations' => array(),
                         'radix_enabled' => true
                     )
                 ),
