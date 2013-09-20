@@ -19,7 +19,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
         $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TermTaxonomy');
         $this->taxonomyMock = $this->getMock('Taxonomy\Entity\Taxonomy');
-        $this->termServiceMock = new TermService(); //$this->getMock('Taxonomy\Service\TermService', array());
+        $this->termServiceMock = new TermService();
         $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
@@ -71,6 +71,7 @@ class TaxonomyManagerTest extends AbstractTestCase
             ->will($this->returnValue($this->taxonomyMock));
         
         $this->assertEquals($this->termServiceMock, $this->taxonomyManager->getTerm(2));
+        $this->assertEquals($this->termServiceMock, $this->taxonomyManager->getTerm('2'));
         $this->assertEquals($this->taxonomyManager, $this->taxonomyManager->getTerm(2)->getManager());
         $this->assertEquals(2, $this->taxonomyManager->getTerm(2)
             ->getId());
@@ -105,5 +106,13 @@ class TaxonomyManagerTest extends AbstractTestCase
     public function testGetTermException()
     {
         $this->taxonomyManager->getTerm('fa23');
+    }
+
+    /**
+     * @expectedException \Taxonomy\Exception\TermNotFoundException
+     */
+    public function testGetTermNotFoundException()
+    {
+        $this->taxonomyManager->getTerm(23);
     }
 }
