@@ -165,7 +165,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         $instance->setTermTaxonomy($entity);
         if ($entity->getTaxonomy() !== $this->getEntity()) {
             $instance->setManager($this->getSharedTaxonomyManager()
-                ->get($entity->getTaxonomy()
+                ->getTaxonomy($entity->getTaxonomy()
                 ->getId()));
         } else {
             $instance->setManager($this);
@@ -181,7 +181,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
                     'update' => 'taxonomy/taxonomy/update'
                 ),
                 'allowed_parents' => array(),
-                'allowed_links' => array(),
+                'allowed_associations' => array(),
                 'radix_enabled' => true
             )
         );

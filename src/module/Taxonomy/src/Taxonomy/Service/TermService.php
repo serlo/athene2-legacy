@@ -109,7 +109,7 @@ class TermService implements TermServiceInterface
     {
         $return = array();
         foreach ($this->getAllowedAssociations() as $targetField => $options) {
-            $return[$targetField] = $this->getLinks($targetField);
+            $return[$targetField] = $this->getAssociated($targetField);
         }
         return $return;
     }
@@ -134,7 +134,7 @@ class TermService implements TermServiceInterface
             ->count();
     }
 
-    public function getLinks($targetField, $recursive = false, $allowedTaxonomies = NULL)
+    public function getAssociated($targetField, $recursive = false, $allowedTaxonomies = NULL)
     {
         if (! $recursive) {
             $this->isLinkAllowedWithException($targetField);
@@ -153,7 +153,7 @@ class TermService implements TermServiceInterface
         return $this->getSharedTaxonomyManager()->getCallback($link);
     }
 
-    public function addAssociation($targetField, $target)
+    public function associate($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getTermTaxonomy();
@@ -161,7 +161,7 @@ class TermService implements TermServiceInterface
         return $this;
     }
 
-    public function removeLink($targetField, $target)
+    public function removeAssociation($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getTermTaxonomy();
@@ -172,7 +172,7 @@ class TermService implements TermServiceInterface
         return $this;
     }
 
-    public function hasLink($targetField, $target)
+    public function isAssociated($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
         $targets = $this->getTermTaxonomy()->getAssociated($targetField);
@@ -187,12 +187,12 @@ class TermService implements TermServiceInterface
 
     public function getAllowedAssociations()
     {
-        return $this->getOption('options')['allowed_links'];
+        return $this->getOption('options')['allowed_associations'];
     }
 
     public function isAssociationAllowed($targetField)
     {
-        return in_array($targetField, (array) $this->getOption('options')['allowed_links']);
+        return in_array($targetField, (array) $this->getOption('options')['allowed_associations']);
     }
 
     public function knowsAncestor($ancestor)
