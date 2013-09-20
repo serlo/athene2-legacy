@@ -71,11 +71,6 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this->getInstance($found->getId());
     }
 
-    public function hasTermService($id)
-    {
-        return $this->hasInstance($id);
-    }
-
     public function deleteTerm($term)
     {
         $id = $term->getId();
@@ -113,7 +108,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
 
     public function updateTerm($id, array $data)
     {
-        $term = $this->getTermService($id);
+        $term = $this->getTerm($id);
         $this->getObjectManager()->persist($term);
         return $this;
     }
