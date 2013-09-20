@@ -48,6 +48,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
             throw new RuntimeException('Ancestors are empty');
         
         $terms = $this->getEntity()->getSaplings();
+        $ancestorsFound = 0;
         foreach ($ancestors as $element) {
             if (is_string($element) && strlen($element) > 0) {
                 foreach ($terms as $term) {
@@ -55,13 +56,14 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
                     if (strtolower($term->getSlug()) == strtolower($element)) {
                         $terms = $term->getChildren();
                         $found = $term;
+                        $ancestorsFound++;
                         break;
                     }
                 }
             }
         }
         
-        if (! is_object($found))
+        if (! is_object($found) || $ancestorsFound != count($ancestors))
             throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $ancestors)));
         
         if (! $this->hasInstance($found->getId())) {

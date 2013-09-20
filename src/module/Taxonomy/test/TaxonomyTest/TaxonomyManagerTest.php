@@ -165,6 +165,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->assertEquals('bar', $this->taxonomyManager->findTermByAncestors(array(
             'some',
             'foo',
+            'test',
             'derp'
         ))
             ->getSlug());
