@@ -73,9 +73,9 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this->getInstance($found->getId());
     }
 
-    public function deleteTerm($term)
+    public function deleteTerm($id)
     {
-        $id = $term->getId();
+        $term = $this->getTerm($id);
         $this->getObjectManager()->remove($term->getEntity());
         $this->removeInstance($id);
         unset($term);
@@ -93,7 +93,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyInterface');
         
         try {
-            $term = $this->getTermManager()->findTermBySlug($data['term']['name'], $language);
+            $term = $this->getTermManager()->findTermByName($data['term']['name'], $language);
         } catch (TermNotFoundException $e) {
             $term = $this->getTermManager()->createTerm($data['term']['name'], $language);
         }

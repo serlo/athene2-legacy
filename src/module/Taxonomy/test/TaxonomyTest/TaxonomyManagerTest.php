@@ -5,6 +5,7 @@ use Taxonomy\Manager\TaxonomyManager;
 use Zend\Stdlib\ArrayUtils;
 use Taxonomy\Service\TermService;
 use TaxonomyTest\Fake\TermFakeFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class TaxonomyManagerTest extends AbstractTestCase
 {
@@ -169,5 +170,56 @@ class TaxonomyManagerTest extends AbstractTestCase
             'derp'
         ))
             ->getSlug());
+    }
+
+    public function testDeleteTerm()
+    {
+        $this->entityManagerMock->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($this->termTaxonomyMock));
+        
+        $this->entityManagerMock->expects($this->once())
+            ->method('remove')
+            ->will($this->returnValue($this->termTaxonomyMock));
+        
+        $this->termTaxonomyMock->expects($this->once())
+            ->method('getTaxonomy')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $this->assertNotNull($this->taxonomyManager->deleteTerm(2));
+    }
+
+    public function testGetSaplings()
+    {
+        $this->taxonomyMock->expects($this->once())
+            ->method('getSaplings')
+            ->will($this->returnValue(new ArrayCollection()));
+        
+        $this->assertInstanceOf('Taxonomy\Collection\TermCollection', $this->taxonomyManager->getSaplings());
+    }
+
+    public function testCreateTerm()
+    {
+        $this->classResolverMock->expects($this->once())
+            ->method('resolve')
+            ->will($this->returnValue($this->termTaxonomyMock));
+        $this->termManagerMock->expects($this->once())
+            ->method('findTermByName')
+            ->will($this->returnValue($this->getMock('Term\Service\TermService')));
+        $this->entityManagerMock->expects($this->once())
+            ->method('persist');
+        
+        $this->termTaxonomyMock->expects($this->once())
+            ->method('getTaxonomy')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $this->taxonomyManager->createTerm(array(
+            'parent' => '1',
+            'description' => 'desc',
+            'weight' => 0,
+            'term' => array(
+                'name' => 'herp'
+            )
+        ), $this->taxonomyManager, $this->languageServiceMock);
     }
 }
