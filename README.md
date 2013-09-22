@@ -11,6 +11,10 @@
 
 Now you are ready to go!
 
+# DB Dump
+
+https://www.dropbox.com/s/5m4tw65fvp9469a/dbdump.sql
+
 # Guide
 
 http://serlo-org.github.io/athene2-guide/
