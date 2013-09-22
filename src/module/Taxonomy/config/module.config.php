@@ -11,6 +11,9 @@
  */
 namespace Taxonomy;
 
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',

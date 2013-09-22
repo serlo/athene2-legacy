@@ -8,6 +8,9 @@
  */
 namespace Versioning;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Module
 {
 

@@ -16,6 +16,9 @@ namespace User;
 use User\View\Helper\Authenticator;
 use Zend\Authentication\Storage\Session as Storage;
 
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'service_manager' => array(
         'factories' => array(

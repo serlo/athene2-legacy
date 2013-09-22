@@ -6,6 +6,10 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
+
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'class_resolver' => array(
         'Versioning\Service\RepositoryServiceInterface' => 'Versioning\Service\RepositoryService'

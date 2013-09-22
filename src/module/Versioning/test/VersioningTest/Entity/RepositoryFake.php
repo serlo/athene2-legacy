@@ -16,6 +16,9 @@ use User\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RevisionInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RepositoryFake implements RepositoryInterface
 {
     

@@ -11,7 +11,6 @@
  */
 namespace Subject\Manager;
 
-use Subject\Service\SubjectServiceInterface;
 use Subject\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Service\LanguageServiceInterface;
@@ -20,25 +19,20 @@ use Subject\Exception\RuntimeException;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
-    use\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait;
 
-    public function __construct(array $config){
+    public function __construct(array $config)
+    {
         $this->setConfig($config);
     }
-    
+
     protected function getDefaultConfig()
     {
         return array(
             'taxonomy' => 'subject',
             'instances' => array(),
-            'plugins' => array(),
+            'plugins' => array()
         );
-    }
-
-    public function addSubject(SubjectServiceInterface $service)
-    {
-        $this->addInstance($service->getId(), $service);
-        return $this;
     }
 
     public function getSubject($id)
@@ -48,7 +42,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         
         if (! $this->hasInstance($id)) {
             $term = $this->getSharedTaxonomyManager()->getTerm((int) $id);
-            $this->addSubject($this->createInstanceFromEntity($term));
+            $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));
         }
         
         return $this->getInstance($id);
@@ -63,8 +57,8 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             ->findTaxonomyByName($this->getOption('taxonomy'), $language)
             ->findTermByAncestors((array) $name);
         
-        if(!$this->hasInstance($term->getId())){
-            $this->addSubject($this->createInstanceFromEntity($term));
+        if (! $this->hasInstance($term->getId())) {
+            $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));
         }
         
         return $this->getInstance($term->getId());
@@ -80,31 +74,28 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $collection;
     }
 
-    public function hasSubject($subject)
-    {
-        return $this->hasInstance($subject);
-    }
-
     private function createInstanceFromEntity(TermServiceInterface $entity)
     {
         $entity = $entity->getEntity();
         $name = strtolower($entity->getName());
-        $languageService = $this->getLanguageManager()->get($entity->getLanguage());
+        $languageService = $this->getLanguageManager()->getLanguage($entity->getLanguage());
         
         $config = $this->findInstanceConfig($name, $languageService->getCode());
-            
+        
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
-        $instance->setTermService($this->getSharedTaxonomyManager()->getTerm($entity->getId()));
+        $instance->setTermService($this->getSharedTaxonomyManager()
+            ->getTerm($entity->getId()));
         $instance->setConfig($config);
         return $instance;
     }
-    
-    private function findInstanceConfig($name, $language){
-        foreach($this->getOption('instances') as $instance){
-            if($instance['name'] == $name && $instance['language'] == $language)
+
+    private function findInstanceConfig($name, $language)
+    {
+        foreach ($this->getOption('instances') as $instance) {
+            if ($instance['name'] == $name && $instance['language'] == $language)
                 return $instance;
-        } 
+        }
         throw new RuntimeException(sprintf('Could not find a configuration for `%s - %s`', $name, $language));
     }
 }

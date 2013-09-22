@@ -20,37 +20,23 @@ interface SubjectManagerInterface
 
     /**
      *
-     * @param int
+     * @param
+     *            int
      * @return SubjectServiceInterface
      */
     public function getSubject($id);
 
     /**
      *
-     * @param SubjectServiceInterface $subject            
-     * @return $this
-     */
-    public function addSubject(SubjectServiceInterface $subject);
-
-    /**
-     *
-     * @param int $id
-     * @return SubjectServiceInterface
-     */
-    public function hasSubject($id);
-    
-    /**
-     * 
-     * @param string $name
-     * @param LanguageServiceInterface $language
+     * @param string $name            
+     * @param LanguageServiceInterface $language            
      * @return SubjectServiceInterface
      */
     public function findSubjectByString($name, LanguageServiceInterface $language);
 
-
     /**
-     * 
-     * @param LanguageServiceInterface $language
+     *
+     * @param LanguageServiceInterface $language            
      * @return ArrayCollection
      */
     public function findSubjectsByLanguage(LanguageServiceInterface $language);
