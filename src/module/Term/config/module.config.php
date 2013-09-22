@@ -11,6 +11,9 @@
  */
 namespace Term;
 
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'class_resolver' => array(
         'Term\Entity\TermInterface' => 'Term\Entity\Term',

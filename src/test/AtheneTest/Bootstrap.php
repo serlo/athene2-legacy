@@ -23,12 +23,7 @@ error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
 /**
- * Test
- * bootstrap,
- * for
- * setting
- * up
- * autoloading
+ * @codeCoverageIgnore
  */
 class Bootstrap
 {
@@ -40,6 +35,7 @@ class Bootstrap
         'CommonTest' => 'Common/test/CommonTest',
         'VersioningTest' => 'Versioning/test/VersioningTest',
         'UserTest' => 'User/test/UserTest',
+        'SubjectTest' => 'Subject/test/SubjectTest',
         'TermTest' => 'Term/test/TermTest'
     );
 

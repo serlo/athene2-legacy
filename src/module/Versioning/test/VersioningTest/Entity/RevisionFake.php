@@ -14,6 +14,9 @@ namespace VersioningTest\Entity;
 use Versioning\Entity\RevisionInterface;
 use User\Entity\UserInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RevisionFake implements RevisionInterface
 {
     protected $repository, $author, $date, $id, $fields;

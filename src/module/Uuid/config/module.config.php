@@ -11,6 +11,9 @@
  */
 namespace Uuid;
 
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'class_resolver' => array(
         'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
