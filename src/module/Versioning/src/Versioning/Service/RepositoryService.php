@@ -102,6 +102,10 @@ class RepositoryService implements RepositoryServiceInterface
     {
         return $this->getRevisions()->last();
     }
+    
+    public function hasHead(){
+        return $this->getRevisions()->count();
+    }
 
     public function checkoutRevision($id)
     {
