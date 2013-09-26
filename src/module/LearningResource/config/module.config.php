@@ -41,8 +41,8 @@ return array(
                         ->get('Versioning\RepositoryManager'));
                     $instance->setObjectManager($sm->getServiceLocator()
                         ->get('EntityManager'));
-                    $instance->setAuthService($sm->getServiceLocator()
-                        ->get('Auth\Service\AuthService'));
+                    $instance->setAuthenticationService($sm->getServiceLocator()
+                        ->get('Zend\Authentication\AuthenticationService'));
                     return $instance;
                 },
                 /*'topicFolder' => function  ($sm)

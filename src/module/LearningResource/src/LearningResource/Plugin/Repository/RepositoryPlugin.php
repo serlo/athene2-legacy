@@ -17,7 +17,7 @@ use Zend\Form\Form;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Auth\Service\AuthServiceAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
     protected function getDefaultConfig ()
     { 
@@ -142,7 +142,7 @@ class RepositoryPlugin extends AbstractPlugin
             ->getEntity()
             ->newRevision();
         
-        $revision->setAuthor($this->getAuthService()
+        $revision->setAuthor($this->getAuthenticationService()
             ->getUser()
             ->getEntity());
         
