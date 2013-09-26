@@ -1,7 +1,0 @@
-<?php
-$this->form->prepare();
-echo $this->form()->openTag($form);
-foreach($this->form->getElements() as $element){
-	echo $this->formRow($element);
-}
-echo $this->form()->closeTag();
