@@ -1,0 +1,26 @@
+
+
+<?php
+$title2 = 'Blog';
+$this->headTitle($title2);
+?>
+
+
+
+
+<article>
+	<h1>TITEL: 
+		<?php echo $this->escapeHtml($title);?> <br>
+	</h1>
+    CONTENT:
+	<?php echo $this->escapeHtml($content);?>
+
+	<br>
+</article>
+
+<a href="<?php //echo '/'.$post->__get('slug').'/edit'?>">Edit this Post</a>
+
+<a href="<?php //echo '/'.$post->__get('slug').'/delete'?>">Delete this
+	Post</a>
+
+<br>
