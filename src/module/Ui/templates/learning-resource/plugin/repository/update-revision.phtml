@@ -1,0 +1,12 @@
+<?php echo $this->template()->getFormattedIdentity(); ?>
+<h1 class="page-header"><?php echo $this->translate('Version bearbeiten'); ?></h1>
+<?php
+$this->form->prepare();
+$formLabel = $this->plugin('formLabel');
+echo $this->form()->openTag($form);
+foreach($this->form->getElements() as $element){
+   // echo $this->formElementErrors($subject);
+    echo $this->formElementErrors($element);    
+	echo $this->formRow($element);
+}
+echo $this->form()->closeTag();

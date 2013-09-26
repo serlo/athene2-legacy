@@ -1,0 +1,28 @@
+<?php
+/**
+ *
+ *
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<?php echo $this->template()->getFormattedIdentity(); ?>
+<h1 class="page_header"><?php echo $this->translate('Login'); ?></h1>
+<?php
+if (count($this->errorMessages)) {
+    foreach ($this->errorMessages as $errorMessage) {
+        echo $this->translate($errorMessage);
+    }
+}
+
+$this->form->prepare();
+echo $this->form()->openTag($this->form);
+echo $this->formRow($this->form->get('email'));
+echo $this->formRow($this->form->get('password'));
+echo $this->formSubmit($this->form->get('submit'));
+echo $this->form()->closeTag();

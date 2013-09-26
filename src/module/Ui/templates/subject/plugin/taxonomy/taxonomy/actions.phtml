@@ -1,0 +1,33 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<?php echo $this->template()->getFormattedIdentity(); ?>
+<div class="right btn-group">
+	<div class="btn-group group-dropdown">
+		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown"
+			href="#"> <i class="icon-plus"></i> <span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a
+				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=1&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Übergeordnetes Thema'); ?></a></li>
+			<li><a
+				href="<?php echo $this->url('taxonomy/term',array('action' => 'create')) . '?taxonomy=2&parent='.$this->term->getId(); ?>"><?php echo $this->translate('Untergeordnetes Thema'); ?></a></li>
+		</ul>
+	</div>
+	<a
+		href="<?php echo $this->url('taxonomy/term',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
+		class="btn btn-mini"><i class="icon-pencil"></i></a>
+	<div class="btn btn-mini">
+		<i class="icon-resize-vertical"></i>
+	</div>
+	<?php echo $this->modal()->delete('<i class="icon-remove icon-white" role="button"></i>',  $this->url('taxonomy/term',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-mini btn-inverse'); ?>
+</div>

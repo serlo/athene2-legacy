@@ -10,6 +10,7 @@ return array(
         'ZfcRbac',
         'TwbBundle',
         'Common',
+        'Ui',
         'User',
         'Versioning',
         'Log',
