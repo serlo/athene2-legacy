@@ -11,7 +11,6 @@
  */
 $article = $this->entity;
 ?>
-<?php echo $this->template()->getFormattedIdentity(); ?>
 <?php if($article->repository()->hasCurrentRevision()): ?>
     <?php $revision = $article->repository()->getCurrentRevision(); ?>
     <article class="article">

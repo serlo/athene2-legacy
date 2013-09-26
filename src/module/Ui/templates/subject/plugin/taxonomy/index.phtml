@@ -10,7 +10,6 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<?php echo $this->template()->getFormattedIdentity(); ?>
 <h1 class="page_header"><?php echo $this->translate('Taxonomie'); ?></h1>
 <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term, 'terms' => $this->terms)); ?>
 <?php echo $this->partial($this->plugin->getTemplate('links'), array('links' => $this->links, 'acceptsEntities' => $this->acceptsEntities, 'subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term)); ?>

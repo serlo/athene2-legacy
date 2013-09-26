@@ -11,7 +11,6 @@
 */
 ?>
 <?php echo $this->partial($this->term->getTemplate('update'), array('term' => $this->term)); ?>
-<?php echo $this->template()->getFormattedIdentity(); ?>
 <script type="text/javascript">
 var termsort = 
   $("#<?php echo $this->term->getId(); ?>").sortable({
