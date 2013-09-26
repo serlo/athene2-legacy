@@ -11,7 +11,6 @@
 */
 $lastType = $this->term;
 ?>
-<?php echo $this->template()->getFormattedIdentity(); ?>
 <ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
     <?php foreach($this->term->getChildren() as $term):?>
         <?php if($lastType !== $term->getTaxonomy()): ?>

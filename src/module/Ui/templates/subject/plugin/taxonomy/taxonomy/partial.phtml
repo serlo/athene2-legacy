@@ -10,7 +10,6 @@
 * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
 */
 ?>
-<?php echo $this->template()->getFormattedIdentity(); ?>
 <ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
     <?php foreach($this->term->getChildren() as $term):?>
         <li class="term" data-id="<?php echo $term->getId(); ?>">
