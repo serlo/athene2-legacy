@@ -13,31 +13,12 @@
 namespace Taxonomy\Provider;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Doctrine\ORM\EntityManager;
-use Application\Navigation\ProviderInterface;
-use Taxonomy\Manager\TaxonomyManager;
+use Zend\Stdlib\ArrayUtils;
 
-class NavigationProvider implements ProviderInterface
+class NavigationProvider implements \Application\Navigation\ProviderInterface
 {
-
-    /**
-     *
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     *
-     * @var TaxonomyManager
-     */
-    protected $termManager;
-
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait,\Language\Service\LanguageServiceAwareTrait; // , \Common\Traits\ConfigAwareTrait;
+    
     /**
      *
      * @var array
@@ -52,23 +33,21 @@ class NavigationProvider implements ProviderInterface
 
     public function __construct(array $options, ServiceLocatorInterface $serviceLocator)
     {
-        $this->options = array_merge($this->defaultOptions, $options);
+        $this->options = ArrayUtils::merge($this->defaultOptions, $options);
         $this->serviceLocator = $serviceLocator;
-        $this->entityManager = $serviceLocator->get('EntityManager');
+        $this->objectManager = $serviceLocator->get('EntityManager');
         $this->languageService = $serviceLocator->get('Language\Manager\LanguageManager')->get($this->options['language']);
-        $this->termManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')->findTaxonomyByName($this->options['type'], $this->languageService)->findTermByAncestors((array) $this->options['parent']);
+        $this->termService = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')
+            ->findTaxonomyByName($this->options['type'], $this->languageService)
+            ->findTermByAncestors((array) $this->options['parent']);
     }
 
     public function provideArray($maxDepth = 1)
     {
-        /*$criteria = Criteria::create()->where(Criteria::expr()->isNull("parent"))
-            ->setFirstResult(0)
-            ->setMaxResults(20);*/
-        if ($this->entityManager->isOpen())
-            $this->entityManager->refresh($this->termManager->getEntity());
+        if ($this->objectManager->isOpen())
+            $this->objectManager->refresh($this->termService->getEntity());
         
-        //$terms = $this->termManager->getTerms()->matching($criteria);
-        $terms = $this->termManager->getChildren();
+        $terms = $this->termService->getChildren();
         $return = $this->iterTerms($terms, $maxDepth);
         return $return;
     }

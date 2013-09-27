@@ -52,7 +52,8 @@ class Bootstrap
         'UuidTest' => 'Uuid/test/UuidTest',
         'Uuid' => 'Uuid/src/Uuid',
         'EntityTest' => 'Entity/test/EntityTest',
-        'Entity' => 'Entity/src/Entity'
+        'Entity' => 'Entity/src/Entity',
+        'Application' => 'Application/src/Application',
     );
 
     public static function getApplication(){
