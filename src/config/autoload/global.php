@@ -31,15 +31,6 @@ return array(
         'password' => '',
         'database' => ''
     ),
-    'smtpParams' => array(
-        'name' => 'smtp.serlo.org',
-        'host' => 'smtp.serlo.org',
-        'connection_class' => 'login',
-        'connection_config' => array(
-            'username' => 'aeneas.rekkas@serlo.org',
-            'password' => 'v4uf428g'
-        )
-    ),
     'session' => array(
         'use_cookies' => true,
         'cookie_secure' => false,
