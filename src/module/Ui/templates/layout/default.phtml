@@ -13,8 +13,8 @@
 echo $this->doctype();
 ?>
 <html class="fuelux" lang="en">
-<head>
-<meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
         <?php
         echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
             ->setAutoEscape(false);
@@ -33,22 +33,24 @@ echo $this->doctype();
         ?>
     </head>
 <body>
-	<header>
-		<div class="container">
-					<div class="navbar navbar-fixed-top navbar-inverse">
-					   <div class="navbar-inner">
+	<header id="header">
+		<div id="serlo-menu" class="navbar">
+            <nav class="navbar-inner">
+                <div class="container">
+                    <div class="row">
+                        <div class="span12">
     						<?php
                             echo $this->navigation('navigation')
                                     ->menu()
                                     ->setOnlyActiveBranch(true)
                                     ->setMinDepth(0)
                                     ->setMaxDepth(3)
-                                    ->setUlClass('nav nav-tabs')
+                                    ->setUlClass('nav pull-left')
                                     ->setPartial('layout/navigation/horizontal.phtml')
                                     ->render();
-                            ?>      
+                            ?>
 			            <?php if($this->authentication()->hasIdentity()) { ?>
-		                    <ul class="nav nav-pills pull-right">
+		                    <ul class="nav pull-right">
 							<li class="dropdown"><a class="dropdown-toggle"
 								data-toggle="dropdown" href="#"><i
 									class="icon-envelope icon-white"></i><b
@@ -69,7 +71,7 @@ echo $this->doctype();
 									class="icon-off icon-white"></i></a></li>
 						</ul>
 		                <?php } else { ?>
-		                    <ul class="nav nav-pills pull-right">
+		                    <ul class="nav pull-right">
 							<li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
 							</li>
 							<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
@@ -78,45 +80,104 @@ echo $this->doctype();
 		                <?php }?>            
                         </div>
 					</div>
-			</div>
+                </div>
+			</nav>
+        </div>
 	</header>
 
-	<div class="container">
-		<div class="row-fluid">
-			<div class="span12" id="application">
-				<div class="flasher">
-                    <?php
-                    if ($this->flashMessenger()->hasSuccessMessages()) {
-                        echo '<div class="alert alert-success">';
-                        foreach ($this->flashmessenger()->getSuccessMessages() as $message)
-                            echo '<p>' . $message . '</p>';
-                        echo '</div>';
-                    }
-                    
-                    if ($this->flashMessenger()->hasErrorMessages()) {
-                        echo '<div class="alert alert-error">';
-                        foreach ($this->flashmessenger()->getErrorMessages() as $message)
-                            echo '<p>' . $message . '</p>';
-                        echo '</div>';
-                    }
-                    
-                    if ($this->flashMessenger()->hasMessages()) {
-                        echo '<div class="alert alert-info">';
-                        foreach ($this->flashmessenger()->getMessages() as $message)
-                            echo '<p>' . $message . '</p>';
-                        echo '</div>';
-                    }
-                    ?>
-        	    </div>
-				<!-- <header class="page-header">
-					<h1><?php echo $this->titleApplication; ?></h1>
-				</header> -->
-                <?php echo $this->content; ?>
+	<div id="page" class="container">
+        <aside id="navigation">
+            <div id="navigation-container">
+                <div id="navigation-toggle" class="layout-toggle">
+                    <i class="icon-list"></i>
+                </div>
+                <div id="search-content">
+                    <!-- tbd:search -->
+                    <!-- markup:
+                    <input id="search-input" class="input-search" type="search" placeholder="Suche" tabindex="1"/><i class="icon-search"></i>
+                    <ul id="search-results" class="nav">
+                        <li><a href="#">Ergebnis oans</a>
+                        </li>
+                        <li><a href="#">Ergebnis zwoa</a>
+                        </li>
+                        <li><a href="#">Ergebnis drei</a>
+                        </li>
+                        <li><a href="#">Ergebnis vier</a>
+                        </li>
+                        <li><a href="#">...</a>
+                        </li>
+                    </ul>
+                    <div id="search-help">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <p>Suche zum Beispiel nach <em>Nullstellen</em>, <em>Euklidische Theorie</em>, <em>Abituraufgaben</em> oder
+                                    deinem <em>Bundesland</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <div id="navigation-content">
+                    <ul id="main-nav" class="nav">
+                        <!-- tbd: mainnav -->
+                    </ul>
+                </div>
             </div>
-		</div>
+        </aside>
+        <div id="main">
+            <div id="main-container">
+                <div id="content">
+                    <div id="content-container" class="layout-inner">
+                        <div class="row-fluid">
+                            <div class="span12" id="application">
+                                <div class="flasher">
+                                    <?php
+                                    if ($this->flashMessenger()->hasSuccessMessages()) {
+                                        echo '<div class="alert alert-success">';
+                                        foreach ($this->flashmessenger()->getSuccessMessages() as $message)
+                                            echo '<p>' . $message . '</p>';
+                                        echo '</div>';
+                                    }
+                                    
+                                    if ($this->flashMessenger()->hasErrorMessages()) {
+                                        echo '<div class="alert alert-error">';
+                                        foreach ($this->flashmessenger()->getErrorMessages() as $message)
+                                            echo '<p>' . $message . '</p>';
+                                        echo '</div>';
+                                    }
+                                    
+                                    if ($this->flashMessenger()->hasMessages()) {
+                                        echo '<div class="alert alert-info">';
+                                        foreach ($this->flashmessenger()->getMessages() as $message)
+                                            echo '<p>' . $message . '</p>';
+                                        echo '</div>';
+                                    }
+                                    ?>
+                                </div>
+                                <!-- <header class="page-header">
+                                    <h1><?php echo $this->titleApplication; ?></h1>
+                                </header> -->
+                                <?php echo $this->content; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
 
-	<footer> </footer>
+	<footer>
+        <div class="container">
+            <div class="row">
+                <div class="span2">
+                    <div class="inner">
+                        <!-- tbd:footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 	<?php echo $this->modal()->renderDialogues(); ?>
 	<!-- /container -->
 </body>
