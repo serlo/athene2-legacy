@@ -18,16 +18,12 @@ use RuntimeException;
 use Zend\Stdlib\ArrayUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Zend\Mvc\Application;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
 /**
- * Test
- * bootstrap,
- * for
- * setting
- * up
- * autoloading
+ * @codeCoverageIgnore
  */
 class Bootstrap
 {
@@ -35,11 +31,12 @@ class Bootstrap
     protected static $serviceManager;
 
     protected static $testingNamespaces = array(
+        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
+        'CommonTest' => 'Common/test/CommonTest',
         'VersioningTest' => 'Versioning/test/VersioningTest',
         'UserTest' => 'User/test/UserTest',
-        'UuidTest' => 'Uuid/test/UuidTest',
-        'TermTest' => 'Term/test/TermTest',
-        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest'
+        'SubjectTest' => 'Subject/test/SubjectTest',
+        'TermTest' => 'Term/test/TermTest'
     );
 
     protected static $modules = array(
@@ -50,22 +47,17 @@ class Bootstrap
         'ZfcRbac',
         'TwbBundle',
         'ZfcBase',
-        'Core',
-        'Auth',
+        'Common',
         'User',
         'Versioning',
-        'Editor',
         'Log',
         'Entity',
         'TwbBundle',
-        'Taxonomy',
-        'Navigation',
-        'Link',
+    	'Taxonomy',
+    	'Link',
         'Subject',
         'Term',
-        'Admin',
         'Uuid',
-        'Common',
         'ClassResolver',
         'LearningResource',
         'Language'
@@ -102,14 +94,14 @@ class Bootstrap
             'module_listener_options' => array(
                 'module_paths' => $zf2ModulePaths,
                 'config_glob_paths' => array(
-                    static::findParentPath('config/autoload') . '/{,*.}{global,local}.php'
-                )
+                    static::findParentPath('config/autoload') . '/{,*.}{global}.php'
+                ),
+                'config_cache_enabled' => false,
             ),
             'modules' => self::$modules
         );
         
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setAllowOverride(true);
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
         
@@ -155,6 +147,7 @@ class Bootstrap
         $namespaces = array(
             __NAMESPACE__ => __DIR__
         );
+        
         $modulePath = self::findParentPath('module');
         foreach (static::$testingNamespaces as $namespace => $path) {
             $namespaces[$namespace] = $modulePath . '/' . $path;

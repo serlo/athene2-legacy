@@ -12,35 +12,32 @@
 namespace Subject\Manager;
 
 use Subject\Service\SubjectServiceInterface;
+use Language\Service\LanguageServiceInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 interface SubjectManagerInterface
 {
 
     /**
      *
-     * @param int|string
-     * @return SubjectServiceInterface
-     */
-    public function get($id);
-
-    /**
-     *
-     * @param SubjectServiceInterface $subject            
-     * @return $his
-     */
-    public function add(SubjectServiceInterface $subject);
-
-    /**
-     *
      * @param
-     *            int|string|SubjectServiceInterface
+     *            int
      * @return SubjectServiceInterface
      */
-    public function has($id);
-    
+    public function getSubject($id);
+
     /**
-     * 
-     * @return array
+     *
+     * @param string $name            
+     * @param LanguageServiceInterface $language            
+     * @return SubjectServiceInterface
      */
-    //public function getAllSubjects();
+    public function findSubjectByString($name, LanguageServiceInterface $language);
+
+    /**
+     *
+     * @param LanguageServiceInterface $language            
+     * @return ArrayCollection
+     */
+    public function findSubjectsByLanguage(LanguageServiceInterface $language);
 }

@@ -15,5 +15,10 @@ use Entity\Plugin\AbstractPlugin;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Taxonomy\Manager\TermManagerAwareTrait;
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Manager\TermManagerAwareTrait;
+
+    protected function getDefaultConfig ()
+    {
+        return array();
+    }
 }

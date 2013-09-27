@@ -14,38 +14,36 @@ namespace Subject\Plugin\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractController extends AbstractActionController
-{   
-    use \Subject\Manager\SubjectManagerAwareTrait;
-    
+{
+    use\Subject\Manager\SubjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+
     /**
-     * 
-     * @param string $identifier
+     *
+     * @param string $identifier            
      * @return \Subject\Service\SubjectServiceInterface
      */
-    public function getSubject($identifier = NULL){
-        if($identifier === NULL){
+    public function getSubject($id = NULL)
+    {
+        if ($id === NULL) {
             $subject = $this->params()->fromRoute('subject');
-            return $this->getSubjectManager()->get($subject);
+            return $this->getSubjectManager()->findSubjectByString($subject, $this->getLanguageManager()
+                ->getLanguageFromRequest());
         } else {
-            return $this->getSubjectManager()->get($identifier);
-        }        	
+            return $this->getSubjectManager()->getSubject($id);
+        }
     }
 
-    protected function getPlugin ($id = NULL)
+    protected function getPlugin($id = NULL)
     {
-        if (! $id) {
-            $id = $this->getParam('subject');
-        }
+        $subjectService = $this->getSubject($id);
         
-        $subjectService = $this->getSubjectManager()->get($id);
-        
-        if (! $subjectService->isPluginWhitelisted($this->getParam('plugin')))
+        if (! $subjectService->isPluginWhitelisted($this->params('plugin')))
             throw new \Exception(sprintf('Plugin %s not supported.', $this->getParam('plugin')));
         
-        $scope = $this->getParam('plugin');
+        $scope = $this->params('plugin');
         
         $plugin = $subjectService->$scope();
-
+        
         return $plugin;
     }
 }

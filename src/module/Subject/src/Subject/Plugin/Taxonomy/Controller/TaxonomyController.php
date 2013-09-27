@@ -26,11 +26,11 @@ class TaxonomyController extends AbstractController
         $entities = array();
         
         if($this->params('path', NULL)){
-            $term = $plugin->get(explode('/', $this->params('path', NULL)));
+            $term = $plugin->findTermByAncestors(explode('/', $this->params('path', NULL)));
         }
         
-        if ($term && $term->isLinkAllowed('entities')) {
-            foreach ($term->getLinks('entities')->asService() as $entity) {
+        if ($term && $term->isAssociationAllowed('entities')) {
+            foreach ($term->getAssociated('entities')->asService() as $entity) {
                 if (! $entity->isTrashed()) {
                     $entities[] = $entity;
                 }
@@ -40,7 +40,7 @@ class TaxonomyController extends AbstractController
         $view = new ViewModel(array(
             'term' => $term,
             'terms' => $term ? $term->getChildren() : $plugin->getRootFolders($this->params('subject', NULL)),
-            'acceptsEntities' => $term ? $term->isLinkAllowed('entities') : false,
+            'acceptsEntities' => $term ? $term->isAssociationAllowed('entities') : false,
             'subject' => $subjectService,
             'plugin' => $plugin,
             'links' => $entities

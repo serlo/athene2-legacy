@@ -17,9 +17,9 @@ use Taxonomy\Service\TermServiceInterface;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
-    protected function getDefaultConfig ()
+    protected function getDefaultConfig()
     {
         return array(
             'entity_types' => array(),
@@ -33,7 +33,7 @@ class TaxonomyPlugin extends AbstractPlugin
         );
     }
 
-    public function addEntity ($entity, $to)
+    public function addEntity($entity, $to)
     {
         $term = $this->getSharedTaxonomyManager()->getTerm($to);
         
@@ -41,23 +41,24 @@ class TaxonomyPlugin extends AbstractPlugin
             ->getTermService()))
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
         
-        $term->addLink('entities', $entity->getEntity());
+        $term->associate('entities', $entity->getEntity());
         $term->persistAndFlush();
         
         return $this;
     }
 
-    public function getPathToTermAsUri (TermServiceInterface $term)
+    public function getPathToTermAsUri(TermServiceInterface $term)
     {
         return ($term->getTaxonomy()->getName() != $this->getOption('taxonomy_parent')) ? $this->getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
-    } 
-
-    public function getTermManager ()
-    {
-        return $this->getSharedTaxonomyManager()->get($this->getOption('taxonomy'));
     }
 
-    public function getEnabledEntityTypes ()
+    public function getTermManager()
+    {
+        return $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $this->getSubjectService()
+            ->getLanguageService());
+    }
+
+    public function getEnabledEntityTypes()
     {
         $types = $this->getOption('entity_types');
         $return = array();
@@ -67,12 +68,12 @@ class TaxonomyPlugin extends AbstractPlugin
         return $return;
     }
 
-    public function isTypeEnabled ($type)
+    public function isTypeEnabled($type)
     {
         return in_array($type, $this->getEnabledEntityTypes());
     }
 
-    public function getEntityTypeLabel ($type, $label)
+    public function getEntityTypeLabel($type, $label)
     {
         if (! array_key_exists($type, $this->getOption('entity_types')))
             throw new \Exception(sprintf('Type %s is not registered.', $type));
@@ -80,7 +81,7 @@ class TaxonomyPlugin extends AbstractPlugin
         return $this->getOption('entity_types')[$type]['labels'][$label];
     }
 
-    public function getTemplateForEntityType ($type)
+    public function getTemplateForEntityType($type)
     {
         if (! array_key_exists($type, $this->getOption('entity_types')))
             throw new \Exception(sprintf('Type %s is not registered.', $type));
@@ -88,22 +89,28 @@ class TaxonomyPlugin extends AbstractPlugin
         return $this->getOption('entity_types')[$type]['template'];
     }
 
-    public function get ($term)
+    public function get($term)
     {
-        return $this->getTermManager()->get($term);
+        return $this->getTermManager()->getTerm($term);
     }
 
-    public function getAll ()
+    public function findTermByAncestors($ancestors)
+    {
+        return $this->getTermManager()->findTermByAncestors($ancestors);
+    }
+
+    public function getAll()
     {
         return $this->getTermManager()->getTerms();
     }
 
-    public function getRootFolders ($taxonomyParentType)
+    public function getRootFolders($taxonomyParentType)
     {
         $return = $this->getSharedTaxonomyManager()
-            ->get($this->getOption('taxonomy_parent'))
-            ->get($taxonomyParentType)
-            ->getChildrenByTaxonomyName($this->getOption('taxonomy'));
+            ->findTaxonomyByName($this->getOption('taxonomy_parent'), $this->getSubjectService()
+            ->getLanguageService())
+            ->findTermByAncestors((array) $taxonomyParentType)
+            ->findChildrenByTaxonomyName($this->getOption('taxonomy'));
         return $return;
     }
 }

@@ -11,8 +11,21 @@
  */
 namespace Term\Service;
 
+use Term\Manager\TermManagerInterface;
+
 interface TermServiceInterface
 {
+    /**
+     * @param TaxonomyManagerInterface $manager
+     * @return $this
+     */
+    public function setManager(TermManagerInterface $manager);
+    
+    /**
+     * 
+     * @return TaxonomyManagerInterface
+     */
+    public function getManager();
 
     /**
      *
@@ -52,11 +65,4 @@ interface TermServiceInterface
      * @return $this
      */
     public function setSlug($slug);
-    
-    /**
-     * Returns an array copy
-     * 
-     * @return array
-     */
-    public function getArrayCopy();
 }

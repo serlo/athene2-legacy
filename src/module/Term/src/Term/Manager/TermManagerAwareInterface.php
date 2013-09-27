@@ -16,7 +16,7 @@ interface TermManagerAwareInterface
     /**
      * Sets the TermManager.
      * 
-     * @param TermManagerInterface $termManager
+     * @param TaxonomyManagerInterface $termManager
      * @return $this
      */
     public function setTermManager(TermManagerInterface $termManager);
@@ -24,7 +24,7 @@ interface TermManagerAwareInterface
     /**
      * Returns the TermManager.
      * 
-     * @return TermManagerInterface
+     * @return TaxonomyManagerInterface
      */
     public function getTermManager();
 }

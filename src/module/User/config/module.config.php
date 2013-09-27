@@ -1,17 +1,60 @@
 <?php
 /**
  *
+ *
+ *
+ * Athene2 - Advanced Learning Resources Manager
+ *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace User;
 
+use User\View\Helper\Authenticator;
+use Zend\Authentication\Storage\Session as Storage;
+
+/**
+ * @codeCoverageIgnore
+ */
 return array(
+    'service_manager' => array(
+        'factories' => array(
+            /*'User\Service\UserLogService' => function ($sm)
+            {
+                $srv = new Service\UserLogService();
+                $srv->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                $srv->setAuthService($sm->get('Zend\Authentication\AuthenticationService'));
+                return $srv;
+            },*/
+            'User\Service\UserService' => function ($sm)
+            {
+                $srv = new Service\UserService();
+                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
+                return $srv;
+            },
+            'Zend\Authentication\AuthenticationService' => function ($sm)
+            {
+                return new \Zend\Authentication\AuthenticationService();
+            }
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
+        )
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'authentication' => function ($sm)
+            {
+                $helper = new Authenticator();
+                $helper->setAuthenticationService($sm->getServiceLocator()
+                    ->get('Zend\Authentication\AuthenticationService'));
+                return $helper;
+            }
         )
     ),
     'class_resolver' => array(
@@ -23,69 +66,105 @@ return array(
         'allowed_controllers' => array(
             __NAMESPACE__ . '\Controller\UsersController',
             __NAMESPACE__ . '\Controller\UserController',
-            __NAMESPACE__ . '\Controller\RoleController',
+            __NAMESPACE__ . '\Controller\RoleController'
         ),
         'definition' => array(
             'class' => array(
-                'User\Manager\UserManager' => array(
+                __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter' => array(
+                    'setHashService' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Authentication\HashService' => array(),
+                __NAMESPACE__ . '\Manager\UserManager' => array(
                     'setClassResolver' => array(
-                        'required' => 'true'
+                        'required' => true
+                    ),
+                    'setAuthenticationService' => array(
+                        'required' => true
                     ),
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Controller\UsersController' => array(
                     'setUserManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
+                        'required' => true
+                    )
                 ),
                 __NAMESPACE__ . '\Controller\UserController' => array(
                     'setUserManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
+                    'setAuthenticationService' => array(
+                        'required' => true
+                    ),
+                    'setAuthAdapter' => array(
+                        'required' => true
+                    )
                 ),
                 __NAMESPACE__ . '\Controller\RoleController' => array(
                     'setUserManager' => array(
-                        'required' => 'true'
-                    ),
-                ),
-            ),
+                        'required' => true
+                    )
+                )
+            )
         ),
         'instance' => array(
             'preferences' => array(
-                'User\Manager\UserManagerInterface' => 'User\Manager\UserManager'
+                __NAMESPACE__ . '\Manager\UserManagerInterface' => __NAMESPACE__ . '\Manager\UserManager',
+                __NAMESPACE__ . '\Authentication\HashServiceInterface' => __NAMESPACE__ . '\Authentication\HashService',
+                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter'
             ),
             'User\Service\UserService' => array(
                 'shared' => false
             )
         )
     ),
-    'service_manager' => array(
-        'factories' => array(
-            'User\Service\UserLogService' => function  ($sm)
-            {
-                $srv = new Service\UserLogService();
-                $srv->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
-                $srv->setAuthService($sm->get('Auth\Service\AuthService'));
-                return $srv;
-            },
-            'User\Service\UserService' => function  ($sm)
-            {
-                $srv = new Service\UserService();
-                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                return $srv;
-            }
-        )
-    ),
     'router' => array(
         'routes' => array(
+            'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/login',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\UserController',
+                        'action' => 'login'
+                    )
+                )
+            ),
+            'register' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/register',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\UserController',
+                        'action' => 'register'
+                    )
+                )
+            ),
+            'logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/logout',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\UserController',
+                        'action' => 'logout'
+                    )
+                )
+            ),
             'user' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,

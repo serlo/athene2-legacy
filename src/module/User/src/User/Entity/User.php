@@ -9,22 +9,20 @@
 namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilterInterface;
-use User\Form\UserFilter;
-use Core\Entity\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\Criteria;
 
 /**
- * A
- * user.
+ * A user.
  *
- * @ORM\Entity @ORM\HasLifecycleCallbacks
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user")
  */
-class User extends AbstractEntity implements UserInterface
+class User implements UserInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -117,136 +115,132 @@ class User extends AbstractEntity implements UserInterface
     protected $removed;
 
     /**
-     *
-     * @return the
-     *         $userRoles
+     * @return field_type $id
      */
-    public function getUserRoles ()
+    public function getId ()
+    {
+        return $this->id;
+    }
+
+	/**
+     * @param field_type $id
+     * @return $this
+     */
+    public function setId ($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+	/**
+     *
+     * @return the $userRoles
+     */
+    public function getUserRoles()
     {
         return $this->userRoles;
     }
 
     /**
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     *         $logs
+     * @return \Doctrine\Common\Collections\ArrayCollection $logs
      */
-    public function getLogs ()
+    public function getLogs()
     {
         return $this->logs;
     }
 
     /**
      *
-     * @return array
-     *         $email
+     * @return array $email
      */
-    public function getEmail ()
+    public function getEmail()
     {
         return $this->email;
     }
 
-    /**
-     *
-     * @return array
-     *         $username
-     */
-    public function getUsername ()
+    public function getUsername()
     {
         return $this->username;
     }
 
-    public function getName ()
-    {
-        return $this->getUsername();
-    }
-
     /**
      *
-     * @return array
-     *         $password
+     * @return array $password
      */
-    public function getPassword ()
+    public function getPassword()
     {
         return $this->password;
     }
 
     /**
      *
-     * @return number
-     *         $logins
+     * @return number $logins
      */
-    public function getLogins ()
+    public function getLogins()
     {
         return $this->logins;
     }
 
     /**
      *
-     * @return field_type
-     *         $last_login
+     * @return field_type $last_login
      */
-    public function getLastLogin ()
+    public function getLastLogin()
     {
         return $this->last_login;
     }
 
     /**
      *
-     * @return field_type
-     *         $date
+     * @return field_type $date
      */
-    public function getDate ()
+    public function getDate()
     {
         return $this->date;
     }
 
     /**
      *
-     * @return field_type
-     *         $givenname
+     * @return field_type $givenname
      */
-    public function getGivenname ()
+    public function getGivenname()
     {
         return $this->givenname;
     }
 
     /**
      *
-     * @return field_type
-     *         $lastname
+     * @return field_type $lastname
      */
-    public function getLastname ()
+    public function getLastname()
     {
         return $this->lastname;
     }
 
     /**
      *
-     * @return field_type
-     *         $gender
+     * @return field_type $gender
      */
-    public function getGender ()
+    public function getGender()
     {
         return $this->gender;
     }
 
     /**
      *
-     * @return boolean
-     *         $ads_enabled
+     * @return boolean $ads_enabled
      */
-    public function getAds_enabled ()
+    public function getAdsEnabled()
     {
         return $this->ads_enabled;
     }
 
     /**
      *
-     * @return boolean
-     *         $removed
+     * @return boolean $removed
      */
-    public function getRemoved ()
+    public function getRemoved()
     {
         return $this->removed;
     }
@@ -256,7 +250,7 @@ class User extends AbstractEntity implements UserInterface
      * @param \Doctrine\Common\Collections\ArrayCollection $logs            
      * @return $this
      */
-    public function setLogs ($logs)
+    public function setLogs($logs)
     {
         $this->logs = $logs;
         return $this;
@@ -267,7 +261,7 @@ class User extends AbstractEntity implements UserInterface
      * @param \Doctrine\Common\Collections\ArrayCollection $userRoles            
      * @return $this
      */
-    public function setUserRoles ($userRoles)
+    public function setUserRoles($userRoles)
     {
         $this->userRoles = $userRoles;
         return $this;
@@ -278,7 +272,7 @@ class User extends AbstractEntity implements UserInterface
      * @param array $email            
      * @return $this
      */
-    public function setEmail ($email)
+    public function setEmail($email)
     {
         $this->email = $email;
         return $this;
@@ -289,7 +283,7 @@ class User extends AbstractEntity implements UserInterface
      * @param array $username            
      * @return $this
      */
-    public function setUsername ($username)
+    public function setUsername($username)
     {
         $this->username = $username;
         return $this;
@@ -300,7 +294,7 @@ class User extends AbstractEntity implements UserInterface
      * @param array $password            
      * @return $this
      */
-    public function setPassword ($password)
+    public function setPassword($password)
     {
         $this->password = $password;
         return $this;
@@ -311,7 +305,7 @@ class User extends AbstractEntity implements UserInterface
      * @param number $logins            
      * @return $this
      */
-    public function setLogins ($logins)
+    public function setLogins($logins)
     {
         $this->logins = $logins;
         return $this;
@@ -322,7 +316,7 @@ class User extends AbstractEntity implements UserInterface
      * @param field_type $last_login            
      * @return $this
      */
-    public function setLastLogin ($last_login)
+    public function setLastLogin($last_login)
     {
         $this->last_login = $last_login;
         return $this;
@@ -333,7 +327,7 @@ class User extends AbstractEntity implements UserInterface
      * @param field_type $date            
      * @return $this
      */
-    public function setDate ($date)
+    public function setDate($date)
     {
         $this->date = $date;
         return $this;
@@ -344,7 +338,7 @@ class User extends AbstractEntity implements UserInterface
      * @param field_type $givenname            
      * @return $this
      */
-    public function setGivenname ($givenname)
+    public function setGivenname($givenname)
     {
         $this->givenname = $givenname;
         return $this;
@@ -355,7 +349,7 @@ class User extends AbstractEntity implements UserInterface
      * @param field_type $lastname            
      * @return $this
      */
-    public function setLastname ($lastname)
+    public function setLastname($lastname)
     {
         $this->lastname = $lastname;
         return $this;
@@ -366,7 +360,7 @@ class User extends AbstractEntity implements UserInterface
      * @param field_type $gender            
      * @return $this
      */
-    public function setGender ($gender)
+    public function setGender($gender)
     {
         $this->gender = $gender;
         return $this;
@@ -377,7 +371,7 @@ class User extends AbstractEntity implements UserInterface
      * @param boolean $ads_enabled            
      * @return $this
      */
-    public function setAds_enabled ($ads_enabled)
+    public function setAdsEnabled($ads_enabled)
     {
         $this->ads_enabled = $ads_enabled;
         return $this;
@@ -388,13 +382,13 @@ class User extends AbstractEntity implements UserInterface
      * @param boolean $removed            
      * @return $this
      */
-    public function setRemoved ($removed)
+    public function setRemoved($removed)
     {
         $this->removed = $removed;
         return $this;
     }
 
-    public function __construct ()
+    public function __construct()
     {
         $this->userRoles = new ArrayCollection();
         $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
@@ -403,51 +397,51 @@ class User extends AbstractEntity implements UserInterface
         $this->logins = 0;
         $this->gender = 'n';
     }
-    
-    public function addRole(RoleInterface $role, LanguageInterface $language = NULL){
+
+    public function addRole(RoleInterface $role, LanguageInterface $language = NULL)
+    {
         $e = new RoleUser();
         $e->setLanguage($language);
         $e->setRole($role);
         $e->setUser($this);
         return $this;
     }
-    
-    public function getRoles(LanguageInterface $language = NULL) {
-        $criteria = $language ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
+
+    public function getRoles($languageId = NULL)
+    {
+        $criteria = $languageId ? Criteria::create(Criteria::expr()->eq('language', $languageId)) : Criteria::create(Criteria::expr()->isNull('language'));
         $mn = $this->getUserRoles()->matching($criteria);
         $collection = new ArrayCollection();
-        foreach($mn as $key => $m){
+        foreach ($mn as $key => $m) {
             $collection->set($key, $m->getRole());
         }
         return $collection;
     }
 
     /**
-     * Populate
-     * from
-     * an
-     * array.
+     * Populate from an array.
      *
      * @param array $data            
      */
-    public function populate (array $data = array())
+    public function populate(array $data = array())
     {
         $this->injectFromArray('email', $data);
         $this->injectFromArray('password', $data);
         $this->injectFromArray('username', $data);
         $this->injectFromArray('logins', $data);
         $this->injectFromArray('ads_enabled', $data);
-        $this->injectFromArray('removed', $data);     
+        $this->injectFromArray('removed', $data);
         $this->injectFromArray('lastname', $data);
         $this->injectFromArray('givenname', $data);
         $this->injectFromArray('gender', $data);
         return $this;
     }
-    
-    private function injectFromArray($key, array $array, $default = NULL){
-        if(array_key_exists($key, $array)){
+
+    private function injectFromArray($key, array $array, $default = NULL)
+    {
+        if (array_key_exists($key, $array)) {
             $this->$key = $array[$key];
-        } elseif($default !== NULL) {
+        } elseif ($default !== NULL) {
             $this->$key = $default;
         }
     }

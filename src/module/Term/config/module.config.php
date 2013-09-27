@@ -11,9 +11,12 @@
  */
 namespace Term;
 
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'class_resolver' => array(
-        'Term\Entity\TermEntityInterface' => 'Term\Entity\Term',
+        'Term\Entity\TermInterface' => 'Term\Entity\Term',
         'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
     ),
     'di' => array(
@@ -45,7 +48,8 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
+                'Term\Service\TermServiceInterface' => 'Term\Service\TermService',
+                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager',
             ),
             'Term\Service\TermService' => array(
                 'shared' => false

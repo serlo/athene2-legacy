@@ -22,9 +22,9 @@
 		"zf-commons/zfc-rbac" : "dev-master",
 		"php" : ">=5.3.3",
 		"zf-commons/zfc-base" : "0.*",
-		"zf-commons/zfc-user" : "0.*",
 		"zendframework/zendframework" : "dev-master",
-		"twitter/bootstrap" : "dev-master"
+		"twitter/bootstrap" : "dev-master",
+    	"zf-commons/zfc-user": "dev-master"
 	},
 	"minimum-stability" : "dev"
 }

@@ -8,27 +8,87 @@
  */
 namespace Taxonomy\Service;
 
+use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 
 interface TermServiceInterface
 {
 
-    /*public function setTemplate ($template);
+    public function setTermTaxonomy(TermTaxonomyInterface $term);
 
-    public function getViewModel ();
+    public function getTermTaxonomy();
 
-    public function getParent ();
+    public function getDescendantBySlugs(array $path);
 
-    public function getChildren ();
+    public function findChildrenByTaxonomyName($taxonomy);
 
-    public function toArray ();
+    public function getTemplate($template);
 
-    public function linkingAllowed ($targetField);
+    public function hasChildren();
 
-    public function getAllLinks ();
+    public function getParent();
 
-    public function getLinks ($targetField);
+    public function getChildren();
 
-    public function addLink ($targetField, EntityInterface $entity);
+    public function getAllLinks();
 
-    public function removeLink ($targetField, EntityInterface $entity);*/
+    public function hasLinks($targetField);
+
+    public function countLinks($targetField);
+
+    public function getAssociated($targetField, $recursive = false, $allowedTaxonomies = NULL);
+
+    public function getCallbackForLink($link);
+
+    public function associate($targetField, $target);
+
+    public function removeAssociation($targetField, $target);
+
+    public function isAssociated($targetField, $target);
+
+    public function getAllowedAssociations();
+
+    public function isAssociationAllowed($targetField);
+
+    public function knowsAncestor($ancestor);
+
+    public function setName($name);
+
+    public function childNodeAllowed(TermTaxonomyInterface $term);
+
+    public function parentNodeAllowed(TermTaxonomyInterface $term);
+
+    public function allowsParentType($type);
+
+    public function allowsChildType($type);
+
+    public function getAllowedParentTypes();
+
+    public function getAllowedChildrenTypes();
+
+    public function radixEnabled();
+
+    public function setParent($parent);
+
+    public function getConfig();
+
+    public function getOption($name);
+
+    public function getId();
+
+    public function getName();
+
+    public function getType();
+
+    public function getTaxonomy();
+
+    public function getLanguageService();
+
+    public function getTypeName();
+
+    public function getSlug();
+
+    public function getManager();
+
+    public function setManager(TaxonomyManagerInterface $termManager);
 }

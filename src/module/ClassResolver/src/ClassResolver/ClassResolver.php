@@ -21,7 +21,7 @@ class ClassResolver implements ClassResolverInterface
      */
     protected $registry;
 
-    public function __construct($config = array())
+	public function __construct($config = array())
     {
         foreach($config as $from => $to){
             $this->addClass($from, $to);

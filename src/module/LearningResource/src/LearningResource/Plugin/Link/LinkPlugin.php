@@ -16,11 +16,14 @@ use Entity\Collection\EntityCollection;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
+    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
 
-    protected $config = array(
-        'types' => array()
-    );
+    protected function getDefaultConfig ()
+    { 
+        return array(
+            'types' => array()
+        );
+    }
 
     public function isOneToOne ()
     {

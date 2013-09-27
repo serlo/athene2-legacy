@@ -11,6 +11,6 @@
  */
 namespace Versioning\Exception;
 
-class RevisionNotFoundException extends \RuntimeExceptio
+class RevisionNotFoundException extends \RuntimeException
 {
 }

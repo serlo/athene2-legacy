@@ -32,19 +32,22 @@ class LanguageManager implements LanguageManagerInterface {
 		return $this;
 	}
 	
-	public function getRequestLanguage(){
+	public function getLanguageFromRequest(){
 		return $this->getFallbackLanugage();
+	}
+	
+	public function getLanguage($language = NULL){
+	    return $this->get($language);
 	}
 	
 	public function get($language = NULL){
 	    $id = $language;
 	    if($language === NULL){
 	        $language = $this->getFallbackLanugage();
-	    } elseif(is_string($language)){
-	        $language = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'))->findOneByCode($language);
-	        
 	    } elseif(is_numeric($language)){
 	        $language = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'), (int) $language);
+	    } elseif(is_string($language)){
+	        $language = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'))->findOneByCode($language);
 	    } elseif ($language instanceof \Language\Entity\LanguageInterface){
 	       $id = $language->getId();
 	    } else {

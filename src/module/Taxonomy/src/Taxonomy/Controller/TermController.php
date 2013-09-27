@@ -56,7 +56,7 @@ class TermController extends AbstractController
 
     public function createAction ()
     {
-        $taxonomyId = $this->getSharedTaxonomyManager()->get($this->params('taxonomy'))->getId();
+        $taxonomyId = $this->getSharedTaxonomyManager()->getTaxonomy($this->params('taxonomy'))->getId();
         $parentId = $this->params('parent', null);
         
         $form = new TaxonomyForm();
@@ -78,8 +78,8 @@ class TermController extends AbstractController
             $form->setData($data);
             if ($form->isValid()) {
                 $this->getSharedTaxonomyManager()
-                    ->get($data['taxonomy'])
-                    ->create($form->getData());
+                    ->getTaxonomy($data['taxonomy'])
+                    ->createTerm($form->getData());
                 
                 $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich hinzugefügt!');
                 $this->redirect()->toUrl($this->params()

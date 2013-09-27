@@ -41,6 +41,7 @@ interface UuidInterface
     public function setUuid ($uuid);
     
     /**
+     * Sets an entities $id to this Uuid
      * 
      * @param UuidHolder $entity
      * @return $this

@@ -10,12 +10,37 @@ namespace User\Service;
 
 use User\Entity\User;
 use Language\Service\LanguageServiceInterface;
+use User\Manager\UserManagerInterface;
 
 class UserService implements UserServiceInterface
 {
     use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
-    public function getRoleNames(LanguageServiceInterface $language = NULL){
+    /**
+     * 
+     * @var UserManagerInterface
+     */
+    protected $manager;
+    
+    /**
+     * @return UserManagerInterface $manager
+     */
+    public function getManager ()
+    {
+        return $this->manager;
+    }
+
+	/**
+     * @param UserManagerInterface $manager
+     * @return $this
+     */
+    public function setManager (UserManagerInterface $manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+	public function getRoleNames(LanguageServiceInterface $language = NULL){
         if($language) $language = $language->getEntity();
         
         $return = array();
@@ -24,49 +49,33 @@ class UserService implements UserServiceInterface
         }
         return $return;
     }
-    
-    
-    public function getRoles ($language = NULL)
+
+    public function hasRole ($roleName, LanguageServiceInterface $language = NULL)
     {
-        return $this->getEntity()->getRoles($language);
-        //throw new \ErrorException('Deprecated, use getRoleNames instead');
-        /*$return = array();
-        
-        $user = $this->getEntity();
-        
-        $userRolesCollection = $user->getUserRoles();
-        
-        foreach ($this->getObjectManager()
-            ->getRepository('User\Entity\Role')
-            ->findAll() as $role) {
-            
-            $roleCriteria = Criteria::create()->where(Criteria::expr()->eq("role", $role->getId()));
-            $userRoles = $userRolesCollection->matching($roleCriteria);
-            
-            foreach ($userRoles as $userRole) {
-                if (((($userRole->exists('language') && $language !== NULL) && ($userRole->__get('language')->id == $language)) || (! $userRole->exists('language')) || ($language === NULL))) {
-                    $return[] = $role->get('name');
-                }
+        $roles = $this->getRoles($language);
+        foreach($roles as $roleEntity){
+            if($roleEntity->getName() == $roleName){
+                return true;
             }
-        }*/
+        }
+        return false;
     }
     
     public function updateLoginData(){
         $this->getEntity()->setLogins($this->getEntity()->getLogins()+1);
         $this->getEntity()->setLastLogin(new \DateTime("now"));
         $this->getObjectManager()->persist($this->getEntity());
-        $this->getObjectManager()->flush();
         return $this;
+    }
+    
+    public function getRoles (LanguageServiceInterface $language = NULL)
+    {
+        return $this->getEntity()->getRoles($language);
     }
 
     public function getId ()
     {
         return $this->getEntity()->getId();
-    }
-
-    public function hasRole ($user, $role, $language = NULL, $subject = NULL)
-    {
-        return array_search($role, $this->getRoles($user, $language, $subject)) !== FALSE;
     }
 
     public function getUserRoles ()
@@ -129,14 +138,14 @@ class UserService implements UserServiceInterface
         return $this->getEntity()->getGender();
     }
 
-    public function getAds_enabled ()
+    public function getAdsEnabled ()
     {
-        return $this->getEntity()->getAds_enabled();
+        return $this->getEntity()->getAdsEnabled();
     }
 
     public function getRemoved ()
     {
-        return $this->getEntity()->removed();
+        return $this->getEntity()->getRemoved();
     }
 
     public function setLogs ($logs)
@@ -175,9 +184,9 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function setLast_login ($last_login)
+    public function setLastLogin ($last_login)
     {
-        $this->getEntity()->setLast_login($last_login);
+        $this->getEntity()->setLastLogin($last_login);
         return $this;
     }
 
@@ -205,9 +214,9 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function setAds_enabled ($ads_enabled)
+    public function setAdsEnabled ($ads_enabled)
     {
-        $this->getEntity()->setAds_enabled($ads_enabled);
+        $this->getEntity()->setAdsEnabled($ads_enabled);
         return $this;
     }
 

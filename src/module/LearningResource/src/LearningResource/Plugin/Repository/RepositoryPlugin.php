@@ -17,12 +17,16 @@ use Zend\Form\Form;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Auth\Service\AuthServiceAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
-    protected $config = array(
+    protected function getDefaultConfig ()
+    { 
+        return array(
         'revision_form' => 'FormNotFound',
         'field_order' => array()
-    );
+        );
+    }
+        
 
     /**
      *
@@ -138,7 +142,7 @@ class RepositoryPlugin extends AbstractPlugin
             ->getEntity()
             ->newRevision();
         
-        $revision->setAuthor($this->getAuthService()
+        $revision->setAuthor($this->getAuthenticationService()
             ->getUser()
             ->getEntity());
         

@@ -11,6 +11,65 @@
  */
 namespace User\Entity;
 
+use Language\Entity\LanguageInterface;
 interface UserInterface
 {
+    
+    public function getUserRoles ();
+    
+    public function getLogs ();
+    
+    public function getEmail ();
+    
+    public function getUsername ();
+    
+    public function getPassword ();
+    
+    public function getLogins ();
+    
+    public function getLastLogin ();
+    
+    public function getDate ();
+    
+    public function getGivenname ();
+    
+    public function getLastname ();
+    
+    public function getGender ();
+    
+    public function getAdsEnabled ();
+    
+    public function getRemoved ();
+    
+    public function setLogs ($logs);
+    
+    public function setUserRoles ($userRoles);
+    
+    public function setEmail ($email);
+    
+    public function setUsername ($username);
+    
+    public function setPassword ($password);
+    
+    public function setLogins ($logins);
+    
+    public function setLastLogin ($lastLogin);
+    
+    public function setDate ($date);
+    
+    public function setGivenname ($givenname);
+    
+    public function setLastname ($lastname);
+    
+    public function setGender ($gender);
+    
+    public function setAdsEnabled ($adsEnabled);
+
+    public function setRemoved ($removed);
+    
+    public function addRole(RoleInterface $role, LanguageInterface $language = NULL);
+    
+    public function getRoles($languageId);
+    
+    public function populate (array $data = array());
 }

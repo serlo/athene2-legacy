@@ -11,6 +11,9 @@
  */
 namespace Term;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Module
 {
 

@@ -9,6 +9,9 @@
 
 namespace Taxonomy;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Module
 {
 
