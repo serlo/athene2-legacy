@@ -53,13 +53,7 @@ class Module
 
     public function getConfig()
     {
-        $config = array_merge_recursive(
-            include __DIR__ . '/config/module.config.php',
-            //include __DIR__ . '/config/subject/module.config.php',
-            include __DIR__ . '/config/taxonomy/module.config.php',
-            include __DIR__ . '/config/entity/module.config.php'
-        );
-        return $config; 
+        return include __DIR__ . '/config/module.config.php';
     }
     
 

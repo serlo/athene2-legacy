@@ -29,25 +29,46 @@ class Bootstrap
 {
 
     protected static $serviceManager;
+    
+    protected static $application;
 
     protected static $testingNamespaces = array(
+        'LanguageTest' => 'Language/test/LanguageTest',
+        'Language' => 'Language/src/Language',
+        'ClassResolverTest' => 'ClassResolver/test/ClassResolverTest',
+        'ClassResolver' => 'ClassResolver/src/ClassResolver',
         'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
+        'Taxonomy' => 'Taxonomy/src/Taxonomy',
         'CommonTest' => 'Common/test/CommonTest',
+        'Common' => 'Common/src/Common',
         'VersioningTest' => 'Versioning/test/VersioningTest',
+        'Versioning' => 'Versioning/src/Versioning',
         'UserTest' => 'User/test/UserTest',
+        'User' => 'User/src/User',
         'SubjectTest' => 'Subject/test/SubjectTest',
-        'TermTest' => 'Term/test/TermTest'
+        'Subject' => 'Subject/src/Subject',
+        'Term' => 'Term/src/Term',
+        'TermTest' => 'Term/test/TermTest',
+        'UuidTest' => 'Uuid/test/UuidTest',
+        'Uuid' => 'Uuid/src/Uuid',
+        'EntityTest' => 'Entity/test/EntityTest',
+        'Entity' => 'Entity/src/Entity'
     );
 
+    public static function getApplication(){
+        return static::$application;
+    }
+    
     protected static $modules = array(
         'Application',
         'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
+        'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
-        'ZfcBase',
         'Common',
+        'Ui',
         'User',
         'Versioning',
         'Log',
@@ -60,16 +81,15 @@ class Bootstrap
         'Uuid',
         'ClassResolver',
         'LearningResource',
-        'Language'
-    );
+        'Language');
 
     public static $dir;
 
-    public static function init ()
+    public static function init()
     {
         static::$dir = __DIR__;
         
-        $zf2ModulePaths = array(
+        /*$zf2ModulePaths = array(
             dirname(dirname(static::$dir))
         );
         if (($path = static::findParentPath('vendor'))) {
@@ -77,7 +97,7 @@ class Bootstrap
         }
         if (($path = static::findParentPath('module')) !== $zf2ModulePaths[0]) {
             $zf2ModulePaths[] = $path;
-        }
+        }*/
         
         static::initAutoloader();
         
@@ -90,36 +110,42 @@ class Bootstrap
         // and
         // it's
         // dependencies
-        $config = array(
+        /*$config = array(
             'module_listener_options' => array(
                 'module_paths' => $zf2ModulePaths,
                 'config_glob_paths' => array(
-                    static::findParentPath('config/autoload') . '/{,*.}{global}.php'
+                    static::findParentPath('config/autoload') . '/{,*.}{global,test}.php'
                 ),
-                'config_cache_enabled' => false,
+                'config_cache_enabled' => false
             ),
             'modules' => self::$modules
-        );
+        );*/
         
-        $serviceManager = new ServiceManager(new ServiceManagerConfig());
+        //static::$application = Application::init($config);
+        /* @var $sm \Zend\ServiceManager\ServiceManager  */
+        
+        /*$serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
-        
-        static::$serviceManager = $serviceManager;
+        $serviceManager->setAllowOverride(true);
+        $serviceManager->setService('Doctrine\Orm\EntityManager', $serviceManager->get('doctrine.entitymanager.orm_test'));
+        $serviceManager->setAllowOverride(false);
+        $serviceManager->get('Application')->bootstrap(array());
+        static::$application = $serviceManager->get('Application');*/
     }
 
-    public static function chroot ()
+    public static function chroot()
     {
         $rootPath = dirname(static::findParentPath('module'));
         chdir($rootPath);
     }
 
-    public static function getServiceManager ()
+    public static function getServiceManager()
     {
         return static::$serviceManager;
     }
 
-    protected static function initAutoloader ()
+    protected static function initAutoloader()
     {
         $vendorPath = static::findParentPath('vendor');
         
@@ -161,11 +187,11 @@ class Bootstrap
         ));
     }
 
-    protected static function findParentPath ($path)
+    public static function findParentPath($path)
     {
         $dir = static::$dir;
         $previousDir = '.';
-        while (! is_dir($dir . '/' . $path)) {
+        while (! is_dir($dir . '/' . $path) && ! file_exists($dir . '/' . $path)) {
             $dir = dirname($dir);
             if ($previousDir === $dir)
                 return false;

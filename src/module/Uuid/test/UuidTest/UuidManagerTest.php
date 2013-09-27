@@ -64,6 +64,7 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateUuid ()
     {
         $uuid = $this->uuidManager->createUuid();
+        $this->assertNotNull($uuid);
     }
 
     public function testGetUuid ()

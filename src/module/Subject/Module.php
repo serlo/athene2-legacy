@@ -30,7 +30,7 @@ class Module
         /*$listener = $serviceManager->get('Subject\Hydrator\Route');
         $listener->setPath(__DIR__ . '/config/subject/');
         $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);*/
-    
+        
         $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
         $hydrator->setPath(__DIR__ . '/config/navigation/');
         
@@ -56,7 +56,7 @@ class Module
                     $subject->topic()
                         ->addEntity($entity, $_GET['term']);
                     
-                    $url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
+                    //$url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
                 }
             }
         }, 2);
