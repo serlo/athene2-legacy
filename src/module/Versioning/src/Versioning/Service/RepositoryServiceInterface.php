@@ -12,7 +12,6 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
-use Core\Entity\EntityInterface;
 use Versioning\Exception\RevisionNotFoundException;
 use Doctrine\ORM\PersistentCollection;
 use Versioning\Entity\RepositoryInterface;
@@ -48,27 +47,27 @@ interface RepositoryServiceInterface
     /**
      * Removes a revision (makes changes persistent)
      *
-     * @param RevisionInterface $revision            
+     * @param numeric $id            
      * @return $this
      */
-    public function removeRevision (RevisionInterface $revision);
+    public function removeRevision ($id);
 
     /**
      * Returns a revision
      *
      * @throws RevisionNotFoundException
-     * @param int $revisionId            
+     * @param numeric $id     
      * @return RevisionInterface $revision
      */
-    public function getRevision ($revisionId);
+    public function getRevision ($id);
 
     /**
      * Checks if the repository has a revision
      *
-     * @param RevisionInterface|int $revision            
+     * @param numeric $id             
      * @return bool
      */
-    public function hasRevision ($revision);
+    public function hasRevision ($id);
 
     /**
      * Returns the revisions
@@ -87,10 +86,10 @@ interface RepositoryServiceInterface
     /**
      * Checks a revision out (makes changes persistent)
      *
-     * @param RevisionInterface $revision            
+     * @param numeric $id             
      * @return $this
      */
-    public function checkoutRevision (RevisionInterface $revision);
+    public function checkoutRevision ($id);
 
     /**
      * Returns the revision currently set
@@ -107,16 +106,8 @@ interface RepositoryServiceInterface
      * @return RevisionInterface
      */
     public function mergeRevisions (RevisionInterface $revision, RevisionInterface $base);
-
-    /**
-     * Makes changes on the revision persistent
-     *
-     * @param RevisionInterface $revision            
-     * @return $this
-     */
-    public function persistRevision (RevisionInterface $revision);
     
-    public function setRepository(RepositoryInterface $repository);
+    public function setRepository(RepositoryInterface $repository);   
     
-    
+    //public function hasRevisionObject(RevisionInterface $revision);
 }

@@ -9,6 +9,9 @@
 
 namespace User;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Module
 {
 

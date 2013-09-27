@@ -11,19 +11,10 @@
  */
 namespace TaxonomyTest;
 
-use TaxonomyTest\Fake\TaxonomyRepositoryFake;
 use Taxonomy\Manager\SharedTaxonomyManager;
-use AtheneTest\Bootstrap;
-use Taxonomy\Entity\TermTaxonomy;
-use Language\Entity\Language;
-use Uuid\Entity\Uuid;
-use Language\Service\LanguageService;
-use TaxonomyTest\Fake\TaxonomyTypeRepositoryFake;
-use Taxonomy\Entity\Taxonomy;
 use Doctrine\DBAL\LockMode;
-use Taxonomy\Entity\TaxonomyType;
 
-class SharedTaxonomyManagerTest extends TaxonomyTestCase
+class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -32,90 +23,207 @@ class SharedTaxonomyManagerTest extends TaxonomyTestCase
      */
     protected $sharedTaxonomyManager;
 
-    protected $languageService;
+    /**
+     *
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $entityManagerMock, $serviceLocatorMock, $repositoryMock, $termTaxonomyMock, $taxonomyManagerMock, $termServiceMock, $languageServiceMock, $languageManagerMock, $classResolverMock, $taxonomyMock;
 
-    public function setUp ()
+    public function setUp()
     {
-        parent::setUp();
+        $config = array(
+            'associations' => array(
+                'footest' => function  ($sm, $collection)
+                {
+                    return $collection;
+                }
+            ),
+            'types' => array(
+                'foobarSimple' => array(
+                    'options' => array(
+                        'allowed_associations' => array(),
+                        'radix_enabled' => true
+                    )
+                ),
+                'foobar' => array(
+                    'options' => array(
+                        'allowed_parents' => array(
+                            'foobarSimple'
+                        ),
+                        'radix_enabled' => false
+                    )
+                )
+            )
+        );
         
-        $sm = Bootstrap::getServiceManager();
-        $em = $sm->get('Doctrine\Orm\EntityManager');
+        $stm = $this->sharedTaxonomyManager = new SharedTaxonomyManager($config);
+        $stm->setCheckClassInheritance(false);
         
-        $languageEntity = new Language();
-        $languageEntity->setId(1);
-        $language = new LanguageService();
-        $language->setEntity($languageEntity);
-        $this->languageService = $language;
+        $this->entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $this->classResolverMock = $this->getMock('ClassResolver\ClassResolver');
+        $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TermTaxonomy');
+        $this->taxonomyMock = $this->getMock('Taxonomy\Entity\Taxonomy');
+        $this->taxonomyManagerMock = $this->getMock('Taxonomy\Manager\TaxonomyManager');
+        $this->termServiceMock = $this->getMock('Taxonomy\Service\TermServiceMock');
+        $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
+        $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         
-        $map = array(
+        $this->sharedTaxonomyManager->setObjectManager($this->entityManagerMock);
+        $this->sharedTaxonomyManager->setClassResolver($this->classResolverMock);
+        $this->sharedTaxonomyManager->setLanguageManager($this->languageManagerMock);
+        $this->sharedTaxonomyManager->setServiceLocator($this->serviceLocatorMock);
+        
+        /*
+         * $this->taxonomyManagerMock->expects($this->any()) ->method('getId') ->will($this->returnValue(10)); $this->termServiceMock->expects($this->any()) ->method('getId') ->will($this->returnValue(1));
+         */
+        
+        $this->termTaxonomyMock->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue(5));
+        
+        $this->taxonomyMock->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue(10));
+        
+        $this->taxonomyMock->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foobar'));
+        
+        $this->taxonomyMock->expects($this->any())
+            ->method('getLanguage')
+            ->will($this->returnValue($this->languageServiceMock));
+        
+        $this->languageManagerMock->expects($this->any())
+            ->method('getLanguage')
+            ->will($this->returnValue($this->languageServiceMock));
+        
+        $this->serviceLocatorMock->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($this->taxonomyManagerMock));
+    }
+
+    public function testGetTaxonomy()
+    {
+        $this->entityManagerMock->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $this->assertEquals($this->taxonomyManagerMock, $this->sharedTaxonomyManager->getTaxonomy(10));
+        $this->assertEquals($this->taxonomyManagerMock, $this->sharedTaxonomyManager->getTaxonomy(10));
+    }
+
+    /**
+     * @expectedException \Taxonomy\Exception\InvalidArgumentException
+     */
+    public function testGetTaxonomyException()
+    {
+        $this->sharedTaxonomyManager->getTaxonomy('asdf');
+    }
+
+    /**
+     * @expectedException \Taxonomy\Exception\NotFoundException
+     */
+    public function testTaxonomyNotFoundException()
+    {
+        $this->sharedTaxonomyManager->getTaxonomy(12345);
+    }
+
+    public function testFindTaxonomyByName()
+    {
+        $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        
+        $taxonomyTypeMock = $this->getMock('Taxonomy\Entity\TaxonomyType');
+        $persistentCollectionMock = $this->getMock('Doctrine\Common\Collections\ArrayCollection');
+        
+        $persistentCollectionMock->expects($this->once())
+            ->method('matching')
+            ->will($this->returnValue($persistentCollectionMock));
+        
+        $persistentCollectionMock->expects($this->once())
+            ->method('first')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $taxonomyTypeMock->expects($this->once())
+            ->method('getTaxonomies')
+            ->will($this->returnValue($persistentCollectionMock));
+        
+        $repositoryMock->expects($this->once())
+            ->method('findOneBy')
+            ->with(array(
+            'name' => 'foobar'
+        ))
+            ->will($this->returnValue($taxonomyTypeMock));
+        
+        $this->entityManagerMock->expects(($this->any()))
+            ->method('getRepository')
+            ->will($this->returnValue($repositoryMock));
+        
+        $this->assertEquals($this->taxonomyManagerMock, $this->sharedTaxonomyManager->findTaxonomyByName('foobar', $this->languageServiceMock));
+    }
+
+    public function testGetTerm()
+    {
+        $this->termTaxonomyMock->expects($this->once())
+            ->method('getTaxonomy')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $this->classResolverMock->expects($this->any())
+            ->method('resolveClassName')
+            ->will($this->returnValueMap(array(
+            array(
+                'Taxonomy\Entity\TermTaxonomyInterface',
+                'Taxonomy\Entity\TermTaxonomy'
+            ),
+            array(
+                'Taxonomy\Entity\TaxonomyInterface',
+                'Taxonomy\Entity\Taxonomy'
+            )
+        )));
+        
+        $this->entityManagerMock->expects($this->atLeastOnce())
+            ->method('find')
+            ->will($this->returnValueMap(array(
             array(
                 'Taxonomy\Entity\TermTaxonomy',
-                2,
+                $this->termTaxonomyMock->getId(),
                 LockMode::NONE,
                 null,
-                (new TermTaxonomy())->setUuid((new Uuid())->setId(2))
+                $this->termTaxonomyMock
             ),
             array(
                 'Taxonomy\Entity\Taxonomy',
-                6,
+                $this->taxonomyMock->getId(),
                 LockMode::NONE,
                 null,
-                (new Taxonomy())->setId(6)->setType((new TaxonomyType())->setId(6)
-                    ->setName('foobar'))
+                $this->taxonomyMock
             )
-        );
+        )));
         
-        $em->expects($this->any())
-            ->method('find')
-            ->will($this->returnValueMap($map));
+        $this->taxonomyManagerMock->expects($this->once())
+            ->method('getTerm')
+            ->will($this->returnValue($this->termServiceMock));
         
-        $repository1 = new TaxonomyRepositoryFake();
-        $repository2 = new TaxonomyTypeRepositoryFake();
-        
-        $map2 = array(
-            array(
-                'Taxonomy\Entity\Taxonomy',
-                $repository1
-            ),
-            array(
-                'Taxonomy\Entity\TaxonomyType',
-                $repository2
-            )
-        );
-        
-        $em->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValueMap($map2));
-        
-        $this->sharedTaxonomyManager = $sm->get('Taxonomy\Manager\SharedTaxonomyManager');
-        $this->sharedTaxonomyManager->setConfig(array(
-            'types' => array(
-                'foobar' => array(
-                    'options' => array()
-                ),
-                'foobar1' => array(
-                    'options' => array()
-                ),
-                'foobar2' => array(
-                    'options' => array()
-                ),
-            )
-        ));
+        $this->assertEquals($this->termServiceMock, $this->sharedTaxonomyManager->getTerm($this->termTaxonomyMock->getId()));
+    }
+    
+    public function testGetCallback()
+    {
+        $this->assertNotNull($this->sharedTaxonomyManager->getCallback('footest'));
     }
 
-    public function testGet ()
+    /**
+     * @expectedException \Taxonomy\Exception\RuntimeException
+     */
+    public function testGetCallbackException()
     {
-        $this->assertEquals(6, $this->sharedTaxonomyManager->get(6, $this->languageService)
-            ->getId());
+        $this->assertNotNull($this->sharedTaxonomyManager->getCallback('12345'));
     }
     
-    public function testGetByName(){
-        $this->assertEquals(1, $this->sharedTaxonomyManager->get('foobar', $this->languageService)
-            ->getId());        
-    }
-    
-    public function testHas(){
-        $e = $this->sharedTaxonomyManager->get(6, $this->languageService);
-        $this->assertEquals(true, $e->getId());      
+    public function testGetAllowedChildrenTypes()
+    {
+        $this->assertEquals(array('foobar'), $this->sharedTaxonomyManager->getAllowedChildrenTypes('foobarSimple'));
     }
 }

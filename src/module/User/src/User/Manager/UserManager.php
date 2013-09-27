@@ -15,105 +15,143 @@ use User\Entity\UserInterface;
 use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use User\Exception\InvalidArgumentException;
+use User\Service\UserServiceInterface;
 
-class UserManager extends AbstractManager implements UserManagerInterface
+class UserManager implements UserManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait, \Zend\EventManager\EventManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
-    public function get ($user)
+    public function addUser(UserServiceInterface $user){
+        $this->addInstance($user->getId(), $user);
+        return $this;
+    }
+    
+    public function getUser($id)
     {
-        if ($user instanceof \User\Entity\UserInterface) {
-        } elseif ($user instanceof \User\Service\UserServiceInterface){
-            return $user;
-        } elseif (is_numeric($user) || is_string($user)){
-            $user = $this->find($user);
-        } else {
-            throw new \InvalidArgumentException();
-        }
+        if (! is_numeric($id))
+            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
+        
+        if (! $this->hasInstance($id)) {
+            $user = $this->getObjectManager()->find($this->getClassResolver()
+                ->resolveClassName('User\Entity\UserInterface'), $id);
+            if (! $user)
+                throw new UserNotFoundException(sprintf('User %s not found', $id));
 
-        if (! is_object($user))
-            throw new UserNotFoundException(sprintf('User not found'));
-        
-        if (! $this->has($user) ) {
-            $this->createService($user);
+            $instance = $this->createService($user);
+            $this->addInstance($user->getId(), $instance);
+            return $instance;
         }
         
-        return $this->getInstance($user->getId());
+        return $this->getInstance($id);
+    }
+    
+    public function getUserFromAuthenticator(){
+        if($this->getAuthenticationService()->hasIdentity()){
+            $email = $this->getAuthenticationService()->getIdentity();
+            try{
+                $user = $this->findUserByEmail($email);
+                if($user->getRemoved() || !$user->hasRole('login')){
+                    $this->getAuthenticationService()->clearIdentity();
+                } else {
+                    return $user;
+                }
+            } catch(UserNotFoundException $e){
+                $this->getAuthenticationService()->clearIdentity();
+            }
+        }
+        return null;
     }
 
-    public function create (array $data)
+    public function findUserByUsername($username)
+    {
+        $user = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\UserInterface'))
+            ->findOneBy(array(
+            'username' => $username
+        ));
+        if (! $user)
+            throw new UserNotFoundException(sprintf('User %s not found', $username));
+        return $this->getUser($user->getId());
+    }
+
+    public function findUserByEmail($email)
+    {
+        $user = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\UserInterface'))
+            ->findOneBy(array(
+            'email' => $email
+        ));
+        if (! $user)
+            throw new UserNotFoundException(sprintf('User with email %s not found', $email));
+        return $this->getUser($user->getId());
+    }
+
+    public function createUser(array $data)
     {
         $user = $this->createUserEntity();
-        
         $user->populate($data);
-        
         $this->getObjectManager()->persist($user);
-        $this->getObjectManager()->flush($user);
-        
-        $this->getEventManager()->trigger('create', $this, array('user' => $user));
-        
+        $this->getEventManager()->trigger('create', $this, array(
+            'user' => $user
+        ));
         return $this->createService($user);
     }
 
-    public function createUser ()
+    public function purgeUser($id)
     {
-        return $this->createService($this->createUserEntity());
+        $user = $this->getUser($id);
+        $this->removeInstance($user->getId());
+        $this->getObjectManager()->remove($user->getEntity());
+        unset($user);
+        return $this;
     }
 
-    public function createUserEntity ()
+    public function trashUser($id)
+    {
+        $user = $this->getUser($id);
+        $user->setRemoved(true);
+        $this->getObjectManager()->persist($user->getEntity());
+        return $this;
+    }
+
+    public function createUserEntity()
     {
         $user = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
         return new $user();
     }
 
-    public function has ($entity)
+    public function findAllUsers()
     {
-        if(is_object($entity))
-            $entity = $entity->getId();
-        
-        return $this->hasInstance($entity);
-    }
-    
-    public function findAllUsers(){
-        $collection = new ArrayCollection($this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'))->findAll());
+        $collection = new ArrayCollection($this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\UserInterface'))
+            ->findAll());
         return new UserCollection($collection, $this);
     }
-    
-    public function findAllRoles(){
-        return $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('User\Entity\RoleInterface'))->findAll();
-    }
-    
-    public function findRole($id){
-        return $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('User\Entity\RoleInterface'), $id);        
+
+    public function findAllRoles()
+    {
+        return $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\RoleInterface'))
+            ->findAll();
     }
 
-    protected function find ($id)
+    public function findRole($id)
     {
-        if (is_numeric($id)) {
-            $user = $this->getObjectManager()->find($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'), $id);
-        } else {
-            $user = $this->getObjectManager()
-                ->getRepository($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'))
-                ->findOneBy(array(
-                'email' => $id
-            ));
-            if (! is_object($user)) {
-                $user = $this->getObjectManager()
-                    ->getRepository($this->getClassResolver()->resolveClassName('User\Entity\UserInterface'))
-                    ->findOneBy(array(
-                    'username' => $id
-                ));
-            }
-        }        
-        return $user;
+        return $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('User\Entity\RoleInterface'), $id);
     }
 
-    protected function createService (UserInterface $entity)
+    protected function createService(UserInterface $entity)
     {
-        $instance = parent::createInstance('User\Service\UserServiceInterface');
+        /* @var $instance \User\Service\UserServiceInterface */
+        $instance = $this->createInstance('User\Service\UserServiceInterface');
         $instance->setEntity($entity);
-        $this->addInstance($entity->getId(), $instance);
+        $instance->setManager($this);
         return $instance;
     }
 }

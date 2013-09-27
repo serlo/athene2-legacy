@@ -11,8 +11,6 @@
  */
 namespace Taxonomy\Exception;
 
-use Subject\Exception\RuntimeException;
-
-class RuntimeException extends RuntimeException
+class RuntimeException extends \RuntimeException
 {
 }

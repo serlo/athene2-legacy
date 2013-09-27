@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit bootstrap="Bootstrap.php" colors="true">
-    <testsuites>
-        <testsuite name="Athene2 Versioning Test Suite">
-            <directory>../../module/Versioning/test</directory>
-        </testsuite>
-        <testsuite name="Athene2 Uuid Test Suite">
-            <directory>../../module/Uuid/test</directory>
-        </testsuite>
-        <testsuite name="Athene2 User Test Suite">
-            <directory>../../module/User/test</directory>
-        </testsuite>
-        <testsuite name="Athene2 Term Test Suite">
-            <directory>../../module/Term/test</directory>
-        </testsuite>
-    </testsuites>
+	<testsuites>
+		<testsuite name="Athene2 User Test Suite">
+			<directory>../../module/User/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Taxonomy Test Suite">
+			<directory>../../module/Taxonomy/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Uuid Test Suite">
+			<directory>../../module/Uuid/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Term Test Suite">
+			<directory>../../module/Term/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Versioning Test Suite">
+			<directory>../../module/Versioning/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Subject Test Suite">
+			<directory>../../module/Subject/test</directory>
+		</testsuite>
+	</testsuites>
 </phpunit>

@@ -11,20 +11,20 @@
  */
 namespace Taxonomy;
 
+/**
+ * @codeCoverageIgnore
+ */
 return array(
     'class_resolver' => array(
-        'Taxonomy\Manager\TermManagerInterface' => 'Taxonomy\Manager\TermManager',
+        'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
-        'Taxonomy\Entity\TaxonomyEntityInterface' => 'Taxonomy\Entity\Taxonomy',
-        'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy',
+        'Taxonomy\Entity\TaxonomyInterface' => 'Taxonomy\Entity\Taxonomy',
+        'Taxonomy\Entity\TermTaxonomyInterface' => 'Taxonomy\Entity\TermTaxonomy',
         'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService',
         'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
     ),
     'taxonomy' => array(
         'types' => array(
-            'foobar' => array(
-                'options' => array()
-            ),
             'root' => array(
                 'options' => array(
                     'allowed_parents' => array(),
@@ -97,11 +97,11 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Taxonomy\Manager\SharedTaxonomyManager' => (function  ($sm)
+            'Taxonomy\Manager\SharedTaxonomyManager' => (function ($sm)
             {
                 $config = $sm->get('config');
-                $config = new \Zend\Config\Config($config['taxonomy']);
-                $instance = new \Taxonomy\Manager\SharedTaxonomyManager($config);
+                // $config = new \Zend\Config\Config($config['taxonomy']);
+                $instance = new \Taxonomy\Manager\SharedTaxonomyManager($config['taxonomy']);
                 $instance->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
                 $instance->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $instance->setServiceLocator($sm);
@@ -122,7 +122,7 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Taxonomy\Manager\TermManager' => array(
+                'Taxonomy\Manager\TaxonomyManager' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
                     ),
@@ -165,31 +165,14 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    )
                 )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Term\Manager\TermManagerInterface' => 'Term\Manager\TermManager',
-                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
                 'Taxonomy\Manager\SharedTaxonomyManagerInterface' => 'Taxonomy\Manager\SharedTaxonomyManager'
-            // 'Auth\Service\AuthServiceInterface'
-            // =>
-            // 'Auth\Service\AuthService',
-            // 'Entity\Service\EntityServiceInterface'
-            // =>
-            // 'EventManager',
-            // 'Versioning\RepositoryManagerInterface'
-            // =>
-            // 'Versioning\RepositoryManager',
-            // 'SharedTaxonomyManagerInterface'
-            // =>
-            // 'SharedTaxonomyManager'
-                        ),
-            'Taxonomy\Manager\TermManager' => array(
+            ),
+            'Taxonomy\Manager\TaxonomyManager' => array(
                 'shared' => false
             ),
             'Taxonomy\Service\TermService' => array(

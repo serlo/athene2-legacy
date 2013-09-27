@@ -11,12 +11,6 @@
  */
 namespace Entity\Plugin;
 
-use Entity\Service\EntityServiceInterface;
-
 interface PluginInterface
 {
-    public function setEntityService(EntityServiceInterface $entityService);
-    public function setConfig($options);
-    public function getIdentity();
-    public function setIdentity($identity);
 }

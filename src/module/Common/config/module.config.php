@@ -14,7 +14,10 @@ namespace Common;
 return array(
     'view_helpers' => array(
         'invokables' => array(
-            'pageHeader' => __NAMESPACE__ . '\View\Helper\PageHeader'
+            'pageHeader' => __NAMESPACE__ . '\View\Helper\PageHeader',
+            'modal' => __NAMESPACE__ . '\View\Helper\Modal',
+            'renderTitle' => __NAMESPACE__ . '\View\Helper\Title',
+            'dateFormat' => __NAMESPACE__ . '\View\Helper\DateFormat'
         )
     ),
     'controller_plugins' => array(
@@ -23,4 +26,3 @@ return array(
         )
     ),
 );
-

@@ -38,7 +38,7 @@ class FilterPlugin extends AbstractPlugin
     public function setTopic ($path)
     {
         $this->topic = $this->getSharedTaxonomyManager()
-            ->get('topic')
+            ->findTaxonomyByName('topic')
             ->get($path);
         return $this;
     }
@@ -66,13 +66,13 @@ class FilterPlugin extends AbstractPlugin
             throw new InvalidArgumentException('Parameter 1 expects to be numeric or implementing Entity\Service\EntityServiceInterface');
         }
         
-        $this->getCurriculum()->removeLink('entities', $entity);
+        $this->getCurriculum()->removeAssociation('entities', $entity);
         return $this;
     }
 
     public function getTermManager ()
     {
-        return $this->getSharedTaxonomyManager()->get('curriculum');
+        return $this->getSharedTaxonomyManager()->findTaxonomyByName('curriculum');
     }
 
     public function filterEntities (Collection $entities, TermServiceInterface $topic)
@@ -81,7 +81,7 @@ class FilterPlugin extends AbstractPlugin
         $curriculum = $this->getCurriculum();
         return $entities->filter(function  ($entity) use( $curriculum)
         {
-            return $curriculum->hasLink('entities', $entity);
+            return $curriculum->isAssociated('entities', $entity);
         });
     }
 
@@ -135,7 +135,7 @@ class FilterPlugin extends AbstractPlugin
         if ($term->getTaxonomy()->getSubject() !== $this->getSubjectService()->getEntity())
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
         
-        $term->addLink('entities', $entity->getEntity());
+        $term->associate('entities', $entity->getEntity());
         $term->persistAndFlush();
         
         return $this;
@@ -171,13 +171,13 @@ class FilterPlugin extends AbstractPlugin
 
     public function getRootFolders ()
     {
-        return $this->getTermManager()->getRootTerms();
+        return $this->getTermManager()->getSaplings();
     }
 
     public function getSchoolTypeRootFolders ()
     {
         return $this->getSharedTaxonomyManager()
-            ->get('school-type')
-            ->getRootTerms();
+            ->findTaxonomyByName('school-type')
+            ->getSaplings();
     }
 }

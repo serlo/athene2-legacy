@@ -26,7 +26,7 @@ abstract class TopicPlugin extends TaxonomyPlugin
     }
     
     function getRoots(){
-        return $this->getSharedTaxonomyManager()->get('topic')->getRootTerms();
+        return $this->getSharedTaxonomyManager()->findTaxonomyByName('topic')->getSaplings();
     }
 
     function getTopic ()
@@ -41,7 +41,7 @@ abstract class TopicPlugin extends TaxonomyPlugin
         $current->get('entities')->removeElement($this->entityService->getEntity());
         $current->persist();
         
-        $term = $this->getTermManager()->get($term);
+        $term = $this->getTermManager()->getTerm($term);
         $this->getEntityService()->getTerms()->add($term);
         $this->getEntityService()->persistAndFlush();
         

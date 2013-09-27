@@ -11,7 +11,6 @@
  */
 namespace Entity\Entity;
 
-use Core\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,53 +19,88 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_type")
  */
-class Type extends AbstractEntity implements TypeInterface {   
+class Type implements TypeInterface
+{
 
-	/**
-	 * @ORM\OneToMany(targetEntity="Entity", mappedBy="type")
-	 **/
-	protected $entities;
-	
-	/** @ORM\Column(type="text",length=255) */
-	protected $name;
-	
-    public function __construct() {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
+    public $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Entity", mappedBy="type")
+     */
+    protected $entities;
+
+    /**
+     * @ORM\Column(type="text",length=255)
+     */
+    protected $name;
+
+    /**
+     *
+     * @return field_type $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @param field_type $id            
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function __construct()
+    {
         $this->entities = new \Doctrine\Common\Collections\ArrayCollection();
     }
-	/**
+
+    /**
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection $entities
      */
-    public function getEntities ()
+    public function getEntities()
     {
         return $this->entities;
     }
 
-	/**
+    /**
+     *
      * @return field_type $className
      */
-    public function getName ()
+    public function getName()
     {
         return $this->name;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $entities
+    /**
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $entities            
      * @return $this
      */
-    public function setEntities ($entities)
+    public function setEntities($entities)
     {
         $this->entities = $entities;
         return $this;
     }
 
-	/**
-     * @param field_type $className
+    /**
+     *
+     * @param field_type $className            
      * @return $this
      */
-    public function setName ($className)
+    public function setName($className)
     {
         $this->name = $className;
         return $this;
     }
-
 }

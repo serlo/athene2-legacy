@@ -12,161 +12,130 @@ use Taxonomy\Exception\NotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\ConfigNotFoundException;
-use Zend\Stdlib\ArrayUtils;
+use Taxonomy\Exception\TermNotFoundException;
+use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyInterface;
+use Doctrine\Common\Collections\Criteria;
+use Taxonomy\Exception\RuntimeException;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
-    
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
-    /**
-     *
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @return multitype: $config
-     */
-    public function getConfig ()
+    public function getDefaultConfig()
     {
-        return $this->config;
+        return array();
     }
 
-	/**
-     * @param multitype: $config
-     * @return $this
-     */
-    public function setConfig ($config)
+    public function __construct(array $config = NULL)
     {
-        if($config instanceof \Zend\Config\Config) $config = $config->toArray();
-        $this->config = $config;
-        return $this;
+        if ($config)
+            $this->setConfig($config);
     }
 
-	/**
-     * Constructor
-     *
-     * @param array $config            
-     */
-    public function __construct($config)
+    public function getTaxonomy($id)
     {
-        $this->setConfig($config);
-    }
-
-    public function add(TermManagerInterface $termManager)
-    {
-        $this->addInstance($termManager->getId(), $termManager);
-        return $termManager->getId();
-    }
-
-    public function get($taxonomy, $language = NULL)
-    {
-        $className = $this->resolveClassName('Taxonomy\Manager\TermManagerInterface');
-        $entityClassName = $this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface');
-        $termEntityClassName = $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface');
+        if (! is_numeric($id))
+            throw new InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
         
-        if (!$language instanceof LanguageServiceInterface)
-            $language = $this->getLanguageManager()->get($language);
-        if (is_numeric($taxonomy)) {
-            $entity = $this->getObjectManager()->find($this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface'), $taxonomy);
-        } elseif (is_string($taxonomy)) {
+        if (! $this->hasInstance($id)) {
+            $entity = $this->getObjectManager()->find($this->getClassResolver()
+                ->resolveClassName('Taxonomy\Entity\TaxonomyInterface'), $id);
             
-            $type = $this->getObjectManager()
-                ->getRepository($this->resolveClassName('Taxonomy\Entity\TaxonomyTypeInterface'))
-                ->findOneBy(array(
-                'name' => $taxonomy
-            ));
+            if (! is_object($entity))
+                throw new NotFoundException(sprintf('A taxonomy by the id of %s could not be found.', $id));
             
-            if (! is_object($type))
-                throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $taxonomy));
-            
-            $entity = $this->getObjectManager()
-                ->getRepository($this->resolveClassName('Taxonomy\Entity\TaxonomyEntityInterface'))
-                ->findOneBy(array(
-                'language' => $language->getId(),
-                'type' => $type->getId()
-            ));
-        } elseif ($taxonomy instanceof $className) {
-            $entity = $taxonomy->getEntity();
-        } elseif ($taxonomy instanceof $entityClassName) {
-            $entity = $taxonomy;
-        } elseif ($taxonomy instanceof $termEntityClassName) {
-            return $this->getTerm($taxonomy);
-        } else {
-            throw new InvalidArgumentException();
+            $this->addInstance($entity->getId(), $this->createService($entity));
         }
         
-        if (! is_object($entity) || ! $entity instanceof $entityClassName )
-            throw new NotFoundException(sprintf('Taxonomy %s not found in repository %s with language set to %s', $taxonomy, $entityClassName, $language->getId()));
-        
-        if(!$this->has($entity)){
-            $this->add($this->createInstanceFromEntity($entity));
-        }
-        
-        $name = $entity->getId();
-        return $this->getInstance($name);
+        return $this->getInstance($id);
     }
 
-    public function getTerm($element)
+    public function findTaxonomyByName($name, LanguageServiceInterface $language)
     {
-        $termEntityClassName = $this->resolveClassName('Taxonomy\Entity\TermTaxonomyEntityInterface');
-        if (is_numeric($element)) {
-            $entity = $this->getObjectManager()->find($termEntityClassName, (int) $element); //->getTaxonomy();
-        } elseif ($element instanceof $termEntityClassName) {
-            $entity = $element;//->getTaxonomy();
-        } else {
-            throw new \InvalidArgumentException();
-        }
+        if (! is_string($name))
+            throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($name)));
+        
+        $type = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('Taxonomy\Entity\TaxonomyTypeInterface'))
+            ->findOneBy(array(
+            'name' => $name
+        ));
+        
+        if (! is_object($type))
+            throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $name));
+        
+        $entity = $type->getTaxonomies()
+            ->matching(Criteria::create()->where(Criteria::expr()->eq('language', $language->getEntity()))
+            ->setMaxResults(1))
+            ->first();
         
         if (! is_object($entity))
-            throw new NotFoundException(sprintf('That term does not exist!'));
+            throw new NotFoundException(sprintf('Could not find Taxonomy %s by language %s.', $name, $language->getId()));
         
-        return $this->get($entity->getTaxonomy())->get($entity);
-    }
-    
-    public function has($entity){
-        return $this->hasInstance($entity->getId());
+        if (! $this->hasInstance($entity->getId())) {
+            $this->addInstance($entity->getId(), $this->createService($entity));
+        }
+        
+        return $this->getInstance($entity->getId());
     }
 
-    public function deleteTerm($id)
+    public function getTerm($term)
     {
-        $term = $this->getTerm($id);
-        $term->getManager()->delete($term);
-    }
-    
-    public function getCallback($link){
-        if(!array_key_exists($link, $this->config['links']))
-            throw new InvalidArgumentException(sprintf('Callback for type %s not found', $link));
+        if (is_numeric($term)) {
+            $term = $this->getObjectManager()->find($this->getClassResolver()
+                ->resolveClassName('Taxonomy\Entity\TermTaxonomyInterface'), (int) $term);
+        } elseif ($term instanceof TermTaxonomyInterface) {} else {
+            if (! is_object()) {
+                throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($term)));
+            } else {
+                throw new InvalidArgumentException(sprintf('Expected `Taxonomy\Entity\TermTaxonomyInterface` but got %s', get_class($term)));
+            }
+        }
         
-        return $this->config['links'][$link];
+        if (! is_object($term))
+            throw new TermNotFoundException(sprintf('Term with id %s could not be found', $term));
+        
+        $return = $this->getTaxonomy($term->getTaxonomy()
+            ->getId())
+            ->getTerm($term->getId());
+        
+        return $return;
     }
-    
-    public function getAllowedChildrenTypes($type){
+
+    public function getCallback($link)
+    {
+        if (! array_key_exists($link, $this->getOption('associations')))
+            throw new RuntimeException(sprintf('Callback for type %s not found', $link));
+        
+        return $this->getOption('associations')[$link];
+    }
+
+    public function getAllowedChildrenTypes($type)
+    {
         $return = array();
-        foreach($this->config['types'] as $name => $config){
-            if(array_key_exists('allowed_parents', $config['options']) && in_array($type, $config['options']['allowed_parents'])){
+        foreach ($this->getOption('types') as $name => $config) {
+            if (array_key_exists('allowed_parents', (array) $config['options']) && in_array($type, $config['options']['allowed_parents'])) {
                 $return[] = $name;
             }
         }
         return $return;
     }
 
-    protected function createInstanceFromEntity($entity)
+    protected function createService(TaxonomyInterface $entity)
     {
-        if (! is_object($entity))
-            throw new NotFoundException();
+        if (! array_key_exists($entity->getName(), $this->getOption('types'))) {
+            throw new ConfigNotFoundException(sprintf('Could not find a configuration for %s. Data: %s', $entity->getName(), print_r($this->config['types'], TRUE)));
+        }
         
-        if(! isset($this->config['types'][$entity->getType()
-            ->getName()]))
-            throw new ConfigNotFoundException(sprintf('Could not find a configuration for %s', $entity->getType()
-            ->getName()));
-        
-        $instance = parent::createInstance('Taxonomy\Manager\TermManagerInterface');
+        $instance = parent::createInstance('Taxonomy\Manager\TaxonomyManagerInterface');
         $instance->setEntity($entity);
         $instance->setSharedTaxonomyManager($this);
-        $instance->setConfig($this->config['types'][$entity->getType()
-            ->getName()]);
+        $instance->setLanguageService($this->getLanguageManager()
+            ->getLanguage($entity->getLanguage()
+            ->getId()));
+        $instance->setConfig($this->getOption('types')[$entity->getName()]);
         return $instance;
     }
 }

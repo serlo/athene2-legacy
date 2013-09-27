@@ -41,17 +41,17 @@ return array(
                         ->get('Versioning\RepositoryManager'));
                     $instance->setObjectManager($sm->getServiceLocator()
                         ->get('EntityManager'));
-                    $instance->setAuthService($sm->getServiceLocator()
-                        ->get('Auth\Service\AuthService'));
+                    $instance->setAuthenticationService($sm->getServiceLocator()
+                        ->get('Zend\Authentication\AuthenticationService'));
                     return $instance;
                 },
-                'topicFolder' => function  ($sm)
+                /*'topicFolder' => function  ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
                     $instance->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $instance;
-                },
+                },*/
                 'link' => function  ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
@@ -85,9 +85,9 @@ return array(
                             )
                         )
                     ),
-                    'topicFolder' => array(
+                    /*'topicFolder' => array(
                         'plugin' => 'topicFolder'
-                    ),
+                    ),*/
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -108,9 +108,9 @@ return array(
                             )
                         )
                     ),
-                    'topicFolder' => array(
+                    /*'topicFolder' => array(
                         'plugin' => 'topicFolder'
-                    ),
+                    ),*/
                     'exercises' => array(
                         'plugin' => 'link',
                         'options' => array(

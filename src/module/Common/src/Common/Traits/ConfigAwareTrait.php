@@ -11,6 +11,7 @@
  */
 namespace Common\Traits;
 
+use Zend\Stdlib\ArrayUtils;
 trait ConfigAwareTrait
 {
 
@@ -33,9 +34,9 @@ trait ConfigAwareTrait
      * @param field_type $config            
      * @return $this
      */
-    public function setConfig ($config)
+    public function setConfig (array $config)
     {
-        $this->config = array_replace_recursive($this->getDefaultConfig(), $config);
+        $this->config = ArrayUtils::merge($this->getDefaultConfig(), $config);
         
         $array = array(
             $this->getDefaultConfig(),
@@ -43,6 +44,11 @@ trait ConfigAwareTrait
             $this->config
         );
         
+        return $this;
+    }
+    
+    public function appendConfig(array $config){
+        $this->config = ArrayUtils::merge($this->config, $config);
         return $this;
     }
 

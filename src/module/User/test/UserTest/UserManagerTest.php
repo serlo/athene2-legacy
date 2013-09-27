@@ -1,103 +1,134 @@
 <?php
 /**
- * 
+ *
+ *
+ *
+ *
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace UserTest;
 
 use User\Manager\UserManager;
-use AtheneTest\Bootstrap as AtheneBootstrap;
-use AtheneTest\TestCase\ObjectManagerTestCase;
-use User\Entity\User;
-use AtheneTest\Bootstrap;
 
-class UserManagerTest extends ObjectManagerTestCase
+class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     *
-     * @var UserManager
-     */
     protected $userManager;
-    
-    private $user;
 
-    public function setUp ()
+    public function setUp()
     {
-        parent::setUp();
+        $this->userManager = new UserManager();
+        $classResolverMock = $this->getMock('ClassResolver\ClassResolver');
+        $entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $userMock = $this->getMock('User\Entity\User');
+        $userServiceMock = $this->getMock('User\Service\UserService');
+        $authServiceMock = $this->getMock('Zend\Authentication\AuthenticationService');
+        $eventManagerMock = $this->getMock('Zend\EventManager\EventManager');
         
-        $sm = AtheneBootstrap::getServiceManager();
-        $userManager = new UserManager();
-        
-        $userManager->setServiceLocator($sm);
-        $userManager->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-        $userManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-        
-        $repository = new UserRepositoryFake();
-        $this->hydrateObjectManager();
-        $this->injectEntityRepository($repository);
-        
-        $this->userManager = $userManager;
-    }
-
-    public function testGetById ()
-    {
-        $this->assertEquals('1', $this->userManager->get(1)
-            ->getId());
-    }
-
-    public function testGetByUsername ()
-    {
-        $this->assertEquals('1', $this->userManager->get('foobar')
-            ->getId());
-    }
-
-    public function testGetByEmail ()
-    {
-        $this->assertEquals('1', $this->userManager->get('foo@bar.de')
-            ->getId());
-    }
-
-    public function testRepositories ()
-    {
-        $this->assertNotNull($this->userManager->findAllRoles());
-        $this->assertNotNull($this->userManager->findAllUsers());
-    }
-
-    public function testCreate ()
-    {        
-        $entity = $this->userManager->create(array(
-            'username' => 'test',
-            'email' => 'test@test.de',
-            'password' => 'foobar',
-            'language' => 1,
-            'id' => 2
-        ));
-        
-        $this->assertInstanceOf('User\Service\UserServiceInterface', $entity);
-    }
-    
-    private function hydrateObjectManager ()
-    {
-        Bootstrap::getServiceManager()->get('Doctrine\ORM\EntityManager')->expects($this->any())
+        $classResolverMock->expects($this->any())
+            ->method('resolveClassName')
+            ->will($this->returnValue('User\Entity\User'));
+        $serviceLocatorMock->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($userServiceMock));
+        $entityManagerMock->expects($this->any())
             ->method('find')
-            ->with($this->equalTo('User\Entity\User'), $this->equalTo(1))
-            ->will($this->returnValue($this->getUserFake()));
+            ->will($this->returnValue($userMock));
+        $repositoryMock->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValue($userMock));
+        $entityManagerMock->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($repositoryMock));
+        $userServiceMock->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue(1));
+        $userMock->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue(1));
+        $authServiceMock->expects($this->any())
+            ->method('getIdentity')
+            ->will($this->returnValue('foo@bar.de'));
+        $authServiceMock->expects($this->any())
+            ->method('hasIdentity')
+            ->will($this->returnValue(1));
+        
+        $this->userManager->setAuthenticationService($authServiceMock);
+        $this->userManager->setCheckClassInheritance(false);
+        $this->userManager->setClassResolver($classResolverMock);
+        $this->userManager->setEventManager($eventManagerMock);
+        $this->userManager->setObjectManager($entityManagerMock);
+        $this->userManager->setServiceLocator($serviceLocatorMock);
+        
+        $this->userServiceMock = $userServiceMock;
+        $this->authServiceMock = $authServiceMock;
     }
 
-    private function getUserFake ()
+    public function testGetUser()
     {
-        if (! $this->user) {
-            $user = new User();
-            $user->setId(1);
-            $this->user = $user;
-        }
-        return $this->user;
+        $this->assertEquals(1, $this->userManager->getUser(1)
+            ->getId());
+    }
+
+    public function testCreateUser()
+    {
+        $this->assertEquals(1, $this->userManager->createUser(array())
+            ->getId());
+    }
+
+    public function testFindUserByEmail()
+    {
+        $user = $this->userManager->findUserByEmail('foo@bar.de');
+        $this->assertEquals(1, $user->getId());
+    }
+
+    public function testFindUserByUsername()
+    {
+        $user = $this->userManager->findUserByUsername('foo@bar.de');
+        $this->assertEquals(1, $user->getId());
+    }
+
+    public function testGetUserFromAuthenticator()
+    {
+        $this->userServiceMock->expects($this->once())
+            ->method('getRemoved')
+            ->will($this->returnValue(false));
+        $this->userServiceMock->expects($this->once())
+            ->method('hasRole')
+            ->will($this->returnValue(true));
+        $this->authServiceMock->expects($this->never())
+            ->method('clearIdentity');
+        $user = $this->userManager->getUserFromAuthenticator();
+        $this->assertEquals(1, $user->getId());
+    }
+
+    public function testGetUserFromAuthenticatorFailsBecauseRemoved()
+    {
+        $this->userServiceMock->expects($this->once())
+            ->method('getRemoved')
+            ->will($this->returnValue(false));
+        $this->userServiceMock->expects($this->once())
+            ->method('hasRole')
+            ->will($this->returnValue(false));
+        $this->authServiceMock->expects($this->once())
+            ->method('clearIdentity');
+        $user = $this->userManager->getUserFromAuthenticator();
+        $this->assertEquals(null, $user);
+    }
+    
+    public function testTrashUser(){
+        $this->userServiceMock->expects($this->once())->method('setRemoved');
+        $this->userManager->trashUser(1);
     }
 }

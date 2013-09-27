@@ -13,4 +13,22 @@ namespace User\Entity;
 
 interface RoleInterface
 {
+
+    public function getId();
+
+    public function setId($id);
+
+    public function getName();
+
+    public function getDescription();
+
+    public function getRoleUsers();
+
+    public function getUsers($languageId);
+
+    public function setName($name);
+
+    public function setDescription($description);
+
+    public function setRoleUsers($roleUsers);
 }

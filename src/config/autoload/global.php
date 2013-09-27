@@ -11,10 +11,17 @@
  * file.
  */
 return array(
+    'doctrine' => array(
+        'entitymanager' => array(
+            'orm_default' => array(
+                'connection' => 'orm_default',
+                'configuration' => 'orm_default'
+            )
+        )
+    ),
     'service_manager' => array(
         'aliases' => array(
-            'EntityManager' => 'Doctrine\ORM\EntityManager',
-            'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
+            'EntityManager' => 'Doctrine\ORM\EntityManager'
         )
     ),
     'dbParams' => array(
@@ -24,19 +31,17 @@ return array(
         'password' => '',
         'database' => ''
     ),
-    'smtpParams' => array(
-    	'name' => 'smtp.serlo.org',
-		'host' => 'smtp.serlo.org',
-		'connection_class' => 'login',
-		'connection_config' => array(
-			'username' => 'aeneas.rekkas@serlo.org',
-			'password' => 'v4uf428g'
-		)
-	),
+    'session' => array(
+        'use_cookies' => true,
+        'cookie_secure' => false,
+        'remember_me_seconds' => 1800,
+    ),
     'di' => array(
-        'preferences' => array(
-            'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-            'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager',
-        ),
+        'instance' => array(
+            'preferences' => array(
+                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
+                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
+            )
+        )
     )
 );

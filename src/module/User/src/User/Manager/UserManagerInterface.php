@@ -11,6 +11,71 @@
  */
 namespace User\Manager;
 
+use User\Service\UserServiceInterface;
+use Doctrine\ORM\EntityRepository;
+use User\Entity\RoleInterface;
+
 interface UserManagerInterface
 {
+    /**
+     * 
+     * @param numeric $id
+     * @return UserServiceInterface
+     */
+    public function getUser ($id);
+
+    /**
+     *
+     * @param string $username
+     * @return UserServiceInterface
+     */
+    public function findUserByUsername ($username);
+
+    /**
+     *
+     * @param string $email
+     * @return UserServiceInterface
+     */
+    public function findUserByEmail ($email);
+
+    /**
+     * 
+     * @param array $data
+     * @return UserServiceInterface
+     */
+    public function createUser (array $data);
+
+    /**
+     *
+     * @param numeric $id
+     * @return $this
+     */
+    public function purgeUser ($id);
+
+    /**
+     *
+     * @param numeric $id
+     * @return $this
+     */
+    public function trashUser ($id);
+
+    /**
+     * @return EntityRepository
+     */
+    public function findAllUsers ();
+
+    /**
+     * 
+     * @return EntityRepository
+     */
+    public function findAllRoles ();
+
+    /**
+     * 
+     * @param int $roleId
+     * @return RoleInterface
+     */
+    public function findRole ($roleId);
+    
+    public function createUserEntity();
 }

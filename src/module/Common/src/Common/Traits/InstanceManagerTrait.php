@@ -22,7 +22,27 @@ trait InstanceManagerTrait
      */
     private $instances = array();
     
+    private $checkClassInheritance = true;
+    
     /**
+     * @return boolean $checkClassInheritance
+     */
+    public function getCheckClassInheritance()
+    {
+        return $this->checkClassInheritance;
+    }
+
+	/**
+     * @param boolean $checkClassInheritance
+     * @return $this
+     */
+    public function setCheckClassInheritance($checkClassInheritance)
+    {
+        $this->checkClassInheritance = $checkClassInheritance;
+        return $this;
+    }
+
+	/**
      * Adds an instance.
      *
      * @param string $name
@@ -88,7 +108,7 @@ trait InstanceManagerTrait
         $this->getServiceLocator()->setShared($class, $shared);
         $instance = $this->getServiceLocator()->get($class);
         
-        if (! $instance instanceof $class)
+        if ($this->checkClassInheritance && ! $instance instanceof $class)
             throw new \InvalidArgumentException('Expeted ' . $class . ' but got ' . get_class($instance));
         
         return $instance;
@@ -97,5 +117,12 @@ trait InstanceManagerTrait
     protected function getInstances()
     {
         return $this->instances;
+    }
+    
+    public function removeInstance($name){
+        if (! $this->hasInstance($name))
+            throw new \Exception('Instance `' . $name . '` not set.');
+        unset($this->instances[$name]);
+        return $this;
     }
 }
