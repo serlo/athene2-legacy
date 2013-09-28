@@ -36,7 +36,8 @@ return array(
                 $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
                 $service->setHelperPluginManager($sm->get('ViewHelperManager'));
                 return $service;
-            }
+            },
+            'navigation' => 'Ui\Navigation\DynamicNavigationFactory'
         )
     ),
 );

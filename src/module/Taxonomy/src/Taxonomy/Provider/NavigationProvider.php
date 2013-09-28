@@ -15,7 +15,7 @@ namespace Taxonomy\Provider;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
 
-class NavigationProvider implements \Application\Navigation\ProviderInterface
+class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
     use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait,\Language\Service\LanguageServiceAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     

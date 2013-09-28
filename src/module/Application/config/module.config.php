@@ -111,7 +111,6 @@ return array(
                 $transport->setOptions($options);
                 return $transport;
             },
-            'navigation' => 'Application\Navigation\DynamicNavigationFactory'
         ),
     ),
     'translator' => array(
