@@ -54,6 +54,7 @@ class Bootstrap
         'EntityTest' => 'Entity/test/EntityTest',
         'Entity' => 'Entity/src/Entity',
         'Application' => 'Application/src/Application',
+        'Ui' => 'Ui/src/Ui',
     );
 
     public static function getApplication(){
