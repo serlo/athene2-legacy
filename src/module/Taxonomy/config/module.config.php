@@ -200,5 +200,23 @@ return array(
                 )
             )
         )
-    )
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Taxonomie',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Taxonomie verwalten',
+                        'route' => 'taxonomy/taxonomy',
+                        'params' => array(
+                            'action' => 'update',
+                            'id' => '43'
+                        )
+                    ),
+                )
+            ),
+        )
+    ),
 );

@@ -38,6 +38,5 @@ return array(
                 return $service;
             }
         )
-        
-    )
+    ),
 );

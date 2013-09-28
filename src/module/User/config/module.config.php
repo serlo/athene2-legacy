@@ -248,5 +248,23 @@ return array(
                 )
             )
         )
-    )
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Benutzer',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Benutzer verwalten',
+                        'route' => 'users',
+                    ),
+                    array(
+                        'label' => 'Benutzerrollen verwalten',
+                        'route' => 'users/roles',
+                    )
+                )
+            ),
+        )
+    ),
 );

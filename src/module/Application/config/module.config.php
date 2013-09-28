@@ -16,29 +16,6 @@ return array(
                 'label' => 'Home',
                 'route' => 'home'
             ),
-
-            array(
-                'label' => 'Verwalten',
-                'uri' => '#',
-                'pages' => array(
-                    array(
-                        'label' => 'Taxonomie verwalten',
-                        'route' => 'taxonomy/taxonomy',
-                        'params' => array(
-                            'action' => 'update',
-                            'id' => '43'
-                        )
-                    ),
-                    array(
-                        'label' => 'Benutzer verwalten',
-                        'route' => 'users',
-                    ),
-                    array(
-                        'label' => 'Benutzerrollen verwalten',
-                        'route' => 'users/roles',
-                    )
-                )
-            ),
         )
     ),
     'zfcrbac' => array(
