@@ -26,7 +26,7 @@ class SharedLinkManager extends AbstractManager implements SharedLinkManagerInte
         
         $entity = $this->getObjectManager()
             ->getRepository($repositoryName)
-            ->findOneByName($name);
+            ->findOneBy(array('name' => $name));
         
         if (! is_object($entity))
             throw new Exception\RuntimeException(sprintf('`%s` not found in repository `%s`', $name, $repositoryName));
@@ -56,7 +56,6 @@ class SharedLinkManager extends AbstractManager implements SharedLinkManagerInte
             if (! $entity instanceof Entity\LinkTypeInterface)
                 throw new Exception\RuntimeException(sprintf('`%s` does not implement `Link\Entity\LinkTypeInterface`', get_class($entity)));
             
-            $this->createService($entity);
             $this->addInstance($entity->getId(), $this->createService($entity));
         }
         

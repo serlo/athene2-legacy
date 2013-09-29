@@ -20,5 +20,8 @@
 		<testsuite name="Athene2 Subject Test Suite">
 			<directory>../../module/Subject/test</directory>
 		</testsuite>
+		<testsuite name="Athene2 Link Test Suite">
+			<directory>../../module/Link/test</directory>
+		</testsuite>
 	</testsuites>
 </phpunit>
