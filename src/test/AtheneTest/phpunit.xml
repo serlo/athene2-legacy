@@ -23,5 +23,8 @@
 		<testsuite name="Athene2 Link Test Suite">
 			<directory>../../module/Link/test</directory>
 		</testsuite>
+		<testsuite name="Athene2 ClassResolverTest Test Suite">
+			<directory>../../module/ClassResolverTest/test</directory>
+		</testsuite>
 	</testsuites>
 </phpunit>
