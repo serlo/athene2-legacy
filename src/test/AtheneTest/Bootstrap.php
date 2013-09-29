@@ -57,6 +57,8 @@ class Bootstrap
         'Ui' => 'Ui/src/Ui',
         'Link' => 'Link/src/Link',
         'LinkTest' => 'Link/test/LinkTest',
+        'Language' => 'Language/src/Language',
+        'LanguageTest' => 'Language/test/LanguageTest'
     );
 
     public static function getApplication(){

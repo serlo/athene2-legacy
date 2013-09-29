@@ -13,7 +13,7 @@ namespace ClassResolver;
 
 class ClassResolver implements ClassResolverInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     /**
      *
@@ -21,21 +21,23 @@ class ClassResolver implements ClassResolverInterface
      */
     protected $registry;
 
-	public function __construct($config = array())
+    public function __construct($config = array())
     {
-        foreach($config as $from => $to){
+        foreach ($config as $from => $to) {
             $this->addClass($from, $to);
         }
     }
-    
-    protected function addClass($from, $to){
+
+    protected function addClass($from, $to)
+    {
         $this->registry[$this->getIndex($from)] = $to;
         return $this;
     }
-    
-    protected function getIndex($key){
-        if(!is_string($key))
-            throw new \InvalidArgumentException('Key is not a string');
+
+    protected function getIndex($key)
+    {
+        if (! is_string($key))
+            throw new InvalidArgumentException('Key is not a string');
         
         return preg_replace('/[^a-z0-9]/i', '_', $key);
     }
@@ -48,13 +50,13 @@ class ClassResolver implements ClassResolverInterface
             return $class;
         
         if (! is_string($class))
-            throw new \InvalidArgumentException(sprintf('Argument is not a string.'));
+            throw new InvalidArgumentException(sprintf('Argument is not a string.'));
         
         if (! array_key_exists($index, $this->registry))
-            throw new \Exception(sprintf("Can't resolve %s (%s).", $class, $index));
+            throw new RuntimeException(sprintf("Can't resolve %s (%s).", $class, $index));
         
         if (! class_exists($this->registry[$index]))
-            throw new \Exception(sprintf("Class %s not found.", $this->registry[$class]));
+            throw new RuntimeException(sprintf("Class %s not found.", $this->registry[$class]));
         
         return $this->registry[$index];
     }
@@ -70,10 +72,10 @@ class ClassResolver implements ClassResolverInterface
     public function resolve($class)
     {
         $className = $this->getClass($class);
-        $instance = new $className();//$this->getServiceLocator()->get($this->getClass($class));
+        $instance = new $className(); // $this->getServiceLocator()->get($this->getClass($class));
         
-        if (!$instance instanceof $class)
-            throw new \Exception(sprintf('Class %s does not implement %s', get_class($instance), $class));
+        if (! $instance instanceof $class)
+            throw new RuntimeException(sprintf('Class %s does not implement %s', get_class($instance), $class));
         
         return $instance;
     }

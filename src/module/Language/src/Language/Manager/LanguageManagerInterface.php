@@ -11,12 +11,34 @@
  */
 namespace Language\Manager;
 
+use Language\Service\LanguageServiceInterface;
+
 interface LanguageManagerInterface
 {
 
+    /**
+     * 
+     * @return LanguageServiceInterface
+     */
     public function getFallbackLanugage();
 
+    /**
+     * 
+     * @return LanguageServiceInterface
+     */
     public function getLanguageFromRequest();
 
-    public function getLanguage($language = NULL);
+    /**
+     * 
+     * @param int $id
+     * @return LanguageServiceInterface
+     */
+    public function getLanguage($id);
+    
+    /**
+     * 
+     * @param string $code
+     * @return LanguageServiceInterface
+     */
+    public function findLanguageByCode($code);
 }

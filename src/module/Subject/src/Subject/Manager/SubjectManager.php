@@ -78,7 +78,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
     {
         $entity = $entity->getEntity();
         $name = strtolower($entity->getName());
-        $languageService = $this->getLanguageManager()->getLanguage($entity->getLanguage());
+        $languageService = $this->getLanguageManager()->getLanguage($entity->getLanguage()->getId());
         
         $config = $this->findInstanceConfig($name, $languageService->getCode());
         

@@ -36,7 +36,7 @@ class SubjectManagerTest extends \PHPUnit_Framework_TestCase
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         $this->classResolverMock = $this->getMock('ClassResolver\ClassResolver');
         $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->subjectServiceMock = $this->getMocK('Subject\Service\SubjectService');
+        $this->subjectServiceMock = $this->getMock('Subject\Service\SubjectService');
         
         $this->termServiceMock->expects($this->any())
             ->method('getId')
