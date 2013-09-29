@@ -38,9 +38,7 @@ class LinkPlugin extends AbstractPlugin
     public function getLinkService ()
     {
         return $this->getLinkManager()
-            ->add($this->getEntityService()
-            ->getEntity())
-            ->get($this->getEntityService()
+            ->getLink($this->getEntityService()
             ->getEntity());
     }
 

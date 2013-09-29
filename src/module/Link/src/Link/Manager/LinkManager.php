@@ -12,7 +12,6 @@
 namespace Link\Manager;
 
 use Link\Entity\LinkEntityInterface;
-use Link\Exception\InvalidArgumentException;
 
 class LinkManager extends AbstractManager implements LinkManagerInterface
 {
@@ -24,57 +23,20 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
      * @see
      * \Link\LinkManagerInterface::get()
      */
-    public function get ($key)
+    public function getLink (LinkEntityInterface $entity)
     {
-        $id = $key;
-        if($key instanceof LinkEntityInterface){
-            $id = $key->getId();
-            
-            // Lazy-Loading
-            if(!$this->has($id)){
-                $this->add($key);
-            }
-        } elseif (is_numeric($key)) {
-            
-        } else {
-            throw new InvalidArgumentException();
+        $id = $entity->getId();
+        if(!$this->hasInstance($id)){
+            $this->addInstance($entity->getId(), $this->createService($entity));
         }
         return $this->getInstance($id);
     }
-
-    /*public function create (LinkEntityInterface $entity)
+    
+    protected function createService (LinkEntityInterface $entity)
     {
         $instance = parent::createInstance('Link\Service\LinkServiceInterface');
         $instance->setEntity($entity);
-        $this->add($instance);
+        $instance->setLinkManager($this);
         return $instance;
-    }*/
-    
-    /*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Link\LinkManagerInterface::add()
-     */
-    public function add (LinkEntityInterface $entity)
-    {
-        if(!$this->has($entity->getId())){
-            $instance = parent::createInstance('Link\Service\LinkServiceInterface');
-            $instance->setEntity($entity);
-            $instance->setLinkManager($this);
-            $this->addInstance($entity->getId(), $instance);
-        }
-        return $this;
-    }
-    
-    /*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Link\LinkManagerInterface::has()
-     */
-    public function has ($id)
-    {
-        return $this->hasInstance($id);
     }
 }

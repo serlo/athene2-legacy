@@ -1,0 +1,33 @@
+<?php
+$title = 'Blog';
+$this->headTitle($title);
+?>
+<h1>
+	<?php echo $this->escapeHtml($title); ?>
+</h1>
+<p>
+	<a href="<?php echo $this->url('blog', array('action'=>'add'));?>">Add
+		new Post</a>
+</p>
+
+<?php foreach ($posts as $post) : ?>
+
+<article>
+	<h1>
+		<a href="<?php echo 'blog/article/'.$post->__get('slug')?>">
+		<?php echo $this->escapeHtml($post->__get('title'))?>
+		</a>
+	</h1>
+
+	<?php echo $this->escapeHtml($post->__get('content'));?>
+
+	<br>
+</article>
+
+<a href="<?php echo '/article/'.$post->__get('slug').'/edit'?>">Edit this Post</a>
+
+<a href="<?php echo '/article/'.$post->__get('slug').'/delete'?>">Delete this
+	Post</a>
+
+<br>
+<?php endforeach; ?>

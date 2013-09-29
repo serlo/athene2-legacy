@@ -23,7 +23,7 @@ interface ClassResolverInterface
 
     /**
      *
-     * @param string $class            
+     * @param string $class          
      * @return object
      */
     public function resolve($class);

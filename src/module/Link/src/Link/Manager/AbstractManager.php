@@ -11,8 +11,7 @@
  */
 namespace Link\Manager;
 
-use Common\Manager\InstanceManager;
-
-class AbstractManager extends InstanceManager
+class AbstractManager
 {
+    use \Common\Traits\InstanceManagerTrait;
 }
