@@ -16,45 +16,66 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class LinkFake implements LinkEntityInterface
 {
-    protected $children, $parents;
-    
-    public function __construct(){
+
+    protected $children, $parents, $id;
+
+    /**
+     *
+     * @return field_type $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @param field_type $id            
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function __construct()
+    {
         $this->children = new ArrayCollection();
         $this->parents = new ArrayCollection();
     }
     
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::getChildren()
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getChildren()
      */
-    public function getChildren (\Link\Entity\LinkTypeInterface $type)
+    public function getChildren(\Link\Entity\LinkTypeInterface $type)
     {
         return $this->children;
     }
-
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::getParents()
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getParents()
      */
-    public function getParents (\Link\Entity\LinkTypeInterface $type)
+    public function getParents(\Link\Entity\LinkTypeInterface $type)
     {
         return $this->parents;
     }
-
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::addChild()
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::addChild()
      */
-    public function addChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function addChild(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
     {
         $this->children->add($parent);
         return $this;
     }
-
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::addParent()
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::addParent()
      */
-    public function addParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
     {
         $this->parent->add($parent);
         return $this;
     }
-
 }
