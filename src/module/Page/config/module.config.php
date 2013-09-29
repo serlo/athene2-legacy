@@ -18,10 +18,22 @@ return array(
 												'action' => 'index'
 										)
 								)),
+						'edit' => array(
+								'type' => 'Zend\Mvc\Router\Http\Segment',
+								'options' => array(
+										'route' => '/page/:slug/edit',
+										'defaults' => array(
+												'controller' => 'Page\Controller\Index',
+												'action' => 'edit',
+						
+										)
+								)
+						),
+						
 						'article' => array(
 								'type' => 'Zend\Mvc\Router\Http\Segment',
 								'options' => array(
-										'route' => '/page/:slug',
+										'route' => '/page/:slug/',
 										'defaults' => array(
 												'controller' => 'Page\Controller\Index',
 												'action' => 'article',
@@ -29,6 +41,8 @@ return array(
 										)
 								)
 						)
+						
+						
 				)
 		),
 		'controllers' => array(
