@@ -20,12 +20,14 @@ class TermControllerTest extends DefaultLayoutTestCase
         $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
         $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->termServiceMock = $this->getMock('Taxonomy\Service\TermService');
+        $languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
         
         $this->sharedTaxonomyManagerMock->expects($this->any())
             ->method('getObjectManager')
             ->will($this->returnValue($this->objectManagerMock));
         
         $controller->setSharedTaxonomyManager($this->sharedTaxonomyManagerMock);
+        $controller->setLanguageManager($languageManagerMock);
     }
 
     public function testCreateActionForm()
@@ -40,6 +42,7 @@ class TermControllerTest extends DefaultLayoutTestCase
             ->method('flush');
         $this->sharedTaxonomyManagerMock->expects($this->once())
             ->method('createTerm');
+        
         
         $this->dispatch('/taxonomy/term/create/1/5', 'POST', array(
             'id' => 5,

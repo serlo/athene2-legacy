@@ -16,10 +16,11 @@ use Zend\View\Model\ViewModel;
 use User\Authentication\Adapter\AdapterInterface;
 use User\Form\Register as RegisterForm;
 use User\Form\Login as LoginForm;
+use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -31,6 +32,32 @@ class UserController extends AbstractUserController
      * @var AdapterInterface
      */
     private $authAdapter;
+
+    /**
+     *
+     * @var Register
+     */
+    private $registerForm;
+
+    /**
+     *
+     * @return \User\Form\Register $registerForm
+     */
+    public function getRegisterForm()
+    {
+        return $this->registerForm;
+    }
+
+    /**
+     *
+     * @param \User\Form\Register $registerForm            
+     * @return $this
+     */
+    public function setRegisterForm(Register $registerForm)
+    {
+        $this->registerForm = $registerForm;
+        return $this;
+    }
 
     /**
      *
@@ -56,6 +83,7 @@ class UserController extends AbstractUserController
     {
         $form = new LoginForm();
         $errorMessages = false;
+        $messages = array();
         
         if ($this->getRequest()->isPost()) {
             
@@ -78,11 +106,12 @@ class UserController extends AbstractUserController
                         ->flush();
                     $this->redirect()->toUrl($this->params('ref', '/'));
                 }
+                $messages = $result->getMessages();
             }
         }
         $view = new ViewModel(array(
             'form' => $form,
-            'errorMessages' => $result->getMessages()
+            'errorMessages' => $messages
         ));
         return $view;
     }
@@ -91,22 +120,26 @@ class UserController extends AbstractUserController
     {
         $this->getAuthenticationService()->clearIdentity();
         $this->redirect()->toUrl($this->getRefererUrl('/'));
+        return '';
     }
 
     public function registerAction()
     {
         if ($this->getAuthenticationService()->hasIdentity())
-            $this->redirect()->toUrl($this->params('ref', '/'));
+            $this->redirect()->toUrl($this->getRefererUrl('/'));
         
-        $form = new RegisterForm($this->getUserManager()->getObjectManager());
+        $form = $this->getRegisterForm();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $user = $this->getUserManager()->createUser($form->getData());
-                $this->getUserManager()->getObjectManager()->flush();
+                $this->getUserManager()
+                    ->getObjectManager()
+                    ->flush();
                 $this->redirect()->toUrl($this->params('ref', '/'));
+                return '';
             }
         }
         
