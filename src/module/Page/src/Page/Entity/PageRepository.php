@@ -10,7 +10,7 @@ use User\Entity\UserInterface;
  * A Page Revision.
  *
  * @ORM\Entity
- * @ORM\Table(name="page_revision")
+ * @ORM\Table(name="page_repository")
  */
 class PageRevision implements RevisionInterface {
 
@@ -30,10 +30,11 @@ class PageRevision implements RevisionInterface {
 
 	/**
 	 * @ORM\Column(type="integer")
-	 * @ORM\ManyToOne(targetEntity="PageRepository")
+	 * @ORM\ManyToOne(targetEntity="PageRevision")
 	 **/
-	protected $page_repository;
-	
+	protected $current_revision_id;
+
+	 
 
 	/** @ORM\Column(type="text",length=255) */
 	protected $title;
@@ -139,7 +140,6 @@ class PageRevision implements RevisionInterface {
 
 	public function setAuthor(UserInterface $author)
 	{
-	
 		$this->author = $author;
 		return $this;
 	}
