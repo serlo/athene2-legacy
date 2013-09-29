@@ -97,7 +97,7 @@ class UserManager implements UserManagerInterface
         $this->getEventManager()->trigger('create', $this, array(
             'user' => $user
         ));
-        return $this->createService($user);
+        return $user;//$this->createService($user);
     }
 
     public function purgeUser($id)

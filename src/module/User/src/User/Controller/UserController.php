@@ -19,7 +19,7 @@ use User\Form\Login as LoginForm;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -98,15 +98,14 @@ class UserController extends AbstractUserController
         if ($this->getAuthenticationService()->hasIdentity())
             $this->redirect()->toUrl($this->params('ref', '/'));
         
-        $form = new RegisterForm($this->getObjectManager());
+        $form = new RegisterForm($this->getUserManager()->getObjectManager());
         
         if ($this->getRequest()->isPost()) {
-            $data = $this->params()
-                ->fromPost();
+            $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $user = $this->getUserManager()->createUser($form->getData());
-                $this->getObjectManager()->flush();
+                $this->getUserManager()->getObjectManager()->flush();
                 $this->redirect()->toUrl($this->params('ref', '/'));
             }
         }

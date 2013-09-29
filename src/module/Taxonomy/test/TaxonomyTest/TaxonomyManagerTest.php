@@ -24,8 +24,6 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->termServiceMock = new TermService();
         $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
-        $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
-        $this->termManagerMock = $this->getMock('Term\Manager\TermManager');
         $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         
@@ -35,8 +33,6 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->taxonomyManager->setLanguageService($this->languageServiceMock);
         $this->taxonomyManager->setServiceLocator($this->serviceLocatorMock);
         $this->taxonomyManager->setSharedTaxonomyManager($this->sharedTaxonomyManagerMock);
-        $this->taxonomyManager->setTermManager($this->termManagerMock);
-        $this->taxonomyManager->setUuidManager($this->uuidManagerMock);
         
         $this->serviceLocatorMock->expects($this->any())
             ->method('get')
@@ -172,23 +168,6 @@ class TaxonomyManagerTest extends AbstractTestCase
             ->getSlug());
     }
 
-    public function testDeleteTerm()
-    {
-        $this->entityManagerMock->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue($this->termTaxonomyMock));
-        
-        $this->entityManagerMock->expects($this->once())
-            ->method('remove')
-            ->will($this->returnValue($this->termTaxonomyMock));
-        
-        $this->termTaxonomyMock->expects($this->once())
-            ->method('getTaxonomy')
-            ->will($this->returnValue($this->taxonomyMock));
-        
-        $this->assertNotNull($this->taxonomyManager->deleteTerm(2));
-    }
-
     public function testGetSaplings()
     {
         $this->taxonomyMock->expects($this->once())
@@ -196,30 +175,5 @@ class TaxonomyManagerTest extends AbstractTestCase
             ->will($this->returnValue(new ArrayCollection()));
         
         $this->assertInstanceOf('Taxonomy\Collection\TermCollection', $this->taxonomyManager->getSaplings());
-    }
-
-    public function testCreateTerm()
-    {
-        $this->classResolverMock->expects($this->once())
-            ->method('resolve')
-            ->will($this->returnValue($this->termTaxonomyMock));
-        $this->termManagerMock->expects($this->once())
-            ->method('findTermByName')
-            ->will($this->returnValue($this->getMock('Term\Service\TermService')));
-        $this->entityManagerMock->expects($this->once())
-            ->method('persist');
-        
-        $this->termTaxonomyMock->expects($this->once())
-            ->method('getTaxonomy')
-            ->will($this->returnValue($this->taxonomyMock));
-        
-        $this->taxonomyManager->createTerm(array(
-            'parent' => '1',
-            'description' => 'desc',
-            'weight' => 0,
-            'term' => array(
-                'name' => 'herp'
-            )
-        ), $this->taxonomyManager, $this->languageServiceMock);
     }
 }

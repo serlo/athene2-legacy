@@ -13,9 +13,4 @@ namespace Term\Exception;
 
 class TermNotFoundException extends \Exception
 {
-
-    function __construct($name)
-    {
-        parent::__construct("Term `{$term}` not found.");
-    }
 }

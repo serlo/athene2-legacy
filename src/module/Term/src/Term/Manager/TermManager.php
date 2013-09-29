@@ -25,7 +25,7 @@ class TermManager implements TermManagerInterface
      *
      * @param TermServiceInterface $termService            
      */
-    public function addTerm(TermServiceInterface $termService)
+    private function addTerm(TermServiceInterface $termService)
     {
         $this->addInstance($termService->getId(), $termService);
         return $this;
@@ -84,14 +84,14 @@ class TermManager implements TermManagerInterface
         return $this->getInstance($entity->getId());
     }
 
-    public function createTerm($name, $slug, LanguageServiceInterface $language)
+    public function createTerm($name, $slug = NULL, LanguageServiceInterface $language)
     {
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermInterface');
         $entity->setName($name);
         $entity->setLanguage($language->getEntity());
-        $entity->setSlug(($slug ? $slug : strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $name), '-'))));
+        $entity->setSlug(($slug ? $slug : $this->slugify($name)));
         $this->getObjectManager()->persist($entity);
-        return $this;
+        return $entity;
     }
 
     protected function createInstanceFromEntity($entity)
@@ -101,5 +101,29 @@ class TermManager implements TermManagerInterface
         $instance->setEntity($entity);
         $instance->setManager($this);
         return $instance;
+    }
+
+    private function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+        
+        // trim
+        $text = trim($text, '-');
+        
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        
+        // lowercase
+        $text = strtolower($text);
+        
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+        
+        if (empty($text)) {
+            return 'n-a';
+        }
+        
+        return $text;
     }
 }

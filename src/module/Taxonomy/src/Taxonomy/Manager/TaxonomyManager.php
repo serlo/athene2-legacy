@@ -19,10 +19,11 @@ use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Entity\TaxonomyTypeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getTerm($id)
     {
@@ -56,7 +57,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
                     if (strtolower($term->getSlug()) == strtolower($element)) {
                         $terms = $term->getChildren();
                         $found = $term;
-                        $ancestorsFound++;
+                        $ancestorsFound ++;
                         break;
                     }
                 }
@@ -73,62 +74,42 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this->getInstance($found->getId());
     }
 
-    public function deleteTerm($id)
-    {
-        $term = $this->getTerm($id);
-        $this->getObjectManager()->remove($term->getEntity());
-        $this->removeInstance($id);
-        unset($term);
-        return $this;
-    }
-
     public function getSaplings()
     {
         $collection = $this->getEntity()->getSaplings();
         return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
-    public function createTerm(array $data, TaxonomyManagerInterface $taxonomy, LanguageServiceInterface $language)
+    public function getAllowedChildrenTypeNames()
     {
-        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyInterface');
-        
-        try {
-            $term = $this->getTermManager()->findTermByName($data['term']['name'], $language);
-        } catch (TermNotFoundException $e) {
-            $term = $this->getTermManager()->createTerm($data['term']['name'], $language);
-        }
-        
-        $this->getUuidManager()->injectUuid($entity);
-        $entity->setTerm($term->getEntity());
-        $this->getEntity()->addTerm($term);
-        $this->hydrateTerm($data, $entity);
-        
-        $this->getObjectManager()->persist($entity);
-        $instance = $this->createService($entity);
-        return $instance;
+        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypeNames($this->getEntity()
+            ->getName());
     }
 
-    public function updateTerm($id, array $data)
+    public function getAllowedParentTypeNames()
     {
-        $term = $this->getTerm($id);
-        $this->getObjectManager()->persist($term);
-        return $this;
+        return $this->getOption('allowed_parents');
     }
 
     public function getAllowedChildrenTypes()
     {
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
-            ->getName());
+        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypeNames($this->getEntity()
+            ->getName(), $$this->getLanguageService());
+    }
+
+    public function getAllowedParentTypes()
+    {
+        $collection = new ArrayCollection();
+        foreach ($this->getOption('allowed_parents') as $taxonomy) {
+            $collection->add($this->getSharedTaxonomyManager()
+                ->findTaxonomyByName($taxonomy, $this->getLanguageService()));
+        }
+        return $collection;
     }
 
     public function allowsParentType($type)
     {
         return in_array($type, $this->getOption('allowed_parents'));
-    }
-
-    public function getAllowedParentTypes()
-    {
-        return $this->getOption('allowed_parents');
     }
 
     public function getId()
@@ -139,6 +120,10 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     public function getType()
     {
         return $this->getEntity()->getType();
+    }
+    
+    public function getName(){
+        return $this->getEntity()->getName();
     }
 
     public function setType(TaxonomyTypeInterface $type)
@@ -173,31 +158,12 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     protected function getDefaultConfig()
     {
         return array(
-            'options' => array(
                 'templates' => array(
                     'update' => 'taxonomy/taxonomy/update'
                 ),
                 'allowed_parents' => array(),
                 'allowed_associations' => array(),
                 'radix_enabled' => true
-            )
         );
-    }
-
-    private function hydrateTerm(array $data, TermTaxonomyInterface $term)
-    {
-        $columns = array(
-            'parent' => 'setParent',
-            'description' => 'setDescription',
-            'weight' => 'setWeight'
-        );
-        
-        foreach ($columns as $key => $method) {
-            if (array_key_exists($key, $data)) {
-                $term->$method($data[$key]);
-            }
-        }
-        
-        return $this;
     }
 }

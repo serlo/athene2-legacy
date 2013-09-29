@@ -27,7 +27,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $entityManagerMock, $serviceLocatorMock, $repositoryMock, $termTaxonomyMock, $taxonomyManagerMock, $termServiceMock, $languageServiceMock, $languageManagerMock, $classResolverMock, $taxonomyMock;
+    protected $uuidManagerMock, $termManagerMock, $entityManagerMock, $serviceLocatorMock, $repositoryMock, $termTaxonomyMock, $taxonomyManagerMock, $termServiceMock, $languageServiceMock, $languageManagerMock, $classResolverMock, $taxonomyMock;
 
     public function setUp()
     {
@@ -68,7 +68,11 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
         $this->termServiceMock = $this->getMock('Taxonomy\Service\TermServiceMock');
         $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
+        $this->termManagerMock = $this->getMock('Term\Manager\TermManager');
         
+        $this->sharedTaxonomyManager->setTermManager($this->termManagerMock);
+        $this->sharedTaxonomyManager->setUuidManager($this->uuidManagerMock);
         $this->sharedTaxonomyManager->setObjectManager($this->entityManagerMock);
         $this->sharedTaxonomyManager->setClassResolver($this->classResolverMock);
         $this->sharedTaxonomyManager->setLanguageManager($this->languageManagerMock);
@@ -222,8 +226,56 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($this->sharedTaxonomyManager->getCallback('12345'));
     }
     
-    public function testGetAllowedChildrenTypes()
+    public function testGetAllowedChildrenTypeNames()
     {
-        $this->assertEquals(array('foobar'), $this->sharedTaxonomyManager->getAllowedChildrenTypes('foobarSimple'));
+        $this->assertEquals(array('foobar'), $this->sharedTaxonomyManager->getAllowedChildrenTypeNames('foobarSimple'));
     }
+    
+    
+    /*
+
+
+
+    public function testDeleteTerm()
+    {
+        $this->entityManagerMock->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($this->termTaxonomyMock));
+        
+        $this->entityManagerMock->expects($this->once())
+            ->method('remove')
+            ->will($this->returnValue($this->termTaxonomyMock));
+        
+        $this->termTaxonomyMock->expects($this->once())
+            ->method('getTaxonomy')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $this->assertNotNull($this->taxonomyManager->deleteTerm(2));
+    }
+    
+    public function testCreateTerm()
+    {
+        $this->classResolverMock->expects($this->once())
+            ->method('resolve')
+            ->will($this->returnValue($this->termTaxonomyMock));
+        $this->termManagerMock->expects($this->once())
+            ->method('findTermByName')
+            ->will($this->returnValue($this->getMock('Term\Service\TermService')));
+        $this->entityManagerMock->expects($this->once())
+            ->method('persist');
+        
+        $this->termTaxonomyMock->expects($this->once())
+            ->method('getTaxonomy')
+            ->will($this->returnValue($this->taxonomyMock));
+        
+        $this->taxonomyManager->createTerm(array(
+            'parent' => '1',
+            'description' => 'desc',
+            'weight' => 0,
+            'term' => array(
+                'name' => 'herp'
+            )
+        ), $this->taxonomyManager, $this->languageServiceMock);
+    }
+     */
 }

@@ -83,8 +83,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateUser()
     {
-        $this->assertEquals(1, $this->userManager->createUser(array())
-            ->getId());
+        $this->assertInstanceOf('User\Entity\UserInterface', $this->userManager->createUser(array()));
     }
 
     public function testFindUserByEmail()

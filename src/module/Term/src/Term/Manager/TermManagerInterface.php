@@ -20,10 +20,12 @@ interface TermManagerInterface
 
     /**
      *
-     * @param TermServiceInterface $termService            
-     * @return $this
+     * @param string $name            
+     * @param string $slug            
+     * @param LanguageServiceInterface $language            
+     * @return TermServiceInterface
      */
-    public function addTerm(TermServiceInterface $termService);
+    public function createTerm($name, $slug = NULL, LanguageServiceInterface $language);
 
     /**
      *

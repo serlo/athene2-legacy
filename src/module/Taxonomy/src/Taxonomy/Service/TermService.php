@@ -17,12 +17,12 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
-use Language\Service\LanguageServiceInterface;
+use Common\ArrayCopyProvider;
 
-class TermService implements TermServiceInterface
+class TermService implements TermServiceInterface, ArrayCopyProvider
 {
     
-    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Term\Manager\TermManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     /**
      *
@@ -39,6 +39,10 @@ class TermService implements TermServiceInterface
     {
         $this->setEntity($term);
         return $this;
+    }
+    
+    public function getArrayCopy(){
+        return $this->getEntity()->getArrayCopy();
     }
 
     /**
@@ -83,10 +87,10 @@ class TermService implements TermServiceInterface
 
     public function getTemplate($template)
     {
-        if (! isset($this->getOption('options')['templates'][$template]))
+        if (! isset($this->getOption('templates')[$template]))
             throw new InvalidArgumentException(sprintf('Template `%s` not found for taxonomy `%s`', $template, $this->getTaxonomy()->getName()));
         
-        return $this->getOption('options')['templates'][$template];
+        return $this->getOption('templates')[$template];
     }
 
     public function hasChildren()
@@ -187,12 +191,12 @@ class TermService implements TermServiceInterface
 
     public function getAllowedAssociations()
     {
-        return $this->getOption('options')['allowed_associations'];
+        return $this->getOption('allowed_associations');
     }
 
     public function isAssociationAllowed($targetField)
     {
-        return in_array($targetField, (array) $this->getOption('options')['allowed_associations']);
+        return in_array($targetField, (array) $this->getOption('allowed_associations'));
     }
 
     public function knowsAncestor($ancestor)
@@ -233,7 +237,7 @@ class TermService implements TermServiceInterface
 
     public function allowsParentType($type)
     {
-        return in_array($type, $this->getOption('options')['allowed_parents']);
+        return in_array($type, $this->getOption('allowed_parents'));
     }
 
     public function allowsChildType($type)
@@ -243,6 +247,16 @@ class TermService implements TermServiceInterface
             ->findTaxonomyByName($type, $language)
             ->allowsParentType($this->getTaxonomy()
             ->getName());
+    }
+
+    public function getAllowedParentTypeNames()
+    {
+        return $this->getManager()->getAllowedParentTypeNames();
+    }
+
+    public function getAllowedChildrenTypeNames()
+    {
+        return $this->getManager()->getAllowedChildrenTypeNames();
     }
 
     public function getAllowedParentTypes()
@@ -257,7 +271,7 @@ class TermService implements TermServiceInterface
 
     public function radixEnabled()
     {
-        return $this->$this->getOption('options')['radix_enabled'];
+        return $this->$this->getOption('radix_enabled');
     }
 
     public function setParent($parent)
@@ -296,11 +310,6 @@ class TermService implements TermServiceInterface
     public function getName()
     {
         return $this->getTermTaxonomy()->getName();
-    }
-
-    public function getType()
-    {
-        return $this->getTermTaxonomy()->getType();
     }
 
     public function getTaxonomy()
