@@ -16,13 +16,13 @@ trait SharedLinkManagerAwareTrait
 
     /**
      *
-     * @var LinkManagerAwareTrait
+     * @var SharedLinkManagerInterface
      */
     protected $sharedLinkManager;
 
     /**
      *
-     * @return \Link\Manager\LinkManagerAwareTrait
+     * @return SharedLinkManagerInterface
      *         $sharedLinkManager
      */
     public function getSharedLinkManager ()
@@ -32,10 +32,10 @@ trait SharedLinkManagerAwareTrait
 
     /**
      *
-     * @param \Link\Manager\LinkManagerAwareTrait $sharedLinkManager            
+     * @param SharedLinkManagerInterface $sharedLinkManager            
      * @return $this
      */
-    public function setSharedLinkManager ($sharedLinkManager)
+    public function setSharedLinkManager (SharedLinkManagerInterface $sharedLinkManager)
     {
         $this->sharedLinkManager = $sharedLinkManager;
         return $this;

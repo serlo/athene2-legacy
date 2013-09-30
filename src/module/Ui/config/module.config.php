@@ -10,6 +10,28 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
+    'navigation' => array(
+        'top' => array(
+            array(
+                'label' => 'test1',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'test2',
+                'uri' => '#'
+            )
+        ),
+        'bottom' => array(
+            array(
+                'label' => 'test-bott1',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'test-bott2',
+                'uri' => '#'
+            )
+        )
+    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions' => true,
@@ -36,8 +58,10 @@ return array(
                 $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
                 $service->setHelperPluginManager($sm->get('ViewHelperManager'));
                 return $service;
-            }
+            },
+            'navigation' => 'Ui\Navigation\DynamicNavigationFactory',
+            'top_navigation' => 'Ui\Navigation\TopNavigationFactory',
+            'bottom_navigation' => 'Ui\Navigation\BottomNavigationFactory'
         )
-        
     )
 );

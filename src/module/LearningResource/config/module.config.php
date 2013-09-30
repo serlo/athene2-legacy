@@ -56,7 +56,7 @@ return array(
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
                     $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\Manager\SharedLinkManager')->get('link', 'Entity\Entity\EntityLinkType'));
+                        ->get('Link\Manager\SharedLinkManager')->findLinkManagerByName('link', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;
@@ -65,7 +65,7 @@ return array(
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
                     $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\Manager\SharedLinkManager')->get('dependency', 'Entity\Entity\EntityLinkType'));
+                        ->get('Link\Manager\SharedLinkManager')->findLinkManagerByName('dependency', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;

@@ -73,11 +73,11 @@ $serviceManager = array(
     'factories' => array(
         'standard_identity' => function ($sm) {
                 $user = $sm->get('User\Manager\UserManager')->getUserFromAuthenticator();
-                $ls = $sm->get('Language\Manager\LanguageManager')->getLanguageFromRequest();
                 
                 if(!$user){
                     return new \ZfcRbac\Identity\StandardIdentity('guest');
                 } else {
+                    $ls = $sm->get('Language\Manager\LanguageManager')->getLanguageFromRequest();
                     $identity = new \ZfcRbac\Identity\StandardIdentity($user->getRoleNames($ls));
                     return $identity;
                 }

@@ -9,14 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Navigation;
+namespace Ui\Navigation;
 
 use Zend\Navigation\Service\AbstractNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Navigation\Exception; 
-use Subject\Hydrator\Navigation;
 
 class DynamicNavigationFactory extends AbstractNavigationFactory
 {

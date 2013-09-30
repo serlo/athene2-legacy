@@ -77,4 +77,11 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(2, $this->uuidManager->findUuidByName('foobar')->getId());
     }
+
+    /**
+     * @expectedException \Uuid\Exception\InvalidArgumentException
+     */
+    public function testGetUuidInvalidArgumentException(){
+        $this->uuidManager->getUuid('asdf23');
+    }
 }

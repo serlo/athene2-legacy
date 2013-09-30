@@ -1,7 +1,5 @@
 <?php
-use DoctrineORMModule\Service\EntityManagerFactory;
 use DoctrineORMModule\Service\DBALConnectionFactory;
-use Zend\ServiceManager\ServiceManager;
 
 $dbParams = array(
     'host' => 'localhost',
@@ -34,7 +32,11 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'doctrine.connection.orm_test' => new DBALConnectionFactory('orm_test')
-        ),
+            'doctrine.connection.orm_test' => new DBALConnectionFactory('orm_test'),
+            'standard_identity' => function ($sm)
+            {
+                return new \ZfcRbac\Identity\StandardIdentity('guest');
+            },
+        )
     )
 );

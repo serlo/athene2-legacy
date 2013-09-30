@@ -68,7 +68,8 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTerm()
     {
-        $this->assertEquals(1, $this->termManager->getTerm(1)->getId());
+        $this->assertEquals(1, $this->termManager->getTerm(1)
+            ->getId());
     }
 
     public function testFindTermByName()
@@ -92,5 +93,15 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals(1, $this->termManager->findTermBySlug('someslug', $languageServiceMock)
             ->getId());
+    }
+
+    public function testCreateTerm()
+    {
+        $this->termManager->getClassResolver()->expects($this->any())
+            ->method('resolve')
+            ->will($this->returnValue(new \Term\Entity\Term()));
+        $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        
+        $this->assertNotNull($this->termManager->createTerm('a', 'b', $languageServiceMock));
     }
 }

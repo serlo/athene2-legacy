@@ -12,6 +12,10 @@ use Doctrine\Common\Collections\Collection;
 
 interface LinkEntityInterface
 {
+    /**
+     * @return int
+     */
+    public function getId();
 
     /**
      * Returns

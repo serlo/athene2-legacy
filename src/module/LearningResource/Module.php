@@ -74,6 +74,7 @@ class Module
                         $entity->$scope()
                             ->addParent($toEntity);
                     }
+                    $entityManager->getObjectManager()->flush();
                 } else {
                     throw new \RuntimeException(sprintf('Scope %s is not whitelisted.', $scope));
                 }

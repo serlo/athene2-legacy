@@ -1,0 +1,17 @@
+<h1>Add a new Post</h1>
+<?php
+$form->setAttribute('action', $this->url('post', array('action'=>'add')))
+     ->prepare();
+
+echo $this->form()->openTag($form);
+
+$postFieldset = $form->get('post');
+
+echo $this->formHidden($form->get('security'));
+echo $this->formHidden($postFieldset->get('id'));
+echo $this->formRow($postFieldset->get('title'));
+echo $this->formRow($postFieldset->get('text'));
+
+echo $this->formInput($form->get('submit'));
+
+echo $this->form()->closeTag($form);

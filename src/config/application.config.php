@@ -23,7 +23,8 @@ return array(
         'Uuid',
         'ClassResolver',
         'LearningResource',
-        'Language'
+        'Language',
+    	'Page'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -106,6 +106,8 @@ return array(
                 $instance->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $instance->setServiceLocator($sm);
                 $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
+                $instance->setTermManager($sm->get('Term\Manager\TermManager'));
                 return $instance;
             })
         )
@@ -120,6 +122,9 @@ return array(
                 'Taxonomy\Controller\TermController' => array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => 'true'
                     )
                 ),
                 'Taxonomy\Manager\TaxonomyManager' => array(
@@ -129,21 +134,10 @@ return array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
-                    'setTermManager' => array(
-                        'required' => 'true'
-                    ),
                     'setClassResolver' => array(
                         'required' => 'true'
                     ),
-                    'setUuidManager' => array(
-                        'required' => 'true'
-                    ),
                     'setObjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                'Taxonomy\Controller\TermController' => array(
-                    'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     )
                 ),
@@ -164,7 +158,7 @@ return array(
                     ),
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
-                    ),
+                    )
                 )
             )
         ),
@@ -197,6 +191,24 @@ return array(
             'orm_default' => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Taxonomie',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Taxonomie verwalten',
+                        'route' => 'taxonomy/taxonomy',
+                        'params' => array(
+                            'action' => 'update',
+                            'id' => '43'
+                        )
+                    )
                 )
             )
         )

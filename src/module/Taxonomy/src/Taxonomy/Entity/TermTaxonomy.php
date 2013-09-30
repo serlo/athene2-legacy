@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Taxonomy\Exception\RuntimeException;
+use Common\ArrayCopyProvider;
 
 /**
  * A
@@ -20,7 +21,7 @@ use Taxonomy\Exception\RuntimeException;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
-class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface
+class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCopyProvider
 {
 
     /**

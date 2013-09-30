@@ -16,9 +16,9 @@
 			href="#"> <i class="icon-plus"></i> <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
-            <?php foreach($this->term->getAllowedChildrenTypes() as $type):?>
+            <?php foreach($this->term->getAllowedParentTypes() as $taxonomy):?>
                 <li><a
-    				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $type, 'parent' => $this->term->getId())); ?>"><?php echo $type; ?></a></li>
+    				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
             <?php endforeach;?>
 		</ul>
 	</div>

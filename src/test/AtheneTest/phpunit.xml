@@ -2,6 +2,9 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="true">
 	<testsuites>
+		<testsuite name="Athene2 Language Test Suite">
+			<directory>../../module/Language/test</directory>
+		</testsuite>
 		<testsuite name="Athene2 User Test Suite">
 			<directory>../../module/User/test</directory>
 		</testsuite>
@@ -19,6 +22,12 @@
 		</testsuite>
 		<testsuite name="Athene2 Subject Test Suite">
 			<directory>../../module/Subject/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Link Test Suite">
+			<directory>../../module/Link/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 ClassResolver Test Suite">
+			<directory>../../module/ClassResolver/test</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

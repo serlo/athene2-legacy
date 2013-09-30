@@ -29,7 +29,7 @@ return array(
                 $srv->setAuthService($sm->get('Zend\Authentication\AuthenticationService'));
                 return $srv;
             },*/
-            'User\Service\UserService' => function ($sm)
+            __NAMESPACE__ . '\Service\UserService' => function ($sm)
             {
                 $srv = new Service\UserService();
                 $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
@@ -38,6 +38,10 @@ return array(
             'Zend\Authentication\AuthenticationService' => function ($sm)
             {
                 return new \Zend\Authentication\AuthenticationService();
+            },
+            __NAMESPACE__ . '\Form\Register' => function ($sm) {
+                $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
+                return $form;
             }
         )
     ),
@@ -110,7 +114,10 @@ return array(
                     ),
                     'setAuthAdapter' => array(
                         'required' => true
-                    )
+                    ),
+                    'setRegisterForm' => array(
+                        'required' => true
+                    ),
                 ),
                 __NAMESPACE__ . '\Controller\RoleController' => array(
                     'setUserManager' => array(
@@ -248,5 +255,23 @@ return array(
                 )
             )
         )
-    )
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Benutzer',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Benutzer verwalten',
+                        'route' => 'users',
+                    ),
+                    array(
+                        'label' => 'Benutzerrollen verwalten',
+                        'route' => 'users/roles',
+                    )
+                )
+            ),
+        )
+    ),
 );

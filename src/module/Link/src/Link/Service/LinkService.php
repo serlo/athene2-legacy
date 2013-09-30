@@ -9,7 +9,6 @@
 namespace Link\Service;
 
 use Link\Entity\LinkEntityInterface;
-use Doctrine\Common\Collections\Criteria;
 
 class LinkService implements LinkServiceInterface
 {
@@ -51,7 +50,7 @@ class LinkService implements LinkServiceInterface
         
         $this->getEntity()->addParent($parent, $this->getLinkManager()->getEntity(), $order);
         
-        return $this->flush();
+        return $this;
     }
     
     /*
@@ -67,12 +66,6 @@ class LinkService implements LinkServiceInterface
         
         $this->getEntity()->addChild($child, $this->getLinkManager()->getEntity(), $oder);
         
-        return $this->flush();
-    }
-
-    protected function flush()
-    {
-        $this->getObjectManager()->flush();
         return $this;
     }
 }

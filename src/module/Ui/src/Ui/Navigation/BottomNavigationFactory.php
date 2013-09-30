@@ -9,12 +9,14 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Application\Navigation;
+namespace Ui\Navigation;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Navigation\Service\AbstractNavigationFactory;
 
-interface ProviderInterface
-{
-    public function __construct(array $options, ServiceLocatorInterface $serviceLocator);
-    public function provideArray();
+class BottomNavigationFactory extends AbstractNavigationFactory
+{    
+    protected function getName()
+    {
+        return 'bottom';
+    }
 }

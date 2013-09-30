@@ -20,22 +20,14 @@ class TaxonomyControllerTest extends DefaultLayoutTestCase
         
         $sharedTaxonomyManagerMock->expects($this->once())
             ->method('getTerm')
+            ->with('43')
             ->will($this->returnValue($termServiceMock));
         $controller->setSharedTaxonomyManager($sharedTaxonomyManagerMock);
     }
 
     public function testUpdateAction()
     {
-        $this->dispatch('/taxonomy/update/1');
+        $this->dispatch('/taxonomy/update/43');
         $this->assertResponseStatusCode(200);
-    }
-
-    protected function mockEntityManager()
-    {
-        $entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager');
-        
-        $this->getApplicationServiceLocator()->setAllowOverride(true);
-        $this->getApplicationServiceLocator()->setService('Doctrine\ORM\EntityManager', $entityManagerMock);
-        $this->getApplicationServiceLocator()->setAllowOverride(false);
     }
 }

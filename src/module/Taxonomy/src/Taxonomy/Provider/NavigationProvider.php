@@ -15,7 +15,7 @@ namespace Taxonomy\Provider;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
 
-class NavigationProvider implements \Application\Navigation\ProviderInterface
+class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
     use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait,\Language\Service\LanguageServiceAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     
@@ -36,7 +36,7 @@ class NavigationProvider implements \Application\Navigation\ProviderInterface
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
         $this->serviceLocator = $serviceLocator;
         $this->objectManager = $serviceLocator->get('EntityManager');
-        $this->languageService = $serviceLocator->get('Language\Manager\LanguageManager')->get($this->options['language']);
+        $this->languageService = $serviceLocator->get('Language\Manager\LanguageManager')->findLanguageByCode($this->options['language']);
         $this->termService = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')
             ->findTaxonomyByName($this->options['type'], $this->languageService)
             ->findTermByAncestors((array) $this->options['parent']);

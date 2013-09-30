@@ -25,12 +25,13 @@ class UserCollection extends AbstractDelegatorCollection
         return $delegator->getEntity();
     }
 
-	/* (non-PHPdoc)
-     * @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
+    /**
+     * (non-PHPdoc)
+     * @return UserManagerInterface
      */
     public function getFromManager ($key)
     {
-        return $this->getManager()->get($key);
+        return $this->getManager()->getUser($key->getId());
     }
     
     protected function validManager($manager){

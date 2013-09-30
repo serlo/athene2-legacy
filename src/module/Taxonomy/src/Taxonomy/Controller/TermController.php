@@ -16,7 +16,9 @@ use Taxonomy\Form\TaxonomyForm;
 
 class TermController extends AbstractController
 {
-    public function updateAction ()
+    use \Language\Manager\LanguageManagerAwareTrait;
+
+    public function updateAction()
     {
         $id = $this->params('id');
         $term = $this->getTerm($id);
@@ -30,13 +32,11 @@ class TermController extends AbstractController
         $form->setData($term->getArrayCopy());
         $view->setVariable('form', $form);
         
-        $from = rawurlencode($this->getRefererUrl('/'));
-        
-        $form->setAttribute('action', $this->url()->fromRoute('taxonomy/term/action', array(
+        $form->setAttribute('action', $this->url()
+            ->fromRoute('taxonomy/term/action', array(
             'action' => 'update',
-            'id' => $id,
-        )) . '?ref=' . $from)
-        ;
+            'id' => $id
+        )) . '?ref=' . $this->params('ref', '/'));
         
         $view->setTemplate('taxonomy/term/form');
         
@@ -44,29 +44,31 @@ class TermController extends AbstractController
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
-                $term->update($form->getData());
+                $this->getSharedTaxonomyManager()->updateTerm($this->params('id'), $form->getData());
+                $this->getSharedTaxonomyManager()
+                    ->getObjectManager()
+                    ->flush();
                 $this->flashMessenger()->addSuccessMessage('Bearbeitung erfoglreich gespeichert!');
-                $this->redirect()->toUrl($this->params()
-                    ->fromQuery('ref'));
+                $this->redirect()->toUrl($this->params('ref', '/'));
             }
         }
         
         return $view;
     }
 
-    public function createAction ()
+    public function createAction()
     {
-        $taxonomyId = $this->getSharedTaxonomyManager()->getTaxonomy($this->params('taxonomy'))->getId();
-        $parentId = $this->params('parent', null);
-        
         $form = new TaxonomyForm();
         $form->setData(array(
-            'taxonomy' => $taxonomyId,
-            'parent' => $parentId
+            'taxonomy' => $this->params('taxonomy'),
+            'parent' => $this->params('parent', null)
         ));
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('taxonomy/term/create', array('parent' => $this->params('parent'), 'taxonomy' => $this->params('taxonomy'))) . '?ref=' . rawurlencode($this->getRefererUrl('/')));
+            ->fromRoute('taxonomy/term/create', array(
+            'parent' => $this->params('parent'),
+            'taxonomy' => $this->params('taxonomy')
+        )) . '?ref=' . rawurlencode($this->getRefererUrl('/')));
         
         $view = new ViewModel();
         
@@ -77,19 +79,20 @@ class TermController extends AbstractController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $this->getSharedTaxonomyManager()
-                    ->getTaxonomy($data['taxonomy'])
-                    ->createTerm($form->getData());
+                $this->getSharedTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
+                    ->getLanguageFromRequest());
                 
+                $this->getSharedTaxonomyManager()
+                    ->getObjectManager()
+                    ->flush();
                 $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich hinzugefügt!');
-                $this->redirect()->toUrl($this->params()
-                    ->fromQuery('ref'));
+                $this->redirect()->toUrl($this->params('ref', '/'));
             }
         }
         return $view;
     }
 
-    public function deleteAction ()
+    public function deleteAction()
     {
         $this->getSharedTaxonomyManager()->deleteTerm($this->getParam('id'));
         
@@ -99,37 +102,37 @@ class TermController extends AbstractController
             ->getUri());
     }
 
-    public function orderAction ()
+    public function orderAction()
     {
         $data = $this->params()->fromPost('sortables');
         $this->iterWeight($data['children']);
         return $this->response;
     }
 
-    protected function iterWeight ($terms, $parent = NULL)
+    protected function iterWeight($terms, $parent = NULL)
     {
         $weight = 1;
         foreach ($terms as $term) {
-            if( (integer) $term['id'] != -1){
+            if ((integer) $term['id'] != - 1) {
                 $entity = $this->getTerm($term['id']);
                 if ($parent) {
                     $entity->setParent($this->getTerm($parent)
                         ->getEntity());
                 } else {
-                    $entity->setParent(NULL);                    
+                    $entity->setParent(NULL);
                 }
                 $entity->setWeight($weight);
                 $entity->persistAndFlush();
                 if (isset($term['children'])) {
                     $this->iterWeight($term['children'], $term['id']);
                 }
-                $weight++;
+                $weight ++;
             }
         }
         return true;
     }
 
-    protected function getTerm ($id = NULL)
+    protected function getTerm($id = NULL)
     {
         if ($id) {
             return $this->getSharedTaxonomyManager()->getTerm($id);

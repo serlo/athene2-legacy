@@ -17,7 +17,7 @@ abstract class UuidEntity implements UuidHolder
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;

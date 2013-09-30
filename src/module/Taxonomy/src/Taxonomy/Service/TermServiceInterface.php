@@ -14,6 +14,10 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 interface TermServiceInterface
 {
 
+
+    public function getAllowedParentTypeNames();
+    
+    public function getAllowedChildrenTypeNames();
     public function setTermTaxonomy(TermTaxonomyInterface $term);
 
     public function getTermTaxonomy();
@@ -77,8 +81,6 @@ interface TermServiceInterface
     public function getId();
 
     public function getName();
-
-    public function getType();
 
     public function getTaxonomy();
 

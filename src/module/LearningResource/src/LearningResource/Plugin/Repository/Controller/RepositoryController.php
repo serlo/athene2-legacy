@@ -52,7 +52,7 @@ class RepositoryController extends AbstractController
     {
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
-        $revision = $this->_getRevision($repository, $this->getParam('revision'), FALSE);
+        $revision = $this->_getRevision($repository, $this->params('revision'), FALSE);
         $currentRevision = $this->_getRevision($repository);
         
         $view = new ViewModel(array(
@@ -63,7 +63,7 @@ class RepositoryController extends AbstractController
         
         $view->setTemplate('learning-resource/plugin/repository/compare-revision');
         
-        $revisionView = $this->getRevision($this->getParam('revision'));
+        $revisionView = $this->getRevision($this->params('revision'));
         $currentRevisionView = $this->getRevision();
         
         $view->addChild($revisionView, 'revisionView');
@@ -120,7 +120,7 @@ class RepositoryController extends AbstractController
     {
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
-        $repository->checkout($this->getParam('revision'));
+        $repository->checkout($this->params('revision'));
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
             'entity' => $entity->getId()
@@ -131,7 +131,7 @@ class RepositoryController extends AbstractController
     {
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
-        $repository->removeRevision($this->getParam('revision'));
+        $repository->removeRevision($this->params('revision'));
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
             'entity' => $entity->getId()
@@ -142,7 +142,7 @@ class RepositoryController extends AbstractController
     {
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
-        $repository->trashRevision($this->getParam('revision'));
+        $repository->trashRevision($this->params('revision'));
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
             'entity' => $entity->getId()

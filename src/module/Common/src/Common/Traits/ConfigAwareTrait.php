@@ -12,19 +12,19 @@
 namespace Common\Traits;
 
 use Zend\Stdlib\ArrayUtils;
+
 trait ConfigAwareTrait
 {
 
-    abstract protected function getDefaultConfig ();
+    abstract protected function getDefaultConfig();
 
     protected $config = array();
 
     /**
      *
-     * @return field_type
-     *         $config
+     * @return field_type $config
      */
-    public function getConfig ()
+    public function getConfig()
     {
         return $this->config;
     }
@@ -34,7 +34,7 @@ trait ConfigAwareTrait
      * @param field_type $config            
      * @return $this
      */
-    public function setConfig (array $config)
+    public function setConfig(array $config)
     {
         $this->config = ArrayUtils::merge($this->getDefaultConfig(), $config);
         
@@ -46,13 +46,14 @@ trait ConfigAwareTrait
         
         return $this;
     }
-    
-    public function appendConfig(array $config){
+
+    public function appendConfig(array $config)
+    {
         $this->config = ArrayUtils::merge($this->config, $config);
         return $this;
     }
 
-    public function getOption ($key)
+    public function getOption($key)
     {
         if (array_key_exists($key, $this->getConfig())) {
             return $this->getConfig()[$key];

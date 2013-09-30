@@ -9,12 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-
 echo $this->doctype();
 ?>
 <html class="fuelux" lang="en">
-    <head>
-        <meta charset="utf-8">
+<head>
+<meta charset="utf-8">
         <?php
         echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
             ->setAutoEscape(false);
@@ -23,77 +22,80 @@ echo $this->doctype();
         echo $this->plugin('HeadStyle');
         echo $this->plugin('HeadScript');
         echo $this->inlineScript();
-        /*echo $this->headlink()
-            ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css')
-            ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');*/
-        echo $this->headScript()
-            ->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
+        /*
+         * echo $this->headlink() ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css') ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
+         */
+        echo $this->headScript()->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
             //->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
         // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
         ?>
+;
     </head>
 <body>
 	<header id="header">
 		<div id="serlo-menu" class="navbar">
-            <nav class="navbar-inner">
-                <div class="container">
-                    <div class="row">
-                        <div class="span12">
+			<nav class="navbar-inner">
+				<div class="container">
+					<div class="row">
+						<div class="span12">
+							<!-- top navigation -->
+							<?php //echo $this->navigation('top_navigation')->menu(); ?>
+							<!-- end top navigation -->
     						<?php
                             echo $this->navigation('navigation')
-                                    ->menu()
-                                    ->setOnlyActiveBranch(true)
-                                    ->setMinDepth(0)
-                                    ->setMaxDepth(3)
-                                    ->setUlClass('nav pull-left')
-                                    ->setPartial('layout/navigation/horizontal.phtml')
-                                    ->render();
+                                ->menu()
+                                ->setOnlyActiveBranch(true)
+                                ->setMinDepth(0)
+                                ->setMaxDepth(3)
+                                ->setUlClass('nav pull-left')
+                                ->setPartial('layout/navigation/horizontal.phtml')
+                                ->render();
                             ?>
-			            <?php if($this->authentication()->hasIdentity()) { ?>
-		                    <ul class="nav pull-right">
-							<li class="dropdown"><a class="dropdown-toggle"
-								data-toggle="dropdown" href="#"><i
-									class="icon-envelope icon-white"></i><b
-									class="caret caret-white"></b></a>
-								<ul class="dropdown-menu">
-									<li class="disabled"><a tabindex="-1" href="#">Deine
-											Benachrichtigungen</a></li>
-									<li class="divider"></li>
-									<li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
-									<li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
-								</ul></li>
-							<li class="dropdown"><a class="dropdown-toggle"
-								data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b
-									class="caret caret-white"></b></a>
-								<ul class="dropdown-menu">
-								</ul></li>
-							<li><a href="<?php echo $this->url('logout'); ?>"><i
-									class="icon-off icon-white"></i></a></li>
-						</ul>
-		                <?php } else { ?>
-		                    <ul class="nav pull-right">
-							<li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
-							</li>
-							<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
-							</li>
-						</ul>
-		                <?php }?>            
+    			            <?php if($this->authentication()->hasIdentity()) { ?>
+    		                    <ul class="nav pull-right">
+    								<li class="dropdown"><a class="dropdown-toggle"
+    									data-toggle="dropdown" href="#"><i
+    										class="icon-envelope icon-white"></i><b
+    										class="caret caret-white"></b></a>
+    									<ul class="dropdown-menu">
+    										<li class="disabled"><a tabindex="-1" href="#">Deine
+    												Benachrichtigungen</a></li>
+    										<li class="divider"></li>
+    										<li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
+    										<li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
+    									</ul></li>
+    								<li class="dropdown"><a class="dropdown-toggle"
+    									data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b
+    										class="caret caret-white"></b></a>
+    									<ul class="dropdown-menu">
+    									</ul></li>
+    								<li><a href="<?php echo $this->url('logout'); ?>"><i
+    										class="icon-off icon-white"></i></a></li>
+    							</ul>
+    		                <?php } else { ?>
+    		                    <ul class="nav pull-right">
+    								<li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
+    								</li>
+    								<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
+    								</li>
+    							</ul>
+    		                <?php }?>            
                         </div>
 					</div>
-                </div>
+				</div>
 			</nav>
-        </div>
+		</div>
 	</header>
 
 	<div id="page" class="container">
-        <aside id="navigation">
-            <div id="navigation-container">
-                <div id="navigation-toggle" class="layout-toggle">
-                    <i class="icon-list"></i>
-                </div>
-                <div id="search-content">
-                    <!-- tbd:search -->
-                    <!-- markup:
+		<aside id="navigation">
+			<div id="navigation-container">
+				<div id="navigation-toggle" class="layout-toggle">
+					<i class="icon-list"></i>
+				</div>
+				<div id="search-content">
+					<!-- tbd:search -->
+					<!-- markup:
                     <input id="search-input" class="input-search" type="search" placeholder="Suche" tabindex="1"/><i class="icon-search"></i>
                     <ul id="search-results" class="nav">
                         <li><a href="#">Ergebnis oans</a>
@@ -117,21 +119,21 @@ echo $this->doctype();
                         </div>
                     </div>
                     -->
-                </div>
-                <div id="navigation-content">
-                    <ul id="main-nav" class="nav">
-                        <!-- tbd: mainnav -->
-                    </ul>
-                </div>
-            </div>
-        </aside>
-        <div id="main">
-            <div id="main-container">
-                <div id="content">
-                    <div id="content-container" class="layout-inner">
-                        <div class="row-fluid">
-                            <div class="span12" id="application">
-                                <div class="flasher">
+				</div>
+				<div id="navigation-content">
+					<ul id="main-nav" class="nav">
+						<!-- tbd: mainnav -->
+					</ul>
+				</div>
+			</div>
+		</aside>
+		<div id="main">
+			<div id="main-container">
+				<div id="content">
+					<div id="content-container" class="layout-inner">
+						<div class="row-fluid">
+							<div class="span12" id="application">
+								<div class="flasher">
                                     <?php
                                     if ($this->flashMessenger()->hasSuccessMessages()) {
                                         echo '<div class="alert alert-success">';
@@ -155,29 +157,32 @@ echo $this->doctype();
                                     }
                                     ?>
                                 </div>
-                                <!-- <header class="page-header">
+								<!-- <header class="page-header">
                                     <h1><?php echo $this->titleApplication; ?></h1>
                                 </header> -->
                                 <?php echo $this->content; ?>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<footer>
-        <div class="container">
-            <div class="row">
-                <div class="span2">
-                    <div class="inner">
-                        <!-- tbd:footer -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+		<div class="container">
+			<div class="row">
+				<div class="span2">
+					<div class="inner">
+						<!-- tbd:footer -->
+						<!-- top navigation -->
+						<?php //echo $this->navigation('bottom_navigation')->menu(); ?>
+						<!-- end top navigation -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 	<?php echo $this->modal()->renderDialogues(); ?>
 	<!-- /container -->
 </body>

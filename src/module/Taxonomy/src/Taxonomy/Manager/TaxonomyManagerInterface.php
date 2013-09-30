@@ -42,13 +42,6 @@ interface TaxonomyManagerInterface
     public function findTermByAncestors(array $ancestors);
 
     /**
-     *
-     * @param int $id            
-     * @return $this
-     */
-    public function deleteTerm($id);
-
-    /**
      * Returns the nodes on the highest level.
      * Nodes on the highest level do either not have a parent node or do have a different taxonomy type than their parents.
      *
@@ -58,26 +51,9 @@ interface TaxonomyManagerInterface
 
     /**
      *
-     * @param array $data            
-     * @param TaxonomyManagerInterface $taxonomy            
-     * @param LanguageServiceInterface $language            
-     * @return TermServiceInterface
-     */
-    public function createTerm(array $data, TaxonomyManagerInterface $taxonomy, LanguageServiceInterface $language);
-
-    /**
-     *
-     * @param int $id            
-     * @param array $data            
-     * @return $this
-     */
-    public function updateTerm($id, array $data);
-
-    /**
-     *
      * @return array
      */
-    public function getAllowedChildrenTypes();
+    public function getAllowedChildrenTypeNames();
 
     /**
      *
@@ -90,7 +66,7 @@ interface TaxonomyManagerInterface
      *
      * @return array
      */
-    public function getAllowedParentTypes();
+    public function getAllowedParentTypeNames();
 
     /**
      *

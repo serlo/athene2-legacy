@@ -36,6 +36,9 @@ return array(
                     'setClassResolver' => array(
                         'required' => 'true'
                     ),
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
                     'setObjectManager' => array(
                         'required' => 'true'
                     )
