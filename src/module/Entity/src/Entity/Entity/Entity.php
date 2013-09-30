@@ -233,7 +233,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $link->setChild($child);
         $this->getChildLinks()->add($link);
         $child->getParentLinks()->add($link);
-        return $link;
+        return $this;
     }
 
     public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $order = -1)
@@ -246,7 +246,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $link->setChild($this);
         $this->getParentLinks()->add($link);
         $parent->getChildLinks()->add($link);
-        return $link;
+        return $this;
     }
 
     protected function createLink(\Link\Entity\LinkTypeInterface $type, $order = -1)

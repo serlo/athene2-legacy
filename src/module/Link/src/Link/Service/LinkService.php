@@ -65,10 +65,8 @@ class LinkService implements LinkServiceInterface
         if ($parent instanceof LinkServiceInterface)
             $parent = $parent->getEntity();
 
-        $link = $this->getEntity()->addParent($parent, $this->getLinkManager()
+        $this->getEntity()->addParent($parent, $this->getLinkManager()
             ->getEntity(), $order);
-        
-        $this->getObjectManager()->persist($link);
         
         return $this;
     }
@@ -81,10 +79,8 @@ class LinkService implements LinkServiceInterface
         if ($child instanceof LinkServiceInterface)
             $child = $child->getEntity();
 
-        $link = $this->getEntity()->addChild($child, $this->getLinkManager()
+        $this->getEntity()->addChild($child, $this->getLinkManager()
             ->getEntity(), $oder);
-        
-        $this->getObjectManager()->persist($link);
         
         return $this;
     }
