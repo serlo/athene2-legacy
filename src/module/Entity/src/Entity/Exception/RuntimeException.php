@@ -11,8 +11,6 @@
  */
 namespace Entity\Exception;
 
-use ClassResolver\RuntimeException;
-
-class RuntimeException extends RuntimeException
+class RuntimeException extends \RuntimeException
 {
 }

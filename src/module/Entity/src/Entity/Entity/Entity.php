@@ -40,33 +40,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $childLinks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Entity", inversedBy="children", cascade={"persist"})
-     * @ORM\JoinTable(name="entity_link",
-     * joinColumns={
-     * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
-     * },
-     * inverseJoinColumns={
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * }
-     * )
-     */
-    protected $parents;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Entity", mappedBy="parents", cascade={"persist"})
-     * @ORM\JoinTable(
-     * name="entity_link",
-     * joinColumns={
-     * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
-     * },
-     * inverseJoinColumns={
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * }
-     * )
-     */
-    protected $children;
-
-    /**
      * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
      * @ORM\OrderBy({"date" = "DESC"})
      */
@@ -112,21 +85,21 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $childCollection;
 
     protected $parentCollection;
-    
+
     protected $fieldOrder;
 
-    public function getFieldOrder ()
+    public function getFieldOrder()
     {
         return $this->fieldOrder;
     }
-    
-    public function setFieldOrder (array $fieldOrder)
+
+    public function setFieldOrder(array $fieldOrder)
     {
         $this->fieldOrder = $fieldOrder;
         return $this;
     }
 
-	public function getTerms()
+    public function getTerms()
     {
         return $this->terms;
     }
@@ -156,19 +129,19 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     {
         return $this->date;
     }
-    
+
     public function setCurrentRevision(RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
         return $this;
     }
-    
+
     public function setLanguage($language)
     {
         $this->language = $language;
         return $this;
     }
-    
+
     public function setDate($date)
     {
         $this->date = $date;
@@ -212,10 +185,10 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function getChildren(\Link\Entity\LinkTypeInterface $type)
     {
-        if (! $this->childCollection)
+        if (!$this->childCollection)
             $this->childCollection = new ArrayCollection();
         
-        foreach ($this->childLinks as $link) {
+        foreach ($this->getChildLinks() as $link) {
             $child = $link->getChild();
             if (! $this->childCollection->containsKey($child->getId())) {
                 $this->childCollection->set($child->getId(), $child);
@@ -227,10 +200,10 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function getParents(\Link\Entity\LinkTypeInterface $type)
     {
-        if (! $this->childCollection)
+        if (!$this->parentCollection)
             $this->parentCollection = new ArrayCollection();
         
-        foreach ($this->parentLinks as $link) {
+        foreach ($this->getParentLinks() as $link) {
             $child = $link->getParent();
             if (! $this->parentCollection->containsKey($child->getId())) {
                 $this->parentCollection->set($child->getId(), $child);
@@ -256,11 +229,11 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
             $order = $this->getLinkOrderOffset($this->getChildLinks(), $child, $type, 'child') + 1;
         }
         $link = $this->createLink($type, $order);
-        //$link->setParent($this);
-        //$link->setChild($child);
+        $link->setParent($this);
+        $link->setChild($child);
         $this->getChildLinks()->add($link);
         $child->getParentLinks()->add($link);
-        return $this;
+        return $link;
     }
 
     public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $order = -1)
@@ -269,11 +242,11 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
             $order = $this->getLinkOrderOffset($this->getParentLinks(), $parent, $type, 'parent') + 1;
         }
         $link = $this->createLink($type, $order);
-        //$link->setParent($parent);
-        //$link->setChild($this);
+        $link->setParent($parent);
+        $link->setChild($this);
         $this->getParentLinks()->add($link);
         $parent->getChildLinks()->add($link);
-        return $this;
+        return $link;
     }
 
     protected function createLink(\Link\Entity\LinkTypeInterface $type, $order = -1)
@@ -298,5 +271,17 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     public function hasCurrentRevision()
     {
         return is_object($this->getCurrentRevision());
+    }
+
+    public function addRevision(RevisionInterface $revision)
+    {
+        $this->revisions->add($revision);
+        return $this;
+    }
+
+    public function removeRevision(RevisionInterface $revision)
+    {
+        $this->revisions->removeElement($revision);
+        return $this;
     }
 }

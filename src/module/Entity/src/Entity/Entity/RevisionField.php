@@ -120,7 +120,7 @@ class RevisionField {
     }
     
 	/**
-	 * @ORM\ManyToOne(targetEntity="Revision", inversedBy="fields")
+	 * @ORM\ManyToOne(targetEntity="Revision", inversedBy="fields", cascade={"persist"})
      * @ORM\JoinColumn(name="entity_revision_id", referencedColumnName="id")
 	 **/
 	protected $revision;

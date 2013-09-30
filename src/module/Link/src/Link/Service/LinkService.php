@@ -13,50 +13,15 @@ use Link\Entity\LinkEntityInterface;
 class LinkService implements LinkServiceInterface
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait, \Link\Manager\LinkManagerAwareTrait, \Common\Traits\EntityDelegatorTrait;
-    
+    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Link\Manager\LinkManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+
     public function setEntity(LinkEntityInterface $entity)
     {
         $this->entity = $entity;
         return $this;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::getChildren()
-     */
-    public function getChildren()
-    {
-        return $this->getEntity()->getChildren($this->getLinkManager()->getEntity());
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::getParents()
-     */
-    public function getParents()
-    {
-        return $this->getEntity()->getParents($this->getLinkManager()->getEntity());
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::addParent()
-     */
-    public function addParent($parent, $order = NULL)
-    {
-        if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkEntityInterface))
-            throw new \InvalidArgumentException();
-        
-        if ($parent instanceof LinkServiceInterface)
-            $parent = $parent->getEntity();
-        
-        $this->getEntity()->addParent($parent, $this->getLinkManager()->getEntity(), $order);
-        
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Link\Service\LinkServiceInterface::addChild()
-     */
-    public function addChild($child, $oder = NULL)
+
+    public function removeChild($child)
     {
         if (! ($child instanceof LinkServiceInterface || $child instanceof LinkEntityInterface))
             throw new \InvalidArgumentException();
@@ -64,7 +29,62 @@ class LinkService implements LinkServiceInterface
         if ($child instanceof LinkServiceInterface)
             $child = $child->getEntity();
         
-        $this->getEntity()->addChild($child, $this->getLinkManager()->getEntity(), $oder);
+        $this->getEntity()->removeChild($child, $this->getLinkManager()
+            ->getEntity());
+    }
+
+    public function removeParent($parent)
+    {
+        if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkEntityInterface))
+            throw new \InvalidArgumentException();
+        
+        if ($parent instanceof LinkServiceInterface)
+            $parent = $parent->getEntity();
+        
+        $this->getEntity()->removeParent($parent, $this->getLinkManager()
+            ->getEntity());
+    }
+
+    public function getChildren()
+    {
+        return $this->getEntity()->getChildren($this->getLinkManager()
+            ->getEntity());
+    }
+
+    public function getParents()
+    {
+        return $this->getEntity()->getParents($this->getLinkManager()
+            ->getEntity());
+    }
+
+    public function addParent($parent, $order = NULL)
+    {
+        if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkEntityInterface))
+            throw new \InvalidArgumentException();
+        
+        if ($parent instanceof LinkServiceInterface)
+            $parent = $parent->getEntity();
+
+        $link = $this->getEntity()->addParent($parent, $this->getLinkManager()
+            ->getEntity(), $order);
+        
+        $this->getObjectManager()->persist($link);
+        
+        return $this;
+    }
+    
+    public function addChild($child, $oder = NULL)
+    {
+        if (! ($child instanceof LinkServiceInterface || $child instanceof LinkEntityInterface))
+            throw new \InvalidArgumentException();
+        
+        if ($child instanceof LinkServiceInterface)
+            $child = $child->getEntity();
+
+        $link = $this->getEntity()->addChild($child, $this->getLinkManager()
+            ->getEntity(), $oder);
+        
+        $this->getObjectManager()->persist($link);
         
         return $this;
     }

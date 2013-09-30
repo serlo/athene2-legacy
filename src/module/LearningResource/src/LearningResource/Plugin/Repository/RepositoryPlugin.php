@@ -20,7 +20,7 @@ use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait, \User\Manager\UserManagerAwareTrait;
 
     /**
      * RouteInterface
@@ -169,12 +169,9 @@ class RepositoryPlugin extends AbstractPlugin
             ->getEntity()
             ->newRevision();
         
-        $revision->setAuthor($this->getAuthenticationService()
-            ->getUser()
-            ->getEntity());
+        $revision->setAuthor($this->getUserManager()->getUserFromAuthenticator()->getEntity());
         
         $repository->addRevision($revision);
-        $repository->persist();
         
         foreach ($form->getData() as $key => $value) {
             if ($key != 'submit' && $key != 'reset') // haxxy...
@@ -217,28 +214,5 @@ class RepositoryPlugin extends AbstractPlugin
     public function isUnrevised()
     {
         return $this->getRepository()->isUnrevised();
-    }
-
-    public function attach(\Zend\EventManager\EventManagerInterface $events)
-    {
-        $plugin = $this;
-        $this->listeners[] = $events->attach('createEntity.postFlush', function (Event $e) use($plugin)
-        {
-            $data = $e->getParam('data');
-            /* @var $entity \Entity\Service\EntityServiceInterface */
-            $entity = $e->getParam('entity');
-            $scope = $plugin->getScope();
-            if ($entity->isPluginWhitelisted($scope) && $entity->$scope() instanceof RepositoryPlugin) {
-                $result = new UrlResult();
-                $result->setResult($entity->getRouter()
-                    ->assemble(array(
-                    'entity' => $entity->getId(),
-                    'action' => 'add-revision'
-                ), array(
-                    'name' => 'entity/plugin/repository'
-                )));
-                return $result;
-            }
-        });
     }
 }

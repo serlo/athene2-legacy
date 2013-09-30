@@ -13,7 +13,6 @@ namespace LearningResource\Plugin\Link\Listener;
 
 use Entity\Plugin\Listener\AbstractListener;
 use Zend\EventManager\Event;
-use LearningResource\Plugin\Link\LinkPlugin;
 
 class Link extends AbstractListener
 {
@@ -22,14 +21,14 @@ class Link extends AbstractListener
      */
     public function attach(\Zend\EventManager\EventManagerInterface $events)
     {
-        $plugin = "a";
-        $entityManager = "b";
-        $this->listeners[] = $events->attach('createEntity.postFlush', function (Event $e) use($plugin, $entityManager)
+        $this->listeners[] = $events->attach('createEntity.preFlush', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
             $data = $e->getParam('data');
-            
+            /* var $entity \Entity\Manager\EntityManagerInterface */
+            $entityManager = $entity->getEntityManager();
+
             foreach ($entity->getScopesForPlugin('link') as $scope) {
                 
                 if (array_key_exists($scope, $data)) {
@@ -37,7 +36,7 @@ class Link extends AbstractListener
                     
                     $toEntity = $entityManager->getEntity($options['to_entity']);
                     $addAs = $options['as'];
-                    
+
                     if ($addAs == 'parent') {
                         $entity->$scope()
                             ->addChild($toEntity);

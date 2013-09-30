@@ -25,38 +25,42 @@ class EntityController extends AbstractActionController
         $entity = $this->getEntityManager()->createEntity($type, $this->params()
             ->fromQuery());
         
-        $results = $this->getEventManager()->trigger('createEntity.preFlush', $this, array(
+        $this->getEntityManager()
+            ->getEventManager()
+            ->trigger('createEntity.preFlush', $this, array(
             'entity' => $entity,
             'data' => $this->params()
                 ->fromQuery()
         ));
         
-        //$this->getEntityManager()
-         //   ->getObjectManager()
-         //   ->flush($entity);
+        $this->getEntityManager()
+            ->getObjectManager()
+            ->flush($entity->getEntity());
         
         $response = $this->getEntityManager()
             ->getEventManager()
             ->trigger('createEntity.postFlush', $this, array(
             'entity' => $entity,
-                
+            
             'data' => $this->params()
                 ->fromQuery()
         ));
-            
-        die("controller");
         
         $this->checkResponse($response);
-        
-        $this->redirect()->toReferer();
     }
 
     public function checkResponse(ResponseCollection $response)
     {
+        $redirected = false;
         foreach ($response as $result) {
             if ($result instanceof Result\UrlResult) {
-                $this->redirect()->toUrl($result->getResult());
+                $this->redirect()->toUrl($result->getResult() . '?ref=' . $this->referer()
+                    ->toUrl());
+                $redirected = true;
             }
         }
+        
+        if (! $redirected)
+            $this->redirect()->toReferer();
     }
 }

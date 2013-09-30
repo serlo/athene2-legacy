@@ -46,17 +46,18 @@ return array(
                     $instance->setRouter($sm->getServiceLocator()
                         ->get('Router'));
                     $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));                    
+                        ->get('Entity\Manager\EntityManager'));
+                    $instance->setUserManager($sm->getServiceLocator()
+                        ->get('User\Manager\UserManager'));
                     return $instance;
                 },
                 'link' => function ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
-                    $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\Manager\SharedLinkManager')
-                        ->findLinkManagerByName('link', 'Entity\Entity\EntityLinkType'));
+                    $instance->setSharedLinkManager($sm->getServiceLocator()
+                        ->get('Link\Manager\SharedLinkManager'));
                     $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));                    
+                        ->get('Entity\Manager\EntityManager'));
                     return $instance;
                 },
                 'dependency' => function ($sm)
@@ -66,13 +67,14 @@ return array(
                         ->get('Link\Manager\SharedLinkManager')
                         ->findLinkManagerByName('dependency', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));                    
+                        ->get('Entity\Manager\EntityManager'));
                     return $instance;
                 }
             )
         ),
         'listeners' => array(
-            'LearningResource\Plugin\Link\Listener\Link'    
+            'LearningResource\Plugin\Link\Listener\Link',
+            'LearningResource\Plugin\Repository\Listener\Repository'
         ),
         'types' => array(
             'text-exercise' => array(
@@ -87,15 +89,16 @@ return array(
                             )
                         )
                     ),
-                    /*'topicFolder' => array(
-                        'plugin' => 'topicFolder'
-                    ),*/
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                'text-solution'
+                                array(
+                                    'to' => 'text-solution',
+                                    'reversed_by' => 'exercise'
+                                )
                             ),
+                            'type' => 'link',
                             'association' => 'one-to-one'
                         )
                     )
@@ -112,15 +115,16 @@ return array(
                             )
                         )
                     ),
-                    /*'topicFolder' => array(
-                        'plugin' => 'topicFolder'
-                    ),*/
                     'exercises' => array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                'grouped-text-exercise'
+                                array(
+                                    'to' => 'grouped-text-exercise',
+                                    'reversed_by' => 'group'
+                                )
                             ),
+                            'type' => 'link',
                             'association' => 'one-to-many'
                         )
                     )
@@ -142,17 +146,25 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                'exercise-group'
+                                array(
+                                    'to' => 'exercise-group',
+                                    'reversed_by' => 'exercises'
+                                )
                             ),
-                            'association' => 'one-to-one'
+                            'type' => 'link',
+                            'association' => 'one-to-many'
                         )
                     ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                'text-solution'
+                                array(
+                                    'to' => 'exercise-solution',
+                                    'reversed_by' => 'exercise'
+                                ),
                             ),
+                            'type' => 'link',
                             'association' => 'one-to-one'
                         )
                     )
@@ -175,8 +187,16 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                'text-exercise'
+                                array(
+                                    'to' => 'text-exercise',
+                                    'reversed_by' => 'solution'
+                                ),
+                                array(
+                                    'to' => 'grouped-text-exercisen',
+                                    'reversed_by' => 'solution'
+                                ),
                             ),
+                            'type' => 'link',
                             'association' => 'one-to-one'
                         )
                     )

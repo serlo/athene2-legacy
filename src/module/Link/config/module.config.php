@@ -57,7 +57,7 @@ return array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver'
             ),
-            'Link\Manage\LinkManager' => array(
+            'Link\Manager\LinkManager' => array(
                 'shared' => false
             ),
             'Link\Service\LinkService' => array(

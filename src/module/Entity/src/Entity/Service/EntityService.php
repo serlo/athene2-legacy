@@ -36,6 +36,7 @@ class EntityService implements EntityServiceInterface
     public function setConfig(array $config)
     {
         $this->whitelistPlugins($config['plugins']);
+        return $this;
     }
 
     public function hasPlugin($name)
@@ -51,8 +52,6 @@ class EntityService implements EntityServiceInterface
     public function getScopesForPlugin($plugin){
         $return = array();
         foreach($this->pluginOptions as $scope => $options){
-            print_r($options);
-            
             if($options['plugin'] == $plugin){
                 $return[] = $scope;
             }
@@ -64,9 +63,7 @@ class EntityService implements EntityServiceInterface
     {
         foreach ($config as $name => $data) {
             $this->whitelistPlugin($name, $data['plugin']);
-            if (isset($data['options'])) {
-                $this->setPluginOptions($name, $data['options']);
-            }
+            $this->setPluginOptions($name, $data);
         }
     }
 
@@ -82,7 +79,7 @@ class EntityService implements EntityServiceInterface
 
     public function getPluginOptions($name)
     {
-        return (array_key_exists($name, $this->pluginOptions)) ? $this->pluginOptions[$name] : array();
+        return (array_key_exists($name, $this->pluginOptions)) ? $this->pluginOptions[$name]['options'] : array();
     }
 
     public function whitelistPlugin($name, $plugin)

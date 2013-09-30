@@ -12,48 +12,43 @@ use Doctrine\Common\Collections\Collection;
 
 interface LinkEntityInterface
 {
+
     /**
+     *
      * @return int
      */
     public function getId();
 
     /**
-     * Returns
-     * the
-     * children
+     * Returns the children
      *
-     * @param LinkTypeInterface $type
+     * @param LinkTypeInterface $type            
      * @return Collection
      */
-    public function getChildren (LinkTypeInterface $type);
+    public function getChildren(LinkTypeInterface $type);
 
     /**
-     * Returns
-     * the
-     * parents
+     * Returns the parents
      *
-     * @param LinkTypeInterface $type
+     * @param LinkTypeInterface $type            
      * @return Collection
      */
-    public function getParents (LinkTypeInterface $type);
-
+    public function getParents(LinkTypeInterface $type);
     /**
-     * Adds
-     * a
-     * child
+     * Adds a child
      *
      * @param LinkEntityInterface $parent            
      * @param LinkTypeInterface $type            
+     * @return $this
      */
-    public function addChild (LinkEntityInterface $parent, LinkTypeInterface $type);
+    public function addChild(LinkEntityInterface $parent, LinkTypeInterface $type);
 
     /**
-     * Adds
-     * a
-     * parent
+     * Adds a parent
      *
      * @param LinkEntityInterface $parent            
      * @param LinkTypeInterface $type            
+     * @return $this
      */
-    public function addParent (LinkEntityInterface $parent, LinkTypeInterface $type);
+    public function addParent(LinkEntityInterface $parent, LinkTypeInterface $type);
 }

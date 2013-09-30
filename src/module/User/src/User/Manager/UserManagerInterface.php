@@ -78,4 +78,6 @@ interface UserManagerInterface
     public function findRole ($roleId);
     
     public function createUserEntity();
+    
+    public function getUserFromAuthenticator();
 }

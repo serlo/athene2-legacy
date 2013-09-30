@@ -57,4 +57,18 @@ interface RepositoryInterface
      * @return $this
      */
     public function setCurrentRevision(RevisionInterface $revision);
+    
+    /**
+     * 
+     * @param RevisionInterface $revision
+     * @return $this
+     */
+    public function addRevision(RevisionInterface $revision);
+    
+    /**
+     * 
+     * @param RevisionInterface $revision
+     * @return $this
+     */
+    public function removeRevision(RevisionInterface $revision);
 }

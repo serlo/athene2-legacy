@@ -68,7 +68,7 @@ class TermController extends AbstractController
             ->fromRoute('taxonomy/term/create', array(
             'parent' => $this->params('parent'),
             'taxonomy' => $this->params('taxonomy')
-        )) . '?ref=' . rawurlencode($this->getRefererUrl('/')));
+        )) . '?ref=' . rawurlencode($this->referer()->toUrl()));
         
         $view = new ViewModel();
         

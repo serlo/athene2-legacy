@@ -16,10 +16,10 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 class RefererProvider extends AbstractPlugin
 {
 
-    public function __invoke ($default = NULL)
+    public function toUrl ($default = '/')
     {
-        return $this->getController()
-            ->getRequest()
-            ->getHeader('HTTP_REFERER', $default);
+        $referer = $this->getController()->getRequest()->getHeader('Referer');
+        $referer = $referer ? $referer->getUri() : $default;
+        return $referer;
     }
 }

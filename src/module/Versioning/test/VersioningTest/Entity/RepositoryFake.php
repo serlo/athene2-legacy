@@ -21,87 +21,100 @@ use Versioning\Entity\RevisionInterface;
  */
 class RepositoryFake implements RepositoryInterface
 {
-    
+
     protected $id, $revisions, $currentRevision;
-    
-    public function __construct(){
+
+    public function __construct()
+    {
         $this->revisions = new ArrayCollection();
     }
     
-	/* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::getRevisions()
+    /*
+     * (non-PHPdoc) @see \Versioning\Entity\RepositoryInterface::getRevisions()
      */
-    public function getRevisions ()
+    public function getRevisions()
     {
         return $this->revisions;
     }
-
-	/* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::newRevision()
+    
+    /*
+     * (non-PHPdoc) @see \Versioning\Entity\RepositoryInterface::newRevision()
      */
-    public function newRevision ()
+    public function newRevision()
     {
         $revision = new RevisionFake();
         $revision->setRepository($this);
         $this->revisions->add($revision);
         return $revision;
     }
-
-	/* (non-PHPdoc)
-     * @see \Core\Entity\ModelInterface::getId()
+    
+    /*
+     * (non-PHPdoc) @see \Core\Entity\ModelInterface::getId()
      */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }
     
-	/* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::setId()
+    /*
+     * (non-PHPdoc) @see \Versioning\Entity\RepositoryInterface::setId()
      */
-    public function setId ($id)
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
 
-	/**
+    /**
+     *
      * @return field_type $currentRevision
      */
-    public function getCurrentRevision ()
+    public function getCurrentRevision()
     {
         return $this->currentRevision;
     }
 
-	/**
-     * @param multitype: $revisions
+    /**
+     *
+     * @param multitype: $revisions            
      * @return $this
      */
-    public function setRevisions ($revisions)
+    public function setRevisions($revisions)
     {
         $this->revisions = $revisions;
         return $this;
     }
 
-	/**
-     * @param field_type $currentRevision
+    /**
+     *
+     * @param field_type $currentRevision            
      * @return $this
      */
-    public function setCurrentRevision (RevisionInterface $currentRevision)
+    public function setCurrentRevision(RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
         return $this;
     }
-
-	/* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
+    
+    /*
+     * (non-PHPdoc) @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
      */
-    public function hasCurrentRevision ()
+    public function hasCurrentRevision()
     {
         return $this->getCurrentRevision() !== NULL;
     }
-    
-    public function addRevision(RevisionInterface $revision){
+
+    public function addRevision(RevisionInterface $revision)
+    {
         $this->revisions->set($revision->getId(), $revision);
         return $this;
     }
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::removeRevision()
+     */
+    public function removeRevision (\Versioning\Entity\RevisionInterface $revision)
+    {
+        $this->revisions->removeElement($revision);
+    }
+
 }

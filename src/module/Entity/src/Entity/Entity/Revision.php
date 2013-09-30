@@ -49,7 +49,7 @@ class Revision implements RevisionInterface
     protected $repository;
 
     /**
-     * @ORM\OneToMany(targetEntity="RevisionField", mappedBy="revision")
+     * @ORM\OneToMany(targetEntity="RevisionField", mappedBy="revision", cascade={"persist"})
      */
     protected $fields;
 

@@ -13,7 +13,6 @@ namespace Subject\Plugin\Entity;
 
 use Subject\Plugin\AbstractPlugin;
 use Entity\Entity\Entity;
-use Entity\Collection\EntityCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Entity\Exception\BadMethodCallException;
 
@@ -27,7 +26,7 @@ class EntityPlugin extends AbstractPlugin
     }
     
     public function getEntities(){
-        return $this->getSubjectService()->getTermService()->getLinks('entities', true, array('topic', 'entity-folder', 'subject'));//$this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
+        return $this->getSubjectService()->getTermService()->getAssociated('entities', true, array('topic', 'topic-folder', 'subject'));//$this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
     }
     
     public function getUnrevisedEntities(){

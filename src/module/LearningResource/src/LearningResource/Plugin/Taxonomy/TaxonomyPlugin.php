@@ -17,4 +17,5 @@ class TaxonomyPlugin extends AbstractPlugin
 {
     use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
     
+    
 }

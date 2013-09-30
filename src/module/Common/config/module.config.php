@@ -22,7 +22,7 @@ return array(
     ),
     'controller_plugins' => array(
         'invokables' => array(
-            'getRefererUrl' => 'Common\Controller\Plugin\RefererProvider',
+            'referer' => 'Common\Controller\Plugin\RefererProvider',
             'redirect' => 'Common\Controller\Plugin\RedirectHelper'
         )
     ),

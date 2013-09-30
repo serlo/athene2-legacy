@@ -9,7 +9,6 @@
 namespace Link\Service;
 
 use Link\Entity\LinkEntityInterface;
-
 use Doctrine\Common\Collections\Collection;
 
 interface LinkServiceInterface
@@ -44,4 +43,18 @@ interface LinkServiceInterface
      * @return $this
      */
     public function addChild($child);
+
+    /**
+     *
+     * @param LinkServiceInterface|LinkEntityInterface $child            
+     * @return $this
+     */
+    public function removeChild($child);
+
+    /**
+     *
+     * @param LinkServiceInterface|LinkEntityInterface $parent            
+     * @return $this
+     */
+    public function removeParent($parent);
 }

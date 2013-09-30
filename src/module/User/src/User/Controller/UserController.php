@@ -119,14 +119,14 @@ class UserController extends AbstractUserController
     public function logoutAction()
     {
         $this->getAuthenticationService()->clearIdentity();
-        $this->redirect()->toUrl($this->getRefererUrl('/'));
+        $this->redirect()->toReferer();
         return '';
     }
 
     public function registerAction()
     {
         if ($this->getAuthenticationService()->hasIdentity())
-            $this->redirect()->toUrl($this->getRefererUrl('/'));
+            $this->redirect()->toReferer();
         
         $form = $this->getRegisterForm();
         

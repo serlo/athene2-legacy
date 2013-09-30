@@ -49,7 +49,11 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function getPathToTermAsUri(TermServiceInterface $term)
     {
-        return ($term->getTaxonomy()->getName() != $this->getOption('taxonomy_parent')) ? $this->getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
+        return substr($this->_getPathToTermAsUri($term), 0 , -1);
+    }
+    
+    private function _getPathToTermAsUri(TermServiceInterface $term){
+        return ($term->getTaxonomy()->getName() != $this->getOption('taxonomy_parent')) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';        
     }
 
     public function getTermManager()

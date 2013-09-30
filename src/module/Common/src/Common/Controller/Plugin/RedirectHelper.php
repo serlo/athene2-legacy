@@ -16,8 +16,9 @@ use Zend\Mvc\Controller\Plugin\Redirect;
 class RedirectHelper extends Redirect
 {
     public function toReferer($default = '/'){
-        return $this->toUrl($this->getController()
-            ->getRequest()
-            ->getHeader('HTTP_REFERER', $default));
+        $referer = $this->getController()->getRequest()->getHeader('Referer');
+        $referer = $referer ? $referer->getUri() : $default;
+        
+        return $this->toUrl($referer);
     }
 }
