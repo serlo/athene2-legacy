@@ -46,8 +46,7 @@ return array(
                     $instance->setRouter($sm->getServiceLocator()
                         ->get('Router'));
                     $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));
-                    $instance->attachListeners();
+                        ->get('Entity\Manager\EntityManager'));                    
                     return $instance;
                 },
                 'link' => function ($sm)
@@ -57,8 +56,7 @@ return array(
                         ->get('Link\Manager\SharedLinkManager')
                         ->findLinkManagerByName('link', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));
-                    $instance->attachListeners();
+                        ->get('Entity\Manager\EntityManager'));                    
                     return $instance;
                 },
                 'dependency' => function ($sm)
@@ -68,11 +66,13 @@ return array(
                         ->get('Link\Manager\SharedLinkManager')
                         ->findLinkManagerByName('dependency', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));
-                    $instance->attachListeners();
+                        ->get('Entity\Manager\EntityManager'));                    
                     return $instance;
                 }
             )
+        ),
+        'listeners' => array(
+            'LearningResource\Plugin\Link\Listener\Link'    
         ),
         'types' => array(
             'text-exercise' => array(

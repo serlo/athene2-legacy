@@ -16,15 +16,18 @@ use Entity\Exception;
 
 class EntityManager implements EntityManagerInterface
 {
-    use\Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
         return array(
             'types' => array(),
-            'plugins' => array()
+            'plugins' => array(),
+            'listeners' => array()
         );
     }
+
+    private $listenersAttached = false;
 
     public function getEntity($id)
     {
@@ -84,6 +87,7 @@ class EntityManager implements EntityManagerInterface
         $config = $this->getOption('types')[$entity->getType()
             ->getName()];
         
+        $this->attachListeners($this->getOption('listeners'));
         $instance->setEventManager($this->getEventManager());
         $instance->setPluginManager($this->getPluginManager());
         $instance->setEntityManager($this);
@@ -91,5 +95,18 @@ class EntityManager implements EntityManagerInterface
         $instance->setConfig($config);
         
         return $instance;
+    }
+
+    protected function attachListeners($listeners)
+    {
+        if ($this->listenersAttached)
+            return $this;
+        
+        foreach ($listeners as $listener) {
+            $listener = new $listener();
+            $this->getEventManager()->attachAggregate($listener);
+        }
+        $this->listenersAttached = true;
+        return $this;
     }
 }

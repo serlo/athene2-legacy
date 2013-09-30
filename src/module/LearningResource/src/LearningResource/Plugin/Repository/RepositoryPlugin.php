@@ -14,7 +14,6 @@ namespace LearningResource\Plugin\Repository;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Plugin\AbstractPlugin;
 use Zend\Form\Form;
-use Entity\Exception;
 use Zend\EventManager\Event;
 use Entity\Result\UrlResult;
 use Zend\Mvc\Router\RouteInterface;
@@ -23,26 +22,26 @@ class RepositoryPlugin extends AbstractPlugin
 {
     use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
-    protected $listeners = array();
-
     /**
      * RouteInterface
      */
     protected $router;
-    
+
     /**
+     *
      * @return field_type $router
      */
-    public function getRouter ()
+    public function getRouter()
     {
         return $this->router;
     }
 
-	/**
-     * @param field_type $router
+    /**
+     *
+     * @param field_type $router            
      * @return $this
      */
-    public function setRouter (RouteInterface $router)
+    public function setRouter(RouteInterface $router)
     {
         $this->router = $router;
         return $this;
@@ -222,12 +221,14 @@ class RepositoryPlugin extends AbstractPlugin
 
     public function attach(\Zend\EventManager\EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('createEntity.postFlush', function (Event $e)
+        $plugin = $this;
+        $this->listeners[] = $events->attach('createEntity.postFlush', function (Event $e) use($plugin)
         {
             $data = $e->getParam('data');
             /* @var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
-            if ($entity->isPluginWhitelisted($this->getScope())) {
+            $scope = $plugin->getScope();
+            if ($entity->isPluginWhitelisted($scope) && $entity->$scope() instanceof RepositoryPlugin) {
                 $result = new UrlResult();
                 $result->setResult($entity->getRouter()
                     ->assemble(array(
@@ -239,14 +240,5 @@ class RepositoryPlugin extends AbstractPlugin
                 return $result;
             }
         });
-    }
-
-    public function detach(\Zend\EventManager\EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
     }
 }

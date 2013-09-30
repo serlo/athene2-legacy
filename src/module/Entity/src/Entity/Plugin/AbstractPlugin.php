@@ -13,25 +13,22 @@ namespace Entity\Plugin;
 
 abstract class AbstractPlugin implements PluginInterface
 {
-    use \Entity\Service\EntityServiceAwareTrait, \Common\Traits\ConfigAwareTrait, \Entity\Manager\EntityManagerAwareTrait;
+    use\Entity\Service\EntityServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
 
     /**
+     *
      * @var string
      */
     protected $scope;
-    
-    public function getScope ()
+
+    public function getScope()
     {
         return $this->scope;
     }
-    
-    public function setScope ($scope)
+
+    public function setScope($scope)
     {
         $this->scope = $scope;
         return $this;
-    }
-
-	public function attachListeners(){
-        $this->getEntityManager()->getEventManager()->attach($this);
     }
 }

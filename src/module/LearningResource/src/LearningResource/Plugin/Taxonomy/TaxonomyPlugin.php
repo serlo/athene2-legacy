@@ -15,24 +15,6 @@ use Entity\Plugin\AbstractPlugin;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
-
-    /* (non-PHPdoc)
-     * @see \Zend\EventManager\ListenerAggregateInterface::attach()
-    */
-    public function attach (\Zend\EventManager\EventManagerInterface $events)
-    {
-        // TODO Auto-generated method stub
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
     
-    }
-    
-    /* (non-PHPdoc)
-     * @see \Zend\EventManager\ListenerAggregateInterface::detach()
-    */
-    public function detach (\Zend\EventManager\EventManagerInterface $events)
-    {
-        // TODO Auto-generated method stub
-    
-    }
-
 }

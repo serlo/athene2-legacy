@@ -31,17 +31,20 @@ class EntityController extends AbstractActionController
                 ->fromQuery()
         ));
         
-        $this->getEntityManager()
-            ->getObjectManager()
-            ->flush($entity);
+        //$this->getEntityManager()
+         //   ->getObjectManager()
+         //   ->flush($entity);
         
         $response = $this->getEntityManager()
             ->getEventManager()
             ->trigger('createEntity.postFlush', $this, array(
             'entity' => $entity,
+                
             'data' => $this->params()
                 ->fromQuery()
         ));
+            
+        die("controller");
         
         $this->checkResponse($response);
         

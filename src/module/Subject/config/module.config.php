@@ -359,7 +359,7 @@ return array(
                                         'may_terminate' => true,
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route' => '/{topic}[/:path]',
+                                            'route' => '/{topic}[/:path/]',
                                             'defaults' => array(
                                                 'plugin' => 'topic'
                                             ),
@@ -372,7 +372,7 @@ return array(
                                         'may_terminate' => true,
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route' => '/{curriculum}[/:path]',
+                                            'route' => '/{curriculum}[/:path/]',
                                             'defaults' => array(
                                                 'plugin' => 'curriculum'
                                             ),

@@ -13,10 +13,11 @@ namespace LearningResource\Plugin\Link;
 
 use Entity\Plugin\AbstractPlugin;
 use Entity\Collection\EntityCollection;
+use Zend\EventManager\Event;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
+    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -177,22 +178,4 @@ class LinkPlugin extends AbstractPlugin
         
         return $collection->current();
     }
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\ListenerAggregateInterface::attach()
-     */
-    public function attach (\Zend\EventManager\EventManagerInterface $events)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\ListenerAggregateInterface::detach()
-     */
-    public function detach (\Zend\EventManager\EventManagerInterface $events)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

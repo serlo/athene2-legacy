@@ -13,6 +13,7 @@ namespace Entity\Service;
 
 use Entity\Exception\InvalidArgumentException;
 use Taxonomy\Collection\TermCollection;
+use Zend\Stdlib\ArrayUtils;
 
 class EntityService implements EntityServiceInterface
 {
@@ -46,6 +47,18 @@ class EntityService implements EntityServiceInterface
     {
         return array_key_exists($name, $this->whitelistedPlugins) && $this->whitelistedPlugins[$name] !== FALSE;
     }
+    
+    public function getScopesForPlugin($plugin){
+        $return = array();
+        foreach($this->pluginOptions as $scope => $options){
+            print_r($options);
+            
+            if($options['plugin'] == $plugin){
+                $return[] = $scope;
+            }
+        }
+        return $return;
+    }
 
     public function whitelistPlugins(array $config)
     {
@@ -60,7 +73,7 @@ class EntityService implements EntityServiceInterface
     public function setPluginOptions($name, array $options)
     {
         if (isset($this->pluginOptions[$name])) {
-            $options = array_merge_recursive($this->pluginOptions[$name], $options);
+            $options = ArrayUtils::merge($this->pluginOptions[$name], $options);
         }
         
         $this->pluginOptions[$name] = $options;
