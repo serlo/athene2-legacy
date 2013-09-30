@@ -28,11 +28,11 @@ use Versioning\Entity\RevisionInterface;
  */
 class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
+
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist"})
      */
     protected $parentLinks;
-    
 
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="parent", cascade={"persist"})
@@ -79,7 +79,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $currentRevision;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Taxonomy\Entity\TermTaxonomy", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="\Taxonomy\Entity\TermTaxonomy")
      * @ORM\JoinTable(name="term_taxonomy_entity",
      * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
      * joinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
@@ -108,167 +108,74 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
+
+    protected $childCollection;
+
+    protected $parentCollection;
     
-    protected $fieldOrder = array();
+    protected $fieldOrder;
+
+    public function getFieldOrder ()
+    {
+        return $this->fieldOrder;
+    }
     
-    /**
-     * @return field_type $terms
-     */
-    public function getTerms ()
+    public function setFieldOrder (array $fieldOrder)
+    {
+        $this->fieldOrder = $fieldOrder;
+        return $this;
+    }
+
+	public function getTerms()
     {
         return $this->terms;
     }
 
-	/**
-     * @param field_type $terms
-     * @return $this
-     */
-    public function setTerms ($terms)
-    {
-        $this->terms = $terms;
-        return $this;
-    }
-
-	public function setFieldOrder(array $fieldOrder){
-        $this->fieldOrder = $fieldOrder;
-        return $this;
-    }
-    
-    public function getFieldOrder($field){
-        return array_search($field, $this->fieldOrder);
-    }
-    
-    /**
-     * @param field_type $type
-     * @return $this
-     */
-    public function setType ($type)
+    public function setType($type)
     {
         $this->type = $type;
         return $this;
     }
 
-	/**
-     * @return field_type $issues
-     */
-    public function getIssues ()
-    {
-        return $this->issues;
-    }
-
-	/**
-     * @param field_type $issues
-     * @return $this
-     */
-    public function setIssues ($issues)
-    {
-        $this->issues = $issues;
-        return $this;
-    }
-
-	/**
-     * @return field_type $currentRevision
-     */
-    public function getCurrentRevision ()
+    public function getCurrentRevision()
     {
         return $this->currentRevision;
     }
 
-	/**
-     * @return field_type $type
-     */
-    public function getType ()
+    public function getType()
     {
         return $this->type;
     }
 
-	/**
-     * @return field_type $language
-     */
-    public function getLanguage ()
+    public function getLanguage()
     {
         return $this->language;
     }
 
-	/**
-     * @return field_type $date
-     */
-    public function getDate ()
+    public function getDate()
     {
         return $this->date;
     }
-
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $parents
-     * @return $this
-     */
-    public function setParents ($parents)
-    {
-        $this->parents = $parents;
-        return $this;
-    }
-
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $children
-     * @return $this
-     */
-    public function setChildren ($children)
-    {
-        $this->children = $children;
-        return $this;
-    }
-
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $revisions
-     * @return $this
-     */
-    public function setRevisions ($revisions)
-    {
-        $this->revisions = $revisions;
-        return $this;
-    }
-
-	/**
-     * @param field_type $currentRevision
-     * @return $this
-     */
-    public function setCurrentRevision (RevisionInterface $currentRevision)
+    
+    public function setCurrentRevision(RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
         return $this;
     }
-
-	/**
-     * @param field_type $factory
-     * @return $this
-     */
-    public function setFactory ($factory)
-    {
-        $this->type = $factory;
-        return $this;
-    }
-
-	/**
-     * @param field_type $language
-     * @return $this
-     */
-    public function setLanguage ($language)
+    
+    public function setLanguage($language)
     {
         $this->language = $language;
         return $this;
     }
-
-	/**
-     * @param field_type $date
-     * @return $this
-     */
-    public function setDate ($date)
+    
+    public function setDate($date)
     {
         $this->date = $date;
         return $this;
     }
 
-	public function __construct($uuid)
+    public function __construct()
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->childLinks = new \Doctrine\Common\Collections\ArrayCollection();
@@ -276,14 +183,10 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fieldOrder = array();
         $this->trashed = false;
-        return parent::__construct($uuid);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::addRevision()
-     */
     public function newRevision()
     {
         $revision = new Revision();
@@ -291,160 +194,109 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $revision;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::getRevisions()
-     */
     public function getRevisions()
     {
         return $this->revisions;
     }
-    
-    public function trash()
+
+    public function setTrashed($trashed)
     {
-        $this->trashed = true;
-        return $this;
-    }
-    
-    public function unTrash(){
-        $this->trashed = false;
+        $this->trashed = $trashed;
         returN $this;
     }
-    
-    public function isTrashed(){
+
+    public function isTrashed()
+    {
         return $this->trashed;
     }
-    
-    protected $childCollection;
-    protected $parentCollection;
-    
-    /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getChildren()
-     */
+
     public function getChildren(\Link\Entity\LinkTypeInterface $type)
     {
-        if(!$this->childCollection)
+        if (! $this->childCollection)
             $this->childCollection = new ArrayCollection();
         
-        foreach($this->childLinks as $link){
+        foreach ($this->childLinks as $link) {
             $child = $link->getChild();
-            if(!$this->childCollection->containsKey($child->getId())){
-              $this->childCollection->set($child->getId(), $child);
+            if (! $this->childCollection->containsKey($child->getId())) {
+                $this->childCollection->set($child->getId(), $child);
             }
         }
         
         return $this->childCollection;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getParents()
-     */
+
     public function getParents(\Link\Entity\LinkTypeInterface $type)
     {
-        if(!$this->childCollection)
+        if (! $this->childCollection)
             $this->parentCollection = new ArrayCollection();
         
-        foreach($this->parentLinks as $link){
+        foreach ($this->parentLinks as $link) {
             $child = $link->getParent();
-            if(!$this->parentCollection->containsKey($child->getId())){
-              $this->parentCollection->set($child->getId(), $child);
+            if (! $this->parentCollection->containsKey($child->getId())) {
+                $this->parentCollection->set($child->getId(), $child);
             }
         }
         
         return $this->parentCollection;
     }
 
-	/**
-     * @return \Doctrine\Common\Collections\ArrayCollection $parentLinks
-     */
-    public function getParentLinks ()
+    public function getParentLinks()
     {
         return $this->parentLinks;
     }
 
-	/**
-     * @return \Doctrine\Common\Collections\ArrayCollection $childLinks
-     */
-    public function getChildLinks ()
+    public function getChildLinks()
     {
         return $this->childLinks;
     }
 
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $parentLinks
-     * @return $this
-     */
-    public function setParentLinks ($parentLinks)
+    public function addChild(\Link\Entity\LinkEntityInterface $child, \Link\Entity\LinkTypeInterface $type, $order = -1)
     {
-        $this->parentLinks = $parentLinks;
-        return $this;
-    }
-
-	/**
-     * @param \Doctrine\Common\Collections\ArrayCollection $childLinks
-     * @return $this
-     */
-    public function setChildLinks ($childLinks)
-    {
-        $this->childLinks = $childLinks;
-        return $this;
-    }
-    
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::addChild()
-     */
-    public function addChild (\Link\Entity\LinkEntityInterface $child,\Link\Entity\LinkTypeInterface $type, $order = -1)
-    {
-        if($order == -1){
-            $order = $this->getOrderOffset($this->childLinks, $child, $type, 'child') + 1;        
+        if ($order == - 1) {
+            $order = $this->getLinkOrderOffset($this->getChildLinks(), $child, $type, 'child') + 1;
         }
         $link = $this->createLink($type, $order);
-        $link->setParent($this);
-        $link->setChild($child);
+        //$link->setParent($this);
+        //$link->setChild($child);
         $this->getChildLinks()->add($link);
         $child->getParentLinks()->add($link);
         return $this;
     }
 
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::addParent()
-     */
-    public function addParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $order = -1)
+    public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $order = -1)
     {
-        if($order == -1){
-            $order = $this->getOrderOffset($this->parentLinks, $parent, $type, 'parent') + 1;        
+        if ($order == - 1) {
+            $order = $this->getLinkOrderOffset($this->getParentLinks(), $parent, $type, 'parent') + 1;
         }
         $link = $this->createLink($type, $order);
-        $link->setParent($parent);
-        $link->setChild($this);
+        //$link->setParent($parent);
+        //$link->setChild($this);
         $this->getParentLinks()->add($link);
         $parent->getChildLinks()->add($link);
         return $this;
-        
     }
-    
-    protected function createLink(\Link\Entity\LinkTypeInterface $type, $order = -1){
+
+    protected function createLink(\Link\Entity\LinkTypeInterface $type, $order = -1)
+    {
         $e = new EntityLink();
         $e->setOrder($order);
         $e->setType($type);
         return $e;
     }
-    
-    protected function getOrderOffset(PersistentCollection $collection, \Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $field){
-        $e = $collection->matching(Criteria::create(Criteria::expr()->andX(Criteria::expr()->eq($field, $parent->getId()), Criteria::expr()->eq('type', $type->getId()))))->last();
-        if(!is_object($e)){
+
+    protected function getLinkOrderOffset(PersistentCollection $collection,\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $field)
+    {
+        $e = $collection->matching(Criteria::create(Criteria::expr()->andX(Criteria::expr()->eq($field, $parent->getId()), Criteria::expr()->eq('type', $type->getId()))))
+            ->last();
+        if (! is_object($e)) {
             return 0;
         } else {
-            return $e->getOrder();       
+            return $e->getOrder();
         }
     }
-    
-	/* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
-     */
-    public function hasCurrentRevision ()
+
+    public function hasCurrentRevision()
     {
-        return $this->getCurrentRevision() !== NULL;
+        return is_object($this->getCurrentRevision());
     }
-    
 }

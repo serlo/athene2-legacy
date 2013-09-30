@@ -116,8 +116,9 @@ return array(
             'Entity\Manager\EntityManager' => (function  ($sm)
             {
                 $config = $sm->get('config');
-                $class = new \Entity\Manager\EntityManager($config['entity']);
+                $class = new \Entity\Manager\EntityManager();
                 
+                $class->setConfig($config['entity']);
                 $class->setPluginManager($sm->get('Entity\Plugin\PluginManager'));
                 $class->setServiceLocator($sm->get('ServiceManager'));
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));

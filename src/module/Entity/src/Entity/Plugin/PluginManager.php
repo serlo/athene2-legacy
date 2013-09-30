@@ -16,13 +16,10 @@ use Subject\Exception\InvalidArgumentException;
 
 class PluginManager extends AbstractPluginManager implements PluginManagerInterface
 {
-    use\Entity\Service\EntityServiceAwareTrait;
+    use \Entity\Service\EntityServiceAwareTrait;
 
     protected $pluginOptions;
-    
-    /*
-     * (non-PHPdoc) @see \Zend\ServiceManager\AbstractPluginManager::validatePlugin()
-     */
+
     public function validatePlugin($plugin)
     {
         if ($plugin instanceof PluginInterface) {
@@ -31,11 +28,12 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         
         throw new InvalidArgumentException(sprintf('%s does not implement %s.', get_class($plugin), __NAMESPACE__ . '\PluginInterface'));
     }
-    
-    protected function getPluginOptions(){
-        if(!$this->pluginOptions === NULL)
+
+    protected function getPluginOptions()
+    {
+        if (! $this->pluginOptions === NULL)
             throw new \Exception('Setup plugin data first!');
-            
+        
         return $this->pluginOptions;
     }
 
@@ -51,9 +49,10 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         $this->pluginOptions = NULL;
     }
 
-    public function get($name, $options = array(), $usePeeringServiceManagers = true)
+    public function get($name, array $options = array(), $usePeeringServiceManagers = true)
     {
         $plugin = parent::get($name);
+        $plugin->setScope($name);
         $this->inject($plugin);
         return $plugin;
     }

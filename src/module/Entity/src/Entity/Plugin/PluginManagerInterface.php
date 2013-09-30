@@ -13,4 +13,32 @@ namespace Entity\Plugin;
 
 interface PluginManagerInterface
 {
+    /**
+     * 
+     * @param mixed $plugin
+     * @return bool
+     */
+    public function validatePlugin($plugin);
+
+    /**
+     * 
+     * @param unknown $options
+     * @return $this
+     */
+    public function setPluginOptions($options);
+
+    /**
+     * 
+     * @return $this
+     */
+    public function clear();
+    
+    /**
+     * 
+     * @param string $name
+     * @param array $options
+     * @param bool $usePeeringServiceManagers
+     * @return PluginInterface
+     */
+    public function get($name, array $options = array(), $usePeeringServiceManagers = true);
 }

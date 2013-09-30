@@ -12,6 +12,23 @@
 
 namespace Entity\Manager;
 
+use Entity\Service\EntityServiceInterface;
+use Entity\Entity\EntityInterface;
+
 interface EntityManagerInterface
 {
+    /**
+     * 
+     * @param int $id
+     * @return EntityServiceInterface
+     */
+    public function getEntity($id);
+    
+    /**
+     * 
+     * @param string $type
+     * @param array $data
+     * @return EntityInterface
+     */
+    public function createEntity($type, array $data = array());
 }

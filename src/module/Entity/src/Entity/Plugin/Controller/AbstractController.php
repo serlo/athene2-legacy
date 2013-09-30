@@ -12,23 +12,29 @@
 namespace Entity\Plugin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Entity\Exception;
 
 abstract class AbstractController extends AbstractActionController
 {
     use \Entity\Manager\EntityManagerAwareTrait;
 
+    /**
+     * 
+     * @param string $id
+     * @throws \Exception
+     */
     protected function getPlugin ($id = NULL)
     {
         if (! $id) {
-            $id = $this->getParam('entity');
+            $id = $this->params('entity');
         }
         
-        $entity = $this->getEntityManager()->get($id);
+        $entity = $this->getEntityManager()->getEntity($id);
         
-        if (! $entity->isPluginWhitelisted($this->getParam('plugin')))
-            throw new \Exception(sprintf('Plugin %s not supported.', $this->getParam('plugin')));
+        if (! $entity->isPluginWhitelisted($this->params('plugin')))
+            throw new Exception\RuntimeException(sprintf('Plugin %s not supported.', $this->params('plugin')));
         
-        $scope = $this->getParam('plugin');
+        $scope = $this->params('plugin');
         
         return $entity->$scope();
     }

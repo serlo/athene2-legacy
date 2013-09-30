@@ -30,4 +30,9 @@
 			<directory>../../module/ClassResolver/test</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../../module/</directory>
+		</whitelist>
+	</filter>
 </phpunit>

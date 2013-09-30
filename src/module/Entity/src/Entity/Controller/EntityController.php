@@ -12,14 +12,48 @@
 namespace Entity\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\EventManager\ResponseCollection;
+use Entity\Result;
 
 class EntityController extends AbstractActionController
 {
-    use \Entity\Manager\EntityManagerAwareTrait;
-    
-    public function createAction(){
+    use\Entity\Manager\EntityManagerAwareTrait;
+
+    public function createAction()
+    {
         $type = $this->params('type');
-        $entity = $this->getEntityManager()->create($type);    
-        return true;
+        $entity = $this->getEntityManager()->createEntity($type, $this->params()
+            ->fromQuery());
+        
+        $results = $this->getEventManager()->trigger('createEntity.preFlush', $this, array(
+            'entity' => $entity,
+            'data' => $this->params()
+                ->fromQuery()
+        ));
+        
+        $this->getEntityManager()
+            ->getObjectManager()
+            ->flush($entity);
+        
+        $response = $this->getEntityManager()
+            ->getEventManager()
+            ->trigger('createEntity.postFlush', $this, array(
+            'entity' => $entity,
+            'data' => $this->params()
+                ->fromQuery()
+        ));
+        
+        $this->checkResponse($response);
+        
+        $this->redirect()->toReferer();
+    }
+
+    public function checkResponse(ResponseCollection $response)
+    {
+        foreach ($response as $result) {
+            if ($result instanceof Result\UrlResult) {
+                $this->redirect()->toUrl($result->getResult());
+            }
+        }
     }
 }

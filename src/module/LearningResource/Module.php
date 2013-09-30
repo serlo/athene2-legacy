@@ -34,16 +34,10 @@ class Module
         );
     }
 
-    public function onBootstrap (MvcEvent $mvce)
+    /*public function onBootstrap (MvcEvent $mvce)
     {
         $sm = $mvce->getApplication()->getServiceManager();
         
-        // Links
-        // an
-        // Entity
-        // to
-        // another
-        // entity
         $sm->get('Entity\Manager\EntityManager')
             ->getEventManager()
             ->attach('create', function  (Event $e) use( $sm, $mvce)
@@ -57,11 +51,6 @@ class Module
                 $entity = $e->getParam('entity');
                 
                 if ($entity->isPluginWhitelisted($scope)) {
-                    // Warning:
-                    // Plugins
-                    // shouldn't
-                    // be
-                    // invokable
                     if (is_object($entity->$scope()) && ! $entity->$scope() instanceof LinkPlugin)
                         throw new \Exception(sprintf('Scope `%s` is not an implementation of LinkPlugin', $scope));
                     
@@ -106,5 +95,5 @@ class Module
                 exit();
             }
         }, - 1000);
-    }
+    }*/
 }

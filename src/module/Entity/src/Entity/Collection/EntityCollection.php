@@ -17,6 +17,12 @@ use Entity\Exception\InvalidArgumentException;
 
 class EntityCollection extends AbstractDelegatorCollection
 {
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getManager(){
+        return parent::getManager();
+    }
     
 	/* (non-PHPdoc)
      * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
@@ -31,7 +37,7 @@ class EntityCollection extends AbstractDelegatorCollection
      */
     public function getFromManager ($key)
     {
-        return $this->getManager()->get($key);
+        return $this->getManager()->getEntity($key->getId());
     }
     
     protected function validManager($manager){

@@ -60,7 +60,7 @@ class FilterPlugin extends AbstractPlugin
             $entity = $entity->getEntity();
         } elseif ($entity instanceof EntityInterface) {} elseif (is_numeric($entity)) {
             $entity = $this->getEntityManager()
-                ->get($entity)
+                ->getEntity($entity)
                 ->getEntity();
         } else {
             throw new InvalidArgumentException('Parameter 1 expects to be numeric or implementing Entity\Service\EntityServiceInterface');

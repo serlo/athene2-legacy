@@ -15,10 +15,24 @@ use Entity\Plugin\AbstractPlugin;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Manager\TermManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
-    protected function getDefaultConfig ()
+    /* (non-PHPdoc)
+     * @see \Zend\EventManager\ListenerAggregateInterface::attach()
+    */
+    public function attach (\Zend\EventManager\EventManagerInterface $events)
     {
-        return array();
+        // TODO Auto-generated method stub
+    
     }
+    
+    /* (non-PHPdoc)
+     * @see \Zend\EventManager\ListenerAggregateInterface::detach()
+    */
+    public function detach (\Zend\EventManager\EventManagerInterface $events)
+    {
+        // TODO Auto-generated method stub
+    
+    }
+
 }

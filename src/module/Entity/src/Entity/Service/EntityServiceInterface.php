@@ -11,6 +11,29 @@
  */
 namespace Entity\Service;
 
-interface EntityServiceInterface
+use Zend\EventManager\EventManagerAwareInterface;
+
+interface EntityServiceInterface extends EventManagerAwareInterface
 {
+    public function getTerms();
+
+    public function getId();
+
+    public function setConfig(array $config);
+
+    public function hasPlugin($name);
+    
+    public function isPluginWhitelisted($name);
+
+    public function whitelistPlugins(array $config);
+
+    public function setPluginOptions($name, array $options);
+
+    public function getPluginOptions($name);
+
+    public function whitelistPlugin($name, $plugin);
+
+    public function getPlugin($name);
+
+    public function plugin($name);
 }

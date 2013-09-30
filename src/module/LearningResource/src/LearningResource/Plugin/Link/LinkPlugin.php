@@ -16,33 +16,32 @@ use Entity\Collection\EntityCollection;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use\Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Manager\EntityManagerAwareTrait;
+    use \Link\Manager\LinkManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
 
-    protected function getDefaultConfig ()
-    { 
+    protected function getDefaultConfig()
+    {
         return array(
             'types' => array()
         );
     }
 
-    public function isOneToOne ()
+    public function isOneToOne()
     {
         return $this->getOption('association') == 'one-to-one';
     }
 
-    public function getEntityTypes ()
+    public function getEntityTypes()
     {
         return $this->getOption('types');
     }
 
-    public function getLinkService ()
+    public function getLinkService()
     {
-        return $this->getLinkManager()
-            ->getLink($this->getEntityService()
+        return $this->getLinkManager()->getLink($this->getEntityService()
             ->getEntity());
     }
 
-    protected function clearAssociation ()
+    protected function clearAssociation()
     {
         if ($this->isOneToOne() && $this->hasParent()) {
             $this->getLinkService()->removeParent($this->getParent());
@@ -51,7 +50,7 @@ class LinkPlugin extends AbstractPlugin
         }
     }
 
-    public function addParent ($entity)
+    public function addParent($entity)
     {
         if (! in_array($entity->getType()->getName(), $this->getEntityTypes()))
             throw new \ErrorException();
@@ -63,7 +62,7 @@ class LinkPlugin extends AbstractPlugin
         return $this;
     }
 
-    public function addChild ($entity)
+    public function addChild($entity)
     {
         if (! in_array($entity->getType()->getName(), $this->getEntityTypes()))
             throw new \ErrorException();
@@ -75,27 +74,27 @@ class LinkPlugin extends AbstractPlugin
         return $this;
     }
 
-    public function hasChild ()
+    public function hasChild()
     {
         return is_object($this->findChild());
     }
 
-    public function hasChildren ()
+    public function hasChildren()
     {
         return $this->findChildren()->count();
     }
 
-    public function hasParents ()
+    public function hasParents()
     {
         return $this->findParents()->count();
     }
 
-    public function hasParent ()
+    public function hasParent()
     {
         return is_object($this->findParent());
     }
 
-    public function findChildren (array $entityTypes = NULL)
+    public function findChildren(array $entityTypes = NULL)
     {
         if ($this->isOneToOne())
             throw new \ErrorException('Link allows only one-to-one associations');
@@ -105,7 +104,7 @@ class LinkPlugin extends AbstractPlugin
         
         $collection = $this->getLinkService()
             ->getChildren()
-            ->filter(function  ($e) use( $entityTypes)
+            ->filter(function ($e) use($entityTypes)
         {
             return (in_array($e->getType()
                 ->getName(), $entityTypes));
@@ -114,7 +113,7 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParents (array $entityTypes = NULL)
+    public function findParents(array $entityTypes = NULL)
     {
         if ($this->isOneToOne())
             throw new \ErrorException('Link allows only one-to-one associations');
@@ -126,7 +125,7 @@ class LinkPlugin extends AbstractPlugin
         
         $collection = $this->getLinkService()
             ->getParents()
-            ->filter(function  ($e) use( $entityTypes)
+            ->filter(function ($e) use($entityTypes)
         {
             return (in_array($e->getType()
                 ->getName(), $entityTypes));
@@ -135,7 +134,7 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParent ($entityTypes = NULL)
+    public function findParent($entityTypes = NULL)
     {
         if (! $this->isOneToOne())
             throw new \ErrorException('Link doesn\'t allow one-to-one associations');
@@ -147,7 +146,7 @@ class LinkPlugin extends AbstractPlugin
         
         $collection = $this->getLinkService()
             ->getParents()
-            ->filter(function  ($e) use( $entityTypes)
+            ->filter(function ($e) use($entityTypes)
         {
             return (in_array($e->getType()
                 ->getName(), $entityTypes));
@@ -157,7 +156,7 @@ class LinkPlugin extends AbstractPlugin
         return $collection->current();
     }
 
-    public function findChild ($entityTypes = NULL)
+    public function findChild($entityTypes = NULL)
     {
         if (! $this->isOneToOne())
             throw new \ErrorException('Link doesn\'t allow one-to-one associations');
@@ -169,7 +168,7 @@ class LinkPlugin extends AbstractPlugin
         
         $collection = $this->getLinkService()
             ->getChildren()
-            ->filter(function  ($e) use( $entityTypes)
+            ->filter(function ($e) use($entityTypes)
         {
             return (in_array($e->getType()
                 ->getName(), $entityTypes));
@@ -178,4 +177,22 @@ class LinkPlugin extends AbstractPlugin
         
         return $collection->current();
     }
+	/* (non-PHPdoc)
+     * @see \Zend\EventManager\ListenerAggregateInterface::attach()
+     */
+    public function attach (\Zend\EventManager\EventManagerInterface $events)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Zend\EventManager\ListenerAggregateInterface::detach()
+     */
+    public function detach (\Zend\EventManager\EventManagerInterface $events)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

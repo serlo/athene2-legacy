@@ -14,25 +14,53 @@ namespace LearningResource\Plugin\Repository;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Plugin\AbstractPlugin;
 use Zend\Form\Form;
+use Entity\Exception;
+use Zend\EventManager\Event;
+use Entity\Result\UrlResult;
+use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
-    protected function getDefaultConfig ()
-    { 
+    protected $listeners = array();
+
+    /**
+     * RouteInterface
+     */
+    protected $router;
+    
+    /**
+     * @return field_type $router
+     */
+    public function getRouter ()
+    {
+        return $this->router;
+    }
+
+	/**
+     * @param field_type $router
+     * @return $this
+     */
+    public function setRouter (RouteInterface $router)
+    {
+        $this->router = $router;
+        return $this;
+    }
+
+    protected function getDefaultConfig()
+    {
         return array(
-        'revision_form' => 'FormNotFound',
-        'field_order' => array()
+            'revision_form' => 'FormNotFound',
+            'field_order' => array()
         );
     }
-        
 
     /**
      *
      * @return RepositoryServiceInterface
      */
-    public function getRepository ()
+    public function getRepository()
     {
         $repository = $this->getEntityService()->getEntity();
         $repository->setFieldOrder($this->getOption('field_order'));
@@ -41,7 +69,7 @@ class RepositoryPlugin extends AbstractPlugin
             ->getRepository($repository);
     }
 
-    public function getRevisionForm ()
+    public function getRevisionForm()
     {
         $form = $this->getOption('revision_form');
         if (! class_exists($form))
@@ -55,7 +83,7 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function hasHead ()
+    public function hasHead()
     {
         return $this->getRepository()->hasHead();
     }
@@ -65,7 +93,7 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function countRevisions ()
+    public function countRevisions()
     {
         return $this->getRepository()->countRevisions();
     }
@@ -75,7 +103,7 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function getCurrentRevision ()
+    public function getCurrentRevision()
     {
         return $this->getRepository()->getCurrentRevision();
     }
@@ -85,7 +113,7 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::getCurrentRevision()
      */
-    public function hasCurrentRevision ()
+    public function hasCurrentRevision()
     {
         return $this->getRepository()->hasCurrentRevision();
     }
@@ -95,12 +123,12 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::getRevision()
      */
-    public function getRevision ($id)
+    public function getRevision($id)
     {
         return $this->getRepository()->getRevision($id);
     }
 
-    public function getAllRevisions ()
+    public function getAllRevisions()
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", false))
             ->orderBy(array(
@@ -111,7 +139,7 @@ class RepositoryPlugin extends AbstractPlugin
             ->matching($criteria);
     }
 
-    public function getTrashedRevisions ()
+    public function getTrashedRevisions()
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", true))
             ->orderBy(array(
@@ -127,14 +155,14 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::checkoutRevision()
      */
-    public function checkout ($revisionId)
+    public function checkout($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->checkoutRevision($revision);
         return $this->entityService;
     }
 
-    public function commitRevision (Form $form)
+    public function commitRevision(Form $form)
     {
         $repository = $this->getRepository();
         
@@ -154,8 +182,6 @@ class RepositoryPlugin extends AbstractPlugin
                 $this->getObjectManager()->persist($revision->addField($key, $value));
         }
         
-        $this->getObjectManager()->flush();
-        
         return $this;
     }
 
@@ -164,23 +190,22 @@ class RepositoryPlugin extends AbstractPlugin
      *
      * @see \Versioning\Service\RepositoryServiceInterface::removeRevision()
      */
-    public function removeRevision ($revisionId)
+    public function removeRevision($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->removeRevision($revision);
         return $this->entityService;
     }
 
-    public function trashRevision ($revisionId)
+    public function trashRevision($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $revision->toggleTrashed();
         $this->getObjectManager()->persist($revision);
-        $this->getObjectManager()->flush($revision);
         return $this->entityService;
     }
 
-    public function isCheckedOut ()
+    public function isCheckedOut()
     {
         try {
             $this->getCurrentRevision();
@@ -190,8 +215,38 @@ class RepositoryPlugin extends AbstractPlugin
         }
     }
 
-    public function isUnrevised ()
+    public function isUnrevised()
     {
         return $this->getRepository()->isUnrevised();
+    }
+
+    public function attach(\Zend\EventManager\EventManagerInterface $events)
+    {
+        $this->listeners[] = $events->attach('createEntity.postFlush', function (Event $e)
+        {
+            $data = $e->getParam('data');
+            /* @var $entity \Entity\Service\EntityServiceInterface */
+            $entity = $e->getParam('entity');
+            if ($entity->isPluginWhitelisted($this->getScope())) {
+                $result = new UrlResult();
+                $result->setResult($entity->getRouter()
+                    ->assemble(array(
+                    'entity' => $entity->getId(),
+                    'action' => 'add-revision'
+                ), array(
+                    'name' => 'entity/plugin/repository'
+                )));
+                return $result;
+            }
+        });
+    }
+
+    public function detach(\Zend\EventManager\EventManagerInterface $events)
+    {
+        foreach ($this->listeners as $index => $listener) {
+            if ($events->detach($listener)) {
+                unset($this->listeners[$index]);
+            }
+        }
     }
 }

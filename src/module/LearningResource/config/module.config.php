@@ -34,7 +34,7 @@ return array(
     'entity' => array(
         'plugins' => array(
             'factories' => array(
-                'repository' => function  ($sm)
+                'repository' => function ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Repository\RepositoryPlugin();
                     $instance->setRepositoryManager($sm->getServiceLocator()
@@ -43,31 +43,33 @@ return array(
                         ->get('EntityManager'));
                     $instance->setAuthenticationService($sm->getServiceLocator()
                         ->get('Zend\Authentication\AuthenticationService'));
+                    $instance->setRouter($sm->getServiceLocator()
+                        ->get('Router'));
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    $instance->attachListeners();
                     return $instance;
                 },
-                /*'topicFolder' => function  ($sm)
-                {
-                    $instance = new \LearningResource\Plugin\Taxonomy\TopicFolderPlugin();
-                    $instance->setSharedTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
-                    return $instance;
-                },*/
-                'link' => function  ($sm)
+                'link' => function ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
                     $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\Manager\SharedLinkManager')->findLinkManagerByName('link', 'Entity\Entity\EntityLinkType'));
+                        ->get('Link\Manager\SharedLinkManager')
+                        ->findLinkManagerByName('link', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
+                    $instance->attachListeners();
                     return $instance;
                 },
-                'dependency' => function  ($sm)
+                'dependency' => function ($sm)
                 {
                     $instance = new \LearningResource\Plugin\Link\LinkPlugin();
                     $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\Manager\SharedLinkManager')->findLinkManagerByName('dependency', 'Entity\Entity\EntityLinkType'));
+                        ->get('Link\Manager\SharedLinkManager')
+                        ->findLinkManagerByName('dependency', 'Entity\Entity\EntityLinkType'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
+                    $instance->attachListeners();
                     return $instance;
                 }
             )
@@ -91,7 +93,9 @@ return array(
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'types' => array('text-solution'),
+                            'types' => array(
+                                'text-solution'
+                            ),
                             'association' => 'one-to-one'
                         )
                     )
@@ -114,11 +118,13 @@ return array(
                     'exercises' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'types' => array('grouped-text-exercise'),
+                            'types' => array(
+                                'grouped-text-exercise'
+                            ),
                             'association' => 'one-to-many'
                         )
-                    ),
-                ),
+                    )
+                )
             ),
             'grouped-text-exercise' => array(
                 'plugins' => array(
@@ -135,18 +141,22 @@ return array(
                     'group' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'types' => array('exercise-group'),
+                            'types' => array(
+                                'exercise-group'
+                            ),
                             'association' => 'one-to-one'
                         )
                     ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'types' => array('text-solution'),
+                            'types' => array(
+                                'text-solution'
+                            ),
                             'association' => 'one-to-one'
                         )
                     )
-                ),
+                )
             ),
             'text-solution' => array(
                 'plugins' => array(
@@ -164,7 +174,9 @@ return array(
                     'exercise' => array(
                         'plugin' => 'link',
                         'options' => array(
-                            'types' => array('text-exercise'),
+                            'types' => array(
+                                'text-exercise'
+                            ),
                             'association' => 'one-to-one'
                         )
                     )

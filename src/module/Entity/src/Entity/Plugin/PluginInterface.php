@@ -11,6 +11,11 @@
  */
 namespace Entity\Plugin;
 
-interface PluginInterface
+use Zend\EventManager\ListenerAggregateInterface;
+
+interface PluginInterface extends ListenerAggregateInterface
 {
+    public function setScope($scope);
+    public function getScope();
+    public function attachListeners();
 }
