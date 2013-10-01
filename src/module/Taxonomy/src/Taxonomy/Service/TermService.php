@@ -80,7 +80,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         $tax = $this->getSharedTaxonomyManager()->findTaxonomyByName($taxonomy, $language);
         $array = $this->getTermTaxonomy()
             ->getChildren()
-            ->matching(Criteria::create()->where(Criteria::expr()->eq('taxonomy', $tax->getTermTaxonomy())));
+            ->matching(Criteria::create()->where(Criteria::expr()->eq('taxonomy', $tax->getEntity())));
         $collection = new TermCollection($array, $this->getSharedTaxonomyManager());
         return $collection;
     }
