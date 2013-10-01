@@ -36,6 +36,7 @@ class Bootstrap
         'LanguageTest' => 'Language/test/LanguageTest',
         'Language' => 'Language/src/Language',
         'ClassResolverTest' => 'ClassResolver/test/ClassResolverTest',
+        'EntityTest' => 'Entity/test/EntityTest',
         'ClassResolver' => 'ClassResolver/src/ClassResolver',
         'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
         'Taxonomy' => 'Taxonomy/src/Taxonomy',
@@ -58,7 +59,8 @@ class Bootstrap
         'Link' => 'Link/src/Link',
         'LinkTest' => 'Link/test/LinkTest',
         'Language' => 'Language/src/Language',
-        'LanguageTest' => 'Language/test/LanguageTest'
+        'LanguageTest' => 'Language/test/LanguageTest',
+        'Page' => 'Page/src/Page',
     );
 
     public static function getApplication(){

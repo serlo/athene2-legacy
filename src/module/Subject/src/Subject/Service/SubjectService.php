@@ -17,7 +17,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class SubjectService implements SubjectServiceInterface, SubjectInterface
 {
-    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -49,12 +49,6 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
     public function getName()
     {
         return $this->getEntity()->getName();
-    }
-
-    public function getTermService()
-    {
-        return $this->getSharedTaxonomyManager()->getTerm($this->getEntity()
-            ->getId());
     }
 
     public function setConfig(array $config)

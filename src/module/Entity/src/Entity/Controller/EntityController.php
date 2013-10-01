@@ -17,13 +17,17 @@ use Entity\Result;
 
 class EntityController extends AbstractActionController
 {
-    use\Entity\Manager\EntityManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function createAction()
     {
         $type = $this->params('type');
+        
+        $language = $this->getLanguageManager()
+            ->getLanguageFromRequest()
+            ->getEntity();
         $entity = $this->getEntityManager()->createEntity($type, $this->params()
-            ->fromQuery());
+            ->fromQuery(), $language);
         
         $this->getEntityManager()
             ->getEventManager()

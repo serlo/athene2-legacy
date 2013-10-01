@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -9,10 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace SubjectTest\Plugin;
 
-namespace LanguageTest;
-
-class Bootstrap extends \AtheneTest\Bootstrap {}
-
-Bootstrap::init();
-Bootstrap::chroot();
+abstract class AbstractPluginTest extends \PHPUnit_Framework_TestCase
+{
+    protected $subjectServiceMock;
+    
+    public function setUp(){
+        $this->subjectServiceMock = $this->getMock('Subject\Service\SubjectService');
+    }
+}

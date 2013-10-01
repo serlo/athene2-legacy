@@ -27,7 +27,7 @@ class EntityPlugin extends AbstractPlugin
         return array();
     }
 
-    public function getEntities()
+    private function getEntities()
     {
         return $this->getSubjectService()
             ->getTermService()

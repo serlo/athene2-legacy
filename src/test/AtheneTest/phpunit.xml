@@ -2,6 +2,9 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="true">
 	<testsuites>
+		<testsuite name="Athene2 Entity Test Suite">
+			<directory>../../module/Entity/test</directory>
+		</testsuite>
 		<testsuite name="Athene2 Language Test Suite">
 			<directory>../../module/Language/test</directory>
 		</testsuite>
@@ -30,9 +33,7 @@
 			<directory>../../module/ClassResolver/test</directory>
 		</testsuite>
 	</testsuites>
-	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">../../module/</directory>
-		</whitelist>
-	</filter>
+    <blacklist>
+        <directory>../../module/vendor</directory>
+    </blacklist>
 </phpunit>

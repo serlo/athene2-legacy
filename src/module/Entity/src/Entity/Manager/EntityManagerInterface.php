@@ -14,6 +14,7 @@ namespace Entity\Manager;
 
 use Entity\Service\EntityServiceInterface;
 use Entity\Entity\EntityInterface;
+use Language\Service\LanguageServiceInterface;
 
 interface EntityManagerInterface
 {
@@ -28,7 +29,8 @@ interface EntityManagerInterface
      * 
      * @param string $type
      * @param array $data
-     * @return EntityInterface
+     * @param LanguageServiceInterface $language
+     * @return EntityServiceInterface
      */
-    public function createEntity($type, array $data = array());
+    public function createEntity($type, array $data = array(), LanguageServiceInterface $language);
 }
