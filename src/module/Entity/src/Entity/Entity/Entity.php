@@ -103,13 +103,13 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function removeTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
     {
-        $this->getTerms()->removeElement($termTaxonomy);
+        $this->getTermTaxonomies()->removeElement($termTaxonomy);
         return $this;
     }
 
     public function addTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
     {
-        $this->getTerms()->add($termTaxonomy);
+        $this->getTermTaxonomies()->add($termTaxonomy);
         return $this;
     }
 
@@ -170,6 +170,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->terms = new \Doctrine\Common\Collections\ArrayCollection();
         $this->fieldOrder = array();
         $this->trashed = false;
     }

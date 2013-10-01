@@ -60,8 +60,10 @@ return array(
                 return $service;
             },
             'navigation' => 'Ui\Navigation\DynamicNavigationFactory',
-            'top_navigation' => 'Ui\Navigation\TopNavigationFactory',
-            'bottom_navigation' => 'Ui\Navigation\BottomNavigationFactory'
+            'top_left_navigation' => 'Ui\Navigation\TopLeftNavigationFactory',
+            'top_right_navigation' => 'Ui\Navigation\TopRightNavigationFactory',
+            'footer_navigation' => 'Ui\Navigation\BottomNavigationFactory',
+            'subject_navigation' => 'Ui\Navigation\SubjectNavigationFactory',
         )
     )
 );
