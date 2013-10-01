@@ -90,9 +90,9 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     protected $fieldOrder;
 
-    public function getFieldOrder()
+    public function getFieldOrder($field)
     {
-        return $this->fieldOrder;
+        return array_key_exists($field, $this->fieldOrder) ? $this->fieldOrder[$field] : 999 ;
     }
 
     public function setFieldOrder(array $fieldOrder)
