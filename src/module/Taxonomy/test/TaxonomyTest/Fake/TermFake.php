@@ -12,6 +12,7 @@
 namespace TaxonomyTest\Fake;
 
 use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TermTaxonomyAware;
 
 class TermFake implements TermTaxonomyInterface
 {
@@ -226,7 +227,7 @@ class TermFake implements TermTaxonomyInterface
     /*
      * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::addAssociation()
      */
-    public function addAssociation($field, $entity)
+    public function addAssociation($field, TermTaxonomyAware $entity)
     {
         // TODO Auto-generated method stub
     }
@@ -234,7 +235,7 @@ class TermFake implements TermTaxonomyInterface
     /*
      * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::removeAssociation()
      */
-    public function removeAssociation($field, $entity)
+    public function removeAssociation($field, TermTaxonomyAware $entity)
     {
         // TODO Auto-generated method stub
     }

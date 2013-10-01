@@ -17,13 +17,13 @@ use Zend\Stdlib\ArrayUtils;
 
 class EntityService implements EntityServiceInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Zend\EventManager\EventManagerAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     protected $whitelistedPlugins = array();
 
     protected $pluginOptions = array();
 
-	public function getTerms()
+    public function getTerms()
     {
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
@@ -48,11 +48,12 @@ class EntityService implements EntityServiceInterface
     {
         return array_key_exists($name, $this->whitelistedPlugins) && $this->whitelistedPlugins[$name] !== FALSE;
     }
-    
-    public function getScopesForPlugin($plugin){
+
+    public function getScopesForPlugin($plugin)
+    {
         $return = array();
-        foreach($this->pluginOptions as $scope => $options){
-            if($options['plugin'] == $plugin){
+        foreach ($this->pluginOptions as $scope => $options) {
+            if ($options['plugin'] == $plugin) {
                 $return[] = $scope;
             }
         }
@@ -79,7 +80,7 @@ class EntityService implements EntityServiceInterface
 
     public function getPluginOptions($name)
     {
-        return (array_key_exists($name, $this->pluginOptions)) ? $this->pluginOptions[$name]['options'] : array();
+        return (array_key_exists($name, $this->pluginOptions) && array_key_exists('options', $this->pluginOptions[$name])) ? $this->pluginOptions[$name]['options'] : array();
     }
 
     public function whitelistPlugin($name, $plugin)

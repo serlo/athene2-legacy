@@ -125,7 +125,7 @@ class Taxonomy implements TaxonomyInterface
 
     public function getName()
     {
-        return $this->getType()->getName();
+        return is_object($this->getType()) ? $this->getType()->getName() : '';
     }
 
     public function getSaplings()

@@ -22,7 +22,7 @@
 			<ul class="dropdown-menu">
                 <?php foreach($this->plugin->getEnabledEntityTypes() as $type):?>
 				    <li><a
-					href="<?php echo rawurldecode($this->url('entity/create', array('type' => $type), array('query' => array( 'topicFolder' => array( 'term' => $this->term->getId()))))); ?>"><?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?></a></li>
+					href="<?php echo rawurldecode($this->url('entity/create', array('type' => $type), array('query' => array( 'taxonomy' => array( 'term' => $this->term->getId()))))); ?>"><?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>

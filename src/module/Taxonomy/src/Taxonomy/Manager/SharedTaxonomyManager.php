@@ -65,7 +65,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         
         if (! is_object($type))
             throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $name));
-        
+            
         $entity = $type->getTaxonomies()
             ->matching(Criteria::create()->where(Criteria::expr()->eq('language', $language->getEntity()))
             ->setMaxResults(1))
@@ -202,7 +202,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     protected function createService(TaxonomyInterface $entity)
     {
         if (! array_key_exists($entity->getName(), $this->getOption('types'))) {
-            throw new ConfigNotFoundException(sprintf('Could not find a configuration for %s. Data: %s', $entity->getName(), print_r($this->config['types'], TRUE)));
+            throw new ConfigNotFoundException(sprintf('Could not find a configuration for %s. Taxonomy (%s), Data (%s)', $entity->getName(), $entity->getId(), print_r($this->config['types'], TRUE)));
         }
         
         $instance = parent::createInstance('Taxonomy\Manager\TaxonomyManagerInterface');
