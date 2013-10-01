@@ -17,7 +17,6 @@ require.config({
         "jquery-ui" : "../bower_components/jquery-ui/ui/jquery-ui",
         "underscore": "../bower_components/underscore/underscore",
         "bootstrap": "../bower_components/sass-bootstrap/dist/js/bootstrap",
-        "app": "modules/serlo_main_app",
         "common" : "modules/serlo_common",
         "events": "libs/eventscope"
     },
@@ -35,7 +34,7 @@ require.config({
     waitSeconds: 2
 });
 
-require(["app"], function (App) {
+require(["ATHENE2"], function (App) {
     "use strict";
     App.initialize();
 });

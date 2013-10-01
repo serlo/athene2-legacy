@@ -306,7 +306,7 @@ module.exports = function (grunt) {
         'concurrent:dist',
         'autoprefixer',
         // 'concat',
-        'modernizr',
+        // 'modernizr',
         'copy:dist',
         'cssmin',
         'imagemin',

@@ -11,7 +11,7 @@
  */
 return array(
     'navigation' => array(
-        'top' => array(
+        'top-left' => array(
             array(
                 'label' => 'test1',
                 'uri' => '#'
@@ -21,7 +21,7 @@ return array(
                 'uri' => '#'
             )
         ),
-        'bottom' => array(
+        'top-right' => array(
             array(
                 'label' => 'test-bott1',
                 'uri' => '#'
