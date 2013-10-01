@@ -170,7 +170,11 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function first ()
     {
-        return $this->getCollection()->first();
+        $first = $this->getCollection()->first();
+        if($this->asService && $first){
+            $first = $this->getFromManager($first);
+        }
+        return $first;
     }
 
     /*
@@ -178,7 +182,11 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function last ()
     {
-        return $this->getCollection()->last();
+        $last = $this->getCollection()->last();
+        if($this->asService && $last){
+            $last = $this->getFromManager($last);
+        }
+        return $last;
     }
 
     /*

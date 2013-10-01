@@ -15,30 +15,85 @@ use Subject\Plugin\AbstractPlugin;
 use Entity\Entity\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Entity\Exception\BadMethodCallException;
+use Entity\Collection\EntityCollection;
+use Entity\Service\EntityServiceInterface;
 
-class EntityPlugin extends AbstractPlugin 
+class EntityPlugin extends AbstractPlugin
 {
-    use \Entity\Manager\EntityManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
-    
-    protected function getDefaultConfig ()
+    use\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+
+    protected function getDefaultConfig()
     {
         return array();
     }
-    
-    public function getEntities(){
-        return $this->getSubjectService()->getTermService()->getAssociated('entities', true, array('topic', 'topic-folder', 'subject'));//$this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
+
+    public function getEntities()
+    {
+        return $this->getSubjectService()
+            ->getTermService()
+            ->getAssociated('entities', true, array(
+            'topic',
+            'topic-folder',
+            'subject'
+        )); // $this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
     }
-    
-    public function getUnrevisedEntities(){
+
+    public function getUnrevisedEntities()
+    {
         $entities = $this->getEntities();
         $collection = new ArrayCollection();
-        foreach($entities->asService() as $entity){
-            try{
-                if($entity->repository()->isUnrevised()){
+        /* @var $entity \Entity\Service\EntityServiceInterface */
+        foreach ($entities as $entity) {
+            foreach ($entity->getScopesForPlugin('repository') as $scope) {
+                if ($entity->$scope()->isUnrevised()) {
                     $collection->add($entity);
+                    $this->iterLinks($entity, $collection);
                 }
-            } catch (BadMethodCallException $e){}
+            }
         }
         return $collection;
+    }
+
+    private function iterLinks($entity, $collection)
+    {
+        foreach ($entity->getScopesForPlugin('link') as $scope) {
+            if ($entity->$scope()->isOneToOne()) {
+                if ($entity->$scope()->hasParent()) {
+                    $this->iterEntity($entity->$scope()
+                        ->findParent(), $collection);
+                }
+                if ($entity->$scope()->hasChild()) {
+                    $this->iterEntity($entity->$scope()
+                        ->findChild(), $collection);
+                }
+            } else {
+                if ($entity->$scope()->hasParents()) {
+                    $this->iterEntities($entity->$scope()
+                        ->findParents(), $collection);
+                }
+                if ($entity->$scope()->hasChildren()) {
+                    $this->iterEntities($entity->$scope()
+                        ->findChildren(), $collection);
+                }
+            }
+        }
+    }
+
+    private function iterEntities(EntityCollection $entities, $collection)
+    {
+        /* @var $entity \Entity\Service\EntityServiceInterface */
+        foreach ($entities as $entity) {
+            $this->iterEntity($entity);
+            $entity->iterLinks($entity, $collection);
+        }
+    }
+
+    private function iterEntity(EntityServiceInterface $entity, $collection)
+    {
+        foreach ($entity->getScopesForPlugin('repository') as $scope) {
+            if ($entity->$scope()->isUnrevised()) {
+                $collection->add($entity);
+            }
+        }
     }
 }

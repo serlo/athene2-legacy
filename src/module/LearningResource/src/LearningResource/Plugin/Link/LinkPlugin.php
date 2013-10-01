@@ -116,9 +116,10 @@ class LinkPlugin extends AbstractPlugin
             return (in_array($e->getType()
                 ->getName(), $entityTypes));
         });
+            
         $collection = new EntityCollection($collection, $this->getEntityManager());
-        
-        return $collection->current();
+
+        return $collection->first();
     }
 
     public function findChild($entityTypes = NULL)
@@ -138,7 +139,7 @@ class LinkPlugin extends AbstractPlugin
         });
         $collection = new EntityCollection($collection, $this->getEntityManager());
         
-        return $collection->current();
+        return $collection->first();
     }
 
     public function isOneToOne()
