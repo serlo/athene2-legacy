@@ -58,7 +58,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     protected $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity",)
+     * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
      * @ORM\JoinTable(name="term_taxonomy_entity",
      * joinColumns={@ORM\JoinColumn(name="term_taxonomy_id",
      * referencedColumnName="id")},
