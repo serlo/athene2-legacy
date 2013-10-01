@@ -13,7 +13,7 @@
 <div class="row-fluid">
     <?php $this->form->prepare(); ?>
     <?php echo $this->form()->openTag($this->form); ?>
-    <div class="span4">
+    <div class="col-xs-4">
     <?php
         echo $this->forminput($this->form->get('id'));
         echo $this->forminput($this->form->get('parent'));
@@ -22,7 +22,7 @@
         echo $this->formRow($this->form->get('term')->get('name'));
     ?>
     </div>
-    <div class="span4">
+    <div class="col-xs-4">
     <?php 
         echo $this->formSubmit($this->form->get('submit'));
         echo $this->forminput($this->form->get('reset'));

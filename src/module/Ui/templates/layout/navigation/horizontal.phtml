@@ -6,7 +6,7 @@ $html = array();
 //$html[] = '<div class="navbar navbar-fixed-top">';
 //$html[] = ' <div class="navbar-inner">';
 //$html[] = ' <div class="container">';
-$html[] = ' <ul class="nav">';
+$html[] = ' <ul class="' . $this->navigation()->menu()->getUlClass() . '">';
 
 foreach ($this->container as $page) {
     // visibility of the page

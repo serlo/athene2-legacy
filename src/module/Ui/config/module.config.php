@@ -63,5 +63,71 @@ return array(
             'top_navigation' => 'Ui\Navigation\TopNavigationFactory',
             'bottom_navigation' => 'Ui\Navigation\BottomNavigationFactory'
         )
-    )
+    ),
+    'assetic_configuration' => array(
+        // 'routes'
+        // =>
+        // array(),
+        'webPath' => realpath('public/assets'),
+        'basePath' => 'assets',
+        
+        'default' => array(
+            'assets' => array(
+                '@scripts',
+                '@styles'
+            ),
+            'options' => array(
+                'mixin' => false
+            )
+        ),
+        
+        'modules' => array(
+            'ui' => array(
+                
+                // module
+                // root
+                // path
+                // for
+                // yout
+                // css
+                // and
+                // js
+                // files
+                'root_path' => __DIR__ . '/../assets/build',
+                
+                // collection
+                // od
+                // assets
+                'collections' => array(
+                    'scripts' => array(
+                        'assets' => array(
+                            'bower_components/requirejs/require.js',
+                            'scripts/main.js'
+                        )
+                    ),
+                    'styles' => array(
+                        'assets' => array(
+                            'styles/main.css'
+                        ),
+                        'filters' => array(
+                            'CssRewriteFilter' => array(
+                                'name' => 'Assetic\Filter\CssRewriteFilter'
+                            )
+                        )
+                    ),
+                    'main_fonts' => array(
+                        'assets' => array(
+                            'styles/fonts/*.eot',
+                            'styles/fonts/*.woff',
+                            'styles/fonts/*.svg',
+                            'styles/fonts/*.ttf'
+                        ),
+                        'options' => array(
+                            'move_raw' => true
+                        )
+                    )
+                )
+            )
+        )
+    ),
 );

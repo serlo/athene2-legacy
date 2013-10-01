@@ -10,10 +10,10 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<div class="right btn-group">
+<div class="pull-right btn-group">
 	<div class="btn-group group-dropdown">
-		<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown"
-			href="#"> <i class="icon-plus"></i> <span class="caret"></span>
+		<a class="btn btn-default btn-mini dropdown-toggle" data-toggle="dropdown"
+			href="#"> <i class="glyphicon icon-plus"></i> <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
             <?php foreach($this->term->getAllowedParentTypes() as $taxonomy):?>
@@ -24,9 +24,9 @@
 	</div>
 	<a
 		href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
-		class="btn btn-mini"><i class="icon-pencil"></i></a>
-	<div class="btn btn-mini">
-		<i class="icon-resize-vertical"></i>
+		class="btn btn-default btn-mini"><i class="glyphicon glyphicon-pencil"></i></a>
+	<div class="btn btn-default btn-mini">
+		<i class="glyphicon glyphicon-resize-vertical"></i>
 	</div>
-	<?php echo $this->modal()->delete('<i class="icon-remove icon-white" role="button"></i>',  $this->url('taxonomy/term/action',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-mini btn-inverse'); ?>
+	<?php echo $this->modal()->delete('<i class="glyphicon glyphicon-remove glyphicon-white" role="button"></i>',  $this->url('taxonomy/term/action',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-danger btn-mini'); ?>
 </div>

@@ -128,104 +128,104 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController'
         )
     ),
-    'assetic_configuration' => array(
-        // 'routes'
-        // =>
-        // array(),
-        'webPath' => realpath('public/assets'),
-        'basePath' => 'assets',
+    // 'assetic_configuration' => array(
+    //     // 'routes'
+    //     // =>
+    //     // array(),
+    //     'webPath' => realpath('public/assets'),
+    //     'basePath' => 'assets',
         
-        'default' => array(
-            'assets' => array(
-                '@base_css',
-                '@html5',
-                '@jquery',
-                '@bootstrap',
-                '@sortable',
-                '@sortable_css'
-            ),
-            'options' => array(
-                'mixin' => false
-            )
-        ),
+    //     'default' => array(
+    //         'assets' => array(
+    //             '@base_css',
+    //             '@html5',
+    //             '@jquery',
+    //             '@bootstrap',
+    //             '@sortable',
+    //             '@sortable_css'
+    //         ),
+    //         'options' => array(
+    //             'mixin' => false
+    //         )
+    //     ),
         
-        'modules' => array(
-            'application' => array(
+    //     'modules' => array(
+    //         'application' => array(
                 
-                // module
-                // root
-                // path
-                // for
-                // yout
-                // css
-                // and
-                // js
-                // files
-                'root_path' => __DIR__ . '/../assets',
+    //             // module
+    //             // root
+    //             // path
+    //             // for
+    //             // yout
+    //             // css
+    //             // and
+    //             // js
+    //             // files
+    //             'root_path' => __DIR__ . '/../assets',
                 
-                // collection
-                // od
-                // assets
-                'collections' => array(
+    //             // collection
+    //             // od
+    //             // assets
+    //             'collections' => array(
                     
-                    'base_css' => array(
-                        'assets' => array(
-                            'css/bootstrap.min.css',
-                            'css/bootstrap-responsive.min.css',
-                            'css/generic.css',
-                            'css/style.css'
-                        ),
-                        'filters' => array(
-                            'CssRewriteFilter' => array(
-                                'name' => 'Assetic\Filter\CssRewriteFilter'
-                            )
-                        ),
-                        'options' => array()
-                    ),
+    //                 'base_css' => array(
+    //                     'assets' => array(
+    //                         'css/bootstrap.min.css',
+    //                         'css/bootstrap-responsive.min.css',
+    //                         'css/generic.css',
+    //                         'css/style.css'
+    //                     ),
+    //                     'filters' => array(
+    //                         'CssRewriteFilter' => array(
+    //                             'name' => 'Assetic\Filter\CssRewriteFilter'
+    //                         )
+    //                     ),
+    //                     'options' => array()
+    //                 ),
                     
-                    'html5' => array(
-                        'assets' => array(
-                            'js/html5.js'
-                        )
-                    ),
+    //                 'html5' => array(
+    //                     'assets' => array(
+    //                         'js/html5.js'
+    //                     )
+    //                 ),
                     
-                    'jquery' => array(
-                        'assets' => array(
-                            'js/jquery.min.js'
-                        )
-                    ),
+    //                 'jquery' => array(
+    //                     'assets' => array(
+    //                         'js/jquery.min.js'
+    //                     )
+    //                 ),
                     
-                    'bootstrap' => array(
-                        'assets' => array(
-                            'js/bootstrap.min.js'
-                        )
-                    ),
+    //                 'bootstrap' => array(
+    //                     'assets' => array(
+    //                         'js/bootstrap.min.js'
+    //                     )
+    //                 ),
                     
-                    'sortable' => array(
-                        'assets' => array(
-                            'js/jquery-sortable.js'
-                        )
-                    ),
-                    'sortable_css' => array(
-                        'assets' => array(
-                            'css/jquery-sortable.css'
-                        )
-                    ),
+    //                 'sortable' => array(
+    //                     'assets' => array(
+    //                         'js/jquery-sortable.js'
+    //                     )
+    //                 ),
+    //                 'sortable_css' => array(
+    //                     'assets' => array(
+    //                         'css/jquery-sortable.css'
+    //                     )
+    //                 ),
                     
-                    'base_images' => array(
-                        'assets' => array(
-                            'images/*.png',
-                            'img/*.png',
-                            'images/*.ico'
-                        ),
-                        'options' => array(
-                            'move_raw' => true
-                        )
-                    )
-                )
-            )
-        )
-    ),
+    //                 'base_images' => array(
+    //                     'assets' => array(
+    //                         'images/*.png',
+    //                         'img/*.png',
+    //                         'images/*.ico'
+    //                     ),
+    //                     'options' => array(
+    //                         'move_raw' => true
+    //                     )
+    //                 )
+    //             )
+    //         )
+    //     )
+    // ),
     'doctrine' => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(

@@ -1,0 +1,6 @@
+// Put quick fixes / dirty stuff here
+.term {
+    @extend .clearfix;
+    clear: both;
+    padding-bottom: 0.4em;
+}

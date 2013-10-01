@@ -19,12 +19,8 @@ $lastType = $this->term;
             <ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
         <?php endif; ?>
         <li class="term" data-id="<?php echo $term->getId(); ?>">
-        	<div class="" style="margin: 5px 0;">
-        		<?php echo $this->partial('taxonomy/taxonomy/actions', array('term' => $term)); ?>
-        		<div>
-        			<?php echo $term->getName(); ?>
-        		</div>
-        	</div>
+    		<?php echo $term->getName(); ?>
+            <?php echo $this->partial('taxonomy/taxonomy/actions', array('term' => $term)); ?>
             <?php echo $this->partial('taxonomy/taxonomy/partial', array('term' => $term)); ?>
         </li>
     <?php endforeach; ?>

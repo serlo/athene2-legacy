@@ -32,11 +32,11 @@ echo $this->doctype();
     </head>
 <body>
 	<header id="header">
-		<div id="serlo-menu" class="navbar">
+		<div id="serlo-menu" class="navbar navbar-default">
 			<nav class="navbar-inner">
 				<div class="container">
 					<div class="row">
-						<div class="span12">
+						<div class="col-xs-12">
 							<!-- top navigation -->
 							<?php //echo $this->navigation('top_navigation')->menu(); ?>
 							<!-- end top navigation -->
@@ -46,12 +46,12 @@ echo $this->doctype();
                                 ->setOnlyActiveBranch(true)
                                 ->setMinDepth(0)
                                 ->setMaxDepth(3)
-                                ->setUlClass('nav pull-left')
+                                ->setUlClass('nav navbar-nav pull-left')
                                 ->setPartial('layout/navigation/horizontal.phtml')
                                 ->render();
                             ?>
     			            <?php if($this->authentication()->hasIdentity()) { ?>
-    		                    <ul class="nav pull-right">
+    		                    <ul class="nav navbar-nav pull-right">
     								<li class="dropdown"><a class="dropdown-toggle"
     									data-toggle="dropdown" href="#"><i
     										class="icon-envelope icon-white"></i><b
@@ -72,7 +72,7 @@ echo $this->doctype();
     										class="icon-off icon-white"></i></a></li>
     							</ul>
     		                <?php } else { ?>
-    		                    <ul class="nav pull-right">
+    		                    <ul class="nav navbar-nav pull-right">
     								<li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
     								</li>
     								<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
@@ -110,7 +110,7 @@ echo $this->doctype();
                     </ul>
                     <div id="search-help">
                         <div class="row-fluid">
-                            <div class="span12">
+                            <div class="col-xs-12">
                                 <p>Suche zum Beispiel nach <em>Nullstellen</em>, <em>Euklidische Theorie</em>, <em>Abituraufgaben</em> oder
                                     deinem <em>Bundesland</em>
                                 </p>
@@ -131,7 +131,7 @@ echo $this->doctype();
 				<div id="content">
 					<div id="content-container" class="layout-inner">
 						<div class="row-fluid">
-							<div class="span12" id="application">
+							<div class="col-xs-12" id="application">
 								<div class="flasher">
                                     <?php
                                     if ($this->flashMessenger()->hasSuccessMessages()) {
@@ -171,7 +171,7 @@ echo $this->doctype();
 	<footer>
 		<div class="container">
 			<div class="row">
-				<div class="span2">
+				<div class="col-xs-12">
 					<div class="inner">
 						<!-- tbd:footer -->
 						<!-- top navigation -->
