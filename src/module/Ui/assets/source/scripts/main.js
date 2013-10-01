@@ -27,14 +27,9 @@ require.config({
         bootstrap: {
             deps: ['jquery']
         },
-        mainApp: {
+        ATHENE2: {
             deps: ['bootstrap']
         }
     },
     waitSeconds: 2
-});
-
-require(["ATHENE2"], function (App) {
-    "use strict";
-    App.initialize();
 });

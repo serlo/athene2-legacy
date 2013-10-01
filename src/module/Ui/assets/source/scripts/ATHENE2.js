@@ -8,7 +8,7 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-/*global define*/
+/*global define, require*/
 define("ATHENE2", ['jquery'], function ($) {
     "use strict";
 
@@ -22,4 +22,9 @@ define("ATHENE2", ['jquery'], function ($) {
             init();
         }
     };
+});
+
+require(['ATHENE2'], function (App) {
+    "use strict";
+    App.initialize();
 });
