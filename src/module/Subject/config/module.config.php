@@ -472,13 +472,7 @@ return array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
-                    'setServiceLocator' => array(
-                        'required' => 'true'
-                    ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setEntityManager' => array(
                         'required' => 'true'
                     ),
                     'setSharedTaxonomyManager' => array(

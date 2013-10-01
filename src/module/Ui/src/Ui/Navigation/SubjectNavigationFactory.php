@@ -13,10 +13,10 @@ namespace Ui\Navigation;
 
 use Zend\Navigation\Service\AbstractNavigationFactory;
 
-class TopNavigationFactory extends AbstractNavigationFactory
+class SubjectNavigationFactory extends AbstractNavigationFactory
 {    
     protected function getName()
     {
-        return 'top';
+        return 'subject';
     }
 }

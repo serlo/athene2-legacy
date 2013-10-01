@@ -9,6 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace LearningResource;
+
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -36,7 +38,7 @@ return array(
             'factories' => array(
                 'repository' => function ($sm)
                 {
-                    $instance = new \LearningResource\Plugin\Repository\RepositoryPlugin();
+                    $instance = new Plugin\Repository\RepositoryPlugin();
                     $instance->setRepositoryManager($sm->getServiceLocator()
                         ->get('Versioning\RepositoryManager'));
                     $instance->setObjectManager($sm->getServiceLocator()
@@ -53,19 +55,18 @@ return array(
                 },
                 'link' => function ($sm)
                 {
-                    $instance = new \LearningResource\Plugin\Link\LinkPlugin();
+                    $instance = new Plugin\Link\LinkPlugin();
                     $instance->setSharedLinkManager($sm->getServiceLocator()
                         ->get('Link\Manager\SharedLinkManager'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;
                 },
-                'dependency' => function ($sm)
+                'taxonomy' => function ($sm)
                 {
-                    $instance = new \LearningResource\Plugin\Link\LinkPlugin();
-                    $instance->setLinkManager($sm->getServiceLocator()
-                        ->get('Link\Manager\SharedLinkManager')
-                        ->findLinkManagerByName('dependency', 'Entity\Entity\EntityLinkType'));
+                    $instance = new Plugin\Taxonomy\TaxonomyPlugin();
+                    $instance->setSharedTaxonomyManager($sm->getServiceLocator()
+                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;
@@ -74,7 +75,8 @@ return array(
         ),
         'listeners' => array(
             'LearningResource\Plugin\Link\Listener\Link',
-            'LearningResource\Plugin\Repository\Listener\Repository'
+            'LearningResource\Plugin\Repository\Listener\Repository',
+            'LearningResource\Plugin\Taxonomy\Listener\Taxonomy'
         ),
         'types' => array(
             'text-exercise' => array(
@@ -88,6 +90,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'taxonomy' => array(
+                        'plugin' => 'taxonomy'
                     ),
                     'solution' => array(
                         'plugin' => 'link',
@@ -114,6 +119,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'taxonomy' => array(
+                        'plugin' => 'taxonomy'
                     ),
                     'exercises' => array(
                         'plugin' => 'link',
@@ -162,7 +170,7 @@ return array(
                                 array(
                                     'to' => 'exercise-solution',
                                     'reversed_by' => 'exercise'
-                                ),
+                                )
                             ),
                             'type' => 'link',
                             'association' => 'one-to-one'
@@ -194,7 +202,7 @@ return array(
                                 array(
                                     'to' => 'grouped-text-exercisen',
                                     'reversed_by' => 'solution'
-                                ),
+                                )
                             ),
                             'type' => 'link',
                             'association' => 'one-to-one'
@@ -213,7 +221,10 @@ return array(
                                 'content'
                             )
                         )
-                    )
+                    ),
+                    'taxonomy' => array(
+                        'plugin' => 'taxonomy'
+                    ),
                 )
             )
         ),

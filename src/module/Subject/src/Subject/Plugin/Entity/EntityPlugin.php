@@ -20,21 +20,24 @@ use Entity\Service\EntityServiceInterface;
 
 class EntityPlugin extends AbstractPlugin
 {
-    use\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
         return array();
     }
 
-    public function getEntities()
+    private function getEntities()
     {
         return $this->getSubjectService()
             ->getTermService()
             ->getAssociated('entities', true, array(
             'topic',
             'topic-folder',
-            'subject'
+            'subject',
+            'curriculum',
+            'curriculum-folder',
+            'school-type'
         )); // $this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
     }
 
@@ -88,10 +91,10 @@ class EntityPlugin extends AbstractPlugin
         }
     }
 
-    private function iterEntity(EntityServiceInterface $entity, $collection)
+    private function iterEntity(EntityServiceInterface $entity,\Doctrine\Common\Collections\Collection $collection)
     {
         foreach ($entity->getScopesForPlugin('repository') as $scope) {
-            if ($entity->$scope()->isUnrevised()) {
+            if ($entity->$scope()->isUnrevised() && ! $collection->contains($entity)) {
                 $collection->add($entity);
             }
         }

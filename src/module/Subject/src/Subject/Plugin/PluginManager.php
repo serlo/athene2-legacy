@@ -32,7 +32,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         throw new InvalidArgumentException(sprintf('%s does not implement %s.', get_class($plugin), __NAMESPACE__ . '\PluginInterface'));
     }
     
-    public function setPluginOptions($options){
+    public function setPluginOptions(array $options){
         $this->pluginOptions = $options;
         return $this;
     }
@@ -42,6 +42,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         $this->pluginOptions = NULL;
         $this->pluginScope = NULL;
         $this->pluginName = NULL;
+        return $this;
     }
     
     public function get($name, $options = array(), $usePeeringServiceManagers = true){
@@ -50,7 +51,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
         return $plugin;
     }
     
-    protected function getPluginOptions(){
+    public function getPluginOptions(){
         if(!$this->pluginOptions === NULL)
             throw new \Exception('Setup plugin data first!');
             

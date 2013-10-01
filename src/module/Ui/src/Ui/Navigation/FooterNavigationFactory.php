@@ -13,10 +13,10 @@ namespace Ui\Navigation;
 
 use Zend\Navigation\Service\AbstractNavigationFactory;
 
-class BottomNavigationFactory extends AbstractNavigationFactory
+class FooterNavigationFactory extends AbstractNavigationFactory
 {    
     protected function getName()
     {
-        return 'bottom';
+        return 'footer';
     }
 }

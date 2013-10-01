@@ -13,10 +13,11 @@ namespace Entity\Manager;
 
 use Entity\Entity\EntityInterface;
 use Entity\Exception;
+use Language\Service\LanguageServiceInterface;
 
 class EntityManager implements EntityManagerInterface
 {
-    use \Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -47,7 +48,7 @@ class EntityManager implements EntityManagerInterface
         return $this->getInstance($id);
     }
 
-    public function createEntity($typeName, array $data = array())
+    public function createEntity($typeName, array $data = array(), LanguageServiceInterface $languageService)
     {
         $type = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -61,9 +62,7 @@ class EntityManager implements EntityManagerInterface
         
         $this->getUuidManager()->injectUuid($entity);
         
-        $entity->setLanguage($this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getEntity());
+        $entity->setLanguage($languageService->getEntity());
         $entity->setType($type);
         
         $this->getObjectManager()->persist($entity);

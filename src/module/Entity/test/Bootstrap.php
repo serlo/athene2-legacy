@@ -10,7 +10,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-namespace LanguageTest;
+namespace EntityTest;
 
 class Bootstrap extends \AtheneTest\Bootstrap {}
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -9,10 +9,14 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace Ui\Navigation;
 
-namespace CommonTest;
+use Zend\Navigation\Service\AbstractNavigationFactory;
 
-class Bootstrap extends \AtheneTest\Bootstrap {}
-
-Bootstrap::init();
-Bootstrap::chroot();
+class TopLeftNavigationFactory extends AbstractNavigationFactory
+{    
+    protected function getName()
+    {
+        return 'top-left';
+    }
+}

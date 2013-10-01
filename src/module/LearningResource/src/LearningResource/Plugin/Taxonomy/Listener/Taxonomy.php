@@ -12,8 +12,9 @@
 namespace LearningResource\Plugin\Taxonomy\Listener;
 
 use Zend\EventManager\Event;
+use Entity\Plugin\Listener\AbstractListener;
 
-class Taxonomy
+class Taxonomy extends AbstractListener
 {
 
     public function attach(\Zend\EventManager\EventManagerInterface $events)
@@ -24,16 +25,12 @@ class Taxonomy
             $entity = $e->getParam('entity');
             $data = $e->getParam('data');
             
-            foreach ($entity->getScopesForPlugin('repository') as $scope) {
-                $result = new UrlResult();
-                $result->setResult($entity->$scope()->getRouter()
-                    ->assemble(array(
-                    'entity' => $entity->getId(),
-                    'action' => 'add-revision'
-                ), array(
-                    'name' => 'entity/plugin/repository'
-                )));
-                return $result;
+            foreach ($entity->getScopesForPlugin('taxonomy') as $scope) {
+                
+                if (array_key_exists($scope, $data)) {
+                    $options = $data[$scope];
+                    $entity->$scope()->addToTerm($options['term']);
+                }
             }
         }, 2);
     }

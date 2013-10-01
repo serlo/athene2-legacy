@@ -57,10 +57,10 @@ interface TermTaxonomyInterface
     public function getAssociated($field);
 
     public function countAssociated($field);
-    
-    public function addAssociation($field, $entity);
-    
-    public function removeAssociation($field, $entity);
+
+    public function addAssociation($field, TermTaxonomyAware $entity);
+
+    public function removeAssociation($field, TermTaxonomyAware $entity);
 
     public function getLanguage();
 }

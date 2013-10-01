@@ -19,6 +19,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\PersistentCollection;
 use Versioning\Entity\RevisionInterface;
+use Taxonomy\Entity\TermTaxonomyAware;
+use Taxonomy\Entity\TermTaxonomyInterface;
 
 /**
  * An entity.
@@ -26,7 +28,7 @@ use Versioning\Entity\RevisionInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
+class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface, TermTaxonomyAware
 {
 
     /**
@@ -88,9 +90,9 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     protected $fieldOrder;
 
-    public function getFieldOrder()
+    public function getFieldOrder($field)
     {
-        return $this->fieldOrder;
+        return array_key_exists($field, $this->fieldOrder) ? $this->fieldOrder[$field] : 999 ;
     }
 
     public function setFieldOrder(array $fieldOrder)
@@ -99,7 +101,19 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this;
     }
 
-    public function getTerms()
+    public function removeTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
+    {
+        $this->getTermTaxonomies()->removeElement($termTaxonomy);
+        return $this;
+    }
+
+    public function addTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
+    {
+        $this->getTermTaxonomies()->add($termTaxonomy);
+        return $this;
+    }
+
+    public function getTermTaxonomies()
     {
         return $this->terms;
     }
@@ -156,6 +170,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->terms = new \Doctrine\Common\Collections\ArrayCollection();
         $this->fieldOrder = array();
         $this->trashed = false;
     }

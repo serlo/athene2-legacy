@@ -60,10 +60,16 @@ return array(
                 'Entity\Controller\EntityController' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
-                    )
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
                 ),
                 'Entity\Service\EntityService' => array(
                     'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setLanguageManager' => array(
                         'required' => 'true'
                     ),
                     'setServiceLocator' => array(
@@ -76,9 +82,6 @@ return array(
                         'required' => 'true'
                     ),
                     'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
                         'required' => 'true'
                     ),
                     'setLinkManager' => array(
@@ -124,7 +127,6 @@ return array(
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $class->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
                 
                 return $class;
             })

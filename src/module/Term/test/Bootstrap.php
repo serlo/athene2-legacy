@@ -12,7 +12,7 @@
 
 namespace TermTest;
 
-class Boostrap extends \AtheneTest\Bootstrap {}
+class Bootstrap extends \AtheneTest\Bootstrap {}
 
 Bootstrap::init();
 Bootstrap::chroot();

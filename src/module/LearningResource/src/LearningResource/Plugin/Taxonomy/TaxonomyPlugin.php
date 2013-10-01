@@ -15,7 +15,24 @@ use Entity\Plugin\AbstractPlugin;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
-    
-    
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+
+    protected function getDefaultConfig()
+    {
+        return array();
+    }
+
+    public function addToTerm($id)
+    {
+        $term = $this->getSharedTaxonomyManager()->getTerm($id);
+        $term->associate('entities', $this->getEntityService()
+            ->getEntity());
+    }
+
+    public function removeFromTerm($id)
+    {
+        $term = $this->getSharedTaxonomyManager()->getTerm($id);
+        $term->removeAssociation('entities', $this->getEntityService()
+            ->getEntity());
+    }
 }

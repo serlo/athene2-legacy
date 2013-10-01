@@ -11,8 +11,6 @@
  */
 namespace Subject\Plugin;
 
-use Subject\Service\SubjectServiceInterface;
-
 interface PluginInterface
 {
 }

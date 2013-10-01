@@ -12,7 +12,7 @@ use User\Entity\UserInterface;
  * @ORM\Entity
  * @ORM\Table(name="page_repository")
  */
-class PageRevision implements RevisionInterface {
+class PageRepository implements RevisionInterface {
 
 	/**
 	 * @ORM\Id
