@@ -170,16 +170,13 @@ echo $this->doctype();
 
 	<footer>
 		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="inner">
-						<!-- tbd:footer -->
-						<!-- top navigation -->
-						<?php //echo $this->navigation('bottom_navigation')->menu(); ?>
-						<!-- end top navigation -->
-					</div>
-				</div>
-			</div>
+			<?php
+            echo $this->navigation('footer_navigation')
+                    ->menu()
+                    ->setUlClass('nav navbar-nav pull-left')
+                    ->setPartial('layout/navigation/footer.phtml')
+                    ->render();
+            ?>
 		</div>
 	</footer>
 	<?php echo $this->modal()->renderDialogues(); ?>

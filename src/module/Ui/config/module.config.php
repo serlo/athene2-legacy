@@ -30,6 +30,32 @@ return array(
                 'label' => 'test-bott2',
                 'uri' => '#'
             )
+        ),
+        'footer' => array(
+            array(
+                'label' => 'Some footer link',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Some footer sublink',
+                        'uri' => '#'
+                    )
+                )
+            ),
+            array(
+                'label' => 'Some other footer link',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Some other footer sublink',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Some other footer sublink',
+                        'uri' => '#'
+                    )
+                )
+            )
         )
     ),
     'view_manager' => array(
@@ -62,7 +88,7 @@ return array(
             'navigation' => 'Ui\Navigation\DynamicNavigationFactory',
             'top_left_navigation' => 'Ui\Navigation\TopLeftNavigationFactory',
             'top_right_navigation' => 'Ui\Navigation\TopRightNavigationFactory',
-            'footer_navigation' => 'Ui\Navigation\BottomNavigationFactory',
+            'footer_navigation' => 'Ui\Navigation\FooterNavigationFactory',
             'subject_navigation' => 'Ui\Navigation\SubjectNavigationFactory',
         )
     ),
