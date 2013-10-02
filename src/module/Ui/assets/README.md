@@ -1,3 +1,5 @@
+The following is outdated. See [http://serlo-org.github.io/athene2-guide/ui/](http://serlo-org.github.io/athene2-guide/ui/) for instructions.
+
 Grunt Boilerplates
 ==================
 
