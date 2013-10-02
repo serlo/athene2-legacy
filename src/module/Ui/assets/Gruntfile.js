@@ -21,14 +21,6 @@ module.exports = function (grunt) {
     grunt.initConfig({
         serlo: config,
         watch: {
-            coffee: {
-                files: ['<%= serlo.app %>/scripts/{,*/}*.coffee'],
-                tasks: ['coffee:dist']
-            },
-            coffeeTest: {
-                files: ['test/spec/{,*/}*.coffee'],
-                tasks: ['coffee:test']
-            },
             compass: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['compass:server', 'autoprefixer']
@@ -39,7 +31,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
-                tasks: ['jshint', 'copy:bower', 'requirejs']
+                tasks: ['jshint', 'copy:requirejs', 'requirejs']
             },
             images: {
                 files: ['<%= serlo.app %>/images/{,*/}*.{png,jpg,jpeg}'],
@@ -71,26 +63,6 @@ module.exports = function (grunt) {
                 '<%= serlo.app %>/scripts/{,*/}*.js'
             ]
         },
-        coffee: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= serlo.app %>/scripts',
-                    src: '{,*/}*.coffee',
-                    dest: '<%= serlo.dist %>/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '{,*/}*.coffee',
-                    dest: '<%= serlo.dist %>/spec',
-                    ext: '.js'
-                }]
-            }
-        },
         compass: {
             options: {
                 sassDir: '<%= serlo.app %>/styles',
@@ -118,7 +90,7 @@ module.exports = function (grunt) {
         },
         autoprefixer: {
             options: {
-                browsers: ['last 1 version']
+                browsers: ['last 2 version']
             },
             dist: {
                 files: [{
@@ -129,51 +101,18 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        // not used since Uglify task does concat,
-        // but still available if needed
-        /*concat: {
-            dist: {}
-        },*/
         'bower-install': {
             app: {
                 html: '<%= serlo.app %>/index.html',
                 ignorePath: '<%= serlo.app %>/'
             }
         },
-        // not enabled since usemin task does concat and uglify
-        // check index.html to edit your build targets
-        // enable this task if you prefer defining your build targets here
         uglify: {
             dist: {
                 files: {
                     '<%= serlo.dist %>/scripts/main.min.js': '<%= serlo.dist %>/scripts/main.js'
                 }
             }
-        },
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%= serlo.dist %>/scripts/{,*/}*.js',
-                        '<%= serlo.dist %>/styles/{,*/}*.css',
-                        '<%= serlo.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
-                        '<%= serlo.dist %>/styles/fonts/{,*/}*.*'
-                    ]
-                }
-            }
-        },
-        useminPrepare: {
-            options: {
-                dest: '<%= serlo.dist %>'
-            },
-            html: '<%= serlo.app %>/index.html'
-        },
-        usemin: {
-            options: {
-                dirs: ['<%= serlo.dist %>']
-            },
-            html: ['<%= serlo.dist %>/{,*/}*.html'],
-            css: ['<%= serlo.dist %>/styles/{,*/}*.css']
         },
         imagemin: {
             dist: {
@@ -196,12 +135,6 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            // This task is pre-configured if you do not wish to use Usemin
-            // blocks for your CSS. By default, the Usemin block from your
-            // `index.html` will take care of minification, e.g.
-
-            //     <!-- build:css({.tmp,app}) styles/main.css -->
-
             minify: {
                 expand: true,
                 cwd: '<%= serlo.dist %>/styles/',
@@ -219,9 +152,7 @@ module.exports = function (grunt) {
                     cwd: '<%= serlo.app %>',
                     dest: '<%= serlo.dist %>',
                     src: [
-                        // '*.{ico,png,txt}',
                         '.htaccess',
-                        // 'images/{,*/}*.{webp,gif}',
                         'styles/fonts/{,*/}*.*'
                     ]
                 }]
@@ -233,12 +164,19 @@ module.exports = function (grunt) {
                 dest: '<%= serlo.dist %>/styles/',
                 src: '{,*/}*.css'
             },
-            bower: {
+            requirejs: {
                 expand: true,
                 dot: true,
                 cwd: '<%= serlo.app %>/bower_components/requirejs',
                 dest: '<%= serlo.dist %>/bower_components/requirejs',
                 src: 'require.js'
+            },
+            modernizr: {
+                expand: true,
+                dot: true,
+                cwd: '<%= serlo.app %>/bower_components/modernizr',
+                dest: '<%= serlo.dist %>/bower_components/modernizr',
+                src: 'modernizr.js'
             }
         },
         modernizr: {
@@ -254,21 +192,17 @@ module.exports = function (grunt) {
         concurrent: {
             server: [
                 'compass',
-                'coffee:dist',
                 'copy:styles',
-                'copy:bower'
+                'copy:requirejs'
             ],
             test: [
-                'coffee',
                 'copy:styles',
-                'copy:bower'
+                'copy:requirejs'
             ],
             dist: [
-                'coffee',
                 'compass',
                 'copy:styles',
-                'copy:bower',
-                // 'imagemin',
+                'copy:requirejs',
                 'svgmin'
             ]
         },
@@ -293,27 +227,24 @@ module.exports = function (grunt) {
             'clean:server',
             'concurrent:server',
             'autoprefixer',
-            'copy:bower',
+            'copy:requirejs',
             'requirejs',
             'copy:dist',
+            'copy:modernizr',
             'watch'
         ]);
     });
 
     grunt.registerTask('build', [
         'clean:dist',
-        // 'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
-        // 'concat',
-        // 'modernizr',
         'copy:dist',
         'cssmin',
         'imagemin',
         'requirejs',
+        // 'modernizr',
         'uglify'
-        // 'rev',
-        // 'usemin'
     ]);
 
     grunt.registerTask('default', [
