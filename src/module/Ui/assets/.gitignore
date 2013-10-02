@@ -1,5 +1,5 @@
 node_modules
-bower_components
+source/bower_components
 .sass-cache
 .tmp
 .grunt
