@@ -48,31 +48,6 @@ return array(
             )
         ),
         'footer' => array(
-            /*Über Serlo
-
-Auf einen Blick
-Bildungsbegriff
-Blog
-Verein
-Presse
-Impressum
-Mitmachen
-
-Wie läuft's?
-Was kann ich tun?
-Als LehrerIn
-Als StudentIn
-Spenden
-Jobs
-Hilfe
-
-Frag die Community
-Supportformular
-Problem melden
-Kontakt
-
-Admins der Fächer
-Kontaktformular*/
             array(
                 'label' => 'Über Serlo',
                 'uri' => '#',
