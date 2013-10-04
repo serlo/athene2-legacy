@@ -36,15 +36,15 @@ return array(
         'top-right' => array(
             array(
                 'label' => 'Registrieren',
-                'uri' => 'register'
+                'uri' => '/register'
             ),
             array(
                 'label' => 'Login',
-                'uri' => 'login'
+                'uri' => '/login'
             ),
             array(
                 'label' => 'Logout',
-                'uri' => 'logout'
+                'uri' => '/logout'
             )
         ),
         'footer' => array(
