@@ -1,6 +1,20 @@
-// Put quick fixes / dirty stuff here
+// Put quick fixes / try-outs / dirty stuff here
+// ...and feel ashamed!
 .term {
-    @extend .clearfix;
-    clear: both;
+    // @extend .clearfix;
+    clear: right;
     padding-bottom: 0.4em;
+}
+
+#navigation {
+    width: 160px;
+    float: left;
+}
+
+#main {
+    margin-left: 160px;
+}
+
+.nav-header {
+    font-weight: bold;
 }

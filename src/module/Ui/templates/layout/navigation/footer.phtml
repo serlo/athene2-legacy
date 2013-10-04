@@ -2,14 +2,14 @@
 /**
 * @authors Kanstantsin A Kamkou (2ka.by); Jeroen Herczeg
 * 
-* renders first level menu items as column
+* renders first level menu items as 1of6 columns
 */
 $html = array(
     '<div class="row-fluid">',
 );
 
 foreach ($this->container as $page) {
-    $html[] = '<div class="col-xs-3">';
+    $html[] = '<div class="col-xs-2">';
     $html[] = '<div class="inner">';
     $html[] = '<ul class="nav">';
     // header

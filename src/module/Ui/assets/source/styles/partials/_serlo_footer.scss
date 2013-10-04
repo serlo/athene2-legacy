@@ -1,0 +1,19 @@
+#footer {
+    border-top: 2px solid $themeColor;
+    background: $footerBackground;
+
+    font-size: 0.9em;
+    small {
+        color: $gray;
+    }
+
+    a {
+        padding-left: 0;
+        color: $gray;
+
+        &:hover {
+            background: none;
+            text-decoration: underline;
+        }
+    }
+}

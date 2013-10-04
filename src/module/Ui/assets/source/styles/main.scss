@@ -2,4 +2,11 @@
 @import "base/variables";
 @import "base/bootstrap-override";
 @import "sass-bootstrap/lib/bootstrap";
+
+@import "base/base";
+
+@import "partials/_bootstrap_extention";
+@import "partials/serlo_top_menu";
+@import "partials/serlo_footer";
+
 @import "shame";
