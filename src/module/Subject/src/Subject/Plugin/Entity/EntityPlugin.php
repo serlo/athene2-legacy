@@ -20,7 +20,7 @@ use Entity\Service\EntityServiceInterface;
 
 class EntityPlugin extends AbstractPlugin
 {
-    use \Entity\Manager\EntityManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -60,24 +60,13 @@ class EntityPlugin extends AbstractPlugin
     private function iterLinks($entity, $collection)
     {
         foreach ($entity->getScopesForPlugin('link') as $scope) {
-            if ($entity->$scope()->isOneToOne()) {
-                if ($entity->$scope()->hasParent()) {
-                    $this->iterEntity($entity->$scope()
-                        ->findParent(), $collection);
-                }
-                if ($entity->$scope()->hasChild()) {
-                    $this->iterEntity($entity->$scope()
-                        ->findChild(), $collection);
-                }
-            } else {
-                if ($entity->$scope()->hasParents()) {
-                    $this->iterEntities($entity->$scope()
-                        ->findParents(), $collection);
-                }
-                if ($entity->$scope()->hasChildren()) {
-                    $this->iterEntities($entity->$scope()
-                        ->findChildren(), $collection);
-                }
+            if ($entity->$scope()->hasParents()) {
+                $this->iterEntities($entity->$scope()
+                    ->findParents(), $collection);
+            }
+            if ($entity->$scope()->hasChildren()) {
+                $this->iterEntities($entity->$scope()
+                    ->findChildren(), $collection);
             }
         }
     }
@@ -91,7 +80,7 @@ class EntityPlugin extends AbstractPlugin
         }
     }
 
-    private function iterEntity(EntityServiceInterface $entity,\Doctrine\Common\Collections\Collection $collection)
+    private function iterEntity(EntityServiceInterface $entity, \Doctrine\Common\Collections\Collection $collection)
     {
         foreach ($entity->getScopesForPlugin('repository') as $scope) {
             if ($entity->$scope()->isUnrevised() && ! $collection->contains($entity)) {

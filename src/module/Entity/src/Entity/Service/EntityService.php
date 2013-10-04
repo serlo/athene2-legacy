@@ -17,7 +17,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class EntityService implements EntityServiceInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Zend\EventManager\EventManagerAwareTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     protected $whitelistedPlugins = array();
 

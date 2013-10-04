@@ -22,8 +22,6 @@ interface TermTaxonomyInterface
 
     public function setDescription($description);
 
-    public function getFactory();
-
     public function getTaxonomy();
 
     public function getChildren();
@@ -43,10 +41,6 @@ interface TermTaxonomyInterface
     public function getWeight();
 
     public function setWeight($weight);
-
-    public function setName($name);
-
-    public function setSlug($slug);
 
     public function getTerm();
 

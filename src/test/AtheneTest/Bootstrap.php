@@ -60,6 +60,8 @@ class Bootstrap
         'LinkTest' => 'Link/test/LinkTest',
         'Language' => 'Language/src/Language',
         'LanguageTest' => 'Language/test/LanguageTest',
+        'LearningResource' => 'LearningResource/src/LearningResource',
+        'LearningResourceTest' => 'LearningResource/test/LearningResourceTest',
         'Page' => 'Page/src/Page',
     );
 

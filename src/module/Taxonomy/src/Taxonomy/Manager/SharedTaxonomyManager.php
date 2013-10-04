@@ -162,33 +162,33 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             'weight' => 'setWeight'
         );
         
-        $taxonomy = $data['taxonomy'];
-        $parent = $data['parent'];
+        $taxonomyManager = array_key_exists('taxonomy', $data) ?  $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($termTaxonomy->getTaxonomy()->getId());
+        $parent = array_key_exists('parent', $data) ? $data['parent'] : null;
         
-        $taxonomyManager = $this->getTaxonomy($taxonomy);
-        $taxonomyManager->getEntity()->addTerm($termTaxonomy);
+        $taxonomyManager->addTerm($termTaxonomy);
         
         if ($parent) {
-            $parent = $this->getTerm($data['parent']);
+            $parent = $this->getTerm($parent);
             if (! $taxonomyManager->allowsParentType($parent->getTaxonomy()
                 ->getName())) {
                 throw new RuntimeException(sprintf('Taxonomy `%s` does not allow parent of type `%s`', $taxonomyManager->getName(), $parent->getTaxonomy()->getName()));
             }
             $termTaxonomy->setParent($parent->getTermTaxonomy());
         } else {
-            if (! $taxonomyManager->allowsParentType($parent->getTaxonomy()
-                ->getName()))
-                throw new RuntimeException(sprintf('Taxonomy `%s` does allow `parent` to be NULL', $taxonomy->getName()));
+            if (! $taxonomyManager->getRadixEnabled())
+                throw new RuntimeException(sprintf('Taxonomy `%s` does allow `parent` to be NULL', $taxonomyManager->getName()));
         }
         
-        try {
-            $term = $this->getTermManager()->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())->getEntity();
-        } catch (\Term\Exception\TermNotFoundException $e) {
-            $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
+        if(array_key_exists('term', $data)){
+            try {
+                $term = $this->getTermManager()->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())->getEntity();
+            } catch (\Term\Exception\TermNotFoundException $e) {
+                $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
+            }
+            $termTaxonomy->setTerm($term);
         }
         
-        $termTaxonomy->setTerm($term);
-        $taxonomyManager->getEntity()->getTerms()->add($termTaxonomy);
+        $taxonomyManager->addTerm($termTaxonomy);
         
         foreach ($columns as $key => $method) {
             if (array_key_exists($key, $data)) {

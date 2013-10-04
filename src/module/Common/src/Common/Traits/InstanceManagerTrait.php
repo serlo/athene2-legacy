@@ -13,18 +13,19 @@ namespace Common\Traits;
 
 trait InstanceManagerTrait
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\ClassResolver\ClassResolverAwareTrait;
-    
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+
     /**
      * Array of all registered instances
      *
      * @var array
      */
     private $instances = array();
-    
+
     private $checkClassInheritance = true;
-    
+
     /**
+     *
      * @return boolean $checkClassInheritance
      */
     public function getCheckClassInheritance()
@@ -32,8 +33,9 @@ trait InstanceManagerTrait
         return $this->checkClassInheritance;
     }
 
-	/**
-     * @param boolean $checkClassInheritance
+    /**
+     *
+     * @param boolean $checkClassInheritance            
      * @return $this
      */
     public function setCheckClassInheritance($checkClassInheritance)
@@ -42,11 +44,11 @@ trait InstanceManagerTrait
         return $this;
     }
 
-	/**
+    /**
      * Adds an instance.
      *
-     * @param string $name
-     * @param object $instance
+     * @param string $name            
+     * @param object $instance            
      * @throws \Exception
      * @return $this
      */
@@ -54,7 +56,7 @@ trait InstanceManagerTrait
     {
         if (! is_object($instance))
             throw new \Exception('Please pass only objects.');
-    
+        
         if ($this->hasInstance($name)) {
             if ($this->instances[$name] !== $instance) {
                 $unsetInstance = $this->instances[$name];
@@ -64,26 +66,26 @@ trait InstanceManagerTrait
                 return $this;
             }
         }
-    
+        
         $this->instances[$name] = $instance;
         return $this;
     }
-    
+
     /**
      * Checks if an instance is already registered.
      *
-     * @param string $name
+     * @param string $name            
      * @return boolean
      */
     protected function hasInstance($name)
     {
         return array_key_exists($name, $this->instances);
     }
-    
+
     /**
      * Returns an instance.
      *
-     * @param string $name
+     * @param string $name            
      * @throws \Exception
      * @return multitype:
      */
@@ -91,14 +93,14 @@ trait InstanceManagerTrait
     {
         if (! $this->hasInstance($name))
             throw new \Exception('Instance `' . $name . '` not set.');
-    
+        
         return $this->instances[$name];
     }
-    
+
     /**
      * Creates an instance
      *
-     * @param string $instanceClassName
+     * @param string $instanceClassName            
      * @throws \InvalidArgumentException
      * @return $instanceClassName
      */
@@ -113,16 +115,16 @@ trait InstanceManagerTrait
         
         return $instance;
     }
-    
+
     protected function getInstances()
     {
         return $this->instances;
     }
-    
-    public function removeInstance($name){
-        if (! $this->hasInstance($name))
-            throw new \Exception('Instance `' . $name . '` not set.');
-        unset($this->instances[$name]);
+
+    public function removeInstance($name)
+    {
+        if ($this->hasInstance($name))
+            unset($this->instances[$name]);
         return $this;
     }
 }

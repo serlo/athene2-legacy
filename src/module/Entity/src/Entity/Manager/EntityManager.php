@@ -53,7 +53,7 @@ class EntityManager implements EntityManagerInterface
         $type = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Entity\Entity\TypeInterface'))
-            ->findOneByName($typeName);
+            ->findOneBy(array('name' => $typeName));
         
         if (! is_object($type))
             throw new Exception\RuntimeException(sprintf('Type %s not found', $typeName));

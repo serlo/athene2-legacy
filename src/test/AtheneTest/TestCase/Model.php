@@ -42,11 +42,13 @@ abstract class Model extends \PHPUnit_Framework_TestCase
         return $this;
     }
 
-    protected function inject($object)
+    protected function inject()
     {
         foreach ($this->getData() as $key => $value) {
             $method = 'set' . ucfirst($key);
-            $object->$method($value);
+            if(method_exists($this->getObject(), $method)){
+                $this->getObject()->$method($value);
+            }
         }
         return $this;
     }
@@ -54,16 +56,18 @@ abstract class Model extends \PHPUnit_Framework_TestCase
     public function testSetter()
     {
         $object = $this->getObject();
-        $this->inject($object);
+        $this->inject();
     }
 
     public function testGetter()
     {
         $object = $this->getObject();
-        $this->inject($object);
+        $this->inject();
         foreach ($this->getData() as $key => $value) {
             $method = 'get' . ucfirst($key);
-            $this->assertEquals($value, $object->$method());
+            if(method_exists($object, $method)){
+                $this->assertEquals($value, $object->$method(), $method);
+            }
         }
     }
 }

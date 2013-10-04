@@ -71,12 +71,12 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     protected $allowedRelations = array(
         'entities'
     );
-    
+
     public function getDescription()
     {
         return $this->description;
     }
-    
+
     public function hasParent()
     {
         return (is_object($this->getParent()));
@@ -86,89 +86,72 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     {
         return $this->getChildren()->count() != 0;
     }
-    
+
     public function setDescription($description)
     {
         $this->description = $description;
         return $this;
     }
 
-    public function getFactory()
-    {
-        return $this->getTaxonomy()->getFactory();
-    }
-    
     public function getTaxonomy()
     {
         return $this->taxonomy;
     }
-    
+
     public function getChildren()
     {
         return $this->children;
     }
-    
+
     public function getParent()
     {
         return $this->parent;
     }
-    
+
     public function getName()
     {
         return $this->getTerm()->getName();
     }
-    
+
     public function getSlug()
     {
         return $this->getTerm()->getSlug();
     }
-    
+
     public function setTaxonomy($taxonomy)
     {
         $this->taxonomy = $taxonomy;
         return $this;
     }
-    
+
     public function setChildren($children)
     {
         $this->children = $children;
         return $this;
     }
-    
+
     public function setParent($parent)
     {
         $this->parent = $parent;
         return $this;
     }
-    
+
     public function getWeight()
     {
         return $this->weight;
     }
-    
+
     public function setWeight($weight)
     {
         $this->weight = $weight;
         return $this;
     }
-    
-    public function setName($name)
-    {
-        $this->getTerm()->setName($name);
-        return $this;
-    }
-    
-    public function setSlug($slug)
-    {
-        $this->getTerm()->setSlug($slug);
-        return $this;
-    }
-    
+
     public function getTerm()
     {
         return $this->term;
     }
-    
+
     public function setTerm($term)
     {
         $this->term = $term;
@@ -178,6 +161,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->entities = new ArrayCollection();
     }
 
     public function getArrayCopy()
@@ -204,14 +188,16 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     {
         return $this->getAssociated($field)->count();
     }
-    
-    public function addAssociation($field, TermTaxonomyAware $entity){
+
+    public function addAssociation($field, TermTaxonomyAware $entity)
+    {
         $this->getAssociated($field)->add($entity);
         $entity->addTermTaxonomy($this);
         return $this;
     }
-    
-    public function removeAssociation($field, TermTaxonomyAware $entity){
+
+    public function removeAssociation($field, TermTaxonomyAware $entity)
+    {
         $this->getAssociated($field)->removeElement($entity);
         $entity->removeTermTaxonomy($this);
         return $this;

@@ -16,7 +16,7 @@ use Entity\Manager\EntityManager;
 class EntityManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $entityManager, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $pluginManagerMock, $languageManagerMock, $entityMock, $entityServiceMock;
+    protected $entityManager, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $pluginManagerMock, $languageManagerMock, $entityMock, $entityServiceMock, $repositoryMock;
 
     public function setUp()
     {
@@ -43,6 +43,9 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
         $this->pluginManagerMock = $this->getMock('Entity\Plugin\PluginManager');
         $this->entityMock = $this->getMock('Entity\Entity\Entity');
         $this->entityServiceMock = $this->getMock('Entity\Service\EntityService');
+        $this->repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
         
         $this->entityManager->setObjectManager($this->objectManagerMock);
         $this->entityManager->setUuidManager($this->uuidManagerMock);
@@ -73,9 +76,6 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
         $this->serviceLocatorMock->expects($this->once())
             ->method('get')
             ->will($this->returnValue($this->entityServiceMock));
-        $this->entityMock->expects($this->once())
-            ->method('getId')
-            ->will($this->returnValue(1));
         
         $this->entityServiceMock->expects($this->once())
             ->method('setEntity')
@@ -94,6 +94,9 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetEntity()
     {
         $this->createService();
+        $this->entityMock->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
         
         $this->objectManagerMock->expects($this->once())
             ->method('find')
@@ -112,6 +115,33 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateEntity()
     {
+        $this->createService();
         
+        $this->entityMock->expects($this->never())
+            ->method('getId')
+            ->will($this->returnValue(1));
+        
+        $this->objectManagerMock->expects($this->once())
+            ->method('persist');
+        
+        $this->objectManagerMock->expects($this->never())
+            ->method('flush');
+        $this->objectManagerMock->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($this->repositoryMock));
+        
+        $this->repositoryMock->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnValue($this->getMock('Entity\Entity\Type')));
+        
+        $this->classResolverMock->expects($this->once())
+            ->method('resolve')
+            ->will($this->returnValue($this->entityMock));
+        
+        $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        
+        $this->assertSame($this->entityServiceMock, $this->entityManager->createEntity('foobar', array(
+            'asdf'
+        ), $languageServiceMock));
     }
 }

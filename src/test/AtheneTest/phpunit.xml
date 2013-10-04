@@ -32,6 +32,12 @@
 		<testsuite name="Athene2 ClassResolver Test Suite">
 			<directory>../../module/ClassResolver/test</directory>
 		</testsuite>
+		<testsuite name="Athene2 LearningResource Test Suite">
+			<directory>../../module/LearningResource/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Common Test Suite">
+			<directory>../../module/Common/test</directory>
+		</testsuite>
 	</testsuites>
     <blacklist>
         <directory>../../module/vendor</directory>

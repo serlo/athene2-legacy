@@ -13,7 +13,7 @@ namespace Uuid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-abstract class UuidEntity implements UuidHolder
+class UuidEntity implements UuidHolder
 {
     /**
      * @ORM\Id

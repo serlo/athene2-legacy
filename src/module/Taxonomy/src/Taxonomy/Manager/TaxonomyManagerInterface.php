@@ -91,4 +91,10 @@ interface TaxonomyManagerInterface
      * @return TermCollection
      */
     public function getTerms();
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function getRadixEnabled();
 }

@@ -14,8 +14,6 @@ namespace LearningResource\Plugin\Repository;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Plugin\AbstractPlugin;
 use Zend\Form\Form;
-use Zend\EventManager\Event;
-use Entity\Result\UrlResult;
 use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin

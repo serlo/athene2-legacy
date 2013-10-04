@@ -14,6 +14,9 @@ namespace TaxonomyTest\Fake;
 use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Entity\TermTaxonomyAware;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TermFake implements TermTaxonomyInterface
 {
 
@@ -117,26 +120,28 @@ class TermFake implements TermTaxonomyInterface
     {
         // TODO Auto-generated method stub
     }
-    
+
     /**
+     *
      * @return field_type $taxonomy
      */
-    public function getTaxonomy ()
+    public function getTaxonomy()
     {
         return $this->taxonomy;
     }
 
-	/**
-     * @param field_type $taxonomy
+    /**
+     *
+     * @param field_type $taxonomy            
      * @return $this
      */
-    public function setTaxonomy ($taxonomy)
+    public function setTaxonomy($taxonomy)
     {
         $this->taxonomy = $taxonomy;
         return $this;
     }
-
-	/*
+    
+    /*
      * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getParent()
      */
     public function getParent()

@@ -20,10 +20,11 @@ use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Taxonomy\Service\TermServiceInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getTerm($id)
     {
@@ -121,14 +122,16 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     {
         return $this->getEntity()->getType();
     }
-    
-    public function getName(){
+
+    public function getName()
+    {
         return $this->getEntity()->getName();
     }
 
     public function setType(TaxonomyTypeInterface $type)
     {
-        return $this->getEntity()->setType($type);
+        $this->getEntity()->setType($type);
+        return $this;
     }
 
     public function getTerms()
@@ -138,7 +141,16 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
 
     public function setTerms($terms)
     {
-        return $this->getEntity()->setTerms($terms);
+        $this->getEntity()->setTerms($terms);
+        return $this;
+    }
+
+    public function addTerm(TermTaxonomyInterface $term)
+    {
+        $this->getEntity()
+            ->getTerms()
+            ->add($term);
+        return $this;
     }
 
     protected function createService(TermTaxonomyInterface $entity)
@@ -155,15 +167,20 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $instance;
     }
 
+    public function getRadixEnabled()
+    {
+        return $this->getOption('radix_enabled');
+    }
+
     protected function getDefaultConfig()
     {
         return array(
-                'templates' => array(
-                    'update' => 'taxonomy/taxonomy/update'
-                ),
-                'allowed_parents' => array(),
-                'allowed_associations' => array(),
-                'radix_enabled' => true
+            'templates' => array(
+                'update' => 'taxonomy/taxonomy/update'
+            ),
+            'allowed_parents' => array(),
+            'allowed_associations' => array(),
+            'radix_enabled' => true
         );
     }
 }

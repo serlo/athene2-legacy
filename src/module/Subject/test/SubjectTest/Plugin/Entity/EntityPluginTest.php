@@ -70,10 +70,6 @@ class EntityPluginTest extends AbstractPluginTest
                 ->method('isUnrevised')
                 ->will($this->returnValue(true));
             
-            $linkPluginMock->expects($this->atLeastOnce())
-                ->method('isOneToOne')
-                ->will($this->returnValue($i == 1));
-            
             $entityService->expects($this->atLeastOnce())
                 ->method('repository')
                 ->will($this->returnValue($repositoryPluginMock));

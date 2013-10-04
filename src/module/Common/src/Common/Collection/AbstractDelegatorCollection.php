@@ -146,7 +146,12 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function getValues ()
     {
-        return $this->getCollection()->getValues();
+        $values = $this->getCollection()->getValues();
+        if($this->asService){
+            $this->hydrate();
+            return array_values($this->delegates);
+        }
+        return $values;
     }
 
     /*

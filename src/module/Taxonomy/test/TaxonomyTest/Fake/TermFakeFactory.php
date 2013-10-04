@@ -11,6 +11,9 @@
  */
 namespace TaxonomyTest\Fake;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TermFakeFactory
 {
 

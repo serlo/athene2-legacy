@@ -68,8 +68,6 @@ class LinkPlugin extends AbstractPlugin
 
     public function findChildren(array $entityTypes = NULL)
     {
-        if ($this->isOneToOne())
-            throw new Exception\RuntimeException('Link allows only one-to-one associations');
         
         if ($entityTypes === NULL)
             $entityTypes = $this->getEntityTypes();
@@ -87,8 +85,6 @@ class LinkPlugin extends AbstractPlugin
 
     public function findParents(array $entityTypes = NULL)
     {
-        if ($this->isOneToOne())
-            throw new Exception\RuntimeException('Link allows only one-to-one associations');
         
         $collection = $this->getLinkService()
             ->getParents()
@@ -103,8 +99,6 @@ class LinkPlugin extends AbstractPlugin
 
     public function findParent($entityTypes = NULL)
     {
-        if (! $this->isOneToOne())
-            throw new Exception\RuntimeException('Link doesn\'t allow one-to-one associations');
         
         if ($entityTypes === NULL)
             $entityTypes = $this->getEntityTypes();
@@ -124,8 +118,6 @@ class LinkPlugin extends AbstractPlugin
 
     public function findChild($entityTypes = NULL)
     {
-        if (! $this->isOneToOne())
-            throw new Exception\RuntimeException('Link doesn\'t allow one-to-one associations');
         
         if ($entityTypes === NULL)
             $entityTypes = $this->getEntityTypes();
@@ -142,7 +134,7 @@ class LinkPlugin extends AbstractPlugin
         return $collection->first();
     }
 
-    public function isOneToOne()
+    private function isOneToOne()
     {
         return $this->getOption('association') == 'one-to-one';
     }
@@ -176,8 +168,6 @@ class LinkPlugin extends AbstractPlugin
     protected function associationAllowed(EntityServiceInterface $entity)
     {
         if ($this->isOneToOne()) {
-            // $where = 'WHERE ' . implode(' OR ');
-            // $result = $this->getObjectManager()->createQuery("SELECT e FROM ".get_class($entity->getEntity())." JOIN u.parentLinks p JOIN u.childrenLinks c ")->getResult();
             $foreignScope = 'scope_not_found';
             
             $domesticType = $this->getEntityService()

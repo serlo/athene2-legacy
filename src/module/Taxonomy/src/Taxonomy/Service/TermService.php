@@ -23,14 +23,14 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 {
     
     use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
-
+    
     /**
      *
      * @var \Taxonomy\Manager\TaxonomyManagerInterface
      */
     protected $manager;
 
-    /**
+	/**
      *
      * @param TermTaxonomyInterface $term            
      * @return $this;
