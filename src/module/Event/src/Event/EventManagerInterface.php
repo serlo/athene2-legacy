@@ -9,8 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Event\Service;
+namespace Event;
 
-interface EventServiceInterface
+use Uuid\Entity\UuidHolder;
+use User\Entity\UserInterface;
+
+interface EventManagerInterface
 {
+    public function logEvent($uri, UserInterface $actor, UuidHolder $uuid, $object, $verb);
 }

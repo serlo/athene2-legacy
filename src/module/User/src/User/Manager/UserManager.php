@@ -20,13 +20,29 @@ use User\Service\UserServiceInterface;
 
 class UserManager implements UserManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ConfigAwareTrait;
 
-    public function addUser(UserServiceInterface $user){
+    protected function getDefaultConfig()
+    {
+        return array(
+            'listener' => array()
+        );
+    }
+
+    public function attachListeners()
+    {
+        foreach ($this->getOption('listeners') as $listener) {
+            $this->getEventManager()->attachAggregate($this->getServiceLocator()
+                ->get($listener));
+        }
+    }
+
+    public function addUser(UserServiceInterface $user)
+    {
         $this->addInstance($user->getId(), $user);
         return $this;
     }
-    
+
     public function getUser($id)
     {
         if (! is_numeric($id))
@@ -37,7 +53,7 @@ class UserManager implements UserManagerInterface
                 ->resolveClassName('User\Entity\UserInterface'), $id);
             if (! $user)
                 throw new UserNotFoundException(sprintf('User %s not found', $id));
-
+            
             $instance = $this->createService($user);
             $this->addInstance($user->getId(), $instance);
             return $instance;
@@ -45,18 +61,19 @@ class UserManager implements UserManagerInterface
         
         return $this->getInstance($id);
     }
-    
-    public function getUserFromAuthenticator(){
-        if($this->getAuthenticationService()->hasIdentity()){
+
+    public function getUserFromAuthenticator()
+    {
+        if ($this->getAuthenticationService()->hasIdentity()) {
             $email = $this->getAuthenticationService()->getIdentity();
-            try{
+            try {
                 $user = $this->findUserByEmail($email);
-                if($user->getRemoved() || !$user->hasRole('login')){
+                if ($user->getRemoved() || ! $user->hasRole('login')) {
                     $this->getAuthenticationService()->clearIdentity();
                 } else {
                     return $user;
                 }
-            } catch(UserNotFoundException $e){
+            } catch (UserNotFoundException $e) {
                 $this->getAuthenticationService()->clearIdentity();
             }
         }
@@ -94,10 +111,7 @@ class UserManager implements UserManagerInterface
         $user = $this->createUserEntity();
         $user->populate($data);
         $this->getObjectManager()->persist($user);
-        $this->getEventManager()->trigger('create', $this, array(
-            'user' => $user
-        ));
-        return $user;//$this->createService($user);
+        return $user; // $this->createService($user);
     }
 
     public function purgeUser($id)
@@ -120,7 +134,9 @@ class UserManager implements UserManagerInterface
     public function createUserEntity()
     {
         $user = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
-        return new $user();
+        $user = new $user();
+        $this->getUuidManager()->injectUuid($user);
+        return $user;
     }
 
     public function findAllUsers()

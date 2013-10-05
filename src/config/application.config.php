@@ -24,6 +24,7 @@ return array(
         'ClassResolver',
         'LearningResource',
         'Language',
+        'Event',
     	//'Page'
     ),
 

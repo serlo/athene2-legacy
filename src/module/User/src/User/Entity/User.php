@@ -8,10 +8,11 @@
  */
 namespace User\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\Criteria;
+use Uuid\Entity\UuidEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A user.
@@ -20,16 +21,8 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user")
  */
-class User implements UserInterface
+class User extends UuidEntity implements UserInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
     /**
      * @ORM\OneToMany(targetEntity="UserLog",
      * mappedBy="user")
@@ -71,13 +64,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime",
      * nullable=true)
-     * *
      */
     protected $last_login;
 
     /**
      * @ORM\Column(type="datetime")
-     * *
      */
     protected $date;
 
@@ -113,24 +104,6 @@ class User implements UserInterface
      * *
      */
     protected $removed;
-
-    /**
-     * @return field_type $id
-     */
-    public function getId ()
-    {
-        return $this->id;
-    }
-
-	/**
-     * @param field_type $id
-     * @return $this
-     */
-    public function setId ($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
 
 	/**
      *

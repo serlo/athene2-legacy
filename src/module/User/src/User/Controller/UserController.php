@@ -98,12 +98,20 @@ class UserController extends AbstractUserController
                 
                 $result = $this->getAuthenticationService()->authenticate($this->getAuthAdapter());
                 if ($result->isValid()) {
+                    $user = $this->getUserManager()->findUserByEmail($result->getIdentity());
+                    $user->updateLoginData();
+                    
                     $this->getUserManager()
-                        ->findUserByEmail($result->getIdentity())
-                        ->updateLoginData();
+                        ->getEventManager()
+                        ->trigger('login', $this, array(
+                        'user' => $user,
+                        'email' => $data['email']
+                    ));
+                    
                     $this->getUserManager()
                         ->getObjectManager()
                         ->flush();
+                    
                     $this->redirect()->toUrl($this->params('ref', '/'));
                 }
                 $messages = $result->getMessages();
@@ -120,6 +128,10 @@ class UserController extends AbstractUserController
     {
         $this->getAuthenticationService()->clearIdentity();
         $this->redirect()->toReferer();
+        
+        $this->getUserManager()
+            ->getEventManager()
+            ->trigger('logout', $this, array());
         return '';
     }
 
@@ -135,9 +147,17 @@ class UserController extends AbstractUserController
             $form->setData($data);
             if ($form->isValid()) {
                 $user = $this->getUserManager()->createUser($form->getData());
+                
+                $this->getUserManager()
+                    ->getEventManager()
+                    ->trigger('register', $this, array(
+                    'user' => $user,
+                    'data' => $data
+                ));
                 $this->getUserManager()
                     ->getObjectManager()
                     ->flush();
+                
                 $this->redirect()->toUrl($this->params('ref', '/'));
                 return '';
             }

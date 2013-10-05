@@ -14,15 +14,17 @@
 namespace User;
 
 use User\View\Helper\Authenticator;
-use Zend\Authentication\Storage\Session as Storage;
 
 /**
  * @codeCoverageIgnore
  */
 return array(
     'notification_manager' => array(
-        'objects' => array(
-            
+        'objects' => array()
+    ),
+    'user_manager' => array(
+        'listeners' => array(
+            __NAMESPACE__ . '\Listener\Event\UserForwardingListener'
         )
     ),
     'service_manager' => array(
@@ -44,9 +46,23 @@ return array(
             {
                 return new \Zend\Authentication\AuthenticationService();
             },
-            __NAMESPACE__ . '\Form\Register' => function ($sm) {
+            __NAMESPACE__ . '\Form\Register' => function ($sm)
+            {
                 $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
                 return $form;
+            },
+            __NAMESPACE__ . '\Manager\UserManager' => function ($sm)
+            {
+                $instance = new Manager\UserManager();
+                $instance->setConfig($sm->get('config')
+                    ['user_manager']);
+                $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $instance->setAuthenticationService($sm->get('Zend\Authentication\AuthenticationService'));
+                $instance->setServiceLocator($sm);
+                $instance->setObjectManager($sm->get('EntityManager'));
+                $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
+                $instance->attachListeners();
+                return $instance;
             }
         )
     ),
@@ -79,6 +95,11 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                __NAMESPACE__ . '\Listener\Event\UserForwardingListener' => array(
+                    'setEventManager' => array(
+                        'required' => true
+                    ),
+                ),
                 __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter' => array(
                     'setHashService' => array(
                         'required' => true
@@ -88,20 +109,6 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Authentication\HashService' => array(),
-                __NAMESPACE__ . '\Manager\UserManager' => array(
-                    'setClassResolver' => array(
-                        'required' => true
-                    ),
-                    'setAuthenticationService' => array(
-                        'required' => true
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Controller\UsersController' => array(
                     'setUserManager' => array(
                         'required' => true
@@ -122,7 +129,7 @@ return array(
                     ),
                     'setRegisterForm' => array(
                         'required' => true
-                    ),
+                    )
                 ),
                 __NAMESPACE__ . '\Controller\RoleController' => array(
                     'setUserManager' => array(
@@ -269,14 +276,14 @@ return array(
                 'pages' => array(
                     array(
                         'label' => 'Benutzer verwalten',
-                        'route' => 'users',
+                        'route' => 'users'
                     ),
                     array(
                         'label' => 'Benutzerrollen verwalten',
-                        'route' => 'users/roles',
+                        'route' => 'users/roles'
                     )
                 )
-            ),
+            )
         )
-    ),
+    )
 );
