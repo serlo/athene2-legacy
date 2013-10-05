@@ -18,7 +18,9 @@ require.config({
         "underscore": "../bower_components/underscore/underscore",
         "bootstrap": "../bower_components/sass-bootstrap/dist/js/bootstrap",
         "common" : "modules/serlo_common",
-        "events": "libs/eventscope"
+        "events": "libs/eventscope",
+        "cache": "libs/cache",
+        "referrer_history" : "modules/serlo_referrer_history"
     },
     shim: {
         underscore: {

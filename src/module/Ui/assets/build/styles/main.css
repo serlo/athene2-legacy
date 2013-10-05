@@ -1,3 +1,13 @@
+/* THEME */
+
+/* Override Base Styles */
+
+/* Override Default Grid */
+
+/* Override Navbar Styles */
+
+/* Base Font */
+
 /*!
  * Bootstrap v3.0.0
  *
@@ -1013,7 +1023,8 @@ pre code {
 
 /* line 7, ../../source/bower_components/sass-bootstrap/lib/_grid.scss */
 
-.container {
+.container,
+#serlo-menu .container {
   margin-right: auto;
   margin-left: auto;
   padding-left: 15px;
@@ -1023,7 +1034,9 @@ pre code {
 /* line 21, ../../source/bower_components/sass-bootstrap/lib/_mixins.scss */
 
 .container:before,
-.container:after {
+#serlo-menu .container:before,
+.container:after,
+#serlo-menu .container:after {
   content: " ";
   /* 1 */
   display: table;
@@ -1032,7 +1045,8 @@ pre code {
 
 /* line 25, ../../source/bower_components/sass-bootstrap/lib/_mixins.scss */
 
-.container:after {
+.container:after,
+#serlo-menu .container:after {
   clear: both;
 }
 
@@ -1206,7 +1220,8 @@ pre code {
 @media (min-width: 768px) {
   /* line 118, ../../source/bower_components/sass-bootstrap/lib/_grid.scss */
 
-  .container {
+  .container,
+  #serlo-menu .container {
     max-width: 750px;
   }
 
@@ -1500,7 +1515,8 @@ pre code {
 @media (min-width: 992px) {
   /* line 196, ../../source/bower_components/sass-bootstrap/lib/_grid.scss */
 
-  .container {
+  .container,
+  #serlo-menu .container {
     max-width: 970px;
   }
 
@@ -1812,7 +1828,8 @@ pre code {
 @media (min-width: 1200px) {
   /* line 276, ../../source/bower_components/sass-bootstrap/lib/_grid.scss */
 
-  .container {
+  .container,
+  #serlo-menu .container {
     max-width: 1170px;
   }
 
@@ -2534,7 +2551,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857;
-  color: #555555;
+  color: #4b4d4c;
   vertical-align: middle;
   background-color: white;
   border: 1px solid #cccccc;
@@ -5456,7 +5473,7 @@ input[type="button"].btn-block {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555555;
+  color: #4b4d4c;
   background-color: white;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
@@ -5746,7 +5763,9 @@ input[type="button"].btn-block {
 /* line 100, ../../source/bower_components/sass-bootstrap/lib/_navbar.scss */
 
 .container > .navbar-header,
-.container > .navbar-collapse {
+#serlo-menu .container > .navbar-header,
+.container > .navbar-collapse,
+#serlo-menu .container > .navbar-collapse {
   margin-right: -15px;
   margin-left: -15px;
 }
@@ -5755,7 +5774,9 @@ input[type="button"].btn-block {
   /* line 100, ../../source/bower_components/sass-bootstrap/lib/_navbar.scss */
 
   .container > .navbar-header,
-  .container > .navbar-collapse {
+  #serlo-menu .container > .navbar-header,
+  .container > .navbar-collapse,
+  #serlo-menu .container > .navbar-collapse {
     margin-right: 0;
     margin-left: 0;
   }
@@ -5827,7 +5848,8 @@ input[type="button"].btn-block {
 @media (min-width: 768px) {
   /* line 161, ../../source/bower_components/sass-bootstrap/lib/_navbar.scss */
 
-  .navbar > .container .navbar-brand {
+  .navbar > .container .navbar-brand,
+  #serlo-menu .navbar > .container .navbar-brand {
     margin-left: -15px;
   }
 }
@@ -6791,7 +6813,8 @@ a.list-group-item.active > .badge,
 
 /* line 23, ../../source/bower_components/sass-bootstrap/lib/_jumbotron.scss */
 
-.container .jumbotron {
+.container .jumbotron,
+#serlo-menu .container .jumbotron {
   border-radius: 6px;
 }
 
@@ -6805,7 +6828,8 @@ a.list-group-item.active > .badge,
 
   /* line 31, ../../source/bower_components/sass-bootstrap/lib/_jumbotron.scss */
 
-  .container .jumbotron {
+  .container .jumbotron,
+  #serlo-menu .container .jumbotron {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -8409,9 +8433,7 @@ body.modal-open {
 /* line 21, ../../source/bower_components/sass-bootstrap/lib/_mixins.scss */
 
 .clearfix:before,
-.term:before,
-.clearfix:after,
-.term:after {
+.clearfix:after {
   content: " ";
   /* 1 */
   display: table;
@@ -8420,8 +8442,7 @@ body.modal-open {
 
 /* line 25, ../../source/bower_components/sass-bootstrap/lib/_mixins.scss */
 
-.clearfix:after,
-.term:after {
+.clearfix:after {
   clear: both;
 }
 
@@ -9371,9 +9392,162 @@ td.visible-print {
   }
 }
 
-/* line 2, ../../source/styles/_shame.scss */
+/* line 1, ../../source/styles/base/_base.scss */
+
+html {
+  background-color: white;
+}
+
+/* line 5, ../../source/styles/base/_base.scss */
+
+body {
+  background-color: #e4e6e6;
+}
+
+/* Nested Dropdown Menu */
+
+/* line 2, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu {
+  position: relative;
+}
+
+/* line 5, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+
+/* line 14, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+/* line 17, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu > a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+
+/* line 30, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu:hover > a:after {
+  border-left-color: #ffffff;
+}
+
+/* line 33, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu.pull-left {
+  float: none;
+}
+
+/* line 36, ../../source/styles/partials/_bootstrap_extention.scss */
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+
+/* /Nested Dropdown Menu */
+
+/* Serlo Menu */
+
+/* top navbar */
+
+/* line 3, ../../source/styles/partials/_serlo_top_menu.scss */
+
+#serlo-menu {
+  font-size: 0.8em;
+  border-bottom: 2px solid #007ec1;
+  min-height: 0;
+}
+
+/* line 8, ../../source/styles/partials/_serlo_top_menu.scss */
+
+#serlo-menu li {
+  line-height: 23px;
+}
+
+/* line 12, ../../source/styles/partials/_serlo_top_menu.scss */
+
+#serlo-menu a {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* line 17, ../../source/styles/partials/_serlo_top_menu.scss */
+
+#serlo-menu .navbar-inner {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 1, ../../source/styles/partials/_serlo_footer.scss */
+
+#footer {
+  border-top: 2px solid #007ec1;
+  background: white;
+  font-size: 0.9em;
+}
+
+/* line 6, ../../source/styles/partials/_serlo_footer.scss */
+
+#footer small {
+  color: #4b4d4c;
+}
+
+/* line 10, ../../source/styles/partials/_serlo_footer.scss */
+
+#footer a {
+  padding-left: 0;
+  color: #4b4d4c;
+}
+
+/* line 14, ../../source/styles/partials/_serlo_footer.scss */
+
+#footer a:hover {
+  background: none;
+  text-decoration: underline;
+}
+
+/* line 3, ../../source/styles/_shame.scss */
 
 .term {
-  clear: both;
+  clear: right;
   padding-bottom: 0.4em;
+}
+
+/* line 9, ../../source/styles/_shame.scss */
+
+#navigation {
+  width: 160px;
+  float: left;
+}
+
+/* line 14, ../../source/styles/_shame.scss */
+
+#main {
+  margin-left: 160px;
+}
+
+/* line 18, ../../source/styles/_shame.scss */
+
+.nav-header {
+  font-weight: bold;
 }

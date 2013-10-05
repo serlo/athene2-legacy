@@ -37,50 +37,46 @@ echo $this->doctype();
 				<div class="container">
 					<div class="row">
 						<div class="col-xs-12">
-							<!-- top navigation -->
-							<?php //echo $this->navigation('top_left_navigation')->menu(); ?>
-							<!-- end top navigation -->
-    						<?php
-                            echo $this->navigation('navigation')
-                                ->menu()
-                                ->setOnlyActiveBranch(true)
-                                ->setMinDepth(0)
-                                ->setMaxDepth(3)
-                                ->setUlClass('nav navbar-nav pull-left')
-                                ->setPartial('layout/navigation/horizontal.phtml')
-                                ->render();
+							<?php
+                            // top left navigation
+                            echo $this->navigation('top_left_navigation')
+                                    ->menu()
+                                    ->setUlClass('nav navbar-nav')
+                                    ->setPartial('layout/navigation/horizontal.phtml')
+                                    ->render();
+                            // top right navigation
+                            // echo $this->navigation('top_right_navigation')
+                            //         ->menu()
+                            //         ->setUlClass('nav navbar-nav pull-right')
+                            //         ->setPartial('layout/navigation/horizontal.phtml')
+                            //         ->render();
                             ?>
-    			            <?php if($this->authentication()->hasIdentity()) { ?>
-    		                    <ul class="nav navbar-nav pull-right">
-    								<li class="dropdown"><a class="dropdown-toggle"
-    									data-toggle="dropdown" href="#"><i
-    										class="icon-envelope icon-white"></i><b
-    										class="caret caret-white"></b></a>
-    									<ul class="dropdown-menu">
-    										<li class="disabled"><a tabindex="-1" href="#">Deine
-    												Benachrichtigungen</a></li>
-    										<li class="divider"></li>
-    										<li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
-    										<li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
-    									</ul></li>
-    								<li class="dropdown"><a class="dropdown-toggle"
-    									data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b
-    										class="caret caret-white"></b></a>
-    									<ul class="dropdown-menu">
-    									</ul></li>
-    								<li><a href="<?php echo $this->url('logout'); ?>"><i
-    										class="icon-off icon-white"></i></a></li>
-    							</ul>
-    		                <?php } else { ?>
-    		                    <ul class="nav navbar-nav pull-right">
-    								<li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a>
-    								</li>
-    								<li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a>
-    								</li>
-    							</ul>
-    		                <?php }?>            
+                            <?php if($this->authentication()->hasIdentity()) { ?>
+                                <ul class="nav navbar-nav pull-right">
+                                    <li class="dropdown"><a class="dropdown-toggle"
+                                        data-toggle="dropdown" href="#"><i
+                                            class="icon-envelope icon-white"></i><b
+                                            class="caret caret-white"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="disabled"><a tabindex="-1" href="#">Deine Benachrichtigungen</a></li>
+                                            <li class="divider"></li>
+                                            <li><a tabindex="-1" href="#">Neuer Kommentar zu deiner Lösung</a></li>
+                                            <li><a tabindex="-1" href="#">Deine Lösung wurde akzeptiert</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b class="caret caret-white"></b></a>
+                                        <ul class="dropdown-menu"></ul>
+                                    </li>
+                                    <li><a href="<?php echo $this->url('logout'); ?>"><i class="icon-off icon-white"></i></a></li>
+                                </ul>
+                            <?php } else { ?>
+                                <ul class="nav navbar-nav pull-right">
+                                    <li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a></li>
+                                    <li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a></li>
+                                </ul>
+                            <?php }?> 
                         </div>
-					</div>
+                    </div>
 				</div>
 			</nav>
 		</div>
@@ -123,6 +119,17 @@ echo $this->doctype();
 					<ul id="main-nav" class="nav">
 						<!-- tbd: mainnav -->
 					</ul>
+    
+                    <?php
+                    echo $this->navigation('navigation')
+                                ->menu()
+                                ->setOnlyActiveBranch(true)
+                                ->setMinDepth(0)
+                                ->setMaxDepth(3)
+                                ->setUlClass('nav clear')
+                                ->setPartial('layout/navigation/vertical.phtml')
+                                ->render();
+                    ?>
 				</div>
 			</div>
 		</aside>
@@ -168,7 +175,7 @@ echo $this->doctype();
 		</div>
 	</div>
 
-	<footer>
+	<footer id="footer">
 		<div class="container">
 			<?php
             echo $this->navigation('footer_navigation')

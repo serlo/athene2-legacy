@@ -16,45 +16,127 @@ return array(
     'navigation' => array(
         'top-left' => array(
             array(
-                'label' => 'test1',
-                'uri' => '#'
+                'label' => 'Home',
+                'uri' => '/'
             ),
             array(
-                'label' => 'test2',
-                'uri' => '#'
+                'label' => 'Blog',
+                'uri' => '/blog'
+            ),
+            array(
+                'label' => 'About',
+                'uri' => '/about'
+            ),
+            array(
+                'label' => 'Participate',
+                'uri' => '/participate'
+            ),
+            array(
+                'label' => 'Admin',
+                'uri' => '/admin'
             )
         ),
         'top-right' => array(
             array(
-                'label' => 'test-bott1',
-                'uri' => '#'
+                'label' => 'Registrieren',
+                'uri' => '/register'
             ),
             array(
-                'label' => 'test-bott2',
-                'uri' => '#'
+                'label' => 'Login',
+                'uri' => '/login'
+            ),
+            array(
+                'label' => 'Logout',
+                'uri' => '/logout'
             )
         ),
         'footer' => array(
             array(
-                'label' => 'Some footer link',
+                'label' => 'Über Serlo',
                 'uri' => '#',
                 'pages' => array(
                     array(
-                        'label' => 'Some footer sublink',
+                        'label' => 'Auf einen Blick',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Bildungsbegriff',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Blog',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Verein',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Presse',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Impressum',
                         'uri' => '#'
                     )
                 )
             ),
             array(
-                'label' => 'Some other footer link',
+                'label' => 'Mitmachen',
                 'uri' => '#',
                 'pages' => array(
                     array(
-                        'label' => 'Some other footer sublink',
+                        'label' => 'Wie läuft\'s?',
                         'uri' => '#'
                     ),
                     array(
-                        'label' => 'Some other footer sublink',
+                        'label' => 'Was kann ich tun?',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Als LehrerIn',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Als StudentIn',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Spenden',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Jobs',
+                        'uri' => '#'
+                    )
+                )
+            ),
+            array(
+                'label' => 'Hilfe',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Frag die Community',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Supportformular',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Problem melden',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Kontakt',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Admins der Fächer',
+                        'uri' => '#'
+                    ),
+                    array(
+                        'label' => 'Kontaktformular',
                         'uri' => '#'
                     )
                 )
