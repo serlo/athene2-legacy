@@ -2,19 +2,31 @@
 namespace AtheneTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use Ui\Listener\AcListener;
 
 abstract class DefaultLayoutTestCase extends AbstractHttpControllerTestCase
 {
+
     protected $traceError = true;
-    
+
     public function setUp()
     {
         parent::setUp();
         $navigationProviderMock = $this->getMockBuilder('Taxonomy\Provider\NavigationProvider')
-                     ->disableOriginalConstructor()
-                     ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $subjectHydrator = $this->getMock('Subject\Hydrator\Navigation');
-        $subjectHydrator->expects($this->once())->method('inject')->will($this->returnValue(array()));
+        $subjectHydrator->expects($this->once())
+            ->method('inject')
+            ->will($this->returnValue(array()));
+        
+        $rbacServiceMock = $this->getMock('ZfcRbac\Service\Rbac', array('isGranted'));
+        
+        $rbacServiceMock->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+        
+        AcListener::setRbacService($rbacServiceMock);
         
         $this->getApplicationServiceLocator()->setAllowOverride(true);
         $this->getApplicationServiceLocator()->setService('Taxonomy\Provider\NavigationProvider', $navigationProviderMock);

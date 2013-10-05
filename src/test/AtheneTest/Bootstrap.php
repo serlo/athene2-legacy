@@ -63,6 +63,7 @@ class Bootstrap
         'LearningResource' => 'LearningResource/src/LearningResource',
         'LearningResourceTest' => 'LearningResource/test/LearningResourceTest',
         'Page' => 'Page/src/Page',
+        //'ZfcRbac' => '../vendor/zf-commons/zfc-rbac/src/ZfcRbac',
     );
 
     public static function getApplication(){

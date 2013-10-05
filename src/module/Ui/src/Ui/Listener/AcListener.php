@@ -12,11 +12,38 @@
 namespace Ui\Listener;
 
 use Zend\EventManager\Event;
+use ZfcRbac\Service\Rbac;
 
 class AcListener
 {
+    /**
+     * 
+     * @var Rbac
+     */
+    protected static $rbac;
+    
 
-    public static function accept(Event $event)
+    /**
+     * @return Rbac $rbac
+     */
+    public static function getRbacService ($default = NULL)
+    {
+        if(!self::$rbac){
+            return $default;
+        }
+        return self::$rbac;
+    }
+
+	/**
+     * @param Rbac $rbac
+     * @return $this
+     */
+    public static function setRbacService (Rbac $rbac)
+    {
+        self::$rbac = $rbac;
+    }
+
+	public static function accept(Event $event)
     {
         
         $event->stopPropagation();
@@ -27,8 +54,8 @@ class AcListener
         
         $accepted = true;
         
-        /* @var $rbacService \ZfcRbac\Service\Rbac */
-        $rbacService = $serviceLocator->get('ZfcRbac\Service\Rbac');
+        /* @var $rbacService Rbac */
+        $rbacService = self::getRbacService($serviceLocator->get('ZfcRbac\Service\Rbac'));
         
         $params = $event->getParams();
         $page = $params['page'];
