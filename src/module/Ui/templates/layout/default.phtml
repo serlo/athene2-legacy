@@ -42,17 +42,17 @@ echo $this->doctype();
                             echo $this->navigation('top_left_navigation')
                                     ->menu()
                                     ->setUlClass('nav navbar-nav')
-                                    ->setPartial('layout/navigation/horizontal.phtml')
+                                    //->setPartial('layout/navigation/horizontal.phtml')
                                     ->render();
                             // top right navigation
-                            // echo $this->navigation('top_right_navigation')
-                            //         ->menu()
-                            //         ->setUlClass('nav navbar-nav pull-right')
-                            //         ->setPartial('layout/navigation/horizontal.phtml')
-                            //         ->render();
+                            echo $this->navigation('top_right_navigation')
+                                     ->menu()
+                                     ->setUlClass('nav navbar-nav pull-right')
+                                     //->setPartial('layout/navigation/horizontal.phtml')
+                                     ->render();
                             ?>
-                            <?php if($this->authentication()->hasIdentity()) { ?>
-                                <ul class="nav navbar-nav pull-right">
+                            <?php // if($this->authentication()->hasIdentity()) { ?>
+                                <!-- <ul class="nav navbar-nav pull-right">
                                     <li class="dropdown"><a class="dropdown-toggle"
                                         data-toggle="dropdown" href="#"><i
                                             class="icon-envelope icon-white"></i><b
@@ -68,13 +68,13 @@ echo $this->doctype();
                                         <ul class="dropdown-menu"></ul>
                                     </li>
                                     <li><a href="<?php echo $this->url('logout'); ?>"><i class="icon-off icon-white"></i></a></li>
-                                </ul>
-                            <?php } else { ?>
-                                <ul class="nav navbar-nav pull-right">
+                                </ul> -->
+                            <?php //} else { ?>
+                                <!-- <ul class="nav navbar-nav pull-right">
                                     <li><a href="<?php echo $this->url('register'); ?>"><?php echo $this->translate('Registrieren'); ?></a></li>
                                     <li><a href="<?php echo $this->url('login'); ?>"><?php echo $this->translate('Login'); ?></a></li>
-                                </ul>
-                            <?php }?> 
+                                </ul> -->
+                            <?php //} ?> 
                         </div>
                     </div>
 				</div>

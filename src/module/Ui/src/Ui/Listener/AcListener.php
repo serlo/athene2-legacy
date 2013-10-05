@@ -16,8 +16,9 @@ use Zend\EventManager\Event;
 class AcListener
 {
 
-    public function accept(Event $event)
+    public static function accept(Event $event)
     {
+        
         $event->stopPropagation();
         
         $serviceLocator = $event->getTarget()

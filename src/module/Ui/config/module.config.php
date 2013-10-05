@@ -39,15 +39,18 @@ return array(
         'top-right' => array(
             array(
                 'label' => 'Registrieren',
-                'uri' => '/register'
+                'route' => 'register',
+                'permission' => 'route:register'
             ),
             array(
                 'label' => 'Login',
-                'uri' => '/login'
+                'route' => 'login',
+                'permission' => 'route:login'
             ),
             array(
                 'label' => 'Logout',
-                'uri' => '/logout'
+                'route' => 'logout',
+                'permission' => 'route:logout'
             )
         ),
         'footer' => array(
@@ -159,17 +162,6 @@ return array(
         ),
         'strategies' => array(
             'Ui\Strategy\PhpRendererStrategy'
-        )
-    )
-    ,
-    'view_helpers' => array(
-        'factories' => array(
-            'navigation' => function (HelperPluginManager $pm)
-            {
-                $instance = $pm->get('Zend\View\Helper\Navigation');
-                $instance->setAcl();
-                return $instance;
-            }
         )
     ),
     'service_manager' => array(

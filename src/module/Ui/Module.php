@@ -19,6 +19,17 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
+    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    {
+        $e->getApplication()
+            ->getEventManager()
+            ->getSharedManager()
+            ->attach('Zend\View\Helper\Navigation\AbstractHelper', 'isAllowed', array(
+            'Ui\Listener\AcListener',
+            'accept'
+        ));
+    }
+
     public function getAutoloaderConfig()
     {
         return array(
