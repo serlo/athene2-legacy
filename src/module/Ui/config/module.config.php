@@ -1,12 +1,15 @@
 <?php
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\HelperPluginManager;
 /**
+ *
  *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
@@ -75,6 +78,17 @@ return array(
         'strategies' => array(
             'Ui\Strategy\PhpRendererStrategy'
         )
+    )
+    ,
+    'view_helpers' => array(
+        'factories' => array(
+            'navigation' => function (HelperPluginManager $pm)
+            {
+                $instance = $pm->get('Zend\View\Helper\Navigation');
+                $instance->setAcl();
+                return $instance;
+            }
+        )
     ),
     'service_manager' => array(
         'factories' => array(
@@ -89,7 +103,7 @@ return array(
             'top_left_navigation' => 'Ui\Navigation\TopLeftNavigationFactory',
             'top_right_navigation' => 'Ui\Navigation\TopRightNavigationFactory',
             'footer_navigation' => 'Ui\Navigation\FooterNavigationFactory',
-            'subject_navigation' => 'Ui\Navigation\SubjectNavigationFactory',
+            'subject_navigation' => 'Ui\Navigation\SubjectNavigationFactory'
         )
     ),
     'assetic_configuration' => array(
@@ -157,5 +171,5 @@ return array(
                 )
             )
         )
-    ),
+    )
 );

@@ -20,6 +20,11 @@ use Zend\Authentication\Storage\Session as Storage;
  * @codeCoverageIgnore
  */
 return array(
+    'notification_manager' => array(
+        'objects' => array(
+            
+        )
+    ),
     'service_manager' => array(
         'factories' => array(
             /*'User\Service\UserLogService' => function ($sm)

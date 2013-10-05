@@ -6,7 +6,6 @@
  * @license LGPL
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace Ui;
 
 /**
@@ -15,12 +14,12 @@ namespace Ui;
 class Module
 {
 
-    public function getConfig ()
+    public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig ()
+    public function getAutoloaderConfig()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
