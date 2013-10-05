@@ -63,6 +63,7 @@ class Bootstrap
         'LearningResource' => 'LearningResource/src/LearningResource',
         'LearningResourceTest' => 'LearningResource/test/LearningResourceTest',
         'Page' => 'Page/src/Page',
+        'Event' => 'Event/src/Event',
         //'ZfcRbac' => '../vendor/zf-commons/zfc-rbac/src/ZfcRbac',
     );
 

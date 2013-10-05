@@ -20,7 +20,7 @@ use User\Manager\UserManager;
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $userManager;
+    protected $userManager, $uuidManagerMock;
 
     public function setUp()
     {
@@ -35,6 +35,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $userServiceMock = $this->getMock('User\Service\UserService');
         $authServiceMock = $this->getMock('Zend\Authentication\AuthenticationService');
         $eventManagerMock = $this->getMock('Zend\EventManager\EventManager');
+        $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
         
         $classResolverMock->expects($this->any())
             ->method('resolveClassName')
@@ -70,6 +71,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->setEventManager($eventManagerMock);
         $this->userManager->setObjectManager($entityManagerMock);
         $this->userManager->setServiceLocator($serviceLocatorMock);
+        $this->userManager->setUuidManager($this->uuidManagerMock);
         
         $this->userServiceMock = $userServiceMock;
         $this->authServiceMock = $authServiceMock;

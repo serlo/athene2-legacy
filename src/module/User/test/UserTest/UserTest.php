@@ -12,6 +12,7 @@
 namespace UserTest;
 
 use AtheneTest\TestCase\Model;
+use Uuid\Entity\Uuid;
 
 class UserTest extends Model
 {
@@ -24,7 +25,6 @@ class UserTest extends Model
     protected function getData()
     {
         return array(
-            'id' => 1,
             'email' => 'asdf',
             'username' => 'asdf',
             'password' => '12345',

@@ -29,7 +29,7 @@ class UuidTest extends Model
     {
         return array(
             'id' => '1',
-            'uuid' => '123'
+            'uuid' => '1234',
         );
     }
     
