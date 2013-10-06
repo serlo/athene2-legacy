@@ -11,12 +11,57 @@
  */
 namespace LearningResourceTest\Plugin;
 
+use LearningResource\Plugin\Repository\RepositoryPlugin;
+
 class RepositoryPluginTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function setUp()
-    {}
+    protected $repository, $repositoryServiceMock, $repositoryManagerMock, $entityServiceMock;
 
-    public function testNothing()
-    {}
+    public function setUp()
+    {
+        $this->repository = new RepositoryPlugin();
+        
+        $this->repositoryManagerMock = $this->getMock('Versioning\RepositoryManager');
+        $this->repositoryServiceMock = $this->getMock('Versioning\Service\RepositoryService');
+        $this->entityServiceMock = $this->getMock('Entity\Service\EntityService');
+        $this->entityMock = $this->getMock('Entity\Entity\Entity');
+        
+        $this->entityServiceMock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($this->entityMock));
+        $this->repositoryManagerMock->expects($this->any())
+            ->method('addRepository')
+            ->will($this->returnValue($this->repositoryManagerMock));
+        $this->repositoryManagerMock->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($this->repositoryServiceMock));
+        
+        $this->repository->setEntityService($this->entityServiceMock);
+        $this->repository->setRepositoryManager($this->repositoryManagerMock);
+        
+        $this->repository->setConfig(array(
+            'revision_form' => 'LearningResourceTest\Plugin\Fake\FormFake',
+            'field_order' => array(
+                'foo',
+                'bar'
+            )
+        ));
+    }
+
+    /**
+     * @expectedException \LearningResource\Exception\ClassNotFoundException
+     */
+    public function testGetFormException()
+    {
+        $this->repository->setConfig(array(
+            'revision_form' => 'notfound'
+        ));
+        $this->repository->getRevisionForm();
+    }
+
+    public function testGetForm()
+    {
+        $this->assertInstanceOf('LearningResourceTest\Plugin\Fake\FormFake', $this->repository->getRevisionForm());
+    }
 }

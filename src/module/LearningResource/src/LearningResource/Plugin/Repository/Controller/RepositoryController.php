@@ -18,13 +18,15 @@ use Entity\Plugin\Controller\AbstractController;
 
 class RepositoryController extends AbstractController
 {
-
+    use \User\Manager\UserManagerAwareTrait;
+    
     public function addRevisionAction()
     {
         $ref = $this->params()->fromQuery('ref', $this->referer()->toUrl('/'));
         
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         
         $view = new ViewModel(array(
             'entity' => $entity
@@ -41,8 +43,8 @@ class RepositoryController extends AbstractController
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
-                $plugin->commitRevision($form);
-                $entity->getObjectManager()->flush();
+                $plugin->commitRevision($form, $user);
+                $plugin->getObjectManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
                 $this->redirect()->toUrl($ref);
             }
@@ -127,7 +129,7 @@ class RepositoryController extends AbstractController
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
         $repository->checkout($this->params('revision'));
-        $entity->getObjectManager()->flush();
+        $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
             'entity' => $entity->getId()
@@ -139,7 +141,7 @@ class RepositoryController extends AbstractController
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
         $repository->removeRevision($this->params('revision'));
-        $entity->getObjectManager()->flush();
+        $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
             'entity' => $entity->getId()
@@ -151,7 +153,7 @@ class RepositoryController extends AbstractController
         $repository = $plugin = $this->getPlugin();
         $entity = $plugin->getEntityService();
         $repository->trashRevision($this->params('revision'));
-        $entity->getObjectManager()->flush();
+        $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
             'entity' => $entity->getId()
@@ -183,6 +185,6 @@ class RepositoryController extends AbstractController
     }
     
     /*
-     * protected function commitRevision ($entity) { $form = $entity->getForm(); $form->setData($this->getRequest() ->getPost()); if ($form->isValid()) { $data = $form->getData(); $entity->commitRevision($data['repository']['revision']); $entity->getObjectManager()->flush(); $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.'); } return $entity; }
+     * protected function commitRevision ($entity) { $form = $entity->getForm(); $form->setData($this->getRequest() ->getPost()); if ($form->isValid()) { $data = $form->getData(); $entity->commitRevision($data['repository']['revision']); $plugin->getObjectManager()->flush(); $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.'); } return $entity; }
      */
 }

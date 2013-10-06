@@ -47,6 +47,9 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         
+        $this->objectManagerMock->expects($this->never())
+            ->method('flush');
+        
         $this->entityManager->setObjectManager($this->objectManagerMock);
         $this->entityManager->setUuidManager($this->uuidManagerMock);
         $this->entityManager->setClassResolver($this->classResolverMock);
@@ -124,8 +127,6 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
         $this->objectManagerMock->expects($this->once())
             ->method('persist');
         
-        $this->objectManagerMock->expects($this->never())
-            ->method('flush');
         $this->objectManagerMock->expects($this->once())
             ->method('getRepository')
             ->will($this->returnValue($this->repositoryMock));

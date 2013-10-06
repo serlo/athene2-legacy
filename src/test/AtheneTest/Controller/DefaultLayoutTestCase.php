@@ -11,6 +11,7 @@ abstract class DefaultLayoutTestCase extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
+        $this->setApplicationConfig(include Bootstrap::findParentPath('config/application.testing.config.php'));
         parent::setUp();
         $navigationProviderMock = $this->getMockBuilder('Taxonomy\Provider\NavigationProvider')
             ->disableOriginalConstructor()

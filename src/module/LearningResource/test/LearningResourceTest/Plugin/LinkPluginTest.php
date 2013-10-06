@@ -12,6 +12,7 @@
 namespace LearningResourceTest\Plugin;
 
 use LearningResource\Plugin\Link\LinkPlugin;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class LinkPluginTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +47,9 @@ class LinkPluginTest extends \PHPUnit_Framework_TestCase
             ->with('foobar', 'Entity\Entity\EntityLinkType')
             ->will($this->returnValue($this->linkManagerMock));
         
-        $this->entityServiceMock->expects($this->any())->method('getEntity')->will($this->returnValue($this->entityMock));
+        $this->entityServiceMock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($this->entityMock));
         
         $this->linkManagerMock->expects($this->any())
             ->method('getLink')
@@ -145,5 +148,100 @@ class LinkPluginTest extends \PHPUnit_Framework_TestCase
         $this->setUpManyToMany();
         
         $this->linkPlugin->addChild($this->entityServiceMock);
+    }
+
+    private function getCollection()
+    {
+        $collection = new ArrayCollection();
+        
+        for ($i = 0; $i <= 4; $i ++) {
+            $entity = $this->getMock('Entity\Entity\Entity');
+            $type = $this->getMock('Entity\Entity\Type');
+            $type->expects($this->any())
+                ->method('getName')
+                ->will($this->returnValue('foobar'));
+            $entity->expects($this->any())
+                ->method('getType')
+                ->will($this->returnValue($type));
+            $collection->add($entity);
+        }
+        
+        return $collection;
+    }
+
+    public function testChildren()
+    {
+        $this->linkPlugin->setConfig(array(
+            'types' => array(
+                array(
+                    'to' => 'testbar',
+                    'reversed_by' => 'link'
+                )
+            ),
+            'type' => 'foobar',
+            'association' => 'many-to-many'
+        ));
+        
+        $this->linkServiceMock->expects($this->atLeastOnce())
+            ->method('getChildren')
+            ->will($this->returnValue($this->getCollection()));
+        
+        $this->entityManagerMock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($this->getMock('Entity\Service\EntityService')));
+        
+        $this->assertInstanceOf('Entity\Collection\EntityCollection', $this->linkPlugin->findChildren(array(
+            'foobar'
+        )));
+        
+        $this->assertInstanceOf('Entity\Service\EntityServiceInterface', $this->linkPlugin->findChild(array(
+            'foobar'
+        )));
+        
+        $this->assertEquals(true, $this->linkPlugin->hasChildren(array(
+            'foobar'
+        )));
+        
+        $this->assertEquals(true, $this->linkPlugin->hasChild(array(
+            'foobar'
+        )));
+    }
+
+    public function testParents()
+    {
+        $this->linkPlugin->setConfig(array(
+            'types' => array(
+                array(
+                    'to' => 'testbar',
+                    'reversed_by' => 'link'
+                )
+            ),
+            'type' => 'foobar',
+            'association' => 'many-to-many'
+        ));
+        
+        $this->linkServiceMock->expects($this->atLeastOnce())
+            ->method('getParents')
+            ->will($this->returnValue($this->getCollection()));
+        
+        $this->entityManagerMock->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($this->getMock('Entity\Service\EntityService')));
+        
+        $this->assertInstanceOf('Entity\Collection\EntityCollection', $this->linkPlugin->findParents(array(
+            'foobar'
+        )));
+        
+        $this->assertInstanceOf('Entity\Service\EntityServiceInterface', $this->linkPlugin->findParent(array(
+            'foobar'
+        )));
+        
+        $this->assertEquals(true, $this->linkPlugin->hasParents(array(
+            'foobar'
+        )));
+        
+        $this->assertEquals(true, $this->linkPlugin->hasParent(array(
+            'foobar'
+        )));
     }
 }

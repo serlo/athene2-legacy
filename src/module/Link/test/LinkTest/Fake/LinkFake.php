@@ -14,6 +14,9 @@ namespace LinkTest\Fake;
 use Link\Entity\LinkEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LinkFake implements LinkEntityInterface
 {
 
@@ -78,4 +81,23 @@ class LinkFake implements LinkEntityInterface
         $this->parent->add($parent);
         return $this;
     }
+    
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkEntityInterface::removeChild()
+     */
+    public function removeChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkEntityInterface::removeParent()
+     */
+    public function removeParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

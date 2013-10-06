@@ -13,6 +13,7 @@ namespace Event\Entity;
 
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
+use Language\Entity\LanguageInterface;
 
 interface EventLogInterface
 {
@@ -21,4 +22,5 @@ interface EventLogInterface
     public function setActor(UserInterface $actor);
     public function setVerb(EventStringInterface $string);
     public function setObject($object);
+    public function setLanguage(LanguageInterface $language);
 }

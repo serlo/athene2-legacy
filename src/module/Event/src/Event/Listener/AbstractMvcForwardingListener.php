@@ -15,13 +15,14 @@ use Zend\EventManager\ListenerAggregateInterface;
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Language\Entity\LanguageInterface;
 
 abstract class AbstractMvcForwardingListener implements ListenerAggregateInterface
 {
     use \Event\EventManagerAwareTrait;
     
-    public function logEvent(AbstractActionController $controller, UserInterface $actor, UuidHolder $uuid, $object, $verb)
+    public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, $object, $verb)
     {
-        $this->getEventManager()->logEvent($controller->getEvent()->getRouteMatch()->getMatchedRouteName(), $actor, $uuid, $object, $verb);
+        $this->getEventManager()->logEvent($controller->getEvent()->getRouteMatch()->getMatchedRouteName(), $language, $actor, $uuid, $object, $verb);
     }
 }

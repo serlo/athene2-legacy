@@ -11,39 +11,15 @@
  */
 namespace LearningResource\Plugin\Repository;
 
+use LearningResource\Exception;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Plugin\AbstractPlugin;
 use Zend\Form\Form;
-use Zend\Mvc\Router\RouteInterface;
+use User\Service\UserServiceInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait, \User\Manager\UserManagerAwareTrait;
-
-    /**
-     * RouteInterface
-     */
-    protected $router;
-
-    /**
-     *
-     * @return field_type $router
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     *
-     * @param field_type $router            
-     * @return $this
-     */
-    public function setRouter(RouteInterface $router)
-    {
-        $this->router = $router;
-        return $this;
-    }
+    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -69,8 +45,10 @@ class RepositoryPlugin extends AbstractPlugin
     public function getRevisionForm()
     {
         $form = $this->getOption('revision_form');
+        
         if (! class_exists($form))
-            throw new \Exception(sprintf('Class %s not found!', $form));
+            throw new Exception\ClassNotFoundException(sprintf('Class %s not found!', $form));
+        
         $form = new $form();
         return $form;
     }
@@ -156,10 +134,10 @@ class RepositoryPlugin extends AbstractPlugin
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->checkoutRevision($revision);
-        return $this->entityService;
+        return $this;
     }
 
-    public function commitRevision(Form $form)
+    public function commitRevision(Form $form, UserServiceInterface $user)
     {
         $repository = $this->getRepository();
         
@@ -167,7 +145,7 @@ class RepositoryPlugin extends AbstractPlugin
             ->getEntity()
             ->newRevision();
         
-        $revision->setAuthor($this->getUserManager()->getUserFromAuthenticator()->getEntity());
+        $revision->setAuthor($user->getEntity());
         
         $repository->addRevision($revision);
         
@@ -179,16 +157,11 @@ class RepositoryPlugin extends AbstractPlugin
         return $this;
     }
 
-    /**
-     * (non-PHPdoc)
-     *
-     * @see \Versioning\Service\RepositoryServiceInterface::removeRevision()
-     */
     public function removeRevision($revisionId)
     {
         $revision = $this->getRepository()->getRevision($revisionId);
         $this->getRepository()->removeRevision($revision);
-        return $this->entityService;
+        return $this;
     }
 
     public function trashRevision($revisionId)
@@ -196,7 +169,7 @@ class RepositoryPlugin extends AbstractPlugin
         $revision = $this->getRepository()->getRevision($revisionId);
         $revision->toggleTrashed();
         $this->getObjectManager()->persist($revision);
-        return $this->entityService;
+        return $this;
     }
 
     public function isCheckedOut()

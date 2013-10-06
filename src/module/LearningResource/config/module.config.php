@@ -45,8 +45,6 @@ return array(
                         ->get('EntityManager'));
                     $instance->setAuthenticationService($sm->getServiceLocator()
                         ->get('Zend\Authentication\AuthenticationService'));
-                    $instance->setRouter($sm->getServiceLocator()
-                        ->get('Router'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     $instance->setUserManager($sm->getServiceLocator()

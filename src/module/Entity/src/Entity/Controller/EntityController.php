@@ -24,8 +24,7 @@ class EntityController extends AbstractActionController
         $type = $this->params('type');
         
         $language = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getEntity();
+            ->getLanguageFromRequest();
         $entity = $this->getEntityManager()->createEntity($type, $this->params()
             ->fromQuery(), $language);
         

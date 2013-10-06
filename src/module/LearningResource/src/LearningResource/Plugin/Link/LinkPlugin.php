@@ -18,7 +18,7 @@ use Entity\Service\EntityServiceInterface;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use\Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function addParent(EntityServiceInterface $entity)
     {
@@ -46,29 +46,28 @@ class LinkPlugin extends AbstractPlugin
         return $this;
     }
 
-    public function hasChild(array $entityTypes = NULL)
+    public function hasChild($entityTypes = NULL)
     {
         return is_object($this->findChild($entityTypes));
     }
 
-    public function hasChildren(array $entityTypes = NULL)
+    public function hasChildren($entityTypes = NULL)
     {
-        return $this->findChildren($entityTypes)->count();
+        return $this->findChildren($entityTypes)->count() != 0;
     }
 
-    public function hasParents(array $entityTypes = NULL)
+    public function hasParents($entityTypes = NULL)
     {
-        return $this->findParents($entityTypes)->count();
+        return $this->findParents($entityTypes)->count() != 0;
     }
 
-    public function hasParent(array $entityTypes = NULL)
+    public function hasParent($entityTypes = NULL)
     {
         return is_object($this->findParent($entityTypes));
     }
 
-    public function findChildren(array $entityTypes = NULL)
+    public function findChildren($entityTypes = NULL)
     {
-        
         if ($entityTypes === NULL)
             $entityTypes = $this->getEntityTypes();
         
@@ -83,8 +82,10 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParents(array $entityTypes = NULL)
+    public function findParents($entityTypes = NULL)
     {
+        if ($entityTypes === NULL)
+            $entityTypes = $this->getEntityTypes();
         
         $collection = $this->getLinkService()
             ->getParents()
@@ -97,41 +98,14 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParent($entityTypes = NULL)
+    public function findParent($entityTypes = array())
     {
-        
-        if ($entityTypes === NULL)
-            $entityTypes = $this->getEntityTypes();
-        
-        $collection = $this->getLinkService()
-            ->getParents()
-            ->filter(function ($e) use($entityTypes)
-        {
-            return (in_array($e->getType()
-                ->getName(), $entityTypes));
-        });
-            
-        $collection = new EntityCollection($collection, $this->getEntityManager());
-
-        return $collection->first();
+        return $this->findParents($entityTypes)->first();
     }
 
     public function findChild($entityTypes = NULL)
     {
-        
-        if ($entityTypes === NULL)
-            $entityTypes = $this->getEntityTypes();
-        
-        $collection = $this->getLinkService()
-            ->getChildren()
-            ->filter(function ($e) use($entityTypes)
-        {
-            return (in_array($e->getType()
-                ->getName(), $entityTypes));
-        });
-        $collection = new EntityCollection($collection, $this->getEntityManager());
-        
-        return $collection->first();
+        return $this->findChildren($entityTypes)->first();
     }
 
     private function isOneToOne()

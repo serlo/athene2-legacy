@@ -37,9 +37,10 @@ class UserForwardingListener extends AbstractMvcForwardingListener
     public function onRegister(Event $e)
     {
         $user = $e->getParam('user');
+        $language = $e->getParam('language');
         $object = sprintf('E-Mail `%s`', $user->getEmail());
         $verb = 'registered';
         
-        $this->logEvent($e->getTarget(), $user, $user, $object, $verb);
+        $this->logEvent($e->getTarget(), $language, $user, $user, $object, $verb);
     }
 }

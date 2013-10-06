@@ -51,4 +51,20 @@ interface LinkEntityInterface
      * @return $this
      */
     public function addParent(LinkEntityInterface $parent, LinkTypeInterface $type);
+    
+    /**
+     * 
+     * @param LinkEntityInterface $parent
+     * @param LinkTypeInterface $type
+     * @return $this
+     */
+    public function removeChild(LinkEntityInterface $parent, LinkTypeInterface $type);
+
+    /**
+     *
+     * @param LinkEntityInterface $parent
+     * @param LinkTypeInterface $type
+     * @return $this
+     */
+    public function removeParent(LinkEntityInterface $parent, LinkTypeInterface $type);
 }

@@ -9,13 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Event;
+namespace LearningResourceTest\Plugin\Fake;
 
-use Uuid\Entity\UuidHolder;
-use User\Entity\UserInterface;
-use Language\Entity\LanguageInterface;
+use Zend\Form\Form;
 
-interface EventManagerInterface
+class FormFake extends Form
 {
-    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, $object, $verb);
 }

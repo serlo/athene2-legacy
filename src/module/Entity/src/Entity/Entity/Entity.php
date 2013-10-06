@@ -92,7 +92,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function getFieldOrder($field)
     {
-        return array_key_exists($field, $this->fieldOrder) ? $this->fieldOrder[$field] : 999 ;
+        return array_key_exists($field, $this->fieldOrder) ? $this->fieldOrder[$field] : 999;
     }
 
     public function setFieldOrder(array $fieldOrder)
@@ -200,7 +200,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function getChildren(\Link\Entity\LinkTypeInterface $type)
     {
-        if (!$this->childCollection)
+        if (! $this->childCollection)
             $this->childCollection = new ArrayCollection();
         
         foreach ($this->getChildLinks() as $link) {
@@ -215,7 +215,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function getParents(\Link\Entity\LinkTypeInterface $type)
     {
-        if (!$this->parentCollection)
+        if (! $this->parentCollection)
             $this->parentCollection = new ArrayCollection();
         
         foreach ($this->getParentLinks() as $link) {
@@ -238,7 +238,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this->childLinks;
     }
 
-    public function addChild(\Link\Entity\LinkEntityInterface $child, \Link\Entity\LinkTypeInterface $type, $order = -1)
+    public function addChild(\Link\Entity\LinkEntityInterface $child,\Link\Entity\LinkTypeInterface $type, $order = -1)
     {
         if ($order == - 1) {
             $order = $this->getLinkOrderOffset($this->getChildLinks(), $child, $type, 'child') + 1;
@@ -251,7 +251,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this;
     }
 
-    public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $order = -1)
+    public function addParent(\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $order = -1)
     {
         if ($order == - 1) {
             $order = $this->getLinkOrderOffset($this->getParentLinks(), $parent, $type, 'parent') + 1;
@@ -272,7 +272,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $e;
     }
 
-    protected function getLinkOrderOffset(PersistentCollection $collection,\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $field)
+    protected function getLinkOrderOffset(PersistentCollection $collection, \Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $field)
     {
         $e = $collection->matching(Criteria::create(Criteria::expr()->andX(Criteria::expr()->eq($field, $parent->getId()), Criteria::expr()->eq('type', $type->getId()))))
             ->last();
@@ -299,4 +299,23 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->revisions->removeElement($revision);
         return $this;
     }
+    
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkEntityInterface::removeChild()
+     */
+    public function removeChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkEntityInterface::removeParent()
+     */
+    public function removeParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

@@ -54,8 +54,7 @@ return array(
             __NAMESPACE__ . '\Manager\UserManager' => function ($sm)
             {
                 $instance = new Manager\UserManager();
-                $instance->setConfig($sm->get('config')
-                    ['user_manager']);
+                $instance->setConfig($sm->get('config')['user_manager']);
                 $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 $instance->setAuthenticationService($sm->get('Zend\Authentication\AuthenticationService'));
                 $instance->setServiceLocator($sm);
@@ -98,7 +97,7 @@ return array(
                 __NAMESPACE__ . '\Listener\Event\UserForwardingListener' => array(
                     'setEventManager' => array(
                         'required' => true
-                    ),
+                    )
                 ),
                 __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter' => array(
                     'setHashService' => array(
@@ -128,6 +127,9 @@ return array(
                         'required' => true
                     ),
                     'setRegisterForm' => array(
+                        'required' => true
+                    ),
+                    'setLanguageManager' => array(
                         'required' => true
                     )
                 ),

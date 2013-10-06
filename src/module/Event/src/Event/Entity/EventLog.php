@@ -11,14 +11,13 @@
  */
 namespace Event\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
+use Language\Entity\LanguageInterface;
 
 /**
- *
  * @ORM\Entity
  * @ORM\Table(name="event_log")
  */
@@ -51,6 +50,12 @@ class EventLog implements EventLogInterface
     protected $uuid;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     */
+    protected $language;
+
+    /**
      * @ORM\ManyToOne(targetEntity="EventString")
      * @ORM\JoinColumn(name="verb_string_id", referencedColumnName="id")
      */
@@ -65,6 +70,26 @@ class EventLog implements EventLogInterface
      * @ORM\Column(type="string", name="object")
      */
     protected $object;
+
+    /**
+     *
+     * @return LanguageInterface $language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     *
+     * @param LanguageInterface $language            
+     * @return $this
+     */
+    public function setLanguage(LanguageInterface $language)
+    {
+        $this->language = $language;
+        return $this;
+    }
 
     /**
      *

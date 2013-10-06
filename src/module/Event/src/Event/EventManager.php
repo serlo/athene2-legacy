@@ -14,12 +14,13 @@ namespace Event;
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Language\Entity\LanguageInterface;
 
 class EventManager implements EventManagerInterface
 {
     use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
-    public function logEvent($uri, UserInterface $actor, UuidHolder $uuid, $object, $verb)
+    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, $object, $verb)
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         
@@ -32,6 +33,7 @@ class EventManager implements EventManagerInterface
         $log->setUuid($uuid->getUuidEntity());
         $log->setObject($object);
         $log->setActor($actor);
+        $log->setLanguage($language);
         
         $this->getObjectManager()->persist($log);
         return $this;

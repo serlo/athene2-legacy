@@ -21,7 +21,6 @@ class UserControllerTest extends DefaultLayoutTestCase
 
     public function setUp()
     {
-        $this->setApplicationConfig(include Bootstrap::findParentPath('config/application.testing.config.php'));
         parent::setUp();
         
         $this->userManagerMock = $this->getMock('User\Manager\UserManager');
@@ -32,6 +31,7 @@ class UserControllerTest extends DefaultLayoutTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->eventManagerMock = $this->getMock('Zend\EventManager\EventManager');
+        $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
         
         $this->objectManagerMock->expects($this->atLeastOnce())
             ->method('getRepository')
@@ -49,6 +49,7 @@ class UserControllerTest extends DefaultLayoutTestCase
         $controller->setAuthAdapter($this->authAdapterMock);
         $controller->setAuthenticationService($this->authServiceMock);
         $controller->setRegisterForm($this->registerForm);
+        $controller->setLanguageManager($this->languageManagerMock);
     }
 
     public function testLogOutAction()

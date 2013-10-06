@@ -20,7 +20,7 @@ use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -152,6 +152,9 @@ class UserController extends AbstractUserController
                     ->getEventManager()
                     ->trigger('register', $this, array(
                     'user' => $user,
+                    'language' => $this->getLanguageManager()
+                        ->getLanguageFromRequest()
+                        ->getEntity(),
                     'data' => $data
                 ));
                 $this->getUserManager()

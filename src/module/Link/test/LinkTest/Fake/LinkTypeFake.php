@@ -13,6 +13,9 @@ namespace LinkTest\Fake;
 
 use Link\Entity\LinkTypeInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 class LinkTypeFake implements LinkTypeInterface
 {
 
