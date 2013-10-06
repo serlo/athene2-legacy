@@ -16,20 +16,32 @@ use Entity\Exception;
 
 abstract class AbstractController extends AbstractActionController
 {
-    use \Entity\Manager\EntityManagerAwareTrait;
+    use\Entity\Manager\EntityManagerAwareTrait;
 
-    /**
-     * 
-     * @param string $id
-     * @throws \Exception
-     */
-    protected function getPlugin ($id = NULL)
+    protected $entityService;
+
+    public function getEntityService($id = NULL)
     {
-        if (! $id) {
-            $id = $this->params('entity');
+        if (! $this->entityService) {
+            
+            if (! $id) {
+                $id = $this->params('entity');
+            }
+            
+            $this->entityService = $this->getEntityManager()->getEntity($id);
         }
         
-        $entity = $this->getEntityManager()->getEntity($id);
+        return $this->entityService;
+    }
+
+    /**
+     *
+     * @param string $id            
+     * @throws \Exception
+     */
+    protected function getPlugin($id = NULL)
+    {
+        $entity = $this->getEntityService($id);
         
         if (! $entity->isPluginWhitelisted($this->params('plugin')))
             throw new Exception\RuntimeException(sprintf('Plugin %s not supported.', $this->params('plugin')));

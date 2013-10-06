@@ -25,7 +25,7 @@ class RepositoryController extends AbstractController
         $ref = $this->params()->fromQuery('ref', $this->referer()->toUrl('/'));
         
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
         $user = $this->getUserManager()->getUserFromAuthenticator();
         
         $view = new ViewModel(array(
@@ -59,7 +59,8 @@ class RepositoryController extends AbstractController
     public function compareAction()
     {
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
+        
         $revision = $this->_getRevision($repository, $this->params('revision'), FALSE);
         $currentRevision = $this->_getRevision($repository);
         
@@ -71,22 +72,13 @@ class RepositoryController extends AbstractController
         
         $view->setTemplate('learning-resource/plugin/repository/compare-revision');
         
-        $revisionView = $this->getRevision($this->params('revision'));
-        $currentRevisionView = $this->getRevision();
-        
-        $view->addChild($revisionView, 'revisionView');
-        
-        if ($currentRevisionView) {
-            $view->addChild($currentRevisionView, 'currentRevisionView');
-        }
-        
         return $view;
     }
 
     public function historyAction()
     {
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
         try {
             $currentRevision = $entity->getCurrentRevision();
         } catch (RevisionNotFoundException $e) {
@@ -127,7 +119,7 @@ class RepositoryController extends AbstractController
     public function checkoutAction()
     {
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
         $repository->checkout($this->params('revision'));
         $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
@@ -139,7 +131,7 @@ class RepositoryController extends AbstractController
     public function purgeRevisionAction()
     {
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
         $repository->removeRevision($this->params('revision'));
         $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
@@ -151,7 +143,7 @@ class RepositoryController extends AbstractController
     public function trashRevisionAction()
     {
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
         $repository->trashRevision($this->params('revision'));
         $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
@@ -173,7 +165,7 @@ class RepositoryController extends AbstractController
     public function getRevision($revisionId = NULL)
     {
         $repository = $plugin = $this->getPlugin();
-        $entity = $plugin->getEntityService();
+        $entity = $this->getEntityService();
         $revision = $this->_getRevision($repository, $revisionId);
         $view = new ViewModel(array(
             'entity' => $entity,

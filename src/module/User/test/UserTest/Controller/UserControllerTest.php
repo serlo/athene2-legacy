@@ -43,6 +43,9 @@ class UserControllerTest extends DefaultLayoutTestCase
         $this->userManagerMock->expects($this->any())
             ->method('getEventManager')
             ->will($this->returnValue($this->eventManagerMock));
+        $this->languageManagerMock->expects($this->any())
+            ->method('getLanguageFromRequest')
+            ->will($this->returnValue($this->getMock('Language\Service\LanguageService')));
         
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
         $controller->setUserManager($this->userManagerMock);

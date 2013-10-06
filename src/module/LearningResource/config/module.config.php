@@ -242,7 +242,10 @@ return array(
                 'LearningResource\Plugin\Repository\Controller\RepositoryController' => array(
                     'setEntityManager' => array(
                         'required' => 'true'
-                    )
+                    ),
+                    'setUserManager' => array(
+                        'required' => 'true'
+                        ),
                 ),
                 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController' => array(
                     'setEntityManager' => array(
