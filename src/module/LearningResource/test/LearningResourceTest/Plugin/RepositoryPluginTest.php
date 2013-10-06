@@ -64,4 +64,56 @@ class RepositoryPluginTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('LearningResourceTest\Plugin\Fake\FormFake', $this->repository->getRevisionForm());
     }
+
+    public function testHasHead()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('hasHead');
+        $this->repository->hasHead();
+    }
+
+    public function testCountRevisions()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('countRevisions');
+        $this->repository->countRevisions();
+    }
+
+    public function testGetCurrentRevision()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('getCurrentRevision');
+        $this->repository->getCurrentRevision();
+    }
+
+    public function testHasCurrentRevision()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('hasCurrentRevision');
+        $this->repository->hasCurrentRevision();
+    }
+
+    public function testGetRevision()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('getRevision');
+        $this->repository->getRevision(1);
+    }
+
+    public function testCheckout()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('checkoutRevision');
+        $this->repositoryServiceMock->expects($this->atLeastOnce())
+            ->method('getRevision')
+            ->will($this->returnValue($this->getMock('Entity\Entity\Revision')));
+        $this->repository->checkout(1);
+    }
+
+    public function testIsUnrevised()
+    {
+        $this->repositoryServiceMock->expects($this->once())
+            ->method('isUnrevised');
+        $this->repository->isUnrevised();
+    }
 }

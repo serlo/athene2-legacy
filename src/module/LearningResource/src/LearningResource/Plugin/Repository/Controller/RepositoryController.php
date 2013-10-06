@@ -18,11 +18,12 @@ use Entity\Plugin\Controller\AbstractController;
 
 class RepositoryController extends AbstractController
 {
-    use \User\Manager\UserManagerAwareTrait;
-    
+    use\User\Manager\UserManagerAwareTrait;
+
     public function addRevisionAction()
     {
-        $ref = $this->params()->fromQuery('ref', $this->referer()->toUrl('/'));
+        $ref = $this->params()->fromQuery('ref', $this->referer()
+            ->toUrl('/'));
         
         $repository = $plugin = $this->getPlugin();
         $entity = $this->getEntityService();
@@ -79,11 +80,7 @@ class RepositoryController extends AbstractController
     {
         $repository = $plugin = $this->getPlugin();
         $entity = $this->getEntityService();
-        try {
-            $currentRevision = $entity->getCurrentRevision();
-        } catch (RevisionNotFoundException $e) {
-            $currentRevision = NULL;
-        }
+        $currentRevision = $repository->hasCurrentRevision() ? $repository->getCurrentRevision() : NULL;
         $repositoryView = new ViewModel(array(
             'entity' => $entity,
             'revisions' => $repository->getAllRevisions(),
@@ -126,6 +123,7 @@ class RepositoryController extends AbstractController
             'action' => 'history',
             'entity' => $entity->getId()
         ));
+        return '';
     }
 
     public function purgeRevisionAction()
@@ -138,6 +136,7 @@ class RepositoryController extends AbstractController
             'action' => 'history',
             'entity' => $entity->getId()
         ));
+        return '';
     }
 
     public function trashRevisionAction()
@@ -150,33 +149,6 @@ class RepositoryController extends AbstractController
             'action' => 'history',
             'entity' => $entity->getId()
         ));
+        return '';
     }
-
-    public function getHeadAction()
-    {
-        return $this->getRevision();
-    }
-
-    public function revisionAction()
-    {
-        return $this->getRevision($this->params('revision'));
-    }
-
-    public function getRevision($revisionId = NULL)
-    {
-        $repository = $plugin = $this->getPlugin();
-        $entity = $this->getEntityService();
-        $revision = $this->_getRevision($repository, $revisionId);
-        $view = new ViewModel(array(
-            'entity' => $entity,
-            'repository' => $repository,
-            'revision' => $revision
-        ));
-        $view->setTemplate('learning-resource/plugin/repository/revision');
-        return $view;
-    }
-    
-    /*
-     * protected function commitRevision ($entity) { $form = $entity->getForm(); $form->setData($this->getRequest() ->getPost()); if ($form->isValid()) { $data = $form->getData(); $entity->commitRevision($data['repository']['revision']); $plugin->getObjectManager()->flush(); $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.'); } return $entity; }
-     */
 }

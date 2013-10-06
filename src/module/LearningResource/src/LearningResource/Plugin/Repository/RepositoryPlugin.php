@@ -172,16 +172,6 @@ class RepositoryPlugin extends AbstractPlugin
         return $this;
     }
 
-    public function isCheckedOut()
-    {
-        try {
-            $this->getCurrentRevision();
-            return true;
-        } catch (\Versioning\Exception\RevisionNotFoundException $e) {
-            return null;
-        }
-    }
-
     public function isUnrevised()
     {
         return $this->getRepository()->isUnrevised();
