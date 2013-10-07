@@ -25,7 +25,8 @@ class Login extends Form
         $this->add(array(
             'name' => 'email',
             'attributes' => array(
-                'type' => 'text'
+                'type' => 'text',
+                'tabindex' => 1
             ),
             'options' => array(
                 'label' => 'E-Mail-Adresse:'
@@ -34,7 +35,8 @@ class Login extends Form
         $this->add(array(
             'name' => 'password',
             'attributes' => array(
-                'type' => 'password'
+                'type' => 'password',
+                'tabindex' => 2
             ),
             'options' => array(
                 'label' => 'Password:'
@@ -44,7 +46,8 @@ class Login extends Form
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Einloggen'
+                'value' => 'Einloggen',
+                'tabindex' => 2
             )
         ));
     }
