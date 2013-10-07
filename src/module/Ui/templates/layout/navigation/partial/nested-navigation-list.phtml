@@ -12,7 +12,7 @@
 foreach ($this->pages as $page) {
     $liClasses = [];
     // visibility of the sub-page
-    if (! $page->isVisible()) {
+    if (! $page->isVisible() || !$this->navigation()->accept($page)) {
         continue;
     }
     if ($page->getLabel() == 'divider') {
