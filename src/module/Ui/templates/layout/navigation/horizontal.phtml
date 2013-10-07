@@ -9,9 +9,16 @@ $html = array();
 $html[] = ' <ul class="' . $this->navigation()->menu()->getUlClass() . '">';
 
 foreach ($this->container as $page) {
+    
     // visibility of the page
     if (! $page->isVisible() || !$this->navigation()->accept($page)) {
         continue;
+    }
+
+    if (! is_null($page->get('needsIdentity'))) {
+        if($this->authentication()->hasIdentity() !== $page->get('needsIdentity')) {
+            continue;
+        }
     }
 
     // dropdown

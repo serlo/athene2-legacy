@@ -40,17 +40,20 @@ return array(
             array(
                 'label' => 'Registrieren',
                 'route' => 'register',
-                'permission' => 'route:register'
+                'needsIdentity' => false,
+                // 'permission' => 'route:register'
             ),
             array(
                 'label' => 'Login',
                 'route' => 'login',
-                'permission' => 'route:login'
+                'needsIdentity' => false,
+                // 'permission' => 'route:login'
             ),
             array(
                 'label' => 'Logout',
                 'route' => 'logout',
-                'permission' => 'route:logout'
+                'needsIdentity' => true,
+                // 'permission' => 'route:logout'
             )
         ),
         'footer' => array(
