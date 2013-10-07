@@ -3283,16 +3283,14 @@ define("bootstrap", ["jquery"], function(){});
 
   });
 
-  
-  // AMD define happens at the end for compatibility with AMD loaders
-  // that don't enforce next-turn semantics on modules.
-  if (typeof define === 'function' && define.amd) {
-    define('underscore', [],function() {
-      return _;
-    });
-  }
-
 }).call(this);
+
+define("underscore", (function (global) {
+    return function () {
+        var ret, fn;
+        return ret || global._;
+    };
+}(this)));
 
 /*global window, jQuery, define*/
 define('cache',[],function () {

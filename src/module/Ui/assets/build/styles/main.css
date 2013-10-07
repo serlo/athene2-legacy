@@ -9551,3 +9551,17 @@ body {
 .nav-header {
   font-weight: bold;
 }
+
+/* line 22, ../../source/styles/_shame.scss */
+
+#page {
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 75px;
+  -webkit-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: 0.15s -webkit-transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+  transition: 0.15s -ms-transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+  transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+}
