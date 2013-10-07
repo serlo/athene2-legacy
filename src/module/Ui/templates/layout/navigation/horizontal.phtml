@@ -15,7 +15,10 @@ foreach ($this->container as $page) {
         continue;
     }
 
+    // for Login/Logout/Register links:
+    // check if menu item has 'needsIdentidy' set
     if (! is_null($page->get('needsIdentity'))) {
+        // check if current user is anonymous and compare to 'needsIdentity' value
         if($this->authentication()->hasIdentity() !== $page->get('needsIdentity')) {
             continue;
         }
