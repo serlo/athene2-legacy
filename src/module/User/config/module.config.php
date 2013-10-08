@@ -19,9 +19,6 @@ use User\View\Helper\Authenticator;
  * @codeCoverageIgnore
  */
 return array(
-    'notification_manager' => array(
-        'objects' => array()
-    ),
     'service_manager' => array(
         'factories' => array(
             /*'User\Service\UserLogService' => function ($sm)
@@ -87,11 +84,6 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                __NAMESPACE__ . '\Listener\Event\UserForwardingListener' => array(
-                    'setEventManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter' => array(
                     'setHashService' => array(
                         'required' => true

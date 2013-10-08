@@ -11,6 +11,7 @@
  */
 namespace Common;
 
+use Zend\Mvc\MvcEvent;
 class Module
 {
 
@@ -30,5 +31,4 @@ class Module
         );
     }
 }
-?>
 

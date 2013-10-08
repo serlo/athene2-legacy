@@ -14,54 +14,10 @@ namespace Event;
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Language\Entity\LanguageInterface;
-use Zend\EventManager\SharedEventManager;
 
 class EventManager implements EventManagerInterface
 {
-    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
-
-    /**
-     *
-     * @var SharedEventManager
-     */
-    protected $sharedEventManager;
-
-    /**
-     *
-     * @return SharedEventManager $sharedEventManager
-     */
-    public function getSharedEventManager()
-    {
-        return $this->sharedEventManager;
-    }
-
-    /**
-     *
-     * @param SharedEventManager $sharedEventManager            
-     * @return $this
-     */
-    public function setSharedEventManager(SharedEventManager $sharedEventManager)
-    {
-        $this->sharedEventManager = $sharedEventManager;
-        return $this;
-    }
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'listener' => array()
-        );
-    }
-
-    public function attachListeners()
-    {
-        foreach ($this->getOption('listeners') as $listener) {
-            $this->getSharedEventManager()->attachAggregate($this->getServiceLocator()
-                ->get($listener));
-            // $this->getEventManager()->attachAggregate($this->getServiceLocator()
-            // ->get($listener));
-        }
-    }
+    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
