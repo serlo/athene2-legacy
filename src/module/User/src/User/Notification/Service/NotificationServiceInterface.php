@@ -11,8 +11,13 @@
  */
 namespace User\Notification\Service;
 
+use Event\Entity\EventLogInterface;
+use User\Notification\Entity\NotificationInterface;
+
 interface NotificationServiceInterface
 {
-    public function setRead($read);
-    public function getRead();
+    public function attachEventLog(EventLogInterface $eventLog);
+    
+    public function setNotification(NotificationInterface $notification);
+    public function getNotification();
 }

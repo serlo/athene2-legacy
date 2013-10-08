@@ -9,18 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Notification;
+namespace User\Notification\Service;
 
-use User\Collection\UserCollection;
-use Uuid\Entity\UuidInterface;
-
-interface SubscriptionManagerInterface
+class NotificationService
 {
-
-    /**
-     *
-     * @param UuidInterface $uuid            
-     * @return UserCollection
-     */
-    public function findSubscribersByUuid(UuidInterface $uuid);
 }

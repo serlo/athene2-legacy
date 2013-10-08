@@ -20,22 +20,7 @@ use User\Service\UserServiceInterface;
 
 class UserManager implements UserManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ConfigAwareTrait;
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'listener' => array()
-        );
-    }
-
-    public function attachListeners()
-    {
-        foreach ($this->getOption('listeners') as $listener) {
-            $this->getEventManager()->attachAggregate($this->getServiceLocator()
-                ->get($listener));
-        }
-    }
+    use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
     public function addUser(UserServiceInterface $user)
     {

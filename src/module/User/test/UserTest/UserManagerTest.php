@@ -34,7 +34,6 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $userMock = $this->getMock('User\Entity\User');
         $userServiceMock = $this->getMock('User\Service\UserService');
         $authServiceMock = $this->getMock('Zend\Authentication\AuthenticationService');
-        $eventManagerMock = $this->getMock('Zend\EventManager\EventManager');
         $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
         
         $classResolverMock->expects($this->any())
@@ -68,7 +67,6 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->setAuthenticationService($authServiceMock);
         $this->userManager->setCheckClassInheritance(false);
         $this->userManager->setClassResolver($classResolverMock);
-        $this->userManager->setEventManager($eventManagerMock);
         $this->userManager->setObjectManager($entityManagerMock);
         $this->userManager->setServiceLocator($serviceLocatorMock);
         $this->userManager->setUuidManager($this->uuidManagerMock);

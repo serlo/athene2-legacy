@@ -1,0 +1,7 @@
+<?php foreach($this->notifications as $notification): ?>
+    <?php try{ ?>
+        <?php echo $this->partial('notification/type/notification-'.$notification->getId(), array('notification' => $notification)); ?>
+    <?php } catch (\Zend\View\Exception\RuntimeException $e) { ?>
+        <?php echo $this->partial('notification/type/notification-default', array('notification' => $notification)); ?>
+    <?php } ?>
+<?php endforeach; ?>

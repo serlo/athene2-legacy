@@ -11,6 +11,35 @@
  */
 namespace User\Notification;
 
-class SubscriptionManager
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+class SubscriptionManager implements SubscriptionManagerInterface
 {
+    use\Common\Traits\ObjectManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\SubscriptionManagerInterface::findSubscribersByUuid()
+     */
+    public function findSubscribersByUuid(\Uuid\Entity\UuidInterface $uuid)
+    {
+        $subscriptions = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
+            ->findBy(array(
+            'uuid' => $uuid->getId()
+        ));
+        
+        $collection = new ArrayCollection();
+        $this->hydrate($collection, $subscriptions);
+        return $collection;
+    }
+
+    private function hydrate(Collection $collection, array $subscriptions)
+    {
+        foreach($subscriptions as $subscription){
+            /* @var $subscription Entity\SubscriptionInterface */
+            $collection->add($subscription->getSubscriber());
+        }
+    }
 }

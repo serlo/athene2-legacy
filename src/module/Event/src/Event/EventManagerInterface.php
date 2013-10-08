@@ -17,5 +17,5 @@ use Language\Entity\LanguageInterface;
 
 interface EventManagerInterface
 {
-    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, $object, $verb);
+    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid);
 }

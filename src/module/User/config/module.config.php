@@ -22,11 +22,6 @@ return array(
     'notification_manager' => array(
         'objects' => array()
     ),
-    'user_manager' => array(
-        'listeners' => array(
-            __NAMESPACE__ . '\Listener\Event\UserForwardingListener'
-        )
-    ),
     'service_manager' => array(
         'factories' => array(
             /*'User\Service\UserLogService' => function ($sm)
@@ -54,13 +49,11 @@ return array(
             __NAMESPACE__ . '\Manager\UserManager' => function ($sm)
             {
                 $instance = new Manager\UserManager();
-                $instance->setConfig($sm->get('config')['user_manager']);
                 $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 $instance->setAuthenticationService($sm->get('Zend\Authentication\AuthenticationService'));
                 $instance->setServiceLocator($sm);
                 $instance->setObjectManager($sm->get('EntityManager'));
                 $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                $instance->attachListeners();
                 return $instance;
             }
         )

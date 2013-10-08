@@ -15,27 +15,38 @@ return array(
     'class_resolver' => array(
         'Event\Entity\EventLogInterface' => 'Event\Entity\EventLog',
         'Event\Entity\EventInterface' => 'Event\Entity\Event',
-        'Event\Entity\EventStringInterface' => 'Event\Entity\EventString',
-)
-
-    ,
+        'Event\Entity\EventStringInterface' => 'Event\Entity\EventString'
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            __NAMESPACE__ . '\EventManager' => function ($sm)
+            {
+                $eventManager = new \Event\EventManager();
+                $config = $sm->get('config')->get('event_manager');
+                
+                $eventManager->setConfig($config);
+                $eventManager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $eventManager->setObjectManager($sm->get('EntityManager'));
+                $eventManager->setSharedEventManager($sm->get('SharedEventManager'));
+                return $eventManager;
+            }
+        )
+    ),
+    'user_manager' => array(
+        'listeners' => array(
+            __NAMESPACE__ . '\Listener\Event\UserForwardingListener'
+        )
+    ),
     'di' => array(
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\EventManager' => array(
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
         'instance' => array(
             'preferences' => array(
                 __NAMESPACE__ . '\EventManagerInterface' => __NAMESPACE__ . '\EventManager'
             )
+        )
+    ),
+    'event_manager' => array(
+        'listeners' => array(
+            __NAMESPACE__ . '\Listener\Event\UserForwardingListener'
         )
     ),
     'doctrine' => array(
@@ -55,3 +66,4 @@ return array(
         )
     )
 );
+

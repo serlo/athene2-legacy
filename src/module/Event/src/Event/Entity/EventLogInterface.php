@@ -17,10 +17,62 @@ use Language\Entity\LanguageInterface;
 
 interface EventLogInterface
 {
+
+    /**
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     *
+     * @param UuidInterface $uuid            
+     * @return $this
+     */
     public function setUuid(UuidInterface $uuid);
+
+    /**
+     *
+     * @param EventInterface $event            
+     * @return $this
+     */
     public function setEvent(EventInterface $event);
+
+    /**
+     *
+     * @param UserInterface $actor            
+     * @return $this
+     */
     public function setActor(UserInterface $actor);
-    public function setVerb(EventStringInterface $string);
-    public function setObject($object);
+
+    /**
+     *
+     * @param LanguageInterface $language            
+     * @return $this
+     */
     public function setLanguage(LanguageInterface $language);
+
+    /**
+     *
+     * @return UuidInterface
+     */
+    public function getUuid();
+
+    /**
+     *
+     * @return UserInterface
+     */
+    public function getActor();
+
+    /**
+     *
+     * @return LanguageInterface
+     */
+    public function getLanguage();
+
+    /**
+     *
+     * @return EventInterface
+     */
+    public function getEvent();
 }

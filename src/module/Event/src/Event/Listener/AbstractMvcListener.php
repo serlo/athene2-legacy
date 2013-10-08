@@ -11,18 +11,18 @@
  */
 namespace Event\Listener;
 
-use Zend\EventManager\ListenerAggregateInterface;
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Language\Entity\LanguageInterface;
+use Zend\EventManager\SharedListenerAggregateInterface;
 
-abstract class AbstractMvcForwardingListener implements ListenerAggregateInterface
+abstract class AbstractMvcListener implements SharedListenerAggregateInterface
 {
     use \Event\EventManagerAwareTrait;
     
-    public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, $object, $verb)
+    public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
-        $this->getEventManager()->logEvent($controller->getEvent()->getRouteMatch()->getMatchedRouteName(), $language, $actor, $uuid, $object, $verb);
+        $this->getEventManager()->logEvent($controller->getEvent()->getRouteMatch()->getMatchedRouteName(), $language, $actor, $uuid);
     }
 }

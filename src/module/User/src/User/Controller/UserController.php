@@ -14,13 +14,12 @@ namespace User\Controller;
 
 use Zend\View\Model\ViewModel;
 use User\Authentication\Adapter\AdapterInterface;
-use User\Form\Register as RegisterForm;
 use User\Form\Login as LoginForm;
 use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -101,9 +100,7 @@ class UserController extends AbstractUserController
                     $user = $this->getUserManager()->findUserByEmail($result->getIdentity());
                     $user->updateLoginData();
                     
-                    $this->getUserManager()
-                        ->getEventManager()
-                        ->trigger('login', $this, array(
+                    $this->getEventManager()->trigger('login', $this, array(
                         'user' => $user,
                         'email' => $data['email']
                     ));
@@ -129,9 +126,7 @@ class UserController extends AbstractUserController
         $this->getAuthenticationService()->clearIdentity();
         $this->redirect()->toReferer();
         
-        $this->getUserManager()
-            ->getEventManager()
-            ->trigger('logout', $this, array());
+        $this->getEventManager()->trigger('logout', $this, array());
         return '';
     }
 
@@ -148,9 +143,7 @@ class UserController extends AbstractUserController
             if ($form->isValid()) {
                 $user = $this->getUserManager()->createUser($form->getData());
                 
-                $this->getUserManager()
-                    ->getEventManager()
-                    ->trigger('register', $this, array(
+                $this->getEventManager()->trigger('register', $this, array(
                     'user' => $user,
                     'language' => $this->getLanguageManager()
                         ->getLanguageFromRequest()

@@ -13,14 +13,57 @@ namespace Event;
 
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
-use Zend\Mvc\Controller\AbstractActionController;
 use Language\Entity\LanguageInterface;
+use Zend\EventManager\SharedEventManager;
 
 class EventManager implements EventManagerInterface
 {
-    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
-    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, $object, $verb)
+    /**
+     *
+     * @var SharedEventManager
+     */
+    protected $sharedEventManager;
+
+    /**
+     *
+     * @return SharedEventManager $sharedEventManager
+     */
+    public function getSharedEventManager()
+    {
+        return $this->sharedEventManager;
+    }
+
+    /**
+     *
+     * @param SharedEventManager $sharedEventManager            
+     * @return $this
+     */
+    public function setSharedEventManager(SharedEventManager $sharedEventManager)
+    {
+        $this->sharedEventManager = $sharedEventManager;
+        return $this;
+    }
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'listener' => array()
+        );
+    }
+
+    public function attachListeners()
+    {
+        foreach ($this->getOption('listeners') as $listener) {
+            $this->getSharedEventManager()->attachAggregate($this->getServiceLocator()
+                ->get($listener));
+            // $this->getEventManager()->attachAggregate($this->getServiceLocator()
+            // ->get($listener));
+        }
+    }
+
+    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         
@@ -28,10 +71,8 @@ class EventManager implements EventManagerInterface
         $log = new $className();
         
         $log->setEvent($this->findEventByRoute($uri));
-        $log->setVerb($this->findVerb($verb));
         
         $log->setUuid($uuid->getUuidEntity());
-        $log->setObject($object);
         $log->setActor($actor);
         $log->setLanguage($language);
         

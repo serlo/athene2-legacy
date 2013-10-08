@@ -56,20 +56,9 @@ class EventLog implements EventLogInterface
     protected $language;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EventString")
-     * @ORM\JoinColumn(name="verb_string_id", referencedColumnName="id")
-     */
-    protected $verb;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     protected $date;
-
-    /**
-     * @ORM\Column(type="string", name="object")
-     */
-    protected $object;
 
     /**
      *
@@ -129,29 +118,11 @@ class EventLog implements EventLogInterface
 
     /**
      *
-     * @return field_type $verb
-     */
-    public function getVerb()
-    {
-        return $this->verb;
-    }
-
-    /**
-     *
      * @return field_type $date
      */
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     *
-     * @return field_type $object
-     */
-    public function getObject()
-    {
-        return $this->object;
     }
 
     /**
@@ -200,34 +171,12 @@ class EventLog implements EventLogInterface
 
     /**
      *
-     * @param field_type $verb            
-     * @return $this
-     */
-    public function setVerb(EventStringInterface $verb)
-    {
-        $this->verb = $verb;
-        return $this;
-    }
-
-    /**
-     *
      * @param field_type $date            
      * @return $this
      */
     public function setDate($date)
     {
         $this->date = $date;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $object            
-     * @return $this
-     */
-    public function setObject($object)
-    {
-        $this->object = $object;
         return $this;
     }
 }
