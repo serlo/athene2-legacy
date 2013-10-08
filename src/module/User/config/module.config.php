@@ -74,16 +74,62 @@ return array(
     'class_resolver' => array(
         'User\Entity\UserInterface' => 'User\Entity\User',
         'User\Entity\RoleInterface' => 'User\Entity\Role',
-        'User\Service\UserServiceInterface' => 'User\Service\UserService'
+        'User\Service\UserServiceInterface' => 'User\Service\UserService',
+        'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
+        'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationInterface',
+        'User\Notification\Entity\NotificationInterface' => 'User\Entity\Notification',
+        'User\Notification\Entity\SubscriptionInterface' => 'User\Entity\Subscription'
     ),
     'di' => array(
         'allowed_controllers' => array(
             __NAMESPACE__ . '\Controller\UsersController',
             __NAMESPACE__ . '\Controller\UserController',
+            __NAMESPACE__ . '\Notification\Controller\WorkerController',
             __NAMESPACE__ . '\Controller\RoleController'
         ),
         'definition' => array(
             'class' => array(
+                __NAMESPACE__ . '\Notification\SubscriptionManager' => array(
+                    'setClassResolver' => array(
+                        'required' => true
+                    ),
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                ),
+                __NAMESPACE__ . '\Notification\NotificationManager' => array(
+                    'setClassResolver' => array(
+                        'required' => true
+                    ),
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Notification\NotificationWorker' => array(
+                    'setUserManager' => array(
+                        'required' => true
+                    ),
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setSubscriptionManager' => array(
+                        'required' => true
+                    ),
+                    'setNotificationManager' => array(
+                        'required' => true
+                    ),
+                    'setClassResolver' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Notification\Controller\WorkerController' => array(
+                    'setNotificationWorker' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter' => array(
                     'setHashService' => array(
                         'required' => true
@@ -129,7 +175,9 @@ return array(
             'preferences' => array(
                 __NAMESPACE__ . '\Manager\UserManagerInterface' => __NAMESPACE__ . '\Manager\UserManager',
                 __NAMESPACE__ . '\Authentication\HashServiceInterface' => __NAMESPACE__ . '\Authentication\HashService',
-                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter'
+                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
+                __NAMESPACE__ . '\Notification\SubscriptionManagerInterface' => __NAMESPACE__ . '\Notification\SubscriptionManager',
+                __NAMESPACE__ . '\Notification\NotificationManagerInterface' => __NAMESPACE__ . '\Notification\NotificationManager',
             ),
             'User\Service\UserService' => array(
                 'shared' => false
@@ -138,6 +186,25 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'notification' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => false,
+                'options' => array(
+                    'route' => '/notification'
+                ),
+                'child_routes' => array(
+                    'role' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/worker',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Notification\Controller\WorkerController',
+                                'action' => 'run'
+                            )
+                        )
+                    )
+                )
+            ),
             'login' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
@@ -245,7 +312,7 @@ return array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(
-                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity',
                 )
             ),
             'orm_default' => array(
@@ -273,4 +340,5 @@ return array(
             )
         )
     )
-);
+)
+;

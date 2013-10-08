@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
     
     /*
      * (non-PHPdoc) @see \User\Notification\SubscriptionManagerInterface::findSubscribersByUuid()
@@ -27,7 +27,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
             ->getRepository($this->getClassResolver()
             ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
             ->findBy(array(
-            'uuid' => $uuid->getId()
+            'id' => $uuid->getId()
         ));
         
         $collection = new ArrayCollection();

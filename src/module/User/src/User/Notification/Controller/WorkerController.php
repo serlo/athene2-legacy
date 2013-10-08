@@ -9,11 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Notification;
+namespace User\Notification\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use User\Notification\NotificationWorker;
 
-class NotificationWorker extends AbstractActionController
+class WorkerController extends AbstractActionController
 {
 
     /**
@@ -24,7 +25,7 @@ class NotificationWorker extends AbstractActionController
 
     /**
      *
-     * @return \User\Notification\NotificationWorker $notificationWorker
+     * @return NotificationWorker $notificationWorker
      */
     public function getNotificationWorker()
     {
@@ -33,10 +34,10 @@ class NotificationWorker extends AbstractActionController
 
     /**
      *
-     * @param \User\Notification\NotificationWorker $notificationWorker            
+     * @param NotificationWorker $notificationWorker            
      * @return $this
      */
-    public function setNotificationWorker($notificationWorker)
+    public function setNotificationWorker(NotificationWorker $notificationWorker)
     {
         $this->notificationWorker = $notificationWorker;
         return $this;

@@ -8,11 +8,11 @@
  */
 namespace User\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\Criteria;
 use Uuid\Entity\UuidEntity;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A user.

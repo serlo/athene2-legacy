@@ -11,6 +11,29 @@
  */
 namespace User\Notification\Service;
 
-class NotificationService
+class NotificationService implements NotificationServiceInterface
 {
+
+    /**
+     *
+     * @var \User\Notification\Entity\NotificationInterface
+     */
+    protected $notification;
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Service\NotificationServiceInterface::setNotification()
+     */
+    public function setNotification(\User\Notification\Entity\NotificationInterface $notification)
+    {
+        $this->notification = $notification;
+        return $this;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Service\NotificationServiceInterface::getNotification()
+     */
+    public function getNotification()
+    {
+        return $this->notification;
+    }
 }

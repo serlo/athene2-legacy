@@ -11,12 +11,9 @@
  */
 namespace User\Notification;
 
-/**
- * @TODO Undirtyfy
- */
 class NotificationWorker
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait, NotificationManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait, NotificationManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait;
 
     public function run()
     {
@@ -29,14 +26,20 @@ class NotificationWorker
         }
     }
 
+    /**
+     * @TODO Undirtyfy
+     */
     protected function getWorkload(){
         $offset = $this->findOffset();
-        $query = $this->getObjectManager()->createQuery(sprintf('SELECT ne FROM Event\Entity\EventLog e WHERE e.id > %d ORDER BY e.id ASC;', $offset));
+        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface'), $offset));
         return $query->getResult();
     }
 
+    /**
+     * @TODO Undirtyfy
+     */
     private function findOffset(){
-        $query = $this->getObjectManager()->createQuery('SELECT ne FROM Entity\NotificationEvent ne ORDER BY ne.event_log_id DESC');
+        $query = $this->getObjectManager()->createQuery(sprintf('SELECT ne FROM %s ne ORDER BY ne.eventLog DESC',  $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationEventInterface')));
         $results = $query->getResult();
         if(count($results)){
             /* @var $result Entity\NotificationEventInterface */

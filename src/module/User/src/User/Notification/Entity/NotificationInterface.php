@@ -41,7 +41,7 @@ interface NotificationInterface
      * @param Entity\User $user            
      * @return $this
      */
-    public function setUser(Entity\User $user);
+    public function setUser(Entity\UserInterface $user);
 
     /**
      *

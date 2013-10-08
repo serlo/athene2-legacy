@@ -29,10 +29,10 @@ interface NotificationManagerInterface
 
     /**
      *
-     * @param int $id            
+     * @param Entity\NotificationInterface $notification  
      * @return Service\NotificationServiceInterface
      */
-    public function getNotificationService($id);
+    public function getNotificationService(Entity\NotificationInterface $notification);
 
     /**
      *
