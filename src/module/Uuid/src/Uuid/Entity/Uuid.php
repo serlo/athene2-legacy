@@ -75,12 +75,6 @@ class Uuid implements UuidInterface
         return $this->uuid;
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
     public function setUuid($uuid)
     {
         $this->uuid = $uuid;

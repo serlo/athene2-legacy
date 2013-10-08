@@ -19,13 +19,6 @@ interface UuidHolder
     public function getUuid ();
     
     /**
-     * 
-     * @param UuidInterface $id
-     * @return $this
-     */
-    public function setId ($id);
-    
-    /**
      * @return int
      */
     public function getId ();

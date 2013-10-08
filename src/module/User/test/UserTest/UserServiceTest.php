@@ -36,7 +36,6 @@ class UserServiceTest extends Model
             'lastname' => 'dichtl',
             'gender' => 'm',
             'adsEnabled' => false,
-            'removed' => true,
         );
     }
 

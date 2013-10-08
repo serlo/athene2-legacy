@@ -35,11 +35,6 @@ class UuidEntity implements UuidHolder
         return $this->getUuidEntity()->getUuid();
     }
 
-    public function setId($id)
-    {
-        return $this->setUuid($id);
-    }
-
     public function getId()
     {
         return $this->getUuidEntity()->getId();
@@ -56,21 +51,20 @@ class UuidEntity implements UuidHolder
         return $this->id;
     }
     
-	/* (non-PHPdoc)
-     * @see \Uuid\Entity\UuidHolder::getVoided()
+    /*
+     * (non-PHPdoc) @see \Uuid\Entity\UuidHolder::getVoided()
      */
-    public function getVoided ()
+    public function getVoided()
     {
         return $this->getUuidEntity()->getVoided();
     }
-
-	/* (non-PHPdoc)
-     * @see \Uuid\Entity\UuidHolder::setVoided()
+    
+    /*
+     * (non-PHPdoc) @see \Uuid\Entity\UuidHolder::setVoided()
      */
-    public function setVoided ($voided)
+    public function setVoided($voided)
     {
         $this->getUuidEntity()->setVoided($voided);
         return $this;
     }
-
 }

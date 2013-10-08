@@ -35,7 +35,6 @@ class UserTest extends Model
             'date' => 1234,
             'gender' => 'a',
             'adsEnabled' => false,
-            'removed' => true,
         );
     }
 }

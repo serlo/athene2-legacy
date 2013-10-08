@@ -19,13 +19,6 @@ interface RepositoryInterface
     public function getId();
     
     /**
-     * 
-     * @param int $id
-     * @return $this
-     */
-    public function setId($id);
-    
-    /**
      * Returns the revisions
      * 
      * @return PersistentCollection $revisions

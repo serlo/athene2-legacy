@@ -28,7 +28,6 @@ class UuidTest extends Model
     protected function getData()
     {
         return array(
-            'id' => '1',
             'uuid' => '1234',
         );
     }

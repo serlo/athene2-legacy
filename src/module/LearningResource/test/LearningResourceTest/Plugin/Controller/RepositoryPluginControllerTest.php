@@ -78,7 +78,6 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
     {
         $this->setUpFirewall();
         
-        
         $this->repositoryPluginMock->expects($this->once())
             ->method('getRevisionForm')
             ->will($this->returnValue(new \LearningResource\Form\ArticleForm()));
@@ -103,13 +102,19 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
     {
         $this->setUpFirewall();
         
+        $revision = $this->getMock('Entity\Entity\Revision');
+        
+        $revision->expects($this->atLeastOnce())
+            ->method('getFields')
+            ->will($this->returnValue(array()));
+        
         $this->repositoryPluginMock->expects($this->atLeastOnce())
             ->method('getRevision')
-            ->will($this->returnValue(new \Entity\Entity\Revision()));
+            ->will($this->returnValue($revision));
         
         $this->repositoryPluginMock->expects($this->atLeastOnce())
             ->method('getCurrentRevision')
-            ->will($this->returnValue(new \Entity\Entity\Revision()));
+            ->will($this->returnValue($revision));
         
         $this->dispatch('/entity/repository/compare/1/3');
         
@@ -140,15 +145,15 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
     public function testCheckoutAction()
     {
         $this->setUpFirewall();
-
+        
         $this->repositoryPluginMock->expects($this->once())
-        ->method('checkout');
+            ->method('checkout');
         $om = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->repositoryPluginMock->expects($this->once())
-        ->method('getObjectManager')
-        ->will($this->returnValue($om));
+            ->method('getObjectManager')
+            ->will($this->returnValue($om));
         $om->expects($this->once())
-        ->method('flush');
+            ->method('flush');
         $this->dispatch('/entity/repository/checkout/1/3');
         
         $this->assertResponseStatusCode(302);
@@ -157,15 +162,15 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
     public function testPurgeRevisionAction()
     {
         $this->setUpFirewall();
-
+        
         $this->repositoryPluginMock->expects($this->once())
-        ->method('removeRevision');
+            ->method('removeRevision');
         $om = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->repositoryPluginMock->expects($this->once())
-        ->method('getObjectManager')
-        ->will($this->returnValue($om));
+            ->method('getObjectManager')
+            ->will($this->returnValue($om));
         $om->expects($this->once())
-        ->method('flush');
+            ->method('flush');
         $this->dispatch('/entity/repository/purge-revision/1/3');
         
         $this->assertResponseStatusCode(302);
@@ -174,15 +179,15 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
     public function testTrashRevisionAction()
     {
         $this->setUpFirewall();
-
+        
         $this->repositoryPluginMock->expects($this->once())
-        ->method('trashRevision');
+            ->method('trashRevision');
         $om = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->repositoryPluginMock->expects($this->once())
-        ->method('getObjectManager')
-        ->will($this->returnValue($om));
+            ->method('getObjectManager')
+            ->will($this->returnValue($om));
         $om->expects($this->once())
-        ->method('flush');
+            ->method('flush');
         $this->dispatch('/entity/repository/trash-revision/1/3');
         
         $this->assertResponseStatusCode(302);
