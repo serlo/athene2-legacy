@@ -23,6 +23,7 @@ use Uuid\Entity\UuidEntity;
  */
 class User extends UuidEntity implements UserInterface
 {
+
     /**
      * @ORM\OneToMany(targetEntity="UserLog",
      * mappedBy="user")
@@ -100,12 +101,6 @@ class User extends UuidEntity implements UserInterface
     protected $ads_enabled;
 
     /**
-     * @ORM\Column(type="boolean")
-     * *
-     */
-    protected $removed;
-
-	/**
      *
      * @return the $userRoles
      */
@@ -215,7 +210,7 @@ class User extends UuidEntity implements UserInterface
      */
     public function getRemoved()
     {
-        return $this->removed;
+        return $this->getUuidEntity()->getVoided();
     }
 
     /**
@@ -347,17 +342,6 @@ class User extends UuidEntity implements UserInterface
     public function setAdsEnabled($ads_enabled)
     {
         $this->ads_enabled = $ads_enabled;
-        return $this;
-    }
-
-    /**
-     *
-     * @param boolean $removed            
-     * @return $this
-     */
-    public function setRemoved($removed)
-    {
-        $this->removed = $removed;
         return $this;
     }
 

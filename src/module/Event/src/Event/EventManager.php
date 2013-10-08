@@ -36,7 +36,7 @@ class EventManager implements EventManagerInterface
         return $this;
     }
 
-    private function findEventByRoute($route)
+    public function findEventByRoute($route)
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
         $event = $this->getObjectManager()

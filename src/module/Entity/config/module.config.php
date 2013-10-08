@@ -64,6 +64,9 @@ return array(
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
+                    'setUserManager' => array(
+                        'required' => 'true'
+                    ),
                 ),
                 'Entity\Service\EntityService' => array(
                     'setObjectManager' => array(

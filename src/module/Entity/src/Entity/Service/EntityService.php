@@ -143,4 +143,8 @@ class EntityService implements EntityServiceInterface
             }
         }
     }
+    
+    public function isVoided(){
+        return $this->getEntity()->getVoided();
+    }
 }

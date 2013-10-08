@@ -16,19 +16,20 @@ use Zend\EventManager\Event;
 
 class Link extends AbstractListener
 {
+    
     /*
-     * (non-PHPdoc) @see \Zend\EventManager\ListenerAggregateInterface::attach()
+     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
      */
-    public function attach(\Zend\EventManager\EventManagerInterface $events)
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('createEntity.preFlush', function (Event $e)
+        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
             $data = $e->getParam('data');
             /* var $entity \Entity\Manager\EntityManagerInterface */
             $entityManager = $entity->getEntityManager();
-
+            
             foreach ($entity->getScopesForPlugin('link') as $scope) {
                 
                 if (array_key_exists($scope, $data)) {
@@ -36,7 +37,7 @@ class Link extends AbstractListener
                     
                     $toEntity = $entityManager->getEntity($options['to_entity']);
                     $addAs = $options['as'];
-
+                    
                     if ($addAs == 'parent') {
                         $entity->$scope()
                             ->addChild($toEntity);

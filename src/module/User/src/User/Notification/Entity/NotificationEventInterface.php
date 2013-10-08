@@ -18,16 +18,16 @@ interface NotificationEventInterface
 
     /**
      *
-     * @return Entity\EventLogInterface
+     * @return NotificationLogInterface
      */
     public function getEventLog();
 
     /**
      *
-     * @param Entity\EventLogInterface $eventLog            
+     * @param NotificationLogInterface $eventLog            
      * @return $this;
      */
-    public function setEventLog(Entity\EventLogInterface $eventLog);
+    public function setEventLog(NotificationLogInterface $eventLog);
 
     /**
      *

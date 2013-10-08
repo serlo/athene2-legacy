@@ -10,6 +10,7 @@ namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use User\Notification\Entity\NotificationEventInterface;
+use User\Notification\Entity\NotificationLogInterface;
 
 /**
  * @ORM\Entity
@@ -26,8 +27,8 @@ class NotificationEvent implements NotificationEventInterface
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Event\Entity\EventLog")
-     * @ORM\JoinColumn(name="event_log_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="NotificationLog")
+     * @ORM\JoinColumn(name="notification_event_log_id", referencedColumnName="id")
      */
     protected $eventLog;
 
@@ -48,7 +49,7 @@ class NotificationEvent implements NotificationEventInterface
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::setEventLog()
      */
-    public function setEventLog(\Event\Entity\EventLogInterface $eventLog)
+    public function setEventLog(NotificationLogInterface $eventLog)
     {
         $this->eventLog = $eventLog;
         return $this;

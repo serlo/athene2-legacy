@@ -16,10 +16,13 @@ use Entity\Plugin\Listener\AbstractListener;
 
 class Taxonomy extends AbstractListener
 {
-
-    public function attach(\Zend\EventManager\EventManagerInterface $events)
+    
+    /*
+     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
+     */
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('createEntity.preFlush', function (Event $e)
+        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
@@ -29,10 +32,10 @@ class Taxonomy extends AbstractListener
                 
                 if (array_key_exists($scope, $data)) {
                     $options = $data[$scope];
-                    $entity->$scope()->addToTerm($options['term']);
+                    $entity->$scope()
+                        ->addToTerm($options['term']);
                 }
             }
         }, 2);
     }
-    
 }

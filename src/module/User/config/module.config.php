@@ -78,7 +78,8 @@ return array(
         'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
         'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationInterface',
         'User\Notification\Entity\NotificationInterface' => 'User\Entity\Notification',
-        'User\Notification\Entity\SubscriptionInterface' => 'User\Entity\Subscription'
+        'User\Notification\Entity\SubscriptionInterface' => 'User\Entity\Subscription',
+        'User\Notification\Entity\NotificationLogInterface' => 'User\Entity\NotificationLog',
     ),
     'di' => array(
         'allowed_controllers' => array(
@@ -89,6 +90,14 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                __NAMESPACE__ . '\Notification\Listener\EntityControllerListener' => array(
+                    'setNotificationLogManager' => array(
+                        'required' => true
+                    ),
+                    'setUuidManager' => array(
+                        'required' => true
+                    ),
+                ),
                 __NAMESPACE__ . '\Notification\SubscriptionManager' => array(
                     'setClassResolver' => array(
                         'required' => true
@@ -105,6 +114,17 @@ return array(
                         'required' => true
                     ),
                     'setServiceLocator' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Notification\NotificationLogManager' => array(
+                    'setClassResolver' => array(
+                        'required' => true
+                    ),
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setEventManager' => array(
                         'required' => true
                     )
                 ),
@@ -178,6 +198,7 @@ return array(
                 __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
                 __NAMESPACE__ . '\Notification\SubscriptionManagerInterface' => __NAMESPACE__ . '\Notification\SubscriptionManager',
                 __NAMESPACE__ . '\Notification\NotificationManagerInterface' => __NAMESPACE__ . '\Notification\NotificationManager',
+                __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager',
             ),
             'User\Service\UserService' => array(
                 'shared' => false

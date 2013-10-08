@@ -11,19 +11,21 @@
  */
 namespace LearningResource;
 
-use Zend\Mvc\MvcEvent;
-use Zend\EventManager\Event;
-use LearningResource\Plugin\Link\LinkPlugin;
-
 class Module
 {
 
-    public function getConfig ()
+    protected $listeners = array(
+        'LearningResource\Plugin\Link\Listener\Link',
+        'LearningResource\Plugin\Repository\Listener\Repository',
+        'LearningResource\Plugin\Taxonomy\Listener\Taxonomy'
+    );
+
+    public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig ()
+    public function getAutoloaderConfig()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
@@ -34,7 +36,15 @@ class Module
         );
     }
 
-    /*public function onBootstrap (MvcEvent $mvce)
+    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-    }*/
+        foreach ($this->listeners as $listener) {
+            $e->getApplication()
+                ->getEventManager()
+                ->getSharedManager()
+                ->attachAggregate($e->getApplication()
+                ->getServiceManager()
+                ->get($listener));
+        }
+    }
 }

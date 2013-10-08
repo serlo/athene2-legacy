@@ -17,10 +17,13 @@ use Zend\EventManager\Event;
 
 class Repository extends AbstractListener
 {
-
-    public function attach(\Zend\EventManager\EventManagerInterface $events)
+    
+    /*
+     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
+     */
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('createEntity.postFlush', function (Event $e)
+        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create.postFlush', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
@@ -28,7 +31,8 @@ class Repository extends AbstractListener
             
             foreach ($entity->getScopesForPlugin('repository') as $scope) {
                 $result = new UrlResult();
-                $result->setResult($entity->$scope()->getRouter()
+                $result->setResult($entity->$scope()
+                    ->getRouter()
                     ->assemble(array(
                     'entity' => $entity->getId(),
                     'action' => 'add-revision'

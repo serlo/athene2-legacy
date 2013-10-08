@@ -11,17 +11,27 @@
  */
 namespace User\Notification;
 
+
 class NotificationWorker
 {
     use\Common\Traits\ObjectManagerAwareTrait,\User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait, NotificationManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait;
 
+    /**
+     * @TODO Undirtyfy
+     */
     public function run()
     {
         foreach ($this->getWorkload() as $eventLog) {
-            /* @var $eventLog \Event\Entity\EventLogInterface */
-            foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getUuid()) as $subscriber) {
+            /* @var $eventLog Entity\NotificationLogInterface */
+            foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getObject()) as $subscriber) {
                 /* @var $subscriber \User\Entity\UserInterface */
                 $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+            }
+            if($eventLog->getReference() !== NULL){
+                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
+                    /* @var $subscriber \User\Entity\UserInterface */
+                    $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                }
             }
         }
     }
@@ -31,7 +41,7 @@ class NotificationWorker
      */
     protected function getWorkload(){
         $offset = $this->findOffset();
-        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface'), $offset));
+        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationLogInterface'), $offset));
         return $query->getResult();
     }
 

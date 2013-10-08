@@ -38,4 +38,6 @@ interface EntityServiceInterface extends EventManagerAwareInterface
     public function plugin($name);
     
     public function getScopesForPlugin($plugin);
+    
+    public function isVoided();
 }

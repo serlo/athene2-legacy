@@ -47,8 +47,12 @@ return array(
                         ->get('Zend\Authentication\AuthenticationService'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
+                    $instance->setRouter($sm->getServiceLocator()
+                        ->get('Router'));
                     $instance->setUserManager($sm->getServiceLocator()
                         ->get('User\Manager\UserManager'));
+                    $instance->setUuidManager($sm->getServiceLocator()
+                        ->get('Uuid\Manager\UuidManager'));
                     return $instance;
                 },
                 'link' => function ($sm)
@@ -70,11 +74,6 @@ return array(
                     return $instance;
                 }
             )
-        ),
-        'listeners' => array(
-            'LearningResource\Plugin\Link\Listener\Link',
-            'LearningResource\Plugin\Repository\Listener\Repository',
-            'LearningResource\Plugin\Taxonomy\Listener\Taxonomy'
         ),
         'types' => array(
             'text-exercise' => array(
@@ -222,7 +221,7 @@ return array(
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
-                    ),
+                    )
                 )
             )
         ),
@@ -245,7 +244,7 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => 'true'
-                        ),
+                    )
                 ),
                 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController' => array(
                     'setEntityManager' => array(

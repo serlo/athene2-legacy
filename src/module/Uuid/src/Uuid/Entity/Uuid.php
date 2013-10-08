@@ -34,34 +34,61 @@ class Uuid implements UuidInterface
      */
     protected $uuid;
 
-    function __construct ()
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $voided;
+
+    /**
+     *
+     * @return field_type $voided
+     */
+    public function getVoided()
     {
-        $this->uuid = hash('crc32b', uniqid('uuid.',true));
+        return $this->voided;
     }
-    
-    public function getId ()
+
+    /**
+     *
+     * @param field_type $voided            
+     * @return $this
+     */
+    public function setVoided($voided)
+    {
+        $this->voided = $voided;
+        return $this;
+    }
+
+    function __construct()
+    {
+        $this->uuid = hash('crc32b', uniqid('uuid.', true));
+        $this->voided = false;
+    }
+
+    public function getId()
     {
         return $this->id;
     }
-    
-    public function getUuid ()
+
+    public function getUuid()
     {
         return $this->uuid;
     }
-    
-    public function setId ($id)
+
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
-    
-    public function setUuid ($uuid)
+
+    public function setUuid($uuid)
     {
         $this->uuid = $uuid;
         return $this;
     }
-    
-    public function hydrate(UuidHolder $entity){
+
+    public function hydrate(UuidHolder $entity)
+    {
         $entity->setUuid($this);
         return $this;
     }

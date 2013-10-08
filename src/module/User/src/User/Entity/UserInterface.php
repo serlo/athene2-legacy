@@ -64,8 +64,6 @@ interface UserInterface
     public function setGender ($gender);
     
     public function setAdsEnabled ($adsEnabled);
-
-    public function setRemoved ($removed);
     
     public function addRole(RoleInterface $role, LanguageInterface $language = NULL);
     

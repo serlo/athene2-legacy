@@ -11,6 +11,7 @@
  */
 namespace User\Notification;
 
+use User\Notification\Entity\NotificationLogInterface;
 class NotificationManager implements NotificationManagerInterface
 {
     use\Common\Traits\InstanceManagerTrait, \Common\Traits\ObjectManagerAwareTrait;
@@ -18,7 +19,7 @@ class NotificationManager implements NotificationManagerInterface
     /*
      * (non-PHPdoc) @see \User\Notification\NotificationManagerInterface::createNotification()
      */
-    public function createNotification(\User\Entity\UserInterface $user, \Event\Entity\EventLogInterface $eventLog)
+    public function createNotification(\User\Entity\UserInterface $user, NotificationLogInterface $eventLog)
     {
         // TODO aggregation
         

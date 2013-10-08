@@ -41,4 +41,8 @@ interface UuidHolder
      * @return UuidInterface
      */
     public function getUuidEntity();
+    
+    public function getVoided();
+    
+    public function setVoided($voided);
 }

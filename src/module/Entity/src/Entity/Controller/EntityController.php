@@ -17,21 +17,20 @@ use Entity\Result;
 
 class EntityController extends AbstractActionController
 {
-    use \Entity\Manager\EntityManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Entity\Manager\EntityManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function createAction()
     {
         $type = $this->params('type');
         
-        $language = $this->getLanguageManager()
-            ->getLanguageFromRequest();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
         $entity = $this->getEntityManager()->createEntity($type, $this->params()
             ->fromQuery(), $language);
         
-        $this->getEntityManager()
-            ->getEventManager()
-            ->trigger('createEntity.preFlush', $this, array(
+        $this->getEventManager()->trigger('create', $this, array(
             'entity' => $entity,
+            'user' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
             'data' => $this->params()
                 ->fromQuery()
         ));
@@ -40,13 +39,12 @@ class EntityController extends AbstractActionController
             ->getObjectManager()
             ->flush($entity->getEntity());
         
-        $response = $this->getEntityManager()
-            ->getEventManager()
-            ->trigger('createEntity.postFlush', $this, array(
+        $response = $this->getEventManager()->trigger('create.postFlush', $this, array(
             'entity' => $entity,
-            
             'data' => $this->params()
-                ->fromQuery()
+                ->fromQuery(),
+            'user' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
         ));
         
         $this->checkResponse($response);

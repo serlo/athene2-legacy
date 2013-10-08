@@ -74,11 +74,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $date;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $trashed;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
@@ -172,7 +167,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->terms = new \Doctrine\Common\Collections\ArrayCollection();
         $this->fieldOrder = array();
-        $this->trashed = false;
     }
 
     public function newRevision()
@@ -185,17 +179,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     public function getRevisions()
     {
         return $this->revisions;
-    }
-
-    public function setTrashed($trashed)
-    {
-        $this->trashed = $trashed;
-        returN $this;
-    }
-
-    public function isTrashed()
-    {
-        return $this->trashed;
     }
 
     public function getChildren(\Link\Entity\LinkTypeInterface $type)

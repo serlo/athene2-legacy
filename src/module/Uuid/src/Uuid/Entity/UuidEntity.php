@@ -15,42 +15,62 @@ use Doctrine\ORM\Mapping as ORM;
 
 class UuidEntity implements UuidHolder
 {
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
-    
-    public function __construct($uuid = NULL){
-        if($uuid){
+
+    public function __construct($uuid = NULL)
+    {
+        if ($uuid) {
             $this->id = $uuid;
         }
     }
-    
-    public function getUuid ()
+
+    public function getUuid()
     {
         return $this->getUuidEntity()->getUuid();
     }
-    
-    public function setId ($id)
+
+    public function setId($id)
     {
         return $this->setUuid($id);
     }
-    
-    
-    public function getId ()
+
+    public function getId()
     {
         return $this->getUuidEntity()->getId();
     }
-    
-    public function setUuid (UuidInterface $uuid = null)
+
+    public function setUuid(UuidInterface $uuid = null)
     {
         $this->id = $uuid;
         return $this;
     }
-    
-    public function getUuidEntity(){
+
+    public function getUuidEntity()
+    {
         return $this->id;
     }
+    
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::getVoided()
+     */
+    public function getVoided ()
+    {
+        return $this->getUuidEntity()->getVoided();
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::setVoided()
+     */
+    public function setVoided ($voided)
+    {
+        $this->getUuidEntity()->setVoided($voided);
+        return $this;
+    }
+
 }

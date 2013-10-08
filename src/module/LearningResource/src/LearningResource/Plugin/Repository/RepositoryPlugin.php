@@ -16,10 +16,37 @@ use Doctrine\Common\Collections\Criteria;
 use Entity\Plugin\AbstractPlugin;
 use Zend\Form\Form;
 use User\Service\UserServiceInterface;
+use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
+
+    /**
+     *
+     * @var RouteInterface
+     */
+    protected $router;
+
+    /**
+     *
+     * @return \Zend\Mvc\Router\RouteInterface $router
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     *
+     * @param \Zend\Mvc\Router\RouteInterface $router            
+     * @return $this
+     */
+    public function setRouter(RouteInterface $router)
+    {
+        $this->router = $router;
+        return $this;
+    }
 
     protected function getDefaultConfig()
     {
@@ -144,6 +171,8 @@ class RepositoryPlugin extends AbstractPlugin
         $revision = $this->getEntityService()
             ->getEntity()
             ->newRevision();
+        
+        $this->getUuidManager()->injectUuid($revision);
         
         $revision->setAuthor($user->getEntity());
         

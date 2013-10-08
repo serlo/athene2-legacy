@@ -17,6 +17,7 @@ use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Entity\UserInterface;
+use Uuid\Entity\UuidEntity;
 
 /**
  * An entity link.
@@ -24,25 +25,8 @@ use User\Entity\UserInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision implements RevisionInterface
+class Revision extends UuidEntity implements RevisionInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-
-    public function getId ()
-    {
-        return $this->id;
-    }
-    
-    public function setId($id){
-        $this->id = $id;
-    }
-
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
      */
@@ -62,11 +46,6 @@ class Revision implements RevisionInterface
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     protected $date;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default"})
-     */
-    protected $trashed;
     
     public function getFields(){
     	$collection = new ArrayCollection();
@@ -156,31 +135,6 @@ class Revision implements RevisionInterface
     {
         return $this;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::trash()
-     */
-    public function trash()
-    {
-        $this->trashed = TRUE;
-        return $this;
-    }
-
-    public function untrash()
-    {
-        $this->trashed = FALSE;
-        return $this;
-    }
-
-    public function isTrashed()
-    {
-        return $this->trashed;
-    }
-
-    public function toggleTrashed()
-    {
-        $this->trashed = ! $this->isTrashed();
-    }
 
     public function setRepository(RepositoryInterface $repository)
     {
@@ -199,7 +153,5 @@ class Revision implements RevisionInterface
     public function __construct()
     {
         $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
-        //$this->unTrash();
-        $this->trashed = false;
     }
 }

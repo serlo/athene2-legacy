@@ -9,18 +9,13 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Plugin\Listener;
+namespace User\Notification;
 
-use Zend\EventManager\SharedListenerAggregateInterface;
-use Zend\EventManager\SharedEventManagerInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
-abstract class AbstractListener implements SharedListenerAggregateInterface
+interface NotificationLogManagerInterface
 {
-    
-    protected $listeners = array();
-    
-    public function detachShared(SharedEventManagerInterface $events)
-    {
-        throw new \Exception('not implemented');
-    }
+    public function logEvent($route, UserInterface $actor, UuidHolder $uuid, UuidInterface $reference = NULL);
 }
