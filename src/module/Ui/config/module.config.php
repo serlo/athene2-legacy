@@ -4,6 +4,7 @@ use Zend\View\HelperPluginManager;
 /**
  *
  *
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -14,6 +15,12 @@ use Zend\View\HelperPluginManager;
  */
 return array(
     'navigation' => array(
+        'default' => array(
+            'restricted' => array(
+                'label' => 'Backend',
+                'route' => 'restricted'
+            )
+        ),
         'top-left' => array(
             array(
                 'label' => 'Home',

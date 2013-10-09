@@ -49,7 +49,7 @@ return array(
                     ),
                     array(
                         'label' => 'Taxonomie verwalten',
-                        'route' => 'taxonomy/taxonomy',
+                        'route' => 'restricted/taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',
                             'id' => '25'

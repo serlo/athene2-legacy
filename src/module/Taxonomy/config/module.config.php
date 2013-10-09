@@ -38,54 +38,63 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'taxonomy' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/taxonomy',
-                    'defaults' => array(
-                        'controller' => 'Taxonomy\Controller\404',
-                        'action' => 'index'
-                    )
-                ),
+            'restricted' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
+                'options' => array(
+                    'route' => '/restricted'
+                ),
                 'child_routes' => array(
                     'taxonomy' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'may_terminate' => true,
-                            'route' => '/:action/:id',
+                            'route' => '/taxonomy',
                             'defaults' => array(
-                                'controller' => 'Taxonomy\Controller\TaxonomyController'
-                            )
-                        )
-                    ),
-                    'term' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/term',
-                            'defaults' => array(
-                                'controller' => 'Taxonomy\Controller\TermController',
+                                'controller' => 'Taxonomy\Controller\404',
                                 'action' => 'index'
                             )
                         ),
+                        'may_terminate' => true,
                         'child_routes' => array(
-                            'create' => array(
-                                'may_terminate' => true,
+                            'taxonomy' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/create/:taxonomy/:parent',
+                                    'may_terminate' => true,
+                                    'route' => '/:action/:id',
                                     'defaults' => array(
-                                        'action' => 'create'
+                                        'controller' => 'Taxonomy\Controller\TaxonomyController'
                                     )
                                 )
                             ),
-                            'action' => array(
-                                'may_terminate' => true,
+                            'term' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/:action[/:id]',
+                                    'route' => '/term',
                                     'defaults' => array(
+                                        'controller' => 'Taxonomy\Controller\TermController',
                                         'action' => 'index'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'create' => array(
+                                        'may_terminate' => true,
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/create/:taxonomy/:parent',
+                                            'defaults' => array(
+                                                'action' => 'create'
+                                            )
+                                        )
+                                    ),
+                                    'action' => array(
+                                        'may_terminate' => true,
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/:action[/:id]',
+                                            'defaults' => array(
+                                                'action' => 'index'
+                                            )
+                                        )
                                     )
                                 )
                             )
@@ -197,16 +206,20 @@ return array(
     ),
     'navigation' => array(
         'default' => array(
-            array(
-                'label' => 'Taxonomie',
-                'uri' => '#',
+            'restricted' => array(
                 'pages' => array(
                     array(
-                        'label' => 'Taxonomie verwalten',
-                        'route' => 'taxonomy/taxonomy',
-                        'params' => array(
-                            'action' => 'update',
-                            'id' => '43'
+                        'label' => 'Taxonomie',
+                        'uri' => '',
+                        'pages' => array(
+                            array(
+                                'label' => 'Taxonomie verwalten',
+                                'route' => 'restricted/taxonomy/taxonomy',
+                                'params' => array(
+                                    'action' => 'update',
+                                    'id' => '43'
+                                )
+                            )
                         )
                     )
                 )
@@ -214,3 +227,4 @@ return array(
         )
     )
 );
+

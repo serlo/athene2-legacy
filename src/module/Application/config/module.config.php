@@ -10,14 +10,6 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
-    'navigation' => array(
-        'default' => array(
-            array(
-                'label' => 'Home',
-                'route' => 'home'
-            ),
-        )
-    ),
     'zfcrbac' => array(
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array()

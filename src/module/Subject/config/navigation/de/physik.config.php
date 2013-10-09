@@ -49,7 +49,7 @@ return array(
                     ),
                     array(
                         'label' => 'Themen verwalten',
-                        'route' => 'taxonomy/taxonomy',
+                        'route' => 'restricted/taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',
                             'id' => '26'

@@ -71,8 +71,10 @@ return array(
             'notifications' => function ($sm)
             {
                 $helper = new Notification();
-                $helper->setUserManager($sm->getServiceLocator()->get('User\Manager\UserManager'));
-                $helper->setNotificationManager($sm->getServiceLocator()->get('User\Notification\NotificationManager'));
+                $helper->setUserManager($sm->getServiceLocator()
+                    ->get('User\Manager\UserManager'));
+                $helper->setNotificationManager($sm->getServiceLocator()
+                    ->get('User\Notification\NotificationManager'));
                 return $helper;
             },
             'authentication' => function ($sm)
@@ -273,67 +275,76 @@ return array(
                     )
                 )
             ),
-            'user' => array(
+            'restricted' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
                 'options' => array(
-                    'route' => '/user/:user',
-                    'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\UserController',
-                        'action' => 'index'
-                    )
+                    'route' => '/restricted'
                 ),
                 'child_routes' => array(
-                    'role' => array(
+                    'user' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
                         'options' => array(
-                            'route' => '/role/:action[/:role]',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\RoleController',
-                                'action' => 'index'
-                            )
-                        )
-                    ),
-                    'update' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/update/:user',
+                            'route' => '/user/:user',
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\UserController',
-                                'action' => 'update'
+                                'action' => 'index'
                             )
-                        )
-                    )
-                )
-            ),
-            'users' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options' => array(
-                    'route' => '/users',
-                    'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
-                        'action' => 'users'
-                    )
-                ),
-                'child_routes' => array(
-                    'roles' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/roles',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UsersController',
-                                'action' => 'roles'
+                        ),
+                        'child_routes' => array(
+                            'role' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/role/:action[/:role]',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Controller\RoleController',
+                                        'action' => 'index'
+                                    )
+                                )
+                            ),
+                            'update' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/update/:user',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Controller\UserController',
+                                        'action' => 'update'
+                                    )
+                                )
                             )
                         )
                     ),
-                    'role' => array(
+                    'users' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
                         'options' => array(
-                            'route' => '/role/:role',
+                            'route' => '/users',
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\UsersController',
-                                'action' => 'role'
+                                'action' => 'users'
+                            )
+                        ),
+                        'child_routes' => array(
+                            'roles' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/roles',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
+                                        'action' => 'roles'
+                                    )
+                                )
+                            ),
+                            'role' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/role/:role',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
+                                        'action' => 'role'
+                                    )
+                                )
                             )
                         )
                     )
@@ -359,20 +370,25 @@ return array(
     ),
     'navigation' => array(
         'default' => array(
-            array(
-                'label' => 'Benutzer',
-                'uri' => '#',
+            'restricted' => array(
                 'pages' => array(
                     array(
-                        'label' => 'Benutzer verwalten',
-                        'route' => 'users'
-                    ),
-                    array(
-                        'label' => 'Benutzerrollen verwalten',
-                        'route' => 'users/roles'
+                        'label' => 'Benutzer',
+                        'uri' => '#',
+                        'pages' => array(
+                            array(
+                                'label' => 'Benutzer verwalten',
+                                'route' => 'restricted/users'
+                            ),
+                            array(
+                                'label' => 'Benutzerrollen verwalten',
+                                'route' => 'restricted/users/roles'
+                            )
+                        )
                     )
                 )
             )
         )
     )
 );
+
