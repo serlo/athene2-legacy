@@ -27,7 +27,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
             ->getRepository($this->getClassResolver()
             ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
             ->findBy(array(
-            'id' => $uuid->getId()
+            'object' => $uuid->getId()
         ));
         
         $collection = new ArrayCollection();
