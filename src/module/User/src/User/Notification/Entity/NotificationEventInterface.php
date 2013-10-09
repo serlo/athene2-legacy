@@ -11,8 +11,6 @@
  */
 namespace User\Notification\Entity;
 
-use \Event\Entity;
-
 interface NotificationEventInterface
 {
 
@@ -52,6 +50,12 @@ interface NotificationEventInterface
      * @return \User\Entity\UserInterface
      */
     public function getActor();
+
+    /**
+     *
+     * @return \Uuid\Entity\Uuid
+     */
+    public function getReference();
 
     /**
      *

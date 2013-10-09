@@ -112,4 +112,42 @@ class Notification implements NotificationInterface
         $this->events->add($event);
         return $this;
     }
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getActors()
+     */
+    public function getActors()
+    {
+        $collection = new ArrayCollection();
+        foreach ($this->getEvents() as $event) {
+            /* @var $event NotificationEvent */
+            $collection->add($event->getActor());
+        }
+        return $collection;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getObjects()
+     */
+    public function getObjects()
+    {
+        $collection = new ArrayCollection();
+        foreach ($this->getEvents() as $event) {
+            /* @var $event NotificationEvent */
+            $collection->add($event->getObject());
+        }
+        return $collection;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getReferences()
+     */
+    public function getReferences()
+    {
+        $collection = new ArrayCollection();
+        foreach ($this->getEvents() as $event) {
+            /* @var $event NotificationEvent */
+            $collection->add($event->getReference());
+        }
+        return $collection;
+    }
 }

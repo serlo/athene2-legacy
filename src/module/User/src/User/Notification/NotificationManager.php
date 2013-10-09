@@ -20,7 +20,7 @@ class NotificationManager implements NotificationManagerInterface
     /*
      * (non-PHPdoc) @see \User\Notification\NotificationManagerInterface::createNotification()
      */
-    public function createNotification(\User\Entity\UserInterface $user, NotificationLogInterface $eventLog)
+    public function createNotification(\User\Entity\UserInterface $user, NotificationLogInterface $log)
     {
         // TODO aggregation
         $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface');
@@ -35,7 +35,7 @@ class NotificationManager implements NotificationManagerInterface
         $notificationLog->setNotification($notification);
         $notification->setUser($user);
         $notification->setSeen(false);
-        $notificationLog->setEventLog($eventLog);
+        $notificationLog->setEventLog($log);
         
         $this->getObjectManager()->persist($notification);
         $this->getObjectManager()->persist($notificationLog);

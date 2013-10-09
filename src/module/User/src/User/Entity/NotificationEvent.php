@@ -76,7 +76,7 @@ class NotificationEvent implements NotificationEventInterface
      */
     public function getObject()
     {
-        return $this->getEventLog()->getUuid();
+        return $this->getEventLog()->getObject();
     }
     
     /*
@@ -93,6 +93,10 @@ class NotificationEvent implements NotificationEventInterface
     public function getNotification()
     {
         return $this->notification;
+    }
+    
+    public function getReference(){
+        return $this->getEventLog()->getReference();
     }
     
     /*

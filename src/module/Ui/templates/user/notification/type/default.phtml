@@ -1,3 +1,3 @@
 <div class="notification">
-    <?php echo sprintf($this->translate('Benutzers hat etwas getan')); ?>
+    <?php echo sprintf($this->translate('Benutzer %s, Uuid %s, Referenz %s'), $this->notification->getActors()->current()->getUsername(), $this->notification->getObjects()->current()->getId(), $this->notification->getReferences()->current()->getId()); ?>
 </div>

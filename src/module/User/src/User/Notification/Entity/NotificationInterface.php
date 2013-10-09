@@ -13,6 +13,7 @@ namespace User\Notification\Entity;
 
 use \User\Entity;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 interface NotificationInterface
 {
@@ -48,11 +49,29 @@ interface NotificationInterface
      * @return PersistentCollection
      */
     public function getEvents();
-    
+
     /**
-     * 
-     * @param NotificationEventInterface $event
+     *
+     * @param NotificationEventInterface $event            
      * @return $this
      */
     public function addEvent(NotificationEventInterface $event);
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getActors();
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getObjects();
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getReferences();
 }
