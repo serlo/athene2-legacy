@@ -27,7 +27,7 @@ class TaxonomyControllerTest extends DefaultLayoutTestCase
 
     public function testUpdateAction()
     {
-        $this->dispatch('/taxonomy/update/43');
+        $this->dispatch('/restricted//taxonomy/update/43');
         $this->assertResponseStatusCode(200);
     }
 }

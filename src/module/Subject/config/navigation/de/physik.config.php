@@ -12,7 +12,10 @@
 return array(
     array(
         'label' => 'Physik',
-        'uri' => '#',
+        'route' => 'subject',
+        'paramts' => array(
+            'subject' => 'physik'
+        ),
         'pages' => array(
             /*array(
                 'label' => 'Lehrplan',

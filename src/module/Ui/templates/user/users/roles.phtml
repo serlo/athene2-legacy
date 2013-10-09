@@ -13,6 +13,6 @@
 <h1 class="page_header"><?php echo $this->translate('Benutzerrollen'); ?></h1>
 <?php foreach($this->roles as $role):?>
 <ul>
-    <li><a href="<?php echo $this->url('users/role', array('role' => $role->getId())); ?>"><?php echo $role->getName(); ?></a></li>
+    <li><a href="<?php echo $this->url('restricted/users/role', array('role' => $role->getId())); ?>"><?php echo $role->getName(); ?></a></li>
 </ul>
 <?php endforeach; ?>
