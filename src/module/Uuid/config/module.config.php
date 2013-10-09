@@ -18,9 +18,55 @@ return array(
     'class_resolver' => array(
         'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
     ),
+    'uuid_router' => array(
+        'routes' => array()
+    ),
+    'router' => array(
+        'routes' => array(
+            'uuid' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => false,
+                'options' => array(
+                    'route' => '/uuid'
+                ),
+                'child_routes' => array(
+                    'router' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/router/:uuid',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\RouterController',
+                                'action' => 'assemble'
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Uuid\Router\UuidRouter' => function ($sm)
+            {
+                $router = new \Uuid\Router\UuidRouter();
+                $config = $sm->get('config')['uuid_router'];
+                $router->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
+                $router->setConfig($config);
+                return $router;
+            }
+        )
+    ),
     'di' => array(
+        'allowed_controllers' => array(
+            'Uuid\Controller\RouterController'
+        ),
         'definition' => array(
             'class' => array(
+                'Uuid\Controller\RouterController' => array(
+                    'setUuidRouter' => array(
+                        'required' => true
+                    )
+                ),
                 'Uuid\Manager\UuidManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
@@ -37,6 +83,7 @@ return array(
         'instance' => array(
             'preferences' => array(
                 'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
+                'Uuid\Router\UuidRouterInterface' => 'Uuid\Router\UuidRouter'
             )
         )
     ),
@@ -57,3 +104,6 @@ return array(
         )
     )
 );
+
+
+

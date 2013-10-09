@@ -12,16 +12,8 @@
 namespace Uuid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 class UuidEntity implements UuidHolder
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     public function __construct($uuid = NULL)
     {

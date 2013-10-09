@@ -20,7 +20,7 @@ use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -132,8 +132,7 @@ class RepositoryPlugin extends AbstractPlugin
 
     public function getAllRevisions()
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", false))
-            ->orderBy(array(
+        $criteria = Criteria::create()->orderBy(array(
             "id" => "desc"
         ));
         return $this->getRepository()
@@ -143,8 +142,7 @@ class RepositoryPlugin extends AbstractPlugin
 
     public function getTrashedRevisions()
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("trashed", true))
-            ->orderBy(array(
+        $criteria = Criteria::create()->orderBy(array(
             "id" => "desc"
         ));
         return $this->getRepository()

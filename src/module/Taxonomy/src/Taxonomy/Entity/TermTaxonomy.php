@@ -23,6 +23,12 @@ use Common\ArrayCopyProvider;
  */
 class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCopyProvider
 {
+    /**
+     * @ORM\Id
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
+     * @ORM\JoinColumn(name="id")
+     */
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Taxonomy",inversedBy="terms")

@@ -28,6 +28,13 @@ use Uuid\Entity\UuidEntity;
 class Revision extends UuidEntity implements RevisionInterface
 {
     /**
+     * @ORM\Id
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
+     * @ORM\JoinColumn(name="id")
+     */
+    protected $id;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
      */
     protected $repository;

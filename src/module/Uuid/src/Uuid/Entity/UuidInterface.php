@@ -44,4 +44,6 @@ interface UuidInterface
     public function getVoided();
     
     public function setVoided($voided);
+    
+    public function is($type);
 }

@@ -23,6 +23,12 @@ use Uuid\Entity\UuidEntity;
  */
 class User extends UuidEntity implements UserInterface
 {
+    /**
+     * @ORM\Id
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
+     * @ORM\JoinColumn(name="id")
+     */
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="UserLog",

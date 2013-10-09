@@ -14,11 +14,17 @@
 namespace User;
 
 use User\View\Helper\Authenticator;
+use User\View\Helper\Notification;
 
 /**
  * @codeCoverageIgnore
  */
 return array(
+    'uuid_router' => array(
+        'routes' => array(
+            'user' => '/user/show/%d'
+        )
+    ),
     'service_manager' => array(
         'factories' => array(
             /*'User\Service\UserLogService' => function ($sm)
@@ -62,6 +68,13 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
+            'notifications' => function ($sm)
+            {
+                $helper = new Notification();
+                $helper->setUserManager($sm->getServiceLocator()->get('User\Manager\UserManager'));
+                $helper->setNotificationManager($sm->getServiceLocator()->get('User\Notification\NotificationManager'));
+                return $helper;
+            },
             'authentication' => function ($sm)
             {
                 $helper = new Authenticator();
@@ -79,7 +92,7 @@ return array(
         'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationInterface',
         'User\Notification\Entity\NotificationInterface' => 'User\Entity\Notification',
         'User\Notification\Entity\SubscriptionInterface' => 'User\Entity\Subscription',
-        'User\Notification\Entity\NotificationLogInterface' => 'User\Entity\NotificationLog',
+        'User\Notification\Entity\NotificationLogInterface' => 'User\Entity\NotificationLog'
     ),
     'di' => array(
         'allowed_controllers' => array(
@@ -96,7 +109,7 @@ return array(
                     ),
                     'setUuidManager' => array(
                         'required' => true
-                    ),
+                    )
                 ),
                 __NAMESPACE__ . '\Notification\SubscriptionManager' => array(
                     'setClassResolver' => array(
@@ -104,7 +117,7 @@ return array(
                     ),
                     'setObjectManager' => array(
                         'required' => true
-                    ),
+                    )
                 ),
                 __NAMESPACE__ . '\Notification\NotificationManager' => array(
                     'setClassResolver' => array(
@@ -198,7 +211,7 @@ return array(
                 __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
                 __NAMESPACE__ . '\Notification\SubscriptionManagerInterface' => __NAMESPACE__ . '\Notification\SubscriptionManager',
                 __NAMESPACE__ . '\Notification\NotificationManagerInterface' => __NAMESPACE__ . '\Notification\NotificationManager',
-                __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager',
+                __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager'
             ),
             'User\Service\UserService' => array(
                 'shared' => false
@@ -209,13 +222,14 @@ return array(
         'routes' => array(
             'notification' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => false,
+                'may_terminate' => true,
                 'options' => array(
                     'route' => '/notification'
                 ),
                 'child_routes' => array(
-                    'role' => array(
+                    'worker' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
                         'options' => array(
                             'route' => '/worker',
                             'defaults' => array(
@@ -333,7 +347,7 @@ return array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(
-                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity',
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 )
             ),
             'orm_default' => array(
@@ -361,5 +375,4 @@ return array(
             )
         )
     )
-)
-;
+);

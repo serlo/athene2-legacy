@@ -12,9 +12,10 @@
 namespace User\Notification;
 
 use User\Notification\Entity\NotificationLogInterface;
+
 class NotificationManager implements NotificationManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait, \Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
     
     /*
      * (non-PHPdoc) @see \User\Notification\NotificationManagerInterface::createNotification()
@@ -22,7 +23,6 @@ class NotificationManager implements NotificationManagerInterface
     public function createNotification(\User\Entity\UserInterface $user, NotificationLogInterface $eventLog)
     {
         // TODO aggregation
-        
         $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface');
         /* @var $notification \User\Notification\Entity\NotificationInterface */
         $notification = new $className();
@@ -31,12 +31,12 @@ class NotificationManager implements NotificationManagerInterface
         /* @var $notificationLog \User\Notification\Entity\NotificationEventInterface */
         $notificationLog = new $className();
         
-        //$notification->addEvent($notificationLog);
+        // $notification->addEvent($notificationLog);
         $notificationLog->setNotification($notification);
         $notification->setUser($user);
         $notification->setSeen(false);
         $notificationLog->setEventLog($eventLog);
-
+        
         $this->getObjectManager()->persist($notification);
         $this->getObjectManager()->persist($notificationLog);
         
@@ -59,7 +59,12 @@ class NotificationManager implements NotificationManagerInterface
      */
     public function findNotificationsBySubsriber(\User\Service\UserServiceInterface $userService)
     {
-        // TODO Auto-generated method stub
+        return $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Notification\Entity\NotificationInterface'))
+            ->findBy(array(
+            'user' => $userService->getId()
+        ));
     }
 
     protected function createService(Entity\NotificationInterface $notification)

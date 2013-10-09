@@ -12,6 +12,12 @@
 namespace Entity;
 
 return array(
+    'uuid_router' => array(
+        'routes' => array(
+            'entity' => '/entity/router/%d',
+            'entityRevision' => '/entity/repository/compare/%d'
+        )
+    ),
     'class_resolver' => array(
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
         'Entity\Entity\TypeInterface' => 'Entity\Entity\Type',
@@ -22,10 +28,12 @@ return array(
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array('create'),
+                    'actions' => array(
+                        'create'
+                    ),
                     'roles' => 'login'
-                ),
-            ),
+                )
+            )
         )
     ),
     'router' => array(
@@ -66,7 +74,7 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => 'true'
-                    ),
+                    )
                 ),
                 'Entity\Service\EntityService' => array(
                     'setObjectManager' => array(
@@ -112,14 +120,14 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Entity\Plugin\PluginManager' => (function  ($sm)
+            'Entity\Plugin\PluginManager' => (function ($sm)
             {
                 $config = $sm->get('config');
                 $config = new \Zend\ServiceManager\Config($config['entity']['plugins']);
                 $class = new \Entity\Plugin\PluginManager($config);
                 return $class;
             }),
-            'Entity\Manager\EntityManager' => (function  ($sm)
+            'Entity\Manager\EntityManager' => (function ($sm)
             {
                 $config = $sm->get('config');
                 $class = new \Entity\Manager\EntityManager();

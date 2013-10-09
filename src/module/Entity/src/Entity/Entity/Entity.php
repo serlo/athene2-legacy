@@ -30,6 +30,12 @@ use Taxonomy\Entity\TermTaxonomyInterface;
  */
 class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface, TermTaxonomyAware
 {
+    /**
+     * @ORM\Id
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
+     * @ORM\JoinColumn(name="id")
+     */
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist"})

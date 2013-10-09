@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Criteria;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use \Zend\EventManager\EventManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use \Zend\EventManager\EventManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     private $identifier;
 
@@ -52,9 +52,8 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function addRevision(RevisionInterface $revision)
     {
-        //if ($this->hasRevision($revision->getId()))
-        //    throw new OutOfSynchException("A revision with the ID `$revision->getId()` already exists in this repository.");
-        
+        // if ($this->hasRevision($revision->getId()))
+        // throw new OutOfSynchException("A revision with the ID `$revision->getId()` already exists in this repository.");
         $revisions = $this->getRevisions();
         
         $revision->setRepository($this->getEntity());
@@ -69,7 +68,7 @@ class RepositoryService implements RepositoryServiceInterface
         
         $id = $revision->getId();
         $this->getRevisions()->removeElement($revision);
-        //$revision->setRepository(NULL);
+        // $revision->setRepository(NULL);
         
         return $this;
     }
@@ -79,7 +78,12 @@ class RepositoryService implements RepositoryServiceInterface
         if (! is_numeric($id))
             throw new \Versioning\Exception\InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
         
-        return $this->getRevisions()->matching(Criteria::create()->where(Criteria::expr()->eq('id', $id)))->count();
+        return $this->getRevisions()
+            ->filter(function ($e) use($id)
+        {
+            return $e->getId() == $id;
+        })
+            ->count();
     }
 
     public function getRevision($id)
@@ -90,7 +94,12 @@ class RepositoryService implements RepositoryServiceInterface
         if (! $this->hasRevision($id))
             throw new RevisionNotFoundException("A revision with the ID `$id` does not exist in the repository `$this->identifier`.");
         
-        return $this->getRevisions()->matching(Criteria::create()->where(Criteria::expr()->eq('id', $id)))->current();
+        return $this->getRevisions()
+            ->filter(function ($e) use($id)
+        {
+            return $e->getId() == $id;
+        })
+            ->current();
     }
 
     public function getRevisions()
@@ -102,8 +111,9 @@ class RepositoryService implements RepositoryServiceInterface
     {
         return $this->getRevisions()->last();
     }
-    
-    public function hasHead(){
+
+    public function hasHead()
+    {
         return $this->getRevisions()->count();
     }
 

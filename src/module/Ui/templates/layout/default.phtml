@@ -50,6 +50,7 @@ echo $this->doctype();
                                      ->setUlClass('nav navbar-nav pull-right')
                                      ->setPartial('layout/navigation/horizontal.phtml')
                                      ->render();
+                            echo $this->notifications()->render();
                             ?>
                             <?php // if($this->authentication()->hasIdentity()) { ?>
                                 <!-- <ul class="nav navbar-nav pull-right">

@@ -40,6 +40,82 @@ class Uuid implements UuidInterface
     protected $voided;
 
     /**
+     * OneToOne(targetEntity="Entity\Entity\EntityRepository", mappedBy="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    // protected $comment;
+    protected $entity;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    protected $termTaxonomy;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    protected $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    protected $entityRevision;
+
+    /**
+     * @return field_type $entity
+     */
+    public function getEntity ()
+    {
+        return $this->entity;
+    }
+
+	/**
+     * @return field_type $termTaxonomy
+     */
+    public function getTermTaxonomy ()
+    {
+        return $this->termTaxonomy;
+    }
+
+	/**
+     * @return field_type $user
+     */
+    public function getUser ()
+    {
+        return $this->user;
+    }
+
+	/**
+     * @return field_type $entityRevision
+     */
+    public function getEntityRevision ()
+    {
+        return $this->entityRevision;
+    }
+
+	/**
+     * ORM\OneToOne(targetEntity="Page\Entity\Page", mappedBy="uuid")
+     */
+    //protected $page;
+
+    /**
+     * ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="uuid")
+     */
+    //protected $pageRepository;
+
+    public function is($type)
+    {
+        $type = 'get'.ucfirst($type);
+        if (method_exists($this, $type)) {
+            return is_object($this->$type());
+        }
+        return false;
+    }
+
+    /**
      *
      * @return field_type $voided
      */
