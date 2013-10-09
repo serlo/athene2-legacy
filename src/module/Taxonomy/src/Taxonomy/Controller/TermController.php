@@ -33,12 +33,12 @@ class TermController extends AbstractController
         $view->setVariable('form', $form);
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('taxonomy/term/action', array(
+            ->fromRoute('restricted/taxonomy/term/action', array(
             'action' => 'update',
             'id' => $id
         )) . '?ref=' . $this->params('ref', '/'));
         
-        $view->setTemplate('taxonomy/term/form');
+        $view->setTemplate('/taxonomy/term/form');
         
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
@@ -65,14 +65,14 @@ class TermController extends AbstractController
         ));
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('taxonomy/term/create', array(
+            ->fromRoute('restricted/taxonomy/term/create', array(
             'parent' => $this->params('parent'),
             'taxonomy' => $this->params('taxonomy')
         )) . '?ref=' . rawurlencode($this->referer()->toUrl()));
         
         $view = new ViewModel();
         
-        $view->setTemplate('taxonomy/term/form');
+        $view->setTemplate('/taxonomy/term/form');
         $view->setVariable('form', $form);
         
         if ($this->getRequest()->isPost()) {
