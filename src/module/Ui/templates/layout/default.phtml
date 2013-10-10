@@ -91,7 +91,7 @@ echo $this->doctype();
 				</div>
 				<div id="search-content">
 					<!-- tbd:search -->
-                    <input id="search-input" class="input-search" type="search" placeholder="<?php echo $this->translate('Suche'); ?>" tabindex="1"/><i class="icon-search"></i>
+                    <input id="search-input" class="input-search" type="search" placeholder="<?php echo $this->translate('Suche'); ?>" tabindex="1"/><i class="glyphicon glyphicon-search"></i>
                     <!-- markup:<ul id="search-results" class="nav">
                         <li><a href="#">Ergebnis oans</a>
                         </li>
@@ -118,11 +118,11 @@ echo $this->doctype();
                 <?php
                 echo $this->navigation('navigation')
                             ->menu()
+                            ->setPartial('layout/navigation/side-navigation.phtml')
                             ->setOnlyActiveBranch(true)
                             ->setMinDepth(0)
                             ->setMaxDepth(0)
                             ->setUlClass('nav clear')
-                            ->setPartial('layout/navigation/side-navigation.phtml')
                             ->render();
                 ?>
 			</div>
