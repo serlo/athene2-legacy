@@ -33,4 +33,12 @@ interface EntityManagerInterface
      * @return EntityServiceInterface
      */
     public function createEntity($type, array $data = array(), LanguageServiceInterface $language);
+
+    /**
+     * 
+     * @param string $slug
+     * @param LanguageServiceInterface $languageService
+     * @return EntityServiceInterface
+     */
+    public function findEntityBySlug($slug, LanguageServiceInterface $languageService);
 }

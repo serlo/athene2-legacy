@@ -19,6 +19,22 @@ return array(
             )
         )
     ),
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'athene2',
+                'remember_me_seconds' => 6000,
+                'use_cookies' => true,
+                'cookie_secure' => false
+            )
+        ),
+        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ),
     'service_manager' => array(
         'aliases' => array(
             'EntityManager' => 'Doctrine\ORM\EntityManager'
@@ -30,11 +46,6 @@ return array(
         'user' => '',
         'password' => '',
         'database' => ''
-    ),
-    'session' => array(
-        'use_cookies' => true,
-        'cookie_secure' => false,
-        'remember_me_seconds' => 1800,
     ),
     'di' => array(
         'instance' => array(

@@ -1,7 +1,9 @@
 <?php
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\HelperPluginManager;
+use Zend\Session\Container;
 /**
+ *
  *
  *
  *
@@ -188,9 +190,6 @@ return array(
         )
     ),
     'assetic_configuration' => array(
-        // 'routes'
-        // =>
-        // array(),
         'webPath' => realpath('public/assets'),
         'basePath' => 'assets',
         
@@ -206,21 +205,7 @@ return array(
         
         'modules' => array(
             'ui' => array(
-                
-                // module
-                // root
-                // path
-                // for
-                // yout
-                // css
-                // and
-                // js
-                // files
                 'root_path' => __DIR__ . '/../assets/build',
-                
-                // collection
-                // od
-                // assets
                 'collections' => array(
                     'scripts' => array(
                         'assets' => array(

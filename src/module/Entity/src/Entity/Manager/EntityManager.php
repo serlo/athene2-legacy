@@ -17,7 +17,7 @@ use Language\Service\LanguageServiceInterface;
 
 class EntityManager implements EntityManagerInterface
 {
-    use \Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
+    use\Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -46,12 +46,38 @@ class EntityManager implements EntityManagerInterface
         return $this->getInstance($id);
     }
 
+    public function findEntityBySlug($slug, LanguageServiceInterface $languageService)
+    {
+        if (! is_string($slug))
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($slug)));
+        
+        $entity = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('Entity\Entity\EntityInterface'))
+            ->findOneBy(array(
+            'slug' => $slug,
+            'language' => $languageService->getId()
+        ));
+        
+        if (! is_object($entity))
+            throw new Exception\EntityNotFoundException(sprintf('Entity could not be found by slug `%s` and language `%s`.', $slug, $languageService->getCode()));
+        
+        $id = $entity->getId();
+        
+        if (! $this->hasInstance($id)) {
+            $this->addInstance($entity->getId(), $this->createService($entity));
+        }
+        return $this->getInstance($id);
+    }
+
     public function createEntity($typeName, array $data = array(), LanguageServiceInterface $languageService)
     {
         $type = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Entity\Entity\TypeInterface'))
-            ->findOneBy(array('name' => $typeName));
+            ->findOneBy(array(
+            'name' => $typeName
+        ));
         
         if (! is_object($type))
             throw new Exception\RuntimeException(sprintf('Type %s not found', $typeName));

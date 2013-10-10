@@ -11,6 +11,7 @@
  */
 namespace LearningResource;
 
+use Entity\Service\EntityServiceInterface;
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -60,6 +61,20 @@ return array(
                     $instance = new Plugin\Link\LinkPlugin();
                     $instance->setSharedLinkManager($sm->getServiceLocator()
                         ->get('Link\Manager\SharedLinkManager'));
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    return $instance;
+                },
+                'provider' => function ($sm)
+                {
+                    $instance = new Plugin\Provider\ProviderPlugin();
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    return $instance;
+                },
+                'page' => function ($sm)
+                {
+                    $instance = new Plugin\Page\PagePlugin();
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;
@@ -221,6 +236,24 @@ return array(
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
+                    ),
+                    'page' => array(
+                        'plugin' => 'page'
+                    ),
+                    'provider' => array(
+                        'plugin' => 'provider',
+                        'title' => function (EntityServiceInterface $es)
+                        {
+                            $es->repository()
+                                ->getCurrentRevision()
+                                ->get('title');
+                        },
+                        'content' => function (EntityServiceInterface $es)
+                        {
+                            $es->repository()
+                                ->getCurrentRevision()
+                                ->get('content');
+                        }
                     )
                 )
             )
@@ -234,21 +267,24 @@ return array(
     'di' => array(
         'allowed_controllers' => array(
             'LearningResource\Plugin\Repository\Controller\RepositoryController',
-            'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController'
+            'LearningResource\Plugin\Page\Controller\PageController'
         ),
         'definition' => array(
             'class' => array(
                 'LearningResource\Plugin\Repository\Controller\RepositoryController' => array(
                     'setEntityManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setUserManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
-                'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController' => array(
+                'LearningResource\Plugin\Page\Controller\PageController' => array(
                     'setEntityManager' => array(
-                        'required' => 'true'
+                        'required' => true
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => true
                     )
                 )
             )
@@ -280,13 +316,14 @@ return array(
                                     )
                                 )
                             ),
-                            'topic-folder' => array(
+                            'page' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/topic-folder/:action/:entity[/:term]',
+                                    'route' => '/view/:slug',
                                     'defaults' => array(
-                                        'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
-                                        'plugin' => 'topicFolder'
+                                        'controller' => 'LearningResource\Plugin\Page\Controller\PageController',
+                                        'plugin' => 'page',
+                                        'action' => 'index'
                                     )
                                 )
                             )

@@ -48,6 +48,7 @@ class EntityController extends AbstractActionController
         ));
         
         $this->checkResponse($response);
+        return '';
     }
 
     public function checkResponse(ResponseCollection $response)
