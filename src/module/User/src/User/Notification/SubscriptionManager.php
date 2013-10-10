@@ -13,6 +13,9 @@ namespace User\Notification;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Uuid\Entity\UuidInterface;
+use User\Service\UserServiceInterface;
+use Uuid\Entity\UuidHolder;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
@@ -35,9 +38,33 @@ class SubscriptionManager implements SubscriptionManagerInterface
         return $collection;
     }
 
+    public function isUserSubscribed(UserServiceInterface $user, UuidHolder $object)
+    {
+        return $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
+            ->findBy(array(
+            'subscriber' => $user->getId(),
+            'object' => $object->getId()
+        ))
+            ->count() !== 0;
+    }
+
+    public function subscribe(UserServiceInterface $user, UuidHolder $object, $notifyMailman)
+    {
+        $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
+        /* @var $entity \User\Notification\Entity\SubscriptionInterface */
+        $entity = new $class();
+        $entity->setSubscriber($user->getEntity());
+        $entity->setSubscribedObject($object->getUuidEntity());
+        $entity->setNotifyMailman($notifyMailman === TRUE);
+        $this->getObjectManager()->persist($entity);
+        return $this;
+    }
+
     private function hydrate(Collection $collection, array $subscriptions)
     {
-        foreach($subscriptions as $subscription){
+        foreach ($subscriptions as $subscription) {
             /* @var $subscription Entity\SubscriptionInterface */
             $collection->add($subscription->getSubscriber());
         }

@@ -67,7 +67,7 @@ interface UserInterface
     
     public function addRole(RoleInterface $role, LanguageInterface $language = NULL);
     
-    public function getRoles($languageId);
+    public function getRoles(LanguageInterface $language = NULL);
     
     public function populate (array $data = array());
 }

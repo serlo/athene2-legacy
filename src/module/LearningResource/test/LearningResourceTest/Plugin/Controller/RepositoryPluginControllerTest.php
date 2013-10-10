@@ -92,7 +92,11 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
         
         $this->dispatch('/entity/repository/add-revision/1', 'POST', array(
             'title' => 'a',
-            'content' => 'b'
+            'content' => 'b',
+            'subscription' => array(
+                'subscribe' => true,
+                'mailman' => true
+            )
         ));
         
         $this->assertResponseStatusCode(302);

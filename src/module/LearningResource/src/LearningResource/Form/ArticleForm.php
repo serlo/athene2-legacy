@@ -22,7 +22,7 @@ class ArticleForm extends Form
         parent::__construct('article');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('text-solution');
-
+        
         $this->add(array(
             'name' => 'title',
             'type' => 'Zend\Form\Element\Text',
@@ -39,21 +39,8 @@ class ArticleForm extends Form
             )
         ));
         
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Speichern'
-            )
-        ));
-        $this->add(array(
-            'name' => 'reset',
-            'attributes' => array(
-                'type' => 'reset',
-                'value' => 'Zurücksetzen'
-            )
-        ));
-
+        $this->add(new Controls());
+        
         $inputFilter->add(array(
             'name' => 'title',
             'required' => true

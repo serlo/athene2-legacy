@@ -41,7 +41,7 @@ class UserService implements UserServiceInterface
     }
 
 	public function getRoleNames(LanguageServiceInterface $language = NULL){
-        if($language) $language = $language->getEntity();
+        $language = $language === NULL ? $language : $language->getEntity();
         
         $return = array();
         foreach($this->getEntity()->getRoles($language) as $role){
@@ -52,6 +52,7 @@ class UserService implements UserServiceInterface
 
     public function hasRole ($roleName, LanguageServiceInterface $language = NULL)
     {
+        $language = $language === NULL ? $language : $language->getEntity();
         $roles = $this->getRoles($language);
         foreach($roles as $roleEntity){
             if($roleEntity->getName() == $roleName){

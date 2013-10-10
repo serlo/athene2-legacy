@@ -181,8 +181,9 @@ class RepositoryPlugin extends AbstractPlugin
         $repository->addRevision($revision);
         
         foreach ($form->getData() as $key => $value) {
-            if ($key != 'submit' && $key != 'reset') // haxxy...
+            if (is_string($key) && is_string($value)){
                 $this->getObjectManager()->persist($revision->addField($key, $value));
+            }
         }
         
         return $this;

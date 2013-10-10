@@ -12,12 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 use User\Notification\Entity\SubscriptionInterface;
 
 /**
- *
  * @ORM\Entity
  * @ORM\Table(name="subscription")
  */
 class Subscription implements SubscriptionInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -26,13 +26,13 @@ class Subscription implements SubscriptionInterface
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Event\Entity\EventLog")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid")
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $object;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\OneToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $user;
@@ -41,39 +41,58 @@ class Subscription implements SubscriptionInterface
      * @ORM\Column(type="boolean", name="notify_mailman")
      */
     protected $notifyMailman;
-    
-	/* (non-PHPdoc)
-     * @see \User\Notification\Entity\SubscriptionInterface::setSubscriber()
+
+    /**
+     *
+     * @return field_type $notifyMailman
      */
-    public function setSubscriber (\User\Entity\UserInterface $user)
+    public function getNotifyMailman()
+    {
+        return $this->notifyMailman;
+    }
+
+    /**
+     *
+     * @param field_type $notifyMailman            
+     * @return $this
+     */
+    public function setNotifyMailman($notifyMailman)
+    {
+        $this->notifyMailman = $notifyMailman === TRUE;
+        return $this;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::setSubscriber()
+     */
+    public function setSubscriber(\User\Entity\UserInterface $user)
     {
         $this->user = $user;
         return $this;
     }
-
-	/* (non-PHPdoc)
-     * @see \User\Notification\Entity\SubscriptionInterface::getSubscriber()
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::getSubscriber()
      */
-    public function getSubscriber ()
+    public function getSubscriber()
     {
         return $this->user;
     }
-
-	/* (non-PHPdoc)
-     * @see \User\Notification\Entity\SubscriptionInterface::setSubscribedObject()
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::setSubscribedObject()
      */
-    public function setSubscribedObject (\Uuid\Entity\UuidInterface $uuid)
+    public function setSubscribedObject(\Uuid\Entity\UuidInterface $uuid)
     {
         $this->object = $uuid;
         return $this;
     }
-
-	/* (non-PHPdoc)
-     * @see \User\Notification\Entity\SubscriptionInterface::getSubscribedObject()
+    
+    /*
+     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::getSubscribedObject()
      */
-    public function getSubscribedObject ()
+    public function getSubscribedObject()
     {
         return $this->object;
     }
-
 }
