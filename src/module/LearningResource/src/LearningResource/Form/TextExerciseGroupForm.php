@@ -15,7 +15,7 @@ use Zend\InputFilter\InputFilter;
 class TextExerciseGroupForm extends Form
 {
 
-    function __construct ()
+    function __construct()
     {
         parent::__construct('text-exercise-group');
         $this->setAttribute('method', 'post');
@@ -29,25 +29,11 @@ class TextExerciseGroupForm extends Form
             )
         ));
         
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Speichern'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'reset',
-            'attributes' => array(
-                'type' => 'reset',
-                'value' => 'Zurücksetzen'
-            )
-        ));
+        $this->add(new Controls());
         
         $inputFilter->add(array(
-                'name' => 'content',
-                'required' => true
+            'name' => 'content',
+            'required' => true
         ));
         
         $this->setInputFilter($inputFilter);

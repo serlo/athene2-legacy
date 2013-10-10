@@ -19,12 +19,17 @@ use Uuid\Entity\UuidInterface;
 
 abstract class AbstractListener implements SharedListenerAggregateInterface
 {
-    use\User\Notification\NotificationLogManagerAwareTrait;
+    use \User\Notification\NotificationLogManagerAwareTrait,\User\Notification\SubscriptionManagerAwareTrait;
 
     public function logEvent(AbstractActionController $controller, UserServiceInterface $actor, EntityServiceInterface $uuid, UuidInterface $reference = NULL)
     {
         $this->getNotificationLogManager()->logEvent($controller->getEvent()
             ->getRouteMatch()
             ->getMatchedRouteName(), $actor->getEntity(), $uuid->getEntity(), $reference);
+    }
+
+    public function subscribe($user, $object, $notifyMailman)
+    {
+        $this->getSubscriptionManager()->subscribe($user, $object, $notifyMailman);
     }
 }

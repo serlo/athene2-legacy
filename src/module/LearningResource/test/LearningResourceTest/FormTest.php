@@ -17,7 +17,7 @@ use LearningResource\Form\TextExerciseForm;
 use LearningResource\Form\TextExerciseGroupForm;
 use LearningResource\Form\TextSolutionForm;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+abstract class FormTest extends \PHPUnit_Framework_TestCase
 {
 
     public function setUp()

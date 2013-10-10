@@ -113,6 +113,14 @@ return array(
                         'required' => true
                     )
                 ),
+                __NAMESPACE__ . '\Notification\Listener\RepositoryPluginControllerListener' => array(
+                    'setNotificationLogManager' => array(
+                        'required' => true
+                    ),
+                    'setSubscriptionManager' => array(
+                        'required' => true
+                    ),
+                ),
                 __NAMESPACE__ . '\Notification\SubscriptionManager' => array(
                     'setClassResolver' => array(
                         'required' => true

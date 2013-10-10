@@ -370,9 +370,9 @@ class User extends UuidEntity implements UserInterface
         return $this;
     }
 
-    public function getRoles($languageId = NULL)
+    public function getRoles(LanguageInterface $language = NULL)
     {
-        $criteria = $languageId ? Criteria::create(Criteria::expr()->eq('language', $languageId)) : Criteria::create(Criteria::expr()->isNull('language'));
+        $criteria = $language !== NULL ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
         $mn = $this->getUserRoles()->matching($criteria);
         $collection = new ArrayCollection();
         foreach ($mn as $key => $m) {

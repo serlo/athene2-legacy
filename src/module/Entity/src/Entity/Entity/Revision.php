@@ -114,7 +114,7 @@ class Revision extends UuidEntity implements RevisionInterface
     }
 
     public function set($field, $key)
-    {
+    {        
         $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
             ->setFirstResult(0)
             ->setMaxResults(1);

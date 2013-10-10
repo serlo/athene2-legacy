@@ -42,4 +42,17 @@ interface SubscriptionInterface
      * @return UuidInterface
      */
     public function getSubscribedObject();
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function getNotifyMailman();
+
+    /**
+     *
+     * @var bool
+     * @return $this
+     */
+    public function setNotifyMailman($notifyMailman);
 }

@@ -18,7 +18,7 @@ use Entity\Plugin\Controller\AbstractController;
 
 class RepositoryController extends AbstractController
 {
-    use\User\Manager\UserManagerAwareTrait;
+    use \User\Manager\UserManagerAwareTrait;
 
     public function addRevisionAction()
     {
@@ -45,9 +45,18 @@ class RepositoryController extends AbstractController
                 ->getPost());
             if ($form->isValid()) {
                 $plugin->commitRevision($form, $user);
+                
+                $this->getEventManager()->trigger('add-revision', $this, array(
+                    'entity' => $entity,
+                    'user' => $user,
+                    'post' => $this->params()
+                        ->fromPost()
+                ));
+
                 $plugin->getObjectManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
                 $this->redirect()->toUrl($ref);
+                return '';
             }
         }
         
