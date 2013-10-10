@@ -20,7 +20,7 @@ use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -52,6 +52,7 @@ class RepositoryPlugin extends AbstractPlugin
     {
         return array(
             'revision_form' => 'FormNotFound',
+            'slugify' => NULL,
             'field_order' => array()
         );
     }
@@ -157,8 +158,11 @@ class RepositoryPlugin extends AbstractPlugin
      */
     public function checkout($revisionId)
     {
-        $revision = $this->getRepository()->getRevision($revisionId);
-        $this->getRepository()->checkoutRevision($revision);
+        $this->getRepository()->checkoutRevision($revisionId);
+        if (is_string($this->getOption('slugify'))) {
+            $revision = $this->getRepository()->getRevision($revisionId);
+            $this->getEntityService()->setSlug($this->slugify($revision->get($this->getOption('slugify'))));
+        }
         return $this;
     }
 
@@ -202,5 +206,31 @@ class RepositoryPlugin extends AbstractPlugin
     public function isUnrevised()
     {
         return $this->getRepository()->isUnrevised();
+    }
+
+    protected function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+        
+        // trim
+        $text = trim($text, '-');
+        
+        // transliterate
+        if (function_exists('iconv')) {
+            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        }
+        
+        // lowercase
+        $text = strtolower($text);
+        
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+        
+        if (empty($text)) {
+            return 'n-a';
+        }
+        
+        return $text;
     }
 }

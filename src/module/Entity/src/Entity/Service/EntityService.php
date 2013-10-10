@@ -32,6 +32,16 @@ class EntityService implements EntityServiceInterface
     {
         return $this->getEntity()->getId();
     }
+    
+    public function getSlug($slug)
+    {
+        return $this->getEntity()->getSlug($slug);
+    }
+    
+    public function setSlug($slug)
+    {
+        return $this->getEntity()->setSlug($slug);
+    }
 
     public function setConfig(array $config)
     {

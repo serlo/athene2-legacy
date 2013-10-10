@@ -16,10 +16,10 @@ use Entity\Plugin\AbstractPlugin;
 class PagePlugin extends AbstractPlugin
 {
 
-    public function getDefaultConfig()
+    protected function getDefaultConfig()
     {
         return array(
-            'template' => 'learning-resource/plugin/page/index',
+            'template' => 'learning-resource/plugin/page/view',
             'provider' => 'provider',
             'fields' => array(
                 'title' => 'title',
@@ -33,11 +33,15 @@ class PagePlugin extends AbstractPlugin
         $fields = $this->getOption('fields');
         $provider = $this->getOption('provider');
         
-        if (! array_key_exists($field, $fields)) {
+        if (array_key_exists($field, $fields)) {
             return $this->getEntityService()
                 ->$provider()
                 ->get($fields[$field]);
         }
         throw new \Entity\Exception\RuntimeException(sprintf('Could not find an alias for %s', $field));
+    }
+    
+    public function getTemplate(){
+        return $this->getOption('template');
     }
 }

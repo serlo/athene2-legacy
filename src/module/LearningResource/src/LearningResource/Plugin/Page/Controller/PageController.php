@@ -16,7 +16,7 @@ use Versioning\Exception\RevisionNotFoundException;
 
 class PageController extends AbstractController
 {
-    use\Language\Manager\LanguageManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait;
 
     public function indexAction()
     {
@@ -28,12 +28,11 @@ class PageController extends AbstractController
                 'title' => $page->getContentFor('title'),
                 'content' => $page->getContentFor('content')
             ));
+            $model->setTemplate($page->getTemplate());
+            return $model;
         } catch (RevisionNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
         }
-        
-        $model->setTemplate($page->getTemplae());
-        return $model;
     }
 
     public function getEntityService($slug = NULL)

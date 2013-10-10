@@ -61,7 +61,7 @@ class EntityPlugin extends AbstractPlugin
     private function iterEntities(\Doctrine\Common\Collections\Collection $entities,\Doctrine\Common\Collections\Collection $collection){
         foreach ($entities as $entity) {
             $this->iterEntity($entity, $collection);
-            $this->iterLinks($entity, $collection);
+            //$this->iterLinks($entity, $collection);
         }
     }
     

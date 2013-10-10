@@ -228,6 +228,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\ArticleForm',
+                            'slugify' => 'title',
                             'field_order' => array(
                                 'title',
                                 'content'
@@ -242,18 +243,22 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'title' => function (EntityServiceInterface $es)
-                        {
-                            $es->repository()
-                                ->getCurrentRevision()
-                                ->get('title');
-                        },
-                        'content' => function (EntityServiceInterface $es)
-                        {
-                            $es->repository()
-                                ->getCurrentRevision()
-                                ->get('content');
-                        }
+                        'options' => array(
+                            'fields' => array(
+                                'title' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                        ->getCurrentRevision()
+                                        ->get('title');
+                                },
+                                'content' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                        ->getCurrentRevision()
+                                        ->get('content');
+                                }
+                            )
+                        )
                     )
                 )
             )

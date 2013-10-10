@@ -30,6 +30,7 @@ use Taxonomy\Entity\TermTaxonomyInterface;
  */
 class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface, TermTaxonomyAware
 {
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
@@ -80,6 +81,11 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $date;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $slug;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
@@ -90,6 +96,26 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $parentCollection;
 
     protected $fieldOrder;
+
+    /**
+     *
+     * @return string $slug
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     *
+     * @param string $slug            
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function getFieldOrder($field)
     {
@@ -227,7 +253,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this->childLinks;
     }
 
-    public function addChild(\Link\Entity\LinkEntityInterface $child,\Link\Entity\LinkTypeInterface $type, $order = -1)
+    public function addChild(\Link\Entity\LinkEntityInterface $child, \Link\Entity\LinkTypeInterface $type, $order = -1)
     {
         if ($order == - 1) {
             $order = $this->getLinkOrderOffset($this->getChildLinks(), $child, $type, 'child') + 1;
@@ -240,7 +266,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this;
     }
 
-    public function addParent(\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $order = -1)
+    public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $order = -1)
     {
         if ($order == - 1) {
             $order = $this->getLinkOrderOffset($this->getParentLinks(), $parent, $type, 'parent') + 1;
@@ -261,7 +287,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $e;
     }
 
-    protected function getLinkOrderOffset(PersistentCollection $collection, \Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type, $field)
+    protected function getLinkOrderOffset(PersistentCollection $collection,\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type, $field)
     {
         $e = $collection->matching(Criteria::create(Criteria::expr()->andX(Criteria::expr()->eq($field, $parent->getId()), Criteria::expr()->eq('type', $type->getId()))))
             ->last();
@@ -289,22 +315,19 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this;
     }
     
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::removeChild()
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::removeChild()
      */
-    public function removeChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function removeChild(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
     {
         // TODO Auto-generated method stub
-        
     }
-
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::removeParent()
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::removeParent()
      */
-    public function removeParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function removeParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
     {
         // TODO Auto-generated method stub
-        
     }
-
 }
