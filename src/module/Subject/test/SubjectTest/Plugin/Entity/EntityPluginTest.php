@@ -74,9 +74,9 @@ class EntityPluginTest extends AbstractPluginTest
                 ->method('repository')
                 ->will($this->returnValue($repositoryPluginMock));
             
-            $entityService->expects($this->atLeastOnce())
-                ->method('link')
-                ->will($this->returnValue($linkPluginMock));
+            //$entityService->expects($this->atLeastOnce())
+            //    ->method('link')
+            //    ->will($this->returnValue($linkPluginMock));
             
             $collection->add($entityService);
         }

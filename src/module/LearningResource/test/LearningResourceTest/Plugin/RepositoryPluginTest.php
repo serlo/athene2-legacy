@@ -104,9 +104,6 @@ class RepositoryPluginTest extends \PHPUnit_Framework_TestCase
     {
         $this->repositoryServiceMock->expects($this->once())
             ->method('checkoutRevision');
-        $this->repositoryServiceMock->expects($this->atLeastOnce())
-            ->method('getRevision')
-            ->will($this->returnValue($this->getMock('Entity\Entity\Revision')));
         $this->repository->checkout(1);
     }
 
