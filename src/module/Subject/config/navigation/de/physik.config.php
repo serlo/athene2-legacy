@@ -26,7 +26,10 @@ return array(
             ),*/
             array(
                 'label' => 'Lernen',
-                'route' => 'subject',
+                'route' => 'subject/plugin/taxonomy/topic',
+                'params' => array(
+                    'subject' => 'physik'
+                ),
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
                     'type' => 'subject',

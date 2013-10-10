@@ -17,7 +17,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait,\Language\Service\LanguageServiceAwareTrait; // , \Common\Traits\ConfigAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait,\Language\Service\LanguageServiceAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     
     /**
      *
@@ -61,7 +61,8 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         foreach ($terms as $term) {
             $current = array();
             $current['route'] = $this->options['route'];
-            $current['params'] = array_merge_recursive($this->options['params'], array(
+            
+            $current['params'] = ArrayUtils::merge($this->options['params'], array(
                 'path' => $term->getSlug()
             ));
             $current['label'] = $term->getName();
