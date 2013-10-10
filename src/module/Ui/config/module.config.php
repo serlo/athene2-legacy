@@ -209,6 +209,7 @@ return array(
                 'collections' => array(
                     'scripts' => array(
                         'assets' => array(
+                            'bower_components/modernizr/modernizr.js',
                             'bower_components/requirejs/require.js',
                             'scripts/main.js'
                         )
@@ -225,13 +226,18 @@ return array(
                     ),
                     'main_fonts' => array(
                         'assets' => array(
-                            'styles/fonts/*.eot',
+                            'styles/fonts/*',
                             'styles/fonts/*.woff',
                             'styles/fonts/*.svg',
                             'styles/fonts/*.ttf'
                         ),
                         'options' => array(
                             'move_raw' => true
+                        )
+                    ),
+                    'main_images' => array(
+                        'assets' => array(
+                            'images/*'
                         )
                     )
                 )

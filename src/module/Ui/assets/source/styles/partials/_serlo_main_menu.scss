@@ -1,0 +1,19 @@
+#main-nav {
+    > li > a {
+        background: $gray;
+        color: white;
+        margin-bottom: 2px;
+
+        &:hover {
+            background: $themeColor;
+        }
+
+        .caret {
+            float: right;
+            margin-top: 8px;
+
+            border-top-color: white;
+            border-bottom-color: white;
+        }
+    }
+}

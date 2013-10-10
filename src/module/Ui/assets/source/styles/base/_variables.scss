@@ -17,3 +17,25 @@ $navbarBackgroundHighlight: $navbarBackground;
 
 // FOOTER
 $footerBackground: #FFF;
+
+
+// MAIN LAYOUT
+$navigationWidth: 200px;
+$navigationMargin: 0;
+$contentWidth: 740px;
+$sidebarWidth: 200px;
+
+// Navigation Breakpoint Grid
+$navigationBreakPoint: 1140px;
+$gridGutterWidthNavigation: 16px;
+$gridColumnWidthNavigation: 67px;
+
+// Sidebar Breakpoint Grid
+$sidebarBreakPoint: 980px;
+$gridGutterWidthSidebar: 8px;
+$gridColumnWidthSidebar: 61px;
+
+// Full Stack Breakpoint Grid
+$fullStackBreakPoint: 1350px;
+$gridGutterWidthFullStack: 30px;
+$gridColumnWidthFullStack: 85px;

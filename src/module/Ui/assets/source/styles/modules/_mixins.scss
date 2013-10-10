@@ -1,0 +1,14 @@
+@mixin placeholder-color($color: "white") {
+  &::-webkit-input-placeholder {
+    color: #{$color};
+  }
+  &:-moz-placeholder {
+    color: #{$color};
+  }
+  &::-moz-placeholder {
+    color: #{$color};
+  }
+  &::-ms-placeholder {
+    color: #{$color};
+  }
+}

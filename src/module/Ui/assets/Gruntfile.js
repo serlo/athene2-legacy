@@ -243,7 +243,7 @@ module.exports = function (grunt) {
         'cssmin',
         'imagemin',
         'requirejs',
-        // 'modernizr',
+        'modernizr',
         'uglify'
     ]);
 
