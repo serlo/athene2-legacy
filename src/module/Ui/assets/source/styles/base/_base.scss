@@ -1,7 +1,25 @@
+/* BODY / HTML*/
+body,html {
+  width: 100%;
+  height: 100%;
+}
+
 html {
-    background-color: white;
+  background: $backgroundColor;
 }
 
 body {
-    background-color: $backgroundColor;
+  background: none transparent;
+  
+  transform-origin: 50% 250px;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+  // ios overfloy-x hidden fix
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+h1 {
+    font-size: 30px;
 }
