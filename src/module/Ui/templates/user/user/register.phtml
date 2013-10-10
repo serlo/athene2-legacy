@@ -1,0 +1,27 @@
+<h1 class="page_header"><?php echo $this->translate('Registrieren'); ?></h1>
+<?php
+$this->form->prepare();
+echo $this->form()->openTag($this->form);
+echo $this->formRow($this->form->get('username'));
+echo $this->formRow($this->form->get('email'));
+echo $this->formRow($this->form->get('emailConfirm'));
+echo $this->formRow($this->form->get('password'));
+echo $this->formRow($this->form->get('passwordConfirm'));
+echo $this->formRow($this->form->get('givenname'));
+echo $this->formRow($this->form->get('lastname'));
+echo $this->formRow($this->form->get('gender'));
+echo $this->formRow($this->form->get('tos'));
+?>
+
+<div class="control-group">
+	<div class="controls">
+		<div class="col-xs-3"><?php
+echo $this->forminput($this->form->get('submit'));
+?></div>
+		<div class="col-xs-3"><?php
+echo $this->forminput($this->form->get('reset'));
+?></div>
+	</div>
+</div>
+<?php
+echo $this->form()->closeTag();

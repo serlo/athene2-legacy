@@ -1,0 +1,30 @@
+{
+	"name" : "serlo-org/athene2",
+	"description" : "Advanced Learning Resources Manager",
+	"authors" : [{
+			"name" : "Aeneas Rekkas",
+			"email" : "aeneas.rekkas@serlo.org"
+		}
+	],
+	"keywords" : [
+		"athene2",
+		"lrm",
+		"alrm"
+	],
+	"homepage" : "http://www.serlo.org",
+	"license" : [
+		"LGPL-3.0+"
+	],
+	"require" : {
+		"neilime/zf2-twb-bundle" : "dev-master",
+		"doctrine/doctrine-orm-module" : "0.*",
+		"widmogrod/zf2-assetic-module" : "dev-master",
+		"zf-commons/zfc-rbac" : "dev-master",
+		"php" : ">=5.3.3",
+		"zf-commons/zfc-base" : "0.*",
+		"zendframework/zendframework" : "dev-master",
+		"twitter/bootstrap" : "dev-master",
+    	"zf-commons/zfc-user": "dev-master"
+	},
+	"minimum-stability" : "dev"
+}

@@ -1,0 +1,29 @@
+// Put quick fixes / try-outs / dirty stuff here
+// ...and feel ashamed!
+.term {
+    // @extend .clearfix;
+    clear: right;
+    padding-bottom: 0.4em;
+}
+
+#navigation {
+    width: 160px;
+    float: left;
+}
+
+#main {
+    margin-left: 160px;
+}
+
+.nav-header {
+    font-weight: bold;
+}
+
+#page {
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 75px;
+  
+  transform-style: preserve-3d;
+  transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+}

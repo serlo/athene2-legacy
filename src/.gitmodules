@@ -1,0 +1,3 @@
+[submodule "FuelUx"]
+	path = /src/public/fuelux/
+	url = https://github.com/ExactTarget/fuelux.git

@@ -1,0 +1,19 @@
+/* THEME */
+
+// $themeColor: #008FAB;
+$themeColor: #007EC1;
+// $themeColor: #00A0DF; //visionsummit-logo blue
+$themeColorLight: lighten($themeColor, 5%);
+$gray: #4B4D4C;
+$darkGray: darken($gray, 8%);
+$darkerGray: darken($gray, 18%);
+$lightGray: lighten($gray, 34%);
+$lighterGray: lighten($gray, 50%);
+$backgroundColor: #E4E6E6;
+
+// TOP NAV BAR
+$navbarBackground: #FBFBFB;
+$navbarBackgroundHighlight: $navbarBackground;
+
+// FOOTER
+$footerBackground: #FFF;

@@ -1,0 +1,32 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
+<div class="pull-right btn-group">
+	<div class="btn-group group-dropdown">
+		<a class="btn btn-default btn-mini dropdown-toggle" data-toggle="dropdown"
+			href="#"> <i class="glyphicon icon-plus"></i> <span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+            <?php foreach($this->term->getAllowedParentTypes() as $taxonomy):?>
+                <li><a
+    				href="<?php echo $this->url('restricted/taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
+            <?php endforeach;?>
+		</ul>
+	</div>
+	<a
+		href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
+		class="btn btn-default btn-mini"><i class="glyphicon glyphicon-pencil"></i></a>
+	<div class="btn btn-default btn-mini">
+		<i class="glyphicon glyphicon-resize-vertical"></i>
+	</div>
+	<?php echo $this->modal()->delete('<i class="glyphicon glyphicon-remove glyphicon-white" role="button"></i>',  $this->url('restricted/taxonomy/term/action',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-danger btn-mini'); ?>
+</div>

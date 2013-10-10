@@ -1,0 +1,12 @@
+.*
+.project
+.settings/
+.buildpath
+.settings/*
+!.gitignore
+!.gitmodules
+!.travis.yml
+deployment.properties
+phpdoc-*.log
+docs/
+coverage/

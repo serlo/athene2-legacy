@@ -1,0 +1,27 @@
+<?php
+/**
+ *
+* Athene2 - Advanced Learning Resources Manager
+*
+* @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+* @license	LGPL-3.0
+* @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+* @link		https://github.com/serlo-org/athene2 for the canonical source repository
+* @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+*/
+$lastType = $this->term;
+?>
+<ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
+    <?php foreach($this->term->getChildren() as $term):?>
+        <?php if($lastType !== $term->getTaxonomy()): ?>
+        <?php $lastType = $term->getTaxonomy(); ?>
+            </ol>
+            <ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
+        <?php endif; ?>
+        <li class="term" data-id="<?php echo $term->getId(); ?>">
+    		<?php echo $term->getName(); ?>
+            <?php echo $this->partial('taxonomy/taxonomy/actions', array('term' => $term)); ?>
+            <?php echo $this->partial('taxonomy/taxonomy/partial', array('term' => $term)); ?>
+        </li>
+    <?php endforeach; ?>
+</ol>

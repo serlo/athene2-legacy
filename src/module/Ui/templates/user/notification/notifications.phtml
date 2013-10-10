@@ -1,0 +1,9 @@
+<div class="notifications">
+<?php foreach($this->notifications as $notification): ?>
+    <?php if($this->resolver('user/notification/type/'.$notification->getId())):?>
+            <?php echo $this->partial('user/notification/type/'.$notification->getId(), array('notification' => $notification)); ?>
+        <?php else: ?>
+            <?php echo $this->partial('user/notification/type/default', array('notification' => $notification)); ?>
+    <?php endif; ?>
+<?php endforeach; ?>
+</div>
