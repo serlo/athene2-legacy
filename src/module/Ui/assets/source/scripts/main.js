@@ -20,7 +20,8 @@ require.config({
         "common" : "modules/serlo_common",
         "events": "libs/eventscope",
         "cache": "libs/cache",
-        "referrer_history" : "modules/serlo_referrer_history"
+        "referrer_history" : "modules/serlo_referrer_history",
+        "side_navigation" : "modules/serlo_side_navigation"
     },
     shim: {
         underscore: {

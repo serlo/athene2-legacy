@@ -9,13 +9,12 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'referrer_history'], function ($, ReferrerHistory) {
+define("ATHENE2", ['jquery', 'side_navigation'], function ($, SideNavigation) {
     "use strict";
 
     function init() {
-        // voidvoid
-        $.extend({});
-        ReferrerHistory.getOne();
+        $.extend();
+        new SideNavigation();
     }
 
     return {
