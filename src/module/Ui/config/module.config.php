@@ -235,9 +235,12 @@ return array(
                             'move_raw' => true
                         )
                     ),
-                    'main_images' => array(
+                    'images' => array(
                         'assets' => array(
                             'images/*'
+                        ),
+                        'options' => array(
+                            'move_raw' => true
                         )
                     )
                 )
