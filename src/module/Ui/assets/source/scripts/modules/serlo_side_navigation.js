@@ -11,7 +11,7 @@
  * Saves the browser pathname on the client side.
  */
 
-/*global define, console*/
+/*global define*/
 define("side_navigation", ["jquery", "underscore", "referrer_history"], function ($, _, ReferrerHistory, undefined) {
     "use strict";
     var defaults,
@@ -76,7 +76,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         function find(dataHierarchy) {
             return _.chain(dataHierarchy).map(deepFlatten).flatten().filter(function (item) {
                 if (item.url === url) {
-                    console.log('FOUND IT', item);
                     return item;
                 }
                 return false;
