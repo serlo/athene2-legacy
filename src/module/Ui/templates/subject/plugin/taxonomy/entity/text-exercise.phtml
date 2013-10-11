@@ -13,24 +13,26 @@ $exercise = $this->entity;
 $solution = $exercise->solution()->findChild();
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
-<article class="text-exercise">
-	<section class="scope">
-        <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
-        <?php echo $revision->get('content'); ?>
-    </section>
-	<section class="solution">
-    	<?php if(!is_object($solution)): ?>
-    	   <?php echo sprintf($this->translate('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?'), rawurldecode($this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array( 'as' => 'child', 'to_entity' => $exercise->getId())))))); ?>
-    	<?php else: ?>
-    	<?php $solutionRepository = $solution->repository(); ?>
-    	<?php if($solutionRepository->hasCurrentRevision()): ?>
-            <?php echo $solutionRepository->getCurrentRevision()->get('content'); ?>
-        <?php elseif($solutionRepository->hasHead()): ?>
-            <?php echo $this->translate('Diese Lösung wartet noch auf Freigabe durch die Redaktion. Sie ist aber bald verfügbar!'); ?>
-        <?php else: ?>
-            <?php echo sprintf($this->translate('Diese Lösung wurde zwar angelegt, enthält aber noch keinen Inhalt. Möchtest du eine Lösung <a href="%s">einreichen</a>?'), $this->url('entity/plugin/repository', array('action' => 'add-revision', 'entity' => $solution->getId()))); ?>
-    	<?php endif; ?>
-        <?php endif; ?>
-    </section>
-</article>
+<li>
+    <article class="text-exercise">
+    	<section class="scope">
+            <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
+            <?php echo $revision->get('content'); ?>
+        </section>
+    	<section class="solution">
+        	<?php if(!is_object($solution)): ?>
+        	   <?php echo sprintf($this->translate('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?'), rawurldecode($this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array( 'as' => 'child', 'to_entity' => $exercise->getId())))))); ?>
+        	<?php else: ?>
+        	<?php $solutionRepository = $solution->repository(); ?>
+        	<?php if($solutionRepository->hasCurrentRevision()): ?>
+                <?php echo $solutionRepository->getCurrentRevision()->get('content'); ?>
+            <?php elseif($solutionRepository->hasHead()): ?>
+                <?php echo $this->translate('Diese Lösung wartet noch auf Freigabe durch die Redaktion. Sie ist aber bald verfügbar!'); ?>
+            <?php else: ?>
+                <?php echo sprintf($this->translate('Diese Lösung wurde zwar angelegt, enthält aber noch keinen Inhalt. Möchtest du eine Lösung <a href="%s">einreichen</a>?'), $this->url('entity/plugin/repository', array('action' => 'add-revision', 'entity' => $solution->getId()))); ?>
+        	<?php endif; ?>
+            <?php endif; ?>
+        </section>
+    </article>
+</li>
 <?php endif; ?>

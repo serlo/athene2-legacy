@@ -12,19 +12,21 @@
 $exercise = $this->entity;
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
-<article class="text-exercise">
-	<section class="scope">
-        <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
-        <?php echo $revision->get('content'); ?>
-    </section>
-	<section class="solution">
-    	<?php if(!$exercise->exercises()->hasChildren()): ?>
-    	<?php echo $this->translate(sprintf('Für diese Aufgabe gibt es noch keine Unteraufgaben, möchtest du eine Unteraufgabe <a href="%s">hinzufügen</a>?', $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('scope' => 'exercises', 'to_entity' => $exercise->getId()))))); ?>
-    	<?php else: ?>
-    	<?php foreach($exercise->exercises()->findChildren() as $child):?>
-    	   <?php echo $this->partial('subject/plugin/topic/entity/text-exercise', array('entity' => $child))?>
-    	<?php endforeach; ?>
-        <?php endif; ?>
-    </section>
-</article>
+<li>
+    <article class="text-exercise">
+    	<section class="scope">
+            <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
+            <?php echo $revision->get('content'); ?>
+        </section>
+    	<section class="solution">
+        	<?php if(!$exercise->exercises()->hasChildren()): ?>
+        	<?php echo $this->translate(sprintf('Für diese Aufgabe gibt es noch keine Unteraufgaben, möchtest du eine Unteraufgabe <a href="%s">hinzufügen</a>?', $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('scope' => 'exercises', 'to_entity' => $exercise->getId()))))); ?>
+        	<?php else: ?>
+        	<?php foreach($exercise->exercises()->findChildren() as $child):?>
+        	   <?php echo $this->partial('subject/plugin/topic/entity/text-exercise', array('entity' => $child))?>
+        	<?php endforeach; ?>
+            <?php endif; ?>
+        </section>
+    </article>
+</li>
 <?php endif; ?>

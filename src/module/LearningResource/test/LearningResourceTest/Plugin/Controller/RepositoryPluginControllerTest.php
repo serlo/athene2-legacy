@@ -94,8 +94,8 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
             'title' => 'a',
             'content' => 'b',
             'subscription' => array(
-                'subscribe' => true,
-                'mailman' => true
+                'subscribe' => '1',
+                'mailman' => '1'
             )
         ));
         

@@ -1,9 +1,12 @@
-<div class="notifications">
-<?php foreach($this->notifications as $notification): ?>
-    <?php if($this->resolver('user/notification/type/'.$notification->getId())):?>
-            <?php echo $this->partial('user/notification/type/'.$notification->getId(), array('notification' => $notification)); ?>
-        <?php else: ?>
-            <?php echo $this->partial('user/notification/type/default', array('notification' => $notification)); ?>
-    <?php endif; ?>
-<?php endforeach; ?>
+<div class="dropdown pull-right">
+	<a data-toggle="dropdown" href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-comment"></span></a>
+	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <?php foreach($this->notifications as $notification): ?>
+            <?php if($this->resolver('user/notification/type/'.$notification->getId())):?>
+                    <?php echo $this->partial('user/notification/type/'.$notification->getId(), array('notification' => $notification)); ?>
+                <?php else: ?>
+                    <?php echo $this->partial('user/notification/type/default', array('notification' => $notification)); ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+	</ul>
 </div>

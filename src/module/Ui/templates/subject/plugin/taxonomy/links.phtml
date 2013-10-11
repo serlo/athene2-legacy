@@ -9,10 +9,16 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+$table = array(
+    'left' => '',
+    'middle' => '',
+    'right' => '',
+    'bottom' => ''
+);
 ?>
-<div class="row-fluid">
-	<div class="span9"></div>
-	<div class="span3">
+<div class="row">
+	<div class="col-md-9"></div>
+	<div class="col-md-3">
 	    <?php if($this->acceptsEntities): ?>
 		<div class="btn-group pull-right">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i
@@ -33,8 +39,45 @@
 <div class="entities">
     <?php foreach($this->links as $link): ?>
     <?php if($this->plugin->isTypeEnabled($link->getType()->getName())): ?>
-    <?php echo $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
+    <?php $partial = $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
+    <?php if($link->getType()->getName() == 'article') $table['left'] .= $partial; ?>
+    <?php if($link->getType()->getName() == 'text-exercise') $table['bottom'] .= $partial; ?>
     <?php endif; ?>
     <?php endforeach; ?>
+    <div class="row">
+		<div class="col-md-4">
+			<ul class="nav nav-pills nav-stacked">
+                <li class="disabled"><h4>
+			         <span class="glyphicon glyphicon-book"></span> <strong><?php echo $this->translate('Artikel'); ?></strong></h4>
+			    </li>
+                <?php echo $table['left']; ?>
+            </ul>
+		</div>
+		<div class="col-md-4">
+			<ul class="nav nav-pills nav-stacked">
+                <li class="disabled"><h4>
+			         <span class="glyphicon glyphicon-facetime-video"></span> <strong><?php echo $this->translate('Videos'); ?></strong></h4>
+			    </li>
+                <?php echo $table['middle']; ?>
+            </ul>
+        </div>
+		<div class="col-md-4">
+			<ul class="nav nav-pills nav-stacked">
+                <li class="disabled"><h4>
+			         <span class="glyphicon glyphicon-list"></span> <strong><?php echo $this->translate('Module'); ?></strong></h4>
+			    </li>
+                <?php echo $table['right']; ?>
+            </ul>
+        </div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Aufgaben'); ?></strong></h4>
+		    <ol>
+		    </ol>
+            <?php echo $table['bottom']; ?>
+        </div>
+	</div>
 </div>
 <?php endif; ?>
