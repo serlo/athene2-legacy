@@ -16,4 +16,9 @@
             border-bottom-color: white;
         }
     }
+
+    .is-active > a {
+        background: $themeColor;
+        color: white;
+    }
 }

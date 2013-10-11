@@ -30,7 +30,7 @@ foreach ($this->pages as $page) {
         $liClasses[] = 'active';
     }
 
-    $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '"">') : '>');
+    $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
     if ($dropdown) {
         $html[] = '<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="' . $page->getHref() . '">';
