@@ -25,6 +25,7 @@ return array(
         'LearningResource',
         'Language',
         'Event',
+        'Admin',
     	//'Page'
     ),
 

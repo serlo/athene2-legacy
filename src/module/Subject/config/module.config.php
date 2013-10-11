@@ -334,7 +334,7 @@ return array(
                 'options' => array(
                     'route' => '/{subject}[/:subject]',
                     'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Provider\Home\Controller\HomeController',
+                        'controller' => __NAMESPACE__ . '\Plugin\Home\Controller\HomeController',
                         'action' => 'index'
                     )
                 ),
@@ -416,10 +416,19 @@ return array(
             // __NAMESPACE__
             // .
             // '\Plugin\Curriculum\Controller\EntityController',
-            __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController'
+            __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController',
+            __NAMESPACE__ . '\Plugin\Home\Controller\HomeController'
         ),
         'definition' => array(
             'class' => array(
+                __NAMESPACE__ . '\Plugin\Home\Controller\HomeController' => array(
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
                 __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController' => array(
                     'setLanguageManager' => array(
                         'required' => 'true'

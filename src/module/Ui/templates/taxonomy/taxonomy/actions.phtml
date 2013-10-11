@@ -12,7 +12,7 @@
 ?>
 <div class="pull-right btn-group">
 	<div class="btn-group group-dropdown">
-		<a class="btn btn-default btn-mini dropdown-toggle" data-toggle="dropdown"
+		<a class="btn btn-default btn-mn dropdown-toggle" data-toggle="dropdown"
 			href="#"> <i class="glyphicon icon-plus"></i> <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
@@ -23,10 +23,9 @@
 		</ul>
 	</div>
 	<a
-		href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
-		class="btn btn-default btn-mini"><i class="glyphicon glyphicon-pencil"></i></a>
-	<div class="btn btn-default btn-mini">
+		href="<?php echo $this->url('restricted/taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
+		class="btn btn-default btn-mn"><i class="glyphicon glyphicon-pencil"></i></a>
+	<div class="btn btn-default btn-mn">
 		<i class="glyphicon glyphicon-resize-vertical"></i>
 	</div>
-	<?php echo $this->modal()->delete('<i class="glyphicon glyphicon-remove glyphicon-white" role="button"></i>',  $this->url('restricted/taxonomy/term/action',array('action' => 'delete', 'id' => $this->term->getId())), 'btn btn-danger btn-mini'); ?>
 </div>
