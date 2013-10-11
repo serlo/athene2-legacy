@@ -17,7 +17,7 @@ use Subject\Plugin\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     public function indexAction(){
-        $view = new ViewModel();
+        $view = new ViewModel(array('subject' => $this->getSubject()));
         $view->setTemplate('subject/plugin/home/index');
         return $view;
     }
