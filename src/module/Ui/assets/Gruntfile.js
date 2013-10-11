@@ -59,7 +59,6 @@ module.exports = function (grunt) {
                 jshintrc: '.jshintrc'
             },
             all: [
-                'Gruntfile.js',
                 '<%= serlo.app %>/scripts/{,*/}*.js'
             ]
         },
