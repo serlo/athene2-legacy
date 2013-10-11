@@ -33,6 +33,7 @@ class RepositoryController extends AbstractController
             'entity' => $entity
         ));
         
+        /* @var $form \Zend\Form\Form */
         $form = $plugin->getRevisionForm();
         $form->setAttribute('action', $this->url()
             ->fromRoute('entity/plugin/repository', array(

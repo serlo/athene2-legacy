@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class RepositoryPluginControllerTest extends DefaultLayoutTestCase
 {
 
-    protected $entityServiceMock, $repositoryPluginMock;
+    protected $entityServiceMock, $repositoryPluginMock, $entityMock;
 
     public function setUp()
     {
@@ -33,6 +33,7 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
             'getEntity'
         ));
         $this->repositoryPluginMock = $this->getMock('LearningResource\Plugin\Repository\RepositoryPlugin');
+        $this->entityMock = $this->getMock('Entity\Entity\Entity');
         
         $controller->getEntityManager()
             ->expects($this->atLeastOnce())
@@ -41,7 +42,11 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
         
         $this->entityServiceMock->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnValue($this->getMock('Entity\Entity\Entity')));
+            ->will($this->returnValue($this->entityMock));
+        
+        $this->entityMock->expects($this->any())
+            ->method('getUuidEntity')
+            ->will($this->returnValue($this->getMock('Uuid\Entity\Uuid')));
         
         $this->entityServiceMock->expects($this->any())
             ->method('getId')
@@ -55,10 +60,16 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
             ->method('repository')
             ->will($this->returnValue($this->repositoryPluginMock));
         
+        $userService = $this->getMock('User\Service\UserService');
+        
         $controller->getUserManager()
             ->expects($this->any())
             ->method('getUserFromAuthenticator')
-            ->will($this->returnValue($this->getMock('User\Service\UserService')));
+            ->will($this->returnValue($userService));
+        
+        $userService->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($this->getMock('User\Entity\User')));
     }
 
     public function testAddRevisionAction()
@@ -93,9 +104,11 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
         $this->dispatch('/entity/repository/add-revision/1', 'POST', array(
             'title' => 'a',
             'content' => 'b',
-            'subscription' => array(
-                'subscribe' => '1',
-                'mailman' => '1'
+            'controls' => array(
+                'subscription' => array(
+                    'subscribe' => '1',
+                    'mailman' => '1'
+                )
             )
         ));
         
