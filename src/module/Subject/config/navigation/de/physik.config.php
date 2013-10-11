@@ -13,7 +13,7 @@ return array(
     array(
         'label' => 'Physik',
         'route' => 'subject',
-        'paramts' => array(
+        'params' => array(
             'subject' => 'physik'
         ),
         'pages' => array(

@@ -13,7 +13,7 @@ return array(
     array(
         'label' => 'Mathe',
         'route' => 'subject',
-        'paramts' => array(
+        'params' => array(
             'subject' => 'mathe'
         ),
         'pages' => array(
