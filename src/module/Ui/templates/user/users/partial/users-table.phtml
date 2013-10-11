@@ -36,11 +36,11 @@
                             <dd class="dropdown">
                                 <a class="dropdown-toggle btn btn-small btn-link" data-toggle="dropdown" href="#"><?php echo $role->getName(); ?> <b class="caret"></b></a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                    <li><a href="<?php echo $this->url('user/role', array('action' => 'remove', 'user' => $user->getId(), 'role' => $role->getId()));?>"><?php echo $this->translate('Rolle entziehen'); ?></a></li>
+                                    <li><a href="<?php echo $this->url('restricted/user/role', array('action' => 'remove', 'user' => $user->getId(), 'role' => $role->getId()));?>"><?php echo $this->translate('Rolle entziehen'); ?></a></li>
                                 </ul>
                             </dd>
                         <?php endforeach; ?>
-                        <dd><a class="btn btn-small btn-link" href="<?php echo $this->url('user/role', array('action' => 'add', 'user' => $user->getId()));?>"><?php echo $this->translate('Rolle zuweisen'); ?></a></dd>                
+                        <dd><a class="btn btn-small btn-link" href="<?php echo $this->url('restricted/user/role', array('action' => 'add', 'user' => $user->getId()));?>"><?php echo $this->translate('Rolle zuweisen'); ?></a></dd>                
                     </dl>
                 </td>
                 <td><?php echo $user->getGivenName(); ?></td>
