@@ -50,8 +50,10 @@ echo $this->doctype();
                                      ->setUlClass('nav navbar-nav pull-right')
                                      ->setPartial('layout/navigation/horizontal.phtml')
                                      ->render();
-                            echo $this->notifications()->render();
                             ?>
+                            <ul class="nav navbar-nav pull-right">
+                                <?php echo $this->notifications()->render(); ?>
+                            </ul>
                             <?php // if($this->authentication()->hasIdentity()) { ?>
                                 <!-- <ul class="nav navbar-nav pull-right">
                                     <li class="dropdown"><a class="dropdown-toggle"

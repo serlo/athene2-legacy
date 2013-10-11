@@ -17,12 +17,6 @@ use Zend\Session\Container;
  */
 return array(
     'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'label' => 'Backend',
-                'route' => 'restricted'
-            )
-        ),
         'top-left' => array(
             array(
                 'label' => 'Home',
@@ -41,8 +35,8 @@ return array(
                 'uri' => '/participate'
             ),
             array(
-                'label' => 'Admin',
-                'uri' => '/admin'
+                'label' => 'Area 51',
+                'route' => 'restricted'
             )
         ),
         'top-right' => array(
