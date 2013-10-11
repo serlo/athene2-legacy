@@ -9757,6 +9757,13 @@ h1 {
   border-bottom-color: white;
 }
 
+/* line 20, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#main-nav .is-active > a {
+  background: #007ec1;
+  color: white;
+}
+
 /* line 1, ../../source/styles/partials/_serlo_footer.scss */
 
 #footer {
