@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 /* BODY / HTML*/
 body,html {
   width: 100%;
@@ -22,4 +24,17 @@ body {
 
 h1 {
     font-size: 30px;
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -1 * $footerHeight; /* the bottom margin is the negative value of the footer's height */
+}
+
+/* States */
+
+.is-inline-block {
+    @include inline-block;
 }

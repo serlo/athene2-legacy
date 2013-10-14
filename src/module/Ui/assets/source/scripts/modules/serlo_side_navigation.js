@@ -13,11 +13,13 @@
  */
 
 /*global define*/
-define("side_navigation", ["jquery", "underscore", "referrer_history"], function ($, _, ReferrerHistory, undefined) {
+define("side_navigation", ["jquery", "underscore", "referrer_history", "events"], function ($, _, ReferrerHistory, eventScope, undefined) {
     "use strict";
     var defaults,
         instance,
         Hierarchy,
+        MenuItem,
+        SubNavigation,
         SideNavigation;
 
     defaults = {
@@ -25,6 +27,89 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         mainId: '#main-nav',
         // active class, given to <li> elements
         activeClass: 'is-active'
+    };
+
+    /**
+     * @class MenuItem
+     * @param {Object} data All informations about the MenuItem (url, title, position)
+     */
+    MenuItem = function (data) {
+        if (!data.url || !data.title || !data.position) {
+            throw new Error("Not enough arguments");
+        }
+
+        this.data = data;
+        this.$el = $('<li>');
+
+        this.render();
+
+        this.$el.click(this.onClick);
+    };
+
+    /**
+     * @method render
+     * 
+     * Renders the a <li> and <a> tag on MenuItem.$el
+     **/
+    MenuItem.prototype.render = function () {
+        var self = this;
+        $('<li>').append($('<a>')
+                    .text(self.data.title)
+                    .attr('href', self.data.url))
+                .appendTo(self.$el);
+        return self;
+    };
+
+    /**
+     * @method onClick
+     * @param {jQuery Click Event} e
+     *
+     * OnClick handler for MenuItem
+     **/
+    MenuItem.prototype.onClick = function (e) {
+        e.preventDefault();
+        this.trigger('click', {
+            originalEvent: e,
+            menuItem: this
+        });
+        return;
+    };
+
+    /**
+     * @method getChildren
+     * @return {Array} Returns children or false
+     **/
+    MenuItem.prototype.getChildren = function () {
+        return this.children || false;
+    };
+
+    eventScope(MenuItem);
+
+    /**
+     * @class SubNavigation
+     * @param {Array} menuItems An array of MenuItems, to be rendered in an <ul>
+     *
+     * Renders the given menuItems in an <ul>
+     **/
+
+    SubNavigation = function (menuItems) {
+        this.menuItems = menuItems;
+        this.$el = $('<ul>');
+        this.render();
+    };
+
+    /**
+     * @method render
+     *
+     * Creates the <li> and <a> elements
+     **/
+    SubNavigation.prototype.render = function () {
+        var self = this;
+        self.$el.empty();
+        _.each(self.menuItems, function (menuItem) {
+            self.$el.append(menuItem.$el);
+        });
+        return this;
     };
 
     /**
@@ -55,9 +140,11 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
          *
          * Creates a recursive reflection of the <li> tags in the given $element
          * on the Hierarchy (hierarchy.data)
+         *
+         * Also creates MenuItem instances for every link and adds event handlers
          **/
         function loop($element, dataHierarchy, level) {
-
+            var subNavigation;
             $('> li', $element).each(function (i) {
                 deepness.splice(level);
                 deepness.push(i);
@@ -65,19 +152,21 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
                 var $listItem = $(this),
                     $link = $listItem.children().filter('a').first();
 
-                dataHierarchy[i] = {
+                dataHierarchy[i] = new MenuItem({
                     url: $link.attr('href'),
                     title: $link.text().trim(),
                     $li: $listItem,
                     $a: $link,
                     position: [].concat(deepness)
-                };
+                });
 
                 if ($listItem.children().filter('ul').length) {
                     dataHierarchy[i].children = [];
                     loop($listItem.children().filter('ul').first(), dataHierarchy[i].children, level + 1);
                 }
             });
+            subNavigation = new SubNavigation(dataHierarchy);
+            $('body').append(subNavigation.$el);
         }
 
         loop(self.$root, self.data, 0);
@@ -140,6 +229,28 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
     };
 
     /**
+     * @method findByPosition
+     * @param {Array} position An array of indexes
+     * @return {MenuItem} or false
+     *
+     **/
+    Hierarchy.prototype.findByPosition = function (position) {
+        var cursor = this.data;
+        _.each(position, function (index) {
+            cursor = cursor[index] || (cursor.children && cursor.children[index]);
+        });
+        return cursor || false;
+    };
+
+    /**
+     * @method getRaw
+     * @return {Array} Returns the raw data hierarchy array
+     **/
+    Hierarchy.prototype.getRaw = function () {
+        return this.data;
+    };
+
+    /**
      * @class SideNavigation
      * @param {Object} options See defaults
      * 
@@ -153,7 +264,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         this.options = options ? $.extend({}, defaults, options) : $.extend({}, defaults);
 
         this.$el = $(this.options.mainId);
-        this.$allLinks = $('li > a', this.$el);
 
         this.hierarchy = new Hierarchy();
         this.hierarchy.fetchFromDom(this.$el);
@@ -161,6 +271,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         this.active = this.hierarchy.findLastAvailableUrl();
 
         this.setActiveBranch();
+
+        this.attachEventHandler();
     };
 
     /**
@@ -176,6 +288,30 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
                 .addClass(this.options.activeClass);
         }
         return this;
+    };
+
+    /**
+     * @method attachEventHandler
+     *
+     * Attaches all needed event handlers
+     **/
+    SideNavigation.prototype.attachEventHandler = function () {
+        var self = this,
+            menuItems = this.hierarchy.getRaw();
+        // add 'open' click event to first-level items
+        _.each(menuItems, function (menuItem) {
+            menuItem.addEventListener('click', function (e) {
+                self.open(e);
+            });
+
+            if (menuItem.getChildren()) {
+                _.each(menuItem.getChildren(), function (subItem) {
+                    subItem.addEventListener('click', function (e) {
+                        self.jumpTo(e);
+                    });
+                });
+            }
+        });
     };
 
     /**
