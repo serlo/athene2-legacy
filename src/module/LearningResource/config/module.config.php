@@ -304,7 +304,109 @@ return array(
                         )
                     )
                 )
-            )
+            ),
+            'module' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\ModuleForm',
+                            'slugify' => 'title',
+                            'field_order' => array(
+                                'title',
+                            )
+                        )
+                    ),
+                    'taxonomy' => array(
+                        'plugin' => 'taxonomy'
+                    ),
+                    'pages' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'types' => array(
+                                array(
+                                    'to' => 'module_page',
+                                    'reversed_by' => 'module'
+                                )
+                            ),
+                            'type' => 'link',
+                            'association' => 'one-to-many'
+                        )
+                    ),
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'learning-resource/plugin/page/module',
+                            'fields' => array(
+                                'title' => 'title',
+                                'pages' => 'pages'
+                            )
+                        )
+                    ),
+                    'provider' => array(
+                        'plugin' => 'provider',
+                        'options' => array(
+                            'fields' => array(
+                                'title' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                        ->getCurrentRevision()
+                                        ->get('title');
+                                },
+                                'pages' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->pages()
+                                        ->findChildren();
+                                }
+                            )
+                        )
+                    )
+                )
+            ),
+            'module_page' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\ModulePageForm',
+                            'field_order' => array(
+                                'title',
+                                'content'
+                            )
+                        )
+                    ),
+                    'module' => array(
+                        'plugin' => 'link',
+                        'options' => array(
+                            'types' => array(
+                                array(
+                                    'to' => 'module_page',
+                                    'reversed_by' => 'module'
+                                )
+                            ),
+                            'type' => 'link',
+                            'association' => 'one-to-many'
+                        )
+                    ),
+                    'provider' => array(
+                        'plugin' => 'provider',
+                        'options' => array(
+                            'fields' => array(
+                                'title' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                    ->getCurrentRevision()->get('title');
+                                },
+                                'content' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                        ->getCurrentRevision()->get('content');
+                                }
+                            )
+                        )
+                    )
+                )
+            ),
         ),
         'instances' => array(
             'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',

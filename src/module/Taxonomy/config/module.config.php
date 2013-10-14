@@ -168,7 +168,21 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
                     )
-                )
+                ),
+                'Taxonomy\Provider\NavigationProvider' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => 'true'
+                    ),
+                    'setObjectManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    )
+                ),
             )
         ),
         'instance' => array(

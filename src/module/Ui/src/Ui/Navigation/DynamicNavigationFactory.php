@@ -85,7 +85,9 @@ class DynamicNavigationFactory extends AbstractNavigationFactory
                 }
                 
                 $className = $page['provider'];
-                $provider = new $className($options, $this->serviceLocator);
+                $provider = $this->serviceLocator->get($className);
+                
+                $provider->setConfig($options);
                 
                 if(isset($page['pages'])){
                     $page['pages'] = array_merge($page['pages'], $this->injectComponentsFromProvider($provider, $routeMatch, $router));

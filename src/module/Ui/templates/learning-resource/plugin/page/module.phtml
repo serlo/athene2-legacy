@@ -1,0 +1,11 @@
+<article class="module">
+	<header>
+		<h1 class="page_header"><?php echo $this->title; ?></h1>
+	</header>
+	<?php foreach($this->pages as $page):?>
+	   <section class="page">
+	       <?php echo $page->provider()->get('content'); ?>
+	   </section>
+	<?php endforeach; ?>
+	<?php echo $this->content; ?>
+</article>

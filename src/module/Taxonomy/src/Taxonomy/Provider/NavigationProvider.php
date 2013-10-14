@@ -14,41 +14,51 @@ namespace Taxonomy\Provider;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
+use Taxonomy\Service\TermServiceInterface;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait,\Language\Service\LanguageServiceAwareTrait; // , \Common\Traits\ConfigAwareTrait;
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     
     /**
      *
      * @var array
      */
-    protected $defaultOptions = array(
-        'name' => 'default',
-        'route' => 'default',
-        'params' => array()
-    );
-
-    protected $options;
-
-    public function __construct(array $options, ServiceLocatorInterface $serviceLocator)
+    protected function getDefaultConfig()
     {
-        $this->options = ArrayUtils::merge($this->defaultOptions, $options);
-        $this->serviceLocator = $serviceLocator;
-        $this->objectManager = $serviceLocator->get('EntityManager');
-        $this->languageService = $serviceLocator->get('Language\Manager\LanguageManager')->findLanguageByCode($this->options['language']);
-        $this->termService = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager')
-            ->findTaxonomyByName($this->options['type'], $this->languageService)
-            ->findTermByAncestors((array) $this->options['parent']);
+        return array(
+            'name' => 'default',
+            'route' => 'default',
+            'max_depth' => 1,
+            'params' => array()
+        );
     }
 
-    public function provideArray($maxDepth = 1)
+    /**
+     *
+     * @var TermServiceInterface
+     */
+    protected $termService;
+
+    public function getTermService()
     {
-        if ($this->objectManager->isOpen())
-            $this->objectManager->refresh($this->termService->getEntity());
+        if (! is_object($this->termService)) {
+            $this->termService = $this->getSharedTaxonomyManager()
+                ->findTaxonomyByName($this->options['type'], $this->getLanguageManager()
+                ->getLanguageFromRequest())
+                ->findTermByAncestors((array) $this->options['parent']);
+        }
+        return $this->termService;
+    }
+
+    public function provideArray()
+    {
+        if ($this->getObjectManager()->isOpen())
+            $this->getObjectManager()->refresh($this->getTermService()
+                ->getEntity());
         
-        $terms = $this->termService->getChildren();
-        $return = $this->iterTerms($terms, $maxDepth);
+        $terms = $this->getTermService()->getChildren();
+        $return = $this->iterTerms($terms, $this->getOption('max_depth'));
         return $return;
     }
 
