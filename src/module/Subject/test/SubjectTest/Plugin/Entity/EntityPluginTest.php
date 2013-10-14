@@ -36,7 +36,7 @@ class EntityPluginTest extends AbstractPluginTest
         $this->entityPlugin->setSubjectService($this->subjectServiceMock);
     }
 
-    public function testGetUnrevisedEntities()
+    private function GetUnrevisedEntitiesDeprecated()
     {
         $this->subjectServiceMock->expects($this->once())
             ->method('getTermService')
