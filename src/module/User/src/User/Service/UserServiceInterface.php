@@ -14,6 +14,8 @@ use User\Manager\UserManagerInterface;
 interface UserServiceInterface
 {
 
+    public function addRole($role, LanguageServiceInterface $language = NULL);
+    
     /**
      *
      * @return UserManagerInterface

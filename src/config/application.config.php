@@ -26,6 +26,7 @@ return array(
         'Language',
         'Event',
         'Admin',
+        'Mailman',
     	//'Page'
     ),
 

@@ -42,17 +42,17 @@ return array(
         'top-right' => array(
             array(
                 'label' => 'Registrieren',
-                'route' => 'register',
+                'route' => 'user/register',
                 'needsIdentity' => false
             ),
             array(
                 'label' => 'Login',
-                'route' => 'login',
+                'route' => 'user/login',
                 'needsIdentity' => false
             ),
             array(
                 'label' => 'Logout',
-                'route' => 'logout',
+                'route' => 'user/logout',
                 'needsIdentity' => true
             )
         ),

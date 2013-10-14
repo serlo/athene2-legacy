@@ -150,10 +150,10 @@ class UserController extends AbstractUserController
                         ->getEntity(),
                     'data' => $data
                 ));
+                
                 $this->getUserManager()
                     ->getObjectManager()
                     ->flush();
-                
                 $this->redirect()->toUrl($this->params('ref', '/'));
                 return '';
             }
@@ -163,6 +163,19 @@ class UserController extends AbstractUserController
             'form' => $form
         ));
         return $view;
+    }
+
+    public function activateAction()
+    {
+        $user = $this->getUserManager()->findUserByToken($this->params('token'));
+        $user->addRole('login');
+        $user->generateToken();
+        $this->getUserManager()
+            ->getObjectManager()
+            ->flush();
+        $this->flashMessenger()->addSuccessMessage('Dein Konto wurde erfolgreich aktiviert. Du kannst dich nun einloggen.');
+        $this->redirect()->toRoute('user/login');
+        return '';
     }
 
     public function lostPasswordAction()

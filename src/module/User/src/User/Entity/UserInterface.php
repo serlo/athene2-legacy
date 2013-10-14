@@ -70,4 +70,7 @@ interface UserInterface
     public function getRoles(LanguageInterface $language = NULL);
     
     public function populate (array $data = array());
+    
+    public function getToken();
+    public function generateToken();
 }
