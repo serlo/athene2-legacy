@@ -164,7 +164,14 @@ return array(
                                         'plural' => 'Gruppenaufgaben'
                                     ),
                                     'template' => 'subject/plugin/taxonomy/entity/exercise-group'
-                                )
+                                ),
+                                'video' => array(
+                                    'labels' => array(
+                                        'singular' => 'Video',
+                                        'plural' => 'Videos'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/video'
+                                ),
                             )
                         )
                     ),

@@ -222,6 +222,49 @@ return array(
                     )
                 )
             ),
+            'video' => array(
+                'plugins' => array(
+                    'repository' => array(
+                        'plugin' => 'repository',
+                        'options' => array(
+                            'revision_form' => 'LearningResource\Form\VideoForm',
+                            'slugify' => 'title',
+                            'field_order' => array(
+                                'title',
+                                'content'
+                            )
+                        )
+                    ),
+                    'taxonomy' => array(
+                        'plugin' => 'taxonomy'
+                    ),
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'learning-resource/plugin/page/video'
+                        )
+                    ),
+                    'provider' => array(
+                        'plugin' => 'provider',
+                        'options' => array(
+                            'fields' => array(
+                                'title' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                        ->getCurrentRevision()
+                                        ->get('title');
+                                },
+                                'content' => function (EntityServiceInterface $es)
+                                {
+                                    return $es->repository()
+                                        ->getCurrentRevision()
+                                        ->get('content');
+                                }
+                            )
+                        )
+                    )
+                )
+            ),
             'article' => array(
                 'plugins' => array(
                     'repository' => array(

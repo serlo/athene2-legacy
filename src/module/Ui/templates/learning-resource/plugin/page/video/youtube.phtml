@@ -1,0 +1,15 @@
+<article class="content">
+	<header>
+		<h1 class="page_header"><?php echo $this->title; ?></h1>
+	</header>
+	
+    <object width="640" height="390">
+      <param name="movie"
+             value="<?php echo $this->content; ?>?version=3&autoplay=1"></param>
+      <param name="allowScriptAccess" value="always"></param>
+      <embed src="<?php echo $this->content; ?>?version=3&autoplay=1"
+             type="application/x-shockwave-flash"
+             allowscriptaccess="always"
+             width="640" height="390"></embed>
+    </object>
+</article>

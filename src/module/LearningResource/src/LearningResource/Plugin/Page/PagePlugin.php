@@ -19,7 +19,7 @@ class PagePlugin extends AbstractPlugin
     protected function getDefaultConfig()
     {
         return array(
-            'template' => 'learning-resource/plugin/page/view',
+            'template' => 'learning-resource/plugin/page/default',
             'provider' => 'provider',
             'fields' => array(
                 'title' => 'title',
