@@ -98,6 +98,12 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
+    public function generateToken(){
+        $this->getEntity()->generateToken();
+        $this->getObjectManager()->persist($this->getEntity());
+        return $this;
+    }
+    
     public function getLogs()
     {
         return $this->getEntity()->getLogs();

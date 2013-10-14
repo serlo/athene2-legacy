@@ -19,7 +19,7 @@ use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -169,10 +169,12 @@ class UserController extends AbstractUserController
     {
         $user = $this->getUserManager()->findUserByToken($this->params('token'));
         $user->addRole('login');
+        $user->generateToken();
         $this->getUserManager()
             ->getObjectManager()
             ->flush();
-        $this->redirect()->toRoute('home');
+        $this->flashMessenger()->addSuccessMessage('Dein Konto wurde erfolgreich aktiviert. Du kannst dich nun einloggen.');
+        $this->redirect()->toRoute('user/login');
         return '';
     }
 
