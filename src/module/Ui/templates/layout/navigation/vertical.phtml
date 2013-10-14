@@ -20,7 +20,7 @@ foreach ($this->container as $page) {
     
     if (! empty($page->pages)) {
         $html[] = '<ul>';
-        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));
+        $html[] = $this->partial('layout/navigation/partial/nested-dropdown-navigation-list', array('pages' => $page->pages));
         $html[] = "</ul>";
     }
 
