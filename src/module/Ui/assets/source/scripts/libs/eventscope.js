@@ -12,7 +12,7 @@
 /*global define*/
 define(['underscore'], function (_) {
     "use strict";
-    return function (element) {
+    function eventScope(element) {
         var Events = {},
             fn = {};
 
@@ -52,14 +52,15 @@ define(['underscore'], function (_) {
         };
 
         switch (element.constructor.name) {
-        case 'Object':
-            _.extend(element, fn);
-            break;
         case 'Function':
             _.extend(element.prototype, fn);
             break;
         default:
-            throw new Error('Unable to create eventScope for element of type ' + element.constructor.name);
+            _.extend(element, fn);
         }
+    }
+
+    return function (element) {
+        eventScope(element);
     };
 });
