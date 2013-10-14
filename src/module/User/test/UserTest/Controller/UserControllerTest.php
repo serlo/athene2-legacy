@@ -59,13 +59,13 @@ class UserControllerTest extends DefaultLayoutTestCase
     {
         $this->authServiceMock->expects($this->once())
             ->method('clearIdentity');
-        $this->dispatch('/logout');
+        $this->dispatch('/user/logout');
         $this->assertResponseStatusCode(302);
     }
 
     public function testLoginActionForm()
     {
-        $this->dispatch('/login');
+        $this->dispatch('/user/login');
         
         $this->assertResponseStatusCode(200);
     }
@@ -100,7 +100,7 @@ class UserControllerTest extends DefaultLayoutTestCase
         $this->objectManagerMock->expects($this->once())
             ->method('flush');
         
-        $this->dispatch('/login', 'POST', array(
+        $this->dispatch('/user/login', 'POST', array(
             'email' => 'user',
             'password' => 'pass'
         ));
@@ -127,7 +127,7 @@ class UserControllerTest extends DefaultLayoutTestCase
             ->method('isValid')
             ->will($this->returnValue(false));
         
-        $this->dispatch('/login', 'POST', array(
+        $this->dispatch('/user/login', 'POST', array(
             'email' => 'user',
             'password' => 'pass'
         ));
@@ -137,7 +137,7 @@ class UserControllerTest extends DefaultLayoutTestCase
 
     public function testLoginActionFailForm()
     {
-        $this->dispatch('/login', 'POST', array(
+        $this->dispatch('/user/login', 'POST', array(
             'test' => 'user',
             'password' => 'pass'
         ));
@@ -151,7 +151,7 @@ class UserControllerTest extends DefaultLayoutTestCase
             ->method('hasIdentity')
             ->will($this->returnValue(false));
         
-        $this->dispatch('/register');
+        $this->dispatch('/user/register');
         $this->assertResponseStatusCode(200);
     }
 
@@ -161,7 +161,7 @@ class UserControllerTest extends DefaultLayoutTestCase
             ->method('hasIdentity')
             ->will($this->returnValue(true));
         
-        $this->dispatch('/register');
+        $this->dispatch('/user/register');
         $this->assertResponseStatusCode(302);
     }
 
@@ -195,7 +195,7 @@ class UserControllerTest extends DefaultLayoutTestCase
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
         $controller->setRegisterForm($registerFormMock);
         
-        $this->dispatch('/register', 'POST', $data);
+        $this->dispatch('/user/register', 'POST', $data);
         $this->assertResponseStatusCode(302);
     }
 }
