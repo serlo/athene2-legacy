@@ -40,7 +40,13 @@ $table = array(
     <?php foreach($this->links as $link): ?>
     <?php if($this->plugin->isTypeEnabled($link->getType()->getName())): ?>
     <?php $partial = $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
-    <?php if($link->getType()->getName() == 'article') $table['left'] .= $partial; ?>
+    <?php switch($link->getType()->getName()){ 
+        case 'article': $table['left'] .= $partial; break; ?>
+        <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>
+        <?php case 'video': $table['middle'] .= $partial; break; ?>
+        <?php case 'module': $table['right'] .= $partial; break; ?>
+        <?php default: $table['left'] .= $partial; break;?>
+    <?php } ?>
     <?php if($link->getType()->getName() == 'text-exercise') $table['bottom'] .= $partial; ?>
     <?php endif; ?>
     <?php endforeach; ?>
