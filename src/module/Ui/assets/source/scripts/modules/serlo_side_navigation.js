@@ -8,7 +8,8 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  * 
- * Saves the browser pathname on the client side.
+ * The Main Navigation
+ * 
  */
 
 /*global define*/
@@ -17,17 +18,28 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
     var defaults,
         instance,
         Hierarchy,
-        Plugin;
+        SideNavigation;
 
     defaults = {
+        // main wrapper selector
         mainId: '#main-nav',
+        // active class, given to <li> elements
         activeClass: 'is-active'
     };
 
+    /**
+     * @class Hierarchy
+     **/
     Hierarchy = function () {
         this.data = [];
     };
 
+    /**
+     * @method fetchFromDom
+     * @param {jQueryObject} $root
+     * 
+     * Loops through $root and creates an hierarchial array of objects
+     **/
     Hierarchy.prototype.fetchFromDom = function ($root) {
         var self = this,
             deepness = [];
@@ -35,6 +47,15 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         self.data = [];
         self.$root = $root;
 
+        /**
+         * @function loop
+         * @param {jQueryObject} $element The element containing the children to loop through
+         * @param {Array} dataHierarchy The current hierarchy array
+         * @param {Number} level The current level of hierarchy
+         *
+         * Creates a recursive reflection of the <li> tags in the given $element
+         * on the Hierarchy (hierarchy.data)
+         **/
         function loop($element, dataHierarchy, level) {
 
             $('> li', $element).each(function (i) {
@@ -63,9 +84,23 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         return this;
     };
 
+    /**
+     * @method findByUrl
+     * @param {String} url
+     * @return {Object} The first found menu item
+     * 
+     * Searches for a menu item by URL
+     **/
     Hierarchy.prototype.findByUrl = function (url) {
         var self = this;
 
+        /**
+         * @function deepFlatten
+         * @param {Object}
+         * @return {Object} the original item OR {Array} an array with the item itself and its children
+         * 
+         * Recursive helper function to flatten the hierarchy to a one-level array
+         **/
         function deepFlatten(item) {
             if (item.children) {
                 return [].concat(item, deepFlatten(item.children));
@@ -73,21 +108,46 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
             return item;
         }
 
-        function find(dataHierarchy) {
-            return _.chain(dataHierarchy).map(deepFlatten).flatten().filter(function (item) {
-                if (item.url === url) {
-                    return item;
-                }
-                return false;
-            }).value();
-        }
-
-        return _.first(find(self.data));
+        return _.first(_.chain(self.data).map(deepFlatten).flatten().filter(function (item) {
+            if (item.url === url) {
+                return item;
+            }
+            return false;
+        }).value());
     };
 
-    Plugin = function (options) {
-        if (!(this instanceof Plugin)) {
-            return new Plugin(options);
+    /**
+     * @method findLastAvailableUrl
+     * @param {String} url
+     * @return {Object} The first found menu item matching on the last ReferrerHistory entries.
+     * 
+     * Searches menu items by URL
+     **/
+    Hierarchy.prototype.findLastAvailableUrl = function () {
+        var self = this,
+            foundItem,
+            lastUrls = ReferrerHistory.getAll();
+
+        _.each(lastUrls, function (lastUrl) {
+            var result = self.findByUrl(lastUrl);
+            if (result) {
+                foundItem = result;
+                return;
+            }
+        });
+
+        return foundItem;
+    };
+
+    /**
+     * @class SideNavigation
+     * @param {Object} options See defaults
+     * 
+     * Main constructor
+     **/
+    SideNavigation = function (options) {
+        if (!(this instanceof SideNavigation)) {
+            return new SideNavigation(options);
         }
 
         this.options = options ? $.extend({}, defaults, options) : $.extend({}, defaults);
@@ -98,16 +158,17 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         this.hierarchy = new Hierarchy();
         this.hierarchy.fetchFromDom(this.$el);
 
-        this.active = this.hierarchy.findByUrl(ReferrerHistory.getOne());
+        this.active = this.hierarchy.findLastAvailableUrl();
 
         this.setActiveBranch();
     };
 
-    Plugin.prototype.findActiveByUrl = function (url) {
-        return this.$allLinks.filter('[href=\"' + url + '\"]').first();
-    };
-
-    Plugin.prototype.setActiveBranch = function () {
+    /**
+     * @method setActiveBranch
+     * 
+     * Sets options.activeClass for active menu item and its parents
+     **/
+    SideNavigation.prototype.setActiveBranch = function () {
         if (this.active) {
             this.active.$li
                 .addClass(this.options.activeClass)
@@ -117,10 +178,14 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         return this;
     };
 
+    /**
+     * SideNavigation constructor wrapper
+     * for creating a singleton
+     */
     return function (options) {
         // singleton
         return instance || (function () {
-            instance = new Plugin(options);
+            instance = new SideNavigation(options);
             return instance;
         }());
     };
