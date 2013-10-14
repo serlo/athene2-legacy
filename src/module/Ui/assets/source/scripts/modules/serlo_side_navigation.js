@@ -117,6 +117,29 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
     };
 
     /**
+     * @method findLastAvailableUrl
+     * @param {String} url
+     * @return {Object} The first found menu item matching on the last ReferrerHistory entries.
+     * 
+     * Searches menu items by URL
+     **/
+    Hierarchy.prototype.findLastAvailableUrl = function () {
+        var self = this,
+            foundItem,
+            lastUrls = ReferrerHistory.getAll();
+
+        _.each(lastUrls, function (lastUrl) {
+            var result = self.findByUrl(lastUrl);
+            if (result) {
+                foundItem = result;
+                return;
+            }
+        });
+
+        return foundItem;
+    };
+
+    /**
      * @class SideNavigation
      * @param {Object} options See defaults
      * 
@@ -135,7 +158,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history"], function
         this.hierarchy = new Hierarchy();
         this.hierarchy.fetchFromDom(this.$el);
 
-        this.active = this.hierarchy.findByUrl(ReferrerHistory.getOne());
+        this.active = this.hierarchy.findLastAvailableUrl();
 
         this.setActiveBranch();
     };

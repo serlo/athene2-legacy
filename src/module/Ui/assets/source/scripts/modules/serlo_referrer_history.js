@@ -16,7 +16,7 @@ define(["underscore", "cache"], function (_, cache) {
     "use strict";
     var ReferrerHistory,
         cacheKey = 'a2_history',
-        limit = 5,
+        limit = 50,
         historyCache = cache(cacheKey);
 
     /**
@@ -93,6 +93,13 @@ define(["underscore", "cache"], function (_, cache) {
      **/
     ReferrerHistory.prototype.getOne = function (index) {
         return this.history[index === undefined ? this.history.length - 1 : index];
+    };
+
+    /**
+     * returns all
+     **/
+    ReferrerHistory.prototype.getAll = function () {
+        return this.getRange(this.history.length);
     };
 
     return new ReferrerHistory();
