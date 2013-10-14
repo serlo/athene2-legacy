@@ -13,13 +13,8 @@ $lastType = $this->term;
 ?>
 <ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
     <?php foreach($this->term->getChildren() as $term):?>
-        <?php if($lastType !== $term->getTaxonomy()): ?>
-        <?php $lastType = $term->getTaxonomy(); ?>
-            </ol>
-            <ol id="<?php echo $this->term->getId(); ?>" class="sortable" data-id="<?php echo $this->term->getId(); ?>">
-        <?php endif; ?>
         <li class="term" data-id="<?php echo $term->getId(); ?>">
-    		<?php echo $term->getName(); ?>
+            <?php echo $term->getName(); ?>
             <?php echo $this->partial('taxonomy/taxonomy/actions', array('term' => $term)); ?>
             <?php echo $this->partial('taxonomy/taxonomy/partial', array('term' => $term)); ?>
         </li>
