@@ -28,7 +28,7 @@ foreach ($this->pages as $page) {
 
     $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
-    $html[] = '<a href="' . $page->getHref() . '">';
+    $html[] = '<a href="' . rawurldecode($page->getHref()) . '">';
 
     if ($page->get('icon')) {
         $html[] = '<i class="icon-' . $page->get('icon') . '"></i>';

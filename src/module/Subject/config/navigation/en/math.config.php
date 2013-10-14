@@ -23,6 +23,7 @@ return array(
                     'parent' => '',
                     'language' => 'en',
                     'route' => 'subject/plugin/topic',
+                    'max_depth' => 10,
                     'params' => array(
                         'subject' => 'math'
                     )

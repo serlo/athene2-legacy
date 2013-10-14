@@ -12,13 +12,12 @@
  */
 namespace Taxonomy\Provider;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
 use Taxonomy\Service\TermServiceInterface;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     
     /**
      *
@@ -29,7 +28,11 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         return array(
             'name' => 'default',
             'route' => 'default',
+            'parent' => '',
+            'parent_type' => '',
+            'language' => 'de',
             'max_depth' => 1,
+            'type' => 'none',
             'params' => array()
         );
     }
@@ -44,9 +47,9 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
     {
         if (! is_object($this->termService)) {
             $this->termService = $this->getSharedTaxonomyManager()
-                ->findTaxonomyByName($this->options['type'], $this->getLanguageManager()
-                ->getLanguageFromRequest())
-                ->findTermByAncestors((array) $this->options['parent']);
+                ->findTaxonomyByName($this->getOption('type'), $this->getLanguageManager()
+                ->findLanguageByCode($this->getOption('language')))
+                ->findTermByAncestors((array) $this->getOption('parent'));
         }
         return $this->termService;
     }
@@ -70,11 +73,14 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         $return = array();
         foreach ($terms as $term) {
             $current = array();
-            $current['route'] = $this->options['route'];
+            $current['route'] = $this->getOption('route');
             
-            $current['params'] = ArrayUtils::merge($this->options['params'], array(
-                'path' => $term->getSlug()
+            $current['params'] = ArrayUtils::merge($this->getOption('params'), array(
+                'path' => $this->getPathToTermAsUri($term)
             ));
+            
+            // getPathToTermAsUri
+            
             $current['label'] = $term->getName();
             $children = $term->getChildren();
             if (count($children)) {
@@ -83,5 +89,15 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
             $return[] = $current;
         }
         return $return;
+    }
+
+    private function getPathToTermAsUri(TermServiceInterface $term)
+    {
+        return substr($this->_getPathToTermAsUri($term), 0, - 1);
+    }
+
+    private function _getPathToTermAsUri(TermServiceInterface $term)
+    {
+        return (!in_array($term->getTaxonomy()->getName(), (array) $this->getOption('parent_type'))) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }
 }
