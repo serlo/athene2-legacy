@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 #main-nav {
     > li > a {
         background: $gray;
@@ -20,5 +22,31 @@
     .is-active > a {
         background: $themeColor;
         color: white;
+    }
+
+    li ul {
+        display: none;
+    }
+}
+
+#serlo-side-sub-navigation {
+    position: absolute;
+    top: 0;
+    left: 175px;
+    background: #FFF;
+    width: 260px;
+    height: 400px;
+
+    z-index: 1;
+    overflow: hidden;
+}
+
+#serlo-side-sub-navigation-mover {
+    position: relative;
+
+    white-space: nowrap;
+    ul {
+        @include inline-block;
+        width: 100%;
     }
 }

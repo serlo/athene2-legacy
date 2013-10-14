@@ -1,0 +1,32 @@
+#subject-nav {
+
+    .dropdown-toggle {
+        display: inline-block;
+        z-index: 12;
+
+        padding-top: 18px;
+        margin-left: 12px;
+
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        
+        line-height: 43px;
+        font-size: 38.5px;
+        font-weight: bold;
+
+        color: $themeColor;
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            border-color: $themeColor;
+        }
+    }
+
+    .caret {
+        margin-left: 10px;
+        border-width: 7px;
+        border-top-color: $themeColor;
+        border-bottom: none;
+    }
+}

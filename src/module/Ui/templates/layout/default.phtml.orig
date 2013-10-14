@@ -1,0 +1,229 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+echo $this->doctype();
+?>
+<html class="fuelux" lang="en">
+<head>
+<meta charset="utf-8">
+        <?php
+        echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
+            ->setAutoEscape(false);
+        
+        echo $this->plugin('HeadLink');
+        echo $this->plugin('HeadStyle');
+        echo $this->plugin('HeadScript');
+        echo $this->inlineScript();
+        /*
+         * echo $this->headlink() ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css') ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
+         */
+        echo $this->headScript()->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
+            //->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
+        // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
+        ?>
+    </head>
+<body>
+    <div class="wrap">
+    	<header id="header">
+    		<div id="serlo-menu" class="navbar navbar-default">
+    			<nav class="navbar-inner">
+    				<div class="container">
+    					<div class="row">
+    						<div class="col-xs-12">
+    							<?php
+                                // top left navigation
+                                echo $this->navigation('top_left_navigation')
+                                        ->menu()
+                                        ->setUlClass('nav navbar-nav')
+                                        ->setPartial('layout/navigation/horizontal.phtml')
+                                        ->render();
+                                // top right navigation
+                                echo $this->navigation('top_right_navigation')
+                                         ->menu()
+                                         ->setUlClass('nav navbar-nav pull-right')
+                                         ->setPartial('layout/navigation/horizontal.phtml')
+                                         ->render();
+                                ?>
+                                <ul class="nav navbar-nav pull-right">
+                                    <?php echo $this->notifications()->render(); ?>
+                                </ul>
+                            </div>
+                        </div>
+    				</div>
+    			</nav>
+    		</div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="subject-nav">
+                            <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" src="/assets/images/serlo_logo.png" /></a></h1>
+                            <div class="dropdown is-inline-block">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">mathe<b class="caret"></b></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <li><a href="/fach/mathe">mathe</a></li>
+                                    <li><a href="/fach/physik">physik</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    	</header>
+
+    	<div id="page" class="container">
+    		<aside id="navigation">
+    			<div id="navigation-container">
+    				<div id="navigation-toggle" class="layout-toggle">
+    					<i class="icon-list"></i>
+    				</div>
+    				<div id="search-content">
+    					<!-- tbd:search -->
+                        <input id="search-input" class="input-search" type="search" placeholder="<?php echo $this->translate('Suche'); ?>" tabindex="1"/><i class="glyphicon glyphicon-search"></i>
+                        <!-- markup:<ul id="search-results" class="nav">
+                            <li><a href="#">Ergebnis oans</a>
+                            </li>
+                            <li><a href="#">Ergebnis zwoa</a>
+                            </li>
+                            <li><a href="#">Ergebnis drei</a>
+                            </li>
+                            <li><a href="#">Ergebnis vier</a>
+                            </li>
+                            <li><a href="#">...</a>
+                            </li>
+                        </ul>
+                        <div id="search-help">
+                            <div class="row-fluid">
+                                <div class="col-xs-12">
+                                    <p>Suche zum Beispiel nach <em>Nullstellen</em>, <em>Euklidische Theorie</em>, <em>Abituraufgaben</em> oder
+                                        deinem <em>Bundesland</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+<<<<<<< HEAD
+                        -->
+    				</div>
+                    <?php
+                    echo $this->navigation('navigation')
+                                ->menu()
+                                ->setPartial('layout/navigation/side-navigation.phtml')
+                                ->setOnlyActiveBranch(true)
+                                ->setMinDepth(0)
+                                ->setMaxDepth(0)
+                                ->setUlClass('nav clear')
+                                ->render();
+                    ?>
+    			</div>
+    		</aside>
+    		<div id="main">
+    			<div id="main-container">
+    				<div id="content">
+    					<div id="content-container" class="layout-inner">
+    						<div class="row-fluid">
+    							<div class="col-xs-12" id="application">
+    								<div class="flasher">
+                                        <?php
+                                        if ($this->flashMessenger()->hasSuccessMessages()) {
+                                            echo '<div class="alert alert-success">';
+                                            foreach ($this->flashmessenger()->getSuccessMessages() as $message)
+                                                echo '<p>' . $message . '</p>';
+                                            echo '</div>';
+                                        }
+                                        
+                                        if ($this->flashMessenger()->hasErrorMessages()) {
+                                            echo '<div class="alert alert-error">';
+                                            foreach ($this->flashmessenger()->getErrorMessages() as $message)
+                                                echo '<p>' . $message . '</p>';
+                                            echo '</div>';
+                                        }
+                                        
+                                        if ($this->flashMessenger()->hasMessages()) {
+                                            echo '<div class="alert alert-info">';
+                                            foreach ($this->flashmessenger()->getMessages() as $message)
+                                                echo '<p>' . $message . '</p>';
+                                            echo '</div>';
+                                        }
+                                        ?>
+                                    </div>
+    								<!-- <header class="page-header">
+                                        <h1><?php echo $this->titleApplication; ?></h1>
+                                    </header> -->
+                                    <?php echo $this->content; ?>
+=======
+                    </div>
+                    -->
+				</div>
+                <?php
+                echo $this->navigation('navigation')
+                            ->menu()
+                            ->setPartial('layout/navigation/side-navigation.phtml')
+                            ->setOnlyActiveBranch(true)
+                            ->setMinDepth(0)
+                            ->setMaxDepth(20)
+                            ->setUlClass('nav clear')
+                            ->render();
+                ?>
+			</div>
+		</aside>
+		<div id="main">
+			<div id="main-container">
+				<div id="content">
+					<div id="content-container" class="layout-inner">
+						<div class="row-fluid">
+							<div class="col-xs-12" id="application">
+								<div class="flasher">
+                                    <?php
+                                    if ($this->flashMessenger()->hasSuccessMessages()) {
+                                        echo '<div class="alert alert-success">';
+                                        foreach ($this->flashmessenger()->getSuccessMessages() as $message)
+                                            echo '<p>' . $message . '</p>';
+                                        echo '</div>';
+                                    }
+                                    
+                                    if ($this->flashMessenger()->hasErrorMessages()) {
+                                        echo '<div class="alert alert-error">';
+                                        foreach ($this->flashmessenger()->getErrorMessages() as $message)
+                                            echo '<p>' . $message . '</p>';
+                                        echo '</div>';
+                                    }
+                                    
+                                    if ($this->flashMessenger()->hasMessages()) {
+                                        echo '<div class="alert alert-info">';
+                                        foreach ($this->flashmessenger()->getMessages() as $message)
+                                            echo '<p>' . $message . '</p>';
+                                        echo '</div>';
+                                    }
+                                    ?>
+>>>>>>> side-navigation
+                                </div>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+        <div id="footer-push"></div>
+    </div>
+	<footer id="footer">
+		<div class="container">
+			<?php
+            echo $this->navigation('footer_navigation')
+                    ->menu()
+                    ->setUlClass('nav navbar-nav pull-left')
+                    ->setPartial('layout/navigation/footer.phtml')
+                    ->render();
+            ?>
+		</div>
+	</footer>
+	<?php echo $this->modal()->renderDialogues(); ?>
+	<!-- /container -->
+</body>
+</html>
