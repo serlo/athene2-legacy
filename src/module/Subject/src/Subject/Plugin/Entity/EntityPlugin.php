@@ -38,7 +38,7 @@ class EntityPlugin extends AbstractPlugin
             'curriculum',
             'curriculum-folder',
             'school-type'
-        )); // $this->getObjectManager()->createQuery(sprintf('SELECT e FROM Entity\Entity\Entity e JOIN e.terms te JOIN te.taxonomy ta WHERE ta.id = %d', $this->getSubjectService()->getId()));
+        ));
     }
 
     public function getUnrevisedEntities()
@@ -61,17 +61,27 @@ class EntityPlugin extends AbstractPlugin
     private function iterEntities(\Doctrine\Common\Collections\Collection $entities,\Doctrine\Common\Collections\Collection $collection){
         foreach ($entities as $entity) {
             $this->iterEntity($entity, $collection);
-            //$this->iterLinks($entity, $collection);
+            $this->iterLinks($entity, $collection);
         }
     }
     
     private function iterLinks($entity, $collection)
     {
         foreach ($entity->getScopesForPlugin('link') as $scope) {
-            if ($entity->$scope()->hasParents()) {
+            // No parents, only children. Smart?
+            /*if ($entity->$scope()->hasParents()) {
+                echo ($entity->$scope()
+                    ->findParents()->count());
+                foreach($entity->$scope()
+                    ->findParents() as $parent){
+                    echo "ok:".($parent === $entity);
+                }
+                echo $entity->getEntity()->getType()->getName();
+                echo $scope;
+                die();
                 $this->iterEntities($entity->$scope()
                     ->findParents(), $collection);
-            }
+            }*/
             if ($entity->$scope()->hasChildren()) {
                 $this->iterEntities($entity->$scope()
                     ->findChildren(), $collection);

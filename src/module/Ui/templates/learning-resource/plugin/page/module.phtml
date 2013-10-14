@@ -2,10 +2,22 @@
 	<header>
 		<h1 class="page_header"><?php echo $this->title; ?></h1>
 	</header>
-	<?php foreach($this->pages as $page):?>
-	   <section class="page">
-	       <?php echo $page->provider()->get('content'); ?>
-	   </section>
-	<?php endforeach; ?>
-	<?php echo $this->content; ?>
+	<?php if(!count($this->pages)) :?>
+	   <?php echo $this->translate('Es wurde noch keine Seite hinzugefügt.'); ?>
+	<?php else: ?>
+	   <ul class="nav nav-pills nav-stacked">
+    	<?php foreach($this->pages as $page):?>
+    	       <li><a href="<?php echo '#'.$page->getId(); ?>"><?php echo $page->provider()->get('title'); ?></li>
+    	<?php endforeach; ?>
+	   </ul>
+    	<?php foreach($this->pages as $page):?>
+    	   <section class="page">
+    	       <h2><a id="<?php echo $page->getId(); ?>"><?php echo $page->provider()->get('title'); ?></a></h2>
+    	       <?php echo $page->provider()->get('content'); ?>
+    	   </section>
+    	<?php endforeach; ?>
+	<?php endif; ?>
+	<footer>
+        <?php echo sprintf($this->translate('Seite <a href="%s">hinzufügen</a>'), rawurldecode($this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array( 'as' => 'child', 'to_entity' => $this->entity->getId())))))); ?>
+	</footer>
 </article>

@@ -26,7 +26,7 @@ class LinkPlugin extends AbstractPlugin
             throw new Exception\RuntimeException(sprintf('Type %s is not allowed on this association.', $entity->getType()->getName()));
         
         if (! $this->associationAllowed($entity))
-            throw new Exception\RuntimeException('One-to-one does not allow multiple associations.');
+            throw new Exception\RuntimeException('This association is not allowed.');
         
         $this->getLinkService()->addParent($entity->getEntity());
         
@@ -39,7 +39,7 @@ class LinkPlugin extends AbstractPlugin
             throw new Exception\RuntimeException(sprintf('Type %s is not allowed on this association.', $entity->getType()->getName()));
         
         if (! $this->associationAllowed($entity))
-            throw new Exception\RuntimeException('One-to-one does not allow multiple associations.');
+            throw new Exception\RuntimeException('This association is not allowed.');
         
         $this->getLinkService()->addChild($entity->getEntity());
         

@@ -325,8 +325,8 @@ return array(
                         'options' => array(
                             'types' => array(
                                 array(
-                                    'to' => 'module_page',
-                                    'reversed_by' => 'module'
+                                    'to' => 'module-page',
+                                    'reversed_by' => 'module',
                                 )
                             ),
                             'type' => 'link',
@@ -363,7 +363,7 @@ return array(
                     )
                 )
             ),
-            'module_page' => array(
+            'module-page' => array(
                 'plugins' => array(
                     'repository' => array(
                         'plugin' => 'repository',
@@ -380,12 +380,12 @@ return array(
                         'options' => array(
                             'types' => array(
                                 array(
-                                    'to' => 'module_page',
-                                    'reversed_by' => 'module'
+                                    'to' => 'module',
+                                    'reversed_by' => 'pages'
                                 )
                             ),
                             'type' => 'link',
-                            'association' => 'one-to-many'
+                            'association' => 'many-to-one'
                         )
                     ),
                     'provider' => array(

@@ -13,6 +13,7 @@ namespace LearningResource\Plugin\Link\Listener;
 
 use Entity\Plugin\Listener\AbstractListener;
 use Zend\EventManager\Event;
+use Entity\Exception\RuntimeException;
 
 class Link extends AbstractListener
 {
@@ -30,13 +31,14 @@ class Link extends AbstractListener
             /* var $entity \Entity\Manager\EntityManagerInterface */
             $entityManager = $entity->getEntityManager();
             
+            $found = false;
             foreach ($entity->getScopesForPlugin('link') as $scope) {
-                
                 if (array_key_exists($scope, $data)) {
                     $options = $data[$scope];
                     
                     $toEntity = $entityManager->getEntity($options['to_entity']);
                     $addAs = $options['as'];
+                    $found = true;
                     
                     if ($addAs == 'parent') {
                         $entity->$scope()
@@ -46,6 +48,9 @@ class Link extends AbstractListener
                             ->addParent($toEntity);
                     }
                 }
+            }
+            if (! $found) {
+                throw new RuntimeException(sprintf('Couldn\'t find link plugin', $scope));
             }
         }, 2);
     }
