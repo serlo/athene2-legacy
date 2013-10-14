@@ -78,7 +78,6 @@ class ZendMailAdapter implements AdapterInterface
      */
     public function flush()
     {
-        echo 'flushing smtppp';
         $transport = new Smtp();
         $transport->setOptions($this->getSmtpOptions());
         foreach ($this->queue as $message) {
