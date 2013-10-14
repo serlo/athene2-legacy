@@ -47,7 +47,6 @@ $table = array(
         <?php case 'module': $table['right'] .= $partial; break; ?>
         <?php default: $table['left'] .= $partial; break;?>
     <?php } ?>
-    <?php if($link->getType()->getName() == 'text-exercise') $table['bottom'] .= $partial; ?>
     <?php endif; ?>
     <?php endforeach; ?>
     <div class="row">
