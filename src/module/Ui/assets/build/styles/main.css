@@ -9397,7 +9397,7 @@ td.visible-print {
 
 /* BODY / HTML*/
 
-/* line 2, ../../source/styles/base/_base.scss */
+/* line 4, ../../source/styles/base/_base.scss */
 
 body,
 html {
@@ -9405,13 +9405,13 @@ html {
   height: 100%;
 }
 
-/* line 7, ../../source/styles/base/_base.scss */
+/* line 9, ../../source/styles/base/_base.scss */
 
 html {
   background: #e4e6e6;
 }
 
-/* line 11, ../../source/styles/base/_base.scss */
+/* line 13, ../../source/styles/base/_base.scss */
 
 body {
   background: none transparent;
@@ -9424,10 +9424,33 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* line 23, ../../source/styles/base/_base.scss */
+/* line 25, ../../source/styles/base/_base.scss */
 
 h1 {
   font-size: 30px;
+}
+
+/* line 29, ../../source/styles/base/_base.scss */
+
+.wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -320px;
+  /* the bottom margin is the negative value of the footer's height */
+}
+
+/* States */
+
+/* line 38, ../../source/styles/base/_base.scss */
+
+.is-inline-block {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
 }
 
 /* Nested Dropdown Menu */
@@ -9734,7 +9757,7 @@ h1 {
   box-shadow: 0 0 3px #dadada;
 }
 
-/* line 2, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 4, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav > li > a {
   background: #4b4d4c;
@@ -9742,13 +9765,13 @@ h1 {
   margin-bottom: 2px;
 }
 
-/* line 7, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 9, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav > li > a:hover {
   background: #007ec1;
 }
 
-/* line 11, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 13, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav > li > a .caret {
   float: right;
@@ -9757,11 +9780,81 @@ h1 {
   border-bottom-color: white;
 }
 
-/* line 20, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 22, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav .is-active > a {
   background: #007ec1;
   color: white;
+}
+
+/* line 27, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#main-nav li ul {
+  display: none;
+}
+
+/* line 32, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation {
+  position: absolute;
+  top: 0;
+  left: 175px;
+  background: #FFF;
+  width: 260px;
+  height: 400px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* line 44, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation-mover {
+  position: relative;
+  white-space: nowrap;
+}
+
+/* line 48, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation-mover ul {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  width: 100%;
+}
+
+/* line 3, ../../source/styles/partials/_serlo_header.scss */
+
+#subject-nav .dropdown-toggle {
+  display: inline-block;
+  z-index: 12;
+  padding-top: 18px;
+  margin-left: 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  line-height: 43px;
+  font-size: 38.5px;
+  font-weight: bold;
+  color: #007ec1;
+}
+
+/* line 20, ../../source/styles/partials/_serlo_header.scss */
+
+#subject-nav .dropdown-toggle:hover,
+#subject-nav .dropdown-toggle:focus {
+  text-decoration: none;
+  border-color: #007ec1;
+}
+
+/* line 26, ../../source/styles/partials/_serlo_header.scss */
+
+#subject-nav .caret {
+  margin-left: 10px;
+  border-width: 7px;
+  border-top-color: #007ec1;
+  border-bottom: none;
 }
 
 /* line 1, ../../source/styles/partials/_serlo_footer.scss */
@@ -9790,6 +9883,13 @@ h1 {
 #footer a:hover {
   background: none;
   text-decoration: underline;
+}
+
+/* line 22, ../../source/styles/partials/_serlo_footer.scss */
+
+#footer,
+#footer-push {
+  height: 320px;
 }
 
 /* line 3, ../../source/styles/_shame.scss */

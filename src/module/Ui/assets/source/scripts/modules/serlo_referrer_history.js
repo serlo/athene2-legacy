@@ -12,7 +12,7 @@
  */
 
 /*global define, window*/
-define(["underscore", "cache"], function (_, cache) {
+define(["underscore", "cache", "events"], function (_, cache) {
     "use strict";
     var ReferrerHistory,
         cacheKey = 'a2_history',
