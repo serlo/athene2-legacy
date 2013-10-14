@@ -13,6 +13,7 @@ namespace LearningResource\Plugin\Page\Controller;
 
 use Entity\Plugin\Controller\AbstractController;
 use Versioning\Exception\RevisionNotFoundException;
+use Entity\Exception\EntityNotFoundException;
 
 class PageController extends AbstractController
 {
@@ -20,8 +21,13 @@ class PageController extends AbstractController
 
     public function indexAction()
     {
-        $page = $plugin = $this->getPlugin();
-        $entity = $this->getEntityService();
+        try {
+            $page = $plugin = $this->getPlugin();
+            $entity = $this->getEntityService();
+        } catch (EntityNotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
         
         try {
             $model = new \Zend\View\Model\ViewModel(array(
@@ -32,6 +38,7 @@ class PageController extends AbstractController
             return $model;
         } catch (RevisionNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
+            return;
         }
     }
 
