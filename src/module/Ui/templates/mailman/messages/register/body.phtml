@@ -1,0 +1,12 @@
+<?php
+echo sprintf($this->translate("Hallo %s,
+vielen Dank für die deine Registrierung auf www.serlo.org.
+Um deinen Account nutzen zu können, musst du deinen Account aktivieren. Dies kannst du tun, indem du folgenden Link aufrufst:
+
+%s 
+
+Wir wünschen dir viel Erfolg beim Lernen,
+
+dein serlo.org Team. "), $this->user->getUserName(), $this->url('user/activate', array(
+    'token' => $this->user->getToken()
+), array('force_canonical' => true)));

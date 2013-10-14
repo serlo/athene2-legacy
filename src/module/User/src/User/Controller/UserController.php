@@ -150,10 +150,10 @@ class UserController extends AbstractUserController
                         ->getEntity(),
                     'data' => $data
                 ));
+                die();
                 $this->getUserManager()
                     ->getObjectManager()
                     ->flush();
-                
                 $this->redirect()->toUrl($this->params('ref', '/'));
                 return '';
             }

@@ -119,7 +119,7 @@ return array(
                     ),
                     'setSubscriptionManager' => array(
                         'required' => true
-                    ),
+                    )
                 ),
                 __NAMESPACE__ . '\Notification\SubscriptionManager' => array(
                     'setClassResolver' => array(
@@ -250,36 +250,60 @@ return array(
                     )
                 )
             ),
-            'login' => array(
+            'user' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
+                'may_terminate' => false,
                 'options' => array(
-                    'route' => '/login',
+                    'route' => '/user',
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\UserController',
-                        'action' => 'login'
+                        'action' => 'index'
                     )
-                )
-            ),
-            'register' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options' => array(
-                    'route' => '/register',
-                    'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\UserController',
-                        'action' => 'register'
-                    )
-                )
-            ),
-            'logout' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options' => array(
-                    'route' => '/logout',
-                    'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\UserController',
-                        'action' => 'logout'
+                ),
+                'child_routes' => array(
+                    'login' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/login',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UserController',
+                                'action' => 'login'
+                            )
+                        )
+                    ),
+                    'register' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/register',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UserController',
+                                'action' => 'register'
+                            )
+                        )
+                    ),
+                    'logout' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/logout',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UserController',
+                                'action' => 'logout'
+                            )
+                        )
+                    ),
+                    'activate' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/activate/:token',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UserController',
+                                'action' => 'activate'
+                            )
+                        )
                     )
                 )
             ),

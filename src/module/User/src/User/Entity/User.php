@@ -69,6 +69,11 @@ class User extends UuidEntity implements UserInterface
     protected $logins;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $token;
+
+    /**
      * @ORM\Column(type="datetime",
      * nullable=true)
      */
@@ -107,6 +112,24 @@ class User extends UuidEntity implements UserInterface
     protected $ads_enabled;
 
     /**
+     * @return field_type $token
+     */
+    public function getToken ()
+    {
+        return $this->token;
+    }
+
+	/**
+     * @param field_type $token
+     * @return $this
+     */
+    public function generateToken()
+    {
+        $this->token = hash('crc32b', uniqid('user.token.', true));;
+        return $this;
+    }
+
+	/**
      *
      * @return the $userRoles
      */
@@ -358,6 +381,7 @@ class User extends UuidEntity implements UserInterface
         $this->ads_enabled = true;
         $this->removed = false;
         $this->logins = 0;
+        $this->generateToken();
         $this->gender = 'n';
     }
 

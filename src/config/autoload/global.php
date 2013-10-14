@@ -1,4 +1,5 @@
 <?php
+use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * Global Configuration Override
  *
@@ -38,7 +39,24 @@ return array(
     'service_manager' => array(
         'aliases' => array(
             'EntityManager' => 'Doctrine\ORM\EntityManager'
-        )
+        ),
+        'factories' => array(
+            'Zend\Mail\Transport\SmtpOptions' => function(ServiceLocatorInterface $sm){
+                $config = $sm->get('config')['smtp_options'];
+                return new \Zend\Mail\Transport\SmtpOptions(
+                    $config
+                );
+            }
+        ),
+    ),
+    'smtp_options' => array(
+    	'name' => 'localhost.localdomain',
+		'host' => 'localhost',
+		'connection_class' => 'login',
+		'connection_config' => array(
+			'username' => 'postmaster',
+			'password' => ''
+		),
     ),
     'dbParams' => array(
         'host' => '',
