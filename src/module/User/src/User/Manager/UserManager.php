@@ -65,6 +65,19 @@ class UserManager implements UserManagerInterface
         return null;
     }
 
+    public function findUserByToken($username)
+    {
+        $user = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\UserInterface'))
+            ->findOneBy(array(
+            'token' => $username
+        ));
+        if (! $user)
+            throw new UserNotFoundException(sprintf('User %s not found', $username));
+        return $this->getUser($user->getId());
+    }
+
     public function findUserByUsername($username)
     {
         $user = $this->getObjectManager()
@@ -145,6 +158,12 @@ class UserManager implements UserManagerInterface
     {
         return $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('User\Entity\RoleInterface'), $id);
+    }
+
+    public function findRoleByName($role)
+    {
+        return $this->getObjectManager()->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\RoleInterface'))->findOneBy(array('name' => $role));
     }
 
     protected function createService(UserInterface $entity)

@@ -391,7 +391,7 @@ class User extends UuidEntity implements UserInterface
         $e->setLanguage($language);
         $e->setRole($role);
         $e->setUser($this);
-        return $this;
+        return $e;
     }
 
     public function getRoles(LanguageInterface $language = NULL)

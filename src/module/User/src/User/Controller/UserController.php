@@ -19,7 +19,7 @@ use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -163,6 +163,17 @@ class UserController extends AbstractUserController
             'form' => $form
         ));
         return $view;
+    }
+
+    public function activateAction()
+    {
+        $user = $this->getUserManager()->findUserByToken($this->params('token'));
+        $user->addRole('login');
+        $this->getUserManager()
+            ->getObjectManager()
+            ->flush();
+        $this->redirect()->toRoute('home');
+        return '';
     }
 
     public function lostPasswordAction()

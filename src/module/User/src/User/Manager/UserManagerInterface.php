@@ -26,6 +26,13 @@ interface UserManagerInterface
 
     /**
      *
+     * @param string $token
+     * @return UserServiceInterface
+     */
+    public function findUserByToken ($token);
+
+    /**
+     *
      * @param string $username
      * @return UserServiceInterface
      */
@@ -76,6 +83,7 @@ interface UserManagerInterface
      * @return RoleInterface
      */
     public function findRole ($roleId);
+    public function findRoleByName($role);
     
     public function createUserEntity();
     
