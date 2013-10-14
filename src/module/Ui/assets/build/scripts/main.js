@@ -3788,7 +3788,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * @param {Object} data All informations about the MenuItem (url, title, position, level)
      */
     MenuItem = function (data) {
-        if (!data.url || !data.title || !data.position || data.level === undefined) {
+        if (data.url === undefined || !data.title || !data.position || data.level === undefined) {
             throw new Error("Not enough arguments");
         }
 
@@ -3994,8 +3994,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
     };
 
     /**
-<<<<<<< HEAD
-=======
      * @method findByPosition
      * @param {Array} position An array of indexes
      * @return {MenuItem} or false
@@ -4058,7 +4056,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
     };
 
     /**
->>>>>>> side-navigation
      * @class SideNavigation
      * @param {Object} options See defaults
      * 
