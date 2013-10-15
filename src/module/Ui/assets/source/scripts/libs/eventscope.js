@@ -10,7 +10,7 @@
  */
 
 /*global define*/
-define(['underscore'], function (_) {
+define(['underscore'], function (_) {
     "use strict";
     function eventScope(element) {
         var Events = {},
@@ -23,7 +23,7 @@ define(['underscore'], function (_) {
         };
 
         fn.removeEventListener = function (type, fn) {
-            return !Events[type] || (function () {
+            return !Events[type] || (function () {
                 if (fn === undefined) {
                     delete Events[type];
                     return true;
