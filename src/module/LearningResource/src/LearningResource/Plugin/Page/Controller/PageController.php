@@ -30,10 +30,8 @@ class PageController extends AbstractController
         }
         
         try {
-            $model = new \Zend\View\Model\ViewModel(array(
-                'title' => $page->getContentFor('title'),
-                'content' => $page->getContentFor('content')
-            ));
+            $model = new \Zend\View\Model\ViewModel(array('entity' => $entity, 'plugin' => $page));
+            $page->hydrate($model);
             $model->setTemplate($page->getTemplate());
             return $model;
         } catch (RevisionNotFoundException $e) {

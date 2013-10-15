@@ -172,6 +172,13 @@ return array(
                                     ),
                                     'template' => 'subject/plugin/taxonomy/entity/video'
                                 ),
+                                'module' => array(
+                                    'labels' => array(
+                                        'singular' => 'Modul',
+                                        'plural' => 'Module'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/module'
+                                ),
                             )
                         )
                     ),

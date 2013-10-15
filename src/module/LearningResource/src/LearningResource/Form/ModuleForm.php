@@ -14,27 +14,20 @@ namespace LearningResource\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
 
-class ArticleForm extends Form
+class ModuleForm extends Form
 {
 
     function __construct()
     {
-        parent::__construct('article');
+        parent::__construct('module');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('article');
+        $inputFilter = new InputFilter('module');
         
         $this->add(array(
             'name' => 'title',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-                'class' => 'ckeditor'
+                'placeholder' => 'Titel'
             )
         ));
         
@@ -42,11 +35,6 @@ class ArticleForm extends Form
         
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true
-        ));
-        
-        $inputFilter->add(array(
-            'name' => 'content',
             'required' => true
         ));
         

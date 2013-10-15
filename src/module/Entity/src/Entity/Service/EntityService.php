@@ -107,22 +107,24 @@ class EntityService implements EntityServiceInterface
     /**
      * Get plugin instance
      *
-     * @param string $name
+     * @param string $scope
      *            Name of plugin to return
      * @return mixed
      */
-    public function plugin($name)
+    public function plugin($scope)
     {
-        if (! $this->isPluginWhitelisted($name)) {
-            throw new InvalidArgumentException(sprintf('Plugin %s is not whitelisted for this entity.', $name));
+        if (! $this->isPluginWhitelisted($scope)) {
+            throw new InvalidArgumentException(sprintf('Plugin %s is not whitelisted for this entity.', $scope));
         }
         
         $pluginManager = $this->getPluginManager();
         
         $pluginManager->setEntityService($this);
-        $pluginManager->setPluginOptions($this->getPluginOptions($name));
+        $pluginManager->setPluginOptions($this->getPluginOptions($scope));
         
-        return $this->getPluginManager()->get($this->getPlugin($name));
+        $plugin = $this->getPluginManager()->get($this->getPlugin($scope));
+        $plugin->setScope($scope);
+        return $plugin;
     }
 
     /**

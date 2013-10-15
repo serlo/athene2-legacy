@@ -21,7 +21,7 @@ $solution = $exercise->solution()->findChild();
         </section>
     	<section class="solution">
         	<?php if(!is_object($solution)): ?>
-        	   <?php echo sprintf($this->translate('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?'), rawurldecode($this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array( 'as' => 'child', 'to_entity' => $exercise->getId())))))); ?>
+        	   <?php echo sprintf($this->translate('Zu dieser Aufgabe gibt es noch keine Lösung. Möchtest du eine Lösung <a href="%s">hinzufügen</a>?'), rawurldecode($this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId())))))); ?>
         	<?php else: ?>
         	<?php $solutionRepository = $solution->repository(); ?>
         	<?php if($solutionRepository->hasCurrentRevision()): ?>

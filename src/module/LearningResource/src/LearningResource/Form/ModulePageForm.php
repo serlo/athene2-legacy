@@ -14,14 +14,14 @@ namespace LearningResource\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
 
-class ArticleForm extends Form
+class ModulePageForm extends Form
 {
 
     function __construct()
     {
-        parent::__construct('article');
+        parent::__construct('module-page');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('article');
+        $inputFilter = new InputFilter('module-page');
         
         $this->add(array(
             'name' => 'title',

@@ -15,7 +15,7 @@ use Subject\Plugin\Entity;
 use SubjectTest\Plugin\AbstractPluginTest;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class EntityPluginTest extends AbstractPluginTest
+abstract class EntityPluginTest extends AbstractPluginTest
 {
 
     protected $entityPlugin, $entityManagerMock, $objectManagerMock, $termServiceMock;
@@ -36,7 +36,7 @@ class EntityPluginTest extends AbstractPluginTest
         $this->entityPlugin->setSubjectService($this->subjectServiceMock);
     }
 
-    public function testGetUnrevisedEntities()
+    private function GetUnrevisedEntitiesDeprecated()
     {
         $this->subjectServiceMock->expects($this->once())
             ->method('getTermService')

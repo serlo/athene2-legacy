@@ -110,9 +110,9 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'text-solution',
-                                    'reversed_by' => 'exercise'
+                                'text-solution' => array(
+                                    'inversed_by' => 'exercise',
+                                    'owning' => true
                                 )
                             ),
                             'type' => 'link',
@@ -139,9 +139,8 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'grouped-text-exercise',
-                                    'reversed_by' => 'group'
+                                'grouped-text-exercise' => array(
+                                    'inversed_by' => 'group',
                                 )
                             ),
                             'type' => 'link',
@@ -166,9 +165,8 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'exercise-group',
-                                    'reversed_by' => 'exercises'
+                                'exercise-group' => array(
+                                    'inversed_by' => 'exercises',
                                 )
                             ),
                             'type' => 'link',
@@ -179,9 +177,9 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'exercise-solution',
-                                    'reversed_by' => 'exercise'
+                                'exercise-solution' => array(
+                                    'inversed_by' => 'exercise',
+                                    'owning' => true
                                 )
                             ),
                             'type' => 'link',
@@ -207,13 +205,13 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'text-exercise',
-                                    'reversed_by' => 'solution'
+                                'text-exercise' => array(
+                                    'inversed_by' => 'solution',
+                                    'owning' => false
                                 ),
-                                array(
-                                    'to' => 'grouped-text-exercisen',
-                                    'reversed_by' => 'solution'
+                                'grouped-text-exercise' => array(
+                                    'inversed_by' => 'solution',
+                                    'owning' => false
                                 )
                             ),
                             'type' => 'link',
@@ -324,9 +322,8 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'module_page',
-                                    'reversed_by' => 'module'
+                                'module-page' => array(
+                                    'inversed_by' => 'module',
                                 )
                             ),
                             'type' => 'link',
@@ -363,7 +360,7 @@ return array(
                     )
                 )
             ),
-            'module_page' => array(
+            'module-page' => array(
                 'plugins' => array(
                     'repository' => array(
                         'plugin' => 'repository',
@@ -379,13 +376,12 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                array(
-                                    'to' => 'module_page',
-                                    'reversed_by' => 'module'
+                                'module' => array(
+                                    'inversed_by' => 'pages',
                                 )
                             ),
                             'type' => 'link',
-                            'association' => 'one-to-many'
+                            'association' => 'many-to-one'
                         )
                     ),
                     'provider' => array(

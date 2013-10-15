@@ -14,7 +14,7 @@ $exercise = $this->entity;
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
 <li>
     <article class="text-exercise">
-    	<section class="scope">
+    	<section class="repository">
             <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
             <?php echo $revision->get('content'); ?>
         </section>
