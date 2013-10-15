@@ -37,16 +37,10 @@ class Link extends AbstractListener
                     $options = $data[$scope];
                     
                     $toEntity = $entityManager->getEntity($options['to_entity']);
-                    $addAs = $options['as'];
                     $found = true;
                     
-                    if ($addAs == 'parent') {
-                        $entity->$scope()
-                            ->addChild($toEntity);
-                    } else {
-                        $entity->$scope()
-                            ->addParent($toEntity);
-                    }
+                    $entity->$scope()
+                        ->add($toEntity);
                 }
             }
             if (! $found) {

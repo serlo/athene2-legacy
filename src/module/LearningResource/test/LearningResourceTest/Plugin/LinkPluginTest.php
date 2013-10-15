@@ -14,7 +14,7 @@ namespace LearningResourceTest\Plugin;
 use LearningResource\Plugin\Link\LinkPlugin;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class LinkPluginTest extends \PHPUnit_Framework_TestCase
+abstract class LinkPluginTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $linkPlugin;

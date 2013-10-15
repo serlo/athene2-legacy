@@ -15,7 +15,7 @@ use Subject\Plugin\Entity;
 use SubjectTest\Plugin\AbstractPluginTest;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class EntityPluginTest extends AbstractPluginTest
+abstract class EntityPluginTest extends AbstractPluginTest
 {
 
     protected $entityPlugin, $entityManagerMock, $objectManagerMock, $termServiceMock;

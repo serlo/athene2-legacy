@@ -52,7 +52,6 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
     public function get($name, array $options = array(), $usePeeringServiceManagers = true)
     {
         $plugin = parent::get($name);
-        $plugin->setScope($name);
         $this->inject($plugin);
         return $plugin;
     }

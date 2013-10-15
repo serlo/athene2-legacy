@@ -18,6 +18,6 @@
     	<?php endforeach; ?>
 	<?php endif; ?>
 	<footer>
-        <?php echo sprintf($this->translate('Seite <a href="%s">hinzufügen</a>'), rawurldecode($this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array( 'as' => 'child', 'to_entity' => $this->entity->getId())))))); ?>
+        <?php echo sprintf($this->translate('Seite <a href="%s">hinzufügen</a>'), rawurldecode($this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array( 'to_entity' => $this->entity->getId())))))); ?>
 	</footer>
 </article>
