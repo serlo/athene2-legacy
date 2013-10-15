@@ -22,7 +22,9 @@ require.config({
         "events": "libs/eventscope",
         "cache": "libs/cache",
         "referrer_history" : "modules/serlo_referrer_history",
-        "side_navigation" : "modules/serlo_side_navigation"
+        "side_navigation" : "modules/serlo_side_navigation",
+        "sortable_list" : "modules/serlo_sortable_list",
+        "nestable" : "thirdparty/jquery.nestable"
     },
     shim: {
         underscore: {
@@ -34,8 +36,11 @@ require.config({
         easing: {
             deps: ['jquery']
         },
+        nestable: {
+            deps: ['jquery']
+        },
         ATHENE2: {
-            deps: ['bootstrap', 'easing']
+            deps: ['bootstrap', 'easing', 'nestable']
         }
     },
     waitSeconds: 2

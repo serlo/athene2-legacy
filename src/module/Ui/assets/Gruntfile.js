@@ -56,7 +56,10 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                ignores: [
+                    '<%= serlo.app %>/scripts/thirdparty/{,*/}*.js'
+                ]
             },
             all: [
                 '<%= serlo.app %>/scripts/{,*/}*.js'
