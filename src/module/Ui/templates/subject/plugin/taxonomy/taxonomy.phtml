@@ -10,18 +10,17 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<ul>
+<ul class="nav nav-side">
     <?php foreach($this->terms as $term): ?>
-    <li class="term" data-id="<?php echo $term->getId(); ?>">
-    	<div class="" style="margin: 5px 0;">
-    		<?php //echo $this->taxonomy('taxonomy/term/actions', array('term' => $term)); ?>
-    		<div>
-    			<a class=""
-    				href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>"><?php echo $term->getName(); ?></a>
-    			<!-- (<?php echo $term->countLinks('entities'); ?>) -->
-    		</div>
-    	</div>
-        <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin)); ?>
+    <li <?php echo (isset($this->recursion) && $this->recursion) ? 'class="nav-side-header"' : ''; ?>>
+    
+    <?php if (isset($this->recursion) && $this->recursion): ?>
+    <a
+		href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>"><?php echo $term->getName(); ?></a>
+		<?php else: ?>
+		<strong><?php echo $term->getName(); ?></strong>
+		<?php endif;?>
+        <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'recursion' => true)); ?>
     </li>
     <?php endforeach; ?>
 </ul>
