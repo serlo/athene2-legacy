@@ -9515,6 +9515,13 @@ h1 {
 
 /* /Nested Dropdown Menu */
 
+/* line 1, ../../source/styles/partials/_serlo_base_layout.scss */
+
+#content-container {
+  background: #FFF;
+  border: 1px solid #DFDFDF;
+}
+
 /* Serlo Menu */
 
 /* top navbar */
@@ -9757,12 +9764,11 @@ h1 {
   box-shadow: 0 0 3px #dadada;
 }
 
-/* line 4, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 5, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav > li > a {
   background: #4b4d4c;
   color: white;
-  margin-bottom: 2px;
 }
 
 /* line 9, ../../source/styles/partials/_serlo_main_menu.scss */
@@ -9782,38 +9788,56 @@ h1 {
 
 /* line 22, ../../source/styles/partials/_serlo_main_menu.scss */
 
+#main-nav > li + li {
+  margin-top: 2px;
+}
+
+/* line 27, ../../source/styles/partials/_serlo_main_menu.scss */
+
 #main-nav .is-active > a {
   background: #007ec1;
   color: white;
 }
 
-/* line 27, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 32, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav li ul {
   display: none;
 }
 
-/* line 32, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 38, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#main-nav .is-nav-active a {
+  text-decoration: underline;
+}
+
+/* line 44, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation {
   position: absolute;
   top: 0;
   left: 175px;
-  background: #FFF;
+  background: #007ec1;
   width: 260px;
   height: 400px;
   z-index: 1;
   overflow: hidden;
 }
 
-/* line 44, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 55, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation a {
+  color: white;
+}
+
+/* line 60, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover {
   position: relative;
   white-space: nowrap;
 }
 
-/* line 48, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 64, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover ul {
   display: -moz-inline-stack;
@@ -9823,6 +9847,37 @@ h1 {
   zoom: 1;
   *display: inline;
   width: 100%;
+  padding-left: 0;
+  margin: 0;
+  height: 0;
+}
+
+/* line 73, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation-mover li {
+  list-style: none;
+}
+
+/* line 75, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation-mover li a {
+  display: block;
+  padding: 10px 12px 2px;
+}
+
+/* line 82, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-navigation-breadcrumbs {
+  margin-bottom: 2px;
+}
+
+/* line 85, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-navigation-breadcrumbs a {
+  padding: 5px 15px 5px 30px;
+  background-color: #007ec1;
+  color: white;
+  font-size: 0.85em;
 }
 
 /* line 3, ../../source/styles/partials/_serlo_header.scss */
