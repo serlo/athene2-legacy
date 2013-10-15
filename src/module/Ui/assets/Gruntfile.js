@@ -56,7 +56,10 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                ignores: [
+                    '<%= serlo.app %>/scripts/thirdparty/{,*/}*.js'
+                ]
             },
             all: [
                 '<%= serlo.app %>/scripts/{,*/}*.js'
@@ -152,7 +155,8 @@ module.exports = function (grunt) {
                     dest: '<%= serlo.dist %>',
                     src: [
                         '.htaccess',
-                        'styles/fonts/{,*/}*.*'
+                        'styles/fonts/{,*/}*.*',
+                        'bower_components/jquery/jquery.min.map'
                     ]
                 }]
             },
@@ -211,7 +215,21 @@ module.exports = function (grunt) {
                     baseUrl: "<%= serlo.app %>/scripts",
                     mainConfigFile: "source/scripts/main.js",
                     out: "<%= serlo.dist %>/scripts/main.js",
-                    optimize: 'none'
+                    preserveLicenseComments: false,
+                    optimize: 'none', // set to uglify2
+                    uglify2: {
+                        output: {
+                            beautify: false
+                        },
+                        compress: {
+                            sequences: true,
+                            global_defs: {
+                                DEBUG: true
+                            }
+                        },
+                        warnings: true,
+                        mangle: true
+                    }
                 }
             }
         }

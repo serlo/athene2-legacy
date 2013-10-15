@@ -9515,6 +9515,13 @@ h1 {
 
 /* /Nested Dropdown Menu */
 
+/* line 1, ../../source/styles/partials/_serlo_base_layout.scss */
+
+#content-container {
+  background: #FFF;
+  border: 1px solid #DFDFDF;
+}
+
 /* Serlo Menu */
 
 /* top navbar */
@@ -9757,12 +9764,11 @@ h1 {
   box-shadow: 0 0 3px #dadada;
 }
 
-/* line 4, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 5, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav > li > a {
   background: #4b4d4c;
   color: white;
-  margin-bottom: 2px;
 }
 
 /* line 9, ../../source/styles/partials/_serlo_main_menu.scss */
@@ -9782,38 +9788,56 @@ h1 {
 
 /* line 22, ../../source/styles/partials/_serlo_main_menu.scss */
 
+#main-nav > li + li {
+  margin-top: 2px;
+}
+
+/* line 27, ../../source/styles/partials/_serlo_main_menu.scss */
+
 #main-nav .is-active > a {
   background: #007ec1;
   color: white;
 }
 
-/* line 27, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 32, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #main-nav li ul {
   display: none;
 }
 
-/* line 32, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 38, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#main-nav .is-nav-active a {
+  text-decoration: underline;
+}
+
+/* line 44, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation {
   position: absolute;
   top: 0;
   left: 175px;
-  background: #FFF;
+  background: #007ec1;
   width: 260px;
   height: 400px;
   z-index: 1;
   overflow: hidden;
 }
 
-/* line 44, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 55, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation a {
+  color: white;
+}
+
+/* line 60, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover {
   position: relative;
   white-space: nowrap;
 }
 
-/* line 48, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 64, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover ul {
   display: -moz-inline-stack;
@@ -9823,6 +9847,37 @@ h1 {
   zoom: 1;
   *display: inline;
   width: 100%;
+  padding-left: 0;
+  margin: 0;
+  height: 0;
+}
+
+/* line 73, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation-mover li {
+  list-style: none;
+}
+
+/* line 75, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-sub-navigation-mover li a {
+  display: block;
+  padding: 10px 12px 2px;
+}
+
+/* line 82, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-navigation-breadcrumbs {
+  margin-bottom: 2px;
+}
+
+/* line 85, ../../source/styles/partials/_serlo_main_menu.scss */
+
+#serlo-side-navigation-breadcrumbs a {
+  padding: 5px 15px 5px 30px;
+  background-color: #007ec1;
+  color: white;
+  font-size: 0.85em;
 }
 
 /* line 3, ../../source/styles/partials/_serlo_header.scss */
@@ -9897,28 +9952,42 @@ h1 {
 .term {
   clear: right;
   padding-bottom: 0.4em;
+  list-style: none;
+  border-left: 1px dashed #eee;
 }
 
-/* line 9, ../../source/styles/_shame.scss */
+/* line 12, ../../source/styles/_shame.scss */
+
+.term .term-inner {
+  padding: 3px 5px;
+  margin-left: -1px;
+  border-radius: 3px;
+  border: 1px solid #f3f3f3;
+  background: #fafafa;
+  background: -webkit-linear-gradient(top, #fafafa 0%, #eeeeee 100%);
+  background: linear-gradient(top, #fafafa 0%, #eeeeee 100%);
+}
+
+/* line 24, ../../source/styles/_shame.scss */
 
 #navigation {
   width: 160px;
   float: left;
 }
 
-/* line 14, ../../source/styles/_shame.scss */
+/* line 29, ../../source/styles/_shame.scss */
 
 #main {
   margin-left: 160px;
 }
 
-/* line 18, ../../source/styles/_shame.scss */
+/* line 33, ../../source/styles/_shame.scss */
 
 .nav-header {
   font-weight: bold;
 }
 
-/* line 22, ../../source/styles/_shame.scss */
+/* line 37, ../../source/styles/_shame.scss */
 
 #page {
   position: relative;
@@ -9930,4 +9999,60 @@ h1 {
   -webkit-transition: 0.15s -webkit-transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
   transition: 0.15s -ms-transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
   transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+}
+
+/**
+ * Nestable
+ */
+
+/* line 78, ../../source/styles/_shame.scss */
+
+.dd-handle {
+  cursor: pointer;
+}
+
+/* line 83, ../../source/styles/_shame.scss */
+
+.dd-placeholder,
+.dd-empty {
+  margin: 5px 0;
+  padding: 0;
+  min-height: 30px;
+  background: #f2fbff;
+  border: 1px dashed #b6bcbf;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+/* line 84, ../../source/styles/_shame.scss */
+
+.dd-empty {
+  border: 1px dashed #bbb;
+  min-height: 100px;
+  background-color: #e5e5e5;
+  background-image: -webkit-linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white), -webkit-linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white);
+  background-image: -webkit-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), -webkit-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);
+  background-image: linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+
+/* line 95, ../../source/styles/_shame.scss */
+
+.dd-dragel {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* line 96, ../../source/styles/_shame.scss */
+
+.dd-dragel > .dd-item .dd-handle {
+  margin-top: 0;
+}
+
+/* line 97, ../../source/styles/_shame.scss */
+
+.dd-dragel .dd-handle {
+  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
 }

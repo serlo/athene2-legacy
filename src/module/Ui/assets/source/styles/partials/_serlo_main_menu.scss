@@ -1,21 +1,26 @@
 @import "compass/css3";
 
 #main-nav {
-    > li > a {
-        background: $gray;
-        color: white;
-        margin-bottom: 2px;
+    > li {
+        > a {
+            background: $gray;
+            color: white;
 
-        &:hover {
-            background: $themeColor;
+            &:hover {
+                background: $themeColor;
+            }
+
+            .caret {
+                float: right;
+                margin-top: 8px;
+
+                border-top-color: white;
+                border-bottom-color: white;
+            }
         }
 
-        .caret {
-            float: right;
-            margin-top: 8px;
-
-            border-top-color: white;
-            border-bottom-color: white;
+        + li {
+            margin-top: 2px;
         }
     }
 
@@ -27,18 +32,29 @@
     li ul {
         display: none;
     }
+
+    
+    .is-nav-active {
+        a {
+            text-decoration: underline;
+        }
+    }
 }
 
 #serlo-side-sub-navigation {
     position: absolute;
     top: 0;
     left: 175px;
-    background: #FFF;
+    background: $themeColor;
     width: 260px;
     height: 400px;
 
     z-index: 1;
     overflow: hidden;
+
+    a {
+        color: white;
+    }
 }
 
 #serlo-side-sub-navigation-mover {
@@ -48,5 +64,28 @@
     ul {
         @include inline-block;
         width: 100%;
+        padding-left: 0;
+        margin: 0;
+        height: 0;
+    }
+
+
+    li {
+        list-style: none;
+        a {
+            display: block;
+            padding: 10px 12px 2px;
+        }
+    }
+}
+
+#serlo-side-navigation-breadcrumbs {
+    margin-bottom: 2px;
+
+    a {
+        padding: 5px 15px 5px 30px;
+        background-color: $themeColor;
+        color: white;
+        font-size: 0.85em;
     }
 }

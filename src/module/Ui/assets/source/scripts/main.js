@@ -13,15 +13,18 @@ require.config({
     name: 'ATHENE2',
     baseUrl: "/assets/build/scripts",
     paths: {
-        "jquery": "../bower_components/jquery/jquery.min",
+        "jquery": "../bower_components/jquery/jquery",
         "jquery-ui" : "../bower_components/jquery-ui/ui/jquery-ui",
         "underscore": "../bower_components/underscore/underscore",
         "bootstrap": "../bower_components/sass-bootstrap/dist/js/bootstrap",
         "common" : "modules/serlo_common",
+        "easing" : "libs/easing",
         "events": "libs/eventscope",
         "cache": "libs/cache",
         "referrer_history" : "modules/serlo_referrer_history",
-        "side_navigation" : "modules/serlo_side_navigation"
+        "side_navigation" : "modules/serlo_side_navigation",
+        "sortable_list" : "modules/serlo_sortable_list",
+        "nestable" : "thirdparty/jquery.nestable"
     },
     shim: {
         underscore: {
@@ -30,8 +33,14 @@ require.config({
         bootstrap: {
             deps: ['jquery']
         },
+        easing: {
+            deps: ['jquery']
+        },
+        nestable: {
+            deps: ['jquery']
+        },
         ATHENE2: {
-            deps: ['bootstrap']
+            deps: ['bootstrap', 'easing', 'nestable']
         }
     },
     waitSeconds: 2

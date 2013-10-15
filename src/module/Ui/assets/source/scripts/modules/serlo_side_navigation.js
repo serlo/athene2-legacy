@@ -27,6 +27,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
         mainId: '#main-nav',
         // active class, given to <li> elements
         activeClass: 'is-active',
+        // class given to menu items the user is navigating through
+        activeNavigatorClass: 'is-nav-active',
         // width of the subnavigation
         subNavigationWidth: 260,
         // duration of slide animation
@@ -55,7 +57,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * @param {Object} data All informations about the MenuItem (url, title, position, level)
      */
     MenuItem = function (data) {
-        if (data.url === undefined || !data.title || !data.position || data.level === undefined) {
+        if (data.url === undefined || !data.title || !data.position || data.level === undefined) {
             throw new Error("Not enough arguments");
         }
 
@@ -96,7 +98,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * OnClick handler for MenuItem
      **/
     MenuItem.prototype.onClick = function (e) {
-        if (this.children) {
+        if (this.children || this.alwaysPrevent) {
             e.preventDefault();
             this.trigger('click', {
                 originalEvent: e,
@@ -229,9 +231,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
     Hierarchy.prototype.findByUrl = function (url) {
         var self = this;
 
-        return _.first(deepFlatten(self.data).filter(function (item) {
-            if (item.url === url) {
-                return item;
+        return _.first(deepFlatten(self.data).filter(function (menuItem) {
+            if (menuItem.data.url === url) {
+                return menuItem;
             }
             return false;
         }).value());
@@ -267,17 +269,20 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      *
      **/
     Hierarchy.prototype.findByPosition = function (position) {
-        var cursor = this.data,
-            last;
+        if (position.length === 1) {
+            return this.data[position[0]];
+        }
+
+        var cursor = this.data[position[0]];
 
         position = position.slice();
-        last = position.pop();
+        position.shift();
 
         _.each(position, function (index) {
-            cursor = cursor[index] || (cursor.children && cursor.children[index]);
+            cursor = cursor.children[index];
         });
 
-        return cursor[last] || false;
+        return cursor || false;
     };
 
     /**
@@ -286,23 +291,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      **/
     Hierarchy.prototype.getFlattened = function () {
         return deepFlatten(this.data).value();
-    };
-
-    /**
-     * @method findLevelByPosition
-     * @param {Array} position An array of indexes
-     * @return {Array} Returns an array of MenuItems in hierarchy
-     **/
-    Hierarchy.prototype.findLevelByPosition = function (position) {
-        if (position.length === 1) {
-            return this.data[position[0]].children || false;
-        }
-
-        var cursor = this.data;
-        _.each(position, function (index) {
-            cursor = cursor[index] || (cursor.children && cursor.children[index]);
-        });
-        return cursor.children || false;
     };
 
     /**
@@ -320,6 +308,35 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             cursor = cursor[index].children;
         });
         return result;
+    };
+
+    /**
+     * @method getParents
+     * @param {Array} position An array of indexes
+     * @return {Array} an Array of menuItems
+     *
+     **/
+    Hierarchy.prototype.getParents = function (position) {
+        var result = [],
+            usePosition = position.slice();
+
+        while (usePosition.length) {
+            result.push(this.findByPosition(usePosition));
+            usePosition.pop();
+        }
+
+        return result;
+    };
+
+    /**
+     * @method getParent
+     * @param {MenuItem} menuItem A menuItem
+     * @return {MenuItem} The direct parent of the given MenuItem
+     **/
+    Hierarchy.prototype.getParent = function (menuItem) {
+        var parents = this.getParents(menuItem.data.position).reverse();
+        parents.pop();
+        return parents[parents.length - 1];
     };
 
     /**
@@ -342,6 +359,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
         this.$nav = $('<nav id="serlo-side-sub-navigation">');
         this.$mover = $('<div id="serlo-side-sub-navigation-mover">');
         this.$nav.append(this.$mover);
+        this.$mover.css('left', 0);
+        this.$breadcrumbs = $('<ul id="serlo-side-navigation-breadcrumbs" class="nav">');
 
         this.hierarchy = new Hierarchy();
         this.hierarchy.fetchFromDom(this.$el);
@@ -359,13 +378,67 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * Sets options.activeClass for active menu item and its parents
      **/
     SideNavigation.prototype.setActiveBranch = function () {
-        if (this.active) {
-            this.active.$li
-                .addClass(this.options.activeClass)
+        var self = this,
+            position,
+            parents,
+            $rootMenuItem;
+
+        if (self.active) {
+            position = self.active.data.position;
+
+            self.active.$el
+                .addClass(self.options.activeClass)
                 .parents('li')
-                .addClass(this.options.activeClass);
+                .addClass(self.options.activeClass);
+
+            // set the original root elements activeClass
+            $rootMenuItem = $('> li', self.$el).eq(position[0]).addClass(self.options.activeClass);
+
+            // Create 'breadcrumbs'
+            parents = self.hierarchy.getParents(position).reverse();
+            parents.shift();
+
+            if (parents.length) {
+                _.each(parents, function (menuItem) {
+                    var breadcrumb = new MenuItem(menuItem.data);
+
+                    breadcrumb.alwaysPrevent = true;
+
+                    eventScope(breadcrumb);
+
+                    breadcrumb.addEventListener('click', function (e) {
+                        var parentMenuItem = self.hierarchy.getParent(e.menuItem);
+                        e.originalEvent.preventDefault();
+                        self.navigatedMenuItem = parentMenuItem;
+                        self.jumpTo(parentMenuItem);
+                    });
+
+                    self.$breadcrumbs.append(breadcrumb.$el);
+                });
+
+                self.$breadcrumbs.insertAfter($rootMenuItem);
+            }
         }
-        return this;
+        return self;
+    };
+
+    /**
+     * @method setActiveNavigator
+     * 
+     * Sets the options.activeNavigatorClass for menu items the user is navigating with
+     **/
+    SideNavigation.prototype.setActiveNavigator = function () {
+        $('.' + this.options.activeNavigatorClass, this.$el)
+            .removeClass(this.options.activeNavigatorClass);
+
+        if (this.navigatedMenuItem) {
+            this.navigatedMenuItem.$el
+                .addClass(this.options.activeNavigatorClass)
+                .parents('li')
+                .addClass(this.options.activeNavigatorClass);
+            // set the original root elements activeClass
+            $('> li', this.$el).eq(this.navigatedMenuItem.data.position[0]).addClass(this.options.activeNavigatorClass);
+        }
     };
 
     /**
@@ -381,6 +454,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
         _.each(menuItems, function (menuItem) {
             menuItem.addEventListener('click', function (e) {
                 e.originalEvent.preventDefault();
+                self.navigatedMenuItem = e.menuItem;
                 self.jumpTo(e.menuItem);
             });
 
@@ -450,37 +524,39 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             startLevels,
             breakpoint;
 
-        if (!self.activeLevels) {
+        if (!self.activeLevels) {
             self.activeLevels = self.hierarchy.getLevels(menuItem.data.position);
 
             self.subNavigation = new SubNavigation(self.activeLevels);
             self.subNavigation.$el.appendTo(self.$mover);
+        }
+
+        startLevels = self.activeLevels;
+
+        self.activeLevels = self.hierarchy.getLevels(menuItem.data.position);
+        // determine position crossing
+        breakpoint = self.determineBreakpoint(startLevels, self.activeLevels);
+        // start and end level is 1, we dont need any animation
+        if (startLevels.length === 1 && self.activeLevels.length === 1) {
+            self.subNavigation.reset(self.activeLevels);
+            self.setActiveNavigator();
         } else {
-            startLevels = self.activeLevels;
-
-            self.activeLevels = self.hierarchy.getLevels(menuItem.data.position);
-            // determine position crossing
-            breakpoint = self.determineBreakpoint(startLevels, self.activeLevels);
-            // start and end level is 1, we dont need any animation
-            if (startLevels.length === 1 && self.activeLevels.length === 1) {
+            if (breakpoint === startLevels.length) {
+                // breakpoint is current level,
+                // so we only need one animation
                 self.subNavigation.reset(self.activeLevels);
+                self.setActiveNavigator();
+                self.animateTo(self.activeLevels.length);
             } else {
-                if (breakpoint === startLevels.length) {
-                    // breakpoint is current level,
-                    // so we only one animation
+                // we need two animations,
+                // first to our breakpoint
+                // then to our target
+                self.animateTo(breakpoint, function () {
                     self.subNavigation.reset(self.activeLevels);
+                    self.setActiveNavigator();
                     self.animateTo(self.activeLevels.length);
-                } else {
-                    // we need two animations,
-                    // first to our breakpoint
-                    // then to our target
-                    self.animateTo(breakpoint, function () {
-                        self.subNavigation.reset(self.activeLevels);
-                        self.animateTo(self.activeLevels.length);
-                    });
-                }
+                });
             }
-
         }
     };
 
@@ -491,7 +567,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      **/
     SideNavigation.prototype.animateTo = function (level, callback) {
         var self = this,
-            targetLeft = (level - 1) * -1 * self.options.subNavigationWidth;
+            targetLeft = ((level - 1) * -1 * self.options.subNavigationWidth) + 'px';
 
         if (self.$mover.css('left') === targetLeft && callback) {
             callback();
@@ -506,7 +582,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
                     callback();
                 }
             },
-            duration: self.options.animationDuration
+            duration: self.options.animationDuration,
+            easing: 'easeOutExpo'
         });
     };
 
@@ -518,8 +595,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      **/
     SideNavigation.prototype.determineBreakpoint = function (start, end) {
         var result = 1,
-            startReverse = start.slice().reverse(),
-            endReverse = end.slice().splice(0, start.length).reverse();
+            startReverse = start.slice(),
+            endReverse = end.slice().splice(0, start.length);
+
+        if (startReverse.length > endReverse.length) {
+            startReverse = startReverse.splice(0, endReverse.length);
+        }
+
 
         _.each(startReverse, function (level, index) {
             if (endReverse[index] !== undefined) {
@@ -537,9 +619,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * SideNavigation constructor wrapper
      * for creating a singleton
      */
-    return function (options) {
+    return function (options) {
         // singleton
-        return instance || (function () {
+        return instance || (function () {
             instance = new SideNavigation(options);
             return instance;
         }());

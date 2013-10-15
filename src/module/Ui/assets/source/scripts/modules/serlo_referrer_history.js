@@ -85,14 +85,14 @@ define(["underscore", "cache", "events"], function (_, cache) {
      **/
     ReferrerHistory.prototype.getRange = function (n) {
         var length = this.history.length;
-        return this.history.slice(length - (n || 1));
+        return this.history.slice(length - (n || 1));
     };
 
     /**
      * returns one by index
      **/
     ReferrerHistory.prototype.getOne = function (index) {
-        return this.history[index === undefined ? this.history.length - 1 : index];
+        return this.history[index === undefined ? this.history.length - 1 : index];
     };
 
     /**
