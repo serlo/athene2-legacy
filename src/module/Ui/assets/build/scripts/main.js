@@ -14616,7 +14616,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             startReverse = startReverse.splice(0, endReverse.length);
         }
 
-
         _.each(startReverse, function (level, index) {
             if (endReverse[index] !== undefined) {
                 if (_.isEqual(level[0].data.position, endReverse[index][0].data.position)) {
@@ -14641,6 +14640,47 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
         }());
     };
 });
+/*global define*/
+define('system_notification',['jquery'], function ($) {
+    
+    var rootSelector = '#page',
+        $wrapper,
+        SystemNotification,
+        /**
+         * allowed status:
+         *   success, info, warning, danger
+         **/
+        showNotification = function (message, status, html) {
+            var notification;
+
+            if (!$wrapper) {
+                $wrapper = $('<div id="system-notification">');
+                $(rootSelector).prepend($wrapper);
+            }
+
+            notification = new SystemNotification(message, status, html);
+            $wrapper.append(notification.$el);
+        };
+
+    SystemNotification = function (message, status, html) {
+        status = status || 'info';
+        this.$el = $('<div class="alert">');
+        if (status) {
+            this.$el.addClass('alert-' + status);
+        }
+        if (html) {
+            this.$el.html(message);
+        } else {
+            this.$el.text(message);
+        }
+    };
+
+    return {
+        notify: function (message, status, html) {
+            showNotification(message, status, html);
+        }
+    };
+});
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -14653,7 +14693,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
  */
 
 /*global define, console*/
-define('common',['underscore'], function (_) {
+define('common',['underscore', 'system_notification'], function (_, SystemNotification) {
     
     var Common = {},
         slice = Array.prototype.slice;
@@ -14705,6 +14745,7 @@ define('common',['underscore'], function (_) {
             console.trace();
             console.log(arguments);
         }
+        SystemNotification.notify('An error occured, please reload.', 'danger');
         throw new Error('An error occured');
     };
 
@@ -14725,18 +14766,43 @@ define('common',['underscore'], function (_) {
 /** maybe use http://dbushell.github.io/Nestable/ instead of jqueryui */
 
 /*global define*/
-define("sortable_list", ["jquery", "underscore", "common"], function ($) {
+define("sortable_list", ["jquery", "underscore", "common"], function ($, _, Common) {
+    
     var SortableList;
 
     SortableList = function () {
         return $(this).each(function () {
             var $instance = $(this),
-                url, originalData;
+                $saveBtn = $('.save-order', this),
+                url,
+                originalData,
+                updatedData;
 
             url = $instance.attr('data-action');
 
             if (!url) {
                 throw new Error('No sort action given.');
+            }
+
+
+            /**
+             * @function cleanEmptyChildren
+             * @param {Array}
+             *
+             * Removes empty children arrays from serialized nestable,
+             * to be able to hide the $saveBtn
+             **/
+            function cleanEmptyChildren(array) {
+                _.each(array, function (child) {
+                    if (child.children) {
+                        if (child.children.length) {
+                            cleanEmptyChildren(child.children);
+                        } else {
+                            delete child.children;
+                        }
+                    }
+                });
+                return array;
             }
 
             $instance.nestable({
@@ -14747,23 +14813,35 @@ define("sortable_list", ["jquery", "underscore", "common"], function ($) {
                 maxDepth: 12
             });
 
-            originalData = $instance.nestable('serialize');
+            originalData = cleanEmptyChildren($instance.nestable('serialize'));
 
             $instance.on('change', function () {
-                var data = $instance.nestable('serialize');
-                console.log(JSON.stringify(data));
-                // if (!_.isEqual(data, originalData)) {
-                //     $.ajax({
-                //         url: url,
-                //         data: JSON.stringify(data),
-                //         method: 'post'
-                //     })
-                //         .success(function (result) {
-                //             console.log(result);
-                //         })
-                //         .fail(Common.genericError);
-                // }
+                updatedData = cleanEmptyChildren($instance.nestable('serialize'));
+                if (!_.isEqual(updatedData, originalData)) {
+                    $saveBtn.show();
+                } else {
+                    $saveBtn.hide();
+                }
             });
+
+            $saveBtn.click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: url,
+                    data: {
+                        sortable: updatedData
+                    },
+                    method: 'post'
+                })
+                    .success(function (result) {
+                        console.log(result);
+                    })
+                    .fail(function () {
+                        Common.genericError(arguments);
+                    });
+                return;
+            });
+
         });
     };
 
@@ -14780,11 +14858,10 @@ define("sortable_list", ["jquery", "underscore", "common"], function ($) {
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'side_navigation', 'sortable_list'], function ($, SideNavigation) {
+define("ATHENE2", ['jquery', 'side_navigation', 'sortable_list', 'system_notification'], function ($, SideNavigation) {
     
 
     function init() {
-        
         new SideNavigation();
 
         $('.sortable').SortableList();

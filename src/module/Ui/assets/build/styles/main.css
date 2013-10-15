@@ -9453,6 +9453,18 @@ h1 {
   *display: inline;
 }
 
+/* line 42, ../../source/styles/base/_base.scss */
+
+.is-hidden {
+  display: none;
+}
+
+/* line 46, ../../source/styles/base/_base.scss */
+
+.is-invisible {
+  visibility: hidden;
+}
+
 /* Nested Dropdown Menu */
 
 /* line 2, ../../source/styles/partials/_bootstrap_extention.scss */
