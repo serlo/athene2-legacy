@@ -602,7 +602,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             startReverse = startReverse.splice(0, endReverse.length);
         }
 
-
         _.each(startReverse, function (level, index) {
             if (endReverse[index] !== undefined) {
                 if (_.isEqual(level[0].data.position, endReverse[index][0].data.position)) {

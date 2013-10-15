@@ -10,7 +10,7 @@
  */
 
 /*global define, console*/
-define(['underscore'], function (_) {
+define(['underscore', 'system_notification'], function (_, SystemNotification) {
     "use strict";
     var Common = {},
         slice = Array.prototype.slice;
@@ -62,6 +62,7 @@ define(['underscore'], function (_) {
             console.trace();
             console.log(arguments);
         }
+        SystemNotification.notify('An error occured, please reload.', 'danger');
         throw new Error('An error occured');
     };
 

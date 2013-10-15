@@ -24,7 +24,9 @@ require.config({
         "referrer_history" : "modules/serlo_referrer_history",
         "side_navigation" : "modules/serlo_side_navigation",
         "sortable_list" : "modules/serlo_sortable_list",
+        "system_notification" : "modules/serlo_system_notification",
         "nestable" : "thirdparty/jquery.nestable"
+
     },
     shim: {
         underscore: {

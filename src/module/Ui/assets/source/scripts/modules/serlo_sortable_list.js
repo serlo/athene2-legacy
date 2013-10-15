@@ -13,18 +13,43 @@
 /** maybe use http://dbushell.github.io/Nestable/ instead of jqueryui */
 
 /*global define*/
-define("sortable_list", ["jquery", "underscore", "common"], function ($) {
+define("sortable_list", ["jquery", "underscore", "common"], function ($, _, Common) {
+    "use strict";
     var SortableList;
 
     SortableList = function () {
         return $(this).each(function () {
             var $instance = $(this),
-                url, originalData;
+                $saveBtn = $('.save-order', this),
+                url,
+                originalData,
+                updatedData;
 
             url = $instance.attr('data-action');
 
             if (!url) {
                 throw new Error('No sort action given.');
+            }
+
+
+            /**
+             * @function cleanEmptyChildren
+             * @param {Array}
+             *
+             * Removes empty children arrays from serialized nestable,
+             * to be able to hide the $saveBtn
+             **/
+            function cleanEmptyChildren(array) {
+                _.each(array, function (child) {
+                    if (child.children) {
+                        if (child.children.length) {
+                            cleanEmptyChildren(child.children);
+                        } else {
+                            delete child.children;
+                        }
+                    }
+                });
+                return array;
             }
 
             $instance.nestable({
@@ -35,23 +60,35 @@ define("sortable_list", ["jquery", "underscore", "common"], function ($) {
                 maxDepth: 12
             });
 
-            originalData = $instance.nestable('serialize');
+            originalData = cleanEmptyChildren($instance.nestable('serialize'));
 
             $instance.on('change', function () {
-                var data = $instance.nestable('serialize');
-                console.log(JSON.stringify(data));
-                // if (!_.isEqual(data, originalData)) {
-                //     $.ajax({
-                //         url: url,
-                //         data: JSON.stringify(data),
-                //         method: 'post'
-                //     })
-                //         .success(function (result) {
-                //             console.log(result);
-                //         })
-                //         .fail(Common.genericError);
-                // }
+                updatedData = cleanEmptyChildren($instance.nestable('serialize'));
+                if (!_.isEqual(updatedData, originalData)) {
+                    $saveBtn.show();
+                } else {
+                    $saveBtn.hide();
+                }
             });
+
+            $saveBtn.click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: url,
+                    data: {
+                        sortable: updatedData
+                    },
+                    method: 'post'
+                })
+                    .success(function (result) {
+                        console.log(result);
+                    })
+                    .fail(function () {
+                        Common.genericError(arguments);
+                    });
+                return;
+            });
+
         });
     };
 
