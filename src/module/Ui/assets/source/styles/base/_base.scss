@@ -38,3 +38,11 @@ h1 {
 .is-inline-block {
     @include inline-block;
 }
+
+.is-hidden {
+    display: none;
+}
+
+.is-invisible {
+    visibility: hidden;
+}
