@@ -14,6 +14,7 @@ namespace Alias\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Alias;
 use Zend\Http\Request;
+use Zend\Stdlib\ArrayUtils;
 
 class AliasController extends AbstractActionController
 {
@@ -45,6 +46,8 @@ class AliasController extends AbstractActionController
         
         $controller = $params['controller'];
         
-        return $this->forward()->dispatch($controller, $params);
+        return $this->forward()->dispatch($controller, ArrayUtils::merge($params, array(
+            'forwarded' => true
+        )));
     }
 }

@@ -459,6 +459,9 @@ return array(
                     )
                 ),
                 'LearningResource\Plugin\Page\Controller\PageController' => array(
+                    'setAliasManager' => array(
+                        'required' => true
+                    ),
                     'setEntityManager' => array(
                         'required' => true
                     ),

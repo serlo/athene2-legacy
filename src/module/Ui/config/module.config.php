@@ -20,7 +20,8 @@ return array(
         'top-left' => array(
             array(
                 'label' => 'Home',
-                'uri' => '/'
+                'uri' => '/',
+                'icon' => 'home'
             ),
             array(
                 'label' => 'Blog',

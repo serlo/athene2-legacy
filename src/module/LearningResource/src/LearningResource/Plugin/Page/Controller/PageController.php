@@ -17,16 +17,22 @@ use Entity\Exception\EntityNotFoundException;
 
 class PageController extends AbstractController
 {
-    use \Language\Manager\LanguageManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait, \Alias\AliasManagerAwareTrait;
 
     public function indexAction()
     {
+        
         try {
             $page = $plugin = $this->getPlugin();
             $entity = $this->getEntityService();
         } catch (EntityNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return;
+        }
+        
+        if(!$this->params('forwarded')){
+            $alias = $this->getAliasManager()->findAliasByUuid($entity->getEntity()->getUuidEntity());
+            $this->redirect()->toUrl('/alias/'.$alias->getAlias());
         }
         
         try {

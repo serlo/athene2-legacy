@@ -12,23 +12,33 @@
 namespace Alias;
 
 use Language\Service\LanguageServiceInterface;
+use Uuid\Entity\UuidInterface;
 
 interface AliasManagerInterface
 {
+
     /**
-     * 
-     * @param string $alias
-     * @param LanguageServiceInterface $language
+     *
+     * @param UuidInterface $uuid            
+     * @return \Alias\Entity\AliasInterface
+     */
+    public function findAliasByUuid(UuidInterface $uuid);
+
+    /**
+     *
+     * @param string $alias            
+     * @param LanguageServiceInterface $language            
      * @return string
      */
     public function findSourceByAlias($alias, LanguageServiceInterface $language);
-    
+
     /**
-     * 
-     * @param string $source
-     * @param string $alias
-     * @param LanguageServiceInterface $language
+     *
+     * @param string $source            
+     * @param string $alias            
+     * @param LanguageServiceInterface $language            
+     * @param UuidInterface $uuid            
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, \Language\Service\LanguageServiceInterface $language);
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, \Language\Service\LanguageServiceInterface $language);
 }

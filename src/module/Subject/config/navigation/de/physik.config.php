@@ -33,7 +33,8 @@ return array(
                     'params' => array(
                         'subject' => 'physik'
                     )
-                )
+                ),
+                'icon' => 'book'
             ),
             array(
                 'label' => 'Verwalten',
@@ -55,7 +56,8 @@ return array(
                             'id' => '26'
                         )
                     )
-                )
+                ),
+                'icon' => 'cog'
             )
         )
     )

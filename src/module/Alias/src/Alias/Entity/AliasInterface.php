@@ -12,6 +12,7 @@
 namespace Alias\Entity;
 
 use Language\Entity\LanguageInterface;
+use Uuid\Entity\UuidInterface;
 
 interface AliasInterface
 {
@@ -60,4 +61,17 @@ interface AliasInterface
      * @return $this;
      */
     public function setLanguage(LanguageInterface $language);
+
+    /**
+     *
+     * @param UuidInterface $uuid            
+     * @return $this
+     */
+    public function setUuid(UuidInterface $uuid);
+
+    /**
+     *
+     * @return $this
+     */
+    public function getUuid();
 }
