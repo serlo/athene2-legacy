@@ -12,8 +12,6 @@
 namespace LearningResource\Plugin\Pathauto;
 
 use Entity\Plugin\AbstractPlugin;
-use Alias\Exception\AliasNotUniqueException;
-use Language\Service\LanguageServiceInterface;
 
 class PathautoPlugin extends AbstractPlugin
 {

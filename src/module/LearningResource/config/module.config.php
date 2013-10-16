@@ -94,9 +94,12 @@ return array(
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     $instance->setServiceLocator($sm->getServiceLocator());
-                    $instance->setTokenizer($sm->getServiceLocator()->get('Token\Tokenizer'));
-                    $instance->setAliasManager($sm->getServiceLocator()->get('Alias\AliasManager'));
-                    $instance->setLanguageManager($sm->getServiceLocator()->get('Language\Manager\LanguageManager'));
+                    $instance->setTokenizer($sm->getServiceLocator()
+                        ->get('Token\Tokenizer'));
+                    $instance->setAliasManager($sm->getServiceLocator()
+                        ->get('Alias\AliasManager'));
+                    $instance->setLanguageManager($sm->getServiceLocator()
+                        ->get('Language\Manager\LanguageManager'));
                     return $instance;
                 }
             )
@@ -442,6 +445,11 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                'LearningResource\Plugin\Pathauto\Provider\TokenProvider' => array(
+                    'setServiceLocator' => array(
+                        'required' => true
+                    ),
+                ),
                 'LearningResource\Plugin\Repository\Controller\RepositoryController' => array(
                     'setEntityManager' => array(
                         'required' => true
@@ -532,21 +540,8 @@ return array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                     'actions' => 'purge-revision',
                     'roles' => 'admin'
-                ),
-                
-                array(
-                    'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TopicFolderController',
-                    'actions' => array(
-                        'set-topic',
-                        'topic-dialog'
-                    ),
-                    'roles' => 'helper'
                 )
             )
         )
     )
-    /*'zfcrbac' => array(
-        'firewalls' => array(
-        ),
-    )*/
 );

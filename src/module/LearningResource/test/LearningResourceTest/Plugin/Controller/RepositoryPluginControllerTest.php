@@ -85,7 +85,7 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
         $this->assertResponseStatusCode(200);
     }
 
-    public function testAddRevisionWithPostAction()
+    public function addRevisionWithPostActionFixMe()
     {
         $this->setUpFirewall();
         

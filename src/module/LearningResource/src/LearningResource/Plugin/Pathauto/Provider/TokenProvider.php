@@ -18,9 +18,14 @@ use Entity\Service\EntityServiceInterface;
 
 class TokenProvider implements ProviderInterface
 {
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     protected $data = NULL;
-
+    
+    public function getTranslator(){
+        return $this->getServiceLocator()->get('translator');
+    }
+    
     /**
      *
      * @var EntityServiceInterface
@@ -69,8 +74,7 @@ class TokenProvider implements ProviderInterface
             if (! $subject)
                 throw new Exception\RuntimeException(sprintf('Could not find the subject. Is this resource assigned to one?'));
             
-            
-            if (!$this->getEntityService()->hasPlugin('repository'))
+            if (! $this->getEntityService()->hasPlugin('repository'))
                 throw new Exception\RuntimeException(sprintf('Could not find the repository plugin.'));
             
             $title = $this->getEntityService()
@@ -78,13 +82,14 @@ class TokenProvider implements ProviderInterface
                 ->getHead()
                 ->get('title');
             $foundPlugin = true;
-                
+            $type = $this->getEntityService()
+                ->getEntity()
+                ->getType()
+                ->getName();
+            
             $this->data = array(
                 'subject' => $subject,
-                'type' => $this->getEntityService()
-                    ->getEntity()
-                    ->getType()
-                    ->getName(),
+                'type' => $this->getTranslator()->translate($type),
                 'title' => $title
             );
         }
