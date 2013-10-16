@@ -29,9 +29,9 @@ class Repository extends AbstractListener
             $entity = $e->getParam('entity');
             $data = $e->getParam('data');
             
-            foreach ($entity->getScopesForPlugin('repository') as $scope) {
+            if ($entity->hasPlugin('repository')) {
                 $result = new UrlResult();
-                $result->setResult($entity->$scope()
+                $result->setResult($entity->plugin('repository')
                     ->getRouter()
                     ->assemble(array(
                     'entity' => $entity->getId(),

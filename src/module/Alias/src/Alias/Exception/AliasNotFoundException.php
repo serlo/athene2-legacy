@@ -11,8 +11,6 @@
  */
 namespace Alias\Exception;
 
-use RuntimeException;
-
 class AliasNotFoundException extends RuntimeException
 {
 }

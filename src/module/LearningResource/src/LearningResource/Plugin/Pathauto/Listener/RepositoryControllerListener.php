@@ -27,10 +27,10 @@ class RepositoryControllerListener extends AbstractListener
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
             $data = $e->getParam('post');
-            /* var $entity \Entity\Manager\EntityManagerInterface */
+            /* var $entityManager \Entity\Manager\EntityManagerInterface */
             $entityManager = $entity->getEntityManager();
-            foreach ($entity->getScopesForPlugin('pathauto') as $pathauto) {
-                $entity->$pathauto()->inject($e->getParam('language'));
+            if($entity->hasPlugin('pathauto')){
+                $entity->plugin('pathauto')->inject($e->getParam('language'));
             }
         }, 2);
     }

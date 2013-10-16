@@ -17,13 +17,13 @@ use Language\Service\LanguageServiceInterface;
 
 class PathautoPlugin extends AbstractPlugin
 {
-    use \Token\TokenizerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Alias\AliasManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+    use\Token\TokenizerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Alias\AliasManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
         return array(
             'provider' => 'LearningResource\Plugin\Pathauto\Provider\TokenProvider',
-            'tokenize' => ''
+            'tokenize' => '{subject}/{type}/{title}'
         );
     }
 
@@ -40,15 +40,10 @@ class PathautoPlugin extends AbstractPlugin
         
         $languageService = $this->getLanguageManager()->getLanguageFromRequest();
         
-        // TODO: MATE DO YOU EVEN ROUTEMATCH
-        try {
-            $this->getAliasManager()->createAlias('/entity/view/' . $this->getEntityService()
-                ->getId(), strtolower($alias), $languageService);
-        } catch (AliasNotUniqueException $e) {
-            $this->getAliasManager()->createAlias('/entity/view/' . $this->getEntityService()
-                ->getId(), strtolower($alias . '-' . $this->getEntityService()
-                ->getId()), $languageService);
-        }
+        $this->getAliasManager()->createAlias('/entity/view/' . $this->getEntityService()
+            ->getId(), strtolower($alias), strtolower($alias . '-' . $this->getEntityService()
+            ->getId()), $languageService);
+        
         return $this;
     }
 }

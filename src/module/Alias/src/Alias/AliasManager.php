@@ -21,7 +21,7 @@ class AliasManager implements AliasManagerInterface
     /*
      * (non-PHPdoc) @see \Alias\AliasManagerInterface::findSourceByAlias()
      */
-    public function findSourceByAlias($alias, \Language\Service\LanguageServiceInterface $language)
+    public function findSourceByAlias($alias,\Language\Service\LanguageServiceInterface $language)
     {
         if (! is_string($alias))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
@@ -44,7 +44,7 @@ class AliasManager implements AliasManagerInterface
     /*
      * (non-PHPdoc) @see \Alias\AliasManagerInterface::createAlias()
      */
-    public function createAlias($source, $alias, \Language\Service\LanguageServiceInterface $language)
+    public function createAlias($source, $alias, $fallbackAlias,\Language\Service\LanguageServiceInterface $language)
     {
         if (! is_string($alias))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
@@ -60,16 +60,17 @@ class AliasManager implements AliasManagerInterface
         
         try {
             $this->findSourceByAlias($alias, $language);
-            throw new Exception\AliasNotUniqueException(sprintf('Alias `%s` is not unique', $alias));
-        } catch (Exception\AliasNotFoundException $e) {
-            $class = $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
-            $class = new $class();
-            /* @var $class Entity\AliasInterface */
-            $class->setSource($source);
-            $class->setLanguage($language->getEntity());
-            $class->setAlias($alias);
-            $this->getObjectManager()->persist($class);
-        }
+            $alias = $fallbackAlias;
+        } catch (Exception\AliasNotFoundException $e) {}
+        
+        $class = $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
+        $class = new $class();
+        /* @var $class Entity\AliasInterface */
+        $class->setSource($source);
+        $class->setLanguage($language->getEntity());
+        $class->setAlias($alias);
+        $this->getObjectManager()->persist($class);
+        
         return $this;
     }
 }

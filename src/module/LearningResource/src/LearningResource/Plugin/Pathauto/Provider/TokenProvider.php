@@ -66,23 +66,19 @@ class TokenProvider implements ProviderInterface
             
             if (! $foundPlugin)
                 throw new Exception\RuntimeException(sprintf('Could not find a taxonomy plugin.'));
-            
             if (! $subject)
                 throw new Exception\RuntimeException(sprintf('Could not find the subject. Is this resource assigned to one?'));
             
-            $foundPlugin = false;
-            foreach ($this->getEntityService()->getScopesForPlugin('repository') as $repository) {
-                $title = $this->getEntityService()
-                    ->$repository()
-                    ->getHead()
-                    ->get('title');
-                $foundPlugin = true;
-                break;
-            }
             
-            if (! $foundPlugin)
-                throw new Exception\RuntimeException(sprintf('Could not find a provider plugin.'));
+            if (!$this->getEntityService()->hasPlugin('repository'))
+                throw new Exception\RuntimeException(sprintf('Could not find the repository plugin.'));
             
+            $title = $this->getEntityService()
+                ->plugin('repository')
+                ->getHead()
+                ->get('title');
+            $foundPlugin = true;
+                
             $this->data = array(
                 'subject' => $subject,
                 'type' => $this->getEntityService()
