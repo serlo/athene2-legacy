@@ -48,6 +48,9 @@ return array(
                     'templates' => array(
                         'update' => 'taxonomy/taxonomy/update'
                     ),
+                    'allowed_parents' => array(
+                        'root',
+                    ),
                     'radix_enabled' => false
                 )
             ),
