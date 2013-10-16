@@ -39,7 +39,7 @@ foreach ($this->pages as $page) {
     }
 
     if ($page->get('icon')) {
-        $html[] = '<i class="icon-' . $page->get('icon') . '"></i>';
+        $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
     }
 
     $html[] = $page->getLabel();

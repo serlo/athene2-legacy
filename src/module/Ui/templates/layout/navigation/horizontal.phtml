@@ -34,6 +34,9 @@ foreach ($this->container as $page) {
         // li-element with subpages
         $html[] = '<li' . ($dropdown ? ' class="dropdown"' : '') . '>';
         $html[] = '<a href="' . ($dropdown ? '#' : $page->getHref()) . '" ' . 'class="dropdown-toggle" data-toggle="dropdown">';
+        if ($page->get('icon')) {
+            $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
+        }
         $html[] = $page->getLabel();
         
         if ($dropdown) {
@@ -45,6 +48,9 @@ foreach ($this->container as $page) {
         // li-element without subpages
         $html[] = '<li>';
         $html[] = '<a href="' . $page->getHref() . '">';
+        if ($page->get('icon')) {
+            $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
+        }
         $html[] = $page->getLabel();
         $html[] = '</a>';
     }
