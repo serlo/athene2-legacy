@@ -16,7 +16,7 @@ use Taxonomy\Form\TaxonomyForm;
 
 class TermController extends AbstractController
 {
-    use \Language\Manager\LanguageManagerAwareTrait;
+    use\Language\Manager\LanguageManagerAwareTrait;
 
     public function updateAction()
     {
@@ -68,7 +68,8 @@ class TermController extends AbstractController
             ->fromRoute('restricted/taxonomy/term/create', array(
             'parent' => $this->params('parent'),
             'taxonomy' => $this->params('taxonomy')
-        )) . '?ref=' . rawurlencode($this->referer()->toUrl()));
+        )) . '?ref=' . rawurlencode($this->referer()
+            ->toUrl()));
         
         $view = new ViewModel();
         
@@ -104,8 +105,11 @@ class TermController extends AbstractController
 
     public function orderAction()
     {
-        $data = $this->params()->fromPost('sortables');
-        $this->iterWeight($data['children']);
+        $data = $this->params()->fromPost('sortable', array());
+        $this->iterWeight($data, $this->params('id'));
+        $this->getSharedTaxonomyManager()
+            ->getObjectManager()
+            ->flush();
         return $this->response;
     }
 
@@ -113,21 +117,19 @@ class TermController extends AbstractController
     {
         $weight = 1;
         foreach ($terms as $term) {
-            if ((integer) $term['id'] != - 1) {
-                $entity = $this->getTerm($term['id']);
-                if ($parent) {
-                    $entity->setParent($this->getTerm($parent)
-                        ->getEntity());
-                } else {
-                    $entity->setParent(NULL);
-                }
-                $entity->setWeight($weight);
-                $entity->persistAndFlush();
-                if (isset($term['children'])) {
-                    $this->iterWeight($term['children'], $term['id']);
-                }
-                $weight ++;
+            $entity = $this->getTerm($term['id']);
+            if ($parent) {
+                $entity->setParent($this->getTerm($parent)
+                    ->getEntity());
+            } else {
+                $entity->setParent(NULL);
             }
+            $entity->setOrder($weight);
+            $this->getSharedTaxonomyManager()->getObjectManager()->persist($entity->getEntity());
+            if (isset($term['children'])) {
+                $this->iterWeight($term['children'], $term['id']);
+            }
+            $weight ++;
         }
         return true;
     }

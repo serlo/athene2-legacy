@@ -271,7 +271,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function radixEnabled()
     {
-        return $this->$this->getOption('radix_enabled');
+        return $this->getOption('radix_enabled');
     }
 
     public function setParent($parent)
@@ -287,7 +287,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
             if ($this->parentNodeAllowed($parent)) {
                 $entity->setParent($parent);
             } else {
-                throw new InvalidArgumentException('Parent `' . $parent->getId() . '` not allowed for `' . $entity->getId() . '`.');
+                throw new InvalidArgumentException('Parent `' . $parent->getName() . '` not allowed for `' . $entity->getName() . '`.');
             }
         }
     }
@@ -363,5 +363,10 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
             }
         }
         return $collection;
+    }
+    
+    public function setOrder($order){
+        $this->getEntity()->setWeight($order);
+        return $this;
     }
 }
