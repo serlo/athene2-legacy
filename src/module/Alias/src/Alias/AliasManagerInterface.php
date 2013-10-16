@@ -25,9 +25,10 @@ interface AliasManagerInterface
     
     /**
      * 
-     * @param unknown $source
-     * @param unknown $alias
+     * @param string $source
+     * @param string $alias
+     * @param LanguageServiceInterface $language
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias);
+    public function createAlias($source, $alias, \Language\Service\LanguageServiceInterface $language);
 }

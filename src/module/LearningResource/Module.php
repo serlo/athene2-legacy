@@ -17,7 +17,8 @@ class Module
     protected $listeners = array(
         'LearningResource\Plugin\Link\Listener\Link',
         'LearningResource\Plugin\Repository\Listener\Repository',
-        'LearningResource\Plugin\Taxonomy\Listener\Taxonomy'
+        'LearningResource\Plugin\Taxonomy\Listener\Taxonomy',
+        'LearningResource\Plugin\Pathauto\Listener\RepositoryControllerListener'
     );
 
     public function getConfig()

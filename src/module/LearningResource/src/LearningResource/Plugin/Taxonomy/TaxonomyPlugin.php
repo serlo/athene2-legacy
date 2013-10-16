@@ -12,6 +12,7 @@
 namespace LearningResource\Plugin\Taxonomy;
 
 use Entity\Plugin\AbstractPlugin;
+use Taxonomy\Collection\TermCollection;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
@@ -34,5 +35,10 @@ class TaxonomyPlugin extends AbstractPlugin
         $term = $this->getSharedTaxonomyManager()->getTerm($id);
         $term->removeAssociation('entities', $this->getEntityService()
             ->getEntity());
+    }
+    
+    public function getTerms(){
+        return new TermCollection($this->getEntityService()
+            ->getEntity()->getTerms(), $this->getSharedTaxonomyManager());
     }
 }

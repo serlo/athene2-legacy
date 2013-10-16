@@ -27,7 +27,8 @@ return array(
         'Event',
         'Admin',
         'Mailman',
-        'Alias'
+        'Alias',
+        'Token'
     	//'Page'
     ),
 

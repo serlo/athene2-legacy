@@ -87,6 +87,17 @@ return array(
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $instance;
+                },
+                'pathauto' => function ($sm)
+                {
+                    $instance = new Plugin\Pathauto\PathautoPlugin();
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    $instance->setServiceLocator($sm->getServiceLocator());
+                    $instance->setTokenizer($sm->getServiceLocator()->get('Token\Tokenizer'));
+                    $instance->setAliasManager($sm->getServiceLocator()->get('Alias\AliasManager'));
+                    $instance->setLanguageManager($sm->getServiceLocator()->get('Language\Manager\LanguageManager'));
+                    return $instance;
                 }
             )
         ),
@@ -288,6 +299,12 @@ return array(
                                 'title',
                                 'content'
                             )
+                        )
+                    ),
+                    'pathauto' => array(
+                        'plugin' => 'pathauto',
+                        'options' => array(
+                            'tokenize' => '{subject}/{type}/{title}'
                         )
                     ),
                     'provider' => array(
