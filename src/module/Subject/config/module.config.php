@@ -16,7 +16,7 @@ use Entity\Collection\EntityCollection;
 return array(
     'taxonomy' => array(
         'associations' => array(
-            'entities' => function  (ServiceLocatorInterface $sm, $collection)
+            'entities' => function (ServiceLocatorInterface $sm, $collection)
             {
                 return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
             }
@@ -49,7 +49,7 @@ return array(
                         'update' => 'taxonomy/taxonomy/update'
                     ),
                     'allowed_parents' => array(
-                        'root',
+                        'root'
                     ),
                     'radix_enabled' => false
                 )
@@ -90,7 +90,7 @@ return array(
     'subject' => array(
         'plugins' => array(
             'factories' => array(
-                'taxonomy' => function  ($sm)
+                'taxonomy' => function ($sm)
                 {
                     $class = new Plugin\Taxonomy\TaxonomyPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
@@ -104,14 +104,14 @@ return array(
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },*/
-                'curriculum' => function  ($sm)
+                'curriculum' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },
-                'taxonomyFilter' => function  ($sm)
+                'taxonomyFilter' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setSharedTaxonomyManager($sm->getServiceLocator()
@@ -120,7 +120,7 @@ return array(
                         ->get('Entity\Manager\EntityManager'));
                     return $class;
                 },
-                'entity' => function  ($sm)
+                'entity' => function ($sm)
                 {
                     $class = new Plugin\Entity\EntityPlugin();
                     $class->setEntityManager($sm->getServiceLocator()
@@ -181,7 +181,7 @@ return array(
                                         'plural' => 'Module'
                                     ),
                                     'template' => 'subject/plugin/taxonomy/entity/module'
-                                ),
+                                )
                             )
                         )
                     ),
@@ -305,6 +305,124 @@ return array(
                         'plugin' => 'entity'
                     )
                 )
+            ),
+            array(
+                'name' => 'math',
+                'language' => 'en',
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'plugin' => 'taxonomy',
+                        'options' => array(
+                            'taxonomy' => 'topic',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/topic',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                            ),
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Exercise',
+                                        'plural' => 'Exercises'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Article',
+                                        'plural' => 'Articles'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Exercise group',
+                                        'plural' => 'Exercise groups'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
+                                ),
+                                'video' => array(
+                                    'labels' => array(
+                                        'singular' => 'Video',
+                                        'plural' => 'Videos'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/video'
+                                ),
+                                'module' => array(
+                                    'labels' => array(
+                                        'singular' => 'Module',
+                                        'plural' => 'Modules'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/module'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity',
+                        'plugin' => 'entity'
+                    )
+                )
+            ),
+            array(
+                'name' => 'physics',
+                'language' => 'en',
+                'plugins' => array(
+                    array(
+                        'name' => 'topic',
+                        'plugin' => 'taxonomy',
+                        'options' => array(
+                            'taxonomy' => 'topic',
+                            'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/topic',
+                            'templates' => array(
+                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                            ),
+                            'entity_types' => array(
+                                'text-exercise' => array(
+                                    'labels' => array(
+                                        'singular' => 'Exercise',
+                                        'plural' => 'Exercises'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
+                                ),
+                                'article' => array(
+                                    'labels' => array(
+                                        'singular' => 'Article',
+                                        'plural' => 'Articles'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/article'
+                                ),
+                                'exercise-group' => array(
+                                    'labels' => array(
+                                        'singular' => 'Exercise group',
+                                        'plural' => 'Exercise groups'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
+                                ),
+                                'video' => array(
+                                    'labels' => array(
+                                        'singular' => 'Video',
+                                        'plural' => 'Videos'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/video'
+                                ),
+                                'module' => array(
+                                    'labels' => array(
+                                        'singular' => 'Module',
+                                        'plural' => 'Modules'
+                                    ),
+                                    'template' => 'subject/plugin/taxonomy/entity/module'
+                                )
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'entity',
+                        'plugin' => 'entity'
+                    )
+                )
             )
         )
     ),
@@ -320,14 +438,14 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE__ . '\Plugin\PluginManager' => (function  ($sm)
+            __NAMESPACE__ . '\Plugin\PluginManager' => (function ($sm)
             {
                 $config = $sm->get('config');
                 $config = new \Zend\ServiceManager\Config($config['subject']['plugins']);
                 $class = new \Subject\Plugin\PluginManager($config);
                 return $class;
             }),
-            __NAMESPACE__ . '\Manager\SubjectManager' => (function  ($sm)
+            __NAMESPACE__ . '\Manager\SubjectManager' => (function ($sm)
             {
                 $config = $sm->get('config');
                 $class = new \Subject\Manager\SubjectManager($config['subject']);

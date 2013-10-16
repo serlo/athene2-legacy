@@ -12,17 +12,23 @@
 return array(
     array(
         'label' => 'Math',
-        'uri' => '#',
+        'route' => 'subject',
+        'params' => array(
+            'subject' => 'math'
+        ),
         'pages' => array(
             array(
                 'label' => 'Learn',
-                'route' => 'subject',
+                'route' => 'subject/plugin/taxonomy/topic',
+                'params' => array(
+                    'subject' => 'math'
+                ),
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
-                    'type' => 'topic',
-                    'parent' => '',
+                    'type' => 'subject',
+                    'parent' => 'math',
                     'language' => 'en',
-                    'route' => 'subject/plugin/topic',
+                    'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,
                     'params' => array(
                         'subject' => 'math'

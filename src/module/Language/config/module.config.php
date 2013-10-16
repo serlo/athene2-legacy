@@ -41,6 +41,9 @@ return array(
                     ),
                     'setObjectManager' => array(
                         'required' => 'true'
+                    ),
+                    'setRequest' => array(
+                        'required' => 'true'
                     )
                 )
             )
@@ -58,5 +61,4 @@ return array(
         'Language\Entity\LanguageInterface' => 'Language\Entity\Language',
         'Language\Service\LanguageServiceInterface' => 'Language\Service\LanguageService'
     )
-)
-;
+);
