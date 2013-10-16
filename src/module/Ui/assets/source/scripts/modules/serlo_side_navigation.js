@@ -174,21 +174,38 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             var $ul = $('<ul>');
 
             if (level[0].data.parent) {
-
-                backBtn = new MenuItem($.extend({}, level[0].data.parent.data, {
-                    icon: 'circle-arrow-left',
-                    cssClass: 'sub-nav-header'
-                }));
-
-                backBtn.$el.unbind('click').click(function (e) {
-                    self.trigger('go back', {
-                        originalEvent: e,
-                        menuItem: backBtn
+                if (level[0].data.parent.data.level === 0) {
+                    backBtn = new MenuItem({
+                        icon: 'remove-circle',
+                        cssClass: 'sub-nav-header',
+                        title: 'Schließen',
+                        url: '#',
+                        position: [],
+                        level: -1
                     });
-                });
 
-                $ul.append(backBtn.$el);
+                    backBtn.$el.unbind('click').click(function (e) {
+                        self.trigger('close', {
+                            originalEvent: e,
+                            menuItem: backBtn
+                        });
+                    });
+                } else {
+                    backBtn = new MenuItem($.extend({}, level[0].data.parent.data, {
+                        icon: 'circle-arrow-left',
+                        cssClass: 'sub-nav-header'
+                    }));
+
+                    backBtn.$el.unbind('click').click(function (e) {
+                        self.trigger('go back', {
+                            originalEvent: e,
+                            menuItem: backBtn
+                        });
+                    });
+                }
             }
+
+            $ul.append(backBtn.$el);
 
             _.each(level, function (menuItem) {
                 $ul.append(menuItem.render().$el);
@@ -578,6 +595,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             self.subNavigation = new SubNavigation(self.activeLevels);
             self.subNavigation.addEventListener('go back', function (e) {
                 self.jumpTo(e.menuItem.data.parent);
+            });
+            self.subNavigation.addEventListener('close', function () {
+                self.close();
             });
             self.subNavigation.$el.appendTo(self.$mover);
         }
