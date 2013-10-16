@@ -11,6 +11,6 @@
  */
 namespace Alias\Exception;
 
-class AliasNotFoundException extends RuntimeException
+class AliasNotUniqueException extends RuntimeException
 {
 }

@@ -120,6 +120,11 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this->terms;
     }
 
+    public function getTerms()
+    {
+        return $this->terms;
+    }
+
     public function setType($type)
     {
         $this->type = $type;

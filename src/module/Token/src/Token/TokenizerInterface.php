@@ -9,8 +9,24 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Alias\Exception;
+namespace Token;
 
-class AliasNotFoundException extends RuntimeException
+use Token\Provider;
+
+interface TokenizerInterface
 {
+
+    /**
+     *
+     * @param Provider\ProviderInterface $provider            
+     * @return $this
+     */
+    public function setProvider(Provider\ProviderInterface $provider);
+
+    /**
+     *
+     * @param string $tokenString            
+     * @return $string
+     */
+    public function transliterate($tokenString);
 }

@@ -9,13 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace LearningResource\Plugin\Repository\Listener;
+namespace LearningResource\Plugin\Pathauto\Listener;
 
 use Entity\Plugin\Listener\AbstractListener;
-use Entity\Result\UrlResult;
 use Zend\EventManager\Event;
 
-class Repository extends AbstractListener
+class RepositoryControllerListener extends AbstractListener
 {
     
     /*
@@ -23,23 +22,15 @@ class Repository extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create.postFlush', function (Event $e)
+        $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'add-revision', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
-            $data = $e->getParam('data');
-            
-            if ($entity->hasPlugin('repository')) {
-                $result = new UrlResult();
-                $result->setResult($entity->plugin('repository')
-                    ->getRouter()
-                    ->assemble(array(
-                    'entity' => $entity->getId(),
-                    'action' => 'add-revision'
-                ), array(
-                    'name' => 'entity/plugin/repository'
-                )));
-                return $result;
+            $data = $e->getParam('post');
+            /* var $entityManager \Entity\Manager\EntityManagerInterface */
+            $entityManager = $entity->getEntityManager();
+            if($entity->hasPlugin('pathauto')){
+                $entity->plugin('pathauto')->inject();
             }
         }, 2);
     }

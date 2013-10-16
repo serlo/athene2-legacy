@@ -89,6 +89,11 @@ class RepositoryPlugin extends AbstractPlugin
     {
         return $this->getRepository()->hasHead();
     }
+    
+    public function getHead()
+    {
+        return $this->getRepository()->getHead();
+    }
 
     /**
      * (non-PHPdoc)
