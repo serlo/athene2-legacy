@@ -17,13 +17,6 @@ return array(
             'subject' => 'physik'
         ),
         'pages' => array(
-            /*array(
-                'label' => 'Lehrplan',
-                'route' => 'subject/plugin/curriculum',
-                'params' => array(
-                    'subject' => 'physik'
-                )
-            ),*/
             array(
                 'label' => 'Lernen',
                 'route' => 'subject/plugin/taxonomy/topic',
@@ -37,7 +30,6 @@ return array(
                     'language' => 'de',
                     'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,
-                    'parent_type' => 'subject',
                     'params' => array(
                         'subject' => 'physik'
                     )

@@ -18,19 +18,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Common\ArrayCopyProvider;
+use Taxonomy\Exception\TermNotFoundException;
 
 class TermService implements TermServiceInterface, ArrayCopyProvider
 {
     
-    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
-    
+    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+
     /**
      *
      * @var \Taxonomy\Manager\TaxonomyManagerInterface
      */
     protected $manager;
 
-	/**
+    /**
      *
      * @param TermTaxonomyInterface $term            
      * @return $this;
@@ -40,8 +41,9 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         $this->setEntity($term);
         return $this;
     }
-    
-    public function getArrayCopy(){
+
+    public function getArrayCopy()
+    {
         return $this->getEntity()->getArrayCopy();
     }
 
@@ -58,18 +60,28 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     {
         $term = $this;
         $found = NULL;
+        $partsFound = 0;
         
-        foreach ($path as $part) {
+        foreach ($path as &$part) {
             $found = false;
-            foreach ($term->getChildren() as $child) {
-                if ($child->getSlug() == $part) {
-                    $term = $child;
-                    $found = $child;
-                    break;
+            $part = strtolower($part);
+            if (strtolower($this->getSlug()) == $part) {
+                $found = $this;
+                $partsFound ++;
+            } else {
+                foreach ($term->getChildren() as $child) {
+                    if (strtolower($child->getSlug()) == $part) {
+                        $term = $child;
+                        $found = $child;
+                        $partsFound ++;
+                        break;
+                    }
                 }
+                if (! is_object($found))
+                    throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $path)));
             }
-            if (! $found)
-                throw new NotFoundException('Term not found');
+            if (! is_object($found))
+                throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $path)));
         }
         return $found;
     }
@@ -101,7 +113,8 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function getParent()
     {
         return $this->getSharedTaxonomyManager()->getTerm($this->getTermTaxonomy()
-            ->getParent()->getId());
+            ->getParent()
+            ->getId());
     }
 
     public function getChildren()
@@ -316,11 +329,11 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     {
         return $this->getTermTaxonomy()->getTaxonomy();
     }
-    
-    public function getLanguageService(){
+
+    public function getLanguageService()
+    {
         return $this->getManager()->getLanguageService();
     }
-    
 
     public function getTypeName()
     {

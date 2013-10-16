@@ -37,7 +37,6 @@ return array(
                     'language' => 'de',
                     'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,
-                    'parent_type' => 'subject',
                     'params' => array(
                         'subject' => 'mathe'
                     )

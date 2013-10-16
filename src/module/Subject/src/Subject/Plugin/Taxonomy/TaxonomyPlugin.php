@@ -14,6 +14,7 @@ namespace Subject\Plugin\Taxonomy;
 use Subject\Plugin\AbstractPlugin;
 use Subject\Exception\InvalidArgumentException;
 use Taxonomy\Service\TermServiceInterface;
+use Zend\Stdlib\ArrayUtils;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
@@ -100,7 +101,7 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function findTermByAncestors($ancestors)
     {
-        return $this->getTermManager()->findTermByAncestors($ancestors);
+        return $this->getSubjectService()->getTermService()->getDescendantBySlugs(ArrayUtils::merge(array($this->getSubjectService()->getName()),$ancestors));
     }
 
     public function getAll()

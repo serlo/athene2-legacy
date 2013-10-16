@@ -29,7 +29,6 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
             'name' => 'default',
             'route' => 'default',
             'parent' => '',
-            'parent_type' => '',
             'language' => 'de',
             'max_depth' => 1,
             'type' => 'none',
@@ -62,6 +61,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         
         $terms = $this->getTermService()->getChildren();
         $return = $this->iterTerms($terms, $this->getOption('max_depth'));
+        $this->termService = NULL;
         return $return;
     }
 
@@ -98,6 +98,6 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
 
     private function _getPathToTermAsUri(TermServiceInterface $term)
     {
-        return (!in_array($term->getTaxonomy()->getName(), (array) $this->getOption('parent_type'))) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
+        return (!in_array($term->getTaxonomy()->getName(), (array) $this->getOption('type'))) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }
 }
