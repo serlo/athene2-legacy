@@ -140,7 +140,7 @@ return array(
                         'options' => array(
                             'types' => array(
                                 'grouped-text-exercise' => array(
-                                    'inversed_by' => 'group',
+                                    'inversed_by' => 'group'
                                 )
                             ),
                             'type' => 'link',
@@ -166,7 +166,7 @@ return array(
                         'options' => array(
                             'types' => array(
                                 'exercise-group' => array(
-                                    'inversed_by' => 'exercises',
+                                    'inversed_by' => 'exercises'
                                 )
                             ),
                             'type' => 'link',
@@ -226,7 +226,6 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\VideoForm',
-                            'slugify' => 'title',
                             'field_order' => array(
                                 'title',
                                 'content'
@@ -239,7 +238,11 @@ return array(
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
-                            'template' => 'learning-resource/plugin/page/video'
+                            'template' => 'learning-resource/plugin/page/video',
+                            'fields' => array(
+                                'title',
+                                'content'
+                            )
                         )
                     ),
                     'provider' => array(
@@ -269,7 +272,6 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\ArticleForm',
-                            'slugify' => 'title',
                             'field_order' => array(
                                 'title',
                                 'content'
@@ -280,7 +282,13 @@ return array(
                         'plugin' => 'taxonomy'
                     ),
                     'page' => array(
-                        'plugin' => 'page'
+                        'plugin' => 'page',
+                        'options' => array(
+                            'fields' => array(
+                                'title',
+                                'content'
+                            )
+                        )
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
@@ -309,9 +317,8 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\ModuleForm',
-                            'slugify' => 'title',
                             'field_order' => array(
-                                'title',
+                                'title'
                             )
                         )
                     ),
@@ -323,7 +330,7 @@ return array(
                         'options' => array(
                             'types' => array(
                                 'module-page' => array(
-                                    'inversed_by' => 'module',
+                                    'inversed_by' => 'module'
                                 )
                             ),
                             'type' => 'link',
@@ -335,8 +342,8 @@ return array(
                         'options' => array(
                             'template' => 'learning-resource/plugin/page/module',
                             'fields' => array(
-                                'title' => 'title',
-                                'pages' => 'pages'
+                                'title',
+                                'pages'
                             )
                         )
                     ),
@@ -352,8 +359,7 @@ return array(
                                 },
                                 'pages' => function (EntityServiceInterface $es)
                                 {
-                                    return $es->pages()
-                                        ->findChildren();
+                                    return $es->pages()->findChildren();
                                 }
                             )
                         )
@@ -377,7 +383,7 @@ return array(
                         'options' => array(
                             'types' => array(
                                 'module' => array(
-                                    'inversed_by' => 'pages',
+                                    'inversed_by' => 'pages'
                                 )
                             ),
                             'type' => 'link',
@@ -391,18 +397,20 @@ return array(
                                 'title' => function (EntityServiceInterface $es)
                                 {
                                     return $es->repository()
-                                    ->getCurrentRevision()->get('title');
+                                        ->getCurrentRevision()
+                                        ->get('title');
                                 },
                                 'content' => function (EntityServiceInterface $es)
                                 {
                                     return $es->repository()
-                                        ->getCurrentRevision()->get('content');
+                                        ->getCurrentRevision()
+                                        ->get('content');
                                 }
                             )
                         )
                     )
                 )
-            ),
+            )
         ),
         'instances' => array(
             'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService',
@@ -465,7 +473,7 @@ return array(
                             'page' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/view/:slug',
+                                    'route' => '/view/:entity',
                                     'defaults' => array(
                                         'controller' => 'LearningResource\Plugin\Page\Controller\PageController',
                                         'plugin' => 'page',
