@@ -21,16 +21,25 @@ define(['jquery'], function ($) {
         };
 
     SystemNotification = function (message, status, html) {
+        var self = this,
+            $close = $('<button type="button" class="close" aria-hidden="true">×</button>')
+                .click(function () {
+                    self.$el.remove();
+                });
+
         status = status || 'info';
-        this.$el = $('<div class="alert">');
+        self.$el = $('<div class="alert">');
+
         if (status) {
-            this.$el.addClass('alert-' + status);
+            self.$el.addClass('alert-' + status);
         }
         if (html) {
-            this.$el.html(message);
+            self.$el.html(message);
         } else {
-            this.$el.text(message);
+            self.$el.text(message);
         }
+
+        self.$el.append($close);
     };
 
     return {

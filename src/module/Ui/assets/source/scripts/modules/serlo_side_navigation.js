@@ -30,7 +30,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
         // class given to menu items the user is navigating through
         activeNavigatorClass: 'is-nav-active',
         // width of the subnavigation
-        subNavigationWidth: 260,
+        subNavigationWidth: 300,
+        // min height of subnavigation
+        subNavigationMinHeight: 400,
+        subNavigationHeightOffset: 75,
         // duration of slide animation
         animationDuration: 150
     };
@@ -61,6 +64,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             throw new Error("Not enough arguments");
         }
 
+        eventScope(this);
+
         this.data = data;
         this.$el = $('<li>');
 
@@ -73,21 +78,33 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * Renders the a <li> and <a> tag on MenuItem.$el
      **/
     MenuItem.prototype.render = function () {
-        var self = this;
+        var self = this,
+            $a;
         this.$el.empty();
+
         if (self.data.level === 0) {
             self.data.$a.click(function (e) {
                 self.onClick(e);
             });
+
         } else {
-            $('<a>')
+            $a = $('<a>')
                 .text(self.data.title)
                 .click(function (e) {
                     self.onClick(e);
                 })
                 .attr('href', self.data.url)
                 .appendTo(self.$el);
+
+            if (self.data.icon) {
+                $a.html('<i class="glyphicon glyphicon-' + self.data.icon + '"></i> <span>' + self.data.title + '</span>');
+            }
+
+            if (self.data.cssClass) {
+                self.$el.addClass(self.data.cssClass);
+            }
         }
+
         return self;
     };
 
@@ -128,6 +145,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
 
     SubNavigation = function (levels) {
         this.$el = $('<div>');
+        eventScope(this);
         this.reset(levels);
     };
 
@@ -147,17 +165,48 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      * Creates the <li> and <a> elements
      **/
     SubNavigation.prototype.render = function () {
-        var self = this;
+        var self = this,
+            backBtn;
+
         self.$el.empty();
 
         _.each(self.levels, function (level) {
             var $ul = $('<ul>');
+
+            if (level[0].data.parent) {
+
+                backBtn = new MenuItem($.extend({}, level[0].data.parent.data, {
+                    icon: 'circle-arrow-left',
+                    cssClass: 'sub-nav-header'
+                }));
+
+                backBtn.$el.unbind('click').click(function (e) {
+                    self.trigger('go back', {
+                        originalEvent: e,
+                        menuItem: backBtn
+                    });
+                });
+
+                $ul.append(backBtn.$el);
+            }
+
             _.each(level, function (menuItem) {
                 $ul.append(menuItem.render().$el);
             });
             self.$el.append($ul);
         });
+
         return this;
+    };
+
+    /**
+     * @method getListAtLevel
+     * @param {Number} level
+     * @return {jQueryObject} $ul The actual <ul> element for given level
+     *
+     **/
+    SubNavigation.prototype.getListAtLevel = function (level) {
+        return this.$el.children().eq(level);
     };
 
     /**
@@ -191,28 +240,28 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
          *
          * Also creates MenuItem instances for every link and adds event handlers
          **/
-        function loop($element, dataHierarchy, level) {
+        function loop($element, dataHierarchy, level, parent) {
             $('> li', $element).each(function (i) {
                 deepness.splice(level);
                 deepness.push(i);
 
                 var $listItem = $(this),
-                    $link = $listItem.children().filter('a').first();
+                    $link = $listItem.children().filter('a').first(),
+                    position = [].concat(deepness);
 
                 dataHierarchy[i] = new MenuItem({
                     url: $link.attr('href'),
                     title: $link.text().trim(),
                     $li: $listItem,
                     $a: $link,
-                    position: [].concat(deepness),
-                    level: level
+                    position: position,
+                    level: level,
+                    parent: parent
                 });
-
-                eventScope(dataHierarchy[i]);
 
                 if ($listItem.children().filter('ul').length) {
                     dataHierarchy[i].children = [];
-                    loop($listItem.children().filter('ul').first(), dataHierarchy[i].children, level + 1);
+                    loop($listItem.children().filter('ul').first(), dataHierarchy[i].children, level + 1, dataHierarchy[i]);
                 }
             });
         }
@@ -404,8 +453,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
 
                     breadcrumb.alwaysPrevent = true;
 
-                    eventScope(breadcrumb);
-
                     breadcrumb.addEventListener('click', function (e) {
                         var parentMenuItem = self.hierarchy.getParent(e.menuItem);
                         e.originalEvent.preventDefault();
@@ -497,6 +544,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
     SideNavigation.prototype.close = function () {
         this.isOpen = false;
         this.$nav.remove();
+        this.$mover.css('left', 0);
     };
 
     /**
@@ -528,6 +576,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             self.activeLevels = self.hierarchy.getLevels(menuItem.data.position);
 
             self.subNavigation = new SubNavigation(self.activeLevels);
+            self.subNavigation.addEventListener('go back', function (e) {
+                self.jumpTo(e.menuItem.data.parent);
+            });
             self.subNavigation.$el.appendTo(self.$mover);
         }
 
@@ -567,6 +618,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
      **/
     SideNavigation.prototype.animateTo = function (level, callback) {
         var self = this,
+            $ul,
+            height,
             targetLeft = ((level - 1) * -1 * self.options.subNavigationWidth) + 'px';
 
         if (self.$mover.css('left') === targetLeft && callback) {
@@ -585,6 +638,23 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
             duration: self.options.animationDuration,
             easing: 'easeOutExpo'
         });
+
+        $ul = self.subNavigation.getListAtLevel(level - 1);
+
+        if ($ul.length) {
+            if ($ul[0].scrollHeight < self.options.subNavigationMinHeight) {
+                height = self.options.subNavigationMinHeight;
+            } else {
+                height = $ul[0].scrollHeight + self.options.subNavigationHeightOffset;
+            }
+
+            self.$nav.animate({
+                height: height
+            }, {
+                duration: self.options.animateionDuration,
+                easing: 'easeOutExpo'
+            });
+        }
     };
 
     /**
