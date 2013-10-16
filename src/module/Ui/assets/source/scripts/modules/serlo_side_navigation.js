@@ -13,7 +13,7 @@
  */
 
 /*global define*/
-define("side_navigation", ["jquery", "underscore", "referrer_history", "events"], function ($, _, ReferrerHistory, eventScope, undefined) {
+define("side_navigation", ["jquery", "underscore", "referrer_history", "events", "translator"], function ($, _, ReferrerHistory, eventScope, t, undefined) {
     "use strict";
     var defaults,
         instance,
@@ -178,7 +178,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
                     backBtn = new MenuItem({
                         icon: 'remove-circle',
                         cssClass: 'sub-nav-header',
-                        title: 'Schließen',
+                        title: t('Schließen'),
                         url: '#',
                         position: [],
                         level: -1

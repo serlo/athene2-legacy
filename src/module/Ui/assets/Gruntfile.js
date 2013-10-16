@@ -29,6 +29,10 @@ module.exports = function (grunt) {
                 files: ['<%= serlo.app %>/styles/{,*/}*.css'],
                 tasks: ['copy:styles', 'autoprefixer']
             },
+            jsLang: {
+                files: ['<%= serlo.app %>/lang/*'],
+                tasks: ['concat:lang']
+            },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
                 tasks: ['jshint', 'copy:requirejs', 'requirejs']
@@ -58,7 +62,8 @@ module.exports = function (grunt) {
             options: {
                 jshintrc: '.jshintrc',
                 ignores: [
-                    '<%= serlo.app %>/scripts/thirdparty/{,*/}*.js'
+                    '<%= serlo.app %>/scripts/thirdparty/{,*/}*.js',
+                    '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
                 ]
             },
             all: [
@@ -182,6 +187,23 @@ module.exports = function (grunt) {
                 src: 'modernizr.js'
             }
         },
+        concat: {
+            options: {
+                banner: '/**\n * Dont edit this file!\n' +
+                    ' * This module generates itself from lang.js files!\n' +
+                    ' * Instead edit the language files in /lang/\n' +
+                    ' **/\n\n' +
+                    '/*global define*/\n' +
+                    'define(function () {\n' +
+                    'var i18n = {};\n',
+                footer: '\nreturn i18n;\n' +
+                    '});'
+            },
+            lang: {
+                src: ['<%= serlo.app %>/lang/*.js'],
+                dest: '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
+            }
+        },
         modernizr: {
             devFile: '<%= serlo.app %>/bower_components/modernizr/modernizr.js',
             outputFile: '<%= serlo.dist %>/bower_components/modernizr/modernizr.js',
@@ -245,6 +267,7 @@ module.exports = function (grunt) {
             'concurrent:server',
             'autoprefixer',
             'copy:requirejs',
+            'concat:lang',
             'requirejs',
             'copy:dist',
             'copy:modernizr',
@@ -257,6 +280,7 @@ module.exports = function (grunt) {
         'concurrent:dist',
         'autoprefixer',
         'copy:dist',
+        'concat:lang',
         'cssmin',
         'imagemin',
         'requirejs',
