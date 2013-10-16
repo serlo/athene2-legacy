@@ -27,7 +27,8 @@ require.config({
         "system_notification" : "modules/serlo_system_notification",
         "nestable" : "thirdparty/jquery.nestable",
         "translator" : "modules/serlo_translator",
-        "i18n" : "modules/serlo_i18n"
+        "i18n" : "modules/serlo_i18n",
+        "layout" : "modules/serlo_layout"
     },
     shim: {
         underscore: {
@@ -43,7 +44,7 @@ require.config({
             deps: ['jquery']
         },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable', 'translator']
+            deps: ['bootstrap', 'easing', 'nestable']
         }
     },
     waitSeconds: 2

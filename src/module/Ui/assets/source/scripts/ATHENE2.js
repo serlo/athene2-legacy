@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'sortable_list', 'system_notification'], function ($, SideNavigation, Translator) {
+define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'layout', 'sortable_list', 'system_notification'], function ($, SideNavigation, Translator, Layout) {
     "use strict";
 
     function init() {
@@ -20,6 +20,8 @@ define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'sortable_list', '
         Translator.config({
             language: 'de_DE'
         });
+
+        Layout.init();
     }
 
     return {

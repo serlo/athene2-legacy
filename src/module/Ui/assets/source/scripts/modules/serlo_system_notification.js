@@ -33,6 +33,7 @@ define(['jquery'], function ($) {
         if (status) {
             self.$el.addClass('alert-' + status);
         }
+
         if (html) {
             self.$el.html(message);
         } else {

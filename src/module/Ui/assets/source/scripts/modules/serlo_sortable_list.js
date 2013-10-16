@@ -13,7 +13,7 @@
 /** maybe use http://dbushell.github.io/Nestable/ instead of jqueryui */
 
 /*global define*/
-define("sortable_list", ["jquery", "underscore", "common"], function ($, _, Common) {
+define("sortable_list", ["jquery", "underscore", "common", "translator", "system_notification"], function ($, _, Common, t, SystemNotification) {
     "use strict";
     var SortableList;
 
@@ -80,8 +80,9 @@ define("sortable_list", ["jquery", "underscore", "common"], function ($, _, Comm
                     },
                     method: 'post'
                 })
-                    .success(function (result) {
-                        console.log(result);
+                    .success(function () {
+                        SystemNotification.notify(t('Order successfully saved'), 'success');
+                        $saveBtn.hide();
                     })
                     .fail(function () {
                         Common.genericError(arguments);
