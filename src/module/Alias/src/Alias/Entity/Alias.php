@@ -16,7 +16,7 @@ use Language\Entity\LanguageInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="alias")
+ * @ORM\Table(name="url_alias")
  */
 class Alias implements AliasInterface
 {

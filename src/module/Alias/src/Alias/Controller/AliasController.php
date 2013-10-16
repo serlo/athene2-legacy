@@ -13,17 +13,38 @@ namespace Alias\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Alias;
-use Common\Traits;
+use Zend\Http\Request;
 
 class AliasController extends AbstractActionController
 {
-    use Alias\AliasManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait, Traits\RouterAwareTrait;
+    use Alias\AliasManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+
+    /**
+     *
+     * @var unknown
+     */
+    protected $router;
 
     public function forwardAction()
     {
         $source = $this->getAliasManager()->findSourceByAlias($this->params('alias'), $this->getLanguageManager()
             ->getLanguageFromRequest());
-        $this->getRouter()->match($request);
-        $this->forward($source);
+        
+        $request = new Request();
+        $request->setMethod(Request::METHOD_GET);
+        $request->setUri($source);
+        
+        $routeMatch = $this->getServiceLocator()
+            ->get('Router')
+            ->match($request);
+        
+        if ($routeMatch === NULL)
+            throw new Alias\Exception\RuntimeException(sprintf('Could not match a route for `%s`', $source));
+        
+        $params = $routeMatch->getParams();
+        
+        $controller = $params['controller'];
+        
+        return $this->forward()->dispatch($controller, $params);
     }
 }

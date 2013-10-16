@@ -12,6 +12,9 @@
 namespace Alias;
 
 return array(
+    'class_resolver' => array(
+        __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
+    ),
     'router' => array(
         'routes' => array(
             'alias' => array(
@@ -21,6 +24,9 @@ return array(
                     'defaults' => array(
                         'controller' => 'Alias\Controller\AliasController',
                         'action' => 'forward'
+                    ),
+                    'constraints' => array(
+                        'alias' => '(.)+'
                     )
                 ),
                 'may_terminate' => true
@@ -29,21 +35,31 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'Admin\Controller\HomeController'
+            'Alias\Controller\AliasController'
         ),
         'definition' => array(
             'class' => array(
-                'Admin\Controller\HomeController' => array(
-                    'setEntityManager' => array(
+                'Alias\Controller\AliasController' => array(
+                    'setAliasManager' => array(
                         'required' => 'true'
                     ),
                     'setLanguageManager' => array(
                         'required' => 'true'
+                    )
+                ),
+                'Alias\AliasManager' => array(
+                    'setObjectManager' => array(
+                        'required' => 'true'
                     ),
-                    'setUserManager' => array(
+                    'setClassResolver' => array(
                         'required' => 'true'
                     )
                 )
+            )
+        ),
+        'instance' => array(
+            'preferences' => array(
+                __NAMESPACE__ . '\AliasManagerInterface' => __NAMESPACE__ . '\AliasManager'
             )
         )
     ),
@@ -64,3 +80,4 @@ return array(
         )
     )
 );
+
