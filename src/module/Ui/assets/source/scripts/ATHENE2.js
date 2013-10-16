@@ -31,7 +31,9 @@ define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'layout', 'sortabl
     };
 });
 
-require(['ATHENE2'], function (App) {
+require(['jquery', 'ATHENE2'], function ($, App) {
     "use strict";
-    App.initialize();
+    $(function () {
+        App.initialize();
+    });
 });
