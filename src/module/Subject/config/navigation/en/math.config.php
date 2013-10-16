@@ -27,7 +27,8 @@ return array(
                     'params' => array(
                         'subject' => 'math'
                     )
-                )
+                ),
+                'icon' => 'book'
             )
         )
     )

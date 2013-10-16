@@ -22,7 +22,8 @@ return array(
                 'route' => 'subject/plugin/taxonomy/curriculum',
                 'params' => array(
                     'subject' => 'mathe'
-                )
+                ),
+                'icon' => 'map-marker'
             ),
             array(
                 'label' => 'Lernen',
@@ -41,7 +42,8 @@ return array(
                     'params' => array(
                         'subject' => 'mathe'
                     )
-                )
+                ),
+                'icon' => 'book'
             ),
             array(
                 'label' => 'Verwalten',
@@ -63,7 +65,8 @@ return array(
                             'id' => '25'
                         )
                     )
-                )
+                ),
+                'icon' => 'cog'
             )
         )
     )
