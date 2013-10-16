@@ -39,19 +39,4 @@ class PageController extends AbstractController
             return;
         }
     }
-
-    public function getEntityService($slug = NULL)
-    {
-        if (! $this->entityService) {
-            
-            if (! $slug) {
-                $slug = $this->params('slug');
-            }
-            
-            $this->entityService = $this->getEntityManager()->findEntityBySlug($slug, $this->getLanguageManager()
-                ->getLanguageFromRequest());
-        }
-        
-        return $this->entityService;
-    }
 }

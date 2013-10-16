@@ -13,7 +13,7 @@ $module = $this->entity;
 ?>
 <?php if($module->repository()->hasCurrentRevision()): ?>
     <?php $revision = $module->repository()->getCurrentRevision(); ?>
-    <li><a href="<?php echo $this->url('entity/plugin/page', array('slug' => $module->getSlug())); ?>" class="article">
+    <li><a href="<?php echo $this->url('entity/plugin/page', array('entity' => $module->getId())); ?>" class="article">
     	<?php echo $revision->get('title'); ?>
     </a></li>
 <?php endif; ?>

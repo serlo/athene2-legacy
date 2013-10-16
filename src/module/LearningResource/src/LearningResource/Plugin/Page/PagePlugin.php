@@ -32,10 +32,10 @@ class PagePlugin extends AbstractPlugin
         $fields = $this->getOption('fields');
         $provider = $this->getOption('provider');
         
-        if (array_key_exists($field, $fields)) {
+        if (in_array($field, $fields)) {
             return $this->getEntityService()
                 ->$provider()
-                ->get($fields[$field]);
+                ->get($field);
         }
         throw new \Entity\Exception\RuntimeException(sprintf('Could not find an alias for %s', $field));
     }
@@ -47,8 +47,8 @@ class PagePlugin extends AbstractPlugin
 
     public function hydrate(ViewModel $model)
     {
-        foreach($this->getOption('fields') as $key => $field){
-            $model->setVariable($key, $this->getContentFor($field));
+        foreach($this->getOption('fields') as $field){
+            $model->setVariable($field, $this->getContentFor($field));
         }
         return $this;
     }

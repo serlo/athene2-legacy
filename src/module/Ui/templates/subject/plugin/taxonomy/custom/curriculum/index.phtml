@@ -11,6 +11,10 @@
  */
 $subtitle = is_object($this->term) ? $this->term->getName() : NULL;
 ?>
-<h1 class="page_header"><?php echo $this->translate('Lehrplanansicht'); ?> <small><?php echo $subtitle; ?></small></h1>
+<div class="page-header">
+	<h1 class="page_header"><?php echo $this->translate('Lehrplanansicht'); ?> <small><?php echo $subtitle; ?></small>
+	</h1>
+</div>
 <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term, 'terms' => $this->terms)); ?>
+<hr>
 <?php echo $this->partial($this->plugin->getTemplate('links'), array('links' => $this->links, 'acceptsEntities' => $this->acceptsEntities, 'subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term)); ?>

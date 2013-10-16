@@ -52,7 +52,6 @@ class RepositoryPlugin extends AbstractPlugin
     {
         return array(
             'revision_form' => 'FormNotFound',
-            'slugify' => NULL,
             'field_order' => array()
         );
     }
@@ -159,10 +158,6 @@ class RepositoryPlugin extends AbstractPlugin
     public function checkout($revisionId)
     {
         $this->getRepository()->checkoutRevision($revisionId);
-        if (is_string($this->getOption('slugify'))) {
-            $revision = $this->getRepository()->getRevision($revisionId);
-            $this->getEntityService()->setSlug($this->slugify($revision->get($this->getOption('slugify'))));
-        }
         return $this;
     }
 

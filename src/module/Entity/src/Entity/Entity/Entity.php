@@ -81,11 +81,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $date;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $slug;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
@@ -96,26 +91,6 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $parentCollection;
 
     protected $fieldOrder;
-
-    /**
-     *
-     * @return string $slug
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     *
-     * @param string $slug            
-     * @return $this
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
 
     public function getFieldOrder($field)
     {

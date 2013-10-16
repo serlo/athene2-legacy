@@ -88,7 +88,6 @@ class EntityManager implements EntityManagerInterface
         
         $entity->setLanguage($languageService->getEntity());
         $entity->setType($type);
-        $entity->setSlug(uniqid('entity_',true));
         
         $this->getObjectManager()->persist($entity);
         

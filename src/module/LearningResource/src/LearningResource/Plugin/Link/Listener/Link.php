@@ -30,21 +30,22 @@ class Link extends AbstractListener
             $data = $e->getParam('data');
             /* var $entity \Entity\Manager\EntityManagerInterface */
             $entityManager = $entity->getEntityManager();
-            
-            $found = false;
-            foreach ($entity->getScopesForPlugin('link') as $scope) {
-                if (array_key_exists($scope, $data)) {
-                    $options = $data[$scope];
-                    
-                    $toEntity = $entityManager->getEntity($options['to_entity']);
-                    $found = true;
-                    
-                    $entity->$scope()
-                        ->add($toEntity);
+            if (count($entity->getScopesForPlugin('link'))) {
+                $found = false;
+                foreach ($entity->getScopesForPlugin('link') as $scope) {
+                    if (array_key_exists($scope, $data)) {
+                        $options = $data[$scope];
+                        
+                        $toEntity = $entityManager->getEntity($options['to_entity']);
+                        $found = true;
+                        
+                        $entity->$scope()
+                            ->add($toEntity);
+                    }
                 }
-            }
-            if (! $found) {
-                throw new RuntimeException(sprintf('Couldn\'t find link plugin', $scope));
+                if (! $found) {
+                    throw new RuntimeException(sprintf('Couldn\'t find link plugin'));
+                }
             }
         }, 2);
     }

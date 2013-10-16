@@ -1,0 +1,31 @@
+<div class="modal fade" id="<?php echo $this->id; ?>" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title"><?php echo $this->header; ?></h4>
+			</div>
+			<div class="modal-body"><?php echo $this->body; ?></div>
+			<div class="modal-footer">
+			    <?php if(isset($this->type)): ?>
+			         <?php switch($this->type){
+			             case 'confirm': ?>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate('Abbrechen'); ?></button>
+                            <a type="button" class="btn" data-dismiss="modal" href="<?php echo $this->href; ?>"><?php echo $this->translate('Ok'); ?></a>
+			             <?php break; ?>
+			             <?php case 'alert': ?>
+                            <button type="button" class="btn" data-dismiss="modal"><?php echo $this->translate('Ok'); ?></button>
+			             <?php break; ?>
+			             <?php default; ?>
+			                 Type <?php echo $this->type; ?> not implemented.
+			                 <?php break; ?>
+			         <?php } ?>
+			    <?php else: ?>
+			         <?php echo $this->footer; ?>
+			    <?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>

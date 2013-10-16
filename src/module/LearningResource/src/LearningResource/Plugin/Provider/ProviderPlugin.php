@@ -12,6 +12,7 @@
 namespace LearningResource\Plugin\Provider;
 
 use Entity\Plugin\AbstractPlugin;
+use Entity\Exception;
 
 class ProviderPlugin extends AbstractPlugin
 {
@@ -23,8 +24,11 @@ class ProviderPlugin extends AbstractPlugin
     }
     
     public function get($field){
+        if(!is_string($field))
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($field)));
+        
         if(!array_key_exists($field, $this->getOption('fields')))
-            throw new \Entity\Exception\RuntimeException(sprintf('No configuration found for field %s', $field));
+            throw new Exception\RuntimeException(sprintf('No configuration found for field %s', $field));
 
         $callback = $this->getOption('fields')[$field];        
         return $callback($this->getEntityService());
