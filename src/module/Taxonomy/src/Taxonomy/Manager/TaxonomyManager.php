@@ -24,7 +24,7 @@ use Taxonomy\Service\TermServiceInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getTerm($id)
     {
@@ -49,10 +49,11 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         if (! count($ancestors))
             throw new RuntimeException('Ancestors are empty');
         
-        $terms = $this->getEntity()->getSaplings();
+        $terms = $this->getEntity()->getTerms();
         $ancestorsFound = 0;
-        foreach ($ancestors as $element) {
+        foreach ($ancestors as &$element) {
             if (is_string($element) && strlen($element) > 0) {
+                $element = strtolower($element);
                 foreach ($terms as $term) {
                     $found = false;
                     if (strtolower($term->getSlug()) == strtolower($element)) {
@@ -62,11 +63,17 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
                         break;
                     }
                 }
+                if(!is_object($found))
+                    break;
             }
         }
         
-        if (! is_object($found) || $ancestorsFound != count($ancestors))
+        if (! is_object($found))
             throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $ancestors)));
+        
+        if ($ancestorsFound != count($ancestors))
+            throw new TermNotFoundException(sprintf('Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1', implode(',', $ancestors), $ancestorsFound, count($ancestors)));
+       
         
         if (! $this->hasInstance($found->getId())) {
             $this->addInstance($found->getId(), $this->createService($found));
