@@ -13,6 +13,7 @@ namespace Alias\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Language\Entity\LanguageInterface;
+use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
@@ -43,6 +44,32 @@ class Alias implements AliasInterface
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid")
+     * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
+     */
+    protected $uuid;
+
+    /**
+     *
+     * @return UuidInterface $uuid
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     *
+     * @param UuidInterface $uuid            
+     * @return $this
+     */
+    public function setUuid(UuidInterface $uuid)
+    {
+        $this->uuid = $uuid;
+        return $this;
+    }
 
     /**
      *

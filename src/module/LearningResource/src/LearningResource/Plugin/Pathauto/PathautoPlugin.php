@@ -40,7 +40,7 @@ class PathautoPlugin extends AbstractPlugin
         
         $this->getAliasManager()->createAlias('/entity/view/' . $this->getEntityService()
             ->getId(), strtolower($alias), strtolower($alias . '-' . $this->getEntityService()
-            ->getId()), $languageService);
+            ->getId()), $this->getEntityService()->getEntity()->getUuidEntity(), $languageService);
         
         return $this;
     }
