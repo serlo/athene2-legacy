@@ -14,7 +14,7 @@ namespace Entity;
 return array(
     'uuid_router' => array(
         'routes' => array(
-            'entity' => '/entity/router/%d',
+            'entity' => '/entity/page/%d',
             'entityRevision' => '/entity/repository/compare/%d'
         )
     ),
