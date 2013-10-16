@@ -463,10 +463,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // Create 'breadcrumbs'
             parents = self.hierarchy.getParents(position).reverse();
             parents.shift();
+            parents = parents.splice(-2);
 
             if (parents.length) {
-                _.each(parents, function (menuItem) {
-                    var breadcrumb = new MenuItem(menuItem.data);
+                _.each(parents, function (menuItem, index) {
+                    var breadcrumb = new MenuItem(_.extend({}, menuItem.data, {
+                        icon: (index === parents.length - 1) ? 'arrow-right' : false
+                    }));
 
                     breadcrumb.alwaysPrevent = true;
 
