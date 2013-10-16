@@ -9,13 +9,17 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'side_navigation', 'sortable_list', 'system_notification'], function ($, SideNavigation) {
+define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'sortable_list', 'system_notification'], function ($, SideNavigation, Translator) {
     "use strict";
 
     function init() {
         new SideNavigation();
 
         $('.sortable').SortableList();
+
+        Translator.config({
+            language: 'de_DE'
+        });
     }
 
     return {

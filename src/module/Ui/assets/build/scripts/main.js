@@ -13573,6 +13573,262 @@ define("underscore", (function (global) {
     };
 }(this)));
 
+/**
+ * Dont edit this file!
+ * This module generates itself from lang.js files!
+ * Instead edit the language files in /lang/
+ **/
+
+/*global define*/
+define('i18n',[],function () {
+var i18n = {};
+i18n.de_DE = {
+    'Hello %s!': 'Hallo %s!',
+    'Close' : 'Schließen'
+};
+i18n.fr_FR = {
+    "Hallo %s!": "Salut %s!"
+};
+return i18n;
+});
+/*global define*/
+define('system_notification',['jquery'], function ($) {
+    
+    var rootSelector = '#page',
+        $wrapper,
+        SystemNotification,
+        /**
+         * allowed status:
+         *   success, info, warning, danger
+         **/
+        showNotification = function (message, status, html) {
+            var notification;
+
+            if (!$wrapper) {
+                $wrapper = $('<div id="system-notification">');
+                $(rootSelector).prepend($wrapper);
+            }
+
+            notification = new SystemNotification(message, status, html);
+            $wrapper.append(notification.$el);
+        };
+
+    SystemNotification = function (message, status, html) {
+        var self = this,
+            $close = $('<button type="button" class="close" aria-hidden="true">×</button>')
+                .click(function () {
+                    self.$el.remove();
+                });
+
+        status = status || 'info';
+        self.$el = $('<div class="alert">');
+
+        if (status) {
+            self.$el.addClass('alert-' + status);
+        }
+        if (html) {
+            self.$el.html(message);
+        } else {
+            self.$el.text(message);
+        }
+
+        self.$el.append($close);
+    };
+
+    return {
+        notify: function (message, status, html) {
+            showNotification(message, status, html);
+        }
+    };
+});
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author  Julian Kempff (julian.kempff@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+
+/*global define, console*/
+define('common',['underscore', 'system_notification'], function (_, SystemNotification) {
+    
+    var Common = {},
+        slice = Array.prototype.slice;
+
+    Common.CarbonCopy = function (element) {
+        if (!(element instanceof Array) && !(element instanceof Object)) {
+            return element;
+        }
+
+        var copy = (function () {
+            if (element instanceof Array) {
+                return slice.call(element, 0);
+            }
+
+            if (element instanceof Object) {
+                return _.extend({}, element);
+            }
+
+            throw new Error('Cant copy element');
+        }());
+
+        _.each(copy, function (item) {
+            item = Common.CarbonCopy(item);
+        });
+
+        return copy;
+    };
+
+    Common.sortArrayByObjectKey = function (key, array, ascending) {
+        ascending = ascending || false;
+        return array.sort(function (a, b) {
+            return ((a[key] < b[key]) ? -1 : ((a[key] > b[key]) ? 1 : 0)) * (ascending ? 1 : -1);
+        });
+    };
+
+    Common.findObjectByKey = function (key, value, object) {
+        var item;
+        _.each(object, function (val) {
+            if (val[key] === value) {
+                item = val;
+                return;
+            }
+        });
+        return item;
+    };
+
+    Common.genericError = function () {
+        if (console) {
+            console.trace();
+            console.log(arguments);
+        }
+        SystemNotification.notify('An error occured, please reload.', 'danger');
+        throw new Error('An error occured');
+    };
+
+    /*
+    * memoize.js
+    * by @philogb and @addyosmani
+    * with further optimizations by @mathias
+    * and @DmitryBaranovsk
+    * perf tests: http://bit.ly/q3zpG3
+    * Released under an MIT license.
+    */
+    Common.memoize = function (fn) {
+        return function () {
+            var args = Array.prototype.slice.call(arguments),
+                hash = "",
+                i = args.length,
+                currentArg = null;
+            while (i--) {
+                currentArg = args[i];
+                hash += (currentArg === Object(currentArg)) ? JSON.stringify(currentArg) : currentArg;
+                if (!fn.memoize) {
+                    fn.memoize = {};
+                }
+            }
+            return (hash in fn.memoize) ? fn.memoize[hash] : (fn.memoize[hash] = fn.apply(this, args));
+        };
+    };
+
+    Common.expr = function (statement) {
+        return statement;
+    };
+
+    return Common;
+});
+/*global define, window*/
+define('translator',["underscore", "i18n", "common"], function (_, i18n, Common) {
+    
+    var t,
+        config,
+        untranslated = [],
+        defaultLanguage = 'de_DE';
+
+    config = {
+        language: defaultLanguage,
+        // with debugging active,
+        // the translator will log
+        //  untranslated strings
+        debug: false
+    };
+
+    function log(string) {
+        untranslated.push(string);
+        console.log(untranslated.toString());
+    }
+
+    /**
+     * @function mayTranslate
+     * @param {String} string The string to translate
+     * @return {String} The translated string OR the untouched string
+     **/
+    function mayTranslate(string) {
+        if (i18n[config.language] && i18n[config.language][string]) {
+            return i18n[config.language][string];
+        }
+
+        Common.expr(config.debug && log(string));
+
+        return string;
+    }
+
+    /**
+     * @function replace
+     * @param {String} string The string to translate
+     * @param {Array} replacements An array of strings, to replace placeholders in @param string
+     * @return {String} The string, with placeholders replaced by replacement partials
+     **/
+    function replace(string, replacements) {
+        _.each(replacements, function (partial) {
+            switch (typeof partial) {
+            case 'string':
+                string = string.replace(/%s/, partial);
+                break;
+            case 'number':
+                string = string.replace(/%d/, partial);
+                break;
+            case 'boolean':
+                string = string.replace(/%b/, partial ? 'true' : 'false');
+                break;
+            }
+        });
+        return string;
+    }
+
+    /**
+     * @function t
+     * @param {String} The string to translate
+     * ... 
+     * @param {String} String replacements
+     * @return {String} The translated string or the original
+     **/
+    t = Common.memoize(function () {
+        var args = Array.prototype.slice.call(arguments),
+            string = args.shift();
+
+        return replace(mayTranslate(string), args);
+    });
+
+    /**
+     * @method config
+     * @param {Object} configuration
+     * 
+     * sets configurations
+     **/
+    t.config = function (configuration) {
+        _.extend(config, configuration);
+    };
+
+    if (config.debug) {
+        window.t = t;
+    }
+
+    return t;
+});
 /*global window, jQuery, define*/
 define('cache',[],function () {
     
@@ -14027,7 +14283,7 @@ define('referrer_history',["underscore", "cache", "events"], function (_, cache)
  */
 
 /*global define*/
-define("side_navigation", ["jquery", "underscore", "referrer_history", "events"], function ($, _, ReferrerHistory, eventScope, undefined) {
+define("side_navigation", ["jquery", "underscore", "referrer_history", "events", "translator"], function ($, _, ReferrerHistory, eventScope, t, undefined) {
     
     var defaults,
         instance,
@@ -14192,7 +14448,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
                     backBtn = new MenuItem({
                         icon: 'remove-circle',
                         cssClass: 'sub-nav-header',
-                        title: 'Schließen',
+                        title: t('Schließen'),
                         url: '#',
                         position: [],
                         level: -1
@@ -14730,126 +14986,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events"]
         }());
     };
 });
-/*global define*/
-define('system_notification',['jquery'], function ($) {
-    
-    var rootSelector = '#page',
-        $wrapper,
-        SystemNotification,
-        /**
-         * allowed status:
-         *   success, info, warning, danger
-         **/
-        showNotification = function (message, status, html) {
-            var notification;
-
-            if (!$wrapper) {
-                $wrapper = $('<div id="system-notification">');
-                $(rootSelector).prepend($wrapper);
-            }
-
-            notification = new SystemNotification(message, status, html);
-            $wrapper.append(notification.$el);
-        };
-
-    SystemNotification = function (message, status, html) {
-        var self = this,
-            $close = $('<button type="button" class="close" aria-hidden="true">×</button>')
-                .click(function () {
-                    self.$el.remove();
-                });
-
-        status = status || 'info';
-        self.$el = $('<div class="alert">');
-
-        if (status) {
-            self.$el.addClass('alert-' + status);
-        }
-        if (html) {
-            self.$el.html(message);
-        } else {
-            self.$el.text(message);
-        }
-
-        self.$el.append($close);
-    };
-
-    return {
-        notify: function (message, status, html) {
-            showNotification(message, status, html);
-        }
-    };
-});
-/**
- * 
- * Athene2 - Advanced Learning Resources Manager
- *
- * @author  Julian Kempff (julian.kempff@serlo.org)
- * @license LGPL-3.0
- * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
- */
-
-/*global define, console*/
-define('common',['underscore', 'system_notification'], function (_, SystemNotification) {
-    
-    var Common = {},
-        slice = Array.prototype.slice;
-
-    Common.CarbonCopy = function (element) {
-        if (!(element instanceof Array) && !(element instanceof Object)) {
-            return element;
-        }
-
-        var copy = (function () {
-            if (element instanceof Array) {
-                return slice.call(element, 0);
-            }
-
-            if (element instanceof Object) {
-                return _.extend({}, element);
-            }
-
-            throw new Error('Cant copy element');
-        }());
-
-        _.each(copy, function (item) {
-            item = Common.CarbonCopy(item);
-        });
-
-        return copy;
-    };
-
-    Common.sortArrayByObjectKey = function (key, array, ascending) {
-        ascending = ascending || false;
-        return array.sort(function (a, b) {
-            return ((a[key] < b[key]) ? -1 : ((a[key] > b[key]) ? 1 : 0)) * (ascending ? 1 : -1);
-        });
-    };
-
-    Common.findObjectByKey = function (key, value, object) {
-        var item;
-        _.each(object, function (val) {
-            if (val[key] === value) {
-                item = val;
-                return;
-            }
-        });
-        return item;
-    };
-
-    Common.genericError = function () {
-        if (console) {
-            console.trace();
-            console.log(arguments);
-        }
-        SystemNotification.notify('An error occured, please reload.', 'danger');
-        throw new Error('An error occured');
-    };
-
-    return Common;
-});
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -14957,13 +15093,17 @@ define("sortable_list", ["jquery", "underscore", "common"], function ($, _, Comm
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'side_navigation', 'sortable_list', 'system_notification'], function ($, SideNavigation) {
+define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'sortable_list', 'system_notification'], function ($, SideNavigation, Translator) {
     
 
     function init() {
         new SideNavigation();
 
         $('.sortable').SortableList();
+
+        Translator.config({
+            language: 'de_DE'
+        });
     }
 
     return {

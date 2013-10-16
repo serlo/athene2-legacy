@@ -25,8 +25,9 @@ require.config({
         "side_navigation" : "modules/serlo_side_navigation",
         "sortable_list" : "modules/serlo_sortable_list",
         "system_notification" : "modules/serlo_system_notification",
-        "nestable" : "thirdparty/jquery.nestable"
-
+        "nestable" : "thirdparty/jquery.nestable",
+        "translator" : "modules/serlo_translator",
+        "i18n" : "modules/serlo_i18n"
     },
     shim: {
         underscore: {
@@ -42,7 +43,7 @@ require.config({
             deps: ['jquery']
         },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable']
+            deps: ['bootstrap', 'easing', 'nestable', 'translator']
         }
     },
     waitSeconds: 2

@@ -66,5 +66,34 @@ define(['underscore', 'system_notification'], function (_, SystemNotification) {
         throw new Error('An error occured');
     };
 
+    /*
+    * memoize.js
+    * by @philogb and @addyosmani
+    * with further optimizations by @mathias
+    * and @DmitryBaranovsk
+    * perf tests: http://bit.ly/q3zpG3
+    * Released under an MIT license.
+    */
+    Common.memoize = function (fn) {
+        return function () {
+            var args = Array.prototype.slice.call(arguments),
+                hash = "",
+                i = args.length,
+                currentArg = null;
+            while (i--) {
+                currentArg = args[i];
+                hash += (currentArg === Object(currentArg)) ? JSON.stringify(currentArg) : currentArg;
+                if (!fn.memoize) {
+                    fn.memoize = {};
+                }
+            }
+            return (hash in fn.memoize) ? fn.memoize[hash] : (fn.memoize[hash] = fn.apply(this, args));
+        };
+    };
+
+    Common.expr = function (statement) {
+        return statement;
+    };
+
     return Common;
 });
