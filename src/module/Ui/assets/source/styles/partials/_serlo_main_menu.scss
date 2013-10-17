@@ -1,6 +1,63 @@
 @import "compass/css3";
 
+
+#navigation {
+  position: relative;
+  z-index: 90;
+}
+
+
+#navigation-container {
+    position: absolute;
+    width: $navigationWidth;
+    height: auto;
+    top: 20px;
+    left: 1px; // 1px left, to overlap #content's 1px border; */
+    margin: 0;
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+        width: 40px;
+
+        .slide-right & {
+            width: $navigationWidth + 40;
+        }
+    }
+
+    .slide-left & {
+        display: none;
+    }
+}
+
+#navigation-toggle {
+    display: none;
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+        display: block;
+
+        @include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
+
+        &:hover {
+            box-shadow: -2px 0 4px darken($themeColor, 8%) inset;
+            background: $themeColor;
+            color: white;
+        }
+    }
+}
+
+#navigation-content {
+    @media only screen and (max-width: $navigationBreakPoint) {
+        visibility: hidden;
+
+        .slide-right & {
+            visibility: visible;
+            margin-left: 40px;
+        }
+    }
+}
+
 #main-nav {
+    width: $navigationWidth;
+
     > li {
         > a {
             background: $gray;
@@ -61,6 +118,10 @@
         font-weight: bold;
         padding-bottom: 12px;
     }
+
+    .slide-right & {
+        left: $navigationWidth + 40;
+    }
 }
 
 #serlo-side-sub-navigation-mover {
@@ -86,12 +147,14 @@
 }
 
 #serlo-side-navigation-breadcrumbs {
-    margin-bottom: 2px;
-
     a {
         padding: 5px 15px 5px 30px;
         background-color: $themeColor;
         color: white;
         font-size: 0.85em;
+    }
+
+    + li {
+        margin-top: 2px;
     }
 }

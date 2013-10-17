@@ -6,10 +6,11 @@
 @import "modules/mixins";
 @import "modules/states";
 
+@import "base/layout";
+
 @import "base/base";
 
 @import "partials/_bootstrap_extention";
-@import "partials/serlo_base_layout";
 @import "partials/serlo_top_menu";
 @import "partials/serlo_search";
 @import "partials/serlo_main_menu";
