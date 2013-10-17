@@ -11,9 +11,7 @@
  */
 namespace Ui\Navigation;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 interface ProviderInterface
 {
-    public function provideArray();
+    public function providePagesConfig();
 }

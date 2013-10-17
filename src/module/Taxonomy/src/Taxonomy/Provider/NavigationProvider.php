@@ -53,7 +53,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         return $this->termService;
     }
 
-    public function provideArray()
+    public function providePagesConfig()
     {
         if ($this->getObjectManager()->isOpen())
             $this->getObjectManager()->refresh($this->getTermService()

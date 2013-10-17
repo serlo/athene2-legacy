@@ -15,6 +15,11 @@ namespace Taxonomy;
  * @codeCoverageIgnore
  */
 return array(
+    'default_navigation' => array(
+        'hydrators' => array(
+            'Taxonomy\Hydrator\Navigation'
+        )
+    ),
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
@@ -128,6 +133,11 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                'Taxonomy\Hydrator\Navigation' => array(
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    )
+                ),
                 'Taxonomy\Controller\TermController' => array(
                     'setSharedTaxonomyManager' => array(
                         'required' => 'true'
@@ -218,27 +228,5 @@ return array(
             )
         )
     ),
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'pages' => array(
-                    array(
-                        'label' => 'Taxonomie',
-                        'uri' => '',
-                        'pages' => array(
-                            array(
-                                'label' => 'Taxonomie verwalten',
-                                'route' => 'restricted/taxonomy/taxonomy',
-                                'params' => array(
-                                    'action' => 'update',
-                                    'id' => '43'
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
 );
 

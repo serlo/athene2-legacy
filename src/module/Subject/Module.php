@@ -1,72 +1,38 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Subject;
 
 use Zend\Mvc\MvcEvent;
-use Zend\EventManager\Event;
-// use Zend\Mvc\ModuleRouteListener;
 
 class Module
 {
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
 
     public function onBootstrap(MvcEvent $e)
     {
-        $app      = $e->getTarget();
-        $serviceManager       = $app->getServiceManager();
-    
-        // Load Subjects
-        //$listener = $serviceManager->get('Subject\Hydrator\Route');
-        //$listener->setPath(__DIR__ . '/config/subject/');
-        //$app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
-    
-        // Route translator
-        //$app->getEventManager()->attach('route', array($this, 'onPreRoute'), 4);
-        
-        // Load Subjects
-        /*$listener = $serviceManager->get('Subject\Hydrator\Route');
-        $listener->setPath(__DIR__ . '/config/subject/');
-        $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);*/
+        $app = $e->getTarget();
+        $serviceManager = $app->getServiceManager();
         
         $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
         $hydrator->setPath(__DIR__ . '/config/navigation/');
-        
-        $this->addEntityManagerListener($serviceManager, $e);
     }
-
-    public function addEntityManagerListener ($sm, MvcEvent $mvce)
-    {
-        /**
-         * Adds an entity to a subject, if a term is given
-         */
-        $sm->get('Entity\Manager\EntityManager')
-            ->getEventManager()
-            ->attach('create', function  (Event $e) use( $sm, $mvce)
-        {
-            $entity = $e->getParam('entity');
-            
-            if (isset($_GET['term']) && isset($_GET['subject'])) {
-                $subjectManager = $sm->get('Subject\Manager\SubjectManager');
-                $subject = $subjectManager->get($_GET['subject']);
-                
-                if ($subject->isPluginWhitelisted('topic')) {
-                    $subject->topic()
-                        ->addEntity($entity, $_GET['term']);
-                    
-                    //$url = $mvce->getRouter()->assemble(array('entity' => $entity->getId(), 'action' => 'add-revision' ), array('name' => 'entity/plugin/repository'));
-                }
-            }
-        }, 2);
-    }
-    
 
     public function getAutoloaderConfig()
     {
-        $namespaces = array(
-        );
+        $namespaces = array();
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -75,12 +41,4 @@ class Module
             )
         );
     }
-    
-    /*public function onBootstrap($e)
-    {
-        $app      = $e->getTarget();
-        $serviceManager       = $app->getServiceManager();
-        $listener = $serviceManager->get('Subject\Hydrator\Route');
-        $app->getEventManager()->attach('route', array($listener, 'onPreRoute'), 5);
-    }*/
 }

@@ -14,6 +14,11 @@ namespace Subject;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Entity\Collection\EntityCollection;
 return array(
+    'default_navigation' => array(
+        'hydrators' => array(
+            'Subject\Hydrator\Navigation'
+        )
+    ),
     'taxonomy' => array(
         'associations' => array(
             'entities' => function (ServiceLocatorInterface $sm, $collection)

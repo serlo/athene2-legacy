@@ -170,7 +170,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Ui\Renderer\PhpDebugRenderer' => function ($sm)
+            'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm)
             {
                 $service = new Ui\Renderer\PhpDebugRenderer();
                 $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
@@ -242,4 +242,5 @@ return array(
             )
         )
     )
-);
+)
+;

@@ -13,7 +13,6 @@ namespace Language\Manager;
 
 use Language\Entity\LanguageInterface;
 use Language\Exception;
-use Zend\Http\Request;
 
 class LanguageManager implements LanguageManagerInterface
 {
