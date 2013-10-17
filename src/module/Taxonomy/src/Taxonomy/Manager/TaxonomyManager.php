@@ -49,7 +49,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         if (! count($ancestors))
             throw new RuntimeException('Ancestors are empty');
         
-        $terms = $this->getEntity()->getTerms();
+        $terms = $this->getEntity()->getSaplings();
         $ancestorsFound = 0;
         foreach ($ancestors as &$element) {
             if (is_string($element) && strlen($element) > 0) {
@@ -101,8 +101,8 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
 
     public function getAllowedChildrenTypes()
     {
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypeNames($this->getEntity()
-            ->getName(), $$this->getLanguageService());
+        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
+            ->getName(), $this->getLanguageService());
     }
 
     public function getAllowedParentTypes()

@@ -12,20 +12,18 @@
 ?>
 <div class="pull-right btn-group">
 	<div class="btn-group group-dropdown">
-		<a class="btn btn-default btn-mn dropdown-toggle" data-toggle="dropdown"
-			href="#"> <i class="glyphicon icon-plus"></i> <span class="caret"></span>
+		<a class="btn btn-default btn-xs dropdown-toggle"
+			data-toggle="dropdown" href="#">  <span class="glyphicon glyphicon-plus"></span>
+			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
-            <?php foreach($this->term->getAllowedParentTypes() as $taxonomy):?>
+            <?php foreach($this->term->getAllowedChildrenTypes() as $taxonomy):?>
                 <li><a
-    				href="<?php echo $this->url('restricted/taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
+				href="<?php echo $this->url('restricted/taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
             <?php endforeach;?>
 		</ul>
 	</div>
 	<a
 		href="<?php echo $this->url('restricted/taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
-		class="btn btn-default btn-mn"><i class="glyphicon glyphicon-pencil"></i></a>
-	<!--<div class="btn btn-default btn-mn sort-handle">
-		<i class="glyphicon glyphicon-resize-vertical"></i>
-	</div>-->
+		class="btn btn-default btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
 </div>

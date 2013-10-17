@@ -17,7 +17,7 @@ use Zend\Http\Request;
 
 class LanguageManager implements LanguageManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
     private $fallBackLanguageId = 1;
 
@@ -35,14 +35,22 @@ class LanguageManager implements LanguageManagerInterface
 
     public function getFallbackLanugage()
     {
-        $this->getLanguage($this->fallBackLanguageId);
+        return $this->getLanguage($this->fallBackLanguageId);
     }
 
     public function getLanguageFromRequest()
     {
+        if (! array_key_exists('HTTP_HOST', (array) $_SERVER))
+            $this->requestLanguage = $this->getFallbackLanugage();
+        
         if (! $this->requestLanguage) {
             $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
-            $this->requestLanguage = $this->findLanguageByCode($subdomain);
+            
+            try {
+                $this->requestLanguage = $this->findLanguageByCode($subdomain);
+            } catch (Exception\LanguageNotFoundException $e) {
+                $this->requestLanguage = $this->getFallbackLanugage();
+            }
         }
         return $this->requestLanguage;
     }

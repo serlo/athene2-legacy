@@ -11,14 +11,21 @@
 */
 $classes = array();
 
-if (!isset($this->isChild)) : ?>
-<div class="sortable" data-action="/restricted/taxonomy/term/order/<?php print $this->term->getId(); ?>">
+if (! isset($this->isChild)) : ?>
+<div class="sortable"
+	data-action="/restricted/taxonomy/term/order/<?php print $this->term->getId(); ?>">
+	<div class="clearfix"></div>
+    <?php echo $this->partial('taxonomy/taxonomy/actions', array('term' => $term)); ?>
+    <hr>
 <?php endif; ?>
-    <ol id="<?php echo $this->term->getId(); ?>" class="dd-list" data-id="<?php echo $this->term->getId(); ?>">
+    <ol id="<?php echo $this->term->getId(); ?>" class="dd-list"
+		data-id="<?php echo $this->term->getId(); ?>">
         <?php foreach($this->term->getChildren() as $term):?>
-            <li class="dd-item term" data-id="<?php echo $term->getId(); ?>">
-                <div class="term-inner">
-                    <span class="dd-handle sort-handle"><i class="glyphicon glyphicon-resize-vertical"></i></span>
+            <li class="dd-item term"
+			data-id="<?php echo $term->getId(); ?>">
+			<div class="term-inner">
+				<span class="dd-handle sort-handle"><i
+					class="glyphicon glyphicon-resize-vertical"></i></span>
                         <?php echo $term->getName(); ?>
                         <?php echo $this->partial('taxonomy/taxonomy/actions', array('term' => $term)); ?>
                 </div>
@@ -28,7 +35,7 @@ if (!isset($this->isChild)) : ?>
     </ol>
 <?php if (!isset($this->isChild)) : ?>
     <div class="list-actions">
-        <button class="btn btn-success save-order is-hidden"><?php print $this->translate('Reihenfolge speichern'); ?></button/>
-    </div>
+		<button class="btn btn-success save-order is-hidden"><?php print $this->translate('Reihenfolge speichern'); ?></button/>
+	</div>
 </div>
 <?php endif; ?>
