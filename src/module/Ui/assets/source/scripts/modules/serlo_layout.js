@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, window*/
 define(['jquery'], function ($) {
     "use strict";
     var Layout,
@@ -6,7 +6,13 @@ define(['jquery'], function ($) {
             leftToggle: '#navigation-toggle',
             leftToggleClass: 'slide-right',
             rightToggle: '#context-toggle',
-            rightToggleClass: 'slide-left'
+            rightToggleClass: 'slide-left',
+            // Full Stack Breakpoint Grid
+            fullStackBreakPoint: 1350,
+            // Sidebar Breakpoint Grid
+            sidebarBreakPoint: 980,
+            // Navigation Breakpoint Grid
+            navigationBreakPoint: 1140
         };
 
     Layout = function (options) {
@@ -25,7 +31,19 @@ define(['jquery'], function ($) {
         });
 
         self.$window.resize(function () {
-            // do stuff
+            var windowWidth = self.$window.width();
+
+            if (windowWidth > self.options.sidebarBreakPoint) {
+                self.$body.removeClass(self.options.rightToggleClass);
+            }
+
+            if (windowWidth > self.options.navigationBreakPoint) {
+                self.$body.removeClass(self.options.leftToggleClass);
+            }
+
+            // if (windowWidth > self.options.fullStackBreakPoint) {
+            //    
+            // }
         });
     };
 
@@ -37,5 +55,5 @@ define(['jquery'], function ($) {
         init: function (options) {
             return new Layout(options);
         }
-    }; 
+    };
 });

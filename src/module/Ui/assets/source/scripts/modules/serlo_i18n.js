@@ -9,7 +9,8 @@ define(function () {
 var i18n = {};
 i18n.de_DE = {
     'Hello %s!': 'Hallo %s!',
-    'Close' : 'Schließen'
+    'Close' : 'Schließen',
+    'Visit %s overview' : 'Zur %s Übersicht'
 };
 i18n.fr_FR = {
     "Hallo %s!": "Salut %s!"

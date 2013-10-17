@@ -144,7 +144,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
 
     SubNavigation = function (levels) {
-        this.$el = $('<div>');
+        this.$el = $('<div id="serlo-side-sub-navigation-mover">');
         eventScope(this);
         this.reset(levels);
     };
@@ -166,13 +166,16 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
     SubNavigation.prototype.render = function () {
         var self = this,
-            backBtn;
+            backBtn,
+            parentLink;
 
         self.$el.empty();
 
         _.each(self.levels, function (level) {
-            var $ul = $('<ul>');
+            var $div = $('<div>'),
+                $ul = $('<ul>');
 
+            // add back btns
             if (level[0].data.parent) {
                 if (level[0].data.parent.data.level === 0) {
                     backBtn = new MenuItem({
@@ -203,14 +206,34 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         });
                     });
                 }
+
+                parentLink = new MenuItem($.extend({}, level[0].data.parent.data, {
+                    icon: 'arrow-right',
+                    cssClass: 'sub-nav-footer',
+                    level: -1,
+                    title: t('Visit %s overview', level[0].data.parent.data.title)
+                }));
+
+                parentLink.$el.unbind('click').click(function (e) {
+                    self.trigger('navigate', {
+                        original: e,
+                        menuItem: parentLink
+                    });
+                });
             }
 
             $ul.append(backBtn.$el);
 
+            // add nav links
             _.each(level, function (menuItem) {
                 $ul.append(menuItem.render().$el);
             });
-            self.$el.append($ul);
+
+            // add parent link
+            $ul.append(parentLink.$el);
+
+            $div.addClass('sub-nav-slider').append($ul);
+            self.$el.append($div);
         });
 
         return this;
@@ -273,7 +296,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     $a: $link,
                     position: position,
                     level: level,
-                    parent: parent
+                    parent: parent,
+                    icon: 'chevron-right'
                 });
 
                 if ($listItem.children().filter('ul').length) {
@@ -423,9 +447,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         this.$el = $(this.options.mainId);
         this.$nav = $('<nav id="serlo-side-sub-navigation">');
-        this.$mover = $('<div id="serlo-side-sub-navigation-mover">');
-        this.$nav.append(this.$mover);
-        this.$mover.css('left', 0);
+        // this.$mover = $('<div id="serlo-side-sub-navigation-mover">');
+        // this.$nav.append(this.$mover);
+        // this.$mover.css('left', 0);
         this.$breadcrumbs = $('<ul id="serlo-side-navigation-breadcrumbs" class="nav">');
 
         this.hierarchy = new Hierarchy();
@@ -564,7 +588,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     SideNavigation.prototype.close = function () {
         this.isOpen = false;
         this.$nav.remove();
-        this.$mover.css('left', 0);
+        // this.$mover.css('left', 0);
+        if (this.subNavigation) {
+            this.subNavigation.$el.css('left', 0);
+        }
     };
 
     /**
@@ -602,7 +629,12 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             self.subNavigation.addEventListener('close', function () {
                 self.close();
             });
-            self.subNavigation.$el.appendTo(self.$mover);
+            self.subNavigation.addEventListener('navigate', function () {
+                self.force = true;
+                self.close();
+            });
+            // self.subNavigation.$el.appendTo(self.$mover);
+            self.subNavigation.$el.appendTo(self.$nav);
         }
 
         startLevels = self.activeLevels;
@@ -645,12 +677,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             height,
             targetLeft = ((level - 1) * -1 * self.options.subNavigationWidth) + 'px';
 
-        if (self.$mover.css('left') === targetLeft && callback) {
+        // if (self.$mover.css('left') === targetLeft && callback) {
+        if (self.subNavigation.$el.css('left') === targetLeft && callback) {
             callback();
             return;
         }
 
-        self.$mover.animate({
+        self.subNavigation.$el.animate({
             left: targetLeft
         }, {
             complete: function () {
@@ -665,7 +698,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         $ul = self.subNavigation.getListAtLevel(level - 1);
 
         if ($ul.length) {
-            if ($ul[0].scrollHeight < self.options.subNavigationMinHeight) {
+
+            if ($ul[0].scrollHeight <= self.options.subNavigationMinHeight) {
                 height = self.options.subNavigationMinHeight;
             } else {
                 height = $ul[0].scrollHeight + self.options.subNavigationHeightOffset;

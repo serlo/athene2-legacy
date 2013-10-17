@@ -254,6 +254,36 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+        process: {
+            lang: {
+                files: [{
+                    src: '<%= serlo.app %>/scripts/{,*/}*.js',
+                    dest: '<%= serlo.app %>/lang-processed/'
+                }],
+                options: {
+                    processors: [
+                        {
+                            pattern: /(^t\(| t\(|\nt\()('|")(.*)\)/g,
+                            setup: function () {
+                                return {
+                                    strings: []
+                                };
+                            },
+                            handler: function (context, params) {
+                                console.log(params);
+                                if (params.match && params.match.length) {
+                                    var string = (/(["'])((?:[^\\\1]|(?:\\\\)*|\\.)*?)\1/.exec(params.match)[0]);
+                                    context.strings.push(string);
+                                }
+                            },
+                            teardown: function (context) {
+                                console.log(context.strings);
+                            }
+                        }
+                    ]
+                }
+            }
         }
     });
 
@@ -286,6 +316,10 @@ module.exports = function (grunt) {
         'requirejs',
         'modernizr',
         'uglify'
+    ]);
+
+    grunt.registerTask('update-lang', [
+        'process:lang'
     ]);
 
     grunt.registerTask('default', [

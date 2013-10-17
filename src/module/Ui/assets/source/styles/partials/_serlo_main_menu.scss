@@ -100,8 +100,8 @@
 
 #serlo-side-sub-navigation {
     position: absolute;
-    top: 0;
-    left: 175px;
+    top: -20px;
+    left: $navigationWidth;
     background: $themeColor;
     width: 300px;
     height: 400px;
@@ -119,6 +119,18 @@
         padding-bottom: 12px;
     }
 
+    .sub-nav-footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+
+        a {
+            background-color: $gray;
+            padding-bottom: 8px;
+        }
+    }
+
     .slide-right & {
         left: $navigationWidth + 40;
     }
@@ -126,14 +138,20 @@
 
 #serlo-side-sub-navigation-mover {
     position: relative;
+    height: 100%;
 
     white-space: nowrap;
-    ul {
+    
+    .sub-nav-slider {
+        position: relative;
         @include inline-block;
         width: 100%;
+        height: 100%;
+    }
+
+    ul {
         padding-left: 0;
         margin: 0;
-        height: 0;
     }
 
 

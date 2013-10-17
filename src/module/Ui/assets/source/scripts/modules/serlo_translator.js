@@ -16,7 +16,7 @@ define(["underscore", "i18n", "common"], function (_, i18n, Common) {
 
     function log(string) {
         untranslated.push(string);
-        console.log(untranslated.toString());
+        Common.log(untranslated.toString());
     }
 
     /**
