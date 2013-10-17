@@ -18,6 +18,14 @@ return array(
         ),
         'pages' => array(
             array(
+                'label' => 'Startseite',
+                'route' => 'subject',
+                'params' => array(
+                    'subject' => 'mathe'
+                ),
+                'icon' => 'home'
+            ),
+            array(
                 'label' => 'Lehrplan',
                 'route' => 'subject/plugin/taxonomy/curriculum',
                 'params' => array(
