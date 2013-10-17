@@ -17,6 +17,7 @@ use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Exception\RuntimeException;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
@@ -125,6 +126,15 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $return;
     }
 
+    public function getAllowedChildrenTypes($type, LanguageServiceInterface $language)
+    {
+        $collection = new ArrayCollection();
+        foreach($this->getAllowedChildrenTypeNames($type) as $child){
+            $collection->add($this->findTaxonomyByName($child, $language));
+        }
+        return $collection;
+    }
+
     public function updateTerm($id, array $data)
     {
         $term = $this->getTerm($id);
@@ -189,6 +199,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         }
         
         $taxonomyManager->addTerm($termTaxonomy);
+        $termTaxonomy->setTaxonomy($taxonomyManager->getEntity());
         
         foreach ($columns as $key => $method) {
             if (array_key_exists($key, $data)) {

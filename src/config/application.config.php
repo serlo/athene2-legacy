@@ -11,6 +11,7 @@ return array(
         'TwbBundle',
         'Common',
         'Ui',
+        'Admin',
         'User',
         'Versioning',
         'Log',
@@ -25,7 +26,6 @@ return array(
         'LearningResource',
         'Language',
         'Event',
-        'Admin',
         'Mailman',
         'Alias',
         'Token'

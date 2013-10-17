@@ -18,6 +18,14 @@ return array(
         ),
         'pages' => array(
             array(
+                'label' => 'Startseite',
+                'route' => 'subject',
+                'params' => array(
+                    'subject' => 'physik'
+                ),
+                'icon' => 'home'
+            ),
+            array(
                 'label' => 'Lernen',
                 'route' => 'subject/plugin/taxonomy/topic',
                 'params' => array(

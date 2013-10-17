@@ -15,6 +15,24 @@ abstract class DefaultLayoutTestCase extends AbstractHttpControllerTestCase
         $this->setApplicationConfig(include Bootstrap::findParentPath('config/application.testing.config.php'));
         parent::setUp();
         $this->setUpLayout();
+        $this->setUpLanguage();
+    }
+
+    public function setUpLanguage()
+    {
+        $languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
+        $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        
+        $languageManagerMock->expects($this->atLeastOnce())
+            ->method('getLanguageFromRequest')
+            ->will($this->returnValue($languageServiceMock));
+        $languageServiceMock->expects($this->atLeastOnce())
+            ->method('getCode')
+            ->will($this->returnValue('de'));
+        
+        $this->getApplicationServiceLocator()->setAllowOverride(true);
+        $this->getApplicationServiceLocator()->setService('Language\Manager\LanguageManager', $languageManagerMock);
+        $this->getApplicationServiceLocator()->setAllowOverride(false);
     }
 
     protected function setUpLayout()

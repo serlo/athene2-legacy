@@ -11,7 +11,10 @@
 */
 namespace Subject\Hydrator;
 
-class Navigation
+use Ui\Navigation\HydratorInterface;
+use Zend\Stdlib\ArrayUtils;
+
+class Navigation implements HydratorInterface
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
@@ -21,11 +24,11 @@ class Navigation
         $this->path = $path;
     }
     
-    public function inject($config){
+    public function hydrateConfig(array &$config){
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $subjects = $this->getSubjectManager()->findSubjectsByLanguage($language);
         foreach ($subjects as $subject) {
-            $config = array_merge_recursive($config, include $this->path . $language->getCode() . '/' . strtolower($subject->getName()) . '.config.php');
+            $config = ArrayUtils::merge($config, include $this->path . $language->getCode() . '/' . strtolower($subject->getName()) . '.config.php');
         }
         return $config;
     }

@@ -18,38 +18,6 @@ use Zend\EventManager\Event;
 
 class Module
 {
-    public function onBootstrap(MvcEvent $e)
-    {
-        $app      = $e->getTarget();
-        $serviceManager       = $app->getServiceManager();
-        
-        // View Exception
-        //$serviceManager->get('Zend\Mvc\View\Http\ExceptionStrategy')->attach($app->getEventManager(), 1);
-        //$serviceManager->get('Zend\Mvc\View\Http\InjectViewModelListener')->attach($app->getEventManager(), -100);
-        
-        
-        // Load translator
-        
-        //$lm = $e->getApplication()->getServiceManager()->get('Language\Manager\LanguageManager');
-        //$code = $lm->getRequestLanguage()->getCode();
-        
-        $translator = $serviceManager->get('translator');
-        $translator->addTranslationFile('PhpArray', __DIR__.'/language/routes/de.php', 'default', 'de');
-        $translator->setLocale('de');
-        
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-        
-        // Route translator
-        $app->getEventManager()->attach('route', array($this, 'onPreRoute'), 4);
-    }
-    
-    public function onPreRoute($e){
-        $app      = $e->getTarget();
-        $serviceManager       = $app->getServiceManager();
-        $serviceManager->get('router')->setTranslator($serviceManager->get('translator'));
-    }
 
     public function getConfig()
     {

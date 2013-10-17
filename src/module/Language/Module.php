@@ -11,15 +11,54 @@
  */
 namespace Language;
 
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\ModuleRouteListener;
+
 class Module
 {
 
-    public function getConfig ()
+    public function onBootstrap(MvcEvent $e)
+    {
+        $app = $e->getTarget();
+        $serviceManager = $app->getServiceManager();
+        
+        // View Exception
+        // $serviceManager->get('Zend\Mvc\View\Http\ExceptionStrategy')->attach($app->getEventManager(), 1);
+        // $serviceManager->get('Zend\Mvc\View\Http\InjectViewModelListener')->attach($app->getEventManager(), -100);
+        
+        // Load translator
+        
+        // Route translator
+        $app->getEventManager()->attach('route', array(
+            $this,
+            'onPreRoute'
+        ), 4);
+    }
+
+    public function onPreRoute($e)
+    {
+        $app = $e->getTarget();
+        $serviceManager = $app->getServiceManager();
+        $serviceManager->get('router')->setTranslator($serviceManager->get('translator'));
+        
+        $lm = $serviceManager->get('Language\Manager\LanguageManager');
+        $code = $lm->getLanguageFromRequest()->getCode();
+        
+        $translator = $serviceManager->get('translator');
+        $translator->addTranslationFile('PhpArray', __DIR__ . '/language/routes/'.$code.'.php', 'default', $code);
+        $translator->setLocale($code);
+        
+        $eventManager = $e->getApplication()->getEventManager();
+        $moduleRouteListener = new ModuleRouteListener();
+        $moduleRouteListener->attach($eventManager);
+    }
+
+    public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig ()
+    public function getAutoloaderConfig()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(

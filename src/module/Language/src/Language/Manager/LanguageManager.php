@@ -20,11 +20,18 @@ class LanguageManager implements LanguageManagerInterface
 
     private $fallBackLanguageId = 1;
 
-    public function setFallBackLanguage($id){
+    /**
+     *
+     * @var \Language\Service\LanguageServiceInterface
+     */
+    protected $requestLanguage;
+
+    public function setFallBackLanguage($id)
+    {
         $this->fallBackLanguageId = $id;
         return $this;
     }
-    
+
     public function getFallbackLanugage()
     {
         return $this->getLanguage($this->fallBackLanguageId);
@@ -32,7 +39,19 @@ class LanguageManager implements LanguageManagerInterface
 
     public function getLanguageFromRequest()
     {
-        return $this->getFallbackLanugage();
+        if (! array_key_exists('HTTP_HOST', (array) $_SERVER))
+            $this->requestLanguage = $this->getFallbackLanugage();
+        
+        if (! $this->requestLanguage) {
+            $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
+            
+            try {
+                $this->requestLanguage = $this->findLanguageByCode($subdomain);
+            } catch (Exception\LanguageNotFoundException $e) {
+                $this->requestLanguage = $this->getFallbackLanugage();
+            }
+        }
+        return $this->requestLanguage;
     }
 
     public function getLanguage($id)
