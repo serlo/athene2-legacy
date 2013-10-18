@@ -1,7 +1,7 @@
 /*global define*/
 define(['jquery'], function ($) {
     "use strict";
-    var rootSelector = '#page',
+    var rootSelector = '#content-container',
         $wrapper,
         SystemNotification,
         /**
@@ -22,7 +22,7 @@ define(['jquery'], function ($) {
 
     SystemNotification = function (message, status, html) {
         var self = this,
-            $close = $('<button type="button" class="close" aria-hidden="true">×</button>')
+            $close = $('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>')
                 .click(function () {
                     self.$el.remove();
                 });

@@ -14023,7 +14023,8 @@ define('i18n',[],function () {
 var i18n = {};
 i18n.de_DE = {
     'Hello %s!': 'Hallo %s!',
-    'Close' : 'Schließen'
+    'Close' : 'Schließen',
+    'Visit %s overview' : 'Zur %s Übersicht'
 };
 i18n.fr_FR = {
     "Hallo %s!": "Salut %s!"
@@ -14033,7 +14034,7 @@ return i18n;
 /*global define*/
 define('system_notification',['jquery'], function ($) {
     
-    var rootSelector = '#page',
+    var rootSelector = '#content-container',
         $wrapper,
         SystemNotification,
         /**
@@ -14054,7 +14055,7 @@ define('system_notification',['jquery'], function ($) {
 
     SystemNotification = function (message, status, html) {
         var self = this,
-            $close = $('<button type="button" class="close" aria-hidden="true">×</button>')
+            $close = $('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>')
                 .click(function () {
                     self.$el.remove();
                 });
@@ -14092,11 +14093,21 @@ define('system_notification',['jquery'], function ($) {
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-/*global define, console*/
+/*global define, window, console*/
 define('common',['underscore', 'system_notification'], function (_, SystemNotification) {
     
     var Common = {},
         slice = Array.prototype.slice;
+
+    Common.log = (function () {
+        var history = [];
+        return function () {
+            history.push(arguments);
+            if (window.console) {
+                console.log(Array.prototype.slice.call(arguments));
+            }
+        };
+    }());
 
     Common.CarbonCopy = function (element) {
         if (!(element instanceof Array) && !(element instanceof Object)) {
@@ -14143,8 +14154,8 @@ define('common',['underscore', 'system_notification'], function (_, SystemNotifi
     Common.genericError = function () {
         if (console) {
             console.trace();
-            console.log(arguments);
         }
+        Common.log(arguments);
         SystemNotification.notify('An error occured, please reload.', 'danger');
         throw new Error('An error occured');
     };
@@ -14198,7 +14209,7 @@ define('translator',["underscore", "i18n", "common"], function (_, i18n, Common)
 
     function log(string) {
         untranslated.push(string);
-        console.log(untranslated.toString());
+        Common.log(untranslated.toString());
     }
 
     /**
@@ -14415,7 +14426,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
 
     SubNavigation = function (levels) {
-        this.$el = $('<div>');
+        this.$el = $('<div id="serlo-side-sub-navigation-mover">');
         eventScope(this);
         this.reset(levels);
     };
@@ -14437,13 +14448,16 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
     SubNavigation.prototype.render = function () {
         var self = this,
-            backBtn;
+            backBtn,
+            parentLink;
 
         self.$el.empty();
 
         _.each(self.levels, function (level) {
-            var $ul = $('<ul>');
+            var $div = $('<div>'),
+                $ul = $('<ul>');
 
+            // add back btns
             if (level[0].data.parent) {
                 if (level[0].data.parent.data.level === 0) {
                     backBtn = new MenuItem({
@@ -14474,14 +14488,34 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         });
                     });
                 }
+
+                parentLink = new MenuItem($.extend({}, level[0].data.parent.data, {
+                    icon: 'arrow-right',
+                    cssClass: 'sub-nav-footer',
+                    level: -1,
+                    title: t('Visit %s overview', level[0].data.parent.data.title)
+                }));
+
+                parentLink.$el.unbind('click').click(function (e) {
+                    self.trigger('navigate', {
+                        original: e,
+                        menuItem: parentLink
+                    });
+                });
             }
 
             $ul.append(backBtn.$el);
 
+            // add nav links
             _.each(level, function (menuItem) {
                 $ul.append(menuItem.render().$el);
             });
-            self.$el.append($ul);
+
+            // add parent link
+            $ul.append(parentLink.$el);
+
+            $div.addClass('sub-nav-slider').append($ul);
+            self.$el.append($div);
         });
 
         return this;
@@ -14544,7 +14578,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     $a: $link,
                     position: position,
                     level: level,
-                    parent: parent
+                    parent: parent,
+                    icon: 'chevron-right'
                 });
 
                 if ($listItem.children().filter('ul').length) {
@@ -14694,9 +14729,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         this.$el = $(this.options.mainId);
         this.$nav = $('<nav id="serlo-side-sub-navigation">');
-        this.$mover = $('<div id="serlo-side-sub-navigation-mover">');
-        this.$nav.append(this.$mover);
-        this.$mover.css('left', 0);
+        // this.$mover = $('<div id="serlo-side-sub-navigation-mover">');
+        // this.$nav.append(this.$mover);
+        // this.$mover.css('left', 0);
         this.$breadcrumbs = $('<ul id="serlo-side-navigation-breadcrumbs" class="nav">');
 
         this.hierarchy = new Hierarchy();
@@ -14835,7 +14870,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     SideNavigation.prototype.close = function () {
         this.isOpen = false;
         this.$nav.remove();
-        this.$mover.css('left', 0);
+        // this.$mover.css('left', 0);
+        if (this.subNavigation) {
+            this.subNavigation.$el.css('left', 0);
+        }
     };
 
     /**
@@ -14873,7 +14911,12 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             self.subNavigation.addEventListener('close', function () {
                 self.close();
             });
-            self.subNavigation.$el.appendTo(self.$mover);
+            self.subNavigation.addEventListener('navigate', function () {
+                self.force = true;
+                self.close();
+            });
+            // self.subNavigation.$el.appendTo(self.$mover);
+            self.subNavigation.$el.appendTo(self.$nav);
         }
 
         startLevels = self.activeLevels;
@@ -14916,12 +14959,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             height,
             targetLeft = ((level - 1) * -1 * self.options.subNavigationWidth) + 'px';
 
-        if (self.$mover.css('left') === targetLeft && callback) {
+        // if (self.$mover.css('left') === targetLeft && callback) {
+        if (self.subNavigation.$el.css('left') === targetLeft && callback) {
             callback();
             return;
         }
 
-        self.$mover.animate({
+        self.subNavigation.$el.animate({
             left: targetLeft
         }, {
             complete: function () {
@@ -14936,7 +14980,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         $ul = self.subNavigation.getListAtLevel(level - 1);
 
         if ($ul.length) {
-            if ($ul[0].scrollHeight < self.options.subNavigationMinHeight) {
+
+            if ($ul[0].scrollHeight <= self.options.subNavigationMinHeight) {
                 height = self.options.subNavigationMinHeight;
             } else {
                 height = $ul[0].scrollHeight + self.options.subNavigationHeightOffset;
@@ -14990,7 +15035,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         }());
     };
 });
-/*global define*/
+/*global define, window*/
 define('layout',['jquery'], function ($) {
     
     var Layout,
@@ -14998,7 +15043,13 @@ define('layout',['jquery'], function ($) {
             leftToggle: '#navigation-toggle',
             leftToggleClass: 'slide-right',
             rightToggle: '#context-toggle',
-            rightToggleClass: 'slide-left'
+            rightToggleClass: 'slide-left',
+            // Full Stack Breakpoint Grid
+            fullStackBreakPoint: 1350,
+            // Sidebar Breakpoint Grid
+            sidebarBreakPoint: 980,
+            // Navigation Breakpoint Grid
+            navigationBreakPoint: 1140
         };
 
     Layout = function (options) {
@@ -15017,7 +15068,19 @@ define('layout',['jquery'], function ($) {
         });
 
         self.$window.resize(function () {
-            // do stuff
+            var windowWidth = self.$window.width();
+
+            if (windowWidth > self.options.sidebarBreakPoint) {
+                self.$body.removeClass(self.options.rightToggleClass);
+            }
+
+            if (windowWidth > self.options.navigationBreakPoint) {
+                self.$body.removeClass(self.options.leftToggleClass);
+            }
+
+            // if (windowWidth > self.options.fullStackBreakPoint) {
+            //    
+            // }
         });
     };
 
@@ -15029,7 +15092,7 @@ define('layout',['jquery'], function ($) {
         init: function (options) {
             return new Layout(options);
         }
-    }; 
+    };
 });
 /**
  * 

@@ -9,11 +9,21 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-/*global define, console*/
+/*global define, window, console*/
 define(['underscore', 'system_notification'], function (_, SystemNotification) {
     "use strict";
     var Common = {},
         slice = Array.prototype.slice;
+
+    Common.log = (function () {
+        var history = [];
+        return function () {
+            history.push(arguments);
+            if (window.console) {
+                console.log(Array.prototype.slice.call(arguments));
+            }
+        };
+    }());
 
     Common.CarbonCopy = function (element) {
         if (!(element instanceof Array) && !(element instanceof Object)) {
@@ -60,8 +70,8 @@ define(['underscore', 'system_notification'], function (_, SystemNotification) {
     Common.genericError = function () {
         if (console) {
             console.trace();
-            console.log(arguments);
         }
+        Common.log(arguments);
         SystemNotification.notify('An error occured, please reload.', 'danger');
         throw new Error('An error occured');
     };
