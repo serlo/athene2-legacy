@@ -197,6 +197,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
 
     public function addAssociation($field, TermTaxonomyAware $entity)
     {
+        echo $this->getId()." ".$entity->getId()."<br />";
         $this->getAssociated($field)->add($entity);
         $entity->addTermTaxonomy($this);
         return $this;

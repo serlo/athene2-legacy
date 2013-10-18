@@ -15,6 +15,9 @@ $solution = $exercise->solution()->findChild();
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
 <li>
     <article class="text-exercise">
+        <div class="pull-right">
+            <a class="btn btn-default btn-xs" href="<?php echo $this->url('entity/plugin/taxonomy/update',array('entity' => $exercise->getId())); ?>"><span class="glyphicon glyphicon-map-marker"></span></a>
+        </div>
     	<section class="scope">
             <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
             <?php echo $revision->get('content'); ?>

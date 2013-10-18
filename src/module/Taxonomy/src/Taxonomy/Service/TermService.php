@@ -193,7 +193,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     {
         $this->isLinkAllowedWithException($targetField);
         $targets = $this->getTermTaxonomy()->getAssociated($targetField);
-        return $targets->contains($target->getId());
+        return $targets->contains($target);
     }
 
     protected function isLinkAllowedWithException($targetField)

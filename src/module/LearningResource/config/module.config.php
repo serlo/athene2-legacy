@@ -86,6 +86,8 @@ return array(
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
+                    $instance->setObjectManager($sm->getServiceLocator()
+                        ->get('EntityManager'));
                     return $instance;
                 },
                 'pathauto' => function ($sm)
@@ -441,14 +443,23 @@ return array(
     'di' => array(
         'allowed_controllers' => array(
             'LearningResource\Plugin\Repository\Controller\RepositoryController',
-            'LearningResource\Plugin\Page\Controller\PageController'
+            'LearningResource\Plugin\Page\Controller\PageController',
+            'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController'
         ),
         'definition' => array(
             'class' => array(
                 'LearningResource\Plugin\Pathauto\Provider\TokenProvider' => array(
                     'setServiceLocator' => array(
                         'required' => true
+                    )
+                ),
+                'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController' => array(
+                    'setEntityManager' => array(
+                        'required' => true
                     ),
+                    'setLanguageManager' => array(
+                        'required' => true
+                    )
                 ),
                 'LearningResource\Plugin\Repository\Controller\RepositoryController' => array(
                     'setEntityManager' => array(
@@ -506,6 +517,29 @@ return array(
                                         'controller' => 'LearningResource\Plugin\Page\Controller\PageController',
                                         'plugin' => 'page',
                                         'action' => 'index'
+                                    )
+                                )
+                            ),
+                            'taxonomy' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/taxonomy',
+                                    'defaults' => array(
+                                        'plugin' => 'taxonomy'
+                                    ),
+                                    'may_terminate' => false
+                                ),
+                                'child_routes' => array(
+                                    'update' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/update/:entity',
+                                            'defaults' => array(
+                                                'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController',
+                                                'action' => 'update'
+                                            )
+                                        ),
+                                        'may_terminate' => true
                                     )
                                 )
                             )

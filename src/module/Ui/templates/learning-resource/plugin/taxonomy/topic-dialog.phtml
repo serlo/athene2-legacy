@@ -19,7 +19,7 @@
             		
                         <div class="right btn-group">
                         <a
-                        	href="<?php echo $this->url('entity/plugin/topic-folder', array('action' => 'set-topic', 'entity' => $this->plugin->getEntityService()->getId(), 'term' => $term->getId() )); ?>"
+                        	href="<?php echo $this->url('entity/plugin/taxonomy/update', array('action' => 'set-topic', 'entity' => $this->plugin->getEntityService()->getId(), 'term' => $term->getId() )); ?>"
                         class="btn btn-mini<?php echo ($term->getId() == $this->plugin->getTopic()->getId()) ? ' disabled' : ' '; ?>"><i
                         class="icon-map-marker"></i></a>
                         </div>
