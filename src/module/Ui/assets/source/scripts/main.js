@@ -17,6 +17,7 @@ require.config({
         "jquery-ui" : "../bower_components/jquery-ui/ui/jquery-ui",
         "underscore": "../bower_components/underscore/underscore",
         "bootstrap": "../bower_components/sass-bootstrap/dist/js/bootstrap",
+        "moment" : "../bower_components/momentjs/min/moment-with-langs.min",
         "common" : "modules/serlo_common",
         "easing" : "libs/easing",
         "events": "libs/eventscope",
@@ -24,13 +25,15 @@ require.config({
         "referrer_history" : "modules/serlo_referrer_history",
         "side_navigation" : "modules/serlo_side_navigation",
         "sortable_list" : "modules/serlo_sortable_list",
+        "timeago" : "modules/serlo_timeago",
         "system_notification" : "modules/serlo_system_notification",
         "nestable" : "thirdparty/jquery.nestable",
         "translator" : "modules/serlo_translator",
         "i18n" : "modules/serlo_i18n",
         "layout" : "modules/serlo_layout",
         "search" : "modules/serlo_search",
-        "support" : "modules/serlo_supporter"
+        "support" : "modules/serlo_supporter",
+        "modals" : "modules/serlo_modals"
     },
     shim: {
         underscore: {
