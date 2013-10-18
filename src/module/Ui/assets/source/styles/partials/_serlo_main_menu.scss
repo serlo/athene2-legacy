@@ -60,12 +60,14 @@
 
     > li {
         > a {
-            background: $gray;
+            padding: 14px 12px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            
             color: white;
-
-            &:hover {
-                background: $themeColor;
-            }
+            
+            background: $gray;
+            @include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
 
             .caret {
                 float: right;
@@ -83,6 +85,7 @@
 
     .is-active > a {
         background: $themeColor;
+        @include background(linear-gradient(right, darken($themeColor, 3%), $themeColor 12px, $themeColor));
         color: white;
     }
 
@@ -94,6 +97,8 @@
     .is-nav-active {
         a {
             text-decoration: underline;
+            
+            background: $themeColor;
         }
     }
 }
@@ -108,6 +113,8 @@
 
     z-index: 1;
     overflow: hidden;
+    
+    box-shadow: 0 0 3px rgba(90, 90, 90, 0.6);
 
     a {
         color: white;
@@ -167,7 +174,10 @@
 #serlo-side-navigation-breadcrumbs {
     a {
         padding: 5px 15px 5px 30px;
-        background-color: $themeColor;
+        
+        background: $themeColor;
+        @include background(linear-gradient(right, darken($themeColor, 3%), $themeColor 12px, $themeColor));
+
         color: white;
         font-size: 0.85em;
     }

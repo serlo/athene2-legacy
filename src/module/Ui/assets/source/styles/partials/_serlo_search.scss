@@ -41,7 +41,7 @@
         }
     }
 
-    &.is-focus {
+    &.is-in-focus {
         width: 386px;
 
         box-shadow: 0 0 7px #9f9f9f;
@@ -150,7 +150,7 @@
     left: 0;
     top: 0;
     padding: 12px;
-    width: 362px;
+    width: 386px;
 
     padding-top: 60px;
 

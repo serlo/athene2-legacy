@@ -7,11 +7,16 @@
 
     li {
         line-height: 23px;
+        float: left;
     }
 
     a {
         padding-top: 5px;
         padding-bottom: 5px;
+    }
+    
+    .navbar-nav {
+        float: left;
     }
 
     .navbar-inner {
@@ -20,6 +25,7 @@
     }
 
     .container {
-        @extend .container;
+        min-width: 750px;
+        // @extend .container;
     }
 }
