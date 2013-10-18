@@ -31,7 +31,6 @@ class NotificationLogManager implements NotificationLogManagerInterface
             ->findEventByRoute($route));
         
         $log->setObject($object);
-        $log->setReference($object);
         if ($reference !== NULL) {
             $log->setReference($reference);
         }

@@ -23,6 +23,10 @@ abstract class AbstractMvcListener implements SharedListenerAggregateInterface
     
     public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
-        $this->getEventManager()->logEvent($controller->getEvent()->getRouteMatch()->getMatchedRouteName(), $language, $actor, $uuid);
+        $params = $controller->getEvent()
+            ->getRouteMatch()
+            ->getParams();
+        $url = strtolower(str_replace('\\', '/', $params['controller']) . '/' . $params['action']);
+        $this->getEventManager()->logEvent($url, $language, $actor, $uuid);
     }
 }
