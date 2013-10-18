@@ -28,7 +28,9 @@ require.config({
         "nestable" : "thirdparty/jquery.nestable",
         "translator" : "modules/serlo_translator",
         "i18n" : "modules/serlo_i18n",
-        "layout" : "modules/serlo_layout"
+        "layout" : "modules/serlo_layout",
+        "search" : "modules/serlo_search",
+        "support" : "modules/serlo_supporter"
     },
     shim: {
         underscore: {

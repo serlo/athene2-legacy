@@ -9,31 +9,39 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'side_navigation', 'translator', 'layout', 'sortable_list', 'system_notification'], function ($, SideNavigation, Translator, Layout) {
-    "use strict";
+define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification', 'sortable_list'],
+    function ($, Common, SideNavigation, t, Layout, Search, SystemNotification) {
+        "use strict";
 
-    function init() {
-        new SideNavigation();
+        function init() {
+            t.config({
+                language: 'de_DE'
+            });
 
-        $('.sortable').SortableList();
+            Common.addEventListener('generic error', function () {
+                SystemNotification.notify(t('An error occured, please reload.'), 'danger');
+            });
 
-        Translator.config({
-            language: 'de_DE'
-        });
+            new SideNavigation();
+            new Search();
 
-        Layout.init();
-    }
+            $('.sortable').SortableList();
 
-    return {
-        initialize: function () {
-            init();
+
+            Layout.init();
         }
-    };
-});
 
-require(['jquery', 'ATHENE2'], function ($, App) {
+        return {
+            initialize: function () {
+                init();
+            }
+        };
+    });
+
+require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     "use strict";
     $(function () {
+        Supporter.check();
         App.initialize();
     });
 });
