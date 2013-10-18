@@ -184,7 +184,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         $this->isLinkAllowedWithException($targetField);
         $entity = $this->getTermTaxonomy();
         
-        $entity->removeAssociation($targetField, $target->getId());
+        $entity->removeAssociation($targetField, $target);
         
         return $this;
     }

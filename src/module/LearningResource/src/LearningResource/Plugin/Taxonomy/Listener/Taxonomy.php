@@ -27,12 +27,11 @@ class Taxonomy extends AbstractListener
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
             $data = $e->getParam('data');
-            
+
             foreach ($entity->getScopesForPlugin('taxonomy') as $scope) {
-                
                 if (array_key_exists($scope, $data)) {
                     $options = $data[$scope];
-                    $entity->$scope()
+                    $entity->plugin($scope)
                         ->addToTerm($options['term']);
                 }
             }

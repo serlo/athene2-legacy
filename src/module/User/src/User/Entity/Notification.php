@@ -104,6 +104,10 @@ class Notification implements NotificationInterface
         return $this->events;
     }
     
+    public function getEventType(){
+        return $this->getEvents()->first()->getEvent();
+    }
+    
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::addEvent()
      */

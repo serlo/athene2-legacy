@@ -5,8 +5,9 @@
         <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#"><?php echo sprintf($this->translate('Du hast keine neuen Benachrichtigungen.')); ?></a></li>
 	    <?php else: ?>
         <?php foreach($this->notifications as $notification): ?>
-            <?php if($this->resolver('user/notification/type/'.$notification->getId())):?>
-                    <?php echo $this->partial('user/notification/type/'.$notification->getId(), array('notification' => $notification)); ?>
+            <?php $route = str_replace('/', '-', $notification->getEventType()->getRoute()); ?>
+            <?php if($this->resolver('user/notification/type/'.$route)):?>
+                    <?php echo $this->partial('user/notification/type/'.$route, array('notification' => $notification)); ?>
                 <?php else: ?>
                     <?php echo $this->partial('user/notification/type/default', array('notification' => $notification)); ?>
             <?php endif; ?>
