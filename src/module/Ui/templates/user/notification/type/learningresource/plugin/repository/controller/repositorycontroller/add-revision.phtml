@@ -8,4 +8,4 @@
         <?php echo sprintf($this->translate('Users %s created new revisions on a content you follow'), $this->notifications()->aggregateUsernames($this->notification->getActors())); ?>    
     <?php endif;?>
     <small> - <abbr class="timeago" title="<?php echo $this->notification->getDate()->getTimestamp(); ?>"><?php echo $this->dateFormat($this->notification->getDate(), \IntlDateFormatter::MEDIUM); ?></abbr></small>
-</a></li>aggregateUsernames
+</a></li>
