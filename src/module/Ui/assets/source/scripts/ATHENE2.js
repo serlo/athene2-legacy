@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification', 'sortable_list'],
+define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification', 'modals', 'sortable_list', 'timeago'],
     function ($, Common, SideNavigation, t, Layout, Search, SystemNotification) {
         "use strict";
 
@@ -26,7 +26,8 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             new Search();
 
             $('.sortable').SortableList();
-
+            $('.timeago').TimeAgo();
+            $('.dialog').SerloModals();
 
             Layout.init();
         }
