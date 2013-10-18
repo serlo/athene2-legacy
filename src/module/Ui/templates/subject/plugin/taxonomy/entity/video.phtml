@@ -13,7 +13,7 @@ $video = $this->entity;
 ?>
 <?php if($video->repository()->hasCurrentRevision()): ?>
     <?php $revision = $video->repository()->getCurrentRevision(); ?>
-    <li><a href="<?php echo $this->url('entity/plugin/page', array('entity' => $video->getId())); ?>" class="module">
+    <li><a href="<?php echo $this->url('entity/plugin/page', array('entity' => $video->getId())); ?>" class="video">
     	<?php echo $revision->get('title'); ?>
     </a></li>
 <?php endif; ?>

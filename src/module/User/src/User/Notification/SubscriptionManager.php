@@ -40,25 +40,26 @@ class SubscriptionManager implements SubscriptionManagerInterface
 
     public function isUserSubscribed(UserServiceInterface $user, UuidHolder $object)
     {
-        return $this->getObjectManager()
+        return is_object($this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
-            ->findBy(array(
-            'subscriber' => $user->getId(),
+            ->findOneBy(array(
+            'user' => $user->getId(),
             'object' => $object->getId()
-        ))
-            ->count() !== 0;
+        )));
     }
 
     public function subscribe(UserServiceInterface $user, UuidHolder $object, $notifyMailman)
     {
-        $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
-        /* @var $entity \User\Notification\Entity\SubscriptionInterface */
-        $entity = new $class();
-        $entity->setSubscriber($user->getEntity());
-        $entity->setSubscribedObject($object->getUuidEntity());
-        $entity->setNotifyMailman($notifyMailman === TRUE);
-        $this->getObjectManager()->persist($entity);
+        if(!$this->isUserSubscribed($user, $object)){
+            $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
+            /* @var $entity \User\Notification\Entity\SubscriptionInterface */
+            $entity = new $class();
+            $entity->setSubscriber($user->getEntity());
+            $entity->setSubscribedObject($object->getUuidEntity());
+            $entity->setNotifyMailman($notifyMailman === TRUE);
+            $this->getObjectManager()->persist($entity);
+        }
         return $this;
     }
 

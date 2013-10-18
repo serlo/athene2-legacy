@@ -12,6 +12,7 @@
 namespace User\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Doctrine\Common\Collections\Collection;
 
 class Notification extends AbstractHelper
 {
@@ -22,6 +23,24 @@ class Notification extends AbstractHelper
     public function __construct()
     {
         $this->template = 'user/notification/notifications';
+    }
+    
+    public function aggregateUsers(Collection $users){
+        $aggregated = array();
+        foreach($users as $actor){
+            if(!$actor instanceof \User\Entity\UserInterface)
+                throw new \User\Exception\RuntimeException(sprintf('Expected UserInterface but got %s', gettype($actor)));
+            
+            if(!in_array($actor, $aggregated)){
+                $aggregated[] = $actor;
+            }
+        }
+        return $aggregated;
+    }
+    
+    public function aggregateUsernames(Collection $users){
+        $users = $this->aggregateUsers($users);
+        return explode(', ', $users);
     }
 
     public function setTemplate($template)
