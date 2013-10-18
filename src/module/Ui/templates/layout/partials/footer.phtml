@@ -1,0 +1,12 @@
+<footer id="footer">
+    <div class="container">
+        <?php
+        echo $this->navigation('footer_navigation')
+                ->menu()
+                ->setUlClass('nav navbar-nav pull-left')
+                ->setPartial('layout/navigation/footer.phtml')
+                ->render();
+        ?>
+    </div>
+</footer>
+<?php echo $this->modal()->renderDialogues(); ?>
