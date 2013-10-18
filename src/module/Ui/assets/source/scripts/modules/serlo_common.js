@@ -10,7 +10,7 @@
  */
 
 /*global define, window, console*/
-define(['underscore', 'system_notification'], function (_, SystemNotification) {
+define(['underscore', 'events'], function (_, eventScope) {
     "use strict";
     var Common = {},
         slice = Array.prototype.slice;
@@ -24,6 +24,17 @@ define(['underscore', 'system_notification'], function (_, SystemNotification) {
             }
         };
     }());
+
+    Common.KeyCode = {
+        left: 37,
+        top : 38,
+        right: 39,
+        down: 40,
+        enter: 13,
+        backspace: 8,
+        entf: 46,
+        esc: 27
+    };
 
     Common.CarbonCopy = function (element) {
         if (!(element instanceof Array) && !(element instanceof Object)) {
@@ -72,8 +83,7 @@ define(['underscore', 'system_notification'], function (_, SystemNotification) {
             console.trace();
         }
         Common.log(arguments);
-        SystemNotification.notify('An error occured, please reload.', 'danger');
-        throw new Error('An error occured');
+        Common.trigger('generic error');
     };
 
     /*
@@ -104,6 +114,8 @@ define(['underscore', 'system_notification'], function (_, SystemNotification) {
     Common.expr = function (statement) {
         return statement;
     };
+
+    eventScope(Common);
 
     return Common;
 });

@@ -1,0 +1,45 @@
+<header id="header">
+    <div id="serlo-menu" class="navbar navbar-default">
+        <nav class="navbar-inner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <?php
+                        // top left navigation
+                        echo $this->navigation('top_left_navigation')
+                                ->menu()
+                                ->setUlClass('nav navbar-nav')
+                                ->setPartial('layout/navigation/horizontal.phtml')
+                                ->render();
+                        // top right navigation
+                        echo $this->navigation('top_right_navigation')
+                                 ->menu()
+                                 ->setUlClass('nav navbar-nav pull-right')
+                                 ->setPartial('layout/navigation/horizontal.phtml')
+                                 ->render();
+                        ?>
+                        <ul class="nav navbar-nav pull-right">
+                            <?php echo $this->notifications()->render(); ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="subject-nav">
+                    <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" width="110" height="37" src="/assets/images/serlo_logo.png" /></a></h1>
+                    <div class="dropdown is-inline-block">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">mathe<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li><a href="/fach/mathe">mathe</a></li>
+                            <li><a href="/fach/physik">physik</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

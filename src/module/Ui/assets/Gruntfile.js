@@ -31,7 +31,7 @@ module.exports = function (grunt) {
             },
             jsLang: {
                 files: ['<%= serlo.app %>/lang/*'],
-                tasks: ['concat:lang']
+                tasks: ['i18n']
             },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
@@ -116,9 +116,26 @@ module.exports = function (grunt) {
         },
         uglify: {
             dist: {
-                files: {
-                    '<%= serlo.dist %>/scripts/main.min.js': '<%= serlo.dist %>/scripts/main.js'
-                }
+                options: {
+                    output: {
+                        beautify: false
+                    },
+                    compress: {
+                        sequences: true,
+                        global_defs: {
+                            DEBUG: true
+                        }
+                    },
+                    warnings: true,
+                    mangle: true
+                },
+                // files: {
+                //     '<%= serlo.dist %>/scripts/main.js': '<%= serlo.dist %>/scripts/main.js'
+                // }
+                files: [{
+                    '<%= serlo.dist %>/scripts/main.js': '<%= serlo.dist %>/scripts/main.js',
+                    '<%= serlo.dist %>/bower_components/requirejs/require.js': '<%= serlo.dist %>/bower_components/requirejs/require.js'
+                }]
             }
         },
         imagemin: {
@@ -187,22 +204,9 @@ module.exports = function (grunt) {
                 src: 'modernizr.js'
             }
         },
-        concat: {
-            options: {
-                banner: '/**\n * Dont edit this file!\n' +
-                    ' * This module generates itself from lang.js files!\n' +
-                    ' * Instead edit the language files in /lang/\n' +
-                    ' **/\n\n' +
-                    '/*global define*/\n' +
-                    'define(function () {\n' +
-                    'var i18n = {};\n',
-                footer: '\nreturn i18n;\n' +
-                    '});'
-            },
-            lang: {
-                src: ['<%= serlo.app %>/lang/*.js'],
-                dest: '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
-            }
+        i18n: {
+            src: ['<%= serlo.app %>/lang/*.json'],
+            dest: '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
         },
         modernizr: {
             devFile: '<%= serlo.app %>/bower_components/modernizr/modernizr.js',
@@ -255,36 +259,15 @@ module.exports = function (grunt) {
                 }
             }
         },
-        process: {
-            lang: {
-                files: [{
-                    src: '<%= serlo.app %>/scripts/{,*/}*.js',
-                    dest: '<%= serlo.app %>/lang-processed/'
-                }],
-                options: {
-                    processors: [
-                        {
-                            pattern: /(^t\(| t\(|\nt\()('|")(.*)\)/g,
-                            setup: function () {
-                                return {
-                                    strings: []
-                                };
-                            },
-                            handler: function (context, params) {
-                                console.log(params);
-                                if (params.match && params.match.length) {
-                                    var string = (/(["'])((?:[^\\\1]|(?:\\\\)*|\\.)*?)\1/.exec(params.match)[0]);
-                                    context.strings.push(string);
-                                }
-                            },
-                            teardown: function (context) {
-                                console.log(context.strings);
-                            }
-                        }
-                    ]
-                }
-            }
-        }
+        "language-update": {
+            src: [
+                '<%= serlo.app %>/scripts/{,*/}*.js'
+            ],
+            langSrc: [
+                '<%= serlo.app %>/lang/*.json'
+            ],
+            dest: '<%= serlo.app %>/lang-processed'
+        },
     });
 
     grunt.registerTask('dev', function (target) {
@@ -297,7 +280,7 @@ module.exports = function (grunt) {
             'concurrent:server',
             'autoprefixer',
             'copy:requirejs',
-            'concat:lang',
+            'i18n',
             'requirejs',
             'copy:dist',
             'copy:modernizr',
@@ -310,7 +293,7 @@ module.exports = function (grunt) {
         'concurrent:dist',
         'autoprefixer',
         'copy:dist',
-        'concat:lang',
+        'i18n',
         'cssmin',
         'imagemin',
         'requirejs',
@@ -318,12 +301,84 @@ module.exports = function (grunt) {
         'uglify'
     ]);
 
-    grunt.registerTask('update-lang', [
-        'process:lang'
-    ]);
-
     grunt.registerTask('default', [
         'jshint',
         'build'
     ]);
+
+    grunt.registerTask('i18n', 'Creates a AMD module based on language files', function () {
+        // options: {
+        //             banner: ,
+        //             footer: 
+        //         },
+        var data = grunt.config('i18n'),
+            files = grunt.file.expand(data.src),
+            output = '/**\n * Dont edit this file!\n' +
+                    ' * This module generates itself from lang.js files!\n' +
+                    ' * Instead edit the language files in /lang/\n' +
+                    ' **/\n\n' +
+                    '/*global define*/\n' +
+                    'define(function () {\n' +
+                    '"use strict";\n' +
+                    'var i18n = {};\n';
+
+        files.forEach(function (f) {
+            var contents = grunt.file.read(f),
+                langName = f.split('/').pop().replace('.json', '');
+
+            output += '\ni18n.' + langName + ' = ' + contents + ';\n';
+        });
+
+        output += '\nreturn i18n;\n' +
+                '});';
+
+        grunt.file.write(data.dest, output);
+    });
+
+    grunt.registerMultiTask('language-update', 'Fetches translation strings from source files', function () {
+        var data = grunt.config('language-update'),
+            files = grunt.file.expand(data.src),
+            languages = grunt.file.expand(data.langSrc),
+            searchFunction = new RegExp(/(\(|^|[\s\n])t\(["']([^")]|[^')])*\)/g),
+            filterString = new RegExp(/(["]([^"])*["])|([']([^'])*['])/),
+            strings = [];
+
+        files.forEach(function (f) {
+            var contents = grunt.file.read(f);
+
+            contents.replace(searchFunction, function (match) {
+                match.replace(filterString, function (string) {
+                    // string = string.split('');
+                    // string.pop().shift();
+                    string = string.substr(1);
+                    string = string.substring(0, string.length - 1);
+
+                    if (strings.indexOf(string) < 0) {
+                        strings.push(string);
+                    }
+                });
+            });
+            // grunt.file.write(p, header + sep + contents + sep + footer);
+            // grunt.log.writeln('File "' + p + '" created.');
+        });
+
+        languages.forEach(function (lang) {
+            var contents = grunt.file.readJSON(lang);
+
+            strings.forEach(function (string) {
+                if (!contents[string]) {
+                    contents[string] = "";
+                }
+            });
+
+            contents = JSON.stringify(contents);
+
+            contents = contents.replace(/\{/g, "{\n    ");
+            contents = contents.replace(/","/g, "\",\n    \"");
+            contents = contents.replace(/":"/g, "\" : \"");
+            contents = contents.replace(/\}/g, "\n}");
+
+            grunt.file.write(lang, contents);
+        });
+  });
 };

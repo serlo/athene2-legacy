@@ -14,22 +14,17 @@ define(["underscore", "i18n", "common"], function (_, i18n, Common) {
         debug: false
     };
 
-    function log(string) {
-        untranslated.push(string);
-        Common.log(untranslated.toString());
-    }
-
     /**
      * @function mayTranslate
      * @param {String} string The string to translate
      * @return {String} The translated string OR the untouched string
      **/
     function mayTranslate(string) {
-        if (i18n[config.language] && i18n[config.language][string]) {
+        if (i18n[config.language] && i18n[config.language][string] && i18n[config.language][string] !== "") {
             return i18n[config.language][string];
         }
 
-        Common.expr(config.debug && log(string));
+        Common.expr(config.debug && untranslated.push(string));
 
         return string;
     }

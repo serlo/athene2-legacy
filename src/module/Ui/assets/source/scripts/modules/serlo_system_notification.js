@@ -1,9 +1,10 @@
 /*global define*/
-define(['jquery'], function ($) {
+define(['jquery', 'translator'], function ($, t) {
     "use strict";
     var rootSelector = '#content-container',
         $wrapper,
         SystemNotification,
+        errorMessage = t('An error occured, please reload.'),
         /**
          * allowed status:
          *   success, info, warning, danger
@@ -46,6 +47,9 @@ define(['jquery'], function ($) {
     return {
         notify: function (message, status, html) {
             showNotification(message, status, html);
+        },
+        error: function (message) {
+            this.notify(message || errorMessage, 'danger');
         }
     };
 });

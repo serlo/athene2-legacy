@@ -167,6 +167,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     SubNavigation.prototype.render = function () {
         var self = this,
             backBtn,
+            parentData,
             parentLink;
 
         self.$el.empty();
@@ -177,11 +178,12 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
             // add back btns
             if (level[0].data.parent) {
-                if (level[0].data.parent.data.level === 0) {
+                parentData = level[0].data.parent.data;
+                if (parentData.level === 0) {
                     backBtn = new MenuItem({
                         icon: 'remove-circle',
                         cssClass: 'sub-nav-header',
-                        title: t('Schließen'),
+                        title: t('Close'),
                         url: '#',
                         position: [],
                         level: -1
@@ -194,7 +196,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         });
                     });
                 } else {
-                    backBtn = new MenuItem($.extend({}, level[0].data.parent.data, {
+                    backBtn = new MenuItem($.extend({}, parentData, {
                         icon: 'circle-arrow-left',
                         cssClass: 'sub-nav-header'
                     }));
@@ -207,19 +209,21 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     });
                 }
 
-                parentLink = new MenuItem($.extend({}, level[0].data.parent.data, {
-                    icon: 'arrow-right',
-                    cssClass: 'sub-nav-footer',
-                    level: -1,
-                    title: t('Visit %s overview', level[0].data.parent.data.title)
-                }));
+                if (parentData.url !== '' && parentData.url !== '#') {
+                    parentLink = new MenuItem($.extend({}, parentData, {
+                        icon: 'arrow-right',
+                        cssClass: 'sub-nav-footer',
+                        level: -1,
+                        title: t('Visit %s overview', parentData.title)
+                    }));
 
-                parentLink.$el.unbind('click').click(function (e) {
-                    self.trigger('navigate', {
-                        original: e,
-                        menuItem: parentLink
+                    parentLink.$el.unbind('click').click(function (e) {
+                        self.trigger('navigate', {
+                            original: e,
+                            menuItem: parentLink
+                        });
                     });
-                });
+                }
             }
 
             $ul.append(backBtn.$el);
@@ -230,7 +234,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             });
 
             // add parent link
-            $ul.append(parentLink.$el);
+            if (parentLink) {
+                $ul.append(parentLink.$el);
+            }
 
             $div.addClass('sub-nav-slider').append($ul);
             self.$el.append($div);
@@ -589,6 +595,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         this.isOpen = false;
         this.$nav.remove();
         // this.$mover.css('left', 0);
+        this.navigatedMenuItem = null;
+        this.setActiveNavigator();
         if (this.subNavigation) {
             this.subNavigation.$el.css('left', 0);
         }
