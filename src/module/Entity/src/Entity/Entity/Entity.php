@@ -105,13 +105,13 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     public function removeTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
     {
-        $this->getTermTaxonomies()->removeElement($termTaxonomy);
+        $this->getTerms()->removeElement($termTaxonomy);
         return $this;
     }
 
     public function addTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
     {
-        $this->getTermTaxonomies()->add($termTaxonomy);
+        $this->getTerms()->add($termTaxonomy);
         return $this;
     }
 
