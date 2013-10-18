@@ -1,0 +1,8 @@
+<li role="presentation"
+	class="<?php $this->notification->getSeen() ? '' : 'active ' ?>"><a
+	role="menuitem" tabindex="-1"
+	href="<?php echo $this->url('entity/plugin/repository', array('action' => 'history', 'entity' => $this->notification->getObjects()->current()->getId())); ?>">
+    <?php echo sprintf($this->translate('User `%s` added a new revision on a content you follow'), $this->notification->getActors()->current()->getUsername()); ?>
+    <small> - <abbr class="timeago"
+			title="<?php echo $this->notification->getDate()->getTimestamp(); ?>"><?php echo $this->dateFormat($this->notification->getDate(), \IntlDateFormatter::MEDIUM); ?></abbr></small>
+</a></li>

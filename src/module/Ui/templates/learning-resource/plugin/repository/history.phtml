@@ -1,4 +1,6 @@
-<?php echo $this->renderTitle($this->translate('Versionsgeschichte')); ?>
+<div class="page-header">
+	<h1><?php echo $this->translate('Versionsgeschichte'); ?></h1>
+</div>
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#revision" data-toggle="tab"><?php echo $this->translate('Revisionen'); ?> (<?php echo $this->revisions->count();?>)</a></li>
 	<li><a href="#trashed" data-toggle="tab"><?php echo $this->translate('Papierkorb'); ?> (<?php echo $this->trashedRevisions->count();?>)</a></li>
@@ -19,13 +21,13 @@
                 $isCurrentRevision = $revision == $this->currentRevision;
                 ?>
                 <tr
-        				class="revision <?php echo $isCurrentRevision ? 'success' : ''; ?>">
-        				<td><?php echo $revision->getId(); ?> (<a
-        					href="<?php echo $this->url('entity/plugin/repository', array('action' => 'compare', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('anzeigen'); ?></a>)</td>
-        				<td><?php echo ($isCurrentRevision) ? '<i class="icon-ok"></i>' : ''; ?></td>
-        				<td><?php echo $revision->getAuthor()->getUsername(); ?></td>
-        				<td><?php echo $revision->getDate()->format($this->dateFormat());?></td>
-        			</tr>
+				class="revision <?php echo $isCurrentRevision ? 'success' : ''; ?>">
+				<td><?php echo $revision->getId(); ?> (<a
+					href="<?php echo $this->url('entity/plugin/repository', array('action' => 'compare', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('anzeigen'); ?></a>)</td>
+				<td><?php echo ($isCurrentRevision) ? '<i class="icon-ok"></i>' : ''; ?></td>
+				<td><?php echo $revision->getAuthor()->getUsername(); ?></td>
+				<td><?php echo $revision->getDate()->format("F j, Y, g:i a");?></td>
+			</tr>
             <?php } ?>
         </table>
 	</div>
@@ -42,11 +44,11 @@
             foreach ($this->trashedRevisions as $revision) {
                 ?>
                 <tr class="revision">
-        				<td><?php echo $revision->getId(); ?> (<a
-        					href="<?php echo $this->url('entity/plugin/repository', array('action' => 'compare', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('anzeigen'); ?></a>)</td>
-        				<td><?php echo $revision->getAuthor()->getUsername(); ?></td>
-        				<td><?php echo $revision->getDate()->format($this->dateFormat());?></td>
-        			</tr>
+				<td><?php echo $revision->getId(); ?> (<a
+					href="<?php echo $this->url('entity/plugin/repository', array('action' => 'compare', 'entity' => $this->entity->getId(), 'revision' => $revision->getId())); ?>"><?php echo $this->translate('anzeigen'); ?></a>)</td>
+				<td><?php echo $revision->getAuthor()->getUsername(); ?></td>
+				<td><?php echo $revision->getDate()->format("F j, Y, g:i a");?></td>
+			</tr>
             <?php } ?>
         </table>
 	</div>

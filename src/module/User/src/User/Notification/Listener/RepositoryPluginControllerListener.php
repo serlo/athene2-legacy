@@ -15,6 +15,7 @@ use Zend\EventManager\Event;
 
 class RepositoryPluginControllerListener extends AbstractListener
 {
+
     /**
      *
      * @var array
@@ -40,6 +41,14 @@ class RepositoryPluginControllerListener extends AbstractListener
         }
     }
 
+    public function onAddRevisionNotify(Event $e)
+    {
+        $entity = $e->getParam('entity');
+        $user = $e->getParam('user');
+        $this->logEvent($e->getTarget(), $user, $entity->getEntity()
+            ->getUuidEntity());
+    }
+
     public function onCheckoutNotify(Event $e)
     {
         $user = $e->getParam('user');
@@ -47,7 +56,8 @@ class RepositoryPluginControllerListener extends AbstractListener
         $entity = $e->getParam('entity');
         $reference = NULL;
         
-        $this->logEvent($e->getTarget(), $user, $revision->getUuidEntity(), $entity->getEntity()->getUuidEntity());
+        $this->logEvent($e->getTarget(), $user, $revision->getUuidEntity(), $entity->getEntity()
+            ->getUuidEntity());
     }
     
     /*
@@ -58,7 +68,12 @@ class RepositoryPluginControllerListener extends AbstractListener
         $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'add-revision', array(
             $this,
             'onAddRevisionSubscribe'
-        ), - 1);
+        ), 2);
+        $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'add-revision', array(
+            $this,
+            'onAddRevisionNotify'
+        ), 1);
+        
         $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'checkout', array(
             $this,
             'onCheckoutNotify'

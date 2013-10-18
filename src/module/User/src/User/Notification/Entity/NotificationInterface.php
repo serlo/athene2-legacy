@@ -30,9 +30,9 @@ interface NotificationInterface
      * @return bool
      */
     public function getSeen();
-    
+
     /**
-     * 
+     *
      * @return string
      */
     public function getEventName();
@@ -80,4 +80,17 @@ interface NotificationInterface
      * @return ArrayCollection
      */
     public function getReferences();
+
+    /**
+     *
+     * @return \DateTime $date
+     */
+    public function getDate();
+
+    /**
+     *
+     * @param \DateTime $date            
+     * @return $this
+     */
+    public function setDate(\DateTime $date);
 }

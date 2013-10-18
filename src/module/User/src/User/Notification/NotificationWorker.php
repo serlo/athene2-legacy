@@ -25,12 +25,16 @@ class NotificationWorker
             /* @var $eventLog Entity\NotificationLogInterface */
             foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getObject()) as $subscriber) {
                 /* @var $subscriber \User\Entity\UserInterface */
-                $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                if($subscriber !== $eventLog->getActor()){
+                    $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                }
             }
             if($eventLog->getReference() !== NULL){
                 foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
                     /* @var $subscriber \User\Entity\UserInterface */
-                    $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                    if($subscriber !== $eventLog->getActor()){
+                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                    }
                 }
             }
         }

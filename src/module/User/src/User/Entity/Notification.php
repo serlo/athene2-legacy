@@ -42,6 +42,22 @@ class Notification implements NotificationInterface
      */
     protected $seen;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $date;
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -103,9 +119,13 @@ class Notification implements NotificationInterface
     {
         return $this->events;
     }
-    
-    public function getEventName(){
-        return $this->getEvents()->first()->getEvent()->getRoute();
+
+    public function getEventName()
+    {
+        return $this->getEvents()
+            ->first()
+            ->getEvent()
+            ->getRoute();
     }
     
     /*

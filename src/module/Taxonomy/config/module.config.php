@@ -20,6 +20,26 @@ return array(
             'Taxonomy\Hydrator\Navigation'
         )
     ),
+    'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Controller' => array(
+                array(
+                    'controller' => 'Taxonomy\Controller\TaxonomyController',
+                    'actions' => array(
+                        'update'
+                    ),
+                    'roles' => 'moderator'
+                ),
+                array(
+                    'controller' => 'Taxonomy\Controller\TermController',
+                    'actions' => array(
+                        'update', 'delete', 'order', 'create'
+                    ),
+                    'roles' => 'moderator'
+                )
+            )
+        )
+    ),
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
@@ -229,4 +249,3 @@ return array(
         )
     ),
 );
-
