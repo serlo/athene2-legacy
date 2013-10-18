@@ -20,7 +20,7 @@ class NotificationLogManager implements NotificationLogManagerInterface
     /*
      * (non-PHPdoc) @see \User\Notification\NotificationLogManagerInterface::logEvent()
      */
-    public function logEvent($route, \User\Entity\UserInterface $actor, \Uuid\Entity\UuidHolder $uuid, UuidInterface $reference = NULL)
+    public function logEvent($route, \User\Entity\UserInterface $actor, UuidInterface $object, UuidInterface $reference = NULL)
     {
         $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationLogInterface');
         
@@ -30,8 +30,8 @@ class NotificationLogManager implements NotificationLogManagerInterface
         $log->setEvent($this->getEventManager()
             ->findEventByRoute($route));
         
-        $log->setObject($uuid->getUuidEntity());
-        $log->setReference($uuid->getUuidEntity());
+        $log->setObject($object);
+        $log->setReference($object);
         if ($reference !== NULL) {
             $log->setReference($reference);
         }

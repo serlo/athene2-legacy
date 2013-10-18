@@ -45,8 +45,9 @@ class RouterController extends AbstractActionController
 
     public function assembleAction()
     {
-        $this->redirect()->toUrl($this->getUuidRouter()
-            ->assemble($this->params('uuid')));
+        $url = $this->getUuidRouter()
+            ->assemble($this->params('uuid'));
+        $this->redirect()->toUrl($url);
         return '';
     }
 }

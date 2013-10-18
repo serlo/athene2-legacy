@@ -30,6 +30,12 @@ interface NotificationInterface
      * @return bool
      */
     public function getSeen();
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getEventName();
 
     /**
      *

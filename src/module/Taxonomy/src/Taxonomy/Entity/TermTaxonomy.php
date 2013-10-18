@@ -23,10 +23,11 @@ use Common\ArrayCopyProvider;
  */
 class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCopyProvider
 {
+
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="termTaxonomy")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 
@@ -64,12 +65,10 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     protected $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity")
+     * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity", mappedBy="terms")
      * @ORM\JoinTable(name="term_taxonomy_entity",
-     * joinColumns={@ORM\JoinColumn(name="term_taxonomy_id",
-     * referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="entity_id",
-     * referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
      * )
      */
     protected $entities;
@@ -198,6 +197,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     public function addAssociation($field, TermTaxonomyAware $entity)
     {
         $this->getAssociated($field)->add($entity);
+        $entity->addTermTaxonomy($this);
         return $this;
     }
 

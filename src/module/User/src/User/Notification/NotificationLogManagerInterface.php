@@ -17,5 +17,5 @@ use Uuid\Entity\UuidInterface;
 
 interface NotificationLogManagerInterface
 {
-    public function logEvent($route, UserInterface $actor, UuidHolder $uuid, UuidInterface $reference = NULL);
+    public function logEvent($route, UserInterface $actor, UuidInterface $uuid, UuidInterface $reference = NULL);
 }

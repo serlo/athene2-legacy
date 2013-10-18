@@ -33,8 +33,8 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entity")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 
@@ -61,10 +61,10 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $currentRevision;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Taxonomy\Entity\TermTaxonomy")
+     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", inversedBy="entities")
      * @ORM\JoinTable(name="term_taxonomy_entity",
-     * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
-     * joinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
+     *      joinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
      * )
      */
     protected $terms;
