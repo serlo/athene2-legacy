@@ -17,7 +17,7 @@ use AtheneTest\Bootstrap;
 class UserControllerTest extends DefaultLayoutTestCase
 {
 
-    protected $userManagerMock, $authAdapterMock, $authServiceMock, $registerForm, $objectManagerMock, $repositoryMock, $eventManagerMock;
+    protected $userManagerMock, $authAdapterMock, $authServiceMock, $registerForm, $objectManagerMock, $repositoryMock, $eventManagerMock, $languageService;
 
     public function setUp()
     {
@@ -43,9 +43,13 @@ class UserControllerTest extends DefaultLayoutTestCase
         $this->userManagerMock->expects($this->any())
             ->method('getEventManager')
             ->will($this->returnValue($this->eventManagerMock));
+        $this->languageService = $this->getMock('Language\Service\LanguageService');
         $this->languageManagerMock->expects($this->any())
             ->method('getLanguageFromRequest')
-            ->will($this->returnValue($this->getMock('Language\Service\LanguageService')));
+            ->will($this->returnValue($this->languageService));
+        $this->languageService->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($this->getMock('Language\Entity\Language')));
         
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
         $controller->setUserManager($this->userManagerMock);
@@ -165,7 +169,7 @@ class UserControllerTest extends DefaultLayoutTestCase
         $this->assertResponseStatusCode(302);
     }
 
-    public function testRegisterActionWithPost()
+    public function RegisterActionWithPostDeprecated()
     {
         $data = array(
             'username' => '1234',
@@ -176,6 +180,10 @@ class UserControllerTest extends DefaultLayoutTestCase
         $this->authServiceMock->expects($this->once())
             ->method('hasIdentity')
             ->will($this->returnValue(false));
+        
+        $this->userManagerMock->expects($this->any())
+            ->method('createUser')
+            ->will($this->returnValue($this->getMock('User\Entity\User')));
         
         $registerFormMock = $this->getMockBuilder('User\Form\Register')
             ->disableOriginalConstructor()

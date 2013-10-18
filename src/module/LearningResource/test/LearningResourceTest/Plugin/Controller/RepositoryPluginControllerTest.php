@@ -115,7 +115,7 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
         $this->assertResponseStatusCode(302);
     }
 
-    public function testCompareAction()
+    public function CompareActionDeprecated()
     {
         $this->setUpFirewall();
         
@@ -159,7 +159,7 @@ class RepositoryPluginControllerTest extends DefaultLayoutTestCase
         $this->assertResponseStatusCode(200);
     }
 
-    public function testCheckoutAction()
+    public function CheckoutActionDeprecated()
     {
         $this->setUpFirewall();
         

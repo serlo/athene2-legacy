@@ -15,6 +15,7 @@ class TermControllerTest extends DefaultLayoutTestCase
     {
         $this->setApplicationConfig(include Bootstrap::findParentPath('config/application.testing.config.php'));
         parent::setUp();
+        $this->setUpFirewall();
         
         $controller = $this->getApplicationServiceLocator()->get('Taxonomy\Controller\TermController');
         $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');

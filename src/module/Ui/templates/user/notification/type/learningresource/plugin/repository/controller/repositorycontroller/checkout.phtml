@@ -3,4 +3,5 @@
 	role="menuitem" tabindex="-1"
 	href="<?php echo $this->url('uuid/router', array('uuid' => $this->notification->getReferences()->current()->getId())); ?>">
     <?php echo sprintf($this->translate('User `%s` accepted a revision you wrote.'), $this->notification->getActors()->current()->getUsername()); ?>
+    <small><span class="timeago" title="<?php echo $this->notification->getDate()->format("Y-m-d H:i:s"); ?>"></span></small>
 </a></li>

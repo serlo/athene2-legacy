@@ -18,7 +18,7 @@ class Notification extends AbstractHelper
 {
     use\User\Notification\NotificationManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
-    protected $template;
+    protected $template, $aggregatedUsers;
 
     public function __construct()
     {
@@ -26,21 +26,24 @@ class Notification extends AbstractHelper
     }
     
     public function aggregateUsers(Collection $users){
-        $aggregated = array();
+        $this->aggregatedUsers = array();
         foreach($users as $actor){
             if(!$actor instanceof \User\Entity\UserInterface)
                 throw new \User\Exception\RuntimeException(sprintf('Expected UserInterface but got %s', gettype($actor)));
             
-            if(!in_array($actor, $aggregated)){
-                $aggregated[] = $actor;
+            if(!in_array($actor, $this->aggregatedUsers)){
+                $this->aggregatedUsers[] = $actor;
             }
         }
-        return $aggregated;
+        return $this->aggregatedUsers;
     }
     
-    public function aggregateUsernames(Collection $users){
-        $users = $this->aggregateUsers($users);
-        return explode(', ', $users);
+    public function getAggregatedUsernames(){
+        $usernames = array();
+        foreach($this->aggregatedUsers as $user){
+            $usernames[] = $user->getUsername();
+        }
+        return implode(', ', $usernames);
     }
 
     public function setTemplate($template)

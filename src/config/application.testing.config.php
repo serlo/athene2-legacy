@@ -3,7 +3,6 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
-        //'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcBase',
@@ -11,6 +10,7 @@ return array(
         'TwbBundle',
         'Common',
         'Ui',
+        'Admin',
         'User',
         'Versioning',
         'Log',
@@ -23,7 +23,11 @@ return array(
         'Uuid',
         'ClassResolver',
         'LearningResource',
-        'Language'
+        'Language',
+        'Event',
+        'Mailman',
+        'Alias',
+        'Token'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

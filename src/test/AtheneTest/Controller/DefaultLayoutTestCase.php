@@ -42,7 +42,7 @@ abstract class DefaultLayoutTestCase extends AbstractHttpControllerTestCase
             ->getMock();
         $subjectHydrator = $this->getMock('Subject\Hydrator\Navigation');
         $subjectHydrator->expects($this->once())
-            ->method('inject')
+            ->method('hydrateConfig')
             ->will($this->returnValue(array()));
         
         $rbacServiceMock = $this->getMock('ZfcRbac\Service\Rbac', array(

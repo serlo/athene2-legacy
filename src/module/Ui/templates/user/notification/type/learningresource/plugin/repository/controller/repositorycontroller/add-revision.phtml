@@ -1,11 +1,12 @@
+<?php $users = $this->notifications()->aggregateUsers($this->notification->getActors()); ?>
 <li role="presentation"
 	class="<?php $this->notification->getSeen() ? '' : 'active ' ?>"><a
 	role="menuitem" tabindex="-1"
 	href="<?php echo $this->url('entity/plugin/repository', array('action' => 'history', 'entity' => $this->notification->getObjects()->current()->getId())); ?>">
-	<?php if(count($this->notifications()->aggregateUsers()) == 1):?>
+	<?php if(count($users) == 1):?>
         <?php echo sprintf($this->translate('User `%s` added a new revision on a content you follow'), $this->notification->getActors()->current()->getUsername()); ?>
     <?php else: ?>
-        <?php echo sprintf($this->translate('Users %s created new revisions on a content you follow'), $this->notifications()->aggregateUsernames($this->notification->getActors())); ?>    
+        <?php echo sprintf($this->translate('Users %s created new revisions on a content you follow'), $this->notifications()->getAggregatedUsernames()); ?>    
     <?php endif;?>
-    <small> - <abbr class="timeago" title="<?php echo $this->notification->getDate()->getTimestamp(); ?>"><?php echo $this->dateFormat($this->notification->getDate(), \IntlDateFormatter::MEDIUM); ?></abbr></small>
+    <small><span class="timeago" title="<?php echo $this->notification->getDate()->format("Y-m-d H:i:s"); ?>"></span></small>
 </a></li>

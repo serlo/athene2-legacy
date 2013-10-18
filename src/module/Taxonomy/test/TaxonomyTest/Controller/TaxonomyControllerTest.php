@@ -13,6 +13,7 @@ class TaxonomyControllerTest extends DefaultLayoutTestCase
     {
         $this->setApplicationConfig(include Bootstrap::findParentPath('config/application.testing.config.php'));
         parent::setUp();
+        $this->setUpFirewall();
         
         $controller = $this->getApplicationServiceLocator()->get('Taxonomy\Controller\TaxonomyController');
         $sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
