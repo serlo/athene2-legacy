@@ -29,8 +29,8 @@ class Revision extends UuidEntity implements RevisionInterface
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
     

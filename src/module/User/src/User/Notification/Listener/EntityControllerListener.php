@@ -35,7 +35,7 @@ class EntityControllerListener extends AbstractListener
                 $reference = $this->getUuidManager()->getUuid($reference);
             }
         }
-        $this->logEvent($e->getTarget(), $user, $entity, $reference);
+        $this->logEvent($e->getTarget(), $user, $entity->getEntity()->getUuidEntity(), $reference);
     }
     
     /*

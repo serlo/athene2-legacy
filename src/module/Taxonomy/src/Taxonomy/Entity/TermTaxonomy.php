@@ -26,8 +26,8 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="termTaxonomy")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 

@@ -14,8 +14,6 @@ namespace Uuid\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * An issue
- *
  * @ORM\Entity
  * @ORM\Table(name="uuid")
  */
@@ -40,27 +38,22 @@ class Uuid implements UuidInterface
     protected $voided;
 
     /**
-     * OneToOne(targetEntity="Entity\Entity\EntityRepository", mappedBy="id")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id")
      */
-    // protected $comment;
     protected $entity;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="id")
      */
     protected $termTaxonomy;
 
     /**
-     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="id")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="id")
      */
     protected $user;
 
     /**
      * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $entityRevision;
 
@@ -96,20 +89,11 @@ class Uuid implements UuidInterface
         return $this->entityRevision;
     }
 
-	/**
-     * ORM\OneToOne(targetEntity="Page\Entity\Page", mappedBy="uuid")
-     */
-    //protected $page;
-
-    /**
-     * ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="uuid")
-     */
-    //protected $pageRepository;
-
     public function is($type)
     {
         $type = 'get'.ucfirst($type);
         if (method_exists($this, $type)) {
+            echo $type.":".is_object($this->$type());
             return is_object($this->$type());
         }
         return false;

@@ -26,7 +26,7 @@ class User extends UuidEntity implements UserInterface
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 

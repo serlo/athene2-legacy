@@ -33,8 +33,8 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entity")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 

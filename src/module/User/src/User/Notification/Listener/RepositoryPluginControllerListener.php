@@ -21,7 +21,7 @@ class RepositoryPluginControllerListener extends AbstractListener
      */
     protected $listeners = array();
 
-    public function onAddRevision(Event $e)
+    public function onAddRevisionSubscribe(Event $e)
     {
         $user = $e->getParam('user');
         $entity = $e->getParam('entity');
@@ -39,6 +39,16 @@ class RepositoryPluginControllerListener extends AbstractListener
             }
         }
     }
+
+    public function onCheckoutNotify(Event $e)
+    {
+        $user = $e->getParam('user');
+        $revision = $e->getParam('revision');
+        $entity = $e->getParam('entity');
+        $reference = NULL;
+        
+        $this->logEvent($e->getTarget(), $user, $revision->getUuidEntity(), $entity->getEntity()->getUuidEntity());
+    }
     
     /*
      * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
@@ -47,7 +57,11 @@ class RepositoryPluginControllerListener extends AbstractListener
     {
         $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'add-revision', array(
             $this,
-            'onAddRevision'
+            'onAddRevisionSubscribe'
+        ), - 1);
+        $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'checkout', array(
+            $this,
+            'onCheckoutNotify'
         ), - 1);
     }
     

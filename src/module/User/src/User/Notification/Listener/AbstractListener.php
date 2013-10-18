@@ -21,11 +21,11 @@ abstract class AbstractListener implements SharedListenerAggregateInterface
 {
     use \User\Notification\NotificationLogManagerAwareTrait,\User\Notification\SubscriptionManagerAwareTrait;
 
-    public function logEvent(AbstractActionController $controller, UserServiceInterface $actor, EntityServiceInterface $uuid, UuidInterface $reference = NULL)
+    public function logEvent(AbstractActionController $controller, UserServiceInterface $actor, UuidInterface $object, UuidInterface $reference = NULL)
     {
         $this->getNotificationLogManager()->logEvent($controller->getEvent()
             ->getRouteMatch()
-            ->getMatchedRouteName(), $actor->getEntity(), $uuid->getEntity(), $reference);
+            ->getMatchedRouteName(), $actor->getEntity(), $object, $reference);
     }
 
     public function subscribe($user, $object, $notifyMailman)

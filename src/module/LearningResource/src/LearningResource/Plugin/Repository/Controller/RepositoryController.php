@@ -18,7 +18,7 @@ use Entity\Plugin\Controller\AbstractController;
 
 class RepositoryController extends AbstractController
 {
-    use \User\Manager\UserManagerAwareTrait;
+    use\User\Manager\UserManagerAwareTrait;
 
     public function addRevisionAction()
     {
@@ -53,7 +53,7 @@ class RepositoryController extends AbstractController
                     'post' => $this->params()
                         ->fromPost()
                 ));
-
+                
                 $plugin->getObjectManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
                 $this->redirect()->toUrl($ref);
@@ -128,6 +128,14 @@ class RepositoryController extends AbstractController
         $repository = $plugin = $this->getPlugin();
         $entity = $this->getEntityService();
         $repository->checkout($this->params('revision'));
+        
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        
+        $this->getEventManager()->trigger('checkout', $this, array(
+            'entity' => $entity,
+            'revision' => $repository->getRevision($this->params('revision')),
+            'user' => $user
+        ));
         $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(
             'action' => 'history',
