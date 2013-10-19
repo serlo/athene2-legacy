@@ -2,10 +2,13 @@
 	<a class="btn btn-default btn-xs"
 		href="<?php echo $this->url('entity/plugin/repository',array('action' => 'add-revision', 'entity' => $this->entity->getId())); ?>"><span
 		class="glyphicon glyphicon-edit"></span></a>
-	<a class="btn btn-default btn-xs"
+	<a class="btn btn-default btn-xs<?php echo ($this->entity->plugin('repository')->isUnrevised()) ? ' btn-warning' : ''?>"
 		href="<?php echo $this->url('entity/plugin/repository',array('action' => 'history', 'entity' => $this->entity->getId())); ?>"><span
 		class="glyphicon glyphicon-time"></span></a>
 	<a class="btn btn-default btn-xs"
 		href="<?php echo $this->url('entity/plugin/taxonomy/update',array('entity' => $this->entity->getId())); ?>"><span
 		class="glyphicon glyphicon-map-marker"></span></a>
+	<a class="btn btn-default btn-xs"
+		href="<?php echo $this->url('entity/trash',array('entity' => $this->entity->getId())); ?>"><span
+		class="glyphicon glyphicon-trash"></span></a>
 </div>

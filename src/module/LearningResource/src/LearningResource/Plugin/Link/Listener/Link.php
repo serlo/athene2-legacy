@@ -43,9 +43,6 @@ class Link extends AbstractListener
                             ->add($toEntity);
                     }
                 }
-                if (! $found) {
-                    throw new RuntimeException(sprintf('Couldn\'t find link plugin'));
-                }
             }
         }, 2);
     }

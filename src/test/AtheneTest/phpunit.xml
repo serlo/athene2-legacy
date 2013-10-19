@@ -40,6 +40,11 @@
 		</testsuite>
 	</testsuites>
     <blacklist>
-        <directory>../../module/vendor</directory>
-    </blacklist>
+        <directory>../../vendor</directory>
+	    <directory>../../module/Ui/assets</directory>
+    </blacklist><filter>
+	  <whitelist processUncoveredFilesFromWhitelist="true">
+	    <directory suffix=".php">../../module</directory>
+	  </whitelist>
+</filter>
 </phpunit>

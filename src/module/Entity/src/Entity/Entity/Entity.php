@@ -50,7 +50,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     /**
      * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
-     * @ORM\OrderBy({"date" = "DESC"})
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     protected $revisions;
 

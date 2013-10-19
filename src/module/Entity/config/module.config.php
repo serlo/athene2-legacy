@@ -32,6 +32,20 @@ return array(
                         'create'
                     ),
                     'roles' => 'login'
+                ),
+                array(
+                    'controller' => 'Entity\Controller\EntityController',
+                    'actions' => array(
+                        'trash'
+                    ),
+                    'roles' => 'moderator'
+                ),
+                array(
+                    'controller' => 'Entity\Controller\EntityController',
+                    'actions' => array(
+                        'purge'
+                    ),
+                    'roles' => 'administrator'
                 )
             )
         )
@@ -52,6 +66,26 @@ return array(
                             'defaults' => array(
                                 'controller' => 'Entity\Controller\EntityController',
                                 'action' => 'create'
+                            )
+                        )
+                    ),
+                    'trash' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/trash/:entity',
+                            'defaults' => array(
+                                'controller' => 'Entity\Controller\EntityController',
+                                'action' => 'trash'
+                            )
+                        )
+                    ),
+                    'purge' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/purge/:entity',
+                            'defaults' => array(
+                                'controller' => 'Entity\Controller\EntityController',
+                                'action' => 'purge'
                             )
                         )
                     )

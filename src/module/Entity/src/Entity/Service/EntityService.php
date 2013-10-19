@@ -27,6 +27,16 @@ class EntityService implements EntityServiceInterface
     {
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
+    
+    public function setVoided($voided){
+        $this->getEntity()->setVoided($voided);
+        $this->getEntityManager()->getObjectManager()->persist($this->getEntity());
+        return $this;
+    }
+    
+    public function getVoided(){
+        return $this->getEntity()->getVoided();
+    }
 
     public function getId()
     {

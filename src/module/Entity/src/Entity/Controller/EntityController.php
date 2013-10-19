@@ -50,6 +50,27 @@ class EntityController extends AbstractActionController
         $this->checkResponse($response);
         return '';
     }
+    
+    public function trashAction(){
+        $entity = $this->getEntity();
+        
+        $entity->setVoided(true);
+        
+        $this->getEventManager()->trigger('trash', $this, array(
+            'entity' => $entity,
+            'user' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
+            'data' => $this->params()
+                ->fromQuery()
+        ));
+        
+        $this->getEntityManager()->getObjectManager()->flush();
+        
+        $this->flashMessenger()->addSuccessMessage('The entity was successfully trashed.');
+        
+        $this->redirect()->toReferer();
+        return '';
+    }
 
     public function checkResponse(ResponseCollection $response)
     {
@@ -64,5 +85,10 @@ class EntityController extends AbstractActionController
         
         if (! $redirected)
             $this->redirect()->toReferer();
+    }
+    
+    protected function getEntity($id = NULL){
+        if($id === NULL) $id = $this->params('entity');
+        return $this->getEntityManager()->getEntity($id);
     }
 }

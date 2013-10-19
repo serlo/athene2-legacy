@@ -19,9 +19,9 @@ $table = array(
 <div class="row">
 	<div class="col-md-9"></div>
 	<div class="col-md-3">
-	    <?php if($this->acceptsEntities): ?>
+	    <?php if($this->term->isAssociationAllowed('entities')): ?>
 		<div class="btn-group pull-right">
-			<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i
+			<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"> <i
 				class="icon-plus"></i><?php echo $this->translate('hinzufügen');?> <span
 				class="caret"></span>
 			</a>
@@ -35,10 +35,10 @@ $table = array(
 		<?php endif; ?>
 	</div>
 </div>
-<?php if($this->acceptsEntities): ?>
+<?php if($this->term->isAssociationAllowed('entities')): ?>
 <div class="entities">
     <?php foreach($this->links as $link): ?>
-    <?php if($this->plugin->isTypeEnabled($link->getType()->getName())): ?>
+    <?php if($this->plugin->isTypeEnabled($link->getType()->getName() && !$link->getVoided())): ?>
     <?php $partial = $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
     <?php switch($link->getType()->getName()){ 
         case 'article': $table['left'] .= $partial; break; ?>
@@ -53,9 +53,15 @@ $table = array(
 		<div class="col-md-4">
 			<div class="list-group">
                 <div>
-			         <h4><span class="glyphicon glyphicon-book"></span> <strong><?php echo $this->translate('Artikel'); ?></strong></h4>
+			         <h4><span class="glyphicon glyphicon-book"></span> <strong><?php echo $this->translate('Articles'); ?></strong></h4>
 			    </div>
-                <?php echo $table['left']; ?>
+			    <?php if(strlen($table['left']) > 0): ?>
+                    <?php echo $table['left']; ?>
+                <?php else: ?>
+                    <div class="list-group-item disabled">
+                    	<span class="text-muted"><?php echo $this->translate('There are no articles for this topic yet.'); ?></span>
+                    </div>
+                <?php endif; ?>
             </div>
 		</div>
 		<div class="col-md-4">
@@ -63,25 +69,43 @@ $table = array(
                 <li class="disabled">
 			         <h4><span class="glyphicon glyphicon-facetime-video"></span> <strong><?php echo $this->translate('Videos'); ?></strong></h4>
 			    </li>
-                <?php echo $table['middle']; ?>
+			    <?php if(strlen($table['middle']) > 0): ?>
+                    <?php echo $table['middle']; ?>
+                <?php else: ?>
+                    <div class="list-group-item disabled">
+                    	<span class="text-muted"><?php echo $this->translate('There are no videos for this topic yet.'); ?></span>
+                    </div>
+                <?php endif; ?>
             </ul>
         </div>
 		<div class="col-md-4">
 			<ul class="nav nav-pills nav-stacked">
                 <li class="disabled">
-			         <h4><span class="glyphicon glyphicon-list"></span> <strong><?php echo $this->translate('Module'); ?></strong></h4>
+			         <h4><span class="glyphicon glyphicon-list"></span> <strong><?php echo $this->translate('Modules'); ?></strong></h4>
 			    </li>
-                <?php echo $table['right']; ?>
+			    <?php if(strlen($table['right']) > 0): ?>
+                    <?php echo $table['right']; ?>
+                <?php else: ?>
+                    <div class="list-group-item disabled">
+                    	<span class="text-muted"><?php echo $this->translate('There are no modules for this topic yet.'); ?></span>
+                    </div>
+                <?php endif; ?>
             </ul>
         </div>
 	</div>
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
-		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Aufgaben'); ?></strong></h4>
-		    <ol>
-		    </ol>
-            <?php echo $table['bottom']; ?>
+		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Exercises'); ?></strong></h4>
+		    <div class="list-group">
+		    <?php if(strlen($table['bottom']) > 0): ?>
+                <?php echo $table['bottom']; ?>
+            <?php else: ?>
+            	<div class="list-group-item">
+            	   <p class="list-group-item-text text-muted"><?php echo $this->translate('There are no exercises for this topic yet.'); ?></p>
+            	</div>
+            <?php endif; ?>
+            </div>
         </div>
 	</div>
 </div>

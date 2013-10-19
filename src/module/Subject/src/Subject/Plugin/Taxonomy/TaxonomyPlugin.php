@@ -29,7 +29,8 @@ class TaxonomyPlugin extends AbstractPlugin
             'templates' => array(
                 'index' => 'subject/plugin/taxonomy/index',
                 'taxonomy' => 'subject/plugin/taxonomy/taxonomy',
-                'links' => 'subject/plugin/taxonomy/links'
+                'links' => 'subject/plugin/taxonomy/entities',
+                'branches' =>  'subject/plugin/taxonomy/branches'
             )
         );
     }

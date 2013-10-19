@@ -109,7 +109,7 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function getHead()
     {
-        return $this->getRevisions()->last();
+        return $this->getRevisions()->first();
     }
 
     public function hasHead()

@@ -14,6 +14,7 @@ namespace Alias;
 use Common\Traits;
 use Alias\Exception;
 use Uuid\Entity\UuidInterface;
+use Common\Filter\Slugify;
 
 class AliasManager implements AliasManagerInterface
 {
@@ -70,11 +71,13 @@ class AliasManager implements AliasManagerInterface
         if (! is_string($source))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
         
-        $slugified = '';
+        $filter = new Slugify();
+        
+        $slugified = array();
         foreach (explode('/', $alias) as $token) {
-            $slugified .= rawurlencode($token) . '/';
+            $slugified[] = $filter->filter($token);
         }
-        $alias = substr($slugified, 0, - 1);
+        $alias = implode('/', $slugified);
         
         try {
             $this->findSourceByAlias($alias, $language);

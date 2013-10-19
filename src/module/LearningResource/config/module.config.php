@@ -261,6 +261,12 @@ return array(
                             )
                         )
                     ),
+                    'pathauto' => array(
+                        'plugin' => 'pathauto',
+                        'options' => array(
+                            'tokenize' => '{subject}/{type}/{title}'
+                        )
+                    ),
                     'provider' => array(
                         'plugin' => 'provider',
                         'options' => array(
@@ -577,6 +583,11 @@ return array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                     'actions' => 'purge-revision',
                     'roles' => 'admin'
+                ),
+                array(
+                    'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController',
+                    'actions' => 'update',
+                    'roles' => 'moderator'
                 )
             )
         )

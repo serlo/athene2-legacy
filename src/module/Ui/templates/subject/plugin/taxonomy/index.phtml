@@ -10,8 +10,11 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<div class="page-header">
-    <h1><?php echo $this->translate('Taxonomie'); ?></h1>
-</div>
-<?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term, 'terms' => $this->terms)); ?>
-<?php echo $this->partial($this->plugin->getTemplate('links'), array('links' => $this->links, 'acceptsEntities' => $this->acceptsEntities, 'subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term)); ?>
+<?php if($this->term->getTaxonomy()->getName() == 'topic'): ?>
+    <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term, 'terms' => $this->terms)); ?>
+    <hr>
+    <?php echo $this->partial($this->plugin->getTemplate('links'), array('links' => $this->links, 'acceptsEntities' => $this->acceptsEntities, 'subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term)); ?>
+<?php elseif($this->term->getTaxonomy()->getName() == 'topic-folder'): ?>
+    <?php echo $this->partial($this->plugin->getTemplate('links'), array('links' => $this->links, 'acceptsEntities' => $this->acceptsEntities, 'subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term)); ?>
+    <?php echo $this->partial($this->plugin->getTemplate('sub-folders'), array('links' => $this->links, 'acceptsEntities' => $this->acceptsEntities, 'subject' => $this->subject, 'plugin' => $this->plugin, 'term' => $this->term)); ?>
+<?php endif; ?>

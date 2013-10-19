@@ -36,7 +36,7 @@ return array(
                         'update', 'delete', 'order', 'create'
                     ),
                     'roles' => 'moderator'
-                )
+                ),
             )
         )
     ),

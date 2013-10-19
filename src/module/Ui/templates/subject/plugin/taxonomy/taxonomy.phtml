@@ -14,12 +14,13 @@
     <?php foreach($this->terms as $term): ?>
     <li <?php echo (isset($this->recursion) && $this->recursion) ? 'class="nav-side-header"' : ''; ?>>
     
-    <?php if (isset($this->recursion) && $this->recursion): ?>
-    <a
-		href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>"><?php echo $term->getName(); ?></a>
-		<?php else: ?>
-		<strong><?php echo $term->getName(); ?></strong>
+    <a href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
+        <?php if (isset($this->recursion) && $this->recursion && $term->hasChildren()): ?>
+            <?php echo $term->getName(); ?>
+    	<?php else: ?>
+    		<strong><?php echo $term->getName(); ?></strong>
 		<?php endif;?>
+    </a>
         <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'recursion' => true)); ?>
     </li>
     <?php endforeach; ?>
