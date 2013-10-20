@@ -80,6 +80,26 @@ return array(
                                 'vote' => 'up|down',
                             )
                         )
+                    ),
+                    'purge' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/purge/:comment',
+                            'defaults' => array(
+                                'controller' => 'Discussion\Controller\DiscussionController',
+                                'action' => 'purge'
+                            ),
+                        )
+                    ),
+                    'archive' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/archive/:comment',
+                            'defaults' => array(
+                                'controller' => 'Discussion\Controller\DiscussionController',
+                                'action' => 'trash'
+                            ),
+                        )
                     )
                 )
             )

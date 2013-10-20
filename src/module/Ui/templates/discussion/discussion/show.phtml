@@ -7,17 +7,25 @@
     <?php endif; ?>
     <section>
 		<div class="row">
-			<div class="col-md-1">
+			<div class="col-md-2">
 				<strong><?php echo $this->discussion->getAuthor()->getUsername(); ?></strong>
-				<div>
-                    <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>
+				<p class="timeago" title="<?php echo $this->discussion->getDate()->format("Y-m-d H:i:s"); ?>"></p>
+			    <hr>
+                <div class="btn-group btn-group-x">
+                    <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>    
                     <a
 						href="<?php echo $this->url('discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
-						class="glyphicon glyphicon-chevron-up"></span></a>
-                    <b><?php echo $this->discussion->countUpVotes(); ?></b>
+						class="glyphicon glyphicon-chevron-up"></span> 
+                    <b><?php echo $this->discussion->countUpVotes(); ?></b> </a>  
+                    <a
+						href="<?php echo $this->url('discussion/archive', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default"><span
+						class="glyphicon glyphicon-inbox"></span></a> 
+                    <a
+						href="<?php echo $this->url('discussion/purge', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default"><span
+						class="glyphicon glyphicon-trash"></span></a>        
                 </div>
 			</div>
-			<div class="col-md-11">
+			<div class="col-md-10">
                 <?php echo $this->discussion->getContent(); ?>
             </div>
 		</div>
@@ -25,8 +33,8 @@
     <?php if(!$this->discussion->isDiscussion()): ?>
         <section>
 		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-11">
+			<div class="col-md-2"></div>
+			<div class="col-md-10">
 				<hr>
 				<div class="list-group">  
                         <?php foreach($this->discussion->getChildren() as $comment): ?>
