@@ -21,8 +21,6 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
      */
     protected $collection;
     
-    abstract public function getDelegate($delegator);
-    
     protected function validManager($manager){
         if(!is_object($manager))
             throw new \InvalidArgumentException('Manager must be an object');
@@ -80,7 +78,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function add ($element)
     {
-        $return = $this->getCollection()->add($this->getDelegate($element));
+        $return = $this->getCollection()->add($element);
         $this->hydrate();
         return $return;
     }
@@ -98,7 +96,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function contains ($element)
     {
-        return $this->getCollection()->contains($this->getDelegate($element));
+        return $this->getCollection()->contains($element);
     }
 
     /*
@@ -122,7 +120,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function removeElement ($element)
     {
-        return $this->getCollection()->removeElement($this->getDelegate($element));
+        return $this->getCollection()->removeElement($element);
     }
 
     /*
@@ -275,7 +273,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     */
     public function indexOf ($element)
     {
-        return $this->getCollection()->indexOf($this->getDelegate($element));
+        return $this->getCollection()->indexOf($element);
     }
 
     /*

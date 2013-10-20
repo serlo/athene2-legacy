@@ -56,6 +56,15 @@ return array(
                         ->get('Uuid\Manager\UuidManager'));
                     return $instance;
                 },
+                'discussion' => function ($sm)
+                {
+                    $instance = new Plugin\Discussion\DiscussionPlugin();
+                    $instance->setDiscussionManager($sm->getServiceLocator()
+                        ->get('Discussion\DiscussionManager'));
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    return $instance;
+                },
                 'link' => function ($sm)
                 {
                     $instance = new Plugin\Link\LinkPlugin();
@@ -300,6 +309,9 @@ return array(
                             )
                         )
                     ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -483,6 +495,9 @@ return array(
                         'required' => true
                     ),
                     'setLanguageManager' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
                         'required' => true
                     )
                 )

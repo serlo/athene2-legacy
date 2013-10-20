@@ -17,11 +17,10 @@ use Entity\Exception\EntityNotFoundException;
 
 class PageController extends AbstractController
 {
-    use \Language\Manager\LanguageManagerAwareTrait, \Alias\AliasManagerAwareTrait;
+    use\Language\Manager\LanguageManagerAwareTrait,\Alias\AliasManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
 
     public function indexAction()
     {
-        
         try {
             $page = $plugin = $this->getPlugin();
             $entity = $this->getEntityService();
@@ -30,13 +29,19 @@ class PageController extends AbstractController
             return;
         }
         
-        if(!$this->params('forwarded')){
-            $alias = $this->getAliasManager()->findAliasByUuid($entity->getEntity()->getUuidEntity());
-            $this->redirect()->toUrl('/alias/'.$alias->getAlias());
+        if (! $this->params('forwarded')) {
+            $alias = $this->getAliasManager()->findAliasByUuid($entity->getEntity()
+                ->getUuidEntity());
+            $this->redirect()->toUrl('/alias/' . $alias->getAlias());
         }
         
         try {
-            $model = new \Zend\View\Model\ViewModel(array('entity' => $entity, 'plugin' => $page));
+            $model = new \Zend\View\Model\ViewModel(array(
+                'entity' => $entity,
+                'plugin' => $page,
+                'user' => $this->getUserManager()->getUserFromAuthenticator(),
+                'discussion' => $entity->plugin('discussion')
+            ));
             $page->hydrate($model);
             $model->setTemplate($page->getTemplate());
             return $model;

@@ -1,0 +1,15 @@
+<?php foreach($this->term->getChildren() as $term): ?>
+    <a class="list-group-item" href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
+        <h4 class="list-group-item-heading">
+            <?php echo $term->getName(); ?>
+        </h4>
+    </a>
+<?php if($term->isAssociationAllowed('entities')): ?>
+<?php foreach($term->getAssociated('entities') as $entity): ?>
+    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getVoided())): ?>
+    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
+    <?php endif; ?>
+<?php endforeach;?>
+<?php endif;?>
+<hr>
+<?php endforeach; ?>

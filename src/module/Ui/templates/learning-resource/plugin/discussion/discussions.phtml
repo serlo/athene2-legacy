@@ -1,0 +1,19 @@
+<?php $form = $this->plugin->getForm(); ?>
+<?php $form->setAttribute('action', $this->url('discussion/start',array('on' => $this->entity->getId()))); ?>
+<h3><?php echo $this->translate('Discussions'); ?></h3>
+<div class="list-group">  
+    <div class="list-group-item">
+        <h4><?php echo $this->translate('Start a new discussion'); ?></h4>
+        <hr>
+        <?php $form->prepare(); ?>
+        <?php echo $this->form()->render($form); ?>
+    </div>
+    <div  class="list-group-item">
+        <h4><?php echo $this->translate('Discussions'); ?></h4>
+    </div>
+    <?php foreach($this->plugin->getDiscussions() as $discussion): ?>
+        <div  class="list-group-item">
+            <?php echo $this->partial('discussion/discussion/show', array('discussion' => $discussion, 'user' => $this->user)); ?>
+        </div>
+    <?php endforeach; ?>
+</div>
