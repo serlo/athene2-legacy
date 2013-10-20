@@ -11,10 +11,7 @@
  */
 namespace Application;
 
-use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\I18n\Translator\Translator;
-use Zend\EventManager\Event;
 
 class Module
 {
@@ -23,16 +20,25 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
 
     public function getAutoloaderConfig()
     {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+                )
+            )
         );
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e)
+        {
+            $result = $e->getResult();
+            $result->setTerminal(TRUE);
+        });
     }
 }
