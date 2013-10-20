@@ -1,35 +1,34 @@
 <article>
     <?php if(!$this->discussion->isDiscussion()): ?>
         <header>
-            <h4><?php echo $this->discussion->getTitle(); ?></h4>
-        </header>
-        <hr>
+		<h4><?php echo $this->discussion->getTitle(); ?></h4>
+	</header>
+	<hr>
     <?php endif; ?>
     <section>
-        <div class="row">
-            <div class="col-md-2">
-                <strong><?php echo $this->discussion->getAuthor()->getUsername(); ?></strong>
-                <div>
+		<div class="row">
+			<div class="col-md-1">
+				<strong><?php echo $this->discussion->getAuthor()->getUsername(); ?></strong>
+				<div>
                     <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>
-                    <a href="<?php echo $this->url('discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>"><span class="glyphicon glyphicon-chevron-<?php echo $vote; ?>"></span></a>
+                    <a
+						href="<?php echo $this->url('discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
+						class="glyphicon glyphicon-chevron-up"></span></a>
+                    <b><?php echo $this->discussion->countUpVotes(); ?></b>
                 </div>
-                <div>
-                    <?php echo $this->discussion->countUpVotes(); ?>
-                </div>
-            </div>
-            <div class="col-md-10">
+			</div>
+			<div class="col-md-11">
                 <?php echo $this->discussion->getContent(); ?>
             </div>
-        </div>
-    </section>
+		</div>
+	</section>
     <?php if(!$this->discussion->isDiscussion()): ?>
         <section>
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-10">
-                    <hr>
-                    <div class="list-group">  
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-11">
+				<hr>
+				<div class="list-group">  
                         <?php foreach($this->discussion->getChildren() as $comment): ?>
                             <div class="list-group-item">
                                 <?php echo $this->partial('discussion/discussion/show', array('discussion' => $comment, 'user' => $this->user)); ?>
@@ -40,7 +39,7 @@
                     <?php $this->discussion->getForm()->prepare(); ?>
                     <?php echo $this->form()->render($this->discussion->getForm()); ?>
                 </div>
-            </div>
-        </section>
+		</div>
+	</section>
     <?php endif; ?>
 </article>
