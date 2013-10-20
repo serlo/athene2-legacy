@@ -53,14 +53,6 @@ class Revision extends UuidEntity implements RevisionInterface
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     protected $date;
-    
-    public function getFields(){
-    	$collection = new ArrayCollection();
-    	foreach($this->fields as $field){
-    		$collection->set($this->getRepository()->getFieldOrder($field->getName()), $field);
-    	}
-    	return $collection;
-    }
 
     /**
      *
@@ -113,19 +105,7 @@ class Revision extends UuidEntity implements RevisionInterface
         return $data[0]->get('value');
     }
 
-    public function set($field, $key)
-    {        
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
-            ->setFirstResult(0)
-            ->setMaxResults(1);
-        $data = $this->fields->matching($criteria);
-        if (count($data) == 0)
-            throw new \Exception('Field `' . $field . '` not found');
-        
-        return $data[0]->set('value', $key);
-    }
-
-    public function addField($name, $value)
+    public function set($name, $value)
     {
         $entity = new RevisionField($name, $this->getId());
         $entity->set('field', $name);

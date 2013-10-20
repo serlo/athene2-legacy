@@ -28,8 +28,11 @@ class RevisionField {
      */
     protected $id;
     
-    /** @ORM\Column(type="integer", name="entity_revision_id") */
-    protected $entityRevisionId;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Revision", inversedBy="fields")
+     * @ORM\JoinColumn(name="entity_revision_id", referencedColumnName="id")
+	 **/
+	protected $revision;
     
     /** @ORM\Column(type="string") */
     protected $field;
@@ -40,8 +43,8 @@ class RevisionField {
     /**
 	 * @return field_type $entityRevisionId
 	 */
-	public function getEntityRevisionId() {
-		return $this->entityRevisionId;
+	public function getRevision() {
+		return $this->revision;
 	}
 	
 	public function getName(){
@@ -63,18 +66,11 @@ class RevisionField {
 	}
 
 	/**
-	 * @return field_type $revision
-	 */
-	public function getRevision() {
-		return $this->revision;
-	}
-
-	/**
 	 * @param field_type $entityRevisionId
 	 * @return $this
 	 */
-	public function setEntityRevisionId($entityRevisionId) {
-		$this->entityRevisionId = $entityRevisionId;
+	public function setRevision($entityRevision) {
+		$this->revision = $entityRevision;
 		return $this;
 	}
 
@@ -96,18 +92,9 @@ class RevisionField {
 		return $this;
 	}
 
-	/**
-	 * @param field_type $revision
-	 * @return $this
-	 */
-	public function setRevision($revision) {
-		$this->revision = $revision;
-		return $this;
-	}
-
 	public function __construct($revision, $field)
     {
-        $this->entityRevisionId = $revision;
+        $this->revision = $revision;
         $this->field = $field;
     }
     
@@ -118,10 +105,4 @@ class RevisionField {
     public function set($property, $value){
         return $this->$property = $value;
     }
-    
-	/**
-	 * @ORM\ManyToOne(targetEntity="Revision", inversedBy="fields", cascade={"persist"})
-     * @ORM\JoinColumn(name="entity_revision_id", referencedColumnName="id")
-	 **/
-	protected $revision;
 }

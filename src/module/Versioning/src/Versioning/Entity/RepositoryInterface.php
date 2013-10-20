@@ -21,20 +21,20 @@ interface RepositoryInterface
     /**
      * Returns the revisions
      * 
-     * @return PersistentCollection $revisions
+     * @return PersistentCollection
      */
     public function getRevisions ();
     
     /**
      * Creates a new revision and adds it to the repository
      * 
-     * @return RevisionInterface $revision
+     * @return RevisionInterface
      */
     public function newRevision();
     
     /**
      * 
-     * @return RevisionInterface $revision
+     * @return RevisionInterface
      */
     public function getCurrentRevision();
 

@@ -7,7 +7,7 @@
 <div class="tab-content">
 	<div class="tab-pane active" id="display">
 		<article>
-            <?php echo $this->partial('learning-resource/plugin/repository/revision', array('revision' => $this->revision)); ?>
+            <?php echo $this->partial('learning-resource/plugin/repository/revision', array('revision' => $this->revision, 'plugin' => $this->plugin)); ?>
             <?php if($this->revision !== $this->currentRevision): ?>
 			<hr>
 			<footer>
@@ -29,7 +29,7 @@
 	<?php if(is_object($this->currentRevision)): ?>
 	<div class="tab-pane" id="current">
 		<article class="current">
-            <?php echo $this->partial('learning-resource/plugin/repository/revision', array('revision' => $this->currentRevision)); ?>
+            <?php echo $this->partial('learning-resource/plugin/repository/revision', array('revision' => $this->currentRevision, 'plugin' => $this->plugin)); ?>
 		</article>
 	</div>
 	<?php endif; ?>

@@ -52,7 +52,7 @@ class RepositoryPlugin extends AbstractPlugin
     {
         return array(
             'revision_form' => 'FormNotFound',
-            'field_order' => array()
+            'fields' => array()
         );
     }
 
@@ -63,13 +63,12 @@ class RepositoryPlugin extends AbstractPlugin
     public function getRepository()
     {
         $repository = $this->getEntityService()->getEntity();
-        $repository->setFieldOrder($this->getOption('field_order'));
         return $this->getRepositoryManager()
             ->addRepository($repository)
             ->getRepository($repository);
     }
 
-    public function getRevisionForm()
+    public function getRevisionForm($hydrate = true)
     {
         $form = $this->getOption('revision_form');
         
@@ -77,7 +76,19 @@ class RepositoryPlugin extends AbstractPlugin
             throw new Exception\ClassNotFoundException(sprintf('Class %s not found!', $form));
         
         $form = new $form();
+        if($hydrate && $this->hasCurrentRevision()){
+            $data = array();
+            foreach($this->getFields() as $field){
+                $data[$field] = $this->getCurrentRevision()->get($field);
+            }
+            $form->setData($data);
+        }
+        
         return $form;
+    }
+    
+    public function getFields(){
+        return $this->getOption('fields');
     }
 
     /**
@@ -182,9 +193,11 @@ class RepositoryPlugin extends AbstractPlugin
         
         foreach ($form->getData() as $key => $value) {
             if (is_string($key) && is_string($value)){
-                $this->getObjectManager()->persist($revision->addField($key, $value));
+                $revision->set($key, $value);
             }
         }
+        
+        $this->getObjectManager()->persist($revision);
         
         return $this;
     }
@@ -209,29 +222,4 @@ class RepositoryPlugin extends AbstractPlugin
         return $this->getRepository()->isUnrevised();
     }
 
-    protected function slugify($text)
-    {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-        
-        // trim
-        $text = trim($text, '-');
-        
-        // transliterate
-        if (function_exists('iconv')) {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        }
-        
-        // lowercase
-        $text = strtolower($text);
-        
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-        
-        if (empty($text)) {
-            return 'n-a';
-        }
-        
-        return $text;
-    }
 }

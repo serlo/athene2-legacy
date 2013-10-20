@@ -113,7 +113,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\TextExerciseForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'title',
                                 'content'
                             )
@@ -143,7 +143,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\TextExerciseGroupForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'content'
                             )
                         )
@@ -171,7 +171,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\GroupedTextExerciseForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'hint',
                                 'content'
                             )
@@ -210,7 +210,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\TextSolutionForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'title',
                                 'hint',
                                 'content'
@@ -242,7 +242,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\VideoForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'title',
                                 'content'
                             )
@@ -294,7 +294,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\ArticleForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'title',
                                 'content'
                             )
@@ -345,7 +345,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\ModuleForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'title'
                             )
                         )
@@ -400,7 +400,7 @@ return array(
                         'plugin' => 'repository',
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\ModulePageForm',
-                            'field_order' => array(
+                            'fields' => array(
                                 'title',
                                 'content'
                             )

@@ -34,6 +34,10 @@ interface RepositoryServiceInterface
      */
     public function getIdentifier ();
     
+    /**
+     * 
+     * @return bool
+     */
     public function hasCurrentRevision();
 
     /**
@@ -94,7 +98,7 @@ interface RepositoryServiceInterface
     /**
      * Returns the revision currently set
      *
-     * @return RevisionInterface $revision
+     * @return RevisionInterface
      */
     public function getCurrentRevision ();
 

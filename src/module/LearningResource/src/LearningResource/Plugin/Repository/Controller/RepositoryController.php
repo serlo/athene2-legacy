@@ -30,7 +30,8 @@ class RepositoryController extends AbstractController
         $user = $this->getUserManager()->getUserFromAuthenticator();
         
         $view = new ViewModel(array(
-            'entity' => $entity
+            'entity' => $entity,
+            'plugin' => $plugin
         ));
         
         /* @var $form \Zend\Form\Form */
@@ -78,7 +79,8 @@ class RepositoryController extends AbstractController
         $view = new ViewModel(array(
             'currentRevision' => $currentRevision,
             'revision' => $revision,
-            'entity' => $entity
+            'entity' => $entity,
+            'plugin' => $plugin
         ));
         
         $view->setTemplate('learning-resource/plugin/repository/compare-revision');
@@ -95,7 +97,8 @@ class RepositoryController extends AbstractController
             'entity' => $entity,
             'revisions' => $repository->getAllRevisions(),
             'trashedRevisions' => $repository->getTrashedRevisions(),
-            'currentRevision' => $currentRevision
+            'currentRevision' => $currentRevision,
+            'plugin' => $plugin
         ));
         
         $repositoryView->setTemplate('learning-resource/plugin/repository/history');
