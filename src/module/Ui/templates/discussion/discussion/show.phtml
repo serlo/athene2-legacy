@@ -15,7 +15,7 @@
                     <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>    
                     <a
 						href="<?php echo $this->url('discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
-						class="glyphicon glyphicon-chevron-up"></span> 
+						class="glyphicon glyphicon-chevron-<?php print $vote; ?>"></span> 
                     <b><?php echo $this->discussion->countUpVotes(); ?></b> </a>  
                     <?php if($this->discussion->isDiscussion()): ?>
                         <a
@@ -23,7 +23,7 @@
     						class="glyphicon glyphicon-inbox"></span></a> 
 					<?php endif;?>
                     <a
-						href="<?php echo $this->url('discussion/trash', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default"><span
+						href="<?php echo $this->url('discussion/trash', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default dialog" data-content="<?php echo $this->translate('Do you really want to delete this discussion?'); ?>"><span
 						class="glyphicon glyphicon-trash"></span></a>        
                 </div>
 			</div>
