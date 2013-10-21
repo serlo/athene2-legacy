@@ -15,6 +15,7 @@ use Entity\Plugin\Controller\AbstractController;
 use Versioning\Exception\RevisionNotFoundException;
 use Entity\Exception\EntityNotFoundException;
 use Zend\Mvc\Router\RouteInterface;
+use Zend\Mvc\Router\Http\RouteMatch;
 
 class PageController extends AbstractController
 {
@@ -36,6 +37,9 @@ class PageController extends AbstractController
                 ->getUuidEntity());
             $this->redirect()->toUrl('/alias/' . $alias->getAlias());
         }
+        $routeMatch = new RouteMatch(array('subject' => $entity->provider()->getSubjectSlug()));
+        $routeMatch->setMatchedRouteName('subject');
+        $this->getServiceLocator()->get('Application')->getMvcEvent()->setRouteMatch($routeMatch);
         
         try {
             $model = new \Zend\View\Model\ViewModel(array(

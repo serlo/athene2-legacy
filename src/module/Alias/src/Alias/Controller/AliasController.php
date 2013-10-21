@@ -35,16 +35,13 @@ class AliasController extends AbstractActionController
         $router = $this->getServiceLocator()
             ->get('Router');
         
-        $routeMatch = new RouteMatch(array('subject' => 'mathe'));
-        $routeMatch->setMatchedRouteName('subject');
-        $this->getServiceLocator()->get('Application')->getMvcEvent()->setRouteMatch($routeMatch);
-        
         $request = new Request();
         $request->setMethod(Request::METHOD_GET);
         $request->setUri($source);
         
         $routeMatch = $router
             ->match($request);
+        $this->getServiceLocator()->get('Application')->getMvcEvent()->setRouteMatch($routeMatch);
         
         if ($routeMatch === NULL)
             throw new Alias\Exception\RuntimeException(sprintf('Could not match a route for `%s`', $source));
@@ -53,8 +50,9 @@ class AliasController extends AbstractActionController
         
         $controller = $params['controller'];
         
-        return $this->forward()->dispatch($controller, ArrayUtils::merge($params, array(
+        $return = $this->forward()->dispatch($controller, ArrayUtils::merge($params, array(
             'forwarded' => true
         )));
+        return $return;
     }
 }

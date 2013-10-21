@@ -29,6 +29,7 @@ interface TermServiceInterface
     public function getTemplate($template);
 
     public function hasChildren();
+    public function hasParent();
 
     public function getParent();
 
