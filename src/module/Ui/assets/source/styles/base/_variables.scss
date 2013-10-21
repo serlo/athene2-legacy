@@ -1,9 +1,14 @@
 /* THEME */
 
+$baseFont: Arial, serif;
+$themeFont: 'Open Sans', sans-serif;
+
+
 // $themeColor: #008FAB;
 $themeColor: #007EC1;
 // $themeColor: #00A0DF; //visionsummit-logo blue
 $themeColorLight: lighten($themeColor, 5%);
+
 $gray: #4B4D4C;
 $darkGray: darken($gray, 8%);
 $darkerGray: darken($gray, 18%);

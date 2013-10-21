@@ -7,11 +7,19 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
             wrapperSelector: '#search-content',
             inputSelector: '#search-input',
             inFocusClass: 'is-in-focus',
-            ajaxThrottling: 360
+            ajaxThrottling: 360,
+            maxQueryLength: 3,
+            ignoreKeys: [
+                Common.KeyCode.shift,
+                Common.KeyCode.backspace,
+                Common.KeyCode.entf,
+                Common.KeyCode.super
+            ]
         };
 
     Search = function (options) {
         var self = this;
+
         self.options = $.extend({}, defaults, options || {});
         self.$el = $(self.options.wrapperSelector);
         self.$input = $(self.options.inputSelector);
@@ -34,12 +42,17 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
                 self.$el.removeClass(self.options.inFocusClass);
             })
             .keydown(function (e) {
+                var value = Common.trim($(this).val());
+                if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
+                    return true;
+                }
+
                 switch (e.keyCode) {
                 case Common.KeyCode.esc:
                     self.$input.blur();
                     break;
                 default:
-                    self.search($(this).val());
+                    Common.expr(value.length < self.options.maxQueryLength || self.search(value));
                     break;
                 }
             });

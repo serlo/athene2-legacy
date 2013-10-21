@@ -12,57 +12,24 @@
 echo $this->doctype();
 ?>
 <html class="fuelux" lang="en">
-<head>
-<meta charset="utf-8">
-        <?php
-        echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
-            ->setAutoEscape(false);
-        
-        echo $this->plugin('HeadLink');
-        echo $this->plugin('HeadStyle');
-        echo $this->plugin('HeadScript');
-        echo $this->inlineScript();
-        /*
-         * echo $this->headlink() ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css') ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
-         */
-        echo $this->headScript()->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
-            //->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
-        // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
-        ?>
-    </head>
+<?php print $this->partial('layout/partials/head'); ?>
 <body>
     <div class="wrap">
     	<?php echo $this->partial('layout/partials/header.phtml'); ?>
 
     	<div id="page" class="container">
-    		<aside id="navigation">
-    			<div id="navigation-container">
-    				<div id="navigation-toggle" class="layout-toggle">
-    					<i class="glyphicon glyphicon-list"></i>
-    				</div>
-                    <?php
-                    echo $this->partial('layout/partials/search.phtml');
-
-                    echo $this->navigation('navigation')
-                                ->menu()
-                                ->setPartial('layout/navigation/side-navigation.phtml')
-                                ->setOnlyActiveBranch(true)
-                                ->setMinDepth(0)
-                                ->setMaxDepth(0)
-                                ->setUlClass('nav clear')
-                                ->render();
-                    ?>
-    			</div>
-    		</aside>
+    		<?php echo $this->partial('layout/partials/left-sidebar'); ?>
     		<section id="main">
     			<div id="main-container">
     				<div id="content">
+                        <?php echo $this->partial('layout/partials/notifications.phtml'); ?>
     					<div id="content-container">
     						<?php echo $this->partial('layout/partials/main.phtml'); ?>
     					</div>
     				</div>
     			</div>
     		</section>
+            <?php echo $this->partial('layout/partials/right-sidebar'); ?>
     	</div>
         <?php /* sticky footer: */ ?>
         <div id="footer-push"></div>

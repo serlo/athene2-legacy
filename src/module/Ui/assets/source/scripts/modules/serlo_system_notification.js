@@ -1,24 +1,36 @@
 /*global define*/
 define(['jquery', 'translator'], function ($, t) {
     "use strict";
-    var rootSelector = '#content-container',
+    var rootSelector = '#content',
         $wrapper,
+        uniqueNotifications = {},
         SystemNotification,
         errorMessage = t('An error occured, please reload.'),
         /**
          * allowed status:
          *   success, info, warning, danger
          **/
-        showNotification = function (message, status, html) {
+        showNotification = function (message, status, html, uniqueID) {
             var notification;
 
             if (!$wrapper) {
                 $wrapper = $('<div id="system-notification">');
                 $(rootSelector).prepend($wrapper);
             }
+            console.log(uniqueID);
+            if (uniqueID) {
+                if (uniqueNotifications[uniqueID]) {
+                    notification = uniqueNotifications[uniqueID];
+                    notification.$el.remove();
+                } else {
+                    notification = uniqueNotifications[uniqueID] = new SystemNotification(message, status, html);
+                }
+            } else {
+                notification = new SystemNotification(message, status, html);
+            }
 
-            notification = new SystemNotification(message, status, html);
-            $wrapper.append(notification.$el);
+            $wrapper.append(notification.$el.hide());
+            notification.$el.fadeIn();
         };
 
     SystemNotification = function (message, status, html) {
@@ -45,11 +57,11 @@ define(['jquery', 'translator'], function ($, t) {
     };
 
     return {
-        notify: function (message, status, html) {
-            showNotification(message, status, html);
+        notify: function (message, status, html, uniqueID) {
+            showNotification(message, status, html, uniqueID);
         },
         error: function (message) {
-            this.notify(message || errorMessage, 'danger');
+            this.notify(message || errorMessage, 'danger', false, 'generic-error');
         }
     };
 });

@@ -35,7 +35,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         subNavigationMinHeight: 400,
         subNavigationHeightOffset: 75,
         // duration of slide animation
-        animationDuration: 150
+        animationDuration: 150,
+        // how many breadcrumbs are shown OR false for every breadcrumb
+        breadcrumbDepth: false
     };
 
     /**
@@ -493,7 +495,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             // Create 'breadcrumbs'
             parents = self.hierarchy.getParents(position).reverse();
             parents.shift();
-            parents = parents.splice(-2);
+            if (self.options.breadcrumbDepth) {
+                parents = parents.splice(-1 * self.options.breadcrumbDepth);
+            }
 
             if (parents.length) {
                 _.each(parents, function (menuItem, index) {
@@ -501,13 +505,17 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         icon: (index === parents.length - 1) ? 'arrow-right' : false
                     }));
 
-                    breadcrumb.alwaysPrevent = true;
+                    // breadcrumb.alwaysPrevent = true;
 
-                    breadcrumb.addEventListener('click', function (e) {
-                        var parentMenuItem = self.hierarchy.getParent(e.menuItem);
-                        e.originalEvent.preventDefault();
-                        self.navigatedMenuItem = parentMenuItem;
-                        self.jumpTo(parentMenuItem);
+                    // breadcrumb.addEventListener('click', function (e) {
+                    //     var parentMenuItem = self.hierarchy.getParent(e.menuItem);
+                    //     e.originalEvent.preventDefault();
+                    //     self.navigatedMenuItem = parentMenuItem;
+                    //     self.jumpTo(parentMenuItem);
+                    // });
+
+                    breadcrumb.addEventListener('reload', function () {
+                        self.force = true;
                     });
 
                     self.$breadcrumbs.append(breadcrumb.$el);
@@ -567,6 +575,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         self.$el.click(function (e) {
             if (!self.force) {
+                console.log(self.force);
                 e.preventDefault();
                 e.stopPropagation();
                 return;

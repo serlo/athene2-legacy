@@ -19,7 +19,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             });
 
             Common.addEventListener('generic error', function () {
-                SystemNotification.notify(t('An error occured, please reload.'), 'danger');
+                SystemNotification.error();
             });
 
             new SideNavigation();

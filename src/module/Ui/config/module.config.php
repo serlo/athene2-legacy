@@ -157,6 +157,7 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
+            'layout/home' => __DIR__ . '/../templates/layout/serlo-home.phtml',
             'layout/layout' => __DIR__ . '/../templates/layout/html.phtml',
             'error/404' => __DIR__ . '/../templates/error/404.phtml',
             'error/index' => __DIR__ . '/../templates/error/index.phtml'
