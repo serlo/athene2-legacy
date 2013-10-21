@@ -1,7 +1,7 @@
 /*global define*/
 define(['jquery', 'translator'], function ($, t) {
     "use strict";
-    var rootSelector = '#content-container',
+    var rootSelector = '#content',
         $wrapper,
         uniqueNotifications = {},
         SystemNotification,
@@ -29,7 +29,8 @@ define(['jquery', 'translator'], function ($, t) {
                 notification = new SystemNotification(message, status, html);
             }
 
-            $wrapper.append(notification.$el);
+            $wrapper.append(notification.$el.hide());
+            notification.$el.fadeIn();
         };
 
     SystemNotification = function (message, status, html) {

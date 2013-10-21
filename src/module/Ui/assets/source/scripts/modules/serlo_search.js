@@ -10,7 +10,10 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
             ajaxThrottling: 360,
             maxQueryLength: 3,
             ignoreKeys: [
-                Common.KeyCode.shift
+                Common.KeyCode.shift,
+                Common.KeyCode.backspace,
+                Common.KeyCode.entf,
+                Common.KeyCode.super
             ]
         };
 
@@ -39,8 +42,8 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
                 self.$el.removeClass(self.options.inFocusClass);
             })
             .keydown(function (e) {
-                var value = $(this).val();
-                if (value.length < self.options.maxQueryLength || _.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
+                var value = Common.trim($(this).val());
+                if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
                     return true;
                 }
 
@@ -49,7 +52,7 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
                     self.$input.blur();
                     break;
                 default:
-                    self.search(value);
+                    Common.expr(value.length < self.options.maxQueryLength || self.search(value));
                     break;
                 }
             });
