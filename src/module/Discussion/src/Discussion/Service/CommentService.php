@@ -40,7 +40,7 @@ class CommentService extends AbstractComment implements CommentServiceInterface
 
     public function isDiscussion()
     {
-        return $this->hasParent();
+        return !$this->hasParent();
     }
 
     public function getForm()

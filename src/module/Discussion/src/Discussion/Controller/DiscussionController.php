@@ -127,6 +127,33 @@ class DiscussionController extends AbstractController
         return '';
     }
 
+    public function archiveAction()
+    {
+        $discussion = $this->getDiscussionManager()->getComment($this->params('comment'));
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        
+        $discussion->setArchived(!$discussion->getArchived());
+        
+        $this->getDiscussionManager()
+            ->getObjectManager()
+            ->flush();
+        
+        $this->redirect()->toReferer();
+        return '';
+    }
+
+    public function trashAction()
+    {        
+        $this->getDiscussionManager()->removeComment($this->params('comment'));
+        
+        $this->getDiscussionManager()
+            ->getObjectManager()
+            ->flush();
+        
+        $this->redirect()->toReferer();
+        return '';
+    }
+
     public function showAction()
     {
         $discussion = $this->getDiscussion();

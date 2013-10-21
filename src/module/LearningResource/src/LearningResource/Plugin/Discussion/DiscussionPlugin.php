@@ -28,11 +28,11 @@ class DiscussionPlugin extends AbstractPlugin
         );
     }
 
-    public function getDiscussions()
+    public function getDiscussions($archived)
     {
         return $this->getDiscussionManager()->findDiscussionsOn($this->getEntityService()
             ->getEntity()
-            ->getUuidEntity());
+            ->getUuidEntity(), $archived);
     }
 
     public function getTemplate()
