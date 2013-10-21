@@ -27,7 +27,8 @@ return array(
         'Event',
         'Mailman',
         'Alias',
-        'Token'
+        'Token',
+        'Discussion'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

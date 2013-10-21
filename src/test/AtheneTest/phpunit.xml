@@ -39,12 +39,15 @@
 			<directory>../../module/Common/test</directory>
 		</testsuite>
 	</testsuites>
-    <blacklist>
-        <directory>../../vendor</directory>
-	    <directory>../../module/Ui/assets</directory>
-    </blacklist><filter>
-	  <whitelist processUncoveredFilesFromWhitelist="true">
-	    <directory suffix=".php">../../module</directory>
-	  </whitelist>
-</filter>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../../module</directory>
+			<exclude>
+				<directory suffix=".php">../../vendor</directory>
+				<directory suffix=".php">../../config</directory>
+				<directory suffix=".php">../../data</directory>
+				<directory suffix=".php">../../module/Ui/assets</directory>
+			</exclude>
+		</whitelist>
+	</filter>
 </phpunit>
