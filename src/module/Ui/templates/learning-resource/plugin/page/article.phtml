@@ -1,5 +1,11 @@
 <article>
-    <?php echo $this->partial('learning-resource/plugin/page/video/youtube', array('title' => $this->title, 'content' => $this->content, 'discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    <header class="page-header">
+        <h1>
+            <?php echo $this->title; ?>
+            <small><?php echo $this->translate('Article'); ?></small>
+        </h1>
+    </header>
+    <?php echo $this->content; ?>
     <hr>
     <section>
         <?php echo $this->partial($this->discussion->getTemplate('widget'), array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>

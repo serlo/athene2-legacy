@@ -17,14 +17,17 @@ use Discussion\Form\DiscussionForm;
 
 class DiscussionPlugin extends AbstractPlugin
 {
-    use \Discussion\DiscussionManagerAwareTrait;
-    
+    use\Discussion\DiscussionManagerAwareTrait;
+
     protected $form;
 
     protected function getDefaultConfig()
     {
         return array(
-            'template' => 'learning-resource/plugin/discussion/discussions'
+            'templates' => array(
+                'widget' => 'learning-resource/plugin/discussion/widget',
+                'discussions' => 'learning-resource/plugin/discussion/discussions'
+            )
         );
     }
 
@@ -35,13 +38,14 @@ class DiscussionPlugin extends AbstractPlugin
             ->getUuidEntity(), $archived);
     }
 
-    public function getTemplate()
+    public function getTemplate($template)
     {
-        return $this->getOption('template');
+        return $this->getOption('templates')[$template];
     }
-    
-    public function getForm(){
-        if(!is_object($this->form)){
+
+    public function getForm()
+    {
+        if (! is_object($this->form)) {
             $this->form = new DiscussionForm();
         }
         return $this->form;

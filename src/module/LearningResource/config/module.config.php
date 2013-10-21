@@ -131,6 +131,9 @@ return array(
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
+                    ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -159,6 +162,9 @@ return array(
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
+                    ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
                     ),
                     'exercises' => array(
                         'plugin' => 'link',
@@ -198,6 +204,9 @@ return array(
                             'association' => 'one-to-many'
                         )
                     ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
+                    ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -225,6 +234,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
                     ),
                     'exercise' => array(
                         'plugin' => 'link',
@@ -269,6 +281,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
                     ),
                     'pathauto' => array(
                         'plugin' => 'pathauto',
@@ -318,6 +333,7 @@ return array(
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
+                            'template' => 'learning-resource/plugin/page/article',
                             'fields' => array(
                                 'title',
                                 'content'
@@ -361,6 +377,9 @@ return array(
                                 'title'
                             )
                         )
+                    ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
@@ -429,6 +448,9 @@ return array(
                             'type' => 'link',
                             'association' => 'many-to-one'
                         )
+                    ),
+                    'discussion' => array(
+                        'plugin' => 'discussion'
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
