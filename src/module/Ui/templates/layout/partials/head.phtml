@@ -1,0 +1,18 @@
+<head>
+<meta charset="utf-8">
+    <?php
+    echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
+        ->setAutoEscape(false);
+    
+    echo $this->plugin('HeadLink');
+    echo $this->plugin('HeadStyle');
+    echo $this->plugin('HeadScript');
+    echo $this->inlineScript();
+    /*
+     * echo $this->headlink() ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css') ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
+     */
+    echo $this->headScript()->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array())
+        //->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
+    // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
+    ?>
+</head>
