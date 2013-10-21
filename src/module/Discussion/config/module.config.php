@@ -32,9 +32,18 @@ return array(
                     'actions' => array(
                         'start',
                         'comment',
+                        'comment',
                         'vote'
                     ),
                     'roles' => 'login'
+                ),
+                array(
+                    'controller' => 'Discussion\Controller\DiscussionController',
+                    'actions' => array(
+                        'archive',
+                        'trash',
+                    ),
+                    'roles' => 'moderator'
                 )
             )
         )
@@ -81,13 +90,13 @@ return array(
                             )
                         )
                     ),
-                    'purge' => array(
+                    'trash' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/purge/:comment',
+                            'route' => '/trash/:comment',
                             'defaults' => array(
                                 'controller' => 'Discussion\Controller\DiscussionController',
-                                'action' => 'purge'
+                                'action' => 'trash'
                             ),
                         )
                     ),
@@ -97,7 +106,7 @@ return array(
                             'route' => '/archive/:comment',
                             'defaults' => array(
                                 'controller' => 'Discussion\Controller\DiscussionController',
-                                'action' => 'trash'
+                                'action' => 'archive'
                             ),
                         )
                     )

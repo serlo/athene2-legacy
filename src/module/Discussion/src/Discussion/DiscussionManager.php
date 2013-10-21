@@ -53,6 +53,13 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
         return $this->getInstance($id);
     }
     
+    public function removeComment($id){
+        $comment = $this->getComment($id);            
+        $this->removeInstance($comment->getId());
+        $this->getObjectManager()->remove($comment->getEntity());        
+        return $this;
+    }
+    
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::findDiscussionsOn()
      */
@@ -71,13 +78,14 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::findDiscussionsOn()
      */
-    public function findDiscussionsOn(\Uuid\Entity\UuidInterface $uuid)
+    public function findDiscussionsOn(\Uuid\Entity\UuidInterface $uuid, $archived = false)
     {
         $discussions = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName($this->entityInterface))
             ->findBy(array(
-            'uuid' => $uuid->getId()
+            'uuid' => $uuid->getId(),
+            'archived' => $archived
         ));
         $collection = new ArrayCollection($discussions);
         return new CommentCollection($collection, $this);
