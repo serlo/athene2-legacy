@@ -505,13 +505,17 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         icon: (index === parents.length - 1) ? 'arrow-right' : false
                     }));
 
-                    breadcrumb.alwaysPrevent = true;
+                    // breadcrumb.alwaysPrevent = true;
 
-                    breadcrumb.addEventListener('click', function (e) {
-                        var parentMenuItem = self.hierarchy.getParent(e.menuItem);
-                        e.originalEvent.preventDefault();
-                        self.navigatedMenuItem = parentMenuItem;
-                        self.jumpTo(parentMenuItem);
+                    // breadcrumb.addEventListener('click', function (e) {
+                    //     var parentMenuItem = self.hierarchy.getParent(e.menuItem);
+                    //     e.originalEvent.preventDefault();
+                    //     self.navigatedMenuItem = parentMenuItem;
+                    //     self.jumpTo(parentMenuItem);
+                    // });
+
+                    breadcrumb.addEventListener('reload', function () {
+                        self.force = true;
                     });
 
                     self.$breadcrumbs.append(breadcrumb.$el);
@@ -571,6 +575,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         self.$el.click(function (e) {
             if (!self.force) {
+                console.log(self.force);
                 e.preventDefault();
                 e.stopPropagation();
                 return;
