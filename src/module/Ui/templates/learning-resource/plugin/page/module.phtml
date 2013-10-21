@@ -1,6 +1,6 @@
 <article class="module">
-	<header>
-		<h1 class="page_header"><?php echo $this->title; ?></h1>
+	<header class="page-header">
+		<h1><?php echo $this->title; ?> <small><?php echo $this->translate('Module'); ?></small></h1>
 	</header>
 	<?php if(!count($this->pages)) :?>
 	   <?php echo $this->translate('Es wurde noch keine Seite hinzugefügt.'); ?>
@@ -12,7 +12,9 @@
 	   </ul>
     	<?php foreach($this->pages as $page):?>
     	   <section class="page">
-    	       <h2><a id="<?php echo $page->getId(); ?>"><?php echo $page->provider()->get('title'); ?></a></h2>
+		<h2>
+			<a id="<?php echo $page->getId(); ?>"><?php echo $page->provider()->get('title'); ?></a>
+		</h2>
     	       <?php echo $page->provider()->get('content'); ?>
     	   </section>
     	<?php endforeach; ?>

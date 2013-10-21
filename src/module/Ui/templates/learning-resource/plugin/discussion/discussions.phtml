@@ -6,7 +6,7 @@
             <h4><?php echo $this->translate('Start a new discussion'); ?></h4>
             <hr>
             <?php $form->prepare(); ?>
-            <?php echo $this->form()->render($form); ?>
+            <?php echo $this->form()->render($form, null); ?>
         </div>
     <?php endif; ?>
     <?php foreach($this->discussions as $discussion): ?>

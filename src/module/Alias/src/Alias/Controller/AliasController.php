@@ -15,6 +15,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Alias;
 use Zend\Http\Request;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Mvc\Router\Http\RouteMatch;
 
 class AliasController extends AbstractActionController
 {
@@ -31,12 +32,18 @@ class AliasController extends AbstractActionController
         $source = $this->getAliasManager()->findSourceByAlias($this->params('alias'), $this->getLanguageManager()
             ->getLanguageFromRequest());
         
+        $router = $this->getServiceLocator()
+            ->get('Router');
+        
+        $routeMatch = new RouteMatch(array('subject' => 'mathe'));
+        $routeMatch->setMatchedRouteName('subject');
+        $this->getServiceLocator()->get('Application')->getMvcEvent()->setRouteMatch($routeMatch);
+        
         $request = new Request();
         $request->setMethod(Request::METHOD_GET);
         $request->setUri($source);
         
-        $routeMatch = $this->getServiceLocator()
-            ->get('Router')
+        $routeMatch = $router
             ->match($request);
         
         if ($routeMatch === NULL)

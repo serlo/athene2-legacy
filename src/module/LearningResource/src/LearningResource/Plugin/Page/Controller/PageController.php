@@ -14,11 +14,13 @@ namespace LearningResource\Plugin\Page\Controller;
 use Entity\Plugin\Controller\AbstractController;
 use Versioning\Exception\RevisionNotFoundException;
 use Entity\Exception\EntityNotFoundException;
+use Zend\Mvc\Router\RouteInterface;
 
 class PageController extends AbstractController
 {
     use\Language\Manager\LanguageManagerAwareTrait,\Alias\AliasManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
 
+    
     public function indexAction()
     {
         try {
