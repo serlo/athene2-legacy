@@ -1,8 +1,11 @@
 #footer {
     border-top: 2px solid $themeColor;
+    padding-top: 1em;
+
     background: $footerBackground;
 
     font-size: 0.9em;
+
     small {
         color: $gray;
     }
@@ -16,9 +19,14 @@
             text-decoration: underline;
         }
     }
+
 }
 
 #footer,
 #footer-push {
     height: $footerHeight;
+
+    @media only screen and (max-width: $screen-sm) {
+        height: auto;
+    }
 }

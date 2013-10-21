@@ -9535,6 +9535,14 @@ h1 {
   /* the bottom margin is the negative value of the footer's height */
 }
 
+@media only screen and (max-width: 768px) {
+  /* line 29, ../../source/styles/base/_base.scss */
+
+  .wrap {
+    margin: 0 auto;
+  }
+}
+
 /* line 1, ../../source/styles/base/_typography.scss */
 
 h1,
@@ -9622,38 +9630,40 @@ h1 {
 
 #serlo-menu {
   font-size: 0.8em;
+  border: none;
   border-bottom: 2px solid #007ec1;
+  border-radius: 0;
   min-height: 0;
 }
 
-/* line 8, ../../source/styles/partials/_serlo_top_menu.scss */
+/* line 12, ../../source/styles/partials/_serlo_top_menu.scss */
 
 #serlo-menu li {
   line-height: 23px;
   float: left;
 }
 
-/* line 13, ../../source/styles/partials/_serlo_top_menu.scss */
+/* line 17, ../../source/styles/partials/_serlo_top_menu.scss */
 
 #serlo-menu a {
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-/* line 18, ../../source/styles/partials/_serlo_top_menu.scss */
+/* line 22, ../../source/styles/partials/_serlo_top_menu.scss */
 
 #serlo-menu .navbar-nav {
   float: left;
 }
 
-/* line 22, ../../source/styles/partials/_serlo_top_menu.scss */
+/* line 26, ../../source/styles/partials/_serlo_top_menu.scss */
 
 #serlo-menu .navbar-inner {
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 27, ../../source/styles/partials/_serlo_top_menu.scss */
+/* line 31, ../../source/styles/partials/_serlo_top_menu.scss */
 
 #serlo-menu .container {
   min-width: 750px;
@@ -10066,7 +10076,15 @@ h1 {
   left: 240px;
 }
 
-/* line 152, ../../source/styles/partials/_serlo_main_menu.scss */
+@media only screen and (max-width: 480px) {
+  /* line 147, ../../source/styles/partials/_serlo_main_menu.scss */
+
+  .slide-right #serlo-side-sub-navigation {
+    left: 75px;
+  }
+}
+
+/* line 157, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover {
   position: relative;
@@ -10074,7 +10092,7 @@ h1 {
   white-space: nowrap;
 }
 
-/* line 158, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 163, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover .sub-nav-slider {
   position: relative;
@@ -10088,27 +10106,27 @@ h1 {
   height: 100%;
 }
 
-/* line 165, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 170, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover ul {
   padding-left: 0;
   margin: 0;
 }
 
-/* line 171, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 176, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover li {
   list-style: none;
 }
 
-/* line 173, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 178, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-sub-navigation-mover li a {
   display: block;
   padding: 10px 12px 2px;
 }
 
-/* line 181, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 186, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-navigation-breadcrumbs a {
   padding: 5px 15px 5px 30px;
@@ -10120,7 +10138,7 @@ h1 {
   font-size: 0.85em;
 }
 
-/* line 191, ../../source/styles/partials/_serlo_main_menu.scss */
+/* line 196, ../../source/styles/partials/_serlo_main_menu.scss */
 
 #serlo-side-navigation-breadcrumbs + li {
   margin-top: 2px;
@@ -10164,35 +10182,45 @@ h1 {
 
 #footer {
   border-top: 2px solid #007ec1;
+  padding-top: 1em;
   background: white;
   font-size: 0.9em;
 }
 
-/* line 6, ../../source/styles/partials/_serlo_footer.scss */
+/* line 9, ../../source/styles/partials/_serlo_footer.scss */
 
 #footer small {
   color: #4b4d4c;
 }
 
-/* line 10, ../../source/styles/partials/_serlo_footer.scss */
+/* line 13, ../../source/styles/partials/_serlo_footer.scss */
 
 #footer a {
   padding-left: 0;
   color: #4b4d4c;
 }
 
-/* line 14, ../../source/styles/partials/_serlo_footer.scss */
+/* line 17, ../../source/styles/partials/_serlo_footer.scss */
 
 #footer a:hover {
   background: none;
   text-decoration: underline;
 }
 
-/* line 22, ../../source/styles/partials/_serlo_footer.scss */
+/* line 26, ../../source/styles/partials/_serlo_footer.scss */
 
 #footer,
 #footer-push {
   height: 320px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* line 26, ../../source/styles/partials/_serlo_footer.scss */
+
+  #footer,
+  #footer-push {
+    height: auto;
+  }
 }
 
 /* line 2, ../../source/styles/partials/_serlo_home.scss */
@@ -10208,6 +10236,8 @@ h1 {
 #main-home #search-content {
   width: 386px;
   position: relative;
+  left: 0;
+  top: 0;
 }
 
 /* line 3, ../../source/styles/_shame.scss */

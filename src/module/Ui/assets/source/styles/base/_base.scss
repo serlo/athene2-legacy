@@ -31,4 +31,8 @@ h1 {
     height: auto !important;
     height: 100%;
     margin: 0 auto -1 * $footerHeight; /* the bottom margin is the negative value of the footer's height */
+
+    @media only screen and (max-width: $screen-sm) {
+        margin: 0 auto;
+    }
 }
