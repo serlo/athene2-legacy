@@ -18,6 +18,8 @@ body {
   // ios overfloy-x hidden fix
   position: relative;
   -webkit-overflow-scrolling: touch;
+
+  font-family: $baseFont;
 }
 
 h1 {

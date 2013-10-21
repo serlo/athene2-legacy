@@ -1,6 +1,6 @@
 #page {
   position: relative;
-  margin-top: 15px;
+  margin-top: 35px;
   margin-bottom: 75px;
   
   transform-style: preserve-3d;
@@ -28,6 +28,12 @@
     background: #FFF;
     border: 1px solid #DFDFDF;
     min-height: 560px;
+
+    padding: 0 20px;
+
+    @media only screen and (min-width: $navigationBreakPoint) {
+        padding: 0 35px;
+    }
 }
 
 .layout-toggle {

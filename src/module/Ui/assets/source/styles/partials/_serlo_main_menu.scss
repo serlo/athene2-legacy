@@ -4,6 +4,8 @@
 #navigation {
   position: relative;
   z-index: 90;
+
+  @include theme-font();
 }
 
 
@@ -68,6 +70,12 @@
             
             background: $gray;
             @include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
+            
+            &:hover {
+                background: $themeColor;
+                @include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
+                color: white;
+            }
 
             .caret {
                 float: right;
@@ -85,7 +93,7 @@
 
     .is-active > a {
         background: $themeColor;
-        @include background(linear-gradient(right, darken($themeColor, 3%), $themeColor 12px, $themeColor));
+        @include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
         color: white;
     }
 
@@ -96,8 +104,6 @@
     
     .is-nav-active {
         a {
-            text-decoration: underline;
-            
             background: $themeColor;
         }
     }
@@ -176,7 +182,7 @@
         padding: 5px 15px 5px 30px;
         
         background: $themeColor;
-        @include background(linear-gradient(right, darken($themeColor, 3%), $themeColor 12px, $themeColor));
+        @include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
 
         color: white;
         font-size: 0.85em;

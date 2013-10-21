@@ -12,9 +12,10 @@
         
         line-height: 43px;
         font-size: 38.5px;
-        font-weight: bold;
 
         color: $themeColor;
+
+        @include theme-font(bold);
 
         &:hover,
         &:focus {
