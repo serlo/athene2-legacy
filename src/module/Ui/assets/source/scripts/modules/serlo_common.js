@@ -33,7 +33,8 @@ define(['underscore', 'events'], function (_, eventScope) {
         enter: 13,
         backspace: 8,
         entf: 46,
-        esc: 27
+        esc: 27,
+        shift: 16
     };
 
     Common.CarbonCopy = function (element) {
