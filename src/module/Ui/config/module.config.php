@@ -17,6 +17,12 @@ use Zend\Session\Container;
  */
 return array(
     'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'dummy',
+                'uri' => '#',
+            ),
+        ),
         'top-left' => array(
             array(
                 'label' => 'Home',
