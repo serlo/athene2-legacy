@@ -11,7 +11,6 @@
  */
 namespace Uuid\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 class UuidEntity implements UuidHolder
 {
 
@@ -43,20 +42,14 @@ class UuidEntity implements UuidHolder
         return $this->id;
     }
     
-    /*
-     * (non-PHPdoc) @see \Uuid\Entity\UuidHolder::getVoided()
-     */
-    public function getVoided()
+    public function getTrashed()
     {
-        return $this->getUuidEntity()->getVoided();
+        return $this->getUuidEntity()->getTrashed();
     }
     
-    /*
-     * (non-PHPdoc) @see \Uuid\Entity\UuidHolder::setVoided()
-     */
-    public function setVoided($voided)
+    public function setTrashed($trashed)
     {
-        $this->getUuidEntity()->setVoided($voided);
+        $this->getUuidEntity()->setTrashed($trashed);
         return $this;
     }
 }

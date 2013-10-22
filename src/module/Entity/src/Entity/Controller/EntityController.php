@@ -54,7 +54,7 @@ class EntityController extends AbstractActionController
     public function trashAction(){
         $entity = $this->getEntity();
         
-        $entity->setVoided(true);
+        $entity->setTrashed(true);
         
         $this->getEventManager()->trigger('trash', $this, array(
             'entity' => $entity,

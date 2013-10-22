@@ -39,16 +39,16 @@ $table = array(
     <?php if($this->term->isAssociationAllowed('entities')): ?>
     <div class="entities">
         <?php foreach($this->links as $link): ?>
-        <?php if($this->plugin->isTypeEnabled($link->getType()->getName() && !$link->getVoided())): ?>
-        <?php $partial = $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
-        <?php switch($link->getType()->getName()){ 
-            case 'article': $table['left'] .= $partial; break; ?>
-            <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>
-            <?php case 'video': $table['middle'] .= $partial; break; ?>
-            <?php case 'module': $table['right'] .= $partial; break; ?>
-            <?php default: $table['left'] .= $partial; break;?>
-        <?php } ?>
-        <?php endif; ?>
+            <?php if($this->plugin->isTypeEnabled($link->getType()->getName())): ?>
+                <?php $partial = $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
+                <?php switch($link->getType()->getName()){ 
+                    case 'article': $table['left'] .= $partial; break; ?>
+                    <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>
+                    <?php case 'video': $table['middle'] .= $partial; break; ?>
+                    <?php case 'module': $table['right'] .= $partial; break; ?>
+                    <?php default: $table['left'] .= $partial; break;?>
+                <?php } ?>
+            <?php endif; ?>
         <?php endforeach; ?>
         <div class="row">
     		<div class="col-md-4">

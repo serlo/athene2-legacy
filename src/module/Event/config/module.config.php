@@ -17,6 +17,7 @@ return array(
         'Event\Entity\EventInterface' => 'Event\Entity\Event',
         'Event\Entity\EventStringInterface' => 'Event\Entity\EventString'
     ),
+    // Define
     'di' => array(
         'definition' => array(
             'class' => array(

@@ -41,9 +41,9 @@ interface UuidInterface
      */
     public function hydrate(UuidHolder $entity);
     
-    public function getVoided();
+    public function getTrashed();
     
-    public function setVoided($voided);
+    public function setTrashed($trashed);
     
     public function is($type);
 }

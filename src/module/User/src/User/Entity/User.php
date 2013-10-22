@@ -239,7 +239,7 @@ class User extends UuidEntity implements UserInterface
      */
     public function getRemoved()
     {
-        return $this->getUuidEntity()->getVoided();
+        return $this->getUuidEntity()->getTrashed();
     }
 
     /**

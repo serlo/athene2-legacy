@@ -28,14 +28,10 @@ class EntityService implements EntityServiceInterface
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
     
-    public function setVoided($voided){
-        $this->getEntity()->setVoided($voided);
+    public function setTrashed($voided){
+        $this->getEntity()->setTrashed($voided);
         $this->getEntityManager()->getObjectManager()->persist($this->getEntity());
         return $this;
-    }
-    
-    public function getVoided(){
-        return $this->getEntity()->getVoided();
     }
 
     public function getId()
@@ -156,7 +152,7 @@ class EntityService implements EntityServiceInterface
         }
     }
     
-    public function isVoided(){
-        return $this->getEntity()->getVoided();
+    public function getTrashed(){
+        return $this->getEntity()->getTrashed();
     }
 }

@@ -35,7 +35,7 @@ interface UuidHolder
      */
     public function getUuidEntity();
     
-    public function getVoided();
+    public function getTrashed();
     
-    public function setVoided($voided);
+    public function setTrashed($voided);
 }

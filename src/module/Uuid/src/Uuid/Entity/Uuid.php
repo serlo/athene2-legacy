@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Uuid implements UuidInterface
 {
-
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -35,7 +35,7 @@ class Uuid implements UuidInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $voided;
+    protected $trashed;
 
     /**
      * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id")
@@ -63,65 +63,69 @@ class Uuid implements UuidInterface
     protected $entityRevision;
 
     /**
+     *
+     * @return field_type $trashed
+     */
+    public function getTrashed()
+    {
+        return $this->trashed;
+    }
+
+    /**
+     *
+     * @param bool $trashed            
+     * @return $this
+     */
+    public function setTrashed($trashed)
+    {
+        $this->trashed = (bool) $trashed;
+        return $this;
+    }
+
+    /**
+     *
      * @return field_type $entity
      */
-    public function getEntity ()
+    public function getEntity()
     {
         return $this->entity;
     }
 
-	/**
+    /**
+     *
      * @return field_type $termTaxonomy
      */
-    public function getTermTaxonomy ()
+    public function getTermTaxonomy()
     {
         return $this->termTaxonomy;
     }
 
-	/**
+    /**
+     *
      * @return field_type $user
      */
-    public function getUser ()
+    public function getUser()
     {
         return $this->user;
     }
 
-	/**
+    /**
+     *
      * @return field_type $entityRevision
      */
-    public function getEntityRevision ()
+    public function getEntityRevision()
     {
         return $this->entityRevision;
     }
 
     public function is($type)
     {
-        $type = 'get'.ucfirst($type);
+        $type = 'get' . ucfirst($type);
         if (method_exists($this, $type)) {
-            echo $type.":".is_object($this->$type());
+            echo $type . ":" . is_object($this->$type());
             return is_object($this->$type());
         }
         return false;
-    }
-
-    /**
-     *
-     * @return field_type $voided
-     */
-    public function getVoided()
-    {
-        return $this->voided;
-    }
-
-    /**
-     *
-     * @param field_type $voided            
-     * @return $this
-     */
-    public function setVoided($voided)
-    {
-        $this->voided = $voided;
-        return $this;
     }
 
     function __construct()
