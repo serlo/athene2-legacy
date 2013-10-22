@@ -1,0 +1,47 @@
+
+
+<?php
+$title2 = 'Page ';
+$this->headTitle($title2);
+?>
+
+<a href="<?php echo '/page/'?>">Neue Seite</a>
+
+<a href="<?php echo '/page/'.$slug.'/editrepository'?>">Seite bearbeiten</a>
+
+<a href="<?php echo '/page/'.$slug.'/delete'?>">Seite löschen</a>
+
+<?php foreach ($this->revisions as $revision) { ?>
+<article>
+<a href="<?php $id = $revision->getId(); echo '/page/'.$slug.'/'.$id?>">
+
+Revision Number: 
+	<?php 
+		 if($id!=NULL) echo $this->escapeHtml($id);?> </a>
+		 
+ Title: 
+	<?php $title = $revision->getTitle();
+		 if($title!=NULL) echo $this->escapeHtml($title);?> 
+
+ Author:
+	<?php $author = $revision->getAuthor();
+		 if($author!=NULL) echo $this->escapeHtml($author);?> 
+
+ Date:
+	<?php $date = $revision->getDate();
+		 if($date!=NULL) echo $this->escapeHtml($date->format('Y-m-d H:i:s'));?> 
+	
+	 <a href="<?php echo '/page/'.$slug.'/'.$id.'/delete'?>">Revision löschen</a>
+	 <a href="<?php echo '/page/'.$slug.'/edit/'.$id?>">Revision bearbeiten</a>
+	 <a href="<?php $id = $revision->getId(); echo '/page/'.$slug.'/'.$id.'/setcurrent'?>">
+	 Als Aktuelle Revision setzen
+	 </a>
+
+
+	<br>
+</article>
+
+<?php } ?><br>
+<a href="<?php echo '/page/'.$slug.'/'?>">Zurück zur Aktuellen Revision</a>
+<a href="<?php echo '/page/'.$slug.'/edit/'?>">Neue Revision</a>
+<br>

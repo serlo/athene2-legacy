@@ -1,26 +1,29 @@
 
 
 <?php
-$title2 = 'Page ';
-$this->headTitle($title2);
+$this->headTitle('page'.$slug);
 ?>
 
 
+<a href="<?php echo '/page/'?>">Neue Seite</a>
 
+<a href="<?php echo '/page/'.$slug.'/editrepository'?>">Seite bearbeiten</a>
+
+<a href="<?php echo '/page/'.$slug.'/delete'?>">Seite löschen</a><br>
 
 <article>
 	<h1>TITEL: 
-		<?php echo $this->escapeHtml($title);?> <br>
+		<?php if($title!=NULL) echo $this->escapeHtml($title);?> <br>
 	</h1>
     CONTENT:
-	<?php echo $this->escapeHtml($content);?>
+	<?php if ($content!=NULL) echo $content;?>
 
 	<br>
 </article>
 
-<a href="<?php echo '/page/'.$slug.'/edit'?>">Edit this Post</a>
+<a href="<?php echo '/page/'.$slug.'/edit/'; if ($revisionid!=NULL) echo $revisionid?>">Revision Barbeiten</a>
+<a href="<?php echo '/page/'.$slug.'/revisions'?>">Revisionen Verwalten</a>
 
-<a href="<?php echo '/page/'.$slug.'/delete'?>">Delete this
-	Page</a>
+<a href="<?php if ($revisionid!=NULL)  echo '/page/'.$slug.'/'.$revisionid.'/delete'?>">Aktuelle Revision löschen</a>
 
 <br>

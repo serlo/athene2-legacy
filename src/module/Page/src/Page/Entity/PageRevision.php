@@ -6,16 +6,22 @@ use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\UserInterface;
 
+
 /**
  * A Page Revision.
  *
  * @ORM\Entity
  * @ORM\Table(name="page_revision")
  */
-class PageRevision implements RevisionInterface {
+
+
+class PageRevision implements RevisionInterface,PageRevisionInterface  {
+    
+    
 
 	/**
 	 * @ORM\Id
+	 * 
 	 * @ORM\Column(type="integer", unique=true)
 	 * @ORM\GeneratedValue(strategy="AUTO") *
 	 */
@@ -28,11 +34,10 @@ class PageRevision implements RevisionInterface {
 	 */
 	protected $author_id;
 
-	/**
-	 * @ORM\Column(type="integer")
-	 * @ORM\ManyToOne(targetEntity="PageRepository")
-	 **/
-	protected $page_repository;
+    /**
+     * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="revisions")
+     */
+    protected $page_repository;
 	
 
 	/** @ORM\Column(type="text",length=255) */
@@ -50,11 +55,6 @@ class PageRevision implements RevisionInterface {
 	 */
 	protected $trashed;
 	
-	public function populate(array $data) {
-		$this->title = $data['title'];
-		$this->content = $data['content'];
-		return $this;
-	}
 
 	/* (non-PHPdoc)
 	 * @see \Versioning\Entity\RevisionInterface::delete()
@@ -90,12 +90,12 @@ class PageRevision implements RevisionInterface {
     
         
 	public function getRepository() {
-		return $this->repository;
+		return $this->page_repository;
 	}
 
 	public function setRepository(RepositoryInterface $repository) {
-		$this->repository = $repository;
 
+        $this->page_repository = $repository;
 		return $this;
 
 	}
@@ -139,8 +139,8 @@ class PageRevision implements RevisionInterface {
 
 	public function setAuthor(UserInterface $author)
 	{
-	
-		$this->author = $author;
+	    
+		$this->author_id = $author->getId();
 		return $this;
 	}
 
@@ -151,6 +151,25 @@ class PageRevision implements RevisionInterface {
 
 	public function setId($id){
 		$this->id = $id;
+	}
+	
+	public function populate(array $data = array())
+	{
+	    $this->injectFromArray('author_id', $data);
+	    $this->injectFromArray('username', $data);
+	    $this->injectFromArray('title', $data);
+	    $this->injectFromArray('content', $data);
+	    $this->injectFromArray('date', $data);
+	    return $this;
+	}
+	
+	private function injectFromArray($key, array $array, $default = NULL)
+	{
+	    if (array_key_exists($key, $array)) {
+	        $this->$key = $array[$key];
+	    } elseif ($default !== NULL) {
+	        $this->$key = $default;
+	    }
 	}
 
 

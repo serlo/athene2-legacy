@@ -2,157 +2,242 @@
 namespace Page\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Versioning\Entity\RevisionInterface;
+use Uuid\Entity\UuidEntity;
 use Versioning\Entity\RepositoryInterface;
-use User\Entity\UserInterface;
+use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use User\Entity\RoleInterface;
 
 /**
- * A Page Revision.
+ * A page repository.
  *
  * @ORM\Entity
  * @ORM\Table(name="page_repository")
+ * 
  */
-class PageRepository implements RevisionInterface {
-
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="integer", unique=true)
-	 * @ORM\GeneratedValue(strategy="AUTO") *
-	 */
-	protected $id;
-
-
-	/**
-	 * @ORM\Column(type="integer")
-	 * @ORM\ManyToOne(targetEntity="User\Entity\User") *
-	 */
-	protected $author_id;
-
-	/**
-	 * @ORM\Column(type="integer")
-	 * @ORM\ManyToOne(targetEntity="PageRevision")
-	 **/
-	protected $current_revision_id;
-
-	 
-
-	/** @ORM\Column(type="text",length=255) */
-	protected $title;
-
-	/** @ORM\Column(type="text") */
-	protected $content;
-
-	/** @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
-	 */
-	protected $date;
-
-	/**
-	 * @ORM\Column(type="boolean", options={"default"})
-	 */
-	protected $trashed;
-	
-	public function populate(array $data) {
-		$this->title = $data['title'];
-		$this->content = $data['content'];
-		return $this;
-	}
-
-	/* (non-PHPdoc)
-	 * @see \Versioning\Entity\RevisionInterface::delete()
-	*/
-	public function delete() {
-		
-	        return $this;
-		        
-	}
-
-	/* (non-PHPdoc)
-	 * @see \Versioning\Entity\RevisionInterface::trash()
-	*/
-	public function trash() {
-		
-        $this->trashed = TRUE;
-        return $this;	}
-	/* (non-PHPdoc)
-	 * @see \Versioning\Entity\RevisionInterface::getRepository()
-	*/
-
-        public function untrash()
-        {
-        	$this->trashed = FALSE;
-        	return $this;
-        }
-        
-        public function isTrashed()
-        {
-        	return $this->trashed;
-        }
-        
+class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface
+{
     
+    /**
+     * @ORM\Id
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRepository")
+     * @ORM\JoinColumn(name="id")
+     */
+    protected $id;
+	
+    /**
+     * @ORM\ManyToMany(targetEntity="User\Entity\Role")
+     * @ORM\JoinTable(name="page_repository_role",
+     *      joinColumns={@ORM\JoinColumn(name="page_repository_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     *      )
+     */
+	protected $roles;
+	
+	 /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language") *
+     */
+    protected $language;
+	
+
+	/**
+	 * @ORM\Column(type="string") *
+	 */
+	protected $slug;
+	
+	  /**
+     * @ORM\OneToOne(targetEntity="PageRevision")
+     * @ORM\JoinColumn(name="current_revision_id", referencedColumnName="id")
+     */
+	protected $current_revision;
+	
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="page_repository", cascade="persist")
+	 */
+	protected $revisions;
+	
+	public function __construct()
+	{
+	    $this->revisions = new ArrayCollection();
+	    $this->roles = new ArrayCollection();
+	}
+	
+
+	/**
+     * @return the $role
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+	/**
+     * @return the $language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+	/**
+     * @return the $slug
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+	
+
+	/**
+     * @param field_type $role
+     */
+    public function setRole(RoleInterface $role)
+    {
+        $this->roles->add($role);
+    }
+    
+    public function setRoles(ArrayCollection $roles)
+    {
+        $this->roles->clear();
+        $this->roles=$roles();
+    }
+    
+    public function hasRole(RoleInterface $role){
+        return $this->roles->contains($role);
+    }
+    
+    
+
+	/**
+     * @param field_type $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+	/**
+     * @param field_type $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+
+	/**
+     * @param field_type $revisions
+     */
+    public function setRevisions($revisions)
+    {
+        $this->revisions = $revisions;
+    }
+
+	public function __get ($property)
+	{
+		return $this->$property;
+	}
+
+	/**
+	 * Magic setter to save protected properties.
+	 *
+	 * @param string $property
+	 * @param mixed $value
+	 *
+	 */
+	public function __set ($property, $value)
+	{
+		$this->$property = $value;
+	}
+
+	
+	public function getRevisions() {
+		
+		return $this->revisions;
+		
+	}
+	
+	public function newRevision() {
+	    $revision = new PageRevision();
+	    $revision->setRepository($this);
+	    return $revision;
+	}
+	
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::getCurrentRevision()
+     */
+    public function getCurrentRevision()
+    {
+        return $this->current_revision;
+    }
+
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
+     */
+    public function hasCurrentRevision()
+    {
+        return $this->getCurrentRevision() !== NULL;        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::setCurrentRevision()
+     */
+    public function setCurrentRevision(\Versioning\Entity\RevisionInterface $revision)
+    {
+        $this->current_revision=$revision;
         
-	public function getRepository() {
-		return $this->repository;
-	}
-
-	public function setRepository(RepositoryInterface $repository) {
-		$this->repository = $repository;
-
-		return $this;
-
-	}
-
-	public function getDate() {
-		return $this->date;
-	}
-
-	public function getContent() {
-		return $this->content;
-	}
-
-	public function getTitle() {
-		return $this->title;
-	}
+    }
+    
 
 
-	public function getAuthor() {
-		return $this->author_id;
-	}
+    public function populate(array $data = array())
+    {
+        $this->injectFromArray('role', $data);
+        $this->injectFromArray('language', $data);
+        $this->injectFromArray('slug', $data);
+        $this->injectFromArray('current_revision', $data);
+        return $this;
+    }
+    
+    private function injectFromArray($key, array $array, $default = NULL)
+    {
+        if (array_key_exists($key, $array)) {
+            $this->$key = $array[$key];
+        } elseif ($default !== NULL) {
+            $this->$key = $default;
+        }
+    }
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::addRevision()
+     */
+    public function addRevision(\Versioning\Entity\RevisionInterface $revision)
+    {
+        $this->revisions->add($revision);
+        $revision->setRepository($this);
+	    return $revision;
+        
+    }
 
-	/**
-	 * Sets the date
-	 *
-	 * @param mixed $date
-	 * @return $this
-	 */
-	public function setDate(\DateTime $date)
-	{
-		$this->date = $date;
-		return $this;
-	}
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::removeRevision()
+     */
+    public function removeRevision(\Versioning\Entity\RevisionInterface $revision)
+    {
+        
+       if ( $this->getCurrentRevision() == $revision)
+         $this->current_revision=NULL;
+        
+       
+        
+        $this->revisions->removeElement($revision);
+     
+        
+    }
 
 
-	/**
-	 * Sets the author
-	 *
-	 * @param EntityInterface $user
-	 * @return $this
-	 */
-
-	public function setAuthor(UserInterface $author)
-	{
-		$this->author = $author;
-		return $this;
-	}
-
-	public function getId ()
-	{
-		return $this->id;
-	}
-
-	public function setId($id){
-		$this->id = $id;
-	}
-
-
-
+    
 }
+
+
