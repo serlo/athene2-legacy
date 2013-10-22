@@ -175,6 +175,19 @@ return array(
             'Ui\Strategy\PhpRendererStrategy'
         )
     ),
+    'view_helpers' => array(
+        'factories' => array(
+            'currentLanguage' => function ($helperPluginManager) {
+                $view_helper = new Ui\View\Helper\ActiveLanguage();
+                $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
+
+                // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
+                $view_helper->setLanguage($languageManager->getLanguageFromRequest());
+
+                return $view_helper;
+            }
+        )
+    ),
     'service_manager' => array(
         'factories' => array(
             'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm)
