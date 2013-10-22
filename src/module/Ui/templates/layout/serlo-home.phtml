@@ -10,9 +10,8 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 echo $this->doctype();
-$locale = $this->currentLanguage();
 ?>
-<html class="fuelux" lang="<?php print $locale; ?>">
+<html class="fuelux" lang="<?php echo $this->currentLanguage(); ?>">
 <?php echo $this->partial('layout/partials/head'); ?>
 <body class="serlo-home">
     <div class="wrap">
