@@ -9,7 +9,7 @@ define(function () {
 "use strict";
 var i18n = {};
 
-i18n.de_DE = {
+i18n.de = {
     "Visit %s overview" : "Zur %s Übersicht",
     "An error occured, please reload." : "",
     "Order successfully saved" : "",
@@ -17,7 +17,7 @@ i18n.de_DE = {
     "Close" : "Schließen"
 };
 
-i18n.fr_FR = {
+i18n.en = {
     "An error occured, please reload." : "",
     "Close" : "",
     "Visit %s overview" : "",

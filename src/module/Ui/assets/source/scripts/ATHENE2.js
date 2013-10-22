@@ -15,7 +15,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
 
         function init() {
             t.config({
-                language: 'de_DE'
+                language: document.getElementsByTagName('html')[0].attributes.lang.value || 'de'
             });
 
             Common.addEventListener('generic error', function () {
