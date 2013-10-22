@@ -63,7 +63,8 @@ module.exports = function (grunt) {
                 jshintrc: '.jshintrc',
                 ignores: [
                     '<%= serlo.app %>/scripts/thirdparty/{,*/}*.js',
-                    '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
+                    '<%= serlo.app %>/scripts/modules/serlo_i18n.js',
+                    '<%= serlo.app %>/scripts/libs/polyfills.js'
                 ]
             },
             all: [
