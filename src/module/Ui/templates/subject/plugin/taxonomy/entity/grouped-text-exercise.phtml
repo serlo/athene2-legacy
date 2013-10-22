@@ -1,0 +1,40 @@
+<?php
+/**
+ *
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+$exercise = $this->entity;
+$solution = $exercise->solution()->findChild();
+?>
+<?php if($exercise->repository()->hasCurrentRevision()): ?>
+<article>
+    <div class="pull-right btn-group">
+        <a class="btn btn-default btn-xs"
+        	href="<?php echo $this->url('entity/plugin/repository',array('action' => 'add-revision', 'entity' => $this->entity->getId())); ?>"><span
+        	class="glyphicon glyphicon-edit"></span></a>
+        <a class="btn btn-default btn-xs<?php echo ($this->entity->plugin('repository')->isUnrevised()) ? ' btn-warning' : ''?>"
+        	href="<?php echo $this->url('entity/plugin/repository',array('action' => 'history', 'entity' => $this->entity->getId())); ?>"><span
+        	class="glyphicon glyphicon-time"></span></a>
+        <a class="btn btn-default btn-xs"
+        	href="<?php echo $this->url('entity/trash',array('entity' => $this->entity->getId())); ?>"><span
+        	class="glyphicon glyphicon-trash"></span></a>
+    </div>
+	<section>
+        <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
+        <?php echo $revision->get('content'); ?>
+    </section>
+	<section class="panel-group" id="solutions-<?php echo $exercise->getId(); ?>">
+    	<?php if(!is_object($solution)): ?>
+    	   <?php echo sprintf($this->translate('This exercise has no solution. Do you want to add <a href="%s">one</a>?'), $this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId()))))); ?>
+    	<?php else: ?>
+    	   <?php echo $this->partial('subject/plugin/taxonomy/entity/text-solution',array('solution' => $solution, 'exercise' => $this->entity)); ?>
+        <?php endif; ?>
+    </section>
+</article>
+<?php endif; ?>

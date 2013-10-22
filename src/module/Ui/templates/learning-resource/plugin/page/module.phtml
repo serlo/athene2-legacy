@@ -20,7 +20,7 @@
                 <?php endif; ?>
             <?php endforeach; ?>
     		<a class="list-group-item"
-    			href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array( 'to_entity' => $this->entity->getId())))); ?>">
+    			href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
     			<h4 class="list-group-item-heading"><span class="glyphicon glyphicon-file"></span> <?php echo $this->translate('Add a new page'); ?></h4>
     		</a>
     	</div>
@@ -54,4 +54,8 @@
             <?php endif; ?>
         <?php endforeach; ?>
 	</section>
+    <hr>
+    <section>
+        <?php echo $this->partial($this->discussion->getTemplate('widget'), array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    </section>
 </article>

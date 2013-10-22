@@ -14,28 +14,18 @@ $solution = $exercise->solution()->findChild();
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
 <article class="list-group-item">
-    <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+    <div class="pull-right btn-group">
+        <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+    </div>
 	<section>
         <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
         <?php echo $revision->get('content'); ?>
     </section>
-	<section>
+	<section class="panel-group" id="solutions-<?php echo $exercise->getId(); ?>">
     	<?php if(!is_object($solution)): ?>
-    	   <?php echo sprintf($this->translate('This exercise has no solution. Do you want to add <a href="%s">one</a>?'), rawurldecode($this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId())))))); ?>
+    	   <?php echo sprintf($this->translate('This exercise has no solution. Do you want to add <a href="%s">one</a>?'), $this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId()))))); ?>
     	<?php else: ?>
-    	<?php $solutionRepository = $solution->repository(); ?>
-    	<?php if($solutionRepository->hasCurrentRevision()): ?>
-    	    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#<?php echo $solution->getId(); ?>">
-              <?php echo $this->translate('Solution'); ?>
-            </a>
-            <div id="<?php echo $solution->getId(); ?>" class="panel-collapse collapse">
-                <?php echo $solutionRepository->getCurrentRevision()->get('content'); ?>
-            </div>
-        <?php elseif($solutionRepository->hasHead()): ?>
-            <?php echo $this->translate('This solution is waiting for approval. It will be soon available!'); ?>
-        <?php else: ?>
-            <?php echo sprintf($this->translate('This exercise has no solution. Do you want to add <a href="%s">one</a>?'), $this->url('entity/plugin/repository', array('action' => 'add-revision', 'entity' => $solution->getId()))); ?>
-    	<?php endif; ?>
+    	   <?php echo $this->partial('subject/plugin/taxonomy/entity/text-solution',array('solution' => $solution, 'exercise' => $this->entity)); ?>
         <?php endif; ?>
     </section>
 </article>

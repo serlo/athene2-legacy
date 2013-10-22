@@ -123,7 +123,6 @@ return array(
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\TextExerciseForm',
                             'fields' => array(
-                                'title',
                                 'content'
                             )
                         )
@@ -187,7 +186,6 @@ return array(
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\GroupedTextExerciseForm',
                             'fields' => array(
-                                'hint',
                                 'content'
                             )
                         )
@@ -201,7 +199,7 @@ return array(
                                 )
                             ),
                             'type' => 'link',
-                            'association' => 'one-to-many'
+                            'association' => 'many-to-one'
                         )
                     ),
                     'discussion' => array(
@@ -211,7 +209,7 @@ return array(
                         'plugin' => 'link',
                         'options' => array(
                             'types' => array(
-                                'exercise-solution' => array(
+                                'text-solution' => array(
                                     'inversed_by' => 'exercise',
                                     'owning' => true
                                 )
@@ -229,7 +227,6 @@ return array(
                         'options' => array(
                             'revision_form' => 'LearningResource\Form\TextSolutionForm',
                             'fields' => array(
-                                'title',
                                 'hint',
                                 'content'
                             )
@@ -383,6 +380,12 @@ return array(
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
+                    ),
+                    'pathauto' => array(
+                        'plugin' => 'pathauto',
+                        'options' => array(
+                            'tokenize' => '{subject}/{type}/{title}'
+                        )
                     ),
                     'pages' => array(
                         'plugin' => 'link',

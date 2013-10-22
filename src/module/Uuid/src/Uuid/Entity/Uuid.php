@@ -131,7 +131,7 @@ class Uuid implements UuidInterface
     function __construct()
     {
         $this->uuid = hash('crc32b', uniqid('uuid.', true));
-        $this->voided = false;
+        $this->trashed = false;
     }
 
     public function getId()
