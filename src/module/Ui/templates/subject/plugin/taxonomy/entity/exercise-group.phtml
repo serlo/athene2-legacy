@@ -13,18 +13,24 @@ $exercise = $this->entity;
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
 <article class="list-group-item">
+    <div class="pull-right btn-group">
+        <a class="btn btn-default btn-xs"
+        	href="<?php echo $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('group' => array('to_entity' => $exercise->getId())))); ?>">
+        	<strong>+</strong></a>
+        <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+    </div>
 	<section>
         <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
         <?php echo $revision->get('content'); ?>
     </section>
 	<section>
-    	<?php if(!$exercise->exercises()->hasChildren()): ?>
-    	<?php echo $this->translate(sprintf('Für diese Aufgabe gibt es noch keine Unteraufgaben, möchtest du eine Unteraufgabe <a href="%s">hinzufügen</a>?', $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('scope' => 'exercises', 'to_entity' => $exercise->getId()))))); ?>
-    	<?php else: ?>
+	   <ul class="list-group">
     	<?php foreach($exercise->exercises()->findChildren() as $child):?>
-    	   <?php echo $this->partial('subject/plugin/topic/entity/text-exercise', array('entity' => $child))?>
+            <li class="list-group-item">
+                <?php echo $this->partial('subject/plugin/taxonomy/entity/grouped-text-exercise', array('entity' => $child)); ?>
+            </li>
     	<?php endforeach; ?>
-        <?php endif; ?>
+	   </ul>
     </section>
 </article>
 <?php endif; ?>

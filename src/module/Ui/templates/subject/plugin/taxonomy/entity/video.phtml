@@ -16,6 +16,8 @@ if($video->repository()->hasCurrentRevision()): ?>
         <a href="<?php echo $this->url('entity/plugin/page', array('entity' => $video->getId())); ?>" class="video">
         	<?php echo $revision->get('title'); ?>
         </a>
-        <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+        </div>
     </div>
 <?php endif; ?>

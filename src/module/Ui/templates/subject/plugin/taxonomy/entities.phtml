@@ -44,6 +44,7 @@ $table = array(
                 <?php switch($link->getType()->getName()){ 
                     case 'article': $table['left'] .= $partial; break; ?>
                     <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>
+                    <?php case 'exercise-group': $table['bottom'] .= $partial; break; ?>
                     <?php case 'video': $table['middle'] .= $partial; break; ?>
                     <?php case 'module': $table['right'] .= $partial; break; ?>
                     <?php default: $table['left'] .= $partial; break;?>

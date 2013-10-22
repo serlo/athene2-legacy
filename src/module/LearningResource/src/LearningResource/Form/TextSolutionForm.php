@@ -24,6 +24,14 @@ class TextSolutionForm extends Form
         $inputFilter = new InputFilter('text-solution');
         
         $this->add(array(
+            'name' => 'hint',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'class' => 'ckeditor'
+            )
+        ));
+        
+        $this->add(array(
             'name' => 'content',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -32,6 +40,12 @@ class TextSolutionForm extends Form
         ));
         
         $this->add(new Controls());
+        
+        $inputFilter->add(array(
+            'name' => 'hint',
+            'required' => true
+        ));
+        
         
         $inputFilter->add(array(
             'name' => 'content',
