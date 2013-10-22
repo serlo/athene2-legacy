@@ -78,6 +78,30 @@ return array(
                 )
             )
         )
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'url' => function ($helperPluginManager) {
+                $serviceLocator = $helperPluginManager->getServiceLocator();
+                $view_helper = new \Alias\View\Helper\Url();
+
+                $router = \Zend\Console\Console::isConsole() ? 'HttpRouter' : 'Router';
+                $view_helper->setRouter($serviceLocator->get($router));
+
+                $view_helper->setAliasManager($serviceLocator->get('Alias\AliasManager'));
+                $view_helper->setLanguageManager($serviceLocator->get('Language\Manager\LanguageManager'));
+
+                $match = $serviceLocator->get('application')
+                            ->getMvcEvent()
+                            ->getRouteMatch();
+
+                if ($match instanceof RouteMatch) {
+                    $view_helper->setRouteMatch($match);
+                }
+
+                return $view_helper;
+            }
+        )
     )
 );
 

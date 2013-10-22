@@ -43,6 +43,28 @@ class AliasManager implements AliasManagerInterface
         return $entity->getSource();
     }
 
+    /*
+     * (non-PHPdoc) @see \Alias\AliasManagerInterface::findAliasBySource()
+     */
+    public function findAliasBySource($source, \Language\Service\LanguageServiceInterface $language)
+    {
+        if (! is_string($source))
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
+
+        $entity = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+                ->resolveClassName('Alias\Entity\AliasInterface'))
+            ->findOneBy(array(
+                'source' => $source,
+                'language' => $language->getId()
+        ));
+
+        if (! is_object($entity))
+            return false;
+
+        return $entity->getAlias();
+    }
+
     public function findAliasByUuid(UuidInterface $uuid)
     {
         

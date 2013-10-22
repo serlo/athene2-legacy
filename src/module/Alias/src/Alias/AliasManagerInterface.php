@@ -26,6 +26,14 @@ interface AliasManagerInterface
 
     /**
      *
+     * @param string $source
+     * @param LanguageServiceInterface $language            
+     * @return string
+     */
+    public function findAliasBySource($source, LanguageServiceInterface $language);
+
+    /**
+     *
      * @param string $alias            
      * @param LanguageServiceInterface $language            
      * @return string
