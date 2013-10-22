@@ -34,6 +34,8 @@ interface TermServiceInterface
     public function getParent();
 
     public function getChildren();
+    
+    public function filterChildren(array $types);
 
     public function getAllLinks();
 

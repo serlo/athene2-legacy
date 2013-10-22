@@ -41,8 +41,14 @@ return array(
                 ),
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
-                    'type' => 'subject',
-                    'parent' => 'mathe',
+                    'parent' => array(
+                        'slug' => 'mathe',
+                        'type' => 'subject'
+                    ),
+                    'types' => array(
+                        'topic',
+                        'topic-folder'
+                    ),
                     'language' => 'de',
                     'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,

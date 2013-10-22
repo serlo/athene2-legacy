@@ -23,7 +23,7 @@ use Taxonomy\Exception\TermNotFoundException;
 class TermService implements TermServiceInterface, ArrayCopyProvider
 {
     
-    use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     /**
      *
@@ -88,13 +88,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function findChildrenByTaxonomyName($taxonomy)
     {
-        $language = $this->getLanguageService();
-        $tax = $this->getSharedTaxonomyManager()->findTaxonomyByName($taxonomy, $language);
-        $array = $this->getTermTaxonomy()
-            ->getChildren()
-            ->matching(Criteria::create()->where(Criteria::expr()->eq('taxonomy', $tax->getEntity())));
-        $collection = new TermCollection($array, $this->getSharedTaxonomyManager());
-        return $collection;
+        return $this->filterChildren((array) $taxonomy);
     }
 
     public function getTemplate($template)
@@ -120,6 +114,18 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         return $this->getSharedTaxonomyManager()->getTerm($this->getTermTaxonomy()
             ->getParent()
             ->getId());
+    }
+
+    public function filterChildren(array $types)
+    {
+        $collection = $this->getTermTaxonomy()
+            ->getChildren()
+            ->filter(function (TermTaxonomyInterface $term) use($types)
+        {
+            return in_array($term->getTaxonomy()
+                ->getName(), $types);
+        });
+        return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
     public function getChildren()

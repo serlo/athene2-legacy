@@ -17,7 +17,7 @@ use Taxonomy\Service\TermServiceInterface;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     
     /**
      *
@@ -28,10 +28,13 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         return array(
             'name' => 'default',
             'route' => 'default',
-            'parent' => '',
+            'parent' => array(
+                'type' => '',
+                'slug' => ''
+            ),
             'language' => 'de',
             'max_depth' => 1,
-            'type' => 'none',
+            'types' => array(),
             'params' => array()
         );
     }
@@ -46,9 +49,9 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
     {
         if (! is_object($this->termService)) {
             $this->termService = $this->getSharedTaxonomyManager()
-                ->findTaxonomyByName($this->getOption('type'), $this->getLanguageManager()
+                ->findTaxonomyByName($this->getOption('parent')['type'], $this->getLanguageManager()
                 ->findLanguageByCode($this->getOption('language')))
-                ->findTermByAncestors((array) $this->getOption('parent'));
+                ->findTermByAncestors((array) $this->getOption('parent')['slug']);
         }
         return $this->termService;
     }
@@ -59,7 +62,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
             $this->getObjectManager()->refresh($this->getTermService()
                 ->getEntity());
         
-        $terms = $this->getTermService()->getChildren();
+        $terms = $this->getTermService()->filterChildren($this->getOption('types'));
         $return = $this->iterTerms($terms, $this->getOption('max_depth'));
         $this->termService = NULL;
         return $return;
@@ -82,7 +85,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
             // getPathToTermAsUri
             
             $current['label'] = $term->getName();
-            $children = $term->getChildren();
+            $children = $term->filterChildren($this->getOption('types'));
             if (count($children)) {
                 $current['pages'] = $this->iterTerms($children, $depth - 1);
             }
@@ -98,6 +101,6 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
 
     private function _getPathToTermAsUri(TermServiceInterface $term)
     {
-        return (!in_array($term->getTaxonomy()->getName(), (array) $this->getOption('type'))) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
+        return (! in_array($term->getTaxonomy()->getName(), (array) $this->getOption('parent')['type'])) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }
 }

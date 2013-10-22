@@ -33,8 +33,13 @@ return array(
                 ),
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
-                    'type' => 'subject',
-                    'parent' => 'physics',
+                    'parent' => array(
+                        'name' => 'physics',
+                        'type' => 'subject'
+                    ),
+                    'types' => array(
+                        'topic'
+                    ),
                     'language' => 'en',
                     'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,
