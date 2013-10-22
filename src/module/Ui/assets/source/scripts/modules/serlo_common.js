@@ -9,10 +9,11 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-/*global define, window, console*/
+/*global define, window, console, requestAnimationFrame*/
 define(['underscore', 'events'], function (_, eventScope) {
     "use strict";
     var Common = {},
+        intervals,
         slice = Array.prototype.slice;
 
     Common.log = (function () {
@@ -127,7 +128,35 @@ define(['underscore', 'events'], function (_, eventScope) {
         };
     }());
 
-    eventScope(Common);
+    intervals = {};
 
+    Common.setInterval = function (fn, timeout) {
+        var interval = +new Date();
+
+        intervals[interval] = true;
+
+        function loop() {
+            if (intervals[interval]) {
+                setTimeout(function () {
+                    requestAnimationFrame(loop);
+                }, timeout);
+
+                fn();
+            }
+        }
+
+        loop();
+
+        return interval;
+    };
+
+    Common.clearInterval = function (interval) {
+        if (intervals[interval]) {
+            delete intervals[interval];
+        }
+    };
+
+    eventScope(Common);
+    window.Common = Common;
     return Common;
 });

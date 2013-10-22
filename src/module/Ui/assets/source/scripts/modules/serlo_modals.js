@@ -1,5 +1,5 @@
 /*global define*/
-define(['jquery'], function ($) {
+define(['jquery', 'router'], function ($, Router) {
     "use strict";
     var SerloModals,
         Modal,
@@ -22,7 +22,7 @@ define(['jquery'], function ($) {
         $('body').append(self.$el);
 
         $('.btn-primary', self.$el).click(function () {
-            document.location.href = self.href;
+            Router.navigate(self.href);
         });
         return self;
     };

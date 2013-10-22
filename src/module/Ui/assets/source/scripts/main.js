@@ -22,6 +22,7 @@ require.config({
         "easing" : "libs/easing",
         "events": "libs/eventscope",
         "cache": "libs/cache",
+        "polyfills": "libs/polyfills",
         "referrer_history" : "modules/serlo_referrer_history",
         "side_navigation" : "modules/serlo_side_navigation",
         "sortable_list" : "modules/serlo_sortable_list",
@@ -33,7 +34,8 @@ require.config({
         "layout" : "modules/serlo_layout",
         "search" : "modules/serlo_search",
         "support" : "modules/serlo_supporter",
-        "modals" : "modules/serlo_modals"
+        "modals" : "modules/serlo_modals",
+        "router" : "modules/serlo_router"
     },
     shim: {
         underscore: {
@@ -49,7 +51,7 @@ require.config({
             deps: ['jquery']
         },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable']
+            deps: ['bootstrap', 'easing', 'nestable', 'polyfills']
         }
     },
     waitSeconds: 2
