@@ -23,7 +23,7 @@ use Taxonomy\Exception\TermNotFoundException;
 class TermService implements TermServiceInterface, ArrayCopyProvider
 {
     
-    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     /**
      *
@@ -108,6 +108,11 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function hasChildren()
     {
         return $this->getTermTaxonomy()->hasChildren();
+    }
+
+    public function hasParent()
+    {
+        return $this->getTermTaxonomy()->hasParent();
     }
 
     public function getParent()
@@ -338,7 +343,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function getTypeName()
     {
         return $this->getTermTaxonomy()
-            ->getType()
+            ->getTaxonomy()
             ->getName();
     }
 
@@ -377,8 +382,9 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         }
         return $collection;
     }
-    
-    public function setOrder($order){
+
+    public function setOrder($order)
+    {
         $this->getEntity()->setWeight($order);
         return $this;
     }
