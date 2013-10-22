@@ -16,12 +16,12 @@ use Versioning\Exception\RevisionNotFoundException;
 use Entity\Exception\EntityNotFoundException;
 use Zend\Mvc\Router\RouteInterface;
 use Zend\Mvc\Router\Http\RouteMatch;
+use Alias\Exception\AliasNotFoundException;
 
 class PageController extends AbstractController
 {
-    use\Language\Manager\LanguageManagerAwareTrait,\Alias\AliasManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait,\Alias\AliasManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
-    
     public function indexAction()
     {
         try {
@@ -33,13 +33,20 @@ class PageController extends AbstractController
         }
         
         if (! $this->params('forwarded')) {
-            $alias = $this->getAliasManager()->findAliasByUuid($entity->getEntity()
-                ->getUuidEntity());
-            $this->redirect()->toUrl('/alias/' . $alias->getAlias());
+            try {
+                $alias = $this->getAliasManager()->findAliasByUuid($entity->getEntity()
+                    ->getUuidEntity());
+                $this->redirect()->toUrl('/alias/' . $alias->getAlias());
+            } catch (AliasNotFoundException $e) {}
         }
-        $routeMatch = new RouteMatch(array('subject' => $entity->provider()->getSubjectSlug()));
+        $routeMatch = new RouteMatch(array(
+            'subject' => $entity->provider()->getSubjectSlug()
+        ));
         $routeMatch->setMatchedRouteName('subject');
-        $this->getServiceLocator()->get('Application')->getMvcEvent()->setRouteMatch($routeMatch);
+        $this->getServiceLocator()
+            ->get('Application')
+            ->getMvcEvent()
+            ->setRouteMatch($routeMatch);
         
         try {
             $model = new \Zend\View\Model\ViewModel(array(
