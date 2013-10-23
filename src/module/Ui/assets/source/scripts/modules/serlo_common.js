@@ -36,7 +36,7 @@ define(['underscore', 'events'], function (_, eventScope) {
         entf: 46,
         esc: 27,
         shift: 16,
-        super: 91
+        cmd: 91
     };
 
     Common.CarbonCopy = function (element) {
@@ -82,7 +82,7 @@ define(['underscore', 'events'], function (_, eventScope) {
     };
 
     Common.genericError = function () {
-        if (console) {
+        if (console && "trace" in console) {
             console.trace();
         }
         Common.log(arguments);
@@ -118,15 +118,9 @@ define(['underscore', 'events'], function (_, eventScope) {
         return statement;
     };
 
-    Common.trim = (function () {
-        var trim = Common.expr("".trim || function () {
-            this.replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
-        });
-
-        return function (string) {
-            return trim.call(string);
-        };
-    }());
+    Common.trim = function (str) {
+        return str.replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
+    };
 
     intervals = {};
 

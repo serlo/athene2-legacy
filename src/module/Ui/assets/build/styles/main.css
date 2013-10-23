@@ -9663,12 +9663,6 @@ h1 {
   padding-right: 0;
 }
 
-/* line 31, ../../source/styles/partials/_serlo_top_menu.scss */
-
-#serlo-menu .container {
-  min-width: 750px;
-}
-
 @-webkit-keyframes searching {
   /* line 11, ../../source/styles/partials/_serlo_search.scss */
   0% {
@@ -9781,15 +9775,17 @@ h1 {
   line-height: 2;
   z-index: 2;
   background: rgba(255, 255, 255, 0.3);
+  -webkit-appearance: none;
+  border-radius: 0;
 }
 
-/* line 93, ../../source/styles/partials/_serlo_search.scss */
+/* line 97, ../../source/styles/partials/_serlo_search.scss */
 
 #search-content input:hover {
   background: white;
 }
 
-/* line 97, ../../source/styles/partials/_serlo_search.scss */
+/* line 101, ../../source/styles/partials/_serlo_search.scss */
 
 #search-content input:focus {
   outline: none 0px;
@@ -9822,13 +9818,13 @@ h1 {
   color: white;
 }
 
-/* line 106, ../../source/styles/partials/_serlo_search.scss */
+/* line 110, ../../source/styles/partials/_serlo_search.scss */
 
 #search-content input:focus + .glyphicon-search {
   color: white;
 }
 
-/* line 112, ../../source/styles/partials/_serlo_search.scss */
+/* line 116, ../../source/styles/partials/_serlo_search.scss */
 
 #search-content .glyphicon-search {
   position: absolute;
@@ -9843,7 +9839,7 @@ h1 {
   transform-origin: 4px 16px;
 }
 
-/* line 124, ../../source/styles/partials/_serlo_search.scss */
+/* line 128, ../../source/styles/partials/_serlo_search.scss */
 
 #search-results {
   display: none;
@@ -9858,13 +9854,13 @@ h1 {
   box-shadow: 0 0 3px #dadada;
 }
 
-/* line 139, ../../source/styles/partials/_serlo_search.scss */
+/* line 143, ../../source/styles/partials/_serlo_search.scss */
 
 #search-results a {
   padding: 6px 12px;
 }
 
-/* line 144, ../../source/styles/partials/_serlo_search.scss */
+/* line 148, ../../source/styles/partials/_serlo_search.scss */
 
 #search-help {
   display: none;
