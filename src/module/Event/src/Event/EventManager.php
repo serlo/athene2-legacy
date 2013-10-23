@@ -26,7 +26,7 @@ class EventManager implements EventManagerInterface
         /* @var $log Entity\EventLogInterface */
         $log = new $className();
         
-        $log->setEvent($this->findEventByRoute($uri));
+        $log->setEvent($this->findEventByName($uri));
         
         $log->setUuid($uuid->getUuidEntity());
         $log->setActor($actor);
@@ -36,17 +36,19 @@ class EventManager implements EventManagerInterface
         return $this;
     }
 
-    public function findEventByRoute($route)
+    public function findEventByName($name)
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
         $event = $this->getObjectManager()
             ->getRepository($className)
             ->findOneBy(array(
-            'route' => $route
+            'route' => $name
         ));
+        /* @var $event Entity\EventInterface */
+            
         if (! is_object($event)) {
             $event = new $className();
-            $event->setRoute($route);
+            $event->setName($name);
             $this->getObjectManager()->persist($event);
         }
         

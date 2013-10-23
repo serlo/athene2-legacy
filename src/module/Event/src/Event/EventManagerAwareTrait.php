@@ -11,18 +11,23 @@
  */
 namespace Event;
 
+/**
+ * Makes your class EventManagerAware
+ */
 trait EventManagerAwareTrait
 {
 
     /**
+     * The EventManager
      *
-     * @var EventManager
+     * @var EventManagerInterface
      */
     protected $eventManager;
 
     /**
+     * Gets the EventManager
      *
-     * @return \Event\EventManager $eventManager
+     * @return EventManagerInterface $eventManager
      */
     public function getEventManager()
     {
@@ -30,11 +35,12 @@ trait EventManagerAwareTrait
     }
 
     /**
+     * Sets the EventManager
      *
-     * @param \Event\EventManager $eventManager            
+     * @param EventManagerInterface $eventManager            
      * @return $this
      */
-    public function setEventManager(EventManager $eventManager)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
         $this->eventManager = $eventManager;
         return $this;

@@ -37,61 +37,34 @@ class Event implements EventInterface
      * @ORM\Column(type="string")
      */
     protected $description;
-
-    /**
-     *
-     * @return field_type $id
-     */
+    
     public function getId()
     {
         return $this->id;
     }
-
-    /**
-     *
-     * @return field_type $uri
-     */
-    public function getRoute()
+    
+    public function getName()
     {
         return $this->route;
     }
-
-    /**
-     *
-     * @return field_type $description
-     */
+    
     public function getDescription()
     {
         return $this->description;
     }
-
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
+    
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
-
-    /**
-     *
-     * @param field_type $uri            
-     * @return $this
-     */
-    public function setRoute($uri)
+    
+    public function setName($uri)
     {
         $this->route = $uri;
         return $this;
     }
-
-    /**
-     *
-     * @param field_type $description            
-     * @return $this
-     */
+    
     public function setDescription($description)
     {
         $this->description = $description;

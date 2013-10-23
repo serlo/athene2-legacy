@@ -17,11 +17,18 @@ class UserControllerListener extends AbstractMvcListener
 {
     
     /**
+     * An array containing all registered listeners.
      *
      * @var array
      */
     protected $listeners = array();
     
+    /**
+     * Gets executed on 'register'
+     * 
+     * @param Event $e
+     * @return null
+     */
     public function onRegister(Event $e)
     {
         $user = $e->getParam('user');
@@ -29,9 +36,7 @@ class UserControllerListener extends AbstractMvcListener
         $this->logEvent($e->getTarget(), $language, $user, $user);
     }
     
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
+    
     public function attachShared (\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach('User\Controller\UserController', 'register', array(
@@ -40,13 +45,9 @@ class UserControllerListener extends AbstractMvcListener
         ));
     }
 
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\SharedListenerAggregateInterface::detachShared()
-     */
+    
     public function detachShared (\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        // TODO Auto-generated method stub
-        
+        throw new \Exception('detachShared is not implemented yet.');
     }
-
 }

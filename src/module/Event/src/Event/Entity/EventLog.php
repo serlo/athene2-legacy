@@ -60,120 +60,60 @@ class EventLog implements EventLogInterface
      */
     protected $date;
 
-    /**
-     *
-     * @return LanguageInterface $language
-     */
     public function getLanguage()
     {
         return $this->language;
     }
 
-    /**
-     *
-     * @param LanguageInterface $language            
-     * @return $this
-     */
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
         return $this;
     }
 
-    /**
-     *
-     * @return field_type $id
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @return field_type $actor
-     */
     public function getActor()
     {
         return $this->actor;
     }
 
-    /**
-     *
-     * @return field_type $event
-     */
     public function getEvent()
     {
         return $this->event;
     }
 
-    /**
-     *
-     * @return field_type $uuid
-     */
     public function getUuid()
     {
         return $this->uuid;
     }
 
-    /**
-     *
-     * @return field_type $date
-     */
     public function getDate()
     {
         return $this->date;
     }
 
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $actor            
-     * @return $this
-     */
     public function setActor(UserInterface $actor)
     {
         $this->actor = $actor;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $event            
-     * @return $this
-     */
     public function setEvent(EventInterface $event)
     {
         $this->event = $event;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $uuid            
-     * @return $this
-     */
     public function setUuid(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $date            
-     * @return $this
-     */
     public function setDate($date)
     {
         $this->date = $date;
