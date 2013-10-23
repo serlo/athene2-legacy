@@ -25,7 +25,6 @@ class DiscussionPlugin extends AbstractPlugin
         return array(
             'templates' => array(
                 'widget' => 'learning-resource/plugin/discussion/widget',
-                'discussions' => 'learning-resource/plugin/discussion/discussions'
             )
         );
     }
@@ -40,13 +39,5 @@ class DiscussionPlugin extends AbstractPlugin
     public function getTemplate($template)
     {
         return $this->getOption('templates')[$template];
-    }
-
-    public function getForm()
-    {
-        if (! is_object($this->form)) {
-            $this->form = new DiscussionForm();
-        }
-        return $this->form;
     }
 }

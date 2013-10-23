@@ -16,7 +16,7 @@ use Uuid\Entity\UuidInterface;
 
 class Discussion extends AbstractHelper
 {
-    use \Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use\Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     protected $discussions, $object;
 
