@@ -12,7 +12,6 @@
 namespace LearningResource\Plugin\Discussion;
 
 use Entity\Plugin\AbstractPlugin;
-use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
 
 class DiscussionPlugin extends AbstractPlugin

@@ -12,10 +12,27 @@
 namespace Discussion;
 
 use Discussion\DiscussionManager;
+use Discussion\View\Helper\Discussion;
+
 return array(
     'uuid_router' => array(
         'routes' => array(
             'comment' => 'discussion/%d'
+        )
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'discussion' => function ($pluginManager)
+            {
+                $plugin = new Discussion();
+                $discussionManager = $pluginManager->getServiceLocator()->get('Discussion\DiscussionManager');
+                $userManager = $pluginManager->getServiceLocator()->get('User\Manager\UserManager');
+                $plugin->setDiscussionManager($discussionManager);
+                $plugin->setUserManager($userManager);
+                $plugin->setConfig(array());
+                
+                return $plugin;
+            }
         )
     ),
     'discussion' => array(),
@@ -41,7 +58,7 @@ return array(
                     'controller' => 'Discussion\Controller\DiscussionController',
                     'actions' => array(
                         'archive',
-                        'trash',
+                        'trash'
                     ),
                     'roles' => 'moderator'
                 )
@@ -86,7 +103,7 @@ return array(
                                 'action' => 'vote'
                             ),
                             'constraints' => array(
-                                'vote' => 'up|down',
+                                'vote' => 'up|down'
                             )
                         )
                     ),
@@ -97,7 +114,7 @@ return array(
                             'defaults' => array(
                                 'controller' => 'Discussion\Controller\DiscussionController',
                                 'action' => 'trash'
-                            ),
+                            )
                         )
                     ),
                     'archive' => array(
@@ -107,7 +124,7 @@ return array(
                             'defaults' => array(
                                 'controller' => 'Discussion\Controller\DiscussionController',
                                 'action' => 'archive'
-                            ),
+                            )
                         )
                     )
                 )

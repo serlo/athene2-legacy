@@ -45,10 +45,11 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <?php if(!$this->discussion->getArchived()): ?>
-                    <?php $this->discussion->getForm()->setAttribute('action', $this->url('discussion/comment',array('discussion' => $this->discussion->getId()))); ?>
-                    <?php $this->discussion->getForm()->prepare(); ?>
-                    <?php echo $this->form()->render($this->discussion->getForm(), null); ?>
+                <?php if(!$this->plugin->getArchived()): ?>
+                    <?php $form = $this->plugin->getForm('comment'); ?>
+                    <?php $form->setAttribute('action', $this->url('discussion/comment',array('discussion' => $this->discussion->getId()))); ?>
+                    <?php $form->prepare(); ?>
+                    <?php echo $this->form()->render($form, null); ?>
                 <?php endif; ?>
             </div>
 		</div>

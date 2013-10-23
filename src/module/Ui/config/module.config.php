@@ -178,13 +178,13 @@ return array(
     'view_helpers' => array(
         'factories' => array(
             'currentLanguage' => function ($helperPluginManager) {
-                $view_helper = new Ui\View\Helper\ActiveLanguage();
+                $plugin = new Ui\View\Helper\ActiveLanguage();
                 $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
 
                 // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
-                $view_helper->setLanguage($languageManager->getLanguageFromRequest());
+                $plugin->setLanguage($languageManager->getLanguageFromRequest());
 
-                return $view_helper;
+                return $plugin;
             }
         )
     ),
