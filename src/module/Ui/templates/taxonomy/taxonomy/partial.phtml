@@ -18,7 +18,7 @@ if (! isset($this->isChild)) : ?>
     </div>
 </div>
 
-<div class="sortable" data-action="/restricted/taxonomy/term/order/<?php print $this->term->getId(); ?>">
+<div class="sortable" data-depth="15" data-action="/restricted/taxonomy/term/order/<?php print $this->term->getId(); ?>">
 <?php endif; ?>
     <ol id="<?php echo $this->term->getId(); ?>" class="sortable-list"
 		data-id="<?php echo $this->term->getId(); ?>">
