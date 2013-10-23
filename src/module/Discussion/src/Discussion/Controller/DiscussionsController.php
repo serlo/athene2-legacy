@@ -11,6 +11,26 @@
  */
 namespace Discussion\Controller;
 
+use Zend\View\Model\ViewModel;
 class DiscussionsController extends AbstractController
 {
+    use \Discussion\Filter\DiscussionFilterChainAwareTrait;
+    
+    public function indexAction()
+    {
+        $this->getDiscussionFilterChain()->attach('taxonomy', array(
+            'type' => 'subject',
+            'slug' => 'mathe'
+        ));
+        
+        $discussions = $this->getDiscussionFilterChain()->filter();
+        
+        $view = new ViewModel(array(
+            'filters' => array(),
+            'discussions' => $discussions
+        ));
+        
+        $view->setTemplate('discussion/discussions/index');
+        return $view;
+    }
 }

@@ -13,7 +13,8 @@ namespace Discussion;
 
 use Discussion\DiscussionManager;
 use Discussion\View\Helper\Discussion;
-
+use Discussion\Filter\DiscussionFilterChain;
+use Discussion\Filter\PluginManager;
 return array(
     'uuid_router' => array(
         'routes' => array(
@@ -29,13 +30,18 @@ return array(
                 $userManager = $pluginManager->getServiceLocator()->get('User\Manager\UserManager');
                 $plugin->setDiscussionManager($discussionManager);
                 $plugin->setUserManager($userManager);
-                $plugin->setConfig(array());
+                $plugin->setConfig($pluginManager->getServiceLocator()
+                    ->get('config')['discussion']['filters']);
                 
                 return $plugin;
             }
         )
     ),
-    'discussion' => array(),
+    'discussion' => array(
+        'filters' => array(
+            'taxonomy' => 'Discussion\Builder\TaxonomyFilter'
+        )     
+    ),
     'class_resolver' => array(
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
         'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote',
@@ -67,6 +73,16 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'discussions' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/discussions',
+                    'defaults' => array(
+                        'controller' => 'Discussion\Controller\DiscussionsController',
+                        'action' => 'index'
+                    )
+                )
+            ),
             'discussion' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -133,10 +149,25 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'Discussion\Controller\DiscussionController'
+            'Discussion\Controller\DiscussionController',
+            'Discussion\Controller\DiscussionsController'
         ),
         'definition' => array(
             'class' => array(
+                'Discussion\Controller\DiscussionsController' => array(
+                    'setDiscussionManager' => array(
+                        'required' => true
+                    ),
+                    'setDiscussionFilterChain' => array(
+                        'required' => true
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
+                        'required' => true
+                    )
+                ),
                 'Discussion\Controller\DiscussionController' => array(
                     'setDiscussionManager' => array(
                         'required' => true
@@ -155,7 +186,8 @@ return array(
                     'setObjectManager' => array(
                         'required' => true
                     )
-                )
+                ),
+                'Discussion\Filter\PluginManager' => array()
             )
         ),
         'instance' => array(
@@ -181,7 +213,17 @@ return array(
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 
                 return $class;
-            })
+            }),
+            'Discussion\Filter\DiscussionFilterChain' => function ($sm)
+            {
+                $config = $sm->get('config');
+                $class = new DiscussionFilterChain();
+                $class->setConfig($config['discussion']['filters']);
+                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $class->setEntityManager($sm->get('EntityManager'));
+                $class->setPluginManager($sm->get('Discussion\Filter\PluginManager'));
+                return $class;
+            }
         )
     ),
     'doctrine' => array(
