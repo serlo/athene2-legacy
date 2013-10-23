@@ -13,6 +13,41 @@ namespace Event\Entity;
 
 interface EventInterface
 {
-    public function setRoute($uri);
-    public function getRoute();
+
+    /**
+     * Returns the event's id.
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * Returns the event's name.
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Returns the event's description.
+     *
+     * @return string
+     */
+    public function getDescription();
+
+    /**
+     * Sets the event's name.
+     *
+     * @param string $name            
+     * @return $this
+     */
+    public function setName($name);
+
+    /**
+     * Sets the event's description.
+     *
+     * @param string $description            
+     * @return $this
+     */
+    public function setDescription($description);
 }

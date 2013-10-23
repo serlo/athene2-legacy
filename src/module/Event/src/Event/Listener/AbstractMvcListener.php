@@ -21,6 +21,16 @@ abstract class AbstractMvcListener implements SharedListenerAggregateInterface
 {
     use \Event\EventManagerAwareTrait;
     
+    
+    /**
+     * Tells the EventManager to log a certain event.
+     * The EventType is automatically generated through the controller.
+     * 
+     * @param AbstractActionController $controller
+     * @param LanguageInterface $language
+     * @param UserInterface $actor
+     * @param UuidHolder $uuid
+     */
     public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
         $params = $controller->getEvent()

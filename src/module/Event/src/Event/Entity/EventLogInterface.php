@@ -19,12 +19,14 @@ interface EventLogInterface
 {
 
     /**
+     * Returns the id.
      *
      * @return int
      */
     public function getId();
 
     /**
+     * Sets the associated object (uuid)
      *
      * @param UuidInterface $uuid            
      * @return $this
@@ -32,6 +34,7 @@ interface EventLogInterface
     public function setUuid(UuidInterface $uuid);
 
     /**
+     * Sets the event.
      *
      * @param EventInterface $event            
      * @return $this
@@ -39,6 +42,7 @@ interface EventLogInterface
     public function setEvent(EventInterface $event);
 
     /**
+     * Sets the actor.
      *
      * @param UserInterface $actor            
      * @return $this
@@ -46,6 +50,7 @@ interface EventLogInterface
     public function setActor(UserInterface $actor);
 
     /**
+     * Sets the language.
      *
      * @param LanguageInterface $language            
      * @return $this
@@ -53,24 +58,28 @@ interface EventLogInterface
     public function setLanguage(LanguageInterface $language);
 
     /**
+     * Gets the associated object (uuid).
      *
      * @return UuidInterface
      */
     public function getUuid();
 
     /**
+     * Gets the actor.
      *
      * @return UserInterface
      */
     public function getActor();
 
     /**
+     * Gets the language.
      *
      * @return LanguageInterface
      */
     public function getLanguage();
 
     /**
+     * Gets the event.
      *
      * @return EventInterface
      */

@@ -1,5 +1,5 @@
-<?php $form = $this->plugin->getForm(); ?>
-<?php $form->setAttribute('action', $this->url('discussion/start',array('on' => $this->entity->getId()))); ?>
+<?php $form = $this->plugin->getForm('discussion'); ?>
+<?php $form->setAttribute('action', $this->url('discussion/start', array('on' => $this->object->getId()))); ?>
 <div class="list-group">  
     <?php if(!$this->isArchived): ?>
         <div class="list-group-item">
@@ -11,7 +11,7 @@
     <?php endif; ?>
     <?php foreach($this->discussions as $discussion): ?>
         <div  class="list-group-item">
-            <?php echo $this->partial('discussion/discussion/show', array('discussion' => $discussion, 'user' => $this->user)); ?>
+            <?php echo $this->partial('discussion/discussion/show', array('discussion' => $discussion, 'user' => $this->user, 'plugin' => $this->plugin)); ?>
         </div>
     <?php endforeach; ?>
 </div>

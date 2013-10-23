@@ -14,8 +14,33 @@ namespace Event;
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Language\Entity\LanguageInterface;
-
+use Event\Entity\EventInterface;
 interface EventManagerInterface
 {
-    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid);
+    /**
+     * Logs an event and tells the UnitOfWork to store it in the database.
+     * Caution: You need to manually handle flushing.
+     *
+     * Example:
+     * <code>
+     * $eventManager->logEvent('eventA', $languageEntityA, $userEntityA, $objectEntityA);
+     * $eventManager->logEvent('eventB', $languageEntityB, $userEntityB, $objectEntityB); 
+     * $eventManager->getObjectManager()->flush(); // Making the changes above persistent
+     * </code>
+     * 
+     * @param string $eventName
+     * @param LanguageInterface $language
+     * @param UserInterface $actor
+     * @param UuidHolder $uuid
+     * @return $this
+     */
+    public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid);
+    
+    /**
+     * Finds an event by it's name
+     * 
+     * @param string $eventName
+     * @return EventInterface
+     */
+    public function findEventByName($eventName);
 }
