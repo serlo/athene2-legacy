@@ -145,6 +145,11 @@ return array(
                             'type' => 'link',
                             'association' => 'one-to-one'
                         )
+                    ),
+                    'provider' => array(
+                        'plugin' => 'provider',
+                        'options' => array(
+                        )
                     )
                 )
             ),
@@ -175,6 +180,11 @@ return array(
                             ),
                             'type' => 'link',
                             'association' => 'one-to-many'
+                        )
+                    ),
+                    'provider' => array(
+                        'plugin' => 'provider',
+                        'options' => array(
                         )
                     )
                 )

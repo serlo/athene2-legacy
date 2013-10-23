@@ -22,9 +22,12 @@ class TaxonomyController extends AbstractController
     {
         $plugin = $this->getPlugin();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
+        $subject = $this->getEntityService()->provider()->getSubjectSlug();
         /* @var $plugin \LearningResource\Plugin\Taxonomy\TaxonomyPlugin */
-        $taxonomy = $plugin->getSharedTaxonomyManager()->findTaxonomyByName('root', $language);
-        $saplings = $taxonomy->getSaplings();
+        $taxonomy = $plugin->getSharedTaxonomyManager()->findTaxonomyByName('subject', $language);
+        
+        $saplings =  $taxonomy->findTermByAncestors(array('mathe'))->getChildren();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
