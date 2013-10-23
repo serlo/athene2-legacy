@@ -1,0 +1,54 @@
+.sortable {
+    margin-left: -40px;
+}
+
+.sortable-list {
+    padding-left: 40px;
+}
+
+.sortable-item {
+    clear: right;
+
+    list-style: none;
+
+    border-left: 1px dashed #eee;
+}
+
+.sortable-item-inner {
+    padding: 5px;
+    margin-left: -1px;
+    margin-bottom: 8px;
+
+    border: 1px solid #f3f3f3;
+
+    // @include background(linear-gradient(top, #FAFAFA, #EEE));
+}
+
+.sortable-handle {
+    cursor: pointer;
+}
+
+.sortable-placeholder,
+.sortable-empty { margin: 5px 0; padding: 0; min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box; }
+.sortable-empty { border: 1px dashed #bbb; min-height: 100px; background-color: #e5e5e5;
+    background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                      -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                         -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), 
+                              linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+}
+
+.sortable-dragel { position: absolute; pointer-events: none; z-index: 9999; }
+.sortable-dragel > .sortable-item .sortable-handle { margin-top: 0; }
+.sortable-dragel .sortable-handle {
+    -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+            box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+}
+
+.sortable-actions {
+    clear: both;
+    padding: 10px 10px 10px 40px;
+}

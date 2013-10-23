@@ -20,7 +20,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
     SortableList = function () {
         return $(this).each(function () {
             var $instance = $(this),
-                $saveBtn = $('.save-order', this),
+                $saveBtn = $('.sortable-save-action', this),
                 url,
                 originalData,
                 updatedData;
@@ -28,7 +28,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
             url = $instance.attr('data-action');
 
             if (!url) {
-                throw new Error('No sort action given.');
+                throw new Error('No sort action given for sortable wrapper.');
             }
 
 
@@ -53,11 +53,21 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
             }
 
             $instance.nestable({
-                handleClass: 'sort-handle',
                 rootClass: 'sortable',
+                listClass: 'sortable-list',
+                itemClass: 'sortable-item',
+                dragClass: 'sortable-dragel',
+                handleClass: 'sortable-handle',
+                collapsedClass: 'sortable-collapsed',
+                placeClass: 'sortable-placeholder',
+                noDragClass: 'sortable-nodrag',
+                emptyClass: 'sortable-empty',
+
                 expandBtnHTML: '',
                 collapseBtnHTML: '',
-                maxDepth: 12
+                group: 0,
+                maxDepth: 12,
+                threshold: 20
             });
 
             originalData = cleanEmptyChildren($instance.nestable('serialize'));
