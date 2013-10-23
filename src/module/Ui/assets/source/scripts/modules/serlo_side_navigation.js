@@ -575,7 +575,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         self.$el.click(function (e) {
             if (!self.force) {
-                console.log(self.force);
                 e.preventDefault();
                 e.stopPropagation();
                 return;
