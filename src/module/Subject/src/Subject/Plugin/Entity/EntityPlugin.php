@@ -40,61 +40,53 @@ class EntityPlugin extends AbstractPlugin
             'school-type'
         ));
     }
+    
+    public function getTrashedEntities()
+    {
+        $entities = $this->getEntities();
+        $collection = new ArrayCollection();
+        $this->iterEntities($entities, $collection, 'isTrashed');
+        return $collection;        
+    }
 
     public function getUnrevisedEntities()
     {
         $entities = $this->getEntities();
         $collection = new ArrayCollection();
-        /* @var $entity \Entity\Service\EntityServiceInterface */
-        //foreach ($entities as $entity) {
-            /*foreach ($entity->getScopesForPlugin('repository') as $scope) {
-                if ($entity->$scope()->isUnrevised()) {
-                    $collection->add($entity);
-                    $this->iterLinks($entity, $collection);
-                }
-            }*/
-        //}
-        $this->iterEntities($entities, $collection);
+        $this->iterEntities($entities, $collection, 'isRevised');
         return $collection;
     }
 
-    private function iterEntities(\Doctrine\Common\Collections\Collection $entities,\Doctrine\Common\Collections\Collection $collection){
+    private function iterEntities(\Doctrine\Common\Collections\Collection $entities,\Doctrine\Common\Collections\Collection $collection, $callback){
         foreach ($entities as $entity) {
-            $this->iterEntity($entity, $collection);
-            $this->iterLinks($entity, $collection);
+            $this->$callback($entity, $collection);
+            $this->iterLinks($entity, $collection, $callback);
         }
     }
     
-    private function iterLinks($entity, $collection)
+    private function iterLinks($entity, $collection, $callback)
     {
         foreach ($entity->getScopesForPlugin('link') as $scope) {
-            // No parents, only children. Smart?
-            /*if ($entity->$scope()->hasParents()) {
-                echo ($entity->$scope()
-                    ->findParents()->count());
-                foreach($entity->$scope()
-                    ->findParents() as $parent){
-                    echo "ok:".($parent === $entity);
-                }
-                echo $entity->getEntity()->getType()->getName();
-                echo $scope;
-                die();
-                $this->iterEntities($entity->$scope()
-                    ->findParents(), $collection);
-            }*/
             if ($entity->$scope()->hasChildren()) {
                 $this->iterEntities($entity->$scope()
-                    ->findChildren(), $collection);
+                    ->findChildren(), $collection, $callback);
             }
         }
     }
     
-    private function iterEntity(EntityServiceInterface $entity,\Doctrine\Common\Collections\Collection $collection)
+    private function isRevised(EntityServiceInterface $entity,\Doctrine\Common\Collections\Collection $collection)
     {
         foreach ($entity->getScopesForPlugin('repository') as $scope) {
             if ($entity->$scope()->isUnrevised() && ! $collection->contains($entity)) {
                 $collection->add($entity);
             }
+        }
+    }
+    
+    private function isTrashed(EntityServiceInterface $entity,\Doctrine\Common\Collections\Collection $collection)
+    {
+        if ($entity->getTrashed() === TRUE) {
+            $collection->add($entity);
         }
     }
 }

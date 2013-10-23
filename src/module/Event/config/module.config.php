@@ -32,12 +32,12 @@ return array(
                     'setEventManager' => array(
                         'required' => true
                     )
-                ),
-            ),
-            'instance' => array(
-                'preferences' => array(
-                    __NAMESPACE__ . '\EventManagerInterface' => __NAMESPACE__ . '\EventManager'
                 )
+            )
+        ),
+        'instance' => array(
+            'preferences' => array(
+                __NAMESPACE__ . '\EventManagerInterface' => __NAMESPACE__ . '\EventManager'
             )
         )
     ),

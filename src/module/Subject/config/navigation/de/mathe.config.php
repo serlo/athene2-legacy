@@ -67,7 +67,15 @@ return array(
                         'route' => 'subject/plugin/entity',
                         'params' => array(
                             'subject' => 'mathe',
-                            'action' => 'get-unrevised'
+                            'action' => 'unrevised'
+                        )
+                    ),
+                    array(
+                        'label' => 'Papierkorb',
+                        'route' => 'subject/plugin/entity',
+                        'params' => array(
+                            'subject' => 'mathe',
+                            'action' => 'trash-bin'
                         )
                     ),
                     array(

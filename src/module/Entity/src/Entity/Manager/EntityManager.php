@@ -17,7 +17,7 @@ use Language\Service\LanguageServiceInterface;
 
 class EntityManager implements EntityManagerInterface
 {
-    use\Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -94,6 +94,15 @@ class EntityManager implements EntityManagerInterface
         $instance = $this->createService($entity);
         
         return $instance;
+    }
+
+    public function purgeEntity($id)
+    {
+        $entity = $this->getEntity($id);
+        $this->getObjectManager()->remove($entity->getEntity());
+        $this->removeInstance($id);
+        $entity = NULL;
+        return $this;
     }
 
     protected function createService(EntityInterface $entity)

@@ -36,7 +36,8 @@ return array(
                 array(
                     'controller' => 'Entity\Controller\EntityController',
                     'actions' => array(
-                        'trash'
+                        'trash',
+                        'restore'
                     ),
                     'roles' => 'moderator'
                 ),
@@ -45,7 +46,7 @@ return array(
                     'actions' => array(
                         'purge'
                     ),
-                    'roles' => 'administrator'
+                    'roles' => 'moderator'
                 )
             )
         )
@@ -76,6 +77,16 @@ return array(
                             'defaults' => array(
                                 'controller' => 'Entity\Controller\EntityController',
                                 'action' => 'trash'
+                            )
+                        )
+                    ),
+                    'restore' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/restore/:entity',
+                            'defaults' => array(
+                                'controller' => 'Entity\Controller\EntityController',
+                                'action' => 'restore'
                             )
                         )
                     ),

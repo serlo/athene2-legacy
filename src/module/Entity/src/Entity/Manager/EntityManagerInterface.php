@@ -41,4 +41,6 @@ interface EntityManagerInterface
      * @return EntityServiceInterface
      */
     public function findEntityBySlug($slug, LanguageServiceInterface $languageService);
+    
+    public function purgeEntity($id);
 }

@@ -11,14 +11,15 @@
  */
 ?>
 <div class="page-header">
-	<h1><?php echo $this->translate('Neue Versionen'); ?><small> <?php echo $this->translate( $this->subject->getName() ); ?></small>
+	<h1>
+	   <?php echo $this->translate('Unrevised learning resources'); ?><small> <?php echo $this->translate( $this->subject->getName() ); ?></small>
 	</h1>
 </div>
 <table class="table table-striped">
 	<thead>
 		<tr>
 			<th><?php echo $this->translate('#'); ?></th>
-			<th><?php echo $this->translate('Typ'); ?></th>
+			<th><?php echo $this->translate('Type'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,7 +28,6 @@
 			<td><a
 				href="<?php echo $this->url('entity/plugin/repository', array('action' => 'history', 'entity' => $entity->getId())); ?>"><?php echo $entity->getUuid(); ?></a></td>
 			<td><?php echo $entity->getType()->getName(); ?></td>
-
 		</tr>
         <?php endforeach; ?>
 	</tbody>

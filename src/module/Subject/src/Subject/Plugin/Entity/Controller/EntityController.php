@@ -16,10 +16,17 @@ use Zend\View\Model\ViewModel;
 
 class EntityController extends AbstractController
 {
-    public function getUnrevisedAction(){
+    public function unrevisedAction(){
         $entities = $this->getPlugin()->getUnrevisedEntities();
         $view = new ViewModel(array('entities' => $entities, 'subject' => $this->getPlugin()->getSubjectService()));
-        $view->setTemplate('subject/plugin/entity/get-unrevised');
+        $view->setTemplate('subject/plugin/entity/unrevised');
+        return $view;
+    }
+    
+    public function trashBinAction(){
+        $entities = $this->getPlugin()->getTrashedEntities();
+        $view = new ViewModel(array('entities' => $entities, 'subject' => $this->getPlugin()->getSubjectService()));
+        $view->setTemplate('subject/plugin/entity/trash-bin');
         return $view;
     }
 }
