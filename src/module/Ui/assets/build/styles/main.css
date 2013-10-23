@@ -10243,47 +10243,45 @@ h1 {
   top: 0;
 }
 
-/* line 3, ../../source/styles/_shame.scss */
+/* line 1, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.term {
+.sortable {
+  margin-left: -40px;
+}
+
+/* line 5, ../../source/styles/partials/_serlo_sortablelist.scss */
+
+.sortable-list {
+  padding-left: 40px;
+}
+
+/* line 9, ../../source/styles/partials/_serlo_sortablelist.scss */
+
+.sortable-item {
   clear: right;
-  padding-bottom: 0.4em;
   list-style: none;
   border-left: 1px dashed #eee;
 }
 
-/* line 12, ../../source/styles/_shame.scss */
+/* line 17, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.term .term-inner {
-  padding: 3px 5px;
+.sortable-item-inner {
+  padding: 5px;
   margin-left: -1px;
-  border-radius: 3px;
+  margin-bottom: 8px;
   border: 1px solid #f3f3f3;
-  background: #fafafa;
-  background: -webkit-linear-gradient(top, #fafafa 0%, #eeeeee 100%);
-  background: linear-gradient(top, #fafafa 0%, #eeeeee 100%);
 }
 
-/* line 25, ../../source/styles/_shame.scss */
+/* line 27, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.nav-header {
-  font-weight: bold;
-}
-
-/**
- * Nestable
- */
-
-/* line 60, ../../source/styles/_shame.scss */
-
-.dd-handle {
+.sortable-handle {
   cursor: pointer;
 }
 
-/* line 65, ../../source/styles/_shame.scss */
+/* line 32, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.dd-placeholder,
-.dd-empty {
+.sortable-placeholder,
+.sortable-empty {
   margin: 5px 0;
   padding: 0;
   min-height: 30px;
@@ -10293,9 +10291,9 @@ h1 {
   -moz-box-sizing: border-box;
 }
 
-/* line 66, ../../source/styles/_shame.scss */
+/* line 33, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.dd-empty {
+.sortable-empty {
   border: 1px dashed #bbb;
   min-height: 100px;
   background-color: #e5e5e5;
@@ -10306,22 +10304,35 @@ h1 {
   background-position: 0 0, 30px 30px;
 }
 
-/* line 77, ../../source/styles/_shame.scss */
+/* line 44, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.dd-dragel {
+.sortable-dragel {
   position: absolute;
   pointer-events: none;
   z-index: 9999;
 }
 
-/* line 78, ../../source/styles/_shame.scss */
+/* line 45, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.dd-dragel > .dd-item .dd-handle {
+.sortable-dragel > .sortable-item .sortable-handle {
   margin-top: 0;
 }
 
-/* line 79, ../../source/styles/_shame.scss */
+/* line 46, ../../source/styles/partials/_serlo_sortablelist.scss */
 
-.dd-dragel .dd-handle {
+.sortable-dragel .sortable-handle {
   box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* line 51, ../../source/styles/partials/_serlo_sortablelist.scss */
+
+.sortable-actions {
+  clear: both;
+  padding: 10px 10px 10px 40px;
+}
+
+/* line 5, ../../source/styles/_shame.scss */
+
+.nav-header {
+  font-weight: bold;
 }
