@@ -17,6 +17,7 @@ use Discussion\Entity;
 use Discussion\Collection\CommentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Service\LanguageServiceInterface;
+use Taxonomy\Service\TermServiceInterface;
 
 class DiscussionManager extends AbstractDiscussionManager implements DiscussionManagerInterface
 {
@@ -25,7 +26,7 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
 
     protected $entityInterface = 'Discussion\Entity\CommentInterface';
     
-    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -94,10 +95,12 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
      */
-    public function startDiscussion(\Uuid\Entity\UuidInterface $object,\Language\Service\LanguageServiceInterface $language,\User\Service\UserServiceInterface $author, $title, $content)
+    public function startDiscussion(\Uuid\Entity\UuidInterface $object,\Language\Service\LanguageServiceInterface $language,\User\Service\UserServiceInterface $author, $forum, $title, $content)
     {
         if ($object->is('comment'))
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
+        
+        $forum = $this->getSharedTaxonomyManager()->getTerm((int) $forum);
         
         $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $comment = new $className();
@@ -109,6 +112,7 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
         $comment->setTitle($title);
         $comment->setContent($content);
         $comment->setStatus(1);
+        $forum->associate('comments', $comment);
         
         $this->getObjectManager()->persist($comment);
         

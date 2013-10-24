@@ -18,6 +18,7 @@ use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
+use Taxonomy\Entity\TermTaxonomyAware;
 
 /**
  * Comment ORM Entity
@@ -25,7 +26,7 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface
+class Comment extends UuidEntity implements CommentInterface, TermTaxonomyAware
 {
 
     /**
@@ -66,6 +67,15 @@ class Comment extends UuidEntity implements CommentInterface
     protected $author;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", inversedBy="entities")
+     * @ORM\JoinTable(name="term_taxonomy_comment",
+     * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
+     * joinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id")}
+     * )
+     */
+    protected $terms;
+
+    /**
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     protected $date;
@@ -100,6 +110,7 @@ class Comment extends UuidEntity implements CommentInterface
     {
         $this->children = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->terms = new ArrayCollection();
         $this->archived = false;
     }
 
@@ -259,11 +270,30 @@ class Comment extends UuidEntity implements CommentInterface
         if ($this->findVotesByUser($user)->count() === 0)
             return NULL;
         
-        $this->getVotes()->removeElement($this->findVotesByUser($user)->current());
+        $this->getVotes()->removeElement($this->findVotesByUser($user)
+            ->current());
+        return $this;
+    }
+
+    public function hasUserVoted(UserInterface $user)
+    {
+        return $this->findVotesByUser($user)->count() === 1;
+    }
+    
+    public function getTermTaxonomies()
+    {
+        return $this->terms;
+    }
+    
+    public function addTermTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
+    {
+        $this->terms->add($termTaxonomy);
         return $this;
     }
     
-    public function hasUserVoted(UserInterface $user){
-        return $this->findVotesByUser($user)->count() === 1;
+    public function removeTermTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
+    {
+        $this->terms->removeElement($termTaxonomy);
+        return $this;
     }
 }

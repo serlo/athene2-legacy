@@ -125,7 +125,7 @@ class Notification implements NotificationInterface
         return $this->getEvents()
             ->first()
             ->getEvent()
-            ->getRoute();
+            ->getName();
     }
     
     /*

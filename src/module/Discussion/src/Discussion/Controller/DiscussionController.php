@@ -27,7 +27,7 @@ class DiscussionController extends AbstractController
             ->toUrl('/'));
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('discussion/start', array(
+            ->fromRoute('discussion/discussion/start', array(
             'on' => $this->params('on')
         )) . '?ref=' . $ref);
         
@@ -43,8 +43,9 @@ class DiscussionController extends AbstractController
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 $title = $form->getData()['title'];
                 $content = $form->getData()['content'];
+                $forum = $form->getData()['forum'];
                 
-                $this->getDiscussionManager()->startDiscussion($object, $language, $author, $title, $content);
+                $this->getDiscussionManager()->startDiscussion($object, $language, $author, $forum, $title, $content);
                 
                 $this->getDiscussionManager()
                     ->getObjectManager()
@@ -68,7 +69,7 @@ class DiscussionController extends AbstractController
             ->toUrl('/'));
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('discussion/start', array(
+            ->fromRoute('discussion/discussion/start', array(
             'on' => $this->params('discussion')
         )) . '?ref=' . $ref);
         

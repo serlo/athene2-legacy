@@ -13,14 +13,19 @@ namespace Discussion\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Uuid\Entity\UuidInterface;
+use Taxonomy\Exception\TermNotFoundException;
 
 class Discussion extends AbstractHelper
 {
-    use\Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use\Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected $discussions, $object;
 
+    protected $form;
+
     protected $archived;
+
+    protected $forum;
 
     /**
      *
@@ -51,6 +56,11 @@ class Discussion extends AbstractHelper
         return $this->archived;
     }
 
+    public function __construct()
+    {
+        $this->form = array();
+    }
+
     /**
      *
      * @param boolean $archived            
@@ -73,15 +83,14 @@ class Discussion extends AbstractHelper
         );
     }
 
-    protected $form;
-
-    public function __invoke(UuidInterface $object = NULL, $archived = false)
+    public function __invoke(UuidInterface $object = NULL, $forum = NULL, $archived = false)
     {
         if ($object !== NULL) {
             $this->discussions = $this->getDiscussionManager()->findDiscussionsOn($object, $archived);
             $this->setArchived($archived);
             $this->form = array();
             $this->setObject($object);
+            $this->setForum($forum);
         }
         return $this;
     }
@@ -104,7 +113,26 @@ class Discussion extends AbstractHelper
             'discussions' => $this->discussions,
             'archived' => $this->archived,
             'plugin' => $this,
-            'object' => $this->getObject()
+            'object' => $this->getObject(),
+            'forum' => $this->getForum()
         ));
+    }
+
+    public function setForum($forum)
+    {
+        if (is_numeric($forum)) {
+            $this->forum = $this->getSharedTaxonomyManager()->getTerm($forum);
+        } elseif (is_string($forum)) {
+            $forumPath = explode('/', 'root/' . $forum);
+            $language = $this->getLanguageManager()->getLanguageFromRequest();
+            $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $language);
+            $this->forum = $taxonomy->findTermByAncestors($forumPath);
+        }
+        return $this;
+    }
+
+    public function getForum()
+    {
+        return $this->forum;
     }
 }

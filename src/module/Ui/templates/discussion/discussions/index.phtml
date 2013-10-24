@@ -1,5 +1,17 @@
-<ul>
-    <?php foreach($this->discussions as $discussion):?>
-        <li><?php echo $discussion->getId();?></li>
+<div class="page-header">
+    <h1><?php echo $this->translate('Discussions'); ?> <small><?php echo is_object($this->forum) ? $this->forum->getName() : ''; ?></small></h1>
+</div>
+<div class="list-group">
+    <?php foreach($this->forums as $forum):?>
+        <a class="list-group-item" href="<?php echo $this->url('discussion/discussions', array('id' => $forum->getId()));?>"><?php echo $this->translate(ucfirst($forum->getName()));?></a>
     <?php endforeach; ?>
+</div>
+<ul class="list-group">
+    <?php if(is_object($this->forum)): ?>
+        <?php foreach($this->forum->getAssociated('comments', true, array('forum')) as $discussion): ?>
+            <li class="list-group-item">
+                <?php echo $this->partial('discussion/discussion/show', array('discussion' => $discussion, 'user' => $this->user, 'plugin' => $this->discussion())); ?>
+            </li>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </ul>

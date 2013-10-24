@@ -17,6 +17,7 @@ use Discussion\Service\CommentInterface;
 use Language\Service\LanguageServiceInterface;
 use Discussion\Service\CommentServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Taxonomy\Service\TermServiceInterface;
 
 interface DiscussionManagerInterface extends ObjectManagerAwareInterface
 {
@@ -41,12 +42,13 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
      * @param UuidInterface $object
      * @param LanguageServiceInterface $language
      * @param UserServiceInterface $author
+     * @param int $forum
      * @param string $title
      * @param string $content
      * @param CommentInterface $parent
      * @return CommentServiceInterface
      */
-    public function startDiscussion(UuidInterface $object, LanguageServiceInterface $language, UserServiceInterface $author, $title, $content);
+    public function startDiscussion(UuidInterface $object, LanguageServiceInterface $language, UserServiceInterface $author, $forum, $title, $content);
     
     /**
      * 

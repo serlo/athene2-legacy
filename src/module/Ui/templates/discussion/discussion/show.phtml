@@ -14,16 +14,16 @@
                 <div class="btn-group btn-group-x">
                     <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>    
                     <a
-						href="<?php echo $this->url('discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
+						href="<?php echo $this->url('discussion/discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
 						class="glyphicon glyphicon-chevron-<?php print $vote; ?>"></span> 
                     <b><?php echo $this->discussion->countUpVotes(); ?></b> </a>  
                     <?php if($this->discussion->isDiscussion()): ?>
                         <a
-    						href="<?php echo $this->url('discussion/archive', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-<?php echo ($this->discussion->getArchived()) ? 'primary' : 'default'; ?>"><span
+    						href="<?php echo $this->url('discussion/discussion/archive', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-<?php echo ($this->discussion->getArchived()) ? 'primary' : 'default'; ?>"><span
     						class="glyphicon glyphicon-inbox"></span></a> 
 					<?php endif;?>
                     <a
-						href="<?php echo $this->url('discussion/trash', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default dialog" data-content="<?php echo $this->translate('Do you really want to delete this discussion?'); ?>"><span
+						href="<?php echo $this->url('discussion/discussion/trash', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default dialog" data-content="<?php echo $this->translate('Do you really want to delete this discussion?'); ?>"><span
 						class="glyphicon glyphicon-trash"></span></a>        
                 </div>
 			</div>
@@ -47,7 +47,7 @@
                 </div>
                 <?php if(!$this->plugin->getArchived()): ?>
                     <?php $form = $this->plugin->getForm('comment'); ?>
-                    <?php $form->setAttribute('action', $this->url('discussion/comment',array('discussion' => $this->discussion->getId()))); ?>
+                    <?php $form->setAttribute('action', $this->url('discussion/discussion/comment',array('discussion' => $this->discussion->getId()))); ?>
                     <?php $form->prepare(); ?>
                     <?php echo $this->form()->render($form, null); ?>
                 <?php endif; ?>

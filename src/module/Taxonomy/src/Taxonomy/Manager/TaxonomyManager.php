@@ -141,6 +141,18 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
+    public function findTerms(array $types)
+    {
+        $collection = $this->getEntity()
+            ->getTerms()
+            ->filter(function (TermTaxonomyInterface $term) use($types)
+        {
+            return in_array($term->getTaxonomy()
+                ->getName(), $types);
+        });
+        return new TermCollection($collection, $this->getSharedTaxonomyManager());
+    }
+
     public function getTerms()
     {
         return new TermCollection($this->getEntity()->getTerms(), $this->getSharedTaxonomyManager());

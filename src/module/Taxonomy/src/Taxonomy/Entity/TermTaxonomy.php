@@ -65,16 +65,26 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     protected $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Entity\Entity\Entity", mappedBy="terms")
+     * @ORM\ManyToMany(targetEntity="Discussion\Entity\Comment", mappedBy="terms")
+     * @ORM\JoinTable(name="term_taxonomy_comment",
+     *      joinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id")}
+     * )
+     */
+    protected $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Entity\Entity\Entity", mappedBy="terms")
      * @ORM\JoinTable(name="term_taxonomy_entity",
-     * joinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
      * )
      */
     protected $entities;
 
     protected $allowedRelations = array(
-        'entities'
+        'entities',
+        'comments'
     );
 
     public function getDescription()
@@ -167,6 +177,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     {
         $this->children = new ArrayCollection();
         $this->entities = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getArrayCopy()

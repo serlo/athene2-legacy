@@ -41,7 +41,12 @@ class CommentForm extends Form
         
         $inputFilter->add(array(
             'name' => 'content',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $this->setInputFilter($inputFilter);

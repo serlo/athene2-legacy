@@ -22,6 +22,13 @@ class DiscussionForm extends Form
         parent::__construct('discussion');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('discussion');
+
+        $this->add(array(
+            'name' => 'forum',
+            'type' => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+            )
+        ));
         
         $this->add(array(
             'name' => 'title',
@@ -49,13 +56,28 @@ class DiscussionForm extends Form
         ));
         
         $inputFilter->add(array(
-            'name' => 'title',
+            'name' => 'forum',
             'required' => true
         ));
         
         $inputFilter->add(array(
+            'name' => 'title',
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
+        ));
+        
+        $inputFilter->add(array(
             'name' => 'content',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $this->setInputFilter($inputFilter);

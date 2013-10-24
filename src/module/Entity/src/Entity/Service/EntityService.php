@@ -14,6 +14,7 @@ namespace Entity\Service;
 use Entity\Exception\InvalidArgumentException;
 use Taxonomy\Collection\TermCollection;
 use Zend\Stdlib\ArrayUtils;
+use Entity\Entity\EntityInterface;
 
 class EntityService implements EntityServiceInterface
 {
@@ -26,6 +27,10 @@ class EntityService implements EntityServiceInterface
     public function getTerms()
     {
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
+    }
+    
+    public function getType(){
+        return $this->getEntity()->getType();
     }
     
     public function setTrashed($voided){

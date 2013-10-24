@@ -21,7 +21,7 @@ use Discussion\Collection\CommentCollection;
 
 class CommentService extends AbstractComment implements CommentServiceInterface
 {
-    use \Discussion\DiscussionManagerAwareTrait;
+    use\Discussion\DiscussionManagerAwareTrait;
 
     /**
      *
@@ -40,7 +40,7 @@ class CommentService extends AbstractComment implements CommentServiceInterface
 
     public function isDiscussion()
     {
-        return !$this->hasParent();
+        return ! $this->hasParent();
     }
 
     public function getForm()
@@ -160,7 +160,7 @@ class CommentService extends AbstractComment implements CommentServiceInterface
     {
         return $this->getEntity()->getParent();
     }
-    
+
     public function countUpVotes()
     {
         return $this->getEntity()->countUpVotes();
@@ -182,7 +182,7 @@ class CommentService extends AbstractComment implements CommentServiceInterface
         $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
-    
+
     public function upVote(UserServiceInterface $user)
     {
         $this->getEntity()->upVote($user->getEntity());
@@ -196,8 +196,11 @@ class CommentService extends AbstractComment implements CommentServiceInterface
         $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
-    
-    public function hasUserVoted(UserServiceInterface $user){
+
+    public function hasUserVoted(UserServiceInterface $user = NULL)
+    {
+        if ($user === NULL)
+            return false;
         return $this->getEntity()->hasUserVoted($user->getEntity());
     }
 }
