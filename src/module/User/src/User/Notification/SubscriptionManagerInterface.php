@@ -29,9 +29,10 @@ interface SubscriptionManagerInterface
     /**
      * 
      * @param UserServiceInterface $user
-     * @param UuidHolder $object
+     * @param UuidInterface $object
      * @param bool $notifyMailman
      * @return $this
      */
-    public function subscribe(UserServiceInterface $user, UuidHolder $object, $notifyMailman);
+    public function subscribe(UserServiceInterface $user, UuidInterface $object, $notifyMailman);
+    public function isUserSubscribed(UserServiceInterface $user, UuidInterface $object);
 }

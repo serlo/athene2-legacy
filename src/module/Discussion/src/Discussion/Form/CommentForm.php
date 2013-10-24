@@ -13,6 +13,7 @@ namespace Discussion\Form;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
+use User\Notification\Form\OptInFieldset;
 
 class CommentForm extends Form
 {
@@ -29,6 +30,8 @@ class CommentForm extends Form
             'attributes' => array(
             )
         ));
+        
+        $this->add(new OptInFieldset());
         
         $this->add(array(
             'name' => 'submit',

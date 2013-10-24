@@ -19,6 +19,8 @@ class EventManager implements EventManagerInterface
 {
     use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
+    protected $inMemoryEvents = array();
+    
     public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
@@ -38,6 +40,12 @@ class EventManager implements EventManagerInterface
 
     public function findEventByName($name)
     {
+        
+        // Avoid MySQL duplicate entry on consecutive checks without flushing.
+        if(array_key_exists($name, $this->inMemoryEvents)){
+            return $this->inMemoryEvents[$name];
+        }
+        
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
         $event = $this->getObjectManager()
             ->getRepository($className)
@@ -50,6 +58,7 @@ class EventManager implements EventManagerInterface
             $event = new $className();
             $event->setName($name);
             $this->getObjectManager()->persist($event);
+            $this->inMemoryEvents[$name] = $event;
         }
         
         return $event;
