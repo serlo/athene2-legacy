@@ -14,7 +14,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
         "use strict";
 
         function init($context) {
-            var languageFromDOM = document.getElementsByTagName('html')[0].attributes.lang.value || 'de';
+            var languageFromDOM = $('html').attr('lang') || 'de';
             // configure Translator to current language
             t.config({
                 language: languageFromDOM
@@ -60,6 +60,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
 
 require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     "use strict";
+
     $(function () {
         Supporter.check();
         App.initialize($('body'));

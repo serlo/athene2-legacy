@@ -25,8 +25,9 @@ define(["underscore", "cache", "events"], function (_, cache) {
      **/
 
     ReferrerHistory = function () {
+        historyCache.json = true;
         this.history = historyCache.remember();
-        if (!this.history) {
+        if (!this.history || typeof this.history === 'string') {
             this.history = [];
         }
 
