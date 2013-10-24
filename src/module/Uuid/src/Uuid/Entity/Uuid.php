@@ -87,48 +87,20 @@ class Uuid implements UuidInterface
         return $this;
     }
 
-    /**
-     *
-     * @return field_type $entity
-     */
-    public function getEntity()
+    public function getHolder()
     {
-        return $this->entity;
-    }
-
-    /**
-     *
-     * @return field_type $termTaxonomy
-     */
-    public function getTermTaxonomy()
-    {
-        return $this->termTaxonomy;
-    }
-
-    /**
-     *
-     * @return field_type $user
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     *
-     * @return field_type $entityRevision
-     */
-    public function getEntityRevision()
-    {
-        return $this->entityRevision;
+        foreach(get_object_vars($this) as $key => $value){
+            if($this->is($key)){
+                return $value;
+            }
+        }
+        return NULL;
     }
 
     public function is($type)
     {
-        $type = 'get' . ucfirst($type);
-        if (method_exists($this, $type)) {
-            echo $type . ":" . is_object($this->$type());
-            return is_object($this->$type());
+        if (property_exists($this, $type)) {
+            return is_object($this->$type);
         }
         return false;
     }

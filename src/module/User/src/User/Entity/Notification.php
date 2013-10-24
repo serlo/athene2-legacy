@@ -123,7 +123,7 @@ class Notification implements NotificationInterface
     public function getEventName()
     {
         return $this->getEvents()
-            ->first()
+            ->current()
             ->getEvent()
             ->getName();
     }
