@@ -1,3 +1,10 @@
+.container {
+    @media only screen and (max-width: $navigationBreakPoint) {
+        width: auto;
+        max-width: 100%;
+    }
+}
+
 #page {
   position: relative;
   margin-top: 35px;
@@ -8,6 +15,8 @@
 
   @media only screen and (max-width: $navigationBreakPoint) {
     margin-top: 54px;
+    width: auto;
+    max-width: 100%;
   }
 }
 
