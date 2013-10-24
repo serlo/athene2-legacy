@@ -51,7 +51,8 @@ class DiscussionController extends AbstractController
                     'user' => $author,
                     'on' => $object,
                     'discussion' => $discussion,
-                    'language' => $language
+                    'language' => $language,
+                    'post' => $form->getData()
                 ));
                 
                 $this->getDiscussionManager()
@@ -96,7 +97,8 @@ class DiscussionController extends AbstractController
                     'user' => $author,
                     'comment' => $comment,
                     'discussion' => $discussion,
-                    'language' => $language
+                    'language' => $language,
+                    'post' => $form->getData()
                 ));
                 
                 $this->getDiscussionManager()

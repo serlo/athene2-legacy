@@ -18,6 +18,7 @@ class Module
     protected $listeners = array(
         'User\Notification\Listener\EntityControllerListener',
         'User\Notification\Listener\RepositoryPluginControllerListener',
+        'User\Notification\Listener\DiscussionControllerListener',
     );
 
     public function getConfig()

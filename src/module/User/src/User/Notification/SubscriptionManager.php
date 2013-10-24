@@ -38,7 +38,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
         return $collection;
     }
 
-    public function isUserSubscribed(UserServiceInterface $user, UuidHolder $object)
+    public function isUserSubscribed(UserServiceInterface $user, UuidInterface $object)
     {
         return is_object($this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -49,14 +49,14 @@ class SubscriptionManager implements SubscriptionManagerInterface
         )));
     }
 
-    public function subscribe(UserServiceInterface $user, UuidHolder $object, $notifyMailman)
+    public function subscribe(UserServiceInterface $user, UuidInterface $object, $notifyMailman)
     {
         if(!$this->isUserSubscribed($user, $object)){
             $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
             /* @var $entity \User\Notification\Entity\SubscriptionInterface */
             $entity = new $class();
             $entity->setSubscriber($user->getEntity());
-            $entity->setSubscribedObject($object->getUuidEntity());
+            $entity->setSubscribedObject($object);
             $entity->setNotifyMailman($notifyMailman === TRUE);
             $this->getObjectManager()->persist($entity);
         }
