@@ -11,7 +11,8 @@
  */
 echo $this->doctype();
 ?>
-<html class="fuelux" lang="<?php echo $this->currentLanguage(); ?>">
+<!--[if lt IE 9 ]>    <html class="old-ie fuelux" lang="<?php echo $this->currentLanguage(); ?>"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="fuelux" lang="<?php echo $this->currentLanguage(); ?>"> <!--<![endif]-->
 <?php print $this->partial('layout/partials/head'); ?>
 <body>
     <div class="wrap">

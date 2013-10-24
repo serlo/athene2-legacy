@@ -99,7 +99,7 @@
         }
 
         &:focus {
-            outline: none 0px;
+            outline: 0;
             box-shadow: none;
 
             background: $themeColor;

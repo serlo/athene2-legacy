@@ -1,5 +1,5 @@
 /*global define, window*/
-define(['underscore', 'system_notification', 'translator'], function (_, SystemNotification, t) {
+define(['jquery', 'underscore', 'system_notification', 'translator'], function ($, _, SystemNotification, t) {
     "use strict";
     var checkSupportFor = [
             'JSON',
@@ -8,6 +8,9 @@ define(['underscore', 'system_notification', 'translator'], function (_, SystemN
         fails = [];
 
     function check() {
+        if ($('html').hasClass('old-ie')) {
+            SystemNotification.notify(t('You are using an outdated web browser. Please consider an update!'), 'danger');
+        }
         // check for browser support
         _.each(checkSupportFor, function (value) {
             if (!window[value]) {

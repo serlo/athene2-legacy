@@ -58,6 +58,7 @@
 }
 
 #main-nav {
+    margin-left: 0; // IE7 :)))
     width: $navigationWidth;
 
     > li {

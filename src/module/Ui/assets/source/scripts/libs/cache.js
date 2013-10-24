@@ -102,7 +102,9 @@ define(function () {
             if (useJSON) {
                 try {
                     return JSON.parse(data);
-                } catch (ignore) {}
+                } catch (ignore) {
+                    console.log('aint no json');
+                }
             }
             return data;
         }
@@ -144,7 +146,8 @@ define(function () {
 
         function remember() {
             /*jshint validthis:true */
-            return decodeData(usedStorage.getItem(this.memoryKey));
+            var value = usedStorage.getItem(this.memoryKey);
+            return decodeData(value);
         }
 
         /**

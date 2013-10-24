@@ -17,7 +17,7 @@ define(['jquery', 'translator'], function ($, t) {
                 $wrapper = $('<div id="system-notification">');
                 $(rootSelector).prepend($wrapper);
             }
-            console.log(uniqueID);
+
             if (uniqueID) {
                 if (uniqueNotifications[uniqueID]) {
                     notification = uniqueNotifications[uniqueID];

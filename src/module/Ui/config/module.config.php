@@ -48,6 +48,22 @@ return array(
         ),
         'top-right' => array(
             array(
+                'label' => 'Community',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'Profile',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'Learn',
+                'uri' => '#'
+            ),
+            array(
+                'label' => 'Settings',
+                'uri' => '#'
+            ),
+            array(
                 'label' => 'Registrieren',
                 'route' => 'user/register',
                 'needsIdentity' => false

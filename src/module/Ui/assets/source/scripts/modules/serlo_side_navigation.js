@@ -290,7 +290,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
          **/
         function loop($element, dataHierarchy, level, parent) {
             $('> li', $element).each(function (i) {
-                deepness.splice(level);
+                deepness = deepness.splice(0, level);
                 deepness.push(i);
 
                 var $listItem = $(this),
@@ -401,6 +401,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         var self = this,
             cursor = self.data,
             result = [];
+
         _.each(position, function (index) {
             result.push(cursor[index].children);
             cursor = cursor[index].children;
@@ -454,7 +455,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         this.force = false;
 
         this.$el = $(this.options.mainId);
-        this.$nav = $('<nav id="serlo-side-sub-navigation">');
+        this.$nav = $('<div id="serlo-side-sub-navigation">');
         // this.$mover = $('<div id="serlo-side-sub-navigation-mover">');
         // this.$nav.append(this.$mover);
         // this.$mover.css('left', 0);
@@ -649,6 +650,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 self.force = true;
                 self.close();
             });
+
             // self.subNavigation.$el.appendTo(self.$mover);
             self.subNavigation.$el.appendTo(self.$nav);
         }
