@@ -42,8 +42,6 @@ class DiscussionControllerListener extends AbstractListener
             ->getEntity()
             ->getUuidEntity();
         $user = $e->getParam('user');
-        $this->logEvent($e->getTarget(), $user, $discussion);
-        
         $this->logEvent($e->getTarget(), $user, $comment, $discussion);
     }
 
