@@ -44,10 +44,4 @@ class UserControllerListener extends AbstractMvcListener
             'onRegister'
         ));
     }
-
-    
-    public function detachShared (\Zend\EventManager\SharedEventManagerInterface $events)
-    {
-        throw new \Exception('detachShared is not implemented yet.');
-    }
 }

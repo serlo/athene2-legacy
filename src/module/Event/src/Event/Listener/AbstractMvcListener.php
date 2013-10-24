@@ -39,4 +39,9 @@ abstract class AbstractMvcListener implements SharedListenerAggregateInterface
         $url = strtolower(str_replace('\\', '/', $params['controller']) . '/' . $params['action']);
         $this->getEventManager()->logEvent($url, $language, $actor, $uuid);
     }
+
+    public function detachShared (\Zend\EventManager\SharedEventManagerInterface $events)
+    {
+        throw new \Exception('detachShared is not implemented yet.');
+    }
 }

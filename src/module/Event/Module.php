@@ -15,7 +15,8 @@ class Module
 {
 
     protected $listeners = array(
-        'Event\Listener\UserControllerListener'
+        'Event\Listener\UserControllerListener',
+        'Event\Listener\DiscussionControllerListener'
     );
 
     public function getConfig()

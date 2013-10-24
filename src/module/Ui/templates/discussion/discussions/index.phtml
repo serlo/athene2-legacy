@@ -3,7 +3,11 @@
 </div>
 <div class="list-group">
     <?php foreach($this->forums as $forum):?>
-        <a class="list-group-item" href="<?php echo $this->url('discussion/discussions', array('id' => $forum->getId()));?>"><?php echo $this->translate(ucfirst($forum->getName()));?></a>
+        <a class="list-group-item" href="<?php echo $this->url('discussion/discussions', array('id' => $forum->getId()));?>">
+            <!-- nice fake -->
+            <span class="badge pull-right"><?php echo $forum->getAssociated('comments', true, array('forum'))->count(); ?></span>
+            <?php echo $this->translate(ucfirst($forum->getName()));?>
+        </a>
     <?php endforeach; ?>
 </div>
 <ul class="list-group">

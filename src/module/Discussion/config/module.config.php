@@ -105,7 +105,6 @@ return array(
                     'actions' => array(
                         'start',
                         'comment',
-                        'comment',
                         'vote'
                     ),
                     'roles' => 'login'
