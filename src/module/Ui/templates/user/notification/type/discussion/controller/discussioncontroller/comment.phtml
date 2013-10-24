@@ -1,0 +1,12 @@
+<?php $users = $this->notifications()->aggregateUsers($this->notification->getActors()); ?>
+<li role="presentation"
+	class="<?php $this->notification->getSeen() ? '' : 'active ' ?>"><a
+	role="menuitem" tabindex="-1"
+	href="">
+	<?php if(count($users) == 1):?>
+        <?php echo sprintf($this->translate('User `%s` commented on a discussion you follow'), $this->notification->getActors()->current()->getUsername()); ?>
+    <?php else: ?>
+        <?php echo sprintf($this->translate('Users %s  commented on a discussion you follow'), $this->notifications()->getAggregatedUsernames()); ?>    
+    <?php endif;?>
+    <small><span class="timeago" title="<?php echo $this->notification->getDate()->format("Y-m-d H:i:s"); ?>"></span></small>
+</a></li>
