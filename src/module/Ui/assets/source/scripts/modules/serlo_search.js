@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
                 Common.KeyCode.shift,
                 Common.KeyCode.backspace,
                 Common.KeyCode.entf,
-                Common.KeyCode.super
+                Common.KeyCode.cmd
             ]
         };
 
@@ -42,7 +42,7 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
                 self.$el.removeClass(self.options.inFocusClass);
             })
             .keydown(function (e) {
-                var value = Common.trim($(this).val());
+                var value = Common.trim($(this).val() || "");
                 if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
                     return true;
                 }

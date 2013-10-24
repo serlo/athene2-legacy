@@ -29,8 +29,7 @@ define(['jquery', 'translator'], function ($, t) {
                 notification = new SystemNotification(message, status, html);
             }
 
-            $wrapper.append(notification.$el.hide());
-            notification.$el.fadeIn();
+            $wrapper.append(notification.$el);
         };
 
     SystemNotification = function (message, status, html) {

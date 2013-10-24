@@ -9,32 +9,51 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification', 'modals', 'sortable_list', 'timeago'],
-    function ($, Common, SideNavigation, t, Layout, Search, SystemNotification) {
+define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification', 'moment', 'modals', 'sortable_list', 'timeago', 'moment_de'],
+    function ($, Common, SideNavigation, t, Layout, Search, SystemNotification, moment) {
         "use strict";
 
-        function init() {
+        function init($context) {
+            var languageFromDOM = document.getElementsByTagName('html')[0].attributes.lang.value || 'de';
+            // configure Translator to current language
             t.config({
-                language: document.getElementsByTagName('html')[0].attributes.lang.value || 'de'
+                language: languageFromDOM
             });
 
+            moment.lang(languageFromDOM);
+
+            // create an system notifiction whenever Common.genericError is called
             Common.addEventListener('generic error', function () {
                 SystemNotification.error();
             });
+            // initialize contextuals whenever a new context is added
+            Common.addEventListener('new context', function ($context) {
+                initContextuals($context);
+            });
 
+            // initialize the side navigation
             new SideNavigation();
+            // initialize the search
             new Search();
 
-            $('.sortable').SortableList();
-            $('.timeago').TimeAgo();
-            $('.dialog').SerloModals();
+            // trigger new contextual
+            Common.trigger('new context', $context);
 
             Layout.init();
         }
 
+        function initContextuals($context) {
+            // init sortable lists in context
+            $('.sortable', $context).SortableList();
+            // init timeago fields in context
+            $('.timeago', $context).TimeAgo();
+            // init dialogues in context
+            $('.dialog', $context).SerloModals();
+        }
+
         return {
-            initialize: function () {
-                init();
+            initialize: function ($context) {
+                init($context);
             }
         };
     });
@@ -43,6 +62,6 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     "use strict";
     $(function () {
         Supporter.check();
-        App.initialize();
+        App.initialize($('body'));
     });
 });

@@ -21,16 +21,18 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
         return $(this).each(function () {
             var $instance = $(this),
                 $saveBtn = $('.sortable-save-action', this),
-                url,
+                dataUrl,
+                dataDepth,
                 originalData,
                 updatedData;
 
-            url = $instance.attr('data-action');
+            dataUrl = $instance.attr('data-action');
 
-            if (!url) {
+            if (!dataUrl) {
                 throw new Error('No sort action given for sortable wrapper.');
             }
 
+            dataDepth = $instance.attr('data-depth') || 0;
 
             /**
              * @function cleanEmptyChildren
@@ -66,7 +68,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                 expandBtnHTML: '',
                 collapseBtnHTML: '',
                 group: 0,
-                maxDepth: 12,
+                maxDepth: dataDepth,
                 threshold: 20
             });
 
@@ -84,7 +86,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
             $saveBtn.click(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: url,
+                    url: dataUrl,
                     data: {
                         sortable: updatedData
                     },

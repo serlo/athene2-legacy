@@ -13,7 +13,7 @@
  */
 
 /*global define*/
-define("side_navigation", ["jquery", "underscore", "referrer_history", "events", "translator"], function ($, _, ReferrerHistory, eventScope, t, undefined) {
+define("side_navigation", ["jquery", "underscore", "referrer_history", "events", "translator", "common"], function ($, _, ReferrerHistory, eventScope, t, Common, undefined) {
     "use strict";
     var defaults,
         instance,
@@ -299,7 +299,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 dataHierarchy[i] = new MenuItem({
                     url: $link.attr('href'),
-                    title: $link.text().trim(),
+                    title: Common.trim($link.text()),
                     $li: $listItem,
                     $a: $link,
                     position: position,
@@ -575,7 +575,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         self.$el.click(function (e) {
             if (!self.force) {
-                console.log(self.force);
                 e.preventDefault();
                 e.stopPropagation();
                 return;
