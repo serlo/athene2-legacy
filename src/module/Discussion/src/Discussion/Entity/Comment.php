@@ -285,13 +285,13 @@ class Comment extends UuidEntity implements CommentInterface, TermTaxonomyAware
         return $this->terms;
     }
     
-    public function addTermTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
+    public function addTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
     {
         $this->terms->add($termTaxonomy);
         return $this;
     }
     
-    public function removeTermTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
+    public function removeTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
     {
         $this->terms->removeElement($termTaxonomy);
         return $this;

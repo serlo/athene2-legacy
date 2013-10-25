@@ -13,24 +13,6 @@ namespace Taxonomy\Entity;
 
 interface TermTaxonomyAware
 {
-
-    /**
-     *
-     * @return Collection
-     */
-    public function getTermTaxonomies();
-
-    /**
-     *
-     * @param TermTaxonomyInterface $termTaxonomy            
-     * @return $this
-     */
-    public function addTermTaxonomy(TermTaxonomyInterface $termTaxonomy);
-    
-    /**
-     * 
-     * @param TermTaxonomyInterface $termTaxonomy        
-     * @return $this
-     */
-    public function removeTermTaxonomy(TermTaxonomyInterface $termTaxonomy);
+    public function addTaxonomy(TermTaxonomyInterface $taxonomy);
+    public function removeTaxonomy(TermTaxonomyInterface $taxonomy);
 }

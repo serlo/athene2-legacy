@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\PersistentCollection;
 use Versioning\Entity\RevisionInterface;
 use Taxonomy\Entity\TermTaxonomyAware;
-use Taxonomy\Entity\TermTaxonomyInterface;
 
 /**
  * An entity.
@@ -28,7 +27,7 @@ use Taxonomy\Entity\TermTaxonomyInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface, TermTaxonomyAware
+class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterface, EntityInterface
 {
 
     /**
@@ -61,13 +60,14 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
     protected $currentRevision;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", inversedBy="entities")
-     * @ORM\JoinTable(name="term_taxonomy_entity",
-     *      inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
-     *      joinColumns={@ORM\JoinColumn(name="entity_id", referencedColumnName="id")}
+     * @ORM\OneToMany(
+     * targetEntity="Taxonomy\Entity\TermTaxonomyEntity",
+     * mappedBy="entity",
+     * cascade={"persist", "remove"},
+     * orphanRemoval=true
      * )
      */
-    protected $terms;
+    protected $termTaxonomyEntities;
 
     /**
      * @ORM\ManyToOne(targetEntity="Type", inversedBy="entities")
@@ -90,39 +90,20 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
 
     protected $parentCollection;
 
-    protected $fieldOrder;
-
-    public function getFieldOrder($field)
-    {
-        return array_key_exists($field, $this->fieldOrder) ? $this->fieldOrder[$field] : 999;
-    }
-
-    public function setFieldOrder(array $fieldOrder)
-    {
-        $this->fieldOrder = $fieldOrder;
-        return $this;
-    }
-
-    public function removeTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
-    {
-        $this->getTerms()->removeElement($termTaxonomy);
-        return $this;
-    }
-
-    public function addTermTaxonomy(TermTaxonomyInterface $termTaxonomy)
-    {
-        $this->getTerms()->add($termTaxonomy);
-        return $this;
-    }
-
     public function getTermTaxonomies()
     {
-        return $this->terms;
+        return $this->getTerms();
     }
 
     public function getTerms()
     {
-        return $this->terms;
+        $collection = new \Doctrine\Common\Collections\ArrayCollection();
+        
+        foreach ($this->termTaxonomyEntities as $rel) {
+            $collection->add($rel->getTermTaxonomy());
+        }
+        
+        return $collection;
     }
 
     public function setType($type)
@@ -178,6 +159,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->terms = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termTaxonomyEntities = new ArrayCollection();
         $this->fieldOrder = array();
     }
 
@@ -295,19 +277,25 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkEntityInterf
         return $this;
     }
     
-    /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::removeChild()
-     */
     public function removeChild(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
     {
         // TODO Auto-generated method stub
     }
     
-    /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::removeParent()
-     */
     public function removeParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
     {
         // TODO Auto-generated method stub
+    }
+    
+    public function addTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy)
+    {
+        $this->termTaxonomyEntities->add($taxonomy);
+        return $this;
+    }
+    
+    public function removeTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy)
+    {
+        $this->termTaxonomyEntities->removeElement($taxonomy);
+        return $this;
     }
 }

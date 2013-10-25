@@ -23,7 +23,7 @@ use Taxonomy\Exception\TermNotFoundException;
 class TermService implements TermServiceInterface, ArrayCopyProvider
 {
     
-    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     /**
      *
@@ -54,6 +54,15 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function getTermTaxonomy()
     {
         return $this->getEntity();
+    }
+
+    public function orderAssociated($association, $of, $order)
+    {
+        $entity = $this->getEntity()->orderAssociated($association, $of, $order);
+        $this->getSharedTaxonomyManager()
+            ->getObjectManager()
+            ->persist($entity);
+        return $this;
     }
 
     public function getDescendantBySlugs(array $path)

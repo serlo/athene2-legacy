@@ -13,4 +13,8 @@ namespace Entity\Entity;
 
 interface EntityInterface
 {
+    
+    public function addTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy);
+    
+    public function removeTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy);
 }

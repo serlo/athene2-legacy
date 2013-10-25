@@ -33,7 +33,7 @@ return array(
                 array(
                     'controller' => 'Taxonomy\Controller\TermController',
                     'actions' => array(
-                        'update', 'delete', 'order', 'create'
+                        'update', 'delete', 'order', 'create', 'orderAssociated'
                     ),
                     'roles' => 'moderator'
                 ),
@@ -120,6 +120,17 @@ return array(
                                                 'action' => 'index'
                                             )
                                         )
+                                    ),
+                                    'sort-associated' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/sort/:association/:term',
+                                            'defaults' => array(
+                                                'controller' => 'Taxonomy\Controller\TermController',
+                                                'action' => 'orderAssociated'
+                                            )
+                                        ),
+                                        'may_terminate' => true
                                     )
                                 )
                             )

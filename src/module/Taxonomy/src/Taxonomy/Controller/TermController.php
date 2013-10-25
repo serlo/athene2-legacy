@@ -105,6 +105,24 @@ class TermController extends AbstractController
             ->getUri());
     }
 
+    public function orderAssociatedAction()
+    {
+        $associations = $this->params()->fromPost('sortable', array());
+        $termService = $this->getTerm($this->params('term'));
+        $i = 0;
+        
+        foreach ($associations as $association) {
+            $termService->orderAssociated('entities', $association['id'], $i);
+            $i++;
+        }
+        
+        $this->getSharedTaxonomyManager()
+            ->getObjectManager()
+            ->flush();
+        
+        return '';        
+    }
+
     public function orderAction()
     {
         $data = $this->params()->fromPost('sortable', array());
@@ -112,7 +130,7 @@ class TermController extends AbstractController
         $this->getSharedTaxonomyManager()
             ->getObjectManager()
             ->flush();
-        return $this->response;
+        return '';
     }
 
     protected function iterWeight($terms, $parent = NULL)
