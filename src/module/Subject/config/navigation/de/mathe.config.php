@@ -31,6 +31,23 @@ return array(
                 'params' => array(
                     'subject' => 'mathe'
                 ),
+                'provider' => 'Taxonomy\Provider\NavigationProvider',
+                'options' => array(
+                    'parent' => array(
+                        'slug' => 'mathe',
+                        'type' => 'subject'
+                    ),
+                    'types' => array(
+                        'school-type',
+                        'curriculum'
+                    ),
+                    'language' => 'de',
+                    'route' => 'subject/plugin/taxonomy/topic',
+                    'max_depth' => 10,
+                    'params' => array(
+                        'subject' => 'mathe'
+                    )
+                ),
                 'icon' => 'map-marker'
             ),
             array(

@@ -1,21 +1,89 @@
 /*global define*/
-define(['jquery', 'underscore', 'common'], function ($, _, Common) {
+define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Router) {
     "use strict";
     var Search,
+        SearchResults,
         defaults = {
             url: 'search/ajax',
             wrapperSelector: '#search-content',
             inputSelector: '#search-input',
+            resultWrapper: '#search-results',
             inFocusClass: 'is-in-focus',
+            hasResultsClass: 'has-results',
             ajaxThrottling: 360,
             maxQueryLength: 3,
             ignoreKeys: [
                 Common.KeyCode.shift,
                 Common.KeyCode.backspace,
                 Common.KeyCode.entf,
-                Common.KeyCode.cmd
+                Common.KeyCode.cmd,
+                Common.KeyCode.up,
+                Common.KeyCode.down
             ]
         };
+
+    SearchResults = function (resultWrapperClass, $input) {
+        this.$el = $(resultWrapperClass);
+        this.$input = $input;
+        this.clear();
+    };
+
+    SearchResults.prototype.clear = function () {
+        this.results = [];
+        this.activeFocus = 0;
+        this.$el.empty();
+    };
+
+    SearchResults.prototype.show = function (items) {
+        var self = this;
+        self.clear();
+        self.results = items;
+
+        _.each(self.results, function (result) {
+            var $li = $('<li>').append($('<a>').text(result.title).attr('href', result.url));
+            self.$el.append($li);
+        });
+
+        this.setActiveItem();
+    };
+
+    SearchResults.prototype.onKey = function (e) {
+        switch (e.keyCode) {
+        case Common.KeyCode.up:
+            e.preventDefault();
+            this.focusPrev();
+            return;
+        case Common.KeyCode.down:
+            e.preventDefault();
+            this.focusNext();
+            return;
+        case Common.KeyCode.enter:
+            Router.navigate(this.$el.find('.active').children().first().attr('href'));
+            break;
+        }
+    };
+
+    SearchResults.prototype.focusNext = function () {
+        this.activeFocus += 1;
+        if (this.activeFocus >= this.results.length) {
+            this.activeFocus = 0;
+        }
+        this.setActiveItem();
+    };
+
+    SearchResults.prototype.focusPrev = function () {
+        this.activeFocus -= 1;
+        if (this.activeFocus < 0) {
+            this.activeFocus = this.results.length - 1;
+        }
+        this.setActiveItem();
+    };
+
+    SearchResults.prototype.setActiveItem = function () {
+        this.$el.find('.active').removeClass('active');
+        var $next = this.$el.find('li').eq(this.activeFocus);
+        $next.addClass('active');
+    };
 
     Search = function (options) {
         var self = this;
@@ -23,6 +91,7 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
         self.options = $.extend({}, defaults, options || {});
         self.$el = $(self.options.wrapperSelector);
         self.$input = $(self.options.inputSelector);
+        self.results = new SearchResults(self.options.resultWrapper, self.$input);
 
         self.origPerformSearch = self.performSearch;
         self.performSearch = _.throttle(function (string) {
@@ -39,10 +108,15 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
                 self.$el.addClass(self.options.inFocusClass);
             })
             .bind('focusout', function () {
-                self.$el.removeClass(self.options.inFocusClass);
+                setTimeout(function () {
+                    self.results.clear();
+
+                    self.$el.removeClass(self.options.inFocusClass).removeClass(self.options.hasResultsClass);
+                }, 400);
             })
             .keydown(function (e) {
                 var value = Common.trim($(this).val() || "");
+                self.results.onKey(e);
                 if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
                     return true;
                 }
@@ -74,12 +148,41 @@ define(['jquery', 'underscore', 'common'], function ($, _, Common) {
         });
 
         self.ajax.success(this.onResult).fail(function () {
-            Common.genericError();
+            // Common.genericError();
+            self.onResult({
+                items: [
+                    {
+                        title: 'Gefunden',
+                        url: '/fach/mathe'
+                    },
+                    {
+                        title: 'Noch was andres',
+                        url: '/fach/mathe'
+                    },
+                    {
+                        title: 'Nur Dummy Content hier?',
+                        url: '/fach/mathe'
+                    },
+                    {
+                        title: 'Yep!',
+                        url: '/fach/mathe'
+                    }
+                ]
+            });
         });
     };
 
     Search.prototype.onResult = function (result) {
-        Common.log(result);
+        var self = this;
+        if (self.$el.hasClass(self.options.inFocusClass)) {
+            self.results.clear();
+            if (result.items.length) {
+                self.$el.addClass(self.options.hasResultsClass);
+                self.results.show(result.items);
+            } else {
+                self.$el.removeClass(self.options.hasResultsClass);
+            }
+        }
     };
 
     return Search;

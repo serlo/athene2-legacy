@@ -126,30 +126,36 @@
 
     a {
         color: white;
+
+        &:hover {
+            text-decoration: none;
+            .glyphicon {
+                color: $lighterGray;
+            }
+        }
+    }
+
+    .glyphicon {
+        padding-right: 5px;
     }
 
     .sub-nav-header {
         font-size: 17px;
         font-weight: bold;
-        padding-bottom: 12px;
+        
+        padding: 5px 0 10px;
     }
 
     .sub-nav-footer {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-
+        margin-top: 12px;
         a {
-            background-color: $gray;
-            padding-bottom: 8px;
+            border-top: 1px dotted white;
         }
     }
 
     .slide-right & {
         left: $navigationWidth + 40;
 
-        
         @media only screen and (max-width: $screen-xs) {
             left: 75px;
         }
@@ -179,7 +185,7 @@
         list-style: none;
         a {
             display: block;
-            padding: 10px 12px 2px;
+            padding: 8px 12px 8px;
         }
     }
 }

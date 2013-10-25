@@ -18,7 +18,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
     var SortableList;
 
     SortableList = function () {
-        return $(this).each(function () {
+        return $(this).each(function (group) {
             var $instance = $(this),
                 $saveBtn = $('.sortable-save-action', this),
                 dataUrl,
@@ -67,7 +67,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
 
                 expandBtnHTML: '',
                 collapseBtnHTML: '',
-                group: 0,
+                group: group,
                 maxDepth: dataDepth,
                 threshold: 20
             });

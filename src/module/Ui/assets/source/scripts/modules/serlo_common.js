@@ -28,7 +28,7 @@ define(['underscore', 'events'], function (_, eventScope) {
 
     Common.KeyCode = {
         left: 37,
-        top : 38,
+        up : 38,
         right: 39,
         down: 40,
         enter: 13,
