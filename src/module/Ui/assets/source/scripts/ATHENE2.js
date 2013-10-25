@@ -9,8 +9,9 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 /*global define, require*/
-define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification', 'moment', 'modals', 'sortable_list', 'timeago', 'moment_de'],
-    function ($, Common, SideNavigation, t, Layout, Search, SystemNotification, moment) {
+define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification',
+                    'moment', 'ajax_overlay', 'modals', 'sortable_list', 'timeago', 'moment_de'],
+    function ($, Common, SideNavigation, t, Layout, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
 
         function init($context) {
@@ -35,6 +36,14 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             new SideNavigation();
             // initialize the search
             new Search();
+            // initialize ajax overlay
+            new AjaxOverlay({
+                on: {
+                    contentOpened: function () {
+                        initContextuals(this.$el);
+                    }
+                }
+            });
 
             // trigger new contextual
             Common.trigger('new context', $context);

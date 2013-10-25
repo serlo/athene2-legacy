@@ -26,6 +26,7 @@ require.config({
         "polyfills": "libs/polyfills",
         "referrer_history" : "modules/serlo_referrer_history",
         "side_navigation" : "modules/serlo_side_navigation",
+        "ajax_overlay": "modules/serlo_ajax_overlay",
         "sortable_list" : "modules/serlo_sortable_list",
         "timeago" : "modules/serlo_timeago",
         "system_notification" : "modules/serlo_system_notification",
