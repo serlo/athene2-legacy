@@ -605,7 +605,6 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      * Hides the generated Subnavigations
      **/
     SideNavigation.prototype.close = function () {
-        console.trace();
         this.isOpen = false;
         this.$nav.detach();
 
