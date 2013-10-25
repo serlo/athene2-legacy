@@ -13,7 +13,7 @@ $exercise = $this->entity;
 $solution = $exercise->solution()->findChild();
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
-<li class="sortable-item list-group-item" data-id="<?php echo $this->entity->getId(); ?>">
+<li class="sortable-item" data-id="<?php echo $this->entity->getId(); ?>">
     <article class="sortable-item-inner">
         <div class="pull-right btn-group">
             <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>

@@ -57,4 +57,13 @@ interface TermTaxonomyInterface
     public function removeAssociation($field, $entity);
 
     public function getLanguage();
+
+    /**
+     *
+     * @param string $association
+     * @param int $of
+     * @param int $order
+     * @return object
+     */
+    public function orderAssociated($association, $of, $order);
 }

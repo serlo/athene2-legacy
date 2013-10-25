@@ -96,4 +96,13 @@ interface TermServiceInterface
     public function getManager();
 
     public function setManager(TaxonomyManagerInterface $termManager);
+    
+    /**
+     * 
+     * @param string $association
+     * @param int $of
+     * @param int $order
+     * @return $this
+     */
+    public function orderAssociated($association, $of, $order);
 }

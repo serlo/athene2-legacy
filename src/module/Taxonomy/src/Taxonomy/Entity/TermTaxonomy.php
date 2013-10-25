@@ -234,7 +234,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
         return $this->$method($of, $order);
     }
     
-    public function orderEntities($entity, $position){
+    protected function orderEntities($entity, $position){
         foreach ($this->termTaxonomyEntities as $rel) {
             if ($rel->getEntity()->getId() == $entity) {
                 $rel->setPosition($position);
