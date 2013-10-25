@@ -1,9 +1,9 @@
-.sortable {
-    margin-left: -40px;
-}
-
 .sortable-list {
-    padding-left: 40px;
+    padding-left: 0;
+
+    .sortable-list {
+        padding-left: 40px;
+    }
 }
 
 .sortable-item {
@@ -50,5 +50,5 @@
 
 .sortable-actions {
     clear: both;
-    padding: 10px 10px 10px 40px;
+    padding: 10px;
 }

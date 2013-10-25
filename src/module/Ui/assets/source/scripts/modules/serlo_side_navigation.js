@@ -213,7 +213,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 if (parentData.url !== '' && parentData.url !== '#') {
                     parentLink = new MenuItem($.extend({}, parentData, {
-                        icon: 'arrow-right',
+                        icon: 'th-list',
                         cssClass: 'sub-nav-footer',
                         level: -1,
                         title: t('Visit %s overview', parentData.title)
