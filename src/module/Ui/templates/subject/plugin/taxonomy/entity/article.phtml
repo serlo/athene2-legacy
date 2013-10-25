@@ -12,14 +12,16 @@
 $article = $this->entity;
 if($article->repository()->hasCurrentRevision()): ?>
     <?php $revision = $article->repository()->getCurrentRevision(); ?>
-    <div class="list-group-item">
-    	<a
-    		href="<?php echo $this->url('entity/plugin/page', array('entity' => $article->getId())); ?>"
-    		class="article">
-           <?php echo $revision->get('title'); ?>
-        </a>
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+    <li class="sortable-item" data-id="<?php echo $this->entity->getId(); ?>">
+        <div class="sortable-item-inner">
+        	<a
+        		href="<?php echo $this->url('entity/plugin/page', array('entity' => $article->getId())); ?>"
+        		class="article">
+               <?php echo $revision->get('title'); ?>
+            </a>
+            <div class="pull-right btn-group">
+                <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+            </div>
         </div>
-    </div>
+    </li>
 <?php endif; ?>
