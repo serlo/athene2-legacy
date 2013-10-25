@@ -119,6 +119,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
     MenuItem.prototype.onClick = function (e) {
         if (this.children || this.alwaysPrevent) {
             e.preventDefault();
+            e.stopPropagation();
             this.trigger('click', {
                 originalEvent: e,
                 menuItem: this
@@ -571,13 +572,16 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         });
 
         $('body').on('click', function () {
-            self.close();
+            if (self.isOpen) {
+                self.close();
+            }
         });
 
         self.$el.click(function (e) {
             if (!self.force) {
                 e.preventDefault();
                 e.stopPropagation();
+                self.force = false;
                 return;
             }
         });
@@ -602,10 +606,11 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
     SideNavigation.prototype.close = function () {
         this.isOpen = false;
-        this.$nav.remove();
-        // this.$mover.css('left', 0);
+        this.$nav.detach();
+
         this.navigatedMenuItem = null;
         this.setActiveNavigator();
+
         if (this.subNavigation) {
             this.subNavigation.$el.css('left', 0);
         }
