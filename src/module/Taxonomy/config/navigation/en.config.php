@@ -22,7 +22,7 @@ return array(
                         'route' => 'restricted/taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',
-                            'id' => '58'
+                            'id' => '2'
                         )
                     )
                 )
