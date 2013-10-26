@@ -14,8 +14,6 @@ namespace Subject\Plugin\Entity;
 use Subject\Plugin\AbstractPlugin;
 use Entity\Entity\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
-use Entity\Exception\BadMethodCallException;
-use Entity\Collection\EntityCollection;
 use Entity\Service\EntityServiceInterface;
 
 class EntityPlugin extends AbstractPlugin
