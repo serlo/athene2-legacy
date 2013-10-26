@@ -32,6 +32,7 @@ class EntityPlugin extends AbstractPlugin
         return $this->getSubjectService()
             ->getTermService()
             ->getAssociated('entities', true, array(
+            'abstract-topic',
             'topic',
             'topic-folder',
             'subject',
