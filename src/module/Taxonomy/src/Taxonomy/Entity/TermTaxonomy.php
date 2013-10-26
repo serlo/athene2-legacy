@@ -76,7 +76,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
 
     /**
      * @ORM\OneToMany(
-     * targetEntity="TermTaxonomyENtity",
+     * targetEntity="TermTaxonomyEntity",
      * mappedBy="termTaxonomy",
      * cascade={"persist", "remove"},
      * orphanRemoval=true
