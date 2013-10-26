@@ -63,8 +63,8 @@ return array(
                         'type' => 'subject'
                     ),
                     'types' => array(
-                        'topic',
-                        'topic-folder'
+                        'abstract-topic',
+                        'topic'
                     ),
                     'language' => 'de',
                     'route' => 'subject/plugin/taxonomy/topic',

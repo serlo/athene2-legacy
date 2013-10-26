@@ -34,16 +34,26 @@ return array(
                     ),
                     'allowed_parents' => array(
                         'topic',
-                        'topic-folder'
                     ),
                     'radix_enabled' => false
                 )
             ),
             'topic' => array(
                 'options' => array(
+                    'allowed_associations' => array(
+                        'entities'
+                    ),
+                    'allowed_parents' => array(
+                        'abstract-topic',
+                    ),
+                    'radix_enabled' => false
+                )
+            ),
+            'abstract-topic' => array(
+                'options' => array(
                     'allowed_parents' => array(
                         'subject',
-                        'topic'
+                        'abstract-topic'
                     ),
                     'radix_enabled' => false
                 )
