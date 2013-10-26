@@ -66,7 +66,7 @@ return array(
                         'route' => 'restricted/taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',
-                            'id' => '26'
+                            'id' => '6'
                         )
                     )
                 ),

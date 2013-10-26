@@ -100,7 +100,7 @@ return array(
                         'route' => 'restricted/taxonomy/taxonomy',
                         'params' => array(
                             'action' => 'update',
-                            'id' => '25'
+                            'id' => '5'
                         )
                     )
                 ),

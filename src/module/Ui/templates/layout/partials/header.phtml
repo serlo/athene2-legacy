@@ -32,14 +32,26 @@
                 <div id="subject-nav">
                     <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" width="110" height="37" src="/assets/images/serlo_logo.png" /></a></h1>
                     <div class="dropdown is-inline-block">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">mathe<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <li><a href="/fach/mathe">mathe</a></li>
-                            <li><a href="/fach/physik">physik</a></li>
-                            <li><a href="/discussions">community</a></li>
-                            <li><a href="/restricted">admin</a></li>
-                        </ul>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">toggle me<b class="caret"></b></a>
+                        <?php 
+                            echo $this->navigation('top_center_navigation')
+                                     ->menu()
+                                     ->setUlClass('dropdown-menu')
+                                     ->setPartial('layout/navigation/horizontal.phtml')
+                                     ->render();
+                        ?>
                     </div>
+                    <!--  
+                        <div class="dropdown is-inline-block">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">mathe<b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li><a href="/fach/mathe">mathe</a></li>
+                                <li><a href="/fach/physik">physik</a></li>
+                                <li><a href="/discussions">community</a></li>
+                                <li><a href="/restricted">admin</a></li>
+                            </ul>
+                        </div>
+                    -->
                 </div>
             </div>
         </div>

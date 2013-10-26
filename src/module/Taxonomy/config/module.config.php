@@ -15,9 +15,13 @@ namespace Taxonomy;
  * @codeCoverageIgnore
  */
 return array(
-    'default_navigation' => array(
-        'hydrators' => array(
-            'Taxonomy\Hydrator\Navigation'
+    'navigation' => array(
+        'hydratables' => array(
+            'default' => array(
+                'hydrators' => array(
+                    'Taxonomy\Hydrator\Navigation'
+                )
+            )
         )
     ),
     'zfcrbac' => array(
@@ -33,10 +37,14 @@ return array(
                 array(
                     'controller' => 'Taxonomy\Controller\TermController',
                     'actions' => array(
-                        'update', 'delete', 'order', 'create', 'orderAssociated'
+                        'update',
+                        'delete',
+                        'order',
+                        'create',
+                        'orderAssociated'
                     ),
                     'roles' => 'moderator'
-                ),
+                )
             )
         )
     ),
@@ -223,7 +231,7 @@ return array(
                     'setLanguageManager' => array(
                         'required' => 'true'
                     )
-                ),
+                )
             )
         ),
         'instance' => array(
@@ -258,5 +266,5 @@ return array(
                 )
             )
         )
-    ),
+    )
 );

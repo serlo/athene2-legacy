@@ -17,26 +17,18 @@ use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Navigation\Exception;
 
-class DynamicNavigationFactory extends AbstractNavigationFactory
+abstract class AbstractHydratableNavigation extends AbstractNavigationFactory
 {
-    use \Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait;
-
     protected function getDefaultConfig()
     {
         return array(
             'navigation' => array(
-                'default' => array()
+                'hydratables' => array()
             ),
-            'default_navigation' => array(
-                'hydrators' => array()
-            )
         );
     }
 
-    protected function getName()
-    {
-        return 'default';
-    }
+    use \Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     protected function getPages(ServiceLocatorInterface $serviceLocator)
     {
@@ -54,7 +46,7 @@ class DynamicNavigationFactory extends AbstractNavigationFactory
             
             $pages = $this->getPagesFromConfig($this->getOption('navigation')[$this->getName()]);
             
-            foreach ($this->getOption('default_navigation')['hydrators'] as $hydrator) {
+            foreach ($this->getOption('navigation')['hydratables'][$this->getName()]['hydrators'] as $hydrator) {
                 $hydrator = $this->getServiceLocator()->get($hydrator); // get('Subject\Hydrator\Navigation');
                 $hydrator->hydrateConfig($pages);
             }

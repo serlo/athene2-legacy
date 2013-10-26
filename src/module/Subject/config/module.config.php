@@ -14,9 +14,44 @@ namespace Subject;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Entity\Collection\EntityCollection;
 return array(
-    'default_navigation' => array(
-        'hydrators' => array(
-            'Subject\Hydrator\Navigation'
+    /**
+     * TODO remove me *
+     */
+    'navigation' => array(
+        'top-center' => array(
+            array(
+                'label' => 'Fächer',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Mathe',
+                        'route' => 'subject',
+                        'params' => array(
+                            'subject' => 'mathe'
+                        )
+                    )
+                )
+            ),
+            array(
+                'label' => 'Labor',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Physik',
+                        'route' => 'subject',
+                        'params' => array(
+                            'subject' => 'physik'
+                        )
+                    )
+                )
+            )
+        ),
+        'hydratables' => array(
+            'default' => array(
+                'hydrators' => array(
+                    'Taxonomy\Hydrator\Navigation'
+                )
+            )
         )
     ),
     'taxonomy' => array(
@@ -33,7 +68,7 @@ return array(
                         'entities'
                     ),
                     'allowed_parents' => array(
-                        'topic',
+                        'topic'
                     ),
                     'radix_enabled' => false
                 )
@@ -44,7 +79,7 @@ return array(
                         'entities'
                     ),
                     'allowed_parents' => array(
-                        'abstract-topic',
+                        'abstract-topic'
                     ),
                     'radix_enabled' => false
                 )

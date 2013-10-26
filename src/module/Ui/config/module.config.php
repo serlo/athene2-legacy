@@ -7,6 +7,8 @@ use Zend\Session\Container;
  *
  *
  *
+ *
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -17,12 +19,21 @@ use Zend\Session\Container;
  */
 return array(
     'navigation' => array(
+        'hydratables' => array(
+            'default' => array(
+                'hydrators' => array()
+            ),
+            'top-center' => array(
+                'hydrators' => array()
+            )
+        ),
         'default' => array(
             array(
                 'label' => 'dummy',
-                'uri' => '#',
-            ),
+                'uri' => '#'
+            )
         ),
+        'top-center' => array(),
         'top-left' => array(
             array(
                 'label' => 'Home',
@@ -193,13 +204,14 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
-            'currentLanguage' => function ($helperPluginManager) {
+            'currentLanguage' => function ($helperPluginManager)
+            {
                 $plugin = new Ui\View\Helper\ActiveLanguage();
                 $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
-
+                
                 // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
                 $plugin->setLanguage($languageManager->getLanguageFromRequest());
-
+                
                 return $plugin;
             }
         )
@@ -213,9 +225,10 @@ return array(
                 $service->setHelperPluginManager($sm->get('ViewHelperManager'));
                 return $service;
             },
-            'navigation' => 'Ui\Navigation\DynamicNavigationFactory',
+            'navigation' => 'Ui\Navigation\DefaultNavigationFactory',
             'top_left_navigation' => 'Ui\Navigation\TopLeftNavigationFactory',
             'top_right_navigation' => 'Ui\Navigation\TopRightNavigationFactory',
+            'top_center_navigation' => 'Ui\Navigation\TopCenterNavigationFactory',
             'footer_navigation' => 'Ui\Navigation\FooterNavigationFactory',
             'subject_navigation' => 'Ui\Navigation\SubjectNavigationFactory'
         )
@@ -278,5 +291,4 @@ return array(
             )
         )
     )
-)
-;
+);
