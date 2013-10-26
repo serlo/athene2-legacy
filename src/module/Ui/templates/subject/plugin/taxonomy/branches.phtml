@@ -6,7 +6,7 @@
     </a>
 <?php if($term->isAssociationAllowed('entities')): ?>
 <?php foreach($term->getAssociated('entities') as $entity): ?>
-    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getVoided())): ?>
+    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
     <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
     <?php endif; ?>
 <?php endforeach;?>
