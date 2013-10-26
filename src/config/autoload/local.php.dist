@@ -7,6 +7,14 @@ $dbParams = array(
 		'database' => 'serlo'
 );
 
+
+/**
+ *
+ * If Sphinx doesn't run on 127.0.0.1:9306, use this.
+ */
+// Sphinxql::addConnection('custom', 'yourhost.com', 9231);
+// Sphinxql::setConnection('custom');
+
 return array(
     'doctrine' => array(
         'connection' => array(

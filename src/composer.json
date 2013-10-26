@@ -23,7 +23,11 @@
 		"zf-commons/zfc-base" : "0.*",
 		"zf-commons/zfc-user" : "dev-master",
 		"zendframework/zendframework" : "dev-master",
+		"foolz/sphinxql-query-builder" : "dev-master",
     	"neilime/zf2-twb-bundle": "dev-master"
 	},
-	"minimum-stability" : "dev"
+	"minimum-stability" : "dev",
+    "autoload": {
+        "psr-0": {"Foolz\\": "vendor/foolz/sphinxql-query-builder/classes/Foolz/"}
+    }
 }

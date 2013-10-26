@@ -124,7 +124,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->taxonomyManager->findTermByAncestors(array());
     }
 
-    public function findTermByAncestorsDepr()
+    public function testFindTermByAncestors()
     {
         $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
         
