@@ -19,11 +19,11 @@
 		<ul class="dropdown-menu">
             <?php foreach($this->term->getAllowedChildrenTypes() as $taxonomy):?>
                 <li><a
-				href="<?php echo $this->url('restricted/taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
+				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
             <?php endforeach;?>
 		</ul>
 	</div>
 	<a
-		href="<?php echo $this->url('restricted/taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
+		href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
 		class="btn btn-default btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
 </div>

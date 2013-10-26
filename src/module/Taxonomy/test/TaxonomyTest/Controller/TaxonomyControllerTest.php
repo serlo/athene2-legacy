@@ -25,10 +25,4 @@ class TaxonomyControllerTest extends DefaultLayoutTestCase
             ->will($this->returnValue($termServiceMock));
         $controller->setSharedTaxonomyManager($sharedTaxonomyManagerMock);
     }
-
-    public function testUpdateAction()
-    {
-        $this->dispatch('/restricted/taxonomy/update/43');
-        $this->assertResponseStatusCode(200);
-    }
 }

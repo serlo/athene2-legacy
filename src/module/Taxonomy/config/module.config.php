@@ -16,10 +16,26 @@ namespace Taxonomy;
  */
 return array(
     'navigation' => array(
-        'hydratables' => array(
-            'default' => array(
-                'hydrators' => array(
-                    'Taxonomy\Hydrator\Navigation'
+        'default' => array(
+            'restricted' => array(
+                'pages' => array(
+                    array(
+                        'label' => 'Taxonomy',
+                        'uri' => '#',
+                        'pages' => array(
+                            array(
+                                'label' => 'Manage taxonomies',
+                                'route' => 'taxonomy/term',
+                                'params' => array(),
+                                'pages' => array(
+                                    array(
+                                        'hidden' => true,
+                                        'route' => 'taxonomy/term/action'
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             )
         )
@@ -29,9 +45,7 @@ return array(
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'Taxonomy\Controller\TaxonomyController',
-                    'actions' => array(
-                        'update'
-                    ),
+                    'actions' => array(),
                     'roles' => 'moderator'
                 ),
                 array(
@@ -41,7 +55,8 @@ return array(
                         'delete',
                         'order',
                         'create',
-                        'orderAssociated'
+                        'orderAssociated',
+                        'organize'
                     ),
                     'roles' => 'moderator'
                 )
@@ -71,76 +86,78 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'restricted' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
+            'taxonomy' => array(
+                'type' => 'Segment',
                 'options' => array(
-                    'route' => '/restricted'
+                    'route' => '/taxonomy',
+                    'defaults' => array(
+                        'controller' => 'Taxonomy\Controller\404',
+                        'action' => 'index'
+                    )
                 ),
+                'may_terminate' => true,
                 'child_routes' => array(
                     'taxonomy' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/taxonomy',
+                            'may_terminate' => true,
+                            'route' => '/:action/:id',
                             'defaults' => array(
-                                'controller' => 'Taxonomy\Controller\404',
-                                'action' => 'index'
+                                'controller' => 'Taxonomy\Controller\TaxonomyController'
+                            )
+                        )
+                    ),
+                    'term' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/term',
+                            'defaults' => array(
+                                'controller' => 'Taxonomy\Controller\TermController',
+                                'action' => 'organize'
                             )
                         ),
                         'may_terminate' => true,
                         'child_routes' => array(
-                            'taxonomy' => array(
+                            'create' => array(
+                                'may_terminate' => true,
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'may_terminate' => true,
-                                    'route' => '/:action/:id',
+                                    'route' => '/create/:taxonomy/:parent',
                                     'defaults' => array(
-                                        'controller' => 'Taxonomy\Controller\TaxonomyController'
+                                        'action' => 'create'
                                     )
                                 )
                             ),
-                            'term' => array(
+                            'action' => array(
+                                'may_terminate' => true,
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/term',
+                                    'route' => '/:action[/:id]',
                                     'defaults' => array(
-                                        'controller' => 'Taxonomy\Controller\TermController',
                                         'action' => 'index'
                                     )
-                                ),
-                                'child_routes' => array(
-                                    'create' => array(
-                                        'may_terminate' => true,
-                                        'type' => 'Segment',
-                                        'options' => array(
-                                            'route' => '/create/:taxonomy/:parent',
-                                            'defaults' => array(
-                                                'action' => 'create'
-                                            )
-                                        )
-                                    ),
-                                    'action' => array(
-                                        'may_terminate' => true,
-                                        'type' => 'Segment',
-                                        'options' => array(
-                                            'route' => '/:action[/:id]',
-                                            'defaults' => array(
-                                                'action' => 'index'
-                                            )
-                                        )
-                                    ),
-                                    'sort-associated' => array(
-                                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                                        'options' => array(
-                                            'route' => '/sort/:association/:term',
-                                            'defaults' => array(
-                                                'controller' => 'Taxonomy\Controller\TermController',
-                                                'action' => 'orderAssociated'
-                                            )
-                                        ),
-                                        'may_terminate' => true
+                                )
+                            ),
+                            'organize' => array(
+                                'may_terminate' => true,
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/organize/:id',
+                                    'defaults' => array(
+                                        'action' => 'organize'
                                     )
                                 )
+                            ),
+                            'sort-associated' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/sort/:association/:term',
+                                    'defaults' => array(
+                                        'controller' => 'Taxonomy\Controller\TermController',
+                                        'action' => 'orderAssociated'
+                                    )
+                                ),
+                                'may_terminate' => true
                             )
                         )
                     )
@@ -268,3 +285,6 @@ return array(
         )
     )
 );
+
+
+

@@ -33,7 +33,7 @@ class TermControllerTest extends DefaultLayoutTestCase
 
     public function testCreateActionForm()
     {
-        $this->dispatch('/restricted/taxonomy/term/create/1/5');
+        $this->dispatch('/taxonomy/term/create/1/5');
         $this->assertResponseStatusCode(200);
     }
 
@@ -45,7 +45,7 @@ class TermControllerTest extends DefaultLayoutTestCase
             ->method('createTerm');
         
         
-        $this->dispatch('/restricted/taxonomy/term/create/1/5', 'POST', array(
+        $this->dispatch('/taxonomy/term/create/1/5', 'POST', array(
             'id' => 5,
             'taxonomy' => 2,
             'term' => array(
@@ -75,7 +75,7 @@ class TermControllerTest extends DefaultLayoutTestCase
             'parent' => 1
         )));
         
-        $this->dispatch('/restricted/taxonomy/term/update/1');
+        $this->dispatch('/taxonomy/term/update/1');
         $this->assertResponseStatusCode(200);
     }
 
@@ -102,7 +102,7 @@ class TermControllerTest extends DefaultLayoutTestCase
         $this->sharedTaxonomyManagerMock->expects($this->once())
             ->method('updateTerm');
         
-        $this->dispatch('/restricted/taxonomy/term/update/1', 'POST', array(
+        $this->dispatch('/taxonomy/term/update/1', 'POST', array(
             'id' => 5,
             'taxonomy' => 2,
             'term' => array(
@@ -111,5 +111,11 @@ class TermControllerTest extends DefaultLayoutTestCase
             'parent' => 1
         ));
         $this->assertResponseStatusCode(302);
+    }
+
+    public function testOrganizeAction()
+    {
+        $this->dispatch('/taxonomy/organize/43');
+        $this->assertResponseStatusCode(200);
     }
 }

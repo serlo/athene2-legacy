@@ -13,8 +13,23 @@ namespace Ui\Navigation;
 
 class DefaultNavigationFactory extends AbstractHydratableNavigation
 {
+
     protected function getName()
     {
         return 'default';
+    }
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'navigation' => array(
+                'default' => array(),
+                'hydrateables' => array(
+                    'default' => array(
+                        'hydrators' => array()
+                    )
+                )
+            )
+        );
     }
 }

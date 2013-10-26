@@ -18,4 +18,18 @@ class TopCenterNavigationFactory extends AbstractHydratableNavigation
     {
         return 'top-center';
     }
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'navigation' => array(
+                'top-center' => array(),
+                'hydrateables' => array(
+                    'top-center' => array(
+                        'hydrators' => array()
+                    )
+                )
+            )
+        );
+    }
 }

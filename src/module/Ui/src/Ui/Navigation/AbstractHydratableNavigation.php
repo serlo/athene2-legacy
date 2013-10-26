@@ -19,14 +19,6 @@ use Zend\Navigation\Exception;
 
 abstract class AbstractHydratableNavigation extends AbstractNavigationFactory
 {
-    protected function getDefaultConfig()
-    {
-        return array(
-            'navigation' => array(
-                'hydratables' => array()
-            ),
-        );
-    }
 
     use \Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -46,7 +38,7 @@ abstract class AbstractHydratableNavigation extends AbstractNavigationFactory
             
             $pages = $this->getPagesFromConfig($this->getOption('navigation')[$this->getName()]);
             
-            foreach ($this->getOption('navigation')['hydratables'][$this->getName()]['hydrators'] as $hydrator) {
+            foreach ($this->getOption('navigation')['hydrateables'][$this->getName()]['hydrators'] as $hydrator) {
                 $hydrator = $this->getServiceLocator()->get($hydrator); // get('Subject\Hydrator\Navigation');
                 $hydrator->hydrateConfig($pages);
             }

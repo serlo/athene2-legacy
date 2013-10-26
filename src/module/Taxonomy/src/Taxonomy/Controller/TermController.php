@@ -12,28 +12,39 @@
 namespace Taxonomy\Controller;
 
 use Zend\View\Model\ViewModel;
-use Taxonomy\Form\TaxonomyForm;
+use Taxonomy\Form\TermForm;
 
 class TermController extends AbstractController
 {
-    use\Language\Manager\LanguageManagerAwareTrait;
 
+    public function organizeAction(){
+        $term = $this->getTerm();
+    
+        $view = new ViewModel(array(
+            'term' => $term,
+        ));
+    
+        $view->setTemplate('taxonomy/term/organize');
+        return $view;
+    }
+    
     public function updateAction()
     {
         $id = $this->params('id');
         $term = $this->getTerm($id);
         
         $view = new ViewModel(array(
-            'id' => $id
+            'id' => $id,
+            'isUpdating' => true
         ));
         
-        $form = new TaxonomyForm();
+        $form = new TermForm();
         
         $form->setData($term->getArrayCopy());
         $view->setVariable('form', $form);
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('restricted/taxonomy/term/action', array(
+            ->fromRoute('taxonomy/term/action', array(
             'action' => 'update',
             'id' => $id
         )) . '?ref=' . $this->params('ref', '/'));
@@ -58,23 +69,25 @@ class TermController extends AbstractController
 
     public function createAction()
     {
-        $form = new TaxonomyForm();
+        $form = new TermForm();
         $form->setData(array(
             'taxonomy' => $this->params('taxonomy'),
             'parent' => $this->params('parent', null)
         ));
         
         $form->setAttribute('action', $this->url()
-            ->fromRoute('restricted/taxonomy/term/create', array(
+            ->fromRoute('taxonomy/term/create', array(
             'parent' => $this->params('parent'),
             'taxonomy' => $this->params('taxonomy')
         )) . '?ref=' . rawurlencode($this->referer()
             ->toUrl()));
         
-        $view = new ViewModel();
+        $view = new ViewModel(array(
+            'form' => $form,
+            'isUpdating' => true
+        ));
         
         $view->setTemplate('/taxonomy/term/form');
-        $view->setVariable('form', $form);
         
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
@@ -152,13 +165,5 @@ class TermController extends AbstractController
             $weight ++;
         }
         return true;
-    }
-
-    protected function getTerm($id = NULL)
-    {
-        if ($id) {
-            return $this->getSharedTaxonomyManager()->getTerm($id);
-        }
-        return $this->getSharedTaxonomyManager()->getTerm($this->getParam('id'));
     }
 }

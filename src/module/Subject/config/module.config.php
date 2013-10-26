@@ -46,10 +46,10 @@ return array(
                 )
             )
         ),
-        'hydratables' => array(
+        'hydrateables' => array(
             'default' => array(
                 'hydrators' => array(
-                    'Taxonomy\Hydrator\Navigation'
+                    'Subject\Hydrator\Navigation'
                 )
             )
         )
