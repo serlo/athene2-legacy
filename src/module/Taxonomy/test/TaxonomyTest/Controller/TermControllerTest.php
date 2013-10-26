@@ -112,10 +112,4 @@ class TermControllerTest extends DefaultLayoutTestCase
         ));
         $this->assertResponseStatusCode(302);
     }
-
-    public function testOrganizeAction()
-    {
-        $this->dispatch('/taxonomy/term');
-        $this->assertResponseStatusCode(200);
-    }
 }
