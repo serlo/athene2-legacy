@@ -59,34 +59,33 @@ return array(
         ),
         'top-right' => array(
             array(
-                'label' => 'Community',
-                'uri' => '#'
+                'label' => '',
+                'route' => 'user/dashboard',
+                'icon' => 'user',
+                'needsIdentity' => true
             ),
             array(
-                'label' => 'Profile',
-                'uri' => '#'
+                'label' => '',
+                'route' => 'user/settings',
+                'icon' => 'wrench',
+                'needsIdentity' => true
             ),
             array(
-                'label' => 'Learn',
-                'uri' => '#'
-            ),
-            array(
-                'label' => 'Settings',
-                'uri' => '#'
-            ),
-            array(
-                'label' => 'Registrieren',
+                'label' => 'Sign up',
                 'route' => 'user/register',
+                'icon' => 'pencil',
                 'needsIdentity' => false
             ),
             array(
-                'label' => 'Login',
+                'label' => '',
                 'route' => 'user/login',
-                'needsIdentity' => false
+                'icon' => 'log-in',
+                'needsIdentity' => false,
             ),
             array(
-                'label' => 'Logout',
+                'label' => '',
                 'route' => 'user/logout',
+                'icon' => 'log-out',
                 'needsIdentity' => true
             )
         ),
@@ -190,8 +189,9 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
-            'layout/home' => __DIR__ . '/../templates/layout/serlo-home.phtml',
-            'layout/layout' => __DIR__ . '/../templates/layout/html.phtml',
+            'layout/1-col' => __DIR__ . '/../templates/layout/1-col.phtml',
+            'layout/layout' => __DIR__ . '/../templates/layout/2-col.phtml',
+            'layout/3-col' => __DIR__ . '/../templates/layout/3-col.phtml',
             'error/404' => __DIR__ . '/../templates/error/404.phtml',
             'error/index' => __DIR__ . '/../templates/error/index.phtml'
         ),

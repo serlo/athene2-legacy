@@ -23,15 +23,13 @@ $exercise = $this->entity;
         	<section>
                 <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
                 <?php echo $revision->get('content'); ?>
-            </section>
-        	<section>
-        	   <ul class="list-group">
-            	<?php foreach($exercise->exercises()->findChildren() as $child):?>
-                    <li class="list-group-item">
-                        <?php echo $this->partial('subject/plugin/taxonomy/entity/grouped-text-exercise', array('entity' => $child)); ?>
-                    </li>
-            	<?php endforeach; ?>
-        	   </ul>
+            </section>  
+            <section>
+    		    <ol class="list-group">
+                	<?php foreach($exercise->exercises()->findChildren() as $child):?>
+                        <li class="list-group-item"><?php echo $this->partial('subject/plugin/taxonomy/entity/grouped-text-exercise', array('entity' => $child)); ?></li>
+                	<?php endforeach; ?>
+        	    </ol>
             </section>
         </article>
     </li>

@@ -47,7 +47,8 @@ class Login extends Form
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Einloggen',
-                'tabindex' => 2
+                'tabindex' => 2,
+                'class' => 'btn btn-success pull-right'
             )
         ));
     }

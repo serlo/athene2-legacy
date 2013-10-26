@@ -258,6 +258,37 @@ return array(
                     )
                 )
             ),
+            'users' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route' => '/users',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
+                        'action' => 'users'
+                    )
+                ),
+                'child_routes' => array(
+                    'roles' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/roles',
+                            'defaults' => array(
+                                'action' => 'roles'
+                            )
+                        )
+                    ),
+                    'role' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/role/:role',
+                            'defaults' => array(
+                                'action' => 'role'
+                            )
+                        )
+                    )
+                )
+            ),
             'user' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
@@ -269,14 +300,53 @@ return array(
                     )
                 ),
                 'child_routes' => array(
+                    'role' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:username/role',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\RoleController',
+                            )
+                        ),
+                        'child_routes' => array(
+                            'add' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/add/:role',
+                                    'defaults' => array(
+                                    )
+                                )
+                            ),
+                            'remove' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/remove/:role',
+                                    'defaults' => array(
+                                        'action' => 'remove'
+                                    )
+                                )
+                            ),
+                        )
+                    ),
                     'login' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options' => array(
                             'route' => '/login',
                             'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UserController',
                                 'action' => 'login'
+                            )
+                        )
+                    ),
+                    'dashboard' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/dashboard',
+                            'defaults' => array(
+                                'action' => 'dashboard'
                             )
                         )
                     ),
@@ -286,7 +356,6 @@ return array(
                         'options' => array(
                             'route' => '/register',
                             'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UserController',
                                 'action' => 'register'
                             )
                         )
@@ -297,7 +366,6 @@ return array(
                         'options' => array(
                             'route' => '/logout',
                             'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UserController',
                                 'action' => 'logout'
                             )
                         )
@@ -308,83 +376,16 @@ return array(
                         'options' => array(
                             'route' => '/activate/:token',
                             'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UserController',
                                 'action' => 'activate'
                             )
                         )
-                    )
-                )
-            ),
-            'restricted' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options' => array(
-                    'route' => '/restricted'
-                ),
-                'child_routes' => array(
-                    'user' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options' => array(
-                            'route' => '/user/:user',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UserController',
-                                'action' => 'index'
-                            )
-                        ),
-                        'child_routes' => array(
-                            'role' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route' => '/role/:action[/:role]',
-                                    'defaults' => array(
-                                        'controller' => __NAMESPACE__ . '\Controller\RoleController',
-                                        'action' => 'index'
-                                    )
-                                )
-                            ),
-                            'update' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route' => '/update/:user',
-                                    'defaults' => array(
-                                        'controller' => __NAMESPACE__ . '\Controller\UserController',
-                                        'action' => 'update'
-                                    )
-                                )
-                            )
-                        )
                     ),
-                    'users' => array(
+                    'settings' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
                         'options' => array(
-                            'route' => '/users',
+                            'route' => '/settings',
                             'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\UsersController',
-                                'action' => 'users'
-                            )
-                        ),
-                        'child_routes' => array(
-                            'roles' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route' => '/roles',
-                                    'defaults' => array(
-                                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
-                                        'action' => 'roles'
-                                    )
-                                )
-                            ),
-                            'role' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route' => '/role/:role',
-                                    'defaults' => array(
-                                        'controller' => __NAMESPACE__ . '\Controller\UsersController',
-                                        'action' => 'role'
-                                    )
-                                )
+                                'action' => 'update'
                             )
                         )
                     )
@@ -431,4 +432,3 @@ return array(
         )
     )
 );
-

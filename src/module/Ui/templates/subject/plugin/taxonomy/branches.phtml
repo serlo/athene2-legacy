@@ -1,15 +1,19 @@
-<?php foreach($this->term->getChildren() as $term): ?>
-    <a class="list-group-item" href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
-        <h4 class="list-group-item-heading">
+<?php foreach($this->term->getChildren() as $term): ?>    	
+    <h4>
+        <a class="" href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
             <?php echo $term->getName(); ?>
-        </h4>
-    </a>
-<?php if($term->isAssociationAllowed('entities')): ?>
-<?php foreach($term->getAssociated('entities') as $entity): ?>
-    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
-    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
-    <?php endif; ?>
-<?php endforeach;?>
-<?php endif;?>
+        </a>
+    </h4>	    
+    <div class="sortable" data-action="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>" data-depth="1">
+        <ol class="sortable-list">
+            <?php if($term->isAssociationAllowed('entities')): ?>
+                <?php foreach($term->getAssociated('entities') as $entity): ?>
+                    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
+                    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
+                    <?php endif; ?>
+                <?php endforeach;?>
+            <?php endif;?>
+        </ol>
+    </div>
 <hr>
 <?php endforeach; ?>

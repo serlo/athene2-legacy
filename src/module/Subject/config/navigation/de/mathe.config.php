@@ -97,9 +97,8 @@ return array(
                     ),
                     array(
                         'label' => 'Taxonomie verwalten',
-                        'route' => 'restricted/taxonomy/taxonomy',
+                        'route' => 'taxonomy/term/organize',
                         'params' => array(
-                            'action' => 'update',
                             'id' => '5'
                         )
                     )

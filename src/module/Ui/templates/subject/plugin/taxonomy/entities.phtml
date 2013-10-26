@@ -120,7 +120,7 @@ $table = array(
     	<div class="row">
     		<div class="col-md-12">
     		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Exercises'); ?></strong></h4>
-    		    <div class="sortable" data-action="<?php echo $this->url('restricted/taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>" data-depth="1">
+    		    <div class="sortable" data-action="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>" data-depth="1">
         		    <ol class="sortable-list">
             		    <?php if(strlen($table['bottom']) > 0): ?>
                             <?php echo $table['bottom']; ?>

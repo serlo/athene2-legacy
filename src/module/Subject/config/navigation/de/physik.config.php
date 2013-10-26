@@ -63,7 +63,7 @@ return array(
                     ),
                     array(
                         'label' => 'Themen verwalten',
-                        'route' => 'restricted/taxonomy/taxonomy',
+                        'route' => 'taxonomy/term/organize',
                         'params' => array(
                             'action' => 'update',
                             'id' => '6'

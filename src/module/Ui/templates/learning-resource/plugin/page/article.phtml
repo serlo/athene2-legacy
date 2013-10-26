@@ -1,5 +1,8 @@
 <article>
     <header class="page-header">
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+        </div>
         <h1>
             <?php echo $this->title; ?>
             <small><?php echo $this->translate('Article'); ?></small>

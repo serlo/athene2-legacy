@@ -84,6 +84,8 @@ class UserController extends AbstractUserController
         $errorMessages = false;
         $messages = array();
         
+        $this->layout('layout/1-col');
+        
         if ($this->getRequest()->isPost()) {
             
             $form->setData($this->params()
@@ -134,6 +136,8 @@ class UserController extends AbstractUserController
     {
         if ($this->getAuthenticationService()->hasIdentity())
             $this->redirect()->toReferer();
+        
+        $this->layout('layout/1-col');
         
         $form = $this->getRegisterForm();
         

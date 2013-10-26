@@ -1,5 +1,15 @@
 <article>
-    <?php echo $this->partial('learning-resource/plugin/page/video/youtube', array('title' => $this->title, 'content' => $this->content, 'discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    <header class="page-header">
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+        </div>
+        <h1>
+            <?php echo $this->title; ?> <small><?php echo $this->translate('Video'); ?></small>
+        </h1>
+    </header>
+    <section>
+        <?php echo $this->partial('learning-resource/plugin/page/video/youtube', array('title' => $this->title, 'content' => $this->content, 'discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    </section>
     <hr>
     <section>
         <?php echo $this->partial($this->discussion->getTemplate('widget'), array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>

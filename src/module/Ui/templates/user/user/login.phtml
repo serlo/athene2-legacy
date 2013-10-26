@@ -11,17 +11,13 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<h1 class="page_header"><?php echo $this->translate('Login'); ?></h1>
+<div class="page-header">
+    <h1><?php echo $this->translate('Login'); ?></h1>
+</div>
 <?php
 if (count($this->errorMessages)) {
     foreach ($this->errorMessages as $errorMessage) {
         echo $this->translate($errorMessage);
     }
 }
-
-$this->form->prepare();
-echo $this->form()->openTag($this->form);
-echo $this->formRow($this->form->get('email'));
-echo $this->formRow($this->form->get('password'));
-echo $this->formSubmit($this->form->get('submit'));
-echo $this->form()->closeTag();
+echo $this->form()->render($this->form);

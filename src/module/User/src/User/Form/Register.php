@@ -90,18 +90,6 @@ class Register extends Form
         ));
         
         $this->add(array(
-            'name' => 'tos',
-            'type' => 'checkbox',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Ich habe die Nutzungsbedingungen gelesen und verstanden und akzeptiere diese.',
-                'unchecked_value' => ''
-            )
-        ));
-        
-        $this->add(array(
             'name' => 'givenname',
             'type' => 'text',
             'options' => array(
@@ -131,23 +119,24 @@ class Register extends Form
         ));
         
         $this->add(array(
+            'name' => 'tos',
+            'type' => 'checkbox',
+            'attributes' => array(
+                'required' => 'required'
+            ),
+            'options' => array(
+                'label' => 'Ich habe die Nutzungsbedingungen gelesen und verstanden und akzeptiere diese.',
+                'unchecked_value' => ''
+            )
+        ));
+        
+        $this->add(array(
             'name' => 'submit',
             'label' => '',
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Registrieren',
-                'class' => 'btn btn-primary'
-            ),
-            'options' => array()
-        ));
-        
-        $this->add(array(
-            'name' => 'reset',
-            'label' => '',
-            'attributes' => array(
-                'type' => 'reset',
-                'value' => 'Zurücksetzen',
-                'class' => 'btn btn-danger'
+                'class' => 'btn btn-success pull-right'
             ),
             'options' => array()
         ));
