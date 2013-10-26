@@ -84,7 +84,7 @@ class TermController extends AbstractController
         
         $view = new ViewModel(array(
             'form' => $form,
-            'isUpdating' => true
+            'isUpdating' => false
         ));
         
         $view->setTemplate('/taxonomy/term/form');

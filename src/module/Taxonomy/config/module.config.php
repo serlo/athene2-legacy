@@ -27,12 +27,6 @@ return array(
                                 'label' => 'Manage taxonomies',
                                 'route' => 'taxonomy/term',
                                 'params' => array(),
-                                'pages' => array(
-                                    array(
-                                        'hidden' => true,
-                                        'route' => 'taxonomy/term/action'
-                                    )
-                                )
                             )
                         )
                     )
