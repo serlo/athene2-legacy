@@ -51,6 +51,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         
         $terms = $this->getEntity()->getSaplings();
         $ancestorsFound = 0;
+        $found = false;
         foreach ($ancestors as &$element) {
             if (is_string($element) && strlen($element) > 0) {
                 $element = strtolower($element);
