@@ -309,7 +309,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     icon: 'chevron-right'
                 });
 
-                if ($listItem.children().filter('ul').length) {
+                if ($listItem.children().filter('ul').find('> li').length) {
                     dataHierarchy[i].children = [];
                     loop($listItem.children().filter('ul').first(), dataHierarchy[i].children, level + 1, dataHierarchy[i]);
                 }

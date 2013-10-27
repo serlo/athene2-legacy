@@ -9,6 +9,9 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+
+$html = array();
+
 foreach ($this->pages as $page) {
     $liClasses = [];
     // visibility of the sub-page
@@ -39,7 +42,7 @@ foreach ($this->pages as $page) {
 
     if ($dropdown) {
         $html[] = '<ul>';
-        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));
+        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));;
         $html[] = '</ul>';
     }
 
