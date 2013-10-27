@@ -42,6 +42,25 @@ class UserControllerListener extends AbstractListener
             ->render($subject), $this->getRenderer()
             ->render($body));
     }
+
+    public function onRestore(Event $e)
+    {
+        /* @var $user \User\Service\UserServiceInterface */
+        $user = $e->getParam('user');
+        
+        $subject = new ViewModel();
+        $body = new ViewModel(array(
+            'user' => $user
+        ));
+        
+        $subject->setTemplate('mailman/messages/restore-password/subject');
+        $body->setTemplate('mailman/messages/restore-password/body');
+        
+        $this->getMailman()->send($user->getEmail(), $this->getMailman()
+            ->getDefaultSender(), $this->getRenderer()
+            ->render($subject), $this->getRenderer()
+            ->render($body));
+    }
     
     /*
      * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
@@ -51,6 +70,10 @@ class UserControllerListener extends AbstractListener
         $this->listeners[] = $events->attach('User\Controller\UserController', 'register', array(
             $this,
             'onRegister'
+        ), - 1);
+        $this->listeners[] = $events->attach('User\Controller\UserController', 'restore-password', array(
+            $this,
+            'onRestore'
         ), - 1);
     }
     

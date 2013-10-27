@@ -350,11 +350,20 @@ return array(
                     ),
                     'password' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
                         'options' => array(
                             'route' => '/password',
                         ),
                         'child_routes' => array(
+                            'restore' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/restore[/:token]',
+                                    'defaults' => array(
+                                        'action' => 'restorePassword'
+                                    )
+                                ),
+                            ),
                             'change' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
@@ -471,6 +480,11 @@ return array(
                             array(
                                 'label' => 'Manage roles',
                                 'route' => 'users/roles'
+                            ),
+                            array(
+                                'label' => 'abc',
+                                'route' => 'users/roles',
+                                'hidden' => true
                             )
                         )
                     )
@@ -492,7 +506,8 @@ return array(
                     'actions' => array(
                         'profile',
                         'login',
-                        'register'
+                        'register',
+                        'restorePassword'
                     ),
                     'roles' => 'guest'
                 ),
@@ -502,8 +517,7 @@ return array(
                         'me',
                         'logout',
                         'settings',
-                        'changePassword',
-                        'lostPassword'
+                        'changePassword'
                     ),
                     'roles' => 'login'
                 ),

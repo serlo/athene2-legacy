@@ -18,6 +18,9 @@ use User\Form\Login as LoginForm;
 use User\Form\Register;
 use User\Form\SettingsForm;
 use User\Form\ChangePasswordForm;
+use User\Form\LostPassword;
+use User\Form\SelectUserForm;
+use User\Exception\UserNotFoundException;
 
 class UserController extends AbstractUserController
 {
@@ -168,6 +171,76 @@ class UserController extends AbstractUserController
         $view = new ViewModel(array(
             'form' => $form
         ));
+        return $view;
+    }
+
+    public function restorePasswordAction()
+    {
+        $messages = array();
+        $view = new ViewModel();
+        
+        $this->layout('layout/1-col');
+        
+        if ($this->params('token', NULL) === NULL) {
+            $form = new SelectUserForm();
+            $form->setAttribute('action', $this->url()
+                ->fromRoute('user/password/restore'));
+            $view->setTemplate('user/user/reset-password/select');
+            
+            if ($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $form->setData($data);
+                if ($form->isValid()) {
+                    try {
+                        $user = $this->getUserManager()->findUserByEmail($data['email']);
+                        $user->generateToken();
+                        
+                        $this->getUserManager()
+                            ->getObjectManager()
+                            ->flush();
+                        
+                        $this->getEventManager()->trigger('restore-password', $this, array(
+                            'user' => $user
+                        ));
+                        
+                        $this->flashmessenger()->addSuccessMessage('You have been sent an email with instructions on how to restore your password!');
+                        $this->redirect()->toRoute('home');
+                    } catch (UserNotFoundException $e) {
+                        $messages[] = 'Sorry, this email adress does not seem to be registered yet.';
+                    }
+                }
+            }
+        } else {
+            $form = new LostPassword();
+            $form->setAttribute('action', $this->url()
+                ->fromRoute('user/password/restore', array('token' => $this->params('token'))));
+            
+            $user = $this->getUserManager()->findUserByToken($this->params('token'));
+            
+            $view->setTemplate('user/user/reset-password/restore');
+            
+            if ($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $form->setData($data);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $user->setPassword($data['password']);
+                    $user->generateToken();
+                    
+                    $this->getUserManager()
+                        ->getObjectManager()
+                        ->persist($user->getEntity());
+                    $this->getUserManager()
+                        ->getObjectManager()
+                        ->flush();
+                    
+                    $this->redirect()->toRoute('user/login');
+                }
+            }
+        }
+        
+        $view->setVariable('form', $form);
+        $view->setVariable('messages', $messages);
         return $view;
     }
 

@@ -27,6 +27,12 @@ return array(
                                 'label' => 'Manage taxonomies',
                                 'route' => 'taxonomy/term',
                                 'params' => array(),
+                                'pages' => array(
+                                    array(
+                                        'route' => 'taxonomy/term/action',
+                                        'visible' => false
+                                    )
+                                )
                             )
                         )
                     )
@@ -127,9 +133,9 @@ return array(
                                 'type' => 'Segment',
                                 'options' => array(
                                     'route' => '/:action[/:id]',
-                                    'defaults' => array(
-                                        'action' => 'index'
-                                    )
+                                    'defaults' => array()
+                                    // 'action' => 'index'
+                                    
                                 )
                             ),
                             'organize' => array(
@@ -279,6 +285,3 @@ return array(
         )
     )
 );
-
-
-
