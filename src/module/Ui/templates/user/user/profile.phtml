@@ -17,28 +17,34 @@
         <strong><?php echo $this->translate('Roles'); ?></strong>
     </div>
     <div class="col-md-3">
-        <?php foreach($this->languages as $language):?>
-            <?php if($this->user->countRoles($language)): ?>
-                <h4><?php echo $language->getCode(); ?></h4>
-                <ul>
-                    <?php foreach($this->user->getRoles($language) as $role): ?>
-                        <li>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
-                                  <?php echo $role->getName(); ?> <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu nav nav-list">
-                                    <li><a href="<?php echo $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $this->translate('Remove role'); ?></a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    <?php endforeach; ?> 
-                </ul>
-            <?php endif; ?>
-        <?php endforeach; ?>
+        <ul>
+            <?php foreach($this->user->getRoles() as $role): ?>
+                    <li>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
+                              <?php echo $role->getName(); ?> <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu nav nav-list">
+                                <li><a href="<?php echo $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $this->translate('Remove role'); ?></a></li>
+                            </ul>
+                        </div>
+                    </li>
+            <?php endforeach; ?> 
+        </ul>
     </div>
     <div class="col-md-7">
-        <a class="btn btn-default btn-xs" href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId()));?>"><?php echo $this->translate('Add role'); ?></a>  
+        <div class="dropdown">
+            <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
+              <?php echo $this->translate('Add role'); ?> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu nav nav-list">
+                <?php foreach($this->user->getUnassociatedRoles() as $role): ?>
+                <li>
+                    <a href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $role->getName(); ?></a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </div>
 </div>
 <hr>
@@ -48,7 +54,8 @@
     </div>
     <div class="col-md-10">
         <ul>
-            <li>Activity A</li>
+            <li>Dummy A</li>
+            <li>Dummy B</li>
         </ul>
     </div>
 </div>

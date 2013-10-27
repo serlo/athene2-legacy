@@ -42,26 +42,35 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function getRoleNames(LanguageServiceInterface $language)
+    public function getRoleNames()
     {
-        $language = $language->getEntity();
         $return = array();
-        foreach ($this->getEntity()->getRoles($language) as $role) {
+        foreach ($this->getEntity()->getRoles() as $role) {
             $return[] = $role->getName();
         }
         return $return;
     }
 
-    public function hasRole($roleName, LanguageServiceInterface $language)
+    public function hasRole($id)
     {
-        $language = $language->getEntity();
-        $roles = $this->getRoles($language);
+        $roles = $this->getRoles();
         foreach ($roles as $roleEntity) {
-            if ($roleEntity->getName() == $roleName) {
+            if ($roleEntity->getId() == $id) {
                 return true;
             }
         }
         return false;
+    }
+    
+    public function getUnassociatedRoles(){
+        $roles = $this->getManager()->findAllRoles();
+        $return = array();
+        foreach($roles as $role){
+            if(!$this->hasRole($role->getId())){
+                $return[] = $role;
+            }
+        }
+        return $return;
     }
 
     public function updateLoginData()
@@ -73,19 +82,14 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function getRoles(LanguageServiceInterface $language)
+    public function getRoles()
     {
-        $language = $language->getEntity();
-        $return = array();
-        foreach ($this->getEntity()->getRoles($language) as $role) {
-            $return[] = $role;
-        }
-        return $return;
+        return $this->getEntity()->getRoles();
     }
 
-    public function countRoles(LanguageServiceInterface $language)
+    public function countRoles()
     {
-        return count($this->getRoles($language));
+        return count($this->getRoles());
     }
 
     public function getId()
@@ -93,20 +97,18 @@ class UserService implements UserServiceInterface
         return $this->getEntity()->getId();
     }
 
-    public function addRole($id, LanguageServiceInterface $language)
+    public function addRole($id)
     {
-        $language = $language->getEntity();
         $role = $this->getManager()->findRole($id);
-        $this->getEntity()->addRole($role, $language);
+        $this->getEntity()->addRole($role);
         $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
 
-    public function removeRole($id, LanguageServiceInterface $language)
+    public function removeRole($id)
     {
-        $language = $language->getEntity();
         $role = $this->getManager()->findRole($id);
-        $this->getEntity()->removeRole($role, $language);
+        $this->getEntity()->removeRole($role);
         $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }

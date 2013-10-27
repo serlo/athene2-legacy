@@ -310,7 +310,7 @@ return array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
                                 'options' => array(
-                                    'route' => '/add',
+                                    'route' => '/add/:role',
                                     'defaults' => array(
                                         'action' => 'addRole'
                                     )

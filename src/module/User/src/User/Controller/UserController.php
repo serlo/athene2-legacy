@@ -19,7 +19,7 @@ use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -186,7 +186,6 @@ class UserController extends AbstractUserController
     {
         $view = new ViewModel(array(
             'user' => $this->getUserManager()->getUser($this->params('id')),
-            'languages' => $this->getLanguageManager()->findAllLanguages()
         ));
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
@@ -212,9 +211,19 @@ class UserController extends AbstractUserController
     public function removeRoleAction()
     {
         $user = $this->getUserManager()->getUser($this->params('user'));
-        $user->removeRole($this->params('role'), $this->getLanguageManager()
-            ->getLanguageFromRequest());
-        $this->getUserManager()->flush();
+        $role = $this->getUserManager()->findRole($this->params('role'));
+        $user->removeRole($this->params('role'));
+        
+        $this->getEventManager()->trigger('removeRole', $this, array(
+            'actor' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
+            'user' => $user,
+            'role' => $role
+        ));
+        
+        $this->getUserManager()
+            ->getObjectManager()
+            ->flush();
         $this->redirect()->toReferer();
         return '';
     }
@@ -222,9 +231,20 @@ class UserController extends AbstractUserController
     public function addRoleAction()
     {
         $user = $this->getUserManager()->getUser($this->params('user'));
-        $user->addRole($this->params('role'), $this->getLanguageManager()
-            ->getLanguageFromRequest());
-        $this->getUserManager()->flush();
+        $role = $this->getUserManager()->findRole($this->params('role'));
+        $user->addRole($this->params('role'));
+        
+        $this->getEventManager()->trigger('addRole', $this, array(
+            'actor' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
+            'user' => $user,
+            'role' => $role
+        ));
+        
+        $this->getUserManager()
+            ->getObjectManager()
+            ->flush();
+        
         $this->redirect()->toReferer();
         return '';
     }

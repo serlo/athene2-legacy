@@ -13,8 +13,9 @@ use User\Manager\UserManagerInterface;
 
 interface UserServiceInterface
 {
+    public function getUnassociatedRoles();
 
-    public function addRole($role, LanguageServiceInterface $language);
+    public function addRole($role);
     
     /**
      *
@@ -29,13 +30,13 @@ interface UserServiceInterface
      */
     public function setManager(UserManagerInterface $manager);
 
-    public function getRoleNames(LanguageServiceInterface $language);
+    public function getRoleNames();
 
-    public function hasRole($roleName, LanguageServiceInterface $language);
+    public function hasRole($roleName);
 
     public function updateLoginData();
 
-    public function getRoles(LanguageServiceInterface $language);
+    public function getRoles();
 
     public function getId();
 
@@ -61,7 +62,7 @@ interface UserServiceInterface
 
     public function getGender();
     
-    public function countRoles(LanguageServiceInterface $language);
+    public function countRoles();
 
     public function getRemoved();
 

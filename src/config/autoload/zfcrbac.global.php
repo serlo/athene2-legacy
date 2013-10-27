@@ -77,8 +77,7 @@ $serviceManager = array(
                 if(!$user){
                     return new \ZfcRbac\Identity\StandardIdentity('guest');
                 } else {
-                    $ls = $sm->get('Language\Manager\LanguageManager')->getLanguageFromRequest();
-                    $identity = new \ZfcRbac\Identity\StandardIdentity($user->getRoleNames($ls));
+                    $identity = new \ZfcRbac\Identity\StandardIdentity($user->getRoleNames());
                     return $identity;
                 }
         },

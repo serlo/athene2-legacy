@@ -40,8 +40,6 @@ interface UserInterface
     
     public function setLogs ($logs);
     
-    public function setUserRoles ($userRoles);
-    
     public function setEmail ($email);
     
     public function setUsername ($username);
@@ -60,12 +58,14 @@ interface UserInterface
     
     public function setGender ($gender);
     
-    public function addRole(RoleInterface $role, LanguageInterface $language);
+    public function addRole(RoleInterface $role);
     
-    public function getRoles(LanguageInterface $language);
+    public function getRoles();
     
     public function populate (array $data = array());
     
     public function getToken();
     public function generateToken();
+
+    public function removeRole(RoleInterface $role);
 }

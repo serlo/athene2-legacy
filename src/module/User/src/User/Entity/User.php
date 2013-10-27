@@ -10,8 +10,6 @@ namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Entity\LanguageInterface;
-use Doctrine\Common\Collections\Criteria;
 use Uuid\Entity\UuidEntity;
 
 /**
@@ -35,14 +33,12 @@ class User extends UuidEntity implements UserInterface
      * mappedBy="user")
      */
     protected $logs;
-
+    
     /**
-     * @ORM\OneToMany(targetEntity="RoleUser",
-     * mappedBy="user",
-     * cascade={"persist", "remove"},
-     * orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinTable(name="role_user")
      */
-    private $userRoles;
+    protected $roles;
 
     /**
      * @ORM\Column(type="string",
@@ -343,7 +339,7 @@ class User extends UuidEntity implements UserInterface
 
     public function __construct()
     {
-        $this->userRoles = new ArrayCollection();
+        $this->roles = new ArrayCollection();
         $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ads_enabled = true;
         $this->removed = false;
@@ -352,24 +348,21 @@ class User extends UuidEntity implements UserInterface
         $this->gender = 'n';
     }
 
-    public function addRole(RoleInterface $role, LanguageInterface $language)
+    public function addRole(RoleInterface $role)
     {
-        $e = new RoleUser();
-        $e->setLanguage($language);
-        $e->setRole($role);
-        $e->setUser($this);
+        $this->roles->add($role);
         return $this;
     }
 
-    public function getRoles(LanguageInterface $language)
+    public function removeRole(RoleInterface $role)
     {
-        $collection = new ArrayCollection();
-        foreach($this->userRoles as $userRole){
-            if($userRole->getLanguage() == $language){
-                $collection->add($userRole->getRole());
-            }
-        }
-        return $collection;
+        $this->roles->removeElement($role);
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
     }
 
     /**
