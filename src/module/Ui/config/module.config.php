@@ -61,7 +61,7 @@ return array(
         'top-right' => array(
             array(
                 'label' => '',
-                'route' => 'user/dashboard',
+                'route' => 'user/me',
                 'icon' => 'user',
                 'needsIdentity' => true
             ),

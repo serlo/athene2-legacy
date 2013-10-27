@@ -20,32 +20,39 @@
         <ul>
             <?php foreach($this->user->getRoles() as $role): ?>
                     <li>
-                        <div class="dropdown">
-                            <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
-                              <?php echo $role->getName(); ?> <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu nav nav-list">
-                                <li><a href="<?php echo $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $this->translate('Remove role'); ?></a></li>
-                            </ul>
-                        </div>
+                        <?php $url = $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>
+                        <?php if($this->rbac()->hasAccessToUrl($url)): ?>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
+                                  <?php echo $role->getName(); ?> <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu nav nav-list">
+                                    <li><a href="<?php echo $url; ?>"><?php echo $this->translate('Remove role'); ?></a></li>
+                                </ul>
+                            </div>
+                        <?php else: ?>
+                          <?php echo $role->getName(); ?>
+                        <?php endif; ?>
                     </li>
             <?php endforeach; ?> 
         </ul>
     </div>
-    <div class="col-md-7">
-        <div class="dropdown">
-            <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
-              <?php echo $this->translate('Add role'); ?> <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu nav nav-list">
-                <?php foreach($this->user->getUnassociatedRoles() as $role): ?>
-                <li>
-                    <a href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $role->getName(); ?></a>
-                </li>
-                <?php endforeach; ?>
-            </ul>
+    <?php if($this->rbac()->hasAccessToRoute('user/role/add')): ?>
+        <div class="col-md-7">
+            <div class="dropdown">
+                <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
+                  <?php echo $this->translate('Add role'); ?> <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu nav nav-list">
+                    <?php foreach($this->user->getUnassociatedRoles() as $role): ?>
+                    <li>
+                        <a href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $role->getName(); ?></a>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
 </div>
 <hr>
 <div class="row">

@@ -182,6 +182,16 @@ class UserController extends AbstractUserController
         return '';
     }
 
+    public function meAction()
+    {
+        $view = new ViewModel(array(
+            'user' => $this->getUserManager()->getUserFromAuthenticator(),
+        ));
+        $this->layout('layout/1-col');
+        $view->setTemplate('user/user/profile');
+        return $view;
+    }
+
     public function profileAction()
     {
         $view = new ViewModel(array(

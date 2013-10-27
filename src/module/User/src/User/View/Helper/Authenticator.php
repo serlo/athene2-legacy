@@ -12,6 +12,7 @@
 namespace User\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+
 use Auth\Service\AuthServiceInterface;
 
 class Authenticator extends AbstractHelper

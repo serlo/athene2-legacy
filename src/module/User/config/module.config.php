@@ -15,6 +15,7 @@ namespace User;
 
 use User\View\Helper\Authenticator;
 use User\View\Helper\Notification;
+use User\View\Helper\Rbac;
 
 /**
  * @codeCoverageIgnore
@@ -82,6 +83,15 @@ return array(
                 $helper = new Authenticator();
                 $helper->setAuthenticationService($sm->getServiceLocator()
                     ->get('Zend\Authentication\AuthenticationService'));
+                return $helper;
+            },
+            'rbac' => function ($sm)
+            {
+                $helper = new Rbac();
+                $helper->setRbac($sm->getServiceLocator()
+                    ->get('ZfcRbac\Service\Rbac'));
+                $helper->setRouter($sm->getServiceLocator()
+                    ->get('router'));
                 return $helper;
             }
         )
@@ -296,14 +306,14 @@ return array(
                     'route' => '/user',
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\UserController',
-                        'action' => 'index'
+                        'action' => 'profile'
                     )
                 ),
                 'child_routes' => array(
                     'role' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/:user/role',
+                            'route' => '/:user/role'
                         ),
                         'child_routes' => array(
                             'add' => array(
@@ -325,6 +335,16 @@ return array(
                                         'action' => 'removeRole'
                                     )
                                 )
+                            )
+                        )
+                    ),
+                    'me' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/me',
+                            'defaults' => array(
+                                'action' => 'me'
                             )
                         )
                     ),
@@ -435,6 +455,41 @@ return array(
                             )
                         )
                     )
+                )
+            )
+        )
+    ),
+    'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+                array(
+                    'route' => 'user/role/add',
+                    'roles' => 'sysadmin'
+                )
+            ),
+            'ZfcRbac\Firewall\Controller' => array(
+                array(
+                    'controller' => 'User\Controller\UserController',
+                    'actions' => array(
+                        'profile'
+                    ),
+                    'roles' => 'guest'
+                ),
+                array(
+                    'controller' => 'User\Controller\UserController',
+                    'actions' => array(
+                        'me',
+                        'logout'
+                    ),
+                    'roles' => 'login'
+                ),
+                array(
+                    'controller' => 'User\Controller\UserController',
+                    'actions' => array(
+                        'addRole',
+                        'removeRole'
+                    ),
+                    'roles' => 'sysadmin'
                 )
             )
         )
