@@ -41,7 +41,7 @@ abstract class DefaultLayoutTestCase extends AbstractHttpControllerTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $subjectHydrator = $this->getMock('Subject\Hydrator\Navigation');
-        $subjectHydrator->expects($this->once())
+        $subjectHydrator->expects($this->any())
             ->method('hydrateConfig')
             ->will($this->returnValue(array()));
         

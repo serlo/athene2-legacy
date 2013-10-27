@@ -25,7 +25,6 @@ class UserServiceTest extends Model
     {
         return array(
             'logs' => array(),
-            'userRoles' => array(),
             'email' => 'asdf',
             'username' => 'herlp',
             'password' => 'secret',
@@ -35,7 +34,6 @@ class UserServiceTest extends Model
             'givenname' => 'peter',
             'lastname' => 'dichtl',
             'gender' => 'm',
-            'adsEnabled' => false,
         );
     }
 
