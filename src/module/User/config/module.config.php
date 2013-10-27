@@ -348,6 +348,25 @@ return array(
                             )
                         )
                     ),
+                    'password' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/password',
+                        ),
+                        'child_routes' => array(
+                            'change' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/change',
+                                    'defaults' => array(
+                                        'action' => 'changePassword'
+                                    )
+                                ),
+                            )
+                        )
+                    ),
                     'profile' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
@@ -413,7 +432,7 @@ return array(
                         'options' => array(
                             'route' => '/settings',
                             'defaults' => array(
-                                'action' => 'update'
+                                'action' => 'settings'
                             )
                         )
                     )
@@ -471,7 +490,9 @@ return array(
                 array(
                     'controller' => 'User\Controller\UserController',
                     'actions' => array(
-                        'profile'
+                        'profile',
+                        'login',
+                        'register'
                     ),
                     'roles' => 'guest'
                 ),
@@ -479,7 +500,10 @@ return array(
                     'controller' => 'User\Controller\UserController',
                     'actions' => array(
                         'me',
-                        'logout'
+                        'logout',
+                        'settings',
+                        'changePassword',
+                        'lostPassword'
                     ),
                     'roles' => 'login'
                 ),

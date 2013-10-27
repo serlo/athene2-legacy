@@ -208,6 +208,7 @@ class UserService implements UserServiceInterface
     public function setPassword($password)
     {
         $this->getEntity()->setPassword($password);
+        $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
 

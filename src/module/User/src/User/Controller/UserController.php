@@ -16,10 +16,12 @@ use Zend\View\Model\ViewModel;
 use User\Authentication\Adapter\AdapterInterface;
 use User\Form\Login as LoginForm;
 use User\Form\Register;
+use User\Form\SettingsForm;
+use User\Form\ChangePasswordForm;
 
 class UserController extends AbstractUserController
 {
-    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -185,17 +187,99 @@ class UserController extends AbstractUserController
     public function meAction()
     {
         $view = new ViewModel(array(
-            'user' => $this->getUserManager()->getUserFromAuthenticator(),
+            'user' => $this->getUserManager()->getUserFromAuthenticator()
         ));
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
         return $view;
     }
 
+    public function settingsAction()
+    {
+        $form = new SettingsForm();
+        $form->setAttribute('action', $this->url()
+            ->fromRoute('user/settings'));
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $data = array(
+            'email' => $user->getEmail(),
+            'givenname' => $user->getGivenname(),
+            'lastname' => $user->getLastname(),
+            'gender' => $user->getGender()
+        );
+        $form->setData($data);
+        
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $user->setGivenname($data['givenname']);
+                $user->setLastname($data['lastname']);
+                $user->setEmail($data['email']);
+                $user->setGender($data['gender']);
+                $this->getUserManager()
+                    ->getObjectManager()
+                    ->persist($user->getEntity());
+                $this->getUserManager()
+                    ->getObjectManager()
+                    ->flush();
+            }
+        }
+        
+        $view = new ViewModel(array(
+            'user' => $user,
+            'form' => $form
+        ));
+        $view->setTemplate('user/user/settings');
+        $this->layout('layout/1-col');
+        return $view;
+    }
+
+    public function changePasswordAction()
+    {
+        $form = new ChangePasswordForm();
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $messages = array();
+        
+        if ($this->getRequest()->isPost()) {
+            
+            $form->setData($this->params()
+                ->fromPost());
+            
+            if ($form->isValid()) {
+                $data = $form->getData();
+                
+                $this->getAuthAdapter()->setIdentity($user->getEmail());
+                $this->getAuthAdapter()->setPassword($data['currentPassword']);
+                
+                $result = $this->getAuthAdapter()->authenticate();
+                
+                if ($result->isValid()) {
+                    $user->setPassword($data['password']);
+                    $user->getObjectManager()->flush();
+                    $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
+                    $this->redirect()->toRoute('user/me');
+                }
+                
+                $messages = $result->getMessages();
+            }
+        }
+        
+        $view = new ViewModel(array(
+            'user' => $user,
+            'form' => $form,
+            'messages' => $messages
+        ));
+        
+        $this->layout('layout/1-col');
+        $view->setTemplate('user/user/change-password');
+        return $view;
+    }
+
     public function profileAction()
     {
         $view = new ViewModel(array(
-            'user' => $this->getUserManager()->getUser($this->params('id')),
+            'user' => $this->getUserManager()->getUser($this->params('id'))
         ));
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');

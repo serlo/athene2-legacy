@@ -97,8 +97,7 @@ class User extends UuidEntity implements UserInterface
     protected $lastname;
 
     /**
-     * @ORM\Column(type="boolean",
-     * nullable=true)
+     * @ORM\Column(type="string",length=1)
      * *
      */
     protected $gender;

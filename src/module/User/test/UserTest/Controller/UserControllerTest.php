@@ -12,7 +12,6 @@
 namespace UserTest\Controller;
 
 use AtheneTest\Controller\DefaultLayoutTestCase;
-use AtheneTest\Bootstrap;
 
 class UserControllerTest extends DefaultLayoutTestCase
 {

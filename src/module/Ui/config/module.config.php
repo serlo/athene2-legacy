@@ -6,14 +6,6 @@ use ZfcRbac\Service\Rbac;
 use Zend\Mvc\Application;
 /**
  *
- *
- *
- *
- *
- *
- *
- *
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
