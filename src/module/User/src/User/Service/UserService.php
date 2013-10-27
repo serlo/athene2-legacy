@@ -14,7 +14,7 @@ use User\Manager\UserManagerInterface;
 
 class UserService implements UserServiceInterface
 {
-    use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -44,29 +44,20 @@ class UserService implements UserServiceInterface
 
     public function getRoleNames()
     {
-        $return = array();
-        foreach ($this->getEntity()->getRoles() as $role) {
-            $return[] = $role->getName();
-        }
-        return $return;
+        return $this->getEntity()->getRoleNames();
     }
 
     public function hasRole($id)
     {
-        $roles = $this->getRoles();
-        foreach ($roles as $roleEntity) {
-            if ($roleEntity->getId() == $id) {
-                return true;
-            }
-        }
-        return false;
+        return $this->getEntity()->hasRole($id);
     }
-    
-    public function getUnassociatedRoles(){
+
+    public function getUnassociatedRoles()
+    {
         $roles = $this->getManager()->findAllRoles();
         $return = array();
-        foreach($roles as $role){
-            if(!$this->hasRole($role->getId())){
+        foreach ($roles as $role) {
+            if (! $this->hasRole($role->getId())) {
                 $return[] = $role;
             }
         }

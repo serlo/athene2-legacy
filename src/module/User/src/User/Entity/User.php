@@ -392,4 +392,30 @@ class User extends UuidEntity implements UserInterface
             $this->$key = $default;
         }
     }
+
+    public function hasRole($id)
+    {
+        $roles = $this->getRoles();
+        foreach ($roles as $roleEntity) {
+            if (is_numeric($id)) {
+                if ($roleEntity->getId() == $id) {
+                    return true;
+                }
+            } elseif (is_string($id)) {
+                if ($roleEntity->getName() == $id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function getRoleNames()
+    {
+        $return = array();
+        foreach ($this->getRoles() as $role) {
+            $return[] = $role->getName();
+        }
+        return $return;
+    }
 }

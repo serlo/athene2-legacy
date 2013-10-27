@@ -74,7 +74,6 @@ return array(
             array(
                 'label' => 'Sign up',
                 'route' => 'user/register',
-                'icon' => 'pencil',
                 'needsIdentity' => false
             ),
             array(
