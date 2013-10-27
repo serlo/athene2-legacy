@@ -22,6 +22,7 @@ class UserControllerTest extends DefaultLayoutTestCase
     public function setUp()
     {
         parent::setUp();
+        $this->setUpFirewall();
         
         $this->userManagerMock = $this->getMock('User\Manager\UserManager');
         $this->authAdapterMock = $this->getMock('User\Authentication\Adapter\UserAuthAdapter');
