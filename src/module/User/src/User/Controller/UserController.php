@@ -256,6 +256,7 @@ class UserController extends AbstractUserController
                 
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);
+                    $user->getObjectManager()->persist($user->getEntity());
                     $user->getObjectManager()->flush();
                     $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
                     $this->redirect()->toRoute('user/me');
