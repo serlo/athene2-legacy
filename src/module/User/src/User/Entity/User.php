@@ -38,7 +38,9 @@ class User extends UuidEntity implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="RoleUser",
-     * mappedBy="user")
+     * mappedBy="user",
+     * cascade={"persist", "remove"},
+     * orphanRemoval=true)
      */
     private $userRoles;
 
@@ -106,12 +108,6 @@ class User extends UuidEntity implements UserInterface
     protected $gender;
 
     /**
-     * @ORM\Column(type="boolean")
-     * *
-     */
-    protected $ads_enabled;
-
-    /**
      * @return field_type $token
      */
     public function getToken ()
@@ -127,15 +123,6 @@ class User extends UuidEntity implements UserInterface
     {
         $this->token = hash('crc32b', uniqid('user.token.', true));;
         return $this;
-    }
-
-	/**
-     *
-     * @return the $userRoles
-     */
-    public function getUserRoles()
-    {
-        return $this->userRoles;
     }
 
     /**
@@ -222,15 +209,6 @@ class User extends UuidEntity implements UserInterface
     public function getGender()
     {
         return $this->gender;
-    }
-
-    /**
-     *
-     * @return boolean $ads_enabled
-     */
-    public function getAdsEnabled()
-    {
-        return $this->ads_enabled;
     }
 
     /**
@@ -363,17 +341,6 @@ class User extends UuidEntity implements UserInterface
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $ads_enabled            
-     * @return $this
-     */
-    public function setAdsEnabled($ads_enabled)
-    {
-        $this->ads_enabled = $ads_enabled;
-        return $this;
-    }
-
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
@@ -385,22 +352,22 @@ class User extends UuidEntity implements UserInterface
         $this->gender = 'n';
     }
 
-    public function addRole(RoleInterface $role, LanguageInterface $language = NULL)
+    public function addRole(RoleInterface $role, LanguageInterface $language)
     {
         $e = new RoleUser();
         $e->setLanguage($language);
         $e->setRole($role);
         $e->setUser($this);
-        return $e;
+        return $this;
     }
 
-    public function getRoles(LanguageInterface $language = NULL)
+    public function getRoles(LanguageInterface $language)
     {
-        $criteria = $language !== NULL ? Criteria::create(Criteria::expr()->eq('language', $language->getId())) : Criteria::create(Criteria::expr()->isNull('language'));
-        $mn = $this->getUserRoles()->matching($criteria);
         $collection = new ArrayCollection();
-        foreach ($mn as $key => $m) {
-            $collection->set($key, $m->getRole());
+        foreach($this->userRoles as $userRole){
+            if($userRole->getLanguage() == $language){
+                $collection->add($userRole->getRole());
+            }
         }
         return $collection;
     }

@@ -42,10 +42,9 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function getRoleNames(LanguageServiceInterface $language = NULL)
+    public function getRoleNames(LanguageServiceInterface $language)
     {
-        $language = $language === NULL ? $language : $language->getEntity();
-        
+        $language = $language->getEntity();
         $return = array();
         foreach ($this->getEntity()->getRoles($language) as $role) {
             $return[] = $role->getName();
@@ -53,9 +52,9 @@ class UserService implements UserServiceInterface
         return $return;
     }
 
-    public function hasRole($roleName, LanguageServiceInterface $language = NULL)
+    public function hasRole($roleName, LanguageServiceInterface $language)
     {
-        $language = $language === NULL ? $language : $language->getEntity();
+        $language = $language->getEntity();
         $roles = $this->getRoles($language);
         foreach ($roles as $roleEntity) {
             if ($roleEntity->getName() == $roleName) {
@@ -74,9 +73,19 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function getRoles(LanguageServiceInterface $language = NULL)
+    public function getRoles(LanguageServiceInterface $language)
     {
-        return $this->getEntity()->getRoles($language);
+        $language = $language->getEntity();
+        $return = array();
+        foreach ($this->getEntity()->getRoles($language) as $role) {
+            $return[] = $role;
+        }
+        return $return;
+    }
+
+    public function countRoles(LanguageServiceInterface $language)
+    {
+        return count($this->getRoles($language));
     }
 
     public function getId()
@@ -84,26 +93,31 @@ class UserService implements UserServiceInterface
         return $this->getEntity()->getId();
     }
 
-    public function getUserRoles()
+    public function addRole($id, LanguageServiceInterface $language)
     {
-        return $this->getEntity()->getUserRoles();
-    }
-
-    public function addRole($role, LanguageServiceInterface $language = NULL)
-    {
-        $language = $language ? $language->getEntity() : $language;
-        $this->getObjectManager()->persist($this->getEntity()
-            ->addRole($this->getManager()
-            ->findRoleByName($role), $language));
+        $language = $language->getEntity();
+        $role = $this->getManager()->findRole($id);
+        $this->getEntity()->addRole($role, $language);
+        $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
 
-    public function generateToken(){
+    public function removeRole($id, LanguageServiceInterface $language)
+    {
+        $language = $language->getEntity();
+        $role = $this->getManager()->findRole($id);
+        $this->getEntity()->removeRole($role, $language);
+        $this->getObjectManager()->persist($this->getEntity());
+        return $this;
+    }
+
+    public function generateToken()
+    {
         $this->getEntity()->generateToken();
         $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
-    
+
     public function getLogs()
     {
         return $this->getEntity()->getLogs();

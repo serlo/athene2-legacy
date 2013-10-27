@@ -13,6 +13,8 @@ namespace Language\Manager;
 
 use Language\Entity\LanguageInterface;
 use Language\Exception;
+use Doctrine\Common\Collections\ArrayCollection;
+use Language\Collection\LanguageCollection;
 
 class LanguageManager implements LanguageManagerInterface
 {
@@ -30,6 +32,12 @@ class LanguageManager implements LanguageManagerInterface
     {
         $this->fallBackLanguageId = $id;
         return $this;
+    }
+    
+    public function findAllLanguages(){
+        $collection = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'))->findAll();
+        $collection = new ArrayCollection($collection);
+        return new LanguageCollection($collection, $this);
     }
 
     public function getFallbackLanugage()

@@ -15,7 +15,6 @@ use Language\Entity\LanguageInterface;
 interface UserInterface
 {
     
-    public function getUserRoles ();
     
     public function getLogs ();
     
@@ -36,8 +35,6 @@ interface UserInterface
     public function getLastname ();
     
     public function getGender ();
-    
-    public function getAdsEnabled ();
     
     public function getRemoved ();
     
@@ -63,11 +60,9 @@ interface UserInterface
     
     public function setGender ($gender);
     
-    public function setAdsEnabled ($adsEnabled);
+    public function addRole(RoleInterface $role, LanguageInterface $language);
     
-    public function addRole(RoleInterface $role, LanguageInterface $language = NULL);
-    
-    public function getRoles(LanguageInterface $language = NULL);
+    public function getRoles(LanguageInterface $language);
     
     public function populate (array $data = array());
     

@@ -9,6 +9,7 @@ use Zend\Session\Container;
  *
  *
  *
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -80,7 +81,7 @@ return array(
                 'label' => '',
                 'route' => 'user/login',
                 'icon' => 'log-in',
-                'needsIdentity' => false,
+                'needsIdentity' => false
             ),
             array(
                 'label' => '',
@@ -214,6 +215,9 @@ return array(
                 
                 return $plugin;
             }
+        ),
+        'invokables' => array(
+            'timeago' => 'Ui\View\Helper\Timeago'
         )
     ),
     'service_manager' => array(

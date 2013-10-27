@@ -1,0 +1,54 @@
+<div class="page-header">
+    <h1><?php echo $this->translate('Profile'); ?> <small><?php echo $this->user->getUsername(); ?></small></h1>
+</div>
+<?php if($this->user->getLastLogin() !== NULL): ?>
+    <div class="row">
+        <div class="col-md-4">
+            <strong><?php echo $this->translate('Last seen'); ?></strong>
+        </div>
+        <div class="col-md-8">
+            <?php echo $this->timeago()->format($this->user->getLastLogin()); ?>
+        </div>
+    </div>
+    <hr>
+<?php endif; ?>
+<div class="row">
+    <div class="col-md-2">
+        <strong><?php echo $this->translate('Roles'); ?></strong>
+    </div>
+    <div class="col-md-3">
+        <?php foreach($this->languages as $language):?>
+            <?php if($this->user->countRoles($language)): ?>
+                <h4><?php echo $language->getCode(); ?></h4>
+                <ul>
+                    <?php foreach($this->user->getRoles($language) as $role): ?>
+                        <li>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
+                                  <?php echo $role->getName(); ?> <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu nav nav-list">
+                                    <li><a href="<?php echo $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $this->translate('Remove role'); ?></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    <?php endforeach; ?> 
+                </ul>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+    <div class="col-md-7">
+        <a class="btn btn-default btn-xs" href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId()));?>"><?php echo $this->translate('Add role'); ?></a>  
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-2">
+        <strong><?php echo $this->translate('Activity log'); ?></strong>
+    </div>
+    <div class="col-md-10">
+        <ul>
+            <li>Activity A</li>
+        </ul>
+    </div>
+</div>

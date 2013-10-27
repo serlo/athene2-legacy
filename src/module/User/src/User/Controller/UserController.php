@@ -19,7 +19,7 @@ use User\Form\Register;
 
 class UserController extends AbstractUserController
 {
-    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getObjectManager()
     {
@@ -182,11 +182,16 @@ class UserController extends AbstractUserController
         return '';
     }
 
-    public function lostPasswordAction()
-    {}
-
-    public function emailConfirmAction()
-    {}
+    public function profileAction()
+    {
+        $view = new ViewModel(array(
+            'user' => $this->getUserManager()->getUser($this->params('id')),
+            'languages' => $this->getLanguageManager()->findAllLanguages()
+        ));
+        $this->layout('layout/1-col');
+        $view->setTemplate('user/user/profile');
+        return $view;
+    }
 
     public function removeAction()
     {
@@ -204,6 +209,23 @@ class UserController extends AbstractUserController
             ->flush();
     }
 
-    public function updateAction()
-    {}
+    public function removeRoleAction()
+    {
+        $user = $this->getUserManager()->getUser($this->params('user'));
+        $user->removeRole($this->params('role'), $this->getLanguageManager()
+            ->getLanguageFromRequest());
+        $this->getUserManager()->flush();
+        $this->redirect()->toReferer();
+        return '';
+    }
+
+    public function addRoleAction()
+    {
+        $user = $this->getUserManager()->getUser($this->params('user'));
+        $user->addRole($this->params('role'), $this->getLanguageManager()
+            ->getLanguageFromRequest());
+        $this->getUserManager()->flush();
+        $this->redirect()->toReferer();
+        return '';
+    }
 }

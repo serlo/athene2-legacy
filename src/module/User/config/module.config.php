@@ -303,18 +303,16 @@ return array(
                     'role' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/:username/role',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\RoleController',
-                            )
+                            'route' => '/:user/role',
                         ),
                         'child_routes' => array(
                             'add' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
                                 'options' => array(
-                                    'route' => '/add/:role',
+                                    'route' => '/add',
                                     'defaults' => array(
+                                        'action' => 'addRole'
                                     )
                                 )
                             ),
@@ -324,10 +322,20 @@ return array(
                                 'options' => array(
                                     'route' => '/remove/:role',
                                     'defaults' => array(
-                                        'action' => 'remove'
+                                        'action' => 'removeRole'
                                     )
                                 )
-                            ),
+                            )
+                        )
+                    ),
+                    'profile' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/profile/:id',
+                            'defaults' => array(
+                                'action' => 'profile'
+                            )
                         )
                     ),
                     'login' => array(
@@ -418,12 +426,12 @@ return array(
                         'uri' => '#',
                         'pages' => array(
                             array(
-                                'label' => 'Benutzer verwalten',
-                                'route' => 'restricted/users'
+                                'label' => 'Manage users',
+                                'route' => 'users'
                             ),
                             array(
-                                'label' => 'Benutzerrollen verwalten',
-                                'route' => 'restricted/users/roles'
+                                'label' => 'Manage roles',
+                                'route' => 'users/roles'
                             )
                         )
                     )

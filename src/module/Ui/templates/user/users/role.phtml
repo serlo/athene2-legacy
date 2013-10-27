@@ -10,5 +10,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<h1 class="page_header"><?php echo $this->translate(sprintf('Benutzer mit %s', $this->role->getName())); ?></h1>
+<div class="page-header">
+    <h1><?php echo $this->translate('Users'); ?> <small><?php echo $this->role->getName(); ?></small></h1>
+</div>
 <?php echo $this->partial('user/users/partial/users-table', array('users' => $this->users)); ?>

@@ -14,7 +14,7 @@ use User\Manager\UserManagerInterface;
 interface UserServiceInterface
 {
 
-    public function addRole($role, LanguageServiceInterface $language = NULL);
+    public function addRole($role, LanguageServiceInterface $language);
     
     /**
      *
@@ -29,17 +29,15 @@ interface UserServiceInterface
      */
     public function setManager(UserManagerInterface $manager);
 
-    public function getRoleNames(LanguageServiceInterface $language = NULL);
+    public function getRoleNames(LanguageServiceInterface $language);
 
-    public function hasRole($roleName, LanguageServiceInterface $language = NULL);
+    public function hasRole($roleName, LanguageServiceInterface $language);
 
     public function updateLoginData();
 
-    public function getRoles(LanguageServiceInterface $language = NULL);
+    public function getRoles(LanguageServiceInterface $language);
 
     public function getId();
-
-    public function getUserRoles();
 
     public function getLogs();
 
@@ -62,14 +60,12 @@ interface UserServiceInterface
     public function getLastname();
 
     public function getGender();
-
-    public function getAdsEnabled();
+    
+    public function countRoles(LanguageServiceInterface $language);
 
     public function getRemoved();
 
     public function setLogs($logs);
-
-    public function setUserRoles($userRoles);
 
     public function setEmail($email);
 
@@ -88,8 +84,6 @@ interface UserServiceInterface
     public function setLastname($lastname);
 
     public function setGender($gender);
-
-    public function setAdsEnabled($adsEnabled);
 
     public function setRemoved($removed);
 }

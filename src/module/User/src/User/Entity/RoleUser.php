@@ -35,7 +35,7 @@ class RoleUser
 
     /**
      * @ORM\ManyToOne(targetEntity="User",
-     * inversedBy="userRoles")
+     * inversedBy="userRoles", cascade="persist")
      */
     protected $user;
 
