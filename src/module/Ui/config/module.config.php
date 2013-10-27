@@ -2,7 +2,11 @@
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\HelperPluginManager;
 use Zend\Session\Container;
+use ZfcRbac\Service\Rbac;
+use Zend\Mvc\Application;
 /**
+ *
+ *
  *
  *
  *
@@ -292,6 +296,13 @@ return array(
                     )
                 )
             )
+        ),
+        'acceptableErrors' => array(
+            Application::ERROR_CONTROLLER_NOT_FOUND,
+            Application::ERROR_CONTROLLER_INVALID,
+            Application::ERROR_ROUTER_NO_MATCH,
+            Rbac::ERROR_ROUTE_UNAUTHORIZED,
+            Rbac::ERROR_CONTROLLER_UNAUTHORIZED
         )
     )
 );

@@ -4,9 +4,9 @@
     echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
         ->setAutoEscape(false);
 
-    echo $this->plugin('HeadLink');
-    echo $this->plugin('HeadStyle');
-    echo $this->plugin('HeadScript');
+    echo $this->headLink();
+    echo $this->headStyle();
+    echo $this->headScript();
 ?>
     <meta name="viewport" content="width=device-width, user-scalable=no">
 <?php
