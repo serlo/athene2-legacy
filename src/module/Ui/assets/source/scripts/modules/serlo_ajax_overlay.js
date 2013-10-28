@@ -128,7 +128,8 @@ define(['jquery', 'common'], function ($, Common) {
             return;
         }
         if ($(this).hasClass(instance.options.closeClass)) {
-            instance.onClickClick(e);
+            instance.forceRedirect = false;
+            instance.onCloseClick(e);
         } else {
             instance.forceRedirect = true;
         }
@@ -141,9 +142,7 @@ define(['jquery', 'common'], function ($, Common) {
     * @param {Object} e jQuery Event Object
     */
     AjaxOverlay.prototype.onCloseClick = function (e) {
-        console.log(instance.forceRedirect);
         if (!instance.forceRedirect) {
-            console.log('shut down?');
             e.preventDefault();
 
             instance.shutDownAjaxContent();
@@ -292,6 +291,7 @@ define(['jquery', 'common'], function ($, Common) {
             instance.options.on.contentOpened.call(page, instance);
 
             activePage = page;
+            console.log(page.$el);
             self.$overlayInner.html(page.$el);
         }
 

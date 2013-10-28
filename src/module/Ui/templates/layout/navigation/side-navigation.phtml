@@ -13,7 +13,7 @@ $html[] = '<ul id="main-nav" class="nav">';
 
 foreach ($this->container as $page) {
     // visibility of the page
-    if (! $page->isVisible() || !$this->navigation()->accept($page) || !$page->isActive(true)) {
+    if (! $page->isVisible(false) || !$this->navigation()->accept($page) || !$page->isActive(true)) {
         continue;
     }
 
