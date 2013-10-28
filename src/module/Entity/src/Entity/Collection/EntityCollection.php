@@ -14,34 +14,34 @@ namespace Entity\Collection;
 use Entity\Manager\EntityManagerInterface;
 use Common\Collection\AbstractDelegatorCollection;
 use Entity\Exception\InvalidArgumentException;
+use Entity\Entity\EntityInterface;
 
 class EntityCollection extends AbstractDelegatorCollection
 {
+
     /**
+     *
      * @return EntityManagerInterface
      */
-    public function getManager(){
+    public function getManager()
+    {
         return parent::getManager();
     }
     
-	/* (non-PHPdoc)
-     * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
+    /*
+     * (non-PHPdoc) @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
      */
-    public function getDelegate ($component)
+    public function getFromManager($key)
     {
-        return $component->getEntity();
-    }
-
-	/* (non-PHPdoc)
-     * @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
-     */
-    public function getFromManager ($key)
-    {
+        if (! $key instanceof EntityInterface)
+            throw new InvalidArgumentException(sprintf('`%s` does not implement `EntityManagerInterface`', get_class($key)));
+        
         return $this->getManager()->getEntity($key->getId());
     }
-    
-    protected function validManager($manager){
-        if(!$manager instanceof EntityManagerInterface)
+
+    protected function validManager($manager)
+    {
+        if (! $manager instanceof EntityManagerInterface)
             throw new InvalidArgumentException(sprintf('`%s` does not implement `EntityManagerInterface`', get_class($manager)));
     }
 }

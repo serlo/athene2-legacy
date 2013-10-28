@@ -18,4 +18,6 @@ interface ProviderInterface
      * @return array
      */
     public function getData();
+    
+    public function setObject($object);
 }

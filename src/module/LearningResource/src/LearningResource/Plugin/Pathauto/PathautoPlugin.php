@@ -29,12 +29,9 @@ class PathautoPlugin extends AbstractPlugin
     {
         $provider = $this->getOption('provider');
         $provider = $this->getServiceLocator()->get($provider);
-        
         /* @var $provider \Token\Provider\ProviderInterface */
-        $provider->setEntityService($this->getEntityService());
         
-        $this->getTokenizer()->setProvider($provider);
-        $alias = $this->getTokenizer()->transliterate($this->getOption('tokenize'));
+        $alias = $this->getTokenizer()->transliterate($provider, $this->getOption('tokenize'));
         
         $languageService = $this->getLanguageManager()->getLanguageFromRequest();
         

@@ -9,22 +9,33 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Token;
+namespace Token\Provider;
 
-interface TokenizerInterface
+abstract class AbstractProvider implements ProviderInterface
 {
 
-    /**
-     *
-     * @param string $provider   
-     * @param string $tokenString            
-     * @return $string
-     */
-    public function transliterate($provider, $tokenString);
+    protected $object;
 
     /**
      *
-     * @return Provider\ProviderInterface $provider
+     * @return mixed $object
      */
-    public function getProvider();
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     *
+     * @param mixed $object            
+     * @return $this
+     */
+    public function setObject($object)
+    {
+        $this->validObject($object);
+        $this->object = $object;
+        return $this;
+    }
+    
+    abstract protected function validObject($object);
 }

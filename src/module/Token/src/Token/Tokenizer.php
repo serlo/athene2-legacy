@@ -36,13 +36,18 @@ class Tokenizer implements TokenizerInterface
      * @param ProviderInterface $provider            
      * @return $this
      */
-    public function setProvider(Provider\ProviderInterface $provider)
+    protected function setProvider(Provider\ProviderInterface $provider)
     {
         $this->provider = $provider;
         return $this;
     }
     
-    public function transliterate($tokenString){
+    public function transliterate($provider, $tokenString){
+        if(!is_object($provider))
+            $provider = new $provider();
+        
+        $this->setProvider($provider);
+        
         // WHY DO YOU NOT WORK WHEN { IS THE FIRST CHAR
         $tokenString = ':'.$tokenString;
         

@@ -9,22 +9,19 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Token;
+namespace Alias\Listener;
 
-interface TokenizerInterface
+use Zend\EventManager\SharedListenerAggregateInterface;
+use Zend\EventManager\SharedEventManagerInterface;
+
+abstract class AbstractListener implements SharedListenerAggregateInterface
 {
-
-    /**
-     *
-     * @param string $provider   
-     * @param string $tokenString            
-     * @return $string
-     */
-    public function transliterate($provider, $tokenString);
-
-    /**
-     *
-     * @return Provider\ProviderInterface $provider
-     */
-    public function getProvider();
+    use \Alias\AliasManagerAwareTrait;
+    
+    protected $listeners = array();
+    
+    public function detachShared(SharedEventManagerInterface $events)
+    {
+        throw new \Exception('not implemented');
+    }
 }

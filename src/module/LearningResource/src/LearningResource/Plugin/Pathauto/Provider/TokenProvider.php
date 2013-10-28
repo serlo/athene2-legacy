@@ -15,8 +15,9 @@ use Token\Provider\ProviderInterface;
 use Entity\Exception;
 use Taxonomy\Service\TermServiceInterface;
 use Entity\Service\EntityServiceInterface;
+use Token\Provider\AbstractProvider;
 
-class TokenProvider implements ProviderInterface
+class TokenProvider extends AbstractProvider implements ProviderInterface
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -25,41 +26,14 @@ class TokenProvider implements ProviderInterface
     public function getTranslator(){
         return $this->getServiceLocator()->get('translator');
     }
-    
-    /**
-     *
-     * @var EntityServiceInterface
-     */
-    protected $entityService;
-
-    /**
-     *
-     * @return EntityServiceInterface $entityService
-     */
-    public function getEntityService()
-    {
-        return $this->entityService;
-    }
-
-    /**
-     *
-     * @param EntityServiceInterface $entityService            
-     * @return $this
-     */
-    public function setEntityService(EntityServiceInterface $entityService)
-    {
-        $this->entityService = $entityService;
-        $this->data = NULL;
-        return $this;
-    }
 
     public function getData()
     {
         if (! is_array($this->data)) {
             $foundPlugin = false;
             $subject = NULL;
-            foreach ($this->getEntityService()->getScopesForPlugin('taxonomy') as $taxonomy) {
-                $terms = $this->getEntityService()
+            foreach ($this->getObject()->getScopesForPlugin('taxonomy') as $taxonomy) {
+                $terms = $this->getObject()
                     ->taxonomy()
                     ->getTerms();
                 foreach ($terms as $term) {
@@ -74,15 +48,15 @@ class TokenProvider implements ProviderInterface
             if (! $subject)
                 throw new Exception\RuntimeException(sprintf('Could not find the subject. Is this resource assigned to one?'));
             
-            if (! $this->getEntityService()->hasPlugin('repository'))
+            if (! $this->getObject()->hasPlugin('repository'))
                 throw new Exception\RuntimeException(sprintf('Could not find the repository plugin.'));
             
-            $title = $this->getEntityService()
+            $title = $this->getObject()
                 ->plugin('repository')
                 ->getHead()
                 ->get('title');
             $foundPlugin = true;
-            $type = $this->getEntityService()
+            $type = $this->getObject()
                 ->getEntity()
                 ->getType()
                 ->getName();
@@ -106,4 +80,13 @@ class TokenProvider implements ProviderInterface
             return $this->findSubject($term->getParent());
         }
     }
+	/* (non-PHPdoc)
+     * @see \Token\Provider\AbstractProvider::validObject()
+     */
+    protected function validObject ($object)
+    {
+        if(!$object instanceof EntityServiceInterface)
+            throw new Exception\InvalidArgumentException(sprintf('Expected EntityServiceInterface but got `%s`', get_class($object)));
+    }
+
 }

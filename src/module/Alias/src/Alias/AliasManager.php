@@ -18,7 +18,33 @@ use Common\Filter\Slugify;
 
 class AliasManager implements AliasManagerInterface
 {
-    use Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Token\TokenizerAwareTrait;
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'aliases' => array()
+        );
+    }
+
+    public function autoAlias($name, $source, UuidInterface $object, \Language\Service\LanguageServiceInterface $language)
+    {
+        if (! is_string($name) || ! is_string($source))
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got `%s`', gettype($name)));
+        
+        if (! array_key_exists($name, $this->getOption('aliases')))
+            throw new Exception\RuntimeException(sprintf('No configuration found for `%s`', $name));
+        
+        $options = $this->getOption('aliases')[$name];
+        $provider = $options['provider'];
+        $tokenString = $options['tokenize'];
+        $fallbackString = $options['fallback'];
+        
+        $alias = $this->tokenizer->transliterate($provider, $tokenString);
+        $aliasFallback = $this->tokenizer->transliterate($provider, $fallbackString);
+        
+        return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
+    }
     
     /*
      * (non-PHPdoc) @see \Alias\AliasManagerInterface::findSourceByAlias()
@@ -42,7 +68,7 @@ class AliasManager implements AliasManagerInterface
         
         return $entity->getSource();
     }
-
+    
     /*
      * (non-PHPdoc) @see \Alias\AliasManagerInterface::findAliasBySource()
      */
@@ -50,18 +76,18 @@ class AliasManager implements AliasManagerInterface
     {
         if (! is_string($source))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
-
+        
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-                ->resolveClassName('Alias\Entity\AliasInterface'))
+            ->resolveClassName('Alias\Entity\AliasInterface'))
             ->findOneBy(array(
-                'source' => $source,
-                'language' => $language->getId()
+            'source' => $source,
+            'language' => $language->getId()
         ));
-
+        
         if (! is_object($entity))
             return false;
-
+        
         return $entity->getAlias();
     }
 
