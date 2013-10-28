@@ -59,6 +59,7 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
             return;
         case Common.KeyCode.enter:
             Router.navigate(this.$el.find('.active').children().first().attr('href'));
+            this.$input.blur();
             break;
         }
     };
