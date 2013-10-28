@@ -13,15 +13,16 @@ namespace Taxonomy\Form;
 
 use Zend\Form\Form;
 use Term\Form\TermFieldset;
+use Zend\InputFilter\InputFilter;
 
 class TermForm extends Form
 {
 
     function __construct()
     {
-        parent::__construct('taxonomy');
+        parent::__construct('term_taxonomy');
         $this->setAttribute('method', 'post');
-        $this->add(new TermFieldset());
+        $this->setInputFilter(new InputFilter());
         
         $this->add(array(
             'name' => 'id',
@@ -50,6 +51,8 @@ class TermForm extends Form
                 'type' => 'hidden'
             ),
         ));
+        
+        $this->add(new TermFieldset());
         
         $this->add(array(
             'name' => 'submit',

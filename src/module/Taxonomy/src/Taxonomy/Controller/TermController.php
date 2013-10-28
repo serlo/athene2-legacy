@@ -70,6 +70,7 @@ class TermController extends AbstractController
     public function createAction()
     {
         $form = new TermForm();
+
         $form->setData(array(
             'taxonomy' => $this->params('taxonomy'),
             'parent' => $this->params('parent', null)
