@@ -24,7 +24,8 @@
 		"zf-commons/zfc-user" : "dev-master",
 		"zendframework/zendframework" : "dev-master",
 		"foolz/sphinxql-query-builder" : "dev-master",
-    	"neilime/zf2-twb-bundle": "dev-master"
+    	"neilime/zf2-twb-bundle": "dev-master",
+    	"zf-commons/zfc-twig": "dev-master" 
 	},
 	"minimum-stability" : "dev",
     "autoload": {
