@@ -14,6 +14,7 @@ use Taxonomy\Exception\RuntimeException;
 use Common\ArrayCopyProvider;
 use Entity\Entity\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Blog\Entity\PostInterface;
 
 /**
  * A
@@ -85,9 +86,16 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
      */
     protected $termTaxonomyEntities;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Blog\Entity\Post",mappedBy="category")
+     * @ORM\OrderBy({"id"="DESC"})
+     */
+    private $blogPosts;
+
     protected $allowedRelations = array(
         'entities',
-        'comments'
+        'comments',
+        'blogPosts'
     );
 
     public function getDescription()
@@ -214,27 +222,64 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
         return $this->getAssociated($field)->count();
     }
 
+    public function getLanguage()
+    {
+        return $this->getTaxonomy()->getLanguage();
+    }
+
     public function addAssociation($field, $entity)
     {
-        if (property_exists($this, $field)) {
-            if(!$entity instanceof TermTaxonomyAware)
+        $method = 'add' . ucfirst($field);
+        if (! method_exists($this, $method)) {
+            if (! $entity instanceof TermTaxonomyAware)
                 throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TermTaxonomyAware but got %s', get_class($entity)));
             $this->getAssociated($field)->add($entity);
             $entity->addTaxonomy($this);
         } else {
-            $field = 'add' . ucfirst($field);
-            $this->$field($entity);
+            $this->$method($entity);
         }
         return $this;
     }
 
     public function orderAssociated($association, $of, $order)
     {
-        $method = 'order'.ucfirst($association);
+        $method = 'order' . ucfirst($association);
+        
+        if (! method_exists($this, $method))
+            throw new \Taxonomy\Exception\RuntimeException(sprintf('Association `%s` does not support sorting.', $association));
+        
         return $this->$method($of, $order);
     }
-    
-    protected function orderEntities($entity, $position){
+
+    public function removeAssociation($field, $entity)
+    {
+        $method = 'remove' . ucfirst($field);
+        if (! method_exists($this, $method)) {
+            if (! $entity instanceof TermTaxonomyAware)
+                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TermTaxonomyAware but got %s', get_class($entity)));
+            $this->getAssociated($field)->removeElement($entity);
+            $entity->removeTaxonomy($this);
+        } else {
+            $this->$method($entity);
+        }
+        return $this;
+    }
+
+    private function addBlogPosts(PostInterface $post)
+    {
+        $post->setCategory($this);
+        $this->blogPosts->add($post);
+        return $this;
+    }
+
+    private function removeBlogPosts(PostInterface $post)
+    {
+        $this->blogPosts->removeElement($post);
+        return $this;
+    }
+
+    private function orderEntities($entity, $position)
+    {
         foreach ($this->termTaxonomyEntities as $rel) {
             if ($rel->getEntity()->getId() == $entity) {
                 $rel->setPosition($position);
@@ -244,21 +289,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
         return $rel;
     }
 
-    public function removeAssociation($field, $entity)
-    {
-        if (property_exists($this, $field)) {
-            if(!$entity instanceof TermTaxonomyAware)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TermTaxonomyAware but got %s', get_class($entity)));
-            $this->getAssociated($field)->removeElement($entity);
-            $entity->removeTaxonomy($this);
-        } else {
-            $field = 'remove' . ucfirst($field);
-            $this->$field($entity);
-        }
-        return $this;
-    }
-
-    protected function addEntities(EntityInterface $entity)
+    private function addEntities(EntityInterface $entity)
     {
         // Build new relation object to handle join entity correct
         $rel = new TermTaxonomyEntity($this, $entity);
@@ -269,8 +300,8 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
         
         return $this;
     }
-    
-    protected function removeEntities(EntityInterface $entity)
+
+    private function removeEntities(EntityInterface $entity)
     {
         // Iterate over all join entities to find the correct
         foreach ($this->termTaxonomyEntities as $rel) {
@@ -282,8 +313,8 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
         }
         return $this;
     }
-    
-    protected function getEntities()
+
+    private function getEntities()
     {
         $collection = new \Doctrine\Common\Collections\ArrayCollection();
         
@@ -292,10 +323,5 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
         }
         
         return $collection;
-    }
-
-    public function getLanguage()
-    {
-        return $this->getTaxonomy()->getLanguage();
     }
 }

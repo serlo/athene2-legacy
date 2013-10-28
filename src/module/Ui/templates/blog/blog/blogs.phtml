@@ -1,0 +1,9 @@
+<div class="page-header">
+	<h1><?php echo $this->translate('Blogs'); ?></h1>
+</div>
+<div class="list-group">
+    <?php foreach ($this->blogs as $blog): ?>
+    <a class="list-group-item"
+		href="<?php echo $this->url('blog/view', array('id' => $blog->getId())); ?>"><?php echo $blog->getName(); ?></a>
+    <?php endforeach; ?>
+</div>

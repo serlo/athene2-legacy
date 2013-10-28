@@ -9,21 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Ui\View\Helper;
+namespace Blog\Exception;
 
-use Zend\View\Helper\AbstractHelper;
-
-class Timeago extends AbstractHelper
+class PostNotFoundException extends \RuntimeException
 {
-    public function __invoke(){
-        return $this;
-    }
-    
-    public function format(\Datetime $datetime){
-        return $datetime->format('Y-m-d H:i:s');
-    }
-    
-    public function render(\Datetime $datetime){
-        return '<span class="timeago" title="'.$this->format($datetime).'"></span>';
-    }
 }

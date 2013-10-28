@@ -16,6 +16,7 @@ namespace Term\Manager;
 use Term\Service\TermServiceInterface;
 use Term\Exception\TermNotFoundException;
 use Language\Service\LanguageServiceInterface;
+use Common\Filter\Slugify;
 
 class TermManager implements TermManagerInterface
 {
@@ -86,10 +87,11 @@ class TermManager implements TermManagerInterface
 
     public function createTerm($name, $slug = NULL, LanguageServiceInterface $language)
     {
+        $filter = new Slugify();
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermInterface');
         $entity->setName($name);
         $entity->setLanguage($language->getEntity());
-        $entity->setSlug(($slug ? $slug : $this->slugify($name)));
+        $entity->setSlug(($slug ? $slug : $filter->filter($name)));
         $this->getObjectManager()->persist($entity);
         return $entity;
     }
@@ -101,29 +103,5 @@ class TermManager implements TermManagerInterface
         $instance->setEntity($entity);
         $instance->setManager($this);
         return $instance;
-    }
-
-    private function slugify($text)
-    {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-        
-        // trim
-        $text = trim($text, '-');
-        
-        // transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        
-        // lowercase
-        $text = strtolower($text);
-        
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-        
-        if (empty($text)) {
-            return 'n-a';
-        }
-        
-        return $text;
     }
 }

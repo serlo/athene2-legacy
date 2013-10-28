@@ -8,7 +8,7 @@ return array(
         'DoctrineORMModule',
         'ZfcBase',
         'ZfcRbac',
-        'TwbBundle',
+        //'TwbBundle',
         'Common',
         'Ui',
         'Admin',
@@ -16,7 +16,6 @@ return array(
         'Versioning',
         'Log',
         'Entity',
-        'TwbBundle',
     	'Taxonomy',
     	'Link',
         'Subject',
@@ -30,7 +29,8 @@ return array(
         'Alias',
         'Token',
         'Discussion',
-        'Page'
+        'Page',
+        'Blog'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

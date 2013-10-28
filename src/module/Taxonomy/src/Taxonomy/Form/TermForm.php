@@ -13,61 +13,54 @@ namespace Taxonomy\Form;
 
 use Zend\Form\Form;
 use Term\Form\TermFieldset;
+use Zend\InputFilter\InputFilter;
 
 class TermForm extends Form
 {
 
     function __construct()
     {
-        parent::__construct('taxonomy');
+        parent::__construct('term_taxonomy');
         $this->setAttribute('method', 'post');
-        $this->add(new TermFieldset());
+        $this->setInputFilter(new InputFilter());
         
         $this->add(array(
             'name' => 'id',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'parent',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'taxonomy',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'weight',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
+        
+        $this->add(new TermFieldset());
         
         $this->add(array(
             'name' => 'submit',
-            'label' => '',
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Speichern',
                 'class' => 'btn btn-success pull-right'
             ),
-            'options' => array()
         ));
     }
 }

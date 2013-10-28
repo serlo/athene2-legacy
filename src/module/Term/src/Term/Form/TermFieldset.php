@@ -24,11 +24,8 @@ class TermFieldset extends Fieldset
             'name' => 'name',
             'attributes' => array(
                 'type' => 'text',
-                'id' => 'name'
+                'placeholder' => 'Name'
             ),
-            'options' => array(
-                'placeholder' => 'Namen eingeben'
-            )
         ));
     }
     

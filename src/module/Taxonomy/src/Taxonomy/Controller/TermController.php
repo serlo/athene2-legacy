@@ -70,6 +70,7 @@ class TermController extends AbstractController
     public function createAction()
     {
         $form = new TermForm();
+
         $form->setData(array(
             'taxonomy' => $this->params('taxonomy'),
             'parent' => $this->params('parent', null)
@@ -93,7 +94,6 @@ class TermController extends AbstractController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                
                 $this->getSharedTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
                     ->getLanguageFromRequest());
                 

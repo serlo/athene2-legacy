@@ -189,14 +189,12 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
                 throw new RuntimeException(sprintf('Taxonomy `%s` does allow `parent` to be NULL', $taxonomyManager->getName()));
         }
         
-        if(array_key_exists('term', $data)){
-            try {
-                $term = $this->getTermManager()->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())->getEntity();
-            } catch (\Term\Exception\TermNotFoundException $e) {
-                $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
-            }
-            $termTaxonomy->setTerm($term);
+        try {
+            $term = $this->getTermManager()->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())->getEntity();
+        } catch (\Term\Exception\TermNotFoundException $e) {
+            $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
         }
+        $termTaxonomy->setTerm($term);
         
         $taxonomyManager->addTerm($termTaxonomy);
         $termTaxonomy->setTaxonomy($taxonomyManager->getEntity());

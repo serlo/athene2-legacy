@@ -58,6 +58,11 @@ class Uuid implements UuidInterface
     protected $user;
 
     /**
+     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id")
+     */
+    protected $blogPost;
+    
+    /**
      * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id")
      */
     protected $entityRevision;

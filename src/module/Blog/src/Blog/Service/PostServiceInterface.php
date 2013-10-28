@@ -9,21 +9,23 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Ui\View\Helper;
+namespace Blog\Service;
 
-use Zend\View\Helper\AbstractHelper;
+use Blog\Entity\PostInterface;
 
-class Timeago extends AbstractHelper
+interface PostServiceInterface
 {
-    public function __invoke(){
-        return $this;
-    }
-    
-    public function format(\Datetime $datetime){
-        return $datetime->format('Y-m-d H:i:s');
-    }
-    
-    public function render(\Datetime $datetime){
-        return '<span class="timeago" title="'.$this->format($datetime).'"></span>';
-    }
+
+    /**
+     *
+     * @return PostInterface
+     */
+    public function getEntity();
+
+    /**
+     *
+     * @param PostInterface $post            
+     * @return $this
+     */
+    public function setEntity(PostInterface $post);
 }
