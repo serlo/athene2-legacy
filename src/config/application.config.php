@@ -30,7 +30,8 @@ return array(
         'Alias',
         'Token',
         'Discussion',
-        'Page'
+        'Page',
+        'Blog'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
