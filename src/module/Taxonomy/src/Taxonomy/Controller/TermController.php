@@ -93,7 +93,6 @@ class TermController extends AbstractController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                
                 $this->getSharedTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
                     ->getLanguageFromRequest());
                 

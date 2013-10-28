@@ -25,49 +25,39 @@ class TermForm extends Form
         
         $this->add(array(
             'name' => 'id',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'parent',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'taxonomy',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'weight',
-            'label' => '',
             'attributes' => array(
                 'type' => 'hidden'
             ),
-            'options' => array()
         ));
         
         $this->add(array(
             'name' => 'submit',
-            'label' => '',
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Speichern',
                 'class' => 'btn btn-success pull-right'
             ),
-            'options' => array()
         ));
     }
 }

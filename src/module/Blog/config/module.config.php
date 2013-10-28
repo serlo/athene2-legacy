@@ -90,12 +90,12 @@ return array(
             )
         ),
         'instance' => array(
-            __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager',
-            __NAMESPACE__ . '\Manager\BlogManagerInterface' => __NAMESPACE__ . '\Manager\BlogManager',
             'preferences' => array(
-                __NAMESPACE__ . '\Service\PostService' => array(
-                    'shared' => false
-                )
+                __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager',
+                __NAMESPACE__ . '\Manager\BlogManagerInterface' => __NAMESPACE__ . '\Manager\BlogManager'
+            ),
+            __NAMESPACE__ . '\Service\PostService' => array(
+                'shared' => false
             )
         )
     ),

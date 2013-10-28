@@ -14,7 +14,14 @@ namespace Blog\Entity;
 use Uuid\Entity\UuidEntity;
 use User\Entity\UserInterface;
 use Taxonomy\Entity\TermTaxonomyInterface;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * A blog post.
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="blog_post")
+ */
 class Post extends UuidEntity implements PostInterface
 {
 
