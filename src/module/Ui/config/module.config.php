@@ -34,23 +34,11 @@ return array(
         'top-left' => array(
             array(
                 'label' => 'Home',
-                'uri' => '/',
+                'route' => 'home',
                 'icon' => 'home'
             ),
             array(
-                'label' => 'Blog',
-                'uri' => '/blog'
-            ),
-            array(
-                'label' => 'About',
-                'uri' => '/about'
-            ),
-            array(
-                'label' => 'Participate',
-                'uri' => '/participate'
-            ),
-            array(
-                'label' => 'Area 51',
+                'label' => 'Restricted area',
                 'route' => 'restricted'
             )
         ),
