@@ -13,7 +13,6 @@ return array(
         'Admin',
         'User',
         'Versioning',
-        'Log',
         'Entity',
         'TwbBundle',
     	'Taxonomy',
