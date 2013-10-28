@@ -1,0 +1,42 @@
+<?php
+/**
+* @authors Kanstantsin A Kamkou (2ka.by); Jeroen Herczeg; Timo Klement
+*/
+
+$html = array();
+
+foreach ($this->container as $page) {
+    // visibility of the page
+    // if (! $page->isVisible() || !$this->navigation()->accept($page) || !$page->isActive(true)) {
+    //     continue;
+    // }
+
+    $html[] = '<div class="row">';
+    $html[] = '<div class="col-xs-5">';
+    $html[] = '<h4 class="is-bold">' . $page->getLabel() . '</h4>';
+    $html[] = '</div>';
+    $html[] = '<div class="col-xs-7">';
+
+    if(! empty($page->pages)) {
+        $html[] = '<ul class="nav">';
+        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));
+        $html[] = "</ul>";
+    }
+
+    $html[] = '</div>';
+    $html[] = '</div>';
+}
+
+
+echo join(PHP_EOL, $html);
+/*
+<div class="dropdown is-inline-block">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">toggle me<b class="caret"></b></a>
+    <?php 
+        echo $this->navigation('top_center_navigation')
+                 ->menu()
+                 ->setUlClass('dropdown-menu')
+                 ->setPartial('layout/navigation/subject-navigation.phtml')
+                 ->render();
+    ?>
+</div>*/

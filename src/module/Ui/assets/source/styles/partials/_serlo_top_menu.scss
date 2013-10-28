@@ -1,12 +1,12 @@
 /* Serlo Menu */
 /* top navbar */
 #serlo-menu {
-    font-size: 0.8em;
     border: none;
-    border-bottom: 2px solid $themeColor;
-    
-    border-radius: 0;
 
+    @include bar();
+
+    font-size: 0.8em;
+    border-radius: 0;
     min-height: 0;
 
     li {
@@ -15,8 +15,8 @@
     }
 
     a {
-        padding-top: 5px;
-        padding-bottom: 5px;
+        padding-top: 6px;
+        padding-bottom: 4px;
     }
     
     .navbar-nav {

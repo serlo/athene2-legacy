@@ -6,18 +6,18 @@
 }
 
 #page {
-  position: relative;
-  margin-top: 35px;
-  margin-bottom: 75px;
-  
-  transform-style: preserve-3d;
-  transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+    position: relative;
+    margin-top: 35px;
+    margin-bottom: 75px;
 
-  @media only screen and (max-width: $navigationBreakPoint) {
-    margin-top: 54px;
-    width: auto;
-    max-width: 100%;
-  }
+    transform-style: preserve-3d;
+    transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+        margin-top: 54px;
+        width: auto;
+        max-width: 100%;
+    }
 }
 
 #main {
@@ -40,7 +40,7 @@
 
     padding: 0 20px;
 
-    @media only screen and (min-width: $navigationBreakPoint) {
+    @media only screen and (min-width: $sidebarBreakPoint) {
         padding: 0 35px;
     }
 }

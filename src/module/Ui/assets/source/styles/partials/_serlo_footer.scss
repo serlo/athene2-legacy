@@ -1,8 +1,7 @@
 #footer {
-    border-top: 2px solid $themeColor;
-    padding-top: 1em;
+    @include bar('bottom');
 
-    background: $footerBackground;
+    padding-top: 1em;
 
     font-size: 0.9em;
 
