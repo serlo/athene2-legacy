@@ -255,7 +255,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      *
      **/
     SubNavigation.prototype.getListAtLevel = function (level) {
-        return this.$el.children().eq(level);
+        return this.$el.children().eq(level).find('ul').first();
     };
 
     /**
@@ -668,6 +668,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         // start and end level is 1, we dont need any animation
         if (startLevels.length === 1 && self.activeLevels.length === 1) {
             self.subNavigation.reset(self.activeLevels);
+            self.setMoverHeight(1);
             self.setActiveNavigator();
         } else {
             if (breakpoint === startLevels.length) {
@@ -696,9 +697,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      **/
     SideNavigation.prototype.animateTo = function (level, callback) {
         var self = this,
-            $ul,
-            height,
             targetLeft = ((level - 1) * -1 * self.options.subNavigationWidth) + 'px';
+
+        self.setMoverHeight(level);
 
         // if (self.$mover.css('left') === targetLeft && callback) {
         if (self.subNavigation.$el.css('left') === targetLeft && callback) {
@@ -717,6 +718,18 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             duration: self.options.animationDuration,
             easing: 'easeOutExpo'
         });
+
+    };
+
+    /**
+     * @method setMoverHeight
+     * @param {Number} level
+     * 
+     **/
+    SideNavigation.prototype.setMoverHeight = function (level) {
+        var self = this,
+            height,
+            $ul;
 
         $ul = self.subNavigation.getListAtLevel(level - 1);
 
