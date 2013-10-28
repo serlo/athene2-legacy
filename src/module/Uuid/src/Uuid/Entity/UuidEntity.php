@@ -13,39 +13,40 @@ namespace Uuid\Entity;
 
 class UuidEntity implements UuidHolder
 {
+    protected $id;
 
-    public final function getUuid()
+    final public function getUuid()
     {
         return $this->getUuidEntity()->getUuid();
     }
 
-    public final function getId()
+    final public function getId()
     {
         return $this->getUuidEntity()->getId();
     }
 
-    public final function setUuid(UuidInterface $uuid = null)
+    public function setUuid(UuidInterface $uuid = null)
     {
         $this->id = $uuid;
         return $this;
     }
 
-    public final function getUuidEntity()
+    public function getUuidEntity()
     {
         return $this->id;
     }
 
-    public final function getTrashed()
+    final public function getTrashed()
     {
         return $this->getUuidEntity()->getTrashed();
     }
 
-    public final function isTrashed()
+    final public function isTrashed()
     {
         return $this->getTrashed();
     }
 
-    public final function setTrashed($trashed)
+    final public function setTrashed($trashed)
     {
         $this->getUuidEntity()->setTrashed($trashed);
         return $this;
