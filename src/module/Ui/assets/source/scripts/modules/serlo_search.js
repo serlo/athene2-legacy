@@ -106,13 +106,35 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         this.$input
             .focus(function () {
                 self.$el.addClass(self.options.inFocusClass);
+
+                // Keep track on the users mouse actions
+                // to prevent too fast result clearing
+                self.$el.mousedown(function () {
+                    self.onMouseDown();
+                });
+                self.$el.mouseup(function () {
+                    self.onMouseUp();
+                });
             })
             .bind('focusout', function () {
-                setTimeout(function () {
+                function clearAndHide() {
                     self.results.clear();
-
                     self.$el.removeClass(self.options.inFocusClass).removeClass(self.options.hasResultsClass);
-                }, 400);
+                    self.$el.unbind('mousedown').unbind('mouseup');
+                }
+
+                // If the user currently has the mouse down
+                // on self.$el, he probably wants to click
+                // on a search result. So we set a timeout
+                // to make sure the results dont disappear
+                // before the user can click on them.
+                if (self.mouseIsDown) {
+                    setTimeout(function () {
+                        clearAndHide();
+                    }, 400);
+                } else {
+                    clearAndHide();
+                }
             })
             .keydown(function (e) {
                 var value = Common.trim($(this).val() || "");
@@ -130,6 +152,14 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
                     break;
                 }
             });
+    };
+
+    Search.prototype.onMouseDown = function () {
+        this.mouseIsDown = true;
+    };
+
+    Search.prototype.onMouseUp = function () {
+        this.mouseIsDown = false;
     };
 
     Search.prototype.search = function (string) {

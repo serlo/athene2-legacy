@@ -291,7 +291,6 @@ define(['jquery', 'common'], function ($, Common) {
             instance.options.on.contentOpened.call(page, instance);
 
             activePage = page;
-            console.log(page.$el);
             self.$overlayInner.html(page.$el);
         }
 
