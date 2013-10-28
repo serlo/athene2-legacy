@@ -90,7 +90,7 @@ interface PostInterface
      * @param \Datetime $date            
      * @return $this
      */
-    public function setDate(\Datetime $date);
+    public function setTimestamp(\Datetime $date);
 
     /**
      * Sets the publish date.
@@ -98,14 +98,14 @@ interface PostInterface
      * @param \Datetime $publish            
      * @return $this
      */
-    public function setPublish(\Datetime $publish);
+    public function setPublish(\Datetime $publish = NULL);
 
     /**
      * Gets the creation date.
      *
      * @return \Datetime
      */
-    public function getDate();
+    public function getTimestamp();
 
     /**
      * Gets the publish date.

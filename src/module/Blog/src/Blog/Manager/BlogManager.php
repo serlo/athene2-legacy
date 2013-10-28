@@ -13,10 +13,12 @@ namespace Blog\Manager;
 
 use Blog\Exception;
 use Taxonomy\Service\TermServiceInterface;
+use Blog\Entity\PostInterface;
+use Language\Service\LanguageServiceInterface;
 
 class BlogManager extends InstanceManager implements BlogManagerInterface
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     public function getBlog($id)
     {
@@ -31,8 +33,30 @@ class BlogManager extends InstanceManager implements BlogManagerInterface
         
         return $this->getInstance($id);
     }
+    
+    public function findAllBlogs(LanguageServiceInterface $languageService){
+        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('blog', $languageService);
+        $blogs = array();
+        foreach($taxonomy->getSaplings() as $blog){
+            $blogs[] = $this->getBlog($blog->getId());
+        }
+        return $blogs;
+    }
 
-    public function findBlogByCategory($name,\Language\Service\LanguageServiceInterface $language)
+    public function getPost(PostInterface $post)
+    {
+        $id = $post->getCategory()->getId();
+        
+        if (! $this->hasInstance($id)) {
+            $category = $this->getSharedTaxonomyManager()->getTerm($post->getCategory());
+            $service = $this->createService($category);
+            $this->addInstance($id, $service);
+        }
+        
+        return $this->getInstance($id)->getPost($post->getId());
+    }
+
+    public function findBlogByCategory($name, \Language\Service\LanguageServiceInterface $language)
     {
         // todo
     }

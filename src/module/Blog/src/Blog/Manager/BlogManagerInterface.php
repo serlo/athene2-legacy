@@ -30,4 +30,11 @@ interface BlogManagerInterface
      * @return PostManagerInterface
      */
     public function findBlogByCategory($name, LanguageServiceInterface $language);
+    
+    /**
+     * 
+     * @param LanguageServiceInterface $languageService
+     * @return PostManagerInterface[]
+     */
+    public function findAllBlogs(LanguageServiceInterface $languageService);
 }

@@ -18,7 +18,7 @@ use Blog\Collection\PostCollection;
 
 class PostManager extends InstanceManager implements PostManagerInterface
 {
-    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait, BlogManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
+    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait, BlogManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     protected $interfaces = array(
         'service' => 'Blog\Service\PostServiceInterface',
@@ -29,21 +29,25 @@ class PostManager extends InstanceManager implements PostManagerInterface
     {
         return $this->interfaces[$name];
     }
-    
-    public function getSlug(){
+
+    public function getSlug()
+    {
         return $this->getTermService()->getSlug();
     }
-    
-    public function getName(){
+
+    public function getName()
+    {
         return $this->getTermService()->getName();
     }
-    
+
+    public function getId()
+    {
+        return $this->getTermService()->getId();
+    }
+
     public function findAllPosts()
     {
-        $className = $this->getClassResolver()->resolveClassName('entity');
-        $found = $this->getObjectManager()->getRepository($className)->findAll();
-        $collection = new ArrayCollection($found);
-        return new PostCollection($collection, $this->getBlogManager());
+        return $this->getTermService()->getAssociated('blogPosts');
     }
 
     public function getPost($id)
@@ -51,11 +55,11 @@ class PostManager extends InstanceManager implements PostManagerInterface
         if (! is_numeric($id))
             throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`.', gettype($id)));
         
-        if(!$this->hasInstance($id)){
-            $className = $this->getClassResolver()->resolveClassName('entity');
+        if (! $this->hasInstance($id)) {
+            $className = $this->getClassResolver()->resolveClassName($this->getInterface('entity'));
             $post = $this->getObjectManager()->find($className, $id);
             
-            if(!is_object($post))
+            if (! is_object($post))
                 throw new Exception\PostNotFoundException(sprintf('Could not find a blog post by the id `%d`', $id));
             
             $service = $this->createService($post);
@@ -65,9 +69,19 @@ class PostManager extends InstanceManager implements PostManagerInterface
         return $this->getInstance($id);
     }
     
+    public function updatePost($id, $title, $content, \DateTime $publish = NULL){
+        $post = $this->getPost($id);
+        $post = $post->getEntity();
+        $post->setTitle($title);
+        $post->setContent($content);
+        $post->setPublish($publish);
+        $this->getObjectManager()->persist($post);
+        return $this;
+    }
+
     public function createPost(\User\Service\UserServiceInterface $author, $title, $content, \DateTime $publish = NULL)
     {
-        if($publish === NULL)
+        if ($publish === NULL)
             $publish = new \DateTime("now");
         
         $className = $this->getClassResolver()->resolveClassName($this->getInterface('entity'));
@@ -76,9 +90,13 @@ class PostManager extends InstanceManager implements PostManagerInterface
         $this->getUuidManager()->injectUuid($post);
         $post->setAuthor($author->getEntity());
         $post->setTitle($title);
-        $post->setCategory($this->getTermService()->getEntity());
+        /*$post->setCategory($this->getTermService()
+            ->getEntity());*/
         $post->setContent($content);
         $post->setPublish($publish);
+        
+        $this->getTermService()->associate('blogPosts', $post);
+        
         $this->getObjectManager()->persist($post);
         
         return $this->createService($post);

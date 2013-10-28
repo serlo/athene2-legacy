@@ -27,7 +27,7 @@ class PostCollection extends AbstractDelegatorCollection
     
     public function getFromManager ($key)
     {
-        return $this->getManager()->getPost($key->getId());
+        return $this->getManager()->getPost($key);
     }
     
     protected function validManager($manager){

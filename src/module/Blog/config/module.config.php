@@ -14,9 +14,40 @@ namespace Blog;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Blog\Collection\PostCollection;
 return array(
+    'navigation' => array(
+        'top-left' => array(
+            array(
+                'label' => 'Blog',
+                'route' => 'blog'
+            )
+        ),
+        'default' => array(
+            'blog' => array(
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Blogs',
+                        'route' => 'blog',
+                        'icon' => 'home'
+                    ),
+                    array(
+                        'label' => 'Develop',
+                        'route' => 'blog/view',
+                        'params' => array(
+                            'id' => 63
+                        )
+                    ),
+                    array(
+                        'route' => 'blog/post/create',
+                        'visible' => false
+                    )
+                )
+            )
+        )
+    ),
     'taxonomy' => array(
         'associations' => array(
-            'blogs' => function (ServiceLocatorInterface $sm, $collection)
+            'blogPosts' => function (ServiceLocatorInterface $sm, $collection)
             {
                 return new PostCollection($collection, $sm->get('Blog\Manager\BlogManager'));
             }
@@ -25,7 +56,7 @@ return array(
             'blog' => array(
                 'options' => array(
                     'allowed_associations' => array(
-                        'blogs'
+                        'blogPosts'
                     ),
                     'allowed_parents' => array(
                         'root'
@@ -63,6 +94,9 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => true
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Manager\BlogManager' => array(
@@ -90,7 +124,11 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Service\PostService' => array()
+                __NAMESPACE__ . '\Service\PostService' => array(
+                    'setObjectManager' => array(
+                        'required' => true
+                    )
+                )
             )
         ),
         'instance' => array(
@@ -117,9 +155,11 @@ return array(
                 'options' => array(
                     'route' => '/blog',
                     'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\BlogController'
+                        'controller' => __NAMESPACE__ . '\Controller\BlogController',
+                        'action' => 'index'
                     )
                 ),
+                'may_terminate' => true,
                 'child_routes' => array(
                     'view' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -147,9 +187,45 @@ return array(
                                         'action' => 'create'
                                     )
                                 )
+                            ),
+                            'update' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/update/:blog/:post',
+                                    'defaults' => array(
+                                        'action' => 'update'
+                                    )
+                                )
+                            ),
+                            'trash' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/trash/:blog/:post',
+                                    'defaults' => array(
+                                        'action' => 'trash'
+                                    )
+                                )
                             )
                         )
                     )
+                )
+            )
+        )
+    ),
+    'zfcrbac' => array(
+        'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+                array(
+                    'route' => 'blog/post/create',
+                    'roles' => 'admin'
+                ),
+                array(
+                    'route' => 'blog/post/update',
+                    'roles' => 'admin'
+                ),
+                array(
+                    'route' => 'blog/post/trash',
+                    'roles' => 'admin'
                 )
             )
         )

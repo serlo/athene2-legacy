@@ -64,11 +64,6 @@ class Post extends UuidEntity implements PostInterface
      */
     protected $publish;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
     public function getAuthor()
     {
         return $this->author;
@@ -89,7 +84,7 @@ class Post extends UuidEntity implements PostInterface
         return $this->content;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -123,13 +118,13 @@ class Post extends UuidEntity implements PostInterface
         return $this;
     }
 
-    public function setDate(\DateTime $date)
+    public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
         return $this;
     }
 
-    public function setPublish(\DateTime $publish)
+    public function setPublish(\DateTime $publish = NULL)
     {
         $this->publish = $publish;
         return $this;

@@ -1,3 +1,31 @@
 <div class="page-header">
-    <h1></h1>
+    <?php if($this->rbac()->hasAccessToRoute('blog/post/create')): ?>
+        <div class="pull-right">
+            <a class="btn btn-default btn-sm" href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
+            	class="glyphicon glyphicon-file"></span></a>
+        </div>
+    <?php endif; ?>
+	<h1><?php echo $this->translate('Blog'); ?> <small><?php echo $this->blog->getName(); ?></small>
+	</h1>
 </div>
+<ul class="list-group">
+    <?php foreach($this->posts as $post): ?>
+    <li class="list-group-item">
+		<article>
+			<header>
+			    <div class="pull-right btn-group">
+			         <?php if($this->rbac()->hasAccessToRoute('blog/post/update')): ?>
+			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/update', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
+		             <?php endif; ?>
+			         <?php if($this->rbac()->hasAccessToRoute('blog/post/trash')): ?>
+			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
+			         <?php endif; ?>
+			    </div>
+				<h3><?php echo $post->getTitle(); ?> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?></small></h3>
+			</header>
+			<hr>
+            <?php echo $post->getContent(); ?>
+        </article>
+	</li>
+    <?php endforeach; ?>
+</ul>

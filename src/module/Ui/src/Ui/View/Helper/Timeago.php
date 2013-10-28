@@ -22,4 +22,8 @@ class Timeago extends AbstractHelper
     public function format(\Datetime $datetime){
         return $datetime->format('Y-m-d H:i:s');
     }
+    
+    public function render(\Datetime $datetime){
+        return '<span class="timeago" title="'.$this->format($datetime).'"></span>';
+    }
 }

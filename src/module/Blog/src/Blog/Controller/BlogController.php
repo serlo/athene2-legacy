@@ -17,16 +17,86 @@ use Blog\Form\PostForm;
 
 class BlogController extends AbstractActionController
 {
-    use \Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use\Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+
+    public function indexAction()
+    {
+        $blogs = $this->getBlogManager()->findAllBlogs($this->getLanguageManager()
+            ->getLanguageFromRequest());
+        $view = new ViewModel(array(
+            'blogs' => $blogs
+        ));
+        $view->setTemplate('blog/blog/blogs');
+        return $view;
+    }
 
     public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         $view = new ViewModel(array(
             'blog' => $blog,
-            'posts' => $blog->findAllPosts()
+            'posts' => $blog->findAllPosts()->filter(function ($e)
+            {
+                return ! $e->isTrashed();
+            })
         ));
         $view->setTemplate('blog/blog/view');
+        return $view;
+    }
+
+    public function trashAction()
+    {
+        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
+        $post = $blog->getPost($this->params('post'));
+        $post->setTrashed(true);
+        $post->getObjectManager()->flush();
+        $this->redirect()->toReferer();
+        return '';
+    }
+
+    public function updateAction()
+    {
+        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
+        $post = $blog->getPost($this->params('post'));
+        
+        $form = new PostForm();
+        $form->setAttribute('action', $this->url()
+            ->fromRoute('blog/post/update', array(
+            'blog' => $this->params('blog'),
+            'post' => $this->params('post')
+        )));
+        
+        $form->setData(array(
+            'title' => $post->getTitle(),
+            'content' => $post->getContent()
+        ));
+        
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $author = $this->getUserManager()->getUserFromAuthenticator();
+                $data = $form->getData();
+                $title = $data['title'];
+                $content = $data['content'];
+                $blog->updatePost($post->getId(), $title, $content);
+                
+                $blog->getObjectManager()->flush();
+                
+                $this->redirect()->toRoute('blog/view', array(
+                    'id' => $this->params('blog')
+                ));
+            }
+        }
+        
+        $view = new ViewModel(array(
+            'blog' => $blog,
+            'post' => $post,
+            'form' => $form
+        ));
+        
+        $view->setTemplate('blog/blog/post/update');
+        
         return $view;
     }
 
