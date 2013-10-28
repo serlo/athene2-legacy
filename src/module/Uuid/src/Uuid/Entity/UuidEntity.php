@@ -15,12 +15,12 @@ class UuidEntity implements UuidHolder
 {
     protected $id;
 
-    final public function getUuid()
+    public function getUuid()
     {
         return $this->getUuidEntity()->getUuid();
     }
 
-    final public function getId()
+    public function getId()
     {
         return $this->getUuidEntity()->getId();
     }
@@ -36,17 +36,17 @@ class UuidEntity implements UuidHolder
         return $this->id;
     }
 
-    final public function getTrashed()
+    public function getTrashed()
     {
         return $this->getUuidEntity()->getTrashed();
     }
 
-    final public function isTrashed()
+    public function isTrashed()
     {
         return $this->getTrashed();
     }
 
-    final public function setTrashed($trashed)
+    public function setTrashed($trashed)
     {
         $this->getUuidEntity()->setTrashed($trashed);
         return $this;
