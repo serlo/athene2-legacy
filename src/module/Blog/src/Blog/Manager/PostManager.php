@@ -18,7 +18,7 @@ use Blog\Collection\PostCollection;
 
 class PostManager extends InstanceManager implements PostManagerInterface
 {
-    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait, BlogManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
 
     protected $interfaces = array(
         'service' => 'Blog\Service\PostServiceInterface',
@@ -30,12 +30,20 @@ class PostManager extends InstanceManager implements PostManagerInterface
         return $this->interfaces[$name];
     }
     
+    public function getSlug(){
+        return $this->getTermService()->getSlug();
+    }
+    
+    public function getName(){
+        return $this->getTermService()->getName();
+    }
+    
     public function findAllPosts()
     {
         $className = $this->getClassResolver()->resolveClassName('entity');
         $found = $this->getObjectManager()->getRepository($className)->findAll();
         $collection = new ArrayCollection($found);
-        return new PostCollection($collection, $this);
+        return new PostCollection($collection, $this->getBlogManager());
     }
 
     public function getPost($id)
@@ -62,10 +70,11 @@ class PostManager extends InstanceManager implements PostManagerInterface
         if($publish === NULL)
             $publish = new \DateTime("now");
         
-        $className = $this->getClassResolver()->resolveClassName('entity');
+        $className = $this->getClassResolver()->resolveClassName($this->getInterface('entity'));
         /* @var $post PostInterface */
         $post = new $className();
-        $post->setAuthor($author);
+        $this->getUuidManager()->injectUuid($post);
+        $post->setAuthor($author->getEntity());
         $post->setTitle($title);
         $post->setCategory($this->getTermService()->getEntity());
         $post->setContent($content);

@@ -19,7 +19,7 @@ class BlogController extends AbstractActionController
 {
     use \Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
-    public function indexAction()
+    public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         $view = new ViewModel(array(
@@ -64,7 +64,7 @@ class BlogController extends AbstractActionController
             'form' => $form
         ));
         
-        $view->setTemplate('blog/blog/create');
+        $view->setTemplate('blog/blog/post/create');
         
         return $view;
     }

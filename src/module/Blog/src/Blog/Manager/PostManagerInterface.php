@@ -27,7 +27,7 @@ interface PostManagerInterface
      * 
      * @return PostServiceInterface
      */
-    public function getPost();
+    public function getPost($id);
     
     /**
      * 
@@ -37,5 +37,5 @@ interface PostManagerInterface
      * @param string $publish
      * @return PostServiceInterface
      */
-    public function createPost(UserServiceInterface $author, $title, $content, $publish = false);
+    public function createPost(UserServiceInterface $author, $title, $content, \DateTime $publish = NULL);
 }

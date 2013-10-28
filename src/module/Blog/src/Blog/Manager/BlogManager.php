@@ -47,6 +47,7 @@ class BlogManager extends InstanceManager implements BlogManagerInterface
         /* @var $postManager PostManagerInterface */
         $postManager = parent::createInstance('Blog\Manager\PostManagerInterface');
         $postManager->setTermService($category);
+        $postManager->setBlogManager($this);
         return $postManager;
     }
 }

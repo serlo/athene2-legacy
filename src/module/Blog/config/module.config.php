@@ -12,33 +12,23 @@
 namespace Blog;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Blog\Collection\PostCollection;
 return array(
     'taxonomy' => array(
         'associations' => array(
             'blogs' => function (ServiceLocatorInterface $sm, $collection)
             {
-                return new $collection();
+                return new PostCollection($collection, $sm->get('Blog\Manager\BlogManager'));
             }
         ),
         'types' => array(
             'blog' => array(
                 'options' => array(
                     'allowed_associations' => array(
-                        'entities'
-                    ),
-                    'allowed_parents' => array(
-                        'root'
-                    ),
-                    'radix_enabled' => false
-                )
-            ),
-            'blog-category' => array(
-                'options' => array(
-                    'allowed_associations' => array(
                         'blogs'
                     ),
                     'allowed_parents' => array(
-                        'blog'
+                        'root'
                     ),
                     'radix_enabled' => false
                 )
@@ -62,8 +52,19 @@ return array(
         )
     ),
     'di' => array(
+        'allowed_controllers' => array(
+            __NAMESPACE__ . '\Controller\BlogController'
+        ),
         'definition' => array(
             'class' => array(
+                __NAMESPACE__ . '\Controller\BlogController' => array(
+                    'setBlogManager' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Manager\BlogManager' => array(
                     'setSharedTaxonomyManager' => array(
                         'required' => true
@@ -84,6 +85,9 @@ return array(
                     ),
                     'setClassResolver' => array(
                         'required' => true
+                    ),
+                    'setUuidManager' => array(
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Service\PostService' => array()
@@ -91,8 +95,10 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager',
                 __NAMESPACE__ . '\Manager\BlogManagerInterface' => __NAMESPACE__ . '\Manager\BlogManager'
+            ),
+            __NAMESPACE__ . '\Manager\PostManager' => array(
+                'shared' => true
             ),
             __NAMESPACE__ . '\Service\PostService' => array(
                 'shared' => false
@@ -103,5 +109,49 @@ return array(
         __NAMESPACE__ . '\Entity\PostInterface' => __NAMESPACE__ . '\Entity\Post',
         __NAMESPACE__ . '\Service\PostServiceInterface' => __NAMESPACE__ . '\Service\PostService',
         __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager'
+    ),
+    'router' => array(
+        'routes' => array(
+            'blog' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/blog',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\BlogController'
+                    )
+                ),
+                'child_routes' => array(
+                    'view' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/view/:id',
+                            'defaults' => array(
+                                'action' => 'view'
+                            )
+                        )
+                    ),
+                    'post' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/post',
+                            'defaults' => array(
+                                'action' => 'view'
+                            )
+                        ),
+                        'child_routes' => array(
+                            'create' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/create/:id',
+                                    'defaults' => array(
+                                        'action' => 'create'
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
     )
 );
