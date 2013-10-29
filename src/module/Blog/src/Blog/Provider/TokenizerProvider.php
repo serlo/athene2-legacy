@@ -13,29 +13,24 @@ namespace Blog\Provider;
 
 use Token\Provider\ProviderInterface;
 use Blog\Entity\PostInterface;
+use Blog\Exception;
+use Token\Provider\AbstractProvider;
 
-class TokenizerProvider implements ProviderInterface
+class TokenizerProvider extends AbstractProvider implements ProviderInterface
 {
-    /**
-     * 
-     * @var PostInterface
-     */
-    protected $post;
-    
-    public function setPost(PostInterface $post){
-        $this->post = $post;
-    }
-    
-	/* (non-PHPdoc)
-     * @see \Token\Provider\ProviderInterface::getData()
-     */
-    public function getData ()
+
+    public function getData()
     {
         return array(
-            'title' => $this->post->getTitle(),
-            'category' => $this->post->getCategory(),
-            'id' => $this->post->getId(),
+            'title' => $this->getObject()->getTitle(),
+            'category' => $this->getObject()->getCategory()->getName(),
+            'id' => $this->getObject()->getId()
         );
     }
 
+    protected function validObject($object)
+    {
+        if (! $object instanceof PostInterface)
+            throw new Exception\InvalidArgumentException(sprintf('Expected PostInterface but got `%s`', get_class($object)));
+    }
 }

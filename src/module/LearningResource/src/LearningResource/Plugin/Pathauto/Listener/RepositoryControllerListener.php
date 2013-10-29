@@ -22,13 +22,11 @@ class RepositoryControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'add-revision', function (Event $e)
+        $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'checkout', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
-            $data = $e->getParam('post');
-            /* var $entityManager \Entity\Manager\EntityManagerInterface */
-            $entityManager = $entity->getEntityManager();
+            
             if($entity->hasPlugin('pathauto')){
                 $entity->plugin('pathauto')->inject();
             }

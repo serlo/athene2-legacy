@@ -21,7 +21,7 @@
 			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
 			         <?php endif; ?>
 			    </div>
-				<h3><?php echo $post->getTitle(); ?> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?></small></h3>
+				<h3><a href="<?php echo $this->url('blog/post/view', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><?php echo $post->getTitle(); ?></a> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?></small></h3>
 			</header>
 			<hr>
             <?php echo $post->getContent(); ?>

@@ -17,7 +17,12 @@ use Zend\EventManager\SharedEventManagerInterface;
 abstract class AbstractListener implements SharedListenerAggregateInterface
 {
     use \Alias\AliasManagerAwareTrait;
-    
+
+    /**
+     * An array containing all registered listeners.
+     *
+     * @var array
+     */
     protected $listeners = array();
     
     public function detachShared(SharedEventManagerInterface $events)

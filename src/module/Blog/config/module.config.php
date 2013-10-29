@@ -40,6 +40,10 @@ return array(
                     array(
                         'route' => 'blog/post/create',
                         'visible' => false
+                    ),
+                    array(
+                        'route' => 'blog/post/view',
+                        'visible' => false
                     )
                 )
             )
@@ -185,6 +189,15 @@ return array(
                                     'route' => '/create/:id',
                                     'defaults' => array(
                                         'action' => 'create'
+                                    )
+                                )
+                            ),
+                            'view' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/view/:blog/:post',
+                                    'defaults' => array(
+                                        'action' => 'viewPost'
                                     )
                                 )
                             ),

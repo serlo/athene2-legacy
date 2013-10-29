@@ -137,7 +137,8 @@ class RepositoryController extends AbstractController
         $this->getEventManager()->trigger('checkout', $this, array(
             'entity' => $entity,
             'revision' => $repository->getRevision($this->params('revision')),
-            'user' => $user
+            'user' => $user,
+            
         ));
         $plugin->getObjectManager()->flush();
         $this->redirect()->toRoute('entity/plugin/repository', array(

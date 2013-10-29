@@ -30,6 +30,18 @@ class BlogController extends AbstractActionController
         return $view;
     }
 
+    public function viewPostAction()
+    {
+        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
+        $post = $blog->getPost($this->params('post'));
+        $view = new ViewModel(array(
+            'blog' => $blog,
+            'post' => $post
+        ));
+        $view->setTemplate('blog/blog/post/view');
+        return $view;
+    }
+
     public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
@@ -79,7 +91,16 @@ class BlogController extends AbstractActionController
                 $data = $form->getData();
                 $title = $data['title'];
                 $content = $data['content'];
+                $language = $this->getLanguageManager()->getLanguageFromRequest();
                 $blog->updatePost($post->getId(), $title, $content);
+                
+                $this->getEventManager()->trigger('post.update', $this, array(
+                    'blog' => $blog,
+                    'post' => $post,
+                    'actor' => $author,
+                    'post' => $data,
+                    'language' => $language
+                ));
                 
                 $blog->getObjectManager()->flush();
                 
@@ -119,7 +140,17 @@ class BlogController extends AbstractActionController
                 $title = $data['title'];
                 $content = $data['content'];
                 $publish = null; // $data['publish'];
-                $blog->createPost($author, $title, $content, $publish);
+                $language = $this->getLanguageManager()->getLanguageFromRequest();
+                $post = $blog->createPost($author, $title, $content, $publish);
+
+
+                $this->getEventManager()->trigger('post.create.postflush', $this, array(
+                    'blog' => $blog,
+                    'post' => $post,
+                    'actor' => $author,
+                    'data' => $data,
+                    'language' => $language
+                ));
                 
                 $blog->getObjectManager()->flush();
                 

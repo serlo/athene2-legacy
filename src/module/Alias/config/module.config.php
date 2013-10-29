@@ -11,7 +11,17 @@
  */
 namespace Alias;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
 return array(
+    'alias_manager' => array(
+        'aliases' => array(
+            'blogPost' => array(
+                'tokenize' => 'blog/{category}/{title}',
+                'provider' => 'Blog\Provider\TokenizerProvider',
+                'fallback' => 'blog/{category}/{id}-{title}'
+            )
+        )
+    ),
     'class_resolver' => array(
         __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
     ),
@@ -33,13 +43,29 @@ return array(
             )
         )
     ),
+    'service_manager' => array(
+        'factories' => array(
+            'Alias\AliasManager' => function (ServiceLocatorInterface $sm)
+            {
+                $config = $sm->get('config')['alias_manager'];
+                
+                $service = new AliasManager();
+                $service->setConfig($config);
+                $service->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $service->setObjectManager($sm->get('EntityManager'));
+                $service->setTokenizer($sm->get('Token\Tokenizer'));
+                
+                return $service;
+            }
+        )
+    ),
     'di' => array(
         'allowed_controllers' => array(
             'Alias\Controller\AliasController'
         ),
         'definition' => array(
             'class' => array(
-                'Alias\Controller\AliasController' => array(
+                __NAMESPACE__ . '\Controller\AliasController' => array(
                     'setAliasManager' => array(
                         'required' => 'true'
                     ),
@@ -47,11 +73,16 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Alias\AliasManager' => array(
+                /*'Alias\AliasManager' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),
                     'setClassResolver' => array(
+                        'required' => 'true'
+                    )
+                )*/
+                __NAMESPACE__ . '\Listener\BlogControllerListener' => array(
+                    'setAliasManager' => array(
                         'required' => 'true'
                     )
                 )
@@ -81,27 +112,27 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
-            'url' => function ($helperPluginManager) {
+            'url' => function ($helperPluginManager)
+            {
                 $serviceLocator = $helperPluginManager->getServiceLocator();
                 $view_helper = new \Alias\View\Helper\Url();
-
+                
                 $router = \Zend\Console\Console::isConsole() ? 'HttpRouter' : 'Router';
                 $view_helper->setRouter($serviceLocator->get($router));
-
+                
                 $view_helper->setAliasManager($serviceLocator->get('Alias\AliasManager'));
                 $view_helper->setLanguageManager($serviceLocator->get('Language\Manager\LanguageManager'));
-
+                
                 $match = $serviceLocator->get('application')
-                            ->getMvcEvent()
-                            ->getRouteMatch();
-
+                    ->getMvcEvent()
+                    ->getRouteMatch();
+                
                 if ($match instanceof RouteMatch) {
                     $view_helper->setRouteMatch($match);
                 }
-
+                
                 return $view_helper;
             }
         )
     )
 );
-

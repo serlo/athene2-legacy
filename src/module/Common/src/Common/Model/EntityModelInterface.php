@@ -9,23 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Token;
+namespace Common\Model;
 
-interface TokenizerInterface
+interface EntityModelInterface
 {
-
-    /**
-     *
-     * @param string $provider   
-     * @param object $object
-     * @param string $tokenString            
-     * @return $string
-     */
-    public function transliterate($provider, $object, $tokenString);
-
-    /**
-     *
-     * @return Provider\ProviderInterface $provider
-     */
-    public function getProvider();
+    public function setEntity();
+    public function getEntity();
 }

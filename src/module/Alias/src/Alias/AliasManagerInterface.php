@@ -13,6 +13,7 @@ namespace Alias;
 
 use Language\Service\LanguageServiceInterface;
 use Uuid\Entity\UuidInterface;
+use Uuid\Entity\UuidHolder;
 
 interface AliasManagerInterface
 {
@@ -45,8 +46,17 @@ interface AliasManagerInterface
      * @param string $source            
      * @param string $alias            
      * @param LanguageServiceInterface $language            
-     * @param UuidInterface $uuid            
+     * @param UuidHolder $uuid            
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, \Language\Service\LanguageServiceInterface $language);
+    public function createAlias($source, $alias, $aliasFallback, UuidHolder $uuid, \Language\Service\LanguageServiceInterface $language);
+    
+    /**
+     * 
+     * @param string $name
+     * @param string $source
+     * @param UuidHolder $object
+     * @param \Language\Service\LanguageServiceInterface $language
+     */
+    public function autoAlias($name, $source, UuidHolder $object, \Language\Service\LanguageServiceInterface $language);
 }

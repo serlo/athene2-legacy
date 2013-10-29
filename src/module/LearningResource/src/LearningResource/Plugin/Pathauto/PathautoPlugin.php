@@ -31,13 +31,13 @@ class PathautoPlugin extends AbstractPlugin
         $provider = $this->getServiceLocator()->get($provider);
         /* @var $provider \Token\Provider\ProviderInterface */
         
-        $alias = $this->getTokenizer()->transliterate($provider, $this->getOption('tokenize'));
+        $alias = $this->getTokenizer()->transliterate($provider, $this->getEntityService(), $this->getOption('tokenize'));
         
         $languageService = $this->getLanguageManager()->getLanguageFromRequest();
         
         $this->getAliasManager()->createAlias('/entity/view/' . $this->getEntityService()
             ->getId(), strtolower($alias), strtolower($alias . '-' . $this->getEntityService()
-            ->getId()), $this->getEntityService()->getEntity()->getUuidEntity(), $languageService);
+            ->getId()), $this->getEntityService()->getEntity(), $languageService);
         
         return $this;
     }

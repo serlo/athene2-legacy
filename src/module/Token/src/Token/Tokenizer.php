@@ -42,11 +42,12 @@ class Tokenizer implements TokenizerInterface
         return $this;
     }
     
-    public function transliterate($provider, $tokenString){
+    public function transliterate($provider, $object, $tokenString){
         if(!is_object($provider))
             $provider = new $provider();
         
         $this->setProvider($provider);
+        $this->getProvider()->setObject($object);
         
         // WHY DO YOU NOT WORK WHEN { IS THE FIRST CHAR
         $tokenString = ':'.$tokenString;
