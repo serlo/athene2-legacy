@@ -14,7 +14,9 @@ i18n.de = {
     "An error occured, please reload." : "",
     "Order successfully saved" : "",
     "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : "",
-    "Close" : "Schließen"
+    "Close" : "Schließen",
+    "When asynchronously trying to load a ressource, I came across an error: %s" : "",
+    "You are using an outdated web browser. Please consider an update!" : ""
 };
 
 i18n.en = {
@@ -22,7 +24,9 @@ i18n.en = {
     "Close" : "",
     "Visit %s overview" : "",
     "Order successfully saved" : "",
-    "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : ""
+    "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : "",
+    "When asynchronously trying to load a ressource, I came across an error: %s" : "",
+    "You are using an outdated web browser. Please consider an update!" : ""
 };
 
 return i18n;

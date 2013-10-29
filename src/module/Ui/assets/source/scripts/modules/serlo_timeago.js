@@ -30,7 +30,7 @@ define(['jquery', 'moment'], function ($, moment) {
 
             self.interval = setInterval(function () {
                 updateTime($self, datetime);
-            }, 500);
+            }, 45000);
         });
     };
 

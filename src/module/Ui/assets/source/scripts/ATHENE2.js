@@ -13,9 +13,11 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                     'moment', 'ajax_overlay', 'modals', 'sortable_list', 'timeago', 'moment_de'],
     function ($, Common, SideNavigation, t, Layout, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
+        var languageFromDOM,
+            ajaxOverlay;
 
         function init($context) {
-            var languageFromDOM = $('html').attr('lang') || 'de';
+            languageFromDOM = $('html').attr('lang') || 'de';
             // configure Translator to current language
             t.config({
                 language: languageFromDOM
@@ -37,10 +39,14 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             // initialize the search
             new Search();
             // initialize ajax overlay
-            new AjaxOverlay({
+            ajaxOverlay = new AjaxOverlay({
                 on: {
                     contentOpened: function () {
                         initContextuals(this.$el);
+                    },
+                    error: function (err) {
+                        ajaxOverlay.shutDownAjaxContent();
+                        SystemNotification.error(t("When asynchronously trying to load a ressource, I came across an error: %s", err.status + ' ' + err.statusText));
                     }
                 }
             });

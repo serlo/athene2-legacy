@@ -99,6 +99,7 @@ define(['jquery', 'common'], function ($, Common) {
 
         this.$overlayHTML.on('click', '.' + this.options.closeClass, this.onCloseClick);
         this.$overlayHTML.on('click', 'a', this.onLinkClick);
+        this.$overlayHTML.on('click', 'input[type="submit"]', this.onLinkClick);
         this.$overlayHTML.on('click', this.preventOverlayClosing);
 
         return this;
