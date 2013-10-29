@@ -43,4 +43,3 @@ interface PageManagerInterface
 	public function createRevision(PageRepositoryInterface $repository, array $data);
 }
 
-?>

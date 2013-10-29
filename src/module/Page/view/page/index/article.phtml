@@ -5,11 +5,10 @@ $this->headTitle('page'.$slug);
 ?>
 
 
-<a href="<?php echo '/page/'?>">Neue Seite</a>
+<?php // Repository Menü?>
+<?php if ($this->hasRole('moderator')) echo $this->partial('page/index/repository-menu.phtml', array(
+    'slug' => $slug)); ?> 
 
-<a href="<?php echo '/page/'.$slug.'/editrepository'?>">Seite bearbeiten</a>
-
-<a href="<?php echo '/page/'.$slug.'/delete'?>">Seite löschen</a><br>
 
 <article>
 	<h1>TITEL: 
@@ -21,9 +20,9 @@ $this->headTitle('page'.$slug);
 	<br>
 </article>
 
-<a href="<?php echo '/page/'.$slug.'/edit/'; if ($revisionid!=NULL) echo $revisionid?>">Revision Barbeiten</a>
-<a href="<?php echo '/page/'.$slug.'/revisions'?>">Revisionen Verwalten</a>
 
-<a href="<?php if ($revisionid!=NULL)  echo '/page/'.$slug.'/'.$revisionid.'/delete'?>">Aktuelle Revision löschen</a>
+<?php //Revision Menü?>
 
-<br>
+<?php if ($this->hasRole('moderator')) echo $this->partial('page/index/revision-menu.phtml', array(
+    'slug' => $slug,
+    'id'=>$revisionid)); ?>

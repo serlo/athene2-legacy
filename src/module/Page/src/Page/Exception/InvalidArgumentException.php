@@ -11,11 +11,6 @@
  */
 namespace Page\Exception;
 
-class PermissionException extends \Exception
+class InvalidArgumentException extends \InvalidArgumentException
 {
-
-    function __construct()
-    { 
-        parent::__construct("No Permission to view this Page");
-    }
 }

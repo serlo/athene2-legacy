@@ -80,19 +80,19 @@ class PageManager implements PageManagerInterface
        return $this->getPageRepository($entity->getId());
     }
 
-    public function createPageEntity()
+    protected function createPageEntity()
     {
         $page = $this->getClassResolver()->resolveClassName('Page\Entity\Page');
         return new $page();
     }
 
-    public function createPageRevisionEntity()
+    protected function createPageRevisionEntity()
     {
         $page = $this->getClassResolver()->resolveClassName('Page\Entity\PageRevision');
         return new $page();
     }
     
-    public function createPageRepositoryEntity()
+    protected function createPageRepositoryEntity()
     {
         $page = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepository');
         return new $page();
@@ -117,12 +117,12 @@ class PageManager implements PageManagerInterface
         $pageRepository->setLanguage($language);
         $pageService = $this->createService($pageRepository);
         
-        for ($i=0;$i<=$pageService->getNumberOfRoles();$i++) {
+        for ($i=0;$i<=$pageService->countRoles();$i++) {
         
             if (array_key_exists($i,$data['roles'])) {
             $role = $pageService->getRoleById($i);
-            if ($role!=null)
-            $pageRepository->setRole($role);
+            if ($role!=null){
+            $pageRepository->setRole($role);}
             }
         }
         
