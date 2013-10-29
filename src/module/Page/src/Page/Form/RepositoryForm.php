@@ -60,6 +60,7 @@ class RepositoryForm extends Form
     $this->add(array(
       'name' => 'submit',
       'attributes' => array(
+        'class' => 'btn btn-mini btn-success',
         'type'  => 'submit',
         'value' => 'Go',
         'id'    => 'submitbutton'

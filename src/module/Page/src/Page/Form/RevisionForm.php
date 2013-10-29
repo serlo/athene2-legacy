@@ -44,8 +44,9 @@ class RevisionForm extends Form
     $this->add(array(
       'name' => 'submit',
       'attributes' => array(
+        'class' => 'btn btn-success',
         'type'  => 'submit',
-        'value' => 'Go',
+        'value' => 'erstellen',
         'id'    => 'submitbutton'
       )
     ));

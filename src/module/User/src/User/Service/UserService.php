@@ -126,11 +126,6 @@ class UserService implements UserServiceInterface
         return $this->getEntity()->getUsername();
     }
 
-    public function getName()
-    {
-        return $this->getEntity()->getName();
-    }
-
     public function getPassword()
     {
         return $this->getEntity()->getPassword();
