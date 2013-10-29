@@ -188,7 +188,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             if (! $taxonomyManager->getRadixEnabled())
                 throw new RuntimeException(sprintf('Taxonomy `%s` does allow `parent` to be NULL', $taxonomyManager->getName()));
         }
-        
+
         try {
             $term = $this->getTermManager()->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())->getEntity();
         } catch (\Term\Exception\TermNotFoundException $e) {

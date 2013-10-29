@@ -270,9 +270,23 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getTaxonomy')
             ->will($this->returnValue($this->taxonomyMock));
         
+        $this->taxonomyManagerMock->expects($this->atLeastOnce())
+            ->method('getLanguageService')
+            ->will($this->returnValue($this->getMock('Language\Service\LanguageService')));
+        $ts = $this->getMock('Term\Service\TermService');
+        $this->termManagerMock->expects($this->atLeastOnce())
+            ->method('findTermByName')
+            ->will($this->returnValue($ts));
+        $ts->expects($this->atLeastOnce())
+            ->method('getEntity')
+            ->will($this->returnValue($this->getMock('Term\Service\TermService')));
+        
         $this->assertNotNull($this->sharedTaxonomyManager->updateTerm($this->termTaxonomyMock->getId(), array(
             'description' => 'asf',
-            'weight' => 123
+            'weight' => 123,
+            'term' => array(
+                'name' => 'test'
+            )
         )));
     }
 
