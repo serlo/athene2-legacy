@@ -33,7 +33,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         subNavigationWidth: 300,
         // min height of subnavigation
         subNavigationMinHeight: 400,
-        subNavigationHeightOffset: 75,
+        subNavigationHeightOffset: 20,
         // duration of slide animation
         animationDuration: 150,
         // how many breadcrumbs are shown OR false for every breadcrumb
