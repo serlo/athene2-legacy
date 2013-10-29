@@ -11,13 +11,7 @@ interface PageServiceInterface
      * @return PageManagerInterface
      */
     public function getManager();
-    /**
-     *
-     * @param PageRevisionInterface  $revision
-     * @param array $array
-     * @return this
-     */
-    public function editCurrentRevision(PageRevisionInterface $revision, array $array);
+   
     /**
      *
      * @return PageRevisionInterface
@@ -39,6 +33,11 @@ interface PageServiceInterface
      * @return this
      */
     public function setCurrentRevision($revision);
+    /**
+     *
+     * @param numeric  $id
+     * @return this
+     */
+    public function deleteRevision($id);
 }
 
-?>

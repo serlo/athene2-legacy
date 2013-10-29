@@ -1,18 +1,6 @@
-<h1 class="page_header"><?php echo $this->translate('Repository Bearbeiten'); ?></h1>
+<h1 class="page_header"><?php echo $this->translate('Seite bearbeiten'); ?></h1>
+
+
 <?php
 $this->form->prepare();
-echo $this->form()->openTag($this->form);
-echo $this->formRow($this->form->get('slug'));
-echo $this->formRow($this->form->get('fallback'));
-?>
-
-<div class="control-group">
-	<div class="controls">
-		<div class="span3"><?php
-echo $this->forminput($this->form->get('submit'));
-?></div>
-		
-	</div>
-</div>
-<?php
-echo $this->form()->closeTag();
+echo $this->form()->render($this->form);

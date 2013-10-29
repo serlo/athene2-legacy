@@ -46,8 +46,6 @@ interface UserServiceInterface
 
     public function getUsername();
 
-    public function getName();
-
     public function getPassword();
 
     public function getLogins();

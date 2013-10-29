@@ -5,43 +5,41 @@ $title2 = 'Page ';
 $this->headTitle($title2);
 ?>
 
-<a href="<?php echo '/page/'?>">Neue Seite</a>
-
-<a href="<?php echo '/page/'.$slug.'/editrepository'?>">Seite bearbeiten</a>
-
-<a href="<?php echo '/page/'.$slug.'/delete'?>">Seite löschen</a>
-
+<?php //Show Repository Menu?>
+<?php echo $this->partial('page/index/repository-menu.phtml', array(
+    'slug' => $slug)); ?><br>
+    
 <?php foreach ($this->revisions as $revision) { ?>
 <article>
-<a href="<?php $id = $revision->getId(); echo '/page/'.$slug.'/'.$id?>">
+<?php $id = $revision->getId();?>
 
-Revision Number: 
-	<?php 
-		 if($id!=NULL) echo $this->escapeHtml($id);?> </a>
+<a href="<?php echo $this->url('page/article/revision',array('slug'=>$slug,'id'=>$id));?>" class="btn-mini btn-primary">
+
 		 
  Title: 
 	<?php $title = $revision->getTitle();
 		 if($title!=NULL) echo $this->escapeHtml($title);?> 
 
- Author:
-	<?php $author = $revision->getAuthor();
-		 if($author!=NULL) echo $this->escapeHtml($author);?> 
 
+	<?php // $author = $revision->getAuthor();
+		 // if($author!=NULL) echo $this->escapeHtml($author);
+		 ?> 
+</a>
  Date:
 	<?php $date = $revision->getDate();
 		 if($date!=NULL) echo $this->escapeHtml($date->format('Y-m-d H:i:s'));?> 
-	
-	 <a href="<?php echo '/page/'.$slug.'/'.$id.'/delete'?>">Revision löschen</a>
-	 <a href="<?php echo '/page/'.$slug.'/edit/'.$id?>">Revision bearbeiten</a>
-	 <a href="<?php $id = $revision->getId(); echo '/page/'.$slug.'/'.$id.'/setcurrent'?>">
-	 Als Aktuelle Revision setzen
-	 </a>
+	</a>
+<a href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>" class="btn-mini btn-info"> Revision Barbeiten</a>
+<a href="<?php echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>" class="btn-mini btn-info"> Revision löschen</a>
+	 <a href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?> " class="btn-mini btn-info">
+	  Als Aktuelle Revision setzen
+	 
 
 
 	<br>
 </article>
 
 <?php } ?><br>
-<a href="<?php echo '/page/'.$slug.'/'?>">Zurück zur Aktuellen Revision</a>
-<a href="<?php echo '/page/'.$slug.'/edit/'?>">Neue Revision</a>
+<a href="<?php echo $this->url('page/article',array('slug'=>$slug));?>"><button class="btn btn-mini btn-primary" type="button">Aktuelle Revision</button></a>
+<a href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>null))?>"><button class="btn btn-mini btn-primary" type="button">Neue Revision</button></a>
 <br>

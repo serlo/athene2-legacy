@@ -151,14 +151,14 @@ class AliasManager implements AliasManagerInterface
         $alias = implode('/', $slugified);
         
         try {
-            $source = $this->findAliasEntityBySource($alias, $language);
+            $this->findAliasByUuid($uuid->getUuidEntity());
+            return $this;
             
             try {
-                $this->findAliasByUuid($uuid->getUuidEntity());
-                return $this;
-            } catch (Exception\AliasNotFoundException $e) {}
-            
-            $alias = $aliasFallback;
+                $source = $this->findAliasEntityBySource($alias, $language);
+            } catch (Exception\AliasNotFoundException $e) {
+                $alias = $aliasFallback;
+            }
         } catch (Exception\AliasNotFoundException $e) {}
         
         $class = $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');

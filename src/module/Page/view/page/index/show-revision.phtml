@@ -4,20 +4,14 @@
 $this->headTitle('Page '.$slug.' ');
 ?>
 
-<a href="<?php echo '/page/'?>">Neue Seite</a>
-
-<a href="<?php echo '/page/'.$slug.'/editrepository'?>">Seite Bearbeiten</a>
-
-<a href="<?php echo '/page/'.$slug.'/delete'?>">Seite Löschen</a>
-
+<?php //Show Repository Menu?>
+<?php echo $this->partial('page/index/repository-menu.phtml', array(
+    'slug' => $slug)); ?>
 
 <article>
 
-		 
-
-
  Author:
-	<?php $author = $revision->getAuthor(); $id = $revision->getId(); 
+	<?php $id = $revision->getId(); 
 		 if($author!=NULL) echo $this->escapeHtml($author);?> 
 
  Date:
@@ -38,8 +32,10 @@ $this->headTitle('Page '.$slug.' ');
 	<br>
 </article>
 
-<a href="<?php echo '/page/'.$slug.'/edit/'.$id?>">Revision bearbeiten</a>
-<a href="<?php echo '/page/'.$slug.'/revisions'?>">Revisionen Verwalten</a>
-<a href="<?php echo '/page/'.$slug.'/'.$id.'/delete'?>">Revision löschen</a>
+ <a href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?>">
+	 <butto class="btn btn-success" type="button"> Als Aktuelle Revision setzen </button></a>
+<?php echo $this->partial('page/index/revision-menu.phtml', array(
+    'slug' => $slug,
+    'id'=>$id)); ?>
 
 <br>

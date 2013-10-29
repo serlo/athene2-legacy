@@ -4,6 +4,7 @@ namespace Page\Service;
 use Page\Manager\PageManagerInterface;
 use Page\Entity\PageRevisionInterface;
 use User\Entity\RoleInterface;
+use Versioning\Entity\RevisionInterface;
 
 
 class PageService implements PageServiceInterface  {
@@ -12,7 +13,6 @@ class PageService implements PageServiceInterface  {
     use \Versioning\RepositoryManagerAwareTrait;
     use\Common\Traits\EntityAwareTrait;
     
-    protected $repository;
     
     
     /**
@@ -39,43 +39,28 @@ class PageService implements PageServiceInterface  {
         return $this;
     }
     
-    public function editCurrentRevision(PageRevisionInterface $revision,array $array){
-        
-        $revision->setContent($array['content']);
-        $revision->setTitle($array['title']);
-        return $this;
-    }
-    
+   
     
     public function getCurrentRevision(){
         
-        return $this->getRepositoryManager()->getRepository($this->entity)->getCurrentRevision();
+        return $this->getRepository()->getCurrentRevision();
         
     }
     
     public function getRevision($id){
     
-		$repository =     $this->getObjectManager()->getRepository('Page\Entity\PageRevision');
-		$revision     = $repository->findOneBy(array('id' => $id));
-
-		return $revision;    
+        return $this->getRepository()->getRevision($id);
+  
     }
     
-    public function getContentAndTitleFromRevision(PageRevisionInterface $revision) {
-    
-        $array = array("content" => $revision->getContent(),
-            "title" => $revision->getTitle());
-        
-        return $array;
-    }
     
     public function hasCurrentRevision(){
-        return $this->getRepositoryManager()->getRepository($this->entity)->hasCurrentRevision();
+        return $this->getRepository()->hasCurrentRevision();
 
     }
     
     public function setCurrentRevision($revision){
-        $this->entity->setCurrentRevision($revision);
+        $this->getRepository()->checkoutRevision($revision->getId());
         return $this;
     }
     
@@ -91,7 +76,7 @@ class PageService implements PageServiceInterface  {
         return $role;
     }
     
-    public function getNumberOfRoles(){
+    public function countRoles(){
     
         $repository =     $this->getObjectManager()->getRepository('User\Entity\Role');
         $roles     = $repository->findAll();
@@ -117,8 +102,20 @@ class PageService implements PageServiceInterface  {
         return false;
     
     }
+    
+    protected function getRepository(){
+        return $this->getRepositoryManager()->getRepository($this->entity);
+    }
 
+
+    public function deleteRevision($id) {
+        $repository = $this->getRepository();
+        $revision = $this->getRevision($id);
+        $repository->removeRevision($id);
+        $this->getObjectManager()->remove($revision);
+        $this->getObjectManager()->flush();
+        return $this;
+    }
 
 }
 
-?>

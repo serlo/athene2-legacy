@@ -144,7 +144,7 @@ class BlogController extends AbstractActionController
                 $post = $blog->createPost($author, $title, $content, $publish);
 
 
-                $this->getEventManager()->trigger('post.create.postflush', $this, array(
+                $this->getEventManager()->trigger('post.create', $this, array(
                     'blog' => $blog,
                     'post' => $post,
                     'actor' => $author,
