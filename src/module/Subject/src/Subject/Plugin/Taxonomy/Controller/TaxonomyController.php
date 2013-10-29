@@ -39,7 +39,7 @@ class TaxonomyController extends AbstractController
         
         $view = new ViewModel(array(
             'term' => $term,
-            'terms' => $term ? $term->getChildren() : $plugin->getRootFolders($this->params('subject', NULL)),
+            'terms' => $term ? $term->getChildren() : $plugin->getRootFolders($this->params('subject')),
             'acceptsEntities' => $term ? $term->isAssociationAllowed('entities') : false,
             'subject' => $subjectService,
             'plugin' => $plugin,

@@ -190,11 +190,11 @@ return array(
                         'name' => 'topic',
                         'plugin' => 'taxonomy',
                         'options' => array(
-                            'taxonomy' => 'topic',
+                            'taxonomy' => 'abstract-topic',
                             'taxonomy_parent' => 'subject',
                             'route' => 'subject/plugin/taxonomy/topic',
                             'templates' => array(
-                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                                'index' => 'subject/plugin/taxonomy/templates/topic/index'
                             ),
                             'entity_types' => array(
                                 'text-exercise' => array(
@@ -243,7 +243,7 @@ return array(
                             'taxonomy_parent' => 'subject',
                             'route' => 'subject/plugin/taxonomy/curriculum',
                             'templates' => array(
-                                'index' => 'subject/plugin/taxonomy/custom/curriculum/index'
+                                'index' => 'subject/plugin/taxonomy/templates/curriculum/index'
                             ),
                             'entity_types' => array(
                                 'text-exercise' => array(
@@ -284,11 +284,11 @@ return array(
                         'name' => 'topic',
                         'plugin' => 'taxonomy',
                         'options' => array(
-                            'taxonomy' => 'topic',
+                            'taxonomy' => 'abstract-topic',
                             'taxonomy_parent' => 'subject',
                             'route' => 'subject/plugin/taxonomy/topic',
                             'templates' => array(
-                                'index' => 'subject/plugin/taxonomy/custom/topic/index'
+                                'index' => 'subject/plugin/taxonomy/templates/topic/index'
                             ),
                             'entity_types' => array(
                                 'text-exercise' => array(
@@ -323,7 +323,7 @@ return array(
                             'taxonomy_parent' => 'subject',
                             'route' => 'subject/plugin/taxonomy/curriculum',
                             'templates' => array(
-                                'index' => 'subject/plugin/taxonomy/custom/curriculum/index'
+                                'index' => 'subject/plugin/taxonomy/templates/curriculum/index'
                             ),
                             'entity_types' => array(
                                 'text-exercise' => array(
@@ -364,7 +364,7 @@ return array(
                         'name' => 'topic',
                         'plugin' => 'taxonomy',
                         'options' => array(
-                            'taxonomy' => 'topic',
+                            'taxonomy' => 'abstract-topic',
                             'taxonomy_parent' => 'subject',
                             'route' => 'subject/plugin/taxonomy/topic',
                             'templates' => array(
@@ -423,7 +423,7 @@ return array(
                         'name' => 'topic',
                         'plugin' => 'taxonomy',
                         'options' => array(
-                            'taxonomy' => 'topic',
+                            'taxonomy' => 'abstract-topic',
                             'taxonomy_parent' => 'subject',
                             'route' => 'subject/plugin/taxonomy/topic',
                             'templates' => array(
