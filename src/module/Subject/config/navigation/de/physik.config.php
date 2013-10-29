@@ -58,14 +58,13 @@ return array(
                         'route' => 'subject/plugin/entity',
                         'params' => array(
                             'subject' => 'physik',
-                            'action' => 'get-unrevised'
+                            'action' => 'unrevised'
                         )
                     ),
                     array(
                         'label' => 'Themen verwalten',
                         'route' => 'taxonomy/term/organize',
                         'params' => array(
-                            'action' => 'update',
                             'id' => '6'
                         )
                     )

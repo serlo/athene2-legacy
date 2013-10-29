@@ -10,18 +10,14 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-// $subject = isset($subject) ? $subject : '';
+$subject = '';
 
-foreach ($pages as $page) {
+foreach ($this->container as $page) {
     if (! $page->isVisible() || !$this->navigation()->accept($page) || !$page->isActive(true)) {
         continue;
     }
 
     $subject = $page->getLabel();
-
-    if(! empty($page->pages)) {
-        $subject = $this->partial('layout/navigation/active-subject', array('pages' => $page->pages));
-    }
 }
 
 echo $subject;
