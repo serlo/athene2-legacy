@@ -3,13 +3,13 @@
 * @authors Kanstantsin A Kamkou (2ka.by); Jeroen Herczeg; Timo Klement
 */
 
+$activeSubject = '';
 $html = array();
 
 foreach ($this->container as $page) {
-    // visibility of the page
-    // if (! $page->isVisible() || !$this->navigation()->accept($page) || !$page->isActive(true)) {
-    //     continue;
-    // }
+    if ($page->isActive(true)) {
+        $activeSubject = $page->getLabel();
+    }
 
     $html[] = '<div class="row">';
     $html[] = '<div class="col-xs-5">';
@@ -21,22 +21,21 @@ foreach ($this->container as $page) {
         $html[] = '<ul class="nav">';
         $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));
         $html[] = "</ul>";
+        if ($page->isActive(true)) {
+            $activeSubject = $this->partial('layout/navigation/partial/active-subject', array('subject' => $activeSubject, 'pages' => $page->pages));
+        }
     }
 
     $html[] = '</div>';
     $html[] = '</div>';
-}
-
-
-echo join(PHP_EOL, $html);
-/*
+} ?>
 <div class="dropdown is-inline-block">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#">toggle me<b class="caret"></b></a>
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <?php echo $activeSubject; ?>
+    <b class="caret"></b></a>
+    <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
     <?php 
-        echo $this->navigation('top_center_navigation')
-                 ->menu()
-                 ->setUlClass('dropdown-menu')
-                 ->setPartial('layout/navigation/subject-navigation.phtml')
-                 ->render();
+        echo join(PHP_EOL, $html);
     ?>
-</div>*/
+    </div>
+</div>

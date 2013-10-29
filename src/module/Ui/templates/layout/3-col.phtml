@@ -31,6 +31,14 @@ echo $this->doctype();
     						<?php echo $this->partial('layout/partials/main.phtml'); ?>
     					</div>
     				</div>
+                    <div id="sidebar">
+                        <div id="sidebar-toggle" class="layout-toggle">
+                            <i class="icon-layers"></i>
+                        </div>
+                        <div id="sidebar-content">
+                            <!-- context area (=3rd column) -->
+                        </div>
+                    </div>
     			</div>
     		</section>
             <?php echo $this->partial('layout/partials/right-sidebar'); ?>
