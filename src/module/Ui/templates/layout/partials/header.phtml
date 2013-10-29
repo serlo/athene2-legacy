@@ -1,3 +1,15 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author  Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
 <header id="header">
     <?php echo $this->partial('layout/partials/top-bar.phtml'); ?>
     <div class="container">
@@ -5,7 +17,7 @@
             <div class="col-xs-12">
                 <div id="subject-nav">
                     <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" width="110" height="37" src="/assets/images/serlo_logo.png" /></a></h1>
-                    <div class="dropdown is-inline-block">
+                    <?php /*<div class="dropdown is-inline-block">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <?php echo $this->navigation('top_center_navigation')
                                         ->menu()
@@ -14,7 +26,6 @@
                                         ->setMinDepth(0)
                                         ->setMaxDepth(0)
                                         ->render(); ?>
-                            <?php // echo $this->partial('layout/navigation/active-subject', array('pages' => $this->container)); ?>
                         <b class="caret"></b></a>
                         <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <?php 
@@ -25,7 +36,14 @@
                                      ->render();
                         ?>
                         </div>
-                    </div>
+                    </div> */
+                        echo $this->navigation('top_center_navigation')
+                                     ->menu()
+                                     ->setOnlyActiveBranch(false)
+                                     ->setUlClass('dropdown-menu')
+                                     ->setPartial('layout/navigation/subject-navigation.phtml')
+                                     ->render();
+                    ?>
                     <div class="slogan"><?php echo $this->translate('The free learning page'); ?></div>
                     <!--  
                         <div class="dropdown is-inline-block">
