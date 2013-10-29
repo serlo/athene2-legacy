@@ -1,38 +1,21 @@
 <header id="header">
-    <div id="serlo-menu" class="navbar navbar-default">
-        <nav class="navbar-inner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <?php
-                        // top left navigation
-                        echo $this->navigation('top_left_navigation')
-                                ->menu()
-                                ->setUlClass('nav navbar-nav')
-                                ->setPartial('layout/navigation/horizontal.phtml')
-                                ->render();
-                        // top right navigation
-                        echo $this->navigation('top_right_navigation')
-                                 ->menu()
-                                 ->setUlClass('nav navbar-nav pull-right')
-                                 ->setPartial('layout/navigation/horizontal.phtml')
-                                 ->render();
-                        ?>
-                        <ul class="nav navbar-nav pull-right">
-                            <?php echo $this->notifications()->render(); ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
+    <?php echo $this->partial('layout/partials/top-bar.phtml'); ?>
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 <div id="subject-nav">
                     <h1 id="logo" class="title is-inline-block"><a href="/"><img id="logo-image" width="110" height="37" src="/assets/images/serlo_logo.png" /></a></h1>
                     <div class="dropdown is-inline-block">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">toggle me<b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <?php echo $this->navigation('top_center_navigation')
+                                        ->menu()
+                                        ->setPartial('layout/navigation/active-subject')
+                                        ->setOnlyActiveBranch(false)
+                                        ->setMinDepth(0)
+                                        ->setMaxDepth(0)
+                                        ->render(); ?>
+                            <?php // echo $this->partial('layout/navigation/active-subject', array('pages' => $this->container)); ?>
+                        <b class="caret"></b></a>
                         <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <?php 
                             echo $this->navigation('top_center_navigation')
