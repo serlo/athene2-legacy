@@ -35,7 +35,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
-                tasks: ['jshint', 'copy:requirejs', 'requirejs']
+                tasks: ['jshint', 'copy:requirejs', 'requirejs:production']
             },
             images: {
                 files: ['<%= serlo.app %>/images/{,*/}*.{png,jpg,jpeg}'],
@@ -246,26 +246,23 @@ module.exports = function (grunt) {
             ]
         },
         requirejs: {
-            compile: {
+            production: {
                 options: {
                     baseUrl: "<%= serlo.app %>/scripts",
                     mainConfigFile: "source/scripts/main.js",
                     out: "<%= serlo.dist %>/scripts/main.js",
                     preserveLicenseComments: false,
-                    optimize: 'none', // set to uglify2
-                    uglify2: {
-                        output: {
-                            beautify: false
-                        },
-                        compress: {
-                            sequences: true,
-                            global_defs: {
-                                DEBUG: true
-                            }
-                        },
-                        warnings: true,
-                        mangle: true
-                    }
+                    optimize: 'none'
+                }
+            },
+            testing: {
+                options: {
+                    name: 'ATHENE2-TEST',
+                    baseUrl: "<%= serlo.app %>/tests/modules",
+                    mainConfigFile: "source/tests/modules/specRunner.js",
+                    out: "<%= serlo.dist %>/scripts/main.js",
+                    preserveLicenseComments: false,
+                    optimize: 'none'
                 }
             }
         },
@@ -278,6 +275,15 @@ module.exports = function (grunt) {
             ],
             dest: '<%= serlo.app %>/lang-processed'
         },
+        concat: {
+            test: {
+                src: [
+                    '<%= serlo.app %>/bower_components/jasmine/lib/jasmine-core/jasmine.css',
+                    '<%= serlo.dist %>/styles/main.css'
+                ],
+                dest: '<%= serlo.dist %>/styles/main.css'
+            }
+        }
     });
 
     grunt.registerTask('dev', function (target) {
@@ -291,7 +297,7 @@ module.exports = function (grunt) {
             'autoprefixer',
             'copy:requirejs',
             'i18n',
-            'requirejs',
+            'requirejs:production',
             'copy:dist',
             'copy:modernizr',
             'watch'
@@ -306,7 +312,7 @@ module.exports = function (grunt) {
         'i18n',
         'cssmin',
         'imagemin',
-        'requirejs',
+        'requirejs:production',
         'modernizr',
         'uglify'
     ]);
@@ -316,11 +322,12 @@ module.exports = function (grunt) {
         'build'
     ]);
 
-    grunt.registerTask('i18n', 'Creates a AMD module based on language files', function () {
-        // options: {
-        //             banner: ,
-        //             footer: 
-        //         },
+    grunt.registerTask('test', [
+        'requirejs:testing',
+        'concat:test'
+    ]);
+
+    grunt.registerTask('i18n', 'Creates an AMD module based on language files', function () {
         var data = grunt.config('i18n'),
             files = grunt.file.expand(data.src),
             output = '/**\n * Dont edit this file!\n' +

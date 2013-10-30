@@ -11,7 +11,8 @@
                 <?php foreach($this->entity->exercises()->findChildren() as $child): ?>
                     <?php if($child->repository()->hasCurrentRevision()): ?>
                         <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
-                            <div class="sortable-item-inner sortable-handle">
+                            <span class="sortable-handle"></span>
+                            <div class="sortable-item-inner">
                                 <article>
                                     <?php echo $child->repository()->getCurrentRevision()->get('content'); ?>
                                 </article>

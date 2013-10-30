@@ -23,8 +23,8 @@ if (! isset($this->isChild)) : ?>
     		data-id="<?php echo $this->term->getId(); ?>">
             <?php foreach($this->term->getChildren() as $term):?>
                 <li class="sortable-item" data-id="<?php echo $term->getId(); ?>">
+                    <span class="sortable-handle"></span>
                     <div class="sortable-item-inner">
-        				<span class="sortable-handle"><i class="glyphicon glyphicon-resize-vertical"></i></span>
                         <?php echo $term->getName(); ?>
                         <?php echo $this->partial('taxonomy/term/organize/actions', array('term' => $term)); ?>
                     </div>

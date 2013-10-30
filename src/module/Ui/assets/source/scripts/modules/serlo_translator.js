@@ -4,7 +4,7 @@ define(["underscore", "i18n", "common"], function (_, i18n, Common) {
     var t,
         config,
         untranslated = [],
-        defaultLanguage = 'de_DE';
+        defaultLanguage = 'de';
 
     config = {
         language: defaultLanguage,
@@ -74,6 +74,10 @@ define(["underscore", "i18n", "common"], function (_, i18n, Common) {
      **/
     t.config = function (configuration) {
         _.extend(config, configuration);
+    };
+
+    t.getLanguage = function () {
+        return config.language;
     };
 
     if (config.debug) {
