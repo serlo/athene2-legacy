@@ -13,9 +13,7 @@ namespace Versioning\Service;
 
 use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Exception\OutOfSynchException;
 use Versioning\Exception\RevisionNotFoundException;
-use Doctrine\Common\Collections\Criteria;
 
 class RepositoryService implements RepositoryServiceInterface
 {
@@ -52,8 +50,6 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function addRevision(RevisionInterface $revision)
     {
-        // if ($this->hasRevision($revision->getId()))
-        // throw new OutOfSynchException("A revision with the ID `$revision->getId()` already exists in this repository.");
         $revisions = $this->getRevisions();
         
         $revision->setRepository($this->getEntity());
@@ -68,7 +64,6 @@ class RepositoryService implements RepositoryServiceInterface
         
         $id = $revision->getId();
         $this->getRevisions()->removeElement($revision);
-        // $revision->setRepository(NULL);
         
         return $this;
     }
@@ -140,10 +135,5 @@ class RepositoryService implements RepositoryServiceInterface
     public function isUnrevised()
     {
         return ($this->hasCurrentRevision() && $this->getCurrentRevision() !== $this->getHead()) || (! $this->hasCurrentRevision() && $this->getRevisions()->count() > 0);
-    }
-
-    public function mergeRevisions(RevisionInterface $revision, RevisionInterface $base)
-    {
-        throw new \Exception("Not implemented yet");
     }
 }

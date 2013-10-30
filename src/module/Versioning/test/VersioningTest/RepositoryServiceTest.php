@@ -14,20 +14,26 @@ namespace VersioningTest;
 use Versioning\Service\RepositoryService;
 use VersioningTest\Entity\RepositoryFake;
 use VersioningTest\Entity\RevisionFake;
+
 class RepositoryServiceTest extends \PHPUnit_Framework_TestCase
 {
+
     private $repositoryService, $revisionFake;
-    
-    protected function tearDown ()
+
+    protected function tearDown()
     {
         $this->repositoryService = null;
         parent::tearDown();
     }
 
-    public function setUp(){
+    public function setUp()
+    {
         $this->repositoryService = new RepositoryService();
         
-        $eventManagerMock = $this->getMock('Zend\EventManager\EventManager', array('attach', 'trigger'));
+        $eventManagerMock = $this->getMock('Zend\EventManager\EventManager', array(
+            'attach',
+            'trigger'
+        ));
         $repository = new RepositoryFake();
         $repository->setId(1);
         
@@ -37,32 +43,67 @@ class RepositoryServiceTest extends \PHPUnit_Framework_TestCase
         $this->repositoryService->setRepository($repository);
         $this->repositoryService->setEventManager($eventManagerMock);
     }
-    
-    public function testAddRevision(){
+
+    public function testAddRevision()
+    {
         $this->assertNotNull($this->repositoryService->addRevision($this->revisionFake));
         $this->assertEquals(true, $this->repositoryService->hasRevision(100));
     }
-    
-    public function testRemoveRevision(){
+
+    public function testRemoveRevision()
+    {
         $this->assertNotNull($this->repositoryService->addRevision($this->revisionFake));
         $this->assertNotNull($this->repositoryService->removeRevision(100));
         $this->assertEquals(false, $this->repositoryService->hasRevision(100));
     }
-    
-    public function testGetRevision(){
+
+    public function testGetRevision()
+    {
         $this->assertNotNull($this->repositoryService->addRevision($this->revisionFake));
         $this->assertInstanceOf('Versioning\Entity\RevisionInterface', $this->repositoryService->getRevision(100));
     }
-    
-    public function testGetHead(){
+
+    public function testGetHead()
+    {
         $this->assertNotNull($this->repositoryService->addRevision($this->revisionFake));
         $this->assertInstanceOf('Versioning\Entity\RevisionInterface', $this->repositoryService->getHead());
     }
-    
-    public function testCheckoutRevision(){
+
+    public function testCheckoutRevision()
+    {
         $this->assertNotNull($this->repositoryService->addRevision($this->revisionFake));
         $this->assertNotNull($this->repositoryService->checkoutRevision(100));
-        $this->assertEquals(100, $this->repositoryService->getCurrentRevision()->getId());
+        $this->assertEquals(100, $this->repositoryService->getCurrentRevision()
+            ->getId());
         $this->assertEquals(true, $this->repositoryService->hasCurrentRevision());
+    }
+
+    public function testSetGetRepository()
+    {
+        $repository = new RepositoryFake();
+        $this->repositoryService->setRepository($repository);
+        $this->assertSame($repository, $this->repositoryService->getRepository());
+    }
+
+    public function testCountRevisions()
+    {
+        $this->repositoryService->addRevision($this->revisionFake);
+        $this->assertEquals(1, $this->repositoryService->countRevisions());
+    }
+
+    public function testSetGetIdentifier()
+    {
+        $this->repositoryService->setIdentifier(1);
+        $this->assertEquals(1, $this->repositoryService->getIdentifier());
+    }
+
+    public function testHasHead(){
+        $this->assertEquals(false, $this->repositoryService->hasHead());
+    }
+    
+    public function testIsUnrevised()
+    {
+        $this->repositoryService->addRevision($this->revisionFake);
+        $this->assertEquals(true, $this->repositoryService->isUnrevised());
     }
 }

@@ -25,17 +25,17 @@ interface RepositoryServiceInterface
      * @param string $identifier            
      * @return $this
      */
-    public function setIdentifier ($identifier);
+    public function setIdentifier($identifier);
 
     /**
      * Gets the identifier
-     * 
+     *
      * $return string $identifier
      */
-    public function getIdentifier ();
-    
+    public function getIdentifier();
+
     /**
-     * 
+     *
      * @return bool
      */
     public function hasCurrentRevision();
@@ -46,7 +46,7 @@ interface RepositoryServiceInterface
      * @param RevisionInterface $revision            
      * @return $this
      */
-    public function addRevision (RevisionInterface $revision);
+    public function addRevision(RevisionInterface $revision);
 
     /**
      * Removes a revision (makes changes persistent)
@@ -54,64 +54,87 @@ interface RepositoryServiceInterface
      * @param numeric $id            
      * @return $this
      */
-    public function removeRevision ($id);
+    public function removeRevision($id);
 
     /**
      * Returns a revision
      *
      * @throws RevisionNotFoundException
-     * @param numeric $id     
+     * @param numeric $id            
      * @return RevisionInterface $revision
      */
-    public function getRevision ($id);
+    public function getRevision($id);
 
     /**
      * Checks if the repository has a revision
      *
-     * @param numeric $id             
+     * @param numeric $id            
      * @return bool
      */
-    public function hasRevision ($id);
+    public function hasRevision($id);
 
     /**
      * Returns the revisions
      *
      * @return PersistentCollection
      */
-    public function getRevisions ();
+    public function getRevisions();
 
     /**
      * Returns the head revision (most recent one)
      *
      * @return RevisionInterface $revision
      */
-    public function getHead ();
+    public function getHead();
 
     /**
      * Checks a revision out (makes changes persistent)
      *
-     * @param numeric $id             
+     * @param numeric $id            
      * @return $this
      */
-    public function checkoutRevision ($id);
+    public function checkoutRevision($id);
 
     /**
      * Returns the revision currently set
      *
      * @return RevisionInterface
      */
-    public function getCurrentRevision ();
+    public function getCurrentRevision();
 
     /**
-     * Merges two revisions
+     * Sets the repository
      *
-     * @param RevisionInterface $revision            
-     * @param RevisionInterface $base            
-     * @return RevisionInterface
+     * @param RepositoryInterface $repository            
+     * @return $this
      */
-    public function mergeRevisions (RevisionInterface $revision, RevisionInterface $base);
-    
-    public function setRepository(RepositoryInterface $repository);   
-    
-    //public function hasRevisionObject(RevisionInterface $revision);
+    public function setRepository(RepositoryInterface $repository);
+
+    /**
+     * Gets the repository
+     * 
+     * @return RepositoryInterface
+     */
+    public function getRepository();
+
+    /**
+     * Counts the revisions in this repository
+     * 
+     * @return int
+     */
+    public function countRevisions();
+
+    /**
+     * Returns, if the repository has revisions
+     * 
+     * @return bool
+     */
+    public function hasHead();
+
+    /**
+     * Returns, if this repository has open merge requests
+     * 
+     * @return bool
+     */
+    public function isUnrevised();
 }
