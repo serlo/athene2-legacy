@@ -68,86 +68,18 @@ class Bootstrap
         'Blog' => 'Blog/src/Blog',
         'Token' => 'Token/src/Token',
         'TokenTest' => 'Token/test/TokenTest',
-        //'ZfcRbac' => '../vendor/zf-commons/zfc-rbac/src/ZfcRbac',
     );
 
     public static function getApplication(){
         return static::$application;
     }
-    
-    protected static $modules = array(
-        'Application',
-        'AsseticBundle',
-        'DoctrineModule',
-        'DoctrineORMModule',
-        'ZfcBase',
-        'ZfcRbac',
-        'TwbBundle',
-        'Common',
-        'Ui',
-        'User',
-        'Versioning',
-        'Log',
-        'Entity',
-        'TwbBundle',
-    	'Taxonomy',
-    	'Link',
-        'Subject',
-        'Term',
-        'Uuid',
-        'ClassResolver',
-        'LearningResource',
-        'Language');
 
     public static $dir;
 
     public static function init()
     {
         static::$dir = __DIR__;
-        
-        /*$zf2ModulePaths = array(
-            dirname(dirname(static::$dir))
-        );
-        if (($path = static::findParentPath('vendor'))) {
-            $zf2ModulePaths[] = $path;
-        }
-        if (($path = static::findParentPath('module')) !== $zf2ModulePaths[0]) {
-            $zf2ModulePaths[] = $path;
-        }*/
-        
         static::initAutoloader();
-        
-        // use
-        // ModuleManager
-        // to
-        // load
-        // this
-        // module
-        // and
-        // it's
-        // dependencies
-        /*$config = array(
-            'module_listener_options' => array(
-                'module_paths' => $zf2ModulePaths,
-                'config_glob_paths' => array(
-                    static::findParentPath('config/autoload') . '/{,*.}{global,test}.php'
-                ),
-                'config_cache_enabled' => false
-            ),
-            'modules' => self::$modules
-        );*/
-        
-        //static::$application = Application::init($config);
-        /* @var $sm \Zend\ServiceManager\ServiceManager  */
-        
-        /*$serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('ApplicationConfig', $config);
-        $serviceManager->get('ModuleManager')->loadModules();
-        $serviceManager->setAllowOverride(true);
-        $serviceManager->setService('Doctrine\Orm\EntityManager', $serviceManager->get('doctrine.entitymanager.orm_test'));
-        $serviceManager->setAllowOverride(false);
-        $serviceManager->get('Application')->bootstrap(array());
-        static::$application = $serviceManager->get('Application');*/
     }
 
     public static function chroot()
