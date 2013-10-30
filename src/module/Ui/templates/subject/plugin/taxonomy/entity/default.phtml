@@ -1,0 +1,4 @@
+<article>
+    <?php $revision = $this->entity->plugin('repository')->getCurrentRevision; ?>
+    <?php echo $revision->get('content'); ?>
+</article>
