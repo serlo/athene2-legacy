@@ -186,7 +186,13 @@ return array(
                         'plugin' => 'provider',
                         'options' => array(
                         )
-                    )
+                    ),
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'learning-resource/plugin/page/exercise-group',
+                        )
+                    ),
                 )
             ),
             'grouped-text-exercise' => array(
@@ -283,10 +289,6 @@ return array(
                         'plugin' => 'page',
                         'options' => array(
                             'template' => 'learning-resource/plugin/page/video',
-                            'fields' => array(
-                                'title',
-                                'content'
-                            )
                         )
                     ),
                     'discussion' => array(
@@ -341,10 +343,6 @@ return array(
                         'plugin' => 'page',
                         'options' => array(
                             'template' => 'learning-resource/plugin/page/article',
-                            'fields' => array(
-                                'title',
-                                'content'
-                            )
                         )
                     ),
                     'pathauto' => array(
@@ -413,10 +411,6 @@ return array(
                         'plugin' => 'page',
                         'options' => array(
                             'template' => 'learning-resource/plugin/page/module',
-                            'fields' => array(
-                                'title',
-                                'pages'
-                            )
                         )
                     ),
                     'provider' => array(
@@ -497,7 +491,8 @@ return array(
         'allowed_controllers' => array(
             'LearningResource\Plugin\Repository\Controller\RepositoryController',
             'LearningResource\Plugin\Page\Controller\PageController',
-            'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController'
+            'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController',
+            'LearningResource\Plugin\Link\Controller\LinkController'
         ),
         'definition' => array(
             'class' => array(
@@ -505,6 +500,11 @@ return array(
                     'setServiceLocator' => array(
                         'required' => true
                     )
+                ),
+                'LearningResource\Plugin\Link\Controller\LinkController' => array(
+                    'setEntityManager' => array(
+                        'required' => true
+                    ),
                 ),
                 'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController' => array(
                     'setEntityManager' => array(
@@ -563,6 +563,28 @@ return array(
                                         'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                                         'plugin' => 'repository'
                                     )
+                                )
+                            ),
+                            'link' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/link',
+                                    'defaults' => array(
+                                        'controller' => 'LearningResource\Plugin\Link\Controller\LinkController',
+                                        'plugin' => 'link'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'order' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/order/:scope/:entity',
+                                            'defaults' => array(
+                                                'action' => 'orderChildren'
+                                            )
+                                        ),
+                                        'may_terminate' => true
+                                    ),
                                 )
                             ),
                             'page' => array(

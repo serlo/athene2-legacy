@@ -11,7 +11,7 @@
  */
 namespace Link\Manager;
 
-use Link\Entity\LinkEntityInterface;
+use Link\Entity\LinkableInterface;
 use Link\Service\LinkServiceInterface;
 
 interface LinkManagerInterface {
@@ -19,8 +19,8 @@ interface LinkManagerInterface {
 	/**
 	 * returns an LinkServiceInterface compatible instance
 	 * 
-	 * @param LinkEntityInterface $entity
+	 * @param LinkableInterface $entity
 	 * @return LinkServiceInterface
 	 */
-	public function getLink(LinkEntityInterface $entity);	
+	public function getLink(LinkableInterface $entity);	
 }

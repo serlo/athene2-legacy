@@ -13,8 +13,23 @@ namespace Link\Entity;
 
 interface LinkTypeInterface
 {
+
     /**
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     *
      * @return string
      */
     public function getName();
+
+    /**
+     *
+     * @param string $name            
+     * @return $this
+     */
+    public function setName($name);
 }

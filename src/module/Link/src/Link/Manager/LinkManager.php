@@ -11,28 +11,32 @@
  */
 namespace Link\Manager;
 
-use Link\Entity\LinkEntityInterface;
+use Link\Entity\LinkableInterface;
+use Link\Exception;
 
 class LinkManager extends AbstractManager implements LinkManagerInterface
 {
-    use \Common\Traits\EntityDelegatorTrait;
+    use\Common\Traits\EntityDelegatorTrait;
 
-	/*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Link\LinkManagerInterface::get()
+    /**
+     * 
+     * @return LinkableInterface
      */
-    public function getLink (LinkEntityInterface $entity)
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+    
+    public function getLink(LinkableInterface $entity)
     {
         $id = $entity->getId();
-        if(!$this->hasInstance($id)){
+        if (! $this->hasInstance($id)) {
             $this->addInstance($entity->getId(), $this->createService($entity));
         }
         return $this->getInstance($id);
     }
-    
-    protected function createService (LinkEntityInterface $entity)
+
+    protected function createService(LinkableInterface $entity)
     {
         $instance = parent::createInstance('Link\Service\LinkServiceInterface');
         $instance->setEntity($entity);

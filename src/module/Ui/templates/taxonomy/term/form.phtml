@@ -10,6 +10,8 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 $title = $this->isUpdating ? 'Edit taxonomy term' : 'Add taxonomy term';
+// TODO remove once issue is fixed
+$this->form->prepare();
 ?>
 <div class="page-header">
     <h1><?php echo $this->translate($title); ?></h1>

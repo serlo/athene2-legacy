@@ -8,7 +8,7 @@
  */
 namespace Link\Service;
 
-use Link\Entity\LinkEntityInterface;
+use Link\Entity\LinkableInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface LinkServiceInterface
@@ -57,4 +57,32 @@ interface LinkServiceInterface
      * @return $this
      */
     public function removeParent($parent);
+
+    /**
+     *
+     * @param int $id            
+     * @return LinkableInterface
+     */
+    public function getParent($id);
+
+    /**
+     *
+     * @param int $id            
+     * @return LinkableInterface
+     */
+    public function getChild($id);
+
+    /**
+     *
+     * @param array $children            
+     * @return $this
+     */
+    public function orderChildren(array $children);
+
+    /**
+     *
+     * @param array $parents            
+     * @return $this
+     */
+    public function orderParents(array $parents);
 }

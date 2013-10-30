@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityRepository;
 use Zend\Mvc\Application;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
+date_default_timezone_set('UTC');
 
 /**
  * @codeCoverageIgnore
@@ -64,6 +65,7 @@ class Bootstrap
         'LearningResourceTest' => 'LearningResource/test/LearningResourceTest',
         'Page' => 'Page/src/Page',
         'Event' => 'Event/src/Event',
+        'Blog' => 'Blog/src/Blog',
         //'ZfcRbac' => '../vendor/zf-commons/zfc-rbac/src/ZfcRbac',
     );
 

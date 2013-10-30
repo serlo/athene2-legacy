@@ -12,7 +12,6 @@
 namespace LearningResource\Plugin\Page;
 
 use Entity\Plugin\AbstractPlugin;
-use Zend\View\Model\ViewModel;
 
 class PagePlugin extends AbstractPlugin
 {
@@ -22,34 +21,10 @@ class PagePlugin extends AbstractPlugin
         return array(
             'template' => 'learning-resource/plugin/page/default',
             'provider' => 'provider',
-            'fields' => array(
-            )
         );
     }
-
-    protected function getContentFor($field)
-    {
-        $fields = $this->getOption('fields');
-        $provider = $this->getOption('provider');
-        
-        if (in_array($field, $fields)) {
-            return $this->getEntityService()
-                ->$provider()
-                ->get($field);
-        }
-        throw new \Entity\Exception\RuntimeException(sprintf('Could not find an alias for %s', $field));
-    }
-
     public function getTemplate()
     {
         return $this->getOption('template');
-    }
-
-    public function hydrate(ViewModel $model)
-    {
-        foreach($this->getOption('fields') as $field){
-            $model->setVariable($field, $this->getContentFor($field));
-        }
-        return $this;
     }
 }
