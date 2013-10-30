@@ -5,7 +5,7 @@ use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use Ui\Listener\AcListener;
 use AtheneTest\Bootstrap;
 
-abstract class DefaultLayoutTestCase extends AbstractHttpControllerTestCase
+abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
 {
 
     protected $traceError = true;

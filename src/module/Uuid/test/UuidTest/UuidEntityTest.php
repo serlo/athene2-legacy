@@ -50,7 +50,7 @@ class UuidEntityTest extends Model
             ->method('getUuid')
             ->will($this->returnValue(1));
         $this->assertEquals(1, $this->getObject()
-            ->getId());
+            ->getUuid());
     }
     
 

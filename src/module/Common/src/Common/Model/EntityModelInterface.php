@@ -13,6 +13,16 @@ namespace Common\Model;
 
 interface EntityModelInterface
 {
-    public function setEntity();
+    /**
+     * 
+     * @param Object $entity
+     * @return $this
+     */
+    public function setEntity($entity);
+    
+    /**
+     * 
+     * @return Object
+     */
     public function getEntity();
 }

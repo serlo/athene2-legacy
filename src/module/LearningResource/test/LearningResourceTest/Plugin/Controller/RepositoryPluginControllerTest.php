@@ -11,10 +11,10 @@
  */
 namespace LearningResourceTest\Plugin\Controller;
 
-use AtheneTest\Controller\DefaultLayoutTestCase;
+use AtheneTest\Controller\Athene2ApplicationTestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class RepositoryPluginControllerTest extends DefaultLayoutTestCase
+class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
 {
 
     protected $entityServiceMock, $repositoryPluginMock, $entityMock;

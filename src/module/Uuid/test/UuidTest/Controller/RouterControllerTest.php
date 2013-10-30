@@ -22,7 +22,7 @@ class RouterControllerTest extends Athene2ApplicationTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->controller = new RouterController();
+        $this->controller = $this->getApplicationServiceLocator()->get('Uuid\Controller\RouterController');
         $uuidRouter = $this->getMock('Uuid\Router\UuidRouter');
         $this->controller->setUuidRouter($uuidRouter);
     }

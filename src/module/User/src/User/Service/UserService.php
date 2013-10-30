@@ -9,7 +9,6 @@
 namespace User\Service;
 
 use User\Entity\User;
-use Language\Service\LanguageServiceInterface;
 use User\Manager\UserManagerInterface;
 
 class UserService implements UserServiceInterface
