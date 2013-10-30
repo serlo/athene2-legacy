@@ -56,8 +56,8 @@ define(['underscore', 'events'], function (_, eventScope) {
             throw new Error('Cant copy element');
         }());
 
-        _.each(copy, function (item) {
-            item = Common.CarbonCopy(item);
+        _.each(copy, function (item, i) {
+            copy[i] = Common.CarbonCopy(item);
         });
 
         return copy;
