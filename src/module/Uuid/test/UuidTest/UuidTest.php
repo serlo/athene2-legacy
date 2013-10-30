@@ -29,12 +29,35 @@ class UuidTest extends Model
     {
         return array(
             'uuid' => '1234',
+            'trashed' => true
         );
     }
-    
-    public function testHydrate(){
+
+    public function testHydrate()
+    {
         $uuidEntityMock = $this->getMock('Uuid\Entity\UuidEntity');
-        $uuidEntityMock->expects($this->once())->method('setUuid'); 
+        $uuidEntityMock->expects($this->once())
+            ->method('setUuid');
         $this->getObject()->hydrate($uuidEntityMock);
+    }
+
+    public function testGetId()
+    {
+        $this->assertEquals(NULL, $this->getObject()
+            ->getId());
+    }
+    
+    public function testIs(){
+        $this->assertEquals(false, $this->getObject()->is('entity'));
+        $this->assertEquals(false, $this->getObject()->is('notfound'));
+    }
+    
+    public function testGetHolderNull(){
+        $this->assertEquals(null, $this->getObject()->getHolder());
+    }
+    
+    public function testGetHolder(){
+        $object = new \UuidTest\Fake\UuidFake();
+        $this->assertInstanceOf('UuidTest\Fake\ObjectFake', $object->getHolder());
     }
 }

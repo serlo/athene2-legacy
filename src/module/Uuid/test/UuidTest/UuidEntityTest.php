@@ -18,7 +18,9 @@ class UuidEntityTest extends Model
 
     public function setUp()
     {
-        $this->setObject(new \Uuid\Entity\UuidEntity());
+        $entity = new \Uuid\Entity\UuidEntity();
+        $entity->setUuid($this->getMock('Uuid\Entity\Uuid'));
+        $this->setObject($entity);
     }
     
     /*
@@ -26,7 +28,48 @@ class UuidEntityTest extends Model
      */
     protected function getData()
     {
-        return array(
-        );
+        return array();
+    }
+
+    public function testGetId()
+    {
+        $this->getObject()
+            ->getUuidEntity()
+            ->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
+        $this->assertEquals(1, $this->getObject()
+            ->getId());
+    }
+
+    public function testGetUuid()
+    {
+        $this->getObject()
+            ->getUuidEntity()
+            ->expects($this->once())
+            ->method('getUuid')
+            ->will($this->returnValue(1));
+        $this->assertEquals(1, $this->getObject()
+            ->getId());
+    }
+    
+
+    public function testTrahsed()
+    {
+        $this->getObject()
+            ->getUuidEntity()
+            ->expects($this->atLeastOnce())
+            ->method('getTrashed')
+            ->will($this->returnValue(1));
+        $this->getObject()
+            ->getUuidEntity()
+            ->expects($this->once())
+            ->method('setTrashed');
+        
+        $this->getObject()->setTrashed(true);
+        $this->assertEquals(true, $this->getObject()
+            ->isTrashed());
+        $this->assertEquals(1, $this->getObject()
+            ->getTrashed());
     }
 }
