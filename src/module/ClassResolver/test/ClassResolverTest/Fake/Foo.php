@@ -11,6 +11,9 @@
  */
 namespace ClassResolverTest\Fake;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Foo implements FooInterface
 {
 }

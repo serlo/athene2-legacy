@@ -13,6 +13,9 @@ namespace ClassResolverTest;
 
 use ClassResolver\ClassResolver;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ClassResolverTest extends \PHPUnit_Framework_TestCase
 {
 
