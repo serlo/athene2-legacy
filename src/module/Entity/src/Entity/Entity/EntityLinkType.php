@@ -36,45 +36,18 @@ class EntityLinkType implements LinkTypeInterface
      * @ORM\Column(type="string")
      */
     protected $name;
-
-    /**
-     *
-     * @return field_type
-     *         $id
-     */
+    
     public function getId ()
     {
         return $this->id;
     }
-
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId ($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
+    
     public function setName ($name)
     {
         $this->name = $name;
         return $this;
     }
     
-    /*
-     *
-     * (non-PHPdoc)
-     * @see
-     * \Link\Entity\LinkTypeInterface::getName()
-     */
     public function getName ()
     {
         return $this->name;

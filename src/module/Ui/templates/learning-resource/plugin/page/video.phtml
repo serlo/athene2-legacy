@@ -1,14 +1,15 @@
+<?php $revision = $this->entity->plugin('repository')->getCurrentRevision();?>
 <article>
     <header class="page-header">
         <div class="pull-right btn-group">
             <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
         </div>
         <h1>
-            <?php echo $this->title; ?> <small><?php echo $this->translate('Video'); ?></small>
+            <?php echo $revision->get('title'); ?> <small><?php echo $this->translate('Video'); ?></small>
         </h1>
     </header>
     <section>
-        <?php echo $this->partial('learning-resource/plugin/page/video/youtube', array('title' => $this->title, 'content' => $this->content, 'discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+        <?php echo $this->partial('learning-resource/plugin/page/video/youtube', array('content' => $revision->get('content'), 'discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
     </section>
     <hr>
     <section>

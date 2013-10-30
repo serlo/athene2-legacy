@@ -11,13 +11,14 @@
  */
 namespace LinkTest\Fake;
 
-use Link\Entity\LinkEntityInterface;
+use Link\Entity\LinkableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Link\Entity\LinkTypeInterface;
 
 /**
  * @codeCoverageIgnore
  */
-class LinkFake implements LinkEntityInterface
+class LinkFake implements LinkableInterface
 {
 
     protected $children, $parents, $id;
@@ -49,55 +50,82 @@ class LinkFake implements LinkEntityInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getChildren()
+     * (non-PHPdoc) @see LinkableInterface::getChildren()
      */
-    public function getChildren(\Link\Entity\LinkTypeInterface $type)
+    public function getChildren(LinkTypeInterface $type)
     {
         return $this->children;
     }
     
     /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::getParents()
+     * (non-PHPdoc) @see LinkableInterface::getParents()
      */
-    public function getParents(\Link\Entity\LinkTypeInterface $type)
+    public function getParents(LinkTypeInterface $type)
     {
         return $this->parents;
     }
     
     /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::addChild()
+     * (non-PHPdoc) @see LinkableInterface::addChild()
      */
-    public function addChild(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
+    public function addChild(LinkableInterface $parent, LinkTypeInterface $type)
     {
         $this->children->add($parent);
         return $this;
     }
     
     /*
-     * (non-PHPdoc) @see \Link\Entity\LinkEntityInterface::addParent()
+     * (non-PHPdoc) @see LinkableInterface::addParent()
      */
-    public function addParent(\Link\Entity\LinkEntityInterface $parent, \Link\Entity\LinkTypeInterface $type)
+    public function addParent(LinkableInterface $parent, LinkTypeInterface $type)
     {
         $this->parent->add($parent);
         return $this;
     }
     
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::removeChild()
+    /*
+     * (non-PHPdoc) @see LinkableInterface::removeChild()
      */
-    public function removeChild (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function removeChild(LinkableInterface $parent, LinkTypeInterface $type)
     {
         // TODO Auto-generated method stub
-        
     }
-
-	/* (non-PHPdoc)
-     * @see \Link\Entity\LinkEntityInterface::removeParent()
+    
+    /*
+     * (non-PHPdoc) @see LinkableInterface::removeParent()
      */
-    public function removeParent (\Link\Entity\LinkEntityInterface $parent,\Link\Entity\LinkTypeInterface $type)
+    public function removeParent(LinkableInterface $parent, LinkTypeInterface $type)
     {
         // TODO Auto-generated method stub
-        
     }
-
+    /*
+     * (non-PHPdoc) @see LinkableInterface::positionChild()
+     */
+    public function positionChild(LinkableInterface $child, LinkTypeInterface $type, $position)
+    {
+        // TODO Auto-generated method stub
+    }
+    
+    /*
+     * (non-PHPdoc) @see LinkableInterface::positionParent()
+     */
+    public function positionParent(LinkableInterface $parent, LinkTypeInterface $type, $position)
+    {
+        // TODO Auto-generated method stub
+    }
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkableInterface::getType()
+     */
+    public function getType()
+    {
+        // TODO Auto-generated method stub
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Link\Entity\LinkableInterface::setType()
+     */
+    public function setType(LinkTypeInterface $type)
+    {
+        // TODO Auto-generated method stub
+    }
 }

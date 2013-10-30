@@ -1,7 +1,20 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Entity\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Link\Entity\LinkInterface;
+use Link\Entity\LinkableInterface;
+use Link\Entity\LinkTypeInterface;
 
 /**
  * An
@@ -11,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_link")
  */
-class EntityLink
+class EntityLink implements LinkInterface
 {
 
     /**
@@ -49,106 +62,56 @@ class EntityLink
      */
     public $order;
 
-    /**
-     *
-     * @return field_type
-     *         $order
-     */
-    public function getOrder ()
+    public function __construct(LinkTypeInterface $type, $order)
+    {
+        $this->type = $type;
+        $this->order = $order;
+    }
+
+    public function getPosition()
     {
         return $this->order;
     }
 
-    /**
-     *
-     * @param field_type $order            
-     * @return $this
-     */
-    public function setOrder ($order)
+    public function setPosition($position)
     {
-        $this->order = $order;
+        $this->order = $position;
         return $this;
     }
 
-    /**
-     *
-     * @return field_type
-     *         $id
-     */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @return field_type
-     *         $child
-     */
-    public function getChild ()
+    public function getChild()
     {
         return $this->child;
     }
 
-    /**
-     *
-     * @return field_type
-     *         $parent
-     */
-    public function getParent ()
+    public function getParent()
     {
         return $this->parent;
     }
 
-    /**
-     *
-     * @return field_type
-     *         $type
-     */
-    public function getType ()
+    public function getType()
     {
         return $this->type;
     }
 
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId ($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $child            
-     * @return $this
-     */
-    public function setChild ($child)
+    public function setChild(LinkableInterface $child)
     {
         $this->child = $child;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $parent            
-     * @return $this
-     */
-    public function setParent ($parent)
+    public function setParent(LinkableInterface $parent)
     {
         $this->parent = $parent;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $type            
-     * @return $this
-     */
-    public function setType ($type)
+    public function setType(LinkTypeInterface $type)
     {
         $this->type = $type;
         return $this;

@@ -140,6 +140,9 @@ class EntityManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->entityMock));
         
         $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        $languageServiceMock->expects($this->atLeastOnce())
+            ->method('getEntity')
+            ->will($this->returnValue($this->getMock('Language\Entity\LanguageInterface')));
         
         $this->assertSame($this->entityServiceMock, $this->entityManager->createEntity('foobar', array(
             'asdf'

@@ -14,7 +14,6 @@ namespace LearningResource\Plugin\Page\Controller;
 use Entity\Plugin\Controller\AbstractController;
 use Versioning\Exception\RevisionNotFoundException;
 use Entity\Exception\EntityNotFoundException;
-use Zend\Mvc\Router\RouteInterface;
 use Zend\Mvc\Router\Http\RouteMatch;
 use Alias\Exception\AliasNotFoundException;
 
@@ -55,7 +54,7 @@ class PageController extends AbstractController
                 'user' => $this->getUserManager()->getUserFromAuthenticator(),
                 'discussion' => $entity->plugin('discussion')
             ));
-            $page->hydrate($model);
+            //$page->hydrate($model);
             $model->setTemplate($page->getTemplate());
             return $model;
         } catch (RevisionNotFoundException $e) {

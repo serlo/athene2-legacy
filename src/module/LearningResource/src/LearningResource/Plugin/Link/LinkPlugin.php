@@ -20,30 +20,41 @@ class LinkPlugin extends AbstractPlugin
 {
     use \Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
     
-    /*
-     * public function addParent(EntityServiceInterface $entity) { if (! in_array($entity->getType()->getName(), $this->getEntityTypes())) throw new Exception\RuntimeException(sprintf('Type %s is not allowed on this association.', $entity->getType()->getName())); // if (! $this->associationAllowed($entity) ) // throw new Exception\RuntimeException('This association is not allowed.'); $this->checkMapping($entity); $this->getLinkService()->addParent($entity->getEntity()); return $this; } public function addChild(EntityServiceInterface $entity) { if (! in_array($entity->getType()->getName(), $this->getEntityTypes())) throw new Exception\RuntimeException(sprintf('Type %s is not allowed on this association.', $entity->getType()->getName())); // if (! $this->associationAllowed($entity) ) // throw new Exception\RuntimeException('This association is not allowed.'); $this->checkMapping($entity); $this->getLinkService()->addChild($entity->getEntity()); return $this; }
-     */
-    public function hasChild($entityTypes = NULL)
+    public function orderAssociated(){
+        $this->getLinkService();        
+    }
+    
+    public function orderChildren(array $children){
+        $this->getLinkService()->orderChildren($children);
+        return $this;
+    }
+    
+    public function orderParents(array $parents){
+        $this->getLinkService()->orderParents($parents);
+        return $this;
+    }
+    
+    public function hasChild(array $entityTypes = NULL)
     {
         return is_object($this->findChild($entityTypes));
     }
 
-    public function hasChildren($entityTypes = NULL)
+    public function hasChildren(array $entityTypes = NULL)
     {
         return $this->findChildren($entityTypes)->count() != 0;
     }
 
-    public function hasParents($entityTypes = NULL)
+    public function hasParents(array $entityTypes = NULL)
     {
         return $this->findParents($entityTypes)->count() != 0;
     }
 
-    public function hasParent($entityTypes = NULL)
+    public function hasParent(array $entityTypes = NULL)
     {
         return is_object($this->findParent($entityTypes));
     }
 
-    public function findChildren($entityTypes = NULL)
+    public function findChildren(array $entityTypes = NULL)
     {
         if ($entityTypes === NULL)
             $entityTypes = $this->getEntityTypes();
@@ -59,7 +70,7 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParents($entityTypes = NULL)
+    public function findParents(array $entityTypes = NULL)
     {
         if ($entityTypes === NULL)
             $entityTypes = $this->getEntityTypes();
@@ -75,12 +86,12 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
-    public function findParent($entityTypes = array())
+    public function findParent(array $entityTypes = NULL)
     {
         return $this->findParents($entityTypes)->first();
     }
 
-    public function findChild($entityTypes = NULL)
+    public function findChild(array $entityTypes = NULL)
     {
         return $this->findChildren($entityTypes)->first();
     }
@@ -119,12 +130,10 @@ class LinkPlugin extends AbstractPlugin
         
         switch ($this->getOption('association')) {
             case 'one-to-one':
-                // $isValid = Mapping\OneToOneMapper::isValid($this, $entity->$foreignScope());
                 $class = 'Mapping\OneToOneMapper';
                 break;
             case 'many-to-one':
                 $class = 'Mapping\ManyToOneMapper';
-                //throw new Exception\RuntimeException('Many-to-one associations are not supported yet.');
                 break;
             case 'one-to-many':
                 throw new Exception\RuntimeException('One-to-many associations are not supported yet. You should strongly consider to establish the association from the owned side.');
@@ -143,15 +152,6 @@ class LinkPlugin extends AbstractPlugin
         $foreignType = $to->getType()->getName();
         $original = $this->getEntityService();
         $originalScope = $this->getScope();
-        
-        /*foreach ($this->getOption('types') as $type) {
-            if ($type['to'] == $foreignType) {
-                if (! array_key_exists('inversed_by', $type))
-                    throw new Exception\RuntimeException('No reverse side defined');
-                $foreignScope = $type['inversed_by'];
-                break;
-            }
-        }*/
 
         if (! array_key_exists('inversed_by', $this->getOption('types')[$foreignType]))
             throw new Exception\RuntimeException('No reverse side defined');

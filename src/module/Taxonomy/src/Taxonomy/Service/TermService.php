@@ -56,9 +56,9 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         return $this->getEntity();
     }
 
-    public function orderAssociated($association, $of, $order)
+    public function orderAssociated($association, $object, $order)
     {
-        $entity = $this->getEntity()->orderAssociated($association, $of, $order);
+        $entity = $this->getEntity()->orderAssociated($association, $object, $order);
         $this->getSharedTaxonomyManager()
             ->getObjectManager()
             ->persist($entity);

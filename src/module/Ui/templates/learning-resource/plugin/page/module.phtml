@@ -17,8 +17,9 @@
         <div class="list-group">
             <?php foreach($this->pages as $page):?>
                 <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
+                    <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
                     <a class="list-group-item" href="<?php echo '#'.$page->getId(); ?>">
-                        <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-align-left"></span> <?php echo $page->provider()->get('title'); ?></h4>
+                        <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-align-left"></span> <?php echo $revision->get('title'); ?></h4>
                     </a>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -31,10 +32,11 @@
 	<section>
         <?php foreach($this->pages as $page):?>
             <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
+                <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
             	<article class="panel panel-default">
                     <header id="<?php echo $page->getId(); ?>" class="panel-heading">
                         <div class="row">
-                            <div class="col-md-10"><?php echo $page->provider()->get('title'); ?></div>
+                            <div class="col-md-10"><?php echo $revision->get('title'); ?></div>
                             <div class="col-md-2">
                                 <div class="pull-right btn-group">
                                 	<a class="btn btn-default btn-xs"
@@ -51,7 +53,7 @@
                         </div>
                     </header>
                     <section class="panel-body">
-                        <?php echo $page->provider()->get('content'); ?>
+                        <?php echo $revision->get('content'); ?>
                     </section>
                 </article>
             <?php endif; ?>
