@@ -66,6 +66,8 @@ class Bootstrap
         'Page' => 'Page/src/Page',
         'Event' => 'Event/src/Event',
         'Blog' => 'Blog/src/Blog',
+        'Token' => 'Token/src/Token',
+        'TokenTest' => 'Token/test/TokenTest',
         //'ZfcRbac' => '../vendor/zf-commons/zfc-rbac/src/ZfcRbac',
     );
 

@@ -41,23 +41,24 @@ class Tokenizer implements TokenizerInterface
         $this->provider = $provider;
         return $this;
     }
-    
-    public function transliterate($provider, $object, $tokenString){
-        if(!is_object($provider))
+
+    public function transliterate($provider, $object, $tokenString)
+    {
+        if (! is_object($provider))
             $provider = new $provider();
         
         $this->setProvider($provider);
         $this->getProvider()->setObject($object);
         
         // WHY DO YOU NOT WORK WHEN { IS THE FIRST CHAR
-        $tokenString = ':'.$tokenString;
+        $tokenString = ':' . $tokenString;
         
         $returnString = $tokenString;
         
         $token = strtok($tokenString, '{');
-        while($token !== FALSE){
+        while ($token !== FALSE) {
             $token = strtok('}');
-            $replace = '{'.$token.'}';
+            $replace = '{' . $token . '}';
             $with = $this->transliterateToken($token);
             $limit = 1;
             $returnString = str_replace($replace, $with, $returnString, $limit);
@@ -67,11 +68,12 @@ class Tokenizer implements TokenizerInterface
         // WHY DO YOU NOT WORK WHEN { IS THE FIRST CHAR
         return substr($returnString, 1);
     }
-    
-    protected function transliterateToken($token){
+
+    protected function transliterateToken($token)
+    {
         $data = $this->getProvider()->getData();
-        if(!array_key_exists($token, $data))
-            throw new \RuntimeException(sprintf('Token `%s` not provided by `%s`', $token, get_class($this->getProvider())));
+        if (! array_key_exists($token, $data))
+            throw new \Token\Exception\RuntimeException(sprintf('Token `%s` not provided by `%s`', $token, get_class($this->getProvider())));
         return $data[$token];
     }
 }
