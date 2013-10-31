@@ -34,7 +34,6 @@ class TaxonomyTest extends Model
             'language' => new Language(),
             'id' => '1',
             'type' => new TaxonomyType(),
-            'terms' => new ArrayCollection(),
             'name' => ''
         );
     }

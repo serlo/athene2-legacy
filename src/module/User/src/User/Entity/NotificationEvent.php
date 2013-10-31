@@ -68,7 +68,7 @@ class NotificationEvent implements NotificationEventInterface
      */
     public function getId()
     {
-        return $this->getId();
+        return $this->id;
     }
     
     /*

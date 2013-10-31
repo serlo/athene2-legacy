@@ -11,24 +11,27 @@
  */
 namespace UserTest\Authentication;
 
-
-use User\Authentication\HashFilter;
 use User\Authentication\HashService;
+use User\Authentication\HashFilter;
+
 /**
  * @codeCoverageIgnore
  */
 class HashFilterTest extends \PHPUnit_Framework_TestCase
 {
+
     protected $hashFilter;
-    
-    public function setUp(){
+
+    public function setUp()
+    {
         $this->hashFilter = new HashFilter();
         $this->hashService = new HashService();
     }
-    
-    public function test(){
+
+    public function testFilter()
+    {
         $password = "12345678";
-        $encrypted = ($this->hashFilter->hashPassword($password));
+        $encrypted = ($this->hashFilter->filter($password));
         $this->assertEquals($encrypted, $this->hashFilter->hashPassword($password, $this->hashFilter->findSalt($encrypted)));
     }
 }

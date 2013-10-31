@@ -61,7 +61,7 @@ class Bootstrap
         'Event' => 'Event/src/Event',
         'Blog' => 'Blog/src/Blog',
         'Token' => 'Token/src/Token',
-        'TokenTest' => 'Token/test/TokenTest',
+        'TokenTest' => 'Token/test/TokenTest'
     );
 
     public static function getApplication(){

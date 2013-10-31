@@ -14,8 +14,6 @@ namespace User\Entity;
 interface UserInterface
 {
 
-    public function getLogs();
-
     public function getEmail();
 
     public function getUsername();
@@ -33,10 +31,6 @@ interface UserInterface
     public function getLastname();
 
     public function getGender();
-
-    public function getRemoved();
-
-    public function setLogs($logs);
 
     public function setEmail($email);
 

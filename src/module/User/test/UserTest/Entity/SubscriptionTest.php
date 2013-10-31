@@ -9,35 +9,41 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace UserTest;
+namespace UserTest\Entity;
 
 use AtheneTest\TestCase\Model;
 use Uuid\Entity\Uuid;
+use User\Entity\User;
+use User\Entity\Subscription;
 
 /**
  * @codeCoverageIgnore
  */
-class UserTest extends Model
+class SubscriptionTest extends Model
 {
+
+    /**
+     *
+     * @return Subscription
+     */
+    public function getObject()
+    {
+        return parent::getObject();
+    }
 
     public function setUp()
     {
-        $this->setObject(new \User\Entity\User());
+        $this->setObject(new Subscription());
     }
 
     protected function getData()
     {
+        $uuid = $this->getMock('Uuid\Entity\Uuid');
         return array(
-            'email' => 'asdf',
-            'username' => 'asdf',
-            'password' => '12345',
-            'lastname' => 'a',
-            'givenname' => 'b',
-            'logins' => 10,
-            'lastLogin' => 12345,
-            'date' => 1234,
-            'gender' => 'a',
-            'adsEnabled' => false,
+            'notifyMailman' => true,
+            'subscriber' => $this->getMock('User\Entity\User'),
+            'subscribedObject' => $this->getMock('Uuid\Entity\Uuid'),
+            'id' => NULL
         );
     }
 }

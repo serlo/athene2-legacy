@@ -21,6 +21,7 @@ use Uuid\Entity\UuidEntity;
  */
 class User extends UuidEntity implements UserInterface
 {
+    
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
@@ -28,12 +29,6 @@ class User extends UuidEntity implements UserInterface
      */
     protected $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity="UserLog",
-     * mappedBy="user")
-     */
-    protected $logs;
-    
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinTable(name="role_user")
@@ -103,30 +98,24 @@ class User extends UuidEntity implements UserInterface
     protected $gender;
 
     /**
+     *
      * @return field_type $token
      */
-    public function getToken ()
+    public function getToken()
     {
         return $this->token;
     }
 
-	/**
-     * @param field_type $token
+    /**
+     *
+     * @param field_type $token            
      * @return $this
      */
     public function generateToken()
     {
-        $this->token = hash('crc32b', uniqid('user.token.', true));;
+        $this->token = hash('crc32b', uniqid('user.token.', true));
+        ;
         return $this;
-    }
-
-    /**
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection $logs
-     */
-    public function getLogs()
-    {
-        return $this->logs;
     }
 
     /**
@@ -204,37 +193,6 @@ class User extends UuidEntity implements UserInterface
     public function getGender()
     {
         return $this->gender;
-    }
-
-    /**
-     *
-     * @return boolean $removed
-     */
-    public function getRemoved()
-    {
-        return $this->getUuidEntity()->getTrashed();
-    }
-
-    /**
-     *
-     * @param \Doctrine\Common\Collections\ArrayCollection $logs            
-     * @return $this
-     */
-    public function setLogs($logs)
-    {
-        $this->logs = $logs;
-        return $this;
-    }
-
-    /**
-     *
-     * @param \Doctrine\Common\Collections\ArrayCollection $userRoles            
-     * @return $this
-     */
-    public function setUserRoles($userRoles)
-    {
-        $this->userRoles = $userRoles;
-        return $this;
     }
 
     /**
@@ -339,7 +297,6 @@ class User extends UuidEntity implements UserInterface
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->logs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ads_enabled = true;
         $this->removed = false;
         $this->logins = 0;
@@ -371,25 +328,24 @@ class User extends UuidEntity implements UserInterface
      */
     public function populate(array $data = array())
     {
-        $this->injectFromArray('email', $data);
-        $this->injectFromArray('password', $data);
-        $this->injectFromArray('username', $data);
-        $this->injectFromArray('logins', $data);
-        $this->injectFromArray('ads_enabled', $data);
-        $this->injectFromArray('removed', $data);
-        $this->injectFromArray('lastname', $data);
-        $this->injectFromArray('givenname', $data);
-        $this->injectFromArray('gender', $data);
+        $this->injectArray('email', $data);
+        $this->injectArray('password', $data);
+        $this->injectArray('username', $data);
+        $this->injectArray('logins', $data);
+        $this->injectArray('ads_enabled', $data);
+        $this->injectArray('removed', $data);
+        $this->injectArray('lastname', $data);
+        $this->injectArray('givenname', $data);
+        $this->injectArray('gender', $data);
         return $this;
     }
 
-    private function injectFromArray($key, array $array, $default = NULL)
+    private function injectArray($key, array $array, $default = NULL)
     {
         if (array_key_exists($key, $array)) {
             $this->$key = $array[$key];
-        } elseif ($default !== NULL) {
-            $this->$key = $default;
         }
+        return $this;
     }
 
     public function hasRole($id)

@@ -40,8 +40,6 @@ interface UserServiceInterface
 
     public function getId();
 
-    public function getLogs();
-
     public function getEmail();
 
     public function getUsername();
@@ -64,8 +62,6 @@ interface UserServiceInterface
 
     public function getRemoved();
 
-    public function setLogs($logs);
-
     public function setEmail($email);
 
     public function setUsername($username);
@@ -83,6 +79,10 @@ interface UserServiceInterface
     public function setLastname($lastname);
 
     public function setGender($gender);
-
-    public function setRemoved($removed);
+    
+    public function setTrashed($trashed);
+    
+    public function isTrashed();
+    
+    public function getTrashed();
 }

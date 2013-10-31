@@ -16,15 +16,7 @@ use User\Manager\UserManagerInterface;
 use User\Exception\InvalidArgumentException;
 
 class UserCollection extends AbstractDelegatorCollection
-{    
-	/* (non-PHPdoc)
-     * @see \Common\Collection\AbstractDelegatorCollection::getDelegate()
-     */
-    public function getDelegate ($delegator)
-    {
-        return $delegator->getEntity();
-    }
-
+{
     /**
      * (non-PHPdoc)
      * @return UserManagerInterface

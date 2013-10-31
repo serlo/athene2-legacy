@@ -20,7 +20,7 @@ abstract class Model extends \PHPUnit_Framework_TestCase
      */
     abstract protected function getData();
 
-    private $object;
+    private $object, $data;
 
     /**
      *
@@ -44,10 +44,14 @@ abstract class Model extends \PHPUnit_Framework_TestCase
 
     protected function inject()
     {
-        foreach ($this->getData() as $key => $value) {
+        if(!is_array($this->data))
+            $this->data = $this->getData();
+        
+        foreach ($this->data as $key => $value) {
             $method = 'set' . ucfirst($key);
-            if(method_exists($this->getObject(), $method)){
-                $this->getObject()->$method($value);
+            if (method_exists($this->getObject(), $method)) {
+                $this->assertSame($this->getObject(), $this->getObject()
+                    ->$method($value));
             }
         }
         return $this;
@@ -63,10 +67,14 @@ abstract class Model extends \PHPUnit_Framework_TestCase
     {
         $object = $this->getObject();
         $this->inject();
-        foreach ($this->getData() as $key => $value) {
+        foreach ($this->data as $key => $value) {
             $method = 'get' . ucfirst($key);
-            if(method_exists($object, $method)){
-                $this->assertEquals($value, $object->$method(), $method);
+            if (method_exists($object, $method)) {
+                if (is_object($object->$method())) {
+                    $this->assertSame($value, $object->$method(), $method);
+                } else {
+                    $this->assertEquals($value, $object->$method(), $method);
+                }
             }
         }
     }

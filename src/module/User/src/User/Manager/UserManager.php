@@ -53,7 +53,7 @@ class UserManager implements UserManagerInterface
             $email = $this->getAuthenticationService()->getIdentity();
             try {
                 $user = $this->findUserByEmail($email);
-                if ($user->getRemoved() || ! $user->hasRole('login')) {
+                if ($user->isTrashed() || ! $user->hasRole('login')) {
                     $this->getAuthenticationService()->clearIdentity();
                 } else {
                     return $user;
@@ -124,7 +124,7 @@ class UserManager implements UserManagerInterface
     public function trashUser($id)
     {
         $user = $this->getUser($id);
-        $user->setRemoved(true);
+        $user->setTrashed(true);
         $this->getObjectManager()->persist($user->getEntity());
         return $this;
     }
