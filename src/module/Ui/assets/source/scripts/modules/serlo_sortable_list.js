@@ -21,8 +21,13 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
         return $(this).each(function (group) {
             var $instance = $(this),
                 $saveBtn = $('.sortable-save-action', this),
+                $activateBtn = $('.sortable-activate-action', this),
+                $abortBtn = $('.sortable-abort-action', this),
+                activeClass = 'sortable-active',
                 dataUrl,
                 dataDepth,
+                dataActive,
+                originalHTML,
                 originalData,
                 updatedData;
 
@@ -31,6 +36,9 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
             if (!dataUrl) {
                 throw new Error('No sort action given for sortable wrapper.');
             }
+
+            dataActive = $instance.attr('data-active') || "true";
+            dataActive = dataActive === "true" ? true : false;
 
             dataDepth = $instance.attr('data-depth') || 0;
 
@@ -54,25 +62,48 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                 return array;
             }
 
-            $instance.nestable({
-                rootClass: 'sortable',
-                listClass: 'sortable-list',
-                itemClass: 'sortable-item',
-                dragClass: 'sortable-dragel',
-                handleClass: 'sortable-handle',
-                collapsedClass: 'sortable-collapsed',
-                placeClass: 'sortable-placeholder',
-                noDragClass: 'sortable-nodrag',
-                emptyClass: 'sortable-empty',
+            function activate() {
+                originalHTML = $instance.find('> ol').first().html();
+                
+                $instance.addClass(activeClass);
 
-                expandBtnHTML: '',
-                collapseBtnHTML: '',
-                group: group,
-                maxDepth: dataDepth,
-                threshold: 20
-            });
+                $activateBtn.hide();
+                $abortBtn.show();
 
-            originalData = cleanEmptyChildren($instance.nestable('serialize'));
+                $instance.nestable({
+                    rootClass: 'sortable',
+                    listClass: 'sortable-list',
+                    itemClass: 'sortable-item',
+                    dragClass: 'sortable-dragel',
+                    handleClass: 'sortable-handle',
+                    collapsedClass: 'sortable-collapsed',
+                    placeClass: 'sortable-placeholder',
+                    noDragClass: 'sortable-nodrag',
+                    emptyClass: 'sortable-empty',
+
+                    expandBtnHTML: '',
+                    collapseBtnHTML: '',
+                    group: group,
+                    maxDepth: dataDepth,
+                    threshold: 20
+                });
+
+                originalData = cleanEmptyChildren($instance.nestable('serialize'));
+            }
+
+            function deactivate() {
+                // Router.reload();
+                $instance
+                    .removeClass(activeClass)
+                    .nestable('destroy')
+                    .find('> ol')
+                    .first()
+                    .html(originalHTML);
+
+                $saveBtn.hide();
+                $abortBtn.hide();
+                $activateBtn.show();
+            }
 
             $instance.on('change', function () {
                 updatedData = cleanEmptyChildren($instance.nestable('serialize'));
@@ -94,6 +125,11 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                 })
                     .success(function () {
                         SystemNotification.notify(t('Order successfully saved'), 'success');
+                        
+                        if (!dataActive) {
+                            deactivate();
+                        }
+
                         $saveBtn.hide();
                     })
                     .fail(function () {
@@ -102,6 +138,19 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                 return;
             });
 
+            $abortBtn.click(function () {
+                if (!dataActive) {
+                    deactivate();
+                }
+            });
+
+            $activateBtn.click(function () {
+                activate();
+            });
+
+            if (dataActive) {
+                activate();
+            }
         });
     };
 

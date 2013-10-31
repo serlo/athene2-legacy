@@ -17,7 +17,12 @@ if (! isset($this->isChild)) : ?>
             <?php echo $this->partial('taxonomy/term/organize/actions', array('term' => $this->term)); ?>
         </div>
     </div>
-    <div class="sortable" data-depth="15" data-action="/taxonomy/term/order/<?php print $this->term->getId(); ?>">
+    <div class="sortable" data-depth="15" data-active="false" data-action="/taxonomy/term/order/<?php print $this->term->getId(); ?>">
+        <div class="sortable-actions">
+            <button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button/>
+            <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Save new order'); ?></button/>
+            <button class="btn btn-default sortable-abort-action is-hidden"><?php print $this->translate('Cancel'); ?></button/>
+        </div>
 <?php endif; ?>
         <ol id="<?php echo $this->term->getId(); ?>" class="sortable-list"
     		data-id="<?php echo $this->term->getId(); ?>">
@@ -34,7 +39,9 @@ if (! isset($this->isChild)) : ?>
         </ol>
 <?php if (!isset($this->isChild)) : ?>
         <div class="sortable-actions">
-    		<button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Reihenfolge speichern'); ?></button/>
+    		<button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button/>
+            <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Save new order'); ?></button/>
+            <button class="btn btn-default sortable-abort-action is-hidden"><?php print $this->translate('Cancel'); ?></button/>
     	</div>
     </div>
 <?php endif; ?>

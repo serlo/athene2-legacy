@@ -12,7 +12,7 @@
 .sortable-item-inner {
     min-height: 35px;
     margin-bottom: 8px;
-    padding: 9px 6px 0 35px;
+    padding: 9px 6px 0 6px;
     
     &.sortable-handle {
         position: relative;
@@ -26,37 +26,43 @@
     }
 }
 
-.sortable-handle {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 30px;
-    width: 30px;
+.sortable-active {
+    .sortable-item-inner {
+        padding-left: 35px;
+    }
 
-    cursor: pointer;
-    
-    &:before {
-        content: '≡';
+    .sortable-handle {
         position: absolute;
         left: 0;
         top: 0;
+        height: 30px;
         width: 30px;
+
+        cursor: pointer;
         
-        text-align: center;
-        font-weight: bold;
+        &:before {
+            content: '≡';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            
+            text-align: center;
+            font-weight: bold;
 
-        font-size: 20px;
-        line-height: 34px;
-    }
+            font-size: 20px;
+            line-height: 34px;
+        }
 
-    &.sortable-item-inner {
-        width: auto;
-        position: relative;
-        height: auto;
-    }
+        &.sortable-item-inner {
+            width: auto;
+            position: relative;
+            height: auto;
+        }
 
-    &:hover {
-        background: #F0F0F0;
+        &:hover {
+            background: #F0F0F0;
+        }
     }
 }
 
