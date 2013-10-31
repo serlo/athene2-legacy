@@ -15,6 +15,9 @@ use AtheneTest\TestCase\Model;
 use Term\Entity\Term;
 use Language\Entity\Language;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TermTest extends Model
 {
 

@@ -9,11 +9,29 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace UuidTest\Fake;
+namespace TermTest;
+
+use Term\Form\TermFieldset;
 
 /**
  * @codeCoverageIgnore
  */
-class ObjectFake
+class TermFieldsetTest extends \PHPUnit_Framework_TestCase
 {
+
+    protected $form;
+
+    public function setUp()
+    {
+        $this->form = new TermFieldset();
+    }
+
+    public function testInputFilter()
+    {
+        $this->assertEquals(array(
+            'name' => array(
+                'required' => true
+            )
+        ), $this->form->getInputFilterSpecification());
+    }
 }

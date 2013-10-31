@@ -14,6 +14,9 @@ namespace UuidTest;
 use AtheneTest\TestCase\Model;
 use Uuid\Entity\Uuid;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UuidTest extends Model
 {
 

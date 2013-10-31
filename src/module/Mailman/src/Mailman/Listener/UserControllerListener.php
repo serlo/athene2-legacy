@@ -18,12 +18,6 @@ class UserControllerListener extends AbstractListener
 {
     use\Zend\I18n\Translator\TranslatorAwareTrait;
 
-    /**
-     *
-     * @var array
-     */
-    protected $listeners = array();
-
     public function onRegister(Event $e)
     {
         /* @var $user \User\Service\UserServiceInterface */
@@ -67,21 +61,22 @@ class UserControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('User\Controller\UserController', 'register', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'register', array(
             $this,
             'onRegister'
         ), - 1);
-        $this->listeners[] = $events->attach('User\Controller\UserController', 'restore-password', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'restore-password', array(
             $this,
             'onRestore'
         ), - 1);
     }
     
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::detachShared()
+	/* (non-PHPdoc)
+     * @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
      */
-    public function detachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    protected function getMonitoredClass ()
     {
-        // TODO Auto-generated method stub
+        return 'User\Controller\UserController';
     }
+
 }

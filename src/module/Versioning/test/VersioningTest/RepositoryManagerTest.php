@@ -14,6 +14,9 @@ namespace VersioningTest;
 use Versioning\RepositoryManager;
 use VersioningTest\Entity\RepositoryFake;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RepositoryManagerTest extends \PHPUnit_Framework_TestCase
 {
     protected function tearDown ()

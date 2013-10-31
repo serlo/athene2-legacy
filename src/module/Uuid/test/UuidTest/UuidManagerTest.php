@@ -14,6 +14,9 @@ namespace UuidTest;
 use Uuid\Manager\UuidManager;
 use ClassResolver\ClassResolver;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UuidManagerTest extends \PHPUnit_Framework_TestCase
 {
 

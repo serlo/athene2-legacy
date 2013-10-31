@@ -13,6 +13,9 @@ namespace UuidTest\Fake;
 
 use Uuid\Entity\Uuid;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UuidFake extends Uuid
 {
     public function __construct(){

@@ -15,22 +15,14 @@ use Zend\EventManager\Event;
 
 /**
  * Event Listener for Discussion\Controller\DiscussionController
- * 
  */
 class DiscussionControllerListener extends AbstractMvcListener
 {
-    
-    /**
-     * An array containing all registered listeners.
-     *
-     * @var array
-     */
-    protected $listeners = array();
-    
+
     /**
      * Gets executed on 'start'
-     * 
-     * @param Event $e
+     *
+     * @param Event $e            
      * @return null
      */
     public function onStart(Event $e)
@@ -41,35 +33,41 @@ class DiscussionControllerListener extends AbstractMvcListener
         $on = $e->getParam('on');
         $this->logEvent($e->getTarget(), $language, $user, $discussion, $on);
     }
-    
+
     /**
      * Gets executed on 'comment'
-     * 
-     * @param Event $e
+     *
+     * @param Event $e            
      * @return null
      */
     public function onComment(Event $e)
     {
         $user = $e->getParam('user')->getEntity();
         $language = $e->getParam('language')->getEntity();
-        $discussion = $e->getParam('discussion')->getEntity()->getUuidEntity();
+        $discussion = $e->getParam('discussion')
+            ->getEntity()
+            ->getUuidEntity();
         $comment = $e->getParam('comment')->getEntity();
         $this->logEvent($e->getTarget(), $language, $user, $comment, $discussion);
     }
-    
-    
-    public function attachShared (\Zend\EventManager\SharedEventManagerInterface $events)
+
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         // Listens 'start'
-        $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'start', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'start', array(
             $this,
             'onStart'
         ));
         
         // Listens on 'comment'
-        $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'comment', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'comment', array(
             $this,
             'onComment'
         ));
+    }
+    
+    protected function getMonitoredClass ()
+    {
+        return 'Discussion\Controller\DiscussionController';
     }
 }

@@ -16,20 +16,20 @@ use User\Entity\UserInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Language\Entity\LanguageInterface;
 use Zend\EventManager\SharedListenerAggregateInterface;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-abstract class AbstractMvcListener implements SharedListenerAggregateInterface
+abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
 {
     use \Event\EventManagerAwareTrait;
-    
-    
+
     /**
      * Tells the EventManager to log a certain event.
      * The EventType is automatically generated through the controller.
-     * 
-     * @param AbstractActionController $controller
-     * @param LanguageInterface $language
-     * @param UserInterface $actor
-     * @param UuidHolder $uuid
+     *
+     * @param AbstractActionController $controller            
+     * @param LanguageInterface $language            
+     * @param UserInterface $actor            
+     * @param UuidHolder $uuid            
      */
     public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
     {
@@ -38,10 +38,5 @@ abstract class AbstractMvcListener implements SharedListenerAggregateInterface
             ->getParams();
         $url = strtolower(str_replace('\\', '/', $params['controller']) . '/' . $params['action']);
         $this->getEventManager()->logEvent($url, $language, $actor, $uuid);
-    }
-
-    public function detachShared (\Zend\EventManager\SharedEventManagerInterface $events)
-    {
-        throw new \Exception('detachShared is not implemented yet.');
     }
 }

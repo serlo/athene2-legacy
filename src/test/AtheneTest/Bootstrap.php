@@ -12,13 +12,7 @@
 namespace AtheneTest;
 
 use Zend\Loader\AutoloaderFactory;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceManager;
 use RuntimeException;
-use Zend\Stdlib\ArrayUtils;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Zend\Mvc\Application;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 date_default_timezone_set('UTC');

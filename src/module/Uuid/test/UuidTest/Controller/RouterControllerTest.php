@@ -12,8 +12,10 @@
 namespace UuidTest\Controller;
 
 use AtheneTest\Controller\Athene2ApplicationTestCase;
-use Uuid\Controller\RouterController;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RouterControllerTest extends Athene2ApplicationTestCase
 {
 

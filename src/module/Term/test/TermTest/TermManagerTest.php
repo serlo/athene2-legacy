@@ -19,6 +19,9 @@ namespace TermTest;
 
 use Term\Manager\TermManager;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TermManagerTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -72,6 +75,14 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
             ->getId());
     }
 
+    /**
+     * @expectedException \Term\Exception\InvalidArgumentException
+     */
+    public function testGetTermInvalidArgumentException(){
+        $this->termManager->getTerm('asdf');
+    }
+    
+    
     public function testFindTermByName()
     {
         $this->repositoryMock->expects($this->any())

@@ -1,4 +1,14 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace TermTest;
 
 use AtheneTest\TestCase\Model;
@@ -6,6 +16,9 @@ use Term\Entity\Term;
 use Language\Entity\Language;
 use Term\Service\TermService;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TermServiceTest extends Model
 {
 
@@ -16,7 +29,7 @@ class TermServiceTest extends Model
             'slug' => 'asdf',
             'language' => new Language(),
             'id' => NULL,
-            'termManager' => $this->getMock('Term\Manager\TermManager')
+            'manager' => $this->getMock('Term\Manager\TermManager')
         );
     }
 

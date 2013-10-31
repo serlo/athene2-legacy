@@ -17,6 +17,7 @@ use Term\Service\TermServiceInterface;
 use Term\Exception\TermNotFoundException;
 use Language\Service\LanguageServiceInterface;
 use Common\Filter\Slugify;
+use Term\Exception;
 
 class TermManager implements TermManagerInterface
 {
@@ -35,7 +36,7 @@ class TermManager implements TermManagerInterface
     public function getTerm($id)
     {
         if (! is_numeric($id)) {
-            throw new \InvalidArgumentException();
+            throw new Exception\InvalidArgumentException();
         }
         
         if (! $this->hasInstance($id)) {

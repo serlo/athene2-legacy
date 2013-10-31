@@ -16,67 +16,53 @@ interface TermInterface
 
     /**
      *
-     * @return int
-     *         $id
+     * @return int $id
      */
-    public function getId ();
+    public function getId();
 
     /**
      *
      * @param int $id            
      * @return $this
      */
-    public function setId ($id);
+    public function setId($id);
 
     /**
      *
-     * @return \Language\Entity\LanguageInterface
-     *         $language
+     * @return \Language\Entity\LanguageInterface $language
      */
-    public function getLanguage ();
+    public function getLanguage();
 
     /**
      *
-     * @return field_type
-     *         $name
+     * @return field_type $name
      */
-    public function getName ();
+    public function getName();
 
     /**
      *
-     * @return field_type
-     *         $slug
+     * @return field_type $slug
      */
-    public function getSlug ();
+    public function getSlug();
 
     /**
      *
      * @param int $language            
      * @return $this
      */
-    public function setLanguage ($language);
+    public function setLanguage($language);
 
     /**
      *
      * @param string $name            
      * @return $this
      */
-    public function setName ($name);
+    public function setName($name);
 
     /**
      *
      * @param string $slug            
      * @return $this
      */
-    public function setSlug ($slug);
-
-    /**
-     * Returns
-     * an
-     * array
-     * copy
-     *
-     * @return array
-     */
-    public function getArrayCopy ();
+    public function setSlug($slug);
 }

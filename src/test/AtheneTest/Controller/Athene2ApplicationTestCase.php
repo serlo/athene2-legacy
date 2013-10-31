@@ -18,6 +18,15 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $this->setUpLanguage();
     }
 
+    protected function detachAggregatedListener($listener)
+    {
+        $this->getApplication()
+            ->getEventManager()
+            ->getSharedManager()
+            ->detachAggregate($this->getApplicationServiceLocator()
+            ->get($listener));
+    }
+
     public function setUpLanguage()
     {
         $languageManagerMock = $this->getMock('Language\Manager\LanguageManager');

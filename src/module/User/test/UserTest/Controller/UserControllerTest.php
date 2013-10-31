@@ -23,6 +23,10 @@ class UserControllerTest extends Athene2ApplicationTestCase
         parent::setUp();
         $this->setUpFirewall();
         
+        /* Detach listeners */
+        $this->detachAggregatedListener('Mailman\Listener\UserControllerListener');
+        $this->detachAggregatedListener('Event\Listener\UserControllerListener');
+        
         $this->userManagerMock = $this->getMock('User\Manager\UserManager');
         $this->authAdapterMock = $this->getMock('User\Authentication\Adapter\UserAuthAdapter');
         $this->authServiceMock = $this->getMock('Zend\Authentication\AuthenticationService');
@@ -169,12 +173,14 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->assertResponseStatusCode(302);
     }
 
-    public function RegisterActionWithPostDeprecated()
+    public function testRegisterActionWithPost()
     {
+        
         $data = array(
             'username' => '1234',
             'password' => '5431',
-            'email' => 'fa98s'
+            'email' => 'fa98s',
+            
         );
         
         $this->authServiceMock->expects($this->once())

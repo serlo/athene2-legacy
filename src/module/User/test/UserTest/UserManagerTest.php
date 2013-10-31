@@ -17,6 +17,9 @@ namespace UserTest;
 
 use User\Manager\UserManager;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
 

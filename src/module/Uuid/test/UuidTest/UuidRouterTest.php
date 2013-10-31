@@ -13,6 +13,9 @@ namespace UuidTest;
 
 use Uuid\Router\UuidRouter;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UuidRouterTest extends \PHPUnit_Framework_TestCase
 {
 

@@ -15,6 +15,9 @@ use Versioning\Service\RepositoryService;
 use VersioningTest\Entity\RepositoryFake;
 use VersioningTest\Entity\RevisionFake;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RepositoryServiceTest extends \PHPUnit_Framework_TestCase
 {
 

@@ -11,10 +11,10 @@
  */
 namespace Mailman\Listener;
 
-use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\View\Renderer\PhpRenderer;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-abstract class AbstractListener implements SharedListenerAggregateInterface
+abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
     use\Mailman\MailmanAwareTrait;
 

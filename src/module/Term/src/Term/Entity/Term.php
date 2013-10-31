@@ -51,24 +51,26 @@ class Term implements TermInterface
     private $termTaxonomies;
 
     /**
+     *
      * @return field_type $id
      */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }
 
-	/**
-     * @param field_type $id
+    /**
+     *
+     * @param field_type $id            
      * @return $this
      */
-    public function setId ($id)
+    public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
 
-	/**
+    /**
      *
      * @return field_type $language
      */
@@ -126,13 +128,5 @@ class Term implements TermInterface
     {
         $this->slug = $slug;
         return $this;
-    }
-    
-    public function getArrayCopy(){
-        return array(
-            'name' => $this->getName(),
-            'id' => $this->getId(),
-            'slug' => $this->getSlug(),
-        );
     }
 }

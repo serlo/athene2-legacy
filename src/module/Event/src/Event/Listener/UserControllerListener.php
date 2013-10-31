@@ -15,14 +15,6 @@ use Zend\EventManager\Event;
 
 class UserControllerListener extends AbstractMvcListener
 {
-    
-    /**
-     * An array containing all registered listeners.
-     *
-     * @var array
-     */
-    protected $listeners = array();
-    
     /**
      * Gets executed on 'register'
      * 
@@ -39,9 +31,14 @@ class UserControllerListener extends AbstractMvcListener
     
     public function attachShared (\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('User\Controller\UserController', 'register', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'register', array(
             $this,
             'onRegister'
         ));
+    }
+    
+    protected function getMonitoredClass ()
+    {
+        return 'Discussion\Controller\DiscussionController';
     }
 }
