@@ -185,6 +185,9 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => true
+                    ),
+                    'setEventManager' => array(
+                        'required' => true
                     )
                 ),
                 'Page\Manager\PageManager' => array(

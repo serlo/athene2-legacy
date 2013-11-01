@@ -19,6 +19,11 @@ return array(
                 'tokenize' => 'blog/{category}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
                 'fallback' => 'blog/{category}/{id}-{title}'
+            ),
+            'page' => array(
+                'tokenize' => 'page/{slug}',
+                'provider' => 'Page\Provider\TokenizerProvider',
+                'fallback' => 'page/{id}-{slug}'
             )
         )
     ),
@@ -82,6 +87,11 @@ return array(
                     )
                 )*/
                 __NAMESPACE__ . '\Listener\BlogControllerListener' => array(
+                    'setAliasManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Listener\PageControllerListener' => array(
                     'setAliasManager' => array(
                         'required' => 'true'
                     )

@@ -14,7 +14,8 @@ namespace Alias;
 class Module
 {
     protected $listeners = array(
-        'Alias\Listener\BlogControllerListener'
+        'Alias\Listener\BlogControllerListener',
+        'Alias\Listener\PageControllerListener'
     );
     
     public function getConfig()

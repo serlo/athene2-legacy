@@ -151,7 +151,8 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $array = $form->getData();
                 $repository = $this->getPageManager()->createPageRepository($form->getData(), $language->getEntity());
-                $url = $this->url()->fromRoute('page/article',array('slug'=>$form->getData()['slug']));
+               // $url = $this->url()->fromRoute('page/article',array('slug'=>$form->getData()['slug']));
+               
                 $this->getEventManager()->trigger('page.create', $this, array(
                     'slug' => $array['slug'],
                     'language' => $language,
