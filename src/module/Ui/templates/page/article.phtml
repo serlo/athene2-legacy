@@ -1,0 +1,19 @@
+<?php
+$this->headTitle($slug);
+?>
+
+<?php // Repository Menü?>
+<?php if ($this->hasRole('moderator')) echo $this->partial('page/repository-menu.phtml', array(
+    'slug' => $slug)); ?> 
+
+<article>
+<?php // Show Revision Title & Content ?>
+<?php echo $this->partial('page/revision-partial.phtml', array(
+    'title' => $title,
+    'content'=>$content)); ?>
+</article>
+
+<?php //Revision Menü?>
+<?php if ($this->hasRole('moderator')) echo $this->partial('page/revision-menu.phtml', array(
+    'slug' => $slug,
+    'id'=>$revisionid));

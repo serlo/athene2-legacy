@@ -21,7 +21,8 @@ class RevisionForm extends Form
             'type' => 'text',
             'attributes' => array(
                 'placeholder' => 'Revision Title',
-                'required' => 'required'
+                'required' => 'required',
+                'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'Titel'
