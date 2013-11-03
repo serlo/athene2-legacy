@@ -218,17 +218,13 @@ class IndexController extends AbstractActionController
             $content = $revision->getContent();
             $revisionid = $revision->getId();
         } else
-            $title = $content = $revisionid = NULL;
+             $revision = NULL;
         $admin = $pageService->hasPermission($this->getUserManager()->getUserFromAuthenticator());
         
       
         $view = new ViewModel(array(
-            'author' => $revision->getAuthor(),
             'revision' => $revision,
-            'content' => $content,
-            'title' => $title,
             'slug' => $slug,
-            'revisionid' => $revisionid,
         ));
         
         $view->setTemplate('page/revision.phtml');
