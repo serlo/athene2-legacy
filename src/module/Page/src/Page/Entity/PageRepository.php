@@ -61,6 +61,7 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
 	{
 	    $this->revisions = new ArrayCollection();
 	    $this->roles = new ArrayCollection();
+	    
 	}
 	
 

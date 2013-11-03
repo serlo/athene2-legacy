@@ -123,7 +123,7 @@ class PageManager implements PageManagerInterface
     public function createRevision(PageRepositoryInterface $repository, array $data) {
         $revision = $this->createPageRevisionEntity();
         $revision->populate($data);
-        $revision->setAuthor($this->getUserManager()->getUserFromAuthenticator()->getEntity());
+        $revision->setAuthor($data['author']);
         $revision->untrash();
         $revision->setRepository($repository);
         $repository->addRevision($revision);
