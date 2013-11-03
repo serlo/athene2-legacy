@@ -9,7 +9,7 @@ $this->headTitle($slug);
 
 <?php //if (asd) ;?>
 <article>
-<h1><?php echo $this->revision->getTitle();?></h1>
-<?php echo $this->revision->getContent();?>
+<h1><?php if ($revision!=NULL) echo $this->revision->getTitle();?></h1>
+<?php if ($revision!=NULL) echo $this->revision->getContent();?>
 </article>
 
