@@ -62,10 +62,9 @@ class IndexController extends AbstractActionController
         $view = new ViewModel(array(
             'revision' => $revision,
             'slug' => $slug,
-            'author' => $this->getUserManager()->getUser($revision->getAuthor())->getUsername()
         ));
         
-        $view->setTemplate('page/show-revision.phtml');
+        $view->setTemplate('page/revision.phtml');
         return $view;
     }
 
@@ -92,7 +91,8 @@ class IndexController extends AbstractActionController
         }
         
         $view = new ViewModel(array(
-            'form' => $form
+            'form' => $form,
+            'title' => 'Repository bearbeiten'
         ));
         $view->setTemplate('page/form.phtml');
         return $view;
@@ -109,8 +109,7 @@ class IndexController extends AbstractActionController
         $language_id = $language->getId();
         $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
         
-        // if (!$pageService->hasPermission($us)) throw new PermissionException();
-        
+
         $repository = $pageService->getEntity();
         if ($id != NULL) {
             $form->get('content')->setValue($pageService->getRevision($id)
@@ -123,7 +122,8 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $page = $this->getPageManager()->createRevision($repository, $form->getData());
+                $array['author'] = $this->getUserManager()->getUserFromAuthenticator()->getEntity();
+                $page = $this->getPageManager()->createRevision($repository, $array);
                 $this->getObjectManager()->flush();
                 
             
@@ -133,7 +133,8 @@ class IndexController extends AbstractActionController
         }
         
         $view = new ViewModel(array(
-            'form' => $form
+            'form' => $form,
+            'title' => 'Revision erstellen'
         ));
         $view->setTemplate('page/form.phtml');
         return $view;
@@ -151,7 +152,8 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $array = $form->getData();
                 $repository = $this->getPageManager()->createPageRepository($form->getData(), $language->getEntity());
-                $url = $this->url()->fromRoute('page/article',array('slug'=>$form->getData()['slug']));
+               // $url = $this->url()->fromRoute('page/article',array('slug'=>$form->getData()['slug']));
+               
                 $this->getEventManager()->trigger('page.create', $this, array(
                     'slug' => $array['slug'],
                     'language' => $language,
@@ -167,7 +169,8 @@ class IndexController extends AbstractActionController
         }
         
         $view = new ViewModel(array(
-            'form' => $form
+            'form' => $form,
+            'title' => 'Seite erstellen'
         ));
         
         $view->setTemplate('page/form.phtml');
@@ -220,13 +223,15 @@ class IndexController extends AbstractActionController
         
       
         $view = new ViewModel(array(
+            'author' => $revision->getAuthor(),
+            'revision' => $revision,
             'content' => $content,
             'title' => $title,
             'slug' => $slug,
             'revisionid' => $revisionid,
         ));
         
-        $view->setTemplate('page/article.phtml');
+        $view->setTemplate('page/revision.phtml');
         
         return $view;
     }

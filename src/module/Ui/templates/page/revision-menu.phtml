@@ -1,3 +1,17 @@
-<a href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>"><button class="btn btn-xs btn-primary" type="button">Neue Revision</button></a>
-<a href="<?php echo $this->url('page/article/revisions',array('slug'=>$slug))?>"><button class="btn btn-xs btn-primary" type="button">Revisionen Verwalten</button></a>
-<a href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>"><button class="btn btn-xs" type="button">Revision löschen</button></a>
+<?php 
+$id = $revision->getId()?>
+
+<div class="btn-group">
+	<a
+		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-file">edit</a> <a
+		href="<?php echo $this->url('page/article/revisions',array('slug'=>$slug))?>"
+		class="btn btn-link glyphicon glyphicon-align-left"> revisions</a> <span
+		<?php if ($revision->getRepository()->getCurrentRevision()==$revision) echo 'style="display:none;"'?>>
+		<a
+		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-remove"> delete</a> <a
+		href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-ok"> setCurrent </a>
+	</span>
+</div>
