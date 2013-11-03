@@ -24,6 +24,9 @@ $solution = $exercise->solution()->findChild();
             <a class="btn btn-default btn-xs"
             	href="<?php echo $this->url('entity/trash',array('entity' => $this->entity->getId())); ?>"><span
             	class="glyphicon glyphicon-trash"></span></a>
+            <a class="btn btn-default btn-xs"
+            	href="<?php echo $this->url('entity/plugin/link/move',array('entity' => $this->entity->getId(), 'scope' => 'group', 'from' => $this->parent->getId())); ?>"><span
+            	class="glyphicon glyphicon-random"></span></a>
         </div>
     	<section>
             <?php $revision = $exercise->repository()->getCurrentRevision(); ?>

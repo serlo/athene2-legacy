@@ -25,4 +25,5 @@ interface Mapper
      * @return bool
      */
     public static function add(EntityServiceInterface $from, EntityServiceInterface $to, $fromScope, $toScope);
+    public static function remove(EntityServiceInterface $entity, EntityServiceInterface $from, $fromScope, $toScope);
 }

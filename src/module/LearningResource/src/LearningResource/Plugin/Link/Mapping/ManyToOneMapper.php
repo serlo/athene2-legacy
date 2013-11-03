@@ -12,7 +12,6 @@
 namespace LearningResource\Plugin\Link\Mapping;
 
 use Entity\Service\EntityServiceInterface;
-use LearningResource\Plugin\Link;
 
 class ManyToOneMapper extends AbstractMapper
 {

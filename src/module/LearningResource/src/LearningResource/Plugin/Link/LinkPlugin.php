@@ -18,22 +18,25 @@ use Entity\Service\EntityServiceInterface;
 
 class LinkPlugin extends AbstractPlugin
 {
-    use \Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
-    
-    public function orderAssociated(){
-        $this->getLinkService();        
+    use\Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+
+    public function orderAssociated()
+    {
+        $this->getLinkService();
     }
-    
-    public function orderChildren(array $children){
+
+    public function orderChildren(array $children)
+    {
         $this->getLinkService()->orderChildren($children);
         return $this;
     }
-    
-    public function orderParents(array $parents){
+
+    public function orderParents(array $parents)
+    {
         $this->getLinkService()->orderParents($parents);
         return $this;
     }
-    
+
     public function hasChild(array $entityTypes = NULL)
     {
         return is_object($this->findChild($entityTypes));
@@ -123,11 +126,61 @@ class LinkPlugin extends AbstractPlugin
             ->getEntity());
     }
 
+    public function remove(EntityServiceInterface $from)
+    {
+        if (! in_array($from->getType()->getName(), $this->getEntityTypes()))
+            throw new Exception\RuntimeException(sprintf('Type %s is not allowed on this association.', $from->getType()->getName()));
+        
+        $foreignType = $from->getType()->getName();
+        $original = $this->getEntityService();
+        $originalScope = $this->getScope();
+        
+        if (! array_key_exists('inversed_by', $this->getOption('types')[$foreignType]))
+            throw new Exception\RuntimeException('No reverse side defined');
+        
+        $foreignScope = $this->getOption('types')[$foreignType]['inversed_by'];
+        
+        if (! $from->isPluginWhitelisted($foreignScope))
+            throw new Exception\RuntimeException(sprintf('Association is not configured as bidirectional. Entity (type: %s) does not know scope %s', $foreignType, $foreignScope));
+
+        $class = $this->getMapper();
+        $isValid = $class::remove($this->getEntityService(), $from, $this->getScope(), $foreignScope);
+        
+        // refresh plugin
+        $original->$originalScope();
+        
+        return $isValid;
+    }
+
     public function add(EntityServiceInterface $to)
     {
         if (! in_array($to->getType()->getName(), $this->getEntityTypes()))
             throw new Exception\RuntimeException(sprintf('Type %s is not allowed on this association.', $to->getType()->getName()));
         
+        $foreignScope = 'scope_not_found';
+        
+        $foreignType = $to->getType()->getName();
+        $original = $this->getEntityService();
+        $originalScope = $this->getScope();
+        
+        if (! array_key_exists('inversed_by', $this->getOption('types')[$foreignType]))
+            throw new Exception\RuntimeException('No reverse side defined');
+        $foreignScope = $this->getOption('types')[$foreignType]['inversed_by'];
+        
+        if (! $to->isPluginWhitelisted($foreignScope))
+            throw new Exception\RuntimeException(sprintf('Association is not configured as bidirectional. Entity (type: %s) does not know scope %s', $foreignType, $foreignScope));
+        
+        $class = $this->getMapper();
+        $isValid = $class::add($this->getEntityService(), $to, $this->getScope(), $foreignScope);
+        
+        // refresh plugin
+        $original->$originalScope();
+        
+        return $isValid;
+    }
+
+    protected function getMapper()
+    {
         switch ($this->getOption('association')) {
             case 'one-to-one':
                 $class = 'Mapping\OneToOneMapper';
@@ -143,30 +196,7 @@ class LinkPlugin extends AbstractPlugin
                 throw new Exception\RuntimeException(sprintf('Association `%s` unkown. Known associations are: one-to-one and many-to-one', $this->getOption('association')));
                 break;
         }
-        
-        $foreignScope = 'scope_not_found';
-        
-        $domesticType = $this->getEntityService()
-            ->getType()
-            ->getName();
-        $foreignType = $to->getType()->getName();
-        $original = $this->getEntityService();
-        $originalScope = $this->getScope();
-
-        if (! array_key_exists('inversed_by', $this->getOption('types')[$foreignType]))
-            throw new Exception\RuntimeException('No reverse side defined');
-        $foreignScope = $this->getOption('types')[$foreignType]['inversed_by'];
-        
-        if (! $to->isPluginWhitelisted($foreignScope))
-            throw new Exception\RuntimeException(sprintf('Association is not configured as bidirectional. Entity (type: %s) does not know scope %s', $foreignType, $foreignScope));
-        
-        $class = __NAMESPACE__ . '\\' . $class;
-        $isValid = $class::add($this->getEntityService(), $to, $this->getScope(), $foreignScope);
-        
-        // refresh plugin
-        $original->$originalScope();
-        
-        return $isValid;
+        return __NAMESPACE__ . '\\' . $class;
     }
 
     protected function associationAllowed(EntityServiceInterface $entity)
