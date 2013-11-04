@@ -44,6 +44,14 @@ module.exports = function (grunt) {
             fonts: {
                 files: ['<%= serlo.app %>/styles/fonts/*'],
                 tasks: ['copy:dist']
+            },
+            editorScripts: {
+                files: ['<%= serlo.app %>/editor/scripts/{,*/}*.js'],
+                tasks: ['jshint', 'copy:requirejs', 'requirejs:editor']
+            },
+            editorCompass: {
+                files: ['<%= serlo.app %>/editor/styles/{,*/}*.{scss,sass}'],
+                tasks: ['jshint', 'compass:editor', 'autoprefixer']
             }
         },
         clean: {
@@ -68,7 +76,8 @@ module.exports = function (grunt) {
                 ]
             },
             all: [
-                '<%= serlo.app %>/scripts/{,*/}*.js'
+                '<%= serlo.app %>/scripts/{,*/}*.js',
+                '<%= serlo.app %>/editor/scripts/{,*/}*.js'
             ]
         },
         compass: {
@@ -93,6 +102,12 @@ module.exports = function (grunt) {
             server: {
                 options: {
                     debugInfo: true
+                }
+            },
+            editor: {
+                options: {
+                    sassDir: '<%= serlo.app %>/editor/styles',
+                    cssDir: '<%= serlo.dist %>/styles'
                 }
             }
         },
@@ -144,6 +159,7 @@ module.exports = function (grunt) {
                 // }
                 files: [{
                     '<%= serlo.dist %>/scripts/main.js': '<%= serlo.dist %>/scripts/main.js',
+                    '<%= serlo.dist %>/scripts/editor.js' : '<%= serlo.dist %>/scripts/editor.js',
                     '<%= serlo.dist %>/bower_components/requirejs/require.js': '<%= serlo.dist %>/bower_components/requirejs/require.js'
                 }]
             }
@@ -212,6 +228,13 @@ module.exports = function (grunt) {
                 cwd: '<%= serlo.app %>/bower_components/modernizr',
                 dest: '<%= serlo.dist %>/bower_components/modernizr',
                 src: 'modernizr.js'
+            },
+            editorStyles: {
+                expand: true,
+                dot: true,
+                cwd: '<%= serlo.app %>/editor/styles',
+                dest: '<%= serlo.dist %>/editor/styles/',
+                src: '{,*/}*.css'
             }
         },
         i18n: {
@@ -241,6 +264,7 @@ module.exports = function (grunt) {
             dist: [
                 'compass',
                 'copy:styles',
+                'copy:editorStyles',
                 'copy:requirejs',
                 'svgmin'
             ]
@@ -261,6 +285,16 @@ module.exports = function (grunt) {
                     baseUrl: "<%= serlo.app %>/tests/modules",
                     mainConfigFile: "source/tests/modules/specRunner.js",
                     out: "<%= serlo.dist %>/scripts/main.js",
+                    preserveLicenseComments: false,
+                    optimize: 'none'
+                }
+            },
+            editor: {
+                options: {
+                    name: 'ATHENE2-EDITOR',
+                    baseUrl: "<%= serlo.app %>/editor/scripts",
+                    mainConfigFile: "source/editor/scripts/main.js",
+                    out: "<%= serlo.dist %>/scripts/editor.js",
                     preserveLicenseComments: false,
                     optimize: 'none'
                 }
@@ -313,8 +347,14 @@ module.exports = function (grunt) {
         'cssmin',
         'imagemin',
         'requirejs:production',
+        'requirejs:editor',
         'modernizr',
         'uglify'
+    ]);
+
+    grunt.registerTask('editor', [
+        'requirejs:editor',
+        'watch'
     ]);
 
     grunt.registerTask('default', [
