@@ -31,6 +31,7 @@ class SelectUserForm extends Form
                 'label' => 'E-Mail-Adresse:'
             )
         ));
+        
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
