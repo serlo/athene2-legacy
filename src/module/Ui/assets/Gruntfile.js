@@ -20,11 +20,6 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         serlo: config,
-        macreload: {
-            fuckyeah: {
-                browser: 'chrome'
-            }
-        },
         watch: {
             compass: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.{scss,sass}'],
@@ -32,7 +27,7 @@ module.exports = function (grunt) {
             },
             styles: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.css'],
-                tasks: ['copy:styles', 'autoprefixer', 'macreload']
+                tasks: ['copy:styles', 'autoprefixer']
             },
             jsLang: {
                 files: ['<%= serlo.app %>/lang/*'],
@@ -40,7 +35,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
-                tasks: ['jshint', 'copy:requirejs', 'requirejs:production', 'macreload']
+                tasks: ['jshint', 'copy:requirejs', 'requirejs:production']
             },
             images: {
                 files: ['<%= serlo.app %>/images/{,*/}*.{png,jpg,jpeg}'],
