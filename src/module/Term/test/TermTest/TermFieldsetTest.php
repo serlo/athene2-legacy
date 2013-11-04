@@ -30,7 +30,12 @@ class TermFieldsetTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array(
             'name' => array(
-                'required' => true
+                'required' => true,
+                'filters' => array(
+                    array(
+                        'name' => 'HtmlEntities'
+                    )
+                )
             )
         ), $this->form->getInputFilterSpecification());
     }

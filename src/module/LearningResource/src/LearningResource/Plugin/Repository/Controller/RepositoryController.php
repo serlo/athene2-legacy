@@ -15,6 +15,7 @@ namespace LearningResource\Plugin\Repository\Controller;
 use Versioning\Exception\RevisionNotFoundException;
 use Zend\View\Model\ViewModel;
 use Entity\Plugin\Controller\AbstractController;
+use Zend\Http\Request;
 
 class RepositoryController extends AbstractController
 {
@@ -172,5 +173,10 @@ class RepositoryController extends AbstractController
             'entity' => $entity->getId()
         ));
         return '';
+    }
+    
+    public function dispatch(\Zend\Stdlib\RequestInterface $request, \Zend\Stdlib\ResponseInterface $response = NULL){
+        $this->layout('layout/1-col');
+        return parent::dispatch($request, $response);
     }
 }
