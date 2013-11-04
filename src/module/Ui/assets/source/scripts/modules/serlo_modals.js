@@ -3,16 +3,16 @@ define(['jquery', 'router'], function ($, Router) {
     "use strict";
     var SerloModals,
         Modal,
+        modals = {},
         modalTemplate = '#modalTemplate';
 
-    Modal = function ($modal, $trigger) {
-        this.$trigger = $trigger;
-        this.$el = $modal;
+    Modal = function (options) {
+        this.$el = $(modalTemplate).clone();
 
-        this.type = $trigger.attr('data-type') || false;
-        this.title = $trigger.attr('data-title') || false;
-        this.content = $trigger.attr('data-content');
-        this.href = $trigger.attr('href');
+        this.type = options.type || false;
+        this.title = options.title || false;
+        this.content = options.content;
+        this.href = options.href;
 
         this.render().show();
     };
@@ -41,21 +41,40 @@ define(['jquery', 'router'], function ($, Router) {
 
     Modal.prototype.show = function () {
         this.$el.modal('show');
+        return this;
+    };
+
+    Modal.prototype.hide = function () {
+        this.$el.modal('hide');
+        return this;
     };
 
     SerloModals = function () {
-        var $modalTemplate = $(modalTemplate).clone();
-
         return $(this).each(function () {
-            var $self = $(this);
+            var $self = $(this),
+                options = {
+                    type: $self.attr('data-type'),
+                    title: $self.attr('data-title'),
+                    content: $self.attr('data-content'),
+                    href: $self.attr('href')
+                };
 
             $self.click(function (e) {
                 e.preventDefault();
-                new Modal($modalTemplate, $self);
+                new Modal(options);
                 return;
             });
         });
     };
 
     $.fn.SerloModals = SerloModals;
+
+    return {
+        show: function (options, uid) {
+            if (uid) {
+                return modals[uid] ? modals[uid].show() : (modals[uid] = new Modal(options));
+            }
+            return new Modal(options);
+        }
+    };
 });
