@@ -12,7 +12,9 @@ define(['jquery', 'router'], function ($, Router) {
         this.type = options.type || false;
         this.title = options.title || false;
         this.content = options.content;
-        this.href = options.href;
+        this.href = options.href || false;
+        this.cancel = options.cancel === undefined ? true : options.cancel;
+        this.okayLabel = options.okayLabel || false;
 
         this.render().show();
     };
@@ -25,8 +27,16 @@ define(['jquery', 'router'], function ($, Router) {
         $('body').append(self.$el);
 
         $btn.click(function () {
-            Router.navigate(self.href);
+            if (self.href) {
+                Router.navigate(self.href);
+            } else {
+                self.hide();
+            }
         });
+
+        if (!self.cancel) {
+            $('.btn-default, .close', self.$el).remove();
+        }
 
         if (self.type) {
             $btn.removeClass('btn-primary').addClass('btn-' + this.type);
@@ -34,6 +44,10 @@ define(['jquery', 'router'], function ($, Router) {
 
         if (self.title) {
             $('.modal-title', self.$el).text(self.title);
+        }
+
+        if (self.label) {
+            $btn.text(self.label);
         }
 
         return self;
@@ -56,7 +70,9 @@ define(['jquery', 'router'], function ($, Router) {
                     type: $self.attr('data-type'),
                     title: $self.attr('data-title'),
                     content: $self.attr('data-content'),
-                    href: $self.attr('href')
+                    href: $self.attr('href'),
+                    cancel: $self.attr('data-cancel') === "false" ? false : true,
+                    label: $self.attr('data-label')
                 };
 
             $self.click(function (e) {
