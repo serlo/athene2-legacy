@@ -9,7 +9,8 @@ define(['jquery', 'router'], function ($, Router) {
         this.$trigger = $trigger;
         this.$el = $modal;
 
-        this.type = $trigger.attr('data-type');
+        this.type = $trigger.attr('data-type') || false;
+        this.title = $trigger.attr('data-title') || false;
         this.content = $trigger.attr('data-content');
         this.href = $trigger.attr('href');
 
@@ -17,13 +18,24 @@ define(['jquery', 'router'], function ($, Router) {
     };
 
     Modal.prototype.render = function () {
-        var self = this;
+        var self = this,
+            $btn = $('.btn-primary', self.$el);
+
         $('.modal-body', self.$el).text(self.content);
         $('body').append(self.$el);
 
-        $('.btn-primary', self.$el).click(function () {
+        $btn.click(function () {
             Router.navigate(self.href);
         });
+
+        if (self.type) {
+            $btn.removeClass('btn-primary').addClass('btn-' + this.type);
+        }
+
+        if (self.title) {
+            $('.modal-title', self.$el).text(self.title);
+        }
+
         return self;
     };
 
