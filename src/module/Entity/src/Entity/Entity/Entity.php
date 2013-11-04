@@ -16,12 +16,11 @@ use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkableInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\PersistentCollection;
 use Versioning\Entity\RevisionInterface;
 use Language\Entity\LanguageInterface;
 use Link\Entity\LinkTypeInterface;
 use Link\Entity\LinkInterface;
+use Entity\Exception;
 
 /**
  * An entity.
@@ -318,7 +317,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
                 return $link;
             }
         }
-        return NULL;
+        throw new Exception\RuntimeException(sprintf('`%s` is not a `%s` child of `%s`.', $this->getId(), $type->getName(),  $parent->getId()));
     }
     
     protected function findChildLink(LinkableInterface $child, LinkTypeInterface $type)
@@ -328,7 +327,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
                 return $link;
             }
         }
-        return NULL;
+        throw new Exception\RuntimeException(sprintf('`%s` is not a `%s` parent of `%s`.', $this->getId(), $type->getName(),  $child->getId()));
     }
     
     protected function findParentLinks(LinkTypeInterface $type)

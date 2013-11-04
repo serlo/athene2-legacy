@@ -1,0 +1,49 @@
+<?php
+$this->headTitle($this->slug . ' Revisions');
+?>
+
+<div class="btn-group">
+	<a href="<?php echo $this->url('page/article',array('slug'=>$slug));?>"
+		class="glyphicon glyphicon-star btn btn-link"> current</a> <a
+		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>null))?>"
+		class="glyphicon glyphicon-plus btn btn-link"> new</a>
+</div>
+
+<h1>Revisions</h1>
+
+<?php
+
+foreach ($this->revisions as $revision) {
+    $id = $revision->getId();
+    ?>
+
+<a
+	href="<?php echo $this->url('page/article/revision',array('slug'=>$slug,'id'=>$id));?>"
+	class="btn list-group-item" style="text-align: left">
+
+Title:	<?php echo $revision->getTitle(); ?> 	
+
+Author: <?php echo $revision->getAuthor()->getUsername();?>
+	
+	<?php echo $this->timeago()->render($revision->getDate()); ?> 
+	</a>
+
+	
+
+<a
+	href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>"
+	class="glyphicon glyphicon-file"> edit </a>
+<span <?php if ($revision->getRepository()->getCurrentRevision()==$revision) echo 'style="display:none;"'?>>
+<a
+	href="<?php echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>"
+	class="glyphicon glyphicon-trash"> delete </a>
+<a
+	href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?>"
+	class="glyphicon glyphicon-ok"> setCurrent</a>
+</a>
+</span>
+<br>
+<br>
+<?php
+
+} 

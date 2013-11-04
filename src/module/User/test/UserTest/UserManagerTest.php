@@ -104,7 +104,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetUserFromAuthenticator()
     {
         $this->userServiceMock->expects($this->once())
-            ->method('getRemoved')
+            ->method('isTrashed')
             ->will($this->returnValue(false));
         $this->userServiceMock->expects($this->once())
             ->method('hasRole')
@@ -118,7 +118,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetUserFromAuthenticatorFailsBecauseRemoved()
     {
         $this->userServiceMock->expects($this->once())
-            ->method('getRemoved')
+            ->method('isTrashed')
             ->will($this->returnValue(false));
         $this->userServiceMock->expects($this->once())
             ->method('hasRole')
@@ -130,7 +130,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testTrashUser(){
-        $this->userServiceMock->expects($this->once())->method('setRemoved');
+        $this->userServiceMock->expects($this->once())->method('setTrashed');
         $this->userManager->trashUser(1);
     }
 }

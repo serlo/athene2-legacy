@@ -20,13 +20,28 @@ abstract class AbstractMapper implements Mapper
         if ($owning) {
             return array(
                 'has' => 'hasChild',
-                'add' => 'addChild'
+                'add' => 'addChild',
+                'remove' => 'removeChild'
             );
         } else {
             return array(
                 'has' => 'hasParent',
-                'add' => 'addParent'
+                'add' => 'addParent',
+                'remove' => 'removeParent'
             );
         }
+    }
+
+    public static function remove(EntityServiceInterface $entity, EntityServiceInterface $from, $fromScope, $toScope)
+    {        
+        $domesticType = $entity->getType()->getName();
+        $foreignType = $from->getType()->getName();        
+        
+        $fromMethods = self::getMethods($entity, $fromScope, false);
+        $toMethods = self::getMethods($from, $toScope, true);
+        
+        $entity->$fromScope()->getLinkService()->$fromMethods['remove']($from->getEntity());
+        
+        return true;
     }
 }

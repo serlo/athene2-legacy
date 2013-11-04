@@ -37,7 +37,6 @@ class UserServiceTest extends Model
     protected function getData ()
     {
         return array(
-            'logs' => array(),
             'email' => 'asdf',
             'username' => 'herlp',
             'password' => 'secret',

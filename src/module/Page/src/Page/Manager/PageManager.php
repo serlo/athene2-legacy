@@ -61,18 +61,6 @@ class PageManager implements PageManagerInterface
             'language' => (int) $language_id
         ));
 
-        //fallback überprüfen
-        if (! $entity) {
-            $language_id = 0;
-            $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-                ->resolveClassName('Page\Entity\PageRepositoryInterface'))
-                ->findOneBy(array(
-                    'slug' => (string) $string,
-                    'language' => (int) $language_id
-                ));
-        }
-            
         
         if (! $entity)
             throw new PageNotFoundException(sprintf('Could not find %s', $string));
@@ -110,7 +98,7 @@ class PageManager implements PageManagerInterface
 
 
     public function createPageRepository(array $data,$language){
-        if ($data['fallback']==1) $language=$this->getLanguageManager()->getLanguage(0)->getEntity();
+        
         $pageRepository = $this->createPageRepositoryEntity();
         $pageRepository->populate($data);
         $this->getUuidManager()->injectUuid($pageRepository);
@@ -135,7 +123,7 @@ class PageManager implements PageManagerInterface
     public function createRevision(PageRepositoryInterface $repository, array $data) {
         $revision = $this->createPageRevisionEntity();
         $revision->populate($data);
-        $revision->setAuthor($this->getUserManager()->getUserFromAuthenticator()->getEntity());
+        $revision->setAuthor($data['author']);
         $revision->untrash();
         $revision->setRepository($repository);
         $repository->addRevision($revision);

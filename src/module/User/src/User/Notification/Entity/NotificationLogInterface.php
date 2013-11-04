@@ -58,10 +58,10 @@ interface NotificationLogInterface
      * @return UuidInterface
      */
     public function getObject();
-    
+
     /**
      *
-     * @return UuidInterface|NULL
+     * @return UuidInterface NULL
      */
     public function getReference();
 
@@ -76,10 +76,17 @@ interface NotificationLogInterface
      * @return EventInterface
      */
     public function getEvent();
-    
+
     /**
-     * 
+     *
      * @return \DateTime
      */
     public function getDate();
+
+    /**
+     *
+     * @param \DateTime $date            
+     * @return $this
+     */
+    public function setDate(\DateTime $date);
 }

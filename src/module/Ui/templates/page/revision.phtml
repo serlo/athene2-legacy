@@ -1,0 +1,15 @@
+<?php
+$this->headTitle($slug);
+?>
+
+<?php
+ if ($this->hasRole('moderator')) echo $this->partial('page/revision-menu.phtml', array(
+    'slug' => $slug,
+    'revision'=>$revision)) ?>
+
+<?php //if (asd) ;?>
+<article>
+<h1><?php if ($revision!=NULL) echo $this->revision->getTitle();?></h1>
+<?php if ($revision!=NULL) echo $this->revision->getContent();?>
+</article>
+

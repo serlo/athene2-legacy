@@ -56,93 +56,64 @@ class NotificationLog implements NotificationLogInterface
      * @ORM\Column(type="datetime")
      */
     protected $date;
-    
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationLogInterface::getId()
-     */
+
     public function getId()
     {
         return $this->id;
     }
-    
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationLogInterface::setObject()
-     */
+
+    public function getActor()
+    {
+        return $this->actor;
+    }
+
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
     public function setObject(\Uuid\Entity\UuidInterface $uuid)
     {
         $this->object = $uuid;
         return $this;
     }
 
-    /**
-     *
-     * @return \User\Entity\UserInterface $actor
-     */
-    public function getActor()
-    {
-        return $this->actor;
-    }
-
-    /**
-     *
-     * @return \Event\Entity\EventInterface $event
-     */
-    public function getEvent()
-    {
-        return $this->event;
-    }
-
-    /**
-     *
-     * @return \Uuid\Entity\UuidInterface $object
-     */
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    /**
-     *
-     * @return \Uuid\Entity\UuidInterface $reference
-     */
-    public function getReference()
-    {
-        return $this->reference;
-    }
-
-    /**
-     *
-     * @return field_type $date
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationLogInterface::setReference()
-     */
     public function setReference(\Uuid\Entity\UuidInterface $uuid = NULL)
     {
         $this->reference = $uuid;
         return $this;
     }
-    
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationLogInterface::setEvent()
-     */
+
     public function setEvent(\Event\Entity\EventInterface $event)
     {
         $this->event = $event;
         return $this;
     }
-    
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationLogInterface::setActor()
-     */
+
     public function setActor(\User\Entity\UserInterface $actor)
     {
         $this->actor = $actor;
+        return $this;
+    }
+
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
         return $this;
     }
 }

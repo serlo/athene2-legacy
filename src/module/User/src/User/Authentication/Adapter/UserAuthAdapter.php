@@ -56,7 +56,7 @@ class UserAuthAdapter implements AdapterInterface
             $password = $this->getHashService()->hashPassword($this->password, $this->getHashService()
                 ->findSalt($hashedPassword));
             if ($password === $hashedPassword) {
-                if($user->getRemoved()){
+                if($user->isTrashed()){
                     return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array('Ihr Benutzerkonto wurde gelöscht.'));
                 } elseif(!$user->hasRole('login')){
                     return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array('Sie haben ihren Account noch nicht aktiviert.'));

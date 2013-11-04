@@ -583,7 +583,15 @@ return array(
                                                 'action' => 'orderChildren'
                                             )
                                         ),
-                                        'may_terminate' => true
+                                    ),
+                                    'move' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/move/:scope/:entity[/:from]',
+                                            'defaults' => array(
+                                                'action' => 'move'
+                                            )
+                                        ),
                                     ),
                                 )
                             ),

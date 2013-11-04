@@ -13,7 +13,7 @@ use User\Manager\UserManagerInterface;
 
 class UserService implements UserServiceInterface
 {
-    use \Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -110,11 +110,6 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function getLogs()
-    {
-        return $this->getEntity()->getLogs();
-    }
-
     public function getEmail()
     {
         return $this->getEntity()->getEmail();
@@ -173,12 +168,6 @@ class UserService implements UserServiceInterface
     public function getRemoved()
     {
         return $this->getEntity()->getRemoved();
-    }
-
-    public function setLogs($logs)
-    {
-        $this->getEntity()->setLogs($logs);
-        return $this;
     }
 
     public function setUserRoles($userRoles)
@@ -247,9 +236,18 @@ class UserService implements UserServiceInterface
         return $this;
     }
 
-    public function setRemoved($removed)
+    public function setTrashed($trashed)
     {
-        $this->getEntity()->setRemoved($removed);
-        return $this;
+        return $this->getEntity()->setTrashed($trashed);
+    }
+
+    public function isTrashed()
+    {
+        return $this->getEntity()->isTrashed();
+    }
+
+    public function getTrashed()
+    {
+        return $this->getEntity()->getTrashed();
     }
 }

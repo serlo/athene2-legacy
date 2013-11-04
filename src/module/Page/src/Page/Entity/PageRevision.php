@@ -28,11 +28,11 @@ class PageRevision implements RevisionInterface,PageRevisionInterface  {
 	protected $id;
 
 
-	/**
-	 * @ORM\Column(type="integer")
-	 * @ORM\ManyToOne(targetEntity="User\Entity\User") *
-	 */
-	protected $author_id;
+    /**
+     * @ORM\ManyToOne(targetEntity="User\Entity\User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    protected $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="PageRepository", inversedBy="revisions")
@@ -114,7 +114,7 @@ class PageRevision implements RevisionInterface,PageRevisionInterface  {
 
 
 	public function getAuthor() {
-		return $this->author_id;
+		return $this->author;
 	}
 
 	/**
@@ -139,8 +139,7 @@ class PageRevision implements RevisionInterface,PageRevisionInterface  {
 
 	public function setAuthor(UserInterface $author)
 	{
-	    
-		$this->author_id = $author->getId();
+		$this->author = $author;
 		return $this;
 	}
 
@@ -155,7 +154,7 @@ class PageRevision implements RevisionInterface,PageRevisionInterface  {
 	
 	public function populate(array $data = array())
 	{
-	    $this->injectFromArray('author_id', $data);
+	    $this->injectFromArray('author', $data);
 	    $this->injectFromArray('username', $data);
 	    $this->injectFromArray('title', $data);
 	    $this->injectFromArray('content', $data);

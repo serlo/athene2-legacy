@@ -1,0 +1,22 @@
+<?php
+if ($revision != NULL)
+    $id = $this->revision->getId();
+else {
+    $id = $revision = '';
+}
+?>
+
+<div class="btn-group">
+	<a
+		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-file">edit</a> <a
+		href="<?php echo $this->url('page/article/revisions',array('slug'=>$slug))?>"
+		class="btn btn-link glyphicon glyphicon-align-left"> revisions</a> <span
+		<?php if ($revision=='') echo 'style="display:none"'; elseif  ($revision->getRepository()->getCurrentRevision()==$revision) echo 'style="display:none;"'?>>
+		<a
+		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-remove"> delete</a> <a
+		href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-ok"> setCurrent </a>
+	</span>
+</div>
