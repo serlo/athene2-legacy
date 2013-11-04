@@ -156,7 +156,16 @@ return array(
                     ),
                     'roles' => 'guest'
                 )
-            )
+            ),
+            /*'Common\Firewall\HydratableController' => array(
+                array(
+                    'controller' => 'Page\Controller\IndexController',
+                    'actions' => array(
+                        'createRepository'
+                    ),
+                    'role_provider' => 'Page\Hydrator\FirewallHydrator',
+                ),
+            )*/
         )
     ),
     'di' => array(
