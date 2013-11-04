@@ -26,14 +26,32 @@ class PostForm extends Form
         $this->add(array(
             'name' => 'title',
             'type' => 'Zend\Form\Element\Text',
-            'attributes' => array()
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Title:'
+            )
         ));
         
         $this->add(array(
             'name' => 'content',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
-                'class' => 'ckeditor'
+                'class' => '',
+            ),
+            'options' => array(
+                'label' => 'Content:'
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'publish',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'datepicker',
+            ),
+            'options' => array(
+                'label' => 'Publish Date:'
             )
         ));
         

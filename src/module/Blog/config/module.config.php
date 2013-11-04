@@ -165,6 +165,15 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'view-all' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/view-all/:id',
+                            'defaults' => array(
+                                'action' => 'viewAll'
+                            )
+                        )
+                    ),
                     'view' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -230,6 +239,10 @@ return array(
             'ZfcRbac\Firewall\Route' => array(
                 array(
                     'route' => 'blog/post/create',
+                    'roles' => 'admin'
+                ),
+                array(
+                    'route' => 'blog/view-all',
                     'roles' => 'admin'
                 ),
                 array(

@@ -28,4 +28,6 @@ interface PostServiceInterface
      * @return $this
      */
     public function setEntity(PostInterface $post);
+    
+    public function isPublished();
 }
