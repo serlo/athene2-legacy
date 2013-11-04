@@ -59,6 +59,10 @@ class PostService implements PostServiceInterface
         return $this->getEntity()->getAuthor();
     }
 
+    public function isPublished(){
+        return $this->getEntity()->isPublished();
+    }
+    
     public function setTrashed($trashed)
     {
         $this->getEntity()->setTrashed($trashed);

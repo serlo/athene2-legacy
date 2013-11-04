@@ -1,49 +1,54 @@
 <?php
-$this->headTitle($this->slug . ' Revisions');
+$this->headTitle($this->slug . $this->translate('Revisions'));
 ?>
 
-<div class="btn-group">
-	<a href="<?php echo $this->url('page/article',array('slug'=>$slug));?>"
-		class="glyphicon glyphicon-star btn btn-link"> current</a> <a
-		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>null))?>"
-		class="glyphicon glyphicon-plus btn btn-link"> new</a>
+<!-- buttons "create Revision" & "current Revision" -->
+<?php  if ($this->revisions[0]==null) $currentid = null; else $currentid = $this->revisions[0]->getRepository()->getCurrentRevision()->getId();?>
+<div class="page-header">
+	<div class="btn-group">
+		<a
+			href="<?php echo $this->url('page/article',array('slug'=>$this->slug));?>"
+			class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current');?></a>
+		<a
+			href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$currentid))?>"
+			class="glyphicon glyphicon-plus btn btn-link"><?php echo $this->translate('new');?></a>
+	</div>
+	<h1><?php echo $this->translate('Revisions');?></h1>
 </div>
 
-<h1>Revisions</h1>
-
+<!-- list of revisions -->
 <?php
-
-foreach ($this->revisions as $revision) {
+foreach ($this->revisions as $revision) :
     $id = $revision->getId();
     ?>
 
+
 <a
-	href="<?php echo $this->url('page/article/revision',array('slug'=>$slug,'id'=>$id));?>"
-	class="btn list-group-item" style="text-align: left">
-
-Title:	<?php echo $revision->getTitle(); ?> 	
-
-Author: <?php echo $revision->getAuthor()->getUsername();?>
-	
+	href="<?php echo $this->url('page/article/revision',array('slug'=>$this->slug,'id'=>$id));?>"
+	class="list-group-item btn btn-default" style="text-align: left"> <!-- title -->
+      <?php $this->translate('title'.':'); echo $revision->getTitle(); ?> 	
+        <!-- author -->
+        <?php $this->translate('author'.':'); echo $revision->getAuthor()->getUsername();?>
+        <!-- date -->	
 	<?php echo $this->timeago()->render($revision->getDate()); ?> 
 	</a>
 
-	
+<!-- edit button -->
+<a
+	href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$id))?>"
+	class="glyphicon glyphicon-file"><?php echo $this->translate('edit');?> </a>
 
+<!--  delete and setCurrent buttons, hidden for current revision -->
+<?php if ($revision->getRepository()->getCurrentRevision()!=$revision):?>
 <a
-	href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>"
-	class="glyphicon glyphicon-file"> edit </a>
-<span <?php if ($revision->getRepository()->getCurrentRevision()==$revision) echo 'style="display:none;"'?>>
+	href="<?php echo $this->url('page/article/deleterevision',array('slug'=>$this->slug,'revisionid'=>$id))?>"
+	class="glyphicon glyphicon-trash"><?php echo $this->translate('delete');?> </a>
 <a
-	href="<?php echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>"
-	class="glyphicon glyphicon-trash"> delete </a>
-<a
-	href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?>"
-	class="glyphicon glyphicon-ok"> setCurrent</a>
-</a>
-</span>
+	href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$this->slug,'id'=>$id))?>"
+	class="glyphicon glyphicon-ok"><?php echo $this->translate('current') ?></a>
 <br>
 <br>
-<?php
 
-} 
+    <?php endif;
+endforeach
+; 

@@ -15,6 +15,8 @@ use Blog\Entity\PostInterface;
 use Blog\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Blog\Collection\PostCollection;
+use DoctrineORMModuleTest\Assets\Entity\Date;
+use Blog\Service\PostServiceInterface;
 
 class PostManager extends InstanceManager implements PostManagerInterface
 {
@@ -43,6 +45,13 @@ class PostManager extends InstanceManager implements PostManagerInterface
     public function getId()
     {
         return $this->getTermService()->getId();
+    }
+
+    public function findPublishedPosts()
+    {
+        return $this->findAllPosts()->filter(function(PostInterface $e){
+            return $e->isPublished() && ! $e->isTrashed();
+        });
     }
 
     public function findAllPosts()
