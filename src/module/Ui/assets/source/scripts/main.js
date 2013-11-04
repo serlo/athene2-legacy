@@ -31,6 +31,7 @@ require.config({
         "timeago" : "modules/serlo_timeago",
         "system_notification" : "modules/serlo_system_notification",
         "nestable" : "thirdparty/jquery.nestable",
+        "datepicker" : "../bower_components/bootstrap-datepicker/js/bootstrap-datepicker",
         "translator" : "modules/serlo_translator",
         "i18n" : "modules/serlo_i18n",
         "layout" : "modules/serlo_layout",
@@ -46,6 +47,9 @@ require.config({
         bootstrap: {
             deps: ['jquery']
         },
+        datepicker: {
+            deps: ['jquery', 'bootstrap']
+        },
         easing: {
             deps: ['jquery']
         },
@@ -53,7 +57,7 @@ require.config({
             deps: ['jquery']
         },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable', 'polyfills']
+            deps: ['bootstrap', 'easing', 'nestable', 'polyfills', 'datepicker']
         }
     },
     waitSeconds: 2
