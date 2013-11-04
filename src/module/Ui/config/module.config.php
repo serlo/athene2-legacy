@@ -173,6 +173,7 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
+            'layout/home' => __DIR__ . '/../templates/layout/serlo-home.phtml',
             'layout/1-col' => __DIR__ . '/../templates/layout/1-col.phtml',
             'layout/layout' => __DIR__ . '/../templates/layout/2-col.phtml',
             'layout/3-col' => __DIR__ . '/../templates/layout/3-col.phtml',
