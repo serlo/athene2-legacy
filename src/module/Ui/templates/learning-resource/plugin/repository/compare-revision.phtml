@@ -1,3 +1,6 @@
+<div class="page-header">
+    <h1><?php echo $this->translate('Revision compare'); ?></h1>
+</div>
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#display" data-toggle="tab"><?php echo $this->translate('Revision'); ?> (#<?php echo $this->revision->getId();?>)</a></li>
 	<?php if($this->currentRevision){ ?>
@@ -9,7 +12,6 @@
 		<article>
             <?php echo $this->partial('learning-resource/plugin/repository/revision', array('revision' => $this->revision, 'plugin' => $this->plugin)); ?>
             <?php if($this->revision !== $this->currentRevision): ?>
-			<hr>
 			<footer>
 				<div class="btn-group">					
 				    <?php if($this->isGranted('route:entity/plugin/repository/checkout')): ?>

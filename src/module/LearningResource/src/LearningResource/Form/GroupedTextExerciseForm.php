@@ -25,7 +25,6 @@ class GroupedTextExerciseForm extends Form
             'name' => 'content',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
-                'class' => 'ckeditor'
             )
         ));
         
@@ -33,7 +32,12 @@ class GroupedTextExerciseForm extends Form
         
         $inputFilter->add(array(
             'name' => 'content',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $this->setInputFilter($inputFilter);

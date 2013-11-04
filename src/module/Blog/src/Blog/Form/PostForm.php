@@ -66,12 +66,22 @@ class PostForm extends Form
         
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $inputFilter->add(array(
             'name' => 'content',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $this->setInputFilter($inputFilter);

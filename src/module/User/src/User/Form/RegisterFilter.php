@@ -34,6 +34,11 @@ class RegisterFilter extends InputFilter
                         'object_manager' => $objectManager
                     )
                 )
+            ),
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
             )
         ));
         
@@ -48,6 +53,11 @@ class RegisterFilter extends InputFilter
                         'fields' => array('username'),
                         'object_manager' => $objectManager
                     )
+                )
+            ),
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
                 )
             )
         ));
