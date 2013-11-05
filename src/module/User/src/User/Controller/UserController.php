@@ -25,15 +25,9 @@ use Zend\Form\Form;
 
 class UserController extends AbstractUserController
 {
-<<<<<<< HEAD
-    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ConfigAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function getObjectManager()
-=======
-    use \Common\Traits\ConfigAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
-    
-    protected function getObjectManager()
->>>>>>> refs/remotes/origin/develop
     {
         return $this->getUserManager()->getObjectManager();
     }

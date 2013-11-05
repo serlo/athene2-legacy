@@ -201,7 +201,6 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->assertResponseStatusCode(302);
     }
 
-<<<<<<< HEAD
     public function testRegisterActionWithInvalidPost()
     {        
         $this->dispatch('/user/register', 'POST', array());
@@ -567,21 +566,6 @@ class UserControllerTest extends Athene2ApplicationTestCase
         
         $this->dispatch('/user/settings', 'POST', array(
         ));
-=======
-    public function testRegisterActionWithPostInvalid()
-    {
-        $data = array(
-            'username' => '',
-            'password' => '',
-            'email' => 'fa98s',
-        );
-        
-        $this->authServiceMock->expects($this->once())
-            ->method('hasIdentity')
-            ->will($this->returnValue(false));
-        
-        $this->dispatch('/user/register', 'POST', $data);
->>>>>>> refs/remotes/origin/develop
         $this->assertResponseStatusCode(200);
     }
 }
