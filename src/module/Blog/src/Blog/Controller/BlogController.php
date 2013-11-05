@@ -17,7 +17,7 @@ use Blog\Form\PostForm;
 
 class BlogController extends AbstractActionController
 {
-    use\Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function indexAction()
     {
@@ -42,15 +42,23 @@ class BlogController extends AbstractActionController
         return $view;
     }
 
+    public function viewAllAction()
+    {
+        $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        $view = new ViewModel(array(
+            'blog' => $blog,
+            'posts' => $blog->findAllPosts()
+        ));
+        $view->setTemplate('blog/blog/view-all');
+        return $view;
+    }
+
     public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         $view = new ViewModel(array(
             'blog' => $blog,
-            'posts' => $blog->findAllPosts()->filter(function ($e)
-            {
-                return ! $e->isTrashed();
-            })
+            'posts' => $blog->findPublishedPosts()
         ));
         $view->setTemplate('blog/blog/view');
         return $view;
@@ -92,13 +100,23 @@ class BlogController extends AbstractActionController
                 $title = $data['title'];
                 $content = $data['content'];
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $blog->updatePost($post->getId(), $title, $content);
+                $publish = new \DateTime('now');
+                if ($data['publish']) {
+                    $dateData = explode('.', $data['publish']);
+                    $day = $dateData[0];
+                    $month = $dateData[1];
+                    $year = $dateData[2];
+                    $publish = (new \Datetime())->setDate($year, $month, $day);
+                    $publish->setTime(0, 0, 0);
+                }
+                
+                $blog->updatePost($post->getId(), $title, $content, $publish);
                 
                 $this->getEventManager()->trigger('post.update', $this, array(
                     'blog' => $blog,
                     'post' => $post,
                     'actor' => $author,
-                    'post' => $data,
+                    'data' => $data,
                     'language' => $language
                 ));
                 
@@ -139,11 +157,18 @@ class BlogController extends AbstractActionController
                 $data = $form->getData();
                 $title = $data['title'];
                 $content = $data['content'];
-                $publish = null; // $data['publish'];
+                $publish = new \DateTime('now');
+                if ($data['publish']) {
+                    $dateData = explode('.', $data['publish']);
+                    $day = $dateData[0];
+                    $month = $dateData[1];
+                    $year = $dateData[2];
+                    $publish = (new \Datetime())->setDate($year, $month, $day);
+                    $publish->setTime(0, 0, 0);
+                }
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
                 $post = $blog->createPost($author, $title, $content, $publish);
-
-
+                
                 $this->getEventManager()->trigger('post.create', $this, array(
                     'blog' => $blog,
                     'post' => $post,

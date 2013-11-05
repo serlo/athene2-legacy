@@ -218,9 +218,6 @@ return array(
                     'setAuthAdapter' => array(
                         'required' => true
                     ),
-                    'setRegisterForm' => array(
-                        'required' => true
-                    ),
                     'setLanguageManager' => array(
                         'required' => true
                     )

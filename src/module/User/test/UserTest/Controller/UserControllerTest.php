@@ -59,7 +59,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $controller->setUserManager($this->userManagerMock);
         $controller->setAuthAdapter($this->authAdapterMock);
         $controller->setAuthenticationService($this->authServiceMock);
-        $controller->setRegisterForm($this->registerForm);
+        $controller->setForm('register', $this->registerForm);
         $controller->setLanguageManager($this->languageManagerMock);
     }
 
@@ -143,16 +143,6 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->assertResponseStatusCode(200);
     }
 
-    public function testLoginActionFailForm()
-    {
-        $this->dispatch('/user/login', 'POST', array(
-            'test' => 'user',
-            'password' => 'pass'
-        ));
-        
-        $this->assertResponseStatusCode(200);
-    }
-
     public function testRegisterAction()
     {
         $this->authServiceMock->expects($this->once())
@@ -205,12 +195,13 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->method('flush');
         
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
-        $controller->setRegisterForm($registerFormMock);
+        $controller->setForm('register', $registerFormMock);
         
         $this->dispatch('/user/register', 'POST', $data);
         $this->assertResponseStatusCode(302);
     }
 
+<<<<<<< HEAD
     public function testRegisterActionWithInvalidPost()
     {        
         $this->dispatch('/user/register', 'POST', array());
@@ -576,6 +567,21 @@ class UserControllerTest extends Athene2ApplicationTestCase
         
         $this->dispatch('/user/settings', 'POST', array(
         ));
+=======
+    public function testRegisterActionWithPostInvalid()
+    {
+        $data = array(
+            'username' => '',
+            'password' => '',
+            'email' => 'fa98s',
+        );
+        
+        $this->authServiceMock->expects($this->once())
+            ->method('hasIdentity')
+            ->will($this->returnValue(false));
+        
+        $this->dispatch('/user/register', 'POST', $data);
+>>>>>>> refs/remotes/origin/develop
         $this->assertResponseStatusCode(200);
     }
 }

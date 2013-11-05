@@ -61,6 +61,7 @@ class Bootstrap
         'Event' => 'Event/src/Event',
         'Blog' => 'Blog/src/Blog',
         'Token' => 'Token/src/Token',
+        'PageTest' => 'Page/test/PageTest',
         'TokenTest' => 'Token/test/TokenTest'
     );
 
