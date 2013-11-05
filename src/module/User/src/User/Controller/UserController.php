@@ -57,7 +57,11 @@ class UserController extends AbstractUserController
     public function getForm($name){
         if(!array_key_exists($name, $this->forms)){
             $form = $this->getOption('forms')[$name];
-            $this->forms[$name] = new $form();
+            if($name == 'register'){
+                $this->forms[$name] = new $form($this->getObjectManager());
+            } else {
+                $this->forms[$name] = new $form();                
+            }
         }
         return $this->forms[$name];
     }
