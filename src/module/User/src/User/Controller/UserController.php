@@ -48,7 +48,7 @@ class UserController extends AbstractUserController
      * 
      * @var Form[]
      */
-    protected $forms;
+    protected $forms = array();
     
     /**
      * 

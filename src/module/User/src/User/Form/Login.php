@@ -56,12 +56,12 @@ class Login extends Form
             )
         ));
         
-        $this->add(array(
+        $filter->add(array(
             'name' => 'email',
             'required' => true
         ));
         
-        $this->add(array(
+        $filter->add(array(
             'name' => 'password',
             'required' => true
         ));
