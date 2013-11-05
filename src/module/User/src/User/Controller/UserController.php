@@ -24,9 +24,9 @@ use User\Exception\UserNotFoundException;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
-    protected function getObjectManager()
+    public function getObjectManager()
     {
         return $this->getUserManager()->getObjectManager();
     }
@@ -213,7 +213,9 @@ class UserController extends AbstractUserController
         } else {
             $form = new LostPassword();
             $form->setAttribute('action', $this->url()
-                ->fromRoute('user/password/restore', array('token' => $this->params('token'))));
+                ->fromRoute('user/password/restore', array(
+                'token' => $this->params('token')
+            )));
             
             $user = $this->getUserManager()->findUserByToken($this->params('token'));
             
@@ -273,13 +275,6 @@ class UserController extends AbstractUserController
         $form->setAttribute('action', $this->url()
             ->fromRoute('user/settings'));
         $user = $this->getUserManager()->getUserFromAuthenticator();
-        $data = array(
-            'email' => $user->getEmail(),
-            'givenname' => $user->getGivenname(),
-            'lastname' => $user->getLastname(),
-            'gender' => $user->getGender()
-        );
-        $form->setData($data);
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -290,13 +285,17 @@ class UserController extends AbstractUserController
                 $user->setLastname($data['lastname']);
                 $user->setEmail($data['email']);
                 $user->setGender($data['gender']);
-                $this->getUserManager()
-                    ->getObjectManager()
-                    ->persist($user->getEntity());
-                $this->getUserManager()
-                    ->getObjectManager()
-                    ->flush();
+                $this->getObjectManager()->persist($user->getEntity());
+                $this->getObjectManager()->flush();
             }
+        } else {
+            $data = array(
+                'email' => $user->getEmail(),
+                'givenname' => $user->getGivenname(),
+                'lastname' => $user->getLastname(),
+                'gender' => $user->getGender()
+            );
+            $form->setData($data);            
         }
         
         $view = new ViewModel(array(
@@ -329,10 +328,11 @@ class UserController extends AbstractUserController
                 
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);
-                    $user->getObjectManager()->persist($user->getEntity());
-                    $user->getObjectManager()->flush();
+                    $this->getObjectManager()->persist($user->getEntity());
+                    $this->getObjectManager()->flush();
                     $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
                     $this->redirect()->toRoute('user/me');
+                    return '';
                 }
                 
                 $messages = $result->getMessages();
@@ -366,6 +366,8 @@ class UserController extends AbstractUserController
         $this->getUserManager()
             ->getObjectManager()
             ->flush();
+        $this->redirect()->toReferer();
+        return '';
     }
 
     public function purgeAction()
@@ -374,6 +376,8 @@ class UserController extends AbstractUserController
         $this->getUserManager()
             ->getObjectManager()
             ->flush();
+        $this->redirect()->toReferer();
+        return '';
     }
 
     public function removeRoleAction()

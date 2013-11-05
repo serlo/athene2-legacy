@@ -12,6 +12,8 @@
 namespace User\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
+
 class SelectUserForm extends Form
 {
 
@@ -19,6 +21,8 @@ class SelectUserForm extends Form
     {
         parent::__construct('select-user');
         $this->setAttribute('method', 'post');
+        $filter = new InputFilter();
+        $this->setInputFilter($filter);
         
         $this->add(array(
             'name' => 'email',
@@ -31,6 +35,7 @@ class SelectUserForm extends Form
                 'label' => 'E-Mail-Adresse:'
             )
         ));
+        
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
@@ -39,6 +44,11 @@ class SelectUserForm extends Form
                 'tabindex' => 2,
                 'class' => 'btn btn-success pull-right'
             )
+        ));
+        
+        $filter->add(array(
+            'name' => 'email',
+            'required' => true
         ));
     }
 }

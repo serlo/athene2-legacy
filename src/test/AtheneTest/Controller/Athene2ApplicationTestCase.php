@@ -16,6 +16,7 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         parent::setUp();
         $this->setUpLayout();
         $this->setUpLanguage();
+        $this->setUpAlias();
     }
 
     protected function detachAggregatedListener($listener)
@@ -26,7 +27,16 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
             ->detachAggregate($this->getApplicationServiceLocator()
             ->get($listener));
     }
-
+    
+    protected function setUpAlias(){
+        $aliasManagerMock = $this->getMock('Alias\AliasManager');
+        
+        $this->getApplicationServiceLocator()->setAllowOverride(true);
+        $this->getApplicationServiceLocator()->setService('Alias\AliasManager', $aliasManagerMock);
+        $this->getApplicationServiceLocator()->setAllowOverride(false);
+        return $this;
+    }
+    
     public function setUpLanguage()
     {
         $languageManagerMock = $this->getMock('Language\Manager\LanguageManager');

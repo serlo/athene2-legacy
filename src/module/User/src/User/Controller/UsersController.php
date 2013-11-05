@@ -17,7 +17,7 @@ class UsersController extends AbstractUserController
 {
     use \Language\Manager\LanguageManagerAwareTrait;
 
-    protected function usersAction ()
+    public function usersAction ()
     {
         $users = $this->getUserManager()->findAllUsers();
         $view = new ViewModel(array(
@@ -26,7 +26,7 @@ class UsersController extends AbstractUserController
         return $view;
     }
 
-    protected function rolesAction ()
+    public function rolesAction ()
     {
         $view = new ViewModel(array(
             'roles' => $this->getUserManager()->findAllRoles()
@@ -34,12 +34,12 @@ class UsersController extends AbstractUserController
         return $view;
     }
 
-    protected function roleAction ()
+    public function roleAction ()
     {
         $role = $this->getUserManager()->findRole($this->params('role'));
         $view = new ViewModel(array(
             'role' => $role,
-            'users' => $role->getUsers($this->getLanguageManager()->getLanguageFromRequest()->getEntity())
+            'users' => $role->getUsers()
         ));
         return $view;
     }

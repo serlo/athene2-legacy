@@ -444,6 +444,24 @@ return array(
                                 'action' => 'settings'
                             )
                         )
+                    ),
+                    'remove' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/remove/:id',
+                            'defaults' => array(
+                                'action' => 'remove'
+                            )
+                        )
+                    ),
+                    'purge' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/purge/:id',
+                            'defaults' => array(
+                                'action' => 'purge'
+                            )
+                        )
                     )
                 )
             )
