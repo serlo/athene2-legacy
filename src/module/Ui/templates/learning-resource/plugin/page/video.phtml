@@ -2,7 +2,7 @@
 <article>
     <header class="page-header">
         <div class="pull-right btn-group">
-            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+            <?php echo $this->partial('learning-resource/plugin/page/partials/actions', array('entity' => $this->entity)); ?>
         </div>
         <h1>
             <?php echo $revision->get('title'); ?> <small><?php echo $this->translate('Video'); ?></small>

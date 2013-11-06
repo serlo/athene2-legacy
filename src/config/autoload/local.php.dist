@@ -37,7 +37,7 @@ return array(
         'password' => $dbParams['password'],
         'database' => $dbParams['database']
     ),
-    'smtpParams' => array(
+    'smtp_options' => array(
     	'name' => 'localhost.localdomain',
 		'host' => '127.0.0.1',
 		'connection_class' => 'login',
