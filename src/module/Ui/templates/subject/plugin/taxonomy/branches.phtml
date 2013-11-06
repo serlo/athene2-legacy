@@ -4,7 +4,7 @@
             <?php echo $term->getName(); ?>
         </a>
     </h4>	    
-    <ol>
+    <div class="list-group">
         <?php if($term->isAssociationAllowed('entities')): ?>
             <?php foreach($term->getAssociated('entities') as $entity): ?>
                 <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
@@ -12,6 +12,6 @@
                 <?php endif; ?>
             <?php endforeach;?>
         <?php endif;?>
-    </ol>
+    </div>
 <hr>
 <?php endforeach; ?>

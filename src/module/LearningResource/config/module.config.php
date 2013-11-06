@@ -643,6 +643,12 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+                array(
+                    'route' => 'entity/plugin/link/order',
+                    'roles' => 'moderator'
+                ),
+            ),
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',

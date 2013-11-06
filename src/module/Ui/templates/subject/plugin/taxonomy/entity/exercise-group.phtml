@@ -12,9 +12,7 @@
 $exercise = $this->entity;
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
-    <li class="sortable-item" data-id="<?php echo $this->entity->getId(); ?>">
-        <div class="sortable-item-inner">
-            <?php echo $this->partial('learning-resource/view/default', array('entity' => $this->entity)); ?>
-        </div>
-    </li>
+    <div class="list-group-item">
+        <?php echo $this->partial('learning-resource/view/default', array('entity' => $this->entity)); ?>
+    </div>
 <?php endif; ?>
