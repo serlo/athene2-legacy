@@ -47,10 +47,12 @@ return array(
     ),
     'taxonomy' => array(
         'associations' => array(
-            'comments' => function (ServiceLocatorInterface $sm, $collection)
-            {
-                return new CommentCollection($collection, $sm->get('Discussion\DiscussionManager'));
-            }
+            'comments' => array(
+                'callback' => function (ServiceLocatorInterface $sm, $collection)
+                {
+                    return new CommentCollection($collection, $sm->get('Discussion\DiscussionManager'));
+                },
+            )
         ),
         'types' => array(
             'forum-category' => array(

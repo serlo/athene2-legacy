@@ -42,6 +42,12 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
+            'ZfcRbac\Firewall\Route' => array(
+                array(
+                    'route' => 'taxonomy/term/sort-associated',
+                    'roles' => 'moderator'
+                ),
+            ),
             'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'Taxonomy\Controller\TaxonomyController',

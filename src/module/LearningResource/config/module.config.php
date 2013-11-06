@@ -12,6 +12,8 @@
 namespace LearningResource;
 
 use Entity\Service\EntityServiceInterface;
+use Entity\Collection\EntityCollection;
+use Zend\ServiceManager\ServiceLocatorInterface;
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -34,6 +36,19 @@ return array(
             __DIR__ . '/../view'
         )
     ),
+    'taxonomy' => array(
+        'associations' => array(
+            'entities' => array(
+                'callback' => function (ServiceLocatorInterface $sm, $collection)
+                {
+                    return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
+                },
+                'options' => array(
+                    'template' => 'learning-resource/view/default'
+                )
+            )
+        )
+    ),
     'entity' => array(
         'plugins' => array(
             'factories' => array(
@@ -54,15 +69,6 @@ return array(
                         ->get('User\Manager\UserManager'));
                     $instance->setUuidManager($sm->getServiceLocator()
                         ->get('Uuid\Manager\UuidManager'));
-                    return $instance;
-                },
-                'discussion' => function ($sm)
-                {
-                    $instance = new Plugin\Discussion\DiscussionPlugin();
-                    $instance->setDiscussionManager($sm->getServiceLocator()
-                        ->get('Discussion\DiscussionManager'));
-                    $instance->setEntityManager($sm->getServiceLocator()
-                        ->get('Entity\Manager\EntityManager'));
                     return $instance;
                 },
                 'link' => function ($sm)
@@ -130,9 +136,6 @@ return array(
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
-                    ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -148,15 +151,14 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                        )
+                        'options' => array()
                     ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
-                            'template' => 'learning-resource/plugin/page/text-exercise',
+                            'template' => 'learning-resource/plugin/page/text-exercise'
                         )
-                    ),
+                    )
                 )
             ),
             'exercise-group' => array(
@@ -173,9 +175,6 @@ return array(
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
-                    ),
                     'exercises' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -190,15 +189,14 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                        )
+                        'options' => array()
                     ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
-                            'template' => 'learning-resource/plugin/page/exercise-group',
+                            'template' => 'learning-resource/plugin/page/exercise-group'
                         )
-                    ),
+                    )
                 )
             ),
             'grouped-text-exercise' => array(
@@ -224,9 +222,6 @@ return array(
                             'association' => 'many-to-one'
                         )
                     ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
-                    ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -239,7 +234,7 @@ return array(
                             'type' => 'link',
                             'association' => 'one-to-one'
                         )
-                    ),
+                    )
                 )
             ),
             'text-solution' => array(
@@ -253,9 +248,6 @@ return array(
                                 'content'
                             )
                         )
-                    ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
                     ),
                     'exercise' => array(
                         'plugin' => 'link',
@@ -294,11 +286,8 @@ return array(
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
-                            'template' => 'learning-resource/plugin/page/video',
+                            'template' => 'learning-resource/plugin/page/video'
                         )
-                    ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
                     ),
                     'pathauto' => array(
                         'plugin' => 'pathauto',
@@ -339,16 +328,13 @@ return array(
                             )
                         )
                     ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
-                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
-                            'template' => 'learning-resource/plugin/page/article',
+                            'template' => 'learning-resource/plugin/page/article'
                         )
                     ),
                     'pathauto' => array(
@@ -389,9 +375,6 @@ return array(
                             )
                         )
                     ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
-                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -416,7 +399,7 @@ return array(
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
-                            'template' => 'learning-resource/plugin/page/module',
+                            'template' => 'learning-resource/plugin/page/module'
                         )
                     ),
                     'provider' => array(
@@ -461,9 +444,6 @@ return array(
                             'type' => 'link',
                             'association' => 'many-to-one'
                         )
-                    ),
-                    'discussion' => array(
-                        'plugin' => 'discussion'
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
@@ -510,7 +490,7 @@ return array(
                 'LearningResource\Plugin\Link\Controller\LinkController' => array(
                     'setEntityManager' => array(
                         'required' => true
-                    ),
+                    )
                 ),
                 'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController' => array(
                     'setEntityManager' => array(
@@ -588,7 +568,7 @@ return array(
                                             'defaults' => array(
                                                 'action' => 'orderChildren'
                                             )
-                                        ),
+                                        )
                                     ),
                                     'move' => array(
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -597,8 +577,8 @@ return array(
                                             'defaults' => array(
                                                 'action' => 'move'
                                             )
-                                        ),
-                                    ),
+                                        )
+                                    )
                                 )
                             ),
                             'page' => array(
@@ -632,7 +612,7 @@ return array(
                                             )
                                         ),
                                         'may_terminate' => true
-                                    ),
+                                    )
                                 )
                             )
                         )
@@ -647,7 +627,7 @@ return array(
                 array(
                     'route' => 'entity/plugin/link/order',
                     'roles' => 'moderator'
-                ),
+                )
             ),
             'ZfcRbac\Firewall\Controller' => array(
                 array(
