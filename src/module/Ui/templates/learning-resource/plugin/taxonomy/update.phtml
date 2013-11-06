@@ -16,6 +16,7 @@
 </div>
 <form method="post"
 	action="<?php $this->url('entity/plugin/taxonomy/update', array('entity' => $this->entity->getId())); ?>">
+	<input type="hidden" name="ref" value="<?php echo $this->ref; ?>" />
 <?php endif; ?>
 <ul>
     <?php foreach($this->terms as $term):?>

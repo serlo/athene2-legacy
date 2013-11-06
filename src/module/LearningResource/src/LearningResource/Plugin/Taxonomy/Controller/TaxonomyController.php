@@ -48,15 +48,18 @@ class TaxonomyController extends AbstractController
                     'post' => $data
                 ));
                 $plugin->getObjectManager()->flush();
-                $this->redirect()->toReferer();
+                $this->redirect()->toUrl($data['ref']);
                 return '';
             }
+        } else {
+            $ref = $this->referer()->toUrl();
         }
         
         $view = new ViewModel(array(
             'terms' => $saplings,
             'plugin' => $plugin,
-            'entity' => $this->getEntityService()
+            'entity' => $this->getEntityService(),
+            'ref' => $ref
         ));
         $view->setTemplate('learning-resource/plugin/taxonomy/update');
         return $view;

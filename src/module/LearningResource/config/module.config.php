@@ -627,7 +627,11 @@ return array(
                 array(
                     'route' => 'entity/plugin/link/order',
                     'roles' => 'moderator'
-                )
+                ),
+                array(
+                    'route' => 'entity/create',
+                    'roles' => 'moderator'
+                ),
             ),
             'ZfcRbac\Firewall\Controller' => array(
                 array(

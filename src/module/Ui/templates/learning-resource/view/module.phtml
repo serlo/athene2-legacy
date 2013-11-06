@@ -29,7 +29,7 @@
                 <div class="col-md-8"></div>
                 <div class="col-md-4">
                     <div class="sortable-actions btn-group pull-right">
-                        <?php echo $this->partial('learning-resource/plugin/page/partials/sortable-actions'); ?>
+                        <?php echo $this->partial('learning-resource/view/partials/sortable-actions'); ?>
                         <?php if($this->rbac()->hasAccessToRoute('entity/create')): ?>
                     		<a class="btn btn-sm btn-default" href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
                     			<span class="glyphicon glyphicon-file"></span>
