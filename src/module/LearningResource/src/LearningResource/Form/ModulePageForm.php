@@ -38,15 +38,10 @@ class ModulePageForm extends Form
         ));
         
         $this->add(new Controls());
-        
+
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
+            'required' => true
         ));
         
         $inputFilter->add(array(

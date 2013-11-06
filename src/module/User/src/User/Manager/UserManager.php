@@ -16,17 +16,10 @@ use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Exception\InvalidArgumentException;
-use User\Service\UserServiceInterface;
 
 class UserManager implements UserManagerInterface
 {
     use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
-
-    public function addUser(UserServiceInterface $user)
-    {
-        $this->addInstance($user->getId(), $user);
-        return $this;
-    }
 
     public function getUser($id)
     {
@@ -41,7 +34,6 @@ class UserManager implements UserManagerInterface
             
             $instance = $this->createService($user);
             $this->addInstance($user->getId(), $instance);
-            return $instance;
         }
         
         return $this->getInstance($id);
@@ -67,10 +59,7 @@ class UserManager implements UserManagerInterface
 
     public function findUserByToken($username)
     {
-        $user = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('User\Entity\UserInterface'))
-            ->findOneBy(array(
+        $user = $this->getUserEntityRepository()->findOneBy(array(
             'token' => $username
         ));
         if (! $user)
@@ -80,10 +69,7 @@ class UserManager implements UserManagerInterface
 
     public function findUserByUsername($username)
     {
-        $user = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('User\Entity\UserInterface'))
-            ->findOneBy(array(
+        $user = $this->getUserEntityRepository()->findOneBy(array(
             'username' => $username
         ));
         if (! $user)
@@ -93,10 +79,7 @@ class UserManager implements UserManagerInterface
 
     public function findUserByEmail($email)
     {
-        $user = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('User\Entity\UserInterface'))
-            ->findOneBy(array(
+        $user = $this->getUserEntityRepository()->findOneBy(array(
             'email' => $email
         ));
         if (! $user)
@@ -106,10 +89,14 @@ class UserManager implements UserManagerInterface
 
     public function createUser(array $data)
     {
-        $user = $this->createUserEntity();
+        $user = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
+        $user = new $user();
+        $this->getUuidManager()->injectUuid($user);
         $user->populate($data);
         $this->getObjectManager()->persist($user);
-        return $user; // $this->createService($user);
+        $instance = $this->createService($user);
+        $this->addInstance($user->getId(), $instance);
+        return $instance;
     }
 
     public function purgeUser($id)
@@ -127,14 +114,6 @@ class UserManager implements UserManagerInterface
         $user->setTrashed(true);
         $this->getObjectManager()->persist($user->getEntity());
         return $this;
-    }
-
-    public function createUserEntity()
-    {
-        $user = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
-        $user = new $user();
-        $this->getUuidManager()->injectUuid($user);
-        return $user;
     }
 
     public function findAllUsers()
@@ -162,8 +141,18 @@ class UserManager implements UserManagerInterface
 
     public function findRoleByName($role)
     {
+        return $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('User\Entity\RoleInterface'))
+            ->findOneBy(array(
+            'name' => $role
+        ));
+    }    
+    
+    protected function getUserEntityRepository()
+    {
         return $this->getObjectManager()->getRepository($this->getClassResolver()
-            ->resolveClassName('User\Entity\RoleInterface'))->findOneBy(array('name' => $role));
+            ->resolveClassName('User\Entity\UserInterface'));
     }
 
     protected function createService(UserInterface $entity)

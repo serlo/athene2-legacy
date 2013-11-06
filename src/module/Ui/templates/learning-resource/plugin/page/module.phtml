@@ -1,36 +1,47 @@
 <article class="module">
 	<header class="page-header">
         <div class="pull-right btn-group">
-            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
+            <?php echo $this->partial('learning-resource/plugin/page/partials/actions', array('entity' => $this->entity)); ?>
         </div>
 		<h1>
-			<div class="row">
-				<div class="col-md-11">
-		          <?php echo $this->title; ?> <small><?php echo $this->translate('Module'); ?></small>
-				</div>
-				<div class="col-md-1">
-				</div>
-			</div>
+            <?php echo $this->title; ?> <small><?php echo $this->translate('Module'); ?></small>
 		</h1>
 	</header>
 	<section>
-        <div class="list-group">
-            <?php foreach($this->pages as $page):?>
-                <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
-                    <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
-                    <a class="list-group-item" href="<?php echo '#'.$page->getId(); ?>">
-                        <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-align-left"></span> <?php echo $revision->get('title'); ?></h4>
-                    </a>
-                <?php endif; ?>
-            <?php endforeach; ?>
-    		<a class="list-group-item"
-    			href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
-    			<h4 class="list-group-item-heading"><span class="glyphicon glyphicon-file"></span> <?php echo $this->translate('Add a new page'); ?></h4>
-    		</a>
-    	</div>
+        <div class="sortable"  data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'pages', 'entity' => $this->entity->getId())); ?>"  data-depth="1" data-active="false">
+            <ol class="sortable-list">
+                <?php foreach($this->entity->pages()->findChildren() as $page):?>
+                    <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
+                        <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+                        <li class="sortable-item" data-id="<?php echo $page->getId(); ?>">
+                            <span class="sortable-handle"></span>
+                            <div class="sortable-item-inner">
+                                <span class="glyphicon glyphicon-align-left"></span>
+                                <a href="<?php echo '#'.$page->getId(); ?>">
+                                    <?php echo $revision->get('title'); ?>
+                                </a>
+                            </div>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ol>            
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <div class="sortable-actions btn-group pull-right">
+                        <?php echo $this->partial('learning-resource/plugin/page/partials/sortable-actions'); ?>
+                        <?php if($this->rbac()->hasAccessToRoute('entity/create')): ?>
+                    		<a class="btn btn-sm btn-default" href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
+                    			<span class="glyphicon glyphicon-file"></span>
+                    		</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</section>
 	<section>
-        <?php foreach($this->pages as $page):?>
+        <?php foreach($this->entity->pages()->findChildren() as $page):?>
             <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
                 <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
             	<article class="panel panel-default">
@@ -39,15 +50,7 @@
                             <div class="col-md-10"><?php echo $revision->get('title'); ?></div>
                             <div class="col-md-2">
                                 <div class="pull-right btn-group">
-                                	<a class="btn btn-default btn-xs"
-                                		href="<?php echo $this->url('entity/plugin/repository',array('action' => 'add-revision', 'entity' => $page->getId())); ?>"><span
-                                		class="glyphicon glyphicon-edit"></span></a>
-                                	<a class="btn btn-default btn-xs<?php echo ($page->plugin('repository')->isUnrevised()) ? ' btn-warning' : ''?>"
-                                		href="<?php echo $this->url('entity/plugin/repository',array('action' => 'history', 'entity' => $page->getId())); ?>"><span
-                                		class="glyphicon glyphicon-time"></span></a>
-                                	<a class="btn btn-default btn-xs"
-                                		href="<?php echo $this->url('entity/trash',array('entity' => $page->getId())); ?>"><span
-                                		class="glyphicon glyphicon-trash"></span></a>
+                                    <?php echo $this->partial('learning-resource/plugin/page/partials/actions', array('entity' => $page, 'hide' => array('taxonomy'))); ?>
                                 </div>
                             </div>
                         </div>

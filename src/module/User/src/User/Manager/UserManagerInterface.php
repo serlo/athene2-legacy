@@ -17,75 +17,85 @@ use User\Entity\RoleInterface;
 
 interface UserManagerInterface
 {
-    /**
-     * 
-     * @param numeric $id
-     * @return UserServiceInterface
-     */
-    public function getUser ($id);
 
     /**
      *
-     * @param string $token
+     * @param numeric $id            
      * @return UserServiceInterface
      */
-    public function findUserByToken ($token);
+    public function getUser($id);
 
     /**
      *
-     * @param string $username
+     * @param string $token            
      * @return UserServiceInterface
      */
-    public function findUserByUsername ($username);
+    public function findUserByToken($token);
 
     /**
      *
-     * @param string $email
+     * @param string $username            
      * @return UserServiceInterface
      */
-    public function findUserByEmail ($email);
-
-    /**
-     * 
-     * @param array $data
-     * @return UserServiceInterface
-     */
-    public function createUser (array $data);
+    public function findUserByUsername($username);
 
     /**
      *
-     * @param numeric $id
+     * @param string $email            
+     * @return UserServiceInterface
+     */
+    public function findUserByEmail($email);
+
+    /**
+     *
+     * @param array $data            
+     * @return UserServiceInterface
+     */
+    public function createUser(array $data);
+
+    /**
+     *
+     * @param numeric $id            
      * @return $this
      */
-    public function purgeUser ($id);
+    public function purgeUser($id);
 
     /**
      *
-     * @param numeric $id
+     * @param numeric $id            
      * @return $this
      */
-    public function trashUser ($id);
+    public function trashUser($id);
 
     /**
+     *
      * @return EntityRepository
      */
-    public function findAllUsers ();
+    public function findAllUsers();
 
     /**
-     * 
+     *
      * @return EntityRepository
      */
-    public function findAllRoles ();
+    public function findAllRoles();
 
     /**
-     * 
-     * @param int $roleId
+     *
+     * @param int $roleId            
      * @return RoleInterface
      */
-    public function findRole ($roleId);
-    public function findRoleByName($role);
-    
-    public function createUserEntity();
-    
+    public function findRole($roleId);
+
+    /**
+     *
+     * @param string $role            
+     * @return RoleInterface
+     */
+    public function findRoleByName($name);
+
+    /**
+     *
+     * @return UserServiceInterface
+     */
     public function getUserFromAuthenticator();
 }

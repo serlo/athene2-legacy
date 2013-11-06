@@ -35,12 +35,7 @@ class ModuleForm extends Form
         
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
+            'required' => true
         ));
         
         $this->setInputFilter($inputFilter);

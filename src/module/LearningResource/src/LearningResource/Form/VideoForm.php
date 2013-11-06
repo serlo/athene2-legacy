@@ -44,11 +44,6 @@ class VideoForm extends Form
         $inputFilter->add(array(
             'name' => 'title',
             'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
         ));
         
         $inputFilter->add(array(

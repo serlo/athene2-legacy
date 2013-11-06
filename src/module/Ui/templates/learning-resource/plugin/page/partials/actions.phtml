@@ -1,0 +1,30 @@
+<?php $hide = isset($this->hide) ? $this->hide : array(); ?>
+
+<!-- Edit -->
+<?php $url = $this->url('entity/plugin/repository',array('action' => 'add-revision', 'entity' => $this->entity->getId())); ?>
+<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('edit', $hide)): ?>
+    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
+    	class="glyphicon glyphicon-edit"></span></a>
+<?php endif; ?>
+
+<!-- Versioning history -->
+<?php $url = $this->url('entity/plugin/repository',array('action' => 'history', 'entity' => $this->entity->getId())); ?>
+<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('history', $hide)): ?>
+    <a
+    	class="btn btn-default btn-xs<?php echo ($this->entity->plugin('repository')->isUnrevised()) ? ' btn-warning' : ''?>"
+    	href="<?php echo $url; ?>"><span class="glyphicon glyphicon-time"></span></a>
+<?php endif; ?>
+
+<!-- Changing taxonomy -->
+<?php $url = $this->url('entity/plugin/taxonomy/update',array('entity' => $this->entity->getId())); ?>
+<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('taxonomy', $hide)): ?>
+    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
+    	class="glyphicon glyphicon-map-marker"></span></a>
+<?php endif; ?>
+
+<!-- Trash entity -->
+<?php $url = $this->url('entity/trash',array('entity' => $this->entity->getId())); ?>
+<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('trash', $hide)): ?>
+    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
+    	class="glyphicon glyphicon-trash"></span></a>
+<?php endif; ?>

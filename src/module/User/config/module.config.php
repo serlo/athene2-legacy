@@ -495,11 +495,6 @@ return array(
                             array(
                                 'label' => 'Manage roles',
                                 'route' => 'users/roles'
-                            ),
-                            array(
-                                'label' => 'abc',
-                                'route' => 'users/roles',
-                                'hidden' => true
                             )
                         )
                     )

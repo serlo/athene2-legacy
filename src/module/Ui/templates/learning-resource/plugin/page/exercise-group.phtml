@@ -1,6 +1,11 @@
 <article>
     <header class="page-header">
-        <h1><?php echo $this->translate('Exercise group'); ?></h1>
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('learning-resource/plugin/page/partials/actions', array('entity' => $this->entity)); ?>
+        </div>
+        <h1>
+            <?php echo $this->translate('Group exercise'); ?>
+        </h1>
     </header>
     <section>
         <?php echo $this->entity->repository()->getCurrentRevision()->get('content'); ?>
@@ -21,10 +26,13 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             </ol>
-            <div class="sortable-actions">
-                <button class="btn btn-success sortable-save-action is-hidden">
-                    <?php echo $this->translate('save'); ?>
-                </button>
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <div class="sortable-actions btn-group pull-right">
+                        <?php echo $this->partial('learning-resource/plugin/page/partials/sortable-actions'); ?>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
