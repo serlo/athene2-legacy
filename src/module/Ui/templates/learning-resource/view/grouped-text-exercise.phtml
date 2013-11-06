@@ -1,22 +1,24 @@
 <?php $solution = $this->entity->solution()->findChild(); ?>
-<div class="pull-right btn-group">
-    <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('grouped-text-exercise' => array('to_entity' => $this->entity->getId())))); ?>
-    <?php if(!is_object($solution) && $this->rbac()->hasAccessToUrl($url)): ?>
-    	<a class="btn btn-default btn-xs"
-    		href="<?php echo $url; ?>">
-    		<strong>+</strong>
-    	</a>
-	<?php endif; ?>
-    <?php echo $this->partial('learning-resource/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
-</div>
-<section>
-    <?php if($this->entity->repository()->hasCurrentRevision()): ?>
-        <?php echo  $this->entity->repository()->getCurrentRevision()->get('content'); ?>
-    <?php endif; ?>
-</section>
-<div class="clearfix"></div>
-<?php if(is_object($solution)): ?>
-    <section class="panel-group" id="solutions-<?php echo $solution->getId(); ?>">
-	   <?php echo $this->partial('learning-resource/view/default',array('entity' => $solution, 'hideActions' => array('detail', 'taxonomy'))); ?>
+<article>
+    <div class="pull-right btn-group">
+        <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('grouped-text-exercise' => array('to_entity' => $this->entity->getId())))); ?>
+        <?php if(!is_object($solution) && $this->rbac()->hasAccessToUrl($url)): ?>
+        	<a class="btn btn-default btn-xs"
+        		href="<?php echo $url; ?>">
+        		<strong>+</strong>
+        	</a>
+    	<?php endif; ?>
+        <?php echo $this->partial('learning-resource/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
+    </div>
+    <section>
+        <?php if($this->entity->repository()->hasCurrentRevision()): ?>
+            <?php echo  $this->entity->repository()->getCurrentRevision()->get('content'); ?>
+        <?php endif; ?>
     </section>
-<?php endif; ?>
+    <div class="clearfix"></div>
+    <?php if(is_object($solution)): ?>
+        <section class="panel-group" id="solutions-<?php echo $solution->getId(); ?>">
+    	   <?php echo $this->partial('learning-resource/view/default',array('entity' => $solution, 'hideActions' => array('detail', 'taxonomy'))); ?>
+        </section>
+    <?php endif; ?>
+</article>

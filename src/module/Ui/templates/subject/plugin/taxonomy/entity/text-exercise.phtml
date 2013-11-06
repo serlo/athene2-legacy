@@ -12,7 +12,7 @@
 $exercise = $this->entity;
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
-    <li>
+    <div class="list-group-item">
         <?php echo $this->partial('learning-resource/view/default', array('entity' => $this->entity)); ?>
-    </li>
+    </div>
 <?php endif; ?>

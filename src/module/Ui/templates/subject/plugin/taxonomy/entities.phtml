@@ -99,15 +99,15 @@ $table = array(
     	<div class="row">
     		<div class="col-md-12">
     		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Exercises'); ?></strong></h4>
-    		    <ol>
+    		    <div class="list-group">
         		    <?php if(strlen($table['bottom']) > 0): ?>
                         <?php echo $table['bottom']; ?>
                     <?php else: ?>
-                    	<li>
+                    	<div class="list-group-item">
                     	   <p class="text-muted"><?php echo $this->translate('There are no exercises for this topic yet.'); ?></p>
-                    	</li>
+                    	</div>
                     <?php endif; ?>
-                </ol>
+                </div>
             </div>
     	</div>
     </div>
