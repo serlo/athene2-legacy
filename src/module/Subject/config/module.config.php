@@ -55,12 +55,6 @@ return array(
         )
     ),
     'taxonomy' => array(
-        'associations' => array(
-            'entities' => function (ServiceLocatorInterface $sm, $collection)
-            {
-                return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
-            }
-        ),
         'types' => array(
             'topic-folder' => array(
                 'options' => array(

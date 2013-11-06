@@ -52,9 +52,7 @@ class PageController extends AbstractController
                 'entity' => $entity,
                 'plugin' => $page,
                 'user' => $this->getUserManager()->getUserFromAuthenticator(),
-                'discussion' => $entity->plugin('discussion')
             ));
-            //$page->hydrate($model);
             $model->setTemplate($page->getTemplate());
             return $model;
         } catch (RevisionNotFoundException $e) {

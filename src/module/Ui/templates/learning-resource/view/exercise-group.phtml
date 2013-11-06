@@ -21,7 +21,7 @@
                     <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
                         <span class="sortable-handle"></span>
                         <div class="sortable-item-inner">
-                            <?php echo $this->partial('learning-resource/view/default', array('entity' => $child, 'parent' => $this->entity, 'hideActions' => array('detail'))); ?>
+                            <?php echo $this->partial('learning-resource/view/default', array('entity' => $child, 'parent' => $this->entity, 'hideActions' => array('detail', 'taxonomy'))); ?>
                         </div>
                     </li>
             	<?php endforeach; ?>

@@ -1,4 +1,4 @@
 <div class="page-header">
-	<h1><?php echo $this->title; ?> <small><?php echo $this->translate('Article'); ?></small></h1>
+	<h1><?php echo $this->entity->getCurrentRevision()->get('title'); ?> <small><?php echo $this->translate('Article'); ?></small></h1>
 </div>
 <?php echo $this->partial('learning-resource/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>

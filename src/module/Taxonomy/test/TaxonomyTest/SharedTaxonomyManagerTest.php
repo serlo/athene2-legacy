@@ -34,10 +34,12 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
     {
         $config = array(
             'associations' => array(
-                'footest' => function ($sm, $collection)
-                {
-                    return $collection;
-                }
+                'footest' => array(
+                    'callback' => function ($sm, $collection)
+                    {
+                        return $collection;
+                    }
+                )
             ),
             'types' => array(
                 'foobarSimple' => array(
