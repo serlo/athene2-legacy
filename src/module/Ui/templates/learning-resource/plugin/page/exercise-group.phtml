@@ -1,39 +1,4 @@
-<article>
-    <header class="page-header">
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('learning-resource/plugin/page/partials/actions', array('entity' => $this->entity)); ?>
-        </div>
-        <h1>
-            <?php echo $this->translate('Group exercise'); ?>
-        </h1>
-    </header>
-    <section>
-        <?php echo $this->entity->repository()->getCurrentRevision()->get('content'); ?>
-    </section>
-    <section>
-        <div class="sortable" data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'exercises', 'entity' => $this->entity->getId())); ?>" data-depth="1">
-            <ol class="sortable-list">
-                <?php foreach($this->entity->exercises()->findChildren() as $child): ?>
-                    <?php if($child->repository()->hasCurrentRevision()): ?>
-                        <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
-                            <span class="sortable-handle"></span>
-                            <div class="sortable-item-inner">
-                                <article>
-                                    <?php echo $child->repository()->getCurrentRevision()->get('content'); ?>
-                                </article>
-                            </div>
-                        </li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </ol>
-            <div class="row">
-                <div class="col-md-8"></div>
-                <div class="col-md-4">
-                    <div class="sortable-actions btn-group pull-right">
-                        <?php echo $this->partial('learning-resource/plugin/page/partials/sortable-actions'); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</article>
+<div class="page-header">
+	<h1><?php echo $this->title; ?> <small><?php echo $this->translate('Exercise group'); ?></small></h1>
+</div>
+<?php echo $this->partial('learning-resource/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>

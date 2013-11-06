@@ -86,7 +86,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateUser()
     {
-        $this->assertInstanceOf('User\Entity\UserInterface', $this->userManager->createUser(array()));
+        $this->userManager->getClassResolver()
+            ->expects($this->once())
+            ->method('resolve')
+            ->will($this->returnValue($this->getMock('User\Entity\User')));
+        $this->assertInstanceOf('User\Service\UserServiceInterface', $this->userManager->createUser(array()));
     }
 
     public function testFindUserByEmail()
@@ -128,9 +132,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $user = $this->userManager->getUserFromAuthenticator();
         $this->assertEquals(null, $user);
     }
-    
-    public function testTrashUser(){
-        $this->userServiceMock->expects($this->once())->method('setTrashed');
+
+    public function testTrashUser()
+    {
+        $this->userServiceMock->expects($this->once())
+            ->method('setTrashed');
         $this->userManager->trashUser(1);
     }
 }

@@ -40,7 +40,7 @@ $table = array(
     <div class="entities">
         <?php foreach($this->links as $link): ?>
             <?php if($this->plugin->isTypeEnabled($link->getType()->getName())): ?>
-                <?php $partial = $this->partial($this->plugin->getTemplateForEntityType($link->getType()->getName()), array('entity' => $link)); ?>
+                <?php $partial = $this->partial('subject/plugin/taxonomy/entity/default', array('entity' => $link)); ?>
                 <?php switch($link->getType()->getName()){ 
                     case 'article': $table['left'] .= $partial; break; ?>
                     <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>
@@ -53,89 +53,61 @@ $table = array(
         <?php endforeach; ?>
         <div class="row">
     		<div class="col-md-4">
-    		    <div class="sortable" data-action="/save/my/sort" data-depth="1">
-        			<ol class="sortable-list">
+    			<ol>
+                    <li>
+    			         <h4><span class="glyphicon glyphicon-book"></span> <strong><?php echo $this->translate('Articles'); ?></strong></h4>
+    			    </li>
+    			    <?php if(strlen($table['left']) > 0): ?>
+                        <?php echo $table['left']; ?>
+                    <?php else: ?>
                         <li>
-        			         <h4><span class="glyphicon glyphicon-book"></span> <strong><?php echo $this->translate('Articles'); ?></strong></h4>
-        			    </li>
-        			    <?php if(strlen($table['left']) > 0): ?>
-                            <?php echo $table['left']; ?>
-                        <?php else: ?>
-                            <li>
-                            	<span class="text-muted"><?php echo $this->translate('There are no articles for this topic yet.'); ?></span>
-                            </li>
-                        <?php endif; ?>
-                    </ol>
-                    <div class="sortable-actions">
-                        <button class="btn btn-success sortable-save-action is-hidden">
-                            <?php echo $this->translate('Save'); ?>
-                        </button>
-                    </div>
-                </div>
+                        	<span class="text-muted"><?php echo $this->translate('There are no articles for this topic yet.'); ?></span>
+                        </li>
+                    <?php endif; ?>
+                </ol>
     		</div>
     		<div class="col-md-4">
-    		    <div class="sortable" data-action="/save/my/sort" data-depth="1">
-        			<ol class="sortable-list">
+    			<ol>
+                    <li>
+    			         <h4><span class="glyphicon glyphicon-facetime-video"></span> <strong><?php echo $this->translate('Videos'); ?></strong></h4>
+    			    </li>
+    			    <?php if(strlen($table['middle']) > 0): ?>
+                        <?php echo $table['middle']; ?>
+                    <?php else: ?>
                         <li>
-        			         <h4><span class="glyphicon glyphicon-facetime-video"></span> <strong><?php echo $this->translate('Videos'); ?></strong></h4>
-        			    </li>
-        			    <?php if(strlen($table['middle']) > 0): ?>
-                            <?php echo $table['middle']; ?>
-                        <?php else: ?>
-                            <li>
-                            	<span class="text-muted"><?php echo $this->translate('There are no videos for this topic yet.'); ?></span>
-                            </li>
-                        <?php endif; ?>
-                    </ol>
-                    <div class="sortable-actions">
-                        <button class="btn btn-success sortable-save-action is-hidden">
-                            <?php echo $this->translate('Save'); ?>
-                        </button>
-                    </div>
-                </div>
+                        	<span class="text-muted"><?php echo $this->translate('There are no videos for this topic yet.'); ?></span>
+                        </li>
+                    <?php endif; ?>
+                </ol>
             </div>
     		<div class="col-md-4">
-    		    <div class="sortable" data-action="/save/my/sort" data-depth="1">
-        			<ol class="sortable-list">
+    			<ol>
+                    <li>
+    			         <h4><span class="glyphicon glyphicon-list"></span> <strong><?php echo $this->translate('Modules'); ?></strong></h4>
+    			    </li>
+    			    <?php if(strlen($table['right']) > 0): ?>
+                        <?php echo $table['right']; ?>
+                    <?php else: ?>
                         <li>
-        			         <h4><span class="glyphicon glyphicon-list"></span> <strong><?php echo $this->translate('Modules'); ?></strong></h4>
-        			    </li>
-        			    <?php if(strlen($table['right']) > 0): ?>
-                            <?php echo $table['right']; ?>
-                        <?php else: ?>
-                            <li>
-                            	<span class="text-muted"><?php echo $this->translate('There are no modules for this topic yet.'); ?></span>
-                            </li>
-                        <?php endif; ?>
-                    </ol>
-                    <div class="sortable-actions">
-                        <button class="btn btn-success sortable-save-action is-hidden">
-                            <?php echo $this->translate('Save'); ?>
-                        </button>
-                    </div>
-                </div>
+                        	<span class="text-muted"><?php echo $this->translate('There are no modules for this topic yet.'); ?></span>
+                        </li>
+                    <?php endif; ?>
+                </ol>
             </div>
     	</div>
     	<hr>
     	<div class="row">
     		<div class="col-md-12">
     		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Exercises'); ?></strong></h4>
-    		    <div class="sortable" data-action="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>" data-depth="1">
-        		    <ol class="sortable-list">
-            		    <?php if(strlen($table['bottom']) > 0): ?>
-                            <?php echo $table['bottom']; ?>
-                        <?php else: ?>
-                        	<li>
-                        	   <p class="text-muted"><?php echo $this->translate('There are no exercises for this topic yet.'); ?></p>
-                        	</li>
-                        <?php endif; ?>
-                    </ol>
-                    <div class="sortable-actions">
-                        <button class="btn btn-success sortable-save-action is-hidden">
-                            <?php echo $this->translate('Save'); ?>
-                        </button>
-                    </div>
-                </div>
+    		    <ol>
+        		    <?php if(strlen($table['bottom']) > 0): ?>
+                        <?php echo $table['bottom']; ?>
+                    <?php else: ?>
+                    	<li>
+                    	   <p class="text-muted"><?php echo $this->translate('There are no exercises for this topic yet.'); ?></p>
+                    	</li>
+                    <?php endif; ?>
+                </ol>
             </div>
     	</div>
     </div>

@@ -13,24 +13,8 @@ $exercise = $this->entity;
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
     <li class="sortable-item" data-id="<?php echo $this->entity->getId(); ?>">
-        <article class="sortable-item-inner">
-            <div class="pull-right btn-group">
-                <a class="btn btn-default btn-xs"
-                	href="<?php echo $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('group' => array('to_entity' => $exercise->getId())))); ?>">
-                	<strong>+</strong></a>
-                <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
-            </div>
-        	<section>
-                <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
-                <?php echo $revision->get('content'); ?>
-            </section>  
-            <section>
-    		    <ol class="list-group">
-                	<?php foreach($exercise->exercises()->findChildren() as $child):?>
-                        <li class="list-group-item"><?php echo $this->partial('subject/plugin/taxonomy/entity/grouped-text-exercise', array('entity' => $child, 'parent' => $this->entity)); ?></li>
-                	<?php endforeach; ?>
-        	    </ol>
-            </section>
-        </article>
+        <div class="sortable-item-inner">
+            <?php echo $this->partial('learning-resource/view/default', array('entity' => $this->entity)); ?>
+        </div>
     </li>
 <?php endif; ?>

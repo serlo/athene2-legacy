@@ -1,4 +1,6 @@
-<article>
-    <?php $revision = $this->entity->plugin('repository')->getCurrentRevision; ?>
-    <?php echo $revision->get('content'); ?>
-</article>
+<?php $type = $this->entity->getType()->getName(); ?>
+<?php if($this->resolver('subject/plugin/taxonomy/entity/'.$type)):?>
+        <?php echo $this->partial('subject/plugin/taxonomy/entity/'.$type, array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    <?php else: ?>
+        <?php echo $this->translate(sprintf('No view found for %s', $type)); ?>
+<?php endif; ?>

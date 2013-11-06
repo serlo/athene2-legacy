@@ -376,7 +376,7 @@ return array(
                                         'singular' => 'Exercise',
                                         'plural' => 'Exercises'
                                     ),
-                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
@@ -390,7 +390,7 @@ return array(
                                         'singular' => 'Exercise group',
                                         'plural' => 'Exercise groups'
                                     ),
-                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise'
                                 ),
                                 'video' => array(
                                     'labels' => array(

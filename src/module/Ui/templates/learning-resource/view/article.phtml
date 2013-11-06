@@ -1,0 +1,13 @@
+<?php $revision = $this->entity->plugin('repository')->getCurrentRevision();?>
+<article>
+    <header>
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('learning-resource/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
+        </div>
+    </header>
+    <?php echo $revision->get('content'); ?>
+    <hr>
+    <section>
+        <?php echo $this->partial($this->discussion->getTemplate('widget'), array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    </section>
+</article>

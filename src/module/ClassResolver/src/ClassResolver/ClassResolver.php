@@ -69,10 +69,15 @@ class ClassResolver implements ClassResolverInterface
     /*
      * (non-PHPdoc) @see \ClassResolver\ClassResolverInterface::resolve()
      */
-    public function resolve($class)
+    public function resolve($class, $userServiceLocator = false)
     {
         $className = $this->getClass($class);
-        $instance = new $className(); // $this->getServiceLocator()->get($this->getClass($class));
+        
+        if($userServiceLocator){
+            $this->getServiceLocator()->get($this->getClass($class));
+        } else {
+            $instance = new $className(); 
+        }
         
         if (! $instance instanceof $class)
             throw new RuntimeException(sprintf('Class %s does not implement %s', get_class($instance), $class));

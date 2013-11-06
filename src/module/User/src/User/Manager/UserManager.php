@@ -89,8 +89,7 @@ class UserManager implements UserManagerInterface
 
     public function createUser(array $data)
     {
-        $user = $this->getClassResolver()->resolveClassName('User\Entity\UserInterface');
-        $user = new $user();
+        $user = $this->getClassResolver()->resolve('User\Entity\UserInterface');
         $this->getUuidManager()->injectUuid($user);
         $user->populate($data);
         $this->getObjectManager()->persist($user);

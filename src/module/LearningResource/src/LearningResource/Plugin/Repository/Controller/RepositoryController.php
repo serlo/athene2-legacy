@@ -174,9 +174,4 @@ class RepositoryController extends AbstractController
         ));
         return '';
     }
-    
-    public function dispatch(\Zend\Stdlib\RequestInterface $request, \Zend\Stdlib\ResponseInterface $response = NULL){
-        $this->layout('layout/1-col');
-        return parent::dispatch($request, $response);
-    }
 }

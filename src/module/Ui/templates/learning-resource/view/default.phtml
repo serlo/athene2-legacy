@@ -1,0 +1,6 @@
+<?php $type = $this->entity->getType()->getName(); ?>
+<?php if($this->resolver('learning-resource/view/'.$type)):?>
+        <?php echo $this->partial('learning-resource/view/'.$type, array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => $this->hideActions)); ?>
+    <?php else: ?>
+        <?php echo $this->translate(sprintf('No view found for %s', $type)); ?>
+<?php endif; ?>

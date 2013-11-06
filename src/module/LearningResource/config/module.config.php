@@ -150,7 +150,13 @@ return array(
                         'plugin' => 'provider',
                         'options' => array(
                         )
-                    )
+                    ),
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'learning-resource/plugin/page/text-exercise',
+                        )
+                    ),
                 )
             ),
             'exercise-group' => array(
@@ -233,7 +239,7 @@ return array(
                             'type' => 'link',
                             'association' => 'one-to-one'
                         )
-                    )
+                    ),
                 )
             ),
             'text-solution' => array(

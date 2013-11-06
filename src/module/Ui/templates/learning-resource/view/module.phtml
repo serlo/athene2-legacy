@@ -1,0 +1,73 @@
+<article>
+	<header>
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('learning-resource/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
+        </div>
+        <div class="clearfix"></div>
+	</header>
+	
+	<!-- Overview -->
+    <section>
+        <div class="sortable"  data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'pages', 'entity' => $this->entity->getId())); ?>"  data-depth="1" data-active="false">
+            <ol class="sortable-list">
+                <?php foreach($this->entity->pages()->findChildren() as $page):?>
+                    <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
+                        <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+                        <li class="sortable-item" data-id="<?php echo $page->getId(); ?>">
+                            <span class="sortable-handle"></span>
+                            <div class="sortable-item-inner">
+                                <span class="glyphicon glyphicon-align-left"></span>
+                                <a href="<?php echo '#'.$page->getId(); ?>">
+                                    <?php echo $revision->get('title'); ?>
+                                </a>
+                            </div>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ol>            
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <div class="sortable-actions btn-group pull-right">
+                        <?php echo $this->partial('learning-resource/plugin/page/partials/sortable-actions'); ?>
+                        <?php if($this->rbac()->hasAccessToRoute('entity/create')): ?>
+                    		<a class="btn btn-sm btn-default" href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
+                    			<span class="glyphicon glyphicon-file"></span>
+                    		</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Detailview -->
+    <section>
+        <?php foreach($this->entity->pages()->findChildren() as $page):?>
+            <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
+                <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+            	<article class="panel panel-default">
+                    <header id="<?php echo $page->getId(); ?>" class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-10"><?php echo $revision->get('title'); ?></div>
+                            <div class="col-md-2">
+                                <div class="pull-right btn-group">
+                                    <?php echo $this->partial('learning-resource/view/partials/actions', array('entity' => $page, 'hide' => array('taxonomy', 'detail'))); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <section class="panel-body">
+                        <?php echo $revision->get('content'); ?>
+                    </section>
+                </article>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </section>
+    <hr>
+    
+    <!-- Discussions -->
+    <section>
+        <?php echo $this->partial($this->discussion->getTemplate('widget'), array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+    </section>
+</article>

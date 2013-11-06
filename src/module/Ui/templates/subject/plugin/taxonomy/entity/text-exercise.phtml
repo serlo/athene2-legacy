@@ -10,25 +10,9 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 $exercise = $this->entity;
-$solution = $exercise->solution()->findChild();
 ?>
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
-<li class="sortable-item" data-id="<?php echo $this->entity->getId(); ?>">
-    <article class="sortable-item-inner">
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
-        </div>
-    	<section>
-            <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
-            <?php echo $revision->get('content'); ?>
-        </section>
-    	<section class="panel-group" id="solutions-<?php echo $exercise->getId(); ?>">
-        	<?php if(!is_object($solution)): ?>
-        	   <?php echo sprintf($this->translate('This exercise has no solution. Do you want to add <a href="%s">one</a>?'), $this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId()))))); ?>
-        	<?php else: ?>
-        	   <?php echo $this->partial('subject/plugin/taxonomy/entity/text-solution',array('solution' => $solution, 'exercise' => $this->entity)); ?>
-            <?php endif; ?>
-        </section>
-    </article>
-</li>
+    <li>
+        <?php echo $this->partial('learning-resource/view/default', array('entity' => $this->entity)); ?>
+    </li>
 <?php endif; ?>

@@ -1,4 +1,4 @@
-<?php $hide = isset($this->hide) ? $this->hide : array(); ?>
+<?php $hide = is_array($this->hide) ? $this->hide : array(); ?>
 
 <!-- Edit -->
 <?php $url = $this->url('entity/plugin/repository',array('action' => 'add-revision', 'entity' => $this->entity->getId())); ?>
@@ -27,4 +27,11 @@
 <?php if($this->rbac()->hasAccessToUrl($url) && !in_array('trash', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-trash"></span></a>
+<?php endif; ?>
+	
+<!-- Detail page -->
+<?php if(!in_array('detail', $hide)): ?>
+    <a class="btn btn-default btn-xs"
+    	href="<?php echo $this->url('entity/plugin/page',array('entity' => $this->entity->getId())); ?>"><span
+    	class="glyphicon glyphicon-search"></span></a>
 <?php endif; ?>
