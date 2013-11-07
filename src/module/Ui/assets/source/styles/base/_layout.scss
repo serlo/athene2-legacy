@@ -22,13 +22,16 @@
 
 #main {
     position: relative;
-    padding-left: $navigationWidth;
 
-    @media only screen and (max-width: $navigationBreakPoint) {
-        padding-left: 40px;
+    .col-2 & {
+        padding-left: $navigationWidth;
 
-        .slide-right & {
-            padding-left: $navigationWidth + 40;
+        @media only screen and (max-width: $navigationBreakPoint) {
+            padding-left: 40px;
+
+            .slide-right & {
+                padding-left: $navigationWidth + 40;
+            }
         }
     }
 }
@@ -36,7 +39,7 @@
 #content-container {
     background: #FFF;
     border: 1px solid #DFDFDF;
-    min-height: 560px;
+    min-height: 420px;
 
     padding: 0 20px;
 

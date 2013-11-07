@@ -62,9 +62,12 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                 return array;
             }
 
-            function activate() {
+            function storeOriginalData() {
                 originalHTML = $instance.find('> ol').first().html();
-                
+                originalData = cleanEmptyChildren($instance.nestable('serialize'));
+            }
+
+            function activate() {
                 $instance.addClass(activeClass);
 
                 $activateBtn.hide();
@@ -88,7 +91,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                     threshold: 20
                 });
 
-                originalData = cleanEmptyChildren($instance.nestable('serialize'));
+                storeOriginalData();
             }
 
             function deactivate() {
@@ -125,7 +128,9 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
                 })
                     .success(function () {
                         SystemNotification.notify(t('Order successfully saved'), 'success');
-                        
+
+                        storeOriginalData();
+
                         if (!dataActive) {
                             deactivate();
                         }

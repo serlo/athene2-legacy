@@ -13,15 +13,16 @@ echo $this->doctype();
 ?>
 <html class="fuelux" lang="<?php echo $this->currentLanguage(); ?>">
 <?php echo $this->partial('layout/partials/head'); ?>
-<body class="serlo-home">
+<body>
     <div class="wrap">
         <?php echo $this->partial('layout/partials/header.phtml'); ?>
-        <div id="page" class="container">
-            <section id="main-home">
+        <div id="page" class="container col-1">
+            <?php echo $this->partial('layout/partials/search.phtml'); ?>
+            <section id="main">
                 <div id="main-container">
                     <div id="content">
+                        <?php echo $this->partial('layout/partials/notifications.phtml'); ?>
                         <div id="content-container">
-                            <?php echo $this->partial('layout/partials/search.phtml'); ?>
                             <?php echo $this->partial('layout/partials/main.phtml'); ?>
                         </div>
                     </div>
