@@ -485,7 +485,8 @@ return array(
             'restricted' => array(
                 'pages' => array(
                     array(
-                        'label' => 'Benutzer',
+                        'label' => 'Users',
+                        'icon' => 'user',
                         'uri' => '#',
                         'pages' => array(
                             array(

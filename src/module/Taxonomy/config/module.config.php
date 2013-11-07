@@ -22,6 +22,7 @@ return array(
                     array(
                         'label' => 'Taxonomy',
                         'uri' => '#',
+                        'icon' => 'book',
                         'pages' => array(
                             array(
                                 'label' => 'Manage taxonomies',

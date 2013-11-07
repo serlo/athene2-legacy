@@ -38,8 +38,8 @@ return array(
                 'icon' => 'home'
             ),
             array(
-                'label' => 'Restricted area',
-                'route' => 'restricted'
+                'label' => 'Backend',
+                'route' => 'backend'
             )
         ),
         'top-right' => array(
