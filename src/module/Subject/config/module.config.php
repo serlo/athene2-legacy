@@ -44,6 +44,18 @@ return array(
                         )
                     )
                 )
+            ),
+            array(
+                'label' => 'Community',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Diskussionen',
+                        'route' => 'discussion/discussions',
+                        'params' => array(
+                        )
+                    )
+                )
             )
         ),
         'hydrateables' => array(
