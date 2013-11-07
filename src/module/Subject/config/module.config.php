@@ -187,6 +187,7 @@ return array(
                         'options' => array(
                             'taxonomy' => 'abstract-topic',
                             'taxonomy_parent' => 'subject',
+                            'route' => 'subject/plugin/taxonomy/topic',
                             'templates' => array(
                                 'index' => 'subject/plugin/taxonomy/templates/topic/index'
                             ),
