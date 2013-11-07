@@ -48,8 +48,11 @@ class PageService implements PageServiceInterface  {
     }
     
     public function getRevision($id){
-    
-        return $this->getRepository()->getRevision($id);
+        $revision = $this->getRepository()->getRevision($id);
+        if (!$revision->isTrashed())
+        return $revision;
+        else
+        return null;
   
     }
     
@@ -94,7 +97,6 @@ class PageService implements PageServiceInterface  {
         
         $roles = $this->entity->getRoles();
         foreach($roles as $roleEntity) { 
-            
             if($userService->hasRole($roleEntity->getName())){
                 return true;
             }
@@ -117,5 +119,12 @@ class PageService implements PageServiceInterface  {
         return $this;
     }
 
+    public function trashRevision($id) {
+        $repository = $this->getRepository();
+        $revision = $this->getRevision($id);
+        $revision->trash();
+        $this->getObjectManager()->flush();
+        return $this;
+    }
 }
 

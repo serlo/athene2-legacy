@@ -16,7 +16,7 @@ return array(
                     'route' => '/page',
                     'defaults' => array(
                         'controller' => 'Page\Controller\IndexController',
-                        'action' => 'createRepository'
+                        'action' => 'index'
                     )
                 ),
                 'child_routes' => array(
@@ -145,7 +145,7 @@ return array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'createRepository','showRevisions','setCurrentRevision','showRevision','editRepository','createRevision','deleteRevision','deleteRepository'
+                        'createRepository','showRevisions','setCurrentRevision','showRevision','editRepository','createRevision','deleteRevision','deleteRepository','index'
                     ),
                     'roles' => 'moderator'
                 ),
