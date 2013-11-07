@@ -4,16 +4,14 @@
             <?php echo $term->getName(); ?>
         </a>
     </h4>	    
-    <div class="sortable" data-action="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>" data-depth="1">
-        <ol class="sortable-list">
-            <?php if($term->isAssociationAllowed('entities')): ?>
-                <?php foreach($term->getAssociated('entities') as $entity): ?>
-                    <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
-                    <?php echo $this->partial($this->plugin->getTemplateForEntityType($entity->getType()->getName()), array('entity' => $entity)); ?>
-                    <?php endif; ?>
-                <?php endforeach;?>
-            <?php endif;?>
-        </ol>
+    <div class="list-group">
+        <?php if($term->isAssociationAllowed('entities')): ?>
+            <?php foreach($term->getAssociated('entities') as $entity): ?>
+                <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
+                    <?php echo $this->partial('subject/plugin/taxonomy/entity/default', array('entity' => $entity)); ?>
+                <?php endif; ?>
+            <?php endforeach;?>
+        <?php endif;?>
     </div>
 <hr>
 <?php endforeach; ?>

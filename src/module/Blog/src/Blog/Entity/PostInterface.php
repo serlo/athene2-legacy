@@ -114,12 +114,4 @@ interface PostInterface
      * @return \DateTime
      */
     public function getPublish();
-    
-    
-    /**
-     * Is this post published?
-     * 
-     * @return bool
-     */
-    public function isPublished();
 }

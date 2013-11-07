@@ -16,7 +16,7 @@ use Zend\Form\Fieldset;
 class TermFieldset extends Fieldset
 {
 
-    function __construct ()
+    function __construct()
     {
         parent::__construct('term');
         
@@ -25,15 +25,21 @@ class TermFieldset extends Fieldset
             'attributes' => array(
                 'type' => 'text',
                 'placeholder' => 'Name'
-            ),
+            )
         ));
     }
-    
-    public function getInputFilterSpecification(){
+
+    public function getInputFilterSpecification()
+    {
         return array(
             'name' => array(
                 'required' => true,
-            ),
+                'filters' => array(
+                    array(
+                        'name' => 'HtmlEntities'
+                    )
+                )
+            )
         );
     }
 }

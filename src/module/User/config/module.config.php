@@ -218,9 +218,6 @@ return array(
                     'setAuthAdapter' => array(
                         'required' => true
                     ),
-                    'setRegisterForm' => array(
-                        'required' => true
-                    ),
                     'setLanguageManager' => array(
                         'required' => true
                     )
@@ -444,6 +441,24 @@ return array(
                                 'action' => 'settings'
                             )
                         )
+                    ),
+                    'remove' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/remove/:id',
+                            'defaults' => array(
+                                'action' => 'remove'
+                            )
+                        )
+                    ),
+                    'purge' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/purge/:id',
+                            'defaults' => array(
+                                'action' => 'purge'
+                            )
+                        )
                     )
                 )
             )
@@ -480,11 +495,6 @@ return array(
                             array(
                                 'label' => 'Manage roles',
                                 'route' => 'users/roles'
-                            ),
-                            array(
-                                'label' => 'abc',
-                                'route' => 'users/roles',
-                                'hidden' => true
                             )
                         )
                     )

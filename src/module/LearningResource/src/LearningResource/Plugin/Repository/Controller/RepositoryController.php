@@ -15,6 +15,7 @@ namespace LearningResource\Plugin\Repository\Controller;
 use Versioning\Exception\RevisionNotFoundException;
 use Zend\View\Model\ViewModel;
 use Entity\Plugin\Controller\AbstractController;
+use Zend\Http\Request;
 
 class RepositoryController extends AbstractController
 {

@@ -1,17 +1,4 @@
-<?php $revision = $this->entity->plugin('repository')->getCurrentRevision();?>
-<article>
-    <header class="page-header">
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('subject/plugin/taxonomy/entity/interaction', array('entity' => $this->entity)); ?>
-        </div>
-        <h1>
-            <?php echo $revision->get('title'); ?>
-            <small><?php echo $this->translate('Article'); ?></small>
-        </h1>
-    </header>
-    <?php echo $revision->get('content'); ?>
-    <hr>
-    <section>
-        <?php echo $this->partial($this->discussion->getTemplate('widget'), array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
-    </section>
-</article>
+<div class="page-header">
+	<h1><?php echo $this->entity->getCurrentRevision()->get('title'); ?> <small><?php echo $this->translate('Article'); ?></small></h1>
+</div>
+<?php echo $this->partial('learning-resource/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>

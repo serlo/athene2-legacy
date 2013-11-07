@@ -34,12 +34,11 @@ class ModulePageForm extends Form
             'name' => 'content',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
-                'class' => 'ckeditor'
             )
         ));
         
         $this->add(new Controls());
-        
+
         $inputFilter->add(array(
             'name' => 'title',
             'required' => true
@@ -47,7 +46,12 @@ class ModulePageForm extends Form
         
         $inputFilter->add(array(
             'name' => 'content',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $this->setInputFilter($inputFilter);

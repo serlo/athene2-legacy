@@ -55,12 +55,6 @@ return array(
         )
     ),
     'taxonomy' => array(
-        'associations' => array(
-            'entities' => function (ServiceLocatorInterface $sm, $collection)
-            {
-                return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
-            }
-        ),
         'types' => array(
             'topic-folder' => array(
                 'options' => array(
@@ -130,7 +124,8 @@ return array(
                         'entities'
                     ),
                     'allowed_parents' => array(
-                        'curriculum'
+                        'curriculum',
+                        'curriculum-folder'
                     ),
                     'radix_enabled' => false
                 )
@@ -192,7 +187,6 @@ return array(
                         'options' => array(
                             'taxonomy' => 'abstract-topic',
                             'taxonomy_parent' => 'subject',
-                            'route' => 'subject/plugin/taxonomy/topic',
                             'templates' => array(
                                 'index' => 'subject/plugin/taxonomy/templates/topic/index'
                             ),
@@ -376,7 +370,7 @@ return array(
                                         'singular' => 'Exercise',
                                         'plural' => 'Exercises'
                                     ),
-                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
@@ -390,7 +384,7 @@ return array(
                                         'singular' => 'Exercise group',
                                         'plural' => 'Exercise groups'
                                     ),
-                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise'
                                 ),
                                 'video' => array(
                                     'labels' => array(

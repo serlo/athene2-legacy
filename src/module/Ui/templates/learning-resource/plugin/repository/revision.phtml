@@ -1,11 +1,15 @@
 <?php if(is_object($this->revision)): ?>
 <article class="revision">
 	<?php foreach($this->plugin->getFields() as $field): ?>
-	<section><?php echo $this->revision->get($field); ?></section>
+	<section>
+        <h3><?php echo $field; ?></h3>
+	    <?php echo $this->revision->get($field); ?>
+    </section>
+    <hr>
 	<?php endforeach; ?>
 </article>
 <?php else: ?>
 <article class="revision">
-    <?php echo $this->translate('Es wurde noch keine Revision gesetzt.'); ?>
+    <?php echo $this->translate('There is no current revision.'); ?>
 </article>
 <?php endif; ?>

@@ -41,6 +41,9 @@
 		<testsuite name="Athene2 Token Test Suite">
 			<directory>../../module/Token/test</directory>
 		</testsuite>
+		<testsuite name="Athene2 Page Test Suite">
+			<directory>../../module/Page/test</directory>
+		</testsuite>
 	</testsuites>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">

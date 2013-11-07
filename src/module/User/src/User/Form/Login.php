@@ -12,6 +12,7 @@
 namespace User\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class Login extends Form
 {
@@ -20,7 +21,8 @@ class Login extends Form
     {
         parent::__construct('login');
         $this->setAttribute('method', 'post');
-        $this->setInputFilter(new LoginFilter());
+        $filter = new InputFilter();
+        $this->setInputFilter($filter);
         
         $this->add(array(
             'name' => 'email',
@@ -29,9 +31,10 @@ class Login extends Form
                 'tabindex' => 1
             ),
             'options' => array(
-                'label' => 'E-Mail-Adresse:'
+                'label' => 'Email address:'
             )
         ));
+        
         $this->add(array(
             'name' => 'password',
             'attributes' => array(
@@ -42,14 +45,25 @@ class Login extends Form
                 'label' => 'Password:'
             )
         ));
+        
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Einloggen',
+                'value' => 'Log in',
                 'tabindex' => 2,
                 'class' => 'btn btn-success pull-right'
             )
+        ));
+        
+        $filter->add(array(
+            'name' => 'email',
+            'required' => true
+        ));
+        
+        $filter->add(array(
+            'name' => 'password',
+            'required' => true
         ));
     }
 }

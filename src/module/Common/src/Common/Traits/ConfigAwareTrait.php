@@ -58,7 +58,12 @@ trait ConfigAwareTrait
         if (array_key_exists($key, $this->getConfig())) {
             return $this->getConfig()[$key];
         } else {
-            return NULL;
+            $this->setConfig(array());
+            if (array_key_exists($key, $this->getConfig())) {
+                return $this->getConfig()[$key];
+            } else {
+                return NULL;
+            }
         }
     }
 }
