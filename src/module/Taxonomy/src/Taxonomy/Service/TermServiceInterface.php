@@ -61,9 +61,9 @@ interface TermServiceInterface
 
     public function setName($name);
 
-    public function childNodeAllowed(TermTaxonomyInterface $term);
+    public function childNodeAllowed(TermServiceInterface $term);
 
-    public function parentNodeAllowed(TermTaxonomyInterface $term);
+    public function parentNodeAllowed(TermServiceInterface $term);
 
     public function allowsParentType($type);
 
@@ -75,7 +75,7 @@ interface TermServiceInterface
 
     public function radixEnabled();
 
-    public function setParent($parent);
+    public function setParent(TermServiceInterface $parent = NULL);
 
     public function getConfig();
 

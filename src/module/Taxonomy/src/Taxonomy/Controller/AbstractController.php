@@ -18,11 +18,15 @@ class AbstractController extends AbstractActionController
     use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
     use\Language\Manager\LanguageManagerAwareTrait;
     
-    protected function getTerm(){
-        if($this->params('id', NULL) === NULL) {
-            return $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $this->getLanguageManager()->getLanguageFromRequest())->getSaplings()->first();            
+    protected function getTerm($id = NULL){
+        if($id === NULL){
+            if($this->params('id', NULL) === NULL) {
+                return $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $this->getLanguageManager()->getLanguageFromRequest())->getSaplings()->first();            
+            } else {
+                return $this->getSharedTaxonomyManager()->getTerm($this->params('id'));
+            }
         } else {
-            return $this->getSharedTaxonomyManager()->getTerm($this->params('id'));
+            return $this->getSharedTaxonomyManager()->getTerm($id);            
         }
     }
 }

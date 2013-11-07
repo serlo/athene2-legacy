@@ -152,8 +152,7 @@ class TermController extends AbstractController
         foreach ($terms as $term) {
             $entity = $this->getTerm($term['id']);
             if ($parent) {
-                $entity->setParent($this->getTerm($parent)
-                    ->getEntity());
+                $entity->setParent($this->getTerm($parent));
             } else {
                 $entity->setParent(NULL);
             }

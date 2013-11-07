@@ -12,8 +12,7 @@ use Taxonomy\Exception\LinkNotAllowedException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Entity\TermTaxonomyInterface;
 use Taxonomy\Collection\TermCollection;
-use Taxonomy\Exception\NotFoundException;
-use Doctrine\Common\Collections\Criteria;
+use Taxonomy\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
@@ -256,13 +255,13 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         return $this;
     }
 
-    public function childNodeAllowed(TermTaxonomyInterface $term)
+    public function childNodeAllowed(TermServiceInterface $term)
     {
         return $this->allowsChildType($term->getTaxonomy()
             ->getName());
     }
 
-    public function parentNodeAllowed(TermTaxonomyInterface $term)
+    public function parentNodeAllowed(TermServiceInterface $term)
     {
         return $this->allowsParentType($term->getTaxonomy()
             ->getName());
@@ -307,20 +306,20 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         return $this->getOption('radix_enabled');
     }
 
-    public function setParent($parent)
+    public function setParent(TermServiceInterface $parent = NULL)
     {
         $entity = $this->getTermTaxonomy();
-        if ($parent == NULL) {
+        if ($parent === NULL) {
             if ($this->radixEnabled()) {
-                $entity->setParent($parent);
+                $entity->setParent(NULL);
             } else {
-                throw new InvalidArgumentException('Radix not allowed.');
+                throw new Exception\RuntimeException('Radix not allowed.');
             }
         } else {
             if ($this->parentNodeAllowed($parent)) {
-                $entity->setParent($parent);
+                $entity->setParent($parent->getEntity());
             } else {
-                throw new InvalidArgumentException('Parent `' . $parent->getName() . '` not allowed for `' . $entity->getName() . '`.');
+                throw new Exception\RuntimeException(sprintf('Parent `%s` (%d) not allowed for `%s` (%d).', $parent->getName(), $parent->getId(), $entity->getName(), $entity->getId()));
             }
         }
     }
