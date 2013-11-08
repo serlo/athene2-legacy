@@ -44,7 +44,7 @@ return array(
                     return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
                 },
                 'options' => array(
-                    'template' => 'learning-resource/view/default'
+                    'template' => 'learning-resource/view/minimalistic/default'
                 )
             )
         )

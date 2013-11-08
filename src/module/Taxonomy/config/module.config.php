@@ -48,6 +48,10 @@ return array(
                     'route' => 'taxonomy/term/sort-associated',
                     'roles' => 'moderator'
                 ),
+                array(
+                    'route' => 'taxonomy/term/order',
+                    'roles' => 'moderator'
+                ),
             ),
             'ZfcRbac\Firewall\Controller' => array(
                 array(
@@ -142,6 +146,16 @@ return array(
                                     'route' => '/:action[/:id]',
                                     'defaults' => array()
                                     // 'action' => 'index'
+                                    
+                                )
+                            ),
+                            'order' => array(
+                                'may_terminate' => true,
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/order/id',
+                                    'defaults' => array(),
+                                    'action' => 'order'
                                     
                                 )
                             ),
