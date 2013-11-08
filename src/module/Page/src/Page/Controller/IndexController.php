@@ -15,6 +15,19 @@ class IndexController extends AbstractActionController
     use \Page\Manager\PageManagerAwareTrait;
     use \Common\Traits\ObjectManagerAwareTrait;
     use\User\Manager\UserManagerAwareTrait;
+    
+    
+    public function indexAction()
+    {
+        $repositorys = $this->getPageManager()->findAllRepositorys($this->getLanguageManager()
+            ->getLanguageFromRequest());
+        $view = new ViewModel(array(
+            'repositorys' => $repositorys
+        ));
+        $view->setTemplate('page/pages');
+        return $view;
+    }
+    
 
     public function setCurrentRevisionAction()
     {
@@ -175,6 +188,18 @@ class IndexController extends AbstractActionController
         
         $view->setTemplate('page/form.phtml');
         return $view;
+    }
+    
+    public function trashRevisionAction()
+    {
+        $slug = $this->params('slug');
+        $id = $this->params('revisionid');
+        $language_id = $this->getLanguageManager()
+        ->getLanguageFromRequest()
+        ->getId();
+        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        $pageService->trashRevision($id);
+        $this->redirect()->toRoute('page/article/revisions',array('slug'=>$slug));
     }
 
     public function deleteRevisionAction()

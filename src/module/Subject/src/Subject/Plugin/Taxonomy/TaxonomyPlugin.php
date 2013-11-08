@@ -30,7 +30,8 @@ class TaxonomyPlugin extends AbstractPlugin
                 'index' => 'subject/plugin/taxonomy/index',
                 'taxonomy' => 'subject/plugin/taxonomy/taxonomy',
                 'links' => 'subject/plugin/taxonomy/entities',
-                'branches' =>  'subject/plugin/taxonomy/branches'
+                'branches' =>  'subject/plugin/taxonomy/branches',
+                'sort-entities' => 'subject/plugin/taxonomy/sort-entities'
             )
         );
     }

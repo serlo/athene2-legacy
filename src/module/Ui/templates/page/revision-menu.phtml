@@ -1,22 +1,31 @@
 <?php
-if ($revision != NULL)
+if ($this->revision != NULL)
     $id = $this->revision->getId();
 else {
-    $id = $revision = '';
+    $id = $this->revision = '';
 }
 ?>
 
+<!-- Only Visible for if User has Permission -->
+<?php if ($this->rbac()->hasAccessToRoute('page/article/createrevision')): ?>
+
 <div class="btn-group">
 	<a
-		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$slug,'id'=>$id))?>"
-		class="btn btn-link glyphicon glyphicon-file">edit</a> <a
-		href="<?php echo $this->url('page/article/revisions',array('slug'=>$slug))?>"
-		class="btn btn-link glyphicon glyphicon-align-left"> revisions</a> <span
-		<?php if ($revision=='') echo 'style="display:none"'; elseif  ($revision->getRepository()->getCurrentRevision()==$revision) echo 'style="display:none;"'?>>
+		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-plus">edit</a> <a
+		href="<?php echo $this->url('page/article/revisions',array('slug'=>$this->slug))?>"
+		class="btn btn-link glyphicon glyphicon-align-left"><?php echo $this->translate('revisions'); ?></a> 
+		<?php if ($this->revision!=''&&$this->revision->getRepository()->getCurrentRevision()!=$this->revision): ?>
 		<a
-		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('slug'=>$slug,'revisionid'=>$id))?>"
-		class="btn btn-link glyphicon glyphicon-remove"> delete</a> <a
-		href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$slug,'id'=>$id))?>"
-		class="btn btn-link glyphicon glyphicon-ok"> setCurrent </a>
-	</span>
+		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('slug'=>$this->slug,'revisionid'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('delete'); ?></a>
+	<a
+		href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$this->slug,'id'=>$id))?>"
+		class="btn btn-link glyphicon glyphicon-ok"><?php echo $this->translate('setCurrent'); ?></a>
+
+			<a
+			href="<?php echo $this->url('page/article',array('slug'=>$this->slug));?>"
+			class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current');?></a>
+<?php endif;?>
 </div>
+<?php endif;

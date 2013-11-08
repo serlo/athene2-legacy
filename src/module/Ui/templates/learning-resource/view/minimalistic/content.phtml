@@ -1,0 +1,5 @@
+<?php if($this->entity->repository()->hasCurrentRevision()): ?>
+    <?php echo $this->entity->repository()->getCurrentRevision()->get('content'); ?> <small><i><?php echo $this->entity->getType()->getName(); ?></i></small>
+<?php else: ?>
+    <?php echo $this->translate('Pending review:'); ?> <?php echo $this->entity->getId(); ?> <small><i><?php echo $this->entity->getType()->getName(); ?></i></small>
+<?php endif; ?>

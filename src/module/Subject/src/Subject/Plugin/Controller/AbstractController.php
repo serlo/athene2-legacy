@@ -38,7 +38,7 @@ class AbstractController extends AbstractActionController
         $subjectService = $this->getSubject($id);
         
         if (! $subjectService->isPluginWhitelisted($this->params('plugin')))
-            throw new \Exception(sprintf('Plugin %s not supported.', $this->getParam('plugin')));
+            throw new \Exception(sprintf('Plugin %s not supported.', $this->params('plugin')));
         
         $scope = $this->params('plugin');
         
