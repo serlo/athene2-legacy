@@ -22,6 +22,8 @@ class DiscussionForm extends Form
     {
         parent::__construct('discussion');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'clearfix');
+       
         $inputFilter = new InputFilter('discussion');
 
         $this->add(array(
@@ -53,8 +55,8 @@ class DiscussionForm extends Form
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => array(
-                'value' => 'Submit',
-                'class' => 'btn btn-success'
+                'value' => 'Start discussion',
+                'class' => 'btn btn-success pull-right'
             )
         ));
         

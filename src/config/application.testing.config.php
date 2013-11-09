@@ -50,6 +50,7 @@ return array(
             __DIR__ . '/autoload/{,*.}{global,testing}.php',
             'config/instance/{,*.}{global,testing}.php',
             'config/instance/navigation/*.php',
+            'config/instance/firewall/*.php',
         ),
 
         // Whether or not to enable a configuration cache.

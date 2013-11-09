@@ -22,6 +22,7 @@ class CommentForm extends Form
     {
         parent::__construct('comment');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'clearfix');
         $inputFilter = new InputFilter('comment');
         
         $this->add(array(
@@ -37,8 +38,8 @@ class CommentForm extends Form
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => array(
-                'value' => 'Submit',
-                'class' => 'btn btn-success'
+                'value' => 'Comment',
+                'class' => 'btn btn-success pull-right'
             )
         ));
         

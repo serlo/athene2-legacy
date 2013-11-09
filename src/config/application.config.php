@@ -50,6 +50,7 @@ return array(
             'config/autoload/{,*.}{global,local}.php',
             'config/instance/{,*.}{global,local}.php',
             'config/instance/navigation/*.php',
+            'config/instance/firewall/*.php',
         ),
 
         // Whether or not to enable a configuration cache.
