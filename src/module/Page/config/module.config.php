@@ -2,19 +2,6 @@
 namespace Page;
 
 return array(
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'pages' => array(
-                    array(
-                        'label' => 'Pages',
-                        'route' => 'page',
-                        'icon' => 'paperclip',
-                    )
-                )
-            )
-        )
-    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'

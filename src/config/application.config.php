@@ -48,6 +48,8 @@ return array(
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
+            'config/instance/{,*.}{global,local}.php',
+            'config/instance/navigation/*.php',
         ),
 
         // Whether or not to enable a configuration cache.

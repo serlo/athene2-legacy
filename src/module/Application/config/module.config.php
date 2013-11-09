@@ -10,13 +10,7 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array()
-        )
-    ),
     'router' => array(
-        'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack',
         'routes' => array(
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
@@ -68,16 +62,6 @@ return array(
                 $transport->setOptions($options);
                 return $transport;
             }
-        )
-    ),
-    'translator' => array(
-        'locale' => 'en_US',
-        'translation_file_patterns' => array(
-            array(
-                'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern' => '%s.mo'
-            )
         )
     ),
     'controllers' => array(

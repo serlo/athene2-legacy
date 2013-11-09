@@ -78,49 +78,10 @@ return array(
             )
         )
     ),
-    'navigation' => array(
-        'default' => array(
-            'community' => array(
-                'label' => 'Community',
-                'route' => 'discussion',
-                'params' => array(),
-                'pages' => array(
-                    array(
-                        'label' => 'Diskussionen',
-                        'route' => 'discussion/discussions',
-                        'icon' => 'comment'
-                    )
-                )
-            )
-        )
-    ),
     'class_resolver' => array(
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
         'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote',
         'Discussion\Service\CommentServiceInterface' => 'Discussion\Service\CommentService'
-    ),
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
-                    'controller' => 'Discussion\Controller\DiscussionController',
-                    'actions' => array(
-                        'start',
-                        'comment',
-                        'vote'
-                    ),
-                    'roles' => 'login'
-                ),
-                array(
-                    'controller' => 'Discussion\Controller\DiscussionController',
-                    'actions' => array(
-                        'archive',
-                        'trash'
-                    ),
-                    'roles' => 'moderator'
-                )
-            )
-        )
     ),
     'router' => array(
         'routes' => array(

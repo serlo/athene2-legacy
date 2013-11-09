@@ -15,65 +15,6 @@ namespace Taxonomy;
  * @codeCoverageIgnore
  */
 return array(
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'pages' => array(
-                    array(
-                        'label' => 'Taxonomy',
-                        'uri' => '#',
-                        'icon' => 'book',
-                        'pages' => array(
-                            array(
-                                'label' => 'Manage taxonomies',
-                                'route' => 'taxonomy/term',
-                                'params' => array(),
-                                'pages' => array(
-                                    array(
-                                        'route' => 'taxonomy/term/action',
-                                        'visible' => false
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array(
-                array(
-                    'route' => 'taxonomy/term/sort-associated',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'taxonomy/term/order',
-                    'roles' => 'moderator'
-                ),
-            ),
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
-                    'controller' => 'Taxonomy\Controller\TaxonomyController',
-                    'actions' => array(),
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'controller' => 'Taxonomy\Controller\TermController',
-                    'actions' => array(
-                        'update',
-                        'delete',
-                        'order',
-                        'create',
-                        'orderAssociated',
-                        'organize'
-                    ),
-                    'roles' => 'moderator'
-                )
-            )
-        )
-    ),
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',

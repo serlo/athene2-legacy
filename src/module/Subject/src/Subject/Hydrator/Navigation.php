@@ -28,7 +28,7 @@ class Navigation implements HydratorInterface
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $subjects = $this->getSubjectManager()->findSubjectsByLanguage($language);
         foreach ($subjects as $subject) {
-            $config = ArrayUtils::merge($config, include $this->path . $language->getCode() . '/' . strtolower($subject->getName()) . '.config.php');
+            $config = ArrayUtils::merge($config, include $this->path . $language->getCode() . '/' . strtolower($subject->getName()) . '/navigation.config.php');
         }
         return $config;
     }

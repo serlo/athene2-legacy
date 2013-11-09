@@ -12,13 +12,30 @@
 namespace Subject;
 
 use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\ArrayUtils;
 
 class Module
 {
 
+    public function getInstanceConfig()
+    {
+        $dir = __DIR__ . '/config/instances';
+        $instances = array(
+            'de\mathe' => $dir . '/de/mathe/instance.config.php',
+            'de\physik' => $dir . '/de/physik/instance.config.php',
+            'en\math' => $dir . '/en/math/instance.config.php',
+            'en\physics' => $dir . '/en/physics/instance.config.php'
+        );
+        $config = array();
+        foreach ($instances as $instance) {
+            $config = ArrayUtils::merge($config, include $instance);
+        }
+        return $config;
+    }
+
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        return ArrayUtils::merge(include __DIR__ . '/config/module.config.php', $this->getInstanceConfig());
     }
 
     public function onBootstrap(MvcEvent $e)
@@ -27,7 +44,7 @@ class Module
         $serviceManager = $app->getServiceManager();
         
         $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
-        $hydrator->setPath(__DIR__ . '/config/navigation/');
+        $hydrator->setPath(__DIR__ . '/config/instances/');
     }
 
     public function getAutoloaderConfig()
@@ -40,5 +57,35 @@ class Module
                 )
             )
         );
+    }
+
+    protected static function getInstanceConfigs()
+    {
+        $return = array();
+        $path = self::findParentPath('config/instances');
+        $dir = __DIR__ . '/';
+        if ($handle = opendir($path)) {
+            while (false !== ($file = readdir($handle))) {
+                echo $dir . $file . is_dir($dir . $file . '/') . '<br/>';
+                flush();
+                if ($file != "." && $file != ".." && is_dir($dir . $file)) {
+                    $return = ArrayUtils::merge($return, include $dir . $file . '/instance.config.php');
+                }
+            }
+        }
+        return $return;
+    }
+
+    protected static function findParentPath($path)
+    {
+        $dir = __DIR__ . '/';
+        $previousDir = '.';
+        while (! is_dir($dir . $path) && ! file_exists($dir . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir)
+                return false;
+            $previousDir = $dir;
+        }
+        return $dir . $path;
     }
 }

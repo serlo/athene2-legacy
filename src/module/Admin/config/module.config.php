@@ -12,21 +12,6 @@
 namespace Admin;
 
 return array(
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'label' => 'Backend',
-                'uri' => '#',
-                'pages' => array(
-                    array(
-                        'label' => 'Home',
-                        'icon' => 'home',
-                        'route' => 'backend'
-                    )
-                )
-            )
-        )
-    ),
     'router' => array(
         'routes' => array(
             'backend' => array(
@@ -79,4 +64,3 @@ return array(
         )
     )
 );
-
