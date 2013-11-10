@@ -15,17 +15,24 @@ return array(
     'navigation' => array(
         'default' => array(
             'restricted' => array(
-                'label' => 'Area 51',
-                'route' => 'restricted'
+                'label' => 'Backend',
+                'uri' => '#',
+                'pages' => array(
+                    array(
+                        'label' => 'Home',
+                        'icon' => 'home',
+                        'route' => 'backend'
+                    )
+                )
             )
         )
     ),
     'router' => array(
         'routes' => array(
-            'restricted' => array(
+            'backend' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/restricted',
+                    'route' => '/backend',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\HomeController',
                         'action' => 'index'

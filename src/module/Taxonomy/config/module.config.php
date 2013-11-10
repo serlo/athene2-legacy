@@ -22,6 +22,7 @@ return array(
                     array(
                         'label' => 'Taxonomy',
                         'uri' => '#',
+                        'icon' => 'book',
                         'pages' => array(
                             array(
                                 'label' => 'Manage taxonomies',
@@ -45,6 +46,10 @@ return array(
             'ZfcRbac\Firewall\Route' => array(
                 array(
                     'route' => 'taxonomy/term/sort-associated',
+                    'roles' => 'moderator'
+                ),
+                array(
+                    'route' => 'taxonomy/term/order',
                     'roles' => 'moderator'
                 ),
             ),
@@ -141,6 +146,16 @@ return array(
                                     'route' => '/:action[/:id]',
                                     'defaults' => array()
                                     // 'action' => 'index'
+                                    
+                                )
+                            ),
+                            'order' => array(
+                                'may_terminate' => true,
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/order/id',
+                                    'defaults' => array(),
+                                    'action' => 'order'
                                     
                                 )
                             ),
