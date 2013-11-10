@@ -141,7 +141,7 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
+            'Page\Firewall\PageFirewall' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
