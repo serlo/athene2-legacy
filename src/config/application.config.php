@@ -29,7 +29,8 @@ return array(
         'Token',
         'Discussion',
         'Page',
-        'Blog'
+        'Blog',
+        'Upload'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
