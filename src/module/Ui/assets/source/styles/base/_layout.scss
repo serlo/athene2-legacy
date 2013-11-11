@@ -23,7 +23,8 @@
 #main {
     position: relative;
 
-    .col-2 & {
+    .col-2 &,
+    .col-3 & {
         padding-left: $navigationWidth;
 
         @media only screen and (max-width: $navigationBreakPoint) {
@@ -31,6 +32,12 @@
 
             .slide-right & {
                 padding-left: $navigationWidth + 40;
+            }
+        }
+
+        @media only screen and (max-width: $sidebarBreakPoint) {
+            .slide-left & {
+                padding-right: $sidebarWidth + 40;
             }
         }
     }
@@ -45,6 +52,53 @@
 
     @media only screen and (min-width: $sidebarBreakPoint) {
         padding: 0 35px;
+    }
+}
+
+#content {
+    margin-right: $sidebarWidth;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        margin-right: 40px;
+    }
+}
+
+#sidebar {
+    position: relative;
+    width: $sidebarWidth;
+    margin-top: 20px;
+
+    float: right;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        width: 40px;
+    }
+}
+
+#sidebar-content {
+    width: $sidebarWidth;
+
+    color: white;
+    background: $gray;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        visibility: hidden;
+
+        .slide-left & {
+            visibility: visible;
+        }
+    }
+}
+
+#sidebar-toggle {
+    display: none;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        display: block;
+
+        .slide-left & {
+            left: $sidebarWidth;
+        }
     }
 }
 
