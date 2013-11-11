@@ -14,6 +14,7 @@ namespace LearningResource;
 use Entity\Service\EntityServiceInterface;
 use Entity\Collection\EntityCollection;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use LearningResource\Plugin\Aggregate\Aggregator\TopicAggregator;
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -118,7 +119,13 @@ return array(
                     $instance->setLanguageManager($sm->getServiceLocator()
                         ->get('Language\Manager\LanguageManager'));
                     return $instance;
-                }
+                },
+                'aggregator' => function ($sm)
+                {
+                    $instance = new Plugin\Aggregate\AggregatePlugin();
+                    $instance->addAggregator(new TopicAggregator());
+                    return $instance;
+                },
             )
         ),
         'types' => array(
@@ -324,8 +331,17 @@ return array(
                             'revision_form' => 'LearningResource\Form\ArticleForm',
                             'fields' => array(
                                 'title',
+                                'reasoning',
                                 'content'
                             )
+                        )
+                    ),
+                    'aggregator' => array(
+                        'plugin' => 'aggregator',
+                        'options' => array(
+                            'aggregators' => array(
+                                'topic'
+                            ),
                         )
                     ),
                     'taxonomy' => array(

@@ -18,7 +18,8 @@ use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Entity\TermTaxonomyAware;
+use Taxonomy\Entity\TaxonomyTermAware;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 /**
  * Comment ORM Entity
@@ -26,7 +27,7 @@ use Taxonomy\Entity\TermTaxonomyAware;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface, TermTaxonomyAware
+class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
 {
 
     /**
@@ -67,7 +68,7 @@ class Comment extends UuidEntity implements CommentInterface, TermTaxonomyAware
     protected $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", inversedBy="entities")
+     * @ORM\ManyToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", inversedBy="entities")
      * @ORM\JoinTable(name="term_taxonomy_comment",
      * inverseJoinColumns={@ORM\JoinColumn(name="term_taxonomy_id", referencedColumnName="id")},
      * joinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id")}
@@ -285,13 +286,13 @@ class Comment extends UuidEntity implements CommentInterface, TermTaxonomyAware
         return $this->terms;
     }
     
-    public function addTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
+    public function addTaxonomy(TaxonomyTermInterface $termTaxonomy)
     {
         $this->terms->add($termTaxonomy);
         return $this;
     }
     
-    public function removeTaxonomy(\Taxonomy\Entity\TermTaxonomyInterface $termTaxonomy)
+    public function removeTaxonomy(TaxonomyTermInterface $termTaxonomy)
     {
         $this->terms->removeElement($termTaxonomy);
         return $this;

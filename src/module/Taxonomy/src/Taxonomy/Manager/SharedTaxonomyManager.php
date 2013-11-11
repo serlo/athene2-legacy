@@ -13,7 +13,7 @@ use Taxonomy\Exception\InvalidArgumentException;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\ConfigNotFoundException;
 use Taxonomy\Exception\TermNotFoundException;
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Exception\RuntimeException;
@@ -86,14 +86,14 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     {
         if (is_numeric($term)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TermTaxonomyInterface'), (int) $term);
-        } elseif ($term instanceof TermTaxonomyInterface) {
+                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $term);
+        } elseif ($term instanceof TaxonomyTermInterface) {
             $entity = $term;
         } else {
             if (! is_object($term)) {
                 throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($term)));
             } else {
-                throw new InvalidArgumentException(sprintf('Expected `Taxonomy\Entity\TermTaxonomyInterface` but got %s', get_class($term)));
+                throw new InvalidArgumentException(sprintf('Expected `Taxonomy\Entity\TaxonomyTermInterface` but got %s', get_class($term)));
             }
         }
         
@@ -162,7 +162,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
 
     public function createTerm(array $data)
     {
-        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TermTaxonomyInterface');
+        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
 
         $this->hydrateTerm($data, $entity);
         $this->getUuidManager()->injectUuid($entity);
@@ -171,7 +171,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $entity;
     }
 
-    private function hydrateTerm(array $data, TermTaxonomyInterface $termTaxonomy)
+    private function hydrateTerm(array $data, TaxonomyTermInterface $taxonomyTerm)
     {
         $columns = array(
             //'parent' => 'setParent',
@@ -180,10 +180,10 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             'weight' => 'setWeight'
         );
         
-        $taxonomyManager = array_key_exists('taxonomy', $data) ?  $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($termTaxonomy->getTaxonomy()->getId());
+        $taxonomyManager = array_key_exists('taxonomy', $data) ?  $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($taxonomyTerm->getTaxonomy()->getId());
         $parent = array_key_exists('parent', $data) ? $data['parent'] : null;
         
-        $taxonomyManager->addTerm($termTaxonomy);
+        $taxonomyManager->addTerm($taxonomyTerm);
         
         if ($parent) {
             $parent = $this->getTerm($parent);
@@ -191,7 +191,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
                 ->getName())) {
                 throw new RuntimeException(sprintf('Taxonomy `%s` does not allow parent of type `%s`', $taxonomyManager->getName(), $parent->getTaxonomy()->getName()));
             }
-            $termTaxonomy->setParent($parent->getTermTaxonomy());
+            $taxonomyTerm->setParent($parent->getTaxonomyTerm());
         } else {
             if (! $taxonomyManager->getRadixEnabled())
                 throw new RuntimeException(sprintf('Taxonomy `%s` does allow `parent` to be NULL', $taxonomyManager->getName()));
@@ -202,14 +202,14 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         } catch (\Term\Exception\TermNotFoundException $e) {
             $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
         }
-        $termTaxonomy->setTerm($term);
+        $taxonomyTerm->setTerm($term);
         
-        $taxonomyManager->addTerm($termTaxonomy);
-        $termTaxonomy->setTaxonomy($taxonomyManager->getEntity());
+        $taxonomyManager->addTerm($taxonomyTerm);
+        $taxonomyTerm->setTaxonomy($taxonomyManager->getEntity());
         
         foreach ($columns as $key => $method) {
             if (array_key_exists($key, $data)) {
-                $termTaxonomy->$method($data[$key]);
+                $taxonomyTerm->$method($data[$key]);
             }
         }
         

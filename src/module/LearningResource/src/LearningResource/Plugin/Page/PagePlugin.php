@@ -21,10 +21,17 @@ class PagePlugin extends AbstractPlugin
         return array(
             'template' => 'learning-resource/plugin/page/default',
             'provider' => 'provider',
+            'layout' => 'layout/3-col'
         );
     }
+
     public function getTemplate()
     {
         return $this->getOption('template');
+    }
+
+    public function getLayout()
+    {
+        return $this->getOption('layout');
     }
 }

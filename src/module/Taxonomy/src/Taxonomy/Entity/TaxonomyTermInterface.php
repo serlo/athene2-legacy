@@ -11,7 +11,7 @@
  */
 namespace Taxonomy\Entity;
 
-interface TermTaxonomyInterface
+interface TaxonomyTermInterface
 {
 
     public function getDescription();

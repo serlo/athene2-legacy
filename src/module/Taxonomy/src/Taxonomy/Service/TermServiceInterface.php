@@ -8,19 +8,19 @@
  */
 namespace Taxonomy\Service;
 
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 
 interface TermServiceInterface
 {
 
-
+public function findAncestorByType($type);
     public function getAllowedParentTypeNames();
     
     public function getAllowedChildrenTypeNames();
-    public function setTermTaxonomy(TermTaxonomyInterface $term);
+    public function setTaxonomyTerm(TaxonomyTermInterface $term);
 
-    public function getTermTaxonomy();
+    public function getTaxonomyTerm();
 
     public function getDescendantBySlugs(array $path);
 

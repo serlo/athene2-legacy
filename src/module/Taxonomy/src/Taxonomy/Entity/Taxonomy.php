@@ -28,7 +28,7 @@ class Taxonomy implements TaxonomyInterface
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="taxonomy")
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="taxonomy")
      * @ORM\OrderBy({"weight" = "ASC"})
      */
     protected $terms;

@@ -12,7 +12,7 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Collection\TermCollection;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\RuntimeException;
@@ -33,7 +33,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         
         if (! $this->hasInstance($id)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TermTaxonomyInterface'), (int) $id);
+                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $id);
             
             if (! is_object($entity))
                 throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
@@ -146,7 +146,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     {
         $collection = $this->getEntity()
             ->getTerms()
-            ->filter(function (TermTaxonomyInterface $term) use($types)
+            ->filter(function (TaxonomyTermInterface $term) use($types)
         {
             return in_array($term->getTaxonomy()
                 ->getName(), $types);
@@ -165,7 +165,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
-    public function addTerm(TermTaxonomyInterface $term)
+    public function addTerm(TaxonomyTermInterface $term)
     {
         $this->getEntity()
             ->getTerms()
@@ -173,10 +173,11 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
-    protected function createService(TermTaxonomyInterface $entity)
+    protected function createService(TaxonomyTermInterface $entity)
     {
+        /* @var $instance \Taxonomy\Service\TermServiceInterface */
         $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
-        $instance->setTermTaxonomy($entity);
+        $instance->setTaxonomyTerm($entity);
         if ($entity->getTaxonomy() !== $this->getEntity()) {
             $instance->setManager($this->getSharedTaxonomyManager()
                 ->getTaxonomy($entity->getTaxonomy()

@@ -10,16 +10,15 @@ namespace Taxonomy\Service;
 
 use Taxonomy\Exception\LinkNotAllowedException;
 use Taxonomy\Exception\InvalidArgumentException;
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
-use Common\ArrayCopyProvider;
 use Taxonomy\Exception\TermNotFoundException;
 
-class TermService implements TermServiceInterface, ArrayCopyProvider
+class TermService implements TermServiceInterface
 {
     
     use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
@@ -32,10 +31,10 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     /**
      *
-     * @param TermTaxonomyInterface $term            
+     * @param TaxonomyTermInterface $term            
      * @return $this;
      */
-    public function setTermTaxonomy(TermTaxonomyInterface $term)
+    public function setTaxonomyTerm(TaxonomyTermInterface $term)
     {
         $this->setEntity($term);
         return $this;
@@ -48,9 +47,9 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     /**
      *
-     * @return TermTaxonomyInterface $term
+     * @return TaxonomyTermInterface $term
      */
-    public function getTermTaxonomy()
+    public function getTaxonomyTerm()
     {
         return $this->getEntity();
     }
@@ -109,26 +108,26 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function hasChildren()
     {
-        return $this->getTermTaxonomy()->hasChildren();
+        return $this->getTaxonomyTerm()->hasChildren();
     }
 
     public function hasParent()
     {
-        return $this->getTermTaxonomy()->hasParent();
+        return $this->getTaxonomyTerm()->hasParent();
     }
 
     public function getParent()
     {
-        return $this->getSharedTaxonomyManager()->getTerm($this->getTermTaxonomy()
+        return $this->getSharedTaxonomyManager()->getTerm($this->getTaxonomyTerm()
             ->getParent()
             ->getId());
     }
 
     public function filterChildren(array $types)
     {
-        $collection = $this->getTermTaxonomy()
+        $collection = $this->getTaxonomyTerm()
             ->getChildren()
-            ->filter(function (TermTaxonomyInterface $term) use($types)
+            ->filter(function (TaxonomyTermInterface $term) use($types)
         {
             return in_array($term->getTaxonomy()
                 ->getName(), $types);
@@ -138,7 +137,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function getChildren()
     {
-        return new TermCollection($this->getTermTaxonomy()->getChildren(), $this->getSharedTaxonomyManager());
+        return new TermCollection($this->getTaxonomyTerm()->getChildren(), $this->getSharedTaxonomyManager());
     }
 
     public function getAllLinks()
@@ -155,7 +154,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         if (! $this->isAssociationAllowed($targetField))
             return false;
         
-        return $this->getTermTaxonomy()
+        return $this->getTaxonomyTerm()
             ->getAssociatedions($targetField)
             ->count() != 0;
     }
@@ -165,7 +164,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         if (! $this->isAssociationAllowed($targetField))
             return 0;
         
-        return $this->getTermTaxonomy()
+        return $this->getTaxonomyTerm()
             ->getAssociated($targetField)
             ->count();
     }
@@ -175,7 +174,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         if (! $recursive) {
             $this->isLinkAllowedWithException($targetField);
             $callback = $this->getCallbackForLink($targetField);
-            return $callback($this->getServiceLocator(), $this->getTermTaxonomy()->getAssociated($targetField));
+            return $callback($this->getServiceLocator(), $this->getTaxonomyTerm()->getAssociated($targetField));
         } else {
             $collection = new ArrayCollection();
             $collection = $this->injectLinks($collection, $this, $targetField, $allowedTaxonomies);
@@ -197,7 +196,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function associate($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getTermTaxonomy();
+        $entity = $this->getTaxonomyTerm();
         
         $entity->addAssociation($targetField, $target);
         return $this;
@@ -206,7 +205,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function removeAssociation($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getTermTaxonomy();
+        $entity = $this->getTaxonomyTerm();
         
         $entity->removeAssociation($targetField, $target);
         
@@ -216,7 +215,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function isAssociated($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);
-        $targets = $this->getTermTaxonomy()->getAssociated($targetField);
+        $targets = $this->getTaxonomyTerm()->getAssociated($targetField);
         return $targets->contains($target);
     }
 
@@ -234,6 +233,17 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function isAssociationAllowed($targetField)
     {
         return in_array($targetField, (array) $this->getOption('allowed_associations'));
+    }
+
+    public function findAncestorByType($type)
+    {
+        $term = $this;
+        while ($term->getParent()) {
+            $term = $term->getParent();
+            if ($term->getTaxonomy()->getName() == $type)
+                return $type;
+        }
+        throw new Exception\RuntimeException(sprintf('Term `%s` does not know an ancestor of type `%s`', $this->getName(), $type));
     }
 
     public function knowsAncestor($ancestor)
@@ -256,7 +266,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     public function setName($name)
     {
         $term = $this->getTermManager()->getTerm($name);
-        $this->getTermTaxonomy()->set('term', $term->getTermTaxonomy());
+        $this->getTaxonomyTerm()->set('term', $term->getTermTaxonomy());
         return $this;
     }
 
@@ -313,7 +323,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function setParent(TermServiceInterface $parent = NULL)
     {
-        $entity = $this->getTermTaxonomy();
+        $entity = $this->getTaxonomyTerm();
         if ($parent === NULL) {
             if ($this->radixEnabled()) {
                 $entity->setParent(NULL);
@@ -341,17 +351,17 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function getId()
     {
-        return $this->getTermTaxonomy()->getId();
+        return $this->getTaxonomyTerm()->getId();
     }
 
     public function getName()
     {
-        return $this->getTermTaxonomy()->getName();
+        return $this->getTaxonomyTerm()->getName();
     }
 
     public function getTaxonomy()
     {
-        return $this->getTermTaxonomy()->getTaxonomy();
+        return $this->getTaxonomyTerm()->getTaxonomy();
     }
 
     public function getLanguageService()
@@ -361,14 +371,14 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
 
     public function getTypeName()
     {
-        return $this->getTermTaxonomy()
+        return $this->getTaxonomyTerm()
             ->getTaxonomy()
             ->getName();
     }
 
     public function getSlug()
     {
-        return $this->getTermTaxonomy()->getSlug();
+        return $this->getTaxonomyTerm()->getSlug();
     }
 
     public function getManager()
@@ -389,7 +399,7 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         }
         
         if ($term->isAssociationAllowed($targetField)) {
-            foreach ($term->getTermTaxonomy()->getAssociated($targetField) as $link) {
+            foreach ($term->getTaxonomyTerm()->getAssociated($targetField) as $link) {
                 $collection->add($link);
             }
         }
@@ -406,5 +416,10 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
     {
         $this->getEntity()->setWeight($order);
         return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->getEntity()->getDescription();
     }
 }

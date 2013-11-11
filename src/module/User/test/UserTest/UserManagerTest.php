@@ -20,7 +20,7 @@ use User\Manager\UserManager;
 /**
  * @codeCoverageIgnore
  */
-class UserManagerTest extends \PHPUnit_Framework_TestCase
+abstract class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $userManager, $uuidManagerMock;
@@ -57,7 +57,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $authServiceMock->expects($this->any())
             ->method('getIdentity')
             ->will($this->returnValue('foo@bar.de'));
-        $this->userMock->expects($this->once())
+        $this->userMock->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
         $authServiceMock->expects($this->any())
@@ -88,6 +88,13 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->userManager->getUser(1)
             ->getId());
     }
+    
+    public function testTrashUser()
+    {
+        $this->userServiceMock->expects($this->once())
+            ->method('setTrashed');
+        $this->userManager->trashUser(1);
+    }
 
     public function testCreateUser()
     {
@@ -100,6 +107,9 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testFindUserByEmail()
     {
+        $this->userManager->getObjectManager()->getRepository('User\Entity\User')->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnValue($this->userMock));
         $user = $this->userManager->findUserByEmail('foo@bar.de');
         $this->assertEquals(1, $user->getId());
     }
@@ -115,12 +125,15 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->userServiceMock->expects($this->once())
             ->method('isTrashed')
             ->will($this->returnValue(false));
+        
         $this->userServiceMock->expects($this->once())
             ->method('hasRole')
             ->will($this->returnValue(true));
+        
         $this->authServiceMock->expects($this->never())
             ->method('clearIdentity');
         $user = $this->userManager->getUserFromAuthenticator();
+        
         $this->assertEquals(1, $user->getId());
     }
 
@@ -128,10 +141,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userServiceMock->expects($this->once())
             ->method('isTrashed')
-            ->will($this->returnValue(false));
-        $this->userServiceMock->expects($this->once())
-            ->method('hasRole')
-            ->will($this->returnValue(false));
+            ->will($this->returnValue(true));
         $this->authServiceMock->expects($this->once())
             ->method('clearIdentity');
         $user = $this->userManager->getUserFromAuthenticator();
@@ -139,10 +149,4 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testTrashUser()
-    {
-        $this->userServiceMock->expects($this->once())
-            ->method('setTrashed');
-        $this->userManager->trashUser(1);
-    }
 }

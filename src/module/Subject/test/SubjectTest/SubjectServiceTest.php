@@ -23,7 +23,7 @@ class SubjectServiceTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         
         $this->pluginManagerMock = $this->getMock('Subject\Plugin\PluginManager');
-        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TermTaxonomy');
+        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TaxonomyTerm');
         $this->termServiceMock = $this->getMock('Taxonomy\Service\TermService');
         
         $this->subjectService = new Service\SubjectService();

@@ -19,9 +19,8 @@ return array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
         'Taxonomy\Entity\TaxonomyInterface' => 'Taxonomy\Entity\Taxonomy',
-        'Taxonomy\Entity\TermTaxonomyInterface' => 'Taxonomy\Entity\TermTaxonomy',
-        'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService',
-        'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
+        'Taxonomy\Entity\TaxonomyTermInterface' => 'Taxonomy\Entity\TaxonomyTerm',
+        'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService'
     ),
     'taxonomy' => array(
         'types' => array(

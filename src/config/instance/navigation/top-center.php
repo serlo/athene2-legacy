@@ -25,6 +25,13 @@ return array(
                         'params' => array(
                             'subject' => 'physik'
                         )
+                    ),
+                    array(
+                        'label' => 'Permakultur',
+                        'route' => 'subject',
+                        'params' => array(
+                            'subject' => 'permakultur'
+                        )
                     )
                 )
             ),

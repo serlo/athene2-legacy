@@ -55,6 +55,16 @@ class TermForm extends Form
         $this->add(new TermFieldset());
         
         $this->add(array(
+            'name' => 'description',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Description:'
+            )
+        ));
+        
+        $this->add(array(
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',

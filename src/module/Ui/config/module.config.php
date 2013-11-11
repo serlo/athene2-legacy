@@ -61,7 +61,8 @@ return array(
             }
         ),
         'invokables' => array(
-            'timeago' => 'Ui\View\Helper\Timeago'
+            'timeago' => 'Ui\View\Helper\Timeago',
+            'registry' => 'Ui\View\Helper\Registry'
         )
     ),
     'service_manager' => array(

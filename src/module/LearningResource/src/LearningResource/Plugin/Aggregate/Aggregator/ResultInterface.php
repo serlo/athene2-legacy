@@ -9,10 +9,30 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Entity;
+namespace LearningResource\Plugin\Aggregate\Aggregator;
 
-interface TermTaxonomyAware
+interface ResultInterface
 {
-    public function addTaxonomy(TermTaxonomyInterface $taxonomy);
-    public function removeTaxonomy(TermTaxonomyInterface $taxonomy);
+    /**
+     * 
+     * @return mixed
+     */
+    public function getObject();
+    
+    /**
+     * @return string;
+     */
+    public function getTitle();
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getRoute();
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getParams();
 }

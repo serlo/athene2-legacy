@@ -9,14 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Entity;
+namespace Taxonomy\Entity;
 
-use Taxonomy\Entity\TaxonomyTermEntity;
-
-interface EntityInterface
+interface TaxonomyTermAware
 {
-
-    public function addTaxonomyIndex(TaxonomyTermEntity $taxonomy);
-
-    public function removeTaxonomyIndex(TaxonomyTermEntity $taxonomy);
+    public function addTaxonomy(TaxonomyTermInterface $taxonomy);
+    public function removeTaxonomy(TaxonomyTermInterface $taxonomy);
 }

@@ -21,6 +21,8 @@ use Language\Entity\LanguageInterface;
 use Link\Entity\LinkTypeInterface;
 use Link\Entity\LinkInterface;
 use Entity\Exception;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermEntity;
 
 /**
  * An entity.
@@ -66,7 +68,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
 
     /**
      * @ORM\OneToMany(
-     * targetEntity="Taxonomy\Entity\TermTaxonomyEntity",
+     * targetEntity="Taxonomy\Entity\TaxonomyTermEntity",
      * mappedBy="entity",
      * cascade={"persist", "remove"},
      * orphanRemoval=true
@@ -183,7 +185,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
         $collection = new \Doctrine\Common\Collections\ArrayCollection();
         
         foreach ($this->termTaxonomyEntities as $rel) {
-            $collection->add($rel->getTermTaxonomy());
+            $collection->add($rel->getTaxonomyTerm());
         }
         
         return $collection;
@@ -298,13 +300,13 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
         return $this;
     }
 
-    public function addTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy)
+    public function addTaxonomyIndex(TaxonomyTermEntity $taxonomy)
     {
         $this->termTaxonomyEntities->add($taxonomy);
         return $this;
     }
 
-    public function removeTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy)
+    public function removeTaxonomyIndex(TaxonomyTermEntity $taxonomy)
     {
         $this->termTaxonomyEntities->removeElement($taxonomy);
         return $this;

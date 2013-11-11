@@ -14,7 +14,6 @@ return array(
         'User',
         'Versioning',
         'Entity',
-        'TwbBundle',
     	'Taxonomy',
     	'Link',
         'Subject',

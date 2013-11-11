@@ -23,7 +23,7 @@ use Blog\Entity\PostInterface;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
-class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCopyProvider
+class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
 {
 
     /**
@@ -45,13 +45,13 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     protected $term;
 
     /**
-     * @ORM\OneToMany(targetEntity="TermTaxonomy",mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="TaxonomyTerm",mappedBy="parent")
      * @ORM\OrderBy({"weight"="ASC"})
      */
     private $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TermTaxonomy",inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="TaxonomyTerm",inversedBy="children")
      * @ORM\JoinColumn(name="parent_id",referencedColumnName="id")
      */
     private $parent;
@@ -77,7 +77,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
 
     /**
      * @ORM\OneToMany(
-     * targetEntity="TermTaxonomyEntity",
+     * targetEntity="TaxonomyTermEntity",
      * mappedBy="termTaxonomy",
      * cascade={"persist", "remove"},
      * orphanRemoval=true
@@ -231,8 +231,8 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     {
         $method = 'add' . ucfirst($field);
         if (! method_exists($this, $method)) {
-            if (! $entity instanceof TermTaxonomyAware)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TermTaxonomyAware but got %s', get_class($entity)));
+            if (! $entity instanceof TaxonomyTermAware)
+                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermAware but got %s', get_class($entity)));
             $this->getAssociated($field)->add($entity);
             $entity->addTaxonomy($this);
         } else {
@@ -255,8 +255,8 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     {
         $method = 'remove' . ucfirst($field);
         if (! method_exists($this, $method)) {
-            if (! $entity instanceof TermTaxonomyAware)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TermTaxonomyAware but got %s', get_class($entity)));
+            if (! $entity instanceof TaxonomyTermAware)
+                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermAware but got %s', get_class($entity)));
             $this->getAssociated($field)->removeElement($entity);
             $entity->removeTaxonomy($this);
         } else {
@@ -292,7 +292,7 @@ class TermTaxonomy extends UuidEntity implements TermTaxonomyInterface, ArrayCop
     private function addEntities(EntityInterface $entity)
     {
         // Build new relation object to handle join entity correct
-        $rel = new TermTaxonomyEntity($this, $entity);
+        $rel = new TaxonomyTermEntity($this, $entity);
         
         // Add relation object to collection
         $this->termTaxonomyEntities->add($rel);

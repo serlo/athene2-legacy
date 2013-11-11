@@ -12,7 +12,7 @@
 namespace Blog\Entity;
 
 use User\Entity\UserInterface;
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 interface PostInterface
 {
@@ -72,17 +72,17 @@ interface PostInterface
     /**
      * Gets the category.
      *
-     * @return TermTaxonomyInterface $category
+     * @return TaxonomyTermInterface $category
      */
     public function getCategory();
 
     /**
      * Sets the category.
      *
-     * @param TermTaxonomyInterface $category            
+     * @param TaxonomyTermInterface $category            
      * @return $this
      */
-    public function setCategory(TermTaxonomyInterface $category);
+    public function setCategory(TaxonomyTermInterface $category);
 
     /**
      * Sets the creation date.

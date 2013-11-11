@@ -2,3 +2,5 @@
 	<h1><?php echo $this->entity->getCurrentRevision()->get('title'); ?> <small><?php echo $this->translate('Article'); ?></small></h1>
 </div>
 <?php echo $this->partial('learning-resource/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>
+
+<?php $this->registry()->add('gen', $this->partial('learning-resource/plugin/page/aggregation/default', array('results' => $this->entity->aggregator()->aggregate()))); ?>

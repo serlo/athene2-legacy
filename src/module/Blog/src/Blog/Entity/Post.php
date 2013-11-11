@@ -13,7 +13,7 @@ namespace Blog\Entity;
 
 use Uuid\Entity\UuidEntity;
 use User\Entity\UserInterface;
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +39,7 @@ class Post extends UuidEntity implements PostInterface
     protected $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TermTaxonomy")
+     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
@@ -106,7 +106,7 @@ class Post extends UuidEntity implements PostInterface
         return $this;
     }
 
-    public function setCategory(TermTaxonomyInterface $category)
+    public function setCategory(TaxonomyTermInterface $category)
     {
         $this->category = $category;
         return $this;

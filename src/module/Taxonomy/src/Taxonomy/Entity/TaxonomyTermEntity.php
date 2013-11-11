@@ -18,7 +18,7 @@ use Entity\Entity\EntityInterface;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy_entity")
  */
-class TermTaxonomyEntity
+class TaxonomyTermEntity
 {
 
     /**
@@ -30,7 +30,7 @@ class TermTaxonomyEntity
 
     /**
      * @ORM\ManyToOne(
-     * targetEntity="TermTaxonomy",
+     * targetEntity="TaxonomyTerm",
      * inversedBy="termTaxonomyEntity",
      * cascade={"persist"}
      * )
@@ -57,7 +57,7 @@ class TermTaxonomyEntity
      *
      * @return field_type $termTaxonomy
      */
-    public function getTermTaxonomy()
+    public function getTaxonomyTerm()
     {
         return $this->termTaxonomy;
     }
@@ -85,7 +85,7 @@ class TermTaxonomyEntity
      * @param field_type $termTaxonomy            
      * @return $this
      */
-    public function setTermTaxonomy($termTaxonomy)
+    public function setTaxonomyTerm($termTaxonomy)
     {
         $this->termTaxonomy = $termTaxonomy;
         return $this;
@@ -113,9 +113,9 @@ class TermTaxonomyEntity
         return $this;
     }
     
-    public function __construct(TermTaxonomyInterface $termTaxonomy, EntityInterface $entity)
+    public function __construct(TaxonomyTermInterface $termTaxonomy, EntityInterface $entity)
     {
-        $this->setTermTaxonomy($termTaxonomy);
+        $this->setTaxonomyTerm($termTaxonomy);
         $this->setEntity($entity);
         $this->position = 0;
     }
