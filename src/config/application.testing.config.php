@@ -29,7 +29,8 @@ return array(
         'Token',
         'Discussion',
         'Page',
-        'Blog'
+        'Blog',
+        'Upload'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
@@ -48,6 +49,9 @@ return array(
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
             __DIR__ . '/autoload/{,*.}{global,testing}.php',
+            'config/instance/{,*.}{global,testing}.php',
+            'config/instance/navigation/*.php',
+            'config/instance/firewall/*.php',
         ),
 
         // Whether or not to enable a configuration cache.

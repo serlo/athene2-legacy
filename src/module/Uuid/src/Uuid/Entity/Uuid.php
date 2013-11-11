@@ -48,6 +48,11 @@ class Uuid implements UuidInterface
     protected $termTaxonomy;
 
     /**
+     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id")
+     */
+    protected $upload;
+
+    /**
      * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id")
      */
     protected $comment;

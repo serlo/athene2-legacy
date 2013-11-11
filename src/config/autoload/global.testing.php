@@ -30,7 +30,7 @@ return array(
             )
         )
     ),
-    'service_manager' => array(
+    /*'service_manager' => array(
         'factories' => array(
             'doctrine.connection.orm_test' => new DBALConnectionFactory('orm_test'),
             'standard_identity' => function ($sm)
@@ -38,5 +38,5 @@ return array(
                 return new \ZfcRbac\Identity\StandardIdentity('guest');
             },
         )
-    )
+    )*/
 );

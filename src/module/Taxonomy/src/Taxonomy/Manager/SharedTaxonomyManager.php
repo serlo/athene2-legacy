@@ -115,6 +115,14 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getOption('associations')[$link]['callback'];
     }
 
+    public function getTemplateForAssociation($association)
+    {
+        if (! array_key_exists($association, $this->getOption('associations')))
+            throw new RuntimeException(sprintf('Association `%s` not found', $association));
+        
+        return $this->getOption('associations')[$association]['options']['template'];
+    }
+
     public function getAllowedChildrenTypeNames($type)
     {
         $return = array();

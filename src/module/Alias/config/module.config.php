@@ -12,6 +12,7 @@
 namespace Alias;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+
 return array(
     'alias_manager' => array(
         'aliases' => array(
@@ -137,7 +138,9 @@ return array(
                     ->getMvcEvent()
                     ->getRouteMatch();
                 
-                if ($match instanceof RouteMatch) {
+                $interface = 'Zend\Mvc\Router\\' . (\Zend\Console\Console::isConsole() ? 'Console' : 'Http') . '\RouteMatch';
+                
+                if ($match instanceof $interface) {
                     $view_helper->setRouteMatch($match);
                 }
                 

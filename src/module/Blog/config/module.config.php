@@ -14,47 +14,14 @@ namespace Blog;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Blog\Collection\PostCollection;
 return array(
-    'navigation' => array(
-        'top-left' => array(
-            array(
-                'label' => 'Blog',
-                'route' => 'blog'
-            )
-        ),
-        'default' => array(
-            'blog' => array(
-                'uri' => '#',
-                'pages' => array(
-                    array(
-                        'label' => 'Blogs',
-                        'route' => 'blog',
-                        'icon' => 'home'
-                    ),
-                    array(
-                        'label' => 'Develop',
-                        'route' => 'blog/view',
-                        'params' => array(
-                            'id' => 63
-                        )
-                    ),
-                    array(
-                        'route' => 'blog/post/create',
-                        'visible' => false
-                    ),
-                    array(
-                        'route' => 'blog/post/view',
-                        'visible' => false
-                    )
-                )
-            )
-        )
-    ),
     'taxonomy' => array(
         'associations' => array(
-            'blogPosts' => function (ServiceLocatorInterface $sm, $collection)
-            {
-                return new PostCollection($collection, $sm->get('Blog\Manager\BlogManager'));
-            }
+            'blogPosts' => array(
+                'callback' => function (ServiceLocatorInterface $sm, $collection)
+                {
+                    return new PostCollection($collection, $sm->get('Blog\Manager\BlogManager'));
+                }
+            )
         ),
         'types' => array(
             'blog' => array(

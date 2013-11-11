@@ -15,60 +15,6 @@ namespace Taxonomy;
  * @codeCoverageIgnore
  */
 return array(
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'pages' => array(
-                    array(
-                        'label' => 'Taxonomy',
-                        'uri' => '#',
-                        'pages' => array(
-                            array(
-                                'label' => 'Manage taxonomies',
-                                'route' => 'taxonomy/term',
-                                'params' => array(),
-                                'pages' => array(
-                                    array(
-                                        'route' => 'taxonomy/term/action',
-                                        'visible' => false
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array(
-                array(
-                    'route' => 'taxonomy/term/sort-associated',
-                    'roles' => 'moderator'
-                ),
-            ),
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
-                    'controller' => 'Taxonomy\Controller\TaxonomyController',
-                    'actions' => array(),
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'controller' => 'Taxonomy\Controller\TermController',
-                    'actions' => array(
-                        'update',
-                        'delete',
-                        'order',
-                        'create',
-                        'orderAssociated',
-                        'organize'
-                    ),
-                    'roles' => 'moderator'
-                )
-            )
-        )
-    ),
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
@@ -141,6 +87,16 @@ return array(
                                     'route' => '/:action[/:id]',
                                     'defaults' => array()
                                     // 'action' => 'index'
+                                    
+                                )
+                            ),
+                            'order' => array(
+                                'may_terminate' => true,
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/order/id',
+                                    'defaults' => array(),
+                                    'action' => 'order'
                                     
                                 )
                             ),

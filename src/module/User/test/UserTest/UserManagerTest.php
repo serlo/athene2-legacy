@@ -34,7 +34,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
-        $userMock = $this->getMock('User\Entity\User');
+        $this->userMock = $this->getMock('User\Entity\User');
         $userServiceMock = $this->getMock('User\Service\UserService');
         $authServiceMock = $this->getMock('Zend\Authentication\AuthenticationService');
         $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
@@ -45,24 +45,21 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $serviceLocatorMock->expects($this->any())
             ->method('get')
             ->will($this->returnValue($userServiceMock));
-        $entityManagerMock->expects($this->any())
-            ->method('find')
-            ->will($this->returnValue($userMock));
         $repositoryMock->expects($this->any())
             ->method('findOneBy')
-            ->will($this->returnValue($userMock));
+            ->will($this->returnValue($this->userMock));
         $entityManagerMock->expects($this->any())
             ->method('getRepository')
             ->will($this->returnValue($repositoryMock));
         $userServiceMock->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-        $userMock->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(1));
         $authServiceMock->expects($this->any())
             ->method('getIdentity')
             ->will($this->returnValue('foo@bar.de'));
+        $this->userMock->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
         $authServiceMock->expects($this->any())
             ->method('hasIdentity')
             ->will($this->returnValue(1));
@@ -80,6 +77,14 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUser()
     {
+        $this->userManager->getObjectManager()->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($this->userMock));
+        
+        $this->assertEquals(1, $this->userManager->getUser(1)
+            ->getId());
+        
+        // consecutive calls
         $this->assertEquals(1, $this->userManager->getUser(1)
             ->getId());
     }
@@ -132,6 +137,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $user = $this->userManager->getUserFromAuthenticator();
         $this->assertEquals(null, $user);
     }
+
 
     public function testTrashUser()
     {

@@ -12,20 +12,12 @@
 namespace Admin;
 
 return array(
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
-                'label' => 'Area 51',
-                'route' => 'restricted'
-            )
-        )
-    ),
     'router' => array(
         'routes' => array(
-            'restricted' => array(
+            'backend' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/restricted',
+                    'route' => '/backend',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\HomeController',
                         'action' => 'index'
@@ -72,4 +64,3 @@ return array(
         )
     )
 );
-

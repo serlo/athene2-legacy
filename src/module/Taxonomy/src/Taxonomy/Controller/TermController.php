@@ -120,20 +120,34 @@ class TermController extends AbstractController
 
     public function orderAssociatedAction()
     {
-        $associations = $this->params()->fromPost('sortable', array());
+        $association = $this->params('association');        
         $termService = $this->getTerm($this->params('term'));
-        $i = 0;
         
-        foreach ($associations as $association) {
-            $termService->orderAssociated('entities', $association['id'], $i);
-            $i++;
-        }
+        if($this->getRequest()->isPost()){
+            $associations = $this->params()->fromPost('sortable', array());
+            $i = 0;
+            
+            foreach ($associations as $a) {
+                $termService->orderAssociated($association, $a['id'], $i);
+                $i++;
+            }
+            
+            $this->getSharedTaxonomyManager()
+                ->getObjectManager()
+                ->flush();
+            
+            return '';
+        }   
         
-        $this->getSharedTaxonomyManager()
-            ->getObjectManager()
-            ->flush();
+        $associations = $termService->getAssociated($association);
+        $view = new ViewModel(array(
+            'term' => $termService,
+            'associations' => $associations,
+            'association' => $association
+        ));
+        $view->setTemplate('taxonomy/term/order-associated');
         
-        return '';        
+        return $view;     
     }
 
     public function orderAction()

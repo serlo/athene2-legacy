@@ -82,9 +82,15 @@ class Rbac extends AbstractHelper
         $request->setUri($url);
         
         $routeMatch = $this->getRouter()->match($request);
-        return $this->getRbac()
+        $controller = $this->getRbac()
             ->getFirewall('controller')
             ->isGranted($routeMatch->getParam('controller', '') . ':' . $routeMatch->getParam('action', ''));
+        
+        $route = $this->getRbac()
+            ->getFirewall('route')
+            ->isGranted($routeMatch->getMatchedRouteName());
+        
+        return $controller && $route;
     }
 
     public function hasAccessToController($controller, $action)

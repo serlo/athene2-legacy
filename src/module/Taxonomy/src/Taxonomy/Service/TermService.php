@@ -189,6 +189,11 @@ class TermService implements TermServiceInterface, ArrayCopyProvider
         return $this->getSharedTaxonomyManager()->getCallback($link);
     }
 
+    public function getTemplateForAssociation($association)
+    {
+        return $this->getSharedTaxonomyManager()->getTemplateForAssociation($association);
+    }
+
     public function associate($targetField, $target)
     {
         $this->isLinkAllowedWithException($targetField);

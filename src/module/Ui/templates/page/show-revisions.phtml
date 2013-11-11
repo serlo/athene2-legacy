@@ -19,16 +19,17 @@ $this->headTitle($this->slug . $this->translate('Revisions'));
 <!-- list of revisions -->
 <?php
 foreach ($this->revisions as $revision) :
-    $id = $revision->getId();
-    ?>
+    if (! $revision->isTrashed()) :
+        $id = $revision->getId();
+        ?>
 
 
 <a
 	href="<?php echo $this->url('page/article/revision',array('slug'=>$this->slug,'id'=>$id));?>"
 	class="list-group-item btn btn-default" style="text-align: left"> <!-- title -->
-      <?php $this->translate('title'.':'); echo $revision->getTitle(); ?> 	
+      <?php echo $this->translate('title'.':'); echo $revision->getTitle(); ?> 	
         <!-- author -->
-        <?php $this->translate('author'.':'); echo $revision->getAuthor()->getUsername();?>
+        <?php echo $this->translate('author'.':'); echo $revision->getAuthor()->getUsername();?>
         <!-- date -->	
 	<?php echo $this->timeago()->render($revision->getDate()); ?> 
 	</a>
@@ -36,7 +37,7 @@ foreach ($this->revisions as $revision) :
 <!-- edit button -->
 <a
 	href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$id))?>"
-	class="glyphicon glyphicon-file"><?php echo $this->translate('edit');?> </a>
+	class="glyphicon glyphicon-plus"><?php echo $this->translate('edit');?> </a>
 
 <!--  delete and setCurrent buttons, hidden for current revision -->
 <?php if ($revision->getRepository()->getCurrentRevision()!=$revision):?>
@@ -49,6 +50,9 @@ foreach ($this->revisions as $revision) :
 <br>
 <br>
 
-    <?php endif;
+
+        <?php endif;
+     
+          endif;
 endforeach
 ; 

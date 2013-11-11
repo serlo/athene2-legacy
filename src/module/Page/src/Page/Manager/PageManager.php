@@ -7,6 +7,8 @@ use Page\Entity\PageRepositoryInterface;
 use  Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
 use Page\Service\PageServiceInterface;
+use Language\Entity\LanguageInterface;
+use Language\Service\LanguageServiceInterface;
 class PageManager implements PageManagerInterface
 {
     
@@ -136,6 +138,16 @@ class PageManager implements PageManagerInterface
         return $pageservice;
     
     } 
+    
+    public function findAllRepositorys(LanguageServiceInterface $language){
+        return
+             $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('Page\Entity\PageRepositoryInterface'))
+            ->findBy(array(
+            'language' => $language->getId()
+        ));
+    }
     
 
 }

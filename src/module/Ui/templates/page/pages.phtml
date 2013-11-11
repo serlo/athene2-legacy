@@ -1,0 +1,17 @@
+<div class="page-header">
+    <a href="<?php echo $this->url('page/createrepository');?>" class="glyphicon glyphicon-plus"><?php echo $this->translate('new page');?></a>
+	<h1><?php echo $this->translate('Pages'); ?></h1>
+</div>
+
+<div class="list-group">
+    <?php foreach ($this->repositorys as $repository): 
+    $slug = $repository->getSlug();?>
+    <a class="list-group-item"
+		href="<?php echo $this->url('page/article', array('slug' => $slug));?>">
+		<?php echo $repository->getSlug(); ?>
+	</a>
+	<a href="<?php echo $this->url('page/article/editrepository',array('slug'=>$slug));?>" class="glyphicon glyphicon-edit"><?php echo $this->translate('edit');?></a>
+	<a href="<?php echo $this->url('page/article/deleterepository',array('slug'=>$slug));?>" class="glyphicon glyphicon-remove"><?php echo $this->translate('delete');?></a>
+    <br><br>
+    <?php endforeach; ?>
+</div>

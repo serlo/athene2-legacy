@@ -23,52 +23,6 @@ return array(
         'Entity\Entity\TypeInterface' => 'Entity\Entity\Type',
         'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
     ),
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
-                    'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array(
-                        'create'
-                    ),
-                    'roles' => 'login'
-                ),
-                array(
-                    'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array(
-                        'trash',
-                        'restore'
-                    ),
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array(
-                        'purge'
-                    ),
-                    'roles' => 'moderator'
-                )
-            ),
-            'ZfcRbac\Firewall\Route' => array(
-                array(
-                    'route' => 'blog/post/create',
-                    'roles' => 'admin'
-                ),
-                array(
-                    'route' => 'blog/view-all',
-                    'roles' => 'admin'
-                ),
-                array(
-                    'route' => 'blog/post/update',
-                    'roles' => 'admin'
-                ),
-                array(
-                    'route' => 'blog/post/trash',
-                    'roles' => 'admin'
-                )
-            )
-        )
-    ),
     'router' => array(
         'routes' => array(
             'entity' => array(
