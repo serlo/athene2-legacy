@@ -73,6 +73,7 @@ return array(
         'routes' => array(
             'upload' => array(
                 'type' => 'Segment',
+                'may_terminate' => true,
                 'options' => array(
                     'route' => '/upload',
                     'defaults' => array(
@@ -80,7 +81,20 @@ return array(
                         'action' => 'upload'
                     )
                 ),
-            )
+                'child_routes' => array(
+                    'get' => array(
+                        'type' => 'Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/get/:id',
+                            'defaults' => array(
+                                'controller' => 'Upload\Controller\UploadController',
+                                'action' => 'get'
+                            )
+                        ),
+                    )
+                )
+            ),
         )
     )
 );

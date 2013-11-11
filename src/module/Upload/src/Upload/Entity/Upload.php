@@ -52,11 +52,6 @@ class Upload extends UuidEntity implements UploadInterface
      * @ORM\Column(type="datetime")
      */
     protected $timestamp;
-
-    public function getId()
-    {
-        return $this->id;
-    }
     
     public function getLocation()
     {

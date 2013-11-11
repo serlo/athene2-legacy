@@ -21,6 +21,12 @@ class UploadController extends AbstractActionController
     
     use \Upload\Manager\UploadManagerAwareTrait;
     
+    public function getAction(){
+        $upload = $this->getUploadManager()->getUpload( (int) $this->params('id'));
+        $this->redirect()->toUrl($upload->getLocation());
+        return false;
+    }
+    
     public function uploadAction()
     {
         $form = new UploadForm();
@@ -41,7 +47,7 @@ class UploadController extends AbstractActionController
                 $this->getUploadManager()->getObjectManager()->flush();
                 return new JsonModel(array(
                     'success' => true,
-                    'location' => $upload->getLocation(),
+                    'location' => $this->url()->fromRoute('upload/get', array('id' => $upload->getId())),
                     'size' => $upload->getSize(),
                     'id' => $upload->getId(),
                     'type' => $upload->getType(),

@@ -22,7 +22,8 @@ class UploadManager implements UploadManagerInterface
     public function getDefaultConfig()
     {
         return array(
-            'path' => self::findParentPath('public/uploads')
+            'path' => self::findParentPath('public/uploads'),
+            'webpath' => '/uploads'
         );
     }
 
@@ -33,13 +34,14 @@ class UploadManager implements UploadManagerInterface
         $type = $file['type'];
         $tmp = $file['tmp_name'];
         $pathinfo = pathinfo($filename);
-        $hash = uniqid() . '_' . hash('ripemd160', $filename) . $pathinfo['extension'];
+        $hash = uniqid() . '_' . hash('ripemd160', $filename) . '.' . $pathinfo['extension'];
         
         $location = $this->getOption('path') . '/' . $hash;
+        $webLocation = $this->getOption('webpath') . '/' . $hash;
         $filter = new RenameUpload($location);
         $filter->filter($file);
         
-        return $this->addUpload($filename, $location, $size, $type);
+        return $this->addUpload($filename, $webLocation, $size, $type);
     }
 
     public function getUpload($id)
