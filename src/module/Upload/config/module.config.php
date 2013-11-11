@@ -28,6 +28,7 @@ return array(
                 $instance->setConfig($config);
                 $instance->setObjectManager($sl->get('EntityManager'));
                 $instance->setServiceLocator($sl);
+                $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
                 return $instance;
             }
         )
@@ -50,6 +51,22 @@ return array(
             'preferences' => array(
                 'Upload\Manager\UploadManagerInterface' => 'Upload\Manager\UploadManager'
             ),
+        )
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
         )
     ),
     'router' => array(

@@ -43,7 +43,8 @@ return array(
             __DIR__ . '/../templates'
         ),
         'strategies' => array(
-            'Ui\Strategy\PhpRendererStrategy'
+            'Zend\View\Strategy\JsonStrategy',
+            'Ui\Strategy\PhpRendererStrategy',
         )
     ),
     'view_helpers' => array(

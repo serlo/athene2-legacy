@@ -17,7 +17,7 @@ use Upload\Entity\Upload;
 
 class UploadManager implements UploadManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -26,23 +26,20 @@ class UploadManager implements UploadManagerInterface
         );
     }
 
-    public function upload(array $files)
+    public function upload(array $file)
     {
-        foreach($files as $file){
-            $filename = $file['filename'];
-            $size = $file['size'];
-            $type = $file['type'];
-            $tmp = $file['tmp_name'];
-            $pathinfo = pathinfo($filename);
-            $hash = uniqid() . '_' . hash('ripemd160', $filename). $pathinfo['extension'];
-            
-            $location = $this->getOption('path') . '/' . $hash;
-            $filter = new RenameUpload($location);
-            $filter->filter($file);
-            
-            $this->addUpload($filename, $location, $size, $type);
-        }
-        return $this;
+        $filename = $file['name'];
+        $size = $file['size'];
+        $type = $file['type'];
+        $tmp = $file['tmp_name'];
+        $pathinfo = pathinfo($filename);
+        $hash = uniqid() . '_' . hash('ripemd160', $filename) . $pathinfo['extension'];
+        
+        $location = $this->getOption('path') . '/' . $hash;
+        $filter = new RenameUpload($location);
+        $filter->filter($file);
+        
+        return $this->addUpload($filename, $location, $size, $type);
     }
 
     public function getUpload($id)
@@ -79,11 +76,12 @@ class UploadManager implements UploadManagerInterface
     
     protected function addUpload($filename, $location, $size, $type){
         $entity = new Upload();
+        $this->getUuidManager()->injectUuid($entity);
         $entity->setFilename($filename);
         $entity->setLocation($location);
         $entity->setSize($size);
         $entity->setType($type);
         $this->getObjectManager()->persist($entity);
-        return $this;
+        return $entity;
     }
 }

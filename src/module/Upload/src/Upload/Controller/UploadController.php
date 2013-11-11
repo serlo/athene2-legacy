@@ -14,9 +14,11 @@ namespace Upload\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Upload\Form\UploadForm;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 
 class UploadController extends AbstractActionController
 {
+    
     use \Upload\Manager\UploadManagerAwareTrait;
     
     public function uploadAction()
@@ -35,9 +37,16 @@ class UploadController extends AbstractActionController
             $form->setData($post);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->getUploadManager()->upload($data);
+                $upload = $this->getUploadManager()->upload($data['file']);
                 $this->getUploadManager()->getObjectManager()->flush();
-                $view->setTemplate('upload/success');
+                return new JsonModel(array(
+                    'success' => true,
+                    'location' => $upload->getLocation(),
+                    'size' => $upload->getSize(),
+                    'id' => $upload->getId(),
+                    'type' => $upload->getType(),
+                    'filename' => $upload->getFilename()
+                ));
             }
         }
         

@@ -12,7 +12,12 @@
 namespace Upload\Entity;
 
 use Uuid\Entity\UuidEntity;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="upload")
+ */
 class Upload extends UuidEntity implements UploadInterface
 {
 
