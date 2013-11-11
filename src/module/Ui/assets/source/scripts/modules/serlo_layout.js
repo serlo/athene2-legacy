@@ -5,7 +5,7 @@ define(['jquery'], function ($) {
         defaults = {
             leftToggle: '#navigation-toggle',
             leftToggleClass: 'slide-right',
-            rightToggle: '#context-toggle',
+            rightToggle: '#sidebar-toggle',
             rightToggleClass: 'slide-left',
             // Full Stack Breakpoint Grid
             fullStackBreakPoint: 1350,
@@ -21,6 +21,7 @@ define(['jquery'], function ($) {
         this.$window = $(window);
         this.$body = $('body');
         this.$leftToggle = $(this.options.leftToggle);
+        this.$rightToggle = $(this.options.rightToggle);
         this.attachHandler();
     };
 
@@ -28,6 +29,10 @@ define(['jquery'], function ($) {
         var self = this;
         self.$leftToggle.click(function () {
             self.onLeftTogglerClick();
+        });
+
+        self.$rightToggle.click(function () {
+            self.onRightTogglerClick();
         });
 
         self.$window.resize(function () {
@@ -48,7 +53,13 @@ define(['jquery'], function ($) {
     };
 
     Layout.prototype.onLeftTogglerClick = function () {
+        this.$body.removeClass(this.options.rightToggleClass);
         this.$body.toggleClass(this.options.leftToggleClass);
+    };
+
+    Layout.prototype.onRightTogglerClick = function () {
+        this.$body.removeClass(this.options.leftToggleClass);
+        this.$body.toggleClass(this.options.rightToggleClass);
     };
 
     return {
