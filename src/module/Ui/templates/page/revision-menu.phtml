@@ -11,20 +11,20 @@ else {
 
 <div class="btn-group">
 	<a
-		href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$id))?>"
+		href="<?php echo $this->url('page/article/createrevision',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
 		class="btn btn-link glyphicon glyphicon-plus">edit</a> <a
-		href="<?php echo $this->url('page/article/revisions',array('slug'=>$this->slug))?>"
+		href="<?php echo $this->url('page/article/revisions',array('repositoryid'=>$this->repositoryid))?>"
 		class="btn btn-link glyphicon glyphicon-align-left"><?php echo $this->translate('revisions'); ?></a> 
 		<?php if ($this->revision!=''&&$this->revision->getRepository()->getCurrentRevision()!=$this->revision): ?>
 		<a
-		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('slug'=>$this->slug,'revisionid'=>$id))?>"
+		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('repositoryid'=>$this->repositoryid,'revisionid'=>$id))?>"
 		class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('delete'); ?></a>
 	<a
-		href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$this->slug,'id'=>$id))?>"
+		href="<?php echo $this->url('page/article/revision/setCurrent',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
 		class="btn btn-link glyphicon glyphicon-ok"><?php echo $this->translate('setCurrent'); ?></a>
 
 			<a
-			href="<?php echo $this->url('page/article',array('slug'=>$this->slug));?>"
+			href="<?php echo $this->url('page/article',array('repositoryid'=>$this->repositoryid));?>"
 			class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current');?></a>
 <?php endif;?>
 </div>

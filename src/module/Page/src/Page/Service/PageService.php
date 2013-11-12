@@ -126,5 +126,10 @@ class PageService implements PageServiceInterface  {
         $this->getObjectManager()->flush();
         return $this;
     }
+    
+    public function getRepositoryId() {
+        return
+        $this->getEntity()->getId();
+    }
 }
 

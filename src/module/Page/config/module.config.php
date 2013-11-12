@@ -47,7 +47,7 @@ return array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options' => array(
-                            'route' => '/view/:slug',
+                            'route' => '/view/:repositoryid',
                             'defaults' => array(
                                 'controller' => 'Page\Controller\IndexController',
                                 'action' => 'article'
