@@ -14,7 +14,6 @@ namespace Related\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Entity
  * @ORM\Table(name="related_internal")
  */
@@ -27,7 +26,7 @@ class InternalRelation
      * @ORM\GeneratedValue
      */
     protected $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="externalRelations")
      */
@@ -37,4 +36,51 @@ class InternalRelation
      * @ORM\Column(type="string") *
      */
     protected $title;
+
+    /**
+     *
+     * @return the $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     *
+     * @return the $relation
+     */
+    public function getRelation()
+    {
+        return $this->relation;
+    }
+
+    /**
+     *
+     * @return the $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     *
+     * @param field_type $relation            
+     */
+    public function setRelation($relation)
+    {
+        $this->relation = $relation;
+        return $this;
+    }
+
+    /**
+     *
+     * @param field_type $title            
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 }

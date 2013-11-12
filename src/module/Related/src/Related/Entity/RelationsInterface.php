@@ -11,10 +11,34 @@
  */
 namespace Related\Entity;
 
+use Doctrine\Common\Collections\Collection;
+
 interface RelationsInterface
 {
     public function getId();
     
+    /**
+     * 
+     * @return Collection
+     */
     public function getInternalRelations();
+    /**
+     * 
+     * @return Collection
+     */
     public function getExternalRelations();
+    
+    /**
+     * 
+     * @param ExternalRelationInterface $externalRelation
+     * @return $this
+     */
+    public function addExternalRelation(ExternalRelationInterface $externalRelation);
+    
+    /**
+     * 
+     * @param InternalRelationInterface $internalRelation
+     * @return $this
+     */
+    public function addInternalRelation(InternalRelationInterface $internalRelation);
 }

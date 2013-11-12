@@ -47,22 +47,26 @@ class Relations extends UuidEntity implements RelationsInterface
         $this->externalRelations = new ArrayCollection();
         $this->internalRelations = new ArrayCollection();
     }
-
-    /**
-     *
-     * @return field_type $externalRelations
-     */
+    
     public function getExternalRelations()
     {
         return $this->externalRelations;
     }
-
-    /**
-     *
-     * @return field_type $internalRelations
-     */
+    
     public function getInternalRelations()
     {
         return $this->internalRelations;
+    }
+
+    public function addExternalRelation(ExternalRelationInterface $externalRelation)
+    {
+        $this->externalRelations->add($externalRelation);
+        return $this;
+    }
+
+    public function addInternalRelation(InternalRelationInterface $internalRelation)
+    {
+        $this->internalRelations->add($internalRelation);
+        return $this;
     }
 }

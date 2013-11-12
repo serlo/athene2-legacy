@@ -11,13 +11,13 @@
  */
 namespace Related\Result;
 
-use Related\Entity\ExternalRelation;
+use Related\Entity\ExternalRelationInterface;
 
 class ExternalResult extends AbstractResult
 {
     /**
      * 
-     * @return ExternalRelation
+     * @return ExternalRelationInterface
      */
     public function getObject(){
         return parent::getObject();
@@ -28,7 +28,7 @@ class ExternalResult extends AbstractResult
      */
     public function getTitle ()
     {
-        
+        return $this->getObject()->getTitle();
     }
 
 	/* (non-PHPdoc)
@@ -36,7 +36,6 @@ class ExternalResult extends AbstractResult
      */
     public function getUrl ()
     {
-        
+        return $this->getObject()->getUrl();
     }
-
 }
