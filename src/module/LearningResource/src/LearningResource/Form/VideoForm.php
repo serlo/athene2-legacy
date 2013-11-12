@@ -35,7 +35,19 @@ class VideoForm extends Form
             'name' => 'content',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Video-URL'
+            ),
+            'options' => array(
+                'label' => 'Video-URL:'
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'reasoning',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Reasoning:'
             )
         ));
         
@@ -55,6 +67,17 @@ class VideoForm extends Form
                 )
             )
         ));
+        
+        $inputFilter->add(array(
+            'name' => 'reasoning',
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
+        ));
+        
         
         $this->setInputFilter($inputFilter);
     }

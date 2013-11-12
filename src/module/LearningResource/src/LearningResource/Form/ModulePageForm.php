@@ -34,6 +34,19 @@ class ModulePageForm extends Form
             'name' => 'content',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Content:'
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'reasoning',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Reasoning:'
             )
         ));
         
@@ -46,6 +59,16 @@ class ModulePageForm extends Form
         
         $inputFilter->add(array(
             'name' => 'content',
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
+        ));
+        
+        $inputFilter->add(array(
+            'name' => 'reasoning',
             'required' => true,
             'filters' => array(
                 array(

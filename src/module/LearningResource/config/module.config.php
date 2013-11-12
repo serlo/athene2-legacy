@@ -283,7 +283,8 @@ return array(
                             'revision_form' => 'LearningResource\Form\VideoForm',
                             'fields' => array(
                                 'title',
-                                'content'
+                                'content',
+                                'reasoning'
                             )
                         )
                     ),
@@ -445,6 +446,7 @@ return array(
                             'revision_form' => 'LearningResource\Form\ModulePageForm',
                             'fields' => array(
                                 'title',
+                                'reasoning',
                                 'content'
                             )
                         )

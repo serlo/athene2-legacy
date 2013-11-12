@@ -101,7 +101,8 @@ class Revision extends UuidEntity implements RevisionInterface
             ->setMaxResults(1);
         $data = $this->fields->matching($criteria);
         if (count($data) == 0)
-            throw new \Exception('Field `' . $field . '` not found');
+            return null;
+        
         return $data[0]->get('value');
     }
 
