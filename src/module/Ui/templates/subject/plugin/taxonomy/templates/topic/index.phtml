@@ -10,8 +10,6 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 $subtitle = is_object($this->term) ? $this->term->getName() : NULL;
-$name = is_object($this->term) ? $this->term->getTaxonomy()->getName() : 'default';
-$template = 'subject/plugin/taxonomy/templates/' . $name;
 $data = array(
     'links' => $this->links,
     'acceptsEntities' => $this->acceptsEntities,
@@ -25,8 +23,4 @@ $data = array(
 	<h1><?php echo $this->translate('Themenansicht'); ?> <small><?php echo $subtitle; ?></small>
 	</h1>
 </div>
-<?php if($this->resolver($template)):?>
-        <?php echo $this->partial($template, $data); ?>
-    <?php else: ?>
-        <?php echo $this->partial('subject/plugin/taxonomy/templates/default', $data); ?>
-<?php endif; ?>
+<?php echo $this->partial('subject/plugin/taxonomy/templates/default', $data); ?>
