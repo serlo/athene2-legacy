@@ -52,7 +52,6 @@ return array(
                     'route' => '/taxonomy',
                     'defaults' => array(
                         'controller' => 'Taxonomy\Controller\404',
-                        'action' => 'index'
                     )
                 ),
                 'may_terminate' => true,
@@ -72,7 +71,8 @@ return array(
                         'options' => array(
                             'route' => '/term',
                             'defaults' => array(
-                                'controller' => 'Taxonomy\Controller\TermController'
+                                'controller' => 'Taxonomy\Controller\TermController',
+                                'action' => 'organize'
                             )
                         ),
                         'may_terminate' => true,
@@ -105,7 +105,7 @@ return array(
                             'order' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/order/:id',
+                                    'route' => '/order/:term',
                                     'defaults' => array(
                                         'action' => 'order'
                                     )

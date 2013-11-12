@@ -153,7 +153,7 @@ class TermController extends AbstractController
     public function orderAction()
     {
         $data = $this->params()->fromPost('sortable', array());
-        $this->iterWeight($data, $this->params('id'));
+        $this->iterWeight($data, $this->params('term'));
         $this->getSharedTaxonomyManager()
             ->getObjectManager()
             ->flush();
