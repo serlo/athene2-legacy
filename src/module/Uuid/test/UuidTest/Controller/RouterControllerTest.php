@@ -36,7 +36,7 @@ class RouterControllerTest extends Athene2ApplicationTestCase
             ->method('assemble')
             ->will($this->returnValue('/'));
         
-        $this->dispatch('/uuid/router/1');
+        $this->dispatch('/uuid/route/1');
         $this->assertResponseStatusCode(302);
     }
 }
