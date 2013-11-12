@@ -21,6 +21,34 @@ return array(
             )
         )
     ),
+    'term_router' => array(
+        'routes' => array(
+            'topic' => array(
+                'route' => 'subject/plugin/taxonomy/topic',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'topic-folder' => array(
+                'route' => 'subject/plugin/taxonomy/topic',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'abstract-topic' => array(
+                'route' => 'subject/plugin/taxonomy/topic',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'curriculum-folder' => array(
+                'route' => 'subject/plugin/taxonomy/curriculum',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'school-type' => array(
+                'route' => 'subject/plugin/taxonomy/curriculum',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'curriculum' => array(
+                'route' => 'subject/plugin/taxonomy/curriculum',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            )
+        )
+    ),
     'taxonomy' => array(
         'types' => array(
             'topic-folder' => array(
@@ -294,6 +322,11 @@ return array(
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
+                    'setSubjectManager' => array(
+                        'required' => 'true'
+                    )
+                ),
+                __NAMESPACE__ . '\Provider\ParamProvider' => array(
                     'setSubjectManager' => array(
                         'required' => 'true'
                     )

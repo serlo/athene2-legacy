@@ -9,66 +9,41 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace LearningResource\Plugin\Aggregate\Aggregator;
+namespace Subject\Provider;
 
+use Taxonomy\Router\ParamProviderInterface;
 use Taxonomy\Service\TermServiceInterface;
+use Subject\Exception;
 
-class TopicResult implements ResultInterface
+class ParamProvider implements ParamProviderInterface
 {
-
+    use \Subject\Manager\SubjectManagerAwareTrait;
+    
     /**
-     *
+     * 
      * @var TermServiceInterface
      */
     protected $object;
     
-    public function __construct($object){
-        $this->setObject($object);
-    }
-
-    /**
-     *
-     * @return TermServiceInterface $object
-     */
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    /**
-     *
-     * @param TermServiceInterface $object            
-     * @return $this
-     */
-    public function setObject(TermServiceInterface $object)
-    {
+    public function setObject($object){
+        if(!$object instanceof TermServiceInterface)
+            throw new Exception\InvalidArgumentException(sprintf('Expected `Taxonomy\Service\TermServiceInterface` but got `%s`', get_class($object)));
         $this->object = $object;
         return $this;
     }
     
-    /*
-     * (non-PHPdoc) @see \LearningResource\Plugin\Aggregate\Aggregator\ResultInterface::getTitle()
+	/**
+     * @return TermServiceInterface $object
      */
-    public function getTitle()
+    public function getObject ()
     {
-        return $this->getObject()->getName();
+        return $this->object;
     }
     
-    /*
-     * (non-PHPdoc) @see \LearningResource\Plugin\Aggregate\Aggregator\ResultInterface::getRoute()
-     */
-    public function getRoute()
-    {
-        return 'subject/plugin/taxonomy/topic';
-    }
-    
-    /*
-     * (non-PHPdoc) @see \LearningResource\Plugin\Aggregate\Aggregator\ResultInterface::getParams()
-     */
     public function getParams()
     {
         return array(
-            'subject' => $this->getObject()->findAncestorByType('subject'),
+            'subject' => $this->getObject()->findAncestorByType('subject')->getSlug(),
             'path' => $this->getPathToTermAsUri($this->getObject())
         );
     }

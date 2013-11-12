@@ -37,7 +37,7 @@ class TopicAggregator extends AbstractAggregator implements AggregatorInterface
         /* @var $term \Taxonomy\Service\TermServiceInterface */
         foreach($plugin->getTerms() as $term){
             if(in_array($term->getTaxonomy()->getName(), $this->whitelist)){
-                $return[] = new TopicResult($term);
+                $return[] = new UuidResult($term->getEntity());
             }
         }
         

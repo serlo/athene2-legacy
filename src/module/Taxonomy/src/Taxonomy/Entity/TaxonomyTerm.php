@@ -28,7 +28,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="termTaxonomy")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="taxonomyTerm")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;

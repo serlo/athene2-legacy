@@ -33,7 +33,7 @@ return array(
                     'router' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/router/:uuid',
+                            'route' => '/route/:uuid',
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\RouterController',
                                 'action' => 'assemble'
