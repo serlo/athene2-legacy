@@ -1,9 +1,9 @@
 <?php
-namespace Page\Firewall;
+namespace Common\Firewall;
 
 use ZfcRbac\Firewall\AbstractFirewall;
 
-class PageFirewall extends AbstractFirewall
+class HydratableController extends AbstractFirewall
 {
 
     /**
@@ -18,10 +18,17 @@ class PageFirewall extends AbstractFirewall
      */
     public function __construct(array $rules)
     {
+       
+        
         foreach ($rules as $rule) {
-            if (! is_array($rule['roles'])) {
-                $rule['roles'] = array(
-                    $rule['roles']
+        
+        $provider = new $rule['role_provider'];
+        $roles = $provider->getRoles();
+
+        
+            if (! is_array($roles)) {
+                $roles = array(
+                    $roles
                 );
             }
             
@@ -29,13 +36,15 @@ class PageFirewall extends AbstractFirewall
                 $rule['actions'] = (array) $rule['actions'];
                 
                 foreach ($rule['actions'] as $action) {
-                    $this->rules[$rule['controller']][$action] = $rule['roles'];
+                    $this->rules[$rule['controller']][$action] = $roles;
                 }
             } else {
-                $this->rules[$rule['controller']] = $rule['roles'];
+                $this->rules[$rule['controller']] = $roles;
             }
         }
+        
     }
+    
 
     /**
      * Checks if access is granted to resource for the role.
@@ -45,6 +54,7 @@ class PageFirewall extends AbstractFirewall
      */
     public function isGranted($resource)
     {
+        
         $resource = explode(':', $resource);
         $controller = $resource[0];
         $action = isset($resource[1]) ? $resource[1] : null;
@@ -68,6 +78,6 @@ class PageFirewall extends AbstractFirewall
      */
     public function getName()
     {
-        return 'PageFirewall';
+        return 'HydratableController';
     }
 }

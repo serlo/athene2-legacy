@@ -9,7 +9,7 @@ return array(
                     array(
                         'label' => 'Pages',
                         'route' => 'page',
-                        'icon' => 'paperclip',
+                        'icon' => 'paperclip'
                     )
                 )
             )
@@ -154,7 +154,17 @@ return array(
     ),
     'zfcrbac' => array(
         'firewalls' => array(
-            'Page\Firewall\PageFirewall' => array(
+            'Common\Firewall\HydratableController' => array(
+                array(
+                    'controller' => 'Page\Controller\IndexController',
+                    'actions' => array(
+                        'editRepository'
+                    ),
+                    'role_provider' => 'Page\Provider\FirewallHydrator'
+                )
+            ),
+            
+            'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
@@ -162,7 +172,6 @@ return array(
                         'showRevisions',
                         'setCurrentRevision',
                         'showRevision',
-                        'editRepository',
                         'createRevision',
                         'deleteRevision',
                         'deleteRepository',
@@ -179,6 +188,7 @@ return array(
                 )
             )
         )
+        
     ),
     'di' => array(
         'allowed_controllers' => array(
@@ -186,6 +196,14 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                'Page\Provider\FirewallHydrator' => array(
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setPageManager' => array(
+                        'required' => 'true'
+                    )
+                ),
                 'Page\Service\PageService' => array(
                     'setRepositoryManager' => array(
                         'required' => 'true'
@@ -256,3 +274,5 @@ return array(
         )
     )
 );
+
+
