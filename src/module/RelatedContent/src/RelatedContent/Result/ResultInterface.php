@@ -11,6 +11,7 @@
  */
 namespace RelatedContent\Result;
 
+use RelatedContent\Entity\TypeInterface;
 interface ResultInterface
 {
     /**
@@ -18,6 +19,7 @@ interface ResultInterface
      * @return string
      */
     public function getTitle();
+    
     /**
      * 
      * @return string
@@ -26,20 +28,26 @@ interface ResultInterface
     
     /**
      * 
-     * @var mixed $object
+     * @var TypeInterface $object
      * @return $this
      */
-    public function setObject($object);
+    public function setObject(TypeInterface $object);
     
     /**
      * 
-     * @return mixed
+     * @return TypeInterface
      */
     public function getObject();
     
     /**
-     * 
+     *
      * @return string
      */
-    public function getName();
+    public function getType();
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getId();
 }

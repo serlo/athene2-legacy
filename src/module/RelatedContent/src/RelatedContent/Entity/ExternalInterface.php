@@ -11,21 +11,8 @@
  */
 namespace RelatedContent\Entity;
 
-interface ExternalInterface
+interface ExternalInterface extends TypeInterface
 {
-
-    /**
-     *
-     * @return int
-     */
-    public function getId();
-
-    /**
-     *
-     * @return ContainerInterface
-     */
-    public function getContainer();
-
     /**
      *
      * @return string
@@ -51,11 +38,4 @@ interface ExternalInterface
      * @return $this
      */
     public function setUrl($url);
-
-    /**
-     *
-     * @param ContainerInterface $container            
-     * @return $this
-     */
-    public function setContainer(ContainerInterface $container);
 }

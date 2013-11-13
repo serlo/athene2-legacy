@@ -13,6 +13,7 @@ namespace RelatedContent\Result;
 
 use RelatedContent\Entity\InternalInterface;
 use RelatedContent\Exception;
+use RelatedContent\Entity\TypeInterface;
 
 class InternalResult extends AbstractResult
 {
@@ -27,20 +28,15 @@ class InternalResult extends AbstractResult
         return parent::getObject();
     }
     
-    public function setObject($object){
+    public function setObject(TypeInterface $object){
         if(!$object instanceof InternalInterface)
             throw new Exception\InvalidArgumentException(sprintf('Expected InternalInterface but got `%s`', get_class($object)));
         return parent::setObject($object);
     }
 
-    public function getName()
+    public function getType()
     {
         return 'internal';
-    }
-
-    public function getId()
-    {
-        return $this->getObject()->getId();
     }
     
     /*

@@ -17,20 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="related_content_external")
  */
-class External implements ExternalInterface
+class External extends AbstractType implements ExternalInterface
 {
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
+     * @ORM\OneToOne(targetEntity="Holder", inversedBy="external")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Container", inversedBy="externalRelations")
-     */
-    protected $container;
 
     /**
      * @ORM\Column(type="string")
@@ -41,42 +36,26 @@ class External implements ExternalInterface
      * @ORM\Column(type="string")
      */
     protected $url;
-    
+
     public function getUrl()
     {
         return $this->url;
     }
-    
-    public function getId()
-    {
-        return $this->id;
-    }
-    
-    public function getContainer()
-    {
-        return $this->container;
-    }
-    
+
     public function getTitle()
     {
         return $this->title;
     }
-    
+
     public function setTitle($title)
     {
         $this->title = $title;
         return $this;
     }
-    
+
     public function setUrl($url)
     {
         $this->url = $url;
-        return $this;
-    }
-    
-    public function setContainer (ContainerInterface $container)
-    {
-        $this->container = $container;
         return $this;
     }
 }

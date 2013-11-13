@@ -9,29 +9,28 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace RelatedContent\Result;
+namespace RelatedContent\Entity;
 
-use RelatedContent\Entity\TypeInterface;
-
-abstract class AbstractResult implements ResultInterface
+abstract class AbstractType implements TypeInterface
 {
-
-    protected $object;
-
-    public function getObject()
+    public function getId()
     {
-        return $this->object;
+        return $this->id->getId();
     }
 
-    public function setObject(TypeInterface $object)
+    public function getHolder()
     {
-        $this->object = $object;
+        return $this->id;
+    }
+
+    public function setHolder(HolderInterface $holder)
+    {
+        $this->id = $holder;
         return $this;
     }
 
-    public function getId()
+    public function getContainer()
     {
-        return $this->getObject()
-            ->getId();
+        return $this->getHolder()->getContainer();
     }
 }

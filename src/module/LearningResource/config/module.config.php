@@ -129,10 +129,6 @@ return array(
                     $topicAggregator->setRouter($sm->getServiceLocator()->get('router'));
                     $instance->addAggregator($topicAggregator);
                     
-                    $relatedAggregator = new RelatedContentAggregator();
-                    $relatedAggregator->setRelatedContentManager($sm->getServiceLocator()->get('RelatedContent\Manager\RelatedContentManager'));
-                    $instance->addAggregator($relatedAggregator);
-                    
                     return $instance;
                 },
             )
@@ -350,8 +346,7 @@ return array(
                         'plugin' => 'aggregator',
                         'options' => array(
                             'aggregators' => array(
-                                'topic',
-                                'related-content'
+                                'topic'
                             ),
                         )
                     ),

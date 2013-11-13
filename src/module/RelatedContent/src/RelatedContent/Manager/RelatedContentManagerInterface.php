@@ -16,49 +16,59 @@ use Doctrine\Common\Collections\Collection;
 
 interface RelatedContentManagerInterface
 {
+
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return Collection
      */
     public function aggregateRelatedContent($id);
 
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return Entity\ContainerInterface
      */
     public function getContainer($id);
 
     /**
-     * 
-     * @param int $container
-     * @param string $title
-     * @param string $url
+     *
+     * @param int $container            
+     * @param string $title            
+     * @param string $url            
      * @return Entity\ExternalInterface
      */
-    public function addExternalRelation($container, $title, $url);
-    
+    public function addExternal($container, $title, $url);
+
     /**
-     * 
-     * @param int $container
-     * @param string $title
-     * @param int $related
+     *
+     * @param int $container            
+     * @param string $title            
+     * @return Entity\CategoryInterface
+     */
+    public function addCategory($container, $title);
+
+    /**
+     *
+     * @param int $container            
+     * @param string $title            
+     * @param int $related            
      * @return Entity\InternalInterface
      */
-    public function addInternalRelation($container, $title, $related);
+    public function addInternal($container, $title, $related);
 
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return $this
      */
-    public function removeExternalRelation($id);
+    public function removeRelatedContent($id);
 
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $holder            
+     * @param int $position            
      * @return $this
      */
-    public function removeInternalRelation($id);
+    public function positionHolder($holder, $position);
 }

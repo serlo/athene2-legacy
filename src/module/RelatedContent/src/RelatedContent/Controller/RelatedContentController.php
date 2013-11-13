@@ -15,6 +15,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use RelatedContent\Form\ExternalForm;
 use RelatedContent\Form\InternalForm;
+use RelatedContent\Form\CategoryForm;
 
 class RelatedContentController extends AbstractActionController
 {
@@ -47,7 +48,7 @@ class RelatedContentController extends AbstractActionController
                 ->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->getRelatedContentManager()->addExternalRelation((int) $this->params('id'), $data['title'], $data['url']);
+                $this->getRelatedContentManager()->addExternal((int) $this->params('id'), $data['title'], $data['url']);
                 $this->getRelatedContentManager()
                     ->getObjectManager()
                     ->flush();
@@ -76,7 +77,7 @@ class RelatedContentController extends AbstractActionController
                 ->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->getRelatedContentManager()->addInternalRelation((int) $this->params('id'), $data['title'], $data['reference']);
+                $this->getRelatedContentManager()->addInternal((int) $this->params('id'), $data['title'], $data['reference']);
                 $this->getRelatedContentManager()
                     ->getObjectManager()
                     ->flush();
@@ -88,20 +89,53 @@ class RelatedContentController extends AbstractActionController
         $view->setTemplate('related-content/add-internal');
         return $view;
     }
-
-    public function removeExternalAction()
+    
+    public function addCategoryAction()
     {
-        $this->getRelatedContentManager()->removeExternalRelation((int) $this->params('id'));
+        $form = new CategoryForm();
+        $form->setAttribute('action', $this->url()->fromRoute('related-content/add-category', array(
+            'id' => $this->params('id')
+        )));
+        
+        $view = new ViewModel(array(
+            'form' => $form
+        ));
+        
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()
+                ->getPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $this->getRelatedContentManager()->addCategory((int) $this->params('id'), $data['title']);
+                $this->getRelatedContentManager()
+                    ->getObjectManager()
+                    ->flush();
+                $this->redirect()->toRoute('related-content/manage', array(
+                    'id' => $this->params('id')
+                ));
+            }
+        }
+        $view->setTemplate('related-content/add-category');
+        return $view;
+    }
+    
+    public function orderAction(){
+        $position = 1;
+        if($this->getRequest()->isPost()){
+            foreach($this->params()->fromPost('sortable', array()) as $holder){
+                $this->getRelatedContentManager()->positionHolder((int) $holder['id'], (int) $position);
+                $position++;
+            }            
+        }
         $this->getRelatedContentManager()
             ->getObjectManager()
             ->flush();
-        $this->redirect()->toReferer();
-        return false;
+        return false;        
     }
 
-    public function removeInternalAction()
+    public function removeAction()
     {
-        $this->getRelatedContentManager()->removeInternalRelation((int) $this->params('id'));
+        $this->getRelatedContentManager()->removeRelatedContent((int) $this->params('id'));
         $this->getRelatedContentManager()
             ->getObjectManager()
             ->flush();

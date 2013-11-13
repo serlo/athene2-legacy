@@ -25,14 +25,21 @@ class Registry extends AbstractHelper
 
     public function add($key, $value)
     {
-        $this->registry[$key] = $value;
+        if(!array_key_exists($key, $this->registry)){
+            $this->registry[$key] = array();
+        }
+        $this->registry[$key][] = $value;
         return $this;
     }
 
     public function get($key)
     {
         if (array_key_exists($key, $this->registry)) {
-            return $this->registry[$key];
+            $return = '';
+            foreach($this->registry[$key] as $value){
+                $return .= $value;
+            }
+            return $return;
         } else {
             return NULL;
         }

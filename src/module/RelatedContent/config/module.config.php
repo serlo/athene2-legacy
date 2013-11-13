@@ -12,10 +12,12 @@
 namespace RelatedContent;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use RelatedContent\View\Helper\RelatedContentHelper;
 return array(
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE__ . '\Manager\RelatedContentManager' => function(ServiceLocatorInterface $sl){
+            __NAMESPACE__ . '\Manager\RelatedContentManager' => function (ServiceLocatorInterface $sl)
+            {
                 $instance = new Manager\RelatedContentManager();
                 $instance->setServiceLocator($sl);
                 $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
@@ -49,7 +51,9 @@ return array(
     'class_resolver' => array(
         __NAMESPACE__ . '\Entity\ContainerInterface' => __NAMESPACE__ . '\Entity\Container',
         __NAMESPACE__ . '\Entity\ExternalInterface' => __NAMESPACE__ . '\Entity\External',
-        __NAMESPACE__ . '\Entity\InternalInterface' => __NAMESPACE__ . '\Entity\Internal'
+        __NAMESPACE__ . '\Entity\InternalInterface' => __NAMESPACE__ . '\Entity\Internal',
+        __NAMESPACE__ . '\Entity\CategoryInterface' => __NAMESPACE__ . '\Entity\Category',
+        __NAMESPACE__ . '\Entity\HolderInterface' => __NAMESPACE__ . '\Entity\Holder'
     ),
     'doctrine' => array(
         'driver' => array(
@@ -97,6 +101,15 @@ return array(
                             )
                         )
                     ),
+                    'add-category' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/add-category/:id',
+                            'defaults' => array(
+                                'action' => 'addCategory'
+                            )
+                        )
+                    ),
                     'add-external' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -106,29 +119,37 @@ return array(
                             )
                         )
                     ),
-                    'remove-internal' => array(
+                    'remove' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
                             'route' => '/remove-internal/:id',
                             'defaults' => array(
-                                'action' => 'removeInternal'
+                                'action' => 'remove'
                             )
                         )
                     ),
-                    'remove-external' => array(
+                    'order' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/remove-external/:id',
+                            'route' => '/order',
                             'defaults' => array(
-                                'action' => 'removeExternal'
+                                'action' => 'order'
                             )
                         )
                     )
                 )
             )
         )
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'related' => function (ServiceLocatorInterface $sl)
+            {
+                $instance = new RelatedContentHelper();
+                $instance->setRelatedContentManager($sl->getServiceLocator()
+                    ->get('RelatedContent\Manager\RelatedContentManager'));
+                return $instance;
+            }
+        )
     )
 );
-
-
-

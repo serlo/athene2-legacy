@@ -16,7 +16,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Entity
  * @ORM\Table(name="related_content_container")
  */
@@ -31,42 +30,26 @@ class Container extends UuidEntity implements ContainerInterface
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="External",
+     * @ORM\OneToMany(targetEntity="Holder",
      * mappedBy="container")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
-    protected $externalRelations;
+    protected $holders;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Internal",
-     * mappedBy="container")
-     */
-    protected $internalRelations;
+    public function getHolders()
+    {
+        return $this->holders;
+    }
 
     public function __construct()
     {
-        $this->externalRelations = new ArrayCollection();
+        $this->holders = new ArrayCollection();
         $this->internalRelations = new ArrayCollection();
     }
-    
-    public function getExternalRelations()
-    {
-        return $this->externalRelations;
-    }
-    
-    public function getInternalRelations()
-    {
-        return $this->internalRelations;
-    }
 
-    public function addExternalRelation(ExternalInterface $externalRelation)
+    public function addHolder(HolderInterface $holder)
     {
-        $this->externalRelations->add($externalRelation);
-        return $this;
-    }
-
-    public function addInternalRelation(InternalInterface $internalRelation)
-    {
-        $this->internalRelations->add($internalRelation);
+        $this->holders->add($holder);
         return $this;
     }
 }

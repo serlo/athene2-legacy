@@ -12,51 +12,34 @@
 namespace RelatedContent\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="related_content_internal")
+ * @ORM\Table(name="related_content_category")
  */
-class Internal extends AbstractType implements InternalInterface
+class Category extends AbstractType implements CategoryInterface
 {
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Holder", inversedBy="external")
+     * @ORM\OneToOne(targetEntity="Holder", inversedBy="category")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
-     */
-    protected $reference;
-
-    /**
      * @ORM\Column(type="string")
      */
-    protected $title;
-
-    public function getReference()
-    {
-        return $this->reference;
-    }
-
+    protected $name;
+    
     public function getTitle()
     {
-        return $this->title;
+        return $this->name;
     }
-
+    
     public function setTitle($title)
     {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function setReference(UuidInterface $object)
-    {
-        $this->reference = $object;
+        $this->name = $title;
         return $this;
     }
 }

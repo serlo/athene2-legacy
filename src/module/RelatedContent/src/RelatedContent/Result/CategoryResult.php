@@ -11,35 +11,35 @@
  */
 namespace RelatedContent\Result;
 
-use RelatedContent\Entity\ExternalInterface;
-use RelatedContent\Exception;
+use RelatedContent\Entity\CategoryInterface;
 use RelatedContent\Entity\TypeInterface;
+use RelatedContent\Exception;
 
-class ExternalResult extends AbstractResult
+class CategoryResult extends AbstractResult
 {
 
+    public function getType()
+    {
+        return 'category';
+    }
+    
+    public function setObject(TypeInterface $object){
+        if(!$object instanceof CategoryInterface)
+            throw new Exception\InvalidArgumentException(sprintf('Expected CategoryInterface but got `%s`', get_class($object)));
+        return parent::setObject($object);
+    }
+    
     /**
      *
-     * @return ExternalInterface
+     * @return CategoryInterface
      */
     public function getObject()
     {
         return parent::getObject();
     }
     
-    public function setObject(TypeInterface $object){
-        if(!$object instanceof ExternalInterface)
-            throw new Exception\InvalidArgumentException(sprintf('Expected ExternalInterface but got `%s`', get_class($object)));
-        return parent::setObject($object);
-    }
-
-    public function getType()
-    {
-        return 'external';
-    }
-    
     /*
-     * (non-PHPdoc) @see \Related\Result\ResultInterface::getTitle()
+     * (non-PHPdoc) @see \RelatedContent\Result\ResultInterface::getTitle()
      */
     public function getTitle()
     {
@@ -47,10 +47,10 @@ class ExternalResult extends AbstractResult
     }
     
     /*
-     * (non-PHPdoc) @see \Related\Result\ResultInterface::getUrl()
+     * (non-PHPdoc) @see \RelatedContent\Result\ResultInterface::getUrl()
      */
     public function getUrl()
     {
-        return $this->getObject()->getUrl();
+        return NULL;
     }
 }

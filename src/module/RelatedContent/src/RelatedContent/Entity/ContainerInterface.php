@@ -25,24 +25,12 @@ interface ContainerInterface
      * 
      * @return Collection
      */
-    public function getInternalRelations();
+    public function getHolders ();
+
     /**
      * 
-     * @return Collection
-     */
-    public function getExternalRelations();
-    
-    /**
-     * 
-     * @param ExternalInterface $externalRelation
+     * @param HolderInterface $holder
      * @return $this
      */
-    public function addExternalRelation(ExternalInterface $externalRelation);
-    
-    /**
-     * 
-     * @param InternalInterface $internalRelation
-     * @return $this
-     */
-    public function addInternalRelation(InternalInterface $internalRelation);
+    public function addHolder(HolderInterface $holder);
 }

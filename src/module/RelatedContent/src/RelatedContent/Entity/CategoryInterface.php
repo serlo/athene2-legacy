@@ -11,33 +11,19 @@
  */
 namespace RelatedContent\Entity;
 
-use Uuid\Entity\UuidInterface;
-
-interface InternalInterface extends TypeInterface
+interface CategoryInterface
 {
-    /**
-     *
-     * @return UuidInterface
-     */
-    public function getReference();
-    
+
     /**
      *
      * @return string
      */
     public function getTitle();
-    
+
     /**
-     * 
-     * @param string $title
-     * @return $this
+     *
+     * @param string $name
+     *            return $this
      */
-    public function setTitle($title);
-    
-    /**
-     * 
-     * @param UuidInterface $uuid
-     * @return $this
-     */
-    public function setReference(UuidInterface $uuid);
+    public function setTitle($name);
 }
