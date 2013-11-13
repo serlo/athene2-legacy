@@ -9,36 +9,34 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace LearningResource\Plugin\Aggregate\Aggregator;
+namespace RelatedContent\Manager;
 
-use Entity\Service\EntityServiceInterface;
-
-abstract class AbstractAggregator implements AggregatorInterface
+trait RelatedContentManagerAwareTrait
 {
 
     /**
      *
-     * @var EntityServiceInterface
+     * @var RelatedContentManagerInterface
      */
-    protected $object;
+    protected $relatedContentManager;
 
     /**
      *
-     * @return EntityServiceInterface $reference
+     * @return RelatedContentManagerInterface $relatedContentManager
      */
-    public function getObject()
+    public function getRelatedContentManager()
     {
-        return $this->object;
+        return $this->relatedContentManager;
     }
 
     /**
      *
-     * @param EntityServiceInterface $reference            
+     * @param RelatedContentManagerInterface $relatedContentManager            
      * @return $this
      */
-    public function setObject(EntityServiceInterface $object)
+    public function setRelatedContentManager(RelatedContentManagerInterface $relatedContentManager)
     {
-        $this->object = $object;
+        $this->relatedContentManager = $relatedContentManager;
         return $this;
     }
 }

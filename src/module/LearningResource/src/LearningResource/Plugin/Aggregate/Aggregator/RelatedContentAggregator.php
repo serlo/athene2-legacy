@@ -11,18 +11,13 @@
  */
 namespace LearningResource\Plugin\Aggregate\Aggregator;
 
-class TopicAggregator extends AbstractAggregator implements AggregatorInterface
+class RelatedContentAggregator extends AbstractAggregator implements AggregatorInterface
 {
-    use \Common\Traits\RouterAwareTrait;
-    
-    protected $whitelist = array(
-        'topic',
-        'topic-folder'
-    );
+    use \RelatedContent\Manager\RelatedContentManagerAwareTrait;
     
     public function getName ()
     {
-        return 'topic';
+        return 'related-content';
     }
 
 	/* (non-PHPdoc)
@@ -32,18 +27,13 @@ class TopicAggregator extends AbstractAggregator implements AggregatorInterface
     {
         $return = array();
         
-        /* @var $plugin \LearningResource\Plugin\Taxonomy\TaxonomyPlugin */
-        $plugin = $this->getObject()->plugin('taxonomy');
+        $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->getObject()->getId());
 
-        /* @var $term \Taxonomy\Service\TermServiceInterface */
-        foreach($plugin->getTerms() as $term){
-            if(in_array($term->getTaxonomy()->getName(), $this->whitelist)){
-                $result = new UuidResult($term->getEntity());
-                $result->setRouter($this->getRouter());
-                $return[] = $result;
-            }
+        /* @var $related \RelatedContent\Result\ResultInterface */
+        foreach($aggregated as $related){
+            $return[] = new RelatedContentResult($related);
         }
-        
         return $return;
     }
+
 }

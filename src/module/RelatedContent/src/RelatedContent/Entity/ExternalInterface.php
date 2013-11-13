@@ -9,11 +9,9 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Related\Entity;
+namespace RelatedContent\Entity;
 
-use Uuid\Entity\UuidInterface;
-
-interface InternalRelationInterface
+interface ExternalInterface
 {
 
     /**
@@ -24,19 +22,40 @@ interface InternalRelationInterface
 
     /**
      *
-     * @return RelationInterface
+     * @return ContainerInterface
      */
-    public function getRelation();
+    public function getContainer();
 
     /**
      *
-     * @return UuidInterface
+     * @return string
      */
-    public function getObject();
-    
+    public function getUrl();
+
     /**
      *
      * @return string
      */
     public function getTitle();
+
+    /**
+     *
+     * @param string $title            
+     * @return $this
+     */
+    public function setTitle($title);
+
+    /**
+     *
+     * @param string $url            
+     * @return $this
+     */
+    public function setUrl($url);
+
+    /**
+     *
+     * @param ContainerInterface $container            
+     * @return $this
+     */
+    public function setContainer(ContainerInterface $container);
 }

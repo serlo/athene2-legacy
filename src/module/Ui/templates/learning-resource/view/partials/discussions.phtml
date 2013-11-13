@@ -7,10 +7,8 @@
     </ul>
     <div class="tab-pane active" id="current">
         <?php echo $this->discussion($this->entity->getUuidEntity(), $forum, false)->render(); ?>
-        <?php //echo $this->partial($this->discussion->getTemplate('discussions'), array('plugin' => $this->discussion, 'isArchived' => false, 'discussions' => $this->discussion->getDiscussions(false), 'entity' => $this->entity, 'user' => $this->user)); ?>
     </div>
     <div class="tab-pane" id="archived">
         <?php echo $this->discussion($this->entity->getUuidEntity(), $forum, true)->render(); ?>
-        <?php //echo $this->partial($this->discussion->getTemplate('discussions'), array('plugin' => $this->discussion, 'isArchived' => true, 'discussions' => $this->discussion->getDiscussions(true), 'entity' => $this->entity, 'user' => $this->user)); ?>
     </div>
 </div>

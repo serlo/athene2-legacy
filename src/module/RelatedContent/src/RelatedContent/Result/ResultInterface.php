@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Related\Result;
+namespace RelatedContent\Result;
 
 interface ResultInterface
 {
@@ -30,4 +30,16 @@ interface ResultInterface
      * @return $this
      */
     public function setObject($object);
+    
+    /**
+     * 
+     * @return mixed
+     */
+    public function getObject();
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getName();
 }

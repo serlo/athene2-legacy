@@ -29,7 +29,8 @@ return array(
         'Discussion',
         'Page',
         'Blog',
-        'Upload'
+        'Upload',
+        'RelatedContent'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -24,7 +24,7 @@ abstract class Model extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @return field_type $object
+     * @return field_type $reference
      */
     protected function getObject()
     {
@@ -33,7 +33,7 @@ abstract class Model extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @param field_type $object            
+     * @param field_type $reference            
      * @return $this
      */
     protected function setObject($object)

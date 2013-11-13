@@ -1,0 +1,30 @@
+<div class="page-header">
+    <h1><?php echo $this->translate('Manage related content'); ?></h1>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><?php echo $this->translate('Title'); ?></th>
+            <th><?php echo $this->translate('Url'); ?></th>
+            <th><?php echo $this->translate('Type'); ?></th>
+            <th><?php echo $this->translate('Action')?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
+        <?php foreach($this->aggregated as $related): ?>
+            <tr>
+                <td><?php echo $related->getTitle(); ?></td>
+                <td><a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getUrl(); ?></a></td>
+                <td><?php echo $this->translate($related->getName()); ?></td>
+                <td><a href="<?php echo $this->url('related-content/remove-' . $related->getName(), array('id' => $related->getId())); ?>" class="btn btn-xs btn-warning"><span class="glyphicon glyphicon-trash"></span></a></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<div class="clearfix">
+    <div class="btn-group pull-right">
+        <a class="btn btn-success btn-sm" href="<?php echo $this->url('related-content/add-internal', array('id' => $this->id)); ?>"><?php echo $this->translate('Add internal'); ?></a>
+        <a class="btn btn-success btn-sm" href="<?php echo $this->url('related-content/add-external', array('id' => $this->id)); ?>"><?php echo $this->translate('Add external'); ?></a>
+    </div>
+</div>

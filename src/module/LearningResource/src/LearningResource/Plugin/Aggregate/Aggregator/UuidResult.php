@@ -11,23 +11,25 @@
  */
 namespace LearningResource\Plugin\Aggregate\Aggregator;
 
-use Uuid\Entity\UuidHolder;
 class UuidResult implements ResultInterface
 {
+    
+    use\Common\Traits\RouterAwareTrait;
 
     /**
      *
-     * @var UuidHolder
+     * @var mixed
      */
     protected $object;
-    
-    public function __construct($object){
+
+    public function __construct($object)
+    {
         $this->setObject($object);
     }
 
     /**
      *
-     * @return UuidHolder $object
+     * @return mixed $reference
      */
     public function getObject()
     {
@@ -36,10 +38,10 @@ class UuidResult implements ResultInterface
 
     /**
      *
-     * @param UuidHolder $object            
+     * @param mixed $reference            
      * @return $this
      */
-    public function setObject(UuidHolder $object)
+    public function setObject($object)
     {
         $this->object = $object;
         return $this;
@@ -56,18 +58,13 @@ class UuidResult implements ResultInterface
     /*
      * (non-PHPdoc) @see \LearningResource\Plugin\Aggregate\Aggregator\ResultInterface::getRoute()
      */
-    public function getRoute()
+    public function getUrl()
     {
-        return 'uuid/router';
-    }
-    
-    /*
-     * (non-PHPdoc) @see \LearningResource\Plugin\Aggregate\Aggregator\ResultInterface::getParams()
-     */
-    public function getParams()
-    {
-        return array(
-            'uuid' => $this->getObject()->getId(),
-        );
+        return $this->getRouter()->assemble(array(
+            'uuid' => $this->getObject()
+                ->getId()
+        ), array(
+            'name' => 'uuid/router'
+        ));
     }
 }

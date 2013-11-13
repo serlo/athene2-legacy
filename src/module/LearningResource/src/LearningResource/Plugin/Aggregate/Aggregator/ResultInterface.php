@@ -28,11 +28,5 @@ interface ResultInterface
      * 
      * @return string
      */
-    public function getRoute();
-    
-    /**
-     * 
-     * @return array
-     */
-    public function getParams();
+    public function getUrl();
 }

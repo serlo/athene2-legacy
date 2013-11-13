@@ -9,17 +9,30 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Related\Result;
+namespace RelatedContent\Result;
 
-use Related\Entity\InternalRelationInterface;
-class InternalResult extends AbstractResult
+abstract class AbstractResult implements ResultInterface
 {
+
+    protected $object;
+
     /**
-     * 
-     * @return InternalRelationInterface
+     *
+     * @return mixed $reference
      */
-    public function getObject(){
-        return parent::getObject();
+    public function getObject()
+    {
+        return $this->object;
     }
-    
+
+    /**
+     *
+     * @param mixed $reference            
+     * @return $this
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+        return $this;
+    }
 }

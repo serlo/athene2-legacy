@@ -33,7 +33,7 @@ class ParamProvider implements ParamProviderInterface
     }
     
 	/**
-     * @return TermServiceInterface $object
+     * @return TermServiceInterface $reference
      */
     public function getObject ()
     {

@@ -29,7 +29,7 @@ class Discussion extends AbstractHelper
 
     /**
      *
-     * @return field_type $object
+     * @return field_type $reference
      */
     public function getObject()
     {
@@ -38,7 +38,7 @@ class Discussion extends AbstractHelper
 
     /**
      *
-     * @param field_type $object            
+     * @param field_type $reference            
      * @return $this
      */
     public function setObject(UuidInterface $object)

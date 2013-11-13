@@ -9,12 +9,16 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Related\Entity;
+namespace RelatedContent\Entity;
 
 use Doctrine\Common\Collections\Collection;
 
-interface RelationsInterface
+interface ContainerInterface
 {
+    /**
+     * 
+     * @return int
+     */
     public function getId();
     
     /**
@@ -30,15 +34,15 @@ interface RelationsInterface
     
     /**
      * 
-     * @param ExternalRelationInterface $externalRelation
+     * @param ExternalInterface $externalRelation
      * @return $this
      */
-    public function addExternalRelation(ExternalRelationInterface $externalRelation);
+    public function addExternalRelation(ExternalInterface $externalRelation);
     
     /**
      * 
-     * @param InternalRelationInterface $internalRelation
+     * @param InternalInterface $internalRelation
      * @return $this
      */
-    public function addInternalRelation(InternalRelationInterface $internalRelation);
+    public function addInternalRelation(InternalInterface $internalRelation);
 }

@@ -9,15 +9,16 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Related\Entity;
+namespace RelatedContent\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="related_internal")
+ * @ORM\Table(name="related_content_internal")
  */
-class InternalRelation
+class Internal implements InternalInterface
 {
 
     /**
@@ -28,59 +29,55 @@ class InternalRelation
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="externalRelations")
+     * @ORM\ManyToOne(targetEntity="Container", inversedBy="externalRelations")
      */
-    protected $relation;
+    protected $container;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
+     */
+    protected $reference;
 
     /**
      * @ORM\Column(type="string") *
      */
     protected $title;
-
-    /**
-     *
-     * @return the $id
-     */
+    
+    public function getReference ()
+    {
+        return $this->reference;
+    }
+    
     public function getId()
     {
         return $this->id;
     }
-
-    /**
-     *
-     * @return the $relation
-     */
-    public function getRelation()
+    
+    public function getContainer()
     {
-        return $this->relation;
+        return $this->container;
     }
-
-    /**
-     *
-     * @return the $title
-     */
+    
     public function getTitle()
     {
         return $this->title;
     }
-
-    /**
-     *
-     * @param field_type $relation            
-     */
-    public function setRelation($relation)
+    
+    public function setContainer(ContainerInterface $container)
     {
-        $this->relation = $relation;
+        $this->container = $container;
         return $this;
     }
-
-    /**
-     *
-     * @param field_type $title            
-     */
+    
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+    
+    public function setReference (UuidInterface $object)
+    {
+        $this->reference = $object;
         return $this;
     }
 }

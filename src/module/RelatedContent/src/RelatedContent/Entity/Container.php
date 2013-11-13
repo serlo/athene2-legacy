@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Related\Entity;
+namespace RelatedContent\Entity;
 
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,9 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  *
  * @ORM\Entity
- * @ORM\Table(name="related")
+ * @ORM\Table(name="related_content_container")
  */
-class Relations extends UuidEntity implements RelationsInterface
+class Container extends UuidEntity implements ContainerInterface
 {
 
     /**
@@ -31,14 +31,14 @@ class Relations extends UuidEntity implements RelationsInterface
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="ExternalRelation",
-     * mappedBy="relations")
+     * @ORM\OneToMany(targetEntity="External",
+     * mappedBy="container")
      */
     protected $externalRelations;
 
     /**
-     * @ORM\OneToMany(targetEntity="InternalRelation",
-     * mappedBy="relations")
+     * @ORM\OneToMany(targetEntity="Internal",
+     * mappedBy="container")
      */
     protected $internalRelations;
 
@@ -58,13 +58,13 @@ class Relations extends UuidEntity implements RelationsInterface
         return $this->internalRelations;
     }
 
-    public function addExternalRelation(ExternalRelationInterface $externalRelation)
+    public function addExternalRelation(ExternalInterface $externalRelation)
     {
         $this->externalRelations->add($externalRelation);
         return $this;
     }
 
-    public function addInternalRelation(InternalRelationInterface $internalRelation)
+    public function addInternalRelation(InternalInterface $internalRelation)
     {
         $this->internalRelations->add($internalRelation);
         return $this;

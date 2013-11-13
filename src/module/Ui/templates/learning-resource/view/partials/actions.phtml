@@ -28,6 +28,14 @@
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-trash"></span></a>
 <?php endif; ?>
+
+<!-- Manage related content -->
+<?php $url = $this->url('related-content/manage',array('id' => $this->entity->getId())); ?>
+<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('related-content', $hide)): ?>
+    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
+    	class="glyphicon glyphicon-link"></span></a>
+<?php endif; ?>
+	
 	
 <!-- Detail page -->
 <?php if(!in_array('detail', $hide)): ?>

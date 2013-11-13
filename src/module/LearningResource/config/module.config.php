@@ -15,6 +15,7 @@ use Entity\Service\EntityServiceInterface;
 use Entity\Collection\EntityCollection;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use LearningResource\Plugin\Aggregate\Aggregator\TopicAggregator;
+use LearningResource\Plugin\Aggregate\Aggregator\RelatedContentAggregator;
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -123,7 +124,15 @@ return array(
                 'aggregator' => function ($sm)
                 {
                     $instance = new Plugin\Aggregate\AggregatePlugin();
-                    $instance->addAggregator(new TopicAggregator());
+                    
+                    $topicAggregator = new TopicAggregator();
+                    $topicAggregator->setRouter($sm->getServiceLocator()->get('router'));
+                    $instance->addAggregator($topicAggregator);
+                    
+                    $relatedAggregator = new RelatedContentAggregator();
+                    $relatedAggregator->setRelatedContentManager($sm->getServiceLocator()->get('RelatedContent\Manager\RelatedContentManager'));
+                    $instance->addAggregator($relatedAggregator);
+                    
                     return $instance;
                 },
             )
@@ -341,7 +350,8 @@ return array(
                         'plugin' => 'aggregator',
                         'options' => array(
                             'aggregators' => array(
-                                'topic'
+                                'topic',
+                                'related-content'
                             ),
                         )
                     ),
