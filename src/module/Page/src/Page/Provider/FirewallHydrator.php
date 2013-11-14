@@ -16,40 +16,42 @@ use Page\Exception;
 use Page\Manager\PageManager;
 use Zend\Http\Request;
 use Language\Manager\LanguageManager;
+use Zend\Mvc\Router\RouteMatch;
+
 
 class FirewallHydrator
 {
     
     use \Page\Manager\PageManagerAwareTrait;
     use  \Language\Manager\LanguageManagerAwareTrait;
+	use \Common\Traits\RouterAwareTrait;
+    
+	/**
+	 * 
+	 * @var RouteMatch
+	 */
+	protected $routeMatch;
+	
+    /**
+	 * @return the $routeMatch
+	 */
+	public function getRouteMatch() {
+		return $this->routeMatch;
+	}
 
-    public function getRoles()
+	/**
+	 * @param \Zend\Mvc\Router\RouteMatch $routeMatch
+	 */
+	public function setRouteMatch(RouteMatch $routeMatch) {
+		$this->routeMatch = $routeMatch;
+	}
+
+	public function getRoles()
     {
-        /*
-        $language_id = $this->getLanguageManager()->getLanguageFromRequest()
-            ->getId();
         
-        
-        $request = new Request();
-        $request->setMethod(Request::METHOD_GET);
-        $request->setUri($source);
-        
-        $routeMatch = $router
-        ->match($request);
-        $this->getServiceLocator()->get('Application')->getMvcEvent()->setRouteMatch($routeMatch);
-        
-        if ($routeMatch === NULL)
-            throw new Alias\Exception\RuntimeException(sprintf('Could not match a route for `%s`', $source));
-        
-        $params = $routeMatch->getParams();
-        
-        $slug = $params['slug'];
-        
-        
-        
-        
-        $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
-        */
+    	
+    	
+    	
         return array(
             'sysadmin'
         // 'roles' => $this->getObject()->getRoles(),

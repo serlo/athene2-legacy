@@ -23,17 +23,8 @@ class CreateRepositoryFilter extends InputFilter
        
         $this->add(array(
             'name' => 'slug',
-            'required' => true,
-            'validators' => array(
-                array(
-                    'name' => 'Page\Validator\UniqueRepository',
-                    'options' => array(
-                        'object_repository' => $objectManager->getRepository('Page\Entity\PageRepository'),
-                        'fields' => array('slug'),
-                        'object_manager' => $objectManager
-                    )
-                )
-            )
+            'required' => true
+
         ));
      
     }

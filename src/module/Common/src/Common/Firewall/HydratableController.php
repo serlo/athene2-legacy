@@ -6,6 +6,8 @@ use ZfcRbac\Firewall\AbstractFirewall;
 class HydratableController extends AbstractFirewall
 {
 
+	use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+	
     /**
      *
      * @var array
@@ -18,12 +20,10 @@ class HydratableController extends AbstractFirewall
      */
     public function __construct(array $rules)
     {
-       
-        
         foreach ($rules as $rule) {
         
         $provider = new $rule['role_provider'];
-        $roles = $provider->getRoles();
+        $roles = $provider->getRoles($rule['controller'], (array) $rule['actions']);
 
         
             if (! is_array($roles)) {
@@ -54,19 +54,22 @@ class HydratableController extends AbstractFirewall
      */
     public function isGranted($resource)
     {
-        
+      
         $resource = explode(':', $resource);
         $controller = $resource[0];
         $action = isset($resource[1]) ? $resource[1] : null;
         
+        
         // Check action first
         if (isset($this->rules[$controller][$action])) {
             $roles = $this->rules[$controller][$action];
-        } elseif (isset($this->rules[$controller])) {
+        } else return true;
+        
+        /*if (isset($this->rules[$controller])) {
             $roles = $this->rules[$controller];
         } else {
-            return true;
-        }
+           $roles='guest';// return true;
+        }*/ 
         
         return $this->rbac->hasRole($roles);
     }
