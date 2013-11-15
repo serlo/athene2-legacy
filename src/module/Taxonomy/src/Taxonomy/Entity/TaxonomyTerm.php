@@ -62,7 +62,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     protected $weight;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $description;
 

@@ -15,11 +15,12 @@ $table = array(
     'right' => '',
     'bottom' => ''
 );
+var_dump($this->term->getDescription());
 ?>
 <?php if(is_object($this->term)): ?>
     <div class="row">
     	<div class="col-md-9">
-            <?php echo $this->term->getDescription(); ?>
+            <?php echo $this->term->getDescription() !== NULL ? $this->term->getDescription() : ''; ?>
     	</div>
     	<div class="col-md-3">
     	    <?php if($this->term->isAssociationAllowed('entities')): ?>

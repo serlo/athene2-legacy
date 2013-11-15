@@ -14,20 +14,28 @@ return array(
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
                 array(
-                    'route' => 'blog/post/create',
-                    'roles' => 'admin'
+                    'route' => 'related-content/manage',
+                    'roles' => 'moderator'
                 ),
                 array(
-                    'route' => 'blog/view-all',
-                    'roles' => 'admin'
+                    'route' => 'related-content/add-internal',
+                    'roles' => 'moderator'
                 ),
                 array(
-                    'route' => 'blog/post/update',
-                    'roles' => 'admin'
+                    'route' => 'related-content/add-external',
+                    'roles' => 'moderator'
                 ),
                 array(
-                    'route' => 'blog/post/trash',
-                    'roles' => 'admin'
+                    'route' => 'related-content/add-category',
+                    'roles' => 'moderator'
+                ),
+                array(
+                    'route' => 'related-content/remove',
+                    'roles' => 'moderator'
+                ),
+                array(
+                    'route' => 'related-content/order',
+                    'roles' => 'moderator'
                 ),
             )
         )
