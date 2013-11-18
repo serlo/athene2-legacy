@@ -25,7 +25,8 @@ class PageControllerListener extends AbstractListener
     public function onUpdate(Event $e)
     {
         
-        $slug = $e->getParam('slug'); 
+        $repositoryid = $e->getParam('repositoryid'); 
+        $slug = $e->getParam('slug');
         $repository = $e->getParam('repository');
         $language = $e->getParam('language');
         $entity = $repository;
@@ -33,10 +34,11 @@ class PageControllerListener extends AbstractListener
         $url = $e->getTarget()
             ->url()
             ->fromRoute('page/article', array(
-            'slug' => $slug
+            'repositoryid' => $repositoryid
         ));
+            
+        $this->getAliasManager()->createAlias($url, $slug, $slug.'-'.$repositoryid, $repository, $language);
         
-        $this->getAliasManager()->autoAlias('page', $url, $entity, $language);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

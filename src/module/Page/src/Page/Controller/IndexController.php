@@ -152,10 +152,10 @@ class IndexController extends AbstractActionController
 
                
                 $this->getEventManager()->trigger('page.create', $this, array(
-                    'slug' => $array['slug'],
+                    'repositoryid' => $repository->getRepositoryId(),
                     'language' => $language,
-                    'repository' => $repository->getEntity()
-                
+                    'repository' => $repository->getEntity(),
+                	'slug' => $array['slug']
                 
                 ));
                 
