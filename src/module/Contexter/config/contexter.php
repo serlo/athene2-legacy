@@ -15,7 +15,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 return array(
     'contexter' => array(
         'router' => array(
-            'adapters' => array()
+            'adapters' => array(
+                array(
+                    'adapter' => __NAMESPACE__ . '\Adapter\EntityPluginController',
+                    'controllers' => array(
+                        'LearningResource\Plugin\Repository\Controller\RepositoryController'
+                    )
+                )
+            )
         )
     ),
     'class_resolver' => array(
@@ -47,9 +54,6 @@ return array(
                 $config = $serviceManager->get('config');
                 $instance = new Router\Router();
                 $instance->setConfig($config['contexter']['router']);
-                $instance->setRouteMatch($serviceManager->get('Application')
-                    ->getMvcEvent()
-                    ->getRouteMatch());
                 $instance->setServiceLocator($serviceManager);
                 $instance->setObjectManager($serviceManager->get('EntityManager'));
                 $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
@@ -87,14 +91,14 @@ return array(
                     )
                 )
             )
-            
-        ),
+        )
+        ,
         'instance' => array(
             'preferences' => array(
                 __NAMESPACE . '\Contexter' => __NAMESPACE . '\Contexter',
                 __NAMESPACE . '\Router\RouterInterface' => __NAMESPACE . '\Router\Router'
             ),
-            __NAMESPACE . '\Context'  => array(
+            __NAMESPACE . '\Context' => array(
                 'shared' => false
             )
         )

@@ -11,17 +11,40 @@
  */
 namespace Contexter\Adapter;
 
+use Zend\Mvc\Router\RouteMatch;
+use Zend\Mvc\Controller\AbstractActionController;
+
 interface AdapterInterface
 {
     /**
      * 
      * @return array
      */
-    public function getParams();
+    public function getParameters();
     
     /**
      * 
      * @return array
      */
     public function getKeys();
+
+    /**
+     *
+     * @return AbstractActionController
+     */
+    public function getController();
+    
+    /**
+     * 
+     * @param RouteMatch $routeMatch
+     * @return $this
+     */
+    public function setRouteMatch(RouteMatch $routeMatch);
+
+    /**
+     *
+     * @param AbstractActionController $controller            
+     * @return $this
+     */
+    public function setController(AbstractActionController $controller);
 }

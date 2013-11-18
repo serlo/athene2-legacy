@@ -310,22 +310,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'content' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('content');
-                                }
-                            )
-                        )
                     )
                 )
             ),
@@ -367,22 +351,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'content' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('content');
-                                }
-                            )
-                        )
                     )
                 )
             ),
@@ -426,20 +394,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'pages' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->pages()->findChildren();
-                                }
-                            )
-                        )
                     )
                 )
             ),
@@ -470,22 +424,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'content' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('content');
-                                }
-                            )
-                        )
                     )
                 )
             )

@@ -59,7 +59,7 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
         return $context;
     }
 
-    public function findTypeByName($name)
+    public function findTypeByName($name, $createOnFallback = FALSE)
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
         
@@ -70,11 +70,13 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
             'name' => $name
         ));
         
-        if (! is_object($type)) {
+        if (! is_object($type) && $createOnFallback) {
             $type = $this->getClassResolver()->resolve('Contexter\Entity\TypeInterface');
             $type->setName($name);
             $this->getObjectManager()->persist($type);
-        }
+        } else 
+            throw new Exception\RuntimeException(sprintf('Type `%s` not found'));
+        
         
         return $type;
     }

@@ -9,29 +9,16 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Contexter\Router;
+namespace Contexter\Adapter;
 
-use Contexter\Adapter\AdapterInterface;
+use Zend\Stdlib\ArrayUtils;
 
+class EntityPluginControllerAdapter extends AbstractAdapter
+{
 
-interface RouterInterface
-{    
-    /**
-     * 
-     * @param string $url
-     * @param string $type
-     * @return RouteMatchInterface[]
-     */
-    public function match($url, $type);
-    
-    /**
-     * @return AdapterInterface
-     */
-    public function getAdapter();
-    
-    /**
-     * 
-     * @return array
-     */
-    public function getRouteParams();
+    public function getParameters()
+    {
+        $params = $this->getParametersFromRouteMatch();
+        return ArrayUtils::merge($params, $this->getController()->getEntityService($params['entity']));
+    }
 }
