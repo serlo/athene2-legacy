@@ -14,6 +14,7 @@ namespace Contexter;
 use Uuid\Entity\UuidHolder;
 use Contexter\Entity\TypeInterface;
 use Doctrine\Common\Collections\Collection;
+use Uuid\Entity\UuidInterface;
 
 interface ContexterInterface extends Router\RouterAwareInterface
 {
@@ -27,12 +28,12 @@ interface ContexterInterface extends Router\RouterAwareInterface
 
     /**
      *
-     * @param UuidHolder $object            
+     * @param UuidInterface $object            
      * @param string $type            
      * @param string $title            
      * @return ContextInterface
      */
-    public function add(UuidHolder $object, $type, $title);
+    public function add(UuidInterface $object, $type, $title);
 
     /**
      *

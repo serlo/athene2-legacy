@@ -17,7 +17,7 @@ use ClassResolver\ClassResolverAwareInterface;
 
 class Context implements ContextInterface, ObjectManagerAwareInterface, ClassResolverAwareInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\RouterAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,Router\RouterAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     /**
      *
@@ -62,6 +62,8 @@ class Context implements ContextInterface, ObjectManagerAwareInterface, ClassRes
         $route = $this->getClassResolver()->resolve('Contexter\Entity\RouteInterface');
         $route->setName($routeName);
         $route->addParameters($params);
+        $route->setContext($this->getEntity());
+        $this->getEntity()->addRoute($route);
         $this->getObjectManager()->persist($route);
         return $route;
     }

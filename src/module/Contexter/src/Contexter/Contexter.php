@@ -17,7 +17,6 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Contexter\Entity;
 use Contexter\Exception;
 use Contexter\Router;
-use Contexter\Entity\ContextInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Contexter\Collection\ContextCollection;
 
@@ -37,26 +36,26 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
             if (! is_object($context))
                 throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
             
-            $this->addInstance($context->getId(), $this->createService(context));
+            $this->addInstance($context->getId(), $this->createService($context));
         }
         
         return $this->getInstance($id);
     }
 
-    public function add(\Uuid\Entity\UuidHolder $object, $type, $title)
+    public function add(\Uuid\Entity\UuidInterface $object, $type, $title)
     {
         $type = $this->findTypeByName($type);
         
         /* @var $context Entity\ContextInterface */
         $context = $this->getClassResolver()->resolve('Contexter\Entity\ContextInterface');
         $context->setTitle($title);
-        $context->setObject($object->getUuidEntity());
+        $context->setObject($object);
         
         $context->setType($type);
         $type->addContext($context);
         
         $this->getObjectManager()->persist($context);
-        return $context;
+        return $this->createService($context);
     }
 
     public function findTypeByName($name, $createOnFallback = FALSE)
@@ -74,8 +73,8 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
             $type = $this->getClassResolver()->resolve('Contexter\Entity\TypeInterface');
             $type->setName($name);
             $this->getObjectManager()->persist($type);
-        } else 
-            throw new Exception\RuntimeException(sprintf('Type `%s` not found'));
+        } elseif (! is_object($type) && !$createOnFallback) 
+            throw new Exception\RuntimeException(sprintf('Type `%s` not found', $name));
         
         
         return $type;
@@ -135,6 +134,7 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
     {
         /* @var $instance ContextInterface */
         $instance = $this->createInstance('Contexter\ContextInterface');
+        $instance->setEntity($context);
         return $instance;
     }
 }

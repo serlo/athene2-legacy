@@ -11,7 +11,7 @@
  */
 namespace Contexter;
 
-use Contexter\Entity\ContextInterface;
+use Contexter\Entity;
 use Contexter\Entity\TypeInterface;
 
 interface ContextInterface
@@ -19,14 +19,14 @@ interface ContextInterface
 
     /**
      *
-     * @param ContextInterface $entity            
+     * @param Entity\ContextInterface $entity            
      * @return $this
      */
-    public function setEntity(ContextInterface $entity);
+    public function setEntity(Entity\ContextInterface $entity);
 
     /**
      *
-     * @return ContextInterface;
+     * @return Entity\ContextInterface;
      */
     public function getEntity();
 
@@ -56,11 +56,4 @@ interface ContextInterface
      * @return $this
      */
     public function addRoute($routeName, array $params = array());
-
-    /**
-     *
-     * @param string $name            
-     * @return TypeInterface
-     */
-    public function findTypeByName($name);
 }

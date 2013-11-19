@@ -12,6 +12,7 @@
 namespace Contexter\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Comment ORM Entity
@@ -44,12 +45,17 @@ class Route implements RouteInterface
      */
     protected $parameters;
 
-    public function getParameters ()
+    public function __construct()
+    {
+        $this->parameters = new ArrayCollection();
+    }
+
+    public function getParameters()
     {
         return $this->parameters;
     }
 
-	public function getId()
+    public function getId()
     {
         return $this->id;
     }
@@ -76,14 +82,15 @@ class Route implements RouteInterface
         return $this;
     }
 
-    public function addParameters(array $parameters){
-        foreach($parameters as $key => $value){
+    public function addParameters(array $parameters)
+    {
+        foreach ($parameters as $key => $value) {
             $this->addParameter($key, $value);
         }
         return $this;
     }
-    
-	public function addParameter ($key, $value)
+
+    public function addParameter($key, $value)
     {
         $parameter = new RouteParameter();
         $parameter->setKey($key);

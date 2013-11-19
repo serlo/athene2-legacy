@@ -27,6 +27,7 @@ return array(
     ),
     'class_resolver' => array(
         'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Context',
+        'Contexter\ContextInterface' => 'Contexter\Context',
         'Contexter\Entity\TypeInterface' => 'Contexter\Entity\Type',
         'Contexter\Entity\RouteInterface' => 'Contexter\Entity\Route',
         'Contexter\Entity\RouteParameterInterface' => 'Contexter\Entity\RouteParameter'
@@ -125,6 +126,9 @@ return array(
                     ),                    
                 ),
                 __NAMESPACE__. '\Controller\ContextController' => array(
+                    'setUuidManager' => array(
+                        'required' => true
+                    ),
                     'setContexter' => array(
                         'required' => true
                     ),

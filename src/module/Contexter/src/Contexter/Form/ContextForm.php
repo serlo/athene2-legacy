@@ -27,13 +27,9 @@ class ContextForm extends Form
         
         $this->add(array(
             'name' => 'route',
-            'type' => 'Text',
+            'type' => 'Hidden',
             'attributes' => array(
-                'disabled' => 'disabled'
             ),
-            'options' => array(
-                'label' => 'Route:'
-            )
         ));
 
 
@@ -87,12 +83,6 @@ class ContextForm extends Form
         
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true,
-            'filters' => array()
-        ));
-        
-        $inputFilter->add(array(
-            'name' => 'content',
             'required' => true,
             'filters' => array()
         ));

@@ -30,17 +30,18 @@ class RouteParameter implements RouteParameterInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="`key`")
      */
     protected $key;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="`value`")
      */
     protected $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="Route", inversedBy="parameters")
+     * @ORM\JoinColumn(name="context_route_id", referencedColumnName="id")
      */
     protected $route;
 

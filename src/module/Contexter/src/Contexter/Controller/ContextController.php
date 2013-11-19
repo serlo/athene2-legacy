@@ -18,7 +18,7 @@ use Contexter\Form\UrlForm;
 
 class ContextController extends AbstractActionController
 {
-    use \Contexter\ContexterAwareTrait,\Contexter\Router\RouterAwareTrait;
+    use \Contexter\ContexterAwareTrait,\Contexter\Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function manageAction()
     {
@@ -44,12 +44,21 @@ class ContextController extends AbstractActionController
                 ->getAdapter()
                 ->getParameters();
             $form = new ContextForm($parameters, $types->toArray());
+            $form->setData(array(
+                'route' => $routeMatch->getMatchedRouteName()
+            ));
             if ($this->getRequest()->isPost()) {
                 $form->setData($this->getRequest()
                     ->getPost());
                 if ($form->isValid()) {
                     $data = $form->getData();
-                    $this->getContexter()->add($data['object'], $type, $data['title']);
+        var_dump($data['parameters']);die();
+                    $object = $this->getUuidManager()->getUuid($data['object']);
+                    $context = $this->getContexter()->add($object, $data['type'], $data['title']);
+                    $context->addRoute($data['route'], $data['parameters']);
+                    $this->getContexter()->getObjectManager()->flush();
+                    $this->redirect()->toUrl($uri);
+                    return FALSE;
                 }
             }
         }

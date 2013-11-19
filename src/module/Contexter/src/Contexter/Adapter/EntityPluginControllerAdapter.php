@@ -22,7 +22,7 @@ class EntityPluginControllerAdapter extends AbstractAdapter
         $params = $this->getParametersFromRouteMatch();
         $entityService = $this->getController()->getEntityService($params['entity']);
         $array = array(
-            'subject' => $entityService->provider()->getSubjectName(),
+            'subject' => $entityService->provider()->getSubjectSlug(),
             'language' => $this->getLanguageManager()->getLanguageFromRequest()->getCode()
         );
         return ArrayUtils::merge($params, $array);
