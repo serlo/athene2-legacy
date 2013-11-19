@@ -88,12 +88,19 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $rbac = $this->getMockBuilder('ZfcRbac\Firewall\Controller')
             ->disableOriginalConstructor()
             ->getMock();
+        $hrbac = $this->getMockBuilder('Common\Firewall\HydratableController')
+            ->disableOriginalConstructor()
+            ->getMock();
         
         $rbacService->expects($this->atLeastOnce())
             ->method('getFirewall')
             ->will($this->returnValueMap(array(
             array(
                 'controller',
+                $rbac
+            ),
+            array(
+                'HydratableController',
                 $rbac
             ),
             array(
