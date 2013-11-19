@@ -7,6 +7,11 @@ return array(
             __DIR__ . '/../view'
         )
     ),
+    'uuid_router' => array(
+        'routes' => array(
+            'pageRepository' => '/page/view/%d',
+        )
+    ),
     'router' => array(
         'routes' => array(
             'page' => array(

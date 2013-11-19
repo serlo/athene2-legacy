@@ -17,11 +17,11 @@ use User\Entity\RoleInterface;
  */
 class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRepository")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 	

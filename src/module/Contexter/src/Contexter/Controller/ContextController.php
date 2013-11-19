@@ -54,7 +54,7 @@ class ContextController extends AbstractActionController
                     $data = $form->getData();
                     
                     $useParameters = array();
-                    foreach($data as $key => $value){
+                    foreach($data['parameters'] as $key => $value){
                         if($value === '1' && array_key_exists($key, $parameters)){
                             $useParameters[$key] = $parameters[$key];
                         }

@@ -12,26 +12,27 @@
 namespace Contexter\Form;
 
 use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilterProviderInterface;
 
 class ParameterFieldset extends Fieldset
 {
 
-    public function __construct($key = 'a', $value = 'b')
+    public function __construct(array $parameters)
     {
         parent::__construct('parameters');
+
+        $this->setLabel('Which parameters should be matched?');
         
-        $this->add(array(
-            'name' => $key,
-            'type' => 'Zend\Form\Element\Checkbox',
-            'attributes' => array(
-                'checked' => true
-            ),
-            'options' => array(
-                'use_hidden_element' => false,
-                'value' => $value,
-                'label' => '<strong>' . $key . ':</strong> ' . $value . ''
-            )
-        ));
+        foreach ($parameters as $key => $value) {
+            $this->add(array(
+                'name' => $key,
+                'type' => 'Zend\Form\Element\Checkbox',
+                'attributes' => array(
+                    'checked' => true
+                ),
+                'options' => array(
+                    'label' => '<strong>' . $key . ':</strong> ' . $value . ''
+                )
+            ));
+        }
     }
 }

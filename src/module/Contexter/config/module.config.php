@@ -12,6 +12,7 @@
 namespace Contexter;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Contexter\View\Helper\Contexter;
 return array(
     'contexter' => array(
         'router' => array(
@@ -23,6 +24,17 @@ return array(
                     )
                 )
             )
+        )
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'contexter' => function ($helperPluginManager)
+            {
+                $plugin = new Contexter();
+                $plugin->setRouter($helperPluginManager->getServiceLocator()
+                    ->get('Contexter\Router\Router'));
+                return $plugin;
+            }
         )
     ),
     'class_resolver' => array(
@@ -55,7 +67,7 @@ return array(
                 'options' => array(
                     'route' => '/context',
                     'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\ContextController',
+                        'controller' => __NAMESPACE__ . '\Controller\ContextController'
                     )
                 ),
                 'child_routes' => array(
@@ -85,30 +97,33 @@ return array(
                                 'action' => 'manage'
                             )
                         )
-                    ),
+                    )
                 )
             )
         )
     ),
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE__. '\Router\Router' => function (ServiceLocatorInterface $serviceManager)
+            __NAMESPACE__ . '\Router\Router' => function (ServiceLocatorInterface $serviceManager)
             {
                 $config = $serviceManager->get('config');
                 $instance = new Router\Router();
                 $instance->setConfig($config['contexter']['router']);
                 $instance->setServiceLocator($serviceManager);
                 $instance->setRouter($serviceManager->get('Router'));
+                $instance->setRouteMatch($serviceManager->get('Application')
+                    ->getMvcEvent()
+                    ->getRouteMatch());
                 $instance->setObjectManager($serviceManager->get('EntityManager'));
                 $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
                 $instance->setContexter($serviceManager->get('Contexter\Contexter'));
                 return $instance;
             },
-            __NAMESPACE__. '\Context' => function (ServiceLocatorInterface $serviceManager)
+            __NAMESPACE__ . '\Context' => function (ServiceLocatorInterface $serviceManager)
             {
                 $instance = new Context();
                 $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
-                $instance->setRouter($serviceManager->get('Contexter\Router\Router'));
+                $instance->setRouter($serviceManager->get('Router'));
                 $instance->setObjectManager($serviceManager->get('EntityManager'));
                 return $instance;
             }
@@ -116,16 +131,16 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            __NAMESPACE__. '\Controller\ContextController'
+            __NAMESPACE__ . '\Controller\ContextController'
         ),
         'definition' => array(
             'class' => array(
-                __NAMESPACE__. '\Adapter\EntityPluginControllerAdapter' => array(
+                __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter' => array(
                     'setLanguageManager' => array(
                         'required' => true
-                    ),                    
+                    )
                 ),
-                __NAMESPACE__. '\Controller\ContextController' => array(
+                __NAMESPACE__ . '\Controller\ContextController' => array(
                     'setUuidManager' => array(
                         'required' => true
                     ),
@@ -136,7 +151,7 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__. '\Context' => array(
+                __NAMESPACE__ . '\Context' => array(
                     'setServiceLocator' => array(
                         'required' => true
                     ),
@@ -149,15 +164,15 @@ return array(
                     'setRouter' => array(
                         'required' => true
                     )
-                ),
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                __NAMESPACE__. '\ContexterInterface' => __NAMESPACE__. '\Contexter',
-                __NAMESPACE__. '\Router\RouterInterface' => __NAMESPACE__. '\Router\Router'
+                __NAMESPACE__ . '\ContexterInterface' => __NAMESPACE__ . '\Contexter',
+                __NAMESPACE__ . '\Router\RouterInterface' => __NAMESPACE__ . '\Router\Router'
             ),
-            __NAMESPACE__. '\Context' => array(
+            __NAMESPACE__ . '\Context' => array(
                 'shared' => false
             )
         )

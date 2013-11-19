@@ -17,7 +17,7 @@ use ClassResolver\ClassResolverAwareInterface;
 
 class Context implements ContextInterface, ObjectManagerAwareInterface, ClassResolverAwareInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,Router\RouterAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\RouterAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     /**
      *
@@ -34,7 +34,7 @@ class Context implements ContextInterface, ObjectManagerAwareInterface, ClassRes
     {
         return $this->getRouter()->assemble(array(
             'uuid' => $this->getEntity()
-                ->getId()
+                ->getObject()->getId()
         ), array(
             'name' => 'uuid/router'
         ));

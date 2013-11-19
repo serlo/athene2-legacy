@@ -1,4 +1,2 @@
-<div class="page-header">
-	<h1><?php echo $this->translate('Add context'); ?></h1>
-</div>
+<?php echo $this->pageHeader($this->translate('Add context'))->render();?>
 <?php echo $this->form()->render($this->form,NULL); ?>

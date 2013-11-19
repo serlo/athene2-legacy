@@ -19,10 +19,11 @@ use Zend\Stdlib\ArrayUtils;
 use Contexter\Collection\ContextCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Http\Request;
+use Contexter\Entity\TypeInterface;
 
 class Router implements RouterInterface
 {
-    use\Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use \Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     /**
      *
@@ -45,10 +46,15 @@ class Router implements RouterInterface
     /*
      * (non-PHPdoc) @see \Contexter\Router\RouterInterface::match()
      */
-    public function match($uri, $type = NULL)
+    public function match($uri = NULL, $type = NULL)
     {
-        $routeMatch = $this->matchUri($uri);
-        $this->setRouteMatch($routeMatch);
+        if ($uri !== NULL) {
+            $routeMatch = $this->matchUri($uri);
+            $this->setRouteMatch($routeMatch);
+        } else {
+            if (! is_object($this->getRouteMatch()))
+                throw new \Contexter\Exception\RuntimeException(sprintf('No RouteMatch set!'));
+        }
         
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
         
@@ -58,14 +64,13 @@ class Router implements RouterInterface
         
         if ($type) {
             $type = $this->getContexter()->findTypeByName($type);
-            $criteria['type'] = $type->getId();
         }
         
         $routes = $this->getObjectManager()
             ->getRepository($className)
             ->findBy($criteria);
         
-        return $this->matchRoutes($routes);
+        return $this->matchRoutes($routes, $type);
     }
 
     public function matchUri($uri)
@@ -73,8 +78,7 @@ class Router implements RouterInterface
         $request = new Request();
         $request->setUri($uri);
         $request->setMethod('post');
-        return $this->getRouter()
-            ->match($request);
+        return $this->getRouter()->match($request);
     }
 
     /**
@@ -91,7 +95,8 @@ class Router implements RouterInterface
                 /* @var $adapter AdapterInterface */
                 $adapter = $this->getServiceLocator()->get($adapter['adapter']);
                 $adapter->setRouteMatch($this->getRouteMatch());
-                $adapter->setController($this->getServiceLocator()->get($controller));
+                $adapter->setController($this->getServiceLocator()
+                    ->get($controller));
                 return $adapter;
             }
         }
@@ -130,17 +135,15 @@ class Router implements RouterInterface
      * @param array $routes            
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    protected function matchRoutes(array $routes)
+    protected function matchRoutes(array $routes, TypeInterface $type)
     {
         $result = new ArrayCollection();
         /* @var $route Entity\RouteInterface */
         foreach ($routes as $route) {
-            $passed = $this->matchesParameters($route);
-            if ($passed) {
-                /* @var $routeMatch \Contexter\Router\RouteMatchInterface */
-                $routeMatch = $this->getClassResolver()->resolve('Contexter\Router\RouteMatchInterface');
-                $routeMatch->setContext($route->getContext());
-                $result->add($routeMatch);
+            if ($route->getContext()->getType() === $type && $this->matchesParameters($route)) {
+                $context = $this->getContexter()->getContext($route->getContext()
+                    ->getId());
+                $result->add($context);
             }
         }
         return $result;
@@ -167,9 +170,8 @@ class Router implements RouterInterface
 
     protected function matchesParameter(Entity\RouteParameterInterface $parameter)
     {
-        $parameters = $this->getRouteParameters();
-        
-        if (in_array($parameter->getKey(), $parameters) && $parameters[$parameter->getKey()] === $parameter->getValue()) {
+        $parameters = $this->getAdapter()->getParameters();
+        if (array_key_exists($parameter->getKey(), $parameters) && $parameters[$parameter->getKey()] === $parameter->getValue()) {
             return true;
         }
         return false;

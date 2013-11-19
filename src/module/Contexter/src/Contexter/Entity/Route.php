@@ -41,7 +41,7 @@ class Route implements RouteInterface
     protected $context;
 
     /**
-     * @ORM\OneToMany(targetEntity="RouteParameter", mappedBy="context", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="RouteParameter", mappedBy="route", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $parameters;
 
