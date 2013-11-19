@@ -12,7 +12,6 @@
 namespace Contexter;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Contexter\View\Helper\Contexter;
 return array(
     'contexter' => array(
         'router' => array(
@@ -30,7 +29,7 @@ return array(
         'factories' => array(
             'contexter' => function ($helperPluginManager)
             {
-                $plugin = new Contexter();
+                $plugin = new \Contexter\View\Helper\Contexter();
                 $plugin->setRouter($helperPluginManager->getServiceLocator()
                     ->get('Contexter\Router\Router'));
                 return $plugin;
