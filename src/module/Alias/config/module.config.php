@@ -20,12 +20,12 @@ return array(
                 'tokenize' => 'blog/{category}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
                 'fallback' => 'blog/{category}/{id}-{title}'
-            ),
+            )/*
             'page' => array(
-                'tokenize' => 'page/{slug}',
+                'tokenize' => 'page/{id}',
                 'provider' => 'Page\Provider\TokenizerProvider',
-                'fallback' => 'page/{id}-{slug}'
-            )
+                'fallback' => 'page/{id}-{id}'
+            )*/
         )
     ),
     'class_resolver' => array(

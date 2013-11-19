@@ -31,15 +31,11 @@ class IndexController extends AbstractActionController
 
     public function setCurrentRevisionAction()
     {
-        $slug = $this->params('slug');
         $id = $this->params('id');
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        $pageService = $this->getPageService();
         $pageService->setCurrentRevision($pageService->getRevision($id));
         $this->redirect()->toRoute('page/article', array(
-            'slug' => $slug
+            'repositoryid' =>  $pageService->getRepositoryId()
         ));
         $this->getObjectManager()->persist($pageService->getEntity());
         $this->getObjectManager()->flush();
@@ -47,16 +43,12 @@ class IndexController extends AbstractActionController
 
     public function showRevisionsAction()
     {
-        $slug = $this->params('slug');
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        $pageService = $this->getPageService();
         $repository = $pageService->getEntity();
         $revisions = $repository->getRevisions();
         $view = new ViewModel(array(
             'revisions' => $revisions,
-            'slug' => $slug
+            'repositoryid' => $pageService->getRepositoryId()
         ));
         $view->setTemplate('page/show-revisions.phtml');
         return $view;
@@ -64,17 +56,12 @@ class IndexController extends AbstractActionController
 
     public function showRevisionAction()
     {
-        $slug = $this->params('slug');
         $id = $this->params('id');
-        
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        $pageService = $this->getPageService();
         $revision = $pageService->getRevision($id);
         $view = new ViewModel(array(
             'revision' => $revision,
-            'slug' => $slug,
+            'repositoryid' =>  $pageService->getRepositoryId()
         ));
         
         $view->setTemplate('page/revision.phtml');
@@ -84,21 +71,20 @@ class IndexController extends AbstractActionController
     public function editRepositoryAction()
     {
         $form = new RepositoryForm($this->getObjectManager());
-        $slug = $this->params('slug');
+        
         $language_id = $this->getLanguageManager()
             ->getLanguageFromRequest()
             ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        $pageService = $this->getPageService();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $pageService->getEntity()->setSlug($array['slug']);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('page/article', array(
-                    'slug' => $array['slug']
+                    'repositoryid' =>  $pageService->getRepositoryId()
                 ));
             }
         }
@@ -115,13 +101,11 @@ class IndexController extends AbstractActionController
     {
         $us = $this->getUserManager()->getUserFromAuthenticator();
         $form = new RevisionForm($this->getObjectManager());
-        $slug = $this->params('slug');
         $id = $this->params('id');
         $language = $this->getLanguageManager()
         ->getLanguageFromRequest();
         $language_id = $language->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
-        
+        $pageService = $this->getPageService();
 
         $repository = $pageService->getEntity();
         if ($id != NULL) {
@@ -141,7 +125,7 @@ class IndexController extends AbstractActionController
                 
             
                 
-                $this->redirect()->toRoute('page/article',array('slug'=>$slug));
+                $this->redirect()->toRoute('page/article',array('repositoryid'=>$pageService->getRepositoryId()));
             }
         }
         
@@ -165,19 +149,19 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $array = $form->getData();
                 $repository = $this->getPageManager()->createPageRepository($form->getData(), $language->getEntity());
-               // $url = $this->url()->fromRoute('page/article',array('slug'=>$form->getData()['slug']));
+
                
                 $this->getEventManager()->trigger('page.create', $this, array(
-                    'slug' => $array['slug'],
+                    'repositoryid' => $repository->getRepositoryId(),
                     'language' => $language,
-                    'repository' => $repository->getEntity()
-                
+                    'repository' => $repository->getEntity(),
+                	'slug' => $array['slug']
                 
                 ));
                 
                 
                 $this->getObjectManager()->flush();
-                $this->redirect()->toRoute('page/article/createrevision',array('slug'=>$form->getData()['slug']));
+                $this->redirect()->toRoute('page/article/createrevision',array('repositoryid'=>$repository->getRepositoryId()));
             }
         }
         
@@ -192,35 +176,25 @@ class IndexController extends AbstractActionController
     
     public function trashRevisionAction()
     {
-        $slug = $this->params('slug');
+        $pageService = $this->getPageService();
         $id = $this->params('revisionid');
-        $language_id = $this->getLanguageManager()
-        ->getLanguageFromRequest()
-        ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        
         $pageService->trashRevision($id);
-        $this->redirect()->toRoute('page/article/revisions',array('slug'=>$slug));
+        $this->redirect()->toRoute('page/article/revisions',array('repositoryid'=>$this->params('repositoryid')));
     }
 
     public function deleteRevisionAction()
     {
-        $slug = $this->params('slug');
         $id = $this->params('revisionid');
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+        $pageService = $this->getPageService();
         $pageService->deleteRevision($id);
-        $this->redirect()->toRoute('page/article',array('slug'=>$slug));
+        $this->redirect()->toRoute('page/article',array('repositoryid'=>$this->params('repositoryid')));
     }
 
     public function deleteRepositoryAction()
     {
-        $slug = $this->params('slug');
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+      
+        $pageService = $this->getPageService();
         $repository = $pageService->getEntity();
         $pageService->getRepositoryManager()->removeRepository($repository);
         $this->getObjectManager()->persist($repository);
@@ -231,11 +205,8 @@ class IndexController extends AbstractActionController
 
     public function articleAction()
     {
-        $slug = $this->params('slug');
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
-        $pageService = $this->getPageManager()->findPageRepositoryBySlug($slug, $language_id);
+       
+        $pageService = $this->getPageService();
         if ($pageService->hasCurrentRevision()) {
             
             $revision = $pageService->getCurrentRevision();
@@ -244,16 +215,22 @@ class IndexController extends AbstractActionController
             $revisionid = $revision->getId();
         } else
              $revision = NULL;
-        $admin = $pageService->hasPermission($this->getUserManager()->getUserFromAuthenticator());
         
+      
       
         $view = new ViewModel(array(
             'revision' => $revision,
-            'slug' => $slug,
+            'repositoryid' =>  $pageService->getRepositoryId()
         ));
         
         $view->setTemplate('page/revision.phtml');
         
         return $view;
+    }
+    
+    protected function getPageService(){
+        $id = $this->params('repositoryid');
+        return
+        $this->getPageManager()->getPageRepository($id);
     }
 }

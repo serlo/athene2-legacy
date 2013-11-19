@@ -1,5 +1,5 @@
 <?php
-$this->headTitle($this->slug . $this->translate('Revisions'));
+$this->headTitle($this->translate('Revisions'));
 ?>
 
 <!-- buttons "create Revision" & "current Revision" -->
@@ -7,10 +7,10 @@ $this->headTitle($this->slug . $this->translate('Revisions'));
 <div class="page-header">
 	<div class="btn-group">
 		<a
-			href="<?php echo $this->url('page/article',array('slug'=>$this->slug));?>"
+			href="<?php echo $this->url('page/article',array('repositoryid'=>$this->repositoryid));?>"
 			class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current');?></a>
 		<a
-			href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$currentid))?>"
+			href="<?php echo $this->url('page/article/createrevision',array('repositoryid'=>$this->repositoryid,'id'=>$currentid))?>"
 			class="glyphicon glyphicon-plus btn btn-link"><?php echo $this->translate('new');?></a>
 	</div>
 	<h1><?php echo $this->translate('Revisions');?></h1>
@@ -25,7 +25,7 @@ foreach ($this->revisions as $revision) :
 
 
 <a
-	href="<?php echo $this->url('page/article/revision',array('slug'=>$this->slug,'id'=>$id));?>"
+	href="<?php echo $this->url('page/article/revision',array('repositoryid'=>$this->repositoryid,'id'=>$id));?>"
 	class="list-group-item btn btn-default" style="text-align: left"> <!-- title -->
       <?php echo $this->translate('title'.':'); echo $revision->getTitle(); ?> 	
         <!-- author -->
@@ -36,16 +36,16 @@ foreach ($this->revisions as $revision) :
 
 <!-- edit button -->
 <a
-	href="<?php echo $this->url('page/article/createrevision',array('slug'=>$this->slug,'id'=>$id))?>"
+	href="<?php echo $this->url('page/article/createrevision',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
 	class="glyphicon glyphicon-plus"><?php echo $this->translate('edit');?> </a>
 
 <!--  delete and setCurrent buttons, hidden for current revision -->
 <?php if ($revision->getRepository()->getCurrentRevision()!=$revision):?>
 <a
-	href="<?php echo $this->url('page/article/deleterevision',array('slug'=>$this->slug,'revisionid'=>$id))?>"
+	href="<?php echo $this->url('page/article/deleterevision',array('repositoryid'=>$this->repositoryid,'revisionid'=>$id))?>"
 	class="glyphicon glyphicon-trash"><?php echo $this->translate('delete');?> </a>
 <a
-	href="<?php echo $this->url('page/article/revision/setCurrent',array('slug'=>$this->slug,'id'=>$id))?>"
+	href="<?php echo $this->url('page/article/revision/setCurrent',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
 	class="glyphicon glyphicon-ok"><?php echo $this->translate('current') ?></a>
 <br>
 <br>

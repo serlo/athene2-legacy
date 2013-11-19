@@ -22,13 +22,6 @@ interface PageManagerInterface
     public function getPageRepository($id);
     /**
      *
-     * @param string $string 
-     * @param numeric $language_id
-     * @return PageServiceInterface
-     */
-    public function findPageRepositoryBySlug($string,$language_id);
-    /**
-     *
      * @param array $data
      * @param LanguageInterface $language
      * @return PageServiceInterface
