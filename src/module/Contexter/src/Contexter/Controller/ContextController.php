@@ -52,10 +52,16 @@ class ContextController extends AbstractActionController
                     ->getPost());
                 if ($form->isValid()) {
                     $data = $form->getData();
-        var_dump($data['parameters']);die();
+                    
+                    $useParameters = array();
+                    foreach($data as $key => $value){
+                        if($value === '1' && array_key_exists($key, $parameters)){
+                            $useParameters[$key] = $parameters[$key];
+                        }
+                    }
                     $object = $this->getUuidManager()->getUuid($data['object']);
                     $context = $this->getContexter()->add($object, $data['type'], $data['title']);
-                    $context->addRoute($data['route'], $data['parameters']);
+                    $context->addRoute($data['route'], $useParameters);
                     $this->getContexter()->getObjectManager()->flush();
                     $this->redirect()->toUrl($uri);
                     return FALSE;

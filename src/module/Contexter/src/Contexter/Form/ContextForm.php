@@ -68,8 +68,33 @@ class ContextForm extends Form
             )
         ));
         
-        foreach($parameters as $key => $name){
-            $this->add(new ParameterFieldset($key, $name));
+        /*$this->add(array(
+            'type' => 'Zend\Form\Element\Collection',
+            'name' => 'categories',
+            'options' => array(
+                'label' => 'Please choose which parameters should be enabled',
+                'count' => 2,
+                //'should_create_template' => true,
+                //'template_placeholder' => '__placeholder__',
+                'target_element' => array(
+                    'type' => 'Contexter\Form\ParameterFieldset'
+                )
+            )
+        ));*/
+        
+        foreach($parameters as $key => $value){
+            //$this->add(new ParameterFieldset($key, $name));
+        
+            $this->add(array(
+                'name' => $key,
+                'type' => 'Zend\Form\Element\Checkbox',
+                'attributes' => array(
+                    'checked' => true
+                ),
+                'options' => array(
+                    'label' => '<strong>' . $key . ':</strong> ' . $value . ''
+                )
+            ));
         }
         
         $this->add(array(

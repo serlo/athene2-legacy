@@ -14,11 +14,13 @@ namespace Contexter\Form;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 
-class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
+class ParameterFieldset extends Fieldset
 {
 
-    public function __construct($key, $value)
+    public function __construct($key = 'a', $value = 'b')
     {
+        parent::__construct('parameters');
+        
         $this->add(array(
             'name' => $key,
             'type' => 'Zend\Form\Element\Checkbox',
@@ -26,25 +28,10 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
                 'checked' => true
             ),
             'options' => array(
+                'use_hidden_element' => false,
                 'value' => $value,
-                'label' => 'User parameter <strong>'.$key.'</strong> with value <strong>'.$value.'</strong>'           
+                'label' => '<strong>' . $key . ':</strong> ' . $value . ''
             )
         ));
-    }
-    /*
-     * (non-PHPdoc) @see \Zend\InputFilter\InputFilterProviderInterface::getInputFilterSpecification()
-     */
-    public function getInputFilterSpecification()
-    {
-        return array(
-            /*'name' => array(
-                'validators' => array()
-                // validators for field "name"
-                ,
-                'filters' => array()
-                // filters for field "name"
-                
-            )*/
-        );
     }
 }
