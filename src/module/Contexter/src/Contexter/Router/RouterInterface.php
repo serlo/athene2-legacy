@@ -12,26 +12,36 @@
 namespace Contexter\Router;
 
 use Contexter\Adapter\AdapterInterface;
-
+use Zend\Mvc\Router\RouteMatch;
 
 interface RouterInterface
-{    
+{
+
     /**
-     * 
-     * @param string $url
-     * @param string $type
+     *
+     * @param string $url            
+     * @param string $type            
      * @return RouteMatchInterface[]
      */
     public function match($url, $type);
-    
+
     /**
+     *
      * @return AdapterInterface
      */
     public function getAdapter();
+
+    /**
+     *
+     * @param string $uri      
+     * @return RouteMatch      
+     */
+    public function matchUri($uri);
     
     /**
      * 
-     * @return array
+     * @param RouteMatch $routeMatch
+     * @return $this
      */
-    public function getRouteParams();
+    public function setRouteMatch(RouteMatch $routeMatch);
 }

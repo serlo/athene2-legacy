@@ -36,7 +36,7 @@ class ExternalForm extends Form
         
         $this->add(array(
             'name' => 'url',
-            'type' => 'Text',
+            'type' => 'webpage-url',
             'attributes' => array(
                 'placeholder' => 'http://'
             ),

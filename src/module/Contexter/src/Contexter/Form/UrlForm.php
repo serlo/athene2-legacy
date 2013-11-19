@@ -18,17 +18,17 @@ class UrlForm extends Form
 {
     public function __construct()
     {
-        parent::__construct('url');
+        parent::__construct('uri');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-        $inputFilter = new InputFilter('url');
+        $inputFilter = new InputFilter('uri');
         
         $this->add(array(
-            'name' => 'url',
+            'name' => 'uri',
             'type' => 'Text',
             'attributes' => array(),
             'options' => array(
-                'label' => 'Url:'
+                'label' => 'Uri:'
             )
         ));
         
@@ -36,19 +36,13 @@ class UrlForm extends Form
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => array(
-                'value' => 'Speichern',
+                'value' => 'Select',
                 'class' => 'btn btn-success pull-right'
             )
         ));
         
         $inputFilter->add(array(
-            'name' => 'title',
-            'required' => true,
-            'filters' => array()
-        ));
-        
-        $inputFilter->add(array(
-            'name' => 'content',
+            'name' => 'uri',
             'required' => true,
             'filters' => array()
         ));

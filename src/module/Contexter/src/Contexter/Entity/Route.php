@@ -70,7 +70,7 @@ class Route implements RouteInterface
         return $this;
     }
 
-    public function setContext($context)
+    public function setContext(ContextInterface $context)
     {
         $this->context = $context;
         return $this;

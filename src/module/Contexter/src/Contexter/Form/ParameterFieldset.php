@@ -15,19 +15,31 @@ use Zend\Form\Fieldset;
 
 class ParameterFieldset extends Fieldset
 {
-    public function __construct($key, $value){
+
+    public function __construct($key, $value)
+    {
         parent::__construct('parameter');
         
         $this->add(array(
             'name' => $key,
-            'type' => 'Text',
+            'type' => 'Zend\Form\Element\Checkbox',
             'attributes' => array(
-        	   'value' => $value
+                'checked' => true
             ),
             'options' => array(
-                'label' => $key.':'
+                'value' => true,
+                'label' => 'Match parameter:'
             )
         ));
         
+        $this->add(array(
+            'name' => uniqid(),
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'value' => $key . ': ' . $value,
+                'class' => 'disabled',
+                'disabled' => true
+            )
+        ));
     }
 }

@@ -22,7 +22,7 @@ use Zend\Http\Request;
 
 class Router implements RouterInterface
 {
-    use \Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     /**
      *
@@ -47,10 +47,8 @@ class Router implements RouterInterface
      */
     public function match($uri, $type = NULL)
     {
-        $request = new Request();
-        $request->setUri($uri);
-        $request->setMethod('post');
-        $this->setRouteMatch($this->getRouter()->match($request));
+        $routeMatch = $this->matchUri($uri);
+        $this->setRouteMatch($routeMatch);
         
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
         
@@ -70,6 +68,15 @@ class Router implements RouterInterface
         return $this->matchRoutes($routes);
     }
 
+    public function matchUri($uri)
+    {
+        $request = new Request();
+        $request->setUri($uri);
+        $request->setMethod('post');
+        return $this->getRouter()
+            ->match($request);
+    }
+
     /**
      *
      * @return AdapterInterface
@@ -77,19 +84,18 @@ class Router implements RouterInterface
     public function getAdapter()
     {
         $requestedController = $this->getRouteMatch()->getParam('controller');
-        $result = array();
         $adapters = $this->getOption('adapters');
         foreach ($adapters as $adapter) {
-            if(in_array($requestedController, $adapter['controllers'])){
-                $controller = $adapter['controllers'][$requestedController];
+            if (in_array($requestedController, $adapter['controllers'])) {
+                $controller = $requestedController;
                 /* @var $adapter AdapterInterface */
                 $adapter = $this->getServiceLocator()->get($adapter['adapter']);
                 $adapter->setRouteMatch($this->getRouteMatch());
-                $adapter->setController();
+                $adapter->setController($this->getServiceLocator()->get($controller));
                 return $adapter;
             }
         }
-        return $result;
+        throw new Exception\RuntimeException(sprintf('Adapter not found for controller `%s`', $requestedController));
     }
 
     /**
@@ -106,7 +112,7 @@ class Router implements RouterInterface
      * @param RouteMatch $routeMatch            
      * @return $this
      */
-    protected function setRouteMatch(RouteMatch $routeMatch)
+    public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
         return $this;
@@ -120,8 +126,8 @@ class Router implements RouterInterface
     }
 
     /**
-     * 
-     * @param array $routes
+     *
+     * @param array $routes            
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     protected function matchRoutes(array $routes)

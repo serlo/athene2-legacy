@@ -32,28 +32,51 @@ class ContextController extends AbstractActionController
 
     public function addAction()
     {
-        $url = $this->params('url', NULL);
-        $parameters = $this->getRouter()->getRouteParams();
-        if ($url === NULL) {
-            $form = new UrlForm();
-            $template = 'contexter/add/url-form';
+        $uri = $this->params()->fromQuery('uri');
+        if ($uri === NULL) {
+            $this->redirect()->toRoute('contexter/select-uri');
+            return false;
         } else {
-            $form = new ContextForm($parameters);
-            $template = 'contexter/add/form';
+            $routeMatch = $this->getRouter()->matchUri($uri);
+            $this->getRouter()->setRouteMatch($routeMatch);
+            $types = $this->getContexter()->findAllTypeNames();
+            $parameters = $this->getRouter()
+                ->getAdapter()
+                ->getParameters();
+            $form = new ContextForm($parameters, $types->toArray());
             if ($this->getRequest()->isPost()) {
                 $form->setData($this->getRequest()
                     ->getPost());
                 if ($form->isValid()) {
-                	$data = $form->getData();
-                    $type = $this->params('type', NULL);
-                	$this->getContexter()->add($data['object'], $type, $data['title']);
+                    $data = $form->getData();
+                    $this->getContexter()->add($data['object'], $type, $data['title']);
                 }
             }
         }
         $view = new ViewModel(array(
             'form' => $form
         ));
-        $view->setTemplate($template);
+        $view->setTemplate('contexter/add/form');
+        return $view;
+    }
+
+    public function selectUriAction()
+    {
+        $form = new UrlForm();
+        $view = new ViewModel(array(
+            'form' => $form
+        ));
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()
+                ->getPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $url = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri']; 
+                $this->redirect()->toUrl($url);
+                return false;
+            }
+        }
+        $view->setTemplate('contexter/add/url-form');
         return $view;
     }
 

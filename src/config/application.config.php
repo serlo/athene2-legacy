@@ -41,7 +41,8 @@ return array(
         'Page',
         'Blog',
         'Upload',
-        'RelatedContent'
+        'RelatedContent',
+        'Contexter'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

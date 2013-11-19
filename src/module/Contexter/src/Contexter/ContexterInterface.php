@@ -12,35 +12,50 @@
 namespace Contexter;
 
 use Uuid\Entity\UuidHolder;
+use Contexter\Entity\TypeInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface ContexterInterface extends Router\RouterAwareInterface
 {
+
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return ContextInterface
      */
     public function getContext($id);
-    
+
     /**
-     * 
-     * @param UuidHolder $object
-     * @param string $type
-     * @param string $title
+     *
+     * @param UuidHolder $object            
+     * @param string $type            
+     * @param string $title            
      * @return ContextInterface
      */
     public function add(UuidHolder $object, $type, $title);
-    
+
     /**
-     * 
-     * @param string $type
+     *
+     * @param string $type            
      * @return ContextInterface[]
      */
     public function findAllByType($name);
 
     /**
-     * 
+     *
      * @return ContextInterface[]
      */
     public function findAll();
+
+    /**
+     *
+     * @return Collection|TypeInterface[]
+     */
+    public function findAllTypes();
+
+    /**
+     *
+     * @return array
+     */
+    public function findAllTypeNames();
 }

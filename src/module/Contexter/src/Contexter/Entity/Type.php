@@ -65,7 +65,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    public function addContext($context)
+    public function addContext(ContextInterface $context)
     {
         $this->context->add($context);
         return $this;

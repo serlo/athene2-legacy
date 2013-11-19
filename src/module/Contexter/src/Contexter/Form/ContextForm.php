@@ -17,12 +17,39 @@ use Zend\InputFilter\InputFilter;
 class ContextForm extends Form
 {
 
-    public function __construct(array $parameters)
+    public function __construct(array $parameters, array $types)
     {
         parent::__construct('context');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
         $inputFilter = new InputFilter('context');
+        $this->setInputFilter($inputFilter);
+        
+        $this->add(array(
+            'name' => 'route',
+            'type' => 'Text',
+            'attributes' => array(
+                'disabled' => 'disabled'
+            ),
+            'options' => array(
+                'label' => 'Route:'
+            )
+        ));
+
+
+        $values = array();
+        foreach($types as $type){
+            $values[$type] = $type;
+        }
+        
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'type',
+            'options' => array(
+                'label' => 'Select a type',
+                'value_options' => $values
+            )
+        ));
         
         $this->add(array(
             'name' => 'title',
@@ -30,17 +57,6 @@ class ContextForm extends Form
             'attributes' => array(),
             'options' => array(
                 'label' => 'Title:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'route',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'disabled'
-            ),
-            'options' => array(
-                'label' => 'Route:'
             )
         ));
         
@@ -56,8 +72,8 @@ class ContextForm extends Form
             )
         ));
         
-        foreach($parameters as $name){
-            $this->add(new ParameterFieldset($name));
+        foreach($parameters as $key => $name){
+            $this->add(new ParameterFieldset($key, $name));
         }
         
         $this->add(array(

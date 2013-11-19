@@ -62,6 +62,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
     protected function getParametersFromRouteMatch()
     {
-        return $this->getRouteMatch()->getParameters();
+        return $this->getRouteMatch()->getParams();
     }
 }

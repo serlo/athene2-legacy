@@ -15,10 +15,16 @@ use Zend\Stdlib\ArrayUtils;
 
 class EntityPluginControllerAdapter extends AbstractAdapter
 {
-
+    use \Language\Manager\LanguageManagerAwareTrait;
+    
     public function getParameters()
     {
         $params = $this->getParametersFromRouteMatch();
-        return ArrayUtils::merge($params, $this->getController()->getEntityService($params['entity']));
+        $entityService = $this->getController()->getEntityService($params['entity']);
+        $array = array(
+            'subject' => $entityService->provider()->getSubjectName(),
+            'language' => $this->getLanguageManager()->getLanguageFromRequest()->getCode()
+        );
+        return ArrayUtils::merge($params, $array);
     }
 }

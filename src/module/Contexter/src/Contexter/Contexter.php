@@ -21,7 +21,7 @@ use Contexter\Entity\ContextInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Contexter\Collection\ContextCollection;
 
-class Contexter implements ContexterInterface, ObjectManagerAwareInterface, ClassResolverAwareInterface, ServiceLocatorAwareInterface, Router\RouterAwareInterface
+class Contexter implements ContexterInterface, ObjectManagerAwareInterface, ClassResolverAwareInterface, ServiceLocatorAwareInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
 
@@ -104,24 +104,31 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
     }
     */
     
-    /*
-     * (non-PHPdoc) @see \Contexter\ContexterInterface::findAllByType()
-     */
     public function findAllByType($name)
     {
         $type = $this->findTypeByName($name);
         return new ContextCollection($type->getContext(), $this);
     }
     
-    /*
-     * (non-PHPdoc) @see \Contexter\ContexterInterface::findAll()
-     */
     public function findAll()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $results = $this->getObjectManager()->getRepository($className)->findAll();
         $collection = new ArrayCollection($results);
         return new ContextCollection($collection, $this);
+    }
+    
+    public function findAllTypes()
+    {
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
+        return new ArrayCollection($this->getObjectManager()->getRepository($className)->findAll());
+    }
+    
+    public function findAllTypeNames()
+    {
+        return $this->findAllTypes()->map(function (\Contexter\Entity\TypeInterface $e){
+            return $e->getName();
+        });
     }
 
     public function createService(Entity\ContextInterface $context)

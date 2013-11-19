@@ -17,7 +17,7 @@ return array(
         'router' => array(
             'adapters' => array(
                 array(
-                    'adapter' => __NAMESPACE__ . '\Adapter\EntityPluginController',
+                    'adapter' => __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter',
                     'controllers' => array(
                         'LearningResource\Plugin\Repository\Controller\RepositoryController'
                     )
@@ -47,24 +47,67 @@ return array(
             )
         )
     ),
+    'router' => array(
+        'routes' => array(
+            'contexter' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/context',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\ContextController',
+                    )
+                ),
+                'child_routes' => array(
+                    'select-uri' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/select-uri',
+                            'defaults' => array(
+                                'action' => 'selectUri'
+                            )
+                        )
+                    ),
+                    'add' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/add',
+                            'defaults' => array(
+                                'action' => 'add'
+                            )
+                        )
+                    ),
+                    'discussions' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/manage',
+                            'defaults' => array(
+                                'action' => 'manage'
+                            )
+                        )
+                    ),
+                )
+            )
+        )
+    ),
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE . '\Router\Router' => function (ServiceLocatorInterface $serviceManager)
+            __NAMESPACE__. '\Router\Router' => function (ServiceLocatorInterface $serviceManager)
             {
                 $config = $serviceManager->get('config');
                 $instance = new Router\Router();
                 $instance->setConfig($config['contexter']['router']);
                 $instance->setServiceLocator($serviceManager);
+                $instance->setRouter($serviceManager->get('Router'));
                 $instance->setObjectManager($serviceManager->get('EntityManager'));
                 $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
                 $instance->setContexter($serviceManager->get('Contexter\Contexter'));
                 return $instance;
             },
-            __NAMESPACE . '\Context' => function (ServiceLocatorInterface $serviceManager)
+            __NAMESPACE__. '\Context' => function (ServiceLocatorInterface $serviceManager)
             {
                 $instance = new Context();
                 $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
-                $instance->setRouter($serviceManager->get('Router'));
+                $instance->setRouter($serviceManager->get('Contexter\Router\Router'));
                 $instance->setObjectManager($serviceManager->get('EntityManager'));
                 return $instance;
             }
@@ -72,11 +115,24 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            __NAMESPACE . '\Controller\DiscussionController'
+            __NAMESPACE__. '\Controller\ContextController'
         ),
         'definition' => array(
             'class' => array(
-                __NAMESPACE . '\Context' => array(
+                __NAMESPACE__. '\Adapter\EntityPluginControllerAdapter' => array(
+                    'setLanguageManager' => array(
+                        'required' => true
+                    ),                    
+                ),
+                __NAMESPACE__. '\Controller\ContextController' => array(
+                    'setContexter' => array(
+                        'required' => true
+                    ),
+                    'setRouter' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__. '\Context' => array(
                     'setServiceLocator' => array(
                         'required' => true
                     ),
@@ -89,18 +145,18 @@ return array(
                     'setRouter' => array(
                         'required' => true
                     )
-                )
+                ),
             )
-        )
-        ,
+        ),
         'instance' => array(
             'preferences' => array(
-                __NAMESPACE . '\Contexter' => __NAMESPACE . '\Contexter',
-                __NAMESPACE . '\Router\RouterInterface' => __NAMESPACE . '\Router\Router'
+                __NAMESPACE__. '\ContexterInterface' => __NAMESPACE__. '\Contexter',
+                __NAMESPACE__. '\Router\RouterInterface' => __NAMESPACE__. '\Router\Router'
             ),
-            __NAMESPACE . '\Context' => array(
+            __NAMESPACE__. '\Context' => array(
                 'shared' => false
             )
         )
     )
 );
+
