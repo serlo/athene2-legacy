@@ -67,4 +67,20 @@ interface UuidManagerInterface
      * @return UuidHolder $entity
      */
     public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL);
+    
+    /**
+     * Finds Uuuids by their trashed attribute.
+     * 
+     * <code>
+     * $uuids = $um->findByTrashed(true);
+     * foreach($uuids as $uuid)
+     * {
+     *      echo $uuid->getId();
+     * }
+     * </code>
+     * 
+     * @param bool $trashed
+     * @return UuidInterface[]
+     */
+    public function findByTrashed($trashed);
 }

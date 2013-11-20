@@ -23,7 +23,7 @@
     						class="glyphicon glyphicon-inbox"></span></a> 
 					<?php endif;?>
                     <a
-						href="<?php echo $this->url('discussion/discussion/trash', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default dialog" data-content="<?php echo $this->translate('Do you really want to delete this discussion?'); ?>"><span
+						href="<?php echo $this->url('uuid/trash', array('id' => $this->discussion->getId())); ?>" class="btn btn-xs btn-default dialog" data-content="<?php echo $this->translate('Do you really want to delete this discussion?'); ?>"><span
 						class="glyphicon glyphicon-trash"></span></a>        
                 </div>
 			</div>

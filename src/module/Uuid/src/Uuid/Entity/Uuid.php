@@ -97,6 +97,16 @@ class Uuid implements UuidInterface
         return $this;
     }
 
+    public function getHolderName()
+    {
+        foreach(get_object_vars($this) as $key => $value){
+            if($this->is($key)){
+                return $key;
+            }
+        }
+        return NULL;
+    }
+
     public function getHolder()
     {
         foreach(get_object_vars($this) as $key => $value){

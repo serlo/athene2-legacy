@@ -18,8 +18,8 @@ use Contexter\Form\UrlForm;
 
 class ContextController extends AbstractActionController
 {
-    use \Contexter\ContexterAwareTrait,\Contexter\Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
-    
+    use\Contexter\ContexterAwareTrait,\Contexter\Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+
     public function manageAction()
     {
         $elements = $this->getContexter()->findAll();
@@ -54,15 +54,17 @@ class ContextController extends AbstractActionController
                     $data = $form->getData();
                     
                     $useParameters = array();
-                    foreach($data['parameters'] as $key => $value){
-                        if($value === '1' && array_key_exists($key, $parameters)){
+                    foreach ($data['parameters'] as $key => $value) {
+                        if ($value === '1' && array_key_exists($key, $parameters)) {
                             $useParameters[$key] = $parameters[$key];
                         }
                     }
                     $object = $this->getUuidManager()->getUuid($data['object']);
                     $context = $this->getContexter()->add($object, $data['type'], $data['title']);
                     $context->addRoute($data['route'], $useParameters);
-                    $this->getContexter()->getObjectManager()->flush();
+                    $this->getContexter()
+                        ->getObjectManager()
+                        ->flush();
                     $this->redirect()->toUrl($uri);
                     return FALSE;
                 }
@@ -86,7 +88,7 @@ class ContextController extends AbstractActionController
                 ->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $url = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri']; 
+                $url = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri'];
                 $this->redirect()->toUrl($url);
                 return false;
             }
@@ -104,5 +106,27 @@ class ContextController extends AbstractActionController
         ));
         $view->setTemplate('contexter/update');
         return $view;
+    }
+
+    public function removeAction()
+    {
+        $id = $this->params('id');
+        $this->getContexter()->removeContext((int) $id);
+        $this->getContexter()
+            ->getObjectManager()
+            ->flush();
+        $this->redirect()->toReferer();
+        return false;
+    }
+
+    public function removeRouteAction()
+    {
+        $id = $this->params('id');
+        $this->getContexter()->removeRoute((int) $id);
+        $this->getContexter()
+            ->getObjectManager()
+            ->flush();
+        $this->redirect()->toReferer();
+        return false;
     }
 }

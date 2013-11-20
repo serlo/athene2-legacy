@@ -23,7 +23,7 @@
 <?php endif; ?>
 
 <!-- Trash entity -->
-<?php $url = $this->url('entity/trash',array('entity' => $this->entity->getId())); ?>
+<?php $url = $this->url('uuid/trash',array('id' => $this->entity->getId())); ?>
 <?php if($this->rbac()->hasAccessToUrl($url) && !in_array('trash', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-trash"></span></a>

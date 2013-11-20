@@ -1,8 +1,6 @@
 <?php
 /**
  *
- *
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -20,7 +18,18 @@ use Uuid\Exception\NotFoundException;
 
 class UuidManager implements UuidManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+
+    public function findByTrashed($trashed)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
+        $entities = $this->getObjectManager()
+            ->getRepository($className)
+            ->findBy(array(
+            'trashed' => $trashed
+        ));
+        return $entities;
+    }
 
     public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL)
     {

@@ -58,6 +58,11 @@ return array(
                                 'route' => 'users/roles'
                             )
                         )
+                    ),
+                    array(
+                        'label' => 'Recycle bin',
+                        'icon' => 'trash',
+                        'route' => 'uuid/recycle-bin',
                     )
                 ),
             ),

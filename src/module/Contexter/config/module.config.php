@@ -79,6 +79,32 @@ return array(
                             )
                         )
                     ),
+                    'route' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/route',
+                        ),
+                        'child_routes' => array(
+                            'remove' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/remove/:id',
+                                    'defaults' => array(
+                                        'action' => 'removeRoute'
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    'remove' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/remove/:id',
+                            'defaults' => array(
+                                'action' => 'remove'
+                            )
+                        )
+                    ),
                     'add' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -88,7 +114,7 @@ return array(
                             )
                         )
                     ),
-                    'discussions' => array(
+                    'manage' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
                             'route' => '/manage',

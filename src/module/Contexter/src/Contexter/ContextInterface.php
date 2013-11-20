@@ -18,6 +18,11 @@ use Contexter\Entity\RouteInterface;
 
 interface ContextInterface
 {
+    /**
+     * 
+     * @return int
+     */
+    public function getId();
 
     /**
      *

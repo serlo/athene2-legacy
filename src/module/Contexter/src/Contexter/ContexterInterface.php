@@ -15,6 +15,7 @@ use Uuid\Entity\UuidHolder;
 use Contexter\Entity\TypeInterface;
 use Doctrine\Common\Collections\Collection;
 use Uuid\Entity\UuidInterface;
+use Contexter\Entity\RouteInterface;
 
 interface ContexterInterface extends Router\RouterAwareInterface
 {
@@ -25,6 +26,13 @@ interface ContexterInterface extends Router\RouterAwareInterface
      * @return ContextInterface
      */
     public function getContext($id);
+
+    /**
+     *
+     * @param int $id            
+     * @return RouteInterface
+     */
+    public function getRoute($id);
 
     /**
      *
@@ -59,4 +67,18 @@ interface ContexterInterface extends Router\RouterAwareInterface
      * @return array
      */
     public function findAllTypeNames();
+    
+    /**
+     * 
+     * @param int $id
+     * @return $this
+     */
+    public function removeRoute($id);
+    
+    /**
+     * 
+     * @param int $id
+     * @return $this
+     */
+    public function removeContext($id);
 }

@@ -22,7 +22,7 @@ use Contexter\Collection\ContextCollection;
 
 class Contexter implements ContexterInterface, ObjectManagerAwareInterface, ClassResolverAwareInterface, ServiceLocatorAwareInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
 
     public function getContext($id)
     {
@@ -40,6 +40,34 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
         }
         
         return $this->getInstance($id);
+    }
+
+    public function getRoute($id)
+    {
+        if (! is_int($id))
+            throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`', gettype($id)));
+        
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
+        $object = $this->getObjectManager()->find($className, $id);
+        if (! is_object($object))
+            throw new Exception\RuntimeException(sprintf('Could not find a route by the id of %d', $id));
+        
+        return $object;
+    }
+
+    public function removeRoute($id)
+    {        
+        $route = $this->getRoute($id);
+        $this->getObjectManager()->remove($route);
+        return $this;
+    }
+
+    public function removeContext($id)
+    {
+        $context = $this->getContext($id);
+        $this->getObjectManager()->remove($context->getEntity());
+        $this->removeInstance($id);
+        return $this;
     }
 
     public function add(\Uuid\Entity\UuidInterface $object, $type, $title)
@@ -73,59 +101,40 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
             $type = $this->getClassResolver()->resolve('Contexter\Entity\TypeInterface');
             $type->setName($name);
             $this->getObjectManager()->persist($type);
-        } elseif (! is_object($type) && !$createOnFallback) 
+        } elseif (! is_object($type) && ! $createOnFallback)
             throw new Exception\RuntimeException(sprintf('Type `%s` not found', $name));
-        
         
         return $type;
     }
 
-    /*
-    public function match($string, $type = NULL)
-    {
-        $matches = $this->getRouter()->match($string);
-        
-        $collection = new ArrayCollection();
-        
-        foreach ($matches as $match) {
-            // @var $match Entity\ContextInterface
-            if ($type !== NULL) {
-                $type = $this->findTypeByName($type);
-                if ($match->getType() === $type) {
-                    $collection->add($match);
-                }
-            } else {
-                $collection->add($match);
-            }
-        }
-        
-        return new ContextCollection($collection, $this);
-    }
-    */
-    
     public function findAllByType($name)
     {
         $type = $this->findTypeByName($name);
         return new ContextCollection($type->getContext(), $this);
     }
-    
+
     public function findAll()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
-        $results = $this->getObjectManager()->getRepository($className)->findAll();
+        $results = $this->getObjectManager()
+            ->getRepository($className)
+            ->findAll();
         $collection = new ArrayCollection($results);
         return new ContextCollection($collection, $this);
     }
-    
+
     public function findAllTypes()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-        return new ArrayCollection($this->getObjectManager()->getRepository($className)->findAll());
+        return new ArrayCollection($this->getObjectManager()
+            ->getRepository($className)
+            ->findAll());
     }
-    
+
     public function findAllTypeNames()
     {
-        return $this->findAllTypes()->map(function (\Contexter\Entity\TypeInterface $e){
+        return $this->findAllTypes()->map(function (\Contexter\Entity\TypeInterface $e)
+        {
             return $e->getName();
         });
     }
