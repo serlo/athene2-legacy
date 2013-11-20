@@ -4,16 +4,17 @@
  */
 $input = input();
 
-print_r(processTables($input));
+$return = processTables($input);
+
+echo json_encode($return);
+print_r($return);
 
 function processTables($input)
 {
     if (! stristr($input, '<table'))
         return $input;
     
-    $layout = array(
-        'layout' => array()
-    );
+    $layout = array();
     
     $subpattern = array();
     
@@ -33,7 +34,7 @@ function processTables($input)
         
         // text vor tabelle
         if (strlen(trim($table[1])) > 0) {
-            $layout['layout'][][] = $table[1];
+            $layout[][]['content'] = $table[1];
         }
         
         // <tr></tr> == new row
@@ -64,7 +65,7 @@ function processTables($input)
                 );
             }
             
-            $layout['layout'][] = $columns;
+            $layout[] = $columns;
         }
         $lastTable = $table;
     }
@@ -72,7 +73,7 @@ function processTables($input)
     // process non-tables behind last </table>
     $pos = strpos($input, $table[0]);
     $garbage = substr($input, $pos);
-    $layout['layout'][][] = str_replace($table[0], '', $garbage);
+    $layout[][]['content'] = str_replace($table[0], '', $garbage);
     
     return $layout;
 }
