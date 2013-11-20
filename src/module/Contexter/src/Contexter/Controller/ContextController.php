@@ -19,7 +19,7 @@ use Contexter\Form\UrlForm;
 class ContextController extends AbstractActionController
 {
     use \Contexter\ContexterAwareTrait,\Contexter\Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
-
+    
     public function manageAction()
     {
         $elements = $this->getContexter()->findAll();

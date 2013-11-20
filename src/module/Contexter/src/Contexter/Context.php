@@ -49,6 +49,10 @@ class Context implements ContextInterface, ObjectManagerAwareInterface, ClassRes
     {
         return $this->getEntity()->getTitle();
     }
+    
+    public function getRoutes(){
+        return $this->getEntity()->getRoutes();
+    }
 
     public function setEntity(Entity\ContextInterface $entity)
     {

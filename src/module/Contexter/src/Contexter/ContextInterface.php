@@ -13,6 +13,8 @@ namespace Contexter;
 
 use Contexter\Entity;
 use Contexter\Entity\TypeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Contexter\Entity\RouteInterface;
 
 interface ContextInterface
 {
@@ -56,4 +58,10 @@ interface ContextInterface
      * @return $this
      */
     public function addRoute($routeName, array $params = array());
+    
+    /**
+     * 
+     * @return ArrayCollection|RouteInterface[]
+     */
+    public function getRoutes();
 }

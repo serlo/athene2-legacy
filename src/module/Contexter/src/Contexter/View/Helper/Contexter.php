@@ -15,22 +15,29 @@ use Zend\View\Helper\AbstractHelper;
 
 class Contexter extends AbstractHelper
 {
-    use \Contexter\Router\RouterAwareTrait, \Common\Traits\ConfigAwareTrait;
-    
-    
-    
-    protected function getDefaultConfig(){
+    use\Contexter\Router\RouterAwareTrait,\Common\Traits\ConfigAwareTrait;
+
+    protected function getDefaultConfig()
+    {
         return array(
             'template' => 'contexter/helper/default'
         );
     }
-    
-    public function __invoke(){
+
+    public function __invoke()
+    {
         return $this;
     }
-    
-    public function render($type = NULL){
-        $matches = $this->getRouter()->match(NULL, $type);
-        return $this->getView()->partial($this->getOption('template'), array('router' => $this->getRouter(), 'matches' => $matches, 'type' => $type));
+
+    public function render($type = NULL)
+    {
+        if (is_object($this->getRouter()->getRouteMatch())) {
+            $matches = $this->getRouter()->match(NULL, $type);
+            return $this->getView()->partial($this->getOption('template'), array(
+                'router' => $this->getRouter(),
+                'matches' => $matches,
+                'type' => $type
+            ));
+        }
     }
 }

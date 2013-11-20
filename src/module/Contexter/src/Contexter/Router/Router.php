@@ -23,16 +23,16 @@ use Contexter\Entity\TypeInterface;
 
 class Router implements RouterInterface
 {
-    use \Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     /**
      *
      * @var RouteMatch
      */
     protected $routeMatch;
-    
+
     /**
-     * 
+     *
      * @var RouteMatch
      */
     protected $factoryRouteMatch;
@@ -110,12 +110,13 @@ class Router implements RouterInterface
         }
         throw new Exception\RuntimeException(sprintf('No suitable adapter found for controller `%s`', $requestedController));
     }
-    
-    public function hasAdapter(){
-        try{
+
+    public function hasAdapter()
+    {
+        try {
             $this->getAdapter();
             return true;
-        } catch (Exception\RuntimeException $e){
+        } catch (Exception\RuntimeException $e) {
             return false;
         }
     }
@@ -136,7 +137,7 @@ class Router implements RouterInterface
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {
-        if($this->factoryRouteMatch === NULL){
+        if ($this->factoryRouteMatch === NULL) {
             $this->factoryRouteMatch = $this->routeMatch;
         }
         $this->routeMatch = $routeMatch;
@@ -149,9 +150,12 @@ class Router implements RouterInterface
             'adapters' => array()
         );
     }
-    
-    protected function clear(){
-        $this->setRouteMatch($this->factoryRouteMatch);
+
+    protected function clear()
+    {
+        if (is_object($this->factoryRouteMatch)) {
+            $this->setRouteMatch($this->factoryRouteMatch);
+        }
         return $this;
     }
 
