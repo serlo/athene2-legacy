@@ -31,6 +31,6 @@ class Contexter extends AbstractHelper
     
     public function render($type = NULL){
         $matches = $this->getRouter()->match(NULL, $type);
-        return $this->getView()->partial($this->getOption('template'), array('matches' => $matches, 'type' => $type));
+        return $this->getView()->partial($this->getOption('template'), array('router' => $this->getRouter(), 'matches' => $matches, 'type' => $type));
     }
 }

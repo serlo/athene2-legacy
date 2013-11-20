@@ -30,6 +30,12 @@ class Router implements RouterInterface
      * @var RouteMatch
      */
     protected $routeMatch;
+    
+    /**
+     * 
+     * @var RouteMatch
+     */
+    protected $factoryRouteMatch;
 
     /**
      *
@@ -70,7 +76,9 @@ class Router implements RouterInterface
             ->getRepository($className)
             ->findBy($criteria);
         
-        return $this->matchRoutes($routes, $type);
+        $result = $this->matchRoutes($routes, $type);
+        $this->clear();
+        return $result;
     }
 
     public function matchUri($uri)
@@ -100,7 +108,16 @@ class Router implements RouterInterface
                 return $adapter;
             }
         }
-        throw new Exception\RuntimeException(sprintf('Adapter not found for controller `%s`', $requestedController));
+        throw new Exception\RuntimeException(sprintf('No suitable adapter found for controller `%s`', $requestedController));
+    }
+    
+    public function hasAdapter(){
+        try{
+            $this->getAdapter();
+            return true;
+        } catch (Exception\RuntimeException $e){
+            return false;
+        }
     }
 
     /**
@@ -119,6 +136,9 @@ class Router implements RouterInterface
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {
+        if($this->factoryRouteMatch === NULL){
+            $this->factoryRouteMatch = $this->routeMatch;
+        }
         $this->routeMatch = $routeMatch;
         return $this;
     }
@@ -128,6 +148,11 @@ class Router implements RouterInterface
         return array(
             'adapters' => array()
         );
+    }
+    
+    protected function clear(){
+        $this->setRouteMatch($this->factoryRouteMatch);
+        return $this;
     }
 
     /**
