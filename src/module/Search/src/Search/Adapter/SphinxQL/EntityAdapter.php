@@ -17,7 +17,7 @@ class EntityAdapter extends AbstractSphinxAdapter
 {
     use \Entity\Manager\EntityManagerAwareTrait;
 
-    protected $types = array('article', 'video');
+    protected $types = array('article', 'video', 'module');
     
     public function search($query)
     {
