@@ -13,28 +13,26 @@ namespace Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-interface SeachServiceInterface
+interface SearchServiceInterface
 {
     /**
      * Search for something.
      * 
      * <code>
-     * $options = array(
-     *      'adapters' => array(
-     *          'AdapterA',
-     *          'AdapterB',
-     *          'AdapterC'
-     *      )
+     * $adapters = array(
+     *     'AdapterA',
+     *     'AdapterB',
+     *     'AdapterC'
      * );
      * 
-     * $results = $searchService->search('test', $options);
+     * $results = $searchService->search('test', $adapters);
      * 
      * var_dump($results);
      * </code>
      * 
      * @param string $query
-     * @param array $options
+     * @param array $adapters
      * @return ArrayCollection
      */
-    public function search($query, array $options);
+    public function search($query, array $adapters);
 }

@@ -42,7 +42,8 @@ return array(
         'Upload',
         'RelatedContent',
         'Contexter',
-        'Flag'
+        'Flag',
+        'Search'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

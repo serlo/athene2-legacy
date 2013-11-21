@@ -9,16 +9,19 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Search\Adapter;
+namespace Search\Result;
 
-use Search\Result\ContainerInterface;
-
-interface AdapterInterface
-{
+interface ResultInterface
+{    
     /**
      * 
-     * @param string $query
-     * @return ContainerInterface[]
+     * @return string
      */
-    public function search($query);
+    public function getName();
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getId();
 }

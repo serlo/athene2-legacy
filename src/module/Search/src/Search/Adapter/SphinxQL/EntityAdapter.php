@@ -11,18 +11,47 @@
  */
 namespace Search\Adapter\SphinxQL;
 
-use Entity\Collection\EntityCollection;
-use Doctrine\Common\Collections\ArrayCollection;
+use Search\Result;
+
 class EntityAdapter extends AbstractSphinxAdapter
 {
     use \Entity\Manager\EntityManagerAwareTrait;
+
+    protected $types = array('article', 'video');
     
     public function search($query)
     {
-        $query = $this->forge();
-        $query->select('value')->from('entityIndex')->match('value', $query);
-        $results = $query->execute();
-        $collection = new ArrayCollection($results);
-        return new EntityCollection($collection, $this->getEntityManager());
+        $container = new Result\Container();
+        $container->setName('entity');
+        
+        foreach($this->types as $type){
+            $resultContainer = $this->searchTypes($query, $type);
+            $container->addContainer($resultContainer);
+        }
+        
+        return $container;
+    }
+
+    protected function searchTypes($query, $type)
+    {
+        $container = new Result\Container();
+        $container->setName($type);
+        
+        $spinxQuery = $this->forge();
+        $spinxQuery->select('value', 'id')
+            ->from('entityIndex')
+            ->match('value', $query)
+            ->where('type', '=', crc32($type));
+        $results = $spinxQuery->execute();
+        
+        foreach($results as $result){
+            $entity = $this->getEntityManager()->getEntity($result['id']);
+            $result = new Result\Result();
+            $result->setName($entity->repository()->getCurrentRevision()->get('title'));
+            $result->setId($entity->getId());
+            $container->addResult($result);
+        }
+        
+        return $container;
     }
 }
