@@ -269,7 +269,7 @@ class UserController extends AbstractUserController
     public function activateAction()
     {
         $user = $this->getUserManager()->findUserByToken($this->params('token'));
-        $user->addRole('login');
+        $user->addRole(2);
         $user->generateToken();
         $this->getUserManager()
             ->getObjectManager()
