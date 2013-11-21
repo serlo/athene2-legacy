@@ -1,0 +1,44 @@
+<?php echo $this->pageHeader('Manage flags')->render(); ?>
+<table class="table">
+    <thead>
+        <tr>
+            <th><?php echo $this->translate('#');?></th>
+            <th><?php echo $this->translate('Object');?></th>
+            <th><?php echo $this->translate('Type');?></th>
+            <th><?php echo $this->translate('Timestamp');?></th>
+            <th><?php echo $this->translate('Reporter');?></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php /* @var $flag \Flag\Service\FlagServiceInterface */ ?>
+        <?php foreach($this->flags as $flag): ?>
+            <tr>
+                <td>
+                    <?php echo $flag->getId(); ?>
+                </td>
+                <td>
+                    <?php $url = $this->url('uuid/router', array('uuid' => $flag->getObject()->getId())); ?>
+                    <a href="<?php echo $url; ?>"><?php echo $flag->getObject()->getUuid(); ?></a>
+                </td>
+                <td>
+                    <?php echo $flag->getType()->getName(); ?>
+                </td>
+                <td>
+                    <?php echo $this->timeago()->render($flag->getTimestamp());?>
+                </td>
+                <td>
+                    <a href="<?php echo $this->url('uuid/router', array('uuid' => $flag->getReporter()->getId())); ?>"><?php echo $flag->getReporter()->getUsername(); ?></a>
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-xs" href="<?php echo $this->url('flag/detail', array('id' => $flag->getId())); ?>"><span class="glyphicon glyphicon-search"></span></a>
+                        <a class="btn btn-danger btn-xs" href="<?php echo $this->url('flag/remove', array('id' => $flag->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
+                    </div>
+                </td>
+            </tr>
+            <?php ?>
+        <?php endforeach; ?>
+    </tbody>
+</table>

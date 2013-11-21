@@ -1,0 +1,50 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author  Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+echo $this->doctype();
+?>
+<!--[if lt IE 9 ]>    <html class="old-ie fuelux" lang="<?php echo $this->currentLanguage(); ?>"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="fuelux" lang="<?php echo $this->currentLanguage(); ?>"> <!--<![endif]-->
+<?php print $this->partial('layout/partials/head'); ?>
+<body>
+    <div class="wrap">
+        <?php echo $this->partial('layout/partials/header.phtml'); ?>
+
+        <div id="page" class="container  col-2">
+            <?php echo $this->partial('layout/partials/left-sidebar'); ?>
+            <section id="main">
+                <div id="main-container">
+                    <aside id="sidebar">
+                        <div id="sidebar-toggle" class="layout-toggle">
+                            <i class="glyphicon glyphicon-list"></i>
+                        </div>
+                        <div id="sidebar-content">
+                            <?php echo $this->registry()->get('gen'); ?>
+                        </div>
+                    </aside>
+                    <div id="content">
+                        <?php echo $this->partial('layout/partials/notifications.phtml'); ?>
+                        <div id="content-container">
+                            <?php echo $this->partial('layout/partials/main.phtml'); ?>
+                        </div>
+                    </div>
+                </div>
+                <?php echo $this->partial('layout/partials/contexter'); ?>
+            </section>
+            <?php echo $this->partial('layout/partials/right-sidebar'); ?>
+        </div>
+        <?php /* sticky footer: */ ?>
+        <div id="footer-push"></div>
+    </div>
+    <?php echo $this->partial('layout/partials/footer.phtml'); ?>
+    <?php echo $this->partial('layout/partials/default-modal.phtml'); ?>
+</body>
+</html>

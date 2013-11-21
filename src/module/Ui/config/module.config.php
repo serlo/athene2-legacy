@@ -1,0 +1,161 @@
+<?php
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\HelperPluginManager;
+use Zend\Session\Container;
+use ZfcRbac\Service\Rbac;
+use Zend\Mvc\Application;
+use Ui\View\Helper\PageHeader;
+/**
+ *
+ *
+ *
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+return array(
+    'navigation' => array(
+        'hydratables' => array(
+            'default' => array(
+                'hydrators' => array()
+            ),
+            'top-center' => array(
+                'hydrators' => array()
+            )
+        )
+    ),
+    'view_manager' => array(
+        'display_not_found_reason' => true,
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
+        'template_map' => array(
+            'layout/home' => __DIR__ . '/../templates/layout/serlo-home.phtml',
+            'layout/1-col' => __DIR__ . '/../templates/layout/1-col.phtml',
+            'layout/layout' => __DIR__ . '/../templates/layout/2-col.phtml',
+            'layout/3-col' => __DIR__ . '/../templates/layout/3-col.phtml',
+            'error/404' => __DIR__ . '/../templates/error/404.phtml',
+            'error/index' => __DIR__ . '/../templates/error/index.phtml'
+        ),
+        'template_path_stack' => array(
+            __DIR__ . '/../templates'
+        ),
+        'strategies' => array(
+            'Zend\View\Strategy\JsonStrategy',
+            'Ui\Strategy\PhpRendererStrategy'
+        )
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'currentLanguage' => function ($helperPluginManager)
+            {
+                $plugin = new Ui\View\Helper\ActiveLanguage();
+                $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
+                
+                // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
+                $plugin->setLanguage($languageManager->getLanguageFromRequest());
+                
+                return $plugin;
+            },
+            'pageHeader' => function ($helperPluginManager)
+            {
+                $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
+                $plugin = new PageHeader();
+                $plugin->setConfig($config);
+                return $plugin;
+            }
+        ),
+        'invokables' => array(
+            'timeago' => 'Ui\View\Helper\Timeago',
+            'registry' => 'Ui\View\Helper\Registry'
+        )
+    ),
+    'page_header_helper' => array(),
+    'service_manager' => array(
+        'factories' => array(
+            'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm)
+            {
+                $service = new Ui\Renderer\PhpDebugRenderer();
+                $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
+                $service->setHelperPluginManager($sm->get('ViewHelperManager'));
+                return $service;
+            },
+            'navigation' => 'Ui\Navigation\DefaultNavigationFactory',
+            'top_left_navigation' => 'Ui\Navigation\TopLeftNavigationFactory',
+            'top_right_navigation' => 'Ui\Navigation\TopRightNavigationFactory',
+            'top_center_navigation' => 'Ui\Navigation\TopCenterNavigationFactory',
+            'footer_navigation' => 'Ui\Navigation\FooterNavigationFactory',
+            'subject_navigation' => 'Ui\Navigation\SubjectNavigationFactory'
+        )
+    ),
+    'assetic_configuration' => array(
+        'webPath' => realpath('public/assets'),
+        'basePath' => 'assets',
+        
+        'default' => array(
+            'assets' => array(
+                '@scripts',
+                '@styles'
+            ),
+            'options' => array(
+                'mixin' => false
+            )
+        ),
+        
+        'modules' => array(
+            'ui' => array(
+                'root_path' => __DIR__ . '/../assets/build',
+                'collections' => array(
+                    'scripts' => array(
+                        'assets' => array(
+                            'bower_components/modernizr/modernizr.js',
+                            'bower_components/requirejs/require.js',
+                            'scripts/main.js'
+                        )
+                    ),
+                    'styles' => array(
+                        'assets' => array(
+                            'styles/main.css'
+                        ),
+                        'filters' => array(
+                            'CssRewriteFilter' => array(
+                                'name' => 'Assetic\Filter\CssRewriteFilter'
+                            )
+                        )
+                    ),
+                    'main_fonts' => array(
+                        'assets' => array(
+                            'styles/fonts/*',
+                            'styles/fonts/*.woff',
+                            'styles/fonts/*.svg',
+                            'styles/fonts/*.ttf'
+                        ),
+                        'options' => array(
+                            'move_raw' => true
+                        )
+                    ),
+                    'images' => array(
+                        'assets' => array(
+                            'images/*'
+                        ),
+                        'options' => array(
+                            'move_raw' => true
+                        )
+                    )
+                )
+            )
+        ),
+        'acceptableErrors' => array(
+            Application::ERROR_CONTROLLER_NOT_FOUND,
+            Application::ERROR_CONTROLLER_INVALID,
+            Application::ERROR_ROUTER_NO_MATCH,
+            Rbac::ERROR_ROUTE_UNAUTHORIZED,
+            Rbac::ERROR_CONTROLLER_UNAUTHORIZED
+        )
+    )
+);

@@ -1,0 +1,39 @@
+<?php
+/**
+* @authors Kanstantsin A Kamkou (2ka.by); Jeroen Herczeg; Timo Klement
+*/
+
+$html = array();
+//$html[] = '<div class="navbar navbar-fixed-top">';
+//$html[] = ' <div class="navbar-inner">';
+//$html[] = ' <div class="container">';
+
+$html[] = '<div id="navigation-content">';
+$html[] = '<ul id="main-nav" class="nav">';
+
+foreach ($this->container as $page) {
+    // visibility of the page
+    if (! $page->isVisible(false) || !$this->navigation()->accept($page) || !$page->isActive(true)) {
+        continue;
+    }
+
+    // for Login/Logout/Register links:
+    // check if menu item has 'needsIdentidy' set
+    if (! is_null($page->get('needsIdentity'))) {
+        // check if current user is anonymous and compare to 'needsIdentity' value
+        if($this->authentication()->hasIdentity() !== $page->get('needsIdentity')) {
+            continue;
+        }
+    }
+
+    if(! empty($page->pages)) {
+        // $html[] = '<ul class="dropdown-menu">';
+        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));
+        // $html[] = "</ul>";
+    }
+}
+
+$html[] = '</ul>';
+$html[] = '</div>';
+
+echo join(PHP_EOL, $html);

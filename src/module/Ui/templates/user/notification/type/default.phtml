@@ -1,0 +1,3 @@
+<li role="presentation" class="<?php $this->notification->getSeen() ? '' : 'active ' ?>"><a role="menuitem" tabindex="-1" href="#">
+    <?php echo sprintf($this->translate('Benutzer %s, Uuid %s'), $this->notification->getActors()->current()->getUsername(), $this->notification->getObjects()->current()->getId()); ?>
+</a></li>

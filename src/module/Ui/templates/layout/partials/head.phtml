@@ -1,0 +1,22 @@
+<head>
+    <meta charset="utf-8">
+    <?php
+    echo $this->headTitle($this->titleHead)->setAutoEscape(false);
+
+    echo $this->headLink();
+    echo $this->headStyle();
+    echo $this->headScript();
+?>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+<?php
+    /* google font: open sans */
+    echo '<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700" rel="stylesheet" type="text/css">';
+    echo $this->inlineScript();
+    /*
+     * echo $this->headlink() ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux.min.css') ->appendStylesheet($this->basePath() . '/fuelux/dist/css/fuelux-responsive.min.css');
+     */
+    echo $this->headScript()->prependFile($this->basePath() . '/ckeditor/ckeditor.js', 'text/javascript', array());
+        //->prependFile($this->basePath() . '/fuelux/dist/loader.js', 'text/javascript', array());
+    // ->prependFile($this->basePath() . '/fuelux/dist/all.js', 'text/javascript', array());
+    ?>
+</head>
