@@ -63,6 +63,11 @@ return array(
                         'label' => 'Recycle bin',
                         'icon' => 'trash',
                         'route' => 'uuid/recycle-bin',
+                    ),
+                    array(
+                        'label' => 'Flags',
+                        'icon' => 'flag',
+                        'route' => 'flag/manage',
                     )
                 ),
             ),

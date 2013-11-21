@@ -35,6 +35,14 @@
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-link"></span></a>
 <?php endif; ?>
+
+<!-- Flag content -->
+<?php $url = $this->url('flag/add',array('id' => $this->entity->getId())); ?>
+<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('flag', $hide)): ?>
+    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
+    	class="glyphicon glyphicon-flag"></span></a>
+<?php endif; ?>
+	
 	
 	
 <!-- Detail page -->

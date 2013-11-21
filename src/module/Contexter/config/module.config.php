@@ -163,7 +163,7 @@ return array(
                 __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter' => array(
                     'setLanguageManager' => array(
                         'required' => true
-                    )
+                    ),
                 ),
                 __NAMESPACE__ . '\Controller\ContextController' => array(
                     'setUuidManager' => array(

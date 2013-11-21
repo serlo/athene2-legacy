@@ -9,23 +9,24 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace ClassResolver;
+namespace Flag;
 
-interface ClassResolverInterface
+class Module
 {
 
-    /**
-     *
-     * @param string $class            
-     * @return string class name
-     */
-    public function resolveClassName($class);
+    public function getConfig ()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
 
-    /**
-     *
-     * @param string $class     
-     * @param bool $userServiceLocator
-     * @return object
-     */
-    public function resolve($class, $userServiceLocator = false);
+    public function getAutoloaderConfig ()
+    {
+        return array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+                )
+            )
+        );
+    }
 }
