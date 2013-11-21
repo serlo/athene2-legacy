@@ -12,7 +12,39 @@
 namespace Search\Adapter\SphinxQL;
 
 use Search\Adapter\AdapterInterface;
+use Foolz\SphinxQL\Connection;
+use Foolz\SphinxQL\SphinxQL;
 
 abstract class AbstractSphinxAdapter implements AdapterInterface
 {
+
+    /**
+     *
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     *
+     * @return Connection $connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     *
+     * @param Connection $connection            
+     * @return $this
+     */
+    public function setConnection(Connection $connection)
+    {
+        $this->connection = $connection;
+        return $this;
+    }
+    
+    public function forge(){
+        return SphinxQL::forge($this->getConnection());
+    }
 }

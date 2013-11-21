@@ -11,5 +11,15 @@
  */
 namespace Search;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
 return array(
+    'service_manager' => array('factories' => array(
+        'Foolz\SphinxQL\Connection' => function(ServiceLocatorInterface $serviceLocator){
+            $config = $serviceLocator->get('config');
+            $config = $config['sphinx'];
+            $instance = new \Foolz\SphinxQL\Connection();
+            $instance->setConnectionParams($config['host'], $config['port']);
+            return $connection;
+        }
+    ))
 );

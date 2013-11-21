@@ -11,13 +11,18 @@
  */
 namespace Search\Adapter\SphinxQL;
 
-use Foolz\Sphinxql\Sphinxql;
-
+use Entity\Collection\EntityCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 class EntityAdapter extends AbstractSphinxAdapter
 {
-
+    use \Entity\Manager\EntityManagerAwareTrait;
+    
     public function search($query)
     {
-        Sphinxql::select('a', 'b');
+        $query = $this->forge();
+        $query->select('value')->from('entityIndex')->match('value', $query);
+        $results = $query->execute();
+        $collection = new ArrayCollection($results);
+        return new EntityCollection($collection, $this->getEntityManager());
     }
 }
