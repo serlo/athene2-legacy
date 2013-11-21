@@ -12,14 +12,30 @@
 namespace Common\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Zend\Session\Container;
 
 class RefererProvider extends AbstractPlugin
 {
 
-    public function toUrl ($default = '/')
+    public function toUrl($default = '/')
     {
-        $referer = $this->getController()->getRequest()->getHeader('Referer');
+        $referer = $this->getController()
+            ->getRequest()
+            ->getHeader('Referer');
         $referer = $referer ? $referer->getUri() : $default;
         return $referer;
+    }
+
+    public function store()
+    {
+        $container = new Container('ref');
+        $container->ref = $this->toUrl();
+        return $this;
+    }
+
+    public function fromStorage()
+    {
+        $container = new Container('ref');
+        return isset($container->ref) ? $container->ref : $this->toUrl();
     }
 }
