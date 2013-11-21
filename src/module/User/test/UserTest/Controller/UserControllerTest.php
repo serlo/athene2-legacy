@@ -301,7 +301,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->will($this->returnValue($user));
         $user->expects($this->once())
             ->method('addRole')
-            ->with('login');
+            ->with(2);
         $user->expects($this->once())
             ->method('generateToken');
         $controller->getObjectManager()
