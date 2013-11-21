@@ -17,7 +17,7 @@ use Zend\View\Model\ViewModel;
 
 class SearchController extends AbstractActionController
 {
-    use \Search\SearchServiceAwareTrait;
+    use\Search\SearchServiceAwareTrait;
 
     public function searchAction()
     {
@@ -32,7 +32,8 @@ class SearchController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $results = $this->getSearchService()->search($data['query'], array(
-                    'entity'
+                    'entity',
+                    'taxonomyTerm'
                 ));
                 $view->setVariable('results', $results);
                 $view->setTemplate('search/results');
