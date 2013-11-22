@@ -12,13 +12,13 @@
 namespace Event\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Uuid\Entity\UuidInterface;
 
 /**
- *
  * @ORM\Entity
- * @ORM\Table(name="event")
+ * @ORM\Table(name="event_parameter")
  */
-class Event implements EventInterface
+class EventParameter implements EventParameterInterface
 {
 
     /**
@@ -29,45 +29,55 @@ class Event implements EventInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="EventLog", inversedBy="parameters")
+     */
+    protected $log;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="EventParameterName")
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
      */
-    protected $description;
-    
+    protected $uuid;
+
     public function getId()
     {
         return $this->id;
     }
-    
+
+    public function getLog()
+    {
+        return $this->log;
+    }
+
     public function getName()
     {
         return $this->name;
     }
-    
-    public function getDescription()
+
+    public function getObject()
     {
-        return $this->description;
+        return $this->uuid;
     }
-    
-    public function setId($id)
+
+    public function setLog(EventLogInterface $log)
     {
-        $this->id = $id;
+        $this->log = $log;
         return $this;
     }
-    
-    public function setName($uri)
+
+    public function setName(EventParameterNameInterface $name)
     {
-        $this->name = $uri;
+        $this->name = $name;
         return $this;
     }
-    
-    public function setDescription($description)
+
+    public function setObject(UuidInterface $uuid)
     {
-        $this->description = $description;
+        $this->uuid = $uuid;
         return $this;
     }
 }

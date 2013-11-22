@@ -84,4 +84,17 @@ interface EventLogInterface
      * @return EventInterface
      */
     public function getEvent();
+
+    /**
+     *
+     * @return EventParameterInterface[]
+     */
+    public function getParameters();
+
+    /**
+     *
+     * @param EventParameterInterface $parameter            
+     * @return $this
+     */
+    public function addParameter(EventParameterInterface $parameter);
 }

@@ -28,15 +28,17 @@ abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
      *
      * @param AbstractActionController $controller            
      * @param LanguageInterface $language            
-     * @param UserInterface $actor            
+     * @param UserInterface $actor          
+     * @param array $params  
      * @param UuidHolder $uuid            
+     * @return void
      */
-    public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
+    public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, array $params = array())
     {
-        $params = $controller->getEvent()
+        $routeParams = $controller->getEvent()
             ->getRouteMatch()
             ->getParams();
-        $url = strtolower(str_replace('\\', '/', $params['controller']) . '/' . $params['action']);
-        $this->getEventManager()->logEvent($url, $language, $actor, $uuid);
+        $url = strtolower(str_replace('\\', '/', $routeParams['controller']) . '/' . $routeParams['action']);
+        $this->getEventManager()->logEvent($url, $language, $actor, $uuid, $params);
     }
 }

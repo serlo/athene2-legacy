@@ -13,9 +13,9 @@ namespace Event\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -56,19 +56,28 @@ class EventLog implements EventLogInterface
     protected $language;
 
     /**
+     * @ORM\OneToMany(targetEntity="EventParameter", mappedBy="log")
+     */
+    protected $parameters;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $date;
 
+    public function __construct()
+    {
+        $this->parameters = new ArrayCollection();
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
     public function getLanguage()
     {
         return $this->language;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-        return $this;
     }
 
     public function getId()
@@ -117,6 +126,18 @@ class EventLog implements EventLogInterface
     public function setDate($date)
     {
         $this->date = $date;
+        return $this;
+    }
+
+    public function setLanguage(LanguageInterface $language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    public function addParameter(EventParameterInterface $parameter)
+    {
+        $this->parameters->add($parameter);
         return $this;
     }
 }

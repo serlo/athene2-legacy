@@ -32,9 +32,10 @@ interface EventManagerInterface
      * @param LanguageInterface $language
      * @param UserInterface $actor
      * @param UuidHolder $uuid
+     * @param array $parameters
      * @return $this
      */
-    public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid);
+    public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, array $parameters = array());
     
     /**
      * Finds an event by it's name
@@ -43,4 +44,12 @@ interface EventManagerInterface
      * @return EventInterface
      */
     public function findEventByName($eventName);
+    
+    /**
+     * 
+     * @param int $objectId
+     * @param string $recursive
+     * @return EventInterface[]
+     */
+    public function findEventsByObject($objectId, $recursive = true);
 }

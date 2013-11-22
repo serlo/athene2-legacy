@@ -14,11 +14,10 @@ namespace Event\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Entity
- * @ORM\Table(name="event")
+ * @ORM\Table(name="event_parameter_name")
  */
-class Event implements EventInterface
+class EventParameterName implements EventParameterNameInterface
 {
 
     /**
@@ -33,41 +32,24 @@ class Event implements EventInterface
      */
     protected $name;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $description;
-    
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
-    public function getDescription()
+
+    public function setName($name)
     {
-        return $this->description;
-    }
-    
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-    
-    public function setName($uri)
-    {
-        $this->name = $uri;
-        return $this;
-    }
-    
-    public function setDescription($description)
-    {
-        $this->description = $description;
+        $this->name = $name;
         return $this;
     }
 }

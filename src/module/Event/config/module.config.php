@@ -15,7 +15,8 @@ return array(
     'class_resolver' => array(
         'Event\Entity\EventLogInterface' => 'Event\Entity\EventLog',
         'Event\Entity\EventInterface' => 'Event\Entity\Event',
-        'Event\Entity\EventStringInterface' => 'Event\Entity\EventString'
+        'Event\Entity\EventParameterInterface' => 'Event\Entity\EventParameter',
+        'Event\Entity\EventParameterNameInterface' => 'Event\Entity\EventParameterName',
     ),
     'di' => array(
         'definition' => array(
