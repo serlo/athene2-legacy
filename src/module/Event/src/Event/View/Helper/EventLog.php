@@ -12,6 +12,8 @@
 namespace Event\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Event\Entity\EventLogInterface;
+use Event\Exception;
 
 class EventLog extends AbstractHelper
 {
@@ -31,5 +33,15 @@ class EventLog extends AbstractHelper
         return $this->getView()->partial($this->getOption('templates')['events'], array(
             'events' => $events
         ));
+    }
+    
+    public function renderLog($id){
+        if(is_numeric($id)){
+            $event = $this->getEventManager()->get
+        } elseif ($id instanceof EventLogInterface){
+            
+        } else {
+            throw new Exception\InvalidArgumentException(sprintf('Expected numeric or EventLogInterface but got `%s`', gettype($id)));
+        }
     }
 }

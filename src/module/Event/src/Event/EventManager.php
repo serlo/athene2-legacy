@@ -19,13 +19,57 @@ use Uuid\Entity\UuidInterface;
 
 class EventManager implements EventManagerInterface
 {
-    use\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
     protected $inMemoryEvents = array();
+
     protected $inMemoryParameterNames = array();
-    
-    public function findEventsByObject($objectId, $recursive = true){
+
+    public function findEventsByObject($objectId, $recursive = true, array $filter = array())
+    {
+        if (! is_numeric($objectId))
+            throw new Exception\InvalidArgumentException(sprintf('Expected numeric but got `%s`', gettype($objectId)));
         
+        $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
+        $repository = $this->getObjectManager()->getRepository($className);
+        
+        $results = $repository->findBy(array(
+            'object' => $objectId
+        ));
+        
+        if ($recursive) {
+            $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterInterface');
+            $parameters = $this->getObjectManager()
+                ->getRepository($className)
+                ->findBy(array(
+                'uuid' => $objectId
+            ));
+            
+            foreach ($parameters as $parameter) {
+                
+                if (! empty($filter)) {
+                	
+                    
+                }
+            }
+        }
+        
+        return $results;
+    }
+
+    public function getEvent($id)
+    {
+        if (! is_numeric($id))
+            throw new Exception\InvalidArgumentException(sprintf('Expected numeric but got `%s`', gettype($id)));
+        
+        if (! $this->hasInstance($id)) {
+            $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
+            $event = $this->getObjectManager()->find($className, $id);
+            if (! is_object($event))
+                throw new Exception\EntityNotFoundException(sprintf('Could not find an Entity by the ID of `%d`', $id));
+            $this->addInstance($id, $event);
+        }
+        return $this->getInstance($id);
     }
 
     public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, array $parameters = array())
@@ -41,7 +85,7 @@ class EventManager implements EventManagerInterface
         $log->setActor($actor);
         $log->setLanguage($language);
         
-        foreach($parameters as $parameter){
+        foreach ($parameters as $parameter) {
             $this->addParameter($log, $parameter);
         }
         
@@ -76,9 +120,9 @@ class EventManager implements EventManagerInterface
     }
 
     /**
-     * 
-     * @param Entity\EventLogInterface $log
-     * @param array $parameter
+     *
+     * @param Entity\EventLogInterface $log            
+     * @param array $parameter            
      * @throws Exception\RuntimeException
      * @return $this
      */
@@ -92,7 +136,7 @@ class EventManager implements EventManagerInterface
             throw new Exception\RuntimeException(sprintf('Parameter name should be string, but got `%s`', gettype($parameter['name'])));
         if (! $parameter['object'] instanceof UuidInterface)
             throw new Exception\RuntimeException(sprintf('Parameter name should be UuidInterface, but got `%s`', get_class($parameter['object'])));
-
+        
         $name = $this->findParameterNameByName($parameter['name']);
         
         /* @var $entity \Event\Entity\EventParameterInterface */
@@ -106,13 +150,13 @@ class EventManager implements EventManagerInterface
         return $this;
     }
 
-
     /**
      *
-     * @param string $name
+     * @param string $name            
      * @return \Event\Entity\EventParameterNameInterface
      */
-    protected function findParameterNameByName($name){
+    protected function findParameterNameByName($name)
+    {
         
         // Avoid MySQL duplicate entry on consecutive checks without flushing.
         if (array_key_exists($name, $this->inMemoryParameterNames)) {
