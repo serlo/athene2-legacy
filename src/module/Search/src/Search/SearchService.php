@@ -20,7 +20,8 @@ class SearchService implements SearchServiceInterface
     protected function getDefaultConfig(){
         return array(
             'adapters' => array(
-                'entity' => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter'
+                'entity' => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter',
+                'taxonomyTerm' => __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter'
             )
         );
     }

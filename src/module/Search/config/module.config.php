@@ -49,6 +49,11 @@ return array(
                         'required' => true
                     )
                 ),
+                __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter' => array(
+                    'setConnection' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Controller\SearchController' => array(
                     'setSearchService' => array(
                         'required' => true

@@ -16,6 +16,7 @@ use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Exception\InvalidArgumentException;
+use User\Exception;
 
 class UserManager implements UserManagerInterface
 {
@@ -134,8 +135,11 @@ class UserManager implements UserManagerInterface
 
     public function findRole($id)
     {
-        return $this->getObjectManager()->find($this->getClassResolver()
+        $role = $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('User\Entity\RoleInterface'), $id);
+        if(!is_object($role))
+            throw new Exception\RuntimeException(sprintf('Role not found by id %u', $id));
+        return $role;
     }
 
     public function findRoleByName($role)

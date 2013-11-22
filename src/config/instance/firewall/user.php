@@ -19,7 +19,8 @@ return array(
                         'profile',
                         'login',
                         'register',
-                        'restorePassword'
+                        'restorePassword',
+                        'activate'
                     ),
                     'roles' => 'guest'
                 ),

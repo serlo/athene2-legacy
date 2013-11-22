@@ -13,43 +13,46 @@ namespace Search\Adapter\SphinxQL;
 
 use Search\Result;
 
-class EntityAdapter extends AbstractSphinxAdapter
+class TaxonomyTermAdapter extends AbstractSphinxAdapter
 {
-    use \Entity\Manager\EntityManagerAwareTrait;
 
-    protected $types = array('article', 'video', 'module');
-    
+    protected $types = array(
+        'topic',
+        'abstract-topic'
+    );
+
     public function search($query)
     {
         $container = new Result\Container();
-        $container->setName('entity');
+        $container->setName('taxonomy');
         
-        foreach($this->types as $type){
+        foreach ($this->types as $type) {
             $resultContainer = $this->searchTypes($query, $type);
             $container->addContainer($resultContainer);
         }
         
         return $container;
     }
-
+    
     protected function searchTypes($query, $type)
     {
         $container = new Result\Container();
         $container->setName($type);
         
         $spinxQuery = $this->forge();
-        $spinxQuery->select('value', 'id')
-            ->from('entityIndex')
-            ->match('value', $query)
+        $spinxQuery->select('name', 'id', 'type')
+            ->from('taxonomyTermIndex')
+            ->match('name', $query)
             ->match('type', $type);
+            // PHP is a bitch and doesn't support bigint/uint
+            //->where('type_filter', '=', crc32($type));
         $results = $spinxQuery->execute();
         
-        foreach($results as $result){
-            $entity = $this->getEntityManager()->getEntity($result['id']);
-            $result = new Result\Result();
-            $result->setName($entity->repository()->getCurrentRevision()->get('title'));
-            $result->setId($entity->getId());
-            $container->addResult($result);
+        foreach ($results as $result) {
+            $resultInstance = new Result\Result();
+            $resultInstance->setName($result['name']);
+            $resultInstance->setId($result['id']);
+            $container->addResult($resultInstance);
         }
         
         return $container;
