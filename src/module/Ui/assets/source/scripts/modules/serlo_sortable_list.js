@@ -40,7 +40,7 @@ define("sortable_list", ["jquery", "underscore", "common", "translator", "system
             dataActive = $instance.attr('data-active') || "true";
             dataActive = dataActive === "true" ? true : false;
 
-            dataDepth = $instance.attr('data-depth') || 0;
+            dataDepth = $instance.attr('data-depth') || 50;
 
             /**
              * @function cleanEmptyChildren
