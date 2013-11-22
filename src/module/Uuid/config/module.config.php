@@ -33,10 +33,50 @@ return array(
                     'router' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/router/:uuid',
+                            'route' => '/route/:uuid',
                             'defaults' => array(
                                 'controller' => __NAMESPACE__ . '\Controller\RouterController',
                                 'action' => 'assemble'
+                            )
+                        )
+                    ),
+                    'trash' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/trash/:id',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UuidController',
+                                'action' => 'trash'
+                            )
+                        )
+                    ),
+                    'recycle-bin' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/recycle-bin',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UuidController',
+                                'action' => 'recycleBin'
+                            )
+                        )
+                    ),
+                    'restore' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/restore/:id',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UuidController',
+                                'action' => 'restore'
+                            )
+                        )
+                    ),
+                    'purge' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/purge/:id',
+                            'defaults' => array(
+                                'controller' => __NAMESPACE__ . '\Controller\UuidController',
+                                'action' => 'purge'
                             )
                         )
                     )
@@ -58,10 +98,16 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            'Uuid\Controller\RouterController'
+            'Uuid\Controller\RouterController',
+            'Uuid\Controller\UuidController'
         ),
         'definition' => array(
             'class' => array(
+                'Uuid\Controller\UuidController' => array(
+                    'setUuidManager' => array(
+                        'required' => true
+                    )
+                ),
                 'Uuid\Controller\RouterController' => array(
                     'setUuidRouter' => array(
                         'required' => true

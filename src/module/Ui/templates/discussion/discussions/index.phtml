@@ -6,7 +6,7 @@
         <a class="list-group-item" href="<?php echo $this->url('discussion/discussions', array('id' => $forum->getId()));?>">
             <!-- nice fake -->
             <span class="badge pull-right"><?php echo $forum->getAssociated('comments', true, array('forum'))->count(); ?></span>
-            <?php echo $this->translate(ucfirst($forum->getName()));?>
+            <?php echo $forum->getParent()->getName() != 'root' ? $forum->getParent()->getName() : ''; ?> - <?php echo $this->translate(ucfirst($forum->getName()));?>
         </a>
     <?php endforeach; ?>
 </div>

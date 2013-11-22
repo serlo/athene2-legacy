@@ -7,6 +7,11 @@ return array(
             __DIR__ . '/../view'
         )
     ),
+    'uuid_router' => array(
+        'routes' => array(
+            'pageRepository' => '/page/view/%d',
+        )
+    ),
     'router' => array(
         'routes' => array(
             'page' => array(
@@ -34,7 +39,7 @@ return array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options' => array(
-                            'route' => '/view/:slug',
+                            'route' => '/view/:repositoryid',
                             'defaults' => array(
                                 'controller' => 'Page\Controller\IndexController',
                                 'action' => 'article'
@@ -125,13 +130,16 @@ return array(
         'invokables' => array(),
         
         'factories' => array(
-						/*'Page\Service\PageService' => function  ($sm)
-						{
-							$srv = new \Page\Service\PageService();
-							$srv->setObjectManager($sm->get('EntityManager'));
-							return $srv;
-						}*/
-				)
+            'Page\Provider\FirewallHydrator' => function ($sm)
+            {
+                $srv = new \Page\Provider\FirewallHydrator();
+                // $srv->setObjectManager($sm->get('EntityManager'));
+                $srv->setRouteMatch($sm->get('RouteMatch'));
+                $srv->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
+                $srv->setPageManager($sm->get('Page\Manager\PageManager'));
+                return $srv;
+            }
+        )
     ),
     'class_resolver' => array(
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
@@ -149,7 +157,6 @@ return array(
                         'showRevisions',
                         'setCurrentRevision',
                         'showRevision',
-                        'editRepository',
                         'createRevision',
                         'deleteRevision',
                         'deleteRepository',
@@ -160,9 +167,19 @@ return array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'article'
+                        'article',
+                        'editRepository'
                     ),
                     'roles' => 'guest'
+                )
+            ),
+            'Common\Firewall\HydratableController' => array(
+                array(
+                    'controller' => 'Page\Controller\IndexController',
+                    'actions' => array(
+                        'editRepository'
+                    ),
+                    'role_provider' => 'Page\Provider\FirewallHydrator'
                 )
             )
         )
@@ -173,6 +190,14 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                'Page\Provider\FirewallHydrator' => array(
+                    'setLanguageManager' => array(
+                        'required' => 'true'
+                    ),
+                    'setPageManager' => array(
+                        'required' => 'true'
+                    )
+                ),
                 'Page\Service\PageService' => array(
                     'setRepositoryManager' => array(
                         'required' => 'true'
@@ -243,3 +268,5 @@ return array(
         )
     )
 );
+
+

@@ -107,7 +107,7 @@ return array(
                 __NAMESPACE__ . '\Manager\BlogManagerInterface' => __NAMESPACE__ . '\Manager\BlogManager'
             ),
             __NAMESPACE__ . '\Manager\PostManager' => array(
-                'shared' => true
+                'shared' => false
             ),
             __NAMESPACE__ . '\Service\PostService' => array(
                 'shared' => false

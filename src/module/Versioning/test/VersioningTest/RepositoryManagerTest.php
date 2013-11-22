@@ -32,10 +32,7 @@ class RepositoryManagerTest extends \PHPUnit_Framework_TestCase
         $this->repositoryManager = new RepositoryManager();
         $this->repositoryManager->setCheckClassInheritance(false);
         
-        $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager', array(
-            'get',
-            'setShared'
-        ));
+        $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
         $classResolverMock = $this->getMock('ClassResolver\ClassResolver', array(
             'resolveClassName'
         ));

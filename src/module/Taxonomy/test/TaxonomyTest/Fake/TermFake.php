@@ -11,12 +11,12 @@
  */
 namespace TaxonomyTest\Fake;
 
-use Taxonomy\Entity\TermTaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 /**
  * @codeCoverageIgnore
  */
-class TermFake implements TermTaxonomyInterface
+class TermFake implements TaxonomyTermInterface
 {
 
     protected $id, $slug, $children = array(), $taxonomy;
@@ -81,7 +81,7 @@ class TermFake implements TermTaxonomyInterface
         return $this;
     }
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getDescription()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getDescription()
      */
     public function getDescription()
     {
@@ -89,7 +89,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::hasParent()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::hasParent()
      */
     public function hasParent()
     {
@@ -97,7 +97,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::hasChildren()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::hasChildren()
      */
     public function hasChildren()
     {
@@ -105,7 +105,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::setDescription()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::setDescription()
      */
     public function setDescription($description)
     {
@@ -113,7 +113,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getFactory()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getFactory()
      */
     public function getFactory()
     {
@@ -141,7 +141,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getParent()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getParent()
      */
     public function getParent()
     {
@@ -149,7 +149,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getName()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getName()
      */
     public function getName()
     {
@@ -157,7 +157,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::setParent()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::setParent()
      */
     public function setParent($parent)
     {
@@ -165,7 +165,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getWeight()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getWeight()
      */
     public function getWeight()
     {
@@ -173,7 +173,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::setWeight()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::setWeight()
      */
     public function setWeight($weight)
     {
@@ -181,7 +181,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::setName()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::setName()
      */
     public function setName($name)
     {
@@ -189,7 +189,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getTerm()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getTerm()
      */
     public function getTerm()
     {
@@ -197,7 +197,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::setTerm()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::setTerm()
      */
     public function setTerm($term)
     {
@@ -205,7 +205,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getArrayCopy()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getArrayCopy()
      */
     public function getArrayCopy()
     {
@@ -213,7 +213,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getAssociated()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getAssociated()
      */
     public function getAssociated($field)
     {
@@ -221,7 +221,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::countAssociated()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::countAssociated()
      */
     public function countAssociated($field)
     {
@@ -229,7 +229,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::addAssociation()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::addAssociation()
      */
     public function addAssociation($field, $entity)
     {
@@ -237,7 +237,7 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::removeAssociation()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::removeAssociation()
      */
     public function removeAssociation($field, $entity)
     {
@@ -245,14 +245,14 @@ class TermFake implements TermTaxonomyInterface
     }
     
     /*
-     * (non-PHPdoc) @see \Taxonomy\Entity\TermTaxonomyInterface::getLanguage()
+     * (non-PHPdoc) @see \Taxonomy\Entity\TaxonomyTermInterface::getLanguage()
      */
     public function getLanguage()
     {
         // TODO Auto-generated method stub
     }
 	/* (non-PHPdoc)
-     * @see \Taxonomy\Entity\TermTaxonomyInterface::orderAssociated()
+     * @see \Taxonomy\Entity\TaxonomyTermInterface::orderAssociated()
      */
     public function orderAssociated ($association, $of, $order)
     {

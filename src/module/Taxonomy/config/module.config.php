@@ -11,17 +11,25 @@
  */
 namespace Taxonomy;
 
+use Taxonomy\Router\TermRouter;
 /**
  * @codeCoverageIgnore
  */
 return array(
+    'term_router' => array(
+        'routes' => array()
+    ),
+    'uuid_router' => array(
+        'routes' => array(
+            'taxonomyTerm' => '/taxonomy/term/route/%d',
+        )
+    ),
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
         'Taxonomy\Entity\TaxonomyInterface' => 'Taxonomy\Entity\Taxonomy',
-        'Taxonomy\Entity\TermTaxonomyInterface' => 'Taxonomy\Entity\TermTaxonomy',
-        'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService',
-        'Taxonomy\Entity\TermTaxonomyEntityInterface' => 'Taxonomy\Entity\TermTaxonomy'
+        'Taxonomy\Entity\TaxonomyTermInterface' => 'Taxonomy\Entity\TaxonomyTerm',
+        'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService'
     ),
     'taxonomy' => array(
         'types' => array(
@@ -44,7 +52,6 @@ return array(
                     'route' => '/taxonomy',
                     'defaults' => array(
                         'controller' => 'Taxonomy\Controller\404',
-                        'action' => 'index'
                     )
                 ),
                 'may_terminate' => true,
@@ -70,8 +77,23 @@ return array(
                         ),
                         'may_terminate' => true,
                         'child_routes' => array(
+                            'action' => array(
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/:action[/:id]'
+                                )
+                            ),
+                            'route' => array(
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/route/:id',
+                                    'defaults' => array(
+                                        'controller' => 'Taxonomy\Controller\TermRouterController',
+                                        'action' => 'index'
+                                    )
+                                )
+                            ),
                             'create' => array(
-                                'may_terminate' => true,
                                 'type' => 'Segment',
                                 'options' => array(
                                     'route' => '/create/:taxonomy/:parent',
@@ -80,28 +102,16 @@ return array(
                                     )
                                 )
                             ),
-                            'action' => array(
-                                'may_terminate' => true,
-                                'type' => 'Segment',
-                                'options' => array(
-                                    'route' => '/:action[/:id]',
-                                    'defaults' => array()
-                                    // 'action' => 'index'
-                                    
-                                )
-                            ),
                             'order' => array(
-                                'may_terminate' => true,
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/order/id',
-                                    'defaults' => array(),
-                                    'action' => 'order'
-                                    
+                                    'route' => '/order/:term',
+                                    'defaults' => array(
+                                        'action' => 'order'
+                                    )
                                 )
                             ),
                             'organize' => array(
-                                'may_terminate' => true,
                                 'type' => 'Segment',
                                 'options' => array(
                                     'route' => '/organize/:id',
@@ -118,8 +128,7 @@ return array(
                                         'controller' => 'Taxonomy\Controller\TermController',
                                         'action' => 'orderAssociated'
                                     )
-                                ),
-                                'may_terminate' => true
+                                )
                             )
                         )
                     )
@@ -141,81 +150,103 @@ return array(
                 $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $instance->setTermManager($sm->get('Term\Manager\TermManager'));
                 return $instance;
+            }),
+            'Taxonomy\Router\TermRouter' => (function ($sm)
+            {
+                $config = $sm->get('config');
+                $instance = new TermRouter();
+                $instance->setConfig($config['term_router']);
+                $instance->setServiceLocator($sm);
+                $instance->setSharedTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $instance->setRouter($sm->get('router'));
+                return $instance;
             })
         )
     ),
     'di' => array(
         'allowed_controllers' => array(
             'Taxonomy\Controller\TermController',
-            'Taxonomy\Controller\TaxonomyController'
+            'Taxonomy\Controller\TaxonomyController',
+            'Taxonomy\Controller\TermRouterController'
         ),
         'definition' => array(
             'class' => array(
                 'Taxonomy\Hydrator\Navigation' => array(
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Controller\TermController' => array(
                     'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
+                    )
+                ),
+                'Taxonomy\Controller\TermRouterController' => array(
+                    'setTermRouter' => array(
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Manager\TaxonomyManager' => array(
                     'setEntityManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setClassResolver' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Controller\TaxonomyController' => array(
                     'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
+                        'required' => true
+                    )
+                ),
+                'Taxonomy\Controller\RouterController' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Service\TermService' => array(
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setTermManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setClassResolver' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Provider\NavigationProvider' => array(
                     'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 )
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Taxonomy\Manager\SharedTaxonomyManagerInterface' => 'Taxonomy\Manager\SharedTaxonomyManager'
+                'Taxonomy\Manager\SharedTaxonomyManagerInterface' => 'Taxonomy\Manager\SharedTaxonomyManager',
+                'Taxonomy\Router\TermRouterInterface' => 'Taxonomy\Router\TermRouter'
             ),
             'Taxonomy\Manager\TaxonomyManager' => array(
                 'shared' => false

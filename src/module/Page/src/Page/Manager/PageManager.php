@@ -46,29 +46,7 @@ class PageManager implements PageManagerInterface
         return $this->getInstance($id);
     }
     
-    /*
-     * (non-PHPdoc) @see \Page\Manager\PageManagerInterface::findPageRepositoryBySlug()
-     */
-    public function findPageRepositoryBySlug($string,$language_id)
-    {
-        if (! is_string($string))
-            throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($string)));
-        
-       
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Page\Entity\PageRepositoryInterface'))
-            ->findOneBy(array(
-            'slug' => (string) $string,
-            'language' => (int) $language_id
-        ));
 
-        
-        if (! $entity)
-            throw new PageNotFoundException(sprintf('Could not find %s', $string));
-        
-       return $this->getPageRepository($entity->getId());
-    }
 
     protected function createPageEntity()
     {

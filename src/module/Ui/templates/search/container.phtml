@@ -1,0 +1,19 @@
+
+<li>
+    <strong><?php echo $this->container->getName(); ?></strong>
+
+    <ul>
+    <?php /* @var $result \Search\Result\ResultInterface */?>
+    <?php foreach($this->container->getResults() as $result): ?>
+        <li><a href="<?php echo $this->url('uuid/router', array('uuid' => $result->getId())); ?>"><?php echo $result->getName(); ?></a></li>
+    <?php endforeach; ?>
+    
+    </ul>
+    
+    <ul>
+    <?php foreach($this->container->getContainers() as $container): ?>
+        <?php echo $this->partial('search/container', array('container' => $container)); ?>
+    <?php endforeach; ?>
+    </ul>
+
+</li>

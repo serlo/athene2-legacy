@@ -19,7 +19,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->classResolverMock = $this->getMock('ClassResolver\ClassResolver');
         $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TermTaxonomy');
+        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TaxonomyTerm');
         $this->taxonomyMock = $this->getMock('Taxonomy\Entity\Taxonomy');
         $this->termServiceMock = new TermService();
         $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');

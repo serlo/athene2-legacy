@@ -45,6 +45,10 @@ class TaxonomyPlugin extends AbstractPlugin
         return $this;
     }
     
+    /**
+     * 
+     * @return \Taxonomy\Collection\TermCollection
+     */
     public function getTerms(){
         return new TermCollection($this->getEntityService()
             ->getEntity()->getTerms(), $this->getSharedTaxonomyManager());

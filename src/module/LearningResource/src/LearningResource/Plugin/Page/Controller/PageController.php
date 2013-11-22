@@ -53,6 +53,7 @@ class PageController extends AbstractController
                 'plugin' => $page,
                 'user' => $this->getUserManager()->getUserFromAuthenticator(),
             ));
+            $this->layout($plugin->getLayout());
             $model->setTemplate($page->getTemplate());
             return $model;
         } catch (RevisionNotFoundException $e) {

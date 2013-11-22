@@ -46,4 +46,8 @@ interface UuidInterface
     public function setTrashed($trashed);
     
     public function is($type);
+    
+    public function getHolderName();
+    
+    public function getHolder();
 }

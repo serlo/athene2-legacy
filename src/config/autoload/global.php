@@ -12,6 +12,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * file.
  */
 return array(
+    'page_header_helper' => array(
+        'brand' => 'www.serlo.org',
+        'delimiter' => ' - '
+    ),
     'doctrine' => array(
         'entitymanager' => array(
             'orm_default' => array(

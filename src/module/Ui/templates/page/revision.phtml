@@ -1,10 +1,8 @@
-<?php
-$this->headTitle($this->slug);
-?>
+
 
 <?php
     echo $this->partial('page/revision-menu.phtml', array(
-        'slug' => $this->slug,
+        'repositoryid' => $this->repositoryid,
         'revision' => $this->revision
     ))?>
 

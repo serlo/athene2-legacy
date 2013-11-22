@@ -39,5 +39,10 @@ interface PageServiceInterface
      * @return this
      */
     public function deleteRevision($id);
+    /**
+     *
+     * @return numeric
+     */
+    public function getRepositoryId();
 }
 

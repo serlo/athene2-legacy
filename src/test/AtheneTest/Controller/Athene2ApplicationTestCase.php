@@ -17,6 +17,20 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $this->setUpLayout();
         $this->setUpLanguage();
         $this->setUpAlias();
+        $this->setUpContexter();
+    }
+
+    protected function setUpContexter()
+    {
+        $contexterMock = $this->getMock('Contexter\Contexter');
+        $routerMock = $this->getMock('Contexter\Router\Router');
+        $routerMock->expects($this->any())
+            ->method('match')
+            ->will($this->returnValue(array()));
+        $this->getApplicationServiceLocator()->setAllowOverride(true);
+        $this->getApplicationServiceLocator()->setService('Contexter\Contexter', $contexterMock);
+        $this->getApplicationServiceLocator()->setService('Contexter\Router\Router', $routerMock);
+        $this->getApplicationServiceLocator()->setAllowOverride(false);
     }
 
     protected function detachAggregatedListener($listener)
@@ -27,8 +41,9 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
             ->detachAggregate($this->getApplicationServiceLocator()
             ->get($listener));
     }
-    
-    protected function setUpAlias(){
+
+    protected function setUpAlias()
+    {
         $aliasManagerMock = $this->getMock('Alias\AliasManager');
         
         $this->getApplicationServiceLocator()->setAllowOverride(true);
@@ -36,7 +51,7 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $this->getApplicationServiceLocator()->setAllowOverride(false);
         return $this;
     }
-    
+
     public function setUpLanguage()
     {
         $languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
@@ -88,12 +103,19 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $rbac = $this->getMockBuilder('ZfcRbac\Firewall\Controller')
             ->disableOriginalConstructor()
             ->getMock();
+        $hrbac = $this->getMockBuilder('Common\Firewall\HydratableController')
+            ->disableOriginalConstructor()
+            ->getMock();
         
         $rbacService->expects($this->atLeastOnce())
             ->method('getFirewall')
             ->will($this->returnValueMap(array(
             array(
                 'controller',
+                $rbac
+            ),
+            array(
+                'HydratableController',
                 $rbac
             ),
             array(

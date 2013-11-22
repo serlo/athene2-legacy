@@ -11,13 +11,47 @@
  */
 namespace Search\Adapter\SphinxQL;
 
-use Foolz\Sphinxql\Sphinxql;
+use Search\Result;
 
 class EntityAdapter extends AbstractSphinxAdapter
 {
+    use \Entity\Manager\EntityManagerAwareTrait;
 
+    protected $types = array('article', 'video', 'module');
+    
     public function search($query)
     {
-        Sphinxql::select('a', 'b');
+        $container = new Result\Container();
+        $container->setName('entity');
+        
+        foreach($this->types as $type){
+            $resultContainer = $this->searchTypes($query, $type);
+            $container->addContainer($resultContainer);
+        }
+        
+        return $container;
+    }
+
+    protected function searchTypes($query, $type)
+    {
+        $container = new Result\Container();
+        $container->setName($type);
+        
+        $spinxQuery = $this->forge();
+        $spinxQuery->select('value', 'id')
+            ->from('entityIndex')
+            ->match('value', $query)
+            ->match('type', $type);
+        $results = $spinxQuery->execute();
+        
+        foreach($results as $result){
+            $entity = $this->getEntityManager()->getEntity($result['id']);
+            $result = new Result\Result();
+            $result->setName($entity->repository()->getCurrentRevision()->get('title'));
+            $result->setId($entity->getId());
+            $container->addResult($result);
+        }
+        
+        return $container;
     }
 }

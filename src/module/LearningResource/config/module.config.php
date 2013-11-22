@@ -14,6 +14,8 @@ namespace LearningResource;
 use Entity\Service\EntityServiceInterface;
 use Entity\Collection\EntityCollection;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use LearningResource\Plugin\Aggregate\Aggregator\TopicAggregator;
+use LearningResource\Plugin\Aggregate\Aggregator\RelatedContentAggregator;
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -118,7 +120,17 @@ return array(
                     $instance->setLanguageManager($sm->getServiceLocator()
                         ->get('Language\Manager\LanguageManager'));
                     return $instance;
-                }
+                },
+                'aggregator' => function ($sm)
+                {
+                    $instance = new Plugin\Aggregate\AggregatePlugin();
+                    
+                    $topicAggregator = new TopicAggregator();
+                    $topicAggregator->setRouter($sm->getServiceLocator()->get('router'));
+                    $instance->addAggregator($topicAggregator);
+                    
+                    return $instance;
+                },
             )
         ),
         'types' => array(
@@ -276,7 +288,8 @@ return array(
                             'revision_form' => 'LearningResource\Form\VideoForm',
                             'fields' => array(
                                 'title',
-                                'content'
+                                'content',
+                                'reasoning'
                             )
                         )
                     ),
@@ -297,22 +310,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'content' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('content');
-                                }
-                            )
-                        )
                     )
                 )
             ),
@@ -324,8 +321,17 @@ return array(
                             'revision_form' => 'LearningResource\Form\ArticleForm',
                             'fields' => array(
                                 'title',
+                                'reasoning',
                                 'content'
                             )
+                        )
+                    ),
+                    'aggregator' => array(
+                        'plugin' => 'aggregator',
+                        'options' => array(
+                            'aggregators' => array(
+                                'topic'
+                            ),
                         )
                     ),
                     'taxonomy' => array(
@@ -345,22 +351,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'content' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('content');
-                                }
-                            )
-                        )
                     )
                 )
             ),
@@ -404,20 +394,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'pages' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->pages()->findChildren();
-                                }
-                            )
-                        )
                     )
                 )
             ),
@@ -429,6 +405,7 @@ return array(
                             'revision_form' => 'LearningResource\Form\ModulePageForm',
                             'fields' => array(
                                 'title',
+                                'reasoning',
                                 'content'
                             )
                         )
@@ -447,22 +424,6 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider',
-                        'options' => array(
-                            'fields' => array(
-                                'title' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('title');
-                                },
-                                'content' => function (EntityServiceInterface $es)
-                                {
-                                    return $es->repository()
-                                        ->getCurrentRevision()
-                                        ->get('content');
-                                }
-                            )
-                        )
                     )
                 )
             )

@@ -1,8 +1,7 @@
 <head>
     <meta charset="utf-8">
     <?php
-    echo $this->headTitle((strlen($this->titleHead) ? $this->translate($this->titleHead) . ' - ' : '') . 'Serlo.org')
-        ->setAutoEscape(false);
+    echo $this->headTitle($this->titleHead)->setAutoEscape(false);
 
     echo $this->headLink();
     echo $this->headStyle();

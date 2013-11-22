@@ -50,67 +50,6 @@ class EntityController extends AbstractActionController
         $this->checkResponse($response);
         return '';
     }
-    
-    public function restoreAction(){
-        $entity = $this->getEntity();
-        
-        $entity->setTrashed(false);
-        
-        $this->getEventManager()->trigger('restore', $this, array(
-            'entity' => $entity,
-            'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
-            'data' => $this->params()
-                ->fromQuery()
-        ));
-        
-        $this->getEntityManager()->getObjectManager()->flush();
-        
-        $this->flashMessenger()->addSuccessMessage('The entity was successfully restored.');
-        
-        $this->redirect()->toReferer();
-        return '';
-    }
-    
-    public function trashAction(){
-        $entity = $this->getEntity();
-        
-        $entity->setTrashed(true);
-        
-        $this->getEventManager()->trigger('trash', $this, array(
-            'entity' => $entity,
-            'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
-            'data' => $this->params()
-                ->fromQuery()
-        ));
-        
-        $this->getEntityManager()->getObjectManager()->flush();
-        
-        $this->flashMessenger()->addSuccessMessage('The entity was successfully trashed.');
-        
-        $this->redirect()->toReferer();
-        return '';
-    }
-    
-    public function purgeAction(){
-        $this->getEntityManager()->purgeEntity($this->params('entity'));
-        
-        $this->getEventManager()->trigger('purge', $this, array(
-            'id' => $this->params('entity'),
-            'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
-            'data' => $this->params()
-                ->fromQuery()
-        ));
-        
-        $this->getEntityManager()->getObjectManager()->flush();
-        
-        $this->flashMessenger()->addSuccessMessage('The entity was successfully removed.');
-        
-        $this->redirect()->toReferer();
-        return '';
-    }
 
     public function checkResponse(ResponseCollection $response)
     {

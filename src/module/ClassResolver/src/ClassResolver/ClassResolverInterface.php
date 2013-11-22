@@ -23,8 +23,9 @@ interface ClassResolverInterface
 
     /**
      *
-     * @param string $class          
+     * @param string $class     
+     * @param bool $userServiceLocator
      * @return object
      */
-    public function resolve($class);
+    public function resolve($class, $userServiceLocator = false);
 }

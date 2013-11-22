@@ -23,7 +23,7 @@ use User\View\Helper\Rbac;
 return array(
     'uuid_router' => array(
         'routes' => array(
-            'user' => '/user/show/%d'
+            'user' => '/user/profile/%d'
         )
     ),
     'service_manager' => array(

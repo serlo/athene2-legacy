@@ -4,7 +4,10 @@ use Zend\View\HelperPluginManager;
 use Zend\Session\Container;
 use ZfcRbac\Service\Rbac;
 use Zend\Mvc\Application;
+use Ui\View\Helper\PageHeader;
 /**
+ *
+ *
  *
  * Athene2 - Advanced Learning Resources Manager
  *
@@ -23,7 +26,7 @@ return array(
             'top-center' => array(
                 'hydrators' => array()
             )
-        ),
+        )
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -43,6 +46,7 @@ return array(
             __DIR__ . '/../templates'
         ),
         'strategies' => array(
+            'Zend\View\Strategy\JsonStrategy',
             'Ui\Strategy\PhpRendererStrategy'
         )
     ),
@@ -57,12 +61,21 @@ return array(
                 $plugin->setLanguage($languageManager->getLanguageFromRequest());
                 
                 return $plugin;
+            },
+            'pageHeader' => function ($helperPluginManager)
+            {
+                $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
+                $plugin = new PageHeader();
+                $plugin->setConfig($config);
+                return $plugin;
             }
         ),
         'invokables' => array(
-            'timeago' => 'Ui\View\Helper\Timeago'
+            'timeago' => 'Ui\View\Helper\Timeago',
+            'registry' => 'Ui\View\Helper\Registry'
         )
     ),
+    'page_header_helper' => array(),
     'service_manager' => array(
         'factories' => array(
             'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm)

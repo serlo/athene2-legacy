@@ -21,6 +21,34 @@ return array(
             )
         )
     ),
+    'term_router' => array(
+        'routes' => array(
+            'topic' => array(
+                'route' => 'subject/plugin/taxonomy/topic',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'topic-folder' => array(
+                'route' => 'subject/plugin/taxonomy/topic',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'abstract-topic' => array(
+                'route' => 'subject/plugin/taxonomy/topic',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'curriculum-folder' => array(
+                'route' => 'subject/plugin/taxonomy/curriculum',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'school-type' => array(
+                'route' => 'subject/plugin/taxonomy/curriculum',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            ),
+            'curriculum' => array(
+                'route' => 'subject/plugin/taxonomy/curriculum',
+                'param_provider' => 'Subject\Provider\ParamProvider'
+            )
+        )
+    ),
     'taxonomy' => array(
         'types' => array(
             'topic-folder' => array(
@@ -256,19 +284,7 @@ return array(
     ),
     'di' => array(
         'allowed_controllers' => array(
-            // __NAMESPACE__
-            // .
-            // '\Application\DefaultSubject\Controller\TopicController',
             __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
-            // __NAMESPACE__
-            // .
-            // '\Plugin\Topic\Controller\TopicController',
-            // __NAMESPACE__
-            // .
-            // '\Plugin\Curriculum\Controller\CurriculumController',
-            // __NAMESPACE__
-            // .
-            // '\Plugin\Curriculum\Controller\EntityController',
             __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController',
             __NAMESPACE__ . '\Plugin\Home\Controller\HomeController'
         ),
@@ -276,72 +292,77 @@ return array(
             'class' => array(
                 __NAMESPACE__ . '\Plugin\Home\Controller\HomeController' => array(
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController' => array(
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Plugin\Entity\Controller\EntityController' => array(
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Provider\ParamProvider' => array(
+                    'setSubjectManager' => array(
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Hydrator\RouteStack' => array(
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Hydrator\Route' => array(
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Hydrator\Navigation' => array(
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Manager\SubjectManager' => array(
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setServiceLocator' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Service\SubjectService' => array(
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSubjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setPluginManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 )
             )

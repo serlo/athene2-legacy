@@ -155,18 +155,6 @@ class DiscussionController extends AbstractController
         return '';
     }
 
-    public function trashAction()
-    {        
-        $this->getDiscussionManager()->removeComment($this->params('comment'));
-        
-        $this->getDiscussionManager()
-            ->getObjectManager()
-            ->flush();
-        
-        $this->redirect()->toReferer();
-        return '';
-    }
-
     public function showAction()
     {
         $discussion = $this->getDiscussion();

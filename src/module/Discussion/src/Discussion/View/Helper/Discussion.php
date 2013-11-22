@@ -17,7 +17,7 @@ use Taxonomy\Exception\TermNotFoundException;
 
 class Discussion extends AbstractHelper
 {
-    use\Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected $discussions, $object;
 
@@ -29,7 +29,7 @@ class Discussion extends AbstractHelper
 
     /**
      *
-     * @return field_type $object
+     * @return field_type $reference
      */
     public function getObject()
     {
@@ -38,7 +38,7 @@ class Discussion extends AbstractHelper
 
     /**
      *
-     * @param field_type $object            
+     * @param field_type $reference            
      * @return $this
      */
     public function setObject(UuidInterface $object)

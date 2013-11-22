@@ -46,7 +46,7 @@ class Term implements TermInterface
     protected $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="term")
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="term")
      */
     private $termTaxonomies;
 

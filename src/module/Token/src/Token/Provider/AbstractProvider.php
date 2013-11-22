@@ -18,7 +18,7 @@ abstract class AbstractProvider implements ProviderInterface
 
     /**
      *
-     * @return mixed $object
+     * @return mixed $reference
      */
     public function getObject()
     {
@@ -27,7 +27,7 @@ abstract class AbstractProvider implements ProviderInterface
 
     /**
      *
-     * @param mixed $object            
+     * @param mixed $reference            
      * @return $this
      */
     public function setObject($object)

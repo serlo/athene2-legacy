@@ -65,7 +65,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
         $this->entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->classResolverMock = $this->getMock('ClassResolver\ClassResolver');
         $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TermTaxonomy');
+        $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TaxonomyTerm');
         $this->taxonomyMock = $this->getMock('Taxonomy\Entity\Taxonomy');
         $this->taxonomyManagerMock = $this->getMock('Taxonomy\Manager\TaxonomyManager');
         $this->termServiceMock = $this->getMock('Taxonomy\Service\TermService');
@@ -129,8 +129,8 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             ->method('resolveClassName')
             ->will($this->returnValueMap(array(
             array(
-                'Taxonomy\Entity\TermTaxonomyInterface',
-                'Taxonomy\Entity\TermTaxonomy'
+                'Taxonomy\Entity\TaxonomyTermInterface',
+                'Taxonomy\Entity\TaxonomyTerm'
             ),
             array(
                 'Taxonomy\Entity\TaxonomyInterface',
@@ -142,7 +142,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             ->method('find')
             ->will($this->returnValueMap(array(
             array(
-                'Taxonomy\Entity\TermTaxonomy',
+                'Taxonomy\Entity\TaxonomyTerm',
                 $this->termTaxonomyMock->getId(),
                 LockMode::NONE,
                 null,

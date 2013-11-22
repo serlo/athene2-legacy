@@ -18,7 +18,9 @@ $table = array(
 ?>
 <?php if(is_object($this->term)): ?>
     <div class="row">
-    	<div class="col-md-9"></div>
+    	<div class="col-md-9">
+            <?php echo $this->term->getDescription() !== "NULL" ? $this->term->getDescription() : ''; ?>
+    	</div>
     	<div class="col-md-3">
     	    <?php if($this->term->isAssociationAllowed('entities')): ?>
     		<div class="btn-group pull-right">

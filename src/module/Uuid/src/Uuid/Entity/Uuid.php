@@ -43,9 +43,14 @@ class Uuid implements UuidInterface
     protected $entity;
 
     /**
-     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TermTaxonomy", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="id")
      */
-    protected $termTaxonomy;
+    protected $taxonomyTerm;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id")
+     */
+    protected $upload;
 
     /**
      * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id")
@@ -90,6 +95,16 @@ class Uuid implements UuidInterface
     {
         $this->trashed = (bool) $trashed;
         return $this;
+    }
+
+    public function getHolderName()
+    {
+        foreach(get_object_vars($this) as $key => $value){
+            if($this->is($key)){
+                return $key;
+            }
+        }
+        return NULL;
     }
 
     public function getHolder()

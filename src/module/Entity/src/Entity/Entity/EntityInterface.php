@@ -11,10 +11,12 @@
  */
 namespace Entity\Entity;
 
+use Taxonomy\Entity\TaxonomyTermEntity;
+
 interface EntityInterface
 {
-    
-    public function addTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy);
-    
-    public function removeTaxonomyIndex(\Taxonomy\Entity\TermTaxonomyEntity $taxonomy);
+
+    public function addTaxonomyIndex(TaxonomyTermEntity $taxonomy);
+
+    public function removeTaxonomyIndex(TaxonomyTermEntity $taxonomy);
 }

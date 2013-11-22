@@ -14,7 +14,7 @@ namespace TaxonomyTest;
 use AtheneTest\TestCase\Model;
 use Taxonomy\Entity\Taxonomy;
 use Language\Entity\Language;
-use Taxonomy\Entity\TermTaxonomy;
+use Taxonomy\Entity\TaxonomyTerm;
 use Term\Entity\Term;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -23,7 +23,7 @@ class TermTaxonomyTest extends Model
 
     public function setUp()
     {
-        $this->setObject(new TermTaxonomy());
+        $this->setObject(new TaxonomyTerm());
     }
     
     /*

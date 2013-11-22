@@ -17,11 +17,11 @@ use User\Entity\RoleInterface;
  */
 class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRepository")
-     * @ORM\JoinColumn(name="id")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 	
@@ -39,11 +39,6 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
      */
     protected $language;
 	
-
-	/**
-	 * @ORM\Column(type="string") *
-	 */
-	protected $slug;
 	
 	  /**
      * @ORM\OneToOne(targetEntity="PageRevision")
@@ -81,13 +76,6 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
         return $this->language;
     }
 
-	/**
-     * @return the $slug
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
 
 	
 
@@ -117,14 +105,6 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
     public function setLanguage($language)
     {
         $this->language = $language;
-    }
-
-	/**
-     * @param field_type $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
     }
 
 
@@ -197,7 +177,6 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
     {
         $this->injectFromArray('role', $data);
         $this->injectFromArray('language', $data);
-        $this->injectFromArray('slug', $data);
         $this->injectFromArray('current_revision', $data);
         return $this;
     }
