@@ -10,10 +10,12 @@ namespace User\Service;
 
 use User\Entity\User;
 use User\Manager\UserManagerInterface;
+use Normalize\Normalizable;
+use Normalize\Normalized;
 
-class UserService implements UserServiceInterface
+class UserService implements UserServiceInterface, Normalizable
 {
-    use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -174,6 +176,20 @@ class UserService implements UserServiceInterface
     {
         $this->getEntity()->setUserRoles($userRoles);
         return $this;
+    }
+
+    public function normalize()
+    {
+        $normalized = new Normalized();
+        $normalized->setTitle($this->getUsername());
+        $normalized->setContent($this->getUsername());
+        $normalized->setPreview($this->getUsername());
+        $normalized->setTimestamp($this->getDate());
+        $normalized->setRouteName('user/profile');
+        $normalized->setRouteParams(array(
+            'id' => $this->getId()
+        ));
+        return $normalized;
     }
 
     public function setEmail($email)

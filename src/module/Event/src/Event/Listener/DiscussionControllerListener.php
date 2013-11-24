@@ -38,7 +38,7 @@ class DiscussionControllerListener extends AbstractMvcListener
             )
         );
         
-        $this->logEvent($e->getTarget(), $language, $user, $discussion, $params);
+        $this->logEvent('discussion/create', $language, $user, $discussion, $params);
     }
 
     /**
@@ -63,7 +63,7 @@ class DiscussionControllerListener extends AbstractMvcListener
         );
         
         $comment = $e->getParam('comment')->getEntity();
-        $this->logEvent($e->getTarget(), $language, $user, $comment, $params);
+        $this->logEvent('discussion/comment/create', $language, $user, $comment, $params);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

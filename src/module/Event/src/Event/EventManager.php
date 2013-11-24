@@ -16,16 +16,20 @@ use User\Entity\UserInterface;
 use Language\Entity\LanguageInterface;
 use Event\Exception;
 use Uuid\Entity\UuidInterface;
+use Event\Entity\EventInterface;
+use Event\Collection\EventCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Event\Entity\EventLogInterface;
 
 class EventManager implements EventManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
     protected $inMemoryEvents = array();
 
     protected $inMemoryParameterNames = array();
 
-    public function findEventsByObject($objectId, $recursive = true, array $filter = array())
+    public function findEventsByObject($objectId, $recursive = true, array $filters = array())
     {
         if (! is_numeric($objectId))
             throw new Exception\InvalidArgumentException(sprintf('Expected numeric but got `%s`', gettype($objectId)));
@@ -34,27 +38,31 @@ class EventManager implements EventManagerInterface
         $repository = $this->getObjectManager()->getRepository($className);
         
         $results = $repository->findBy(array(
-            'object' => $objectId
+            'uuid' => $objectId
         ));
         
         if ($recursive) {
             $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterInterface');
+            
             $parameters = $this->getObjectManager()
                 ->getRepository($className)
                 ->findBy(array(
                 'uuid' => $objectId
             ));
             
+            /* @var $parameter \Event\Entity\EventParameterInterface */
             foreach ($parameters as $parameter) {
-                
-                if (! empty($filter)) {
-                	
-                    
+                if (! empty($filters)) {
+                    if (in_array($parameter->getName(), $filters)) {
+                        $results[] = $parameter->getLog();
+                    }
+                } else {
+                    $results[] = $parameter->getLog();
                 }
             }
         }
-        
-        return $results;
+        $collection = new ArrayCollection($results);
+        return new EventCollection($collection, $this);
     }
 
     public function getEvent($id)
@@ -67,7 +75,7 @@ class EventManager implements EventManagerInterface
             $event = $this->getObjectManager()->find($className, $id);
             if (! is_object($event))
                 throw new Exception\EntityNotFoundException(sprintf('Could not find an Entity by the ID of `%d`', $id));
-            $this->addInstance($id, $event);
+            $this->addInstance($id, $this->createService($event));
         }
         return $this->getInstance($id);
     }
@@ -79,9 +87,9 @@ class EventManager implements EventManagerInterface
         /* @var $log Entity\EventLogInterface */
         $log = new $className();
         
-        $log->setEvent($this->findEventByName($uri));
+        $log->setEvent($this->findTypeByName($uri));
         
-        $log->setUuid($uuid->getUuidEntity());
+        $log->setObject($uuid->getUuidEntity());
         $log->setActor($actor);
         $log->setLanguage($language);
         
@@ -93,7 +101,7 @@ class EventManager implements EventManagerInterface
         return $this;
     }
 
-    public function findEventByName($name)
+    public function findTypeByName($name)
     {
         
         // Avoid MySQL duplicate entry on consecutive checks without flushing.
@@ -117,6 +125,14 @@ class EventManager implements EventManagerInterface
         }
         
         return $event;
+    }
+
+    protected function createService(EventLogInterface $event)
+    {
+        /* @var $instance \Event\Service\EventServiceInterface */
+        $instance = $this->createInstance('Event\Service\EventServiceInterface');
+        $instance->setEntity($event);
+        return $instance;
     }
 
     /**

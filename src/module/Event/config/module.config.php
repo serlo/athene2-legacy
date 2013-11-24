@@ -11,14 +11,31 @@
  */
 namespace Event;
 
+use Event\View\Helper\EventLog;
 return array(
+    'event_manager' => array(),
     'class_resolver' => array(
         'Event\Entity\EventLogInterface' => 'Event\Entity\EventLog',
         'Event\Entity\EventInterface' => 'Event\Entity\Event',
         'Event\Entity\EventParameterInterface' => 'Event\Entity\EventParameter',
         'Event\Entity\EventParameterNameInterface' => 'Event\Entity\EventParameterName',
+        'Event\Service\EventServiceInterface' => 'Event\Service\EventService'
+    ),
+    'view_helpers' => array(
+        'factories' => array(
+            'events' => function ($sm)
+            {
+                $instance = new EventLog();
+                $instance->setEventManager($sm->getServiceLocator()
+                    ->get('Event\EventManager'));
+                return $instance;
+            }
+        )
     ),
     'di' => array(
+        'allowed_controllers' => array(
+            __NAMESPACE__ . '\Controller\EventController'
+        ),
         'definition' => array(
             'class' => array(
                 __NAMESPACE__ . '\EventManager' => array(
@@ -26,6 +43,20 @@ return array(
                         'required' => true
                     ),
                     'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Service\EventService' => array(
+                    'setUuidManager' => array(
+                        'required' => true
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
                         'required' => true
                     )
                 ),
@@ -38,12 +69,20 @@ return array(
                     'setEventManager' => array(
                         'required' => true
                     )
+                ),
+                __NAMESPACE__ . '\Listener\RepositoryPluginControllerListener' => array(
+                    'setEventManager' => array(
+                        'required' => true
+                    )
                 )
             )
         ),
         'instance' => array(
             'preferences' => array(
                 __NAMESPACE__ . '\EventManagerInterface' => __NAMESPACE__ . '\EventManager'
+            ),
+            __NAMESPACE__ . '\Service\EventService' => array(
+                'shared' => false
             )
         )
     ),
@@ -59,6 +98,30 @@ return array(
             'orm_default' => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
+    ),
+    'router' => array(
+        'routes' => array(
+            'event' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/event',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\EventController'
+                    )
+                ),
+                'child_routes' => array(
+                    'history' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/history/:id',
+                            'defaults' => array(
+                                'action' => 'history'
+                            )
+                        )
+                    )
                 )
             )
         )

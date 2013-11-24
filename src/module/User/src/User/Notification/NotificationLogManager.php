@@ -28,7 +28,7 @@ class NotificationLogManager implements NotificationLogManagerInterface
         $log = new $className();
         
         $log->setEvent($this->getEventManager()
-            ->findEventByName($route));
+            ->findTypeByName($route));
         
         $log->setObject($object);
         if ($reference !== NULL) {

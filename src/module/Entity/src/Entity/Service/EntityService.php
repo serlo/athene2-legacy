@@ -14,28 +14,75 @@ namespace Entity\Service;
 use Entity\Exception\InvalidArgumentException;
 use Taxonomy\Collection\TermCollection;
 use Zend\Stdlib\ArrayUtils;
-use Entity\Entity\EntityInterface;
+use Normalize\Normalizable;
+use Normalize\Normalized;
 
-class EntityService implements EntityServiceInterface
+class EntityService implements EntityServiceInterface, Normalizable
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Zend\EventManager\EventManagerAwareTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Zend\EventManager\EventManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     protected $whitelistedPlugins = array();
 
     protected $pluginOptions = array();
 
+    public function normalize()
+    {
+        $normalized = new Normalized();
+        $normalized->setRouteName('entity/plugin/page');
+        $normalized->setRouteParams(array(
+            'entity' => $this->getId()
+        ));
+        $normalized->setTimestamp($this->getTimestamp());
+        
+        $normalized->setTitle($this->getUuid());
+        
+        // repository
+        if ($this->hasPlugin('repository') && ($this->repository()->hasCurrentRevision() || $this->repositoryHasHead())) {
+            if ($this->repository()->hasCurrentRevision()) {
+                $revision = $this->repository()->getCurrentRevision();
+            } elseif ($this->repositoryHasHead()) {
+                $revision = $this->repository()->getHead();
+            }
+            if ($revision->get('title')) {
+                $normalized->setTitle($revision->get('title'));
+            }
+            if ($revision->get('content')) {
+                $normalized->setPreview(substr($revision->get('content'), 0, 200) . '...');
+            }
+            if ($revision->get('content')) {
+                $normalized->setContent($revision->get('content'));
+            }
+        }
+        
+        return $normalized;
+    }
+
     public function getTerms()
     {
         return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
     }
-    
-    public function getType(){
+
+    public function getTimestamp()
+    {
+        return $this->getEntity()->getTimestamp();
+    }
+
+    public function getUuid()
+    {
+        return $this->getEntity()->getUuid();
+    }
+
+    public function getType()
+    {
         return $this->getEntity()->getType();
     }
-    
-    public function setTrashed($voided){
+
+    public function setTrashed($voided)
+    {
         $this->getEntity()->setTrashed($voided);
-        $this->getEntityManager()->getObjectManager()->persist($this->getEntity());
+        $this->getEntityManager()
+            ->getObjectManager()
+            ->persist($this->getEntity());
         return $this;
     }
 
@@ -156,8 +203,9 @@ class EntityService implements EntityServiceInterface
             }
         }
     }
-    
-    public function getTrashed(){
+
+    public function getTrashed()
+    {
         return $this->getEntity()->getTrashed();
     }
 }

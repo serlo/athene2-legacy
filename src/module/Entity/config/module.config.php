@@ -11,11 +11,22 @@
  */
 namespace Entity;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
 return array(
     'uuid_router' => array(
         'routes' => array(
             'entity' => '/entity/view/%d',
             'entityRevision' => '/entity/repository/compare/%d'
+        )
+    ),
+    'uuid_manager' => array(
+        'resolver' => array(
+            'Entity\Entity\Entity' => function ($uuid, ServiceLocatorInterface $serviceLocator)
+            {
+                /* @var $entityManager \Entity\Manager\EntityManagerInterface */
+                $entityManager = $serviceLocator->get('Entity\Manager\EntityManager');
+                return $entityManager->getEntity($uuid->getId());
+            }
         )
     ),
     'class_resolver' => array(

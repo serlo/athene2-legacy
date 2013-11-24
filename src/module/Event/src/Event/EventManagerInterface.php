@@ -43,13 +43,21 @@ interface EventManagerInterface
      * @param string $eventName
      * @return EventInterface
      */
-    public function findEventByName($eventName);
+    public function findTypeByName($eventName);
     
     /**
      * 
      * @param int $objectId
      * @param string $recursive
+     * @param array $filter
      * @return EventInterface[]
      */
-    public function findEventsByObject($objectId, $recursive = true);
+    public function findEventsByObject($objectId, $recursive = true, array $filter = array());
+    
+    /**
+     * 
+     * @param int $id
+     * @return EventInterface
+     */
+    public function getEvent($id);
 }

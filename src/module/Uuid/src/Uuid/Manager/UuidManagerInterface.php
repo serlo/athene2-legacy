@@ -83,4 +83,11 @@ interface UuidManagerInterface
      * @return UuidInterface[]
      */
     public function findByTrashed($trashed);
+    
+    /**
+     * 
+     * @param int $uuid
+     * @return mixed
+     */
+    public function getService($uuid);
 }

@@ -1,0 +1,5 @@
+<ul>
+<?php foreach($this->events as $event):?>
+    <li><?php echo $this->events()->renderEvent($event); ?></li>
+<?php endforeach; ?>
+</ul>

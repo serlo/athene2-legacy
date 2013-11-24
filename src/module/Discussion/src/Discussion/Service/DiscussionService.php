@@ -18,8 +18,10 @@ use Discussion\Entity\CommentInterface;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
 use Discussion\Collection\CommentCollection;
+use Normalize\Normalizable;
+use Normalize\Normalized;
 
-class CommentService extends AbstractComment implements CommentServiceInterface
+class DiscussionService extends AbstractComment implements DiscussionServiceInterface, Normalizable
 {
     use\Discussion\DiscussionManagerAwareTrait;
 
@@ -109,7 +111,7 @@ class CommentService extends AbstractComment implements CommentServiceInterface
         return $this;
     }
 
-    public function setParent(CommentServiceInterface $comment)
+    public function setParent(DiscussionServiceInterface $comment)
     {
         $this->getEntity()->setParent($comment->getEntity());
         $this->getObjectManager()->persist($this->getEntity());
@@ -149,7 +151,7 @@ class CommentService extends AbstractComment implements CommentServiceInterface
         return new CommentCollection($this->getEntity()->getChildren(), $this->getDiscussionManager());
     }
 
-    public function addChild(CommentServiceInterface $comment)
+    public function addChild(DiscussionServiceInterface $comment)
     {
         $this->getEntity()->addChild($comment->getEntity());
         $this->getObjectManager()->persist($this->getEntity());
@@ -202,5 +204,17 @@ class CommentService extends AbstractComment implements CommentServiceInterface
         if ($user === NULL)
             return false;
         return $this->getEntity()->hasUserVoted($user->getEntity());
+    }
+    
+    public function normalize(){
+        $normalized = new Normalized();
+        $normalized->setTitle($this->getTitle());
+        $normalized->setContent($this->getContent());
+        $normalized->setTimestamp($this->getDate());
+        $normalized->setRouteName('discussion/view');
+        $normalized->setRouteParams(array(
+            'id'=> $this->getId()
+        ));
+        return $normalized;
     }
 }

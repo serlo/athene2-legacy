@@ -14,34 +14,41 @@ namespace Event\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Event\Entity\EventLogInterface;
 use Event\Exception;
+use Event\Service\EventServiceInterface;
 
 class EventLog extends AbstractHelper
 {
-    use \Event\EventManagerAwareTrait, \Common\Traits\ConfigAwareTrait;
-    
-    protected function getDefaultConfig(){
+    use\Event\EventManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+
+    protected function getDefaultConfig()
+    {
         return array(
             'templates' => array(
                 'events' => 'event/helper/events',
-                'event' => 'event/helper/event'
+                'event' => 'event/helper/event/default'
             )
         );
     }
-    
-    public function renderObjectLog($id){
+
+    public function renderObjectLog($id)
+    {
         $events = $this->getEventManager()->findEventsByObject($id);
         return $this->getView()->partial($this->getOption('templates')['events'], array(
             'events' => $events
         ));
     }
-    
-    public function renderLog($id){
-        if(is_numeric($id)){
-            $event = $this->getEventManager()->get
-        } elseif ($id instanceof EventLogInterface){
-            
+
+    public function renderEvent($id)
+    {
+        if (is_numeric($id)) {
+            $event = $this->getEventManager()->getEvent($id);
+        } elseif ($id instanceof EventLogInterface || $id instanceof EventServiceInterface) {
+            $event = $id;
         } else {
-            throw new Exception\InvalidArgumentException(sprintf('Expected numeric or EventLogInterface but got `%s`', gettype($id)));
+            throw new Exception\InvalidArgumentException(sprintf('Expected numeric, EventLogInterface or EventServiceInterface but got `%s`', gettype($id)));
         }
+        return $this->getView()->partial($this->getOption('templates')['event'], array(
+            'event' => $event
+        ));
     }
 }

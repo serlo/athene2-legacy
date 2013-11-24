@@ -22,7 +22,7 @@ use Taxonomy\Service\TermServiceInterface;
 class DiscussionManager extends AbstractDiscussionManager implements DiscussionManagerInterface
 {
 
-    protected $serviceInterface = 'Discussion\Service\CommentServiceInterface';
+    protected $serviceInterface = 'Discussion\Service\DiscussionServiceInterface';
 
     protected $entityInterface = 'Discussion\Entity\CommentInterface';
     

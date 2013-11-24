@@ -19,6 +19,15 @@ use Uuid\Exception\NotFoundException;
 class UuidManager implements UuidManagerInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\ConfigAwareTrait;
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'resolver' => array(
+            )
+        );
+    }
 
     public function findByTrashed($trashed)
     {
@@ -77,6 +86,18 @@ class UuidManager implements UuidManagerInterface
         }
         
         return $this->getUuid($entity->getId());
+    }
+
+    public function getService($key)
+    {
+        $key = $this->getUuid($key)->getHolder();
+        $className = get_class($key);
+        $classes = $this->getOption('resolver');
+        if(array_key_exists($className, $classes)){
+            return $classes[$className]($key, $this->getServiceLocator());
+        } else {
+            return $key;
+        }
     }
 
     public function createUuid()

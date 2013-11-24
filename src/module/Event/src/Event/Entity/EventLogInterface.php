@@ -14,6 +14,8 @@ namespace Event\Entity;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageInterface;
+use Uuid\Entity\UuidHolder;
+
 
 interface EventLogInterface
 {
@@ -26,43 +28,17 @@ interface EventLogInterface
     public function getId();
 
     /**
-     * Sets the associated object (uuid)
-     *
-     * @param UuidInterface $uuid            
-     * @return $this
-     */
-    public function setUuid(UuidInterface $uuid);
-
-    /**
-     * Sets the event.
-     *
-     * @param EventInterface $event            
-     * @return $this
-     */
-    public function setEvent(EventInterface $event);
-
-    /**
-     * Sets the actor.
-     *
-     * @param UserInterface $actor            
-     * @return $this
-     */
-    public function setActor(UserInterface $actor);
-
-    /**
-     * Sets the language.
-     *
-     * @param LanguageInterface $language            
-     * @return $this
-     */
-    public function setLanguage(LanguageInterface $language);
-
-    /**
      * Gets the associated object (uuid).
      *
-     * @return UuidInterface
+     * @return UuidHolder
      */
-    public function getUuid();
+    public function getObject();
+    
+    /**
+     * 
+     * @return \Datetime
+     */
+    public function getTimestamp();
 
     /**
      * Gets the actor.
@@ -93,8 +69,46 @@ interface EventLogInterface
 
     /**
      *
+     * @return UuidHolder
+     */
+    public function getParameter($name);
+    
+    /**
+     *
      * @param EventParameterInterface $parameter            
      * @return $this
      */
     public function addParameter(EventParameterInterface $parameter);
+
+    /**
+     * Sets the associated object (uuid)
+     *
+     * @param UuidInterface $uuid            
+     * @return $this
+     */
+    public function setObject(UuidInterface $uuid);
+
+    /**
+     * Sets the event.
+     *
+     * @param EventInterface $event            
+     * @return $this
+     */
+    public function setEvent(EventInterface $event);
+
+    /**
+     * Sets the actor.
+     *
+     * @param UserInterface $actor            
+     * @return $this
+     */
+    public function setActor(UserInterface $actor);
+
+    /**
+     * Sets the language.
+     *
+     * @param LanguageInterface $language            
+     * @return $this
+     */
+    public function setLanguage(LanguageInterface $language);
 }

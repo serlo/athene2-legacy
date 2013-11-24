@@ -15,7 +15,7 @@ use User\Service\UserServiceInterface;
 use Language\Service\LanguageServiceInterface;
 use Uuid\Entity\UuidInterface;
 
-interface CommentServiceInterface
+interface DiscussionServiceInterface
 {
 
     /**
@@ -59,14 +59,14 @@ interface CommentServiceInterface
 
     /**
      *
-     * @param CommentServiceInterface $comment            
+     * @param DiscussionServiceInterface $comment            
      * @return $this
      */
-    public function setParent(CommentServiceInterface $comment);
+    public function setParent(DiscussionServiceInterface $comment);
 
     /**
      *
-     * @return CommentServiceInterface
+     * @return DiscussionServiceInterface
      */
     public function getParent();
 
@@ -78,10 +78,10 @@ interface CommentServiceInterface
 
     /**
      *
-     * @param CommentServiceInterface $comment            
+     * @param DiscussionServiceInterface $comment            
      * @return $this
      */
-    public function addChild(CommentServiceInterface $comment);
+    public function addChild(DiscussionServiceInterface $comment);
 
     /**
      *

@@ -11,6 +11,7 @@
  */
 namespace Uuid;
 
+use Uuid\Manager\UuidManager;
 /**
  * @codeCoverageIgnore
  */
@@ -21,6 +22,7 @@ return array(
     'uuid_router' => array(
         'routes' => array()
     ),
+    'uuid_manager' => array(),
     'router' => array(
         'routes' => array(
             'uuid' => array(
@@ -93,6 +95,15 @@ return array(
                 $router->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $router->setConfig($config);
                 return $router;
+            },
+            'Uuid\Manager\UuidManager' => function($sm){
+                $config = $sm->get('config');
+                $manager = new UuidManager();
+                $manager->setConfig($config['uuid_manager']);
+                $manager->setServiceLocator($sm);
+                $manager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
+                $manager->setObjectManager($sm->get('EntityManager'));
+                return $manager;
             }
         )
     ),
@@ -150,6 +161,3 @@ return array(
         )
     )
 );
-
-
-
