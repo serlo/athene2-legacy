@@ -117,6 +117,12 @@ return array(
                 'Uuid\Controller\UuidController' => array(
                     'setUuidManager' => array(
                         'required' => true
+                    ),
+                    'setUserManager' => array(
+                        'required' => true
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => true
                     )
                 ),
                 'Uuid\Controller\RouterController' => array(

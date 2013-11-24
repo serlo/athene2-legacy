@@ -15,6 +15,8 @@ use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Uuid\Collection\UuidCollection;
 
 class UuidManager implements UuidManagerInterface
 {
@@ -37,7 +39,8 @@ class UuidManager implements UuidManagerInterface
             ->findBy(array(
             'trashed' => $trashed
         ));
-        return $entities;
+        $collection = new ArrayCollection($entities);
+        return new UuidCollection($collection, $this);
     }
 
     public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL)

@@ -37,7 +37,7 @@ class UuidController extends AbstractActionController
         $this->getEventManager()->trigger('trash', $this, array(
             'user' => $this->getUserManager()
                 ->getUserFromAuthenticator(),
-            'on' => $uuid,
+            'object' => $uuid,
             'language' => $this->getLanguageManager()
                 ->getLanguageFromRequest()
         ));
@@ -58,7 +58,7 @@ class UuidController extends AbstractActionController
         $this->getEventManager()->trigger('restore', $this, array(
             'user' => $this->getUserManager()
                 ->getUserFromAuthenticator(),
-            'on' => $uuid,
+            'object' => $uuid,
             'language' => $this->getLanguageManager()
                 ->getLanguageFromRequest()
         ));

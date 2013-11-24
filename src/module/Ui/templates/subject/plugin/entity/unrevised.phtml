@@ -18,15 +18,14 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th><?php echo $this->translate('#'); ?></th>
+			<th><?php echo $this->translate('Title'); ?></th>
 			<th><?php echo $this->translate('Type'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
         <?php foreach($this->entities as $entity): ?>
-            <tr>
-			<td><a
-				href="<?php echo $this->url('entity/plugin/repository', array('action' => 'history', 'entity' => $entity->getId())); ?>"><?php echo $entity->getUuid(); ?></a></td>
+        <tr>
+			<td><?php echo $this->normalize()->toAnchor($entity); ?></td>
 			<td><?php echo $entity->getType()->getName(); ?></td>
 		</tr>
         <?php endforeach; ?>

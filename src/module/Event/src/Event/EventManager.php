@@ -80,7 +80,7 @@ class EventManager implements EventManagerInterface
         return $this->getInstance($id);
     }
 
-    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid, array $parameters = array())
+    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array())
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         
@@ -89,7 +89,7 @@ class EventManager implements EventManagerInterface
         
         $log->setEvent($this->findTypeByName($uri));
         
-        $log->setObject($uuid->getUuidEntity());
+        $log->setObject($uuid);
         $log->setActor($actor);
         $log->setLanguage($language);
         

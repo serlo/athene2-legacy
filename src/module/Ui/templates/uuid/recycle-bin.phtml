@@ -3,7 +3,7 @@
 	<thead>
 	   <tr>
 	       <th><?php echo $this->translate('ID'); ?></th>
-	       <th><?php echo $this->translate('Uuid'); ?></th>
+	       <th><?php echo $this->translate('Title'); ?></th>
 	       <th><?php echo $this->translate('Type'); ?></th>
 	       <th><?php echo $this->translate('Actions'); ?></th>
 	   </tr>
@@ -12,9 +12,9 @@
         <?php /* @var $entity \Uuid\Entity\UuidInterface */ ?>
         <?php foreach($this->entities as $entity): ?>
             <tr>
-                <td><a href="<?php echo $this->url('uuid/router', array('uuid' => $entity->getId())); ?>"><?php echo $entity->getId(); ?></a></td>
                 <td><?php echo $entity->getUuid(); ?></td>
-                <td><?php echo $entity->getHolderName(); ?></td>
+			    <td><?php echo $this->normalize()->toAnchor($entity); ?></td>
+                <td><?php echo $this->translate($entity->getHolderName()); ?></td>
                 <td>
                     <div class="btn-group">
                         <?php if($this->rbac()->hasAccessToRoute('uuid/restore')): ?>
