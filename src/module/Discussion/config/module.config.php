@@ -238,7 +238,7 @@ return array(
             'preferences' => array(
                 'Discussion\DiscussionManagerInterface' => 'Discussion\DiscussionManager'
             ),
-            'Discussion\Service\CommentService' => array(
+            'Discussion\Service\DiscussionService' => array(
                 'shared' => false
             )
         )
