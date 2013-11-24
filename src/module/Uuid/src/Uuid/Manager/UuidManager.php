@@ -15,10 +15,20 @@ use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Uuid\Collection\UuidCollection;
 
 class UuidManager implements UuidManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ConfigAwareTrait;
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'resolver' => array()
+        );
+    }
 
     public function findByTrashed($trashed)
     {
@@ -28,7 +38,8 @@ class UuidManager implements UuidManagerInterface
             ->findBy(array(
             'trashed' => $trashed
         ));
-        return $entities;
+        $collection = new ArrayCollection($entities);
+        return new UuidCollection($collection, $this);
     }
 
     public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL)
@@ -77,6 +88,16 @@ class UuidManager implements UuidManagerInterface
         }
         
         return $this->getUuid($entity->getId());
+    }
+
+    public function getService($key)
+    {
+        $key = $this->getUuid($key)->getHolder();
+        foreach ($this->getOption('resolver') as $className => $callback) {
+            if ($key instanceof $className)
+                return $callback($key, $this->getServiceLocator());
+        }
+        return $key;
     }
 
     public function createUuid()

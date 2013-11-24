@@ -101,7 +101,7 @@ return array(
         'User\Entity\RoleInterface' => 'User\Entity\Role',
         'User\Service\UserServiceInterface' => 'User\Service\UserService',
         'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
-        'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationInterface',
+        'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationService',
         'User\Notification\Entity\NotificationInterface' => 'User\Entity\Notification',
         'User\Notification\Entity\SubscriptionInterface' => 'User\Entity\Subscription',
         'User\Notification\Entity\NotificationLogInterface' => 'User\Entity\NotificationLog'
@@ -115,6 +115,11 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                'User\Notification\Service\NotificationService' => array(
+                    'setEventManager' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Notification\Listener\EntityControllerListener' => array(
                     'setNotificationLogManager' => array(
                         'required' => true
@@ -238,7 +243,7 @@ return array(
                 __NAMESPACE__ . '\Notification\NotificationManagerInterface' => __NAMESPACE__ . '\Notification\NotificationManager',
                 __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager'
             ),
-            'User\Service\UserService' => array(
+            'User\Notification\Service\NotificationService' => array(
                 'shared' => false
             )
         )
@@ -348,7 +353,7 @@ return array(
                     'password' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/password',
+                            'route' => '/password'
                         ),
                         'child_routes' => array(
                             'restore' => array(
@@ -359,7 +364,7 @@ return array(
                                     'defaults' => array(
                                         'action' => 'restorePassword'
                                     )
-                                ),
+                                )
                             ),
                             'change' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -369,7 +374,7 @@ return array(
                                     'defaults' => array(
                                         'action' => 'changePassword'
                                     )
-                                ),
+                                )
                             )
                         )
                     ),
@@ -479,5 +484,5 @@ return array(
                 )
             )
         )
-    ),
+    )
 );

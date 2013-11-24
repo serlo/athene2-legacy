@@ -18,6 +18,8 @@ use Versioning\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
+use Normalize\Normalizable;
+use Normalize\Normalized;
 
 /**
  * An entity link.
@@ -25,15 +27,16 @@ use Uuid\Entity\UuidEntity;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends UuidEntity implements RevisionInterface
+class Revision extends UuidEntity implements RevisionInterface, Normalizable
 {
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
      */
@@ -141,5 +144,20 @@ class Revision extends UuidEntity implements RevisionInterface
     public function __construct()
     {
         $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function normalize()
+    {
+        $normalized = new Normalized();
+        $normalized->setTimestamp($this->getDate());
+        $normalized->setTitle($this->get('title') ? $this->get('title') : $this->getUuid());
+        $normalized->setContent($this->get('content'));
+        $normalized->setRouteName('entity/plugin/repository/compare');
+        $normalized->setRouteParams(array(
+            'revision' => $this->getId(),
+            'entity' => $this->getRepository()
+                ->getId()
+        ));
+        return $normalized;
     }
 }

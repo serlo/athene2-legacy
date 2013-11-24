@@ -14,7 +14,6 @@ namespace Event\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Entity
  * @ORM\Table(name="event")
  */
@@ -31,40 +30,45 @@ class Event implements EventInterface
     /**
      * @ORM\Column(type="string")
      */
-    protected $route;
+    protected $name;
 
     /**
      * @ORM\Column(type="string")
      */
     protected $description;
-    
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function getName()
     {
-        return $this->route;
+        return $this->name;
     }
-    
+
     public function getDescription()
     {
         return $this->description;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
-    
+
     public function setName($uri)
     {
-        $this->route = $uri;
+        $this->name = $uri;
         return $this;
     }
-    
+
     public function setDescription($description)
     {
         $this->description = $description;

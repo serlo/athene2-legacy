@@ -11,11 +11,9 @@
  */
 namespace LearningResource;
 
-use Entity\Service\EntityServiceInterface;
 use Entity\Collection\EntityCollection;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use LearningResource\Plugin\Aggregate\Aggregator\TopicAggregator;
-use LearningResource\Plugin\Aggregate\Aggregator\RelatedContentAggregator;
 return array(
     'doctrine' => array(
         'driver' => array(
@@ -126,11 +124,12 @@ return array(
                     $instance = new Plugin\Aggregate\AggregatePlugin();
                     
                     $topicAggregator = new TopicAggregator();
-                    $topicAggregator->setRouter($sm->getServiceLocator()->get('router'));
+                    $topicAggregator->setRouter($sm->getServiceLocator()
+                        ->get('router'));
                     $instance->addAggregator($topicAggregator);
                     
                     return $instance;
-                },
+                }
             )
         ),
         'types' => array(
@@ -309,7 +308,7 @@ return array(
                         )
                     ),
                     'provider' => array(
-                        'plugin' => 'provider',
+                        'plugin' => 'provider'
                     )
                 )
             ),
@@ -331,7 +330,7 @@ return array(
                         'options' => array(
                             'aggregators' => array(
                                 'topic'
-                            ),
+                            )
                         )
                     ),
                     'taxonomy' => array(
@@ -350,7 +349,7 @@ return array(
                         )
                     ),
                     'provider' => array(
-                        'plugin' => 'provider',
+                        'plugin' => 'provider'
                     )
                 )
             ),
@@ -393,7 +392,7 @@ return array(
                         )
                     ),
                     'provider' => array(
-                        'plugin' => 'provider',
+                        'plugin' => 'provider'
                     )
                 )
             ),
@@ -423,7 +422,7 @@ return array(
                         )
                     ),
                     'provider' => array(
-                        'plugin' => 'provider',
+                        'plugin' => 'provider'
                     )
                 )
             )
@@ -467,6 +466,9 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => true
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => true
                     )
                 ),
                 'LearningResource\Plugin\Page\Controller\PageController' => array(
@@ -505,10 +507,48 @@ return array(
                             'repository' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/repository/:action/:entity[/:revision]',
+                                    'route' => '/repository',
                                     'defaults' => array(
                                         'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                                         'plugin' => 'repository'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'checkout' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/checkout/:entity/:revision',
+                                            'defaults' => array(
+                                                'action' => 'checkout'
+                                            )
+                                        )
+                                    ),
+                                    'compare' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/compare/:entity/:revision',
+                                            'defaults' => array(
+                                                'action' => 'compare'
+                                            )
+                                        )
+                                    ),
+                                    'history' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/history/:entity',
+                                            'defaults' => array(
+                                                'action' => 'history'
+                                            )
+                                        )
+                                    ),
+                                    'add-revision' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/add-revision/:entity',
+                                            'defaults' => array(
+                                                'action' => 'addRevision'
+                                            )
+                                        )
                                     )
                                 )
                             ),
@@ -581,5 +621,5 @@ return array(
                 )
             )
         )
-    ),
+    )
 );

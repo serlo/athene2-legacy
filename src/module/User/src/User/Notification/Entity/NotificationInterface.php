@@ -14,6 +14,7 @@ namespace User\Notification\Entity;
 use \User\Entity;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Event\Entity\EventLogInterface;
 
 interface NotificationInterface
 {
@@ -52,7 +53,7 @@ interface NotificationInterface
 
     /**
      *
-     * @return PersistentCollection
+     * @return EventLogInterface[]
      */
     public function getEvents();
 
@@ -79,18 +80,17 @@ interface NotificationInterface
      *
      * @return ArrayCollection
      */
-    public function getReferences();
+    public function getParameters();
 
     /**
      *
-     * @return \DateTime $date
+     * @return \DateTime $timestamp
      */
-    public function getDate();
+    public function getTimestamp();
 
     /**
      *
-     * @param \DateTime $date            
-     * @return $this
+     * @return \DateTime $timestamp
      */
-    public function setDate(\DateTime $date);
+    public function setTimestamp(\DateTime $timestamp);
 }

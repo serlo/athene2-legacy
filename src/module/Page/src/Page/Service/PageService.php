@@ -2,115 +2,115 @@
 namespace Page\Service;
 
 use Page\Manager\PageManagerInterface;
-use Page\Entity\PageRevisionInterface;
 use User\Entity\RoleInterface;
-use Versioning\Entity\RevisionInterface;
+use Normalize\Normalizable;
+use Normalize\Normalized;
 
-
-class PageService implements PageServiceInterface  {
-
+class PageService implements PageServiceInterface, Normalizable
+{
+    
     use \Common\Traits\ObjectManagerAwareTrait;
     use \Versioning\RepositoryManagerAwareTrait;
     use\Common\Traits\EntityAwareTrait;
-    
-    
-    
+
     /**
      *
      * @var PageManagerInterface
      */
     protected $manager;
-    
+
     /**
+     *
      * @return PageManagerInterface $manager
      */
-    public function getManager ()
+    public function getManager()
     {
         return $this->manager;
     }
-    
+
     /**
-     * @param PageManagerInterface $manager
+     *
+     * @param PageManagerInterface $manager            
      * @return $this
      */
-    public function setManager (PageManagerInterface $manager)
+    public function setManager(PageManagerInterface $manager)
     {
         $this->manager = $manager;
         return $this;
     }
-    
-   
-    
-    public function getCurrentRevision(){
-        
-        return $this->getRepository()->getCurrentRevision();
-        
-    }
-    
-    public function getRevision($id){
-        $revision = $this->getRepository()->getRevision($id);
-        if (!$revision->isTrashed())
-        return $revision;
-        else
-        return null;
-  
-    }
-    
-    
-    public function hasCurrentRevision(){
-        return $this->getRepository()->hasCurrentRevision();
 
+    public function getCurrentRevision()
+    {
+        return $this->getRepository()->getCurrentRevision();
     }
-    
-    public function setCurrentRevision($revision){
+
+    public function getRevision($id)
+    {
+        $revision = $this->getRepository()->getRevision($id);
+        if (! $revision->isTrashed())
+            return $revision;
+        else
+            return null;
+    }
+
+    public function hasCurrentRevision()
+    {
+        return $this->getRepository()->hasCurrentRevision();
+    }
+
+    public function setCurrentRevision($revision)
+    {
         $this->getRepository()->checkoutRevision($revision->getId());
         return $this;
     }
-    
-    
-    public function setRole(RoleInterface $role){
-        $this->entity->setRole($role); 
+
+    public function setRole(RoleInterface $role)
+    {
+        $this->entity->setRole($role);
     }
-    
-    public function getRoleById($id){
-    
+
+    public function getRoleById($id)
+    {
         $repository = $this->getObjectManager()->getRepository('User\Entity\Role');
-        $role     =   $repository->findOneBy(array('id' => $id)); 
+        $role = $repository->findOneBy(array(
+            'id' => $id
+        ));
         return $role;
     }
-    
-    public function countRoles(){
-    
-        $repository =     $this->getObjectManager()->getRepository('User\Entity\Role');
-        $roles     = $repository->findAll();
+
+    public function countRoles()
+    {
+        $repository = $this->getObjectManager()->getRepository('User\Entity\Role');
+        $roles = $repository->findAll();
         return count($roles);
     }
-    
-    public function hasRole($role){
+
+    public function hasRole($role)
+    {
         return $this->entity->hasRole($role);
     }
-    
-    public function hasPermission($userService){
-        
-        
-        if ($userService==null) return false;
+
+    public function hasPermission($userService)
+    {
+        if ($userService == null)
+            return false;
         
         $roles = $this->entity->getRoles();
-        foreach($roles as $roleEntity) { 
-            if($userService->hasRole($roleEntity->getName())){
+        foreach ($roles as $roleEntity) {
+            if ($userService->hasRole($roleEntity->getName())) {
                 return true;
             }
         }
         return false;
-    
     }
-    
-    protected function getRepository(){
+
+    protected function getRepository()
+    {
         return $this->getRepositoryManager()->getRepository($this->entity);
     }
 
-
-    public function deleteRevision($id) {
+    public function deleteRevision($id)
+    {
         $repository = $this->getRepository();
         $revision = $this->getRevision($id);
         $repository->removeRevision($id);
@@ -119,17 +119,31 @@ class PageService implements PageServiceInterface  {
         return $this;
     }
 
-    public function trashRevision($id) {
+    public function trashRevision($id)
+    {
         $repository = $this->getRepository();
         $revision = $this->getRevision($id);
         $revision->trash();
         $this->getObjectManager()->flush();
         return $this;
     }
-    
-    public function getRepositoryId() {
-        return
-        $this->getEntity()->getId();
+
+    public function getRepositoryId()
+    {
+        return $this->getEntity()->getId();
+    }
+
+    public function normalize()
+    {
+        $normalized = new Normalized();
+        $repository = $this->getRepository();
+        $normalized->setTitle($this->getEntity()
+            ->getUuid());
+        $normalized->setRouteName('page/article');
+        $normalized->setRouteParams(array(
+            'repositoryid' => $this->getRepositoryId()
+        ));
+        return $normalized;
     }
 }
 

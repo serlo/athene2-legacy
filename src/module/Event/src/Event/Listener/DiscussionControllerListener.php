@@ -30,8 +30,15 @@ class DiscussionControllerListener extends AbstractMvcListener
         $language = $e->getParam('language')->getEntity();
         $user = $e->getParam('user')->getEntity();
         $discussion = $e->getParam('discussion')->getEntity();
-        $on = $e->getParam('on');
-        $this->logEvent($e->getTarget(), $language, $user, $discussion, $on);
+        
+        $params = array(
+            array(
+                'name' => 'on',
+                'object' => $e->getParam('on')
+            )
+        );
+        
+        $this->logEvent('discussion/create', $language, $user, $discussion, $params);
     }
 
     /**
@@ -47,8 +54,16 @@ class DiscussionControllerListener extends AbstractMvcListener
         $discussion = $e->getParam('discussion')
             ->getEntity()
             ->getUuidEntity();
+        
+        $params = array(
+            array(
+                'name' => 'discussion',
+                'object' => $discussion
+            )
+        );
+        
         $comment = $e->getParam('comment')->getEntity();
-        $this->logEvent($e->getTarget(), $language, $user, $comment, $discussion);
+        $this->logEvent('discussion/comment/create', $language, $user, $comment, $params);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

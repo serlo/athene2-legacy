@@ -11,30 +11,29 @@ $settings = array(
      * role provider.
      */
     'anonymousRole' => 'guest',
-
+    
     /**
      * Flag: enable or disable the routing firewall.
      */
     'firewallRoute' => true,
-
+    
     /**
      * Flag: enable or disable the controller firewall.
      */
     'firewallController' => true,
-
+    
     /**
      * Set the view template to use on a 403 error.
      */
     'template' => 'error/403',
-
+    
     /**
      * flag: enable or disable the use of lazy-loading providers.
      */
     'enableLazyProviders' => true,
-
+    
     'firewalls' => array(
-        'ZfcRbac\Firewall\Route' => array(
-        ),
+        'ZfcRbac\Firewall\Route' => array()
     ),
     'providers' => array(
         'ZfcRbac\Provider\AdjacencyList\Role\DoctrineDbal' => array(
@@ -61,9 +60,10 @@ $settings = array(
             )
         )
     ),
-
+    
     /**
-     * Set the identity provider to use. The identity provider must be retrievable from the
+     * Set the identity provider to use.
+     * The identity provider must be retrievable from the
      * service locator and must implement \ZfcRbac\Identity\IdentityInterface.
      */
     'identity_provider' => 'standard_identity'
@@ -71,16 +71,17 @@ $settings = array(
 
 $serviceManager = array(
     'factories' => array(
-        'standard_identity' => function ($sm) {
-                $user = $sm->get('User\Manager\UserManager')->getUserFromAuthenticator();
-                
-                if(!$user){
-                    return new \ZfcRbac\Identity\StandardIdentity('guest');
-                } else {
-                    $identity = new \ZfcRbac\Identity\StandardIdentity($user->getRoleNames());
-                    return $identity;
-                }
-        },
+        'standard_identity' => function ($sm)
+        {
+            $user = $sm->get('User\Manager\UserManager')->getUserFromAuthenticator();
+            
+            if (! $user) {
+                return new \ZfcRbac\Identity\StandardIdentity('guest');
+            } else {
+                $identity = new \ZfcRbac\Identity\StandardIdentity($user->getRoleNames());
+                return $identity;
+            }
+        }
     )
 );
 
@@ -89,5 +90,5 @@ $serviceManager = array(
  */
 return array(
     'zfcrbac' => $settings,
-    'service_manager' => $serviceManager,
+    'service_manager' => $serviceManager
 );

@@ -14,6 +14,8 @@ namespace User\Entity;
 interface UserInterface
 {
 
+    public function getId();
+    
     public function getEmail();
 
     public function getUsername();
@@ -25,13 +27,7 @@ interface UserInterface
     public function getLastLogin();
 
     public function getDate();
-
-    public function getGivenname();
-
-    public function getLastname();
-
-    public function getGender();
-
+    
     public function setEmail($email);
 
     public function setUsername($username);
@@ -43,12 +39,6 @@ interface UserInterface
     public function setLastLogin($lastLogin);
 
     public function setDate($date);
-
-    public function setGivenname($givenname);
-
-    public function setLastname($lastname);
-
-    public function setGender($gender);
 
     public function addRole(RoleInterface $role);
 

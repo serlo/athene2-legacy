@@ -39,7 +39,7 @@ class RevisionFake implements RevisionInterface
     }
 
 	/* (non-PHPdoc)
-     * @see \Versioning\Entity\RevisionInterface::getDate()
+     * @see \Versioning\Entity\RevisionInterface::getTimestamp()
      */
     public function getDate ()
     {

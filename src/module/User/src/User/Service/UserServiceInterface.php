@@ -51,12 +51,6 @@ interface UserServiceInterface
     public function getLastLogin();
 
     public function getDate();
-
-    public function getGivenname();
-
-    public function getLastname();
-
-    public function getGender();
     
     public function countRoles();
 
@@ -73,12 +67,6 @@ interface UserServiceInterface
     public function setLastLogin($last_login);
 
     public function setDate($date);
-
-    public function setGivenname($givenname);
-
-    public function setLastname($lastname);
-
-    public function setGender($gender);
     
     public function setTrashed($trashed);
     

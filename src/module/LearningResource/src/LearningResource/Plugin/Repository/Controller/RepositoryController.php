@@ -19,7 +19,7 @@ use Zend\Http\Request;
 
 class RepositoryController extends AbstractController
 {
-    use\User\Manager\UserManagerAwareTrait;
+    use\User\Manager\UserManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
     public function addRevisionAction()
     {
@@ -38,20 +38,21 @@ class RepositoryController extends AbstractController
         /* @var $form \Zend\Form\Form */
         $form = $plugin->getRevisionForm();
         $form->setAttribute('action', $this->url()
-            ->fromRoute('entity/plugin/repository', array(
-            'action' => 'add-revision',
-            'entity' => $entity->getId()
+            ->fromRoute('entity/plugin/repository/add-revision', array(
+            'entity' => $entity->getId(),
         )) . '?ref=' . $ref);
         
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
-                $plugin->commitRevision($form, $user);
+                $revision = $plugin->commitRevision($form, $user);
                 
                 $this->getEventManager()->trigger('add-revision', $this, array(
                     'entity' => $entity,
                     'user' => $user,
+                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+                    'revision' => $revision,
                     'post' => $this->params()
                         ->fromPost()
                 ));
@@ -139,37 +140,10 @@ class RepositoryController extends AbstractController
             'entity' => $entity,
             'revision' => $repository->getRevision($this->params('revision')),
             'user' => $user,
-            
+            'language' => $this->getLanguageManager()->getLanguageFromRequest(),            
         ));
         $plugin->getObjectManager()->flush();
-        $this->redirect()->toRoute('entity/plugin/repository', array(
-            'action' => 'history',
-            'entity' => $entity->getId()
-        ));
-        return '';
-    }
-
-    public function purgeRevisionAction()
-    {
-        $repository = $plugin = $this->getPlugin();
-        $entity = $this->getEntityService();
-        $repository->removeRevision($this->params('revision'));
-        $plugin->getObjectManager()->flush();
-        $this->redirect()->toRoute('entity/plugin/repository', array(
-            'action' => 'history',
-            'entity' => $entity->getId()
-        ));
-        return '';
-    }
-
-    public function trashRevisionAction()
-    {
-        $repository = $plugin = $this->getPlugin();
-        $entity = $this->getEntityService();
-        $repository->trashRevision($this->params('revision'));
-        $plugin->getObjectManager()->flush();
-        $this->redirect()->toRoute('entity/plugin/repository', array(
-            'action' => 'history',
+        $this->redirect()->toRoute('entity/plugin/repository/history', array(
             'entity' => $entity->getId()
         ));
         return '';

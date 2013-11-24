@@ -175,38 +175,4 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
         
         $this->assertResponseStatusCode(302);
     }
-
-    public function testPurgeRevisionAction()
-    {
-        $this->setUpFirewall();
-        
-        $this->repositoryPluginMock->expects($this->once())
-            ->method('removeRevision');
-        $om = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
-        $this->repositoryPluginMock->expects($this->once())
-            ->method('getObjectManager')
-            ->will($this->returnValue($om));
-        $om->expects($this->once())
-            ->method('flush');
-        $this->dispatch('/entity/repository/purge-revision/1/3');
-        
-        $this->assertResponseStatusCode(302);
-    }
-
-    public function testTrashRevisionAction()
-    {
-        $this->setUpFirewall();
-        
-        $this->repositoryPluginMock->expects($this->once())
-            ->method('trashRevision');
-        $om = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
-        $this->repositoryPluginMock->expects($this->once())
-            ->method('getObjectManager')
-            ->will($this->returnValue($om));
-        $om->expects($this->once())
-            ->method('flush');
-        $this->dispatch('/entity/repository/trash-revision/1/3');
-        
-        $this->assertResponseStatusCode(302);
-    }
 }
