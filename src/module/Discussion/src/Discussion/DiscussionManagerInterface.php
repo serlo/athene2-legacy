@@ -58,7 +58,7 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
      * @param string $content
      * @return CommentServiceInterface
      */
-    public function commentDiscussion(CommentServiceInterface $discussion, LanguageServiceInterface $language, UserServiceInterface $author, $content);
+    public function commentDiscussion(DiscussionServiceInterface $discussion, LanguageServiceInterface $language, UserServiceInterface $author, $content);
     
     /**
      * 
