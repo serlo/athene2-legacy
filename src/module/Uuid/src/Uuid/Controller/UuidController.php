@@ -16,7 +16,7 @@ use Zend\View\Model\ViewModel;
 
 class UuidController extends AbstractActionController
 {
-    use\Uuid\Manager\UuidManagerAwareTrait;
+    use\Uuid\Manager\UuidManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function recycleBinAction()
     {
@@ -30,7 +30,18 @@ class UuidController extends AbstractActionController
 
     public function trashAction()
     {
-        $this->setTrashed(true);
+        $id = $this->params('id');
+        $uuid = $this->getUuidManager()->getUuid($id);
+        $uuid->setTrashed(true);
+        
+        $this->getEventManager()->trigger('trash', $this, array(
+            'user' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
+            'on' => $uuid,
+            'language' => $this->getLanguageManager()
+                ->getLanguageFromRequest()
+        ));
+        
         $this->getUuidManager()
             ->getObjectManager()
             ->flush();
@@ -40,7 +51,18 @@ class UuidController extends AbstractActionController
 
     public function restoreAction()
     {
-        $this->setTrashed(false);
+        $id = $this->params('id');
+        $uuid = $this->getUuidManager()->getUuid($id);
+        $uuid->setTrashed(false);
+        
+        $this->getEventManager()->trigger('restore', $this, array(
+            'user' => $this->getUserManager()
+                ->getUserFromAuthenticator(),
+            'on' => $uuid,
+            'language' => $this->getLanguageManager()
+                ->getLanguageFromRequest()
+        ));
+        
         $this->getUuidManager()
             ->getObjectManager()
             ->flush();
@@ -60,13 +82,5 @@ class UuidController extends AbstractActionController
             ->flush();
         $this->redirect()->toReferer();
         return false;
-    }
-
-    protected function setTrashed($trash)
-    {
-        $id = $this->params('id');
-        $uuid = $this->getUuidManager()->getUuid($id);
-        $uuid->setTrashed($trash);
-        return $this;
     }
 }
