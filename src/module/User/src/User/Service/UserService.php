@@ -15,7 +15,7 @@ use Normalize\Normalized;
 
 class UserService implements UserServiceInterface, Normalizable
 {
-    use \Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -142,24 +142,9 @@ class UserService implements UserServiceInterface, Normalizable
         return $this->getEntity()->getDate();
     }
 
-    public function getGivenname()
-    {
-        return $this->getEntity()->getGivenname();
-    }
-
-    public function getLastname()
-    {
-        return $this->getEntity()->getLastname();
-    }
-
     public function getToken()
     {
         return $this->getEntity()->getToken();
-    }
-
-    public function getGender()
-    {
-        return $this->getEntity()->getGender();
     }
 
     public function getAdsEnabled()
@@ -225,24 +210,6 @@ class UserService implements UserServiceInterface, Normalizable
     public function setDate($date)
     {
         $this->getEntity()->setDate($date);
-        return $this;
-    }
-
-    public function setGivenname($givenname)
-    {
-        $this->getEntity()->setGivenname($givenname);
-        return $this;
-    }
-
-    public function setLastname($lastname)
-    {
-        $this->getEntity()->setLastname($lastname);
-        return $this;
-    }
-
-    public function setGender($gender)
-    {
-        $this->getEntity()->setGender($gender);
         return $this;
     }
 

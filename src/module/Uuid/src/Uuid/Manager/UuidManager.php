@@ -20,14 +20,13 @@ use Uuid\Collection\UuidCollection;
 
 class UuidManager implements UuidManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
-    use \Common\Traits\ConfigAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig()
     {
         return array(
-            'resolver' => array(
-            )
+            'resolver' => array()
         );
     }
 
@@ -94,13 +93,11 @@ class UuidManager implements UuidManagerInterface
     public function getService($key)
     {
         $key = $this->getUuid($key)->getHolder();
-        $className = get_class($key);
-        $classes = $this->getOption('resolver');
-        if(array_key_exists($className, $classes)){
-            return $classes[$className]($key, $this->getServiceLocator());
-        } else {
-            return $key;
+        foreach ($this->getOption('resolver') as $className => $callback) {
+            if ($key instanceof $className)
+                return $callback($key, $this->getServiceLocator());
         }
+        return $key;
     }
 
     public function createUuid()

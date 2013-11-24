@@ -21,7 +21,7 @@ use Uuid\Entity\UuidEntity;
  */
 class User extends UuidEntity implements UserInterface
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
@@ -76,26 +76,6 @@ class User extends UuidEntity implements UserInterface
      * @ORM\Column(type="datetime")
      */
     protected $date;
-
-    /**
-     * @ORM\Column(type="string",
-     * nullable=true)
-     * *
-     */
-    protected $givenname;
-
-    /**
-     * @ORM\Column(type="string",
-     * nullable=true)
-     * *
-     */
-    protected $lastname;
-
-    /**
-     * @ORM\Column(type="string",length=1)
-     * *
-     */
-    protected $gender;
 
     /**
      *
@@ -170,33 +150,6 @@ class User extends UuidEntity implements UserInterface
 
     /**
      *
-     * @return field_type $givenname
-     */
-    public function getGivenname()
-    {
-        return $this->givenname;
-    }
-
-    /**
-     *
-     * @return field_type $lastname
-     */
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    /**
-     *
-     * @return field_type $gender
-     */
-    public function getGender()
-    {
-        return $this->gender;
-    }
-
-    /**
-     *
      * @param array $email            
      * @return $this
      */
@@ -261,39 +214,6 @@ class User extends UuidEntity implements UserInterface
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $givenname            
-     * @return $this
-     */
-    public function setGivenname($givenname)
-    {
-        $this->givenname = $givenname;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $lastname            
-     * @return $this
-     */
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $gender            
-     * @return $this
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-        return $this;
-    }
-
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -301,7 +221,6 @@ class User extends UuidEntity implements UserInterface
         $this->removed = false;
         $this->logins = 0;
         $this->generateToken();
-        $this->gender = 'n';
     }
 
     public function addRole(RoleInterface $role)

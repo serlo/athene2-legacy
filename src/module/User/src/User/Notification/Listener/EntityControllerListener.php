@@ -13,7 +13,7 @@ namespace User\Notification\Listener;
 
 use Zend\EventManager\Event;
 
-class EntityControllerListener extends AbstractListener
+abstract class EntityControllerListener extends AbstractListener
 {
     use \Uuid\Manager\UuidManagerAwareTrait;
 

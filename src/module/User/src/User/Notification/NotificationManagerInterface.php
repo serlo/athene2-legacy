@@ -25,7 +25,7 @@ interface NotificationManagerInterface
      * @param EventLogInterface $eventLog            
      * @return $this
      */
-    public function createNotification(UserInterface $user, Entity\NotificationLogInterface $eventLog);
+    public function createNotification(UserInterface $user, EventLogInterface $eventLog);
 
     /**
      *

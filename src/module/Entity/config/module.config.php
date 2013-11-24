@@ -21,7 +21,7 @@ return array(
     ),
     'uuid_manager' => array(
         'resolver' => array(
-            'Entity\Entity\Entity' => function ($uuid, ServiceLocatorInterface $serviceLocator)
+            'Entity\Entity\EntityInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
             {
                 /* @var $entityManager \Entity\Manager\EntityManagerInterface */
                 $entityManager = $serviceLocator->get('Entity\Manager\EntityManager');

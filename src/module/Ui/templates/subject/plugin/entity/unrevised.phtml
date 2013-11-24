@@ -25,7 +25,7 @@
 	<tbody>
         <?php foreach($this->entities as $entity): ?>
         <tr>
-			<td><?php echo $this->normalize()->toAnchor($entity); ?></td>
+			<td><a href="<?php echo $this->url('entity/plugin/repository/history', array('entity' => $entity->getId())); ?>"><?php echo $this->normalize()->toTitle($entity); ?></a></td>
 			<td><?php echo $entity->getType()->getName(); ?></td>
 		</tr>
         <?php endforeach; ?>

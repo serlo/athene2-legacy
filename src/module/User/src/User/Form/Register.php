@@ -90,35 +90,6 @@ class Register extends Form
         ));
         
         $this->add(array(
-            'name' => 'givenname',
-            'type' => 'text',
-            'options' => array(
-                'label' => 'Vorname:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'lastname',
-            'type' => 'text',
-            'options' => array(
-                'label' => 'Nachname:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'gender',
-            'type' => 'select',
-            'options' => array(
-                'label' => 'Geschlecht:',
-                'value_options' => array(
-                    'n' => 'Keine Angabe',
-                    'm' => 'Männlich',
-                    'w' => 'Weiblich'
-                )
-            )
-        ));
-        
-        $this->add(array(
             'name' => 'tos',
             'type' => 'checkbox',
             'attributes' => array(

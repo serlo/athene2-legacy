@@ -23,7 +23,7 @@ return array(
     ),
     'uuid_manager' => array(
         'resolver' => array(
-            'Discussion\Entity\Comment' => function ($uuid, ServiceLocatorInterface $serviceLocator)
+            'Discussion\Entity\CommentInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
             {
                 /* @var $discussionManager \Discussion\DiscussionManager */
                 $discussionManager = $serviceLocator->get('Discussion\DiscussionManager');

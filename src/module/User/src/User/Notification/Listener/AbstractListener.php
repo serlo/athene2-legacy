@@ -11,26 +11,12 @@
  */
 namespace User\Notification\Listener;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\EventManager\SharedListenerAggregateInterface;
-use User\Service\UserServiceInterface;
-use Entity\Service\EntityServiceInterface;
-use Uuid\Entity\UuidInterface;
 
 abstract class AbstractListener implements SharedListenerAggregateInterface
 {
-    use\User\Notification\NotificationLogManagerAwareTrait,\User\Notification\SubscriptionManagerAwareTrait;
-
-    public function logEvent(AbstractActionController $controller, UserServiceInterface $actor, UuidInterface $object, UuidInterface $reference = NULL)
-    {
-        $params = $controller->getEvent()
-            ->getRouteMatch()
-            ->getParams();
-        $url = strtolower(str_replace('\\', '/', $params['controller']) . '/' . $params['action']);
-        $this->getNotificationLogManager()->logEvent($url, $actor->getEntity(), $object, $reference)
-        ;
-    }
-
+    use \User\Notification\SubscriptionManagerAwareTrait;
+    
     public function subscribe($user, $object, $notifyMailman)
     {
         $this->getSubscriptionManager()->subscribe($user, $object, $notifyMailman);

@@ -37,10 +37,10 @@ class EntityService implements EntityServiceInterface, Normalizable
         $normalized->setTitle($this->getUuid());
         
         // repository
-        if ($this->hasPlugin('repository') && ($this->repository()->hasCurrentRevision() || $this->repositoryHasHead())) {
+        if ($this->hasPlugin('repository') && ($this->repository()->hasCurrentRevision() || $this->repository()->hasHead())) {
             if ($this->repository()->hasCurrentRevision()) {
                 $revision = $this->repository()->getCurrentRevision();
-            } elseif ($this->repositoryHasHead()) {
+            } elseif ($this->repository()->hasHead()) {
                 $revision = $this->repository()->getHead();
             }
             if ($revision->get('title')) {
