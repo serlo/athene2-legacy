@@ -20,7 +20,7 @@ use Zend\Mvc\Router\RouteInterface;
 
 class RepositoryPlugin extends AbstractPlugin
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\User\Manager\UserManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -76,9 +76,9 @@ class RepositoryPlugin extends AbstractPlugin
             throw new Exception\ClassNotFoundException(sprintf('Class %s not found!', $form));
         
         $form = new $form();
-        if($hydrate && $this->hasCurrentRevision()){
+        if ($hydrate && $this->hasCurrentRevision()) {
             $data = array();
-            foreach($this->getFields() as $field){
+            foreach ($this->getFields() as $field) {
                 $data[$field] = $this->getCurrentRevision()->get($field);
             }
             $form->setData($data);
@@ -86,8 +86,9 @@ class RepositoryPlugin extends AbstractPlugin
         
         return $form;
     }
-    
-    public function getFields(){
+
+    public function getFields()
+    {
         return $this->getOption('fields');
     }
 
@@ -100,7 +101,7 @@ class RepositoryPlugin extends AbstractPlugin
     {
         return $this->getRepository()->hasHead();
     }
-    
+
     public function getHead()
     {
         return $this->getRepository()->getHead();
@@ -148,22 +149,22 @@ class RepositoryPlugin extends AbstractPlugin
 
     public function getAllRevisions()
     {
-        $criteria = Criteria::create()->orderBy(array(
-            "id" => "desc"
-        ));
         return $this->getRepository()
             ->getRevisions()
-            ->matching($criteria);
+            ->filter(function ($e)
+        {
+            return $e->isTrashed() === false;
+        });
     }
 
     public function getTrashedRevisions()
     {
-        $criteria = Criteria::create()->orderBy(array(
-            "id" => "desc"
-        ));
         return $this->getRepository()
             ->getRevisions()
-            ->matching($criteria);
+            ->filter(function ($e)
+        {
+            return $e->isTrashed() === true;
+        });
     }
 
     /**
@@ -192,14 +193,14 @@ class RepositoryPlugin extends AbstractPlugin
         $repository->addRevision($revision);
         
         foreach ($form->getData() as $key => $value) {
-            if (is_string($key) && is_string($value)){
+            if (is_string($key) && is_string($value)) {
                 $revision->set($key, $value);
             }
         }
         
         $this->getObjectManager()->persist($revision);
         
-        return $this;
+        return $revision;
     }
 
     public function removeRevision($revisionId)
@@ -209,17 +210,8 @@ class RepositoryPlugin extends AbstractPlugin
         return $this;
     }
 
-    public function trashRevision($revisionId)
-    {
-        $revision = $this->getRepository()->getRevision($revisionId);
-        $revision->toggleTrashed();
-        $this->getObjectManager()->persist($revision);
-        return $this;
-    }
-
     public function isUnrevised()
     {
         return $this->getRepository()->isUnrevised();
     }
-
 }

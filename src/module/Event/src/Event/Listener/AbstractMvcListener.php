@@ -11,12 +11,11 @@
  */
 namespace Event\Listener;
 
-use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
-use Zend\Mvc\Controller\AbstractActionController;
 use Language\Entity\LanguageInterface;
-use Zend\EventManager\SharedListenerAggregateInterface;
 use Common\Listener\AbstractSharedListenerAggregate;
+use Uuid\Entity\UuidInterface;
+use Uuid\Entity\UuidHolder;
 
 abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
 {
@@ -26,17 +25,18 @@ abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
      * Tells the EventManager to log a certain event.
      * The EventType is automatically generated through the controller.
      *
-     * @param AbstractActionController $controller            
+     * @param string $name            
      * @param LanguageInterface $language            
-     * @param UserInterface $actor            
-     * @param UuidHolder $uuid            
+     * @param UserInterface $actor          
+     * @param array $params  
+     * @param $uuid            
+     * @return void
      */
-    public function logEvent(AbstractActionController $controller, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid)
+    public function logEvent($name, LanguageInterface $language, UserInterface $actor, $uuid, array $params = array())
     {
-        $params = $controller->getEvent()
-            ->getRouteMatch()
-            ->getParams();
-        $url = strtolower(str_replace('\\', '/', $params['controller']) . '/' . $params['action']);
-        $this->getEventManager()->logEvent($url, $language, $actor, $uuid);
+        if($uuid instanceof UuidHolder)
+            $uuid = $uuid->getUuidEntity();
+        
+        $this->getEventManager()->logEvent($name, $language, $actor, $uuid, $params);
     }
 }

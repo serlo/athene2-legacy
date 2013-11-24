@@ -44,7 +44,8 @@ return array(
         'RelatedContent',
         'Contexter',
         'Flag',
-        'Search'
+        'Search',
+        'Normalize'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

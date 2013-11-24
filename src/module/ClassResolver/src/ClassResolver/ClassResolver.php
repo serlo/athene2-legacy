@@ -56,7 +56,7 @@ class ClassResolver implements ClassResolverInterface
             throw new RuntimeException(sprintf("Can't resolve %s (%s).", $class, $index));
         
         if (! class_exists($this->registry[$index]))
-            throw new RuntimeException(sprintf("Class %s not found.", $this->registry[$class]));
+            throw new RuntimeException(sprintf("Class `%s` not found, resolved from %s.", $this->registry[$index], $class));
         
         return $this->registry[$index];
     }

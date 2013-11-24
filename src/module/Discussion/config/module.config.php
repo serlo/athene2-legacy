@@ -18,7 +18,17 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 return array(
     'uuid_router' => array(
         'routes' => array(
-            'comment' => 'discussion/%d'
+            'comment' => '/discussion/%d'
+        )
+    ),
+    'uuid_manager' => array(
+        'resolver' => array(
+            'Discussion\Entity\CommentInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
+            {
+                /* @var $discussionManager \Discussion\DiscussionManager */
+                $discussionManager = $serviceLocator->get('Discussion\DiscussionManager');
+                return $discussionManager->getComment($uuid->getId());
+            }
         )
     ),
     'view_helpers' => array(
@@ -81,7 +91,7 @@ return array(
     'class_resolver' => array(
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
         'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote',
-        'Discussion\Service\CommentServiceInterface' => 'Discussion\Service\CommentService'
+        'Discussion\Service\DiscussionServiceInterface' => 'Discussion\Service\DiscussionService'
     ),
     'router' => array(
         'routes' => array(
@@ -92,6 +102,16 @@ return array(
                 ),
                 'may_terminate' => false,
                 'child_routes' => array(
+                    'view' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/discussion/:id',
+                            'defaults' => array(
+                                'controller' => 'Discussion\Controller\DiscussionController',
+                                'action' => 'view'
+                            )
+                        )
+                    ),
                     'discussions' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -206,7 +226,7 @@ return array(
                         'required' => true
                     )
                 ),
-                'Discussion\Service\CommentService' => array(
+                'Discussion\Service\DiscussionService' => array(
                     'setObjectManager' => array(
                         'required' => true
                     )

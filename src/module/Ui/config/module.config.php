@@ -1,13 +1,5 @@
 <?php
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\HelperPluginManager;
-use Zend\Session\Container;
-use ZfcRbac\Service\Rbac;
-use Zend\Mvc\Application;
-use Ui\View\Helper\PageHeader;
 /**
- *
- *
  *
  * Athene2 - Advanced Learning Resources Manager
  *
@@ -17,6 +9,11 @@ use Ui\View\Helper\PageHeader;
  * @link https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcRbac\Service\Rbac;
+use Zend\Mvc\Application;
+use Ui\View\Helper\PageHeader;
+
 return array(
     'navigation' => array(
         'hydratables' => array(

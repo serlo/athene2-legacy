@@ -11,21 +11,22 @@
  */
 namespace User\Notification\Entity;
 
+use Event\Entity\EventLogInterface;
 interface NotificationEventInterface
 {
 
     /**
      *
-     * @return NotificationLogInterface
+     * @return EventLogInterface
      */
     public function getEventLog();
 
     /**
      *
-     * @param NotificationLogInterface $eventLog            
+     * @param EventLogInterface $eventLog            
      * @return $this;
      */
-    public function setEventLog(NotificationLogInterface $eventLog);
+    public function setEventLog(EventLogInterface $eventLog);
 
     /**
      *

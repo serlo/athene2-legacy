@@ -14,6 +14,8 @@ namespace Event\Entity;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageInterface;
+use Uuid\Entity\UuidHolder;
+
 
 interface EventLogInterface
 {
@@ -26,12 +28,65 @@ interface EventLogInterface
     public function getId();
 
     /**
+     * Gets the associated object (uuid).
+     *
+     * @return UuidHolder
+     */
+    public function getObject();
+    
+    /**
+     * 
+     * @return \Datetime
+     */
+    public function getTimestamp();
+
+    /**
+     * Gets the actor.
+     *
+     * @return UserInterface
+     */
+    public function getActor();
+
+    /**
+     * Gets the language.
+     *
+     * @return LanguageInterface
+     */
+    public function getLanguage();
+
+    /**
+     * Gets the event.
+     *
+     * @return EventInterface
+     */
+    public function getEvent();
+
+    /**
+     *
+     * @return EventParameterInterface[]
+     */
+    public function getParameters();
+
+    /**
+     *
+     * @return UuidHolder
+     */
+    public function getParameter($name);
+    
+    /**
+     *
+     * @param EventParameterInterface $parameter            
+     * @return $this
+     */
+    public function addParameter(EventParameterInterface $parameter);
+
+    /**
      * Sets the associated object (uuid)
      *
      * @param UuidInterface $uuid            
      * @return $this
      */
-    public function setUuid(UuidInterface $uuid);
+    public function setObject(UuidInterface $uuid);
 
     /**
      * Sets the event.
@@ -56,32 +111,4 @@ interface EventLogInterface
      * @return $this
      */
     public function setLanguage(LanguageInterface $language);
-
-    /**
-     * Gets the associated object (uuid).
-     *
-     * @return UuidInterface
-     */
-    public function getUuid();
-
-    /**
-     * Gets the actor.
-     *
-     * @return UserInterface
-     */
-    public function getActor();
-
-    /**
-     * Gets the language.
-     *
-     * @return LanguageInterface
-     */
-    public function getLanguage();
-
-    /**
-     * Gets the event.
-     *
-     * @return EventInterface
-     */
-    public function getEvent();
 }

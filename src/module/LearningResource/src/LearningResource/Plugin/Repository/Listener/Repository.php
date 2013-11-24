@@ -35,9 +35,8 @@ class Repository extends AbstractListener
                     ->getRouter()
                     ->assemble(array(
                     'entity' => $entity->getId(),
-                    'action' => 'add-revision'
                 ), array(
-                    'name' => 'entity/plugin/repository'
+                    'name' => 'entity/plugin/repository/add-revision'
                 )));
                 return $result;
             }

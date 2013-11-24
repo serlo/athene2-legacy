@@ -27,7 +27,6 @@ class Url extends ZendUrl {
         if ($alias)
             $link = '/alias/' . $alias;
 
-        
         return $link;
     }
 }

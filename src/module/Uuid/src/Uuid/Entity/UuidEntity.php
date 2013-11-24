@@ -51,4 +51,9 @@ class UuidEntity implements UuidHolder
         $this->getUuidEntity()->setTrashed($trashed);
         return $this;
     }
+
+    public function getHolderName()
+    {
+        return $this->getUuidEntity()->getHolderName();
+    }
 }

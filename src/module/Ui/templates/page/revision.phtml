@@ -1,10 +1,10 @@
 
 
 <?php
-    echo $this->partial('page/revision-menu.phtml', array(
+    echo $this->partial('page/revision-menu', array(
         'repositoryid' => $this->repositoryid,
         'revision' => $this->revision
-    ))?>
+    )); ?>
 
 <div class="page-header">
 	<h1><?php if ($this->revision!=NULL) echo $this->revision->getTitle();?></h1>

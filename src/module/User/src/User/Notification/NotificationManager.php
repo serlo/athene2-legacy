@@ -12,15 +12,15 @@
 namespace User\Notification;
 
 use User\Notification\Entity\NotificationLogInterface;
+use Event\Entity\EventLogInterface;
+use User\Notification\Collection\NotificationCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class NotificationManager implements NotificationManagerInterface
 {
     use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
     
-    /*
-     * (non-PHPdoc) @see \User\Notification\NotificationManagerInterface::createNotification()
-     */
-    public function createNotification(\User\Entity\UserInterface $user, NotificationLogInterface $log)
+    public function createNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
     {
         $notification = $this->aggregateNotification($user, $log);
         
@@ -34,7 +34,7 @@ class NotificationManager implements NotificationManagerInterface
         $notificationLog->setNotification($notification);
         $notification->setUser($user);
         $notification->setSeen(false);
-        $notification->setDate(new \DateTime('NOW'));
+        $notification->setTimestamp(new \DateTime('NOW'));
         $notificationLog->setEventLog($log);
         
         $this->getObjectManager()->persist($notification);
@@ -42,32 +42,7 @@ class NotificationManager implements NotificationManagerInterface
         
         return $this;
     }
-
-    /**
-     *
-     * @param \User\Entity\UserInterface $user            
-     * @param NotificationLogInterface $log            
-     * @return \User\Notification\Entity\NotificationInterface
-     */
-    protected function aggregateNotification(\User\Entity\UserInterface $user, NotificationLogInterface $log)
-    {
-        $query = $this->getObjectManager()->createQuery(sprintf('SELECT n FROM %s n JOIN %s ne WITH (ne.notification = n.id) JOIN %s nl WITH (nl.id = ne.eventLog) WHERE n.user = %d AND nl.object = %d ORDER BY n.id DESC',
-            $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface'),
-            $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationEventInterface'),
-            $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationLogInterface'),
-            $user->getId(),
-            $log->getObject()->getId()));
-        $result = $query->getResult();
-        if (count($result)) {
-            return $result[0];
-        }
-        $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface');
-        return new $className();
-    }
     
-    /*
-     * (non-PHPdoc) @see \User\Notification\NotificationManagerInterface::getNotification()
-     */
     public function getNotificationService(Entity\NotificationInterface $notification)
     {
         if (! $this->hasInstance($notification->getId())) {
@@ -76,17 +51,38 @@ class NotificationManager implements NotificationManagerInterface
         return $this->getInstance($notification->getId());
     }
     
-    /*
-     * (non-PHPdoc) @see \User\Notification\NotificationManagerInterface::findNotificationsBySubsriber()
-     */
     public function findNotificationsBySubsriber(\User\Service\UserServiceInterface $userService)
     {
-        return $this->getObjectManager()
+        $notifications = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('User\Notification\Entity\NotificationInterface'))
             ->findBy(array(
             'user' => $userService->getId()
         ));
+        $collection = new ArrayCollection($notifications);
+        return new NotificationCollection($collection, $this);
+    }
+
+    /**
+     *
+     * @param \User\Entity\UserInterface $user            
+     * @param NotificationLogInterface $log            
+     * @return \User\Notification\Entity\NotificationInterface
+     */
+    protected function aggregateNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
+    {
+        /*$query = $this->getObjectManager()->createQuery(sprintf('SELECT n FROM %s n JOIN %s ne WITH (ne.notification = n.id) JOIN %s nl WITH (nl.id = ne.eventLog) WHERE n.user = %d AND nl.object = %d ORDER BY n.id DESC',
+            $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface'),
+            $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationEventInterface'),
+            $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationLogInterface'),
+            $user->getId(),
+            $log->getObject()->getId()));
+        $result = $query->getResult();
+        if (count($result)) {
+            return $result[0];
+        }*/
+        $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface');
+        return new $className();
     }
 
     protected function createService(Entity\NotificationInterface $notification)

@@ -139,7 +139,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
         return $this->language;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -167,7 +167,7 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
         return $this;
     }
 
-    public function setDate(\DateTime $date)
+    public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
         return $this;

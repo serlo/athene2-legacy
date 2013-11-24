@@ -21,22 +21,30 @@ class NotificationWorker
      */
     public function run()
     {
+        /* @var $eventLog \Event\Entity\EventLogInterface */
         foreach ($this->getWorkload() as $eventLog) {
-            /* @var $eventLog Entity\NotificationLogInterface */
-            foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getObject()) as $subscriber) {
+            foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getObject()->getUuidEntity()) as $subscriber) {
                 /* @var $subscriber \User\Entity\UserInterface */
                 if($subscriber !== $eventLog->getActor()){
                     $this->getNotificationManager()->createNotification($subscriber, $eventLog);
                 }
             }
-            if($eventLog->getReference() !== NULL){
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
+            foreach($eventLog->getParameters() as $parameter){
+                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($parameter->getObject()) as $subscriber) {
                     /* @var $subscriber \User\Entity\UserInterface */
                     if($subscriber !== $eventLog->getActor()){
                         $this->getNotificationManager()->createNotification($subscriber, $eventLog);
                     }
                 }
             }
+            /*if($eventLog->getReference() !== NULL){
+                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
+                    // @var $subscriber \User\Entity\UserInterface
+                    if($subscriber !== $eventLog->getActor()){
+                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                    }
+                }
+            }*/
         }
     }
 
@@ -45,7 +53,7 @@ class NotificationWorker
      */
     protected function getWorkload(){
         $offset = $this->findOffset();
-        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationLogInterface'), $offset));
+        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('Event\Entity\EventLog'), $offset));
         return $query->getResult();
     }
 
