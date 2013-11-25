@@ -17,6 +17,7 @@ class Module
     protected $listeners = array(
         'Event\Listener\RepositoryPluginControllerListener',
         'Event\Listener\DiscussionControllerListener',
+        'Event\Listener\TaxonomyTermControllerListener',
         'Event\Listener\UuidControllerListener'
     );
 

@@ -12,28 +12,33 @@
  */
 namespace Common;
 
-return array (
-		'di' => array (
-				'allowed_controllers' => array (
-						__NAMESPACE__ . '\Controller\IndexController' 
-				),
-				'definition' => array (
-						'class' => array (
-								'Common\Firewall\HydratableController' => array (
-										'setServiceLocator' => array (
-												'required' => true 
-										)
-								) 
-						) 
-				) 
-		),
-		'view_helpers' => array (
-				'invokables' => array () 
-		),
-		'controller_plugins' => array (
-				'invokables' => array (
-						'referer' => 'Common\Controller\Plugin\RefererProvider',
-						'redirect' => 'Common\Controller\Plugin\RedirectHelper' 
-				) 
-		) 
+return array(
+    'di' => array(
+        'allowed_controllers' => array(
+            __NAMESPACE__ . '\Controller\IndexController'
+        ),
+        'definition' => array(
+            'class' => array(
+                'Common\Firewall\HydratableController' => array(
+                    'setServiceLocator' => array(
+                        'required' => true
+                    )
+                )
+            )
+        )
+    ),
+    'view_helpers' => array(
+        'invokables' => array()
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'referer' => 'Common\Controller\Plugin\RefererProvider',
+            'redirect' => 'Common\Controller\Plugin\RedirectHelper'
+        )
+    ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'normalize' => 'Common\View\Helper\Normalize'
+        )
+    )
 );

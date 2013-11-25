@@ -1,0 +1,6 @@
+<?php $name = $this->entity->getType()->getName(); ?>
+<?php if($this->resolver('entity/view/'.$name)):?>
+        <?php echo $this->partial('entity/view/'.$name, array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => $this->hideActions)); ?>
+    <?php else: ?>
+        <?php echo $this->translate(sprintf('No view found for %s', $name)); ?>
+<?php endif; ?>

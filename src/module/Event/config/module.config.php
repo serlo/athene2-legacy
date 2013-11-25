@@ -65,6 +65,11 @@ return array(
                         'required' => true
                     )
                 ),
+                __NAMESPACE__ . '\Listener\TaxonomyTermControllerListener' => array(
+                    'setEventManager' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Listener\DiscussionControllerListener' => array(
                     'setEventManager' => array(
                         'required' => true

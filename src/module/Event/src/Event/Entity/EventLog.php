@@ -78,7 +78,12 @@ class EventLog implements EventLogInterface
     
     public function getParameter($name)
     {
-        return $this->getParameters()->matching(Criteria::create(Criteria::expr()->eq('name', $name)))->current()->getObject()->getHolder();
+        foreach($this->getParameters() as $parameter){
+            if($parameter->getName() == $name){
+                return $parameter->getObject()->getHolder();
+            }
+        }
+        return NULL;
     }
     
     public function getLanguage()

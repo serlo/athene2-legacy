@@ -11,12 +11,25 @@
  */
 namespace Entity;
 
+use Zend\Stdlib\ArrayUtils;
 class Module
 {
 
+    protected $listeners = array(
+        'Entity\Plugin\Link\Listener\Link',
+        'Entity\Plugin\Repository\Listener\Repository',
+        'Entity\Plugin\Taxonomy\Listener\Taxonomy',
+        'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener'
+    );
+
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        $module = include __DIR__ . '/config/module.config.php';
+        $types = include __DIR__ . '/config/plugins/plugins.config.php';
+        $plugins = include __DIR__ . '/config/types/types.config.php';
+        $merge = ArrayUtils::merge($module, $types);
+        $merge = ArrayUtils::merge($merge, $plugins);
+        return $merge;
     }
 
     public function getAutoloaderConfig()
@@ -28,5 +41,17 @@ class Module
                 )
             )
         );
+    }
+
+    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    {
+        foreach ($this->listeners as $listener) {
+            $e->getApplication()
+                ->getEventManager()
+                ->getSharedManager()
+                ->attachAggregate($e->getApplication()
+                ->getServiceManager()
+                ->get($listener));
+        }
     }
 }

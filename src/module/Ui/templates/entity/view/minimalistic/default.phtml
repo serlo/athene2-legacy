@@ -1,0 +1,10 @@
+<?php $name = $this->entity->getType()->getName(); ?>
+<?php if($this->resolver('entity/view/minimalistic/'.$name)):?>
+        <?php echo $this->partial('entity/view/minimalistic/'.$name, array('entity' => $this->entity)); ?>
+    <?php else: ?>
+        <?php if($this->entity->repository()->hasCurrentRevision()): ?>
+            <?php echo $this->entity->repository()->getCurrentRevision()->get('title'); ?> <small><i><?php echo $this->entity->getType()->getName(); ?></i></small>
+        <?php else: ?>
+            <?php echo $this->translate('Pending review:'); ?> <?php echo $this->entity->getId(); ?> <small><i><?php echo $this->entity->getType()->getName(); ?></i></small>
+        <?php endif; ?>
+<?php endif; ?>

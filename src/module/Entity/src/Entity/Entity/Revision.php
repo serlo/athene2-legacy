@@ -15,11 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
-use Normalize\Normalizable;
-use Normalize\Normalized;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
 /**
  * An entity link.

@@ -168,6 +168,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         $this->getUuidManager()->injectUuid($entity);
         
         $this->getObjectManager()->persist($entity);
+        
         return $entity;
     }
 

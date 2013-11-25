@@ -12,7 +12,22 @@
 namespace Entity;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Entity\Collection\EntityCollection;
+
 return array(
+    'taxonomy' => array(
+        'associations' => array(
+            'entities' => array(
+                'callback' => function (ServiceLocatorInterface $sm, $collection)
+                {
+                    return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
+                },
+                'options' => array(
+                    'template' => 'entity/view/minimalistic/default'
+                )
+            )
+        )
+    ),
     'uuid_router' => array(
         'routes' => array(
             'entity' => '/entity/view/%d',

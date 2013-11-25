@@ -18,8 +18,8 @@ use Discussion\Entity\CommentInterface;
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
 use Discussion\Collection\CommentCollection;
-use Normalize\Normalizable;
-use Normalize\Normalized;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
 class DiscussionService extends AbstractComment implements DiscussionServiceInterface, Normalizable
 {

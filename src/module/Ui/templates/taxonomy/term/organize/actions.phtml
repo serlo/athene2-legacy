@@ -23,7 +23,10 @@
             <?php endforeach;?>
 		</ul>
 	</div>
-	<a
-		href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
+	<a href="<?php echo $this->url('taxonomy/term/action',array('action' => 'update', 'id' => $this->term->getId() )); ?>"
 		class="btn btn-default btn-xs"><i class="glyphicon glyphicon-pencil"></i></a>
+    <a class="btn btn-default btn-xs" href="<?php echo $this->url('event/history',array('id' => $this->term->getId())); ?>"><span
+    	class="glyphicon glyphicon-hdd"></span></a>
+	<a href="<?php echo $this->url('uuid/trash',array('action' => 'trash', 'id' => $this->term->getId() )); ?>"
+		class="btn btn-default btn-xs"><i class="glyphicon glyphicon-trash"></i></a>
 </div>

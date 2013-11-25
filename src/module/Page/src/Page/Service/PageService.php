@@ -3,8 +3,8 @@ namespace Page\Service;
 
 use Page\Manager\PageManagerInterface;
 use User\Entity\RoleInterface;
-use Normalize\Normalizable;
-use Normalize\Normalized;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
 class PageService implements PageServiceInterface, Normalizable
 {
