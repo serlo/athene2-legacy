@@ -38,4 +38,6 @@ interface UuidHolder
     public function getTrashed();
     
     public function setTrashed($voided);
+
+    public function getHolderName();
 }

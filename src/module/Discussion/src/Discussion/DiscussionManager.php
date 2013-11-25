@@ -22,7 +22,7 @@ use Taxonomy\Service\TermServiceInterface;
 class DiscussionManager extends AbstractDiscussionManager implements DiscussionManagerInterface
 {
 
-    protected $serviceInterface = 'Discussion\Service\CommentServiceInterface';
+    protected $serviceInterface = 'Discussion\Service\DiscussionServiceInterface';
 
     protected $entityInterface = 'Discussion\Entity\CommentInterface';
     
@@ -122,7 +122,7 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::comment()
      */
-    public function commentDiscussion(\Discussion\Service\CommentServiceInterface $discussion,\Language\Service\LanguageServiceInterface $language,\User\Service\UserServiceInterface $author, $content)
+    public function commentDiscussion(\Discussion\Service\DiscussionServiceInterface $discussion,\Language\Service\LanguageServiceInterface $language,\User\Service\UserServiceInterface $author, $content)
     {
         if ($discussion->hasParent())
             throw new Exception\RuntimeException(sprintf('You are trying to comment on a comment, but only commenting a discussion is allowed (comments have parents whilst discussions do not).'));

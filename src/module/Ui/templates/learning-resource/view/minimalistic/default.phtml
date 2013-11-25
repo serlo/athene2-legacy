@@ -1,6 +1,6 @@
-<?php $type = $this->entity->getType()->getName(); ?>
-<?php if($this->resolver('learning-resource/view/minimalistic/'.$type)):?>
-        <?php echo $this->partial('learning-resource/view/minimalistic/'.$type, array('entity' => $this->entity)); ?>
+<?php $name = $this->entity->getType()->getName(); ?>
+<?php if($this->resolver('learning-resource/view/minimalistic/'.$name)):?>
+        <?php echo $this->partial('learning-resource/view/minimalistic/'.$name, array('entity' => $this->entity)); ?>
     <?php else: ?>
         <?php if($this->entity->repository()->hasCurrentRevision()): ?>
             <?php echo $this->entity->repository()->getCurrentRevision()->get('title'); ?> <small><i><?php echo $this->entity->getType()->getName(); ?></i></small>

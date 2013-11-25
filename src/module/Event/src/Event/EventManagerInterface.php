@@ -15,6 +15,7 @@ use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Language\Entity\LanguageInterface;
 use Event\Entity\EventInterface;
+use Uuid\Entity\UuidInterface;
 interface EventManagerInterface
 {
     /**
@@ -31,10 +32,11 @@ interface EventManagerInterface
      * @param string $eventName
      * @param LanguageInterface $language
      * @param UserInterface $actor
-     * @param UuidHolder $uuid
+     * @param UuidInterface $uuid
+     * @param array $parameters
      * @return $this
      */
-    public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidHolder $uuid);
+    public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array());
     
     /**
      * Finds an event by it's name
@@ -42,5 +44,21 @@ interface EventManagerInterface
      * @param string $eventName
      * @return EventInterface
      */
-    public function findEventByName($eventName);
+    public function findTypeByName($eventName);
+    
+    /**
+     * 
+     * @param int $objectId
+     * @param string $recursive
+     * @param array $filter
+     * @return EventInterface[]
+     */
+    public function findEventsByObject($objectId, $recursive = true, array $filter = array());
+    
+    /**
+     * 
+     * @param int $id
+     * @return EventInterface
+     */
+    public function getEvent($id);
 }

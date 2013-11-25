@@ -78,6 +78,11 @@ class Uuid implements UuidInterface
     protected $pageRepository;
 
     /**
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="id")
+     */
+    protected $pageRevision;
+
+    /**
      *
      * @return field_type $trashed
      */

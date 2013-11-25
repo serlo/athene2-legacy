@@ -13,9 +13,10 @@ namespace Event\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity
@@ -56,19 +57,33 @@ class EventLog implements EventLogInterface
     protected $language;
 
     /**
+     * @ORM\OneToMany(targetEntity="EventParameter", mappedBy="log")
+     */
+    protected $parameters;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $date;
 
+    public function __construct()
+    {
+        $this->parameters = new ArrayCollection();
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+    
+    public function getParameter($name)
+    {
+        return $this->getParameters()->matching(Criteria::create(Criteria::expr()->eq('name', $name)))->current()->getObject()->getHolder();
+    }
+    
     public function getLanguage()
     {
         return $this->language;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-        return $this;
     }
 
     public function getId()
@@ -86,16 +101,16 @@ class EventLog implements EventLogInterface
         return $this->event;
     }
 
-    public function getUuid()
+    public function getObject()
     {
-        return $this->uuid;
+        return $this->uuid->getHolder();
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
-
+    
     public function setActor(UserInterface $actor)
     {
         $this->actor = $actor;
@@ -108,15 +123,21 @@ class EventLog implements EventLogInterface
         return $this;
     }
 
-    public function setUuid(UuidInterface $uuid)
+    public function setObject(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
         return $this;
     }
 
-    public function setDate($date)
+    public function setLanguage(LanguageInterface $language)
     {
-        $this->date = $date;
+        $this->language = $language;
+        return $this;
+    }
+
+    public function addParameter(EventParameterInterface $parameter)
+    {
+        $this->parameters->add($parameter);
         return $this;
     }
 }

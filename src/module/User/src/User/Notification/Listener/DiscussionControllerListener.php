@@ -22,29 +22,6 @@ class DiscussionControllerListener extends AbstractListener
      */
     protected $listeners = array();
 
-    public function onStartNotify(Event $e)
-    {
-        $discussion = $e->getParam('discussion')
-            ->getEntity()
-            ->getUuidEntity();
-        $user = $e->getParam('user');
-        $on = $e->getParam('on');
-        
-        $this->logEvent($e->getTarget(), $user, $discussion, $on);
-    }
-
-    public function onCommentNotify(Event $e)
-    {
-        $discussion = $e->getParam('discussion')
-            ->getEntity()
-            ->getUuidEntity();
-        $comment = $e->getParam('comment')
-            ->getEntity()
-            ->getUuidEntity();
-        $user = $e->getParam('user');
-        $this->logEvent($e->getTarget(), $user, $comment, $discussion);
-    }
-
     public function onStartSubscribe(Event $e)
     {
         if (array_key_exists('subscription', $e->getParam('post'))) {
@@ -91,20 +68,11 @@ class DiscussionControllerListener extends AbstractListener
             $this,
             'onStartSubscribe'
         ), 2);
-        $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'start', array(
-            $this,
-            'onStartNotify'
-        ), 1);
         
         $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'comment', array(
             $this,
             'onCommentSubscribe'
         ), 2);
-        
-        $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'comment', array(
-            $this,
-            'onCommentNotify'
-        ), 1);
     }
     
     /*

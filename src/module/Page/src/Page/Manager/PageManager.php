@@ -50,20 +50,19 @@ class PageManager implements PageManagerInterface
 
     protected function createPageEntity()
     {
-        $page = $this->getClassResolver()->resolveClassName('Page\Entity\Page');
-        return new $page();
+        return $this->getClassResolver()->resolve('Page\Entity\Page');
     }
 
     protected function createPageRevisionEntity()
     {
-        $page = $this->getClassResolver()->resolveClassName('Page\Entity\PageRevision');
-        return new $page();
+        $revision = $this->getClassResolver()->resolve('Page\Entity\PageRevision');
+        $this->getUuidManager()->injectUuid($revision);
+        return $revision;
     }
     
     protected function createPageRepositoryEntity()
     {
-        $page = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepository');
-        return new $page();
+        return $this->getClassResolver()->resolve('Page\Entity\PageRepository');
     }
     
     protected function createService(PageRepositoryInterface $entity)

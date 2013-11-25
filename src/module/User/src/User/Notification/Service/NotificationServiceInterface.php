@@ -18,14 +18,61 @@ interface NotificationServiceInterface
 
     /**
      *
-     * @param NotificationInterface $notification            
-     * @return $this
-     */
-    public function setNotification(NotificationInterface $notification);
-
-    /**
-     *
      * @return NotificationInterface
      */
     public function getNotification();
+
+    /**
+     *
+     * @return bool
+     */
+    public function getSeen();
+
+    /**
+     *
+     * @return string
+     */
+    public function getEventName();
+
+    /**
+     *
+     * @return Entity\User
+     */
+    public function getUser();
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getEvents();
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getActors();
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getObjects();
+
+    /**
+     *
+     * @return ArrayCollection
+     */
+    public function getParameters();
+
+    /**
+     *
+     * @return \DateTime $date
+     */
+    public function getTimestamp();
+    /**
+     * 
+     * @param mixed $timestamp
+     * @return $this
+     */
+    public function setTimestamp($timestamp);
 }

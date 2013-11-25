@@ -1,0 +1,11 @@
+<?php /* @var $event \Event\Entity\EventLogInterface; */?>
+<?php $event = $this->event; ?>
+<?php $name = $event->getName(); ?>
+<?php if($this->resolver('event/helper/event/'.$name)):?>
+    <?php echo $this->partial('event/helper/event/'.$name, array('event' => $event)); ?>
+<?php else: ?>
+    <?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+    <?php echo $this->translate($name); ?>
+    <?php echo $user; ?>
+<?php endif;?>
+<small> - <?php echo $this->timeago()->render($this->event->getTimestamp()); ?></small>

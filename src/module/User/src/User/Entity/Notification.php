@@ -47,15 +47,9 @@ class Notification implements NotificationInterface
      */
     protected $date;
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
-    }
-
-    public function setDate(\DateTime $date)
-    {
-        $this->date = $date;
-        return $this;
     }
 
     public function __construct()
@@ -117,7 +111,11 @@ class Notification implements NotificationInterface
      */
     public function getEvents()
     {
-        return $this->events;
+        $events = new ArrayCollection();
+        foreach ($this->events as $event) {
+            $events->add($event->getEventLog());
+        }
+        return $events;
     }
 
     public function getEventName()
@@ -163,9 +161,9 @@ class Notification implements NotificationInterface
     }
     
     /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getReferences()
+     * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getParameters()
      */
-    public function getReferences()
+    public function getParameters()
     {
         $collection = new ArrayCollection();
         foreach ($this->getEvents() as $event) {
@@ -173,5 +171,11 @@ class Notification implements NotificationInterface
             $collection->add($event->getReference());
         }
         return $collection;
+    }
+
+    public function setTimestamp(\DateTime $timestamp)
+    {
+        $this->date = $timestamp;
+        return $this;
     }
 }

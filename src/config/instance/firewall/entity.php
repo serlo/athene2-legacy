@@ -45,13 +45,13 @@ return array(
                 ),
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => 'add-revision',
+                    'actions' => 'addRevision',
                     'roles' => 'login'
                 ),
                 array(
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
                     'actions' => array(
-                        'trash-revision',
+                        'trashRevision',
                         'checkout'
                     ),
                     'roles' => 'helper'
