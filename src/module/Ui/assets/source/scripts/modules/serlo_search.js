@@ -29,20 +29,26 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
     };
 
     SearchResults.prototype.clear = function () {
-        this.results = [];
         this.activeFocus = 0;
         this.$el.empty();
     };
 
-    SearchResults.prototype.show = function (items) {
+    SearchResults.prototype.show = function (groups) {
         var self = this;
         self.clear();
-        self.results = items;
+        self.count = 0;
 
-        _.each(self.results, function (result) {
-            var $li = $('<li>').append($('<a>').text(result.title).attr('href', result.url));
+        _.each(groups, function (group) {
+            var $li = $('<li class="header">').append(group.title);
             self.$el.append($li);
+            _.each(group.items, function (item) {
+                var $li = $('<li>').append($('<a>').text(item.title).attr('href', item.url));
+                self.$el.append($li);
+                self.count += 1;
+            });
         });
+
+        self.$links = self.$el.find('li').filter(':not(.header)');
 
         this.setActiveItem();
     };
@@ -66,7 +72,7 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
 
     SearchResults.prototype.focusNext = function () {
         this.activeFocus += 1;
-        if (this.activeFocus >= this.results.length) {
+        if (this.activeFocus >= this.count) {
             this.activeFocus = 0;
         }
         this.setActiveItem();
@@ -75,14 +81,14 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
     SearchResults.prototype.focusPrev = function () {
         this.activeFocus -= 1;
         if (this.activeFocus < 0) {
-            this.activeFocus = this.results.length - 1;
+            this.activeFocus = this.count - 1;
         }
         this.setActiveItem();
     };
 
     SearchResults.prototype.setActiveItem = function () {
         this.$el.find('.active').removeClass('active');
-        var $next = this.$el.find('li').eq(this.activeFocus);
+        var $next = this.$links.eq(this.activeFocus);
         $next.addClass('active');
     };
 
@@ -178,28 +184,9 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
             method: 'post'
         });
 
-        self.ajax.success(this.onResult).fail(function () {
-            // Common.genericError();
-            self.onResult({
-                items: [
-                    {
-                        title: 'Gefunden',
-                        url: '/fach/mathe'
-                    },
-                    {
-                        title: 'Noch was andres',
-                        url: '/fach/mathe'
-                    },
-                    {
-                        title: 'Nur Dummy Content hier?',
-                        url: '/fach/mathe'
-                    },
-                    {
-                        title: 'Yep!',
-                        url: '/fach/mathe'
-                    }
-                ]
-            });
+        self.ajax.success(self.onResult).fail(function () {
+            self.$input.blur();
+            Common.genericError();
         });
     };
 
@@ -207,9 +194,9 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         var self = this;
         if (self.$el.hasClass(self.options.inFocusClass)) {
             self.results.clear();
-            if (result.items.length) {
+            if (result.length) {
                 self.$el.addClass(self.options.hasResultsClass);
-                self.results.show(result.items);
+                self.results.show(result);
             } else {
                 self.$el.removeClass(self.options.hasResultsClass);
             }

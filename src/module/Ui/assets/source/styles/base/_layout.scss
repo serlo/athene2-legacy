@@ -56,10 +56,12 @@
 }
 
 #content {
-    margin-right: $sidebarWidth;
+    .col-3 & {
+        margin-right: $sidebarWidth;
 
-    @media only screen and (max-width: $sidebarBreakPoint) {
-        margin-right: 40px;
+        @media only screen and (max-width: $sidebarBreakPoint) {
+            margin-right: 40px;
+        }
     }
 }
 
