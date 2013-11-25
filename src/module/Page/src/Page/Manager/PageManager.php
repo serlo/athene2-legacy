@@ -48,21 +48,19 @@ class PageManager implements PageManagerInterface
     
 
 
-    protected function createPageEntity()
-    {
-        return $this->getClassResolver()->resolve('Page\Entity\Page');
-    }
-
+ 
     protected function createPageRevisionEntity()
     {
-        $revision = $this->getClassResolver()->resolve('Page\Entity\PageRevision');
-        $this->getUuidManager()->injectUuid($revision);
+        $revision = $this->getClassResolver()->resolve('Page\Entity\PageRevisionInterface');
+        $uuidManager=$this->getUuidManager();
+        $uuidManager->injectUuid($revision);
         return $revision;
     }
     
     protected function createPageRepositoryEntity()
     {
-        return $this->getClassResolver()->resolve('Page\Entity\PageRepository');
+        $repository = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
+        return $repository;
     }
     
     protected function createService(PageRepositoryInterface $entity)
@@ -79,6 +77,7 @@ class PageManager implements PageManagerInterface
     public function createPageRepository(array $data,$language){
         
         $pageRepository = $this->createPageRepositoryEntity();
+        
         $pageRepository->populate($data);
         $this->getUuidManager()->injectUuid($pageRepository);
         $pageRepository->setLanguage($language);
