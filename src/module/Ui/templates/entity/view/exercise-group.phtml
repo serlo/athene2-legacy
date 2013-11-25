@@ -1,0 +1,35 @@
+<article>
+    <div class="pull-right btn-group">
+        <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('group' => array('to_entity' => $this->entity->getId())))); ?>
+        <?php if($this->rbac()->hasAccessToUrl($url)): ?>
+        	<a class="btn btn-default btn-xs"
+        		href="<?php echo $url; ?>">
+        		<strong>+</strong>
+        	</a>
+    	<?php endif; ?>
+        <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
+    </div>
+    <section>
+        <?php if($this->entity->repository()->hasCurrentRevision()): ?>
+            <?php echo $this->entity->repository()->getCurrentRevision()->get('content'); ?>
+        <?php endif; ?>
+    </section>
+    <section>    
+        <div class="sortable" data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'exercises', 'entity' => $this->entity->getId())); ?>" data-depth="1" data-active="false">
+            <ol class="sortable-list">
+            	<?php foreach($this->entity->exercises()->findChildren() as $child): ?>
+                    <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
+                        <span class="sortable-handle"></span>
+                        <div class="sortable-item-inner">
+                            <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $this->entity, 'hideActions' => array('detail', 'taxonomy'))); ?>
+                        </div>
+                    </li>
+            	<?php endforeach; ?>
+            </ol>            
+            <div class="sortable-actions pull-right btn-group">
+                <?php echo $this->partial('entity/view/partials/sortable-actions'); ?>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </section>
+</article>

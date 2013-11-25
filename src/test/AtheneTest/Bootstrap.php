@@ -55,16 +55,12 @@ class Bootstrap
         'LinkTest' => 'Link/test/LinkTest',
         'Language' => 'Language/src/Language',
         'LanguageTest' => 'Language/test/LanguageTest',
-        'LearningResource' => 'LearningResource/src/LearningResource',
-        'LearningResourceTest' => 'LearningResource/test/LearningResourceTest',
         'Page' => 'Page/src/Page',
         'Event' => 'Event/src/Event',
         'Blog' => 'Blog/src/Blog',
         'Token' => 'Token/src/Token',
         'PageTest' => 'Page/test/PageTest',
-        'TokenTest' => 'Token/test/TokenTest',
-        'Normalize' => 'Normalize/src/Normalize',
-        'NormalizeTest' => 'Normalize/test/NormalizeTest'
+        'TokenTest' => 'Token/test/TokenTest'
     );
 
     public static function getApplication(){
