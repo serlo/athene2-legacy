@@ -182,6 +182,9 @@ return array(
                     ),
                     'setLanguageManager' => array(
                         'required' => true
+                    ),
+                    'setUserManager' => array(
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Controller\TermRouterController' => array(

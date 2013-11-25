@@ -16,6 +16,7 @@ use Taxonomy\Form\TermForm;
 
 class TermController extends AbstractController
 {
+    use \User\Manager\UserManagerAwareTrait;
 
     public function organizeAction(){
         $term = $this->getTerm();
@@ -43,12 +44,6 @@ class TermController extends AbstractController
         $form->setData($term->getArrayCopy());
         $view->setVariable('form', $form);
         
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('taxonomy/term/action', array(
-            'action' => 'update',
-            'id' => $id
-        )) . '?ref=' . $this->params('ref', '/'));
-        
         $view->setTemplate('/taxonomy/term/form');
         
         if ($this->getRequest()->isPost()) {
@@ -56,13 +51,22 @@ class TermController extends AbstractController
                 ->getPost());
             if ($form->isValid()) {
                 $this->getSharedTaxonomyManager()->updateTerm($this->params('id'), $form->getData());
+                
+                $this->getEventManager()->trigger('update', $this, array(
+                    'term' => $term,
+                    'user' => $this->getUserManager()->getUserFromAuthenticator(),
+                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+                    'post' => $form->getData()
+                ));
+                
                 $this->getSharedTaxonomyManager()
                     ->getObjectManager()
                     ->flush();
                 $this->flashMessenger()->addSuccessMessage('Bearbeitung erfoglreich gespeichert!');
-                $this->redirect()->toUrl($this->params('ref', '/'));
+                $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         }
+        $this->referer()->store();
         
         return $view;
     }
@@ -80,8 +84,7 @@ class TermController extends AbstractController
             ->fromRoute('taxonomy/term/create', array(
             'parent' => $this->params('parent'),
             'taxonomy' => $this->params('taxonomy')
-        )) . '?ref=' . rawurlencode($this->referer()
-            ->toUrl()));
+        )));
         
         $view = new ViewModel(array(
             'form' => $form,
@@ -94,17 +97,25 @@ class TermController extends AbstractController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $this->getSharedTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
+                $term = $this->getSharedTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
                     ->getLanguageFromRequest());
+                
+                $this->getEventManager()->trigger('create', $this, array(
+                    'term' => $term,
+                    'user' => $this->getUserManager()->getUserFromAuthenticator(),
+                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+                    'post' => $form->getData()
+                ));
                 
                 $this->getSharedTaxonomyManager()
                     ->getObjectManager()
                     ->flush();
-                
+
                 $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich hinzugefügt!');
-                $this->redirect()->toUrl($this->params()->fromQuery('ref', '/'));
+                $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         }
+        $this->referer()->store();
         return $view;
     }
 
@@ -113,9 +124,7 @@ class TermController extends AbstractController
         $this->getSharedTaxonomyManager()->deleteTerm($this->getParam('id'));
         
         $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich gelöscht!');
-        $this->redirect()->toUrl($this->getRequest()
-            ->getHeader('Referer')
-            ->getUri());
+        $this->redirect()->toReferer();
     }
 
     public function orderAssociatedAction()
@@ -165,6 +174,7 @@ class TermController extends AbstractController
         $weight = 1;
         foreach ($terms as $term) {
             $entity = $this->getTerm($term['id']);
+            $oldParent = $entity->getParent();
             if ($parent) {
                 $entity->setParent($this->getTerm($parent));
             } else {
@@ -172,6 +182,17 @@ class TermController extends AbstractController
             }
             $entity->setOrder($weight);
             $this->getSharedTaxonomyManager()->getObjectManager()->persist($entity->getEntity());
+            
+            if($oldParent !== $entity->getParent()){
+                $this->getEventManager()->trigger('parent-change', $this, array(
+                    'term' => $entity,
+                    'old' => $oldParent,
+                    'new' => $entity->getParent(),
+                    'user' => $this->getUserManager()->getUserFromAuthenticator(),
+                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+                ));
+            }
+            
             if (isset($term['children'])) {
                 $this->iterWeight($term['children'], $term['id']);
             }
