@@ -16,6 +16,7 @@ use Language\Entity\LanguageInterface;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Uuid\Entity\UuidInterface;
 use Uuid\Entity\UuidHolder;
+use Event\Exception\RuntimeException;
 
 abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
 {
@@ -38,5 +39,10 @@ abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
             $uuid = $uuid->getUuidEntity();
         
         $this->getEventManager()->logEvent($name, $language, $actor, $uuid, $params);
+    }
+    
+    public function __construct(){
+        if(!class_exists($this->getMonitoredClass()))
+            throw new RuntimeException(sprintf('The class you are trying to attach to does not exist: %s', $this->getMonitoredClass()));
     }
 }

@@ -18,7 +18,7 @@ $solution = $exercise->solution()->findChild();
             <?php $url = $this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId())))); ?>
             <?php if(!is_object($solution) && $this->rbac()->hasAccessToUrl($url)): ?>
             	<a class="btn btn-default btn-xs"
-            		href="<?php echo $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('text-exercise' => array('to_entity' => $this->entity->getId())))); ?>">
+            		href="<?php echo $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $this->entity->getId())))); ?>">
             		<strong>+</strong>
             	</a>
         	<?php endif; ?>

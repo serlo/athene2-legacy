@@ -27,7 +27,6 @@ class Repository extends AbstractListener
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
-            $data = $e->getParam('data');
             
             if ($entity->hasPlugin('repository')) {
                 $result = new UrlResult();

@@ -38,6 +38,8 @@ class PageController extends AbstractController
                 $this->redirect()->toUrl('/alias/' . $alias->getAlias());
             } catch (AliasNotFoundException $e) {}
         }
+        
+        /*
         $routeMatch = new RouteMatch(array(
             'subject' => $entity->provider()->getSubjectSlug()
         ));
@@ -46,6 +48,8 @@ class PageController extends AbstractController
             ->get('Application')
             ->getMvcEvent()
             ->setRouteMatch($routeMatch);
+        */
+        
         
         try {
             $model = new \Zend\View\Model\ViewModel(array(

@@ -13,7 +13,6 @@ namespace Entity\Plugin\Link\Listener;
 
 use Entity\Plugin\Listener\AbstractListener;
 use Zend\EventManager\Event;
-use Entity\Exception\RuntimeException;
 
 class Link extends AbstractListener
 {
@@ -27,7 +26,10 @@ class Link extends AbstractListener
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
-            $data = $e->getParam('data');
+            $data = $e->getParam('query');
+            $user = $e->getParam('user');
+            $language = $e->getParam('language');
+            
             /* var $entity \Entity\Manager\EntityManagerInterface */
             $entityManager = $entity->getEntityManager();
             if (count($entity->getScopesForPlugin('link'))) {
@@ -38,9 +40,18 @@ class Link extends AbstractListener
                         
                         $toEntity = $entityManager->getEntity($options['to_entity']);
                         $found = true;
-                        
+
                         $entity->$scope()
                             ->add($toEntity);
+
+                        $e->getTarget()
+                            ->getEventManager()
+                            ->trigger('link', $this, array(
+                            'entity' => $entity,
+                            'parent' => $toEntity,
+                            'user' => $user,
+                            'language' => $language
+                        ));
                     }
                 }
             }

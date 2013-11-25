@@ -88,7 +88,7 @@ return array(
                 {
                     $instance = new Plugin\Aggregate\AggregatePlugin();
                     
-                    $topicAggregator = new TopicAggregator();
+                    $topicAggregator = new Plugin\Aggregate\Aggregator\TopicAggregator();
                     $topicAggregator->setRouter($sm->getServiceLocator()
                         ->get('router'));
                     $instance->addAggregator($topicAggregator);

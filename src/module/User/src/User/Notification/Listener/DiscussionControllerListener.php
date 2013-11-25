@@ -64,22 +64,18 @@ class DiscussionControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'start', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'start', array(
             $this,
             'onStartSubscribe'
         ), 2);
         
-        $this->listeners[] = $events->attach('Discussion\Controller\DiscussionController', 'comment', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'comment', array(
             $this,
             'onCommentSubscribe'
         ), 2);
     }
     
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::detachShared()
-     */
-    public function detachShared(\Zend\EventManager\SharedEventManagerInterface $events)
-    {
-        // TODO Auto-generated method stub
+    protected function getMonitoredClass(){
+        return 'Discussion\Controller\DiscussionController';
     }
 }

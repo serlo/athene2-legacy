@@ -18,7 +18,8 @@ class Module
         'Event\Listener\RepositoryPluginControllerListener',
         'Event\Listener\DiscussionControllerListener',
         'Event\Listener\TaxonomyTermControllerListener',
-        'Event\Listener\UuidControllerListener'
+        'Event\Listener\UuidControllerListener',
+        'Event\Listener\EntityControllerListener'
     );
 
     public function getConfig()

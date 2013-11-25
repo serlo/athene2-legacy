@@ -114,6 +114,12 @@ return array(
                             'association' => 'many-to-one'
                         )
                     ),
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'entity/plugin/page/grouped-text-exercise'
+                        )
+                    ),
                     'solution' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -139,6 +145,12 @@ return array(
                                 'hint',
                                 'content'
                             )
+                        )
+                    ),
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'entity/plugin/page/text-solution'
                         )
                     ),
                     'exercise' => array(
@@ -305,6 +317,12 @@ return array(
                     'provider' => array(
                         'plugin' => 'provider'
                     )
+                    'page' => array(
+                        'plugin' => 'page',
+                        'options' => array(
+                            'template' => 'entity/plugin/page/module-page'
+                        )
+                    ),
                 )
             )
         )

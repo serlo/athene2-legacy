@@ -38,12 +38,6 @@ class LinkController extends AbstractController
         $entity = $this->getEntityService();
         $scope = $this->params('scope');
         $form = new MoveForm();
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('entity/plugin/link/move', array(
-            'scope' => $this->params('scope'),
-            'entity' => $this->params('entity')
-        )) . '?ref=' . $this->referer()
-            ->toUrl());
         
         $form->setData(array(
             'from' => $this->params()
@@ -69,9 +63,10 @@ class LinkController extends AbstractController
                     ->getObjectManager()
                     ->flush();
                 
-                $this->redirect()->toUrl($this->params()->fromQuery('ref', '/'));
+                $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         }
+        $this->referer()->store();
         
         $view = new ViewModel(array(
             'form' => $form

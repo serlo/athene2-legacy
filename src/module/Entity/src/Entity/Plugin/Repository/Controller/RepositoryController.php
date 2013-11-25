@@ -23,9 +23,6 @@ class RepositoryController extends AbstractController
 
     public function addRevisionAction()
     {
-        $ref = $this->params()->fromQuery('ref', $this->referer()
-            ->toUrl('/'));
-        
         $repository = $plugin = $this->getPlugin();
         $entity = $this->getEntityService();
         $user = $this->getUserManager()->getUserFromAuthenticator();
@@ -37,17 +34,13 @@ class RepositoryController extends AbstractController
         
         /* @var $form \Zend\Form\Form */
         $form = $plugin->getRevisionForm();
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('entity/plugin/repository/add-revision', array(
-            'entity' => $entity->getId(),
-        )) . '?ref=' . $ref);
         
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
                 $revision = $plugin->commitRevision($form, $user);
-                
+
                 $this->getEventManager()->trigger('add-revision', $this, array(
                     'entity' => $entity,
                     'user' => $user,
@@ -56,12 +49,14 @@ class RepositoryController extends AbstractController
                     'post' => $this->params()
                         ->fromPost()
                 ));
-                
+
                 $plugin->getObjectManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
-                $this->redirect()->toUrl($ref);
+                $this->redirect()->toUrl($this->referer()->fromStorage());
                 return '';
             }
+        } else {
+            $this->referer()->store();            
         }
         
         $view->setTemplate('entity/plugin/repository/update-revision');

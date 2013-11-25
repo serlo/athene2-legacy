@@ -75,6 +75,11 @@ return array(
                         'required' => true
                     )
                 ),
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => array(
+                    'setEventManager' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Listener\UuidControllerListener' => array(
                     'setEventManager' => array(
                         'required' => true
