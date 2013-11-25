@@ -17,12 +17,13 @@ use Page\Manager\PageManager;
 class PageManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $pageManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock;
+    protected $pageManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$languageMock;
 
     public function setUp()
     {
         parent::setUp();
         $this->pageManager = new PageManager();
+        $this->languageMock = $this->getMock('Language\Entity\Language');
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->userMock = $this->getMock('User\Entity\User');
         $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
@@ -114,6 +115,17 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
             
     }
     
+    private function createPageRepositoryEntity()
+    {
+        $this->classResolverMock->expects($this->any())->method('resolve')->will($this->returnValue($this->pageRepositoryMock));
+        $this->uuidManagerMock
+        ->expects($this->once())
+        ->method('injectUuid')
+        ->with($this->pageRepositoryMock);
+    
+    
+    }
+    
     
 
     public function testCreateRevision()
@@ -131,6 +143,20 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         )));
         
 
+    }
+    
+    public function testCreatePageRepository()
+    {
+    
+        $this->createPageRepositoryEntity();
+        $this->pageRepositoryMock->expects($this->once())->method('setLanguage')->with($this->languageMock);
+        $this->createService();
+        $this->assertInstanceOf('Page\Service\PageServiceInterface', $this->pageManager->createPageRepository(array(
+            123,
+            456,123,'language'=>$this->languageMock,'roles'=>array('sysadmin')
+        ),$this->languageMock));
+    
+    
     }
     
 }
