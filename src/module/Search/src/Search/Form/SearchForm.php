@@ -24,7 +24,7 @@ class SearchForm extends Form
         $this->setInputFilter($inputFilter);
         
         $this->add(array(
-            'name' => 'query',
+            'name' => 'q',
             'type' => 'text',
             'options' => array(
             )
@@ -40,7 +40,7 @@ class SearchForm extends Form
         ));
         
         $inputFilter->add(array(
-            'name' => 'query',
+            'name' => 'q',
             'required' => true
         ));
     }

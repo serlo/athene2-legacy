@@ -12,6 +12,7 @@
 namespace Search;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 class SearchService implements SearchServiceInterface
 {
     

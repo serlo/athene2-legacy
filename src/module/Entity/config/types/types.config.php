@@ -316,13 +316,13 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider'
-                    )
+                    ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
                             'template' => 'entity/plugin/page/module-page'
                         )
-                    ),
+                    )
                 )
             )
         )

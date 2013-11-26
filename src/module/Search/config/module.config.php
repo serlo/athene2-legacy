@@ -75,7 +75,19 @@ return array(
                     'route' => '/search',
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\SearchController',
-                        'action' => 'search'
+                        'action' => 'search',
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'ajax' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/ajax',
+                            'defaults' => array(
+                                'json' => true
+                            )
+                        )
                     )
                 )
             )
