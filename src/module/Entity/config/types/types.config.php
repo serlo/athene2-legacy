@@ -316,7 +316,7 @@ return array(
                     ),
                     'provider' => array(
                         'plugin' => 'provider'
-                    )
+                    ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
