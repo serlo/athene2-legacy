@@ -28,17 +28,42 @@ class Result implements ResultInterface
 
     /**
      *
-     * @return string $name
+     * @var array
      */
+    protected $routeParams;
+
+    /**
+     *
+     * @var string
+     */
+    protected $routeName;
+
+    /**
+     *
+     * @var mixed
+     */
+    protected $object;
+
+    public function getRouteParams()
+    {
+        return $this->routeParams;
+    }
+
+    public function getRouteName()
+    {
+        return $this->routeName;
+    }
+
+    public function getObject()
+    {
+        return $this->object;
+    }
+    
     public function getName()
     {
         return $this->name;
     }
-
-    /**
-     *
-     * @return number $id
-     */
+    
     public function getId()
     {
         return $this->id;
@@ -63,6 +88,34 @@ class Result implements ResultInterface
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     *
+     * @param array $routeParams            
+     * @return $this
+     */
+    public function setRouteParams(array $routeParams)
+    {
+        $this->routeParams = $routeParams;
+        return $this;
+    }
+
+    /**
+     *
+     * @param string $routeName            
+     * @return $this
+     */
+    public function setRouteName($routeName)
+    {
+        $this->routeName = $routeName;
+        return $this;
+    }
+
+    public function setObject($object)
+    {
+        $this->object = $object;
         return $this;
     }
 }

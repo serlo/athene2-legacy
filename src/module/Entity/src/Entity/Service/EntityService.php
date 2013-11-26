@@ -17,7 +17,7 @@ use Zend\Stdlib\ArrayUtils;
 use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
 
-class EntityService implements EntityServiceInterface, Normalizable
+class EntityService implements EntityServiceInterface
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Zend\EventManager\EventManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 

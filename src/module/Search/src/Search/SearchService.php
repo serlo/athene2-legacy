@@ -11,14 +11,12 @@
  */
 namespace Search;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 class SearchService implements SearchServiceInterface
 {
-    
-    use \Common\Traits\ConfigAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait;
-    
-    protected function getDefaultConfig(){
+    use\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\RouterAwareTrait;
+
+    protected function getDefaultConfig()
+    {
         return array(
             'adapters' => array(
                 'entity' => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter',
@@ -26,13 +24,13 @@ class SearchService implements SearchServiceInterface
             )
         );
     }
-    
-    public function search ($query, array $adapters)
+
+    public function search($query, array $adapters)
     {
-        $container = new ArrayCollection();
-        $configAdapters =  $this->getOption('adapters');
-        foreach($adapters as $adapter){
-            if(!array_key_exists($adapter, $configAdapters))
+        $container = new Result\Results();
+        $configAdapters = $this->getOption('adapters');
+        foreach ($adapters as $adapter) {
+            if (! array_key_exists($adapter, $configAdapters))
                 throw new Exception\RuntimeException(sprintf('Unkown adapter: %s', $adapter));
             
             $adapter = $configAdapters[$adapter];
@@ -41,5 +39,44 @@ class SearchService implements SearchServiceInterface
             $container->add($adapter->search($query));
         }
         return $container;
-    }    
+    }
+
+    public function simplifyResults(Result\Results $results)
+    {
+        $return = array();
+        
+        /* @var $result Result\ContainerInterface */
+        foreach ($results as $container) {
+            $this->iterContainer($container, $return);
+        }
+        
+        return $return;
+    }
+
+    protected function iterContainer(Result\ContainerInterface $container, array & $return)
+    {
+        $i = count($return) + 1;
+        
+        $return[$i] = array(
+            'title' => $container->getName(),
+            'items' => array()
+        );
+        
+        foreach ($container->getResults() as $result) {
+            $url = $this->getRouter()->assemble($result->getRouteParams(), array(
+                'name' => $result->getRouteName()
+            ));
+            $item = array(
+                'title' => $result->getName(),
+                'url' => $url
+            );
+            $return[$i]['items'][] = $item;
+        }
+        
+        foreach ($container->getContainers() as $subContainer) {
+            $this->iterContainer($subContainer, $return);
+        }
+        
+        return $this;
+    }
 }

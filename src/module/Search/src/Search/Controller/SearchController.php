@@ -18,7 +18,7 @@ use Zend\View\Model\JsonModel;
 
 class SearchController extends AbstractActionController
 {
-    use \Search\SearchServiceAwareTrait;
+    use\Search\SearchServiceAwareTrait;
 
     public function searchAction()
     {
@@ -27,8 +27,8 @@ class SearchController extends AbstractActionController
         $view = new ViewModel(array(
             'form' => $form
         ));
-        
         $view->setTemplate('search/form');
+        
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
@@ -41,14 +41,32 @@ class SearchController extends AbstractActionController
                 
                 $view->setVariable('results', $results);
                 $view->setTemplate('search/results');
-                if ($this->params('json', false)) {
-                    $view = new JsonModel(array(
-                        'results' => \Zend\Json\Json::encode($results, true)
-                    ));
-                }
-                return $view;
             }
         }
         return $view;
+    }
+
+    public function ajaxAction()
+    {
+        $form = new SearchForm();
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()
+                ->getPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                
+                $results = $this->getSearchService()->search($data['q'], array(
+                    'entity',
+                    'taxonomyTerm'
+                ));
+                
+                $results = $this->getSearchService()->simplifyResults($results);
+                
+                $view = new JsonModel(array(
+                    $results
+                ));
+                return $view;
+            }
+        }
     }
 }

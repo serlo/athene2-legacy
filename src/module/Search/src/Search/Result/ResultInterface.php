@@ -15,13 +15,31 @@ interface ResultInterface
 {    
     /**
      * 
-     * @return string
+     * @return string $name
      */
     public function getName();
     
     /**
      * 
-     * @return int
+     * @return int $id
      */
     public function getId();
+    
+    /**
+     * 
+     * @return mixed $object
+     */
+    public function getObject();
+
+    /**
+     *
+     * @return array $routeParams
+     */
+    public function getRouteParams();
+    
+    /**
+     *
+     * @return string $routeName
+     */
+    public function getRouteName();
 }
