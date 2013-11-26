@@ -301,19 +301,13 @@ class UserController extends AbstractUserController
             $form->setData($data);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $user->setGivenname($data['givenname']);
-                $user->setLastname($data['lastname']);
                 $user->setEmail($data['email']);
-                $user->setGender($data['gender']);
                 $this->getObjectManager()->persist($user->getEntity());
                 $this->getObjectManager()->flush();
             }
         } else {
             $data = array(
-                'email' => $user->getEmail(),
-                'givenname' => $user->getGivenname(),
-                'lastname' => $user->getLastname(),
-                'gender' => $user->getGender()
+                'email' => $user->getEmail()
             );
             $form->setData($data);            
         }

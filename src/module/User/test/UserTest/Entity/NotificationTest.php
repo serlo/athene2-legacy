@@ -58,39 +58,43 @@ class NotificationTest extends Model
 
     public function testGetActors()
     {
-        $mock = $this->getMock('User\Entity\NotificationEvent');
-        $mock->expects($this->atLeastOnce())
+        $logMock = $this->getMock('Event\Entity\EventLog');
+        $logMock->expects($this->atLeastOnce())
             ->method('getActor')
             ->will($this->returnValue('foo'));
+        
+        $mock = $this->getMock('User\Entity\NotificationEvent');
+        $mock->expects($this->atLeastOnce())
+            ->method('getEventLog')
+            ->will($this->returnValue($logMock));
         $this->getObject()->addEvent($mock);
+        
+        $this->assertEquals(1, $this->getObject()
+            ->getEvents()
+            ->count());
         $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->getObject()
             ->getActors());
         $this->assertEquals('foo', $this->getObject()
             ->getActors()
             ->first());
     }
-
-    public function testGetReferences()
-    {
-        $mock = $this->getMock('User\Entity\NotificationEvent');
-        $mock->expects($this->atLeastOnce())
-            ->method('getReference')
-            ->will($this->returnValue('foo'));
-        $this->getObject()->addEvent($mock);
-        $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->getObject()
-            ->getReferences());
-        $this->assertEquals('foo', $this->getObject()
-            ->getReferences()
-            ->first());
-    }
-
+    
+    /*
+     * public function testGetParameters() { $mock = $this->getMock('User\Entity\NotificationEvent'); $mock->expects($this->atLeastOnce()) ->method('getParameter') ->will($this->returnValue('foo')); $this->getObject()->addEvent($mock); $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->getObject() ->getParameters()); $this->assertEquals('foo', $this->getObject() ->getParameters() ->first()); }
+     */
     public function testGetObjects()
     {
+        $logMock = $this->getMock('Event\Entity\EventLog');
         $mock = $this->getMock('User\Entity\NotificationEvent');
         $mock->expects($this->atLeastOnce())
+            ->method('getEventLog')
+            ->will($this->returnValue($logMock));
+        
+        $logMock->expects($this->atLeastOnce())
             ->method('getObject')
             ->will($this->returnValue('foo'));
         $this->getObject()->addEvent($mock);
+        
         $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->getObject()
             ->getObjects());
         $this->assertEquals('foo', $this->getObject()
@@ -101,10 +105,17 @@ class NotificationTest extends Model
     public function testGetEventName()
     {
         $mock = $this->getMock('User\Entity\NotificationEvent');
-        $event = $this->getMock('Event\Entity\Event');
+        $logMock = $this->getMock('Event\Entity\EventLog');
         $mock->expects($this->atLeastOnce())
+            ->method('getEventLog')
+            ->will($this->returnValue($logMock));
+        
+        $event = $this->getMock('Event\Entity\Event');
+        
+        $logMock->expects($this->atLeastOnce())
             ->method('getEvent')
             ->will($this->returnValue($event));
+        
         $event->expects($this->atLeastOnce())
             ->method('getName')
             ->will($this->returnValue('foo'));

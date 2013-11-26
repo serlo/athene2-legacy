@@ -23,10 +23,6 @@ class UserControllerTest extends Athene2ApplicationTestCase
         parent::setUp();
         $this->setUpFirewall();
         
-        /* Detach listeners */
-        $this->detachAggregatedListener('Mailman\Listener\UserControllerListener');
-        $this->detachAggregatedListener('Event\Listener\UserControllerListener');
-        
         $this->userManagerMock = $this->getMock('User\Manager\UserManager');
         $this->authAdapterMock = $this->getMock('User\Authentication\Adapter\UserAuthAdapter');
         $this->authServiceMock = $this->getMock('Zend\Authentication\AuthenticationService');

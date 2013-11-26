@@ -18,6 +18,25 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $this->setUpLanguage();
         $this->setUpAlias();
         $this->setUpContexter();
+        $this->setUpNotification();
+
+        $this->detachAggregatedListeners(\Event\Module::$listeners);
+        $this->detachAggregatedListeners(\User\Module::$listeners);
+        $this->detachAggregatedListeners(\Mailman\Module::$listeners);
+    }
+    
+    protected function detachAggregatedListeners(array $listeners){
+        foreach($listeners as $listener){
+            $this->detachAggregatedListener($listener);
+        }
+    }
+
+    protected function setUpNotification()
+    {
+        $viewHelperPluginManager = $this->getApplicationServiceLocator()->get('ViewHelperManager');
+        $viewHelperPluginManager->setAllowOverride(true);
+        $viewHelperPluginManager->setService('notifications', $this->getMock('User\View\Helper\Notification'));
+        $viewHelperPluginManager->setAllowOverride(false);
     }
 
     protected function setUpContexter()

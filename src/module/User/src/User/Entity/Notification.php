@@ -168,7 +168,7 @@ class Notification implements NotificationInterface
         $collection = new ArrayCollection();
         foreach ($this->getEvents() as $event) {
             /* @var $event NotificationEvent */
-            $collection->add($event->getReference());
+            $collection->add($event->getParameters());
         }
         return $collection;
     }
