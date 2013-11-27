@@ -228,6 +228,9 @@ return array(
                     ),
                     'setSharedTaxonomyManager' => array(
                         'required' => true
+                    ),
+                    'setTermRouter' => array(
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Provider\NavigationProvider' => array(

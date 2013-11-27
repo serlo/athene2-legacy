@@ -30,33 +30,9 @@ interface NotificationEventInterface
 
     /**
      *
-     * @return Entity\EventInterface
-     */
-    public function getEvent();
-
-    /**
-     *
      * @return int
      */
     public function getId();
-
-    /**
-     *
-     * @return \Uuid\Entity\Uuid
-     */
-    public function getObject();
-
-    /**
-     *
-     * @return \User\Entity\UserInterface
-     */
-    public function getActor();
-
-    /**
-     *
-     * @return \Uuid\Entity\Uuid
-     */
-    public function getReference();
 
     /**
      *

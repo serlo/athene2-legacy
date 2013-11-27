@@ -19,7 +19,7 @@ use Event\Entity\EventLogInterface;
  */
 class NotificationEvent implements NotificationEventInterface
 {
-
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -57,14 +57,6 @@ class NotificationEvent implements NotificationEventInterface
     }
     
     /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getEvent()
-     */
-    public function getEvent()
-    {
-        return $this->getEventLog()->getEvent();
-    }
-    
-    /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getId()
      */
     public function getId()
@@ -73,31 +65,11 @@ class NotificationEvent implements NotificationEventInterface
     }
     
     /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getObject()
-     */
-    public function getObject()
-    {
-        return $this->getEventLog()->getObject();
-    }
-    
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getActor()
-     */
-    public function getActor()
-    {
-        return $this->getEventLog()->getActor();
-    }
-    
-    /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getNotification()
      */
     public function getNotification()
     {
         return $this->notification;
-    }
-    
-    public function getReference(){
-        return $this->getEventLog()->getReference();
     }
     
     /*

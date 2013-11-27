@@ -10,14 +10,17 @@ namespace Taxonomy\Service;
 
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
+use Common\Normalize\Normalizable;
 
-interface TermServiceInterface
+interface TermServiceInterface extends Normalizable
 {
 
-public function findAncestorByType($type);
+    public function findAncestorByType($type);
+
     public function getAllowedParentTypeNames();
-    
+
     public function getAllowedChildrenTypeNames();
+
     public function setTaxonomyTerm(TaxonomyTermInterface $term);
 
     public function getTaxonomyTerm();
@@ -29,12 +32,13 @@ public function findAncestorByType($type);
     public function getTemplate($template);
 
     public function hasChildren();
+
     public function hasParent();
 
     public function getParent();
 
     public function getChildren();
-    
+
     public function filterChildren(array $types);
 
     public function getAllLinks();
@@ -96,12 +100,12 @@ public function findAncestorByType($type);
     public function getManager();
 
     public function setManager(TaxonomyManagerInterface $termManager);
-    
+
     /**
-     * 
-     * @param string $association
-     * @param int $of
-     * @param int $order
+     *
+     * @param string $association            
+     * @param int $of            
+     * @param int $order            
      * @return $this
      */
     public function orderAssociated($association, $of, $order);

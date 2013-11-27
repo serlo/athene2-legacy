@@ -15,7 +15,7 @@ namespace User;
 class Module
 {
 
-    protected $listeners = array(
+    public static $listeners = array(
         //'User\Notification\Listener\EntityControllerListener',
         'User\Notification\Listener\RepositoryPluginControllerListener',
         'User\Notification\Listener\DiscussionControllerListener',
@@ -39,7 +39,7 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (static::$listeners as $listener) {
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()

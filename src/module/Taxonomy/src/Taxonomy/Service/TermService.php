@@ -17,11 +17,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Exception\TermNotFoundException;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
 class TermService implements TermServiceInterface
 {
     
-    use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
 
     /**
      *
@@ -43,6 +45,16 @@ class TermService implements TermServiceInterface
     public function getArrayCopy()
     {
         return $this->getEntity()->getArrayCopy();
+    }
+
+    public function normalize()
+    {
+        $routeMatch = $this->getTermRouter()->route($this->getId());
+        $normalized = new Normalized();
+        $normalized->setTitle($this->getName());
+        $normalized->setRouteName($routeMatch->getMatchedRouteName());
+        $normalized->setRouteParams($routeMatch->getParams());
+        return $normalized;
     }
 
     /**

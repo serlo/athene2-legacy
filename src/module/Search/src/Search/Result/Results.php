@@ -9,23 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Router;
+namespace Search\Result;
 
-use Zend\Mvc\Router\RouteMatch;
+use Doctrine\Common\Collections\ArrayCollection;
 
-interface TermRouterInterface
+class Results extends ArrayCollection
 {
-    /**
-     * 
-     * @param int $id
-     * @return string
-     */
-    public function assemble($id);
-    
-    /**
-     * 
-     * @param int $id
-     * @return RouteMatch
-     */
-    public function route($id);
 }

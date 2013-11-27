@@ -14,7 +14,7 @@ namespace Mailman;
 class Module
 {
 
-    protected $listeners = array(
+    public static $listeners = array(
         'Mailman\Listener\UserControllerListener',
     );
 
@@ -36,7 +36,7 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (static::$listeners as $listener) {
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()

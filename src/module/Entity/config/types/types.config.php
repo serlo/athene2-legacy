@@ -322,7 +322,7 @@ return array(
                         'options' => array(
                             'template' => 'entity/plugin/page/module-page'
                         )
-                    ),
+                    )
                 )
             )
         )

@@ -32,7 +32,14 @@ interface SearchServiceInterface
      * 
      * @param string $query
      * @param array $adapters
-     * @return ArrayCollection
+     * @return Result\Results
      */
     public function search($query, array $adapters);
+    
+    /**
+     * 
+     * @param Result\Results $results
+     * @return array
+     */
+    public function simplifyResults(Result\Results $results);
 }

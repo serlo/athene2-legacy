@@ -36,7 +36,7 @@ interface ContainerInterface
 
     /**
      *
-     * @return ResultInterface
+     * @return ResultInterface[]
      */
     public function getResults();
 

@@ -60,11 +60,6 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Listener\UserControllerListener' => array(
-                    'setEventManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Listener\TaxonomyTermControllerListener' => array(
                     'setEventManager' => array(
                         'required' => true
