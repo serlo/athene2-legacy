@@ -19,7 +19,7 @@ return array(
                 array(
                     'adapter' => __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter',
                     'controllers' => array(
-                        'LearningResource\Plugin\Repository\Controller\RepositoryController'
+                        'Entity\Plugin\Repository\Controller\RepositoryController'
                     )
                 )
             )
