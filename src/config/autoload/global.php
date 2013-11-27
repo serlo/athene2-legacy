@@ -76,5 +76,9 @@ return array(
                 'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
             )
         )
+    ),
+    'sphinx' => array(
+        'host' => '127.0.0.1',
+        'port' => 9306
     )
 );
