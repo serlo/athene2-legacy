@@ -13,7 +13,7 @@ namespace Search;
 
 class SearchService implements SearchServiceInterface
 {
-    use\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\RouterAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\RouterAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -55,12 +55,7 @@ class SearchService implements SearchServiceInterface
 
     protected function iterContainer(Result\ContainerInterface $container, array & $return)
     {
-        $i = count($return) + 1;
-        
-        $return[$i] = array(
-            'title' => $container->getName(),
-            'items' => array()
-        );
+        $items = array();
         
         foreach ($container->getResults() as $result) {
             $url = $this->getRouter()->assemble($result->getRouteParams(), array(
@@ -70,8 +65,13 @@ class SearchService implements SearchServiceInterface
                 'title' => $result->getName(),
                 'url' => $url
             );
-            $return[$i]['items'][] = $item;
+            $items[] = $item;
         }
+        
+        $return[] = array(
+            'title' => $container->getName(),
+            'items' => $items
+        );
         
         foreach ($container->getContainers() as $subContainer) {
             $this->iterContainer($subContainer, $return);

@@ -18,7 +18,7 @@ use Zend\View\Model\JsonModel;
 
 class SearchController extends AbstractActionController
 {
-    use\Search\SearchServiceAwareTrait;
+    use \Search\SearchServiceAwareTrait;
 
     public function searchAction()
     {
@@ -62,9 +62,7 @@ class SearchController extends AbstractActionController
                 
                 $results = $this->getSearchService()->simplifyResults($results);
                 
-                $view = new JsonModel(array(
-                    $results
-                ));
+                $view = new JsonModel($results);
                 return $view;
             }
         }
