@@ -184,7 +184,9 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
             method: 'post'
         });
 
-        self.ajax.success(self.onResult).fail(function () {
+        self.ajax.success(function (data) {
+            self.onResult(data);
+        }).fail(function () {
             self.$input.blur();
             Common.genericError();
         });
