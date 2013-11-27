@@ -13,6 +13,7 @@ namespace Metadata;
 
 class Module
 {
+    public static $listener = array();
 
     public function getConfig()
     {
