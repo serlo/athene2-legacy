@@ -9,23 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Router;
+namespace Metadata\Exception;
 
-use Zend\Mvc\Router\RouteMatch;
-
-interface TermRouterInterface
+class RuntimeException extends \RuntimeException
 {
-    /**
-     * 
-     * @param int $id
-     * @return string
-     */
-    public function assemble($id);
-    
-    /**
-     * 
-     * @param int $id
-     * @return RouteMatch
-     */
-    public function route($id);
 }

@@ -15,6 +15,7 @@ use Search\Result;
 
 class TaxonomyTermAdapter extends AbstractSphinxAdapter
 {
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
     protected $types = array(
         'topic',
@@ -33,7 +34,7 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
         
         return $container;
     }
-    
+
     protected function searchTypes($query, $type)
     {
         $container = new Result\Container();
@@ -44,14 +45,23 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
             ->from('taxonomyTermIndex')
             ->match('name', $query)
             ->match('type', $type);
-            // PHP is a bitch and doesn't support bigint/uint
-            //->where('type_filter', '=', crc32($type));
+        
+        /**
+         * TODO use 64bit PHP (which isn't supported on windows)
+         * PHP is a bitch and doesn't support bigint/uint
+         * ->where('type_filter', '=', crc32($type));
+         */
+        
         $results = $spinxQuery->execute();
         
         foreach ($results as $result) {
+            $term = $this->getSharedTaxonomyManager()->getTerm($result['id']);
             $resultInstance = new Result\Result();
             $resultInstance->setName($result['name']);
             $resultInstance->setId($result['id']);
+            $resultInstance->setObject($term);
+            $resultInstance->setRouteName($term->normalize()->getRouteName());
+            $resultInstance->setRouteParams($term->normalize()->getRouteParams());
             $container->addResult($resultInstance);
         }
         

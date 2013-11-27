@@ -9,23 +9,27 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Taxonomy\Router;
+namespace Metadata\Entity;
 
-use Zend\Mvc\Router\RouteMatch;
-
-interface TermRouterInterface
+interface MetadataKeyInterface
 {
+
     /**
-     * 
-     * @param int $id
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     *
      * @return string
      */
-    public function assemble($id);
-    
+    public function getName();
+
     /**
-     * 
-     * @param int $id
-     * @return RouteMatch
+     *
+     * @param string $name            
+     * @return $this
      */
-    public function route($id);
+    public function setName($name);
 }

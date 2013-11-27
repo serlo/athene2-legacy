@@ -12,8 +12,9 @@
 namespace Entity\Service;
 
 use Zend\EventManager\EventManagerAwareInterface;
+use Common\Normalize\Normalizable;
 
-interface EntityServiceInterface extends EventManagerAwareInterface
+interface EntityServiceInterface extends EventManagerAwareInterface, Normalizable
 {
     public function getTerms();
 
