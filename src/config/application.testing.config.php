@@ -30,7 +30,6 @@ return array(
         'Term',
         'Uuid',
         'ClassResolver',
-        'LearningResource',
         'Language',
         'Event',
         'Mailman',
@@ -43,8 +42,7 @@ return array(
         'RelatedContent',
         'Contexter',
         'Flag',
-        'Search',
-        'Normalize'
+        'Search'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

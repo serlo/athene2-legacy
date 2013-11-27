@@ -60,12 +60,17 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Listener\UserControllerListener' => array(
+                __NAMESPACE__ . '\Listener\TaxonomyTermControllerListener' => array(
                     'setEventManager' => array(
                         'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Listener\DiscussionControllerListener' => array(
+                    'setEventManager' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => array(
                     'setEventManager' => array(
                         'required' => true
                     )

@@ -71,6 +71,6 @@ class RepositoryPluginControllerListener extends AbstractMvcListener
 
     protected function getMonitoredClass()
     {
-        return 'LearningResource\Plugin\Repository\Controller\RepositoryController';
+        return 'Entity\Plugin\Repository\Controller\RepositoryController';
     }
 }

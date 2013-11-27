@@ -46,17 +46,14 @@ class RepositoryPluginControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('LearningResource\Plugin\Repository\Controller\RepositoryController', 'add-revision', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'add-revision', array(
             $this,
             'onAddRevisionSubscribe'
         ), 2);
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::detachShared()
-     */
-    public function detachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+
+    protected function getMonitoredClass()
     {
-        // TODO Auto-generated method stub
+        return 'Entity\Plugin\Repository\Controller\RepositoryController';
     }
 }

@@ -14,32 +14,57 @@ namespace Search\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Search\Form\SearchForm;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 
 class SearchController extends AbstractActionController
 {
-    use\Search\SearchServiceAwareTrait;
+    use \Search\SearchServiceAwareTrait;
 
     public function searchAction()
     {
         $form = new SearchForm();
+        
         $view = new ViewModel(array(
             'form' => $form
         ));
         $view->setTemplate('search/form');
+        
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $results = $this->getSearchService()->search($data['query'], array(
+                $results = $this->getSearchService()->search($data['q'], array(
                     'entity',
                     'taxonomyTerm'
                 ));
+                
                 $view->setVariable('results', $results);
                 $view->setTemplate('search/results');
-                return $view;
             }
         }
         return $view;
+    }
+
+    public function ajaxAction()
+    {
+        $form = new SearchForm();
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()
+                ->getPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                
+                $results = $this->getSearchService()->search($data['q'], array(
+                    'entity',
+                    'taxonomyTerm'
+                ));
+                
+                $results = $this->getSearchService()->simplifyResults($results);
+                
+                $view = new JsonModel($results);
+                return $view;
+            }
+        }
     }
 }

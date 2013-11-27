@@ -14,10 +14,10 @@ namespace Entity\Service;
 use Entity\Exception\InvalidArgumentException;
 use Taxonomy\Collection\TermCollection;
 use Zend\Stdlib\ArrayUtils;
-use Normalize\Normalizable;
-use Normalize\Normalized;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
-class EntityService implements EntityServiceInterface, Normalizable
+class EntityService implements EntityServiceInterface
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Zend\EventManager\EventManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 

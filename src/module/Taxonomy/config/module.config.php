@@ -182,6 +182,9 @@ return array(
                     ),
                     'setLanguageManager' => array(
                         'required' => true
+                    ),
+                    'setUserManager' => array(
+                        'required' => true
                     )
                 ),
                 'Taxonomy\Controller\TermRouterController' => array(
@@ -224,6 +227,9 @@ return array(
                         'required' => true
                     ),
                     'setSharedTaxonomyManager' => array(
+                        'required' => true
+                    ),
+                    'setTermRouter' => array(
                         'required' => true
                     )
                 ),

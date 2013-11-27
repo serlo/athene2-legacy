@@ -29,6 +29,7 @@ return array(
                 $config = $serviceLocator->get('config');
                 $config = $config['search'];
                 $instance = new SearchService();
+                $instance->setRouter($serviceLocator->get('Router'));
                 $instance->setServiceLocator($serviceLocator);
                 $instance->setConfig($config);
                 return $instance;
@@ -51,6 +52,9 @@ return array(
                 ),
                 __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter' => array(
                     'setConnection' => array(
+                        'required' => true
+                    ),
+                    'setSharedTaxonomyManager' => array(
                         'required' => true
                     )
                 ),
@@ -76,6 +80,18 @@ return array(
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\SearchController',
                         'action' => 'search'
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'ajax' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/ajax',
+                            'defaults' => array(
+                                'action' => 'ajax'
+                            )
+                        )
                     )
                 )
             )

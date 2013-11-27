@@ -31,7 +31,8 @@ class EntityController extends AbstractActionController
             'entity' => $entity,
             'user' => $this->getUserManager()
                 ->getUserFromAuthenticator(),
-            'data' => $this->params()
+            'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+            'query' => $this->params()
                 ->fromQuery()
         ));
         

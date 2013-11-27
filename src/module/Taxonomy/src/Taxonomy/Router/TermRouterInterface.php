@@ -11,12 +11,21 @@
  */
 namespace Taxonomy\Router;
 
+use Zend\Mvc\Router\RouteMatch;
+
 interface TermRouterInterface
 {
     /**
      * 
      * @param int $id
      * @return string
+     */
+    public function assemble($id);
+    
+    /**
+     * 
+     * @param int $id
+     * @return RouteMatch
      */
     public function route($id);
 }

@@ -12,22 +12,33 @@
 namespace Taxonomy\Router;
 
 use Taxonomy\Exception;
+use Zend\Mvc\Router\RouteMatch;
 
 class TermRouter implements TermRouterInterface
 {
-    use \Common\Traits\ConfigAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait, \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Common\Traits\RouterAwareTrait;
-    
-    protected function getDefaultConfig(){
+    use \Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\RouterAwareTrait;
+
+    protected function getDefaultConfig()
+    {
         return array(
             'routes' => array()
         );
     }
-    
-    public function route($id){        
+
+    public function assemble($id)
+    {
+        $routeMatch = $this->route($id);
+        return rawurldecode($this->getRouter()->assemble($routeMatch->getParams(), array(
+            'name' => $routeMatch->getMatchedRouteName()
+        )));
+    }
+
+    public function route($id)
+    {
         $termService = $this->getSharedTaxonomyManager()->getTerm($id);
         $type = $termService->getTaxonomy()->getName();
         
-        if(!array_key_exists($type, $this->getOption('routes')))
+        if (! array_key_exists($type, $this->getOption('routes')))
             throw new Exception\RuntimeException(sprintf('No route found for `%s`', $type));
         
         $options = $this->getOption('routes')[$type];
@@ -35,6 +46,9 @@ class TermRouter implements TermRouterInterface
         $provider = $this->getServiceLocator()->get($options['param_provider']);
         $provider->setObject($termService);
         
-        return rawurldecode($this->getRouter()->assemble($provider->getParams(), array('name' => $options['route'])));
+        $routeMatch = new RouteMatch($provider->getParams());
+        $routeMatch->setMatchedRouteName($options['route']);
+        return $routeMatch;
+        return rawurldecode($this->getRouter()->assemble($provider->getParams(), $options['route']));
     }
 }

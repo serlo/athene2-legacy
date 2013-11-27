@@ -18,7 +18,7 @@ class TermRouterController extends AbstractActionController
     use \Taxonomy\Router\TermRouterAwareTrait;
     
     public function indexAction(){
-        $url = $this->getTermRouter()->route($this->params('id'));
+        $url = $this->getTermRouter()->assemble($this->params('id'));
         $this->redirect()->toUrl($url);
         return false;
     }

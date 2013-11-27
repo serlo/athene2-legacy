@@ -10,8 +10,8 @@ namespace User\Service;
 
 use User\Entity\User;
 use User\Manager\UserManagerInterface;
-use Normalize\Normalizable;
-use Normalize\Normalized;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
 class UserService implements UserServiceInterface, Normalizable
 {

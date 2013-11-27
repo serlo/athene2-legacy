@@ -43,12 +43,9 @@ class UserTest extends Model
             'email' => 'asdf',
             'username' => 'asdf',
             'password' => '12345',
-            'lastname' => 'a',
-            'givenname' => 'b',
             'logins' => 10,
             'lastLogin' => 12345,
             'date' => 1234,
-            'gender' => 'a',
             'adsEnabled' => false
         );
     }

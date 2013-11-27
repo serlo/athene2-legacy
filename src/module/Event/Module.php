@@ -14,10 +14,12 @@ namespace Event;
 class Module
 {
 
-    protected $listeners = array(
+    public static $listeners = array(
         'Event\Listener\RepositoryPluginControllerListener',
         'Event\Listener\DiscussionControllerListener',
-        'Event\Listener\UuidControllerListener'
+        'Event\Listener\TaxonomyTermControllerListener',
+        'Event\Listener\UuidControllerListener',
+        'Event\Listener\EntityControllerListener'
     );
 
     public function getConfig()
@@ -38,7 +40,7 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (static::$listeners as $listener) {
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()
