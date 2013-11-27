@@ -41,7 +41,7 @@ class ExternalForm extends Form
                 'placeholder' => 'http://'
             ),
             'options' => array(
-                'label' => 'url:'
+                'label' => 'Url:'
             )
         ));
         
