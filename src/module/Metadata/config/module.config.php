@@ -9,22 +9,14 @@
 namespace Metadata;
 
 return array(
-    /*'class_resolver' => array(
-        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService',
-        'Link\Manager\LinkManagerInterface' => 'Link\Manager\LinkManager'
+    'class_resolver' => array(
+        __NAMESPACE__ . '\Entity\MetadataInterface' => __NAMESPACE__ . '\Entity\Metadata',
+        __NAMESPACE__ . '\Entity\MetadataKeyInterface' => __NAMESPACE__ . '\Entity\MetadataKey'
     ),
     'di' => array(
         'definition' => array(
             'class' => array(
-                'Link\Service\LinkService' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                'Link\Manager\LinkManager' => array(
+                __NAMESPACE__ . '\Manager\MetadataManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
@@ -32,20 +24,6 @@ return array(
                         'required' => 'true'
                     ),
                     'setClassResolver' => array(
-                        'required' => 'true'
-                    )
-                ),
-                'Link\Manager\SharedLinkManager' => array(
-                    'setServiceLocator' => array(
-                        'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    ),
-                    'setSharedLinkManager' => array(
                         'required' => 'true'
                     )
                 )
@@ -53,21 +31,8 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Link\Manager\SharedLinkManagerInterface' => 'Link\Manager\SharedLinkManager',
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver'
-            ),
-            'Link\Manager\LinkManager' => array(
-                'shared' => false
-            ),
-            'Link\Service\LinkService' => array(
-                'shared' => false
+                __NAMESPACE__ . '\Manager\MetadataManagerInterface' => __NAMESPACE__ . '\Manager\MetadataManager'
             )
-        )
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            __DIR__ . '/../view'
         )
     ),
     'doctrine' => array(
@@ -85,5 +50,5 @@ return array(
                 )
             )
         )
-    )*/
+    )
 );
