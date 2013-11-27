@@ -16677,7 +16677,9 @@ define('search',['jquery', 'underscore', 'common', 'router'], function ($, _, Co
             method: 'post'
         });
 
-        self.ajax.success(self.onResult).fail(function () {
+        self.ajax.success(function (data) {
+            self.onResult(data);
+        }).fail(function () {
             self.$input.blur();
             Common.genericError();
         });
