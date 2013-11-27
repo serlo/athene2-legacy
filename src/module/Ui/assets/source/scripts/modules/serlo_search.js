@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
     var Search,
         SearchResults,
         defaults = {
-            url: 'search/ajax',
+            url: '/search/ajax',
             wrapperSelector: '#search-content',
             inputSelector: '#search-input',
             resultWrapper: '#search-results',
