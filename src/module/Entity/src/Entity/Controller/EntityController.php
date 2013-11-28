@@ -57,8 +57,7 @@ class EntityController extends AbstractActionController
         $redirected = false;
         foreach ($response as $result) {
             if ($result instanceof Result\UrlResult) {
-                $this->redirect()->toUrl($result->getResult() . '?ref=' . $this->referer()
-                    ->toUrl());
+                $this->redirect()->toUrl($result->getResult());
                 $redirected = true;
             }
         }

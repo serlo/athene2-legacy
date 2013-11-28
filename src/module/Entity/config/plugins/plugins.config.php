@@ -94,6 +94,17 @@ return array(
                     $instance->addAggregator($topicAggregator);
                     
                     return $instance;
+                },
+                'metadata' => function ($sm)
+                {
+                    $instance = new Plugin\Metadata\MetadataPlugin();
+
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    $instance->setMetadataManager($sm->getServiceLocator()
+                        ->get('Metadata\Manager\MetadataManager'));
+                    
+                    return $instance;
                 }
             )
         )
@@ -284,7 +295,7 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Plugin\Taxonomy\Listener\Taxonomy' => array(
+                __NAMESPACE__ . '\Plugin\Taxonomy\Listener\EntityControllerListener' => array(
                     'setSharedTaxonomyManager' => array(
                         'required' => true
                     )

@@ -25,6 +25,9 @@ return array(
                             )
                         )
                     ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -63,6 +66,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
@@ -185,6 +191,9 @@ return array(
                             )
                         )
                     ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -217,6 +226,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
                     ),
                     'aggregator' => array(
                         'plugin' => 'aggregator',
@@ -256,6 +268,9 @@ return array(
                                 'title'
                             )
                         )
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'

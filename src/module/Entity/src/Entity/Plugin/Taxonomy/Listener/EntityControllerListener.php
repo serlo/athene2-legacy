@@ -14,7 +14,7 @@ namespace Entity\Plugin\Taxonomy\Listener;
 use Zend\EventManager\Event;
 use Entity\Plugin\Listener\AbstractListener;
 
-class Taxonomy extends AbstractListener
+class EntityControllerListener extends AbstractListener
 {
     use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 

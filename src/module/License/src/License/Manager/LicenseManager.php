@@ -24,6 +24,14 @@ class LicenseManager implements LicenseManagerInterface
     {
         if(is_numeric($id))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 1 to be numeric, but got `%s`', gettype($id)));
+        
+        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
+        $license = $this->getObjectManager()->find($className, $id);
+        
+        if(!is_object($license))
+            throw new Exception\LicenseNotFoundException(sprintf('License by id `%s` not found.', $id));
+        
+        return $license;
     }
 
 	/* (non-PHPdoc)

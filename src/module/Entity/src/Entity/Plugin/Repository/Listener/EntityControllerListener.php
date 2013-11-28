@@ -15,7 +15,7 @@ use Entity\Plugin\Listener\AbstractListener;
 use Entity\Result\UrlResult;
 use Zend\EventManager\Event;
 
-class Repository extends AbstractListener
+class EntityControllerListener extends AbstractListener
 {
     
     /*

@@ -13,12 +13,36 @@ namespace Entity\Plugin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Entity\Exception;
+use Zend\Mvc\Router\RouteMatch;
+use Zend\Stdlib\RequestInterface;
+use Zend\Stdlib\ResponseInterface;
 
 abstract class AbstractController extends AbstractActionController
 {
     use\Entity\Manager\EntityManagerAwareTrait;
 
     protected $entityService;
+
+    public function dispatch(RequestInterface $request, ResponseInterface $response = NULL)
+    {
+        $dispatch = parent::dispatch($request, $response);
+        $subject = $this->getEntityService()
+            ->metadata()
+            ->getSlugifiedSubject();
+        
+        if ($subject !== NULL) {
+            $routeMatch = new RouteMatch(array(
+                'subject' => $subject
+            ));
+            $routeMatch->setMatchedRouteName('subject');
+            $this->getServiceLocator()
+                ->get('Application')
+                ->getMvcEvent()
+                ->setRouteMatch($routeMatch);
+        }
+        
+        return $dispatch;
+    }
 
     public function getEntityService($id = NULL)
     {

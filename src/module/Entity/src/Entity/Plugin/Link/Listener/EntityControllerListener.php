@@ -14,7 +14,7 @@ namespace Entity\Plugin\Link\Listener;
 use Entity\Plugin\Listener\AbstractListener;
 use Zend\EventManager\Event;
 
-class Link extends AbstractListener
+class EntityControllerListener extends AbstractListener
 {
     
     /*
