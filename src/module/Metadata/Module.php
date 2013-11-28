@@ -13,7 +13,10 @@ namespace Metadata;
 
 class Module
 {
-    public static $listener = array();
+    public static $listeners = array(
+        'Metadata\Listener\EntityControllerListener',
+        'Metadata\Listener\EntityTaxonomyPluginControllerListener'
+    );
 
     public function getConfig()
     {
@@ -29,5 +32,17 @@ class Module
                 )
             )
         );
+    }
+
+    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    {
+        foreach (static::$listeners as $listener) {
+            $e->getApplication()
+                ->getEventManager()
+                ->getSharedManager()
+                ->attachAggregate($e->getApplication()
+                ->getServiceManager()
+                ->get($listener));
+        }
     }
 }

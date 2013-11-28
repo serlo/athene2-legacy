@@ -15,7 +15,7 @@ use Zend\Stdlib\ArrayUtils;
 class Module
 {
 
-    protected $listeners = array(
+    public static $listeners = array(
         'Entity\Plugin\Link\Listener\Link',
         'Entity\Plugin\Repository\Listener\Repository',
         'Entity\Plugin\Taxonomy\Listener\Taxonomy',
@@ -45,7 +45,7 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (self::$listeners as $listener) {
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()

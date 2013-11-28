@@ -283,6 +283,11 @@ return array(
                     'setUserManager' => array(
                         'required' => true
                     )
+                ),
+                __NAMESPACE__ . '\Plugin\Taxonomy\Listener\Taxonomy' => array(
+                    'setSharedTaxonomyManager' => array(
+                        'required' => true
+                    )
                 )
             )
         ),

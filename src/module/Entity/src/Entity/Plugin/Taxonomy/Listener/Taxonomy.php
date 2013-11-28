@@ -16,25 +16,40 @@ use Entity\Plugin\Listener\AbstractListener;
 
 class Taxonomy extends AbstractListener
 {
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+
+    public function onCreate(Event $e)
+    {
+        /* var $entity \Entity\Service\EntityServiceInterface */
+        $entity = $e->getParam('entity');
+        $data = $e->getParam('query');
+        
+        foreach ($entity->getScopesForPlugin('taxonomy') as $scope) {
+            if (array_key_exists($scope, $data)) {
+
+                $options = $data[$scope];
+                $term = $this->getSharedTaxonomyManager()->getTerm($options['term']);
+                
+                $entity->plugin($scope)->addToTerm($term->getId());
+                
+                $e->getTarget()
+                    ->getEventManager()
+                    ->trigger('addToTerm', $this, array(
+                    'entity' => $entity,
+                    'term' => $term
+                ));
+            }
+        }
+    }
     
     /*
      * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create', function (Event $e)
-        {
-            /* var $entity \Entity\Service\EntityServiceInterface */
-            $entity = $e->getParam('entity');
-            $data = $e->getParam('query');
-
-            foreach ($entity->getScopesForPlugin('taxonomy') as $scope) {
-                if (array_key_exists($scope, $data)) {
-                    $options = $data[$scope];
-                    $entity->plugin($scope)
-                        ->addToTerm($options['term']);
-                }
-            }
-        }, 2);
+        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create', array(
+            $this,
+            'onCreate'
+        ), 2);
     }
 }

@@ -255,7 +255,7 @@ class TermService implements TermServiceInterface
             if ($term->getTaxonomy()->getName() == $type)
                 return $term;
         }
-        throw new Exception\RuntimeException(sprintf('Term `%s` does not know an ancestor of type `%s`', $this->getName(), $type));
+        throw new Exception\TermNotFoundException(sprintf('Term `%s` does not know an ancestor of type `%s`', $this->getName(), $type));
     }
 
     public function knowsAncestor($ancestor)

@@ -23,23 +23,39 @@ class TaxonomyController extends AbstractController
         $plugin = $this->getPlugin();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         
-        $subject = $this->getEntityService()->provider()->getSubjectSlug();
+        $subject = $this->getEntityService()
+            ->provider()
+            ->getSubjectSlug();
         /* @var $plugin \Entity\Plugin\Taxonomy\TaxonomyPlugin */
         $taxonomy = $plugin->getSharedTaxonomyManager()->findTaxonomyByName('subject', $language);
         
-        $saplings =  $taxonomy->findTermByAncestors(array('mathe'))->getChildren();
+        $saplings = $taxonomy->findTermByAncestors(array(
+            'mathe'
+        ))->getChildren();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             if (array_key_exists('terms', $data)) {
                 foreach ($data['terms'] as $term => $added) {
                     if ($added == 1) {
-                        if (! $plugin->hasTerm($term) ) {
+                        if (! $plugin->hasTerm($term)) {
                             $plugin->addToTerm($term);
+                            
+                            $this->getEventManager()->trigger('addToTerm', $this, array(
+                                'entity' => $plugin->getEntityService(),
+                                'term' => $plugin->getSharedTaxonomyManager()
+                                    ->getTerm($term)
+                            ));
                         }
                     } elseif ($added == 0) {
                         if ($plugin->hasTerm($term)) {
                             $plugin->removeFromTerm($term);
+                            
+                            $this->getEventManager()->trigger('removeFromTerm', $this, array(
+                                'entity' => $plugin->getEntityService(),
+                                'term' => $plugin->getSharedTaxonomyManager()
+                                    ->getTerm($term)
+                            ));
                         }
                     }
                 }

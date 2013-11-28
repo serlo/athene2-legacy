@@ -15,7 +15,7 @@ use Metadata\Exception;
 
 class MetadataManager implements MetadataManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function getMetadata($id)
     {
@@ -51,6 +51,48 @@ class MetadataManager implements MetadataManagerInterface
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 2 to be string but got %s', gettype($key)));
         if (! is_string($value))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 3 to be string but got %s', gettype($value)));
+        
+        foreach ($this->findMetadataByObjectAndKey($object, $key) as $metadata) {
+            if ($metadata->getValue() === $value) {
+                throw new Exception\DuplicateMetadata(sprintf('Object %s already has metadata with key `%s` and value `%s`', $object->getId(), $key, $value));
+            }
+        }
+        
+        $key = $this->findKeyByName($key);
+        
+        /* @var $entity \Metadata\Entity\MetadataInterface */
+        $entity = $this->getClassResolver()->resolve('Metadata\Entity\MetadataInterface');
+        $entity->setObject($object);
+        $entity->setKey($key);
+        $entity->setValue($value);
+        $this->getObjectManager()->persist($entity);
+        
+        return $entity;
+    }
+
+    public function findMetadataByObjectAndKeyAndValue(\Uuid\Entity\UuidInterface $object, $key, $value)
+    {
+        if (! is_string($key))
+            throw new Exception\InvalidArgumentException(sprintf('Expected parameter 2 to be string but got %s', gettype($key)));
+        if (! is_string($value))
+            throw new Exception\InvalidArgumentException(sprintf('Expected parameter 3 to be string but got %s', gettype($value)));
+        
+        $key = $this->findKeyByName($key);
+        
+        $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
+        
+        $entity = $this->getObjectManager()
+            ->getRepository($className)
+            ->findOneBy(array(
+            'object' => $object->getId(),
+            'key' => $key->getId(),
+            'value' => $value
+        ));
+            
+        if (! is_object($entity))
+            throw new Exception\MetadataNotFoundException(sprintf('Could not find metadata by object `%s`, key `%s` and value `%s`', $object->getId(), $key, $value));
+        
+        return $entity;
     }
 
     public function findMetadataByObjectAndKey(\Uuid\Entity\UuidInterface $object, $key, $default = NULL)
@@ -70,6 +112,13 @@ class MetadataManager implements MetadataManagerInterface
         ));
     }
 
+    public function removeMetadata($id)
+    {
+        $metadata = $this->getMetadata($id);
+        $this->getObjectManager()->remove($metadata);
+        return $this;
+    }
+
     /**
      *
      * @param string $name            
@@ -77,10 +126,10 @@ class MetadataManager implements MetadataManagerInterface
      */
     protected function findKeyByName($name)
     {
-        $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
+        $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataKeyInterface');
         $entity = $this->getObjectManager()
             ->getRepository($className)
-            ->findBy(array(
+            ->findOneBy(array(
             'name' => $name
         ));
         if (! is_object($entity))

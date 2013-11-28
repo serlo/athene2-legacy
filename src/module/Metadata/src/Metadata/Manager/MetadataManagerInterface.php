@@ -26,6 +26,13 @@ interface MetadataManagerInterface
 
     /**
      *
+     * @param int $id            
+     * @return $this
+     */
+    public function removeMetadata($id);
+
+    /**
+     *
      * @param UuidInterface $object            
      * @return Entity\MetadataInterface[]
      */
@@ -44,8 +51,17 @@ interface MetadataManagerInterface
      *
      * @param UuidInterface $object            
      * @param string $key            
-     * @param mixed $default
+     * @param mixed $default            
      * @return Entity\MetadataInterface[]
      */
     public function findMetadataByObjectAndKey(UuidInterface $object, $key, $default = NULL);
+
+    /**
+     *
+     * @param \Uuid\Entity\UuidInterface $object            
+     * @param string $key            
+     * @param string $default            
+     * @return Entity\MetadataInterface
+     */
+    public function findMetadataByObjectAndKeyAndValue(\Uuid\Entity\UuidInterface $object, $key, $default = NULL);
 }
