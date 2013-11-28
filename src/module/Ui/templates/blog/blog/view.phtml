@@ -1,0 +1,14 @@
+<div class="page-header">
+    <div class="pull-right btn-group">
+        <?php if($this->rbac()->hasAccessToRoute('blog/post/create')): ?>
+            <a class="btn btn-default btn-sm" href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
+            	class="glyphicon glyphicon-file"></span></a>
+        <?php endif; ?>
+        <?php if($this->rbac()->hasAccessToRoute('blog/view-all')): ?>
+            <a href="<?php echo $this->url('blog/view-all', array('id' => $this->blog->getId())); ?>" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-inbox"></span></a>
+        <?php endif; ?>
+    </div>
+	<h1><?php echo $this->translate('Blog'); ?> <small><?php echo $this->blog->getName(); ?></small>
+	</h1>
+</div>
+<?php echo $this->partial('blog/blog/view-partial', array('posts' => $this->posts, 'blog' => $this->blog)); ?>

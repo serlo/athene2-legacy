@@ -1,0 +1,52 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author  Julian Kempff (julian.kempff@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+
+$html = array();
+
+foreach ($this->pages as $page) {
+    $liClasses = [];
+    // visibility of the sub-page
+    if (! $page->isVisible() || !$this->navigation()->accept($page)) {
+        continue;
+    }
+    if ($page->getLabel() == 'divider') {
+        $html[] = '<li class="divider"></li>';
+        continue;
+    }
+
+    $dropdown = ! empty($page->pages);
+
+    if ($page->isActive()) {
+        $liClasses[] = 'active';
+    }
+
+    $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
+
+    $html[] = '<a href="' . rawurldecode($page->getHref()) . '">';
+
+    if ($page->get('icon')) {
+        $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
+    }
+
+    $html[] = $page->getLabel();
+    $html[] = "</a>";
+
+    if ($dropdown) {
+        $html[] = '<ul>';
+        $html[] = $this->partial('layout/navigation/partial/nested-navigation-list', array('pages' => $page->pages));;
+        $html[] = '</ul>';
+    }
+
+    $html[] = "</li>";
+}
+
+echo join(PHP_EOL, $html);

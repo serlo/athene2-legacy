@@ -1,0 +1,14 @@
+<?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
+<ul>
+    <?php foreach($this->aggregated as $related): ?>
+        <?php if($related->getType() == 'category'): ?>
+            </ul>
+            <strong><?php echo $related->getTitle(); ?></strong>
+            <ul>
+        <?php elseif($related->getType() == 'internal'): ?>
+            <li><span class="glyphicon glyphicon-transfer"></span> <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
+        <?php elseif($related->getType() == 'external'): ?>
+            <li><span class="glyphicon glyphicon-globe"></span> <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</ul>

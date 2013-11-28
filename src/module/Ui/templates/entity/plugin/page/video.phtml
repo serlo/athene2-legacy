@@ -1,0 +1,2 @@
+<?php echo $this->pageHeader($this->entity->getCurrentRevision()->get('title'), 'Video')->render(); ?>
+<?php echo $this->partial('entity/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>

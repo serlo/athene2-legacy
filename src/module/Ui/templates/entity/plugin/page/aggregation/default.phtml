@@ -1,0 +1,7 @@
+<strong><?php echo $this->translate('Related'); ?></strong>
+<ul>
+    <?php /* @var $result \LearningResource\Plugin\Aggregate\Aggregator\ResultInterface */ ?>
+    <?php foreach($this->results as $result): ?>
+        <li><a href="<?php echo $result->getUrl(); ?>"><?php echo $result->getTitle(); ?></a></li>
+    <?php endforeach; ?>
+</ul>
