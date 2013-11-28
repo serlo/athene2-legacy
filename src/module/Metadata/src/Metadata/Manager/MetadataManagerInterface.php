@@ -54,7 +54,7 @@ interface MetadataManagerInterface
      * @param mixed $default            
      * @return Entity\MetadataInterface[]
      */
-    public function findMetadataByObjectAndKey(UuidInterface $object, $key, $default = NULL);
+    public function findMetadataByObjectAndKey(UuidInterface $object, $key);
 
     /**
      *
@@ -63,5 +63,5 @@ interface MetadataManagerInterface
      * @param string $default            
      * @return Entity\MetadataInterface
      */
-    public function findMetadataByObjectAndKeyAndValue(\Uuid\Entity\UuidInterface $object, $key, $default = NULL);
+    public function findMetadataByObjectAndKeyAndValue(\Uuid\Entity\UuidInterface $object, $key, $value);
 }

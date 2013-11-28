@@ -23,6 +23,7 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $this->detachAggregatedListeners(\Event\Module::$listeners);
         $this->detachAggregatedListeners(\User\Module::$listeners);
         $this->detachAggregatedListeners(\Mailman\Module::$listeners);
+        $this->detachAggregatedListeners(\Metadata\Module::$listeners);
     }
     
     protected function detachAggregatedListeners(array $listeners){

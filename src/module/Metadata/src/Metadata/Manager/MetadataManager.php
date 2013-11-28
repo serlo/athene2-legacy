@@ -95,7 +95,7 @@ class MetadataManager implements MetadataManagerInterface
         return $entity;
     }
 
-    public function findMetadataByObjectAndKey(\Uuid\Entity\UuidInterface $object, $key, $default = NULL)
+    public function findMetadataByObjectAndKey(\Uuid\Entity\UuidInterface $object, $key)
     {
         if (! is_string($key))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 2 to be string but got %s', gettype($key)));
