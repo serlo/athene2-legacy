@@ -11,6 +11,8 @@
  */
 namespace License\Entity;
 
+use Language\Entity\LanguageInterface;
+
 interface LicenseInterface
 {
 
@@ -40,6 +42,25 @@ interface LicenseInterface
 
     /**
      *
+     * @return string
+     */
+    public function getIconHref();
+
+    /**
+     *
+     * @return LanguageInterface
+     */
+    public function getLanguage();
+
+    /**
+     *
+     * @param LanguageInterface $language            
+     * @return $this
+     */
+    public function setLanguage(LanguageInterface $language);
+
+    /**
+     *
      * @param string $url            
      * @return $this
      */
@@ -58,4 +79,11 @@ interface LicenseInterface
      * @return $this
      */
     public function setTitle($title);
+
+    /**
+     *
+     * @param string $iconHref            
+     * @return $this
+     */
+    public function setIconHref($iconHref);
 }

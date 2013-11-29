@@ -68,6 +68,11 @@ return array(
                         'label' => 'Flags',
                         'icon' => 'flag',
                         'route' => 'flag/manage',
+                    ),
+                    array(
+                        'label' => 'Licenses',
+                        'icon' => 'tags',
+                        'route' => 'license/manage',
                     )
                 ),
             ),

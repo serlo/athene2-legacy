@@ -43,7 +43,8 @@ return array(
         'Contexter',
         'Flag',
         'Search',
-        'Metadata'
+        'Metadata',
+        'License'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
