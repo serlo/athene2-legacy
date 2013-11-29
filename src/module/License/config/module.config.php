@@ -9,22 +9,16 @@
 namespace License;
 
 return array(
-    /*'class_resolver' => array(
-        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService',
-        'Link\Manager\LinkManagerInterface' => 'Link\Manager\LinkManager'
+    'class_resolver' => array(
+        __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
     ),
     'di' => array(
+        'allowed_controllers' => array(
+            __NAMESPACE__ . '\Controller\LicenseController'
+        ),
         'definition' => array(
             'class' => array(
-                'Link\Service\LinkService' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                'Link\Manager\LinkManager' => array(
+                 __NAMESPACE__ . '\Manager\LicenseManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
@@ -35,39 +29,20 @@ return array(
                         'required' => 'true'
                     )
                 ),
-                'Link\Manager\SharedLinkManager' => array(
-                    'setServiceLocator' => array(
+                __NAMESPACE__ . '\Controller\LicenseController' => array(
+                    'setLicenseManager' => array(
                         'required' => 'true'
                     ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    ),
-                    'setSharedLinkManager' => array(
+                    'setLanguageManager' => array(
                         'required' => 'true'
                     )
-                )
+                ),
             )
         ),
         'instance' => array(
             'preferences' => array(
-                'Link\Manager\SharedLinkManagerInterface' => 'Link\Manager\SharedLinkManager',
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'ClassResolver\ClassResolverInterface' => 'ClassResolver\ClassResolver'
-            ),
-            'Link\Manager\LinkManager' => array(
-                'shared' => false
-            ),
-            'Link\Service\LinkService' => array(
-                'shared' => false
+                __NAMESPACE__ . '\Manager\LicenseManagerInterface' => __NAMESPACE__ . '\Manager\LicenseManager'
             )
-        )
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            __DIR__ . '/../view'
         )
     ),
     'doctrine' => array(
@@ -85,5 +60,65 @@ return array(
                 )
             )
         )
-    )*/
+    ),
+    'router' => array(
+        'routes' => array(
+            'license' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/license',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\LicenseController'
+                    )
+                ),
+                'child_routes' => array(
+                    'manage' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/manage',
+                            'defaults' => array(
+                                'action' => 'manage'
+                            )
+                        )
+                    ),
+                    'add' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/add',
+                            'defaults' => array(
+                                'action' => 'add'
+                            )
+                        )
+                    ),
+                    'detail' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/detail/:id',
+                            'defaults' => array(
+                                'action' => 'detail'
+                            )
+                        )
+                    ),
+                    'update' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/update/:id',
+                            'defaults' => array(
+                                'action' => 'update'
+                            )
+                        )
+                    ),
+                    'remove' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/remove/:id',
+                            'defaults' => array(
+                                'action' => 'remove'
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 );

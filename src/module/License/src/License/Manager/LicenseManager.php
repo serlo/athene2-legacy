@@ -12,53 +12,92 @@
 namespace License\Manager;
 
 use License\Exception;
+use License\Form\LicenseForm;
+use Language\Service\LanguageServiceInterface;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait, \Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
     
-	/* (non-PHPdoc)
-     * @see \License\Manager\LicenseManagerInterface::getLicense()
+    /*
+     * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::getLicense()
      */
-    public function getLicense ($id)
+    public function getLicense($id)
     {
-        if(is_numeric($id))
+        if (!is_numeric($id))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 1 to be numeric, but got `%s`', gettype($id)));
         
         $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
         $license = $this->getObjectManager()->find($className, $id);
         
-        if(!is_object($license))
+        if (! is_object($license))
             throw new Exception\LicenseNotFoundException(sprintf('License by id `%s` not found.', $id));
         
         return $license;
     }
-
-	/* (non-PHPdoc)
-     * @see \License\Manager\LicenseManagerInterface::addLicense()
+    
+    /*
+     * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::addLicense()
      */
-    public function addLicense ($title, $url, $content = NULL)
+    public function addLicense(LicenseForm $form, LanguageServiceInterface $languageService)
     {
-        // TODO Auto-generated method stub
-        
+        /* @var $entity \License\Entity\LicenseInterface */
+        $entity = $form->getObject();
+        $entity->setLanguage($languageService->getEntity());
+        $form->bind($entity);
+        $this->getObjectManager()->persist($entity);
+        return $this;
     }
 
-	/* (non-PHPdoc)
-     * @see \License\Manager\LicenseManagerInterface::removeLicense()
-     */
-    public function removeLicense ($id)
+    public function getLicenseForm($id = NULL)
     {
-        // TODO Auto-generated method stub
-        
+        if ($id !== NULL) {
+            $license = $this->getLicense($id);
+        } else {
+            $license = $this->getClassResolver()->resolve('License\Entity\LicenseInterface');
+        }
+        $form = new LicenseForm();
+        $form->bind($license);
+        return $form;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::removeLicense()
+     */
+    public function removeLicense($id)
+    {
+        $license = $this->getLicense($id);
+        $this->getObjectManager()->remove($license);
+        return $this;
     }
 
-	/* (non-PHPdoc)
-     * @see \License\Manager\LicenseManagerInterface::findAllLicenses()
-     */
-    public function findAllLicenses ()
+    public function updateLicense(LicenseForm $form)
     {
-        // TODO Auto-generated method stub
-        
+        $form->bind($form->getObject());
+        $license = $form->getObject();
+        $this->getObjectManager()->persist($license);
+        return $this;
+    }
+    
+    /*
+     * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::findAllLicenses()
+     */
+    public function findAllLicenses()
+    {
+        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
+        return $this->getObjectManager()
+            ->getRepository($className)
+            ->findAll();
     }
 
+    public function findLicensesByLanguage(LanguageServiceInterface $languageService)
+    {
+        $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
+        return $this->getObjectManager()
+            ->getRepository($className)
+            ->findBy(array(
+            'language' => $languageService->getEntity()
+        ));
+    }
 }

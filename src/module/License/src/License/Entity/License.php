@@ -12,12 +12,13 @@
 namespace License\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Language\Entity\LanguageInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="metadata")
+ * @ORM\Table(name="license")
  */
-class License extends LicenseInterface
+class License implements LicenseInterface
 {
 
     /**
@@ -41,6 +42,34 @@ class License extends LicenseInterface
      * @ORM\Column(type="string")
      */
     protected $content;
+
+    /**
+     * @ORM\Column(type="string", name="icon_href")
+     */
+    protected $iconHref;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     */
+    protected $language;
+
+    /**
+     *
+     * @return field_type $iconHref
+     */
+    public function getIconHref()
+    {
+        return $this->iconHref;
+    }
+
+    /**
+     *
+     * @return field_type $language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
 
     /**
      *
@@ -108,6 +137,28 @@ class License extends LicenseInterface
     public function setContent($content)
     {
         $this->content = $content;
+        return $this;
+    }
+
+    /**
+     *
+     * @param field_type $iconHref            
+     * @return $this
+     */
+    public function setIconHref($iconHref)
+    {
+        $this->iconHref = $iconHref;
+        return $this;
+    }
+
+    /**
+     *
+     * @param field_type $language            
+     * @return $this
+     */
+    public function setLanguage(LanguageInterface $language)
+    {
+        $this->language = $language;
         return $this;
     }
 }
