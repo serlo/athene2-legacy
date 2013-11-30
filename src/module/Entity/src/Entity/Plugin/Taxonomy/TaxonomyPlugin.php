@@ -19,7 +19,7 @@ class TaxonomyPlugin extends AbstractPlugin
     use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     /**
-     *
+     * 
      * @return \Taxonomy\Collection\TermCollection
      */
     public function getTerms()

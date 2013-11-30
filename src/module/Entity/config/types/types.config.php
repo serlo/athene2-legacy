@@ -25,6 +25,9 @@ return array(
                             )
                         )
                     ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
                     'metadata' => array(
                         'plugin' => 'metadata'
                     ),
@@ -67,6 +70,9 @@ return array(
                             )
                         )
                     ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
                     'metadata' => array(
                         'plugin' => 'metadata'
                     ),
@@ -107,6 +113,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'group' => array(
                         'plugin' => 'link',
@@ -153,6 +162,9 @@ return array(
                             )
                         )
                     ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
@@ -190,6 +202,9 @@ return array(
                                 'reasoning'
                             )
                         )
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'metadata' => array(
                         'plugin' => 'metadata'
@@ -229,6 +244,9 @@ return array(
                     ),
                     'metadata' => array(
                         'plugin' => 'metadata'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'aggregator' => array(
                         'plugin' => 'aggregator',
@@ -271,6 +289,9 @@ return array(
                     ),
                     'metadata' => array(
                         'plugin' => 'metadata'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
@@ -316,6 +337,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'module' => array(
                         'plugin' => 'link',

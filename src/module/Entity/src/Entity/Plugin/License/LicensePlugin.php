@@ -17,8 +17,9 @@ class LicensePlugin extends AbstractPlugin
 {
     public function getDefaultConfig(){
         return array(
-        	'default' => 'cc-by-sa',
-            'fallback' => 1
+        	'defaults' => array(
+                'de' => 1
+            )
         );
     }
 }

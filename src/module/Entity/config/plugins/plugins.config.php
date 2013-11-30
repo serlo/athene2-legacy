@@ -36,6 +36,13 @@ return array(
                         ->get('Uuid\Manager\UuidManager'));
                     return $instance;
                 },
+                'learningResource' => function ($sm)
+                {
+                    $instance = new Plugin\LearningResource\LearningResourcePlugin();
+                    $instance->setEntityManager($sm->getServiceLocator()
+                        ->get('Entity\Manager\EntityManager'));
+                    return $instance;
+                },
                 'link' => function ($sm)
                 {
                     $instance = new Plugin\Link\LinkPlugin();
