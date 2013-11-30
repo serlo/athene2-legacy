@@ -1,4 +1,5 @@
 <?php $solution = $this->entity; ?>
+<?php echo $solution->learningResource()->getSubject()->getName();  ?>
 <?php if($solution->repository()->hasCurrentRevision() && !$solution->getTrashed()): ?>
     <article>
         <header class="btn-group">

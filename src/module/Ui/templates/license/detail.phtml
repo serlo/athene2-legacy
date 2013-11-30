@@ -1,6 +1,6 @@
 <?php /* @var $license \License\Entity\LicenseInterface */ ?>
 <?php $license = $this->license; ?>
-<?php echo $this->pageHeader($license->getTitle(), 'License')->render(); ?>
+<?php echo $this->pageHeader('License')->setSubtitle($license->getTitle())->render(); ?>
 <div class="well">
     <?php echo $license->getContent(); ?>
 </div>

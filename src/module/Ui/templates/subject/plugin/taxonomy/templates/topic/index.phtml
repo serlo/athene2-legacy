@@ -19,5 +19,5 @@ $data = array(
     'terms' => $this->terms
 );
 ?>
-<?php echo $this->pageHeader($title, 'Topic')->render(); ?>
+<?php echo $this->pageHeader('Topic')->setSubtitle($title)->render(); ?>
 <?php echo $this->partial('subject/plugin/taxonomy/templates/default', $data); ?>

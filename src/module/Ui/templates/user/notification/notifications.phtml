@@ -7,7 +7,7 @@
 	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 	    <?php if(count($this->notifications) == 0):?>
         <li role="presentation" class="disabled"><a role="menuitem"
-			tabindex="-1" href="#"><?php echo sprintf($this->translate('Du hast keine neuen Benachrichtigungen.')); ?></a></li>
+			tabindex="-1" href="#"><?php echo sprintf($this->translate('You have no notifications.')); ?></a></li>
 	    <?php else: ?>
         <?php foreach($this->notifications as $notification): ?>
             <?php $name = $notification->getEventName(); ?>

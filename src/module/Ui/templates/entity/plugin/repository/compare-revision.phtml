@@ -1,4 +1,4 @@
-<?php echo $this->pageHeader($this->entity->getUuid(), 'compare revisions')->render(); ?>
+<?php echo $this->pageHeader('Compare revisions')->setSubtitle($this->entity->getUuid())->render(); ?>
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#display" data-toggle="tab"><?php echo $this->translate('Revision'); ?> (#<?php echo $this->revision->getId();?>)</a></li>
 	<?php if($this->currentRevision){ ?>

@@ -1,4 +1,4 @@
-<?php echo $this->pageHeader($this->entity->getUuid(), 'history')->render(); ?>
+<?php echo $this->pageHeader('History')->setSubtitle($this->entity->getUuid())->render(); ?>
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#revision" data-toggle="tab"><?php echo $this->translate('Revisions'); ?> (<?php echo $this->revisions->count();?>)</a></li>
 	<li><a href="#trashed" data-toggle="tab"><?php echo $this->translate('Trashed revisions'); ?> (<?php echo $this->trashedRevisions->count();?>)</a></li>
