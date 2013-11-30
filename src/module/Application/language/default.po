@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Athene2\n"
-"POT-Creation-Date: 2013-11-30 13:25+0100\n"
-"PO-Revision-Date: 2013-11-30 13:27+0100\n"
+"POT-Creation-Date: 2013-11-30 13:44+0100\n"
+"PO-Revision-Date: 2013-11-30 13:48+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,10 +10,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;pageHeader;"
-"setSubtitle\n"
+"setSubtitle;addMessage;addSuccessMessage;addErrorMessage;'label' =>\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: D:\\workspace\\athene2\\src\\module\n"
+
+#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:123
+msgid "You can't downvote this comment."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:125
+msgid "You have downvoted this comment."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:129
+msgid "You can't upvote this comment."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:131
+msgid "You have upvoted this comment."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Entity/src/Entity/Plugin/Repository/Controller/RepositoryController.php:54
+msgid ""
+"Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, "
+"sobald deine Bearbeitung geprüft wird."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Flag/src/Flag/Controller/FlagController.php:48
+msgid "The content has been flagged."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Flag/src/Flag/Controller/FlagController.php:79
+msgid "Your action was successfull."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:65
+msgid "Bearbeitung erfoglreich gespeichert!"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:114
+msgid "Knoten erfolgreich hinzugefügt!"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:126
+msgid "Knoten erfolgreich gelöscht!"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:226
+msgid ""
+"You have been sent an email with instructions on how to restore your "
+"password!"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:277
+msgid "Dein Konto wurde erfolgreich aktiviert. Du kannst dich nun einloggen."
+msgstr ""
+
+#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:347
+msgid "Your password has successfully been changed."
+msgstr ""
 
 #: D:\workspace\athene2\src\module/Ui/templates/admin/home/index.phtml:3
 msgid "Backend"
@@ -623,6 +679,14 @@ msgstr ""
 msgid "Taxonomie erstellen"
 msgstr ""
 
+#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/form.phtml:14
+msgid "Edit taxonomy term"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/form.phtml:16
+msgid "Add taxonomy term"
+msgstr ""
+
 #: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/order-associated.phtml:2
 msgid "Sort entities"
 msgstr ""
@@ -654,7 +718,7 @@ msgid "Upload a file"
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Ui/templates/user/notification/notifications.phtml:10
-msgid "Du hast keine neuen Benachrichtigungen."
+msgid "You have no notifications."
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Ui/templates/user/notification/notifications.phtml:19
