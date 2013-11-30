@@ -14,26 +14,37 @@ namespace Entity\Plugin\LearningResource;
 use Entity\Plugin\AbstractPlugin;
 use Entity\Plugin\LearningResource\Exception;
 use Entity\Service\EntityServiceInterface;
+use Entity\Plugin\Taxonomy\TaxonomyPlugin;
+use Taxonomy\Service\TermServiceInterface;
 
 class LearningResourcePlugin extends AbstractPlugin
 {
+
     protected $checkedDependencies = false;
-    
+
+    protected $taxonomyPlugin = NULL;
+
     protected function getDefaultConfig()
     {
         return array();
     }
-    
-    public function setEntityService(EntityServiceInterface $entityService){
+
+    public function setEntityService(EntityServiceInterface $entityService)
+    {
         $return = parent::setEntityService($entityService);
-        $this->checkedDependencies = false;
+        $this->reset();
         $this->checkDependencies();
         return $return;
     }
 
+    public function isStatisfied()
+    {
+        return true;
+    }
+
     public function checkDependencies()
     {
-        if($this->checkedDependencies = true)
+        if ($this->checkedDependencies == true)
             return true;
         
         $entityService = $this->getEntityService();
@@ -41,29 +52,18 @@ class LearningResourcePlugin extends AbstractPlugin
         if (! $entityService->hasPlugin('page'))
             throw new Exception\UnstatisfiedDependencyException('Missing dependency: page');
         
-        if (! $entityService->hasPlugin('license'))
-            throw new Exception\UnstatisfiedDependencyException('Missing dependency: license');
+        //if (! $entityService->hasPlugin('license'))
+        //    throw new Exception\UnstatisfiedDependencyException('Missing dependency: license');
         
         if (! $entityService->hasPlugin('repository'))
             throw new Exception\UnstatisfiedDependencyException('Missing dependency: repository');
         
-        if (! $entityService->hasPlugin('metadata'))
-            throw new Exception\UnstatisfiedDependencyException('Missing dependency: metadata');
+        //if (! $entityService->hasPlugin('metadata'))
+        //    throw new Exception\UnstatisfiedDependencyException('Missing dependency: metadata');
         
         if (! $entityService->hasPlugin('taxonomy')) {
             if (count($entityService->getScopesForPlugin('link'))) {
-                $statisfyable = false;
-                foreach ($entityService->getScopesForPlugin('link') as $scope) {
-                    /* @var $linked \Entity\Plugin\Link\LinkPlugin */
-                    $linked = $entityService->plugin($scope);
-                    if ($linked->hasParents()) {
-                        foreach ($linked->findParents() as $parent) {
-                            $parent->plugin('learningResource')->checkDependencies();
-                            $statisfyable = false;
-                        }
-                    }
-                }
-                if(!$statisfyable)
+                if ($this->getTaxonomyPlugin() === NULL)
                     throw new Exception\UnstatisfiedDependencyException('Missing dependency taxonomy, and not resolvable through parents');
             } else {
                 throw new Exception\UnstatisfiedDependencyException('Missing dependency: taxonomy');
@@ -71,5 +71,69 @@ class LearningResourcePlugin extends AbstractPlugin
         }
         $this->checkedDependencies = true;
         return true;
+    }
+
+    public function getDefaultSubject()
+    {
+        
+        /* @var $term TermServiceInterface */
+        foreach($this->getTaxonomyPlugin()->getTerms() as $term){
+            $subject = $term->findAncestorByType('subject');
+            if(is_object($subject))
+                return $subject;
+        }
+        return NULL;
+    }
+
+    public function findSubjects()
+    {}
+
+    public function findTaxonomyTerms()
+    {}
+
+    public function findTopicTerms()
+    {}
+
+    public function findCurriculumTerms()
+    {}
+
+    protected function getTaxonomyPlugin()
+    {
+        $entityService = $this->getEntityService();
+        if (! is_object($this->taxonomyPlugin)) {
+            if (! $entityService->hasPlugin('taxonomy')) {
+                $this->taxonomyPlugin = $this->findTaxonomyPluginThorughParents();
+                parent::setEntityService($entityService);
+            } else {
+                $this->taxonomyPlugin = $this->getEntityService()->plugin('taxonomy');
+            }
+        }
+        return $this->taxonomyPlugin;
+    }
+
+    /**
+     * 
+     * @return TaxonomyPlugin|null
+     */
+    protected function findTaxonomyPluginThorughParents()
+    {
+        $entityService = $this->getEntityService();
+        foreach ($entityService->getScopesForPlugin('link') as $scope) {
+            /* @var $linked \Entity\Plugin\Link\LinkPlugin */
+            $linked = $entityService->plugin($scope);
+                    die($linked->findParents()->count() == 0);
+            if ($linked->hasParents()) {
+                foreach ($linked->findParents() as $parent) {
+                    return $parent->plugin('learningResource')->getTaxonomyPlugin();
+                }
+            }
+        }
+        return NULL;
+    }
+
+    protected function reset()
+    {
+        $this->checkedDependencies = false;
+        $this->taxonomyPlugin = NULL;
     }
 }
