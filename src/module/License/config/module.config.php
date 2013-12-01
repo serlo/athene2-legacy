@@ -33,6 +33,9 @@ return array(
                     ),
                     'setClassResolver' => array(
                         'required' => 'true'
+                    ),
+                    'setLanguageManager' => array(
+                        'required' => 'true'
                     )
                 ),
                 __NAMESPACE__ . '\Controller\LicenseController' => array(

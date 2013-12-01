@@ -15,6 +15,7 @@ use License\Entity\LicenseInterface;
 use Language\Service\LanguageServiceInterface;
 use License\Form\LicenseForm;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use License\Entity\LicenseAwareInterface;
 
 interface LicenseManagerInterface extends ObjectManagerAwareInterface
 {
@@ -66,4 +67,12 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface
      * @return LicenseForm
      */
     public function getLicenseForm($id = NULL);
+    
+    /**
+     * 
+     * @param LicenseAwareInterface $object
+     * @param LicenseInterface $license
+     * @return $this
+     */
+    public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = NULL);
 }

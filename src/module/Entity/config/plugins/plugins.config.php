@@ -12,7 +12,6 @@
 namespace Entity;
 
 use Entity\Plugin;
-
 return array(
     'entity' => array(
         'plugins' => array(
@@ -34,6 +33,12 @@ return array(
                         ->get('User\Manager\UserManager'));
                     $instance->setUuidManager($sm->getServiceLocator()
                         ->get('Uuid\Manager\UuidManager'));
+                    return $instance;
+                },
+                'license' => function ($sm)
+                {
+                    $instance = new Plugin\License\LicensePlugin();
+                    $instance->setLicenseManager($sm->getServiceLocator()->get('License\Manager\LicenseManager'));
                     return $instance;
                 },
                 'learningResource' => function ($sm)
@@ -105,7 +110,7 @@ return array(
                 'metadata' => function ($sm)
                 {
                     $instance = new Plugin\Metadata\MetadataPlugin();
-
+                    
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     $instance->setMetadataManager($sm->getServiceLocator()
@@ -307,15 +312,20 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Listener\EntityControllerListener' => array(
+                'Entity\Plugin\LearningResource\Listener\EntityControllerListener' => array(
                     'setMetadataManager' => array(
-                        'required' => 'true'
-                    ),
+                        'required' => true
+                    )
                 ),
-                __NAMESPACE__ . '\Listener\EntityTaxonomyPluginControllerListener' => array(
+                'Entity\Plugin\License\Listener\EntityControllerListener' => array(
+                    'setLicenseManager' => array(
+                        'required' => true
+                    )
+                ),
+                'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener' => array(
                     'setMetadataManager' => array(
-                        'required' => 'true'
-                    ),
+                        'required' => true
+                    )
                 )
             )
         ),
@@ -324,5 +334,5 @@ return array(
                 'Entity\EntityManagerInterface' => 'Entity\EntityManager'
             )
         )
-    ),
+    )
 );

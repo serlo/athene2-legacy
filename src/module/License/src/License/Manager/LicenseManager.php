@@ -14,16 +14,56 @@ namespace License\Manager;
 use License\Exception;
 use License\Form\LicenseForm;
 use Language\Service\LanguageServiceInterface;
+use License\Entity\LicenseAwareInterface;
+use License\Entity\LicenseInterface;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
         return array(
-            'defaults' => array()
+            'defaults' => array(
+                'de' => 'cc-by-sa-3.0'
+            )
         );
+    }
+
+    public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = NULL)
+    {
+        if (! $license) {
+            $license = $this->getDefaultLicense();
+        }
+        $object->setLicense($license);
+        $this->getObjectManager()->persist($object);
+        return $this;
+    }
+
+    protected function getDefaultLicense()
+    {
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $code = $language->getCode();
+        $defaults = $this->getDefaultConfig()['defaults'];
+        if(!array_key_exists($code, $defaults))
+            throw new Exception\RuntimeException(sprintf('No default license set for language `%s`', $code));
+        $title = $defaults[$code];
+        return $this->findLicenseByTitleAndLanguage($title, $language);
+    }
+    
+    public function findLicenseByTitleAndLanguage($title, LanguageServiceInterface $language){
+        if (! is_string($title))
+            throw new Exception\InvalidArgumentException(sprintf('Expected parameter 1 to be string, but got `%s`', gettype($title)));
+        
+        $license = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface'))->findOneBy(array(
+            'title' => $title,
+            'language' => $language->getId()
+        ));
+        
+        if (! is_object($license))
+            throw new Exception\LicenseNotFoundException(sprintf('License not found by title `%s` and language `%s`.', $title, $language->getCode()));
+        
+        return $license;
     }
     
     /*
@@ -38,7 +78,7 @@ class LicenseManager implements LicenseManagerInterface
         $license = $this->getObjectManager()->find($className, $id);
         
         if (! is_object($license))
-            throw new Exception\LicenseNotFoundException(sprintf('License by id `%s` not found.', $id));
+            throw new Exception\LicenseNotFoundException(sprintf('License not found by id `%s`.', $id));
         
         return $license;
     }

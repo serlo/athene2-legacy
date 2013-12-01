@@ -58,8 +58,8 @@ class LearningResourcePlugin extends AbstractPlugin
         if (! $entityService->hasPlugin('repository'))
             throw new Exception\UnstatisfiedDependencyException('Missing dependency: repository');
         
-        //if (! $entityService->hasPlugin('metadata'))
-        //    throw new Exception\UnstatisfiedDependencyException('Missing dependency: metadata');
+        if (! $entityService->hasPlugin('metadata'))
+            throw new Exception\UnstatisfiedDependencyException('Missing dependency: metadata');
         
         if (! $entityService->hasPlugin('taxonomy')) {
             if (count($entityService->getScopesForPlugin('link'))) {

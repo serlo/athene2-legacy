@@ -15,11 +15,16 @@ use Entity\Plugin\AbstractPlugin;
 
 class LicensePlugin extends AbstractPlugin
 {
-    public function getDefaultConfig(){
-        return array(
-        	'defaults' => array(
-                'de' => 1
-            )
-        );
+    use\License\Manager\LicenseManagerAwareTrait;
+
+    public function getDefaultConfig()
+    {
+        return array();
+    }
+
+    public function inject()
+    {
+        $this->getLicenseManager()->injectLicense($this->getEntityService()
+            ->getEntity());
     }
 }

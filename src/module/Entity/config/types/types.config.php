@@ -31,6 +31,9 @@ return array(
                     'metadata' => array(
                         'plugin' => 'metadata'
                     ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -73,6 +76,9 @@ return array(
                     'learningResource' => array(
                         'plugin' => 'learningResource'
                     ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
                     'metadata' => array(
                         'plugin' => 'metadata'
                     ),
@@ -113,6 +119,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
                     ),
                     'learningResource' => array(
                         'plugin' => 'learningResource'
@@ -162,6 +171,9 @@ return array(
                             )
                         )
                     ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
                     'learningResource' => array(
                         'plugin' => 'learningResource'
                     ),
@@ -203,6 +215,9 @@ return array(
                             )
                         )
                     ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
                     'learningResource' => array(
                         'plugin' => 'learningResource'
                     ),
@@ -241,6 +256,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
                     ),
                     'metadata' => array(
                         'plugin' => 'metadata'
@@ -286,6 +304,9 @@ return array(
                                 'title'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
                     ),
                     'metadata' => array(
                         'plugin' => 'metadata'
@@ -337,6 +358,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
                     ),
                     'learningResource' => array(
                         'plugin' => 'learningResource'

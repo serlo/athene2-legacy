@@ -18,6 +18,7 @@ class Module
 
     public static $listeners = array(
         'Entity\Plugin\Link\Listener\EntityControllerListener',
+        'Entity\Plugin\License\Listener\EntityControllerListener',
         'Entity\Plugin\Repository\Listener\EntityControllerListener',
         'Entity\Plugin\Taxonomy\Listener\EntityControllerListener',
         'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener',
