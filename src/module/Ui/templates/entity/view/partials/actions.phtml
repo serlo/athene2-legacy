@@ -50,6 +50,13 @@
     	class="glyphicon glyphicon-hdd"></span></a>
 <?php endif; ?>
 
+<!-- License -->
+<?php $url = $this->url('license/detail',array('id' => $this->entity->license()->getId())); ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('event', $hide)): ?>
+    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
+    	class="glyphicon glyphicon-leaf"></span></a>
+<?php endif; ?>
+
 <!-- Detail page -->
 <?php if(!in_array('detail', $hide)): ?>
     <a class="btn btn-default btn-xs"

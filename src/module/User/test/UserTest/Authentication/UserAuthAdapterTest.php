@@ -22,7 +22,7 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $this->adapter = new UserAuthAdapter();
         $this->adapter->setIdentity('foo');
-        $this->adapter->setPassword('bar');
+        $this->adapter->setCredentials('bar');
         
         $this->adapter->setHashService($this->getMock('User\Authentication\HashService'));
         $this->adapter->setUserManager($this->getMock('User\Manager\UserManager'));

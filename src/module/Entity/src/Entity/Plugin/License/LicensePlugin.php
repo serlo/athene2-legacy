@@ -27,4 +27,32 @@ class LicensePlugin extends AbstractPlugin
         $this->getLicenseManager()->injectLicense($this->getEntityService()
             ->getEntity());
     }
+
+    public function getId()
+    {
+        return $this->getLicense()->getId();
+    }
+
+    public function getTitle()
+    {
+        return $this->getLicense()->getTitle();
+    }
+
+    public function getIcon()
+    {
+        return $this->getLicense()->getIconHref();
+    }
+
+    public function getUrl()
+    {
+        return $this->getLicense()->getUrl();
+    }
+
+    public function getLicense()
+    {
+        return $this->getLicenseManager()->getLicense($this->getEntityService()
+            ->getEntity()
+            ->getLicense()
+            ->getId());
+    }
 }
