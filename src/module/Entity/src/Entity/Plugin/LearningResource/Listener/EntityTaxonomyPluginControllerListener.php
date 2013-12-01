@@ -9,15 +9,18 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Metadata\Listener;
+namespace Entity\Plugin\LearningResource\Listener;
 
 use Zend\EventManager\Event;
 use Taxonomy\Exception\TermNotFoundException;
 use Metadata\Exception\DuplicateMetadata;
 use Metadata\Exception\MetadataNotFoundException;
+use Common\Listener\AbstractSharedListenerAggregate;
+use Entity\Plugin\LearningResource\Exception\UnstatisfiedDependencyException;
 
-class EntityTaxonomyPluginControllerListener extends AbstractListener
+class EntityTaxonomyPluginControllerListener extends AbstractSharedListenerAggregate
 {
+    use \Metadata\Manager\MetadataManagerAwareTrait;
 
     public function onAddToTerm(Event $e)
     {
@@ -25,14 +28,21 @@ class EntityTaxonomyPluginControllerListener extends AbstractListener
         $entity = $e->getParam('entity');
         /* @var $term \Taxonomy\Service\TermServiceInterface */
         $term = $e->getParam('term');
-        $object = $entity->getEntity()->getUuidEntity();
         
         try {
-            $subject = $term->findAncestorByType('subject');
+            $entity->learningResource()->isStatisfied();
+            
+            $object = $entity->getEntity()->getUuidEntity();
+            
             try {
-                $this->getMetadataManager()->addMetadata($object, 'subject', $subject->getName());
-            } catch (DuplicateMetadata $e) {}
-        } catch (TermNotFoundException $e) {}
+                $subject = $term->findAncestorByType('subject');
+                try {
+                    $this->getMetadataManager()->addMetadata($object, 'subject', $subject->getName());
+                } catch (DuplicateMetadata $e) {}
+            } catch (TermNotFoundException $e) {}
+        } catch (UnstatisfiedDependencyException $e) {
+            return false;
+        }
     }
 
     public function onRemoveFromTerm(Event $e)

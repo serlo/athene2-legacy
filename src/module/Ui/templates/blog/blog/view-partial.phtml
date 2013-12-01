@@ -4,10 +4,10 @@
 		<article>
 			<header>
 			    <div class="pull-right btn-group">
-			         <?php if($this->rbac()->hasAccessToRoute('blog/post/update')): ?>
+			         <?php if($this->guard()->hasAccessToRoute('blog/post/update')): ?>
 			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/update', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
 		             <?php endif; ?>
-			         <?php if($this->rbac()->hasAccessToRoute('blog/post/trash')): ?>
+			         <?php if($this->guard()->hasAccessToRoute('blog/post/trash')): ?>
 			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
 			         <?php endif; ?>
 			    </div>

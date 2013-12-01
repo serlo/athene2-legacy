@@ -11,10 +11,10 @@
  */
 namespace Entity\Plugin\Pathauto\Listener;
 
-use Entity\Plugin\Listener\AbstractListener;
 use Zend\EventManager\Event;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-class RepositoryControllerListener extends AbstractListener
+class RepositoryControllerListener extends AbstractSharedListenerAggregate
 {
     
     /*
@@ -22,7 +22,7 @@ class RepositoryControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Entity\Plugin\Repository\Controller\RepositoryController', 'checkout', function (Event $e)
+        $this->listeners[] = $events->attach($this->getMonitoredClass() , 'checkout', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
@@ -31,5 +31,13 @@ class RepositoryControllerListener extends AbstractListener
                 $entity->plugin('pathauto')->inject();
             }
         }, 2);
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
+     */
+    protected function getMonitoredClass ()
+    {
+        return 'Entity\Plugin\Repository\Controller\RepositoryController';
     }
 }

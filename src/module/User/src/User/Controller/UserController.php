@@ -77,32 +77,6 @@ class UserController extends AbstractUserController
         return $this;
     }
 
-    /**
-     *
-     * @var AdapterInterface
-     */
-    private $authAdapter;
-
-    /**
-     *
-     * @return AdapterInterface $authAdapter
-     */
-    public function getAuthAdapter()
-    {
-        return $this->authAdapter;
-    }
-
-    /**
-     *
-     * @param AdapterInterface $authAdapter            
-     * @return $this
-     */
-    public function setAuthAdapter(AdapterInterface $authAdapter)
-    {
-        $this->authAdapter = $authAdapter;
-        return $this;
-    }
-
     public function loginAction()
     {
         $form = $this->getForm('login');
@@ -118,13 +92,15 @@ class UserController extends AbstractUserController
             
             if ($form->isValid()) {
                 $data = $form->getData();
+
+                $adapter = $this->getAuthenticationService()->getAdapter();
+                $adapter->setIdentity($data['email']);
+                $adapter->setCredential($data['password']);
                 
-                $this->getAuthAdapter()->setIdentity($data['email']);
-                $this->getAuthAdapter()->setPassword($data['password']);
+                $result = $this->getAuthenticationService()->authenticate();
                 
-                $result = $this->getAuthenticationService()->authenticate($this->getAuthAdapter());
                 if ($result->isValid()) {
-                    $user = $this->getUserManager()->findUserByEmail($result->getIdentity());
+                    $user = $this->getUserManager()->getUser($result->getIdentity()->getId());
                     $user->updateLoginData();
                     
                     $this->getEventManager()->trigger('login', $this, array(

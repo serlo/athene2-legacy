@@ -9,6 +9,12 @@
 namespace License;
 
 return array(
+    'license_manager' => array(
+        'defaults' => array()
+    ),
+    'service_manager' => array(
+        'factories' => array()
+    ),
     'class_resolver' => array(
         __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
     ),
@@ -18,7 +24,7 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                 __NAMESPACE__ . '\Manager\LicenseManager' => array(
+                __NAMESPACE__ . '\Manager\LicenseManager' => array(
                     'setServiceLocator' => array(
                         'required' => 'true'
                     ),
@@ -36,7 +42,7 @@ return array(
                     'setLanguageManager' => array(
                         'required' => 'true'
                     )
-                ),
+                )
             )
         ),
         'instance' => array(
@@ -57,6 +63,13 @@ return array(
             'orm_default' => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        ),
+        'entity_resolver' => array(
+            'orm_default' => array(
+                'resolvers' => array(
+                    __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
                 )
             )
         )

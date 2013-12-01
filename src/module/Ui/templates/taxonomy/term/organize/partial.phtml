@@ -37,7 +37,7 @@ if (! isset($this->isChild)) : ?>
                 </li>
             <?php endforeach; ?>
         </ol>
-<?php if (!isset($this->isChild) && $this->rbac()->hasAccessToRoute('taxonomy/term/order')) : ?>
+<?php if (!isset($this->isChild) && $this->guard()->hasAccessToRoute('taxonomy/term/order')) : ?>
         <div class="sortable-actions">
     		<button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button>
             <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Save new order'); ?></button>

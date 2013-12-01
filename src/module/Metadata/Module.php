@@ -14,8 +14,8 @@ namespace Metadata;
 class Module
 {
     public static $listeners = array(
-        'Metadata\Listener\EntityControllerListener',
-        'Metadata\Listener\EntityTaxonomyPluginControllerListener'
+        //'Metadata\Listener\EntityControllerListener',
+        //'Metadata\Listener\EntityTaxonomyPluginControllerListener'
     );
 
     public function getConfig()

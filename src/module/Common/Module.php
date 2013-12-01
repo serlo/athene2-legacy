@@ -27,7 +27,11 @@ class Module {
 				) 
 		);
 	}
-	public function onBootstrap(MvcEvent $e) {
+	
+	/**
+	 * Deprecated due to ZFCRbac Service
+	 */
+	/*public function onBootstrap(MvcEvent $e) {
 		$app = $e->getTarget ();
 		$sm = $app->getServiceManager ();
 		$rbacService = $sm->get ( 'ZfcRbac\Service\Rbac' );
@@ -43,7 +47,7 @@ class Module {
 		}
 		
 		$app->getEventManager ()->attach ( $strategy );
-	}
+	}*/
 }
 
 

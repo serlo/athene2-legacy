@@ -7,7 +7,7 @@ else {
 ?>
 
 <!-- Only Visible for if User has Permission -->
-<?php if ($this->rbac()->hasAccessToRoute('page/article/createrevision')): ?>
+<?php if ($this->guard()->hasAccessToRoute('page/article/createrevision')): ?>
 
 <div class="btn-group">
 	<a

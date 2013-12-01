@@ -9,18 +9,20 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Plugin\Listener;
+namespace License\Entity;
 
-use Zend\EventManager\SharedListenerAggregateInterface;
-use Zend\EventManager\SharedEventManagerInterface;
-
-abstract class AbstractListener implements SharedListenerAggregateInterface
+interface LicenseAwareInterface
 {
+    /**
+     * 
+     * @param LicenseInterface $license
+     * @return $this
+     */
+    public function setLicense(LicenseInterface $license);
     
-    protected $listeners = array();
-    
-    public function detachShared(SharedEventManagerInterface $events)
-    {
-        throw new \Exception('not implemented');
-    }
+    /**
+     * 
+     * @return LicenseInterface
+     */
+    public function getLicense();
 }

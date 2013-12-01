@@ -41,4 +41,12 @@ class PathautoPlugin extends AbstractPlugin
         
         return $this;
     }
+    
+	/* (non-PHPdoc)
+     * @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
+     */
+    protected function getMonitoredClass ()
+    {
+        return 'Entity\Controller\EntityController';
+    }
 }

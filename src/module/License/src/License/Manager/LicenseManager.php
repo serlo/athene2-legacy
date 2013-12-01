@@ -14,18 +14,24 @@ namespace License\Manager;
 use License\Exception;
 use License\Form\LicenseForm;
 use Language\Service\LanguageServiceInterface;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'defaults' => array()
+        );
+    }
     
     /*
      * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::getLicense()
      */
     public function getLicense($id)
     {
-        if (!is_numeric($id))
+        if (! is_numeric($id))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 1 to be numeric, but got `%s`', gettype($id)));
         
         $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');

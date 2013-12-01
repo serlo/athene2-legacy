@@ -9,35 +9,17 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Route' => array(
-                array(
-                    'route' => 'related-content/manage',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'related-content/add-internal',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'related-content/add-external',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'related-content/add-category',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'related-content/remove',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'related-content/order',
-                    'roles' => 'moderator'
-                ),
-            )
-        )
-    )
-);
+ return [
+    'zfc_rbac' => [
+        'guards' => [
+            'ZfcRbac\Guard\RouteGuard' => [
+                'related-content/manage' => ['moderator'],
+                'related-content/add-internal' => ['moderator'],
+                'related-content/add-external' => ['moderator'],
+                'related-content/add-category' => ['moderator'],
+                'related-content/remove' => ['moderator'],
+                'related-content/order' => ['moderator'],
+            ]
+        ]
+    ]
+];

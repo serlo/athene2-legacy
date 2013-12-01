@@ -11,7 +11,9 @@
  */
 namespace User\Entity;
 
-interface UserInterface
+use ZfcRbac\Identity\IdentityInterface;
+
+interface UserInterface extends IdentityInterface
 {
 
     public function getId();

@@ -2,14 +2,14 @@
 
 <!-- Edit -->
 <?php $url = $this->url('entity/plugin/repository/add-revision',array('entity' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('edit', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('edit', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-edit"></span></a>
 <?php endif; ?>
 
 <!-- Versioning history -->
 <?php $url = $this->url('entity/plugin/repository/history',array('entity' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('history', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('history', $hide)): ?>
     <a
     	class="btn btn-default btn-xs<?php echo ($this->entity->plugin('repository')->isUnrevised()) ? ' btn-warning' : ''?>"
     	href="<?php echo $url; ?>"><span class="glyphicon glyphicon-time"></span></a>
@@ -17,35 +17,35 @@
 
 <!-- Changing taxonomy -->
 <?php $url = $this->url('entity/plugin/taxonomy/update',array('entity' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('taxonomy', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('taxonomy', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-map-marker"></span></a>
 <?php endif; ?>
 
 <!-- Trash entity -->
 <?php $url = $this->url('uuid/trash',array('id' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('trash', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('trash', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-trash"></span></a>
 <?php endif; ?>
 
 <!-- Manage related content -->
 <?php $url = $this->url('related-content/manage',array('id' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('related-content', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('related-content', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-link"></span></a>
 <?php endif; ?>
 
 <!-- Flag content -->
 <?php $url = $this->url('flag/add',array('id' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('flag', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('flag', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-flag"></span></a>
 <?php endif; ?>
 
 <!-- Event log -->
 <?php $url = $this->url('event/history',array('id' => $this->entity->getId())); ?>
-<?php if($this->rbac()->hasAccessToUrl($url) && !in_array('event', $hide)): ?>
+<?php if($this->guard()->hasAccessToUrl($url) && !in_array('event', $hide)): ?>
     <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
     	class="glyphicon glyphicon-hdd"></span></a>
 <?php endif; ?>

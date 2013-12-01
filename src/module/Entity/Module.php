@@ -12,6 +12,7 @@
 namespace Entity;
 
 use Zend\Stdlib\ArrayUtils;
+
 class Module
 {
 
@@ -19,7 +20,9 @@ class Module
         'Entity\Plugin\Link\Listener\EntityControllerListener',
         'Entity\Plugin\Repository\Listener\EntityControllerListener',
         'Entity\Plugin\Taxonomy\Listener\EntityControllerListener',
-        'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener'
+        'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener',
+        'Entity\Plugin\LearningResource\Listener\EntityControllerListener',
+        'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener'
     );
 
     public function getConfig()

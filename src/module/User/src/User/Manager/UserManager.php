@@ -43,9 +43,9 @@ class UserManager implements UserManagerInterface
     public function getUserFromAuthenticator()
     {
         if ($this->getAuthenticationService()->hasIdentity()) {
-            $email = $this->getAuthenticationService()->getIdentity();
+            $user = $this->getAuthenticationService()->getIdentity();
             try {
-                $user = $this->findUserByEmail($email);
+                $user = $this->getUser($user->getId());
                 if ($user->isTrashed() || ! $user->hasRole('login')) {
                     $this->getAuthenticationService()->clearIdentity();
                 } else {

@@ -306,6 +306,16 @@ return array(
                     'setSharedTaxonomyManager' => array(
                         'required' => true
                     )
+                ),
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => array(
+                    'setMetadataManager' => array(
+                        'required' => 'true'
+                    ),
+                ),
+                __NAMESPACE__ . '\Listener\EntityTaxonomyPluginControllerListener' => array(
+                    'setMetadataManager' => array(
+                        'required' => 'true'
+                    ),
                 )
             )
         ),

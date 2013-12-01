@@ -40,5 +40,9 @@ class Module
             $result = $e->getResult();
             $result->setTerminal(TRUE);
         });
+        $t = $e->getTarget();
+        
+        $t->getEventManager()->attach($t->getServiceManager()
+            ->get('ZfcRbac\View\Strategy\UnauthorizedStrategy'));
     }
 }

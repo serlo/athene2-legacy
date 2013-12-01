@@ -11,10 +11,10 @@
  */
 namespace Entity\Plugin\Link\Listener;
 
-use Entity\Plugin\Listener\AbstractListener;
 use Zend\EventManager\Event;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-class EntityControllerListener extends AbstractListener
+class EntityControllerListener extends AbstractSharedListenerAggregate
 {
     
     /*
@@ -22,7 +22,7 @@ class EntityControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create', function (Event $e)
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
@@ -56,5 +56,13 @@ class EntityControllerListener extends AbstractListener
                 }
             }
         }, 2);
+    }
+    
+	/* (non-PHPdoc)
+     * @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
+     */
+    protected function getMonitoredClass ()
+    {
+        return 'Entity\Controller\EntityController';
     }
 }

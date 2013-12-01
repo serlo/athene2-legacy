@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Uuid implements UuidInterface
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -66,7 +66,7 @@ class Uuid implements UuidInterface
      * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id")
      */
     protected $blogPost;
-    
+
     /**
      * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id")
      */
@@ -104,8 +104,8 @@ class Uuid implements UuidInterface
 
     public function getHolderName()
     {
-        foreach(get_object_vars($this) as $key => $value){
-            if($this->is($key)){
+        foreach (get_object_vars($this) as $key => $value) {
+            if ($this->is($key)) {
                 return $key;
             }
         }
@@ -114,8 +114,8 @@ class Uuid implements UuidInterface
 
     public function getHolder()
     {
-        foreach(get_object_vars($this) as $key => $value){
-            if($this->is($key)){
+        foreach (get_object_vars($this) as $key => $value) {
+            if ($this->is($key)) {
                 return $value;
             }
         }
@@ -156,5 +156,17 @@ class Uuid implements UuidInterface
     {
         $entity->setUuid($this);
         return $this;
+    }
+
+    /**
+     * Without this, the whole thing breaks at
+     * 
+     * Object of class DoctrineORMModule\Proxy\__CG__\Uuid\Entity\Uuid could not be converted to string in D:\workspace\athene2\src\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php on line 2891
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->id;
     }
 }

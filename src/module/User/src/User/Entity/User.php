@@ -36,16 +36,12 @@ class User extends UuidEntity implements UserInterface
     protected $roles;
 
     /**
-     * @ORM\Column(type="string",
-     * unique=true)
-     * *
+     * @ORM\Column(type="string", unique=true)
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string",
-     * unique=true)
-     * *
+     * @ORM\Column(type="string", unique=true)
      */
     protected $username;
 

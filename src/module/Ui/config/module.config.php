@@ -10,9 +10,9 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcRbac\Service\Rbac;
 use Zend\Mvc\Application;
 use Ui\View\Helper\PageHeader;
+use ZfcRbac\Guard\GuardInterface;
 
 return array(
     'navigation' => array(
@@ -151,8 +151,7 @@ return array(
             Application::ERROR_CONTROLLER_NOT_FOUND,
             Application::ERROR_CONTROLLER_INVALID,
             Application::ERROR_ROUTER_NO_MATCH,
-            Rbac::ERROR_ROUTE_UNAUTHORIZED,
-            Rbac::ERROR_CONTROLLER_UNAUTHORIZED
+            GuardInterface::GUARD_UNAUTHORIZED
         )
     )
 );

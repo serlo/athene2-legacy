@@ -11,11 +11,11 @@
  */
 namespace Entity\Plugin\Repository\Listener;
 
-use Entity\Plugin\Listener\AbstractListener;
 use Entity\Result\UrlResult;
 use Zend\EventManager\Event;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-class EntityControllerListener extends AbstractListener
+class EntityControllerListener extends AbstractSharedListenerAggregate
 {
     
     /*
@@ -23,7 +23,7 @@ class EntityControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create.postFlush', function (Event $e)
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create.postFlush', function (Event $e)
         {
             /* var $entity \Entity\Service\EntityServiceInterface */
             $entity = $e->getParam('entity');
@@ -33,12 +33,20 @@ class EntityControllerListener extends AbstractListener
                 $result->setResult($entity->plugin('repository')
                     ->getRouter()
                     ->assemble(array(
-                    'entity' => $entity->getId(),
+                    'entity' => $entity->getId()
                 ), array(
                     'name' => 'entity/plugin/repository/add-revision'
                 )));
                 return $result;
             }
         }, 2);
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
+     */
+    protected function getMonitoredClass()
+    {
+        return 'Entity\Controller\EntityController';
     }
 }

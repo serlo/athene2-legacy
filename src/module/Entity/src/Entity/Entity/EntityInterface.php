@@ -12,8 +12,11 @@
 namespace Entity\Entity;
 
 use Taxonomy\Entity\TaxonomyTermEntity;
+use License\Entity\LicenseAwareInterface;
+use Link\Entity\LinkableInterface;
+use Versioning\Entity\RepositoryInterface;
 
-interface EntityInterface
+interface EntityInterface extends RepositoryInterface, LinkableInterface , LicenseAwareInterface
 {
 
     public function addTaxonomyIndex(TaxonomyTermEntity $taxonomy);

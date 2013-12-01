@@ -12,9 +12,9 @@
 namespace Entity\Plugin\Taxonomy\Listener;
 
 use Zend\EventManager\Event;
-use Entity\Plugin\Listener\AbstractListener;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-class EntityControllerListener extends AbstractListener
+class EntityControllerListener extends AbstractSharedListenerAggregate
 {
     use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
@@ -26,7 +26,7 @@ class EntityControllerListener extends AbstractListener
         
         foreach ($entity->getScopesForPlugin('taxonomy') as $scope) {
             if (array_key_exists($scope, $data)) {
-
+                
                 $options = $data[$scope];
                 $term = $this->getSharedTaxonomyManager()->getTerm($options['term']);
                 
@@ -47,9 +47,17 @@ class EntityControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Entity\Controller\EntityController', 'create', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
             $this,
             'onCreate'
         ), 2);
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
+     */
+    protected function getMonitoredClass()
+    {
+        return 'Entity\Controller\EntityController';
     }
 }

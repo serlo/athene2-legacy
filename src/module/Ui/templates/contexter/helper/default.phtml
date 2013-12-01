@@ -9,7 +9,7 @@
                 <?php echo $context->getTitle(); ?>
             </a></li>
         <?php endforeach; ?>
-        <?php if($this->rbac()->hasAccessToRoute('contexter/add')): ?>
+        <?php if($this->guard()->hasAccessToRoute('contexter/add')): ?>
             <?php $url = $this->url($this->router->getRouteMatch()->getMatchedRouteName(), $this->router->getRouteMatch()->getParams());?>
             <li>
                 <a href="<?php echo $this->url('contexter/add', array(), array('query' => array('uri' => $url))); ?>">
