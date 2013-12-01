@@ -13,5 +13,4 @@ namespace User\Authentication;
 
 class AuthenticationService extends \Zend\Authentication\AuthenticationService
 {
-    public function authenticate()
 }
