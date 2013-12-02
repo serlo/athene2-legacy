@@ -114,7 +114,7 @@ class Role implements RoleInterface
     {
         $this->users = new ArrayCollection();
         $this->permissions = new ArrayCollection();
-        $this->cihldren = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function addUser(UserInterface $user)
