@@ -1,140 +1,141 @@
 <?php
 /**
  * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @copyright 2013 by www.serlo.org
  * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL]
  */
 namespace License;
 
-return array(
-    'license_manager' => array(
-        'defaults' => array()
-    ),
-    'service_manager' => array(
-        'factories' => array()
-    ),
-    'class_resolver' => array(
+use Zend\ServiceManager\ServiceLocatorInterface;
+use License\Manager\LicenseManager;
+return [
+    'license_manager' => [
+        'defaults' => []
+    ],
+    'service_manager' => [
+        'factories' => []
+    ],
+    'class_resolver' => [
         __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+    ],
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Manager\LicenseManager' => function (ServiceLocatorInterface $serviceLocator)
+            {
+                $instance = new LicenseManager();
+                $instance->setServiceLocator($serviceLocator);
+                $instance->setObjectManager($serviceLocator->get('EntityManager'));
+                $instance->setClassResolver($serviceLocator->get('ClassResolver\ClassResolver'));
+                $instance->setLanguageManager($serviceLocator->get('Language\Manager\LanguageManager'));
+                return $instance;
+            }
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\LicenseController'
-        ),
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\Manager\LicenseManager' => array(
-                    'setServiceLocator' => array(
+        ],
+        'definition' => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\LicenseController' => [
+                    'setLicenseManager' => [
                         'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
+                    ],
+                    'setLanguageManager' => [
                         'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\LicenseController' => array(
-                    'setLicenseManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\LicenseManagerInterface' => __NAMESPACE__ . '\Manager\LicenseManager'
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        ),
-        'entity_resolver' => array(
-            'orm_default' => array(
-                'resolvers' => array(
+                ]
+            ]
+        ],
+        'entity_resolver' => [
+            'orm_default' => [
+                'resolvers' => [
                     __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
-                )
-            )
-        )
-    ),
-    'router' => array(
-        'routes' => array(
-            'license' => array(
+                ]
+            ]
+        ]
+    ],
+    'router' => [
+        'routes' => [
+            'license' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/license',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\LicenseController'
-                    )
-                ),
-                'child_routes' => array(
-                    'manage' => array(
+                    ]
+                ],
+                'child_routes' => [
+                    'manage' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/manage',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'manage'
-                            )
-                        )
-                    ),
-                    'add' => array(
+                            ]
+                        ]
+                    ],
+                    'add' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/add',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'add'
-                            )
-                        )
-                    ),
-                    'detail' => array(
+                            ]
+                        ]
+                    ],
+                    'detail' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/detail/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'detail'
-                            )
-                        )
-                    ),
-                    'update' => array(
+                            ]
+                        ]
+                    ],
+                    'update' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/update/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'update'
-                            )
-                        )
-                    ),
-                    'remove' => array(
+                            ]
+                        ]
+                    ],
+                    'remove' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/remove/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'remove'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];
