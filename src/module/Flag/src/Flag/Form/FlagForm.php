@@ -13,10 +13,15 @@ namespace Flag\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Select;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Submit;
 
 class FlagForm extends Form
 {
-    public function __construct(array $types){
+
+    public function __construct(array $types)
+    {
         parent::__construct('context');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
@@ -25,36 +30,19 @@ class FlagForm extends Form
         
         $values = array();
         /* @var $type \Flag\Entity\TypeInterface */
-        foreach($types as $type){
+        foreach ($types as $type) {
             $values[$type->getId()] = $type->getName();
         }
         
-        $this->add(array(
-            'name' => 'type',
-            'type' => 'Select',
-            'attributes' => array(),
-            'options' => array(
-                'label' => 'Type:',
-                'value_options' => $values
-            )
-        ));
+        $this->add((new Select('type'))->setLabel('Type:')
+            ->setOptions(array(
+            'value_options' => $values
+        )));
         
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Textarea',
-            'options' => array(
-                'label' => 'Content:',
-            )
-        ));
-
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Report',
-                'class' => 'btn btn-success pull-right',
-            )
-        ));
+        $this->add((new Textarea('content'))->setLabel('Content:'));
+        
+        $this->add((new Submit('submit'))->setValue('Report')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'content',
@@ -68,7 +56,7 @@ class FlagForm extends Form
         
         $inputFilter->add(array(
             'name' => 'type',
-            'required' => true,
+            'required' => true
         ));
     }
 }

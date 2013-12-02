@@ -51,7 +51,7 @@ class RepositoryController extends AbstractController
                 ));
 
                 $plugin->getObjectManager()->flush();
-                $this->flashMessenger()->addSuccessMessage('Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, sobald deine Bearbeitung geprüft wird.');
+                $this->flashMessenger()->addSuccessMessage('Your revision has been saved, it will be available once it get\'s approved');
                 $this->redirect()->toUrl($this->referer()->fromStorage());
                 return '';
             }

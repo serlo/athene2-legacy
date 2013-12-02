@@ -250,7 +250,7 @@ class UserController extends AbstractUserController
         $this->getUserManager()
             ->getObjectManager()
             ->flush();
-        $this->flashMessenger()->addSuccessMessage('Dein Konto wurde erfolgreich aktiviert. Du kannst dich nun einloggen.');
+        $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
         $this->redirect()->toRoute('user/login');
         return '';
     }

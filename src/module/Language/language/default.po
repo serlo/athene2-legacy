@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Athene2\n"
-"POT-Creation-Date: 2013-11-30 13:44+0100\n"
-"PO-Revision-Date: 2013-11-30 13:48+0100\n"
+"POT-Creation-Date: 2013-12-02 14:00+0100\n"
+"PO-Revision-Date: 2013-12-02 14:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,10 +10,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;pageHeader;"
-"setSubtitle;addMessage;addSuccessMessage;addErrorMessage;'label' =>\n"
+"setSubtitle;addMessage;addSuccessMessage;addErrorMessage;setLabel;setLegend;"
+"setValue\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: D:\\workspace\\athene2\\src\\module\n"
+
+#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ParameterFieldset.php:23
+msgid "Which parameters should be matched?"
+msgstr ""
 
 #: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:123
 msgid "You can't downvote this comment."
@@ -33,8 +38,7 @@ msgstr ""
 
 #: D:\workspace\athene2\src\module/Entity/src/Entity/Plugin/Repository/Controller/RepositoryController.php:54
 msgid ""
-"Deine Bearbeitung wurde gespeichert. Du erhälst eine Benachrichtigung, "
-"sobald deine Bearbeitung geprüft wird."
+"Your revision has been saved, it will be available once it get's approved"
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Flag/src/Flag/Controller/FlagController.php:48
@@ -45,29 +49,41 @@ msgstr ""
 msgid "Your action was successfull."
 msgstr ""
 
+#: D:\workspace\athene2\src\module/Flag/src/Flag/Form/FlagForm.php:37
+msgid "Type:"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Flag/src/Flag/Form/FlagForm.php:42
+msgid "Content:"
+msgstr ""
+
+#: D:\workspace\athene2\src\module/Flag/src/Flag/Form/FlagForm.php:44
+msgid "Report"
+msgstr ""
+
 #: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:65
-msgid "Bearbeitung erfoglreich gespeichert!"
+msgid "Your changes have been saved!"
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:114
-msgid "Knoten erfolgreich hinzugefügt!"
+msgid "The node has been added successfully!"
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:126
-msgid "Knoten erfolgreich gelöscht!"
+msgid "The node has been deleted successfully!"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:226
+#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:202
 msgid ""
 "You have been sent an email with instructions on how to restore your "
 "password!"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:277
-msgid "Dein Konto wurde erfolgreich aktiviert. Du kannst dich nun einloggen."
+#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:253
+msgid "Your account has been activated, you may now log in."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:347
+#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:324
 msgid "Your password has successfully been changed."
 msgstr ""
 
@@ -245,26 +261,26 @@ msgid "There is no current revision."
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/update-revision.phtml:1
-msgid "Version bearbeiten"
+msgid "Update revision"
 msgstr ""
 
 #: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/taxonomy/update.phtml:15
 msgid "Assign a resource"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:6
+#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:5
 msgid "Hint"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:7
+#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:6
 msgid "Solution"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:23
+#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:22
 msgid "This solution is waiting for approval. It will be soon available!"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:25
+#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:24
 #, php-format
 msgid ""
 "This exercise has no solution. Do you want to add <a href=\"%s\">one</a>?"
