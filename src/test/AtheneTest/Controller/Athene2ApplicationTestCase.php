@@ -2,7 +2,6 @@
 namespace AtheneTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
-use Ui\Listener\AcListener;
 use AtheneTest\Bootstrap;
 
 abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
@@ -19,15 +18,17 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
         $this->setUpAlias();
         $this->setUpContexter();
         $this->setUpNotification();
-
+        $this->setUpFirewall();
+        
         $this->detachAggregatedListeners(\Event\Module::$listeners);
         $this->detachAggregatedListeners(\User\Module::$listeners);
         $this->detachAggregatedListeners(\Mailman\Module::$listeners);
         $this->detachAggregatedListeners(\Metadata\Module::$listeners);
     }
-    
-    protected function detachAggregatedListeners(array $listeners){
-        foreach($listeners as $listener){
+
+    protected function detachAggregatedListeners(array $listeners)
+    {
+        foreach ($listeners as $listener) {
             $this->detachAggregatedListener($listener);
         }
     }
@@ -99,63 +100,25 @@ abstract class Athene2ApplicationTestCase extends AbstractHttpControllerTestCase
             ->method('hydrateConfig')
             ->will($this->returnValue(array()));
         
-        $rbacServiceMock = $this->getMock('ZfcRbac\Service\Rbac', array(
-            'isGranted'
-        ));
-        
-        $rbacServiceMock->expects($this->any())
-            ->method('isGranted')
-            ->will($this->returnValue(true));
-        
-        AcListener::setRbacService($rbacServiceMock);
-        
         $this->getApplicationServiceLocator()->setAllowOverride(true);
         $this->getApplicationServiceLocator()->setService('Taxonomy\Provider\NavigationProvider', $navigationProviderMock);
         $this->getApplicationServiceLocator()->setService('Subject\Hydrator\Navigation', $subjectHydrator);
         $this->getApplicationServiceLocator()->setAllowOverride(false);
     }
 
-    protected function setUpFirewall($role = NULL, $allow = true)
+    protected function setUpFirewall()
     {
-        $rbacService = $this->getMockBuilder('ZfcRbac\Service\Rbac')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $rbac = $this->getMockBuilder('ZfcRbac\Firewall\Controller')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $hrbac = $this->getMockBuilder('Common\Firewall\HydratableController')
-            ->disableOriginalConstructor()
-            ->getMock();
+        /* @var \Zend\Mvc\Application $application */
+        $application = $this->getApplication();
+        $serviceManager = $application->getServiceManager();
+        $eventManager = $application->getEventManager();
         
-        $rbacService->expects($this->atLeastOnce())
-            ->method('getFirewall')
-            ->will($this->returnValueMap(array(
-            array(
-                'controller',
-                $rbac
-            ),
-            array(
-                'HydratableController',
-                $rbac
-            ),
-            array(
-                'route',
-                $rbac
-            )
-        )));
+        /* @var \ZfcRbac\Guard\GuardInterface[]|array $guards */
+        $guards = $serviceManager->get('ZfcRbac\Guards');
         
-        if ($role) {
-            $rbac->expects($this->atLeastOnce())
-                ->method('isGranted')
-                ->with($role)
-                ->will($this->returnValue($allow));
-        } else {
-            $rbac->expects($this->atLeastOnce())
-                ->method('isGranted')
-                ->will($this->returnValue($allow));
+        // Register listeners, if any
+        foreach ($guards as $guard) {
+            $eventManager->detachAggregate($guard);
         }
-        $this->getApplicationServiceLocator()->setAllowOverride(true);
-        $this->getApplicationServiceLocator()->setService('ZfcRbac\Service\Rbac', $rbacService);
-        $this->getApplicationServiceLocator()->setAllowOverride(false);
     }
 }

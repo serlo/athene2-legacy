@@ -310,11 +310,12 @@ class UserController extends AbstractUserController
             
             if ($form->isValid()) {
                 $data = $form->getData();
+
+                $adapter = $this->getAuthenticationService()->getAdapter();
+                $adapter->setIdentity($user->getEmail());
+                $adapter->setCredential($data['password']);
                 
-                $this->getAuthAdapter()->setIdentity($user->getEmail());
-                $this->getAuthAdapter()->setPassword($data['currentPassword']);
-                
-                $result = $this->getAuthAdapter()->authenticate();
+                $result = $this->getAuthenticationService()->authenticate();
                 
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);

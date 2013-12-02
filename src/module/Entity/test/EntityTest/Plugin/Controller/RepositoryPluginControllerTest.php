@@ -28,6 +28,7 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
         $controller->setUserManager($this->getMock('User\Manager\UserManager'));
         $this->entityServiceMock = $this->getMock('Entity\Service\EntityService', array(
             'isPluginWhitelisted',
+            'hasPlugin',
             'repository',
             'getId',
             'getEntity'
@@ -57,6 +58,11 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
             ->will($this->returnValue(true));
         
         $this->entityServiceMock->expects($this->atLeastOnce())
+            ->method('hasPlugin')
+            ->with('metadata')
+            ->will($this->returnValue(false));
+        
+        $this->entityServiceMock->expects($this->atLeastOnce())
             ->method('repository')
             ->will($this->returnValue($this->repositoryPluginMock));
         
@@ -74,7 +80,6 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
 
     public function testAddRevisionAction()
     {
-        $this->setUpFirewall();
         
         $this->repositoryPluginMock->expects($this->once())
             ->method('getRevisionForm')
@@ -87,7 +92,6 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
 
     public function addRevisionWithPostActionFixMe()
     {
-        $this->setUpFirewall();
         
         $this->repositoryPluginMock->expects($this->once())
             ->method('getRevisionForm')
@@ -116,9 +120,7 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
     }
 
     public function CompareActionDeprecated()
-    {
-        $this->setUpFirewall();
-        
+    {        
         $revision = $this->getMock('Entity\Entity\Revision');
         
         $revision->expects($this->atLeastOnce())
@@ -139,9 +141,7 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
     }
 
     public function testHistoryAction()
-    {
-        $this->setUpFirewall();
-        
+    {        
         $this->repositoryPluginMock->expects($this->atLeastOnce())
             ->method('hasCurrentRevision')
             ->will($this->returnValue(false));
@@ -160,9 +160,7 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
     }
 
     public function CheckoutActionDeprecated()
-    {
-        $this->setUpFirewall();
-        
+    {        
         $this->repositoryPluginMock->expects($this->once())
             ->method('checkout');
         $om = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);

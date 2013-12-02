@@ -19,26 +19,29 @@ use Zend\Stdlib\ResponseInterface;
 
 abstract class AbstractController extends AbstractActionController
 {
-    use\Entity\Manager\EntityManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait;
 
     protected $entityService;
 
     public function dispatch(RequestInterface $request, ResponseInterface $response = NULL)
     {
         $dispatch = parent::dispatch($request, $response);
-        $subject = $this->getEntityService()
-            ->metadata()
-            ->getSlugifiedSubject();
         
-        if ($subject !== NULL) {
-            $routeMatch = new RouteMatch(array(
-                'subject' => $subject
-            ));
-            $routeMatch->setMatchedRouteName('subject');
-            $this->getServiceLocator()
-                ->get('Application')
-                ->getMvcEvent()
-                ->setRouteMatch($routeMatch);
+        if ($this->getEntityService()->hasPlugin('metadata')) {
+            $subject = $this->getEntityService()
+                ->metadata()
+                ->getSlugifiedSubject();
+            
+            if ($subject !== NULL) {
+                $routeMatch = new RouteMatch(array(
+                    'subject' => $subject
+                ));
+                $routeMatch->setMatchedRouteName('subject');
+                $this->getServiceLocator()
+                    ->get('Application')
+                    ->getMvcEvent()
+                    ->setRouteMatch($routeMatch);
+            }
         }
         
         return $dispatch;

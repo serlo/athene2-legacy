@@ -21,7 +21,6 @@ class UserControllerTest extends Athene2ApplicationTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->setUpFirewall();
         
         $this->userManagerMock = $this->getMock('User\Manager\UserManager');
         $this->authAdapterMock = $this->getMock('User\Authentication\Adapter\UserAuthAdapter');
@@ -50,10 +49,12 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->languageService->expects($this->any())
             ->method('getEntity')
             ->will($this->returnValue($this->getMock('Language\Entity\Language')));
+        $this->authServiceMock->expects($this->any())
+            ->method('getAdapter')
+            ->will($this->returnValue($this->authAdapterMock));
         
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
         $controller->setUserManager($this->userManagerMock);
-        $controller->setAuthAdapter($this->authAdapterMock);
         $controller->setAuthenticationService($this->authServiceMock);
         $controller->setForm('register', $this->registerForm);
         $controller->setLanguageManager($this->languageManagerMock);
@@ -80,12 +81,15 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $userServiceMock = $this->getMocK('User\Service\UserService');
+        $resultMock->expects($this->atLeastOnce())
+            ->method('getIdentity')
+            ->will($this->returnValue($userServiceMock));
         
         $this->authAdapterMock->expects($this->once())
             ->method('setIdentity')
             ->with('user');
         $this->authAdapterMock->expects($this->once())
-            ->method('setPassword')
+            ->method('setCredential')
             ->with('pass');
         $this->authServiceMock->expects($this->once())
             ->method('authenticate')
@@ -94,7 +98,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->userManagerMock->expects($this->once())
-            ->method('findUserByEmail')
+            ->method('getUser')
             ->will($this->returnValue($userServiceMock));
         $userServiceMock->expects($this->once())
             ->method('updateLoginData');
@@ -122,7 +126,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->method('setIdentity')
             ->with('user');
         $this->authAdapterMock->expects($this->once())
-            ->method('setPassword')
+            ->method('setCredential')
             ->with('pass');
         $this->authServiceMock->expects($this->once())
             ->method('authenticate')
@@ -198,7 +202,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
     }
 
     public function testRegisterActionWithInvalidPost()
-    {        
+    {
         $this->dispatch('/user/register', 'POST', array());
         $this->assertResponseStatusCode(200);
     }
@@ -364,14 +368,11 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $resultMock = $this->getMockBuilder('Zend\Authentication\Result')
             ->disableOriginalConstructor()
             ->getMock();
-        $controller->getAuthAdapter()
-            ->expects($this->once())
+        $this->authAdapterMock->expects($this->once())
             ->method('setIdentity');
-        $controller->getAuthAdapter()
-            ->expects($this->once())
-            ->method('setPassword');
-        $controller->getAuthAdapter()
-            ->expects($this->once())
+        $this->authAdapterMock->expects($this->once())
+            ->method('setCredential');
+        $this->authServiceMock->expects($this->once())
             ->method('authenticate')
             ->will($this->returnValue($resultMock));
         $resultMock->expects($this->once())
@@ -401,14 +402,11 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $resultMock = $this->getMockBuilder('Zend\Authentication\Result')
             ->disableOriginalConstructor()
             ->getMock();
-        $controller->getAuthAdapter()
-            ->expects($this->once())
+        $this->authAdapterMock->expects($this->once())
             ->method('setIdentity');
-        $controller->getAuthAdapter()
-            ->expects($this->once())
-            ->method('setPassword');
-        $controller->getAuthAdapter()
-            ->expects($this->once())
+        $this->authAdapterMock->expects($this->once())
+            ->method('setCredential');
+        $this->authServiceMock->expects($this->once())
             ->method('authenticate')
             ->will($this->returnValue($resultMock));
         $resultMock->expects($this->once())
@@ -517,8 +515,9 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->dispatch('/user/1/role/add/2');
         $this->assertResponseStatusCode(302);
     }
-    
-    public function testSettings(){
+
+    public function testSettings()
+    {
         $user = $this->getMock('User\Service\UserService');
         /* @var $controller \User\Controller\UserController */
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
@@ -530,8 +529,9 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->dispatch('/user/settings');
         $this->assertResponseStatusCode(200);
     }
-    
-    public function testSettingsWithPost(){
+
+    public function testSettingsWithPost()
+    {
         $user = $this->getMock('User\Service\UserService');
         /* @var $controller \User\Controller\UserController */
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
@@ -539,8 +539,12 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->expects($this->once())
             ->method('getUserFromAuthenticator')
             ->will($this->returnValue($user));
-        $controller->getObjectManager()->expects($this->once())->method('persist');
-        $controller->getObjectManager()->expects($this->once())->method('flush');
+        $controller->getObjectManager()
+            ->expects($this->once())
+            ->method('persist');
+        $controller->getObjectManager()
+            ->expects($this->once())
+            ->method('flush');
         
         $this->dispatch('/user/settings', 'POST', array(
             'email' => 'foo@bar.de',
@@ -550,8 +554,9 @@ class UserControllerTest extends Athene2ApplicationTestCase
         ));
         $this->assertResponseStatusCode(200);
     }
-    
-    public function testSettingsWithInvalidPost(){
+
+    public function testSettingsWithInvalidPost()
+    {
         $user = $this->getMock('User\Service\UserService');
         /* @var $controller \User\Controller\UserController */
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
@@ -560,8 +565,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->method('getUserFromAuthenticator')
             ->will($this->returnValue($user));
         
-        $this->dispatch('/user/settings', 'POST', array(
-        ));
+        $this->dispatch('/user/settings', 'POST', array());
         $this->assertResponseStatusCode(200);
     }
 }
