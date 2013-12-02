@@ -17,12 +17,12 @@
                 <td><?php echo $this->translate($entity->getHolderName()); ?></td>
                 <td>
                     <div class="btn-group">
-                        <?php if($this->rbac()->hasAccessToRoute('uuid/restore')): ?>
+                        <?php if($this->guard()->hasAccessToRoute('uuid/restore')): ?>
                             <a class="btn btn-success btn-xs" href="<?php echo $this->url('uuid/restore', array('id' => $entity->getId())); ?>">
                                 <span class="glyphicon glyphicon-star"></span>
                             </a>
                         <?php endif; ?>
-                        <?php if($this->rbac()->hasAccessToRoute('uuid/purge')): ?>
+                        <?php if($this->guard()->hasAccessToRoute('uuid/purge')): ?>
                             <button class="dialog btn btn-danger btn-xs" href="<?php echo $this->url('uuid/purge', array('id' => $entity->getId())); ?>" data-content="<?php echo $this->translate('Do you really want to purge this item? It and all references to it will be lost forever!'); ?>" data-type="danger">
                                 <span class="glyphicon glyphicon-fire"></span>
                             </button>

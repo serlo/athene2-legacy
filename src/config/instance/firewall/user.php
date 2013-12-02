@@ -9,46 +9,46 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
+return [
+    'zfc_rbac' => [
+        'guards' => [
+            'ZfcRbac\Guard\ControllerGuard' => [
+                [
                     'controller' => 'User\Controller\UserController',
-                    'actions' => array(
+                    'actions' => [
                         'profile',
                         'login',
                         'register',
                         'restorePassword',
                         'activate'
-                    ),
-                    'roles' => 'guest'
-                ),
-                array(
+                    ],
+                    'roles' => [
+                        'guest'
+                    ]
+                ],
+                [
                     'controller' => 'User\Controller\UserController',
-                    'actions' => array(
+                    'actions' => [
                         'me',
                         'logout',
                         'settings',
                         'changePassword'
-                    ),
-                    'roles' => 'login'
-                ),
-                array(
+                    ],
+                    'roles' => [
+                        'login'
+                    ]
+                ],
+                [
                     'controller' => 'User\Controller\UserController',
-                    'actions' => array(
+                    'actions' => [
                         'addRole',
                         'removeRole'
-                    ),
-                    'roles' => 'sysadmin'
-                )
-            ),
-            'ZfcRbac\Firewall\Route' => array(
-                array(
-                    'route' => 'user/role/add',
-                    'roles' => 'sysadmin'
-                )
-            )
-        )
-    )
-);
+                    ],
+                    'roles' => [
+                        'sysadmin'
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

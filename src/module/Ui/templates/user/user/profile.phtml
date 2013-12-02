@@ -21,7 +21,7 @@
             <?php foreach($this->user->getRoles() as $role): ?>
                     <li>
                         <?php $url = $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>
-                        <?php if($this->rbac()->hasAccessToUrl($url)): ?>
+                        <?php if($this->guard()->hasAccessToUrl($url)): ?>
                             <div class="dropdown">
                                 <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
                                   <?php echo $role->getName(); ?> <span class="caret"></span>
@@ -37,7 +37,7 @@
             <?php endforeach; ?> 
         </ul>
     </div>
-    <?php if($this->rbac()->hasAccessToRoute('user/role/add')): ?>
+    <?php if($this->guard()->hasAccessToRoute('user/role/add')): ?>
         <div class="col-md-7">
             <div class="dropdown">
                 <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">

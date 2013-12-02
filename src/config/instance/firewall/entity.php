@@ -9,74 +9,80 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
-                array(
+return [
+    'zfc_rbac' => [
+        'guards' => [
+            'ZfcRbac\Guard\ControllerGuard' => [
+                [
                     'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array(
-                        'create'
-                    ),
-                    'roles' => 'login'
-                ),
-                array(
-                    'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array(
+                    'actions' => [
+                        'create',
+                    ],
+                    'roles' => [
+                        'login'
+                    ]
+                ],
+                [
+                    'controller' => 'Discussion\Controller\DiscussionController',
+                    'actions' => [
                         'trash',
                         'restore'
-                    ),
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'controller' => 'Entity\Controller\EntityController',
-                    'actions' => array(
-                        'purge'
-                    ),
-                    'roles' => 'moderator'
-                ),
-                array(
+                    ],
+                    'roles' => [
+                        'moderator'
+                    ]
+                ],
+                [
+                    'controller' => 'Discussion\Controller\DiscussionController',
+                    'actions' => [
+                        'purge',
+                    ],
+                    'roles' => [
+                        'sysadmin'
+                    ]
+                ],
+                [
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => array(
+                    'actions' => [
+                        'history',
                         'compare',
-                        'history'
-                    ),
-                    'roles' => 'guest'
-                ),
-                array(
+                    ],
+                    'roles' => [
+                        'guest'
+                    ]
+                ],
+                [
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => 'addRevision',
-                    'roles' => 'login'
-                ),
-                array(
+                    'actions' => [
+                        'addRevision',
+                    ],
+                    'roles' => [
+                        'login'
+                    ]
+                ],
+                [
                     'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => array(
+                    'actions' => [
                         'trashRevision',
                         'checkout'
-                    ),
-                    'roles' => 'helper'
-                ),
-                array(
-                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => 'purge-revision',
-                    'roles' => 'admin'
-                ),
-                array(
+                    ],
+                    'roles' => [
+                        'helper'
+                    ]
+                ],
+                [
                     'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController',
-                    'actions' => 'update',
-                    'roles' => 'moderator'
-                ),
-            ),
-            'ZfcRbac\Firewall\Route' => array(
-                array(
-                    'route' => 'entity/plugin/link/order',
-                    'roles' => 'moderator'
-                ),
-                array(
-                    'route' => 'entity/create',
-                    'roles' => 'moderator'
-                ),
-            )
-        )
-    )
-);
+                    'actions' => [
+                        'update',
+                    ],
+                    'roles' => [
+                        'moderator'
+                    ]
+                ],
+            ],
+            'ZfcRbac\Guard\RouteGuard' => [
+                'entity/plugin/link/order' => ['moderator'],
+            ]
+        ]
+    ]
+];

@@ -1,4 +1,4 @@
-<?php echo $this->pageHeader($this->entity->getCurrentRevision()->get('title'), 'Article')->render(); ?>
+<?php echo $this->pageHeader($this->entity->getCurrentRevision()->get('title'))->setSubtitle('Article')->render(); ?>
 <?php echo $this->partial('entity/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>
 
 <?php $this->registry()->add('gen', $this->partial('entity/plugin/page/aggregation/default', array('results' => $this->entity->aggregator()->aggregate()))); ?>

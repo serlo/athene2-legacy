@@ -13,6 +13,7 @@ namespace User\Notification\Form;
 
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Form\Element;
 
 class OptInFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -21,23 +22,22 @@ class OptInFieldset extends Fieldset implements InputFilterProviderInterface
     {
         parent::__construct('subscription');
         
-        $this->add(array(
-            'name' => 'subscribe',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'options' => array(
-                'label' => 'Benachrichtigungen zu diesem Inhalt erhalten.',
-                'checked' => true
-            )
+        $subscribe = new Element\Checkbox('subscribe');
+        $subscribe->setName('subscribe');
+        $subscribe->setOptions(array(
+            'label' => 'Benachrichtigungen zu diesem Inhalt erhalten.'
         ));
+        $subscribe->setChecked(true);
         
-        $this->add(array(
-            'name' => 'mailman',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'options' => array(
-                'label' => 'Benachrichtigungen auch als E-Mail erhalten.',
-                'checked' => true
-            )
+        $mailman = new Element\Checkbox('mailman');
+        $mailman->setName('mailman');
+        $mailman->setOptions(array(
+            'label' => 'Benachrichtigungen auch als E-Mail erhalten.'
         ));
+        $mailman->setChecked(true);
+        
+        $this->add($subscribe);
+        $this->add($mailman);
     }
 
     public function getInputFilterSpecification()

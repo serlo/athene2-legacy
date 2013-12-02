@@ -16,7 +16,17 @@ use Zend\Authentication\Adapter\AdapterInterface as AI;
 interface AdapterInterface extends AI
 {
 
+    /**
+     * 
+     * @param unknown $email
+     * @return $this
+     */
     public function setIdentity($email);
 
-    public function setPassword($email);
+    /**
+     * 
+     * @param striong $password
+     * @return $this
+     */
+    public function setCredential($password);
 }

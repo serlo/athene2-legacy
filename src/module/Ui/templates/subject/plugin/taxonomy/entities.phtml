@@ -24,7 +24,7 @@ $table = array(
     	<div class="col-md-3">
     	    <?php if($this->term->isAssociationAllowed('entities')): ?>
     		<div class="btn-group pull-right">
-    		    <?php if($this->rbac()->hasAccessToRoute('entity/create')): ?>
+    		    <?php if($this->guard()->hasAccessToRoute('entity/create')): ?>
                     <div class="btn-group">
             			<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
             			     <span class="glyphicon glyphicon-file"></span> <span class="caret"></span>
@@ -37,7 +37,7 @@ $table = array(
             			</ul>
         			</div>
     			<?php endif; ?>
-    		    <?php if($this->rbac()->hasAccessToRoute('taxonomy/term/sort-associated')): ?>
+    		    <?php if($this->guard()->hasAccessToRoute('taxonomy/term/sort-associated')): ?>
         			<a class="btn btn-default" href="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>">
         			     <span class="glyphicon glyphicon-sort"></span>
         			</a>

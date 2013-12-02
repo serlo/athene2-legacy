@@ -12,14 +12,18 @@
 namespace Entity;
 
 use Zend\Stdlib\ArrayUtils;
+
 class Module
 {
 
-    protected $listeners = array(
-        'Entity\Plugin\Link\Listener\Link',
-        'Entity\Plugin\Repository\Listener\Repository',
-        'Entity\Plugin\Taxonomy\Listener\Taxonomy',
-        'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener'
+    public static $listeners = array(
+        'Entity\Plugin\Link\Listener\EntityControllerListener',
+        'Entity\Plugin\License\Listener\EntityControllerListener',
+        'Entity\Plugin\Repository\Listener\EntityControllerListener',
+        'Entity\Plugin\Taxonomy\Listener\EntityControllerListener',
+        'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener',
+        'Entity\Plugin\LearningResource\Listener\EntityControllerListener',
+        'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener'
     );
 
     public function getConfig()
@@ -45,7 +49,7 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (self::$listeners as $listener) {
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()

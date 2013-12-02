@@ -12,7 +12,6 @@
 namespace Entity\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkableInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,8 +20,8 @@ use Language\Entity\LanguageInterface;
 use Link\Entity\LinkTypeInterface;
 use Link\Entity\LinkInterface;
 use Entity\Exception;
-use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermEntity;
+use License\Entity\LicenseInterface;
 
 /**
  * An entity.
@@ -30,7 +29,7 @@ use Taxonomy\Entity\TaxonomyTermEntity;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements RepositoryInterface, LinkableInterface, EntityInterface
+class Entity extends UuidEntity implements EntityInterface
 {
 
     /**
@@ -93,7 +92,23 @@ class Entity extends UuidEntity implements RepositoryInterface, LinkableInterfac
      */
     protected $language;
 
-    public function __construct()
+    /**
+     * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
+     */
+    protected $license;
+    
+    public function getLicense ()
+    {
+        return $this->license;
+    }
+    
+    public function setLicense (LicenseInterface $license)
+    {
+        $this->license = $license;
+        return $this;
+    }
+
+	public function __construct()
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->childLinks = new \Doctrine\Common\Collections\ArrayCollection();

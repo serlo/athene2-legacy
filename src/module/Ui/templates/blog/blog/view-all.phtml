@@ -1,6 +1,6 @@
 <div class="page-header">
     <div class="pull-right btn-group">
-        <?php if($this->rbac()->hasAccessToRoute('blog/post/create')): ?>
+        <?php if($this->guard()->hasAccessToRoute('blog/post/create')): ?>
             <a class="btn btn-default btn-sm" href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
             	class="glyphicon glyphicon-file"></span></a>
         <?php endif; ?>

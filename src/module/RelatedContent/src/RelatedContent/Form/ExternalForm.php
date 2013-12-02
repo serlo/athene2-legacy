@@ -36,12 +36,12 @@ class ExternalForm extends Form
         
         $this->add(array(
             'name' => 'url',
-            'type' => 'webpage-url',
+            'type' => 'Zend\Form\Element\Url',
             'attributes' => array(
                 'placeholder' => 'http://'
             ),
             'options' => array(
-                'label' => 'url:'
+                'label' => 'Url:'
             )
         ));
         

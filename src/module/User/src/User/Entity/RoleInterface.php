@@ -11,7 +11,7 @@
  */
 namespace User\Entity;
 
-interface RoleInterface
+interface RoleInterface extends \Zend\Permissions\Rbac\RoleInterface
 {
     public function getId();
     

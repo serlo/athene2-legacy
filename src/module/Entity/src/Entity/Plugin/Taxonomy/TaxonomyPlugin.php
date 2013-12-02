@@ -16,17 +16,24 @@ use Taxonomy\Collection\TermCollection;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
-    protected function getDefaultConfig()
+    /**
+     * 
+     * @return \Taxonomy\Collection\TermCollection
+     */
+    public function getTerms()
     {
-        return array();
+        return new TermCollection($this->getEntityService()
+            ->getEntity()
+            ->getTerms(), $this->getSharedTaxonomyManager());
     }
-    
-    public function hasTerm($id){
+
+    public function hasTerm($id)
+    {
         $term = $this->getSharedTaxonomyManager()->getTerm($id);
         return $term->isAssociated('entities', $this->getEntityService()
-            ->getEntity());        
+            ->getEntity());
     }
 
     public function addToTerm($id)
@@ -44,13 +51,9 @@ class TaxonomyPlugin extends AbstractPlugin
             ->getEntity());
         return $this;
     }
-    
-    /**
-     * 
-     * @return \Taxonomy\Collection\TermCollection
-     */
-    public function getTerms(){
-        return new TermCollection($this->getEntityService()
-            ->getEntity()->getTerms(), $this->getSharedTaxonomyManager());
+
+    protected function getDefaultConfig()
+    {
+        return array();
     }
 }

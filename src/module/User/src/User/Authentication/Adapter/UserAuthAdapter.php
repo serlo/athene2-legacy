@@ -16,7 +16,7 @@ use User\Exception\UserNotFoundException;
 
 class UserAuthAdapter implements AdapterInterface
 {
-    use\User\Manager\UserManagerAwareTrait,\User\Authentication\HashServiceAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\User\Authentication\HashServiceAwareTrait;
 
     private $email, $password;
 
@@ -36,7 +36,7 @@ class UserAuthAdapter implements AdapterInterface
      * @param string $password            
      * @return $this
      */
-    public function setPassword($password)
+    public function setCredential($password)
     {
         $this->password = $password;
         return $this;
@@ -51,25 +51,39 @@ class UserAuthAdapter implements AdapterInterface
     public function authenticate()
     {
         try {
-            $user = $this->getUserManager()->findUserByEmail($this->email);
+            $user = $this->getObjectManager()
+                ->getRepository('User\Entity\User')
+                ->findOneBy(array(
+                'email' => $this->email
+            ));
             $hashedPassword = $user->getPassword();
             $password = $this->getHashService()->hashPassword($this->password, $this->getHashService()
                 ->findSalt($hashedPassword));
             if ($password === $hashedPassword) {
-                if($user->isTrashed()){
-                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array('Ihr Benutzerkonto wurde gelöscht.'));
-                } elseif(!$user->hasRole('login')){
-                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array('Sie haben ihren Account noch nicht aktiviert.'));
+                if ($user->isTrashed()) {
+                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
+                        'Ihr Benutzerkonto wurde gelöscht.'
+                    ));
+                } elseif (! $user->hasRole('login')) {
+                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
+                        'Sie haben ihren Account noch nicht aktiviert.'
+                    ));
                 } else {
-                    return new Result(RESULT::SUCCESS, $this->email);
+                    return new Result(RESULT::SUCCESS, $user);
                 }
             } else {
-                return new Result(RESULT::FAILURE_CREDENTIAL_INVALID, $this->email, array('Mit dieser Kombination ist bei uns kein Benutzer registriert.'));
+                return new Result(RESULT::FAILURE_CREDENTIAL_INVALID, $this->email, array(
+                    'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
+                ));
             }
         } catch (UserNotFoundException $e) {
-            return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array('Mit dieser Kombination ist bei uns kein Benutzer registriert.'));
+            return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
+                'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
+            ));
         }
         
-        return new Result(RESULT::FAILURE, $this->email, array('Logischer Fehler beim Login.'));
+        return new Result(RESULT::FAILURE, $this->email, array(
+            'Logischer Fehler beim Login.'
+        ));
     }
 }

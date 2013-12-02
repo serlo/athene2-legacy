@@ -24,7 +24,7 @@ return array(
                     array(
                         'label' => 'Pages',
                         'route' => 'page',
-                        'icon' => 'paperclip',
+                        'icon' => 'paperclip'
                     ),
                     array(
                         'label' => 'Taxonomy',
@@ -62,14 +62,33 @@ return array(
                     array(
                         'label' => 'Recycle bin',
                         'icon' => 'trash',
-                        'route' => 'uuid/recycle-bin',
+                        'route' => 'uuid/recycle-bin'
                     ),
                     array(
                         'label' => 'Flags',
                         'icon' => 'flag',
-                        'route' => 'flag/manage',
+                        'route' => 'flag/manage'
+                    ),
+                    array(
+                        'label' => 'Licenses',
+                        'icon' => 'tags',
+                        'route' => 'license/manage',
+                        'pages' => array(
+                            array(
+                                'route' => 'license/add',
+                                'visible' => false
+                            ),
+                            array(
+                                'route' => 'license/update',
+                                'visible' => false
+                            ),
+                            array(
+                                'route' => 'license/detail',
+                                'visible' => false
+                            )
+                        )
                     )
-                ),
+                )
             ),
             'blog' => array(
                 'uri' => '#',
@@ -108,6 +127,6 @@ return array(
                     )
                 )
             )
-        ),
-    ),
+        )
+    )
 );

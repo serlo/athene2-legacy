@@ -2,7 +2,7 @@
 <article>
     <div class="pull-right btn-group">
         <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $this->entity->getId())))); ?>
-        <?php if(!is_object($solution) && $this->rbac()->hasAccessToUrl($url)): ?>
+        <?php if(!is_object($solution) && $this->guard()->hasAccessToUrl($url)): ?>
         	<a class="btn btn-default btn-xs"
         		href="<?php echo $url; ?>">
         		<strong>+</strong>

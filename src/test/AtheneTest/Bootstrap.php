@@ -60,7 +60,10 @@ class Bootstrap
         'Blog' => 'Blog/src/Blog',
         'Token' => 'Token/src/Token',
         'PageTest' => 'Page/test/PageTest',
-        'TokenTest' => 'Token/test/TokenTest'
+        'TokenTest' => 'Token/test/TokenTest',
+        'Metadata' => 'Metadata/src/Metadata',
+        'License' => 'License/src/License',
+        'LicenseTest' => 'License/test/LicenseTest'
     );
 
     public static function getApplication(){

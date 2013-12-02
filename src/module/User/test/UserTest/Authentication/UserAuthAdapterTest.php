@@ -22,17 +22,25 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $this->adapter = new UserAuthAdapter();
         $this->adapter->setIdentity('foo');
-        $this->adapter->setPassword('bar');
+        $this->adapter->setCredential('bar');
         
         $this->adapter->setHashService($this->getMock('User\Authentication\HashService'));
-        $this->adapter->setUserManager($this->getMock('User\Manager\UserManager'));
+        $this->adapter->setObjectManager($this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false));
+        $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->adapter->getObjectManager()
+            ->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($repositoryMock));
     }
 
     public function testAuthenticateUserNotFound()
     {
-        $this->adapter->getUserManager()
+        $this->adapter->getObjectManager()
+            ->getRepository('User\Entity\User')
             ->expects($this->once())
-            ->method('findUserByEmail')
+            ->method('findOneBy')
             ->will($this->throwException(new \User\Exception\UserNotFoundException()));
         
         $result = $this->adapter->authenticate();
@@ -41,7 +49,7 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticateUserTrashed()
     {
-        $user = $this->getMock('User\Service\UserService');
+        $user = $this->getMock('User\Entity\User');
         $user->expects($this->once())
             ->method('getPassword')
             ->will($this->returnValue('hash'));
@@ -50,9 +58,10 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
             ->method('isTrashed')
             ->will($this->returnValue(true));
         
-        $this->adapter->getUserManager()
+        $this->adapter->getObjectManager()
+            ->getRepository('User\Entity\User')
             ->expects($this->once())
-            ->method('findUserByEmail')
+            ->method('findOneBy')
             ->will($this->returnValue($user));
         
         $this->adapter->getHashService()
@@ -66,7 +75,7 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticateLoginMissing()
     {
-        $user = $this->getMock('User\Service\UserService');
+        $user = $this->getMock('User\Entity\User');
         $user->expects($this->once())
             ->method('getPassword')
             ->will($this->returnValue('hash'));
@@ -80,9 +89,10 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
             ->with('login')
             ->will($this->returnValue(false));
         
-        $this->adapter->getUserManager()
+        $this->adapter->getObjectManager()
+            ->getRepository('User\Entity\User')
             ->expects($this->once())
-            ->method('findUserByEmail')
+            ->method('findOneBy')
             ->will($this->returnValue($user));
         
         $this->adapter->getHashService()
@@ -96,14 +106,15 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticateHashMismatch()
     {
-        $user = $this->getMock('User\Service\UserService');
+        $user = $this->getMock('User\Entity\User');
         $user->expects($this->once())
             ->method('getPassword')
             ->will($this->returnValue('hash'));
         
-        $this->adapter->getUserManager()
+        $this->adapter->getObjectManager()
+            ->getRepository('User\Entity\User')
             ->expects($this->once())
-            ->method('findUserByEmail')
+            ->method('findOneBy')
             ->will($this->returnValue($user));
         
         $this->adapter->getHashService()
@@ -117,7 +128,7 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticate()
     {
-        $user = $this->getMock('User\Service\UserService');
+        $user = $this->getMock('User\Entity\User');
         $user->expects($this->once())
             ->method('getPassword')
             ->will($this->returnValue('hash'));
@@ -131,9 +142,10 @@ class UserAuthAdapterTest extends \PHPUnit_Framework_TestCase
             ->with('login')
             ->will($this->returnValue(true));
         
-        $this->adapter->getUserManager()
+        $this->adapter->getObjectManager()
+            ->getRepository('User\Entity\User')
             ->expects($this->once())
-            ->method('findUserByEmail')
+            ->method('findOneBy')
             ->will($this->returnValue($user));
         
         $this->adapter->getHashService()

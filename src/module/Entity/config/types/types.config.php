@@ -25,6 +25,15 @@ return array(
                             )
                         )
                     ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -64,6 +73,15 @@ return array(
                             )
                         )
                     ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -101,6 +119,12 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'group' => array(
                         'plugin' => 'link',
@@ -147,6 +171,12 @@ return array(
                             )
                         )
                     ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
                     'page' => array(
                         'plugin' => 'page',
                         'options' => array(
@@ -185,6 +215,15 @@ return array(
                             )
                         )
                     ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
                     ),
@@ -217,6 +256,15 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'aggregator' => array(
                         'plugin' => 'aggregator',
@@ -256,6 +304,15 @@ return array(
                                 'title'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'taxonomy' => array(
                         'plugin' => 'taxonomy'
@@ -301,6 +358,12 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'license' => array(
+                        'plugin' => 'license'
+                    ),
+                    'learningResource' => array(
+                        'plugin' => 'learningResource'
                     ),
                     'module' => array(
                         'plugin' => 'link',

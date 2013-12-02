@@ -100,5 +100,3 @@ class HashService implements HashServiceInterface
     	return $salt;
     }
 }
-
-?>

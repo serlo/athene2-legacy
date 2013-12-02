@@ -20,43 +20,82 @@ class LinkPlugin extends AbstractPlugin
 {
     use\Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
-    public function orderAssociated()
+    protected function getDefaultConfig()
     {
-        $this->getLinkService();
+        return array(
+            'types' => array(),
+            'type' => 'type_not_set',
+            'association' => ''
+        );
     }
-
+    
+    /**
+     * 
+     * @param array $children
+     * @return \Entity\Plugin\Link\LinkPlugin
+     */
     public function orderChildren(array $children)
     {
         $this->getLinkService()->orderChildren($children);
         return $this;
     }
 
+    /**
+     * 
+     * @param array $parents
+     * @return \Entity\Plugin\Link\LinkPlugin
+     */
     public function orderParents(array $parents)
     {
         $this->getLinkService()->orderParents($parents);
         return $this;
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return boolean
+     */
     public function hasChild(array $entityTypes = NULL)
     {
         return is_object($this->findChild($entityTypes));
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return boolean
+     */
     public function hasChildren(array $entityTypes = NULL)
     {
         return $this->findChildren($entityTypes)->count() != 0;
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return boolean
+     */
     public function hasParents(array $entityTypes = NULL)
     {
         return $this->findParents($entityTypes)->count() != 0;
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return boolean
+     */
     public function hasParent(array $entityTypes = NULL)
     {
         return is_object($this->findParent($entityTypes));
     }
 
+    /**
+     *
+     * @param array $entityTypes
+     * @return \Entity\Collection\EntityCollection
+     */
     public function findChildren(array $entityTypes = NULL)
     {
         if ($entityTypes === NULL)
@@ -73,6 +112,11 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return \Entity\Collection\EntityCollection
+     */
     public function findParents(array $entityTypes = NULL)
     {
         if ($entityTypes === NULL)
@@ -89,33 +133,33 @@ class LinkPlugin extends AbstractPlugin
         return new EntityCollection($collection, $this->getEntityManager());
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return Ambigous <\Doctrine\Common\Collections\mixed, \Entity\Service\EntityServiceInterface>
+     */
     public function findParent(array $entityTypes = NULL)
     {
         return $this->findParents($entityTypes)->first();
     }
 
+    /**
+     * 
+     * @param array $entityTypes
+     * @return Ambigous <\Doctrine\Common\Collections\mixed, \Entity\Service\EntityServiceInterface>
+     */
     public function findChild(array $entityTypes = NULL)
     {
         return $this->findChildren($entityTypes)->first();
     }
 
-    private function isOneToOne()
-    {
-        return $this->getOption('association') == 'one-to-one';
-    }
-
+    /**
+     * 
+     * @return multitype:string
+     */
     public function getEntityTypes()
     {
         return array_keys($this->getOption('types'));
-    }
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'types' => array(),
-            'type' => 'type_not_set',
-            'association' => ''
-        );
     }
 
     public function getLinkService()
@@ -231,5 +275,10 @@ class LinkPlugin extends AbstractPlugin
         } else {
             return true;
         }
+    }
+
+    private function isOneToOne()
+    {
+        return $this->getOption('association') == 'one-to-one';
     }
 }

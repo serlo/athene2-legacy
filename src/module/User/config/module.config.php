@@ -16,6 +16,11 @@ namespace User;
 use User\View\Helper\Authenticator;
 use User\View\Helper\Notification;
 use User\View\Helper\Rbac;
+use User\View\Helper\Guard;
+use User\Entity\UserInterface;
+use User\Authentication\HashFilter;
+use User\Authentication\Storage\UserRepository;
+use User\Authentication\AuthenticationService;
 
 /**
  * @codeCoverageIgnore
@@ -28,13 +33,6 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            /*'User\Service\UserLogService' => function ($sm)
-            {
-                $srv = new Service\UserLogService();
-                $srv->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
-                $srv->setAuthService($sm->get('Zend\Authentication\AuthenticationService'));
-                return $srv;
-            },*/
             __NAMESPACE__ . '\Service\UserService' => function ($sm)
             {
                 $srv = new Service\UserService();
@@ -43,7 +41,10 @@ return array(
             },
             'Zend\Authentication\AuthenticationService' => function ($sm)
             {
-                return new \Zend\Authentication\AuthenticationService();
+                $instance = new AuthenticationService();
+                $instance->setAdapter($sm->get('User\Authentication\Adapter\UserAuthAdapter'));
+                $instance->setStorage($sm->get('User\Authentication\Storage\UserSessionStorage'));
+                return $instance;
             },
             __NAMESPACE__ . '\Form\Register' => function ($sm)
             {
@@ -59,7 +60,8 @@ return array(
                 $instance->setObjectManager($sm->get('EntityManager'));
                 $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 return $instance;
-            }
+            },
+            __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
         )
     ),
     'view_manager' => array(
@@ -85,11 +87,13 @@ return array(
                     ->get('Zend\Authentication\AuthenticationService'));
                 return $helper;
             },
-            'rbac' => function ($sm)
+            'guard' => function ($sm)
             {
-                $helper = new Rbac();
-                $helper->setRbac($sm->getServiceLocator()
-                    ->get('ZfcRbac\Service\Rbac'));
+                $helper = new Guard();
+                $helper->setGuardPluginManager($sm->getServiceLocator()
+                    ->get('ZfcRbac\Guard\GuardPluginManager'));
+                $helper->setApplication($sm->getServiceLocator()
+                    ->get('Application'));
                 $helper->setRouter($sm->getServiceLocator()
                     ->get('router'));
                 return $helper;
@@ -196,11 +200,19 @@ return array(
                         'required' => true
                     )
                 ),
+                __NAMESPACE__ . '\Authentication\Storage\UserSessionStorage' => array(
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setClassResolver' => array(
+                        'required' => true
+                    )
+                ),
                 __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter' => array(
                     'setHashService' => array(
                         'required' => true
                     ),
-                    'setUserManager' => array(
+                    'setObjectManager' => array(
                         'required' => true
                     )
                 ),
@@ -482,6 +494,23 @@ return array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
+            )
+        ),
+        'authentication' => array(
+            'orm_default' => array(
+                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'identity_class' => 'User\Entity\User',
+                'identity_property' => 'email',
+                'credential_property' => 'password',
+                'storage' => 'User\Authentication\Storage\UserRepository',
+                'credential_callable' => function (UserInterface $user, $passwordGiven)
+                {
+                    $filter = new HashFilter();
+                    $salt = $filter->findSalt($user->getPassword());
+                    $passwordGiven = $filter->hashPassword($passwordGiven, $salt);
+                    
+                    return $user->getPassword() === $passwordGiven && $user->hasRole('login') && ! $user->isTrashed();
+                }
             )
         )
     )

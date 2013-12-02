@@ -25,15 +25,19 @@ class PageHeader extends AbstractHelper
         );
     }
 
-    protected $text;
+    protected $text = '';
 
-    protected $subtext;
+    protected $subtext = '';
 
-    public function __invoke($text, $subtext = NULL)
+    public function __invoke($text)
     {
         $this->text = $text;
-        $this->subtext = $subtext;
         return $this;
+    }
+    
+    public function setSubtitle($subtext){
+        $this->subtext = $subtext;     
+        return $this;   
     }
 
     public function render($setHeadTitle = true)

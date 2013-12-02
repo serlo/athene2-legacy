@@ -22,6 +22,10 @@ return array(
                 'route' => 'blog'
             ),
             array(
+                'label' => 'Community',
+                'route' => 'discussion/discussions'
+            ),
+            array(
                 'label' => 'Backend',
                 'route' => 'backend'
             )

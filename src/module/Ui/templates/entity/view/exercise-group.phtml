@@ -1,7 +1,7 @@
 <article>
     <div class="pull-right btn-group">
         <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => 'grouped-text-exercise'), array('query' => array('group' => array('to_entity' => $this->entity->getId())))); ?>
-        <?php if($this->rbac()->hasAccessToUrl($url)): ?>
+        <?php if($this->guard()->hasAccessToUrl($url)): ?>
         	<a class="btn btn-default btn-xs"
         		href="<?php echo $url; ?>">
         		<strong>+</strong>
