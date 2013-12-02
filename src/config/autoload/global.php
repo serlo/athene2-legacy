@@ -16,6 +16,9 @@ return array(
         'brand' => 'www.serlo.org',
         'delimiter' => ' - '
     ),
+    'brand' => array(
+        'name' => 'serlo'
+    ),
     'doctrine' => array(
         'entitymanager' => array(
             'orm_default' => array(
@@ -37,30 +40,29 @@ return array(
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',
         'validators' => array(
             'Zend\Session\Validator\RemoteAddr',
-            'Zend\Session\Validator\HttpUserAgent',
-        ),
+            'Zend\Session\Validator\HttpUserAgent'
+        )
     ),
     'service_manager' => array(
         'aliases' => array(
             'EntityManager' => 'Doctrine\ORM\EntityManager'
         ),
         'factories' => array(
-            'Zend\Mail\Transport\SmtpOptions' => function(ServiceLocatorInterface $sm){
+            'Zend\Mail\Transport\SmtpOptions' => function (ServiceLocatorInterface $sm)
+            {
                 $config = $sm->get('config')['smtp_options'];
-                return new \Zend\Mail\Transport\SmtpOptions(
-                    $config
-                );
+                return new \Zend\Mail\Transport\SmtpOptions($config);
             }
-        ),
+        )
     ),
     'smtp_options' => array(
-    	'name' => 'localhost.localdomain',
-		'host' => 'localhost',
-		'connection_class' => 'login',
-		'connection_config' => array(
-			'username' => 'postmaster',
-			'password' => ''
-		),
+        'name' => 'localhost.localdomain',
+        'host' => 'localhost',
+        'connection_class' => 'login',
+        'connection_config' => array(
+            'username' => 'postmaster',
+            'password' => ''
+        )
     ),
     'dbParams' => array(
         'host' => '',

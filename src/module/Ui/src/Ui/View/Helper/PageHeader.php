@@ -31,12 +31,12 @@ class PageHeader extends AbstractHelper
 
     public function __invoke($text)
     {
-        $this->text = $text;
+        $this->text = $this->getView()->translate($text);
         return $this;
     }
     
     public function setSubtitle($subtext){
-        $this->subtext = $subtext;     
+        $this->subtext = $this->getView()->translate($subtext);     
         return $this;   
     }
 

@@ -8,4 +8,4 @@ Please confirm your account:
 
 your %s Team. "), $this->user->getUserName(), $this->url('user/activate', array(
     'token' => $this->user->getToken()
-), 'serlo.org', array('force_canonical' => true), 'serlo.org'));
+), $this->brand(), array('force_canonical' => true), $this->brand()));

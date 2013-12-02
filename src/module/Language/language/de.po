@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: serlo\n"
 "POT-Creation-Date: 2013-11-30 13:25+0100\n"
-"PO-Revision-Date: 2013-11-30 13:33+0100\n"
+"PO-Revision-Date: 2013-12-02 13:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: de_DE\n"
 "X-Poedit-SearchPath-0: D:\\workspace\\athene2\\src\\module\n"
+
+msgid "Content:"
+msgstr "Inhalt:"
 
 #: D:\workspace\athene2\src\module/Ui/templates/admin/home/index.phtml:3
 msgid "Backend"
@@ -342,7 +345,7 @@ msgstr "%s updated a taxonomy term: <strong>\"%s\"</strong>"
 
 #: D:\workspace\athene2\src\module/Ui/templates/flag/add.phtml:1
 msgid "Flag content"
-msgstr "Flag content"
+msgstr "Inhalt melden"
 
 #: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:5
 msgid "Flag detail"
