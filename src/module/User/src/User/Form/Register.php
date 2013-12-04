@@ -12,104 +12,32 @@
 namespace User\Form;
 
 use \Zend\Form\Form;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Email;
+use Zend\Form\Element\Password;
+use Zend\Form\Element\Checkbox;
 
 class Register extends Form
 {
 
     public function __construct($objectManager)
     {
-        $filter = new RegisterFilter($objectManager);
-        
         parent::__construct('signUp');
         
         $this->setAttribute('method', 'post');
-        $this->setAttribute('class', 'form-horizontal');
+        $this->setAttribute('class', 'clearfix');
+        $filter = new RegisterFilter($objectManager);
         $this->setInputFilter($filter);
         
-        $this->add(array(
-            'name' => 'username',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'Wunschname',
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Benutzername:',
-                array(
-                    'twb' => array()
-                )
-            )
-        ));
+        $this->add((new Text('username'))->setLabel('Username:'));
+        $this->add((new Email('email'))->setLabel('Email:'));
+        $this->add((new Email('emailConfirm'))->setLabel('Confirm email:'));
+        $this->add((new Password('password'))->setLabel('Password:'));
+        $this->add((new Password('passwordConfirm'))->setLabel('Confirm password:'));
+        $this->add((new Checkbox('tos'))->setLabel('I\'ve read and understood the terms of service.'));
         
-        $this->add(array(
-            'name' => 'email',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'user@beispiel.de',
-                'type' => 'email',
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'E-Mail-Adresse:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'emailConfirm',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'user@beispiel.de',
-                'type' => 'email',
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'E-Mail-Adresse bestätigen:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'password',
-            'type' => 'password',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Passwort:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'passwordConfirm',
-            'type' => 'password',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Passwort bestätigen:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'tos',
-            'type' => 'checkbox',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Ich habe die Nutzungsbedingungen gelesen und verstanden und akzeptiere diese.',
-                'unchecked_value' => ''
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'label' => '',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Registrieren',
-                'class' => 'btn btn-success pull-right'
-            ),
-            'options' => array()
-        ));
+        $this->add((new Submit('submit'))->setValue('Sign up')
+            ->setAttribute('class', 'btn btn-success pull-right'));
     }
 }

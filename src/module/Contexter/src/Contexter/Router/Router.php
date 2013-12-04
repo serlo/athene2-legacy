@@ -96,16 +96,20 @@ class Router implements RouterInterface
     public function getAdapter()
     {
         $requestedController = $this->getRouteMatch()->getParam('controller');
+        $requestedAction = $this->getRouteMatch()->getParam('action');
         $adapters = $this->getOption('adapters');
         foreach ($adapters as $adapter) {
-            if (in_array($requestedController, $adapter['controllers'])) {
-                $controller = $requestedController;
-                /* @var $adapter AdapterInterface */
-                $adapter = $this->getServiceLocator()->get($adapter['adapter']);
-                $adapter->setRouteMatch($this->getRouteMatch());
-                $adapter->setController($this->getServiceLocator()
-                    ->get($controller));
-                return $adapter;
+            foreach($adapter['controllers'] as $controller){
+                $action = isset($controller['action']) ? ($controller['action'] === $requestedAction) : true;
+                if ($controller['controller'] === $requestedController && $action) {
+                    $controller = $requestedController;
+                    /* @var $adapter AdapterInterface */
+                    $adapter = $this->getServiceLocator()->get($adapter['adapter']);
+                    $adapter->setRouteMatch($this->getRouteMatch());
+                    $adapter->setController($this->getServiceLocator()
+                        ->get($controller));
+                    return $adapter;
+                }
             }
         }
         throw new Exception\RuntimeException(sprintf('No suitable adapter found for controller `%s`', $requestedController));

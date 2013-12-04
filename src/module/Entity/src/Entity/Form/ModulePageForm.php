@@ -13,6 +13,8 @@ namespace Entity\Form;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
 
 class ModulePageForm extends Form
 {
@@ -22,39 +24,22 @@ class ModulePageForm extends Form
         parent::__construct('module-page');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('module-page');
-        
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            ),
-            'options' => array(
-                'label' => 'Content:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'reasoning',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            ),
-            'options' => array(
-                'label' => 'Reasoning:'
-            )
-        ));
+        $this->setAttribute('class', 'clearfix');
+
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Textarea('content'))->setLabel('Content:'));
+        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:'));
         
         $this->add(new Controls());
 
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $inputFilter->add(array(

@@ -1,7 +1,7 @@
 <?php
 use ZfcRbac\Guard\GuardInterface;
 
-return array(
+return [
     'zfc_rbac' => [
         'role_providers' => [
             'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
@@ -9,6 +9,7 @@ return array(
                 'class_name' => 'User\Entity\Role'
             ]
         ],
-        'protection_policy' => GuardInterface::POLICY_ALLOW
+        'protection_policy' => GuardInterface::POLICY_ALLOW,
+        'guest_role' => NULL,
     ]
-);
+];

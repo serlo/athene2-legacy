@@ -23,7 +23,8 @@ abstract class AbstractController extends AbstractActionController
 
     protected $entityService;
 
-    public function dispatch(RequestInterface $request, ResponseInterface $response = NULL)
+    // This is a very ugly hack and breaks other modules.
+    /*public function dispatch(RequestInterface $request, ResponseInterface $response = NULL)
     {
         $dispatch = parent::dispatch($request, $response);
         
@@ -45,7 +46,7 @@ abstract class AbstractController extends AbstractActionController
         }
         
         return $dispatch;
-    }
+    }*/
 
     public function getEntityService($id = NULL)
     {

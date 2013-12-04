@@ -13,6 +13,7 @@ namespace Entity\Form;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
+use Zend\Form\Element\Textarea;
 
 class TextSolutionForm extends Form
 {
@@ -22,20 +23,10 @@ class TextSolutionForm extends Form
         parent::__construct('text-solution');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('text-solution');
-        
-        $this->add(array(
-            'name' => 'hint',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            )
-        ));
+        $this->setAttribute('class', 'clearfix');
+
+        $this->add((new Textarea('hint'))->setLabel('Hint:'));
+        $this->add((new Textarea('content'))->setLabel('Content:'));
         
         $this->add(new Controls());
         

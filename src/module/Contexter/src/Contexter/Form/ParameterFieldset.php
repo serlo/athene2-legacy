@@ -12,6 +12,7 @@
 namespace Contexter\Form;
 
 use Zend\Form\Fieldset;
+use Zend\Form\Element\Checkbox;
 
 class ParameterFieldset extends Fieldset
 {
@@ -19,20 +20,12 @@ class ParameterFieldset extends Fieldset
     public function __construct(array $parameters)
     {
         parent::__construct('parameters');
-
+        
         $this->setLabel('Which parameters should be matched?');
         
         foreach ($parameters as $key => $value) {
-            $this->add(array(
-                'name' => $key,
-                'type' => 'Zend\Form\Element\Checkbox',
-                'attributes' => array(
-                    'checked' => true
-                ),
-                'options' => array(
-                    'label' => '<strong>' . $key . ':</strong> ' . $value . ''
-                )
-            ));
+            $this->add((new Checkbox($key))->setLabel('<strong>' . $key . ':</strong> ' . $value . '')
+                ->setAttribute('checked', true));
         }
     }
 }

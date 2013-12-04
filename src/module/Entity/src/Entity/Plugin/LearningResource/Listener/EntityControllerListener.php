@@ -20,33 +20,25 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
 {
     use\Metadata\Manager\MetadataManagerAwareTrait;
 
-    public function onAddToTerm(Event $e)
+    public function onCreate(Event $e)
     {
         /* @var $term \Entity\Service\EntityServiceInterface */
         $entity = $e->getParam('entity');
         /* @var $term \Taxonomy\Service\TermServiceInterface */
         $term = $e->getParam('term');
         
-        try {
-            $entity->learningResource()->isStatisfied();
-            
-            $object = $entity->getEntity()->getUuidEntity();
-            
-            try {
-                $subject = $term->findAncestorByType('subject');
-                $this->getMetadataManager()->addMetadata($object, 'subject', $subject->getName());
-            } catch (TermNotFoundException $e) {}
-        } catch (UnstatisfiedDependencyException $e) {
-            return false;
-        }
+        $object = $entity->getEntity()->getUuidEntity();
+        
+        $subject = $entity->learningResource()->getDefaultSubject();
+        $this->getMetadataManager()->addMetadata($object, 'subject', $subject->getName());
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'addToTerm', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
             $this,
-            'onAddToTerm'
-        ));
+            'onCreate'
+        ), -100);
     }
 
     protected function getMonitoredClass()

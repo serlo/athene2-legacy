@@ -13,13 +13,7 @@
 namespace User\Controller;
 
 use Zend\View\Model\ViewModel;
-use User\Authentication\Adapter\AdapterInterface;
-use User\Form\Login as LoginForm;
-use User\Form\Register;
-use User\Form\SettingsForm;
 use User\Form\ChangePasswordForm;
-use User\Form\LostPassword;
-use User\Form\SelectUserForm;
 use User\Exception\UserNotFoundException;
 use Zend\Form\Form;
 
@@ -57,7 +51,7 @@ class UserController extends AbstractUserController
     public function getForm($name){
         if(!array_key_exists($name, $this->forms)){
             $form = $this->getOption('forms')[$name];
-            if($name == 'register'){
+            if($name == 'register' || $name = 'settings'){
                 $this->forms[$name] = new $form($this->getObjectManager());
             } else {
                 $this->forms[$name] = new $form();                
@@ -278,7 +272,6 @@ class UserController extends AbstractUserController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $user->setEmail($data['email']);
-                $this->getObjectManager()->persist($user->getEntity());
                 $this->getObjectManager()->flush();
             }
         } else {
@@ -313,9 +306,9 @@ class UserController extends AbstractUserController
 
                 $adapter = $this->getAuthenticationService()->getAdapter();
                 $adapter->setIdentity($user->getEmail());
-                $adapter->setCredential($data['password']);
+                $adapter->setCredential($data['currentPassword']);
                 
-                $result = $this->getAuthenticationService()->authenticate();
+                $result = $adapter->authenticate();
                 
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);

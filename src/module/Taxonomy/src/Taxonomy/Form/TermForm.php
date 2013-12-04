@@ -14,6 +14,8 @@ namespace Taxonomy\Form;
 use Zend\Form\Form;
 use Term\Form\TermFieldset;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Submit;
 
 class TermForm extends Form
 {
@@ -22,7 +24,8 @@ class TermForm extends Form
     {
         parent::__construct('term_taxonomy');
         $this->setAttribute('method', 'post');
-        $this->setInputFilter(new InputFilter());
+        $filter = new InputFilter();
+        $this->setInputFilter($filter);
         
         $this->add(array(
             'name' => 'id',
@@ -54,23 +57,19 @@ class TermForm extends Form
         
         $this->add(new TermFieldset());
         
-        $this->add(array(
-            'name' => 'description',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            ),
-            'options' => array(
-                'label' => 'Description:'
-            )
-        ));
+        $this->add((new Textarea('description'))->setLabel('description:'));
         
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Speichern',
-                'class' => 'btn btn-success pull-right'
-            ),
+        $this->add((new Submit('submit'))->setValue('Save')
+            ->setAttribute('class', 'btn btn-success pull-right'));
+        
+        $filter->add(array(
+            'name' => 'description',
+            'required' => false,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
     }
 }

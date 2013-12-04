@@ -13,6 +13,9 @@ namespace User\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Password;
 
 class Login extends Form
 {
@@ -21,40 +24,15 @@ class Login extends Form
     {
         parent::__construct('login');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'clearfix');
         $filter = new InputFilter();
         $this->setInputFilter($filter);
         
-        $this->add(array(
-            'name' => 'email',
-            'attributes' => array(
-                'type' => 'text',
-                'tabindex' => 1
-            ),
-            'options' => array(
-                'label' => 'Email address:'
-            )
-        ));
+        $this->add((new Text('email'))->setLabel('Email address:'));
+        $this->add((new Password('password'))->setLabel('Password:'));
         
-        $this->add(array(
-            'name' => 'password',
-            'attributes' => array(
-                'type' => 'password',
-                'tabindex' => 2
-            ),
-            'options' => array(
-                'label' => 'Password:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Log in',
-                'tabindex' => 2,
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Login')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $filter->add(array(
             'name' => 'email',

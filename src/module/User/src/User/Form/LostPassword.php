@@ -13,6 +13,8 @@ namespace User\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Password;
+use Zend\Form\Element\Submit;
 
 class LostPassword extends Form
 {
@@ -21,30 +23,15 @@ class LostPassword extends Form
     {
         parent::__construct('lost-password');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'clearfix');
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
         
-        $this->add(array(
-            'name' => 'password',
-            'type' => 'password',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'New password:'
-            )
-        ));
+        $this->add((new Password('password'))->setLabel('New password:'));
+        $this->add((new Password('passwordConfirm'))->setLabel('Repeat new password:'));
         
-        $this->add(array(
-            'name' => 'passwordConfirm',
-            'type' => 'password',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Repeat new password:'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Update')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'passwordConfirm',
@@ -73,17 +60,6 @@ class LostPassword extends Form
                     'name' => 'User\Authentication\HashFilter'
                 )
             )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'label' => '',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Update password',
-                'class' => 'btn btn-success pull-right'
-            ),
-            'options' => array()
         ));
     }
 }

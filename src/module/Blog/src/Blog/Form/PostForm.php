@@ -13,6 +13,9 @@ namespace Blog\Form;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Submit;
 
 class PostForm extends Form
 {
@@ -21,48 +24,13 @@ class PostForm extends Form
     {
         parent::__construct('post');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'clearfix');
         $inputFilter = new InputFilter('post');
-        
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-            ),
-            'options' => array(
-                'label' => 'Title:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-                'class' => '',
-            ),
-            'options' => array(
-                'label' => 'Content:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'publish',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'datepicker',
-            ),
-            'options' => array(
-                'label' => 'Publish Date:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Speichern',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Textarea('content'))->setLabel('Content:'));
+        $this->add((new Text('publish'))->setLabel('Publish date:'))->setAttribute('class', 'datepicker');
+        $this->add((new Submit('submit'))->setLabel('Save'))->setAttribute('class', 'btn btn-success pull-right');
         
         $inputFilter->add(array(
             'name' => 'title',

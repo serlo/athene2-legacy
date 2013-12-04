@@ -22,10 +22,12 @@ class EntityPluginControllerAdapter extends AbstractAdapter
         $params = $this->getParametersFromRouteMatch();
         $entityService = $this->getController()->getEntityService($params['entity']);
         $array = array(
-            'subject' => $entityService->provider()->getSubjectSlug(),
             'type' => $entityService->getType()->getName(),
             'language' => $this->getLanguageManager()->getLanguageFromRequest()->getCode()
         );
+        if($entityService->hasPlugin('learningResource')){
+            $array['subject'] = $entityService->learningResource()->getDefaultSubject()->getSlug();
+        }
         return ArrayUtils::merge($params, $array);
     }
 }

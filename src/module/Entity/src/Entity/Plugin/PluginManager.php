@@ -46,7 +46,7 @@ class PluginManager extends AbstractPluginManager implements PluginManagerInterf
     public function clear()
     {
         $this->entityService = NULL;
-        $this->pluginOptions = NULL;
+        $this->pluginOptions = array();
     }
 
     public function get($name, array $options = array(), $usePeeringServiceManagers = true)

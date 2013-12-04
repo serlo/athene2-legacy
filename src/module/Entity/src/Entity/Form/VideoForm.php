@@ -13,6 +13,8 @@ namespace Entity\Form;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
 
 class VideoForm extends Form
 {
@@ -22,40 +24,22 @@ class VideoForm extends Form
         parent::__construct('video');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('video');
-        
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Titel'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-            ),
-            'options' => array(
-                'label' => 'Video-URL:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'reasoning',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            ),
-            'options' => array(
-                'label' => 'Reasoning:'
-            )
-        ));
+        $this->setAttribute('class', 'clearfix');
+
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Textarea('content'))->setLabel('Video url:'));
+        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:'));
         
         $this->add(new Controls());
         
         $inputFilter->add(array(
             'name' => 'title',
             'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $inputFilter->add(array(

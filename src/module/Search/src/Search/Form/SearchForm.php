@@ -13,6 +13,8 @@ namespace Search\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Submit;
 
 class SearchForm extends Form
 {
@@ -23,21 +25,10 @@ class SearchForm extends Form
         $inputFilter = new InputFilter('search');
         $this->setInputFilter($inputFilter);
         
-        $this->add(array(
-            'name' => 'q',
-            'type' => 'text',
-            'options' => array(
-            )
-        ));
-
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'search',
-                'class' => 'btn btn-success pull-right',
-            )
-        ));
+        $this->add((new Text('q'));
+        
+        $this->add((new Submit('submit'))->setValue('search')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'q',

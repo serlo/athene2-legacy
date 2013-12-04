@@ -11,6 +11,7 @@ namespace Entity\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Textarea;
 
 class TextExerciseGroupForm extends Form
 {
@@ -20,13 +21,10 @@ class TextExerciseGroupForm extends Form
         parent::__construct('text-exercise-group');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('text-exercise-group');
+        $this->setAttribute('class', 'clearfix');
+
+        $this->add((new Textarea('content'))->setLabel('Content:'));
         
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            )
-        ));
         
         $this->add(new Controls());
         
