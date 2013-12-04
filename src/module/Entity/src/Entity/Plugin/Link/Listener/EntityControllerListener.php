@@ -16,52 +16,56 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
+
+    public function onCreate(Event $e)
+    {
+        /* var $entity \Entity\Service\EntityServiceInterface */
+        $entity = $e->getParam('entity');
+        $data = $e->getParam('query');
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
+        
+        /* var $entity \Entity\Manager\EntityManagerInterface */
+        $entityManager = $entity->getEntityManager();
+        if (count($entity->getScopesForPlugin('link'))) {
+            $found = false;
+            foreach ($entity->getScopesForPlugin('link') as $scope) {
+                if (array_key_exists($scope, $data)) {
+                    $options = $data[$scope];
+                    
+                    $toEntity = $entityManager->getEntity($options['to_entity']);
+                    $found = true;
+                    
+                    $entity->$scope()->add($toEntity);
+                    
+                    $e->getTarget()
+                        ->getEventManager()
+                        ->trigger('link', $this, array(
+                        'entity' => $entity,
+                        'parent' => $toEntity,
+                        'user' => $user,
+                        'language' => $language
+                    ));
+                }
+            }
+        }
+    }
     
     /*
      * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', function (Event $e)
-        {
-            /* var $entity \Entity\Service\EntityServiceInterface */
-            $entity = $e->getParam('entity');
-            $data = $e->getParam('query');
-            $user = $e->getParam('user');
-            $language = $e->getParam('language');
-            
-            /* var $entity \Entity\Manager\EntityManagerInterface */
-            $entityManager = $entity->getEntityManager();
-            if (count($entity->getScopesForPlugin('link'))) {
-                $found = false;
-                foreach ($entity->getScopesForPlugin('link') as $scope) {
-                    if (array_key_exists($scope, $data)) {
-                        $options = $data[$scope];
-                        
-                        $toEntity = $entityManager->getEntity($options['to_entity']);
-                        $found = true;
-
-                        $entity->$scope()
-                            ->add($toEntity);
-
-                        $e->getTarget()
-                            ->getEventManager()
-                            ->trigger('link', $this, array(
-                            'entity' => $entity,
-                            'parent' => $toEntity,
-                            'user' => $user,
-                            'language' => $language
-                        ));
-                    }
-                }
-            }
-        }, 2);
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
+            $this,
+            'onCreate'
+        ), 2);
     }
     
-	/* (non-PHPdoc)
-     * @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
+    /*
+     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
      */
-    protected function getMonitoredClass ()
+    protected function getMonitoredClass()
     {
         return 'Entity\Controller\EntityController';
     }

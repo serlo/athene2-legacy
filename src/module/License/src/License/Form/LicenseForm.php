@@ -14,6 +14,10 @@ namespace License\Form;
 use Zend\Form\Form;
 use License\Hydrator\LicenseHydrator;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Url;
 
 class LicenseForm extends Form
 {
@@ -25,61 +29,53 @@ class LicenseForm extends Form
         $this->setHydrator(new LicenseHydrator());
         $inputFilter = new InputFilter('license');
         $this->setInputFilter($inputFilter);
+
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Textarea('content'))->setLabel('Content:'));
+        $this->add((new Url('url'))->setLabel('License url:'));
+        $this->add((new Url('iconHref'))->setLabel('Icon url:'));
         
-        $this->add(array(
+        $this->add((new Submit('submit'))->setValue('Save')
+            ->setAttribute('class', 'btn btn-success pull-right'));
+        
+        $inputFilter->add(array(
             'name' => 'title',
-            'type' => 'Text',
-            'options' => array(
-                'label' => 'Title:',
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
             )
         ));
         
-        $this->add(array(
+        $inputFilter->add(array(
             'name' => 'content',
-            'type' => 'Textarea',
-            'options' => array(
-                'label' => 'Content:',
+            'required' => false,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
             )
-        ));
-        
-        $this->add(array(
-            'name' => 'url',
-            'type' => 'Zend\Form\Element\Url',
-            'options' => array(
-                'label' => 'License-Url:',
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'iconHref',
-            'type' => 'Zend\Form\Element\Url',
-            'options' => array(
-                'label' => 'Icon:',
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Save',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
-        
-        $inputFilter->add(array(
-            'name' => 'title',
-            'required' => true
         ));
         
         $inputFilter->add(array(
             'name' => 'iconHref',
-            'required' => false
+            'required' => false,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $inputFilter->add(array(
             'name' => 'url',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
     }
 }

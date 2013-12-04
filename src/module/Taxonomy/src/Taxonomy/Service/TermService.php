@@ -17,13 +17,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Exception\TermNotFoundException;
-use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
 
 class TermService implements TermServiceInterface
 {
     
-    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
+    use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
 
     /**
      *
@@ -130,9 +129,11 @@ class TermService implements TermServiceInterface
 
     public function getParent()
     {
-        return $this->getSharedTaxonomyManager()->getTerm($this->getTaxonomyTerm()
-            ->getParent()
-            ->getId());
+        $parent = $this->getTaxonomyTerm()->getParent();
+        if($parent === NULL){
+            throw new Exception\RuntimeException(sprintf('Taxonomy term `%s` has no parent', $this->getName()));
+        }
+        return $this->getSharedTaxonomyManager()->getTerm($parent->getId());
     }
 
     public function filterChildren(array $types)
@@ -250,10 +251,11 @@ class TermService implements TermServiceInterface
     public function findAncestorByType($type)
     {
         $term = $this;
-        while ($term->getParent()) {
+        while ($term->hasParent()) {
             $term = $term->getParent();
-            if ($term->getTaxonomy()->getName() == $type)
+            if ($term->getTaxonomy()->getName() == $type){
                 return $term;
+            }
         }
         throw new Exception\TermNotFoundException(sprintf('Term `%s` does not know an ancestor of type `%s`', $this->getName(), $type));
     }

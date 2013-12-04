@@ -13,6 +13,8 @@ namespace User\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Email;
+use Zend\Form\Element\Submit;
 
 class SelectUserForm extends Form
 {
@@ -21,30 +23,14 @@ class SelectUserForm extends Form
     {
         parent::__construct('select-user');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'clearfix');
         $filter = new InputFilter();
         $this->setInputFilter($filter);
         
-        $this->add(array(
-            'name' => 'email',
-            'attributes' => array(
-                'type' => 'text',
-                'tabindex' => 1,
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'E-Mail-Adresse:'
-            )
-        ));
+        $this->add((new Email('email'))->setLabel('Email:'));
         
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Restore',
-                'tabindex' => 2,
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Restore')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $filter->add(array(
             'name' => 'email',

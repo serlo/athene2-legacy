@@ -13,6 +13,8 @@ namespace RelatedContent\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Submit;
 class CategoryForm extends Form
 {
     function __construct()
@@ -23,27 +25,19 @@ class CategoryForm extends Form
         $inputFilter = new InputFilter('category');
         $this->setInputFilter($inputFilter);
         
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Text',
-            'attributes' => array(),
-            'options' => array(
-                'label' => 'Title:'
-            )
-        ));
+        $this->add((new Text('title'))->setLabel('Title:'));
         
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Add',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Add')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
     }
 }

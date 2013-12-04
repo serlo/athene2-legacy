@@ -12,6 +12,7 @@
 namespace Term\Form;
 
 use Zend\Form\Fieldset;
+use Zend\Form\Element\Text;
 
 class TermFieldset extends Fieldset
 {
@@ -20,13 +21,7 @@ class TermFieldset extends Fieldset
     {
         parent::__construct('term');
         
-        $this->add(array(
-            'name' => 'name',
-            'attributes' => array(
-                'type' => 'text',
-                'placeholder' => 'Name'
-            )
-        ));
+        $this->add((new Text('name'))->setLabel('Name:'));
     }
 
     public function getInputFilterSpecification()

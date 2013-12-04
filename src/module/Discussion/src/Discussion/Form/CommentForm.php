@@ -14,6 +14,8 @@ namespace Discussion\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
 use User\Notification\Form\OptInFieldset;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Submit;
 
 class CommentForm extends Form
 {
@@ -25,23 +27,12 @@ class CommentForm extends Form
         $this->setAttribute('class', 'clearfix');
         $inputFilter = new InputFilter('comment');
         
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            )
-        ));
+        $this->add((new Textarea('content'))->setLabel('Content:'));
         
         $this->add(new OptInFieldset());
         
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Comment',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Comment')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'content',

@@ -14,6 +14,9 @@ namespace Discussion\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
 use User\Notification\Form\OptInFieldset;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Submit;
 
 class DiscussionForm extends Form
 {
@@ -23,42 +26,22 @@ class DiscussionForm extends Form
         parent::__construct('discussion');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-       
+        
         $inputFilter = new InputFilter('discussion');
-
+        
         $this->add(array(
             'name' => 'forum',
             'type' => 'Zend\Form\Element\Hidden',
-            'attributes' => array(
-            )
+            'attributes' => array()
         ));
         
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'class' => 'form-control',
-                'placeholder' => 'Title'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-            )
-        ));
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Textarea('content'))->setLabel('content:'));
         
         $this->add(new OptInFieldset());
         
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Start discussion',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Start discussion')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'forum',

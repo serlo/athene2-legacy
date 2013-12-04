@@ -13,6 +13,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mvc\Application;
 use Ui\View\Helper\PageHeader;
 use ZfcRbac\Guard\GuardInterface;
+use Ui\View\Helper\Brand;
 
 return array(
     'navigation' => array(
@@ -65,7 +66,14 @@ return array(
                 $plugin = new PageHeader();
                 $plugin->setConfig($config);
                 return $plugin;
-            }
+            },
+            'brand' => function ($helperPluginManager)
+            {
+                $config = $helperPluginManager->getServiceLocator()->get('config')['brand'];
+                $plugin = new Brand();
+                $plugin->setConfig($config);
+                return $plugin;
+            },
         ),
         'invokables' => array(
             'timeago' => 'Ui\View\Helper\Timeago',

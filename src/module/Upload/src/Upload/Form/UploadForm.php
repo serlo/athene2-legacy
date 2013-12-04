@@ -12,6 +12,8 @@
 namespace Upload\Form;
 
 use Zend\Form\Form;
+use Zend\Form\Element\File;
+use Zend\Form\Element\Submit;
 
 class UploadForm extends Form
 {
@@ -21,24 +23,8 @@ class UploadForm extends Form
         parent::__construct('upload');
         $this->setAttribute('class', 'clearfix');
         
-        $this->add(array(
-            'name' => 'file',
-            'type' => 'file',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Upload file:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'class' => 'btn btn-success pull-right',
-                'value' => 'Upload',
-            ),
-        ));
+        $this->add((new File('file'))->setLabel('Upload file:'));
+        $this->add((new Submit('submit'))->setValue('Upload')
+            ->setAttribute('class', 'btn btn-success pull-right'));
     }
 }

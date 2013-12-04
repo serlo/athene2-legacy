@@ -11,6 +11,7 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Zend\Permissions\Rbac\AbstractRole;
 
 /**
  * A role.
@@ -18,7 +19,7 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role implements RoleInterface
+class Role extends AbstractRole implements RoleInterface
 {
 
     /**
@@ -114,7 +115,7 @@ class Role implements RoleInterface
     {
         $this->users = new ArrayCollection();
         $this->permissions = new ArrayCollection();
-        $this->cihldren = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function addUser(UserInterface $user)
@@ -142,15 +143,25 @@ class Role implements RoleInterface
         return $this;
     }
     
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::hasPermission()
-     */
     public function hasPermission($name)
     {
-        return $this->permissions->filter(function (Permission $p) use ($name)
-        {
-            return $p->getName() == $name;
-        })->count() > 0;
+        $found = $this->permissions->filter(function($e) use($name){
+            return $e->getName() === $name;
+        });
+        
+        if ($found->count() > 0) {
+            return true;
+        }
+
+        $it = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($it as $leaf) {
+            /** @var RoleInterface $leaf */
+            if ($leaf->hasPermission($name)) {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     /*
@@ -168,71 +179,7 @@ class Role implements RoleInterface
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
+        parent::setParent($parent);
         return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::getParent()
-     */
-    public function getParent()
-    {
-        return $this->getParent();
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::hasChildren()
-     */
-    public function hasChildren()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::getChildren()
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::current()
-     */
-    public function current()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::next()
-     */
-    public function next()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::key()
-     */
-    public function key()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::valid()
-     */
-    public function valid()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see RecursiveIterator::rewind()
-     */
-    public function rewind()
-    {
-        // TODO Auto-generated method stub
     }
 }

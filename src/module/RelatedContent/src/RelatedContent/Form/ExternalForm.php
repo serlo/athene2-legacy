@@ -13,6 +13,9 @@ namespace RelatedContent\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Url;
 
 class ExternalForm extends Form
 {
@@ -25,43 +28,30 @@ class ExternalForm extends Form
         $inputFilter = new InputFilter('external');
         $this->setInputFilter($inputFilter);
         
-        $this->add(array(
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Url('url'))->setLabel('Url:'));
+        
+        $this->add((new Submit('submit'))->setValue('Add')
+            ->setAttribute('class', 'btn btn-success pull-right'));
+        
+        $inputFilter->add(array(
             'name' => 'title',
-            'type' => 'Text',
-            'attributes' => array(),
-            'options' => array(
-                'label' => 'Title:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'url',
-            'type' => 'Zend\Form\Element\Url',
-            'attributes' => array(
-                'placeholder' => 'http://'
-            ),
-            'options' => array(
-                'label' => 'Url:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Add',
-                'class' => 'btn btn-success pull-right'
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
             )
         ));
         
         $inputFilter->add(array(
-            'name' => 'title',
-            'required' => true
-        ));
-        
-        $inputFilter->add(array(
             'name' => 'url',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
     }
 }

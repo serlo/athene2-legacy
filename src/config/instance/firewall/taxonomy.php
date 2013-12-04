@@ -18,22 +18,21 @@ return [
                 ],
                 'taxonomy/term/order' => [
                     'moderator'
-                ]
-            ],
-            'ZfcRbac\Guard\ControllerGuard' => [
-                [
-                    'controller' => 'Taxonomy\Controller\TermController',
-                    'actions' => [
-                        'update',
-                        'delete',
-                        'order',
-                        'create',
-                        'orderAssociated',
-                        'organize'
-                    ],
-                    'roles' => [
-                        'moderator'
-                    ]
+                ],
+                'taxonomy/term/organize' => [
+                    'moderator'
+                ],
+                'taxonomy/term/delete' => [
+                    'moderator'
+                ],
+                'taxonomy/term/create' => [
+                    'moderator'
+                ],
+                'taxonomy/term/update' => [
+                    'moderator'
+                ],
+                'taxonomy/term/sort-associated' => [
+                    'moderator'
                 ]
             ]
         ]

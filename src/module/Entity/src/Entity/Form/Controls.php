@@ -14,25 +14,19 @@ namespace Entity\Form;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use User\Notification\Form\OptInFieldset;
+use Zend\Form\Element\Submit;
 
 class Controls extends Fieldset implements InputFilterProviderInterface
 {
+
     public function __construct()
     {
         parent::__construct('controls');
-
-
+        
         $this->add(new OptInFieldset());
-
-
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Speichern',
-                'class' => 'btn btn-success pull-right',
-            )
-        ));
+        
+        $this->add((new Submit('submit'))->setValue('Save')
+            ->setAttribute('class', 'btn btn-success pull-right'));
     }
 
     public function getInputFilterSpecification()

@@ -1,4 +1,4 @@
-<h1 class="page-header"><?php echo $this->translate('Version bearbeiten'); ?></h1>
+<?php echo $this->pageHeader('Update revision')->render(); ?>
 <?php
 $this->form->prepare();
 echo $this->form()->render($this->form, null);

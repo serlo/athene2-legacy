@@ -14,6 +14,9 @@ namespace Contexter\Form;
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Select;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Submit;
 
 class ContextForm extends Form
 {
@@ -37,57 +40,32 @@ class ContextForm extends Form
             $values[$type] = $type;
         }
         
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Select',
-            'name' => 'type',
-            'options' => array(
-                'label' => 'Select a type',
-                'value_options' => $values
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Text',
-            'attributes' => array(),
-            'options' => array(
-                'label' => 'Title:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'object',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'disabled',
-                'placeholder' => '1234'
-            ),
-            'options' => array(
-                'label' => 'Object:'
-            )
-        ));
+        $this->add((new Select('type'))->setLabel('Select a type:')->setValueOptions($values));
+        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Text('object'))->setLabel('Object-ID:'));
         
         $this->add(new ParameterFieldset($parameters));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Speichern',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Save')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'title',
             'required' => true,
-            'filters' => array()
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $inputFilter->add(array(
             'name' => 'object',
             'required' => true,
-            'filters' => array()
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
     }
 }

@@ -52,8 +52,8 @@ class LearningResourcePlugin extends AbstractPlugin
         if (! $entityService->hasPlugin('page'))
             throw new Exception\UnstatisfiedDependencyException('Missing dependency: page');
         
-        //if (! $entityService->hasPlugin('license'))
-        //    throw new Exception\UnstatisfiedDependencyException('Missing dependency: license');
+        if (! $entityService->hasPlugin('license'))
+            throw new Exception\UnstatisfiedDependencyException('Missing dependency: license');
         
         if (! $entityService->hasPlugin('repository'))
             throw new Exception\UnstatisfiedDependencyException('Missing dependency: repository');
@@ -75,7 +75,6 @@ class LearningResourcePlugin extends AbstractPlugin
 
     public function getDefaultSubject()
     {
-        
         /* @var $term TermServiceInterface */
         foreach($this->getTaxonomyPlugin()->getTerms() as $term){
             $subject = $term->findAncestorByType('subject');
@@ -84,18 +83,6 @@ class LearningResourcePlugin extends AbstractPlugin
         }
         return NULL;
     }
-
-    public function findSubjects()
-    {}
-
-    public function findTaxonomyTerms()
-    {}
-
-    public function findTopicTerms()
-    {}
-
-    public function findCurriculumTerms()
-    {}
 
     protected function getTaxonomyPlugin()
     {
@@ -121,7 +108,7 @@ class LearningResourcePlugin extends AbstractPlugin
         foreach ($entityService->getScopesForPlugin('link') as $scope) {
             /* @var $linked \Entity\Plugin\Link\LinkPlugin */
             $linked = $entityService->plugin($scope);
-                    die($linked->findParents()->count() == 0);
+            
             if ($linked->hasParents()) {
                 foreach ($linked->findParents() as $parent) {
                     return $parent->plugin('learningResource')->getTaxonomyPlugin();

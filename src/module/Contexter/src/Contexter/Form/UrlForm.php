@@ -13,9 +13,12 @@ namespace Contexter\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Submit;
 
 class UrlForm extends Form
 {
+
     public function __construct()
     {
         parent::__construct('uri');
@@ -23,28 +26,18 @@ class UrlForm extends Form
         $this->setAttribute('class', 'clearfix');
         $inputFilter = new InputFilter('uri');
         
-        $this->add(array(
-            'name' => 'uri',
-            'type' => 'Text',
-            'attributes' => array(),
-            'options' => array(
-                'label' => 'Uri:'
-            )
-        ));
-        
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => array(
-                'value' => 'Select',
-                'class' => 'btn btn-success pull-right'
-            )
-        ));
+        $this->add((new Text('uri'))->setLabel('Uri:'));
+        $this->add((new Submit('submit'))->setValue('Select')
+            ->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'uri',
             'required' => true,
-            'filters' => array()
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
     }
 }

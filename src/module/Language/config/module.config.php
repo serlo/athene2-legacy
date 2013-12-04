@@ -12,6 +12,16 @@
 namespace Language;
 
 return array(
+    'translator' => array(
+        'translation_file_patterns' => array(
+            array(
+                'type' => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.mo',
+                'text_domain' => 'default'
+            )
+        )
+    ),
     'doctrine' => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(
@@ -62,3 +72,4 @@ return array(
         'Language\Service\LanguageServiceInterface' => 'Language\Service\LanguageService'
     )
 );
+

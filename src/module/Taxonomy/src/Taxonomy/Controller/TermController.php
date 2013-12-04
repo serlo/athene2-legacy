@@ -62,7 +62,7 @@ class TermController extends AbstractController
                 $this->getSharedTaxonomyManager()
                     ->getObjectManager()
                     ->flush();
-                $this->flashMessenger()->addSuccessMessage('Bearbeitung erfoglreich gespeichert!');
+                $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
                 $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         }
@@ -111,7 +111,7 @@ class TermController extends AbstractController
                     ->getObjectManager()
                     ->flush();
 
-                $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich hinzugefügt!');
+                $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
                 $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         }
@@ -123,7 +123,7 @@ class TermController extends AbstractController
     {
         $this->getSharedTaxonomyManager()->deleteTerm($this->getParam('id'));
         
-        $this->flashMessenger()->addSuccessMessage('Knoten erfolgreich gelöscht!');
+        $this->flashMessenger()->addSuccessMessage('The node has been deleted successfully!');
         $this->redirect()->toReferer();
     }
 

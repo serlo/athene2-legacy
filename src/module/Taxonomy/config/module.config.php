@@ -72,7 +72,6 @@ return array(
                             'route' => '/term',
                             'defaults' => array(
                                 'controller' => 'Taxonomy\Controller\TermController',
-                                'action' => 'organize'
                             )
                         ),
                         'may_terminate' => true,

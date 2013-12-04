@@ -126,6 +126,9 @@ return array(
                     'learningResource' => array(
                         'plugin' => 'learningResource'
                     ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
+                    ),
                     'group' => array(
                         'plugin' => 'link',
                         'options' => array(
@@ -182,6 +185,9 @@ return array(
                         'options' => array(
                             'template' => 'entity/plugin/page/text-solution'
                         )
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
                     ),
                     'exercise' => array(
                         'plugin' => 'link',
@@ -358,6 +364,9 @@ return array(
                                 'content'
                             )
                         )
+                    ),
+                    'metadata' => array(
+                        'plugin' => 'metadata'
                     ),
                     'license' => array(
                         'plugin' => 'license'

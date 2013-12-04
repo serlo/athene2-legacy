@@ -180,6 +180,7 @@ class UserService implements UserServiceInterface, Normalizable
     public function setEmail($email)
     {
         $this->getEntity()->setEmail($email);
+        $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
 

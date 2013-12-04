@@ -13,6 +13,7 @@ namespace Language;
 
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\ModuleRouteListener;
+use Zend\I18n\Translator\Translator;
 
 class Module
 {
@@ -39,14 +40,18 @@ class Module
     {
         $app = $e->getTarget();
         $serviceManager = $app->getServiceManager();
-        $serviceManager->get('router')->setTranslator($serviceManager->get('translator'));
+        
+        /* @var $translator Translator */
+        $translator = $serviceManager->get('MvcTranslator');
+        $serviceManager->get('router')->setTranslator($translator);
         
         $lm = $serviceManager->get('Language\Manager\LanguageManager');
         $code = $lm->getLanguageFromRequest()->getCode();
         
-        $translator = $serviceManager->get('translator');
         $translator->addTranslationFile('PhpArray', __DIR__ . '/language/routes/'.$code.'.php', 'default', $code);
         $translator->setLocale($code);
+        $translator->setFallbackLocale('default');
+        
         
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();

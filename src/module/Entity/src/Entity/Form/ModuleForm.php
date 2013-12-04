@@ -13,6 +13,7 @@ namespace Entity\Form;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Form\Form;
+use Zend\Form\Element\Text;
 
 class ModuleForm extends Form
 {
@@ -22,20 +23,20 @@ class ModuleForm extends Form
         parent::__construct('module');
         $this->setAttribute('method', 'post');
         $inputFilter = new InputFilter('module');
-        
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'placeholder' => 'Titel'
-            )
-        ));
+        $this->setAttribute('class', 'clearfix');
+
+        $this->add((new Text('title'))->setLabel('Title:'));
         
         $this->add(new Controls());
         
         $inputFilter->add(array(
             'name' => 'title',
-            'required' => true
+            'required' => true,
+            'filters' => array(
+                array(
+                    'name' => 'HtmlEntities'
+                )
+            )
         ));
         
         $this->setInputFilter($inputFilter);

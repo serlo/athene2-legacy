@@ -223,7 +223,7 @@ class Entity extends UuidEntity implements EntityInterface
     {
         $collection = new ArrayCollection();
         
-        foreach ($this->getChildLinks() as $link) {
+        foreach ($this->getParentLinks() as $link) {
             if ($link->getType() === $type) {
                 $collection->add($link->getParent());
             }

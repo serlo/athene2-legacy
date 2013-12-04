@@ -15,12 +15,11 @@ use Zend\View\Helper\AbstractHelper;
 
 class PageHeader extends AbstractHelper
 {
-    use \Common\Traits\ConfigAwareTrait;
+    use\Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig()
     {
         return array(
-            'brand' => 'Athene2',
             'template' => 'common/helper/page-header'
         );
     }
@@ -31,13 +30,14 @@ class PageHeader extends AbstractHelper
 
     public function __invoke($text)
     {
-        $this->text = $text;
+        $this->text = $this->getView()->translate((string) $text);
         return $this;
     }
-    
-    public function setSubtitle($subtext){
-        $this->subtext = $subtext;     
-        return $this;   
+
+    public function setSubtitle($subtext)
+    {
+        $this->subtext = $this->getView()->translate((string) $subtext);
+        return $this;
     }
 
     public function render($setHeadTitle = true)
@@ -45,7 +45,7 @@ class PageHeader extends AbstractHelper
         if ($setHeadTitle) {
             $delimiter = $this->getOption('delimiter');
             if (strlen($this->subtext) > 0) {
-                $headTitle = $this->text . $delimiter . $this->subtext . $delimiter . $this->getOption('brand');
+                $headTitle = $this->text . $delimiter . $this->subtext . $delimiter . $this->getView()->brand();
             } else {
                 $headTitle = $this->text . $delimiter . $this->getOption('brand');
             }

@@ -19,7 +19,10 @@ return array(
                 array(
                     'adapter' => __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter',
                     'controllers' => array(
-                        'Entity\Plugin\Repository\Controller\RepositoryController'
+                        [
+                            'controller' => 'Entity\Plugin\Repository\Controller\RepositoryController',
+                            'action' => 'addRevision'
+                        ]
                     )
                 )
             )
