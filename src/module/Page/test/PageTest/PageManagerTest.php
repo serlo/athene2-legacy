@@ -4,6 +4,7 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
+ * @author Jakob Pfab (jakob.pfab@serlo.org)
  * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
@@ -17,12 +18,13 @@ use Page\Manager\PageManager;
 class PageManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $pageManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$languageMock;
+    protected $pageManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock,$languageServiceMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$languageMock;
 
     public function setUp()
     {
         parent::setUp();
         $this->pageManager = new PageManager();
+        $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         $this->languageMock = $this->getMock('Language\Entity\Language');
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->userMock = $this->getMock('User\Entity\User');
@@ -157,6 +159,45 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         ),$this->languageMock));
     
     
+    }
+    
+    public function testGetRevision(){
+        $this->pageManager->getObjectManager()->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($this->pageRevisionMock));
+        
+        $this->pageRevisionMock->expects($this->once())
+        ->method('getId')
+        ->will($this->returnValue(1));
+        
+        
+           $this->assertEquals(1, $this->pageManager->getRevision(1)
+            ->getId());
+    }
+    
+    public function testGetPageRepository(){
+        $this->createService();
+        
+        $this->pageManager->getObjectManager()->expects($this->once())
+        ->method('find')
+        ->will($this->returnValue($this->pageRepositoryMock));
+        
+        $this->createService();
+        
+        $this->pageServiceMock->expects($this->once())
+        ->method('getRepositoryId')
+        ->will($this->returnValue(1));
+        
+        $this->assertEquals(1, $this->pageManager->getPageRepository(1)->getRepositoryId());
+    }
+    
+    public function testFindAllRepositorys(){
+        
+        $this->classResolverMock->expects($this->once())->method('resolveClassName')->will($this->returnValue('Page\Entity\PageRepository'));
+        $this->objectManagerMock->expects($this->once())->method('getRepository')->will($this->returnValue($this->repositoryMock));
+        $this->repositoryMock->expects($this->once())->method('findBy')->will($this->returnValue(array($this->pageRepositoryMock)));
+        
+        $this->assertNotNull($this->pageManager->findAllRepositorys($this->languageServiceMock));
     }
     
 }

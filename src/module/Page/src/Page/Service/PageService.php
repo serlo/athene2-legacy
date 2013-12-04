@@ -41,16 +41,8 @@ class PageService implements PageServiceInterface, Normalizable
 
     public function getCurrentRevision()
     {
-        return $this->getRepository()->getCurrentRevision();
-    }
-
-    public function getRevision($id)
-    {
-        $revision = $this->getRepository()->getRevision($id);
-        if (! $revision->isTrashed())
-            return $revision;
-        else
-            return null;
+        $repository = $this->getRepository();
+        return $repository->getCurrentRevision();
     }
 
     public function hasCurrentRevision()
@@ -89,7 +81,7 @@ class PageService implements PageServiceInterface, Normalizable
     {
         return $this->entity->hasRole($role);
     }
-
+/*
     public function hasPermission($userService)
     {
         if ($userService == null)
@@ -102,29 +94,29 @@ class PageService implements PageServiceInterface, Normalizable
             }
         }
         return false;
-    }
+    }*/
 
     protected function getRepository()
     {
-        return $this->getRepositoryManager()->getRepository($this->entity);
+        $repositoryManager = $this->getRepositoryManager();
+        $repository =  $repositoryManager->getRepository($this->entity);
+        return $repository;
     }
 
     public function deleteRevision($id)
     {
         $repository = $this->getRepository();
-        $revision = $this->getRevision($id);
+        $revision = $this->getManager()->getRevision($id);
         $repository->removeRevision($id);
         $this->getObjectManager()->remove($revision);
-        $this->getObjectManager()->flush();
+
         return $this;
     }
 
     public function trashRevision($id)
     {
-        $repository = $this->getRepository();
-        $revision = $this->getRevision($id);
+        $revision = $this->getManager()->getRevision($id);
         $revision->trash();
-        $this->getObjectManager()->flush();
         return $this;
     }
 

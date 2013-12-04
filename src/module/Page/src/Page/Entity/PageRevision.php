@@ -59,8 +59,9 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      */
     public function delete()
     {
-        return $this;
-    }
+    $this->page_repository->removeRevision($this);
+    return $this;
+     }
     
     /*
      * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::trash()
@@ -100,9 +101,18 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
         return $this->date;
     }
 
+    public function setContent($content){
+        $this->content=$content;
+        return $this;
+    }
     public function getContent()
     {
         return $this->content;
+    }
+    
+    public function setTitle($title){
+        $this->title=$title;
+        return $this;
     }
 
     public function getTitle()
@@ -142,7 +152,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
     public function populate(array $data = array())
     {
         $this->injectFromArray('author', $data);
-        $this->injectFromArray('username', $data);
         $this->injectFromArray('title', $data);
         $this->injectFromArray('content', $data);
         $this->injectFromArray('date', $data);
