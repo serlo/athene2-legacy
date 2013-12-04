@@ -33,11 +33,23 @@ return array(
                         'pages' => array(
                             array(
                                 'label' => 'Manage taxonomies',
-                                'route' => 'taxonomy/term',
+                                'route' => 'taxonomy/term/organize',
                                 'params' => array(),
                                 'pages' => array(
                                     array(
                                         'route' => 'taxonomy/term/action',
+                                        'visible' => false
+                                    ),
+                                    array(
+                                        'route' => 'taxonomy/term/create',
+                                        'visible' => false
+                                    ),
+                                    array(
+                                        'route' => 'taxonomy/term/update',
+                                        'visible' => false
+                                    ),
+                                    array(
+                                        'route' => 'taxonomy/term/sort-associated',
                                         'visible' => false
                                     )
                                 )

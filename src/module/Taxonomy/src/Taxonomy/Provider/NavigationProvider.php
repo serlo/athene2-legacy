@@ -75,21 +75,23 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         
         $return = array();
         foreach ($terms as $term) {
-            $current = array();
-            $current['route'] = $this->getOption('route');
-            
-            $current['params'] = ArrayUtils::merge($this->getOption('params'), array(
-                'path' => $this->getPathToTermAsUri($term)
-            ));
-            
-            // getPathToTermAsUri
-            
-            $current['label'] = $term->getName();
-            $children = $term->filterChildren($this->getOption('types'));
-            if (count($children)) {
-                $current['pages'] = $this->iterTerms($children, $depth - 1);
+            if(!$term->isTrashed()){
+                $current = array();
+                $current['route'] = $this->getOption('route');
+                
+                $current['params'] = ArrayUtils::merge($this->getOption('params'), array(
+                    'path' => $this->getPathToTermAsUri($term)
+                ));
+                
+                // getPathToTermAsUri
+                
+                $current['label'] = $term->getName();
+                $children = $term->filterChildren($this->getOption('types'));
+                if (count($children)) {
+                    $current['pages'] = $this->iterTerms($children, $depth - 1);
+                }
+                $return[] = $current;
             }
-            $return[] = $current;
         }
         return $return;
     }

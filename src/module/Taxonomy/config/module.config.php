@@ -59,7 +59,6 @@ return array(
                     'taxonomy' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'may_terminate' => true,
                             'route' => '/:action/:id',
                             'defaults' => array(
                                 'controller' => 'Taxonomy\Controller\TaxonomyController'
@@ -113,7 +112,7 @@ return array(
                             'organize' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/organize/:id',
+                                    'route' => '/organize[/:id]',
                                     'defaults' => array(
                                         'action' => 'organize'
                                     )

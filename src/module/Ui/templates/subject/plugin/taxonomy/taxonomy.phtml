@@ -17,27 +17,31 @@ $columnsClass = 'col-xs-' . (12 / $columns);
 <?php if (empty($this->recursion)) : ?>
 <ul class="nav nav-side row">
     <?php foreach ($this->terms as $key => $term) : ?>
-        <?php if ($key !== 0 && $key % $columns === 0) : ?>
-        </ul><ul class="nav nav-side row">
+        <?php if(!$term->isTrashed()): ?>
+            <?php if ($key !== 0 && $key % $columns === 0) : ?>
+            </ul><ul class="nav nav-side row">
+            <?php endif; ?>
+            <li class="<?php echo $columnsClass; ?>">
+                <a href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
+                    <strong><?php echo $term->getName(); ?></strong>
+                </a>
+                <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'recursion' => true)); ?>
+            </li>
+            <?php //$liCount++; ?>
         <?php endif; ?>
-        <li class="<?php echo $columnsClass; ?>">
-            <a href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
-                <strong><?php echo $term->getName(); ?></strong>
-            </a>
-            <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'recursion' => true)); ?>
-        </li>
-        <?php //$liCount++; ?>
     <?php endforeach; ?>
 </ul>
 <?php else : ?>
 <ul class="nav nav-side">
     <?php foreach ($this->terms as $term) : ?>
-        <li>
-            <a href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
-                <?php echo $term->getName(); ?>
-            </a>
-            <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'recursion' => true)); ?>
-        </li>
+        <?php if(!$term->isTrashed()): ?>
+            <li>
+                <a href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
+                    <?php echo $term->getName(); ?>
+                </a>
+                <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), array('terms' => $term->getChildren(), 'subject' => $this->subject, 'plugin' => $this->plugin, 'recursion' => true)); ?>
+            </li>
+        <?php endif; ?>
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>

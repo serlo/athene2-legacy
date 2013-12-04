@@ -22,7 +22,7 @@ use Common\Normalize\Normalized;
 class TermService implements TermServiceInterface
 {
     
-    use\ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
 
     /**
      *
@@ -54,6 +54,11 @@ class TermService implements TermServiceInterface
         $normalized->setRouteName($routeMatch->getMatchedRouteName());
         $normalized->setRouteParams($routeMatch->getParams());
         return $normalized;
+    }
+
+    public function isTrashed()
+    {
+        return $this->getEntity()->isTrashed();
     }
 
     /**
@@ -130,7 +135,7 @@ class TermService implements TermServiceInterface
     public function getParent()
     {
         $parent = $this->getTaxonomyTerm()->getParent();
-        if($parent === NULL){
+        if ($parent === NULL) {
             throw new Exception\RuntimeException(sprintf('Taxonomy term `%s` has no parent', $this->getName()));
         }
         return $this->getSharedTaxonomyManager()->getTerm($parent->getId());
@@ -253,7 +258,7 @@ class TermService implements TermServiceInterface
         $term = $this;
         while ($term->hasParent()) {
             $term = $term->getParent();
-            if ($term->getTaxonomy()->getName() == $type){
+            if ($term->getTaxonomy()->getName() == $type) {
                 return $term;
             }
         }

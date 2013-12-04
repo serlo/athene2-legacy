@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -12,76 +12,31 @@
 return [
     'zfc_rbac' => [
         'guards' => [
-            'ZfcRbac\Guard\ControllerGuard' => [
-                [
-                    'controller' => 'Entity\Controller\EntityController',
-                    'actions' => [
-                        'create',
-                    ],
-                    'roles' => [
-                        'login'
-                    ]
-                ],
-                [
-                    'controller' => 'Discussion\Controller\DiscussionController',
-                    'actions' => [
-                        'trash',
-                        'restore'
-                    ],
-                    'roles' => [
-                        'moderator'
-                    ]
-                ],
-                [
-                    'controller' => 'Discussion\Controller\DiscussionController',
-                    'actions' => [
-                        'purge',
-                    ],
-                    'roles' => [
-                        'sysadmin'
-                    ]
-                ],
-                [
-                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => [
-                        'history',
-                        'compare',
-                    ],
-                    'roles' => [
-                        'guest'
-                    ]
-                ],
-                [
-                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => [
-                        'addRevision',
-                    ],
-                    'roles' => [
-                        'login'
-                    ]
-                ],
-                [
-                    'controller' => 'LearningResource\Plugin\Repository\Controller\RepositoryController',
-                    'actions' => [
-                        'trashRevision',
-                        'checkout'
-                    ],
-                    'roles' => [
-                        'helper'
-                    ]
-                ],
-                [
-                    'controller' => 'LearningResource\Plugin\Taxonomy\Controller\TaxonomyController',
-                    'actions' => [
-                        'update',
-                    ],
-                    'roles' => [
-                        'moderator'
-                    ]
-                ],
-            ],
             'ZfcRbac\Guard\RouteGuard' => [
-                'entity/plugin/link/order' => ['moderator'],
+                'entity/plugin/link/order' => [
+                    'moderator'
+                ],
+                'entity/plugin/repository/add-revision' => [
+                    'login'
+                ],
+                'entity/plugin/repository/compare' => [
+                    '*'
+                ],
+                'entity/plugin/repository/history' => [
+                    '*'
+                ],
+                'entity/plugin/repository/checkout' => [
+                    'helper'
+                ],
+                'entity/plugin/taxonomy/update' => [
+                    'moderator'
+                ],
+                'entity/plugin/license/update' => [
+                    'admin'
+                ],
+                'entity/create' => [
+                    'login'
+                ]
             ]
         ]
     ]
