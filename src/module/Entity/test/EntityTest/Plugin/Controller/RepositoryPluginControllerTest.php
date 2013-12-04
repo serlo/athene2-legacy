@@ -58,11 +58,6 @@ class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
             ->will($this->returnValue(true));
         
         $this->entityServiceMock->expects($this->atLeastOnce())
-            ->method('hasPlugin')
-            ->with('metadata')
-            ->will($this->returnValue(false));
-        
-        $this->entityServiceMock->expects($this->atLeastOnce())
             ->method('repository')
             ->will($this->returnValue($this->repositoryPluginMock));
         
