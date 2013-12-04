@@ -26,6 +26,14 @@ class LicensePlugin extends AbstractPlugin
     {
         $this->getLicenseManager()->injectLicense($this->getEntityService()
             ->getEntity());
+        return $this;
+    }
+    
+    public function setLicense($id)
+    {
+        $license = $this->getLicenseManager()->getLicense($id);
+        $this->getLicenseManager()->injectLicense($this->getEntityService()->getEntity(), $license);
+        return $this;
     }
 
     public function getId()
@@ -54,5 +62,10 @@ class LicensePlugin extends AbstractPlugin
             ->getEntity()
             ->getLicense()
             ->getId());
+    }
+    
+    public function getLicenses($languageService)
+    {
+        return $this->getLicenseManager()->findLicensesByLanguage($languageService);
     }
 }

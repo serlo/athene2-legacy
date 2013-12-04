@@ -185,6 +185,27 @@ return array(
                                     )
                                 )
                             ),
+                            'license' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/license',
+                                    'defaults' => array(
+                                        'controller' => __NAMESPACE__ . '\Plugin\License\Controller\LicenseController',
+                                        'plugin' => 'license'
+                                    )
+                                ),
+                                'child_routes' => array(
+                                    'update' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route' => '/update/:entity',
+                                            'defaults' => array(
+                                                'action' => 'update'
+                                            )
+                                        )
+                                    ),
+                                )
+                            ),
                             'link' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
@@ -260,12 +281,21 @@ return array(
             __NAMESPACE__ . '\Plugin\Repository\Controller\RepositoryController',
             __NAMESPACE__ . '\Plugin\Page\Controller\PageController',
             __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
-            __NAMESPACE__ . '\Plugin\Link\Controller\LinkController'
+            __NAMESPACE__ . '\Plugin\Link\Controller\LinkController',
+            __NAMESPACE__ . '\Plugin\License\Controller\LicenseController'
         ),
         'definition' => array(
             'class' => array(
                 __NAMESPACE__ . '\Plugin\Pathauto\Provider\TokenProvider' => array(
                     'setServiceLocator' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Plugin\License\Controller\LicenseController' => array(
+                    'setEntityManager' => array(
+                        'required' => true
+                    ),
+                    'setLanguageManager' => array(
                         'required' => true
                     )
                 ),

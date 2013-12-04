@@ -104,7 +104,7 @@
                 <li>
                     <a href="<?php echo $url; ?>">
                         <span class="glyphicon glyphicon-map-marker"></span>
-                        <?php echo $this->translate('Taxonomy associations'); ?>   
+                        <?php echo $this->translate('Taxonomy terms'); ?>   
                     </a>
                 </li>
             <?php endif; ?>
@@ -116,9 +116,22 @@
             <li>
                 <a href="<?php echo $url; ?>">
                     <span class="glyphicon glyphicon-link"></span>
-                    <?php echo $this->translate('Manage related'); ?>   
+                    <?php echo $this->translate('Related content'); ?>   
                 </a>
             </li>
+        <?php endif; ?>
+        
+        <!-- License -->
+        <?php if($entity->hasPlugin('license')): ?>
+            <?php $url = $this->url('entity/plugin/license/update', array('entity' => $entity->getId())); ?>
+            <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                <li>
+                    <a href="<?php echo $url; ?>">
+                        <span class="glyphicon glyphicon-leaf"></span>
+                        <?php echo $this->translate('Change license'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
         <?php endif; ?>
         
         <!-- Trash entity -->
@@ -127,7 +140,7 @@
             <li>
                 <a href="<?php echo $url; ?>">
                     <span class="glyphicon glyphicon-trash"></span>
-                    <?php echo $this->translate('Trash content'); ?>   
+                    <?php echo $this->translate('Trash'); ?>   
                 </a>
             </li>
         <?php endif; ?>
