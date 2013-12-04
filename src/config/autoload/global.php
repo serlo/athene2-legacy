@@ -17,7 +17,7 @@ return array(
         'delimiter' => ' - '
     ),
     'brand' => array(
-        'name' => 'Serlo'
+        'name' => 'Serlo<sup><small>beta</small></sup>'
     ),
     'doctrine' => array(
         'entitymanager' => array(
