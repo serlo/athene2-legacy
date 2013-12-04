@@ -90,7 +90,7 @@ return array(
                         'options' => array(
                             'types' => array(
                                 'grouped-text-exercise' => array(
-                                    'inversed_by' => 'group'
+                                    'inversed_by' => 'group',
                                 )
                             ),
                             'type' => 'link',

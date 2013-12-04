@@ -15,14 +15,7 @@ $solution = $exercise->solution()->findChild();
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
     <article>
         <div class="pull-right btn-group">
-            <?php $url = $this->url('entity/create', array('type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $exercise->getId())))); ?>
-            <?php if(!is_object($solution) && $this->guard()->hasAccessToUrl($url)): ?>
-            	<a class="btn btn-default btn-xs"
-            		href="<?php echo $this->url('entity/create', array('action' => 'create', 'type' => 'text-solution'), array('query' => array('exercise' => array('to_entity' => $this->entity->getId())))); ?>">
-            		<strong>+</strong>
-            	</a>
-        	<?php endif; ?>
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
+            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
         </div>
     	<section>
             <?php $revision = $exercise->repository()->getCurrentRevision(); ?>

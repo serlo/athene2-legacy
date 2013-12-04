@@ -1,65 +1,135 @@
-<?php $hide = is_array($this->hide) ? $this->hide : array(); ?>
+<?php /* @var $entity \Entity\Service\EntityServiceInterface */ ?>
+<?php $entity = $this->entity;?>
 
-<!-- Edit -->
-<?php $url = $this->url('entity/plugin/repository/add-revision',array('entity' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('edit', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-edit"></span></a>
-<?php endif; ?>
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+        <?php echo $this->translate('Editing'); ?> <span class="caret"></span>
+    </button>
+        <ul class="dropdown-menu" role="menu">
+            <?php if($entity->hasPlugin('repository')): ?>
+                <!-- Edit Revision -->
+                <?php $url = $this->url('entity/plugin/repository/add-revision', array('entity' => $entity->getId())); ?>
+                <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                    <li>
+                        <a href="<?php echo $url; ?>">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            <?php echo $this->translate('Edit'); ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <!-- Versioning history -->
+                <?php $url = $this->url('entity/plugin/repository/history',array('entity' => $entity->getId())); ?>
+                <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                    <li>
+                        <a href="<?php echo $url; ?>">
+                            <span class="glyphicon glyphicon-time"></span>
+                            <?php echo $this->translate('Repository history'); ?>
+                            <?php if($entity->plugin('repository')->isUnrevised()): ?>
+                                <span class="label label-warning"><?php echo $this->translate('new')?></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php foreach($entity->getScopesForPlugin('link') as $scope): ?>
+                <?php $plugin = $entity->$scope(); ?>
+                <?php foreach($plugin->getTypes() as $type => $options): ?>
+                    <?php if(($plugin->doesAssociationAllowMultiples() && $plugin->owns($type)) || (!$plugin->doesAssociationAllowMultiples() && !is_object($plugin->findChild()))): ?>
+                        <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
+                        <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                        	<li>
+                            	<a href="<?php echo $url; ?>">
+                                    <span class="glyphicon glyphicon-file"></span>
+                                    <?php echo sprintf($this->translate('Add %s'), $type); ?>
+                            	</a>
+                        	<li>
+                    	<?php endif; ?>
+                	<?php endif; ?>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+        </ul>
+</div>
 
-<!-- Versioning history -->
-<?php $url = $this->url('entity/plugin/repository/history',array('entity' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('history', $hide)): ?>
-    <a
-    	class="btn btn-default btn-xs<?php echo ($this->entity->plugin('repository')->isUnrevised()) ? ' btn-warning' : ''?>"
-    	href="<?php echo $url; ?>"><span class="glyphicon glyphicon-time"></span></a>
-<?php endif; ?>
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+        <?php echo $this->translate('Data'); ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <?php if($entity->hasPlugin('license')): ?>
+            <!-- License -->
+            <?php $url = $this->url('license/detail',array('id' => $entity->license()->getId())); ?>
+            <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                <li>
+                    <a href="<?php echo $url; ?>">
+                        <span class="glyphicon glyphicon-leaf"></span>
+                        <?php echo $this->translate('License'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+        
+        <!-- Event log -->
+        <?php $url = $this->url('event/history',array('id' => $entity->getId())); ?>
+        <?php if($this->guard()->hasAccessToUrl($url)): ?>
+            <li>
+                <a href="<?php echo $url; ?>">
+                    <span class="glyphicon glyphicon-hdd"></span>
+                    <?php echo $this->translate('Eventlog'); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
 
-<!-- Changing taxonomy -->
-<?php $url = $this->url('entity/plugin/taxonomy/update',array('entity' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('taxonomy', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-map-marker"></span></a>
-<?php endif; ?>
-
-<!-- Trash entity -->
-<?php $url = $this->url('uuid/trash',array('id' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('trash', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-trash"></span></a>
-<?php endif; ?>
-
-<!-- Manage related content -->
-<?php $url = $this->url('related-content/manage',array('id' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('related-content', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-link"></span></a>
-<?php endif; ?>
-
-<!-- Flag content -->
-<?php $url = $this->url('flag/add',array('id' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('flag', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-flag"></span></a>
-<?php endif; ?>
-
-<!-- Event log -->
-<?php $url = $this->url('event/history',array('id' => $this->entity->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('event', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-hdd"></span></a>
-<?php endif; ?>
-
-<!-- License -->
-<?php $url = $this->url('license/detail',array('id' => $this->entity->license()->getId())); ?>
-<?php if($this->guard()->hasAccessToUrl($url) && !in_array('event', $hide)): ?>
-    <a class="btn btn-default btn-xs" href="<?php echo $url; ?>"><span
-    	class="glyphicon glyphicon-leaf"></span></a>
-<?php endif; ?>
-
-<!-- Detail page -->
-<?php if(!in_array('detail', $hide)): ?>
-    <a class="btn btn-default btn-xs"
-    	href="<?php echo $this->url('entity/plugin/page',array('entity' => $this->entity->getId())); ?>"><span
-    	class="glyphicon glyphicon-search"></span></a>
-<?php endif; ?>
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+        <?php echo $this->translate('Manage'); ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <!-- Flag content -->
+        <?php $url = $this->url('flag/add',array('id' => $entity->getId())); ?>
+        <?php if($this->guard()->hasAccessToUrl($url)): ?>
+            <li>
+                <a href="<?php echo $url; ?>">
+                    <span class="glyphicon glyphicon-flag"></span>
+                    <?php echo $this->translate('Flag content'); ?>                
+                </a>
+            </li>
+        <?php endif; ?>
+        
+        <?php if($entity->hasPlugin('taxonomy')): ?>
+            <!-- Change taxonomy term(s) -->
+            <?php $url = $this->url('entity/plugin/taxonomy/update',array('entity' => $entity->getId())); ?>
+            <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                <li>
+                    <a href="<?php echo $url; ?>">
+                        <span class="glyphicon glyphicon-map-marker"></span>
+                        <?php echo $this->translate('Taxonomy associations'); ?>   
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+        
+        <!-- Manage related content -->
+        <?php $url = $this->url('related-content/manage',array('id' => $entity->getId())); ?>
+        <?php if($this->guard()->hasAccessToUrl($url)): ?>
+            <li>
+                <a href="<?php echo $url; ?>">
+                    <span class="glyphicon glyphicon-link"></span>
+                    <?php echo $this->translate('Manage related'); ?>   
+                </a>
+            </li>
+        <?php endif; ?>
+        
+        <!-- Trash entity -->
+        <?php $url = $this->url('uuid/trash',array('id' => $entity->getId())); ?>
+        <?php if($this->guard()->hasAccessToUrl($url)): ?>
+            <li>
+                <a href="<?php echo $url; ?>">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    <?php echo $this->translate('Trash content'); ?>   
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>

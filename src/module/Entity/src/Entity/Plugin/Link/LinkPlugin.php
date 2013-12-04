@@ -18,6 +18,11 @@ use Entity\Service\EntityServiceInterface;
 
 class LinkPlugin extends AbstractPlugin
 {
+    const ONE_TO_ONE = 'one-to-one';
+    const ONE_TO_MANY = 'one-to-many';
+    const MANY_TO_ONE = 'many-to-one';
+    const MANY_TO_MANY = 'many-to-many';
+    
     use\Link\Manager\SharedLinkManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     protected function getDefaultConfig()
@@ -28,10 +33,37 @@ class LinkPlugin extends AbstractPlugin
             'association' => ''
         );
     }
-    
+
+    public function getTypes()
+    {
+        return $this->getOption('types');
+    }
+
+    public function doesAssociationAllowMultiples()
+    {
+        return ! $this->isOneToOne();
+    }
+
+    public function owns($type)
+    {
+        if (!array_key_exists($type, $this->getTypes())) {
+            throw new Exception\RuntimeException(sprintf('Unkown association: "%s"', $type));
+        }
+        if($this->getOption('association') === self::ONE_TO_MANY){
+            return true;
+        } elseif ($this->getOption('association') === self::MANY_TO_ONE){
+            return false;
+        } else {
+            $options = $this->getTypes()[$type];
+            return array_key_exists('owning', $options) ? $options['owning'] : false;
+        }
+            
+        throw new Exception\RuntimeException(sprintf('Invalid configured association: "%s"', $type));
+    }
+
     /**
-     * 
-     * @param array $children
+     *
+     * @param array $children            
      * @return \Entity\Plugin\Link\LinkPlugin
      */
     public function orderChildren(array $children)
@@ -41,8 +73,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $parents
+     *
+     * @param array $parents            
      * @return \Entity\Plugin\Link\LinkPlugin
      */
     public function orderParents(array $parents)
@@ -52,8 +84,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return boolean
      */
     public function hasChild(array $entityTypes = NULL)
@@ -62,8 +94,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return boolean
      */
     public function hasChildren(array $entityTypes = NULL)
@@ -72,8 +104,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return boolean
      */
     public function hasParents(array $entityTypes = NULL)
@@ -82,8 +114,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return boolean
      */
     public function hasParent(array $entityTypes = NULL)
@@ -93,7 +125,7 @@ class LinkPlugin extends AbstractPlugin
 
     /**
      *
-     * @param array $entityTypes
+     * @param array $entityTypes            
      * @return \Entity\Collection\EntityCollection
      */
     public function findChildren(array $entityTypes = NULL)
@@ -113,8 +145,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return \Entity\Collection\EntityCollection
      */
     public function findParents(array $entityTypes = NULL)
@@ -134,8 +166,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return Ambigous <\Doctrine\Common\Collections\mixed, \Entity\Service\EntityServiceInterface>
      */
     public function findParent(array $entityTypes = NULL)
@@ -144,8 +176,8 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
-     * @param array $entityTypes
+     *
+     * @param array $entityTypes            
      * @return Ambigous <\Doctrine\Common\Collections\mixed, \Entity\Service\EntityServiceInterface>
      */
     public function findChild(array $entityTypes = NULL)
@@ -154,7 +186,7 @@ class LinkPlugin extends AbstractPlugin
     }
 
     /**
-     * 
+     *
      * @return multitype:string
      */
     public function getEntityTypes()
@@ -186,7 +218,7 @@ class LinkPlugin extends AbstractPlugin
         
         if (! $from->isPluginWhitelisted($foreignScope))
             throw new Exception\RuntimeException(sprintf('Association is not configured as bidirectional. Entity (type: %s) does not know scope %s', $foreignType, $foreignScope));
-
+        
         $class = $this->getMapper();
         $isValid = $class::remove($this->getEntityService(), $from, $this->getScope(), $foreignScope);
         
