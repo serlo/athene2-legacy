@@ -9,7 +9,6 @@ return [
                 'class_name' => 'User\Entity\Role'
             ]
         ],
-        'protection_policy' => GuardInterface::POLICY_ALLOW,
-        'guest_role' => NULL,
+        'protection_policy' => GuardInterface::POLICY_ALLOW
     ]
 ];
