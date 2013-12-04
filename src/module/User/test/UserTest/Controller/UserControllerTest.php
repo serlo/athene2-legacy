@@ -102,7 +102,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->will($this->returnValue($userServiceMock));
         $userServiceMock->expects($this->once())
             ->method('updateLoginData');
-        $this->userManagerMock->expects($this->once())
+        $this->userManagerMock->expects($this->atLeastOnce())
             ->method('getObjectManager')
             ->will($this->returnValue($this->objectManagerMock));
         $this->objectManagerMock->expects($this->once())
@@ -372,7 +372,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->method('setIdentity');
         $this->authAdapterMock->expects($this->once())
             ->method('setCredential');
-        $this->authServiceMock->expects($this->once())
+        $this->authAdapterMock->expects($this->once())
             ->method('authenticate')
             ->will($this->returnValue($resultMock));
         $resultMock->expects($this->once())
@@ -406,7 +406,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->method('setIdentity');
         $this->authAdapterMock->expects($this->once())
             ->method('setCredential');
-        $this->authServiceMock->expects($this->once())
+        $this->authAdapterMock->expects($this->once())
             ->method('authenticate')
             ->will($this->returnValue($resultMock));
         $resultMock->expects($this->once())
@@ -539,9 +539,6 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->expects($this->once())
             ->method('getUserFromAuthenticator')
             ->will($this->returnValue($user));
-        $controller->getObjectManager()
-            ->expects($this->once())
-            ->method('persist');
         $controller->getObjectManager()
             ->expects($this->once())
             ->method('flush');

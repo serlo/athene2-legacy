@@ -27,8 +27,10 @@ class UserServiceTest extends Model
         
         $entity = new User();
         $this->userService->setEntity($entity);
+        $this->userService->setObjectManager( $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false));
         
         $this->setObject($this->userService);
+        
     }
     
 	/* (non-PHPdoc)
