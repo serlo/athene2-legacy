@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-$name = is_object($this->term) ? $this->term->getTaxonomy()->getName() : '';
+$name = $this->term->getTaxonomy()->getName();
 $template = 'subject/plugin/taxonomy/templates/' . $name;
 $forum = $this->subject->getSlug() . '/issues/taxonomy';
 $data = array(
@@ -21,24 +21,25 @@ $data = array(
     'terms' => $this->terms
 );
 ?>
+<?php if($this->term->isTrashed()): ?>
+    <div class="alert alert-danger"><?php echo $this->translate('This taxonomy term is marked as <strong>trashed</strong>. Contents might be out of date or unmaintained.'); ?></div>
+<?php endif; ?>
 <?php if($this->resolver($template)):?>
-        <?php echo $this->partial($template, $data); ?>
-    <?php else: ?>
-        <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), $data); ?>
+    <?php echo $this->partial($template, $data); ?>
+<?php else: ?>
+    <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), $data); ?>
 <?php endif; ?>
-<?php if(is_object($this->term)): ?>
-    <hr>
-    <div class="tab-content">
-        <h3><?php echo $this->translate('Discussions'); ?></h3>
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#current" data-toggle="tab"><?php echo $this->translate('Current'); ?></a></li>
-            <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
-        </ul>
-        <div class="tab-pane active" id="current">
-            <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, false)->render(); ?>
-        </div>
-        <div class="tab-pane" id="archived">
-            <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, true)->render(); ?>
-        </div>
+<hr>
+<div class="tab-content">
+    <h3><?php echo $this->translate('Discussions'); ?></h3>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#current" data-toggle="tab"><?php echo $this->translate('Current'); ?></a></li>
+        <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
+    </ul>
+    <div class="tab-pane active" id="current">
+        <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, false)->render(); ?>
     </div>
-<?php endif; ?>
+    <div class="tab-pane" id="archived">
+        <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, true)->render(); ?>
+    </div>
+</div>
