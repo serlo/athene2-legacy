@@ -9,12 +9,14 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Ui\Navigation;
+namespace Entity\Plugin\Link\Listener;
 
-class TopLeftNavigationFactory extends AbstractNavigationFactory
-{    
-    protected function getName()
+use Entity\Listener\AbstractDispatchListener;
+
+class LinkControllerListener extends AbstractDispatchListener
+{
+    public function getMonitoredClass()
     {
-        return 'top-left';
+        return 'Entity\Plugin\Link\Controller\LinkController';
     }
 }

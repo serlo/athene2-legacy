@@ -11,8 +11,6 @@
  */
 namespace Ui\Navigation;
 
-use Zend\Navigation\Service\AbstractNavigationFactory;
-
 class SubjectNavigationFactory extends AbstractNavigationFactory
 {    
     protected function getName()

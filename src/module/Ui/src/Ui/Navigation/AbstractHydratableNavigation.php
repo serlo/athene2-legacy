@@ -11,7 +11,6 @@
  */
 namespace Ui\Navigation;
 
-use Zend\Navigation\Service\AbstractNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface as Router;

@@ -24,14 +24,11 @@ abstract class AbstractController extends AbstractActionController
     protected $entityService;
 
     // This is a very ugly hack and breaks other modules.
-    /*public function dispatch(RequestInterface $request, ResponseInterface $response = NULL)
+    public function dispatchD(RequestInterface $request, ResponseInterface $response = NULL)
     {
-        $dispatch = parent::dispatch($request, $response);
-        
-        if ($this->getEntityService()->hasPlugin('metadata')) {
+        if ($this->getEntityService()->hasPlugin('learningResource')) {
             $subject = $this->getEntityService()
-                ->metadata()
-                ->getSlugifiedSubject();
+                ->learningResource()->getDefaultSubject()->getSlug();
             
             if ($subject !== NULL) {
                 $routeMatch = new RouteMatch(array(
@@ -39,14 +36,13 @@ abstract class AbstractController extends AbstractActionController
                 ));
                 $routeMatch->setMatchedRouteName('subject');
                 $this->getServiceLocator()
-                    ->get('Application')
-                    ->getMvcEvent()
+                    ->get('Ui\Navigation\DefaultNavigationFactory')
                     ->setRouteMatch($routeMatch);
             }
         }
         
-        return $dispatch;
-    }*/
+        return parent::dispatch($request, $response);
+    }
 
     public function getEntityService($id = NULL)
     {

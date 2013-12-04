@@ -11,8 +11,6 @@
  */
 namespace Ui\Navigation;
 
-use Zend\Navigation\Service\AbstractNavigationFactory;
-
 class TopRightNavigationFactory extends AbstractNavigationFactory
 {    
     protected function getName()

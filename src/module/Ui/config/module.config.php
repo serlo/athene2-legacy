@@ -73,7 +73,7 @@ return array(
                 $plugin = new Brand();
                 $plugin->setConfig($config);
                 return $plugin;
-            },
+            }
         ),
         'invokables' => array(
             'timeago' => 'Ui\View\Helper\Timeago',
@@ -90,7 +90,11 @@ return array(
                 $service->setHelperPluginManager($sm->get('ViewHelperManager'));
                 return $service;
             },
-            'navigation' => 'Ui\Navigation\DefaultNavigationFactory',
+            'navigation' => function (ServiceLocatorInterface $sm)
+            {
+                // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
+                return $sm->get('Ui\Navigation\DefaultNavigationFactory')->createService($sm);
+            },
             'top_left_navigation' => 'Ui\Navigation\TopLeftNavigationFactory',
             'top_right_navigation' => 'Ui\Navigation\TopRightNavigationFactory',
             'top_center_navigation' => 'Ui\Navigation\TopCenterNavigationFactory',

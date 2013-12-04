@@ -23,7 +23,11 @@ class Module
         'Entity\Plugin\Taxonomy\Listener\EntityControllerListener',
         'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener',
         'Entity\Plugin\LearningResource\Listener\EntityControllerListener',
-        'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener'
+        'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener',
+        'Entity\Plugin\Link\Listener\LinkControllerListener',
+        'Entity\Plugin\Page\Listener\PageControllerListener',
+        'Entity\Plugin\Repository\Listener\RepositoryControllerListener',
+        'Entity\Plugin\Taxonomy\Listener\TaxonomyControllerListener'
     );
 
     public function getConfig()
@@ -49,11 +53,11 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
+        $application = $e->getApplication();
+        $eventManager = $application->getEventManager();
+        
         foreach (self::$listeners as $listener) {
-            $e->getApplication()
-                ->getEventManager()
-                ->getSharedManager()
-                ->attachAggregate($e->getApplication()
+            $eventManager->getSharedManager()->attachAggregate($e->getApplication()
                 ->getServiceManager()
                 ->get($listener));
         }
