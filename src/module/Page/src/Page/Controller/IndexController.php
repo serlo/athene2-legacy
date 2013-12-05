@@ -34,9 +34,7 @@ class IndexController extends AbstractActionController
         $id = $this->params('id');
         $pageService = $this->getPageService();
         $pageService->setCurrentRevision($this->getPageManager()->getRevision($id));
-        $this->redirect()->toRoute('page/article', array(
-            'repositoryid' =>  $pageService->getRepositoryId()
-        ));
+        $this->redirect()->toReferer();//->toRoute('page/article', array('repositoryid' =>  $pageService->getRepositoryId()));
         $this->getObjectManager()->persist($pageService->getEntity());
         $this->getObjectManager()->flush();
     }

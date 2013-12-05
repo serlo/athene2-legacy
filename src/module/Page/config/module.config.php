@@ -241,7 +241,9 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => true
-                    )
+                    ),
+                    'setLicenseManager' => array(
+                        'required' => true)
                 )
             )
         ),

@@ -6,6 +6,8 @@ use Uuid\Entity\UuidEntity;
 use Versioning\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Entity\RoleInterface;
+use License\Entity\LicenseAwareInterface;
+use License\Entity\LicenseInterface;
 
 /**
  * A page repository.
@@ -14,7 +16,7 @@ use User\Entity\RoleInterface;
  * @ORM\Table(name="page_repository")
  * 
  */
-class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface
+class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface,LicenseAwareInterface 
 {
 
     /**
@@ -50,6 +52,22 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
 	 * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="page_repository", cascade="persist")
 	 */
 	protected $revisions;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
+	 */
+	protected $license;
+	
+	public function getLicense ()
+	{
+	    return $this->license;
+	}
+	
+	public function setLicense (LicenseInterface $license)
+	{
+	    $this->license = $license;
+	    return $this;
+	}
 	
 	public function __construct()
 	{

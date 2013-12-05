@@ -28,6 +28,7 @@ class PageManager implements PageManagerInterface
     use \Uuid\Manager\UuidManagerAwareTrait;
     use \Language\Manager\LanguageManagerAwareTrait;
     use \User\Manager\UserManagerAwareTrait;
+    use \License\Manager\LicenseManagerAwareTrait;
     
     /*
      * (non-PHPdoc) @see \Page\Manager\PageManagerInterface::getPageRepository()
@@ -79,6 +80,10 @@ class PageManager implements PageManagerInterface
     {
         $repository = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
         $this->getUuidManager()->injectUuid($repository);
+        
+        $license = $this->getLicenseManager()->getLicense(1); // Finds a license with the id 3
+        $this->getLicenseManager()->injectLicense($repository, $license);
+       // $this->getLicenseManager()->injectLicense($repository);
         return $repository;
     }
 
