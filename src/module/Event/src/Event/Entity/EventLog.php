@@ -14,7 +14,7 @@ namespace Event\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
@@ -51,7 +51,7 @@ class EventLog implements EventLogInterface
     protected $uuid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
@@ -134,7 +134,7 @@ class EventLog implements EventLogInterface
         return $this;
     }
 
-    public function setLanguage(LanguageInterface $language)
+    public function setLanguage(LanguageEntityInterface $language)
     {
         $this->language = $language;
         return $this;

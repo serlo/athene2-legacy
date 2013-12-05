@@ -11,7 +11,7 @@
  */
 namespace License\Entity;
 
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 
 interface LicenseInterface
 {
@@ -48,16 +48,16 @@ interface LicenseInterface
 
     /**
      *
-     * @return LanguageInterface
+     * @return LanguageEntityInterface
      */
     public function getLanguage();
 
     /**
      *
-     * @param LanguageInterface $language            
+     * @param LanguageEntityInterface $language            
      * @return $this
      */
-    public function setLanguage(LanguageInterface $language);
+    public function setLanguage(LanguageEntityInterface $language);
 
     /**
      *

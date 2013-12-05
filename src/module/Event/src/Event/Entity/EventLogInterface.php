@@ -13,7 +13,7 @@ namespace Event\Entity;
 
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Uuid\Entity\UuidHolder;
 
 
@@ -50,7 +50,7 @@ interface EventLogInterface
     /**
      * Gets the language.
      *
-     * @return LanguageInterface
+     * @return LanguageEntityInterface
      */
     public function getLanguage();
 
@@ -107,8 +107,8 @@ interface EventLogInterface
     /**
      * Sets the language.
      *
-     * @param LanguageInterface $language            
+     * @param LanguageEntityInterface $language            
      * @return $this
      */
-    public function setLanguage(LanguageInterface $language);
+    public function setLanguage(LanguageEntityInterface $language);
 }

@@ -13,7 +13,7 @@ namespace Event;
 
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Event\Exception;
 use Uuid\Entity\UuidInterface;
 use Event\Entity\EventInterface;
@@ -80,7 +80,7 @@ class EventManager implements EventManagerInterface
         return $this->getInstance($id);
     }
 
-    public function logEvent($uri, LanguageInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array())
+    public function logEvent($uri, LanguageEntityInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array())
     {
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         

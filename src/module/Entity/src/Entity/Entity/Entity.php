@@ -16,7 +16,7 @@ use Link\Entity\LinkableInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RevisionInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Link\Entity\LinkTypeInterface;
 use Link\Entity\LinkInterface;
 use Entity\Exception;
@@ -87,7 +87,7 @@ class Entity extends UuidEntity implements EntityInterface
     protected $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity", inversedBy="entities")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
@@ -176,7 +176,7 @@ class Entity extends UuidEntity implements EntityInterface
         return $this;
     }
 
-    public function setLanguage(LanguageInterface $language)
+    public function setLanguage(LanguageEntityInterface $language)
     {
         $this->language = $language;
         return $this;

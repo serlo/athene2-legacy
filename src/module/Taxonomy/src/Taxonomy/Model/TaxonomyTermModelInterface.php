@@ -14,7 +14,7 @@ namespace Taxonomy\Model;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\Common\Collections\Collection;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Term\Model\TermModelAwareInterface;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 
@@ -96,7 +96,7 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface
     
     /**
      * 
-     * @return LanguageInterface
+     * @return LanguageEntityInterface
      */
     public function getLanguage();
     

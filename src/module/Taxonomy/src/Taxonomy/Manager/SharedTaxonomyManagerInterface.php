@@ -8,8 +8,8 @@
  */
 namespace Taxonomy\Manager;
 
-use Language\Service\LanguageServiceInterface;
 use Taxonomy\Service\TermServiceInterface;
+use Language\Model\LanguageModelInterface;
 
 interface SharedTaxonomyManagerInterface
 {
@@ -17,10 +17,10 @@ interface SharedTaxonomyManagerInterface
     /**
      *
      * @param string $taxonomy            
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return TaxonomyManagerInterface
      */
-    public function findTaxonomyByName($taxonomy, LanguageServiceInterface $language);
+    public function findTaxonomyByName($taxonomy, LanguageModelInterface $language);
 
     /**
      *
@@ -34,7 +34,7 @@ interface SharedTaxonomyManagerInterface
      * @param TermTaxonomyInterface|numeric $term            
      * @return TermServiceInterface
      */
-    public function getTerm($term);
+    public function getTerm($idOrObject);
 
     /**
      *

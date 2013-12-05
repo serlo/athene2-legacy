@@ -1,10 +1,13 @@
 <?php
 /**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
  *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Taxonomy\Entity;
 
@@ -25,7 +28,7 @@ use Taxonomy\Model\TaxonomyTermModelAwareInterface;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
-class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
+class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
 {
 
     /**
@@ -41,7 +44,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
     protected $taxonomy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Term\Entity\Term",
+     * @ORM\ManyToOne(targetEntity="Term\Entity\TermEntity",
      * inversedBy="termTaxonomies")
      */
     protected $term;
@@ -93,6 +96,12 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
      * @ORM\OrderBy({"id"="DESC"})
      */
     private $blogPosts;
+    
+    protected $allowedRelations = [
+            'entities',
+            'comments',
+            'blogPosts'
+        ];
 
     public function __construct()
     {
@@ -100,11 +109,6 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         $this->entities = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
-        $this->allowedRelations = [
-            'entities',
-            'comments',
-            'blogPosts'
-        ];
     }
 
     public function getEntity()

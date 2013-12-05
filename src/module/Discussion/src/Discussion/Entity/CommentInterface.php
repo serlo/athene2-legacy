@@ -12,7 +12,7 @@
 namespace Discussion\Entity;
 
 use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use User\Entity\UserInterface;
 use Doctrine\Common\Collections\Collection;
 
@@ -34,14 +34,14 @@ interface CommentInterface
 
     /**
      *
-     * @param LanguageInterface $language            
+     * @param LanguageEntityInterface $language            
      * @return $this
      */
-    public function setLanguage(LanguageInterface $language);
+    public function setLanguage(LanguageEntityInterface $language);
 
     /**
      *
-     * @return LanguageInterface
+     * @return LanguageEntityInterface
      */
     public function getLanguage();
 

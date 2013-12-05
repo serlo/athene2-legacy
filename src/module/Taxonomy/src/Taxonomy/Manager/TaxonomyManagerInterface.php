@@ -11,7 +11,6 @@
  */
 namespace Taxonomy\Manager;
 
-use Language\Service\LanguageServiceInterface;
 use Taxonomy\Service\TermServiceInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Entity\TaxonomyTypeInterface;

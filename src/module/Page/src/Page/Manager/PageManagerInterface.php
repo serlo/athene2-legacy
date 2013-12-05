@@ -4,7 +4,7 @@ namespace Page\Manager;
 use Page\Entity\PageRevisionInterface;
 use Page\Entity\PageRepositoryInterface;
 use Page\Service\PageServiceInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 
 interface PageManagerInterface
 {
@@ -23,7 +23,7 @@ interface PageManagerInterface
     /**
      *
      * @param array $data
-     * @param LanguageInterface $language
+     * @param LanguageEntityInterface $language
      * @return PageServiceInterface
      */
 	public function createPageRepository(array $data,$language);

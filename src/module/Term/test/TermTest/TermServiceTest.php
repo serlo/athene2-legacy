@@ -13,7 +13,7 @@ namespace TermTest;
 
 use AtheneTest\TestCase\Model;
 use Term\Entity\Term;
-use Language\Entity\Language;
+use Language\Entity\LanguageEntity;
 use Term\Service\TermService;
 
 /**

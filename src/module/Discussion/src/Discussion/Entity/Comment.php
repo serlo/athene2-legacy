@@ -13,7 +13,7 @@ namespace Discussion\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
@@ -58,7 +58,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermModelA
     protected $votes;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
      */
     protected $language;
 
@@ -167,7 +167,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermModelA
         return $this;
     }
 
-    public function setLanguage(LanguageInterface $language)
+    public function setLanguage(LanguageEntityInterface $language)
     {
         $this->language = $language;
         return $this;

@@ -12,13 +12,14 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Model\TaxonomyTermModelInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Collection\TermCollection;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
+use Taxonomy\Exception;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Taxonomy\Model\TaxonomyTermModelInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
@@ -31,7 +32,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         
         if (! $this->hasInstance($id)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Model\TaxonomyTermModelInterface'), (int) $id);
+                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $id);
             
             if (! is_object($entity))
                 throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
@@ -45,7 +46,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     public function findTermByAncestors(array $ancestors)
     {
         if (! count($ancestors))
-            throw new RuntimeException('Ancestors are empty');
+            throw new Exception\RuntimeException('Ancestors are empty');
         
         $terms = $this->getEntity()->getSaplings();
         $ancestorsFound = 0;
@@ -168,7 +169,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     {
         /* @var $instance \Taxonomy\Service\TermServiceInterface */
         $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
-        $instance->setTaxonomyTerm($entity);
+        $instance->setEntity($entity);
         if ($entity->getTaxonomy() !== $this->getEntity()) {
             $instance->setManager($this->getSharedTaxonomyManager()
                 ->getTaxonomy($entity->getTaxonomy()

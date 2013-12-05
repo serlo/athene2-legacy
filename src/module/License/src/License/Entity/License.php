@@ -12,7 +12,7 @@
 namespace License\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 
 /**
  * @ORM\Entity
@@ -49,7 +49,7 @@ class License implements LicenseInterface
     protected $iconHref;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
      */
     protected $language;
 
@@ -156,7 +156,7 @@ class License implements LicenseInterface
      * @param field_type $language            
      * @return $this
      */
-    public function setLanguage(LanguageInterface $language)
+    public function setLanguage(LanguageEntityInterface $language)
     {
         $this->language = $language;
         return $this;

@@ -38,71 +38,34 @@ class TaxonomyType implements TaxonomyTypeInterface
      */
     protected $name;
 
-    /**
-     *
-     * @return field_type $id
-     */
+    public function __construct()
+    {
+        $this->taxonomies = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection $taxonomies
-     */
     public function getTaxonomies()
     {
         return $this->taxonomies;
     }
 
-    /**
-     *
-     * @param \Doctrine\Common\Collections\ArrayCollection $taxonomies            
-     * @return $this
-     */
-    public function setTaxonomies($taxonomies)
-    {
-        $this->taxonomies = $taxonomies;
-        return $this;
-    }
-
-    /**
-     *
-     * @return field_type $name
-     */
     public function getName()
     {
         return $this->name;
     }
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
+
     public function setName($name)
     {
         $this->name = $name;
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->taxonomies = new ArrayCollection();
-    }
-    
-    public function __toString(){
-        return $this->getName();
     }
 }

@@ -9,10 +9,20 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Entity;
+namespace Taxonomy\Manager;
 
-use Language\Model\LanguageModelInterface;
-
-interface LanguageEntityInterface extends LanguageModelInterface
+interface SharedTaxonomyManagerAwareInterface
 {
+    /**
+     * 
+     * @return SharedTaxonomyManagerInterface
+     */
+    public function getSharedTaxonomyManager();
+    
+    /**
+     * 
+     * @param SharedTaxonomyManagerInterface $sharedTaxonomyManager
+     * @return $this
+     */
+    public function setSharedTaxonomyManager(SharedTaxonomyManagerInterface $sharedTaxonomyManager);
 }

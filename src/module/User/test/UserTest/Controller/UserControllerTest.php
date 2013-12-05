@@ -48,7 +48,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
             ->will($this->returnValue($this->languageService));
         $this->languageService->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnValue($this->getMock('Language\Entity\Language')));
+            ->will($this->returnValue($this->getMock('Language\Entity\LanguageEntity')));
         $this->authServiceMock->expects($this->any())
             ->method('getAdapter')
             ->will($this->returnValue($this->authAdapterMock));

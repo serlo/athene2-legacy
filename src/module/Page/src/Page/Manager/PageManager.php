@@ -7,7 +7,7 @@ use Page\Entity\PageRepositoryInterface;
 use  Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
 use Page\Service\PageServiceInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Language\Service\LanguageServiceInterface;
 class PageManager implements PageManagerInterface
 {

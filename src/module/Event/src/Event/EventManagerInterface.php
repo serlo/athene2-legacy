@@ -13,7 +13,7 @@ namespace Event;
 
 use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Event\Entity\EventInterface;
 use Uuid\Entity\UuidInterface;
 interface EventManagerInterface
@@ -30,13 +30,13 @@ interface EventManagerInterface
      * </code>
      * 
      * @param string $eventName
-     * @param LanguageInterface $language
+     * @param LanguageEntityInterface $language
      * @param UserInterface $actor
      * @param UuidInterface $uuid
      * @param array $parameters
      * @return $this
      */
-    public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array());
+    public function logEvent($eventName, LanguageEntityInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array());
     
     /**
      * Finds an event by it's name

@@ -16,39 +16,25 @@ interface TaxonomyTypeInterface
 
     /**
      *
-     * @return field_type $id
+     * @return int $id
      */
     public function getId();
 
     /**
      *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId($id);
-
-    /**
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection $taxonomies
+     * @return TaxonomyInterface[]
      */
     public function getTaxonomies();
 
     /**
      *
-     * @param \Doctrine\Common\Collections\ArrayCollection $taxonomies            
-     * @return $this
-     */
-    public function setTaxonomies($taxonomies);
-
-    /**
-     *
-     * @return field_type $name
+     * @return string $name
      */
     public function getName();
 
     /**
      *
-     * @param field_type $name            
+     * @param string $name            
      * @return $this
      */
     public function setName($name);

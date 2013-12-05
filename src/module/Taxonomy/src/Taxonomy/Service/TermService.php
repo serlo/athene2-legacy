@@ -9,7 +9,6 @@
 namespace Taxonomy\Service;
 
 use Taxonomy\Exception\LinkNotAllowedException;
-use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception;
@@ -19,11 +18,12 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Exception\TermNotFoundException;
 use Common\Normalize\Normalized;
 use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
-class TermService implements TermServiceInterface
+class TermService  implements TermServiceInterface
 {
     
-    use\Term\Manager\TermManagerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
+    use \Term\Manager\TermManagerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
 
     /**
      *
@@ -65,6 +65,11 @@ class TermService implements TermServiceInterface
     public function getId()
     {
         return $this->getEntity()->getId();
+    }
+
+    public function getType()
+    {
+        return $this->getEntity()->getType();
     }
 
     public function getName()
@@ -123,19 +128,19 @@ class TermService implements TermServiceInterface
         return $callback($this->getServiceLocator(), $this->getEntity()->getAssociated($targetField));
     }
 
-    public function isAssociated($association, $object)
+    public function isAssociated($association, TaxonomyTermModelAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         return $this->getEntity()->isAssociated($association, $object);
     }
 
-    public function positionAssociatedObject($association, TaxonomyTermModelInterface $object, $position)
+    public function positionAssociatedObject($association, TaxonomyTermModelAwareInterface $object, $position)
     {
         $entity = $this->getEntity()->positionAssociatedObject($association, $object, $position);
         return $this;
     }
 
-    public function removeAssociation($association, TaxonomyTermModelInterface $object)
+    public function removeAssociation($association, TaxonomyTermModelAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         $this->getEntity()->removeAssociation($association, $object);
@@ -148,7 +153,7 @@ class TermService implements TermServiceInterface
             ->getTerm());
     }
 
-    public function associateObject($association, \Taxonomy\Model\TaxonomyTermModelInterface $object)
+    public function associateObject($association, TaxonomyTermModelAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         $this->getEntity()->addAssociation($association, $object);
@@ -234,7 +239,7 @@ class TermService implements TermServiceInterface
         return in_array($targetField, (array) $this->getOption('allowed_associations'));
     }
 
-    public function findAncestorByType($name)
+    public function findAncestorByTypeName($name)
     {
         $ancestor = $this->getEntity()->findAncestorByTypeName($name);
         
@@ -286,11 +291,11 @@ class TermService implements TermServiceInterface
 
     public function setEntity(TaxonomyTermModelInterface $term)
     {
-        $this->setEntity($term);
+        $this->entity = $term;
         return $this;
     }
 
-    public function setParent(TermServiceInterface $parent = NULL)
+    public function setParent(TaxonomyTermModelInterface $parent = NULL)
     {
         $entity = $this->getEntity();
         if ($parent === NULL) {
