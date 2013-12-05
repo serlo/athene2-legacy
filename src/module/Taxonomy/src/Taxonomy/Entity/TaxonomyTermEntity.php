@@ -113,7 +113,7 @@ class TaxonomyTermEntity
         return $this;
     }
     
-    public function __construct(TaxonomyTermInterface $termTaxonomy, EntityInterface $entity)
+    public function __construct(TaxonomyTermModelInterface $termTaxonomy, EntityInterface $entity)
     {
         $this->setTaxonomyTerm($termTaxonomy);
         $this->setEntity($entity);

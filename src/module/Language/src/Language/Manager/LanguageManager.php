@@ -11,7 +11,7 @@
  */
 namespace Language\Manager;
 
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageEntityInterface;
 use Language\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Collection\LanguageCollection;
@@ -35,7 +35,7 @@ class LanguageManager implements LanguageManagerInterface
     }
     
     public function findAllLanguages(){
-        $collection = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface'))->findAll();
+        $collection = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageEntityInterface'))->findAll();
         $collection = new ArrayCollection($collection);
         return new LanguageCollection($collection, $this);
     }
@@ -69,7 +69,7 @@ class LanguageManager implements LanguageManagerInterface
         
         if (! $this->hasInstance($id)) {
             $language = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Language\Entity\LanguageInterface'), $id);
+                ->resolveClassName('Language\Entity\LanguageEntityInterface'), $id);
             
             if (! is_object($language))
                 throw new Exception\LanguageNotFoundException(sprintf('Language %s could not be found', $id));
@@ -87,7 +87,7 @@ class LanguageManager implements LanguageManagerInterface
         
         $language = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Language\Entity\LanguageInterface'))
+            ->resolveClassName('Language\Entity\LanguageEntityInterface'))
             ->findOneBy(array(
             'code' => $code
         ));
@@ -102,7 +102,7 @@ class LanguageManager implements LanguageManagerInterface
         return $this->getInstance($language->getId());
     }
 
-    protected function createService(LanguageInterface $entity)
+    protected function createService(LanguageEntityInterface $entity)
     {
         $instance = $this->createInstance('Language\Service\LanguageServiceInterface');
         $instance->setEntity($entity);

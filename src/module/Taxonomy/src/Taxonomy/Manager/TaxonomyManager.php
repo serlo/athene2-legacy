@@ -12,7 +12,7 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Collection\TermCollection;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\RuntimeException;
@@ -24,7 +24,7 @@ use Taxonomy\Service\TermServiceInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getTerm($id)
     {
@@ -33,7 +33,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         
         if (! $this->hasInstance($id)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $id);
+                ->resolveClassName('Taxonomy\Model\TaxonomyTermModelInterface'), (int) $id);
             
             if (! is_object($entity))
                 throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
@@ -88,17 +88,6 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
-    public function getAllowedChildrenTypeNames()
-    {
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypeNames($this->getEntity()
-            ->getName());
-    }
-
-    public function getAllowedParentTypeNames()
-    {
-        return $this->getOption('allowed_parents');
-    }
-
     public function getAllowedChildrenTypes()
     {
         return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
@@ -145,7 +134,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     {
         $collection = $this->getEntity()
             ->getTerms()
-            ->filter(function (TaxonomyTermInterface $term) use($types)
+            ->filter(function (TaxonomyTermModelInterface $term) use($types)
         {
             return in_array($term->getTaxonomy()
                 ->getName(), $types);
@@ -164,7 +153,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
-    public function addTerm(TaxonomyTermInterface $term)
+    public function addTerm(TaxonomyTermModelInterface $term)
     {
         $this->getEntity()
             ->getTerms()
@@ -172,7 +161,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
-    protected function createService(TaxonomyTermInterface $entity)
+    protected function createService(TaxonomyTermModelInterface $entity)
     {
         /* @var $instance \Taxonomy\Service\TermServiceInterface */
         $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');

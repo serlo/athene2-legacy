@@ -12,6 +12,7 @@
 namespace Event\Service;
 
 use Event\Entity\EventLogInterface;
+use Event\Exception;
 
 class EventService implements EventServiceInterface
 {
@@ -56,6 +57,11 @@ class EventService implements EventServiceInterface
     public function getParameter($name)
     {
         $object = $this->getEntity()->getParameter($name);
+        
+        if(!is_object($object)){
+            throw new Exception\RuntimeException(sprintf('Event "%s" does not have a parameter called "%s".', $this->getName(), $name));
+        }
+        
         return $this->getUuidManager()->getService($object->getId());
     }
 

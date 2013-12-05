@@ -102,4 +102,8 @@ class TaxonomyType implements TaxonomyTypeInterface
     {
         $this->taxonomies = new ArrayCollection();
     }
+    
+    public function __toString(){
+        return $this->getName();
+    }
 }

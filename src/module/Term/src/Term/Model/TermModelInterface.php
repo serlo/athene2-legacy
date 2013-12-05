@@ -9,9 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Term\Entity;
+namespace Term\Model;
 
-interface TermInterface
+use Language\Model\LanguageModelAwareInterface;
+
+interface TermModelInterface extends LanguageModelAwareInterface
 {
 
     /**
@@ -19,20 +21,6 @@ interface TermInterface
      * @return int $id
      */
     public function getId();
-
-    /**
-     *
-     * @param int $id            
-     * @return $this
-     */
-    public function setId($id);
-
-    /**
-     *
-     * @return \Language\Entity\LanguageInterface $language
-     */
-    public function getLanguage();
-
     /**
      *
      * @return field_type $name
@@ -47,13 +35,6 @@ interface TermInterface
 
     /**
      *
-     * @param int $language            
-     * @return $this
-     */
-    public function setLanguage($language);
-
-    /**
-     *
      * @param string $name            
      * @return $this
      */
@@ -65,4 +46,10 @@ interface TermInterface
      * @return $this
      */
     public function setSlug($slug);
+    
+    /**
+     * 
+     * @return TermModelInterface
+     */
+    public function getEntity();
 }

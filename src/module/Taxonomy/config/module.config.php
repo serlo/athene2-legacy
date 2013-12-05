@@ -28,7 +28,7 @@ return array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
         'Taxonomy\Entity\TaxonomyInterface' => 'Taxonomy\Entity\Taxonomy',
-        'Taxonomy\Entity\TaxonomyTermInterface' => 'Taxonomy\Entity\TaxonomyTerm',
+        'Taxonomy\Model\TaxonomyTermModelInterface' => 'Taxonomy\Entity\TaxonomyTerm',
         'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService'
     ),
     'taxonomy' => array(

@@ -18,6 +18,7 @@ use Term\Exception\TermNotFoundException;
 use Language\Service\LanguageServiceInterface;
 use Common\Filter\Slugify;
 use Term\Exception;
+use Term\Entity\TermEntityInterface;
 
 class TermManager implements TermManagerInterface
 {
@@ -33,30 +34,33 @@ class TermManager implements TermManagerInterface
         return $this;
     }
 
-    public function getTerm($id)
+    public function getTerm($idOrObject)
     {
-        if (! is_numeric($id)) {
+        if (is_numeric($idOrObject)) {
+        } elseif ($idOrObject instanceof TermEntityInterface){
+            $idOrObject = $idOrObject->getId();
+        } else {
             throw new Exception\InvalidArgumentException();
         }
         
-        if (! $this->hasInstance($id)) {
+        if (! $this->hasInstance($idOrObject)) {
             $instance = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Term\Entity\TermInterface'), $id);
+                ->resolveClassName('Term\Entity\TermEntityInterface'), $idOrObject);
             
             if (! is_object($instance))
-                throw new TermNotFoundException($id);
+                throw new TermNotFoundException($idOrObject);
             
             $this->addTerm($this->createInstanceFromEntity($instance));
         }
         
-        return $this->getInstance($id);
+        return $this->getInstance($idOrObject);
     }
 
     public function findTermBySlug($slug, LanguageServiceInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Term\Entity\TermInterface'))
+            ->resolveClassName('Term\Entity\TermEntityInterface'))
             ->findOneBy(array(
             'slug' => $slug,
             'language' => $language->getId()
@@ -73,7 +77,7 @@ class TermManager implements TermManagerInterface
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Term\Entity\TermInterface'))
+            ->resolveClassName('Term\Entity\TermEntityInterface'))
             ->findOneBy(array(
             'name' => $name,
             'language' => $language->getId()
@@ -89,7 +93,7 @@ class TermManager implements TermManagerInterface
     public function createTerm($name, $slug = NULL, LanguageServiceInterface $language)
     {
         $filter = new Slugify();
-        $entity = $this->getClassResolver()->resolve('Term\Entity\TermInterface');
+        $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
         $entity->setName($name);
         $entity->setLanguage($language->getEntity());
         $entity->setSlug(($slug ? $slug : $filter->filter($name)));

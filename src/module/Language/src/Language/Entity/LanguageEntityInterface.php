@@ -9,17 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Service;
+namespace Language\Entity;
 
 use Language\Model\LanguageModelInterface;
-use Language\Entity\LanguageEntityInterface;
 
-interface LanguageServiceInterface extends LanguageModelInterface
+interface LanguageEntityInterface extends LanguageModelInterface
 {
-    /**
-     * 
-     * @param LanguageEntityInterface $language
-     * @return $this
-     */
-    public function setEntity(LanguageEntityInterface $language);
+
 }

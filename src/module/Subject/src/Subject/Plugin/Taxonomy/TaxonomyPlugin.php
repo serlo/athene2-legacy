@@ -117,7 +117,7 @@ class TaxonomyPlugin extends AbstractPlugin
             ->findTaxonomyByName($this->getOption('taxonomy_parent'), $this->getSubjectService()
             ->getLanguageService())
             ->findTermByAncestors((array) $taxonomyParentType)
-            ->findChildrenByTaxonomyName($this->getOption('taxonomy'));
+            ->findChildrenByTaxonomyNames($this->getOption('taxonomy'));
         return $return;
     }
 }

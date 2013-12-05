@@ -18,8 +18,8 @@ use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Entity\TaxonomyTermAware;
-use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
 /**
  * Comment ORM Entity
@@ -27,7 +27,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
+class Comment extends UuidEntity implements CommentInterface, TaxonomyTermModelAwareInterface
 {
 
     /**
@@ -286,13 +286,13 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
         return $this->terms;
     }
     
-    public function addTaxonomy(TaxonomyTermInterface $termTaxonomy)
+    public function addTaxonomyTerm(TaxonomyTermModelInterface $termTaxonomy)
     {
         $this->terms->add($termTaxonomy);
         return $this;
     }
     
-    public function removeTaxonomy(TaxonomyTermInterface $termTaxonomy)
+    public function removeTaxonomyTerm(TaxonomyTermModelInterface $termTaxonomy)
     {
         $this->terms->removeElement($termTaxonomy);
         return $this;

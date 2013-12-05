@@ -11,16 +11,41 @@
  */
 namespace Language\Service;
 
+use Language\Entity\LanguageEntityInterface;
+
 class LanguageService implements LanguageServiceInterface
 {
-    use\Common\Traits\EntityDelegatorTrait;
+
+    /**
+     *
+     * @var LanguageEntityInterface
+     */
+    protected $entity;
 
     public function getId()
     {
         return $this->getEntity()->getId();
     }
-    
-    public function getCode(){
+
+    public function getCode()
+    {
         return $this->getEntity()->getCode();
+    }
+
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(LanguageEntityInterface $entity)
+    {
+        $this->entity = $entity;
+        return $this;
+    }
+
+    public function setCode($code)
+    {
+        $this->getEntity()->setCode($code);
+        return $this;
     }
 }

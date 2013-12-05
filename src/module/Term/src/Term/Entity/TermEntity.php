@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="term")
  */
-class Term implements TermInterface
+class TermEntity implements TermEntityInterface
 {
 
     /**
@@ -50,80 +50,43 @@ class Term implements TermInterface
      */
     private $termTaxonomies;
 
-    /**
-     *
-     * @return field_type $id
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId($id)
+    public function getEntity()
     {
-        $this->id = $id;
         return $this;
     }
 
-    /**
-     *
-     * @return field_type $language
-     */
     public function getLanguage()
     {
         return $this->language;
     }
 
-    /**
-     *
-     * @return field_type $name
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     *
-     * @return field_type $slug
-     */
     public function getSlug()
     {
         return $this->slug;
     }
 
-    /**
-     *
-     * @param field_type $language            
-     * @return $this
-     */
     public function setLanguage($language)
     {
         $this->language = $language;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
     public function setName($name)
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $slug            
-     * @return $this
-     */
     public function setSlug($slug)
     {
         $this->slug = $slug;

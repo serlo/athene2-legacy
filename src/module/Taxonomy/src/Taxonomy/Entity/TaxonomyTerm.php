@@ -11,10 +11,11 @@ namespace Taxonomy\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Taxonomy\Exception\RuntimeException;
-use Common\ArrayCopyProvider;
 use Entity\Entity\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Blog\Entity\PostInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use Term\Model\TermModelInterface;
 
 /**
  * A
@@ -23,7 +24,7 @@ use Blog\Entity\PostInterface;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
-class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
+class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
 {
 
     /**
@@ -92,11 +93,18 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
      */
     private $blogPosts;
 
-    protected $allowedRelations = array(
-        'entities',
-        'comments',
-        'blogPosts'
-    );
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+        $this->entities = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->termTaxonomyEntities = new ArrayCollection();
+        $this->allowedRelations = [
+            'entities',
+            'comments',
+            'blogPosts'
+        ];
+    }
 
     public function getDescription()
     {
@@ -110,13 +118,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
 
     public function hasChildren()
     {
-        return $this->getChildren()->count() != 0;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        return $this;
+        return $this->getChildren()->count() !== 0;
     }
 
     public function getTaxonomy()
@@ -134,6 +136,11 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->parent;
     }
 
+    public function getType()
+    {
+        return $this->getTaxonomy()->getType();
+    }
+
     public function getName()
     {
         return $this->getTerm()->getName();
@@ -144,52 +151,14 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->getTerm()->getSlug();
     }
 
-    public function setTaxonomy($taxonomy)
-    {
-        $this->taxonomy = $taxonomy;
-        return $this;
-    }
-
-    public function setChildren($children)
-    {
-        $this->children = $children;
-        return $this;
-    }
-
-    public function setParent($parent)
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    public function getWeight()
+    public function getPosition()
     {
         return $this->weight;
-    }
-
-    public function setWeight($weight)
-    {
-        $this->weight = $weight;
-        return $this;
     }
 
     public function getTerm()
     {
         return $this->term;
-    }
-
-    public function setTerm($term)
-    {
-        $this->term = $term;
-        return $this;
-    }
-
-    public function __construct()
-    {
-        $this->children = new ArrayCollection();
-        $this->entities = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        $this->termTaxonomyEntities = new ArrayCollection();
     }
 
     public function getArrayCopy()
@@ -202,6 +171,12 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
             'taxonomy' => $this->getTaxonomy()->getId(),
             'parent' => $this->getParent()->getId()
         );
+    }
+
+    public function isAssociated($association, TaxonomyTermModelInterface $object)
+    {
+        $associations = $this->getEntity()->getAssociated($association);
+        return $associations->contains($object);
     }
 
     public function getAssociated($field)
@@ -217,7 +192,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
     }
 
-    public function countAssociated($field)
+    public function countAssociations($field)
     {
         return $this->getAssociated($field)->count();
     }
@@ -227,12 +202,12 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->getTaxonomy()->getLanguage();
     }
 
-    public function addAssociation($field, $entity)
+    public function associateObject($field, $entity)
     {
         $method = 'add' . ucfirst($field);
         if (! method_exists($this, $method)) {
-            if (! $entity instanceof TaxonomyTermAware)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermAware but got %s', get_class($entity)));
+            if (! $entity instanceof TaxonomyTermModelInterface)
+                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermModelInterface but got %s', get_class($entity)));
             $this->getAssociated($field)->add($entity);
             $entity->addTaxonomy($this);
         } else {
@@ -241,7 +216,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this;
     }
 
-    public function orderAssociated($association, $of, $order)
+    public function positionAssociatedObject($association, $of, $order)
     {
         $method = 'order' . ucfirst($association);
         
@@ -255,8 +230,8 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     {
         $method = 'remove' . ucfirst($field);
         if (! method_exists($this, $method)) {
-            if (! $entity instanceof TaxonomyTermAware)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermAware but got %s', get_class($entity)));
+            if (! $entity instanceof TaxonomyTermModelInterface)
+                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermModelInterface but got %s', get_class($entity)));
             $this->getAssociated($field)->removeElement($entity);
             $entity->removeTaxonomy($this);
         } else {
@@ -265,20 +240,50 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this;
     }
 
-    private function addBlogPosts(PostInterface $post)
+    public function setTaxonomy(TaxonomyInterface $taxonomy)
+    {
+        $this->taxonomy = $taxonomy;
+        return $this;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function setParent(TaxonomyTermModelInterface $parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    public function setPosition($position)
+    {
+        $this->weight = $position;
+        return $this;
+    }
+
+    public function setTerm(TermModelInterface $term)
+    {
+        $this->term = $term;
+        return $this;
+    }
+
+    protected function addBlogPosts(PostInterface $post)
     {
         $post->setCategory($this);
         $this->blogPosts->add($post);
         return $this;
     }
 
-    private function removeBlogPosts(PostInterface $post)
+    protected function removeBlogPosts(PostInterface $post)
     {
         $this->blogPosts->removeElement($post);
         return $this;
     }
 
-    private function orderEntities($entity, $position)
+    protected function orderEntities($entity, $position)
     {
         foreach ($this->termTaxonomyEntities as $rel) {
             if ($rel->getEntity()->getId() == $entity) {
@@ -289,7 +294,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $rel;
     }
 
-    private function addEntities(EntityInterface $entity)
+    protected function addEntities(EntityInterface $entity)
     {
         // Build new relation object to handle join entity correct
         $rel = new TaxonomyTermEntity($this, $entity);
@@ -301,7 +306,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this;
     }
 
-    private function removeEntities(EntityInterface $entity)
+    protected function removeEntities(EntityInterface $entity)
     {
         // Iterate over all join entities to find the correct
         foreach ($this->termTaxonomyEntities as $rel) {
@@ -313,8 +318,8 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         }
         return $this;
     }
-
-    private function getEntities()
+    
+    protected function getEntities()
     {
         $collection = new \Doctrine\Common\Collections\ArrayCollection();
         

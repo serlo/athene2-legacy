@@ -62,7 +62,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
             $this->getObjectManager()->refresh($this->getTermService()
                 ->getEntity());
         
-        $terms = $this->getTermService()->filterChildren($this->getOption('types'));
+        $terms = $this->getTermService()->findChildrenByTaxonomyNames($this->getOption('types'));
         $return = $this->iterTerms($terms, $this->getOption('max_depth'));
         $this->termService = NULL;
         return $return;
@@ -86,7 +86,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
                 // getPathToTermAsUri
                 
                 $current['label'] = $term->getName();
-                $children = $term->filterChildren($this->getOption('types'));
+                $children = $term->findChildrenByTaxonomyNames($this->getOption('types'));
                 if (count($children)) {
                     $current['pages'] = $this->iterTerms($children, $depth - 1);
                 }

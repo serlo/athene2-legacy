@@ -13,50 +13,50 @@ namespace Language\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**    
+/**
  * A language.
- * 
+ *
  * @ORM\Entity
- * @ORM\Table(name="language")  
+ * @ORM\Table(name="language")
  */
-class Language implements LanguageInterface
+class LanguageEntity implements LanguageEntityInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
     protected $id;
-    
+
     /**
      * @ORM\Column(type="string", length=2)
      */
     protected $code;
-
-    /**
-     * @return field_type $code
-     */
+    
     public function getCode()
     {
         return $this->code;
     }
 
-	/**
-     * @param field_type $code
-     * @return $this
-     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function getEntity()
+    {
+        return $this;
+    }
+    
     public function setCode($code)
     {
         $this->code = $code;
         return $this;
     }
 
-	public function getId ()
+    public function setId($id)
     {
-        return $this->id;
-    }
-    
-    public function setId($id){
         $this->id = $id;
         return $this;
     }

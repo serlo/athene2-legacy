@@ -13,7 +13,7 @@ namespace Blog\Entity;
 
 use Uuid\Entity\UuidEntity;
 use User\Entity\UserInterface;
-use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -106,7 +106,7 @@ class Post extends UuidEntity implements PostInterface
         return $this;
     }
 
-    public function setCategory(TaxonomyTermInterface $category)
+    public function setCategory(TaxonomyTermModelInterface $category)
     {
         $this->category = $category;
         return $this;

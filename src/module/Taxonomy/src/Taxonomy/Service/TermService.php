@@ -10,7 +10,7 @@ namespace Taxonomy\Service;
 
 use Taxonomy\Exception\LinkNotAllowedException;
 use Taxonomy\Exception\InvalidArgumentException;
-use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,32 +18,214 @@ use Doctrine\Common\Collections\Collection;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Exception\TermNotFoundException;
 use Common\Normalize\Normalized;
+use Taxonomy\Exception\RuntimeException;
 
 class TermService implements TermServiceInterface
 {
     
-    use \ClassResolver\ClassResolverAwareTrait ,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
+    use \Term\Manager\TermManagerAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
 
     /**
      *
      * @var \Taxonomy\Manager\TaxonomyManagerInterface
      */
     protected $manager;
-
+    
     /**
-     *
-     * @param TaxonomyTermInterface $term            
-     * @return $this;
+     * 
+     * @var TaxonomyTermModelInterface
      */
-    public function setTaxonomyTerm(TaxonomyTermInterface $term)
+    protected $entity;
+
+    public function getEntity()
     {
-        $this->setEntity($term);
-        return $this;
+        return $this->entity;
     }
 
     public function getArrayCopy()
     {
         return $this->getEntity()->getArrayCopy();
+    }
+
+    public function hasChildren()
+    {
+        return $this->getEntity()->hasChildren();
+    }
+
+    public function hasParent()
+    {
+        return $this->getEntity()->hasParent();
+    }
+
+    public function isTrashed()
+    {
+        return $this->getEntity()->isTrashed();
+    }
+
+    public function getId()
+    {
+        return $this->getEntity()->getId();
+    }
+
+    public function getName()
+    {
+        return $this->getEntity()->getName();
+    }
+
+    public function getTaxonomy()
+    {
+        return $this->getEntity()->getTaxonomy();
+    }
+
+    public function getConfig()
+    {
+        return $this->getManager()->getConfig();
+    }
+
+    public function getOption($name)
+    {
+        return $this->getManager()->getOption($name);
+    }
+    
+    public function getSlug()
+    {
+        return $this->getEntity()->getSlug();
+    }
+
+    public function getDescription()
+    {
+        return $this->getEntity()->getDescription();
+    }
+
+    public function getChildren()
+    {
+        return new TermCollection($this->getEntity()->getChildren(), $this->getSharedTaxonomyManager());
+    }
+    
+    public function getPosition ()
+    {
+        return $this->getEntity()->getPosition();
+    }
+    
+    public function getLanguage ()
+    {
+        return $this->getManager()->getLanguageService();
+    }
+
+    public function getParent()
+    {
+        $parent = $this->getEntity()->getParent();
+        if ($parent === NULL) {
+            throw new Exception\RuntimeException(sprintf('Taxonomy term `%s` has no parent', $this->getName()));
+        }
+        return $this->getSharedTaxonomyManager()->getTerm($parent->getId());
+    }
+
+    public function countAssociations ($association)
+    {
+        return $this->getEntity()->countAssociations($association);
+    }
+
+    public function getAssociated($targetField)
+    {
+        $this->isLinkAllowedWithException($targetField);
+        $callback = $this->getCallbackForLink($targetField);
+        return $callback($this->getServiceLocator(), $this->getEntity()->getAssociated($targetField));
+    }
+
+    public function isAssociated($association, $object)
+    {
+        $this->isLinkAllowedWithException($association);
+        return $this->getEntity()->isAssociated($association, $object);
+    }
+
+    public function positionAssociatedObject($association, TaxonomyTermModelInterface $object, $position)
+    {
+        $entity = $this->getEntity()->positionAssociatedObject($association, $object, $position);
+        return $this;
+    }
+
+    public function removeAssociation($association, TaxonomyTermModelInterface $object)
+    {
+        $this->isLinkAllowedWithException($association);
+        $this->getEntity()->removeAssociation($association, $object);
+        return $this;
+    }
+    
+    public function getTerm ()
+    {
+        return $this->getTermManager()->getTerm($this->getEntity()->getTerm());
+    }
+
+    public function associateObject ($association,\Taxonomy\Model\TaxonomyTermModelInterface $object)
+    {
+        $this->isLinkAllowedWithException($association);
+        $this->getEntity()->addAssociation($association, $object);
+        return $this;
+    }
+    
+    public function setTaxonomy (\Taxonomy\Entity\TaxonomyInterface $taxonomy)
+    {
+        $this->getEntity()->setTaxonomy($taxonomy);
+        return $this;
+    }
+
+    public function setDescription ($description)
+    {
+        $this->getEntity()->setDescription($description);
+        return $this;
+    }
+    public function setPosition ($position)
+    {
+        $this->getEntity()->setPosition($position);
+        return $this;
+    }
+    
+    public function setTerm (\Term\Model\TermModelInterface $term)
+    {
+        $this->getEntity()->setTerm($term->getEntity());
+        return $this;
+    }
+    
+    public function setEntity(TaxonomyTermModelInterface $term)
+    {
+        $this->setEntity($term);
+        return $this;
+    }
+
+    public function setParent(TermServiceInterface $parent = NULL)
+    {
+        $entity = $this->getEntity();
+        if ($parent === NULL) {
+            if ($this->radixEnabled()) {
+                $entity->setParent(NULL);
+            } else {
+                throw new Exception\RuntimeException('Radix not allowed.');
+            }
+        } else {
+            if ($this->parentNodeAllowed($parent)) {
+                $entity->setParent($parent->getEntity());
+            } else {
+                throw new Exception\RuntimeException(sprintf('Parent `%s` (%d) not allowed for `%s` (%d).', $parent->getName(), $parent->getId(), $entity->getName(), $entity->getId()));
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+    public function getManager()
+    {
+        return $this->manager;
     }
 
     public function normalize()
@@ -54,29 +236,6 @@ class TermService implements TermServiceInterface
         $normalized->setRouteName($routeMatch->getMatchedRouteName());
         $normalized->setRouteParams($routeMatch->getParams());
         return $normalized;
-    }
-
-    public function isTrashed()
-    {
-        return $this->getEntity()->isTrashed();
-    }
-
-    /**
-     *
-     * @return TaxonomyTermInterface $term
-     */
-    public function getTaxonomyTerm()
-    {
-        return $this->getEntity();
-    }
-
-    public function orderAssociated($association, $object, $order)
-    {
-        $entity = $this->getEntity()->orderAssociated($association, $object, $order);
-        $this->getSharedTaxonomyManager()
-            ->getObjectManager()
-            ->persist($entity);
-        return $this;
     }
 
     public function getDescendantBySlugs(array $path)
@@ -109,138 +268,32 @@ class TermService implements TermServiceInterface
         return $found;
     }
 
-    public function findChildrenByTaxonomyName($taxonomy)
+    public function findChildrenByTaxonomyNames($names)
     {
-        return $this->filterChildren((array) $taxonomy);
+        $names = (array) $names;
+        $collection = $this->getEntity()
+            ->getChildren()
+            ->filter(function (TaxonomyTermModelInterface $term) use($names)
+        {
+            return in_array($term->getTaxonomy()
+                ->getName(), $names);
+        });
+        return new TermCollection($collection, $this->getSharedTaxonomyManager());
     }
 
     public function getTemplate($template)
     {
         if (! isset($this->getOption('templates')[$template]))
-            throw new InvalidArgumentException(sprintf('Template `%s` not found for taxonomy `%s`', $template, $this->getTaxonomy()->getName()));
+            throw new RuntimeException(sprintf('Template `%s` not found for taxonomy `%s`', $template, $this->getTaxonomy()->getName()));
         
         return $this->getOption('templates')[$template];
     }
-
-    public function hasChildren()
-    {
-        return $this->getTaxonomyTerm()->hasChildren();
-    }
-
-    public function hasParent()
-    {
-        return $this->getTaxonomyTerm()->hasParent();
-    }
-
-    public function getParent()
-    {
-        $parent = $this->getTaxonomyTerm()->getParent();
-        if ($parent === NULL) {
-            throw new Exception\RuntimeException(sprintf('Taxonomy term `%s` has no parent', $this->getName()));
-        }
-        return $this->getSharedTaxonomyManager()->getTerm($parent->getId());
-    }
-
-    public function filterChildren(array $types)
-    {
-        $collection = $this->getTaxonomyTerm()
-            ->getChildren()
-            ->filter(function (TaxonomyTermInterface $term) use($types)
-        {
-            return in_array($term->getTaxonomy()
-                ->getName(), $types);
-        });
-        return new TermCollection($collection, $this->getSharedTaxonomyManager());
-    }
-
-    public function getChildren()
-    {
-        return new TermCollection($this->getTaxonomyTerm()->getChildren(), $this->getSharedTaxonomyManager());
-    }
-
-    public function getAllLinks()
-    {
-        $return = array();
-        foreach ($this->getAllowedAssociations() as $targetField => $options) {
-            $return[$targetField] = $this->getAssociated($targetField);
-        }
-        return $return;
-    }
-
-    public function hasLinks($targetField)
-    {
-        if (! $this->isAssociationAllowed($targetField))
-            return false;
-        
-        return $this->getTaxonomyTerm()
-            ->getAssociatedions($targetField)
-            ->count() != 0;
-    }
-
-    public function countLinks($targetField)
-    {
-        if (! $this->isAssociationAllowed($targetField))
-            return 0;
-        
-        return $this->getTaxonomyTerm()
-            ->getAssociated($targetField)
-            ->count();
-    }
-
-    public function getAssociated($targetField, $recursive = false, $allowedTaxonomies = NULL)
-    {
-        if (! $recursive) {
-            $this->isLinkAllowedWithException($targetField);
-            $callback = $this->getCallbackForLink($targetField);
-            return $callback($this->getServiceLocator(), $this->getTaxonomyTerm()->getAssociated($targetField));
-        } else {
-            $collection = new ArrayCollection();
-            $collection = $this->injectLinks($collection, $this, $targetField, $allowedTaxonomies);
-            $callback = $this->getCallbackForLink($targetField);
-            return $callback($this->getServiceLocator(), $collection);
-        }
-    }
-
-    public function getCallbackForLink($link)
-    {
-        return $this->getSharedTaxonomyManager()->getCallback($link);
-    }
-
-    public function getTemplateForAssociation($association)
-    {
-        return $this->getSharedTaxonomyManager()->getTemplateForAssociation($association);
-    }
-
-    public function associate($targetField, $target)
-    {
-        $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getTaxonomyTerm();
-        
-        $entity->addAssociation($targetField, $target);
-        return $this;
-    }
-
-    public function removeAssociation($targetField, $target)
-    {
-        $this->isLinkAllowedWithException($targetField);
-        $entity = $this->getTaxonomyTerm();
-        
-        $entity->removeAssociation($targetField, $target);
-        
-        return $this;
-    }
-
-    public function isAssociated($targetField, $target)
-    {
-        $this->isLinkAllowedWithException($targetField);
-        $targets = $this->getTaxonomyTerm()->getAssociated($targetField);
-        return $targets->contains($target);
-    }
-
-    protected function isLinkAllowedWithException($targetField)
-    {
-        if (! $this->isAssociationAllowed($targetField))
-            throw new LinkNotAllowedException();
+    
+    public function getAssociatedRecursive($targetField, array $allowedTaxonomies = array()){
+        $collection = new ArrayCollection();
+        $collection = $this->prepareAssociations($collection, $this, $targetField, $allowedTaxonomies);
+        $callback = $this->getCallbackForLink($targetField);
+        return $callback($this->getServiceLocator(), $collection);
     }
 
     public function getAllowedAssociations()
@@ -285,7 +338,7 @@ class TermService implements TermServiceInterface
     public function setName($name)
     {
         $term = $this->getTermManager()->getTerm($name);
-        $this->getTaxonomyTerm()->set('term', $term->getTermTaxonomy());
+        $this->getEntity()->set('term', $term->getTermTaxonomy());
         return $this;
     }
 
@@ -315,16 +368,6 @@ class TermService implements TermServiceInterface
             ->getName());
     }
 
-    public function getAllowedParentTypeNames()
-    {
-        return $this->getManager()->getAllowedParentTypeNames();
-    }
-
-    public function getAllowedChildrenTypeNames()
-    {
-        return $this->getManager()->getAllowedChildrenTypeNames();
-    }
-
     public function getAllowedParentTypes()
     {
         return $this->getManager()->getAllowedParentTypes();
@@ -335,110 +378,40 @@ class TermService implements TermServiceInterface
         return $this->getManager()->getAllowedChildrenTypes();
     }
 
-    public function radixEnabled()
-    {
-        return $this->getOption('radix_enabled');
-    }
-
-    public function setParent(TermServiceInterface $parent = NULL)
-    {
-        $entity = $this->getTaxonomyTerm();
-        if ($parent === NULL) {
-            if ($this->radixEnabled()) {
-                $entity->setParent(NULL);
-            } else {
-                throw new Exception\RuntimeException('Radix not allowed.');
-            }
-        } else {
-            if ($this->parentNodeAllowed($parent)) {
-                $entity->setParent($parent->getEntity());
-            } else {
-                throw new Exception\RuntimeException(sprintf('Parent `%s` (%d) not allowed for `%s` (%d).', $parent->getName(), $parent->getId(), $entity->getName(), $entity->getId()));
-            }
-        }
-    }
-
-    public function getConfig()
-    {
-        return $this->getManager()->getConfig();
-    }
-
-    public function getOption($name)
-    {
-        return $this->getManager()->getOption($name);
-    }
-
-    public function getId()
-    {
-        return $this->getTaxonomyTerm()->getId();
-    }
-
-    public function getName()
-    {
-        return $this->getTaxonomyTerm()->getName();
-    }
-
-    public function getTaxonomy()
-    {
-        return $this->getTaxonomyTerm()->getTaxonomy();
-    }
-
-    public function getLanguageService()
-    {
-        return $this->getManager()->getLanguageService();
-    }
-
-    public function getTypeName()
-    {
-        return $this->getTaxonomyTerm()
-            ->getTaxonomy()
-            ->getName();
-    }
-
-    public function getSlug()
-    {
-        return $this->getTaxonomyTerm()->getSlug();
-    }
-
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
     public function setManager(TaxonomyManagerInterface $termManager)
     {
         $this->manager = $termManager;
         return $this;
     }
-
-    protected function injectLinks(Collection $collection, TermService $term, $targetField, $allowedTaxonomies = NULL)
+    
+    protected function getCallbackForLink($link)
     {
-        if (! $allowedTaxonomies) {
+        return $this->getSharedTaxonomyManager()->getCallback($link);
+    }
+
+    protected function prepareAssociations(Collection $collection, TermService $term, $targetField, array $allowedTaxonomies = array())
+    {
+        if (empty($allowedTaxonomies)) {
             return $collection;
         }
         
         if ($term->isAssociationAllowed($targetField)) {
-            foreach ($term->getTaxonomyTerm()->getAssociated($targetField) as $link) {
+            foreach ($term->getEntity()->getAssociated($targetField) as $link) {
                 $collection->add($link);
             }
         }
         
         foreach ($term->getChildren() as $child) {
             if (in_array($child->getTaxonomy()->getName(), $allowedTaxonomies)) {
-                $this->injectLinks($collection, $child, $targetField, $allowedTaxonomies);
+                $this->prepareAssociations($collection, $child, $targetField, $allowedTaxonomies);
             }
         }
         return $collection;
     }
 
-    public function setOrder($order)
+    protected function isLinkAllowedWithException($targetField)
     {
-        $this->getEntity()->setWeight($order);
-        return $this;
-    }
-
-    public function getDescription()
-    {
-        return $this->getEntity()->getDescription();
+        if (! $this->isAssociationAllowed($targetField))
+            throw new LinkNotAllowedException();
     }
 }

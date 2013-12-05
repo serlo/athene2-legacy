@@ -13,10 +13,12 @@
 namespace Term\Service;
 
 use Term\Manager\TermManagerInterface;
+use Term\Entity\TermEntityInterface;
+use Language\Model\LanguageModelInterface;
 
 class TermService implements TermServiceInterface
 {
-    use\Common\Traits\EntityDelegatorTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait;
 
     /**
      *
@@ -26,90 +28,68 @@ class TermService implements TermServiceInterface
 
     /**
      *
-     * @return TaxonomyManagerInterface $manager
+     * @var TermEntityInterface
      */
+    protected $entity;
+
     public function getManager()
     {
         return $this->manager;
     }
 
-    /**
-     *
-     * @param TaxonomyManagerInterface $manager            
-     * @return $this
-     */
-    public function setManager(TermManagerInterface $manager)
+    public function getEntity()
     {
-        $this->manager = $manager;
-        return $this;
+        return $this->entity;
     }
 
-    /**
-     *
-     * @return field_type $language
-     */
     public function getLanguage()
     {
         return $this->getEntity()->getLanguage();
     }
 
-    /**
-     *
-     * @return field_type $name
-     */
     public function getName()
     {
         return $this->getEntity()->getName();
     }
 
-    /**
-     *
-     * @return field_type $slug
-     */
     public function getId()
     {
         return $this->getEntity()->getId();
     }
 
-    /**
-     *
-     * @return field_type $slug
-     */
     public function getSlug()
     {
         return $this->getEntity()->getSlug();
     }
 
-    /**
-     *
-     * @param field_type $language            
-     * @return $this
-     */
-    public function setLanguage($language)
+    public function setLanguage(LanguageModelInterface $language)
     {
+        $language = $language->getEntity();
         $this->getEntity()->setLanguage($language);
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
     public function setName($name)
     {
         $this->getEntity()->setName($name);
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $slug            
-     * @return $this
-     */
     public function setSlug($slug)
     {
         $this->getEntity()->setSlug($slug);
+        return $this;
+    }
+
+    public function setManager(TermManagerInterface $manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+    public function setEntity(TermEntityInterface $entity)
+    {
+        $this->entity = $entity;
         return $this;
     }
 }

@@ -13,7 +13,7 @@ use Taxonomy\Exception\InvalidArgumentException;
 use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\ConfigNotFoundException;
 use Taxonomy\Exception\TermNotFoundException;
-use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Exception\RuntimeException;
@@ -86,14 +86,14 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     {
         if (is_numeric($term)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $term);
-        } elseif ($term instanceof TaxonomyTermInterface) {
+                ->resolveClassName('Taxonomy\Model\TaxonomyTermModelInterface'), (int) $term);
+        } elseif ($term instanceof TaxonomyTermModelInterface) {
             $entity = $term;
         } else {
             if (! is_object($term)) {
                 throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($term)));
             } else {
-                throw new InvalidArgumentException(sprintf('Expected `Taxonomy\Entity\TaxonomyTermInterface` but got %s', get_class($term)));
+                throw new InvalidArgumentException(sprintf('Expected `Taxonomy\Model\TaxonomyTermModelInterface` but got %s', get_class($term)));
             }
         }
         
@@ -115,15 +115,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getOption('associations')[$link]['callback'];
     }
 
-    public function getTemplateForAssociation($association)
-    {
-        if (! array_key_exists($association, $this->getOption('associations')))
-            throw new RuntimeException(sprintf('Association `%s` not found', $association));
-        
-        return $this->getOption('associations')[$association]['options']['template'];
-    }
-
-    public function getAllowedChildrenTypeNames($type)
+    protected function getAllowedChildrenTypeNames($type)
     {
         $return = array();
         foreach ($this->getOption('types') as $name => $config) {
@@ -162,7 +154,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
 
     public function createTerm(array $data)
     {
-        $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
+        $entity = $this->getClassResolver()->resolve('Taxonomy\Model\TaxonomyTermModelInterface');
 
         $this->hydrateTerm($data, $entity);
         $this->getUuidManager()->injectUuid($entity);
@@ -172,7 +164,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $entity;
     }
 
-    private function hydrateTerm(array $data, TaxonomyTermInterface $taxonomyTerm)
+    private function hydrateTerm(array $data, TaxonomyTermModelInterface $taxonomyTerm)
     {
         $columns = array(
             //'parent' => 'setParent',

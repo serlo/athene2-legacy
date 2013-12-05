@@ -7,6 +7,8 @@
             <li class="sortable-item" data-id="<?php echo $associated->getId(); ?>">
                 <span class="sortable-handle"></span>
                 <div class="sortable-item-inner">
+                    FIXME USE NORMALIZER INSTEAD
+                
                     <?php $template = $this->term->getTemplateForAssociation($this->association); ?>
                     <?php if($this->association === 'entities'): ?>
                         <?php echo $this->partial($template, array('entity' => $associated)); ?>

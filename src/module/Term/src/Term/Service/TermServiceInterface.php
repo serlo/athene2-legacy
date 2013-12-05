@@ -12,8 +12,11 @@
 namespace Term\Service;
 
 use Term\Manager\TermManagerInterface;
+use Term\Model\TermModelInterface;
+use Term\Entity\TermEntityInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 
-interface TermServiceInterface
+interface TermServiceInterface extends TermModelInterface
 {
     /**
      * @param TaxonomyManagerInterface $manager
@@ -32,37 +35,11 @@ interface TermServiceInterface
      * @return \Language\Service\LanguageServiceInterface $language
      */
     public function getLanguage();
-
+    
     /**
-     *
-     * @return field_type $name
-     */
-    public function getName();
-
-    /**
-     *
-     * @return field_type $slug
-     */
-    public function getSlug();
-
-    /**
-     *
-     * @param int $language            
+     * 
+     * @param TermEntityInterface $entity
      * @return $this
      */
-    public function setLanguage($language);
-
-    /**
-     *
-     * @param string $name            
-     * @return $this
-     */
-    public function setName($name);
-
-    /**
-     *
-     * @param string $slug            
-     * @return $this
-     */
-    public function setSlug($slug);
+    public function setEntity(TermEntityInterface $entity);
 }

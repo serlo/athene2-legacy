@@ -64,7 +64,7 @@ class ProviderPlugin extends AbstractPlugin
     }
     
     protected function iterTerm(TermServiceInterface $term){
-        if($term->getTypeName() == 'subject'){
+        if((string) $term->getType() == 'subject'){
             return $term;
         } else {
             if($term->hasParent()){

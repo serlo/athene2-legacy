@@ -41,8 +41,4 @@ trait SubjectDelegatorTrait
     {
         return $this->getSubjectEntity()->getName();
     }
-    
-    public function getTypeName(){
-        return $this->getSubjectEntity()->getTypeName();
-    }
 }

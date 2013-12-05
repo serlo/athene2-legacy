@@ -129,7 +129,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             ->method('resolveClassName')
             ->will($this->returnValueMap(array(
             array(
-                'Taxonomy\Entity\TaxonomyTermInterface',
+                'Taxonomy\Model\TaxonomyTermModelInterface',
                 'Taxonomy\Entity\TaxonomyTerm'
             ),
             array(
