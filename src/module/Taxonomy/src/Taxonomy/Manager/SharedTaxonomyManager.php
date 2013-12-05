@@ -18,10 +18,11 @@ use Taxonomy\Entity\TaxonomyInterface;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Exception\RuntimeException;
 use Doctrine\Common\Collections\ArrayCollection;
+use Taxonomy\Entity\TaxonomyTypeInterface;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -64,9 +65,9 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             'name' => $name
         ));
         
-        if (! is_object($type))
+        if (! (is_object($type) || $type instanceof TaxonomyTypeInterface))
             throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $name));
-            
+        
         $entity = $type->getTaxonomies()
             ->matching(Criteria::create()->where(Criteria::expr()->eq('language', $language->getEntity()))
             ->setMaxResults(1))
@@ -115,21 +116,10 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getOption('associations')[$link]['callback'];
     }
 
-    protected function getAllowedChildrenTypeNames($type)
-    {
-        $return = array();
-        foreach ($this->getOption('types') as $name => $config) {
-            if (array_key_exists('allowed_parents', (array) $config['options']) && in_array($type, $config['options']['allowed_parents'])) {
-                $return[] = $name;
-            }
-        }
-        return $return;
-    }
-
     public function getAllowedChildrenTypes($type, LanguageServiceInterface $language)
     {
         $collection = new ArrayCollection();
-        foreach($this->getAllowedChildrenTypeNames($type) as $child){
+        foreach ($this->getAllowedChildrenTypeNames($type) as $child) {
             $collection->add($this->findTaxonomyByName($child, $language));
         }
         return $collection;
@@ -155,7 +145,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     public function createTerm(array $data)
     {
         $entity = $this->getClassResolver()->resolve('Taxonomy\Model\TaxonomyTermModelInterface');
-
+        
         $this->hydrateTerm($data, $entity);
         $this->getUuidManager()->injectUuid($entity);
         
@@ -167,13 +157,14 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     private function hydrateTerm(array $data, TaxonomyTermModelInterface $taxonomyTerm)
     {
         $columns = array(
-            //'parent' => 'setParent',
-            //'taxonomy' => 'setTaxonomy',
+            // 'parent' => 'setParent',
+            // 'taxonomy' => 'setTaxonomy',
             'description' => 'setDescription',
             'weight' => 'setWeight'
         );
         
-        $taxonomyManager = array_key_exists('taxonomy', $data) ?  $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($taxonomyTerm->getTaxonomy()->getId());
+        $taxonomyManager = array_key_exists('taxonomy', $data) ? $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($taxonomyTerm->getTaxonomy()
+            ->getId());
         $parent = array_key_exists('parent', $data) ? $data['parent'] : null;
         
         $taxonomyManager->addTerm($taxonomyTerm);
@@ -189,9 +180,11 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             if (! $taxonomyManager->getRadixEnabled())
                 throw new RuntimeException(sprintf('Taxonomy `%s` does allow `parent` to be NULL', $taxonomyManager->getName()));
         }
-
+        
         try {
-            $term = $this->getTermManager()->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())->getEntity();
+            $term = $this->getTermManager()
+                ->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())
+                ->getEntity();
         } catch (\Term\Exception\TermNotFoundException $e) {
             $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
         }
@@ -207,6 +200,17 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         }
         
         return $this;
+    }
+
+    protected function getAllowedChildrenTypeNames($type)
+    {
+        $return = array();
+        foreach ($this->getOption('types') as $name => $config) {
+            if (array_key_exists('allowed_parents', (array) $config['options']) && in_array($type, $config['options']['allowed_parents'])) {
+                $return[] = $name;
+            }
+        }
+        return $return;
     }
 
     protected function createService(TaxonomyInterface $entity)

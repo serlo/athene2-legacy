@@ -23,16 +23,16 @@ use Taxonomy\Exception\RuntimeException;
 class TermService implements TermServiceInterface
 {
     
-    use \Term\Manager\TermManagerAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
+    use\Term\Manager\TermManagerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
 
     /**
      *
      * @var \Taxonomy\Manager\TaxonomyManagerInterface
      */
     protected $manager;
-    
+
     /**
-     * 
+     *
      * @var TaxonomyTermModelInterface
      */
     protected $entity;
@@ -77,16 +77,6 @@ class TermService implements TermServiceInterface
         return $this->getEntity()->getTaxonomy();
     }
 
-    public function getConfig()
-    {
-        return $this->getManager()->getConfig();
-    }
-
-    public function getOption($name)
-    {
-        return $this->getManager()->getOption($name);
-    }
-    
     public function getSlug()
     {
         return $this->getEntity()->getSlug();
@@ -101,13 +91,13 @@ class TermService implements TermServiceInterface
     {
         return new TermCollection($this->getEntity()->getChildren(), $this->getSharedTaxonomyManager());
     }
-    
-    public function getPosition ()
+
+    public function getPosition()
     {
         return $this->getEntity()->getPosition();
     }
-    
-    public function getLanguage ()
+
+    public function getLanguage()
     {
         return $this->getManager()->getLanguageService();
     }
@@ -121,7 +111,7 @@ class TermService implements TermServiceInterface
         return $this->getSharedTaxonomyManager()->getTerm($parent->getId());
     }
 
-    public function countAssociations ($association)
+    public function countAssociations($association)
     {
         return $this->getEntity()->countAssociations($association);
     }
@@ -151,77 +141,19 @@ class TermService implements TermServiceInterface
         $this->getEntity()->removeAssociation($association, $object);
         return $this;
     }
-    
-    public function getTerm ()
+
+    public function getTerm()
     {
-        return $this->getTermManager()->getTerm($this->getEntity()->getTerm());
+        return $this->getTermManager()->getTerm($this->getEntity()
+            ->getTerm());
     }
 
-    public function associateObject ($association,\Taxonomy\Model\TaxonomyTermModelInterface $object)
+    public function associateObject($association, \Taxonomy\Model\TaxonomyTermModelInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         $this->getEntity()->addAssociation($association, $object);
         return $this;
     }
-    
-    public function setTaxonomy (\Taxonomy\Entity\TaxonomyInterface $taxonomy)
-    {
-        $this->getEntity()->setTaxonomy($taxonomy);
-        return $this;
-    }
-
-    public function setDescription ($description)
-    {
-        $this->getEntity()->setDescription($description);
-        return $this;
-    }
-    public function setPosition ($position)
-    {
-        $this->getEntity()->setPosition($position);
-        return $this;
-    }
-    
-    public function setTerm (\Term\Model\TermModelInterface $term)
-    {
-        $this->getEntity()->setTerm($term->getEntity());
-        return $this;
-    }
-    
-    public function setEntity(TaxonomyTermModelInterface $term)
-    {
-        $this->setEntity($term);
-        return $this;
-    }
-
-    public function setParent(TermServiceInterface $parent = NULL)
-    {
-        $entity = $this->getEntity();
-        if ($parent === NULL) {
-            if ($this->radixEnabled()) {
-                $entity->setParent(NULL);
-            } else {
-                throw new Exception\RuntimeException('Radix not allowed.');
-            }
-        } else {
-            if ($this->parentNodeAllowed($parent)) {
-                $entity->setParent($parent->getEntity());
-            } else {
-                throw new Exception\RuntimeException(sprintf('Parent `%s` (%d) not allowed for `%s` (%d).', $parent->getName(), $parent->getId(), $entity->getName(), $entity->getId()));
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
 
     public function getManager()
     {
@@ -268,7 +200,7 @@ class TermService implements TermServiceInterface
         return $found;
     }
 
-    public function findChildrenByTaxonomyNames($names)
+    public function findChildrenByTaxonomyNames(array $names)
     {
         $names = (array) $names;
         $collection = $this->getEntity()
@@ -288,17 +220,13 @@ class TermService implements TermServiceInterface
         
         return $this->getOption('templates')[$template];
     }
-    
-    public function getAssociatedRecursive($targetField, array $allowedTaxonomies = array()){
+
+    public function getAssociatedRecursive($targetField, array $allowedTaxonomies = array())
+    {
         $collection = new ArrayCollection();
         $collection = $this->prepareAssociations($collection, $this, $targetField, $allowedTaxonomies);
         $callback = $this->getCallbackForLink($targetField);
         return $callback($this->getServiceLocator(), $collection);
-    }
-
-    public function getAllowedAssociations()
-    {
-        return $this->getOption('allowed_associations');
     }
 
     public function isAssociationAllowed($targetField)
@@ -306,66 +234,20 @@ class TermService implements TermServiceInterface
         return in_array($targetField, (array) $this->getOption('allowed_associations'));
     }
 
-    public function findAncestorByType($type)
+    public function findAncestorByType($name)
     {
-        $term = $this;
-        while ($term->hasParent()) {
-            $term = $term->getParent();
-            if ($term->getTaxonomy()->getName() == $type) {
-                return $term;
-            }
-        }
-        throw new Exception\TermNotFoundException(sprintf('Term `%s` does not know an ancestor of type `%s`', $this->getName(), $type));
-    }
-
-    public function knowsAncestor($ancestor)
-    {
-        if (is_numeric($ancestor)) {} elseif ($ancestor instanceof TermServiceInterface) {
-            $ancestor = $ancestor->getId();
-        } else {
-            throw new InvalidArgumentException();
+        $ancestor = $this->getEntity()->findAncestorByTypeName($name);
+        
+        if (! is_object($ancestor)) {
+            throw new Exception\TermNotFoundException(sprintf('Term `%s` does not know an ancestor of type `%s`', $this->getName(), $name));
         }
         
-        $term = $this;
-        while ($term->getParent()) {
-            $term = $term->getParent();
-            if ($term->getId() == $ancestor)
-                return true;
-        }
-        return false;
+        return $ancestor;
     }
 
-    public function setName($name)
+    public function knowsAncestor(TaxonomyTermModelInterface $taxonomyTerm)
     {
-        $term = $this->getTermManager()->getTerm($name);
-        $this->getEntity()->set('term', $term->getTermTaxonomy());
-        return $this;
-    }
-
-    public function childNodeAllowed(TermServiceInterface $term)
-    {
-        return $this->allowsChildType($term->getTaxonomy()
-            ->getName());
-    }
-
-    public function parentNodeAllowed(TermServiceInterface $term)
-    {
-        return $this->allowsParentType($term->getTaxonomy()
-            ->getName());
-    }
-
-    public function allowsParentType($type)
-    {
-        return in_array($type, $this->getOption('allowed_parents'));
-    }
-
-    public function allowsChildType($type)
-    {
-        $language = $this->getLanguageService();
-        return $this->getSharedTaxonomyManager()
-            ->findTaxonomyByName($type, $language)
-            ->allowsParentType($this->getTaxonomy()
-            ->getName());
+        return $this->knowsAncestor($taxonomyTerm);
     }
 
     public function getAllowedParentTypes()
@@ -378,12 +260,60 @@ class TermService implements TermServiceInterface
         return $this->getManager()->getAllowedChildrenTypes();
     }
 
+    public function setTaxonomy(\Taxonomy\Entity\TaxonomyInterface $taxonomy)
+    {
+        $this->getEntity()->setTaxonomy($taxonomy);
+        return $this;
+    }
+
+    public function setDescription($description)
+    {
+        $this->getEntity()->setDescription($description);
+        return $this;
+    }
+
+    public function setPosition($position)
+    {
+        $this->getEntity()->setPosition($position);
+        return $this;
+    }
+
+    public function setTerm(\Term\Model\TermModelInterface $term)
+    {
+        $this->getEntity()->setTerm($term->getEntity());
+        return $this;
+    }
+
+    public function setEntity(TaxonomyTermModelInterface $term)
+    {
+        $this->setEntity($term);
+        return $this;
+    }
+
+    public function setParent(TermServiceInterface $parent = NULL)
+    {
+        $entity = $this->getEntity();
+        if ($parent === NULL) {
+            if ($this->radixEnabled()) {
+                $entity->setParent(NULL);
+            } else {
+                throw new Exception\RuntimeException('Radix not allowed.');
+            }
+        } else {
+            if ($this->parentNodeAllowed($parent)) {
+                $entity->setParent($parent->getEntity());
+            } else {
+                throw new Exception\RuntimeException(sprintf('Parent `%s` (%d) not allowed for `%s` (%d).', $parent->getName(), $parent->getId(), $entity->getName(), $entity->getId()));
+            }
+        }
+    }
+
     public function setManager(TaxonomyManagerInterface $termManager)
     {
         $this->manager = $termManager;
         return $this;
     }
-    
+
     protected function getCallbackForLink($link)
     {
         return $this->getSharedTaxonomyManager()->getCallback($link);
@@ -413,5 +343,10 @@ class TermService implements TermServiceInterface
     {
         if (! $this->isAssociationAllowed($targetField))
             throw new LinkNotAllowedException();
+    }
+
+    protected function getOption($name)
+    {
+        return $this->getManager()->getOption($name);
     }
 }

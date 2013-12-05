@@ -29,8 +29,7 @@ class TaxonomyType implements TaxonomyTypeInterface
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Taxonomy",
-     * mappedBy="type")
+     * @ORM\OneToMany(targetEntity="Taxonomy", mappedBy="type")
      */
     protected $taxonomies;
 

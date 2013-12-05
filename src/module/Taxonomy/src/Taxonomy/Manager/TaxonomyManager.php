@@ -14,13 +14,11 @@ namespace Taxonomy\Manager;
 
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Collection\TermCollection;
-use Language\Service\LanguageServiceInterface;
 use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Taxonomy\Service\TermServiceInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
@@ -161,6 +159,11 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         return $this;
     }
 
+    public function getRadixEnabled()
+    {
+        return $this->getOption('radix_enabled');
+    }
+
     protected function createService(TaxonomyTermModelInterface $entity)
     {
         /* @var $instance \Taxonomy\Service\TermServiceInterface */
@@ -174,11 +177,6 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
             $instance->setManager($this);
         }
         return $instance;
-    }
-
-    public function getRadixEnabled()
-    {
-        return $this->getOption('radix_enabled');
     }
 
     protected function getDefaultConfig()

@@ -10,13 +10,71 @@ namespace Taxonomy\Service;
 
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Common\Normalize\Normalizable;
+use Taxonomy\Manager\SharedTaxonomyManagerAwareInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
+use Taxonomy\Collection\TermCollection;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
-interface TermServiceInterface extends Normalizable, TaxonomyTermModelInterface
+interface TermServiceInterface extends Normalizable, TaxonomyTermModelInterface, SharedTaxonomyManagerAwareInterface
 {
+
     /**
-     * 
-     * @param TaxonomyTermModelInterface $term
+     *
+     * @return TaxonomyManagerInterface
+     */
+    public function getManager();
+
+    /**
+     *
+     * @param TaxonomyTermModelInterface $term            
      * @return $this
      */
     public function setEntity(TaxonomyTermModelInterface $term);
+
+    /**
+     *
+     * @param TaxonomyManagerInterface $taxonomyManager            
+     * @return $this
+     */
+    public function setManager(TaxonomyManagerInterface $taxonomyManager);
+    
+    /**
+     * <code>
+     * $slugs = explode('path/to/slug', '/');
+     * $term = $termService->getDescendantBySlugs($slugs);
+     * </code>
+     * 
+     * @param array $slugs
+     * @return self
+     */
+    public function getDescendantBySlugs(array $slugs);
+    
+    /**
+     * 
+     * @param array $names
+     * @return TermCollection
+     */
+    public function findChildrenByTaxonomyNames(array $names);
+    
+    /**
+     * 
+     * @param string $name
+     * @return string
+     */
+    public function getTemplate($name);
+    
+    /**
+     * 
+     * @param unknown $targetField
+     * @param array $allowedTaxonomies
+     * @return TaxonomyTermModelAwareInterface[]
+     */
+    public function getAssociatedRecursive($targetField, array $allowedTaxonomies = array());
+    
+    /**
+     * 
+     * @param string $association
+     * @return bool
+     */
+    public function isAssociationAllowed($association);
 }

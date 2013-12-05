@@ -51,22 +51,10 @@ interface TaxonomyManagerInterface
 
     /**
      *
-     * @return array
-     */
-    public function getAllowedChildrenTypeNames();
-
-    /**
-     *
      * @param string $type            
      * @return bool
      */
     public function allowsParentType($type);
-
-    /**
-     *
-     * @return array
-     */
-    public function getAllowedParentTypeNames();
 
     /**
      *

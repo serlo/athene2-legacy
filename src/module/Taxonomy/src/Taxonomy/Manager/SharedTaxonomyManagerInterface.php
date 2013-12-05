@@ -44,12 +44,6 @@ interface SharedTaxonomyManagerInterface
 
     /**
      *
-     * @param unknown $type            
-     */
-    public function getAllowedChildrenTypeNames($type);
-
-    /**
-     *
      * @param int $id            
      * @return $this
      */

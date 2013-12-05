@@ -102,12 +102,10 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface
     
     /**
      * 
-     * @param string $targetField
-     * @param bool $recursive
-     * @param array $taxonomiesToBeChecked
-     * @return TaxonomyTermModelInterface[]
+     * @param string $association
+     * @return TaxonomyTermModelAwareInterface[]
      */
-    public function getAssociated($targetField, $recursive = false, array $taxonomiesToBeChecked = array());
+    public function getAssociated($association);
     
     /**
      * 
@@ -119,35 +117,35 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface
     /**
      * 
      * @param string $association
-     * @param TaxonomyTermModelInterface $object
+     * @param TaxonomyTermModelAwareInterface $object
      * @return bool
      */
-    public function isAssociated($association, TaxonomyTermModelInterface $object);
+    public function isAssociated($association, TaxonomyTermModelAwareInterface $object);
     
     /**
      * 
      * @param string $association
-     * @param TaxonomyTermModelInterface $object
+     * @param TaxonomyTermModelAwareInterface $object
      * @return $this
      */
-    public function associateObject($association, TaxonomyTermModelInterface $object);
+    public function associateObject($association, TaxonomyTermModelAwareInterface $object);
     
     /**
      * 
      * @param string $association
-     * @param TaxonomyTermModelInterface $object
+     * @param TaxonomyTermModelAwareInterface $object
      * @param int $position
      * @return $this
      */
-    public function positionAssociatedObject($association, TaxonomyTermModelInterface $object, $position);
+    public function positionAssociatedObject($association, TaxonomyTermModelAwareInterface $object, $position);
     
     /**
      * 
      * @param string $field
-     * @param TaxonomyTermModelInterface $object
+     * @param TaxonomyTermModelAwareInterface $object
      * @return $this
      */
-    public function removeAssociation($field, TaxonomyTermModelInterface $object);
+    public function removeAssociation($field, TaxonomyTermModelAwareInterface $object);
     
     /**
      * 
@@ -176,4 +174,18 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface
      * @return $this
      */
     public function setPosition($position);
+    
+    /**
+     * 
+     * @param string $name
+     * @return TaxonomyTermModelInterface
+     */
+    public function findAncestorByTypeName($name);
+    
+    /**
+     * 
+     * @param TaxonomyTermModelInterface $ancestor
+     * @return bool
+     */
+    public function knowsAncestor(TaxonomyTermModelInterface $ancestor);
 }

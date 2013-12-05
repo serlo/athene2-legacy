@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Blog\Entity\PostInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Term\Model\TermModelInterface;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
 /**
  * A
@@ -106,6 +107,11 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         ];
     }
 
+    public function getEntity()
+    {
+        return $this;
+    }
+
     public function getDescription()
     {
         return $this->description;
@@ -161,6 +167,18 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         return $this->term;
     }
 
+    public function findAncestorByTypeName($name)
+    {
+        $term = $this;
+        while ($term->hasParent()) {
+            $term = $term->getParent();
+            if ($term->getTaxonomy()->getName() === $name) {
+                return $term;
+            }
+        }
+        return NULL;
+    }
+
     public function getArrayCopy()
     {
         return array(
@@ -173,7 +191,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         );
     }
 
-    public function isAssociated($association, TaxonomyTermModelInterface $object)
+    public function isAssociated($association, TaxonomyTermModelAwareInterface $object)
     {
         $associations = $this->getEntity()->getAssociated($association);
         return $associations->contains($object);
@@ -202,7 +220,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         return $this->getTaxonomy()->getLanguage();
     }
 
-    public function associateObject($field, $entity)
+    public function associateObject($field, TaxonomyTermModelAwareInterface $entity)
     {
         $method = 'add' . ucfirst($field);
         if (! method_exists($this, $method)) {
@@ -216,7 +234,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         return $this;
     }
 
-    public function positionAssociatedObject($association, $of, $order)
+    public function positionAssociatedObject($association, TaxonomyTermModelAwareInterface $of, $order)
     {
         $method = 'order' . ucfirst($association);
         
@@ -226,7 +244,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         return $this->$method($of, $order);
     }
 
-    public function removeAssociation($field, $entity)
+    public function removeAssociation($field, TaxonomyTermModelAwareInterface $entity)
     {
         $method = 'remove' . ucfirst($field);
         if (! method_exists($this, $method)) {
@@ -268,6 +286,18 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
     {
         $this->term = $term;
         return $this;
+    }
+
+    public function knowsAncestor(TaxonomyTermModelInterface $ancestor)
+    {
+        $term = $this;
+        while ($term->hasParent()) {
+            $term = $term->getParent();
+            if ($term === $ancestor) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function addBlogPosts(PostInterface $post)
@@ -318,7 +348,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermModelInterface
         }
         return $this;
     }
-    
+
     protected function getEntities()
     {
         $collection = new \Doctrine\Common\Collections\ArrayCollection();
