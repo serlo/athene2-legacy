@@ -11,6 +11,15 @@
  */
 namespace Entity\Entity;
 
-interface TypeInterface
+use Entity\Model\TypeModelInterface;
+
+interface TypeInterface extends TypeModelInterface
 {
+    public function getId();
+
+    public function getEntities();
+
+    public function getName();
+
+    public function setName($className);
 }

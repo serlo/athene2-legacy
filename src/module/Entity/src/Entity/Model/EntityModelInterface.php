@@ -1,6 +1,5 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -9,7 +8,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Entity;
+namespace Entity\Model;
 
 use License\Entity\LicenseAwareInterface;
 use Link\Entity\LinkableInterface;
@@ -17,6 +16,6 @@ use Versioning\Entity\RepositoryInterface;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 use Language\Model\LanguageModelAwareInterface;
 
-interface EntityInterface extends LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermModelAwareInterface
+interface EntityModelInterface extends LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermModelAwareInterface
 {
 }

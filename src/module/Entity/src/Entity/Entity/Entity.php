@@ -16,13 +16,14 @@ use Link\Entity\LinkableInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RevisionInterface;
-use Language\Entity\LanguageEntityInterface;
 use Link\Entity\LinkTypeInterface;
 use Link\Entity\LinkInterface;
 use Entity\Exception;
 use License\Entity\LicenseInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Model\TaxonomyTermNodeModelInterface;
+use Entity\Model\TypeModelInterface;
+use Language\Model\LanguageModelInterface;
 
 /**
  * An entity.
@@ -98,17 +99,6 @@ class Entity extends UuidEntity implements EntityInterface
      */
     protected $license;
 
-    public function getLicense()
-    {
-        return $this->license;
-    }
-
-    public function setLicense(LicenseInterface $license)
-    {
-        $this->license = $license;
-        return $this;
-    }
-
     public function __construct()
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
@@ -122,22 +112,15 @@ class Entity extends UuidEntity implements EntityInterface
         $this->fieldOrder = array();
     }
 
-    /**
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection LinkInterface
-     */
-    public function getParentLinks()
+    public function getLicense()
     {
-        return $this->parentLinks;
+        return $this->license;
     }
 
-    /**
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection LinkInterface
-     */
-    public function getChildLinks()
+    public function setLicense(LicenseInterface $license)
     {
-        return $this->childLinks;
+        $this->license = $license;
+        return $this;
     }
 
     public function getCurrentRevision()
@@ -165,7 +148,7 @@ class Entity extends UuidEntity implements EntityInterface
         return $this->revisions;
     }
 
-    public function setType($type)
+    public function setType(TypeModelInterface $type)
     {
         $this->type = $type;
         return $this;
@@ -177,7 +160,7 @@ class Entity extends UuidEntity implements EntityInterface
         return $this;
     }
 
-    public function setLanguage(LanguageEntityInterface $language)
+    public function setLanguage(LanguageModelInterface $language)
     {
         $this->language = $language;
         return $this;
@@ -386,5 +369,15 @@ class Entity extends UuidEntity implements EntityInterface
         } else {
             return $e->getPosition();
         }
+    }
+
+    protected function getParentLinks()
+    {
+        return $this->parentLinks;
+    }
+
+    protected function getChildLinks()
+    {
+        return $this->childLinks;
     }
 }
