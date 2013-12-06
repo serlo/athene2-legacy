@@ -16,14 +16,22 @@ interface TaxonomyTermModelAwareInterface
     /**
      * 
      * @param TaxonomyTermModelInterface $taxonomyTerm
-     * @return $this
+     * @param TaxonomyTermNodeModelInterface $node
+     * @return self
      */
-    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm);
+    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL);
     
     /**
      * 
      * @param TaxonomyTermModelInterface $taxonomyTerm
+     * @param TaxonomyTermNodeModelInterface $node
      * @return $this
      */
-    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm);
+    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL);
+    
+    /**
+     * 
+     * @return TaxonomyTermModelInterface[]
+     */
+    public function getTaxonomyTerms();
 }

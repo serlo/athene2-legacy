@@ -133,11 +133,11 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface
     /**
      * 
      * @param string $association
-     * @param TaxonomyTermModelAwareInterface $object
+     * @param int $objectId
      * @param int $position
      * @return $this
      */
-    public function positionAssociatedObject($association, TaxonomyTermModelAwareInterface $object, $position);
+    public function positionAssociatedObject($association, $objectId, $position);
     
     /**
      * 

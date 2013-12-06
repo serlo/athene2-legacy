@@ -15,8 +15,9 @@ use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageEntityInterface;
 use User\Entity\UserInterface;
 use Doctrine\Common\Collections\Collection;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
-interface CommentInterface
+interface CommentInterface extends TaxonomyTermModelAwareInterface
 {
 
     /**

@@ -26,7 +26,7 @@ class TaxonomyPlugin extends AbstractPlugin
     {
         return new TermCollection($this->getEntityService()
             ->getEntity()
-            ->getTerms(), $this->getSharedTaxonomyManager());
+            ->getTaxonomyTerms(), $this->getSharedTaxonomyManager());
     }
 
     public function hasTerm($id)
@@ -39,7 +39,7 @@ class TaxonomyPlugin extends AbstractPlugin
     public function addToTerm($id)
     {
         $term = $this->getSharedTaxonomyManager()->getTerm($id);
-        $term->associate('entities', $this->getEntityService()
+        $term->associateObject('entities', $this->getEntityService()
             ->getEntity());
         return $this;
     }

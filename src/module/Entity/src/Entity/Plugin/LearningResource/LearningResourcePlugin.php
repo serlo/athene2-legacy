@@ -77,7 +77,7 @@ class LearningResourcePlugin extends AbstractPlugin
     {
         /* @var $term TermServiceInterface */
         foreach($this->getTaxonomyPlugin()->getTerms() as $term){
-            $subject = $term->findAncestorByType('subject');
+            $subject = $term->findAncestorByTypeName('subject');
             if(is_object($subject))
                 return $subject;
         }

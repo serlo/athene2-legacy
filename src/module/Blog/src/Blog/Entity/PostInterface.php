@@ -13,8 +13,9 @@ namespace Blog\Entity;
 
 use User\Entity\UserInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
-interface PostInterface
+interface PostInterface extends TaxonomyTermModelAwareInterface
 {
 
     /**

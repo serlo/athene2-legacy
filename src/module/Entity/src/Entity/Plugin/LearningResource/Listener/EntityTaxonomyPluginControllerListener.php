@@ -35,7 +35,7 @@ class EntityTaxonomyPluginControllerListener extends AbstractSharedListenerAggre
             $object = $entity->getEntity()->getUuidEntity();
             
             try {
-                $subject = $term->findAncestorByType('subject');
+                $subject = $term->findAncestorByTypeName('subject');
                 try {
                     $this->getMetadataManager()->addMetadata($object, 'subject', $subject->getName());
                 } catch (DuplicateMetadata $e) {}
@@ -54,7 +54,7 @@ class EntityTaxonomyPluginControllerListener extends AbstractSharedListenerAggre
         $object = $entity->getEntity()->getUuidEntity();
         
         try {
-            $subject = $term->findAncestorByType('subject');
+            $subject = $term->findAncestorByTypeName('subject');
             
             try {
                 $metadata = $this->getMetadataManager()->findMetadataByObjectAndKeyAndValue($object, 'subject', $subject->getName());

@@ -104,7 +104,7 @@ class PostManager extends InstanceManager implements PostManagerInterface
         $post->setContent($content);
         $post->setPublish($publish);
         
-        $this->getTermService()->associate('blogPosts', $post);
+        $this->getTermService()->associateObject('blogPosts', $post);
         
         $this->getObjectManager()->persist($post);
         

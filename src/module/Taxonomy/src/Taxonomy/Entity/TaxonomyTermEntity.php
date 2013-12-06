@@ -13,12 +13,15 @@ namespace Taxonomy\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
+use Taxonomy\Model\TaxonomyTermNodeModelInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy_entity")
  */
-class TaxonomyTermEntity
+class TaxonomyTermEntity implements TaxonomyTermNodeModelInterface
 {
 
     /**
@@ -53,70 +56,48 @@ class TaxonomyTermEntity
      */
     protected $position;
 
-    /**
-     *
-     * @return field_type $termTaxonomy
-     */
+    public function __construct(TaxonomyTermModelInterface $termTaxonomy, EntityInterface $entity)
+    {
+        $this->setTaxonomyTerm($termTaxonomy);
+        $this->setObject($entity);
+        $this->setPosition(0);
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getTaxonomyTerm()
     {
         return $this->termTaxonomy;
     }
 
-    /**
-     *
-     * @return field_type $entity
-     */
-    public function getEntity()
+    public function getObject()
     {
         return $this->entity;
     }
 
-    /**
-     *
-     * @return field_type $position
-     */
     public function getPosition()
     {
         return $this->position;
     }
 
-    /**
-     *
-     * @param field_type $termTaxonomy            
-     * @return $this
-     */
-    public function setTaxonomyTerm($termTaxonomy)
+    public function setTaxonomyTerm(TaxonomyTermModelInterface $termTaxonomy)
     {
         $this->termTaxonomy = $termTaxonomy;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $entity            
-     * @return $this
-     */
-    public function setEntity($entity)
+    public function setObject(TaxonomyTermModelAwareInterface $entity)
     {
         $this->entity = $entity;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $position            
-     * @return $this
-     */
     public function setPosition($position)
     {
         $this->position = $position;
         return $this;
-    }
-    
-    public function __construct(TaxonomyTermModelInterface $termTaxonomy, EntityInterface $entity)
-    {
-        $this->setTaxonomyTerm($termTaxonomy);
-        $this->setEntity($entity);
-        $this->position = 0;
     }
 }

@@ -31,7 +31,7 @@ class TaxonomyTypeTest extends Model
     protected function getData()
     {
         return array(
-            'id' => '1',
+            'id' => NULL,
             'name' => 'a',
             'taxonomies' => new ArrayCollection()
         );

@@ -9,13 +9,8 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Entity;
+namespace Blog\Exception;
 
-use License\Entity\LicenseAwareInterface;
-use Link\Entity\LinkableInterface;
-use Versioning\Entity\RepositoryInterface;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
-
-interface EntityInterface extends RepositoryInterface, LinkableInterface , LicenseAwareInterface, TaxonomyTermModelAwareInterface
+class RuntimeException extends \RuntimeException
 {
 }

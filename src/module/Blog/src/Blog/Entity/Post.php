@@ -15,6 +15,9 @@ use Uuid\Entity\UuidEntity;
 use User\Entity\UserInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Blog\Exception;
+use Doctrine\Common\Collections\ArrayCollection;
+use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 
 /**
  * A blog post.
@@ -139,5 +142,20 @@ class Post extends UuidEntity implements PostInterface
     public function isPublished()
     {
         return $this->getPublish() < new \DateTime();
+    }
+    
+    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->setCategory($taxonomyTerm);
+    }
+    
+    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        throw new Exception\RuntimeException('You can\'t unset the category - it is required!');
+    }
+    
+    public function getTaxonomyTerms()
+    {
+        return new ArrayCollection((array) $this->getCategory());
     }
 }

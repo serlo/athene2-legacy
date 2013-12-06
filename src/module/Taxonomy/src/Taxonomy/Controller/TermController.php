@@ -119,14 +119,6 @@ class TermController extends AbstractController
         return $view;
     }
 
-    public function deleteAction()
-    {
-        $this->getSharedTaxonomyManager()->deleteTerm($this->getParam('id'));
-        
-        $this->flashMessenger()->addSuccessMessage('The node has been deleted successfully!');
-        $this->redirect()->toReferer();
-    }
-
     public function orderAssociatedAction()
     {
         $association = $this->params('association');        
@@ -137,7 +129,7 @@ class TermController extends AbstractController
             $i = 0;
             
             foreach ($associations as $a) {
-                $termService->orderAssociated($association, $a['id'], $i);
+                $termService->positionAssociatedObject($association, $a['id'], $i);
                 $i++;
             }
             
@@ -180,7 +172,7 @@ class TermController extends AbstractController
             } else {
                 $entity->setParent(NULL);
             }
-            $entity->setOrder($weight);
+            $entity->setPosition($weight);
             $this->getSharedTaxonomyManager()->getObjectManager()->persist($entity->getEntity());
             
             if($oldParent !== $entity->getParent()){

@@ -20,6 +20,7 @@ use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 
 /**
  * Comment ORM Entity
@@ -27,9 +28,9 @@ use Taxonomy\Model\TaxonomyTermModelAwareInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface, TaxonomyTermModelAwareInterface
+class Comment extends UuidEntity implements CommentInterface
 {
-
+    
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment")
@@ -281,20 +282,30 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermModelA
         return $this->findVotesByUser($user)->count() === 1;
     }
     
-    public function getTermTaxonomies()
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelAwareInterface::addTaxonomyTerm()
+     */
+    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->terms->add($taxonomyTerm);
+        return $this;
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelAwareInterface::removeTaxonomyTerm()
+     */
+    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->terms->removeElement($taxonomyTerm);
+        return $this;
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelAwareInterface::getTaxonomyTerms()
+     */
+    public function getTaxonomyTerms()
     {
         return $this->terms;
     }
-    
-    public function addTaxonomyTerm(TaxonomyTermModelInterface $termTaxonomy)
-    {
-        $this->terms->add($termTaxonomy);
-        return $this;
-    }
-    
-    public function removeTaxonomyTerm(TaxonomyTermModelInterface $termTaxonomy)
-    {
-        $this->terms->removeElement($termTaxonomy);
-        return $this;
-    }
+
 }

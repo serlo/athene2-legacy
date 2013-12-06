@@ -134,9 +134,9 @@ class TermService  implements TermServiceInterface
         return $this->getEntity()->isAssociated($association, $object);
     }
 
-    public function positionAssociatedObject($association, TaxonomyTermModelAwareInterface $object, $position)
+    public function positionAssociatedObject($association, $objectId, $position)
     {
-        $entity = $this->getEntity()->positionAssociatedObject($association, $object, $position);
+        $entity = $this->getEntity()->positionAssociatedObject($association, $objectId, $position);
         return $this;
     }
 
@@ -156,7 +156,7 @@ class TermService  implements TermServiceInterface
     public function associateObject($association, TaxonomyTermModelAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
-        $this->getEntity()->addAssociation($association, $object);
+        $this->getEntity()->associateObject($association, $object);
         return $this;
     }
 
@@ -342,6 +342,10 @@ class TermService  implements TermServiceInterface
             }
         }
         return $collection;
+    }
+    
+    protected function parentNodeAllowed(TaxonomyTermModelInterface $taxonomyTerm){
+        return $this->getManager()->allowsParentType($taxonomyTerm->getType()->getName());
     }
 
     protected function isLinkAllowedWithException($targetField)

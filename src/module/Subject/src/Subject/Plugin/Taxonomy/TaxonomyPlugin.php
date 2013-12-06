@@ -44,7 +44,7 @@ class TaxonomyPlugin extends AbstractPlugin
             ->getTermService()))
             throw new InvalidArgumentException(sprintf('Subject %s does not know topic %s', $this->getSubjectService()->getName(), $to));
         
-        $term->associate('entities', $entity->getEntity());
+        $term->associateObject('entities', $entity->getEntity());
         $term->persistAndFlush();
         
         return $this;

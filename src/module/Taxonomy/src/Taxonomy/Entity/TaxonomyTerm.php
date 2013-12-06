@@ -20,6 +20,7 @@ use Blog\Entity\PostInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Term\Model\TermModelInterface;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 
 /**
  * A
@@ -228,34 +229,30 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     {
         $method = 'add' . ucfirst($field);
         if (! method_exists($this, $method)) {
-            if (! $entity instanceof TaxonomyTermModelInterface)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermModelInterface but got %s', get_class($entity)));
             $this->getAssociated($field)->add($entity);
-            $entity->addTaxonomy($this);
+            $entity->addTaxonomyTerm($this);
         } else {
             $this->$method($entity);
         }
         return $this;
     }
 
-    public function positionAssociatedObject($association, TaxonomyTermModelAwareInterface $of, $order)
+    public function positionAssociatedObject($association, $objectId, $order)
     {
         $method = 'order' . ucfirst($association);
         
         if (! method_exists($this, $method))
-            throw new \Taxonomy\Exception\RuntimeException(sprintf('Association `%s` does not support sorting.', $association));
+            throw new \Taxonomy\Exception\RuntimeException(sprintf('Association `%s` does not support sorting. You\'d have to implement a node', $association));
         
-        return $this->$method($of, $order);
+        return $this->$method($objectId, $order);
     }
 
     public function removeAssociation($field, TaxonomyTermModelAwareInterface $entity)
     {
         $method = 'remove' . ucfirst($field);
         if (! method_exists($this, $method)) {
-            if (! $entity instanceof TaxonomyTermModelInterface)
-                throw new \Taxonomy\Exception\InvalidArgumentException(sprintf('Expected TaxonomyTermModelInterface but got %s', get_class($entity)));
             $this->getAssociated($field)->removeElement($entity);
-            $entity->removeTaxonomy($this);
+            $entity->removeTaxonomyTerm($this);
         } else {
             $this->$method($entity);
         }
@@ -303,24 +300,19 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         }
         return false;
     }
-
-    protected function addBlogPosts(PostInterface $post)
-    {
-        $post->setCategory($this);
-        $this->blogPosts->add($post);
-        return $this;
+    
+    /**
+     * 
+     * @return ArrayCollection|TaxonomyTermNodeModelInterface[]
+     */
+    protected function getEntityNodes() {
+        return $this->termTaxonomyEntities;
     }
 
-    protected function removeBlogPosts(PostInterface $post)
+    protected function orderEntities($objectId, $position)
     {
-        $this->blogPosts->removeElement($post);
-        return $this;
-    }
-
-    protected function orderEntities($entity, $position)
-    {
-        foreach ($this->termTaxonomyEntities as $rel) {
-            if ($rel->getEntity()->getId() == $entity) {
+        foreach ($this->getEntityNodes() as $rel) {
+            if ($rel->getObject()->getId() === (int) $objectId) {
                 $rel->setPosition($position);
                 break;
             }
@@ -334,8 +326,8 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         $rel = new TaxonomyTermEntity($this, $entity);
         
         // Add relation object to collection
-        $this->termTaxonomyEntities->add($rel);
-        $entity->addTaxonomyIndex($rel);
+        $this->getEntityNodes()->add($rel);
+        $entity->addTaxonomyTerm($this, $rel);
         
         return $this;
     }
@@ -343,10 +335,10 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     protected function removeEntities(EntityInterface $entity)
     {
         // Iterate over all join entities to find the correct
-        foreach ($this->termTaxonomyEntities as $rel) {
-            if ($rel->getEntity() === $entity) {
-                $this->termTaxonomyEntities->removeElement($rel);
-                $rel->getEntity()->removeTaxonomyIndex($rel);
+        foreach ($this->getEntityNodes() as $rel) {
+            if ($rel->getObject() === $entity) {
+                $rel->removeElement($rel);
+                $rel->getObject()->removeTaxonomyTerm($this, $rel);
                 break;
             }
         }
@@ -357,8 +349,8 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     {
         $collection = new \Doctrine\Common\Collections\ArrayCollection();
         
-        foreach ($this->termTaxonomyEntities as $rel) {
-            $collection->add($rel->getEntity());
+        foreach ($this->getEntityNodes() as $rel) {
+            $collection->add($rel->getObject());
         }
         
         return $collection;

@@ -24,6 +24,12 @@ class Normalized implements NormalizedInterface
 
     /**
      *
+     * @var string
+     */
+    protected $type;
+
+    /**
+     *
      * @var array
      */
     protected $routeParams;
@@ -45,38 +51,49 @@ class Normalized implements NormalizedInterface
      * @var DateTime
      */
     protected $timestamp;
-    
+
     /**
-     * 
+     *
      * @var string
      */
     protected $content;
-    
-    public function getContent ()
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getContent()
     {
         return $this->content;
     }
-    
+
     public function getRouteName()
     {
         return $this->routeName;
     }
-    
+
     public function getRouteParams()
     {
         return $this->routeParams;
     }
-    
+
     public function getTitle()
     {
         return $this->title;
     }
-    
+
     public function getPreview()
     {
         return $this->preview;
     }
-    
+
     public function getTimestamp()
     {
         return $this->timestamp;
@@ -137,11 +154,12 @@ class Normalized implements NormalizedInterface
         return $this;
     }
 
-	/**
-     * @param string $content
+    /**
+     *
+     * @param string $content            
      * @return $this
      */
-    public function setContent ($content)
+    public function setContent($content)
     {
         $this->content = $content;
         return $this;

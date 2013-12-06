@@ -43,7 +43,7 @@ class ParamProvider implements ParamProviderInterface
     public function getParams()
     {
         return array(
-            'subject' => $this->getObject()->findAncestorByType('subject')->getSlug(),
+            'subject' => $this->getObject()->findAncestorByTypeName('subject')->getSlug(),
             'path' => $this->getPathToTermAsUri($this->getObject())
         );
     }

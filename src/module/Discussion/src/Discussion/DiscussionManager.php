@@ -112,7 +112,7 @@ class DiscussionManager extends AbstractDiscussionManager implements DiscussionM
         $comment->setTitle($title);
         $comment->setContent($content);
         $comment->setStatus(1);
-        $forum->associate('comments', $comment);
+        $forum->associateObject('comments', $comment);
         
         $this->getObjectManager()->persist($comment);
         

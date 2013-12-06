@@ -241,13 +241,6 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($this->sharedTaxonomyManager->getCallback('12345'));
     }
 
-    public function testGetAllowedChildrenTypeNames()
-    {
-        $this->assertEquals(array(
-            'foobar'
-        ), $this->sharedTaxonomyManager->getAllowedChildrenTypeNames('foobarSimple'));
-    }
-
     public function testDeleteTerm()
     {
         $this->setUpGetTerm();

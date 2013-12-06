@@ -29,8 +29,8 @@ class PostForm extends Form
 
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Textarea('content'))->setLabel('Content:'));
-        $this->add((new Text('publish'))->setLabel('Publish date:'))->setAttribute('class', 'datepicker');
-        $this->add((new Submit('submit'))->setLabel('Save'))->setAttribute('class', 'btn btn-success pull-right');
+        $this->add((new Text('publish'))->setLabel('Publish date:')->setAttribute('class', 'datepicker'));
+        $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
         
         $inputFilter->add(array(
             'name' => 'title',

@@ -1,12 +1,6 @@
 <?php
 /**
  *
- *
- *
- *
- *
- *
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -42,7 +36,7 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $termServiceMock = $this->getMock('Term\Service\TermService');
-        $this->termMock = $this->getMocK('Term\Entity\Term');
+        $this->termMock = $this->getMocK('Term\Entity\TermEntity');
         
         $classResolverMock->expects($this->any())
             ->method('resolveClassName')
@@ -110,7 +104,7 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->termManager->getClassResolver()->expects($this->any())
             ->method('resolve')
-            ->will($this->returnValue(new \Term\Entity\Term()));
+            ->will($this->returnValue(new \Term\Entity\TermEntity()));
         $languageServiceMock = $this->getMock('Language\Service\LanguageService');
         
         $this->assertNotNull($this->termManager->createTerm('a', 'b', $languageServiceMock));
