@@ -178,7 +178,6 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
             //'parent' => 'setParent',
             //'taxonomy' => 'setTaxonomy',
             'description' => 'setDescription',
-            'weight' => 'setWeight'
         );
         
         $taxonomyManager = array_key_exists('taxonomy', $data) ?  $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($taxonomyTerm->getTaxonomy()->getId());

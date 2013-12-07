@@ -190,6 +190,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         $this->entities = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
+        $this->weight = 0;
     }
 
     public function getArrayCopy()
