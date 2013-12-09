@@ -15,7 +15,10 @@ $solution = $exercise->solution()->findChild();
 <?php if($exercise->repository()->hasCurrentRevision()): ?>
     <article>
         <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+    	   <?php if(is_object($solution)): ?>
+               <a class="btn-default btn btn-xs accordion-toggle" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">=</a>
+    	   <?php endif; ?>
+           <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
         </div>
     	<section>
             <?php $revision = $exercise->repository()->getCurrentRevision(); ?>

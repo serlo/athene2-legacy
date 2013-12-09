@@ -30,11 +30,6 @@
                 <div class="col-md-4">
                     <div class="sortable-actions btn-group pull-right">
                         <?php echo $this->partial('entity/view/partials/sortable-actions'); ?>
-                        <?php if($this->guard()->hasAccessToRoute('entity/create')): ?>
-                    		<a class="btn btn-sm btn-default" href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
-                    			<span class="glyphicon glyphicon-file"></span>
-                    		</a>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -49,8 +44,8 @@
             	<article class="panel panel-default">
                     <header id="<?php echo $page->getId(); ?>" class="panel-heading">
                         <div class="row">
-                            <div class="col-md-10"><?php echo $revision->get('title'); ?></div>
-                            <div class="col-md-2">
+                            <div class="col-md-6"><h4><?php echo $revision->get('title'); ?></h4></div>
+                            <div class="col-md-6">
                                 <div class="pull-right btn-group">
                                     <?php echo $this->partial('entity/view/partials/actions', array('entity' => $page, 'hide' => array('taxonomy', 'detail'))); ?>
                                 </div>

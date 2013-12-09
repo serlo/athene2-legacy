@@ -1,6 +1,9 @@
 <?php $solution = $this->entity->solution()->findChild(); ?>
 <article>
     <div class="pull-right btn-group">
+	   <?php if(is_object($solution)): ?>
+           <a class="btn-default btn btn-xs" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">=</a>
+	   <?php endif; ?>
         <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
     </div>
     <section>
