@@ -51,7 +51,7 @@ class EventService implements EventServiceInterface
     public function getObject()
     {
         $object = $this->getEntity()->getObject();
-        return $this->getUuidManager()->getService($object->getId());
+        return $this->getUuidManager()->createService($object->getId());
     }
 
     public function getParameter($name)
@@ -62,7 +62,7 @@ class EventService implements EventServiceInterface
             throw new Exception\RuntimeException(sprintf('Event "%s" does not have a parameter called "%s".', $this->getName(), $name));
         }
         
-        return $this->getUuidManager()->getService($object->getId());
+        return $this->getUuidManager()->createService($object->getId());
     }
 
     public function getTimestamp()

@@ -13,19 +13,27 @@ namespace Taxonomy\Router;
 
 use Taxonomy\Service\TermServiceInterface;
 
-interface ParamProviderInterface
+abstract class AbstractParamProvider implements ParamProviderInterface
 {
 
     /**
      *
-     * @return array
+     * @var TermServiceInterface
      */
-    public function getParams();
+    protected $object;
 
     /**
      *
-     * @var TermServiceInterface $object
-     * @return $this
+     * @return TermServiceInterface
      */
-    public function setObject(TermServiceInterface $object);
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    public function setObject(TermServiceInterface $object)
+    {
+        $this->object = $object;
+        return $this;
+    }
 }

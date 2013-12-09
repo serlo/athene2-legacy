@@ -18,16 +18,11 @@ use Language\Entity\LanguageEntityInterface;
 use Term\Model\TermModelAwareInterface;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 use Common\Model\Wrapable;
+use Uuid\Entity\UuidHolder;
 
 
-interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable
+interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable, UuidHolder
 {
-
-    /**
-     * 
-     * @return int
-     */
-    public function getId();
 
     /**
      * 

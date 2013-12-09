@@ -28,15 +28,12 @@ class UuidCollection extends AbstractDelegatorCollection
         return parent::getManager();
     }
     
-    /*
-     * (non-PHPdoc) @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
-     */
     public function getFromManager($key)
     {
         if (! $key instanceof UuidInterface)
             throw new InvalidArgumentException(sprintf('`%s` does not implement `EntityManagerInterface`', get_class($key)));
         
-        return $this->getManager()->getService($key->getId());
+        return $this->getManager()->createService($key);
     }
 
     protected function validManager($manager)

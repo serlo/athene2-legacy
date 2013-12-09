@@ -15,6 +15,7 @@ use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
+use Uuid\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Collection\UuidCollection;
 
@@ -90,16 +91,6 @@ class UuidManager implements UuidManagerInterface
         return $this->getUuid($entity->getId());
     }
 
-    public function getService($key)
-    {
-        $key = $this->getUuid($key)->getHolder();
-        foreach ($this->getOption('resolver') as $className => $callback) {
-            if ($key instanceof $className)
-                return $callback($key, $this->getServiceLocator());
-        }
-        return $key;
-    }
-
     public function createUuid()
     {
         $entity = $this->createInstance('Uuid\Entity\UuidInterface');
@@ -107,5 +98,30 @@ class UuidManager implements UuidManagerInterface
         $this->getObjectManager()->flush($entity);
         $this->addInstance($entity->getId(), $entity);
         return $entity;
+    }
+
+    public function createService($idOrObject)
+    {
+        $holder = $this->ambigousToUuid($idOrObject)->getHolder();
+        foreach ($this->getOption('resolver') as $className => $callback) {
+            if ($holder instanceof $className)
+                return $callback($holder, $this->getServiceLocator());
+        }
+        return $holder;
+    }
+
+    protected function ambigousToUuid($idOrObject)
+    {
+        $uuid = NULL;
+        if (is_int($idOrObject)) {
+            $uuid = $this->getUuid($idOrObject);
+        } elseif ($idOrObject instanceof UuidHolder) {
+            $uuid = $idOrObject->getUuidEntity();
+        } elseif ($idOrObject instanceof UuidInterface) {
+            $uuid = $idOrObject;
+        } else {
+            throw new Exception\InvalidArgumentException(sprintf('Expected int, UuidHolder or UuidInterface but got "%s"', (is_object($idOrObject) ? get_class($idOrObject) : gettype($idOrObject))));
+        }
+        return $uuid;
     }
 }

@@ -21,6 +21,14 @@ return array(
             'comment' => '/discussion/%d'
         )
     ),
+    'term_router' => array(
+        'routes' => array(
+            'forum' => array(
+                'route' => 'discussion/discussions',
+                'param_provider' => 'Discussion\Provider\ParamProvider'
+            )
+        )
+    ),
     'uuid_manager' => array(
         'resolver' => array(
             'Discussion\Entity\CommentInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
@@ -61,7 +69,7 @@ return array(
                 'callback' => function (ServiceLocatorInterface $sm, $collection)
                 {
                     return new CommentCollection($collection, $sm->get('Discussion\DiscussionManager'));
-                },
+                }
             )
         ),
         'types' => array(
@@ -211,6 +219,8 @@ return array(
                     'setUserManager' => array(
                         'required' => true
                     )
+                ),
+                __NAMESPACE__ . '\Provider\ParamProvider' => array(
                 ),
                 'Discussion\Controller\DiscussionController' => array(
                     'setDiscussionManager' => array(

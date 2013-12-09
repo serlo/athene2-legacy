@@ -86,8 +86,8 @@ interface UuidManagerInterface
     
     /**
      * 
-     * @param int $uuid
+     * @param int|UuidInterface|UuidHolder $uuid
      * @return mixed
      */
-    public function getService($uuid);
+    public function createService($idOrObject);
 }

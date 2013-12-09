@@ -19,8 +19,9 @@ use Taxonomy\Exception\TermNotFoundException;
 use Common\Normalize\Normalized;
 use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Uuid\Entity\UuidInterface;
 
-class TermService  implements TermServiceInterface
+class TermService implements TermServiceInterface
 {
     
     use \Term\Manager\TermManagerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Taxonomy\Router\TermRouterAwareTrait;
@@ -85,6 +86,37 @@ class TermService  implements TermServiceInterface
     public function getSlug()
     {
         return $this->getEntity()->getSlug();
+    }
+
+    public function getUuid()
+    {
+        return $this->getEntity()->getUuid();
+    }
+
+    public function setUuid(UuidInterface $uuid)
+    {
+        $this->getEntity()->setUuid($uuid);
+    }
+
+    public function getUuidEntity()
+    {
+        return $this->getEntity()->getUuidEntity();
+    }
+
+    public function getTrashed()
+    {
+        return $this->getEntity()->getTrashed();
+    }
+
+    public function setTrashed($trashed)
+    {
+        $this->getEntity()->setTrashed($trashed);
+        return $this;
+    }
+
+    public function getHolderName()
+    {
+        return $this->getEntity()->getHolderName();
     }
 
     public function getDescription()
@@ -343,9 +375,11 @@ class TermService  implements TermServiceInterface
         }
         return $collection;
     }
-    
-    protected function parentNodeAllowed(TaxonomyTermModelInterface $taxonomyTerm){
-        return $this->getManager()->allowsParentType($taxonomyTerm->getType()->getName());
+
+    protected function parentNodeAllowed(TaxonomyTermModelInterface $taxonomyTerm)
+    {
+        return $this->getManager()->allowsParentType($taxonomyTerm->getType()
+            ->getName());
     }
 
     protected function isLinkAllowedWithException($targetField)

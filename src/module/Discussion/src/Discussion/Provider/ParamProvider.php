@@ -9,10 +9,9 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Subject\Provider;
+namespace Discussion\Provider;
 
 use Taxonomy\Router\ParamProviderInterface;
-use Taxonomy\Service\TermServiceInterface;
 use Taxonomy\Router\AbstractParamProvider;
 
 class ParamProvider extends AbstractParamProvider implements ParamProviderInterface
@@ -21,20 +20,7 @@ class ParamProvider extends AbstractParamProvider implements ParamProviderInterf
     public function getParams()
     {
         return array(
-            'subject' => $this->getObject()
-                ->findAncestorByTypeName('subject')
-                ->getSlug(),
-            'path' => $this->getPathToTermAsUri($this->getObject())
+            'id' => $this->getObject()->getId()
         );
-    }
-
-    protected function getPathToTermAsUri(TermServiceInterface $term)
-    {
-        return substr($this->_getPathToTermAsUri($term), 0, - 1);
-    }
-
-    protected function _getPathToTermAsUri(TermServiceInterface $term)
-    {
-        return ($term->getTaxonomy()->getName() != 'subject') ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }
 }

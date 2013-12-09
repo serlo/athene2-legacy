@@ -314,11 +314,6 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Provider\ParamProvider' => array(
-                    'setSubjectManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Hydrator\RouteStack' => array(
                     'setSubjectManager' => array(
                         'required' => true

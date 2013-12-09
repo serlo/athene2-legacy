@@ -12,6 +12,7 @@
 namespace Taxonomy;
 
 use Taxonomy\Router\TermRouter;
+use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * @codeCoverageIgnore
  */
@@ -22,6 +23,16 @@ return array(
     'uuid_router' => array(
         'routes' => array(
             'taxonomyTerm' => '/taxonomy/term/route/%d',
+        )
+    ),
+    'uuid_manager' => array(
+        'resolver' => array(
+            __NAMESPACE__ . '\Entity\TaxonomyTerm' => function ($uuid, ServiceLocatorInterface $serviceLocator)
+            {
+                /* @var $sharedTaxonomyManager \Taxonomy\Manager\SharedTaxonomyManager */
+                $sharedTaxonomyManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager');
+                return $sharedTaxonomyManager->getTerm($uuid->getId());
+            }
         )
     ),
     'class_resolver' => array(

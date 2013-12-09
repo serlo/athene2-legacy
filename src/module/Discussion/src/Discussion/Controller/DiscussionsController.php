@@ -25,7 +25,7 @@ class DiscussionsController extends AbstractController
         $forum = $this->getTermService();
         
         if(is_object($forum)){
-            $discussions = $forum->getAssociated('comments', true);
+            $discussions = $forum->getAssociatedRecursive('comments');
             $forums = $forum->getChildren();
         }
         
