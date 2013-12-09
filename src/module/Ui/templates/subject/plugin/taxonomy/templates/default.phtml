@@ -9,7 +9,10 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-$name = $this->term->getTaxonomy()->getName();
+$name = 'none';
+if(is_object($this->term)) {
+    $name = $this->term->getTaxonomy()->getName();
+}
 $template = 'subject/plugin/taxonomy/templates/' . $name;
 $forum = $this->subject->getSlug() . '/issues/taxonomy';
 $data = array(
@@ -21,7 +24,7 @@ $data = array(
     'terms' => $this->terms
 );
 ?>
-<?php if($this->term->isTrashed()): ?>
+<?php if(is_object($this->term) && $this->term->isTrashed()): ?>
     <div class="alert alert-danger"><?php echo $this->translate('This taxonomy term is marked as <strong>trashed</strong>. Contents might be out of date or unmaintained.'); ?></div>
 <?php endif; ?>
 <?php if($this->resolver($template)):?>
@@ -30,6 +33,7 @@ $data = array(
     <?php echo $this->partial($this->plugin->getTemplate('taxonomy'), $data); ?>
 <?php endif; ?>
 <hr>
+<?php if(is_object($this->term)): ?>
 <div class="tab-content">
     <h3><?php echo $this->translate('Discussions'); ?></h3>
     <ul class="nav nav-tabs">
@@ -43,3 +47,4 @@ $data = array(
         <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, true)->render(); ?>
     </div>
 </div>
+<?php endif; ?>

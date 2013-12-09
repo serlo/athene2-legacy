@@ -48,13 +48,6 @@ class TermForm extends Form
             ),
         ));
         
-        $this->add(array(
-            'name' => 'weight',
-            'attributes' => array(
-                'type' => 'hidden'
-            ),
-        ));
-        
         $this->add(new TermFieldset());
         
         $this->add((new Textarea('description'))->setLabel('description:'));

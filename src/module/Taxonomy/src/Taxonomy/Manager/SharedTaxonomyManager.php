@@ -160,10 +160,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
     private function hydrateTerm(array $data, TaxonomyTermInterface $taxonomyTerm)
     {
         $columns = array(
-            // 'parent' => 'setParent',
-            // 'taxonomy' => 'setTaxonomy',
-            'description' => 'setDescription',
-            'weight' => 'setPosition'
+            'description' => 'setDescription'
         );
         
         $taxonomyManager = array_key_exists('taxonomy', $data) ? $this->getTaxonomy($data['taxonomy']) : $this->getTaxonomy($taxonomyTerm->getTaxonomy()

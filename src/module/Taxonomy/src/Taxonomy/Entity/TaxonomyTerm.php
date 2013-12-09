@@ -16,11 +16,9 @@ use Uuid\Entity\UuidEntity;
 use Taxonomy\Exception\RuntimeException;
 use Entity\Entity\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Blog\Entity\PostInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Term\Model\TermModelInterface;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
-use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 
 /**
  * A
@@ -97,12 +95,12 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
      * @ORM\OrderBy({"id"="DESC"})
      */
     private $blogPosts;
-    
+
     protected $allowedRelations = [
-            'entities',
-            'comments',
-            'blogPosts'
-        ];
+        'entities',
+        'comments',
+        'blogPosts'
+    ];
 
     public function __construct()
     {
@@ -110,6 +108,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         $this->entities = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
+        $this->weight = 0;
     }
 
     public function getEntity()
@@ -300,12 +299,13 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         }
         return false;
     }
-    
+
     /**
-     * 
-     * @return ArrayCollection|TaxonomyTermNodeModelInterface[]
+     *
+     * @return ArrayCollection TaxonomyTermNodeModelInterface[]
      */
-    protected function getEntityNodes() {
+    protected function getEntityNodes()
+    {
         return $this->termTaxonomyEntities;
     }
 
