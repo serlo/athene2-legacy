@@ -14,16 +14,69 @@ namespace Entity\Service;
 use Entity\Exception\InvalidArgumentException;
 use Taxonomy\Collection\TermCollection;
 use Zend\Stdlib\ArrayUtils;
-use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
+use Entity\Model\EntityModelInterface;
+use Entity\Model\TypeModelInterface;
+use Datetime;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use Taxonomy\Model\TaxonomyTermNodeModelInterface;
+use License\Entity\LicenseInterface;
+use Versioning\Entity\RevisionInterface;
+use Link\Entity\LinkTypeInterface;
+use Link\Entity\LinkableInterface;
+use Entity\Entity\EntityInterface;
 
 class EntityService implements EntityServiceInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Zend\EventManager\EventManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Language\Manager\LanguageManagerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Entity\Manager\EntityManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
 
+    /**
+     *
+     * @var EntityModelInterface
+     */
+    protected $entity;
+
+    /**
+     *
+     * @var array
+     */
     protected $whitelistedPlugins = array();
 
+    /**
+     *
+     * @var array
+     */
     protected $pluginOptions = array();
+
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    public function getTerms()
+    {
+        return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
+    }
+
+    public function getTimestamp()
+    {
+        return $this->getEntity()->getTimestamp();
+    }
+
+    public function getUuid()
+    {
+        return $this->getEntity()->getUuid();
+    }
+
+    public function getType()
+    {
+        return $this->getEntity()->getType();
+    }
+
+    public function getId()
+    {
+        return $this->getEntity()->getId();
+    }
 
     public function normalize()
     {
@@ -59,40 +112,6 @@ class EntityService implements EntityServiceInterface
             ->getName());
         
         return $normalized;
-    }
-
-    public function getTerms()
-    {
-        return new TermCollection($this->getEntity()->get('terms'), $this->getSharedTaxonomyManager());
-    }
-
-    public function getTimestamp()
-    {
-        return $this->getEntity()->getTimestamp();
-    }
-
-    public function getUuid()
-    {
-        return $this->getEntity()->getUuid();
-    }
-
-    public function getType()
-    {
-        return $this->getEntity()->getType();
-    }
-
-    public function setTrashed($voided)
-    {
-        $this->getEntity()->setTrashed($voided);
-        $this->getEntityManager()
-            ->getObjectManager()
-            ->persist($this->getEntity());
-        return $this;
-    }
-
-    public function getId()
-    {
-        return $this->getEntity()->getId();
     }
 
     public function setConfig(array $config)
@@ -151,11 +170,6 @@ class EntityService implements EntityServiceInterface
         return $this;
     }
 
-    public function getPlugin($name)
-    {
-        return $this->whitelistedPlugins[$name];
-    }
-
     /**
      * Get plugin instance
      *
@@ -174,9 +188,20 @@ class EntityService implements EntityServiceInterface
         $pluginManager->setEntityService($this);
         $pluginManager->setPluginOptions($this->getPluginOptions($scope));
         
-        $plugin = $this->getPluginManager()->get($this->getPlugin($scope));
+        $plugin = $this->getPluginManager()->get($this->whitelistedPlugins[$scope]);
         $plugin->setScope($scope);
         return $plugin;
+    }
+
+    /**
+     *
+     * @param EntityInterface $entity            
+     * @return \Entity\Service\EntityService
+     */
+    public function setEntity(EntityInterface $entity)
+    {
+        $this->entity = $entity;
+        return $this;
     }
 
     /**
@@ -208,8 +233,173 @@ class EntityService implements EntityServiceInterface
         }
     }
 
+    public function setType(TypeModelInterface $type)
+    {
+        $this->getEntity()->setType($type);
+        return $this;
+    }
+
+    public function setTimestamp(DateTime $date)
+    {
+        $this->getEntity()->setTimestamp($date);
+        return $this;
+    }
+
+    public function getLanguage()
+    {
+        return $this->getLanguageManager()->getLanguage($this->getEntity()
+            ->getLanguage()
+            ->getId());
+    }
+
+    public function setLanguage(\Language\Model\LanguageModelInterface $language)
+    {
+        $language = $language->getEntity();
+        $this->getEntity()->setLanguage($language);
+        return $this;
+    }
+
+    public function setUuid(\Uuid\Entity\UuidInterface $uuid)
+    {
+        $this->getEntity()->setUuid($uuid);
+        return $this;
+    }
+
+    public function getUuidEntity()
+    {
+        return $this->getEntity()->getUuidEntity();
+    }
+
     public function getTrashed()
     {
         return $this->getEntity()->getTrashed();
+    }
+
+    public function setTrashed($trashed)
+    {
+        $this->getEntity()->setTrashed($trashed);
+        return $this;
+    }
+
+    public function getHolderName()
+    {
+        return $this->getEntity()->getHolderName();
+    }
+
+    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->getEntity()->addTaxonomyTerm($taxonomyTerm, $node);
+        return $this;
+    }
+
+    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->getEntity()->removeTaxonomyTerm($taxonomyTerm, $node);
+        return $this;
+    }
+
+    public function getTaxonomyTerms()
+    {
+        return $this->getEntity()->getTaxonomyTerms();
+    }
+
+    public function setLicense(LicenseInterface $license)
+    {
+        $this->getEntity()->setLicense($license);
+        return $this;
+    }
+
+    public function getLicense()
+    {
+        return $this->getEntity()->getLicense();
+    }
+
+    public function getRevisions()
+    {
+        return $this->getEntity()->getRevisions();
+    }
+    
+    /*
+     * (non-PHPdoc) @see \Versioning\Entity\RepositoryInterface::newRevision()
+     */
+    public function newRevision()
+    {
+        return $this->getEntity()->newRevision();
+    }
+
+    public function getCurrentRevision()
+    {
+        return $this->getEntity()->getCurrentRevision();
+    }
+
+    public function hasCurrentRevision()
+    {
+        return $this->getEntity()->hasCurrentRevision();
+    }
+
+    public function setCurrentRevision(RevisionInterface $revision)
+    {
+        $this->getEntity()->setCurrentRevision($revision);
+        return $this;
+    }
+
+    public function addRevision(RevisionInterface $revision)
+    {
+        $this->getEntity()->addRevision($revision);
+        return $this;
+    }
+
+    public function removeRevision(RevisionInterface $revision)
+    {
+        $this->getEntity()->addRevision($revision);
+        return $this;
+    }
+
+    public function getChildren(LinkTypeInterface $type)
+    {
+        $this->getEntity()->getChildren($type);
+        return $this;
+    }
+
+    public function getParents(LinkTypeInterface $type)
+    {
+        $this->getEntity()->getParents($type);
+        return $this;
+    }
+
+    public function addChild(LinkableInterface $child, LinkTypeInterface $type)
+    {
+        $this->getEntity()->addChild($child->getEntity(), $type);
+        return $this;
+    }
+
+    public function addParent(LinkableInterface $parent, LinkTypeInterface $type)
+    {
+        $this->getEntity()->addParent($parent->getEntity(), $type);
+        return $this;
+    }
+
+    public function removeChild(LinkableInterface $child, LinkTypeInterface $type)
+    {
+        $this->getEntity()->addParent($child->getEntity(), $type);
+        return $this;
+    }
+
+    public function removeParent(LinkableInterface $parent, LinkTypeInterface $type)
+    {
+        $this->getEntity()->removeParent($parent->getEntity(), $type);
+        return $this;
+    }
+
+    public function positionChild(LinkableInterface $child, LinkTypeInterface $type, $position)
+    {
+        $this->getEntity()->positionChild($child->getEntity(), $type, $position);
+        return $this;
+    }
+
+    public function positionParent(LinkableInterface $parent, LinkTypeInterface $type, $position)
+    {
+        $this->getEntity()->positionChild($parent->getEntity(), $type, $position);
+        return $this;
     }
 }

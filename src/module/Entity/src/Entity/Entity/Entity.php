@@ -112,6 +112,11 @@ class Entity extends UuidEntity implements EntityInterface
         $this->fieldOrder = array();
     }
 
+    public function getEntity()
+    {
+        return $this;
+    }
+
     public function getLicense()
     {
         return $this->license;

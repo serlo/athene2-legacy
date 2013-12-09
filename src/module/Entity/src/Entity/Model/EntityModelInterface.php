@@ -15,7 +15,41 @@ use Link\Entity\LinkableInterface;
 use Versioning\Entity\RepositoryInterface;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 use Language\Model\LanguageModelAwareInterface;
+use Common\Model\Wrapable;
+use Uuid\Entity\UuidHolder;
+use Datetime;
 
-interface EntityModelInterface extends LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermModelAwareInterface
+interface EntityModelInterface extends UuidHolder, Wrapable, LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermModelAwareInterface
 {
+
+    /**
+     *
+     * @return TypeModelInterface
+     */
+    public function getType();
+
+    /**
+     *
+     * @return DateTime
+     */
+    public function getTimestamp();
+
+    /**
+     *
+     * @param TypeModelInterface $type            
+     * @return self
+     */
+    public function setType(TypeModelInterface $type);
+
+    /**
+     *
+     * @param DateTime $date            
+     */
+    public function setTimestamp(DateTime $date);
+
+    /**
+     *
+     * @return self
+     */
+    public function getEntity();
 }

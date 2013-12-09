@@ -9,8 +9,9 @@
 namespace Link\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Common\Model\Wrapable;
 
-interface LinkableInterface
+interface LinkableInterface extends Wrapable
 {
 
     /**
@@ -86,4 +87,10 @@ interface LinkableInterface
      * @return $this
      */
     public function positionParent(LinkableInterface $parent, LinkTypeInterface $type, $position);
+    
+    /**
+     * 
+     * @return self
+     */
+    public function getEntity();
 }

@@ -11,18 +11,10 @@
  */
 namespace Common\Model;
 
-interface EntityModelInterface
+/**
+ * Implies, that a model is wrappable / extendable. A common example
+ * is a model wrapping an entity.
+ */
+interface Wrapable
 {
-    /**
-     * 
-     * @param Object $entity
-     * @return $this
-     */
-    public function setEntity($entity);
-    
-    /**
-     * 
-     * @return Object
-     */
-    public function getEntity();
 }

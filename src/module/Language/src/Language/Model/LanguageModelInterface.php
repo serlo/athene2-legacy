@@ -11,11 +11,14 @@
  */
 namespace Language\Model;
 
-interface LanguageModelInterface
+use Common\Model\Wrapable;
+
+interface LanguageModelInterface extends Wrapable
 {
 
     /**
-     * Returns the code. echo $language->getCode(); // prints: 'de'
+     * Returns the code.
+     * echo $language->getCode(); // prints: 'de'
      *
      * @return string $code
      */
@@ -35,9 +38,9 @@ interface LanguageModelInterface
      * @return int $id
      */
     public function getId();
-    
+
     /**
-     * 
+     *
      * @return bool
      */
     public function getEntity();

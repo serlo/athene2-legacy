@@ -11,12 +11,8 @@
  */
 namespace Entity\Entity;
 
-use License\Entity\LicenseAwareInterface;
-use Link\Entity\LinkableInterface;
-use Versioning\Entity\RepositoryInterface;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
-use Language\Model\LanguageModelAwareInterface;
+use Entity\Model\EntityModelInterface;
 
-interface EntityInterface extends LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermModelAwareInterface
+interface EntityInterface extends EntityModelInterface
 {
 }

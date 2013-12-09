@@ -28,7 +28,7 @@ interface UuidHolder
      * @param UuidInterface $uuid
      * @return $this
      */
-    public function setUuid (UuidInterface $uuid = null);
+    public function setUuid (UuidInterface $uuid);
     
     /**
      * @return UuidInterface

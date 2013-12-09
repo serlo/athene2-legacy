@@ -12,8 +12,9 @@
 namespace Term\Model;
 
 use Language\Model\LanguageModelAwareInterface;
+use Common\Model\Wrapable;
 
-interface TermModelInterface extends LanguageModelAwareInterface
+interface TermModelInterface extends LanguageModelAwareInterface, Wrapable
 {
 
     /**
@@ -21,6 +22,7 @@ interface TermModelInterface extends LanguageModelAwareInterface
      * @return int $id
      */
     public function getId();
+
     /**
      *
      * @return field_type $name
@@ -46,9 +48,9 @@ interface TermModelInterface extends LanguageModelAwareInterface
      * @return $this
      */
     public function setSlug($slug);
-    
+
     /**
-     * 
+     *
      * @return TermModelInterface
      */
     public function getEntity();

@@ -17,9 +17,10 @@ use Doctrine\Common\Collections\Collection;
 use Language\Entity\LanguageEntityInterface;
 use Term\Model\TermModelAwareInterface;
 use Taxonomy\Entity\TaxonomyTypeInterface;
+use Common\Model\Wrapable;
 
 
-interface TaxonomyTermModelInterface extends TermModelAwareInterface
+interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable
 {
 
     /**

@@ -10,6 +10,32 @@
  */
 namespace Entity\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 interface TypeModelInterface
 {
+    /**
+     * 
+     * @return int
+     */
+    public function getId();
+    
+    /**
+     * 
+     * @return Ambigous<Collection, EntityModelInterface[]>
+     */
+    public function getEntities();
+
+    /**
+     * 
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * 
+     * @param string $className
+     * @return self
+     */
+    public function setName($className);
 }
