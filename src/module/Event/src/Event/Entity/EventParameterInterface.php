@@ -17,47 +17,47 @@ interface EventParameterInterface
 {
 
     /**
-     *
+     * 
      * @return int
      */
     public function getId();
 
     /**
-     *
+     * 
      * @return EventLogInterface
      */
     public function getLog();
 
     /**
-     *
-     * @return UuidInterface
-     */
-    public function getObject();
-
-    /**
-     *
+     * 
      * @return string
      */
     public function getName();
 
     /**
      * 
+     * @return UuidInterface
+     */
+    public function getObject();
+
+    /**
+     * 
      * @param EventLogInterface $log
-     * @return $this
+     * @return self
      */
     public function setLog(EventLogInterface $log);
 
     /**
      * 
-     * @param UuidInterface $object
-     * @return $this
+     * @param EventParameterNameInterface $name
+     * @return self
      */
-    public function setObject(UuidInterface $object);
+    public function setName(EventParameterNameInterface $name);
 
     /**
      * 
-     * @param EventParameterNameInterface $name
-     * @return $this
+     * @param UuidInterface $uuid
+     * @return self
      */
-    public function setName(EventParameterNameInterface $name);
+    public function setObject(UuidInterface $uuid);
 }

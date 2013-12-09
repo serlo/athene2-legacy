@@ -18,7 +18,7 @@ use Event\Service\EventServiceInterface;
 
 class EventLog extends AbstractHelper
 {
-    use\Event\EventManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Event\EventManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -33,6 +33,14 @@ class EventLog extends AbstractHelper
     public function renderObjectLog($id)
     {
         $events = $this->getEventManager()->findEventsByObject($id);
+        return $this->getView()->partial($this->getOption('templates')['events'], array(
+            'events' => $events
+        ));
+    }
+
+    public function renderUserLog($id)
+    {
+        $events = $this->getEventManager()->findEventsByActor($id);
         return $this->getView()->partial($this->getOption('templates')['events'], array(
             'events' => $events
         ));

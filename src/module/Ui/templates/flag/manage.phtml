@@ -19,8 +19,7 @@
                     <?php echo $flag->getId(); ?>
                 </td>
                 <td>
-                    <?php $url = $this->url('uuid/router', array('uuid' => $flag->getObject()->getId())); ?>
-                    <a href="<?php echo $url; ?>"><?php echo $flag->getObject()->getUuid(); ?></a>
+                    <a href="<?php echo $this->normalize()->toUrl($flag->getObject()); ?>"><?php echo $this->normalize()->toTitle($flag->getObject()); ?></a>
                 </td>
                 <td>
                     <?php echo $flag->getType()->getName(); ?>
@@ -29,7 +28,7 @@
                     <?php echo $this->timeago()->render($flag->getTimestamp());?>
                 </td>
                 <td>
-                    <a href="<?php echo $this->url('uuid/router', array('uuid' => $flag->getReporter()->getId())); ?>"><?php echo $flag->getReporter()->getUsername(); ?></a>
+                    <a href="<?php echo $this->normalize()->toUrl($flag->getReporter()); ?>"><?php echo $this->normalize()->toTitle($flag->getReporter()); ?></a>        
                 </td>
                 <td>
                     <div class="btn-group">

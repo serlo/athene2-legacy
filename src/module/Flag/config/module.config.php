@@ -37,6 +37,9 @@ return array(
                 __NAMESPACE__ . '\Service\FlagService' => array(
                     'setUserManager' => array(
                         'required' => 'true'
+                    ),
+                    'setUuidManager' => array(
+                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Manager\FlagManager' => array(

@@ -11,12 +11,10 @@
  */
 namespace Event\Service;
 
-use User\Service\UserServiceInterface;
-use Language\Service\LanguageServiceInterface;
 use Event\Entity\EventLogInterface;
+use Event\Model\EventLogModelInterface;
 
-
-interface EventServiceInterface
+interface EventServiceInterface extends EventLogModelInterface
 {
     /**
      * 
@@ -37,33 +35,6 @@ interface EventServiceInterface
      * @return UuidHolder
      */
     public function getObject();
-    
-    /**
-     * 
-     * @return \Datetime
-     */
-    public function getTimestamp();
-
-    /**
-     * Gets the actor.
-     *
-     * @return UserServiceInterface
-     */
-    public function getActor();
-
-    /**
-     * Gets the language.
-     *
-     * @return LanguageServiceInterface
-     */
-    public function getLanguage();
-
-    /**
-     * Gets the event name.
-     *
-     * @return string
-     */
-    public function getName();
 
     /**
      *
@@ -74,7 +45,7 @@ interface EventServiceInterface
     /**
      * 
      * @param EventLogInterface $entity
-     * @return $this
+     * @return self
      */
     public function setEntity(EventLogInterface $entity);
 }

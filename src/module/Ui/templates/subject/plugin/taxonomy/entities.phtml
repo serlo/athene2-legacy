@@ -20,9 +20,9 @@ $table = array(
     <div class="row">
     	<div class="col-md-9">
             <?php if($this->term->getDescription()): ?>
-                <h5><?php echo $this->term->getDescription(); ?></h5>
+                <p class="lead"><?php echo $this->term->getDescription(); ?></p>
             <?php else: ?>
-                <i><?php echo $this->translate('No description set.'); ?></i>
+                <p class="text-muted"><?php echo $this->translate('No description set.'); ?></p>
             <?php endif;?>
     	</div>
     	<div class="col-md-3">

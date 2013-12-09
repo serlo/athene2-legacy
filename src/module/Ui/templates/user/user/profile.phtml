@@ -60,9 +60,6 @@
         <strong><?php echo $this->translate('Activity log'); ?></strong>
     </div>
     <div class="col-md-10">
-        <ul>
-            <li>Dummy A</li>
-            <li>Dummy B</li>
-        </ul>
+        <?php echo $this->events()->renderUserLog($this->user->getId()); ?>
     </div>
 </div>

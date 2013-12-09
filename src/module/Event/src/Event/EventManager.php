@@ -11,23 +11,36 @@
  */
 namespace Event;
 
-use Uuid\Entity\UuidHolder;
 use User\Entity\UserInterface;
 use Language\Entity\LanguageEntityInterface;
 use Event\Exception;
 use Uuid\Entity\UuidInterface;
-use Event\Entity\EventInterface;
 use Event\Collection\EventCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Event\Entity\EventLogInterface;
 
 class EventManager implements EventManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
     protected $inMemoryEvents = array();
 
     protected $inMemoryParameterNames = array();
+
+    public function findEventsByActor($userId)
+    {
+        if (! is_numeric($userId))
+            throw new Exception\InvalidArgumentException(sprintf('Expected numeric but got "%s"', gettype($userId)));
+        
+        $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
+        $repository = $this->getObjectManager()->getRepository($className);
+        
+        $results = $repository->findBy(array(
+            'actor' => $userId
+        ), array('id' => 'desc'));
+        $collection = new ArrayCollection($results);
+        return new EventCollection($collection, $this);
+    }
 
     public function findEventsByObject($objectId, $recursive = true, array $filters = array())
     {

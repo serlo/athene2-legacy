@@ -29,6 +29,11 @@ class Normalize extends AbstractHelper
         return $object->normalize()->getTitle();
     }
 
+    public function toPreview(Normalizable $object)
+    {
+        return $object->normalize()->getPreview();
+    }
+
     public function toType(Normalizable $object)
     {
         return $object->normalize()->getType();

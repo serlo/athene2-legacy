@@ -35,7 +35,6 @@ return array(
                                 'label' => 'Manage taxonomies',
                                 'route' => 'taxonomy/term/organize',
                                 'params' => array(
-                            	   'id' => NULL
                                 ),
                                 'pages' => array(
                                     array(
@@ -70,6 +69,10 @@ return array(
                             array(
                                 'label' => 'Manage roles',
                                 'route' => 'users/roles'
+                            ),
+                            array(
+                                'route' => 'users/role',
+                                'visible' => false
                             )
                         )
                     ),
@@ -81,7 +84,13 @@ return array(
                     array(
                         'label' => 'Flags',
                         'icon' => 'flag',
-                        'route' => 'flag/manage'
+                        'route' => 'flag/manage',
+                        'pages' => array(
+                            array(
+                                'route' => 'flag/detail',
+                                'visible' => false
+                            ),
+                        )
                     ),
                     array(
                         'label' => 'Licenses',

@@ -58,7 +58,7 @@ class EventService implements EventServiceInterface
     {
         $object = $this->getEntity()->getParameter($name);
         
-        if(!is_object($object)){
+        if (! is_object($object)) {
             throw new Exception\RuntimeException(sprintf('Event "%s" does not have a parameter called "%s".', $this->getName(), $name));
         }
         
@@ -78,6 +78,46 @@ class EventService implements EventServiceInterface
     public function setEntity(EventLogInterface $entity)
     {
         $this->entity = $entity;
+        return $this;
+    }
+
+    public function getEvent()
+    {
+        return $this->getEntity->getEvent();
+    }
+
+    public function getParameters()
+    {
+        return $this->getEntity->getParameters();
+    }
+
+    public function addParameter(\Event\Entity\EventParameterInterface $parameter)
+    {
+        $this->getEntity()->setObject($parameter);
+        return $this;
+    }
+
+    public function setObject(\Uuid\Entity\UuidInterface $uuid)
+    {
+        $this->getEntity()->setObject($uuid);
+        return $this;
+    }
+
+    public function setEvent(\Event\Entity\EventInterface $event)
+    {
+        $this->getEntity()->setEvent($event);
+        return $this;
+    }
+
+    public function setActor(\User\Entity\UserInterface $actor)
+    {
+        $this->getEntity()->setActor($actor);
+        return $this;
+    }
+
+    public function setLanguage(\Language\Model\LanguageModelInterface $language)
+    {
+        $this->getEntity()->setLanguage($language);
         return $this;
     }
 }

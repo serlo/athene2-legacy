@@ -15,7 +15,7 @@ use Flag\Entity\FlagInterface;
 
 class FlagService implements FlagServiceInterface
 {
-    use\User\Manager\UserManagerAwareTrait;
+    use \User\Manager\UserManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -35,7 +35,8 @@ class FlagService implements FlagServiceInterface
 
     public function getObject()
     {
-        return $this->getEntity()->getObject();
+        return $this->getUuidManager()->createService($this->getEntity()
+            ->getObject());
     }
 
     public function getContent()

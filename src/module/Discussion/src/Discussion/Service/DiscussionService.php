@@ -23,7 +23,7 @@ use Common\Normalize\Normalized;
 
 class DiscussionService extends AbstractComment implements DiscussionServiceInterface, Normalizable
 {
-    use\Discussion\DiscussionManagerAwareTrait;
+    use \Discussion\DiscussionManagerAwareTrait;
 
     /**
      *
@@ -92,6 +92,16 @@ class DiscussionService extends AbstractComment implements DiscussionServiceInte
     public function getTitle()
     {
         return $this->getEntity()->getTitle();
+    }
+
+    public function getHolderName()
+    {
+        return $this->getEntity()->getHolderName();
+    }
+
+    public function getUuid()
+    {
+        return $this->getEntity()->getUuid();
     }
 
     public function getContent()
@@ -205,15 +215,17 @@ class DiscussionService extends AbstractComment implements DiscussionServiceInte
             return false;
         return $this->getEntity()->hasUserVoted($user->getEntity());
     }
-    
-    public function normalize(){
+
+    public function normalize()
+    {
         $normalized = new Normalized();
         $normalized->setTitle($this->getTitle());
         $normalized->setContent($this->getContent());
+        $normalized->setPreview(substr($this->getContent(), 0, 100));
         $normalized->setTimestamp($this->getDate());
         $normalized->setRouteName('discussion/view');
         $normalized->setRouteParams(array(
-            'id'=> $this->getId()
+            'id' => $this->getId()
         ));
         return $normalized;
     }
