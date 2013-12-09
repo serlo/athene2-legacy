@@ -12,7 +12,7 @@
 $module = $this->entity;
 if($module->repository()->hasCurrentRevision()): ?>
     <?php $revision = $module->repository()->getCurrentRevision(); ?>
-    <li>
+    <li class="list-group-item">
         <a href="<?php echo $this->url('entity/plugin/page', array('entity' => $module->getId())); ?>" class="module">
         	<?php echo $revision->get('title'); ?>
         </a>

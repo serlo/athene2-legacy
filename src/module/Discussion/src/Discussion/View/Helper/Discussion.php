@@ -68,7 +68,7 @@ class Discussion extends AbstractHelper
      */
     public function setArchived($archived)
     {
-        $this->archived = (bool) $archived;
+        $this->archived = $archived;
         return $this;
     }
 
@@ -83,7 +83,7 @@ class Discussion extends AbstractHelper
         );
     }
 
-    public function __invoke(UuidInterface $object = NULL, $forum = NULL, $archived = false)
+    public function __invoke(UuidInterface $object = NULL, $forum = NULL, $archived = NULL)
     {
         if ($object !== NULL) {
             $this->discussions = $this->getDiscussionManager()->findDiscussionsOn($object, $archived);
@@ -111,7 +111,7 @@ class Discussion extends AbstractHelper
         return $this->getView()->partial($this->getOption('template'), array(
             'user' => $user,
             'discussions' => $this->discussions,
-            'archived' => $this->archived,
+            'isArchived' => $this->archived,
             'plugin' => $this,
             'object' => $this->getObject(),
             'forum' => $this->getForum()

@@ -17,7 +17,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class SubjectService implements SubjectServiceInterface, SubjectInterface
 {
-    use\Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait;
+    use \Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -65,6 +65,17 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
     public function isPluginWhitelisted($name)
     {
         return array_key_exists($name, $this->pluginWhitelist) && $this->pluginWhitelist[$name] !== FALSE;
+    }
+
+    public function getScopesForPlugin($plugin)
+    {
+        $return = array();
+        foreach ($this->pluginWhitelist as $scope => $pluginName) {
+            if ($plugin == $pluginName) {
+                $return[] = $scope;
+            }
+        }
+        return $return;
     }
 
     public function whitelistPlugins(array $config)

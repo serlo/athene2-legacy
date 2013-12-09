@@ -12,12 +12,12 @@
 				<p class="timeago" title="<?php echo $this->discussion->getDate()->format("Y-m-d H:i:s"); ?>"></p>
 			    <hr>
                 <div class="btn-group btn-group-x">
-                    <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>    
-                    <a
-						href="<?php echo $this->url('discussion/discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
-						class="glyphicon glyphicon-chevron-<?php print $vote; ?>"></span> 
-                    <b><?php echo $this->discussion->countUpVotes(); ?></b> </a>  
                     <?php if($this->discussion->isDiscussion()): ?>
+                        <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>    
+                        <a
+    						href="<?php echo $this->url('discussion/discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
+    						class="glyphicon glyphicon-chevron-<?php print $vote; ?>"></span> 
+                        <b><?php echo $this->discussion->countUpVotes(); ?></b> </a>  
                         <a
     						href="<?php echo $this->url('discussion/discussion/archive', array('comment' => $this->discussion->getId())); ?>" class="btn btn-xs btn-<?php echo ($this->discussion->getArchived()) ? 'primary' : 'default'; ?>"><span
     						class="glyphicon glyphicon-inbox"></span></a> 

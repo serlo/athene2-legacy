@@ -19,33 +19,38 @@ $table = array(
 <?php if(is_object($this->term)): ?>
     <div class="row">
     	<div class="col-md-9">
-            <?php echo $this->term->getDescription() !== "NULL" ? $this->term->getDescription() : ''; ?>
+            <?php if($this->term->getDescription()): ?>
+                <h5><?php echo $this->term->getDescription(); ?></h5>
+            <?php else: ?>
+                <i><?php echo $this->translate('No description set.'); ?></i>
+            <?php endif;?>
     	</div>
     	<div class="col-md-3">
     	    <?php if($this->term->isAssociationAllowed('entities')): ?>
-    		<div class="btn-group pull-right">
-    		    <?php if($this->guard()->hasAccessToRoute('entity/create')): ?>
-                    <div class="btn-group">
-            			<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-            			     <span class="glyphicon glyphicon-file"></span> <span class="caret"></span>
+        		<div class="btn-group pull-right">
+        		    <?php if($this->guard()->hasAccessToRoute('entity/create')): ?>
+                        <div class="btn-group">
+                			<a class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown" href="#">
+                			     <span class="glyphicon glyphicon-file"></span> <span class="caret"></span>
+                			</a>
+                			<ul class="dropdown-menu">
+                                <?php foreach($this->plugin->getEnabledEntityTypes() as $type):?>
+                				    <li><a
+                					href="<?php echo rawurldecode($this->url('entity/create', array('type' => $type), array('query' => array( 'taxonomy' => array( 'term' => $this->term->getId()))))); ?>"><?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?></a></li>
+                				<?php endforeach; ?>
+                			</ul>
+            			</div>
+        			<?php endif; ?>
+        		    <?php if($this->guard()->hasAccessToRoute('taxonomy/term/sort-associated')): ?>
+            			<a class="btn btn-default btn-xs" href="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>">
+            			     <span class="glyphicon glyphicon-sort"></span>
             			</a>
-            			<ul class="dropdown-menu">
-                            <?php foreach($this->plugin->getEnabledEntityTypes() as $type):?>
-            				    <li><a
-            					href="<?php echo rawurldecode($this->url('entity/create', array('type' => $type), array('query' => array( 'taxonomy' => array( 'term' => $this->term->getId()))))); ?>"><?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?></a></li>
-            				<?php endforeach; ?>
-            			</ul>
-        			</div>
-    			<?php endif; ?>
-    		    <?php if($this->guard()->hasAccessToRoute('taxonomy/term/sort-associated')): ?>
-        			<a class="btn btn-default" href="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>">
-        			     <span class="glyphicon glyphicon-sort"></span>
-        			</a>
-    			<?php endif; ?>
-    		</div>
+        			<?php endif; ?>
+        		</div>
     		<?php endif; ?>
     	</div>
     </div>
+    <hr />
     <?php if($this->term->isAssociationAllowed('entities')): ?>
     <div class="entities">
         <?php foreach($this->links as $link): ?>
@@ -63,42 +68,42 @@ $table = array(
         <?php endforeach; ?>
         <div class="row">
     		<div class="col-md-4">
-    			<ol>
-                    <li>
+    			<ol class="list-group">
+                    <li class="list-group-item">
     			         <h4><span class="glyphicon glyphicon-book"></span> <strong><?php echo $this->translate('Articles'); ?></strong></h4>
     			    </li>
     			    <?php if(strlen($table['left']) > 0): ?>
                         <?php echo $table['left']; ?>
                     <?php else: ?>
-                        <li>
+                        <li class="list-group-item">
                         	<span class="text-muted"><?php echo $this->translate('There are no articles for this topic yet.'); ?></span>
                         </li>
                     <?php endif; ?>
                 </ol>
     		</div>
     		<div class="col-md-4">
-    			<ol>
-                    <li>
+    			<ol class="list-group">
+                    <li class="list-group-item">
     			         <h4><span class="glyphicon glyphicon-facetime-video"></span> <strong><?php echo $this->translate('Videos'); ?></strong></h4>
     			    </li>
     			    <?php if(strlen($table['middle']) > 0): ?>
                         <?php echo $table['middle']; ?>
                     <?php else: ?>
-                        <li>
+                        <li class="list-group-item">
                         	<span class="text-muted"><?php echo $this->translate('There are no videos for this topic yet.'); ?></span>
                         </li>
                     <?php endif; ?>
                 </ol>
             </div>
     		<div class="col-md-4">
-    			<ol>
-                    <li>
+    			<ol class="list-group">
+                    <li class="list-group-item">
     			         <h4><span class="glyphicon glyphicon-list"></span> <strong><?php echo $this->translate('Modules'); ?></strong></h4>
     			    </li>
     			    <?php if(strlen($table['right']) > 0): ?>
                         <?php echo $table['right']; ?>
                     <?php else: ?>
-                        <li>
+                        <li class="list-group-item">
                         	<span class="text-muted"><?php echo $this->translate('There are no modules for this topic yet.'); ?></span>
                         </li>
                     <?php endif; ?>

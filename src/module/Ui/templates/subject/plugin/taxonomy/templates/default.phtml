@@ -34,17 +34,5 @@ $data = array(
 <?php endif; ?>
 <hr>
 <?php if(is_object($this->term)): ?>
-<div class="tab-content">
-    <h3><?php echo $this->translate('Discussions'); ?></h3>
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#current" data-toggle="tab"><?php echo $this->translate('Current'); ?></a></li>
-        <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
-    </ul>
-    <div class="tab-pane active" id="current">
-        <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, false)->render(); ?>
-    </div>
-    <div class="tab-pane" id="archived">
-        <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum, true)->render(); ?>
-    </div>
-</div>
+    <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum)->render(); ?>
 <?php endif; ?>

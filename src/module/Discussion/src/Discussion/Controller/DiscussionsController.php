@@ -15,7 +15,7 @@ use Zend\View\Model\ViewModel;
 
 class DiscussionsController extends AbstractController
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function indexAction()
     {
@@ -24,7 +24,7 @@ class DiscussionsController extends AbstractController
         
         $forum = $this->getTermService();
         
-        if(is_object($forum)){
+        if (is_object($forum)) {
             $discussions = $forum->getAssociatedRecursive('comments');
             $forums = $forum->getChildren();
         }
@@ -39,18 +39,18 @@ class DiscussionsController extends AbstractController
         $view->setTemplate('discussion/discussions/index');
         return $view;
     }
-    
-    protected function getTaxonomyManager(){
+
+    protected function getTaxonomyManager()
+    {
         return $this->getSharedTaxonomyManager()->findTaxonomyByName('forum-category', $this->getLanguageManager()
             ->getLanguageFromRequest());
     }
-    
+
     protected function getTermService($id = NULL)
     {
+        $id = $this->params('id', $id);
         if ($id === NULL) {
-            $id = $this->params('id', NULL);
-            if($id === NULL)
-                return NULL;
+            return NULL;
         }
         
         return $this->getSharedTaxonomyManager()->getTerm($id);

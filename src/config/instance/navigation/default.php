@@ -105,6 +105,7 @@ return array(
                 )
             ),
             'blog' => array(
+                'label' => 'Blog',
                 'uri' => '#',
                 'pages' => array(
                     array(
@@ -138,6 +139,32 @@ return array(
                         'label' => 'Diskussionen',
                         'route' => 'discussion/discussions',
                         'icon' => 'comment'
+                    ),
+                    array(
+                        'route' => 'user/login',
+                        'visible' => false
+                    ),
+                    array(
+                        'route' => 'user/register',
+                        'visible' => false
+                    ),
+                    array(
+                        'route' => 'user/me',
+                        'visible' => false
+                    ),
+                    array(
+                        'route' => 'user/profile',
+                        'visible' => false
+                    )
+                )
+            ),
+            'home' => array(
+                'label' => 'Home',
+                'route' => 'home',
+                'pages' => array(
+                    array(
+                        'route' => 'home',
+                        'visible' => false
                     )
                 )
             )

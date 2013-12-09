@@ -13,7 +13,7 @@
 $article = $this->entity;
 if($article->repository()->hasCurrentRevision()): ?>
     <?php $revision = $article->repository()->getCurrentRevision(); ?>
-    <li>
+    <li class="list-group-item">
     	<a
     		href="<?php echo $this->url('entity/plugin/page', array('entity' => $article->getId())); ?>">
            <?php echo $revision->get('title'); ?>
