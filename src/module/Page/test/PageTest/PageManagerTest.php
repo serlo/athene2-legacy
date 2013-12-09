@@ -18,12 +18,13 @@ use Page\Manager\PageManager;
 class PageManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $pageManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock,$languageServiceMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$languageMock;
+    protected $pageManager,$licenseManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock,$languageServiceMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$languageMock;
 
     public function setUp()
     {
         parent::setUp();
         $this->pageManager = new PageManager();
+        $this->licenseManager = $this->getMock('License\Manager\LicenseManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         $this->languageMock = $this->getMock('Language\Entity\Language');
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
@@ -47,7 +48,7 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         $this->pageManager->setUuidManager($this->uuidManagerMock);
         $this->pageManager->setClassResolver($this->classResolverMock);
         $this->pageManager->setServiceLocator($this->serviceLocatorMock);
-        
+        $this->pageManager->setLicenseManager($this->licenseManager);
         
         $this->userMock->expects($this->any())
         ->method('getEntity')

@@ -139,6 +139,7 @@ return array(
                 $srv->setPageManager($sm->get('Page\Manager\PageManager'));
                 return $srv;
             }
+            
         )
     ),
     'class_resolver' => array(
@@ -147,9 +148,14 @@ return array(
         'Page\Entity\PageInterface' => 'Page\Entity\Page',
         'Page\Service\PageServiceInterface' => 'Page\Service\PageService'
     ),
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
+    'zfc_rbac' => array(
+        'guard_manager' => [
+        'factories' => [
+        'Common\Guard\HydratableControllerGuard' => 'Common\Guard\Factory\HydratableControllerGuardFactory'
+            ]
+            ],
+        'guards' => array(
+          /*  'ZfcRbac\Firewall\Controller' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
@@ -172,8 +178,8 @@ return array(
                     ),
                     'roles' => 'guest'
                 )
-            ),
-            'Common\Firewall\HydratableController' => array(
+            ),*/
+            'Common\Guard\HydratableControllerGuard' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
@@ -190,14 +196,7 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                'Page\Provider\FirewallHydrator' => array(
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setPageManager' => array(
-                        'required' => 'true'
-                    )
-                ),
+            
                 'Page\Service\PageService' => array(
                     'setRepositoryManager' => array(
                         'required' => 'true'

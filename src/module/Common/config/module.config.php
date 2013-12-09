@@ -19,12 +19,16 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                'Common\Firewall\HydratableController' => array(
+                'Common\Guard\HydratableControllerGuard' => array(
                     'setServiceLocator' => array(
+                        'required' => true
+                    ),
+                    'setPageManager' => array(
                         'required' => true
                     )
                 )
             )
+            
         )
     ),
     'view_helpers' => array(
