@@ -1,21 +1,18 @@
 <?php
-
-
 namespace Common\Guard;
 
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 use ZfcRbac\Service\AuthorizationService;
 use ZfcRbac\Guard\AbstractGuard;
+
 /**
  * A controller guard can protect a controller and a set of actions
  */
 class HydratableControllerGuard extends AbstractGuard
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-    use \Page\Manager\PageManagerAwareTrait;
-    
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use\Page\Manager\PageManagerAwareTrait;
+
     /**
      * Set a lower priority for controller guards than for route guards, so that they are
      * always executed after them
@@ -43,15 +40,9 @@ class HydratableControllerGuard extends AbstractGuard
      * @param AuthorizationService $authorizationService            
      * @param array $rules            
      */
-    public function __construct(AuthorizationService $authorizationService, array $rules = [],ServiceLocatorInterface $serviceLocator)
+    public function __construct(AuthorizationService $authorizationService, array $rules = [])
     {
-        
         parent::__construct($authorizationService);
-        
-        if ($authorizationService==null) die(($authorizationService));
-
-        
-        
         $this->setRules($rules);
     }
 
@@ -62,13 +53,11 @@ class HydratableControllerGuard extends AbstractGuard
      * @return void
      */
     public function setRules(array $rules)
-    { //die(serialize($rules));
+    {
         $this->rules = [];
         $this->addRules($rules);
     }
 
-    
-    
     /**
      * Add controller rules
      *
@@ -86,12 +75,12 @@ class HydratableControllerGuard extends AbstractGuard
     public function addRules(array $rules)
     {
         foreach ($rules as $rule) {
-            $provider = new $rule['role_provider'];
+            $provider = new $rule['role_provider']();
             
-            //$provider->setServiceLocator(($this->getServiceLocator()));
-            //$provider->setPageManager($this->getPageManager());
+            $provider->setServiceLocator(($this->getServiceLocator()));
+            $provider->setPageManager($this->getPageManager());
             
-            $roles = $provider->getRoles(); 
+            $roles = $provider->getRoles();
             
             if (! is_array($roles)) {
                 $roles = array(
@@ -116,21 +105,21 @@ class HydratableControllerGuard extends AbstractGuard
     /**
      * {@inheritDoc}
      */
- public function isGranted(MvcEvent $event)
+    public function isGranted(MvcEvent $event)
     {
         $routeMatch = $event->getRouteMatch();
         $controller = strtolower($routeMatch->getParam('controller'));
-        $action     = strtolower($routeMatch->getParam('action'));
-
+        $action = strtolower($routeMatch->getParam('action'));
+        
         // If no rules apply, it is considered as granted or not based on the protection policy
-        if (!isset($this->rules[$controller])) {
+        if (! isset($this->rules[$controller])) {
             return true;
         }
-
+        
         // Algorithm is as follow: we first check if there is an exact match (controller + action), if not
         // we check if there are rules set globally for the whole controllers (see the index "0"), and finally
         // if nothing is matched, we fallback to the protection policy logic
-
+        
         if (isset($this->rules[$controller][$action])) {
             $allowedRoles = $this->rules[$controller][$action];
         } elseif (isset($this->rules[$controller][0])) {
@@ -138,11 +127,11 @@ class HydratableControllerGuard extends AbstractGuard
         } else {
             return true;
         }
-
+        
         if (in_array('*', $allowedRoles)) {
             return true;
         }
-
+        
         return $this->isAllowed($allowedRoles);
     }
 }

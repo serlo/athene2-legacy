@@ -13,7 +13,14 @@
 namespace Common;
 
 return array(
-
+    'zfc_rbac' => [
+        'guard_manager' => [
+            'factories' => [
+                'Common\Guard\HydratableControllerGuard' => 'Common\Guard\Factory\HydratableControllerGuardFactory'
+            ]
+        ]
+    ]
+    ,
     'view_helpers' => array(
         'invokables' => array()
     ),

@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Common\Guard\Factory;
 
 use Common\Guard\HydratableControllerGuard;
@@ -8,7 +8,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class HydratableControllerGuardFactory implements FactoryInterface, MutableCreationOptionsInterface
 {
+
     /**
+     *
      * @var array
      */
     protected $options;
@@ -25,14 +27,15 @@ class HydratableControllerGuardFactory implements FactoryInterface, MutableCreat
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
-    {   
+    {
         $parentLocator = $serviceLocator->getServiceLocator();
-        $title = ($parentLocator->get('Page\Manager\PageManager')->getRevision(67)->getTitle());
         $authorizationService = $parentLocator->get('ZfcRbac\Service\AuthorizationService');
-        $guard = new HydratableControllerGuard( $authorizationService,$this->options,$serviceLocator);
-       
+        $guard = new HydratableControllerGuard($authorizationService);
+        
         $guard->setPageManager($parentLocator->get('Page\Manager\PageManager'));
-        $guard->setServiceLocator($serviceLocator);
+        $guard->setServiceLocator($parentLocator);
+        
+        $guard->setRules($this->options);
         return $guard;
     }
 }

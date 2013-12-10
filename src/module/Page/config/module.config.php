@@ -149,11 +149,6 @@ return array(
         'Page\Service\PageServiceInterface' => 'Page\Service\PageService'
     ),
     'zfc_rbac' => array(
-        'guard_manager' => [
-        'factories' => [
-        'Common\Guard\HydratableControllerGuard' => 'Common\Guard\Factory\HydratableControllerGuardFactory'
-            ]
-            ],
         'guards' => array(
           /*  'ZfcRbac\Firewall\Controller' => array(
                 array(
