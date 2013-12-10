@@ -38,6 +38,7 @@ return array(
                         'type' => 'subject'
                     ),
                     'types' => array(
+                        'abstract-topic',
                         'topic'
                     ),
                     'language' => 'de',

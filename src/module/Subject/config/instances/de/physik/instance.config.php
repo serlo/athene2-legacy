@@ -42,41 +42,6 @@ return array(
                         )
                     ),
                     array(
-                        'name' => 'curriculum',
-                        'plugin' => 'taxonomy',
-                        'options' => array(
-                            'taxonomy' => 'school-type',
-                            'taxonomy_parent' => 'subject',
-                            'route' => 'subject/plugin/taxonomy/curriculum',
-                            'templates' => array(
-                                'index' => 'subject/plugin/taxonomy/templates/curriculum/index'
-                            ),
-                            'entity_types' => array(
-                                'text-exercise' => array(
-                                    'labels' => array(
-                                        'singular' => 'Aufgabe',
-                                        'plural' => 'Aufgaben'
-                                    ),
-                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
-                                ),
-                                'article' => array(
-                                    'labels' => array(
-                                        'singular' => 'Artikel',
-                                        'plural' => 'Artikel'
-                                    ),
-                                    'template' => 'subject/plugin/taxonomy/entity/article'
-                                ),
-                                'exercise-group' => array(
-                                    'labels' => array(
-                                        'singular' => 'Gruppenaufgabe',
-                                        'plural' => 'Gruppenaufgaben'
-                                    ),
-                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
-                                )
-                            )
-                        )
-                    ),
-                    array(
                         'name' => 'entity',
                         'plugin' => 'entity'
                     )
