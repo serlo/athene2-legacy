@@ -13,24 +13,7 @@
 namespace Common;
 
 return array(
-    'di' => array(
-        'allowed_controllers' => array(
-            __NAMESPACE__ . '\Controller\IndexController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Common\Guard\HydratableControllerGuard' => array(
-                    'setServiceLocator' => array(
-                        'required' => true
-                    ),
-                    'setPageManager' => array(
-                        'required' => true
-                    )
-                )
-            )
-            
-        )
-    ),
+
     'view_helpers' => array(
         'invokables' => array()
     ),

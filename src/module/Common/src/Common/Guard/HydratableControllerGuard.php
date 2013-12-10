@@ -4,6 +4,8 @@
 namespace Common\Guard;
 
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 use ZfcRbac\Service\AuthorizationService;
 use ZfcRbac\Guard\AbstractGuard;
 /**
@@ -41,8 +43,9 @@ class HydratableControllerGuard extends AbstractGuard
      * @param AuthorizationService $authorizationService            
      * @param array $rules            
      */
-    public function __construct(AuthorizationService $authorizationService, array $rules = [])
+    public function __construct(AuthorizationService $authorizationService, array $rules = [],ServiceLocatorInterface $serviceLocator)
     {
+        
         parent::__construct($authorizationService);
         
         if ($authorizationService==null) die(($authorizationService));
@@ -85,8 +88,9 @@ class HydratableControllerGuard extends AbstractGuard
         foreach ($rules as $rule) {
             $provider = new $rule['role_provider'];
             
-           // $provider->setServiceLocator(($this->getServiceLocator()));
+            //$provider->setServiceLocator(($this->getServiceLocator()));
             //$provider->setPageManager($this->getPageManager());
+            
             $roles = $provider->getRoles(); 
             
             if (! is_array($roles)) {
