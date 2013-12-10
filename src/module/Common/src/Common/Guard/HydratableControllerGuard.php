@@ -84,8 +84,9 @@ class HydratableControllerGuard extends AbstractGuard
     {
         foreach ($rules as $rule) {
             $provider = new $rule['role_provider'];
+            
            // $provider->setServiceLocator(($this->getServiceLocator()));
-           // $provider->setPageManager($this->getPageManager());
+            //$provider->setPageManager($this->getPageManager());
             $roles = $provider->getRoles(); 
             
             if (! is_array($roles)) {

@@ -21,12 +21,12 @@ use Zend\Mvc\Router\RouteMatch;
 
 class FirewallHydrator
 {
-    /*
+    
     use \Page\Manager\PageManagerAwareTrait;
     use  \Language\Manager\LanguageManagerAwareTrait;
 	use \Common\Traits\RouterAwareTrait;
 	use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-	*/
+	
 	/**
 	 * 
 	 * @var RouteMatch
@@ -53,7 +53,7 @@ class FirewallHydrator
     {
       
          return array(
-             'sysadmin'
+             'login'
              // 'roles' => $this->getObject()->getRoles(),
          ); /*
         $pageService = $this->pageManager->getPageRepository(66);

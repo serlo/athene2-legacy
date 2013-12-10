@@ -27,9 +27,12 @@ class HydratableControllerGuardFactory implements FactoryInterface, MutableCreat
     public function createService(ServiceLocatorInterface $serviceLocator)
     {   
         $parentLocator = $serviceLocator->getServiceLocator();
+        
         $authorizationService = $parentLocator->get('ZfcRbac\Service\AuthorizationService');
         $guard = new HydratableControllerGuard( $authorizationService,$this->options);
-       
+        if ($parentLocator->get('Page\Manager\PageManager')==null) die(haee);
+        $guard->setPageManager($parentLocator->get('Page\Manager\PageManager'));
+        $guard->setServiceLocator($serviceLocator);
         return $guard;
     }
 }
