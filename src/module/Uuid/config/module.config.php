@@ -19,9 +19,6 @@ return array(
     'class_resolver' => array(
         'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
     ),
-    'uuid_router' => array(
-        'routes' => array()
-    ),
     'uuid_manager' => array(),
     'router' => array(
         'routes' => array(
@@ -32,16 +29,6 @@ return array(
                     'route' => '/uuid'
                 ),
                 'child_routes' => array(
-                    'router' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/route/:uuid',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\RouterController',
-                                'action' => 'assemble'
-                            )
-                        )
-                    ),
                     'trash' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(

@@ -12,34 +12,20 @@
 namespace Versioning;
 
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Exception\RuntimeException;
 
 class RepositoryManager implements RepositoryManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait;
-
-    protected static $instance;
-
-    public function __construct()
-    {
-        if (isset($instance))
-            throw new RuntimeException('The RepositoryManager has already been instanciated');
-        
-        static::$instance = $this;
-    }
-
-    protected function getUniqId(RepositoryInterface $repository)
-    {
-        return get_class($repository) . '::' . $repository->getId();
-    }
+    use\Common\Traits\InstanceManagerTrait;
 
     public function addRepository(RepositoryInterface $repository)
     {
-        $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
-        $name = $this->getUniqId($repository);
+        $instance   = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
+        $name       = $this->getUniqId($repository);
+        
         $instance->setIdentifier($name);
         $instance->setRepository($repository);
         $this->addInstance($name, $instance);
+        
         return $this;
     }
 
@@ -69,5 +55,10 @@ class RepositoryManager implements RepositoryManagerInterface
     public function getRepositories()
     {
         return $this->getInstances();
+    }
+
+    protected function getUniqId(RepositoryInterface $repository)
+    {
+        return get_class($repository) . '::' . $repository->getId();
     }
 }

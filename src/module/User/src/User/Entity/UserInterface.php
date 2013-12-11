@@ -11,50 +11,8 @@
  */
 namespace User\Entity;
 
-use ZfcRbac\Identity\IdentityInterface;
+use User\Model\UserModelInterface;
 
-interface UserInterface extends IdentityInterface
+interface UserInterface extends UserModelInterface
 {
-
-    public function getId();
-    
-    public function getEmail();
-
-    public function getUsername();
-
-    public function getPassword();
-
-    public function getLogins();
-
-    public function getLastLogin();
-
-    public function getDate();
-    
-    public function setEmail($email);
-
-    public function setUsername($username);
-
-    public function setPassword($password);
-
-    public function setLogins($logins);
-
-    public function setLastLogin($lastLogin);
-
-    public function setDate($date);
-
-    public function addRole(RoleInterface $role);
-
-    public function getRoles();
-
-    public function populate(array $data = array());
-
-    public function getToken();
-
-    public function generateToken();
-
-    public function removeRole(RoleInterface $role);
-
-    public function hasRole($id);
-
-    public function getRoleNames();
 }

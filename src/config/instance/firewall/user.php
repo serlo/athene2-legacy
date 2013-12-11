@@ -42,7 +42,8 @@ return [
                     'controller' => 'User\Controller\UserController',
                     'actions' => [
                         'addRole',
-                        'removeRole'
+                        'removeRole',
+                        'purge'
                     ],
                     'roles' => [
                         'sysadmin'

@@ -9,56 +9,59 @@
 namespace User\Service;
 
 use User\Entity\User;
-use User\Manager\UserManagerInterface;
-use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
+use User\Entity\RoleInterface;
+use DateTime;
+use Uuid\Entity\UuidInterface;
+use User\Entity\UserInterface;
 
-class UserService implements UserServiceInterface, Normalizable
+class UserService implements UserServiceInterface
 {
-    use\Common\Traits\EntityAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     /**
      *
-     * @var UserManagerInterface
+     * @var UserInterface
      */
-    protected $manager;
+    protected $entity;
 
-    /**
-     *
-     * @return UserManagerInterface $manager
-     */
-    public function getManager()
+    public function getEntity()
     {
-        return $this->manager;
+        return $this->entity;
     }
 
-    /**
-     *
-     * @param UserManagerInterface $manager            
-     * @return $this
-     */
-    public function setManager(UserManagerInterface $manager)
+    public function normalize()
     {
-        $this->manager = $manager;
+        $normalized = new Normalized();
+        $normalized->setTitle($this->getUsername());
+        $normalized->setContent($this->getUsername());
+        $normalized->setPreview($this->getUsername());
+        $normalized->setTimestamp($this->getDate());
+        $normalized->setRouteName('user/profile');
+        $normalized->setRouteParams(array(
+            'id' => $this->getId()
+        ));
+        return $normalized;
+    }
+
+    public function persist()
+    {
+        $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
 
-    public function getRoleNames()
+    public function flush()
     {
-        return $this->getEntity()->getRoleNames();
-    }
-
-    public function hasRole($id)
-    {
-        return $this->getEntity()->hasRole($id);
+        $this->getObjectManager()->flush($this->getEntity());
+        return $this;
     }
 
     public function getUnassociatedRoles()
     {
-        $roles = $this->getManager()->findAllRoles();
+        $roles = $this->getUserManager()->findAllRoles();
         $return = array();
         foreach ($roles as $role) {
-            if (! $this->hasRole($role->getId())) {
+            if (! $this->hasRole($role)) {
                 $return[] = $role;
             }
         }
@@ -69,9 +72,34 @@ class UserService implements UserServiceInterface, Normalizable
     {
         $this->getEntity()->setLogins($this->getEntity()
             ->getLogins() + 1);
-        $this->getEntity()->setLastLogin(new \DateTime("now"));
-        $this->getObjectManager()->persist($this->getEntity());
+        $this->getEntity()->setLastLogin(new DateTime("now"));
         return $this;
+    }
+
+    public function generateToken()
+    {
+        $this->getEntity()->generateToken();
+        return $this;
+    }
+
+    public function getUuid()
+    {
+        return $this->getEntity()->getUuid();
+    }
+
+    public function getHolderName()
+    {
+        return $this->getEntity()->getHolderName();
+    }
+
+    public function getUuidEntity()
+    {
+        return $this->getEntity()->$uuid();
+    }
+
+    public function getTrashed()
+    {
+        return $this->getEntity()->getTrashed();
     }
 
     public function getRoles()
@@ -87,29 +115,6 @@ class UserService implements UserServiceInterface, Normalizable
     public function getId()
     {
         return $this->getEntity()->getId();
-    }
-
-    public function addRole($id)
-    {
-        $role = $this->getManager()->findRole($id);
-        $this->getEntity()->addRole($role);
-        $this->getObjectManager()->persist($this->getEntity());
-        return $this;
-    }
-
-    public function removeRole($id)
-    {
-        $role = $this->getManager()->findRole($id);
-        $this->getEntity()->removeRole($role);
-        $this->getObjectManager()->persist($this->getEntity());
-        return $this;
-    }
-
-    public function generateToken()
-    {
-        $this->getEntity()->generateToken();
-        $this->getObjectManager()->persist($this->getEntity());
-        return $this;
     }
 
     public function getEmail()
@@ -157,30 +162,9 @@ class UserService implements UserServiceInterface, Normalizable
         return $this->getEntity()->getRemoved();
     }
 
-    public function setUserRoles($userRoles)
-    {
-        $this->getEntity()->setUserRoles($userRoles);
-        return $this;
-    }
-
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $normalized->setTitle($this->getUsername());
-        $normalized->setContent($this->getUsername());
-        $normalized->setPreview($this->getUsername());
-        $normalized->setTimestamp($this->getDate());
-        $normalized->setRouteName('user/profile');
-        $normalized->setRouteParams(array(
-            'id' => $this->getId()
-        ));
-        return $normalized;
-    }
-
     public function setEmail($email)
     {
         $this->getEntity()->setEmail($email);
-        $this->getObjectManager()->persist($this->getEntity());
         return $this;
     }
 
@@ -202,13 +186,13 @@ class UserService implements UserServiceInterface, Normalizable
         return $this;
     }
 
-    public function setLastLogin($last_login)
+    public function setLastLogin(DateTime $last_login)
     {
         $this->getEntity()->setLastLogin($last_login);
         return $this;
     }
 
-    public function setDate($date)
+    public function setDate(DateTime $date)
     {
         $this->getEntity()->setDate($date);
         return $this;
@@ -225,13 +209,30 @@ class UserService implements UserServiceInterface, Normalizable
         return $this->getEntity()->setTrashed($trashed);
     }
 
-    public function isTrashed()
+    public function addRole(RoleInterface $role)
     {
-        return $this->getEntity()->isTrashed();
+        $this->getEntity()->addRole($role);
+        return $this;
     }
 
-    public function getTrashed()
+    public function removeRole(RoleInterface $role)
     {
-        return $this->getEntity()->getTrashed();
+        $this->getEntity()->removeRole($role);
+        return $this;
+    }
+
+    public function hasRole(RoleInterface $role)
+    {
+        return $this->getEntity()->hasRole($role);
+    }
+
+    public function setUuid(UuidInterface $uuid)
+    {
+        return $this->getEntity()->setUuid($uuid);
+    }
+
+    public function setEntity(UserInterface $user)
+    {
+        $this->entity = $user;
     }
 }

@@ -19,14 +19,15 @@ use Zend\Form\Form;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\ConfigAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\ConfigAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function getObjectManager()
     {
         return $this->getUserManager()->getObjectManager();
     }
-    
-    protected function getDefaultConfig(){
+
+    protected function getDefaultConfig()
+    {
         return array(
             'forms' => array(
                 'register' => 'User\Form\Register',
@@ -37,36 +38,38 @@ class UserController extends AbstractUserController
             )
         );
     }
-    
+
     /**
-     * 
+     *
      * @var Form[]
      */
     protected $forms = array();
-    
+
     /**
-     * 
-     * @param Form $form
+     *
+     * @param Form $form            
      */
-    public function getForm($name){
-        if(!array_key_exists($name, $this->forms)){
+    public function getForm($name)
+    {
+        if (! array_key_exists($name, $this->forms)) {
             $form = $this->getOption('forms')[$name];
-            if($name == 'register' || $name = 'settings'){
+            if ($name == 'register' || $name = 'settings') {
                 $this->forms[$name] = new $form($this->getObjectManager());
             } else {
-                $this->forms[$name] = new $form();                
+                $this->forms[$name] = new $form();
             }
         }
         return $this->forms[$name];
     }
-    
+
     /**
-     * 
-     * @param string $name
-     * @param Form $form
+     *
+     * @param string $name            
+     * @param Form $form            
      * @return $this
      */
-    public function setForm($name, Form $form){
+    public function setForm($name, Form $form)
+    {
         $this->forms[$name] = $form;
         return $this;
     }
@@ -86,7 +89,7 @@ class UserController extends AbstractUserController
             
             if ($form->isValid()) {
                 $data = $form->getData();
-
+                
                 $adapter = $this->getAuthenticationService()->getAdapter();
                 $adapter->setIdentity($data['email']);
                 $adapter->setCredential($data['password']);
@@ -94,7 +97,8 @@ class UserController extends AbstractUserController
                 $result = $this->getAuthenticationService()->authenticate();
                 
                 if ($result->isValid()) {
-                    $user = $this->getUserManager()->getUser($result->getIdentity()->getId());
+                    $user = $this->getUserManager()->getUser($result->getIdentity()
+                        ->getId());
                     $user->updateLoginData();
                     
                     $this->getEventManager()->trigger('login', $this, array(
@@ -102,9 +106,8 @@ class UserController extends AbstractUserController
                         'email' => $data['email']
                     ));
                     
-                    $this->getUserManager()
-                        ->getObjectManager()
-                        ->flush();
+                    $user->persist();
+                    $user->flush();
                     
                     $this->redirect()->toUrl($this->params('ref', '/'));
                 }
@@ -133,7 +136,7 @@ class UserController extends AbstractUserController
             $this->redirect()->toReferer();
         
         $this->layout('layout/1-col');
-
+        
         $form = $this->getForm('register');
         
         if ($this->getRequest()->isPost()) {
@@ -150,9 +153,9 @@ class UserController extends AbstractUserController
                     'data' => $data
                 ));
                 
-                $this->getUserManager()
-                    ->getObjectManager()
-                    ->flush();
+                $user->persist();
+                $user->flush();
+                
                 $this->redirect()->toUrl($this->params('ref', '/'));
                 return '';
             }
@@ -185,13 +188,13 @@ class UserController extends AbstractUserController
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
                         $user->generateToken();
                         
-                        $this->getUserManager()
-                            ->getObjectManager()
-                            ->flush();
+                        $user->persist();
                         
                         $this->getEventManager()->trigger('restore-password', $this, array(
                             'user' => $user
                         ));
+                        
+                        $user->flush();
                         
                         $this->flashmessenger()->addSuccessMessage('You have been sent an email with instructions on how to restore your password!');
                         $this->redirect()->toRoute('home');
@@ -219,12 +222,8 @@ class UserController extends AbstractUserController
                     $user->setPassword($data['password']);
                     $user->generateToken();
                     
-                    $this->getUserManager()
-                        ->getObjectManager()
-                        ->persist($user->getEntity());
-                    $this->getUserManager()
-                        ->getObjectManager()
-                        ->flush();
+                    $user->persist();
+                    $user->flush();
                     
                     $this->redirect()->toRoute('user/login');
                 }
@@ -238,15 +237,20 @@ class UserController extends AbstractUserController
 
     public function activateAction()
     {
-        $user = $this->getUserManager()->findUserByToken($this->params('token'));
-        $user->addRole(2);
-        $user->generateToken();
-        $this->getUserManager()
-            ->getObjectManager()
-            ->flush();
-        $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
+        try {
+            $user = $this->getUserManager()->findUserByToken($this->params('token'));
+            $role = $this->getUserManager()->findRoleByName('login');
+            $user->addRole($role);
+            $user->generateToken();
+            $user->persist();
+            $user->flush();
+            $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
+        } catch (UserNotFoundException $e) {
+            $this->flashMessenger()->addErrorMessage('I couldn\'t find an account by that token.');
+        }
+        
         $this->redirect()->toRoute('user/login');
-        return '';
+        return false;
     }
 
     public function meAction()
@@ -272,13 +276,14 @@ class UserController extends AbstractUserController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $user->setEmail($data['email']);
-                $this->getObjectManager()->flush();
+                $user->persist();
+                $user->flush();
             }
         } else {
             $data = array(
                 'email' => $user->getEmail()
             );
-            $form->setData($data);            
+            $form->setData($data);
         }
         
         $view = new ViewModel(array(
@@ -303,7 +308,7 @@ class UserController extends AbstractUserController
             
             if ($form->isValid()) {
                 $data = $form->getData();
-
+                
                 $adapter = $this->getAuthenticationService()->getAdapter();
                 $adapter->setIdentity($user->getEmail());
                 $adapter->setCredential($data['currentPassword']);
@@ -312,8 +317,8 @@ class UserController extends AbstractUserController
                 
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);
-                    $this->getObjectManager()->persist($user->getEntity());
-                    $this->getObjectManager()->flush();
+                    $user->persist();
+                    $user->flush();
                     $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
                     $this->redirect()->toRoute('user/me');
                     return '';
@@ -346,12 +351,12 @@ class UserController extends AbstractUserController
 
     public function removeAction()
     {
-        $this->getUserManager()->trashUser($this->params('id', null));
-        $this->getUserManager()
-            ->getObjectManager()
-            ->flush();
+        $user = $this->getUserManager()->getUser($this->params('id', null));
+        $user->setTrashed(true);
+        $user->persist();
+        $user->flush();
         $this->redirect()->toReferer();
-        return '';
+        return false;
     }
 
     public function purgeAction()
@@ -361,14 +366,14 @@ class UserController extends AbstractUserController
             ->getObjectManager()
             ->flush();
         $this->redirect()->toReferer();
-        return '';
+        return false;
     }
 
     public function removeRoleAction()
     {
         $user = $this->getUserManager()->getUser($this->params('user'));
         $role = $this->getUserManager()->findRole($this->params('role'));
-        $user->removeRole($this->params('role'));
+        $user->removeRole($role);
         
         $this->getEventManager()->trigger('removeRole', $this, array(
             'actor' => $this->getUserManager()
@@ -381,14 +386,14 @@ class UserController extends AbstractUserController
             ->getObjectManager()
             ->flush();
         $this->redirect()->toReferer();
-        return '';
+        return false;
     }
 
     public function addRoleAction()
     {
         $user = $this->getUserManager()->getUser($this->params('user'));
         $role = $this->getUserManager()->findRole($this->params('role'));
-        $user->addRole($this->params('role'));
+        $user->addRole($role);
         
         $this->getEventManager()->trigger('addRole', $this, array(
             'actor' => $this->getUserManager()
@@ -402,6 +407,6 @@ class UserController extends AbstractUserController
             ->flush();
         
         $this->redirect()->toReferer();
-        return '';
+        return false;
     }
 }

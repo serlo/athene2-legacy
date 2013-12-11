@@ -122,14 +122,6 @@ class Uuid implements UuidInterface
         return NULL;
     }
 
-    public function is($type)
-    {
-        if (property_exists($this, $type)) {
-            return is_object($this->$type);
-        }
-        return false;
-    }
-
     function __construct()
     {
         $this->uuid = hash('crc32b', uniqid('uuid.', true));
@@ -152,21 +144,21 @@ class Uuid implements UuidInterface
         return $this;
     }
 
-    public function hydrate(UuidHolder $entity)
-    {
-        $entity->setUuid($this);
-        return $this;
-    }
-
     /**
      * Without this, the whole thing breaks at
-     * 
-     * Object of class DoctrineORMModule\Proxy\__CG__\Uuid\Entity\Uuid could not be converted to string in D:\workspace\athene2\src\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php on line 2891
-     * 
+     *
+     * Object of class DoctrineORMModule\Proxy\__CG__\Uuid\Entity\Uuid could not be converted to string in Doctrine\ORM\UnitOfWork.php on line 2891
+     *
      * @return string
      */
-    public function __toString()
+    /*
+     * public function __toString() { return (string) $this->id; }
+     */
+    public function is($type)
     {
-        return (string) $this->id;
+        if (property_exists($this, $type)) {
+            return is_object($this->$type);
+        }
+        return false;
     }
 }

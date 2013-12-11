@@ -50,7 +50,7 @@ class Role extends AbstractRole implements RoleInterface
      * @ORM\JoinTable(name="role_permission")
      */
     protected $permissions;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
      */
@@ -142,25 +142,28 @@ class Role extends AbstractRole implements RoleInterface
         $this->permissions->add($permission);
         return $this;
     }
-    
+
     public function hasPermission($name)
     {
-        $found = $this->permissions->filter(function($e) use($name){
+        $found = $this->permissions->filter(function ($e) use($name)
+        {
             return $e->getName() === $name;
         });
         
         if ($found->count() > 0) {
             return true;
         }
-
+        
         $it = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($it as $leaf) {
-            /** @var RoleInterface $leaf */
+            /**
+             * @var RoleInterface $leaf
+             */
             if ($leaf->hasPermission($name)) {
                 return true;
             }
         }
-
+        
         return false;
     }
     
@@ -181,5 +184,10 @@ class Role extends AbstractRole implements RoleInterface
     {
         parent::setParent($parent);
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

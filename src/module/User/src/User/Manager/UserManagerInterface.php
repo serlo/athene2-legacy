@@ -62,13 +62,6 @@ interface UserManagerInterface
 
     /**
      *
-     * @param numeric $id            
-     * @return $this
-     */
-    public function trashUser($id);
-
-    /**
-     *
      * @return EntityRepository
      */
     public function findAllUsers();

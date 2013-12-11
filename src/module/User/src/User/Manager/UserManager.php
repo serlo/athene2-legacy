@@ -20,7 +20,7 @@ use User\Exception;
 
 class UserManager implements UserManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use\Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
     public function getUser($id)
     {
@@ -46,7 +46,8 @@ class UserManager implements UserManagerInterface
             $user = $this->getAuthenticationService()->getIdentity();
             try {
                 $user = $this->getUser($user->getId());
-                if ($user->isTrashed() || ! $user->hasRole('login')) {
+                $role = $this->findRoleByName('login');
+                if ($user->getTrashed() || ! $user->hasRole($role)) {
                     $this->getAuthenticationService()->clearIdentity();
                 } else {
                     return $user;
@@ -108,14 +109,6 @@ class UserManager implements UserManagerInterface
         return $this;
     }
 
-    public function trashUser($id)
-    {
-        $user = $this->getUser($id);
-        $user->setTrashed(true);
-        $this->getObjectManager()->persist($user->getEntity());
-        return $this;
-    }
-
     public function findAllUsers()
     {
         $collection = new ArrayCollection($this->getObjectManager()
@@ -137,7 +130,7 @@ class UserManager implements UserManagerInterface
     {
         $role = $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('User\Entity\RoleInterface'), $id);
-        if(!is_object($role))
+        if (! is_object($role))
             throw new Exception\RuntimeException(sprintf('Role not found by id %u', $id));
         return $role;
     }
@@ -150,8 +143,8 @@ class UserManager implements UserManagerInterface
             ->findOneBy(array(
             'name' => $role
         ));
-    }    
-    
+    }
+
     protected function getUserEntityRepository()
     {
         return $this->getObjectManager()->getRepository($this->getClassResolver()
@@ -163,7 +156,7 @@ class UserManager implements UserManagerInterface
         /* @var $instance \User\Service\UserServiceInterface */
         $instance = $this->createInstance('User\Service\UserServiceInterface');
         $instance->setEntity($entity);
-        $instance->setManager($this);
+        $instance->setUserManager($this);
         return $instance;
     }
 }

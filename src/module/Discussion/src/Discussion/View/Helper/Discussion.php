@@ -13,7 +13,6 @@ namespace Discussion\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Uuid\Entity\UuidInterface;
-use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Service\TermServiceInterface;
 
 class Discussion extends AbstractHelper
@@ -177,15 +176,15 @@ class Discussion extends AbstractHelper
 
     protected function getDefaultConfig()
     {
-        return array(
-            'template' => 'discussion/discussions',
-            'form' => array(
-                'discussion' => 'Discussion\Form\DiscussionForm',
-                'comment' => 'Discussion\Form\CommentForm'
+        return [
+            'template'  => 'discussion/discussions',
+            'form'      => array(
+                'discussion'    => 'Discussion\Form\DiscussionForm',
+                'comment'       => 'Discussion\Form\CommentForm'
             ),
-            'root' => 'root',
-            'forum' => 'forum',
-            'forum_category' => 'forum-category'
-        );
+            'root'              => 'root',
+            'forum'             => 'forum',
+            'forum_category'    => 'forum-category'
+        ];
     }
 }
