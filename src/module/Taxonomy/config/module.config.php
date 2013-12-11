@@ -123,7 +123,16 @@ return array(
                             'organize' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/organize[/:id]',
+                                    'route' => '/organize/:id',
+                                    'defaults' => array(
+                                        'action' => 'organize'
+                                    )
+                                )
+                            ),
+                            'organize-all' => array(
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/organize-all',
                                     'defaults' => array(
                                         'action' => 'organize'
                                     )

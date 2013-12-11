@@ -14,7 +14,6 @@ if(is_object($this->term)) {
     $name = $this->term->getTaxonomy()->getName();
 }
 $template = 'subject/plugin/taxonomy/templates/' . $name;
-$forum = $this->subject->getSlug() . '/issues/taxonomy';
 $data = array(
     'links' => $this->links,
     'acceptsEntities' => $this->acceptsEntities,
@@ -34,5 +33,5 @@ $data = array(
 <?php endif; ?>
 <hr>
 <?php if(is_object($this->term)): ?>
-    <?php echo $this->discussion($this->term->getEntity()->getUuidEntity(), $forum)->render(); ?>
+    <?php echo $this->discussion($this->term->getEntity()->getUuidEntity())->findForum([$this->subject->getSlug(), $this->term->getTaxonomy()->getName()])->render(); ?>
 <?php endif; ?>

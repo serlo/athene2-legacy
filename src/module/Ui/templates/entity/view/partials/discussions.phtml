@@ -1,2 +1,1 @@
-<?php $forum = $this->entity->plugin('provider')->getSubjectSlug() . '/issues/' . $this->entity->getType()->getName(); ?>
-<?php echo $this->discussion($this->entity->getUuidEntity(), $forum)->render(); ?>
+<?php echo $this->discussion($this->entity->getUuidEntity())->findForum([$this->entity->learningResource()->getDefaultSubject()->getSlug(), $this->entity->getType()->getName()])->render(); ?>

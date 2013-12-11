@@ -26,6 +26,10 @@ return array(
             'forum' => array(
                 'route' => 'discussion/discussions',
                 'param_provider' => 'Discussion\Provider\ParamProvider'
+            ),
+            'forum-category' => array(
+                'route' => 'discussion/discussions',
+                'param_provider' => 'Discussion\Provider\ParamProvider'
             )
         )
     ),

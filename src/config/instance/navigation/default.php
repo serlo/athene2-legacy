@@ -33,9 +33,7 @@ return array(
                         'pages' => array(
                             array(
                                 'label' => 'Manage taxonomies',
-                                'route' => 'taxonomy/term/organize',
-                                'params' => array(
-                                ),
+                                'route' => 'taxonomy/term/organize-all',
                                 'pages' => array(
                                     array(
                                         'route' => 'taxonomy/term/action',

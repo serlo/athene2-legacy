@@ -14,6 +14,7 @@ namespace Discussion\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Uuid\Entity\UuidInterface;
 use Taxonomy\Exception\TermNotFoundException;
+use Taxonomy\Service\TermServiceInterface;
 
 class Discussion extends AbstractHelper
 {
@@ -26,6 +27,11 @@ class Discussion extends AbstractHelper
     protected $archived;
 
     protected $forum;
+
+    public function __construct()
+    {
+        $this->form = array();
+    }
 
     /**
      *
@@ -56,11 +62,6 @@ class Discussion extends AbstractHelper
         return $this->archived;
     }
 
-    public function __construct()
-    {
-        $this->form = array();
-    }
-
     /**
      *
      * @param boolean $archived            
@@ -72,26 +73,14 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    protected function getDefaultConfig()
+    public function getForum()
     {
-        return array(
-            'template' => 'discussion/discussions',
-            'form' => array(
-                'discussion' => 'Discussion\Form\DiscussionForm',
-                'comment' => 'Discussion\Form\CommentForm'
-            )
-        );
+        return $this->forum;
     }
 
-    public function __invoke(UuidInterface $object = NULL, $forum = NULL, $archived = NULL)
+    public function setForum(TermServiceInterface $forum)
     {
-        if ($object !== NULL) {
-            $this->discussions = $this->getDiscussionManager()->findDiscussionsOn($object, $archived);
-            $this->setArchived($archived);
-            $this->form = array();
-            $this->setObject($object);
-            $this->setForum($forum);
-        }
+        $this->forum = $forum;
         return $this;
     }
 
@@ -102,6 +91,22 @@ class Discussion extends AbstractHelper
             $this->form[$type] = new $form();
         }
         return $this->form[$type];
+    }
+
+    public function __invoke(UuidInterface $object = NULL, $forum = NULL, $archived = NULL)
+    {
+        if ($object !== NULL) {
+            $this->discussions = $this->getDiscussionManager()->findDiscussionsOn($object, $archived);
+            $this->setObject($object);
+        }
+        if ($archived !== NULL) {
+            $this->setArchived($archived);
+        }
+        
+        if ($forum !== NULL) {
+            $this->setForum($forum);
+        }
+        return $this;
     }
 
     public function render()
@@ -118,21 +123,69 @@ class Discussion extends AbstractHelper
         ));
     }
 
-    public function setForum($forum)
+    public function findForum(array $forums)
     {
-        if (is_numeric($forum)) {
-            $this->forum = $this->getSharedTaxonomyManager()->getTerm($forum);
-        } elseif (is_string($forum)) {
-            $forumPath = explode('/', 'root/' . $forum);
-            $language = $this->getLanguageManager()->getLanguageFromRequest();
-            $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $language);
-            $this->forum = $taxonomy->findTermByAncestors($forumPath);
-        }
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $language);
+        $term = $taxonomy->findTermByAncestors([
+            'root',
+            'discussions'
+        ]);
+        $this->setForum($this->iterForums($forums, $term));
         return $this;
     }
 
-    public function getForum()
+    protected function iterForums(array $forums, TermServiceInterface $current)
     {
-        return $this->forum;
+        if (empty($forums)) {
+            return $current;
+        }
+        
+        $forum = current($forums);
+        
+        foreach ($current->findChildrenByTaxonomyNames(['forum']) as $child) {
+            if ($child->getSlug() == $forum) {
+                array_shift($forums);
+                return $this->iterForums($forums, $child);
+            }
+        }
+        
+        return $this->createForums($forums, $current);
+    }
+
+    protected function createForums(array $forums, TermServiceInterface $current)
+    {
+        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('forum', $this->getLanguageManager()
+            ->getLanguageFromRequest());
+        
+        foreach ($forums as $forum) {
+            $current = $this->getSharedTaxonomyManager()->createTerm([
+                'term' => [
+                    'name' => $forum
+                ],
+                'parent' => $current,
+                'taxonomy' => $taxonomy->getId()
+            ]);
+        }
+        
+        $this->getSharedTaxonomyManager()
+            ->getObjectManager()
+            ->flush();
+        
+        return $this->getSharedTaxonomyManager()->getTerm($current);
+    }
+
+    protected function getDefaultConfig()
+    {
+        return array(
+            'template' => 'discussion/discussions',
+            'form' => array(
+                'discussion' => 'Discussion\Form\DiscussionForm',
+                'comment' => 'Discussion\Form\CommentForm'
+            ),
+            'root' => 'root',
+            'forum' => 'forum',
+            'forum_category' => 'forum-category'
+        );
     }
 }

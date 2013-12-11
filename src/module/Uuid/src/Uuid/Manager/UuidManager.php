@@ -93,7 +93,7 @@ class UuidManager implements UuidManagerInterface
 
     public function createUuid()
     {
-        $entity = $this->createInstance('Uuid\Entity\UuidInterface');
+        $entity = $this->getClassResolver()->resolve('Uuid\Entity\UuidInterface');
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush($entity);
         $this->addInstance($entity->getId(), $entity);
