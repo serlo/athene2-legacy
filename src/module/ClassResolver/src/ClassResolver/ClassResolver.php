@@ -36,27 +36,22 @@ class ClassResolver implements ClassResolverInterface
 
     protected function getIndex($key)
     {
-        if (! is_string($key))
-            throw new InvalidArgumentException('Key is not a string');
-        
-        return preg_replace('/[^a-z0-9]/i', '_', $key);
+        return preg_replace('/[^a-z0-9]/i', '_', (string) $key);
     }
 
     protected function getClass($class)
     {
         $index = $this->getIndex($class);
         
-        if (in_array($class, $this->registry))
-            return $class;
-        
-        if (! is_string($class))
-            throw new InvalidArgumentException(sprintf('Argument is not a string.'));
-        
-        if (! array_key_exists($index, $this->registry))
-            throw new RuntimeException(sprintf("Can't resolve %s (%s).", $class, $index));
-        
-        if (! class_exists($this->registry[$index]))
-            throw new RuntimeException(sprintf("Class `%s` not found, resolved from %s.", $this->registry[$index], $class));
+        if (! is_string($class)) {
+            throw new Exception\InvalidArgumentException(sprintf('Argument is not a string.'));
+        }
+        if (! array_key_exists($index, $this->registry)) {
+            throw new Exception\RuntimeException(sprintf("Can't resolve %s (%s).", $class, $index));
+        }
+        if (! class_exists($this->registry[$index])) {
+            throw new Exception\RuntimeException(sprintf("Class `%s` not found, resolved from %s.", $this->registry[$index], $class));
+        }
         
         return $this->registry[$index];
     }
@@ -65,22 +60,20 @@ class ClassResolver implements ClassResolverInterface
     {
         return $this->getClass($class);
     }
-    
-    /*
-     * (non-PHPdoc) @see \ClassResolver\ClassResolverInterface::resolve()
-     */
+
     public function resolve($class, $userServiceLocator = false)
     {
         $className = $this->getClass($class);
         
-        if($userServiceLocator){
-            $this->getServiceLocator()->get($this->getClass($class));
+        if ($userServiceLocator) {
+            $instance = $this->getServiceLocator()->get($this->getClass($class));
         } else {
-            $instance = new $className(); 
+            $instance = new $className();
         }
         
-        if (! $instance instanceof $class)
-            throw new RuntimeException(sprintf('Class %s does not implement %s', get_class($instance), $class));
+        if (! $instance instanceof $class) {
+            throw new Exception\RuntimeException(sprintf('Class %s does not implement %s', get_class($instance), $class));
+        }
         
         return $instance;
     }
