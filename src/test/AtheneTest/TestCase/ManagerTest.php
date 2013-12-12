@@ -58,13 +58,14 @@ abstract class ManagerTest extends \PHPUnit_Framework_TestCase
         return $this->serviceLocator;
     }
 
-    protected final function prepareObjectManager()
+    protected final function prepareObjectManager($inject = true)
     {
-        if ($this->objectManager) {
-            return $this->objectManager;
+        if (! $this->objectManager) {
+            $this->objectManager = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         }
-        $this->objectManager = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
-        $this->getManager()->setObjectManager($this->objectManager);
+        if ($inject) {
+            $this->getManager()->setObjectManager($this->objectManager);
+        }
         return $this->objectManager;
     }
 

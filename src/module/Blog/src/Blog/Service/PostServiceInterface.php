@@ -12,8 +12,9 @@
 namespace Blog\Service;
 
 use Blog\Entity\PostInterface;
+use Blog\Model\PostModelInterface;
 
-interface PostServiceInterface
+interface PostServiceInterface extends PostModelInterface
 {
 
     /**
@@ -25,9 +26,19 @@ interface PostServiceInterface
     /**
      *
      * @param PostInterface $post            
-     * @return $this
+     * @return self
      */
     public function setEntity(PostInterface $post);
-    
-    public function isPublished();
+
+    /**
+     *
+     * @return self
+     */
+    public function flush();
+
+    /**
+     *
+     * @return self
+     */
+    public function persist();
 }

@@ -119,7 +119,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $this->getOption('associations')[$link]['callback'];
     }
 
-    public function getAllowedChildrenTypes($type, LanguageServiceInterface $language)
+    public function getAllowedChildrenTypes($type, LanguageModelInterface $language)
     {
         $collection = new ArrayCollection();
         foreach ($this->getAllowedChildrenTypeNames($type) as $child) {

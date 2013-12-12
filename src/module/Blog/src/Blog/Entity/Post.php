@@ -12,12 +12,14 @@
 namespace Blog\Entity;
 
 use Uuid\Entity\UuidEntity;
-use User\Entity\UserInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Blog\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Model\TaxonomyTermNodeModelInterface;
+use Uuid\Entity\UuidInterface;
+use User\Model\UserModelInterface;
+use DateTime;
 
 /**
  * A blog post.
@@ -69,8 +71,13 @@ class Post extends UuidEntity implements PostInterface
 
     public function __construct()
     {
-        $this->publish = new \DateTime();
-        $this->date = new \DateTime();
+        $this->publish = new DateTime();
+        $this->date = new DateTime();
+    }
+
+    public function getEntity()
+    {
+        return $this;
     }
 
     public function getAuthor()
@@ -103,7 +110,7 @@ class Post extends UuidEntity implements PostInterface
         return $this->publish;
     }
 
-    public function setAuthor(UserInterface $author)
+    public function setAuthor(UserModelInterface $author)
     {
         $this->author = $author;
         return $this;
@@ -127,33 +134,40 @@ class Post extends UuidEntity implements PostInterface
         return $this;
     }
 
-    public function setTimestamp(\DateTime $date)
+    public function setTimestamp(DateTime $date)
     {
         $this->date = $date;
         return $this;
     }
 
-    public function setPublish(\DateTime $publish = NULL)
+    public function setPublish(DateTime $publish = NULL)
     {
         $this->publish = $publish;
         return $this;
     }
 
+    public function setUuid(UuidInterface $uuid)
+    {
+        $uuid->setHolder('blogPost', $this);
+        $this->id = $uuid;
+        return $this;
+    }
+
     public function isPublished()
     {
-        return $this->getPublish() < new \DateTime();
+        return $this->getPublish() < new DateTime();
     }
-    
+
     public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
     {
         $this->setCategory($taxonomyTerm);
     }
-    
+
     public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
     {
         throw new Exception\RuntimeException('You can\'t unset the category - it is required!');
     }
-    
+
     public function getTaxonomyTerms()
     {
         return new ArrayCollection((array) $this->getCategory());

@@ -67,7 +67,16 @@ class Bootstrap
         'Alias' => 'Alias/src/Alias',
         'AliasTest' => 'Alias/test/AliasTest',
         'Contexter' => 'Contexter/src/Contexter',
-        'ContexterTest' => 'Contexter/test/ContexterTest'
+        'ContexterTest' => 'Contexter/test/ContexterTest',
+        'Discussion' => 'Discussion/src/Discussion',
+        'DiscussionTest' => 'Discussion/test/DiscussionTest',
+        'Flag' => 'Flag/src/Flag',
+        'FlagTest' => 'Flag/test/FlagTest',
+        'Mailman' => 'Mailman/src/Mailman',
+        'MailmanTest' => 'Mailman/test/MailmanTest',
+        'RelatedContent' => 'RelatedContent/src/RelatedContent',
+        'Search' => 'Search/src/Search',
+        'Upload' => 'Upload/src/Upload',
     );
 
     public static function getApplication(){

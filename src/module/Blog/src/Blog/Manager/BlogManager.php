@@ -14,16 +14,17 @@ namespace Blog\Manager;
 use Blog\Exception;
 use Taxonomy\Service\TermServiceInterface;
 use Blog\Entity\PostInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 
-class BlogManager extends InstanceManager implements BlogManagerInterface
+class BlogManager implements BlogManagerInterface
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
     public function getBlog($id)
     {
-        if (! is_numeric($id))
+        if (! is_numeric($id)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`.', gettype($id)));
+        }
         
         if (! $this->hasInstance($id)) {
             $category = $this->getSharedTaxonomyManager()->getTerm($id);
@@ -33,11 +34,12 @@ class BlogManager extends InstanceManager implements BlogManagerInterface
         
         return $this->getInstance($id);
     }
-    
-    public function findAllBlogs(LanguageServiceInterface $languageService){
+
+    public function findAllBlogs(LanguageModelInterface $languageService)
+    {
         $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('blog', $languageService);
         $blogs = array();
-        foreach($taxonomy->getSaplings() as $blog){
+        foreach ($taxonomy->getSaplings() as $blog) {
             $blogs[] = $this->getBlog($blog->getId());
         }
         return $blogs;
@@ -56,11 +58,6 @@ class BlogManager extends InstanceManager implements BlogManagerInterface
         return $this->getInstance($id)->getPost($post->getId());
     }
 
-    public function findBlogByCategory($name, \Language\Service\LanguageServiceInterface $language)
-    {
-        // todo
-    }
-
     /**
      *
      * @param TermServiceInterface $category            
@@ -69,7 +66,7 @@ class BlogManager extends InstanceManager implements BlogManagerInterface
     protected function createService(TermServiceInterface $category)
     {
         /* @var $postManager PostManagerInterface */
-        $postManager = parent::createInstance('Blog\Manager\PostManagerInterface');
+        $postManager = $this->createInstance('Blog\Manager\PostManagerInterface');
         $postManager->setTermService($category);
         $postManager->setBlogManager($this);
         return $postManager;

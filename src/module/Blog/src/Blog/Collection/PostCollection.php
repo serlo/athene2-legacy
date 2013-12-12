@@ -13,23 +13,32 @@ namespace Blog\Collection;
 
 use Common\Collection\AbstractDelegatorCollection;
 use Blog\Exception\InvalidArgumentException;
-use Blog\Manager\PostManagerInterface;
 use Blog\Manager\BlogManagerInterface;
+use Blog\Model\PostModelInterface;
 
 class PostCollection extends AbstractDelegatorCollection
 {
     /**
+     * 
      * @return BlogManagerInterface
      */
     public function getManager(){
         return parent::getManager();
     }
     
+    /**
+     * 
+     * @return PostModelInterface
+     */
     public function getFromManager ($key)
     {
         return $this->getManager()->getPost($key);
     }
     
+    /**
+     * (non-PHPdoc)
+     * @see \Common\Collection\AbstractDelegatorCollection::validManager()
+     */
     protected function validManager($manager){
         if(!$manager instanceof BlogManagerInterface)
             throw new InvalidArgumentException(sprintf('`%s` does not implement `BlogManagerInterface`', get_class($manager)));

@@ -12,6 +12,7 @@
 namespace Uuid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Uuid\Exception;
 
 /**
  * @ORM\Entity
@@ -109,7 +110,8 @@ class Uuid implements UuidInterface
                 return $key;
             }
         }
-        return NULL;
+        
+        throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
     }
 
     public function getHolder()
@@ -119,7 +121,8 @@ class Uuid implements UuidInterface
                 return $value;
             }
         }
-        return NULL;
+        
+        throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
     }
 
     function __construct()
@@ -144,21 +147,19 @@ class Uuid implements UuidInterface
         return $this;
     }
 
-    /**
-     * Without this, the whole thing breaks at
-     *
-     * Object of class DoctrineORMModule\Proxy\__CG__\Uuid\Entity\Uuid could not be converted to string in Doctrine\ORM\UnitOfWork.php on line 2891
-     *
-     * @return string
-     */
-    /*
-     * public function __toString() { return (string) $this->id; }
-     */
     public function is($type)
     {
         if (property_exists($this, $type)) {
             return is_object($this->$type);
         }
         return false;
+    }
+
+    public function setHolder($key, $object)
+    {
+        if (property_exists($this, $key)) {
+            $this->$key = $object;
+        }
+        return $this;
     }
 }

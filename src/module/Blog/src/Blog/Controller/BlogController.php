@@ -71,7 +71,7 @@ class BlogController extends AbstractActionController
         $post->setTrashed(true);
         $post->getObjectManager()->flush();
         $this->redirect()->toReferer();
-        return '';
+        return false;
     }
 
     public function updateAction()
@@ -97,20 +97,15 @@ class BlogController extends AbstractActionController
             if ($form->isValid()) {
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 $data = $form->getData();
-                $title = $data['title'];
-                $content = $data['content'];
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
                 $publish = new \DateTime('now');
+                
                 if ($data['publish']) {
                     $dateData = explode('.', $data['publish']);
-                    $day = $dateData[0];
-                    $month = $dateData[1];
-                    $year = $dateData[2];
-                    $publish = (new \Datetime())->setDate($year, $month, $day);
-                    $publish->setTime(0, 0, 0);
+                    $publish = (new \Datetime())->setDate($dateData[0], $dateData[1], $dateData[2])->setTime(0, 0, 0);
                 }
                 
-                $blog->updatePost($post->getId(), $title, $content, $publish);
+                $blog->updatePost($post->getId(), $data['title'], $data['content'], $publish);
                 
                 $this->getEventManager()->trigger('post.update', $this, array(
                     'blog' => $blog,
@@ -153,21 +148,19 @@ class BlogController extends AbstractActionController
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $author = $this->getUserManager()->getUserFromAuthenticator();
+                
                 $data = $form->getData();
-                $title = $data['title'];
-                $content = $data['content'];
+                
                 $publish = new \DateTime('now');
+                $author = $this->getUserManager()->getUserFromAuthenticator();
+                
                 if ($data['publish']) {
                     $dateData = explode('.', $data['publish']);
-                    $day = $dateData[0];
-                    $month = $dateData[1];
-                    $year = $dateData[2];
-                    $publish = (new \Datetime())->setDate($year, $month, $day);
-                    $publish->setTime(0, 0, 0);
+                    $publish = (new \Datetime())->setDate($dateData[0], $dateData[1], $dateData[2])->setTime(0, 0, 0);
                 }
+                
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $post = $blog->createPost($author, $title, $content, $publish);
+                $post = $blog->createPost($author, $data['title'], $data['content'], $publish);
                 
                 $this->getEventManager()->trigger('post.create', $this, array(
                     'blog' => $blog,

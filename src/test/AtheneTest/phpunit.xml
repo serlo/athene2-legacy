@@ -5,6 +5,9 @@
 		<testsuite name="Athene2 Alias Test Suite">
 			<directory>../../module/Alias/test</directory>
 		</testsuite>
+		<testsuite name="Athene2 Blog Test Suite">
+			<directory>../../module/Blog/test</directory>
+		</testsuite>
 		<testsuite name="Athene2 Language Test Suite">
 			<directory>../../module/Language/test</directory>
 		</testsuite>
@@ -41,6 +44,8 @@
 				<directory suffix=".php">../../config</directory>
 				<directory suffix=".php">../../data</directory>
 				<directory suffix=".php">../../module/Ui/assets</directory>
+				<directory suffix="config.php">../../module</directory>
+				<directory suffix="Module.php">../../module</directory>
 			</exclude>
 		</whitelist>
 	</filter>

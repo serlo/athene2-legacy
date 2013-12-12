@@ -12,7 +12,6 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;

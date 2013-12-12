@@ -42,4 +42,6 @@ interface UuidInterface
     public function getHolderName();
     
     public function getHolder();
+    
+    public function setHolder($key, $object);
 }

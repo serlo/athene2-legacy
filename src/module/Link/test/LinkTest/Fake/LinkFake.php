@@ -128,4 +128,12 @@ class LinkFake implements LinkableInterface
     {
         // TODO Auto-generated method stub
     }
+    
+	/* (non-PHPdoc)
+     * @see \Link\Entity\LinkableInterface::getEntity()
+     */
+    public function getEntity ()
+    {
+        return $this;
+    }
 }

@@ -12,10 +12,11 @@
 namespace Blog\Service;
 
 use Blog\Entity\PostInterface;
+use DateTime;
 
 class PostService implements PostServiceInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -59,19 +60,114 @@ class PostService implements PostServiceInterface
         return $this->getEntity()->getAuthor();
     }
 
-    public function isPublished(){
+    public function isPublished()
+    {
         return $this->getEntity()->isPublished();
     }
-    
-    public function setTrashed($trashed)
-    {
-        $this->getEntity()->setTrashed($trashed);
-        return $this->persist();
-    }
 
-    protected function persist()
+    public function persist()
     {
         $this->getObjectManager()->persist($this->getEntity());
         return $this;
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush($this->getEntity());
+        return $this;
+    }
+
+    public function getPublish()
+    {
+        return $this->getEntity()->getPublish();
+    }
+
+    public function getCategory()
+    {
+        return $this->getEntity()->getCategory();
+    }
+
+    public function setTitle($title)
+    {
+        $this->getEntity()->setTitle($title);
+        return $this;
+    }
+
+    public function getUuid()
+    {
+        return $this->getEntity()->getUuid();
+    }
+
+    public function getHolderName()
+    {
+        return $this->getEntity()->getHolderName();
+    }
+
+    public function getUuidEntity()
+    {
+        return $this->getEntity()->getUuidEntity();
+    }
+
+    public function getTrashed()
+    {
+        return $this->getEntity()->getTrashed();
+    }
+
+    public function getTaxonomyTerms()
+    {
+        return $this->getEntity()->getTaxonomyTerms();
+    }
+
+    public function setCategory(\Taxonomy\Model\TaxonomyTermModelInterface $category)
+    {
+        $this->getEntity()->setCategory($category->getEntity());
+        return $this;
+    }
+
+    public function setTimestamp(Datetime $date)
+    {
+        $this->getEntity()->setTimestamp($date);
+        return $this;
+    }
+
+    public function setContent($content)
+    {
+        $this->getEntity()->setContent($content);
+        return $this;
+    }
+
+    public function setAuthor(\User\Model\UserModelInterface $author)
+    {
+        $this->getEntity()->setAuthor($author->getEntity());
+        return $this;
+    }
+
+    public function setPublish(Datetime $publish = NULL)
+    {
+        $this->getEntity()->setPublish($publish);
+        return $this;
+    }
+
+    public function setUuid(\Uuid\Entity\UuidInterface $uuid)
+    {
+        $this->getEntity()->setUuid($uuid);
+        return $this;
+    }
+
+    public function addTaxonomyTerm(\Taxonomy\Model\TaxonomyTermModelInterface $taxonomyTerm, \Taxonomy\Model\TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->getEntity()->addTaxonomyTerm($taxonomyTerm->getEntity(), $node);
+        return $this;
+    }
+
+    public function removeTaxonomyTerm(\Taxonomy\Model\TaxonomyTermModelInterface $taxonomyTerm, \Taxonomy\Model\TaxonomyTermNodeModelInterface $node = NULL)
+    {
+        $this->getEntity()->addTaxonomyTerm($taxonomyTerm->getEntity(), $node);
+        return $this;
+    }
+
+    public function setTrashed($trashed)
+    {
+        $this->getEntity()->setTrashed($trashed);
     }
 }

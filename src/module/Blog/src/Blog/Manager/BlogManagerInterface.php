@@ -11,7 +11,7 @@
  */
 namespace Blog\Manager;
 
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 
 interface BlogManagerInterface
 {
@@ -22,19 +22,11 @@ interface BlogManagerInterface
      * @return PostManagerInterface
      */
     public function getBlog($id);
-
-    /**
-     *
-     * @param string $name            
-     * @param LanguageServiceInterface $language            
-     * @return PostManagerInterface
-     */
-    public function findBlogByCategory($name, LanguageServiceInterface $language);
     
     /**
      * 
-     * @param LanguageServiceInterface $languageService
+     * @param LanguageModelInterface $languageService
      * @return PostManagerInterface[]
      */
-    public function findAllBlogs(LanguageServiceInterface $languageService);
+    public function findAllBlogs(LanguageModelInterface $languageService);
 }

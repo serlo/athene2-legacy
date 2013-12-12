@@ -11,14 +11,24 @@
  */
 namespace Blog;
 
-use Zend\Mvc\MvcEvent;
-use Zend\Mvc\ModuleRouteListener;
+use Zend\Stdlib\ArrayUtils;
 
 class Module
 {
+
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        $include = [
+            'dependencies',
+            'module',
+            'router'
+        ];
+        $config = [];
+        
+        foreach ($include as $file) {
+            $config = ArrayUtils::merge($config, include __DIR__ . '/config/' . $file . '.config.php');
+        }
+        return $config;
     }
 
     public function getAutoloaderConfig()

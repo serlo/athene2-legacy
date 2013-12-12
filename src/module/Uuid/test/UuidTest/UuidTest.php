@@ -46,7 +46,10 @@ class UuidTest extends Model
         $this->assertEquals(false, $this->getObject()->is('entity'));
         $this->assertEquals(false, $this->getObject()->is('notfound'));
     }
-    
+
+    /**
+     * @expectedException \Uuid\Exception\RuntimeException
+     */
     public function testGetHolderNull(){
         $this->assertEquals(null, $this->getObject()->getHolder());
     }

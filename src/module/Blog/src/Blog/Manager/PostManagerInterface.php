@@ -13,29 +13,31 @@ namespace Blog\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Blog\Service\PostServiceInterface;
-use User\Service\UserServiceInterface;
+use User\Model\UserModelInterface;
+use DateTime;
 
 interface PostManagerInterface
 {
+
     /**
-     * 
-     * @return Collection|PostServiceInterface[]
+     *
+     * @return Collection PostServiceInterface[]
      */
     public function findAllPosts();
-    
+
     /**
-     * 
+     *
      * @return PostServiceInterface
      */
     public function getPost($id);
-    
+
     /**
-     * 
-     * @param UserServiceInterface $author
-     * @param string $title
-     * @param string $content
-     * @param string $publish
+     *
+     * @param UserModelInterface $author            
+     * @param string $title            
+     * @param string $content            
+     * @param string $publish            
      * @return PostServiceInterface
      */
-    public function createPost(UserServiceInterface $author, $title, $content, \DateTime $publish = NULL);
+    public function createPost(UserModelInterface $author, $title, $content, DateTime $publish = NULL);
 }
