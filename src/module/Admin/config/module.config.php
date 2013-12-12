@@ -3,64 +3,48 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Admin;
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'backend' => array(
+return [
+    'router' => [
+        'routes' => [
+            'backend' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/backend',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Admin\Controller\HomeController',
                         'action' => 'index'
-                    )
-                ),
+                    ]
+                ],
                 'may_terminate' => true
-            )
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+            ]
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             'Admin\Controller\HomeController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Admin\Controller\HomeController' => array(
-                    'setEntityManager' => array(
+        ],
+        'definition' => [
+            'class' => [
+                'Admin\Controller\HomeController' => [
+                    'setEntityManager' => [
                         'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
+                    ],
+                    'setLanguageManager' => [
                         'required' => 'true'
-                    ),
-                    'setUserManager' => array(
+                    ],
+                    'setUserManager' => [
                         'required' => 'true'
-                    )
-                )
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(
-                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

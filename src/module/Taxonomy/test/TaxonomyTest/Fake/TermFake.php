@@ -80,181 +80,271 @@ class TermFake implements TaxonomyTermModelInterface
         $this->children = $children;
         return $this;
     }
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getDescription()
-     */
-    public function getDescription()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::hasParent()
-     */
-    public function hasParent()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::hasChildren()
-     */
-    public function hasChildren()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::setDescription()
-     */
-    public function setDescription($description)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getFactory()
-     */
-    public function getFactory()
-    {
-        // TODO Auto-generated method stub
-    }
-
-    /**
-     *
-     * @return field_type $taxonomy
-     */
-    public function getTaxonomy()
-    {
-        return $this->taxonomy;
-    }
-
-    /**
-     *
-     * @param field_type $taxonomy            
-     * @return $this
-     */
-    public function setTaxonomy($taxonomy)
-    {
-        $this->taxonomy = $taxonomy;
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getParent()
-     */
-    public function getParent()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getName()
-     */
-    public function getName()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::setParent()
-     */
-    public function setParent($parent)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getWeight()
-     */
-    public function getWeight()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::setWeight()
-     */
-    public function setWeight($weight)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::setName()
-     */
-    public function setName($name)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getTerm()
-     */
-    public function getTerm()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::setTerm()
-     */
-    public function setTerm($term)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getArrayCopy()
-     */
-    public function getArrayCopy()
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getAssociated()
-     */
-    public function getAssociated($field)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::countAssociated()
-     */
-    public function countAssociations($field)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::addAssociation()
-     */
-    public function associateObject($field, $entity)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::removeAssociation()
-     */
-    public function removeAssociation($field, $entity)
-    {
-        // TODO Auto-generated method stub
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Taxonomy\Model\TaxonomyTermModelInterface::getLanguage()
-     */
-    public function getLanguage()
-    {
-        // TODO Auto-generated method stub
-    }
 	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermModelInterface::orderAssociated()
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getDescription()
      */
-    public function positionAssociatedObject ($association, $of, $order)
+    public function getDescription ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::hasParent()
+     */
+    public function hasParent ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getEntity()
+     */
+    public function getEntity ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::hasChildren()
+     */
+    public function hasChildren ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getTaxonomy()
+     */
+    public function getTaxonomy ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getType()
+     */
+    public function getType ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getParent()
+     */
+    public function getParent ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getName()
+     */
+    public function getName ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getPosition()
+     */
+    public function getPosition ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getLanguage()
+     */
+    public function getLanguage ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::getAssociated()
+     */
+    public function getAssociated ($association)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::countAssociations()
+     */
+    public function countAssociations ($association)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::isAssociated()
+     */
+    public function isAssociated ($association,\Taxonomy\Model\TaxonomyTermModelAwareInterface $object)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::associateObject()
+     */
+    public function associateObject ($association,\Taxonomy\Model\TaxonomyTermModelAwareInterface $object)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::positionAssociatedObject()
+     */
+    public function positionAssociatedObject ($association, $objectId, $position)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::removeAssociation()
+     */
+    public function removeAssociation ($field,\Taxonomy\Model\TaxonomyTermModelAwareInterface $object)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::setTaxonomy()
+     */
+    public function setTaxonomy (\Taxonomy\Entity\TaxonomyInterface $taxonomy)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::setDescription()
+     */
+    public function setDescription ($description)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::setParent()
+     */
+    public function setParent (\Taxonomy\Model\TaxonomyTermModelInterface $parent)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::setPosition()
+     */
+    public function setPosition ($position)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::findAncestorByTypeName()
+     */
+    public function findAncestorByTypeName ($name)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Taxonomy\Model\TaxonomyTermModelInterface::knowsAncestor()
+     */
+    public function knowsAncestor (\Taxonomy\Model\TaxonomyTermModelInterface $ancestor)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::getUuid()
+     */
+    public function getUuid ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::getHolderName()
+     */
+    public function getHolderName ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::getUuidEntity()
+     */
+    public function getUuidEntity ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::getTrashed()
+     */
+    public function getTrashed ()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::setTrashed()
+     */
+    public function setTrashed ($trashed)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Uuid\Entity\UuidHolder::setUuid()
+     */
+    public function setUuid (\Uuid\Entity\UuidInterface $uuid)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Term\Model\TermModelAwareInterface::setTerm()
+     */
+    public function setTerm (\Term\Model\TermModelInterface $term)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+	/* (non-PHPdoc)
+     * @see \Term\Model\TermModelAwareInterface::getTerm()
+     */
+    public function getTerm ()
     {
         // TODO Auto-generated method stub
         

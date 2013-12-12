@@ -15,6 +15,7 @@ use AtheneTest\TestCase\Model;
 use Term\Entity\Term;
 use Language\Entity\LanguageEntity;
 use Term\Service\TermService;
+use Term\Entity\TermEntity;
 
 /**
  * @codeCoverageIgnore
@@ -27,7 +28,7 @@ class TermServiceTest extends Model
         return array(
             'name' => 'asdf',
             'slug' => 'asdf',
-            'language' => new Language(),
+            'language' => new LanguageEntity(),
             'id' => NULL,
             'manager' => $this->getMock('Term\Manager\TermManager')
         );
@@ -37,7 +38,7 @@ class TermServiceTest extends Model
     {
         parent::setUp();
         $termService = new TermService();
-        $termService->setEntity(new Term());
+        $termService->setEntity(new TermEntity());
         $this->setObject($termService);
     }
 }

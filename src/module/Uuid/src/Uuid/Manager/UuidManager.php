@@ -21,8 +21,8 @@ use Uuid\Collection\UuidCollection;
 
 class UuidManager implements UuidManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
-    use\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -48,22 +48,25 @@ class UuidManager implements UuidManagerInterface
         if (! $uuid) {
             $uuid = $this->createUuid();
         }
+        
         return $entity->setUuid($uuid);
     }
 
     public function getUuid($key)
     {
-        if (! is_numeric($key))
+        if (! is_numeric($key)) {
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($key)));
+        }
         
         if (! $this->hasInstance($key)) {
             $entity = $this->getObjectManager()->find($this->getClassResolver()
                 ->resolveClassName('Uuid\Entity\UuidInterface'), (int) $key);
             
-            if (! is_object($entity))
+            if (! is_object($entity)) {
                 throw new NotFoundException(sprintf('Could not find %s', $key));
+            }
             
-            $this->addInstance($entity->getId(), $entity);
+            $this->addInstance($key, $entity);
         }
         
         return $this->getInstance($key);
@@ -71,9 +74,10 @@ class UuidManager implements UuidManagerInterface
 
     public function findUuidByName($string)
     {
-        if (! is_string($string))
+        if (! is_string($string)) {
             throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($string)));
-        
+        }
+            
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Uuid\Entity\UuidInterface'))
@@ -81,9 +85,10 @@ class UuidManager implements UuidManagerInterface
             'uuid' => (string) $string
         ));
         
-        if (! $entity)
+        if (! $entity) {
             throw new NotFoundException(sprintf('Could not find %s', $string));
-        
+        }
+            
         if (! $this->hasInstance($entity->getId())) {
             $this->addInstance($entity->getId(), $entity);
         }
@@ -94,9 +99,12 @@ class UuidManager implements UuidManagerInterface
     public function createUuid()
     {
         $entity = $this->getClassResolver()->resolve('Uuid\Entity\UuidInterface');
+        
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush($entity);
+        
         $this->addInstance($entity->getId(), $entity);
+        
         return $entity;
     }
 
@@ -113,6 +121,7 @@ class UuidManager implements UuidManagerInterface
     protected function ambigousToUuid($idOrObject)
     {
         $uuid = NULL;
+        
         if (is_int($idOrObject)) {
             $uuid = $this->getUuid($idOrObject);
         } elseif ($idOrObject instanceof UuidHolder) {
@@ -122,6 +131,7 @@ class UuidManager implements UuidManagerInterface
         } else {
             throw new Exception\InvalidArgumentException(sprintf('Expected int, UuidHolder or UuidInterface but got "%s"', (is_object($idOrObject) ? get_class($idOrObject) : gettype($idOrObject))));
         }
+        
         return $uuid;
     }
 }

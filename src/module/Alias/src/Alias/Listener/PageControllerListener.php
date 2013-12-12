@@ -17,15 +17,14 @@ class PageControllerListener extends AbstractListener
 {
 
     /**
-     * Gets executed on 'register'
+     * Gets executed on page create
      *
      * @param Event $e            
-     * @return null
+     * @return void
      */
     public function onUpdate(Event $e)
     {
-        
-        $repositoryid = $e->getParam('repositoryid'); 
+        $repositoryid = $e->getParam('repositoryid');
         $slug = $e->getParam('slug');
         $repository = $e->getParam('repository');
         $language = $e->getParam('language');
@@ -36,16 +35,20 @@ class PageControllerListener extends AbstractListener
             ->fromRoute('page/article', array(
             'repositoryid' => $repositoryid
         ));
-            
-        $this->getAliasManager()->createAlias($url, $slug, $slug.'-'.$repositoryid, $repository, $language);
         
+        $this->getAliasManager()->createAlias($url, $slug, $slug . '-' . $repositoryid, $repository->getUuidEntity(), $language);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Page\Controller\IndexController', 'page.create', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'page.create', array(
             $this,
             'onUpdate'
         ));
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Page\Controller\IndexController';
     }
 }

@@ -32,7 +32,7 @@ trait AliasManagerAwareTrait
     /**
      *
      * @param AliasManagerInterface $aliasManager            
-     * @return $this
+     * @return self
      */
     public function setAliasManager(AliasManagerInterface $aliasManager)
     {

@@ -1,0 +1,13 @@
+
+		<testsuite name="Athene2 User Test Suite">
+			<directory>../../module/User/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 LearningResource Test Suite">
+			<directory>../../module/LearningResource/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Entity Test Suite">
+			<directory>../../module/Entity/test</directory>
+		</testsuite>
+		<testsuite name="Athene2 Link Test Suite">
+			<directory>../../module/Link/test</directory>
+		</testsuite>

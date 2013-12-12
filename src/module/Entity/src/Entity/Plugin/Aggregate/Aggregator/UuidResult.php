@@ -52,7 +52,9 @@ class UuidResult implements ResultInterface
      */
     public function getTitle()
     {
-        return $this->getObject()->getName();
+        return $this->getObject()
+            ->normalize()
+            ->getTitle();
     }
     
     /*
@@ -60,11 +62,12 @@ class UuidResult implements ResultInterface
      */
     public function getUrl()
     {
-        return $this->getRouter()->assemble(array(
-            'uuid' => $this->getObject()
-                ->getId()
-        ), array(
-            'name' => 'uuid/router'
+        return $this->getRouter()->assemble($this->getObject()
+            ->normalize()
+            ->getRouteParams(), array(
+            'name' => $this->getObject()
+                ->normalize()
+                ->getRouteName()
         ));
     }
 }

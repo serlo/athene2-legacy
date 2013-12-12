@@ -14,11 +14,10 @@ namespace Flag\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Flag\Form\FlagForm;
-use Zend\Session\Container;
 
 class FlagController extends AbstractActionController
 {
-    use\Flag\Manager\FlagManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
+    use \Flag\Manager\FlagManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function manageAction()
     {
@@ -35,19 +34,22 @@ class FlagController extends AbstractActionController
         $this->layout('layout/1-col');
         $types = $this->getFlagManager()->findAllTypes();
         $form = new FlagForm($types);
-        if($this->getRequest()->isPost()){
+        if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
-            if($form->isValid()){
+            if ($form->isValid()) {
                 $data = $form->getData();
                 $uuid = $this->params('id');
                 $reporter = $this->getUserManager()->getUserFromAuthenticator();
                 $this->getFlagManager()->addFlag((int) $data['type'], $data['content'], (int) $uuid, $reporter);
-                $this->getFlagManager()->getObjectManager()->flush();
+                $this->getFlagManager()
+                    ->getObjectManager()
+                    ->flush();
                 
                 $this->flashMessenger()->addSuccessMessage('The content has been flagged.');
-
-                $this->redirect()->toUrl($this->referer()->fromStorage());
+                
+                $this->redirect()->toUrl($this->referer()
+                    ->fromStorage());
                 return false;
             }
         }
@@ -60,24 +62,28 @@ class FlagController extends AbstractActionController
         $view->setTemplate('flag/add');
         return $view;
     }
-    
-    public function detailAction(){
+
+    public function detailAction()
+    {
         $id = (int) $this->params('id');
         $flag = $this->getFlagManager()->getFlag($id);
-        $view = new ViewModel(array('flag' => $flag));
+        $view = new ViewModel(array(
+            'flag' => $flag
+        ));
         $view->setTemplate('flag/detail');
         return $view;
     }
 
     public function removeAction()
     {
-        
         $id = $this->params('id');
-        $this->getFlagManager()->removeFlag((int) $id);   
-        $this->getFlagManager()->getObjectManager()->flush();  
-                
+        $this->getFlagManager()->removeFlag((int) $id);
+        $this->getFlagManager()
+            ->getObjectManager()
+            ->flush();
+        
         $this->flashMessenger()->addSuccessMessage('Your action was successfull.');
-           
+        
         $this->redirect()->toReferer();
         return false;
     }

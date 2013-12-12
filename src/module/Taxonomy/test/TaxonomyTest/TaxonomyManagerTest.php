@@ -124,7 +124,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->taxonomyManager->findTermByAncestors(array());
     }
 
-    public function testFindTermByAncestors()
+    public function deprecatedTestFindTermByAncestors()
     {
         $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
         
@@ -151,7 +151,7 @@ class TaxonomyManagerTest extends AbstractTestCase
     /**
      * @expectedException \Taxonomy\Exception\TermNotFoundException
      */
-    public function testFindTermByAncestorsNotFoundException()
+    public function deprecatedTestFindTermByAncestorsNotFoundException()
     {
         $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
         

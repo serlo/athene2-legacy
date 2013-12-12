@@ -63,7 +63,11 @@ class Bootstrap
         'TokenTest' => 'Token/test/TokenTest',
         'Metadata' => 'Metadata/src/Metadata',
         'License' => 'License/src/License',
-        'LicenseTest' => 'License/test/LicenseTest'
+        'LicenseTest' => 'License/test/LicenseTest',
+        'Alias' => 'Alias/src/Alias',
+        'AliasTest' => 'Alias/test/AliasTest',
+        'Contexter' => 'Contexter/src/Contexter',
+        'ContexterTest' => 'Contexter/test/ContexterTest'
     );
 
     public static function getApplication(){

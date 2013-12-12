@@ -37,6 +37,18 @@ return [
                 'entity/create' => [
                     'login'
                 ]
+            ],
+
+            'ZfcRbac\Guard\ControllerGuard' => [
+                [
+                    'controller' => 'Entity\Plugin\Page\Controller\PageController',
+                    'actions' => [
+                        'index',
+                    ],
+                    'roles' => [
+                        'login'
+                    ]
+                ],
             ]
         ]
     ]

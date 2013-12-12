@@ -13,20 +13,27 @@ namespace Alias\View\Helper;
 
 use Zend\View\Helper\Url as ZendUrl;
 
-class Url extends ZendUrl {
-    use \Alias\AliasManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+class Url extends ZendUrl
+{
+    use\Alias\AliasManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait;#
+    
+    protected function getDefaultConfig()
+    {
+        return ['uri_head' => '/alias'];
+    }
 
     public function __invoke($name = null, $params = array(), $options = array(), $reuseMatchedParams = false)
     {
         $link = parent::__invoke($name, $params, $options, $reuseMatchedParams);
-
+        
         $aliasManager = $this->getAliasManager();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $alias = $aliasManager->findAliasBySource($link, $language);
-
-        if ($alias)
-            $link = '/alias/' . $alias;
-
+        
+        if ($alias) {
+            $link = $this->getOption('uri_head') . '/' . $alias;
+        }
+        
         return $link;
     }
 }

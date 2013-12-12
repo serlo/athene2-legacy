@@ -15,7 +15,6 @@ use AtheneTest\TestCase\Model;
 use Taxonomy\Entity\Taxonomy;
 use Language\Entity\LanguageEntity;
 use Taxonomy\Entity\TaxonomyType;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class TaxonomyTest extends Model
 {
@@ -31,7 +30,7 @@ class TaxonomyTest extends Model
     protected function getData()
     {
         return array(
-            'language' => new Language(),
+            'language' => new LanguageEntity(),
             'id' => '1',
             'type' => new TaxonomyType(),
             'name' => ''

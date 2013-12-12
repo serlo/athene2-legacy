@@ -17,10 +17,10 @@ class BlogControllerListener extends AbstractListener
 {
 
     /**
-     * Gets executed on 'register'
+     * Gets executed on post create & update
      *
      * @param Event $e            
-     * @return null
+     * @return void
      */
     public function onUpdate(Event $e)
     {
@@ -30,26 +30,32 @@ class BlogControllerListener extends AbstractListener
         $data = $e->getParam('data');
         $language = $e->getParam('language');
         $entity = $post->getEntity();
-
+        
         $url = $e->getTarget()
             ->url()
             ->fromRoute('blog/post/view', array(
             'blog' => $blog->getId(),
             'post' => $post->getId()
         ));
-            
+        
         $this->getAliasManager()->autoAlias('blogPost', $url, $entity, $language);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach('Blog\Controller\BlogController', 'post.create', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'post.create', array(
             $this,
             'onUpdate'
         ));
-        $this->listeners[] = $events->attach('Blog\Controller\BlogController', 'post.update', array(
+        
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'post.update', array(
             $this,
             'onUpdate'
         ));
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Blog\Controller\BlogController';
     }
 }

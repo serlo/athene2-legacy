@@ -12,11 +12,13 @@
 namespace TermTest;
 
 use Term\Manager\TermManager;
+use AtheneTest\TestCase\ManagerTest;
+use Term\Service\TermService;
 
 /**
  * @codeCoverageIgnore
  */
-class TermManagerTest extends \PHPUnit_Framework_TestCase
+class TermManagerTest extends ManagerTest
 {
 
     /**
@@ -28,85 +30,100 @@ class TermManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->termManager = new TermManager();
+        $this->setManager($this->termManager);
         
-        $classResolverMock = $this->getMock('ClassResolver\ClassResolver');
-        $entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
-        $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $termServiceMock = $this->getMock('Term\Service\TermService');
-        $this->termMock = $this->getMocK('Term\Entity\TermEntity');
-        
-        $classResolverMock->expects($this->any())
-            ->method('resolveClassName')
-            ->will($this->returnValue('Term\Entity\Term'));
-        $serviceLocatorMock->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($termServiceMock));
-        $termServiceMock->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(1));
-        $this->termMock->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(1));
-        $entityManagerMock->expects($this->any())
-            ->method('find')
-            ->will($this->returnValue($this->termMock));
-        $entityManagerMock->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValue($this->repositoryMock));
-        
-        $this->termManager->setObjectManager($entityManagerMock);
-        $this->termManager->setClassResolver($classResolverMock);
-        $this->termManager->setCheckClassInheritance(false);
-        $this->termManager->setServiceLocator($serviceLocatorMock);
+        $this->prepareClassResolver([
+            'Term\Entity\TermEntityInterface' => 'Term\Entity\TermEntity',
+            'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
+        ]);
     }
 
-    public function testGetTerm()
+    protected function mockTerm($id)
     {
-        $this->assertEquals(1, $this->termManager->getTerm(1)
-            ->getId());
+        return $this->mockEntity('Term\Entity\TermEntity', $id);
+    }
+
+    protected function mockLanguage($id)
+    {
+        $language = $this->mockEntity('Language\Model\LanguageModelInterface', $id);
+        $language->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($language));
+        return $language;
+    }
+
+    protected function prepareFactory()
+    {
+        $this->prepareServiceLocator();
+        
+        $service = new TermService();
+        
+        $this->termManager->getServiceLocator()
+            ->expects($this->once())
+            ->method('get')
+            ->with('Term\Service\TermService')
+            ->will($this->returnValue($service));
+        
+        return $service;
     }
 
     /**
      * @expectedException \Term\Exception\InvalidArgumentException
      */
-    public function testGetTermInvalidArgumentException(){
+    public function testGetTermInvalidArgumentException()
+    {
         $this->termManager->getTerm('asdf');
     }
-    
-    
+
+    public function testGetTerm()
+    {
+        $service = $this->prepareFactory();
+        $entity = $this->mockTerm(1);
+        $language = $this->mockLanguage(1);
+        
+        $this->prepareFind('Term\Entity\TermEntity', 1, $entity);
+        
+        $this->assertSame($service, $this->termManager->getTerm(1));
+    }
+
     public function testFindTermByName()
     {
-        $this->repositoryMock->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValue($this->termMock));
+        $service = $this->prepareFactory();
+        $entity = $this->mockTerm(1);
+        $language = $this->mockLanguage(1);
         
-        $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        $this->prepareFindOneBy('Term\Entity\TermEntity', array(
+            'name' => 'foo',
+            'language' => 1
+        ), $entity);
         
-        $this->assertEquals(1, $this->termManager->findTermByName('somename', $languageServiceMock)
-            ->getId());
+        $this->assertSame($service, $this->termManager->findTermByName('foo', $language));
     }
 
     public function testFindTermBySlug()
     {
-        $this->repositoryMock->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValue($this->termMock));
-        $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        $service = $this->prepareFactory();
+        $entity = $this->mockTerm(1);
+        $language = $this->mockLanguage(1);
         
-        $this->assertEquals(1, $this->termManager->findTermBySlug('someslug', $languageServiceMock)
-            ->getId());
+        $this->prepareFindOneBy('Term\Entity\TermEntity', array(
+            'slug' => 'foo',
+            'language' => 1
+        ), $entity);
+        
+        $this->assertSame($service, $this->termManager->findTermBySlug('foo', $language));
     }
 
     public function testCreateTerm()
     {
-        $this->termManager->getClassResolver()->expects($this->any())
-            ->method('resolve')
-            ->will($this->returnValue(new \Term\Entity\TermEntity()));
-        $languageServiceMock = $this->getMock('Language\Service\LanguageService');
+        $language = $this->mockLanguage(1);
         
-        $this->assertNotNull($this->termManager->createTerm('a', 'b', $languageServiceMock));
+        $this->prepareObjectManager();
+        
+        $this->termManager->getObjectManager()
+            ->expects($this->once())
+            ->method('persist');
+        
+        $this->assertNotNull($this->termManager->createTerm('a', 'b', $language));
     }
 }

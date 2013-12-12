@@ -14,6 +14,7 @@ namespace Term\Manager;
 
 use Term\Service\TermServiceInterface;
 use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 
 interface TermManagerInterface
 {
@@ -22,10 +23,10 @@ interface TermManagerInterface
      *
      * @param string $name            
      * @param string $slug            
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return TermServiceInterface
      */
-    public function createTerm($name, $slug = NULL, LanguageServiceInterface $language);
+    public function createTerm($name, $slug = NULL, LanguageModelInterface $language);
 
     /**
      *
@@ -37,16 +38,16 @@ interface TermManagerInterface
     /**
      *
      * @param unknown $name            
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return TermServiceInterface
      */
-    public function findTermByName($name, LanguageServiceInterface $language);
+    public function findTermByName($name, LanguageModelInterface $language);
 
     /**
      *
      * @param unknown $slug            
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return TermServiceInterface
      */
-    public function findTermBySlug($slug, LanguageServiceInterface $language);
+    public function findTermBySlug($slug, LanguageModelInterface $language);
 }

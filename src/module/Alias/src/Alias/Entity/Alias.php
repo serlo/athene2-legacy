@@ -12,8 +12,8 @@
 namespace Alias\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageEntityInterface;
 use Uuid\Entity\UuidInterface;
+use Language\Model\LanguageModelInterface;
 
 /**
  * @ORM\Entity
@@ -51,90 +51,50 @@ class Alias implements AliasInterface
      */
     protected $uuid;
 
-    /**
-     *
-     * @return UuidInterface $uuid
-     */
-    public function getUuid()
-    {
-        return $this->uuid;
-    }
-
-    /**
-     *
-     * @param UuidInterface $uuid            
-     * @return $this
-     */
-    public function setUuid(UuidInterface $uuid)
-    {
-        $this->uuid = $uuid;
-        return $this;
-    }
-
-    /**
-     *
-     * @return int $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     *
-     * @return string $alias
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
-     *
-     * @return string $source
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
-    /**
-     *
-     * @return LanguageEntityInterface $language
-     */
     public function getLanguage()
     {
         return $this->language;
     }
 
-    /**
-     *
-     * @param string $alias            
-     * @return $this
-     */
+    public function getObject()
+    {
+        return $this->uuid;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    public function getSource()
+    {
+        return $this->source;
+    }
+
     public function setAlias($alias)
     {
         $this->alias = $alias;
         return $this;
     }
 
-    /**
-     *
-     * @param string $source            
-     * @return $this
-     */
     public function setSource($source)
     {
         $this->source = $source;
         return $this;
     }
 
-    /**
-     *
-     * @param LanguageEntityInterface $language            
-     * @return $this
-     */
-    public function setLanguage(LanguageEntityInterface $language)
+    public function setObject(UuidInterface $uuid)
+    {
+        $this->uuid = $uuid;
+        return $this;
+    }
+
+    public function setLanguage(LanguageModelInterface $language)
     {
         $this->language = $language;
         return $this;

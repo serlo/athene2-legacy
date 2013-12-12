@@ -9,12 +9,21 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Alias\Listener;
+namespace Entity\Manager;
 
-use Zend\EventManager\SharedEventManagerInterface;
-use Common\Listener\AbstractSharedListenerAggregate;
-
-abstract class AbstractListener extends AbstractSharedListenerAggregate
+interface EntityManagerAwareInterface
 {
-    use \Alias\AliasManagerAwareTrait;
+
+    /**
+     *
+     * @return EntityManagerInterface $entityManager
+     */
+    public function getEntityManager();
+
+    /**
+     *
+     * @param EntityManagerInterface $entityManager            
+     * @return self
+     */
+    public function setEntityManager(\Entity\Manager\EntityManagerInterface $entityManager);
 }

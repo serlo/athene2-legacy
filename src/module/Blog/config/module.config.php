@@ -14,6 +14,15 @@ namespace Blog;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Blog\Collection\PostCollection;
 return array(
+    'alias_manager' => array(
+        'aliases' => array(
+            'blogPost' => array(
+                'tokenize' => 'blog/{category}/{title}',
+                'provider' => 'Blog\Provider\TokenizerProvider',
+                'fallback' => 'blog/{category}/{id}-{title}'
+            )
+        )
+    ),
     'taxonomy' => array(
         'associations' => array(
             'blogPosts' => array(

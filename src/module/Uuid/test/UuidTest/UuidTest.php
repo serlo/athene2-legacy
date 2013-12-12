@@ -36,14 +36,6 @@ class UuidTest extends Model
         );
     }
 
-    public function testHydrate()
-    {
-        $uuidEntityMock = $this->getMock('Uuid\Entity\UuidEntity');
-        $uuidEntityMock->expects($this->once())
-            ->method('setUuid');
-        $this->getObject()->hydrate($uuidEntityMock);
-    }
-
     public function testGetId()
     {
         $this->assertEquals(NULL, $this->getObject()

@@ -19,6 +19,7 @@ use Language\Service\LanguageServiceInterface;
 use Common\Filter\Slugify;
 use Term\Exception;
 use Term\Entity\TermEntityInterface;
+use Language\Model\LanguageModelInterface;
 
 class TermManager implements TermManagerInterface
 {
@@ -56,7 +57,7 @@ class TermManager implements TermManagerInterface
         return $this->getInstance($idOrObject);
     }
 
-    public function findTermBySlug($slug, LanguageServiceInterface $language)
+    public function findTermBySlug($slug, LanguageModelInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -73,7 +74,7 @@ class TermManager implements TermManagerInterface
         return $this->getInstance($entity->getId());
     }
 
-    public function findTermByName($name, LanguageServiceInterface $language)
+    public function findTermByName($name, LanguageModelInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -90,7 +91,7 @@ class TermManager implements TermManagerInterface
         return $this->getInstance($entity->getId());
     }
 
-    public function createTerm($name, $slug = NULL, LanguageServiceInterface $language)
+    public function createTerm($name, $slug = NULL, LanguageModelInterface $language)
     {
         $filter = new Slugify();
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');

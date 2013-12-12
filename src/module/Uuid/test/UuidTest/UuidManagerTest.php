@@ -13,106 +13,76 @@ namespace UuidTest;
 
 use Uuid\Manager\UuidManager;
 use ClassResolver\ClassResolver;
+use AtheneTest\TestCase\ManagerTest;
+use Uuid\Entity\Uuid;
 
 /**
  * @codeCoverageIgnore
  */
-class UuidManagerTest extends \PHPUnit_Framework_TestCase
+class UuidManagerTest extends ManagerTest
 {
 
-    private $uuidManager;
-
-    protected function tearDown()
-    {
-        $this->uuidManager = null;
-        parent::tearDown();
-    }
+    protected $uuidManager;
 
     public function setUp()
     {
         $this->uuidManager = new UuidManager();
+        $this->setManager($this->uuidManager);
         
-        $classResolverMock = $this->getMock('ClassResolver\ClassResolver');
-        $entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
-        $serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $uuidMock = $this->getMock('Uuid\Entity\Uuid');
-        $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $classResolverMock->expects($this->any())
-            ->method('resolveClassName')
-            ->will($this->returnValue('Uuid\Entity\Uuid'));
-        
-        $uuidMock->expects($this->any())
+        $this->prepareClassResolver([
+            'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
+        ]);
+    }
+
+    protected function prepareEntity($id)
+    {
+        $mock = $this->getMock('Uuid\Entity\Uuid');
+        $mock->expects($this->any())
             ->method('getId')
-            ->will($this->returnValue(2));
-        
-        $uuidMock->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foobar'));
-        
-        $serviceLocatorMock->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($uuidMock));
-        
-        $repositoryMock->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValue($uuidMock));
-        
-        $entityManagerMock->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValue($repositoryMock));
-        
-        $this->uuidManager->setServiceLocator($serviceLocatorMock)
-            ->setObjectManager($entityManagerMock)
-            ->setClassResolver($classResolverMock);
+            ->will($this->returnValue($id));
+        return $mock;
     }
 
     public function testInjectUuid()
     {
+        $this->prepareObjectManager();
+        
+        $entity = $this->getMock('Uuid\Entity\UuidHolder');
+        
         $this->uuidManager->getObjectManager()
             ->expects($this->once())
             ->method('persist');
         $this->uuidManager->getObjectManager()
             ->expects($this->once())
             ->method('flush');
-        $entity = $this->getMock('Uuid\Entity\UuidEntity');
         $entity->expects($this->once())
             ->method('setUuid');
+        
         $this->uuidManager->injectUuid($entity);
     }
 
     public function testCreateUuid()
     {
+        $this->prepareObjectManager();
+        
         $this->uuidManager->getObjectManager()
             ->expects($this->once())
             ->method('persist');
+        
         $this->uuidManager->getObjectManager()
             ->expects($this->once())
             ->method('flush');
-        $uuid = $this->uuidManager->createUuid();
-        $this->assertNotNull($uuid);
+        
+        $this->assertInstanceOf('Uuid\Entity\UuidInterface', $this->uuidManager->createUuid());
     }
 
     public function testGetUuid()
     {
-        $uuid = $this->uuidManager->createUuid();
-        $this->assertEquals($uuid, $this->uuidManager->getUuid(2));
-    }
-
-    public function testGetUuidFromObjectManager()
-    {
-        $objectManager = $this->uuidManager->getObjectManager();
-        $entity = $this->getMock('Uuid\Entity\Uuid');
-        $entity->expects($this->atLeastOnce())
-            ->method('getId')
-            ->will($this->returnValue(2));
+        $uuid = new Uuid();
         
-        $objectManager->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue($entity));
-        $this->assertEquals($entity, $this->uuidManager->getUuid(2));
+        $this->prepareFind('Uuid\Entity\Uuid', 1, $uuid);
+        
+        $this->assertSame($uuid, $this->uuidManager->getUuid(1));
     }
 
     /**
@@ -120,17 +90,18 @@ class UuidManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUuidNotFoundException()
     {
-        $objectManager = $this->uuidManager->getObjectManager();
-        $objectManager->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue(NULL));
-        $this->uuidManager->getUuid(2);
+        $this->prepareFind('Uuid\Entity\Uuid', 1, NULL);
+        
+        $this->uuidManager->getUuid(1);
     }
 
     public function testFindUuidByName()
     {
-        $this->assertEquals(2, $this->uuidManager->findUuidByName('foobar')
-            ->getId());
+        $uuid = $this->prepareEntity(1);
+        $this->prepareFindOneBy('Uuid\Entity\Uuid', [
+            'uuid' => 'foobar'
+        ], $uuid);
+        $this->assertSame($uuid, $this->uuidManager->findUuidByName('foobar'));
     }
 
     /**

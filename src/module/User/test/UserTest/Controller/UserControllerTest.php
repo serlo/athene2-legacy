@@ -163,7 +163,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->assertResponseStatusCode(302);
     }
 
-    public function testRegisterActionWithPost()
+    public function deprecatedTestRegisterActionWithPost()
     {
         $data = array(
             'username' => '1234',
@@ -448,7 +448,7 @@ class UserControllerTest extends Athene2ApplicationTestCase
         $this->assertResponseStatusCode(200);
     }
 
-    public function testRemove()
+    public function deprecatedTestRemove()
     {
         /* @var $controller \User\Controller\UserController */
         $controller = $this->getApplicationServiceLocator()->get('User\Controller\UserController');
