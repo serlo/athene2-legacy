@@ -47,9 +47,9 @@ interface AliasManagerInterface
      * 
      * @param string $name
      * @param string $source
-     * @param UuidHolder $object
+     * @param UuidInterface $object
      * @param LanguageModelInterface $language
      * @return self
      */
-    public function autoAlias($name, $source, UuidHolder $object, LanguageModelInterface $language);
+    public function autoAlias($name, $source, UuidInterface $object, LanguageModelInterface $language);
 }

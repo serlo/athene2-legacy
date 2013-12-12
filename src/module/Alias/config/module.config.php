@@ -12,7 +12,6 @@
 namespace Alias;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-
 return [
     'alias_manager' => [
         'aliases' => [
@@ -46,18 +45,7 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Alias\AliasManager' => function (ServiceLocatorInterface $sm)
-            {
-                $config = $sm->get('config')['alias_manager'];
-                
-                $service = new AliasManager();
-                $service->setConfig($config);
-                $service->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $service->setObjectManager($sm->get('EntityManager'));
-                $service->setTokenizer($sm->get('Token\Tokenizer'));
-                
-                return $service;
-            }
+            'Alias\Options\ManagerOptions' => 'Alias\Factory\ManagerOptionsFactory'
         ]
     ],
     'di' => [
@@ -68,20 +56,37 @@ return [
             'class' => [
                 __NAMESPACE__ . '\Controller\AliasController' => [
                     'setAliasManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setLanguageManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Listener\BlogControllerListener' => [
                     'setAliasManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Listener\PageControllerListener' => [
                     'setAliasManager' => [
-                        'required' => 'true'
+                        'required' => true
+                    ]
+                ],
+                'Alias\AliasManager' => [
+                    'setClassResolver' => [
+                        'required' => true
+                    ],
+                    'setOptions' => [
+                        'required' => true
+                    ],
+                    'setObjectManager' => [
+                        'required' => true
+                    ],
+                    'setTokenizer' => [
+                        'required' => true
+                    ],
+                    'setUuidManager' => [
+                        'required' => true
                     ]
                 ]
             ]

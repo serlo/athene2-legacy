@@ -15,37 +15,57 @@ use Common\Traits;
 use Alias\Exception;
 use Uuid\Entity\UuidInterface;
 use Common\Filter\Slugify;
-use Uuid\Entity\UuidHolder;
 use Language\Model\LanguageModelInterface;
+use Alias\Options\ManagerOptions;
 
 class AliasManager implements AliasManagerInterface
 {
-    use Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Token\TokenizerAwareTrait;
+    use Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Token\TokenizerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
-    protected function getDefaultConfig()
+    /**
+     *
+     * @var ManagerOptions
+     */
+    protected $options;
+
+    /**
+     *
+     * @return ManagerOptions $options
+     */
+    public function getOptions()
     {
-        return array(
-            'aliases' => array()
-        );
+        return $this->options;
     }
 
-    public function autoAlias($name, $source, UuidHolder $object, LanguageModelInterface $language)
+    /**
+     *
+     * @param ManagerOptions $options            
+     * @return $this
+     */
+    public function setOptions(ManagerOptions $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    public function autoAlias($name, $source, UuidInterface $object, LanguageModelInterface $language)
     {
         if (! is_string($name) || ! is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected name and source to be string but got "%s" and "%s"', gettype($name), gettype($source)));
         }
         
-        if (! array_key_exists($name, $this->getOption('aliases'))) {
+        if (! array_key_exists($name, $this->getOptions()->getAliases())) {
             throw new Exception\RuntimeException(sprintf('No configuration found for "%s"', $name));
         }
         
-        $options = $this->getOption('aliases')[$name];
+        $options = $this->getOptions()->getAliases()[$name];
         $provider = $options['provider'];
         $tokenString = $options['tokenize'];
         $fallbackString = $options['fallback'];
+        $service = $this->getUuidManager()->createService($object);
         
-        $alias = $this->getTokenizer()->transliterate($provider, $object, $tokenString);
-        $aliasFallback = $this->getTokenizer()->transliterate($provider, $object, $fallbackString);
+        $alias = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
+        $aliasFallback = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
         
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
     }
