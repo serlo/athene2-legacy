@@ -12,42 +12,22 @@
  */
 namespace Common;
 
-use Zend\Mvc\MvcEvent;
+class Module
+{
 
-class Module {
-	public function getConfig() {
-		return include __DIR__ . '/config/module.config.php';
-	}
-	public function getAutoloaderConfig() {
-		return array (
-				'Zend\Loader\StandardAutoloader' => array (
-						'namespaces' => array (
-								__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ 
-						) 
-				) 
-		);
-	}
-	
-	/**
-	 * Deprecated due to ZFCRbac Service
-	 */
-	/*public function onBootstrap(MvcEvent $e) {
-		$app = $e->getTarget ();
-		$sm = $app->getServiceManager ();
-		$rbacService = $sm->get ( 'ZfcRbac\Service\Rbac' );
-		$strategy = $sm->get ( 'ZfcRbac\View\UnauthorizedStrategy' );
-		$config = $sm->get ( 'config' );
-		
-		
-		if ($rbacService->getOptions ()->getFirewallController ()) {
-			$app->getEventManager ()->attach ( 'route', array (
-					'Common\Firewall\Listener\HydratableController',
-					'onRoute' 
-			), - 1000 );
-		}
-		
-		$app->getEventManager ()->attach ( $strategy );
-	}*/
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function getAutoloaderConfig()
+    {
+        return array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+                )
+            )
+        );
+    }
 }
-
-

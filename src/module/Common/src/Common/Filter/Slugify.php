@@ -20,7 +20,7 @@ class Slugify implements FilterInterface
      */
     public function filter($value)
     {
-        return self::toAscii($value);
+        return self::slugify($value);
     }
 
     static protected function slugify($text)
@@ -49,12 +49,8 @@ class Slugify implements FilterInterface
         return $text;
     }
 
-    static protected function toAscii($str, $replace = array(), $delimiter = '-')
+    static protected function toAscii($str, $delimiter = '-')
     {
-        if (! empty($replace)) {
-            $str = str_replace((array) $replace, ' ', $str);
-        }
-        
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
