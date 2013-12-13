@@ -9,10 +9,18 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Contexter\Entity;
+namespace Contexter\Service;
 
 use Contexter\Model\ContextModelInterface;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Contexter\ContextInterface;
 
-interface ContextInterface extends ContextModelInterface
+interface ContextServiceInterface extends ContextModelInterface, ObjectManagerAwareInterface
 {
+    /**
+     * 
+     * @param ContextInterface $context
+     * @return self
+     */
+    public function setEntity(ContextInterface $context);
 }

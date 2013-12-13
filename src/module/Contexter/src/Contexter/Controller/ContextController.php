@@ -18,11 +18,11 @@ use Contexter\Form\UrlForm;
 
 class ContextController extends AbstractActionController
 {
-    use\Contexter\ContexterAwareTrait,\Contexter\Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Contexter\Manager\ContextManagerAwareTrait,\Contexter\Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function manageAction()
     {
-        $elements = $this->getContexter()->findAll();
+        $elements = $this->getContextManager()->findAll();
         $view = new ViewModel(array(
             'elements' => $elements
         ));
@@ -32,14 +32,14 @@ class ContextController extends AbstractActionController
 
     public function addAction()
     {
-        $uri = $this->params()->fromQuery('uri');
-        if ($uri === NULL) {
+        $uri = $this->params()->fromQuery('uri', null);
+        if ($uri === null) {
             $this->redirect()->toRoute('contexter/select-uri');
             return false;
         } else {
             $routeMatch = $this->getRouter()->matchUri($uri);
             $this->getRouter()->setRouteMatch($routeMatch);
-            $types = $this->getContexter()->findAllTypeNames();
+            $types = $this->getContextManager()->findAllTypeNames();
             $parameters = $this->getRouter()
                 ->getAdapter()
                 ->getParameters();
@@ -60,13 +60,13 @@ class ContextController extends AbstractActionController
                         }
                     }
                     $object = $this->getUuidManager()->getUuid($data['object']);
-                    $context = $this->getContexter()->add($object, $data['type'], $data['title']);
+                    $context = $this->getContextManager()->add($object, $data['type'], $data['title']);
                     $context->addRoute($data['route'], $useParameters);
-                    $this->getContexter()
+                    $this->getContextManager()
                         ->getObjectManager()
                         ->flush();
                     $this->redirect()->toUrl($uri);
-                    return FALSE;
+                    return false;
                 }
             }
         }
@@ -100,7 +100,7 @@ class ContextController extends AbstractActionController
     public function updateAction()
     {
         $id = $this->params('id');
-        $context = $this->getContexter()->getContext($id);
+        $context = $this->getContextManager()->getContext($id);
         $view = new ViewModel(array(
             'context' => $context
         ));
@@ -111,8 +111,8 @@ class ContextController extends AbstractActionController
     public function removeAction()
     {
         $id = $this->params('id');
-        $this->getContexter()->removeContext((int) $id);
-        $this->getContexter()
+        $this->getContextManager()->removeContext((int) $id);
+        $this->getContextManager()
             ->getObjectManager()
             ->flush();
         $this->redirect()->toReferer();
@@ -122,8 +122,8 @@ class ContextController extends AbstractActionController
     public function removeRouteAction()
     {
         $id = $this->params('id');
-        $this->getContexter()->removeRoute((int) $id);
-        $this->getContexter()
+        $this->getContextManager()->removeRoute((int) $id);
+        $this->getContextManager()
             ->getObjectManager()
             ->flush();
         $this->redirect()->toReferer();

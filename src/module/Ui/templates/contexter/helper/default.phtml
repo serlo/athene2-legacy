@@ -1,16 +1,18 @@
-<?php if($this->router->hasAdapter()): ?>
+<?php /* @var $router \Contexter\Router\RouterInterface */ ?>
+<?php $router = $this->router; ?>
+<?php if($router->hasAdapter()): ?>
     <?php if($this->type !== NULL): ?>
     <h3><?php echo $this->translate($this->type); ?></h3>
     <?php endif; ?>
     <ul class="nav nav-pills">
-        <?php /* @var $match \Contexter\Context */ ?>
+        <?php /* @var $match \Contexter\Service\ContextServiceInterface */ ?>
         <?php foreach($this->matches as $context): ?>
             <li><a href="<?php echo $context->getUrl(); ?>">
                 <?php echo $context->getTitle(); ?>
             </a></li>
         <?php endforeach; ?>
         <?php if($this->guard()->hasAccessToRoute('contexter/add')): ?>
-            <?php $url = $this->url($this->router->getRouteMatch()->getMatchedRouteName(), $this->router->getRouteMatch()->getParams());?>
+            <?php $url = $this->url($router->getRouteMatch()->getMatchedRouteName(), $router->getRouteMatch()->getParams());?>
             <li>
                 <a href="<?php echo $this->url('contexter/add', array(), array('query' => array('uri' => $url))); ?>">
                     <span class="glyphicon glyphicon-plus-sign"></span>

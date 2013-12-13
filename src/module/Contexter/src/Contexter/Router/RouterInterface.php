@@ -33,15 +33,21 @@ interface RouterInterface
 
     /**
      *
-     * @param string $uri      
-     * @return RouteMatch      
+     * @param string $uri            
+     * @return RouteMatch
      */
     public function matchUri($uri);
-    
+
     /**
-     * 
-     * @param RouteMatch $routeMatch
-     * @return $this
+     *
+     * @param RouteMatch $routeMatch            
+     * @return self
      */
     public function setRouteMatch(RouteMatch $routeMatch);
+
+    /**
+     *
+     * @return bool
+     */
+    public function hasAdapter();
 }

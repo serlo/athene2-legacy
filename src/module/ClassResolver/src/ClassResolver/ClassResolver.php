@@ -13,7 +13,7 @@ namespace ClassResolver;
 
 class ClassResolver implements ClassResolverInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     /**
      *
@@ -41,11 +41,12 @@ class ClassResolver implements ClassResolverInterface
 
     protected function getClass($class)
     {
-        $index = $this->getIndex($class);
-        
         if (! is_string($class)) {
             throw new Exception\InvalidArgumentException(sprintf('Argument is not a string.'));
         }
+        
+        $index = $this->getIndex($class);
+        
         if (! array_key_exists($index, $this->registry)) {
             throw new Exception\RuntimeException(sprintf("Can't resolve %s (%s).", $class, $index));
         }

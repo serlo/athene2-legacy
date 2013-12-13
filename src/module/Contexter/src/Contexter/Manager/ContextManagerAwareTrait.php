@@ -9,42 +9,34 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Contexter\Entity;
+namespace Contexter\Manager;
 
-use Doctrine\Common\Collections\Collection;
-
-interface TypeInterface
+trait ContextManagerAwareTrait
 {
 
     /**
      *
-     * @return Collection
+     * @var ContextManagerInterface
      */
-    public function getContext();
+    protected $contextManager;
 
     /**
      *
-     * @return int
+     * @return ContextManagerInterface $contexter
      */
-    public function getId();
+    public function getContextManager()
+    {
+        return $this->contextManager;
+    }
 
     /**
      *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     *
-     * @param string $title            
+     * @param ContextManagerInterface $contexter            
      * @return self
      */
-    public function setName($name);
-
-    /**
-     *
-     * @param ContextInterface $context            
-     * @return self
-     */
-    public function addContext(ContextInterface $context);
+    public function setContextManager(ContextManagerInterface $contextManager)
+    {
+        $this->contextManager = $contextManager;
+        return $this;
+    }
 }

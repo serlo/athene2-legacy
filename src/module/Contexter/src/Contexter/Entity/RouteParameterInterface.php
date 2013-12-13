@@ -41,21 +41,21 @@ interface RouteParameterInterface
     /**
      *
      * @param string $key            
-     * @return $this
+     * @return self
      */
     public function setKey($key);
 
     /**
      *
      * @param string $value            
-     * @return $this
+     * @return self
      */
     public function setValue($value);
 
     /**
      *
      * @param RouteInterface $route            
-     * @return $this
+     * @return self
      */
     public function setRoute(RouteInterface $route);
 }

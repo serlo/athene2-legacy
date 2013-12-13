@@ -12,8 +12,9 @@
 namespace Contexter;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Contexter\Service\ContextService;
 return array(
-    'contexter' => array(
+    'Manager\ContextManager' => array(
         'router' => array(
             'adapters' => array(
                 array(
@@ -40,8 +41,8 @@ return array(
         )
     ),
     'class_resolver' => array(
-        'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Context',
-        'Contexter\ContextInterface' => 'Contexter\Context',
+        'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Service\ContextService',
+        'Contexter\Service\ContextServiceInterface' => 'Contexter\Service\ContextService',
         'Contexter\Entity\TypeInterface' => 'Contexter\Entity\Type',
         'Contexter\Entity\RouteInterface' => 'Contexter\Entity\Route',
         'Contexter\Entity\RouteParameterInterface' => 'Contexter\Entity\RouteParameter'
@@ -62,148 +63,5 @@ return array(
             )
         )
     ),
-    'router' => array(
-        'routes' => array(
-            'contexter' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/context',
-                    'defaults' => array(
-                        'controller' => __NAMESPACE__ . '\Controller\ContextController'
-                    )
-                ),
-                'child_routes' => array(
-                    'select-uri' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/select-uri',
-                            'defaults' => array(
-                                'action' => 'selectUri'
-                            )
-                        )
-                    ),
-                    'route' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/route',
-                        ),
-                        'child_routes' => array(
-                            'remove' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route' => '/remove/:id',
-                                    'defaults' => array(
-                                        'action' => 'removeRoute'
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'remove' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/remove/:id',
-                            'defaults' => array(
-                                'action' => 'remove'
-                            )
-                        )
-                    ),
-                    'add' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/add',
-                            'defaults' => array(
-                                'action' => 'add'
-                            )
-                        )
-                    ),
-                    'manage' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/manage',
-                            'defaults' => array(
-                                'action' => 'manage'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            __NAMESPACE__ . '\Router\Router' => function (ServiceLocatorInterface $serviceManager)
-            {
-                $config = $serviceManager->get('config');
-                $instance = new Router\Router();
-                $instance->setConfig($config['contexter']['router']);
-                $instance->setServiceLocator($serviceManager);
-                $instance->setRouter($serviceManager->get('Router'));
-                $instance->setRouteMatch($serviceManager->get('Application')
-                    ->getMvcEvent()
-                    ->getRouteMatch());
-                $instance->setObjectManager($serviceManager->get('EntityManager'));
-                $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
-                $instance->setContexter($serviceManager->get('Contexter\Contexter'));
-                return $instance;
-            },
-            __NAMESPACE__ . '\Context' => function (ServiceLocatorInterface $serviceManager)
-            {
-                $instance = new Context();
-                $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
-                $instance->setRouter($serviceManager->get('Router'));
-                $instance->setObjectManager($serviceManager->get('EntityManager'));
-                return $instance;
-            }
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
-            __NAMESPACE__ . '\Controller\ContextController'
-        ),
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter' => array(
-                    'setLanguageManager' => array(
-                        'required' => true
-                    ),
-                ),
-                __NAMESPACE__ . '\Controller\ContextController' => array(
-                    'setUuidManager' => array(
-                        'required' => true
-                    ),
-                    'setContexter' => array(
-                        'required' => true
-                    ),
-                    'setRouter' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Context' => array(
-                    'setServiceLocator' => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    ),
-                    'setClassResolver' => array(
-                        'required' => true
-                    ),
-                    'setRouter' => array(
-                        'required' => true
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
-                __NAMESPACE__ . '\ContexterInterface' => __NAMESPACE__ . '\Contexter',
-                __NAMESPACE__ . '\Router\RouterInterface' => __NAMESPACE__ . '\Router\Router'
-            ),
-            __NAMESPACE__ . '\Context' => array(
-                'shared' => false
-            )
-        )
-    )
 );
 

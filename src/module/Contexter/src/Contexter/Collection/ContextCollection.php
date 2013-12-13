@@ -27,8 +27,9 @@ class ContextCollection extends AbstractDelegatorCollection
         return parent::getManager();
     }
     
-    /*
-     * (non-PHPdoc) @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
+    /**
+     * (non-PHPdoc)
+     * @see \Common\Collection\AbstractDelegatorCollection::getFromManager()
      */
     public function getFromManager($key)
     {

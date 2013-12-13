@@ -16,7 +16,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
-    use\Contexter\Router\RouterAwareTrait;
+    use \Contexter\Router\RouterAwareTrait;
 
     /**
      *
@@ -29,37 +29,38 @@ abstract class AbstractAdapter implements AdapterInterface
      * @var AnbstractActionController
      */
     protected $controller;
-    
+
+    public function getRouteMatch()
+    {
+        return $this->routeMatch;
+    }
+
     public function getController()
     {
         return $this->controller;
     }
-    
+
     public function setController(AbstractActionController $controller)
     {
         $this->controller = $controller;
         return $this;
     }
 
-    /**
-     *
-     * @return RouteMatch
-     */
-    public function getRouteMatch()
+    public function getKeys()
     {
-        return $this->routeMatch;
-    }
-    
-    public function getKeys(){
         return array_keys($this->getParameters());
     }
-    
+
     public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
         return $this;
     }
 
+    /**
+     *
+     * @return array
+     */
     protected function getParametersFromRouteMatch()
     {
         return $this->getRouteMatch()->getParams();

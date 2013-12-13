@@ -9,21 +9,20 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Contexter;
+namespace Contexter\Manager;
 
-use Uuid\Entity\UuidHolder;
-use Contexter\Entity\TypeInterface;
+use Contexter\Entity;
 use Doctrine\Common\Collections\Collection;
 use Uuid\Entity\UuidInterface;
-use Contexter\Entity\RouteInterface;
+use Context\Model;
 
-interface ContexterInterface extends Router\RouterAwareInterface
+interface ContextManagerInterface extends Router\RouterAwareInterface
 {
 
     /**
      *
      * @param int $id            
-     * @return ContextInterface
+     * @return Model\ContextModelInterface
      */
     public function getContext($id);
 
@@ -39,28 +38,28 @@ interface ContexterInterface extends Router\RouterAwareInterface
      * @param UuidInterface $object            
      * @param string $type            
      * @param string $title            
-     * @return ContextInterface
+     * @return Model\ContextModelInterface
      */
     public function add(UuidInterface $object, $type, $title);
 
     /**
      *
      * @param string $type            
-     * @return ContextInterface[]
+     * @return Model\ContextModelInterface[]
      */
-    public function findAllByType($name);
+    //public function findAllByType($name);
 
     /**
      *
-     * @return ContextInterface[]
+     * @return Model\ContextModelInterface[]
      */
     public function findAll();
 
     /**
      *
-     * @return Collection|TypeInterface[]
+     * @return Collection|Entity\TypeInterface[]
      */
-    public function findAllTypes();
+    //public function findAllTypes();
 
     /**
      *
@@ -71,14 +70,14 @@ interface ContexterInterface extends Router\RouterAwareInterface
     /**
      * 
      * @param int $id
-     * @return $this
+     * @return self
      */
     public function removeRoute($id);
     
     /**
      * 
      * @param int $id
-     * @return $this
+     * @return self
      */
     public function removeContext($id);
 }

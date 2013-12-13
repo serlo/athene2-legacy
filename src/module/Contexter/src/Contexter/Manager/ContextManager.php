@@ -9,33 +9,31 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Contexter;
+namespace Contexter\Manager;
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use ClassResolver\ClassResolverAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Contexter\Entity;
 use Contexter\Exception;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
 use Contexter\Collection\ContextCollection;
 
-class Contexter implements ContexterInterface, ObjectManagerAwareInterface, ClassResolverAwareInterface, ServiceLocatorAwareInterface
+class ContextManager implements ContextManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
 
     public function getContext($id)
     {
-        if (! is_int($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`', gettype($id)));
+        if (! is_numeric($id)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected id to be numeric but got "%s"', gettype($id)));
+        }
         
         if (! $this->hasInstance($id)) {
             $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
             $context = $this->getObjectManager()->find($className, $id);
             
-            if (! is_object($context))
+            if (! is_object($context)) {
                 throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
-            
+            }
             $this->addInstance($context->getId(), $this->createService($context));
         }
         
@@ -44,19 +42,21 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
 
     public function getRoute($id)
     {
-        if (! is_int($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`', gettype($id)));
+        if (! is_numeric($id)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected id to be numeric but got "%s"', gettype($id)));
+        }
         
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
         $object = $this->getObjectManager()->find($className, $id);
-        if (! is_object($object))
+        if (! is_object($object)) {
             throw new Exception\RuntimeException(sprintf('Could not find a route by the id of %d', $id));
+        }
         
         return $object;
     }
 
     public function removeRoute($id)
-    {        
+    {
         $route = $this->getRoute($id);
         $this->getObjectManager()->remove($route);
         return $this;
@@ -86,14 +86,12 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
         return $this->createService($context);
     }
 
-    public function findTypeByName($name, $createOnFallback = FALSE)
+    public function findTypeByName($name, $createOnFallback = false)
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
         
         /* @var $type Entity\TypeInterface */
-        $type = $this->getObjectManager()
-            ->getRepository($className)
-            ->findOneBy(array(
+        $type = $this->getTypeRepository()->findOneBy(array(
             'name' => $name
         ));
         
@@ -101,16 +99,11 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
             $type = $this->getClassResolver()->resolve('Contexter\Entity\TypeInterface');
             $type->setName($name);
             $this->getObjectManager()->persist($type);
-        } elseif (! is_object($type) && ! $createOnFallback)
+        } elseif (! is_object($type) && ! $createOnFallback) {
             throw new Exception\RuntimeException(sprintf('Type `%s` not found', $name));
+        }
         
         return $type;
-    }
-
-    public function findAllByType($name)
-    {
-        $type = $this->findTypeByName($name);
-        return new ContextCollection($type->getContext(), $this);
     }
 
     public function findAll()
@@ -123,14 +116,6 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
         return new ContextCollection($collection, $this);
     }
 
-    public function findAllTypes()
-    {
-        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-        return new ArrayCollection($this->getObjectManager()
-            ->getRepository($className)
-            ->findAll());
-    }
-
     public function findAllTypeNames()
     {
         return $this->findAllTypes()->map(function (\Contexter\Entity\TypeInterface $e)
@@ -139,11 +124,34 @@ class Contexter implements ContexterInterface, ObjectManagerAwareInterface, Clas
         });
     }
 
-    public function createService(Entity\ContextInterface $context)
+    protected function getTypeClassName()
+    {
+        return $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
+    }
+
+    protected function getTypeRepository()
+    {
+        $className = $this->getTypeClassName();
+        return $this->getObjectManager()->getRepository($className);
+    }
+
+    protected function createService(Entity\ContextInterface $context)
     {
         /* @var $instance ContextInterface */
         $instance = $this->createInstance('Contexter\ContextInterface');
         $instance->setEntity($context);
         return $instance;
     }
+
+    protected function findAllTypes()
+    {
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
+        return new ArrayCollection($this->getObjectManager()
+            ->getRepository($className)
+            ->findAll());
+    }
+    
+    /*
+     * public function findAllByType($name) { $type = $this->findTypeByName($name); return new ContextCollection($type->getContext(), $this); }
+     */
 }

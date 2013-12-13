@@ -64,4 +64,20 @@ class ClassResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->classResolver->resolve('ClassResolverTest\Fake\FailInterface');
     }
+
+    /**
+     * @expectedException \ClassResolver\Exception\InvalidArgumentException
+     */
+    public function testInvalidArgumentException()
+    {
+        $this->classResolver->resolveClassName(array());
+    }
+
+    /**
+     * @expectedException \ClassResolver\Exception\RuntimeException
+     */
+    public function testNotResolvable()
+    {
+        $this->classResolver->resolveClassName('NotResolvable');
+    }
 }

@@ -13,4 +13,17 @@ namespace Contexter\Router;
 
 interface RouterAwareInterface
 {
+
+    /**
+     * 
+     * @return RouterInterface
+     */
+    public function getRouter();
+
+    /**
+     * 
+     * @param RouterInterface $router
+     * @return self
+     */
+    public function setRouter(RouterInterface $router);
 }
