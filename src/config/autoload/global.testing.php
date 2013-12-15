@@ -1,13 +1,4 @@
 <?php
-use DoctrineORMModule\Service\DBALConnectionFactory;
-
-$dbParams = array(
-    'host' => 'localhost',
-    'port' => '3306',
-    'user' => 'travis',
-    'password' => '',
-    'database' => 'serlo_test'
-);
 
 return array(
     'doctrine' => array(
@@ -15,11 +6,11 @@ return array(
             'orm_test' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => array(
-                    'host' => $dbParams['host'],
-                    'port' => $dbParams['port'],
-                    'user' => $dbParams['user'],
-                    'password' => $dbParams['password'],
-                    'dbname' => $dbParams['database']
+                    'host' => 'none',
+                    'port' => '',
+                    'user' => '',
+                    'password' => '',
+                    'dbname' => ''
                 )
             )
         ),
@@ -30,13 +21,4 @@ return array(
             )
         )
     ),
-    /*'service_manager' => array(
-        'factories' => array(
-            'doctrine.connection.orm_test' => new DBALConnectionFactory('orm_test'),
-            'standard_identity' => function ($sm)
-            {
-                return new \ZfcRbac\Identity\StandardIdentity('guest');
-            },
-        )
-    )*/
 );

@@ -18,7 +18,7 @@ use Language\Model\LanguageModelInterface;
 
 class BlogManager implements BlogManagerInterface
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function getBlog($id)
     {
@@ -56,6 +56,12 @@ class BlogManager implements BlogManagerInterface
         }
         
         return $this->getInstance($id)->getPost($post->getId());
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
     }
 
     /**

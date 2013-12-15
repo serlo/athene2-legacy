@@ -11,12 +11,13 @@
  */
 namespace Contexter\Adapter;
 
+use Zend\Stdlib\ArrayUtils;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Controller\AbstractActionController;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
-    use \Contexter\Router\RouterAwareTrait;
+    use\Contexter\Router\RouterAwareTrait;
 
     /**
      *
@@ -57,12 +58,13 @@ abstract class AbstractAdapter implements AdapterInterface
         return $this;
     }
 
-    /**
-     *
-     * @return array
-     */
-    protected function getParametersFromRouteMatch()
+    public function getRouteParams()
     {
         return $this->getRouteMatch()->getParams();
+    }
+
+    public function getParams()
+    {
+        return ArrayUtils::merge($this->getRouteParams(), $this->getProvidedParams());
     }
 }

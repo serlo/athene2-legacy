@@ -16,14 +16,27 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 interface AdapterInterface
 {
+
     /**
-     * 
+     *
      * @return array
      */
-    public function getParameters();
-    
+    public function getProvidedParams();
+
     /**
-     * 
+     *
+     * @return array
+     */
+    public function getRouteParams();
+
+    /**
+     *
+     * @return array
+     */
+    public function getParams();
+
+    /**
+     *
      * @return array
      */
     public function getKeys();
@@ -33,10 +46,10 @@ interface AdapterInterface
      * @return AbstractActionController
      */
     public function getController();
-    
+
     /**
-     * 
-     * @param RouteMatch $routeMatch
+     *
+     * @param RouteMatch $routeMatch            
      * @return $this
      */
     public function setRouteMatch(RouteMatch $routeMatch);

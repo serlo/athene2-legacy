@@ -30,13 +30,24 @@ return [
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\ContextController' => [
-                    'setUuidManager' => [
-                        'required' => true
-                    ],
-                    'setManager\ContextManager' => [
+                    'setContextManager' => [
                         'required' => true
                     ],
                     'setRouter' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Manager\ContextManager' => [
+                    'setServiceLocator' => [
+                        'required' => true
+                    ],
+                    'setObjectManager' => [
+                        'required' => true
+                    ],
+                    'setClassResolver' => [
+                        'required' => true
+                    ],
+                    'setUuidManager' => [
                         'required' => true
                     ]
                 ],

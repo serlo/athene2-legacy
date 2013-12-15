@@ -11,9 +11,9 @@
  */
 namespace UserTest\Controller;
 
-use AtheneTest\Controller\Athene2ApplicationTestCase;
+use AtheneTest\Controller\ControllerTestCase;
 
-class UsersControllerTest extends Athene2ApplicationTestCase
+class UsersControllerTest extends ControllerTestCase
 {
 
     protected $controller;

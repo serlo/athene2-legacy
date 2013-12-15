@@ -29,13 +29,7 @@ interface PostServiceInterface extends PostModelInterface
      * @return self
      */
     public function setEntity(PostInterface $post);
-
-    /**
-     *
-     * @return self
-     */
-    public function flush();
-
+    
     /**
      *
      * @return self

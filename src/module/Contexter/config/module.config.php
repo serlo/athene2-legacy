@@ -11,8 +11,6 @@
  */
 namespace Contexter;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Contexter\Service\ContextService;
 return array(
     'Manager\ContextManager' => array(
         'router' => array(

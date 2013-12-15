@@ -14,6 +14,7 @@ namespace Blog\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Blog\Form\PostForm;
+use DateTime;
 
 class BlogController extends AbstractActionController
 {
@@ -69,7 +70,7 @@ class BlogController extends AbstractActionController
         $blog = $this->getBlogManager()->getBlog($this->params('blog'));
         $post = $blog->getPost($this->params('post'));
         $post->setTrashed(true);
-        $post->getObjectManager()->flush();
+        $this->getBlogManager()->flush();
         $this->redirect()->toReferer();
         return false;
     }
@@ -98,7 +99,7 @@ class BlogController extends AbstractActionController
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 $data = $form->getData();
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $publish = new \DateTime('now');
+                $publish = new DateTime('now');
                 
                 if ($data['publish']) {
                     $dateData = explode('.', $data['publish']);
@@ -115,7 +116,7 @@ class BlogController extends AbstractActionController
                     'language' => $language
                 ));
                 
-                $blog->getObjectManager()->flush();
+                $this->getBlogManager()->flush();
                 
                 $this->redirect()->toRoute('blog/view', array(
                     'id' => $this->params('blog')
@@ -151,7 +152,7 @@ class BlogController extends AbstractActionController
                 
                 $data = $form->getData();
                 
-                $publish = new \DateTime('now');
+                $publish = new DateTime('now');
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 
                 if ($data['publish']) {
@@ -170,7 +171,7 @@ class BlogController extends AbstractActionController
                     'language' => $language
                 ));
                 
-                $blog->getObjectManager()->flush();
+                $this->getBlogManager()->flush();
                 
                 $this->redirect()->toRoute('blog/view', array(
                     'id' => $this->params('id')

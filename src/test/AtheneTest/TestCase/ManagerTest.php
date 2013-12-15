@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace AtheneTest\TestCase;
 
 use ClassResolver\ClassResolver;
 
-abstract class ManagerTest extends \PHPUnit_Framework_TestCase
+abstract class ManagerTest extends GenericTestCase
 {
 
     protected $manager;
@@ -61,19 +71,12 @@ abstract class ManagerTest extends \PHPUnit_Framework_TestCase
     protected final function prepareObjectManager($inject = true)
     {
         if (! $this->objectManager) {
-            $this->objectManager = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+            $this->objectManager = $this->mockEntityManager();
         }
         if ($inject) {
             $this->getManager()->setObjectManager($this->objectManager);
         }
         return $this->objectManager;
-    }
-
-    protected final function prepareEntityRepository()
-    {
-        return $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     protected final function prepareFind($repositoryName, $key, $return)
@@ -89,7 +92,7 @@ abstract class ManagerTest extends \PHPUnit_Framework_TestCase
     protected final function prepareFindBy($repositoryName, array $criteria, $return)
     {
         $objectManager = $this->prepareObjectManager();
-        $repository = $this->prepareEntityRepository();
+        $repository = $this->mockEntityRepository();
         
         $objectManager->expects($this->once())
             ->method('getRepository')
@@ -105,7 +108,7 @@ abstract class ManagerTest extends \PHPUnit_Framework_TestCase
     protected final function prepareFindOneBy($repositoryName, array $criteria, $return)
     {
         $objectManager = $this->prepareObjectManager();
-        $repository = $this->prepareEntityRepository();
+        $repository = $this->mockEntityRepository();
         
         $objectManager->expects($this->once())
             ->method('getRepository')

@@ -14,7 +14,7 @@ namespace Contexter;
 return [
     'router' => [
         'routes' => [
-            'Manager\ContextManager' => [
+            'contexter' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => [
                     'route' => '/context',

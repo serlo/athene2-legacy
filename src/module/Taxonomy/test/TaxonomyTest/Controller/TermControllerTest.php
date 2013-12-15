@@ -1,10 +1,10 @@
 <?php
 namespace TaxonomyTest\Controller;
 
-use AtheneTest\Controller\Athene2ApplicationTestCase;
+use AtheneTest\Controller\ControllerTestCase;
 use AtheneTest\Bootstrap;
 
-class TermControllerTest extends Athene2ApplicationTestCase
+class TermControllerTest extends ControllerTestCase
 {
 
     protected $traceError = true;

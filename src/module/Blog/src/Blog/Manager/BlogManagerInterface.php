@@ -29,4 +29,11 @@ interface BlogManagerInterface
      * @return PostManagerInterface[]
      */
     public function findAllBlogs(LanguageModelInterface $languageService);
+    
+    /**
+     * Make changes persistent
+     * 
+     * @return self
+     */
+    public function flush();
 }

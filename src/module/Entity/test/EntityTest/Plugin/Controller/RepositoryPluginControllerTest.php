@@ -11,10 +11,10 @@
  */
 namespace EntityTest\Plugin\Controller;
 
-use AtheneTest\Controller\Athene2ApplicationTestCase;
+use AtheneTest\Controller\ControllerTestCase;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class RepositoryPluginControllerTest extends Athene2ApplicationTestCase
+class RepositoryPluginControllerTest extends ControllerTestCase
 {
 
     protected $entityServiceMock, $repositoryPluginMock, $entityMock;

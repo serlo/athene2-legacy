@@ -19,7 +19,7 @@ use Contexter\Collection\ContextCollection;
 
 class ContextManager implements ContextManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
 
     public function getContext($id)
     {
@@ -70,8 +70,10 @@ class ContextManager implements ContextManagerInterface
         return $this;
     }
 
-    public function add(\Uuid\Entity\UuidInterface $object, $type, $title)
+    public function add($object, $type, $title)
     {
+        $object = $this->getUuidManager()->getUuid($object);
+        
         $type = $this->findTypeByName($type);
         
         /* @var $context Entity\ContextInterface */
@@ -124,6 +126,12 @@ class ContextManager implements ContextManagerInterface
         });
     }
 
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
+    }
+
     protected function getTypeClassName()
     {
         return $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
@@ -150,8 +158,4 @@ class ContextManager implements ContextManagerInterface
             ->getRepository($className)
             ->findAll());
     }
-    
-    /*
-     * public function findAllByType($name) { $type = $this->findTypeByName($name); return new ContextCollection($type->getContext(), $this); }
-     */
 }

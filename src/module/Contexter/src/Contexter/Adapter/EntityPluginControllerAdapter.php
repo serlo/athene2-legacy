@@ -11,15 +11,13 @@
  */
 namespace Contexter\Adapter;
 
-use Zend\Stdlib\ArrayUtils;
-
 class EntityPluginControllerAdapter extends AbstractAdapter
 {
     use\Language\Manager\LanguageManagerAwareTrait;
 
-    public function getParameters()
+    public function getProvidedParams()
     {
-        $params         = $this->getParametersFromRouteMatch();
+        $params         = $this->getRouteParams();
         $entityService  = $this->getController()->getEntityService($params['entity']);
         
         $array = [
@@ -35,6 +33,6 @@ class EntityPluginControllerAdapter extends AbstractAdapter
                 ->getSlug();
         }
         
-        return ArrayUtils::merge($params, $array);
+        return $array;
     }
 }

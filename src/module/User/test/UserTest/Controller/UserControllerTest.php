@@ -11,9 +11,9 @@
  */
 namespace UserTest\Controller;
 
-use AtheneTest\Controller\Athene2ApplicationTestCase;
+use AtheneTest\Controller\ControllerTestCase;
 
-class UserControllerTest extends Athene2ApplicationTestCase
+class UserControllerTest extends ControllerTestCase
 {
 
     protected $userManagerMock, $authAdapterMock, $authServiceMock, $registerForm, $objectManagerMock, $repositoryMock, $eventManagerMock, $languageService;

@@ -11,10 +11,7 @@
  */
 namespace Contexter\Manager;
 
-use Contexter\Entity;
-use Doctrine\Common\Collections\Collection;
-use Uuid\Entity\UuidInterface;
-use Context\Model;
+use Contexter\Router;
 
 interface ContextManagerInterface extends Router\RouterAwareInterface
 {
@@ -35,19 +32,12 @@ interface ContextManagerInterface extends Router\RouterAwareInterface
 
     /**
      *
-     * @param UuidInterface $object            
+     * @param int $objectId            
      * @param string $type            
      * @param string $title            
      * @return Model\ContextModelInterface
      */
-    public function add(UuidInterface $object, $type, $title);
-
-    /**
-     *
-     * @param string $type            
-     * @return Model\ContextModelInterface[]
-     */
-    //public function findAllByType($name);
+    public function add($objectId, $type, $title);
 
     /**
      *
@@ -57,27 +47,28 @@ interface ContextManagerInterface extends Router\RouterAwareInterface
 
     /**
      *
-     * @return Collection|Entity\TypeInterface[]
-     */
-    //public function findAllTypes();
-
-    /**
-     *
      * @return array
      */
     public function findAllTypeNames();
-    
+
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return self
      */
     public function removeRoute($id);
-    
+
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return self
      */
     public function removeContext($id);
+    
+    /**
+     * Make changes persistent
+     * 
+     * @return self
+     */
+    public function flush();
 }

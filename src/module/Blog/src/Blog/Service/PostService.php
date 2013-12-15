@@ -16,7 +16,7 @@ use DateTime;
 
 class PostService implements PostServiceInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -68,12 +68,6 @@ class PostService implements PostServiceInterface
     public function persist()
     {
         $this->getObjectManager()->persist($this->getEntity());
-        return $this;
-    }
-
-    public function flush()
-    {
-        $this->getObjectManager()->flush($this->getEntity());
         return $this;
     }
 
@@ -154,13 +148,13 @@ class PostService implements PostServiceInterface
         return $this;
     }
 
-    public function addTaxonomyTerm(\Taxonomy\Model\TaxonomyTermModelInterface $taxonomyTerm, \Taxonomy\Model\TaxonomyTermNodeModelInterface $node = NULL)
+    public function addTaxonomyTerm(\Taxonomy\Model\TaxonomyTermModelInterface $taxonomyTerm,\Taxonomy\Model\TaxonomyTermNodeModelInterface $node = NULL)
     {
         $this->getEntity()->addTaxonomyTerm($taxonomyTerm->getEntity(), $node);
         return $this;
     }
 
-    public function removeTaxonomyTerm(\Taxonomy\Model\TaxonomyTermModelInterface $taxonomyTerm, \Taxonomy\Model\TaxonomyTermNodeModelInterface $node = NULL)
+    public function removeTaxonomyTerm(\Taxonomy\Model\TaxonomyTermModelInterface $taxonomyTerm,\Taxonomy\Model\TaxonomyTermNodeModelInterface $node = NULL)
     {
         $this->getEntity()->addTaxonomyTerm($taxonomyTerm->getEntity(), $node);
         return $this;
