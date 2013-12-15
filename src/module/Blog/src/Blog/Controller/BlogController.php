@@ -24,21 +24,24 @@ class BlogController extends AbstractActionController
     {
         $blogs = $this->getBlogManager()->findAllBlogs($this->getLanguageManager()
             ->getLanguageFromRequest());
+        
         $view = new ViewModel(array(
             'blogs' => $blogs
         ));
+        
         $view->setTemplate('blog/blog/blogs');
         return $view;
     }
 
     public function viewPostAction()
     {
-        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
-        $post = $blog->getPost($this->params('post'));
+        $post = $this->getBlogManager()->getPost($this->params('post'));
+        
         $view = new ViewModel(array(
-            'blog' => $blog,
+            'blog' => $post->getBlog(),
             'post' => $post
         ));
+        
         $view->setTemplate('blog/blog/post/view');
         return $view;
     }
@@ -46,10 +49,12 @@ class BlogController extends AbstractActionController
     public function viewAllAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        
         $view = new ViewModel(array(
             'blog' => $blog,
-            'posts' => $blog->findAllPosts()
+            'posts' => $blog->getAssociated('blogPosts')
         ));
+        
         $view->setTemplate('blog/blog/view-all');
         return $view;
     }
@@ -57,20 +62,19 @@ class BlogController extends AbstractActionController
     public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        
         $view = new ViewModel(array(
             'blog' => $blog,
-            'posts' => $blog->findPublishedPosts()
+            'posts' => $blog->getAssociated('blogPosts')
         ));
+        
         $view->setTemplate('blog/blog/view');
         return $view;
     }
 
     public function trashAction()
     {
-        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
-        $post = $blog->getPost($this->params('post'));
-        $post->setTrashed(true);
-        $this->getBlogManager()->flush();
+        $this->getBlogManager()->trashPost($this->params('post'))->flush();        
         $this->redirect()->toReferer();
         return false;
     }
@@ -140,14 +144,12 @@ class BlogController extends AbstractActionController
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         
         $form = new PostForm();
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('blog/post/create', array(
-            'id' => $this->params('id')
-        )));
         
         if ($this->getRequest()->isPost()) {
+            
             $data = $this->params()->fromPost();
             $form->setData($data);
+            
             if ($form->isValid()) {
                 
                 $data = $form->getData();
@@ -161,7 +163,8 @@ class BlogController extends AbstractActionController
                 }
                 
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $post = $blog->createPost($author, $data['title'], $data['content'], $publish);
+                
+                $post = $this->getBlogManager()->createPost($blog, $author, $data['title'], $data['content'], $publish);
                 
                 $this->getEventManager()->trigger('post.create', $this, array(
                     'blog' => $blog,

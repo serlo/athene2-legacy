@@ -16,9 +16,9 @@ return [
     'alias_manager' => [
         'aliases' => [
             'blogPost' => [
-                'tokenize' => 'blog/{category}/{title}',
+                'tokenize' => 'blog/{blog}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
-                'fallback' => 'blog/{category}/{id}-{title}'
+                'fallback' => 'blog/{blog}/{id}-{title}'
             ]
         ]
     ],
@@ -27,7 +27,7 @@ return [
             'blogPosts' => [
                 'callback' => function (ServiceLocatorInterface $sm, $collection)
                 {
-                    return new PostCollection($collection, $sm->get('Blog\Manager\BlogManager'));
+                    return $collection;
                 }
             ]
         ],

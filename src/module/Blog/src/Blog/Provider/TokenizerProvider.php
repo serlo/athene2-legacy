@@ -23,8 +23,8 @@ class TokenizerProvider extends AbstractProvider implements ProviderInterface
     {
         return array(
             'title'     => $this->getObject()->getTitle(),
-            'category'  => $this->getObject()
-                                ->getCategory()
+            'blog'      => $this->getObject()
+                                ->getBlog()
                                 ->getName(),
             'id'        => $this->getObject()->getId()
         );

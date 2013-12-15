@@ -12,6 +12,8 @@
 namespace Blog\Manager;
 
 use Language\Model\LanguageModelInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use Blog\Entity\PostInterface;
 
 interface BlogManagerInterface
 {
@@ -19,14 +21,14 @@ interface BlogManagerInterface
     /**
      *
      * @param int $id            
-     * @return PostManagerInterface
+     * @return TaxonomyTermModelInterface
      */
     public function getBlog($id);
     
     /**
      * 
      * @param LanguageModelInterface $languageService
-     * @return PostManagerInterface[]
+     * @return TaxonomyTermModelInterface[]
      */
     public function findAllBlogs(LanguageModelInterface $languageService);
     
@@ -36,4 +38,11 @@ interface BlogManagerInterface
      * @return self
      */
     public function flush();
+    
+    /**
+     * 
+     * @param int $id
+     * @return PostInterface
+     */
+    public function getPost($id);
 }

@@ -8,4 +8,4 @@
 	<h1><?php echo $this->translate('Manage blog'); ?> <small><?php echo $this->blog->getName(); ?></small>
 	</h1>
 </div>
-<?php echo $this->partial('blog/blog/view-partial', array('posts' => $this->posts, 'blog' => $this->blog)); ?>
+<?php echo $this->partial('blog/blog/view-partial', array('posts' => $this->posts, 'blog' => $this->blog, 'showAll' => true)); ?>

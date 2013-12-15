@@ -54,24 +54,11 @@ return [
                     ],
                     'setClassResolver' => [
                         'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Manager\PostManager' => [
+                    ],
                     'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setServiceLocator' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
                         'required' => true
                     ],
                     'setUuidManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Service\PostService' => [
-                    'setObjectManager' => [
                         'required' => true
                     ]
                 ]
@@ -80,12 +67,6 @@ return [
         'instance' => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\BlogManagerInterface' => __NAMESPACE__ . '\Manager\BlogManager'
-            ],
-            __NAMESPACE__ . '\Manager\PostManager' => [
-                'shared' => false
-            ],
-            __NAMESPACE__ . '\Service\PostService' => [
-                'shared' => false
             ]
         ]
     ],
@@ -93,5 +74,6 @@ return [
         __NAMESPACE__ . '\Entity\PostInterface' => __NAMESPACE__ . '\Entity\Post',
         __NAMESPACE__ . '\Service\PostServiceInterface' => __NAMESPACE__ . '\Service\PostService',
         __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager'
-    ],
+    ]
 ];
+

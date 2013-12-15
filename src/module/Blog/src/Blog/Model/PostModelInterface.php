@@ -87,9 +87,9 @@ interface PostModelInterface extends TaxonomyTermModelAwareInterface, Wrapable, 
     /**
      * Gets the category.
      *
-     * @return self $category
+     * @return TaxonomyTermModelInterface
      */
-    public function getCategory();
+    public function getBlog();
 
     /**
      * Sets the category.
@@ -97,7 +97,7 @@ interface PostModelInterface extends TaxonomyTermModelAwareInterface, Wrapable, 
      * @param TaxonomyTermModelInterface $category            
      * @return $this
      */
-    public function setCategory(TaxonomyTermModelInterface $category);
+    public function setBlog(TaxonomyTermModelInterface $category);
 
     /**
      * Sets the creation date.

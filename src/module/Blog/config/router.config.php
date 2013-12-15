@@ -64,7 +64,7 @@ return [
                             'view' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/view/:blog/:post',
+                                    'route' => '/view/:post',
                                     'defaults' => [
                                         'action' => 'viewPost'
                                     ]
@@ -73,7 +73,7 @@ return [
                             'update' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/update/:blog/:post',
+                                    'route' => '/update/:post',
                                     'defaults' => [
                                         'action' => 'update'
                                     ]
@@ -82,7 +82,7 @@ return [
                             'trash' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/trash/:blog/:post',
+                                    'route' => '/trash/:post',
                                     'defaults' => [
                                         'action' => 'trash'
                                     ]

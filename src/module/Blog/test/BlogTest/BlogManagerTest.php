@@ -15,7 +15,7 @@ use AtheneTest\TestCase\ManagerTest;
 use Blog\Manager\BlogManager;
 use Blog\Manager\PostManager;
 
-class BlogManagerTest extends ManagerTest
+abstract class BlogManagerTest extends ManagerTest
 {
 
     protected $blogManager;

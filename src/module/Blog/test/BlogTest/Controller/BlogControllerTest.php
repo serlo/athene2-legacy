@@ -14,7 +14,7 @@ namespace BlogTest\Controller;
 use Blog\Controller\BlogController;
 use AtheneTest\TestCase\ControllerTestCase;
 
-class BlogControllerTest extends ControllerTestCase
+abstract class BlogControllerTest extends ControllerTestCase
 {
 
     public function setUp()

@@ -85,7 +85,7 @@ class Post extends UuidEntity implements PostInterface
         return $this->author;
     }
 
-    public function getCategory()
+    public function getBlog()
     {
         return $this->category;
     }
@@ -116,7 +116,7 @@ class Post extends UuidEntity implements PostInterface
         return $this;
     }
 
-    public function setCategory(TaxonomyTermModelInterface $category)
+    public function setBlog(TaxonomyTermModelInterface $category)
     {
         $this->category = $category;
         return $this;
@@ -160,7 +160,7 @@ class Post extends UuidEntity implements PostInterface
 
     public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
     {
-        $this->setCategory($taxonomyTerm);
+        $this->setBlog($taxonomyTerm);
     }
 
     public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
@@ -170,6 +170,6 @@ class Post extends UuidEntity implements PostInterface
 
     public function getTaxonomyTerms()
     {
-        return new ArrayCollection((array) $this->getCategory());
+        return new ArrayCollection((array) $this->getBlog());
     }
 }
