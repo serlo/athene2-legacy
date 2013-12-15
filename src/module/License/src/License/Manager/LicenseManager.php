@@ -13,7 +13,7 @@ namespace License\Manager;
 
 use License\Exception;
 use License\Form\LicenseForm;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use License\Entity\LicenseAwareInterface;
 use License\Entity\LicenseInterface;
 
@@ -51,7 +51,7 @@ class LicenseManager implements LicenseManagerInterface
         return $this->findLicenseByTitleAndLanguage($title, $language);
     }
     
-    public function findLicenseByTitleAndLanguage($title, LanguageServiceInterface $language){
+    public function findLicenseByTitleAndLanguage($title, LanguageModelInterface $language){
         if (! is_string($title))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 1 to be string, but got `%s`', gettype($title)));
         
@@ -86,7 +86,7 @@ class LicenseManager implements LicenseManagerInterface
     /*
      * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::addLicense()
      */
-    public function addLicense(LicenseForm $form, LanguageServiceInterface $languageService)
+    public function addLicense(LicenseForm $form, LanguageModelInterface $languageService)
     {
         /* @var $entity \License\Entity\LicenseInterface */
         $entity = $form->getObject();
@@ -137,7 +137,7 @@ class LicenseManager implements LicenseManagerInterface
             ->findAll();
     }
 
-    public function findLicensesByLanguage(LanguageServiceInterface $languageService)
+    public function findLicensesByLanguage(LanguageModelInterface $languageService)
     {
         $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
         return $this->getObjectManager()

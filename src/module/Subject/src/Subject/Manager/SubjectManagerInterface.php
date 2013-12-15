@@ -12,7 +12,7 @@
 namespace Subject\Manager;
 
 use Subject\Service\SubjectServiceInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 interface SubjectManagerInterface
@@ -29,15 +29,15 @@ interface SubjectManagerInterface
     /**
      *
      * @param string $name            
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return SubjectServiceInterface
      */
-    public function findSubjectByString($name, LanguageServiceInterface $language);
+    public function findSubjectByString($name, LanguageModelInterface $language);
 
     /**
      *
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return ArrayCollection
      */
-    public function findSubjectsByLanguage(LanguageServiceInterface $language);
+    public function findSubjectsByLanguage(LanguageModelInterface $language);
 }

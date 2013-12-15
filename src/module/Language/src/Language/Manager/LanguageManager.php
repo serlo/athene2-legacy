@@ -11,10 +11,8 @@
  */
 namespace Language\Manager;
 
-use Language\Entity\LanguageEntityInterface;
 use Language\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Collection\LanguageCollection;
 
 class LanguageManager implements LanguageManagerInterface
 {
@@ -24,7 +22,7 @@ class LanguageManager implements LanguageManagerInterface
 
     /**
      *
-     * @var \Language\Service\LanguageServiceInterface
+     * @var \Language\Model\LanguageModelInterface
      */
     protected $requestLanguage;
 
@@ -33,11 +31,14 @@ class LanguageManager implements LanguageManagerInterface
         $this->fallBackLanguageId = $id;
         return $this;
     }
-    
-    public function findAllLanguages(){
-        $collection = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Language\Entity\LanguageEntityInterface'))->findAll();
-        $collection = new ArrayCollection($collection);
-        return new LanguageCollection($collection, $this);
+
+    public function findAllLanguages()
+    {
+        $collection = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('Language\Entity\LanguageEntityInterface'))
+            ->findAll();
+        return new ArrayCollection($collection);
     }
 
     public function getFallbackLanugage()
@@ -64,26 +65,22 @@ class LanguageManager implements LanguageManagerInterface
 
     public function getLanguage($id)
     {
-        if (! is_numeric($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
+        $className = $this->getClassResolver()->resolveClassName('Language\Entity\LanguageEntityInterface');
         
-        if (! $this->hasInstance($id)) {
-            $language = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Language\Entity\LanguageEntityInterface'), $id);
-            
-            if (! is_object($language))
-                throw new Exception\LanguageNotFoundException(sprintf('Language %s could not be found', $id));
-            
-            $this->addInstance($language->getId(), $this->createService($language));
+        $language = $this->getObjectManager()->find($className, $id);
+        
+        if (! is_object($language)) {
+            throw new Exception\LanguageNotFoundException(sprintf('Language %s could not be found', $id));
         }
         
-        return $this->getInstance($id);
+        return $language;
     }
 
     public function findLanguageByCode($code)
     {
-        if (! is_string($code))
+        if (! is_string($code)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($code)));
+        }
         
         $language = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -92,20 +89,10 @@ class LanguageManager implements LanguageManagerInterface
             'code' => $code
         ));
         
-        if (! is_object($language))
+        if (! is_object($language)) {
             throw new Exception\LanguageNotFoundException(sprintf('Language %s could not be found', $code));
-        
-        if (! $this->hasInstance($language->getId())) {
-            $this->addInstance($language->getId(), $this->createService($language));
         }
         
-        return $this->getInstance($language->getId());
-    }
-
-    protected function createService(LanguageEntityInterface $entity)
-    {
-        $instance = $this->createInstance('Language\Service\LanguageServiceInterface');
-        $instance->setEntity($entity);
-        return $instance;
+        return $language;
     }
 }

@@ -12,7 +12,7 @@
 namespace Discussion\Service;
 
 use Uuid\Entity\UuidInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use User\Service\UserServiceInterface;
 use Discussion\Entity\CommentInterface;
 use Discussion\Form\CommentForm;
@@ -128,7 +128,7 @@ class DiscussionService extends AbstractComment implements DiscussionServiceInte
         return $this;
     }
 
-    public function setLanguage(LanguageServiceInterface $language)
+    public function setLanguage(LanguageModelInterface $language)
     {
         $this->getEntity()->setLanguage($language->getEntity());
         $this->getObjectManager()->persist($this->getEntity());

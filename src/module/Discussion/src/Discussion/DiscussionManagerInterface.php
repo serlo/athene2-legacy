@@ -14,7 +14,7 @@ namespace Discussion;
 use User\Service\UserServiceInterface;
 use Uuid\Entity\UuidInterface;
 use Discussion\Service\CommentInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use Discussion\Service\CommentServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Taxonomy\Service\TermServiceInterface;
@@ -41,7 +41,7 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
     /**
      * 
      * @param UuidInterface $object
-     * @param LanguageServiceInterface $language
+     * @param LanguageModelInterface $language
      * @param UserServiceInterface $author
      * @param int $forum
      * @param string $title
@@ -49,17 +49,17 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
      * @param CommentInterface $parent
      * @return CommentServiceInterface
      */
-    public function startDiscussion(UuidInterface $object, LanguageServiceInterface $language, UserServiceInterface $author, $forum, $title, $content);
+    public function startDiscussion(UuidInterface $object, LanguageModelInterface $language, UserServiceInterface $author, $forum, $title, $content);
     
     /**
      * 
      * @param DiscussionServiceInterface $discussion
-     * @param LanguageServiceInterface $language
+     * @param LanguageModelInterface $language
      * @param UserServiceInterface $author
      * @param string $content
      * @return CommentServiceInterface
      */
-    public function commentDiscussion(DiscussionServiceInterface $discussion, LanguageServiceInterface $language, UserServiceInterface $author, $content);
+    public function commentDiscussion(DiscussionServiceInterface $discussion, LanguageModelInterface $language, UserServiceInterface $author, $content);
     
     /**
      * 
@@ -70,8 +70,8 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
     
     /**
      * 
-     * @param LanguageServiceInterface $language
+     * @param LanguageModelInterface $language
      * @return CommentServiceInterface[]
      */
-    public function findDiscussionsByLanguage(LanguageServiceInterface $language);
+    public function findDiscussionsByLanguage(LanguageModelInterface $language);
 }

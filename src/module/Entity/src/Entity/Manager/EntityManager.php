@@ -13,7 +13,7 @@ namespace Entity\Manager;
 
 use Entity\Entity\EntityInterface;
 use Entity\Exception;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 
 class EntityManager implements EntityManagerInterface
 {
@@ -46,7 +46,7 @@ class EntityManager implements EntityManagerInterface
         return $this->getInstance($id);
     }
 
-    public function findEntityBySlug($slug, LanguageServiceInterface $languageService)
+    public function findEntityBySlug($slug, LanguageModelInterface $languageService)
     {
         if (! is_string($slug))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($slug)));
@@ -70,7 +70,7 @@ class EntityManager implements EntityManagerInterface
         return $this->getInstance($id);
     }
 
-    public function createEntity($typeName, array $data = array(), LanguageServiceInterface $languageService)
+    public function createEntity($typeName, array $data = array(), LanguageModelInterface $languageService)
     {
         $type = $this->getObjectManager()
             ->getRepository($this->getClassResolver()

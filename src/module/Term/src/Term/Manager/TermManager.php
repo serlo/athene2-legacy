@@ -15,11 +15,10 @@ namespace Term\Manager;
 
 use Term\Service\TermServiceInterface;
 use Term\Exception\TermNotFoundException;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use Common\Filter\Slugify;
 use Term\Exception;
 use Term\Entity\TermEntityInterface;
-use Language\Model\LanguageModelInterface;
 
 class TermManager implements TermManagerInterface
 {

@@ -11,7 +11,7 @@
  */
 namespace Contexter\Manager;
 
-class ContextManagerAwareInterface
+interface ContextManagerAwareInterface
 {
 
     /**

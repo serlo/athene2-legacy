@@ -62,7 +62,7 @@ class TaxonomyPlugin extends AbstractPlugin
     public function getTermManager()
     {
         return $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $this->getSubjectService()
-            ->getLanguageService());
+            ->getLanguage());
     }
 
     public function getEnabledEntityTypes()
@@ -115,7 +115,7 @@ class TaxonomyPlugin extends AbstractPlugin
     {
         $return = $this->getSharedTaxonomyManager()
             ->findTaxonomyByName($this->getOption('taxonomy_parent'), $this->getSubjectService()
-            ->getLanguageService())
+            ->getLanguage())
             ->findTermByAncestors((array) $taxonomyParentType)
             ->findChildrenByTaxonomyNames((array) $this->getOption('taxonomy'));
         return $return;

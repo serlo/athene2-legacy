@@ -69,7 +69,7 @@ return array(
     ),
     'class_resolver' => array(
         'Language\Entity\LanguageEntityInterface' => 'Language\Entity\LanguageEntity',
-        'Language\Service\LanguageServiceInterface' => 'Language\Service\LanguageService'
+        'Language\Model\LanguageModelInterface' => 'Language\Service\LanguageService'
     )
 );
 

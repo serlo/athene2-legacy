@@ -136,7 +136,7 @@ class TermService implements TermServiceInterface
 
     public function getLanguage()
     {
-        return $this->getManager()->getLanguageService();
+        return $this->getManager()->getLanguage();
     }
 
     public function getParent()

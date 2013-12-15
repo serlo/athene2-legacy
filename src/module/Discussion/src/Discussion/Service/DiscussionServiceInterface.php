@@ -12,7 +12,7 @@
 namespace Discussion\Service;
 
 use User\Service\UserServiceInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use Uuid\Entity\UuidInterface;
 
 interface DiscussionServiceInterface
@@ -33,14 +33,14 @@ interface DiscussionServiceInterface
 
     /**
      *
-     * @param LanguageServiceInterface $language            
+     * @param LanguageModelInterface $language            
      * @return $this
      */
-    public function setLanguage(LanguageServiceInterface $language);
+    public function setLanguage(LanguageModelInterface $language);
 
     /**
      *
-     * @return LanguageServiceInterface
+     * @return LanguageModelInterface
      */
     public function getLanguage();
 

@@ -13,7 +13,6 @@
 namespace Term\Manager;
 
 use Term\Service\TermServiceInterface;
-use Language\Service\LanguageServiceInterface;
 use Language\Model\LanguageModelInterface;
 
 interface TermManagerInterface

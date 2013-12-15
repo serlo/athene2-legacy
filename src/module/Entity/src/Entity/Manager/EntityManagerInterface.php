@@ -14,7 +14,7 @@ namespace Entity\Manager;
 
 use Entity\Service\EntityServiceInterface;
 use Entity\Entity\EntityInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 
 interface EntityManagerInterface
 {
@@ -29,18 +29,18 @@ interface EntityManagerInterface
      * 
      * @param string $type
      * @param array $data
-     * @param LanguageServiceInterface $language
+     * @param LanguageModelInterface $language
      * @return EntityServiceInterface
      */
-    public function createEntity($type, array $data = array(), LanguageServiceInterface $language);
+    public function createEntity($type, array $data = array(), LanguageModelInterface $language);
 
     /**
      * 
      * @param string $slug
-     * @param LanguageServiceInterface $languageService
+     * @param LanguageModelInterface $languageService
      * @return EntityServiceInterface
      */
-    public function findEntityBySlug($slug, LanguageServiceInterface $languageService);
+    public function findEntityBySlug($slug, LanguageModelInterface $languageService);
     
     public function purgeEntity($id);
 }

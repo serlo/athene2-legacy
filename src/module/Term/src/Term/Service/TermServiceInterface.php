@@ -32,7 +32,7 @@ interface TermServiceInterface extends TermModelInterface
 
     /**
      *
-     * @return \Language\Service\LanguageServiceInterface $language
+     * @return \Language\Model\LanguageModelInterface $language
      */
     public function getLanguage();
     

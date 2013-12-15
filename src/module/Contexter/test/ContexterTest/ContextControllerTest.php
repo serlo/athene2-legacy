@@ -14,7 +14,7 @@ namespace ContexterTest;
 use Contexter\Controller\ContextController;
 use AtheneTest\TestCase\ControllerTestCase;
 
-class ContextControllerTest extends ControllerTestCase
+abstract class ContextControllerTest extends ControllerTestCase
 {
 
     protected $controller;

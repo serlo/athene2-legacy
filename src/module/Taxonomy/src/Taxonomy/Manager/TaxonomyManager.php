@@ -22,7 +22,7 @@ use Taxonomy\Model\TaxonomyTermModelInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getTerm($id)
     {
@@ -89,7 +89,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     public function getAllowedChildrenTypes()
     {
         return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
-            ->getName(), $this->getLanguageService());
+            ->getName(), $this->getLanguage());
     }
 
     public function getAllowedParentTypes()
@@ -97,7 +97,7 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
         $collection = new ArrayCollection();
         foreach ($this->getOption('allowed_parents') as $taxonomy) {
             $collection->add($this->getSharedTaxonomyManager()
-                ->findTaxonomyByName($taxonomy, $this->getLanguageService()));
+                ->findTaxonomyByName($taxonomy, $this->getLanguage()));
         }
         return $collection;
     }

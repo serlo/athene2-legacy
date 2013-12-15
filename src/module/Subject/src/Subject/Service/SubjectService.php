@@ -26,7 +26,7 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
         );
     }
 
-    public function getLanguageService()
+    public function getLanguage()
     {
         return $this->getTermService()->getLanguage();
     }

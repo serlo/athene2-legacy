@@ -13,7 +13,7 @@ namespace Subject\Manager;
 
 use Subject\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use Taxonomy\Service\TermServiceInterface;
 use Subject\Exception\RuntimeException;
 
@@ -48,7 +48,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $this->getInstance($id);
     }
 
-    public function findSubjectByString($name, LanguageServiceInterface $language)
+    public function findSubjectByString($name, LanguageModelInterface $language)
     {
         if (! is_string($name))
             throw new InvalidArgumentException();
@@ -64,7 +64,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $this->getInstance($term->getId());
     }
 
-    public function findSubjectsByLanguage(LanguageServiceInterface $language)
+    public function findSubjectsByLanguage(LanguageModelInterface $language)
     {
         $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $language);
         $collection = new ArrayCollection();

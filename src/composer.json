@@ -18,11 +18,11 @@
 	"require" : {
 		"doctrine/doctrine-orm-module" : "0.*",
 		"widmogrod/zf2-assetic-module" : "dev-master",
-		"zf-commons/zfc-rbac" : "dev-develop",
+		"zf-commons/zfc-rbac" : "dev-master",
 		"php" : ">=5.4",
 		"zf-commons/zfc-base" : "0.*",
 		"zf-commons/zfc-user" : "dev-master",
-		"zendframework/zendframework" : "dev-master",
+		"zendframework/zendframework" : "2.2.*",
 		"foolz/sphinxql-query-builder" : "dev-master",
     	"neilime/zf2-twb-bundle": "dev-master",
     	"zf-commons/zfc-twig": "dev-master"

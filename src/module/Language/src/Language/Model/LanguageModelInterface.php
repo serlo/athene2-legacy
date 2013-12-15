@@ -11,9 +11,7 @@
  */
 namespace Language\Model;
 
-use Common\Model\Wrapable;
-
-interface LanguageModelInterface extends Wrapable
+interface LanguageModelInterface
 {
 
     /**

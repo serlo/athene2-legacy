@@ -47,7 +47,7 @@ abstract class AbstractHydratableNavigation extends AbstractNavigationFactory
         
         return $this->pages;
     }
-
+    
     /**
      * Injects components
      *

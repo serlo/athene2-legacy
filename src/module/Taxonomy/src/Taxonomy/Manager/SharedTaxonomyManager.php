@@ -10,7 +10,7 @@ namespace Taxonomy\Manager;
 
 use Taxonomy\Exception\NotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use Taxonomy\Exception\ConfigNotFoundException;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Entity\TaxonomyTermInterface;
@@ -18,9 +18,6 @@ use Taxonomy\Entity\TaxonomyInterface;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Exception\RuntimeException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Taxonomy\Entity\TaxonomyTypeInterface;
-use Language\Model\LanguageModelInterface;
-use Taxonomy\Entity\TaxonomyType;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
@@ -183,10 +180,10 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         
         try {
             $term = $this->getTermManager()
-                ->findTermByName($data['term']['name'], $taxonomyManager->getLanguageService())
+                ->findTermByName($data['term']['name'], $taxonomyManager->getLanguage())
                 ->getEntity();
         } catch (\Term\Exception\TermNotFoundException $e) {
-            $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguageService());
+            $term = $this->getTermManager()->createTerm($data['term']['name'], NULL, $taxonomyManager->getLanguage());
         }
         $taxonomyTerm->setTerm($term);
         
@@ -222,7 +219,7 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         $instance = parent::createInstance('Taxonomy\Manager\TaxonomyManagerInterface');
         $instance->setEntity($entity);
         $instance->setSharedTaxonomyManager($this);
-        $instance->setLanguageService($this->getLanguageManager()
+        $instance->setLanguage($this->getLanguageManager()
             ->getLanguage($entity->getLanguage()
             ->getId()));
         $instance->setConfig($this->getOption('types')[$entity->getName()]['options']);

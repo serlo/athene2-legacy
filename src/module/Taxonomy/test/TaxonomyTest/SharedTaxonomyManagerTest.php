@@ -266,7 +266,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->taxonomyMock));
         
         $this->taxonomyManagerMock->expects($this->atLeastOnce())
-            ->method('getLanguageService')
+            ->method('getLanguage')
             ->will($this->returnValue($this->getMock('Language\Service\LanguageService')));
         $ts = $this->getMock('Term\Service\TermService');
         $this->termManagerMock->expects($this->atLeastOnce())
@@ -295,7 +295,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->termTaxonomyMock));
         
         $this->taxonomyManagerMock->expects($this->any())
-            ->method('getLanguageService')
+            ->method('getLanguage')
             ->will($this->returnValue($this->languageServiceMock));
         
         $this->termManagerMock->expects($this->once())

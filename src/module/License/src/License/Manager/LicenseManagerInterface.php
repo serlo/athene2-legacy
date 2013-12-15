@@ -12,7 +12,7 @@
 namespace License\Manager;
 
 use License\Entity\LicenseInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Model\LanguageModelInterface;
 use License\Form\LicenseForm;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use License\Entity\LicenseAwareInterface;
@@ -30,9 +30,9 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface
     /**
      * 
      * @param LicenseForm $form
-     * @param LanguageServiceInterface $language
+     * @param LanguageModelInterface $language
      */
-    public function addLicense(LicenseForm $form, LanguageServiceInterface $language);
+    public function addLicense(LicenseForm $form, LanguageModelInterface $language);
 
     /**
      * 
@@ -49,10 +49,10 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface
     
     /**
      * 
-     * @param LanguageServiceInterface $languageService
+     * @param LanguageModelInterface $languageService
      * @return LicenseInterface[]
      */
-    public function findLicensesByLanguage(LanguageServiceInterface $languageService);
+    public function findLicensesByLanguage(LanguageModelInterface $languageService);
     
     /**
      * 

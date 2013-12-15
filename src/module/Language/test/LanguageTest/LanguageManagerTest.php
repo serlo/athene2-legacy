@@ -13,7 +13,7 @@ namespace LanguageTest;
 
 use Language\Manager\LanguageManager;
 
-class LanguageManagerTest extends \PHPUnit_Framework_TestCase
+abstract class LanguageManagerTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $languageManager, $serviceLocatorMock, $entityManagerMock, $entityRepositoryMock, $classResolverMock, $languageServiceMock;
