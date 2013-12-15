@@ -19,7 +19,7 @@ use License\Entity\LicenseInterface;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -45,17 +45,21 @@ class LicenseManager implements LicenseManagerInterface
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $code = $language->getCode();
         $defaults = $this->getDefaultConfig()['defaults'];
-        if(!array_key_exists($code, $defaults))
+        if (! array_key_exists($code, $defaults))
             throw new Exception\RuntimeException(sprintf('No default license set for language `%s`', $code));
         $title = $defaults[$code];
         return $this->findLicenseByTitleAndLanguage($title, $language);
     }
     
-    public function findLicenseByTitleAndLanguage($title, LanguageModelInterface $language){
+    public function findLicenseByTitleAndLanguage($title, LanguageModelInterface $language)
+    {
         if (! is_string($title))
             throw new Exception\InvalidArgumentException(sprintf('Expected parameter 1 to be string, but got `%s`', gettype($title)));
         
-        $license = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface'))->findOneBy(array(
+        $license = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('License\Entity\LicenseInterface'))
+            ->findOneBy(array(
             'title' => $title,
             'language' => $language->getId()
         ));

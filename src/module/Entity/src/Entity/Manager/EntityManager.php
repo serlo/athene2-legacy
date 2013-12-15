@@ -11,7 +11,6 @@
  */
 namespace Entity\Manager;
 
-use Entity\Entity\EntityInterface;
 use Entity\Exception;
 use Language\Model\LanguageModelInterface;
 
@@ -30,43 +29,15 @@ class EntityManager implements EntityManagerInterface
 
     public function getEntity($id)
     {
-        if (! is_numeric($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
+        $entity = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Entity\Entity\EntityInterface'), $id);
         
-        if (! $this->hasInstance($id)) {
-            $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Entity\Entity\EntityInterface'), $id);
-            
-            if (! is_object($entity))
-                throw new Exception\EntityNotFoundException(sprintf('Entity with ID %s not found.', $id));
-            
-            $this->addInstance($entity->getId(), $this->createService($entity));
+        if (! is_object($entity)){
+            throw new Exception\EntityNotFoundException(sprintf('Entity with ID %s not found.', $id));
         }
         
-        return $this->getInstance($id);
-    }
-
-    public function findEntityBySlug($slug, LanguageModelInterface $languageService)
-    {
-        if (! is_string($slug))
-            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($slug)));
+        $this->addInstance($entity->getId(), $this->createService($entity));
         
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Entity\Entity\EntityInterface'))
-            ->findOneBy(array(
-            'slug' => $slug,
-            'language' => $languageService->getId()
-        ));
-        
-        if (! is_object($entity))
-            throw new Exception\EntityNotFoundException(sprintf('Entity could not be found by slug `%s` and language `%s`.', $slug, $languageService->getCode()));
-        
-        $id = $entity->getId();
-        
-        if (! $this->hasInstance($id)) {
-            $this->addInstance($entity->getId(), $this->createService($entity));
-        }
         return $this->getInstance($id);
     }
 
@@ -91,21 +62,19 @@ class EntityManager implements EntityManagerInterface
         
         $this->getObjectManager()->persist($entity);
         
-        $instance = $this->createService($entity);
-        
-        return $instance;
+        return $entity;
     }
 
-    public function purgeEntity($id)
+    /*public function purgeEntity($id)
     {
         $entity = $this->getEntity($id);
         $this->getObjectManager()->remove($entity->getEntity());
         $this->removeInstance($id);
         $entity = NULL;
         return $this;
-    }
+    }*/
 
-    protected function createService(EntityInterface $entity)
+    /*protected function createService(EntityInterface $entity)
     {
         $instance = $this->createInstance('Entity\Service\EntityServiceInterface');
         
@@ -126,5 +95,5 @@ class EntityManager implements EntityManagerInterface
         $instance->setConfig($config);
         
         return $instance;
-    }
+    }*/
 }

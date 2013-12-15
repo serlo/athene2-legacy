@@ -9,6 +9,8 @@
 namespace Versioning\Entity;
 
 use User\Entity\UserInterface;
+use DateTime;
+
 interface RevisionInterface
 {
     /**
@@ -52,7 +54,7 @@ interface RevisionInterface
      * @param \DateTime $date
      * @return $this
      */
-    public function setDate(\DateTime $date);
+    public function setDate(DateTime $date);
     
     /**
      * Sets the author
