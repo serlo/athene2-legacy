@@ -16,8 +16,9 @@ use User\Service\UserServiceInterface;
 use Flag\Service\FlagServiceInterface;
 use Flag\Collection\FlagCollection;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Common\ObjectManager\Flushable;
 
-interface FlagManagerInterface extends ObjectManagerAwareInterface
+interface FlagManagerInterface extends ObjectManagerAwareInterface, Flushable
 {
 
     /**

@@ -17,7 +17,7 @@ use Flag\Form\FlagForm;
 
 class FlagController extends AbstractActionController
 {
-    use \Flag\Manager\FlagManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use\Flag\Manager\FlagManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function manageAction()
     {
@@ -42,9 +42,7 @@ class FlagController extends AbstractActionController
                 $uuid = $this->params('id');
                 $reporter = $this->getUserManager()->getUserFromAuthenticator();
                 $this->getFlagManager()->addFlag((int) $data['type'], $data['content'], (int) $uuid, $reporter);
-                $this->getFlagManager()
-                    ->getObjectManager()
-                    ->flush();
+                $this->getFlagManager()->flush();
                 
                 $this->flashMessenger()->addSuccessMessage('The content has been flagged.');
                 
@@ -78,9 +76,7 @@ class FlagController extends AbstractActionController
     {
         $id = $this->params('id');
         $this->getFlagManager()->removeFlag((int) $id);
-        $this->getFlagManager()
-            ->getObjectManager()
-            ->flush();
+        $this->getFlagManager()->flush();
         
         $this->flashMessenger()->addSuccessMessage('Your action was successfull.');
         

@@ -34,19 +34,8 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                __NAMESPACE__ . '\Service\FlagService' => array(
-                    'setUserManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setUuidManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Manager\FlagManager' => array(
                     'setClassResolver' => array(
-                        'required' => 'true'
-                    ),
-                    'setServiceLocator' => array(
                         'required' => 'true'
                     ),
                     'setObjectManager' => array(
@@ -68,12 +57,8 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                __NAMESPACE__ . '\Service\FlagServiceInterface' => __NAMESPACE__ . '\Service\FlagService',
                 __NAMESPACE__ . '\Manager\FlagManagerInterface' => __NAMESPACE__ . '\Manager\FlagManager'
             ),
-            __NAMESPACE__ . '\Service\FlagService' => array(
-                'shared' => false
-            )
         )
     ),
     'class_resolver' => array(
