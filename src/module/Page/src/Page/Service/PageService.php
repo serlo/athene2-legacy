@@ -6,7 +6,7 @@ use User\Entity\RoleInterface;
 use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
 
-class PageService implements PageServiceInterface, Normalizable
+class PageService implements PageServiceInterface
 {
     
     use \Common\Traits\ObjectManagerAwareTrait;
@@ -127,19 +127,6 @@ class PageService implements PageServiceInterface, Normalizable
     public function getRepositoryId()
     {
         return $this->getEntity()->getId();
-    }
-
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $repository = $this->getRepository();
-        $normalized->setTitle($this->getEntity()
-            ->getUuid());
-        $normalized->setRouteName('page/article');
-        $normalized->setRouteParams(array(
-            'repositoryid' => $this->getRepositoryId()
-        ));
-        return $normalized;
     }
 }
 

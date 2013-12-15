@@ -9,45 +9,50 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Common\View\Helper;
+namespace Normalizer\View\Helper;
 
-use Common\Normalize\Normalizable;
 use Zend\View\Helper\AbstractHelper;
 
 class Normalize extends AbstractHelper
 {
+    use \Normalizer\NormalizerAwareTrait;
 
-    public function __invoke(Normalizable $object = NULL)
+    public function __invoke($object = NULL)
     {
         if ($object === NULL)
             return $this;
-        return $object->normalize();
+        return $this->normalize($object);
     }
 
-    public function toTitle(Normalizable $object)
+    public function toTitle($object)
     {
-        return $object->normalize()->getTitle();
+        return $this->normalize($object)->getTitle();
     }
 
-    public function toPreview(Normalizable $object)
+    public function toPreview($object)
     {
-        return $object->normalize()->getPreview();
+        return $this->normalize($object)->getPreview();
     }
 
-    public function toType(Normalizable $object)
+    public function toType($object)
     {
-        return $object->normalize()->getType();
+        return $this->normalize($object)->getType();
     }
 
-    public function toUrl(Normalizable $object)
+    public function toUrl($object)
     {
-        $normalized = $object->normalize();
+        $normalized = $this->normalize($object);
         return $this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams());
     }
 
-    public function toAnchor(Normalizable $object)
+    public function toAnchor($object)
     {
-        $normalized = $object->normalize();
+        $normalized = $this->normalize($object);
         return '<a href="' . $this->toUrl($object) . '">' . $normalized->getTitle() . '</a>';
+    }
+
+    protected function normalize($object)
+    {
+        return $this->getNormalizer()->normalize($object);
     }
 }

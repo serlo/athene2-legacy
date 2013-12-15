@@ -11,8 +11,68 @@
  */
 namespace Contexter\Entity;
 
-use Contexter\Model\ContextModelInterface;
+use Uuid\Entity\UuidInterface;
+use Contexter\Entity\TypeInterface;
+use Contexter\Entity\RouteInterface;
+use Doctrine\Common\Collections\Collection;
 
-interface ContextInterface extends ContextModelInterface
+interface ContextInterface
 {
+    /**
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     *
+     * @return UuidInterface
+     */
+    public function getObject();
+
+    /**
+     *
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     *
+     * @return TypeInterface
+     */
+    public function getType();
+
+    /**
+     *
+     * @return Collection
+     */
+    public function getRoutes();
+
+    /**
+     *
+     * @param UuidInterface $uuid            
+     * @return $this
+     */
+    public function setObject(UuidInterface $uuid);
+
+    /**
+     *
+     * @param string $title            
+     * @return $this
+     */
+    public function setTitle($title);
+
+    /**
+     *
+     * @param TypeInterface $type            
+     * @return $this
+     */
+    public function setType(TypeInterface $type);
+
+    /**
+     *
+     * @param RouteInterface $route            
+     * @return $this
+     */
+    public function addRoute(RouteInterface $route);
 }

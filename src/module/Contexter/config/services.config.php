@@ -14,8 +14,7 @@ namespace Contexter;
 return [
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Router\Router' => __NAMESPACE__ . '\Factory\RouterFactory',
-            __NAMESPACE__ . '\Service\ContextService' => __NAMESPACE__ . '\Factory\ContextServiceFactory'
+            __NAMESPACE__ . '\Router\Router' => __NAMESPACE__ . '\Factory\RouterFactory'
         ]
     ],
     'di' => [
@@ -50,20 +49,6 @@ return [
                     'setUuidManager' => [
                         'required' => true
                     ]
-                ],
-                __NAMESPACE__ . '\Service\ContextService' => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setRouter' => [
-                        'required' => true
-                    ]
                 ]
             ]
         ],
@@ -71,9 +56,6 @@ return [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\ContextManagerInterface' => __NAMESPACE__ . '\Manager\ContextManager',
                 __NAMESPACE__ . '\Router\RouterInterface' => __NAMESPACE__ . '\Router\Router'
-            ],
-            __NAMESPACE__ . '\Service\ContextService' => [
-                'shared' => false
             ]
         ]
     ]

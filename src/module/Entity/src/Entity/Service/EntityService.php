@@ -78,41 +78,7 @@ class EntityService implements EntityServiceInterface
         return $this->getEntity()->getId();
     }
 
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $normalized->setRouteName('entity/plugin/page');
-        $normalized->setRouteParams(array(
-            'entity' => $this->getId()
-        ));
-        $normalized->setTimestamp($this->getTimestamp());
-        
-        $normalized->setTitle($this->getUuid());
-        
-        // repository
-        if ($this->hasPlugin('repository') && ($this->repository()->hasCurrentRevision() || $this->repository()->hasHead())) {
-            if ($this->repository()->hasCurrentRevision()) {
-                $revision = $this->repository()->getCurrentRevision();
-            } elseif ($this->repository()->hasHead()) {
-                $revision = $this->repository()->getHead();
-            }
-            if ($revision->get('title')) {
-                $normalized->setTitle($revision->get('title'));
-            }
-            if ($revision->get('content')) {
-                $normalized->setPreview(substr($revision->get('content'), 0, 200) . '...');
-            }
-            if ($revision->get('content')) {
-                $normalized->setContent($revision->get('content'));
-            }
-        }
-        
-        $normalized->setType($this->getEntity()
-            ->getType()
-            ->getName());
-        
-        return $normalized;
-    }
+   
 
     public function setConfig(array $config)
     {

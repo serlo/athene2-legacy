@@ -19,7 +19,7 @@ interface ContextManagerInterface extends Router\RouterAwareInterface
     /**
      *
      * @param int $id            
-     * @return Model\ContextModelInterface
+     * @return Entity\ContextInterface
      */
     public function getContext($id);
 
@@ -35,13 +35,13 @@ interface ContextManagerInterface extends Router\RouterAwareInterface
      * @param int $objectId            
      * @param string $type            
      * @param string $title            
-     * @return Model\ContextModelInterface
+     * @return Entity\ContextInterface
      */
     public function add($objectId, $type, $title);
 
     /**
      *
-     * @return Model\ContextModelInterface[]
+     * @return Entity\ContextInterface[]
      */
     public function findAll();
 

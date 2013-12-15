@@ -56,12 +56,7 @@ class Context implements ContextInterface
     {
         $this->routes = new ArrayCollection();
     }
-
-    public function getEntity()
-    {
-        return $this;
-    }
-
+    
     public function getRoutes()
     {
         return $this->routes;
@@ -74,7 +69,7 @@ class Context implements ContextInterface
 
     public function getObject()
     {
-        return $this->object;
+        return $this->object->getHolder();
     }
 
     public function getType()

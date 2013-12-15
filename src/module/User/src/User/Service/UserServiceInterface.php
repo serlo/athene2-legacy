@@ -8,12 +8,11 @@
  */
 namespace User\Service;
 
-use Common\Normalize\Normalizable;
 use User\Model\UserModelInterface;
 use User\Manager\UserManagerAwareInterface;
 use User\Entity\UserInterface;
 
-interface UserServiceInterface extends Normalizable, UserModelInterface, UserManagerAwareInterface
+interface UserServiceInterface extends UserModelInterface, UserManagerAwareInterface
 {
     public function updateLoginData();
 

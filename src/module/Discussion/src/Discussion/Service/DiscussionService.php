@@ -21,7 +21,7 @@ use Discussion\Collection\CommentCollection;
 use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
 
-class DiscussionService extends AbstractComment implements DiscussionServiceInterface, Normalizable
+class DiscussionService extends AbstractComment implements DiscussionServiceInterface
 {
     use \Discussion\DiscussionManagerAwareTrait;
 
@@ -214,19 +214,5 @@ class DiscussionService extends AbstractComment implements DiscussionServiceInte
         if ($user === NULL)
             return false;
         return $this->getEntity()->hasUserVoted($user->getEntity());
-    }
-
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $normalized->setTitle($this->getTitle());
-        $normalized->setContent($this->getContent());
-        $normalized->setPreview(substr($this->getContent(), 0, 100));
-        $normalized->setTimestamp($this->getDate());
-        $normalized->setRouteName('discussion/view');
-        $normalized->setRouteParams(array(
-            'id' => $this->getId()
-        ));
-        return $normalized;
     }
 }

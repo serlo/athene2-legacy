@@ -18,7 +18,7 @@ use Contexter\Entity\ContextInterface;
 
 class ContextManager implements ContextManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function addRoute(ContextInterface $context, $routeName, array $params = array())
     {
@@ -65,14 +65,14 @@ class ContextManager implements ContextManagerInterface
     public function removeContext($id)
     {
         $context = $this->getContext($id);
-        $this->getObjectManager()->remove($context->getEntity());
+        $this->getObjectManager()->remove($context);
         $this->removeInstance($id);
         return $this;
     }
 
-    public function add($object, $type, $title)
+    public function add($objectId, $type, $title)
     {
-        $object = $this->getUuidManager()->getUuid($object);
+        $object = $this->getUuidManager()->getUuid($objectId);
         
         $type = $this->findTypeByName($type);
         

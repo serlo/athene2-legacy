@@ -142,11 +142,5 @@ class PageServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(100,$this->pageService->getRepositoryId());
         
     }
-    
-    public function testNormalized(){
-        $this->getRepository();
-        $this->assertInstanceOf('Common\Normalize\Normalized',$this->pageService->normalize());
-        
-    }
 
 }

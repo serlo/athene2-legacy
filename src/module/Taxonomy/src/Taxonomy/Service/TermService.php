@@ -197,16 +197,6 @@ class TermService implements TermServiceInterface
         return $this->manager;
     }
 
-    public function normalize()
-    {
-        $routeMatch = $this->getTermRouter()->route($this->getId());
-        $normalized = new Normalized();
-        $normalized->setTitle($this->getName());
-        $normalized->setRouteName($routeMatch->getMatchedRouteName());
-        $normalized->setRouteParams($routeMatch->getParams());
-        return $normalized;
-    }
-
     public function getDescendantBySlugs(array $path)
     {
         $term = $this;

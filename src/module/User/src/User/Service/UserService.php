@@ -30,20 +30,6 @@ class UserService implements UserServiceInterface
         return $this->entity;
     }
 
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $normalized->setTitle($this->getUsername());
-        $normalized->setContent($this->getUsername());
-        $normalized->setPreview($this->getUsername());
-        $normalized->setTimestamp($this->getDate());
-        $normalized->setRouteName('user/profile');
-        $normalized->setRouteParams(array(
-            'id' => $this->getId()
-        ));
-        return $normalized;
-    }
-
     public function persist()
     {
         $this->getObjectManager()->persist($this->getEntity());

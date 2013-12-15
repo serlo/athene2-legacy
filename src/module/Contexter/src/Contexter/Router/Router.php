@@ -203,7 +203,7 @@ class Router implements RouterInterface
 
     protected function matchesParameter(Entity\RouteParameterInterface $parameter)
     {
-        $parameters = $this->getAdapter()->getParameters();
+        $parameters = $this->getAdapter()->getParams();
         if (array_key_exists($parameter->getKey(), $parameters) && $parameters[$parameter->getKey()] === $parameter->getValue()) {
             return true;
         }

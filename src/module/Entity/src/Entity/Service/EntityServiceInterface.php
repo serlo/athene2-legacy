@@ -17,7 +17,7 @@ use Entity\Entity\EntityInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Entity\Model\EntityModelInterface;
 
-interface EntityServiceInterface extends EventManagerAwareInterface, Normalizable, EntityModelInterface
+interface EntityServiceInterface extends EventManagerAwareInterface, EntityModelInterface
 {
 
     /**

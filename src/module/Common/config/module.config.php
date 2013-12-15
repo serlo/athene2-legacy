@@ -21,18 +21,10 @@ return array(
         ]
     ]
     ,
-    'view_helpers' => array(
-        'invokables' => array()
-    ),
     'controller_plugins' => array(
         'invokables' => array(
             'referer' => 'Common\Controller\Plugin\RefererProvider',
             'redirect' => 'Common\Controller\Plugin\RedirectHelper'
-        )
-    ),
-    'view_helpers' => array(
-        'invokables' => array(
-            'normalize' => 'Common\View\Helper\Normalize'
         )
     )
 );

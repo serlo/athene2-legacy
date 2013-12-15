@@ -45,7 +45,8 @@ return array(
         'Flag',
         'Search',
         'Metadata',
-        'License'
+        'License',
+        'Normalizer'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

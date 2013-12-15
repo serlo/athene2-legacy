@@ -77,6 +77,7 @@ class Bootstrap
         'RelatedContent' => 'RelatedContent/src/RelatedContent',
         'Search' => 'Search/src/Search',
         'Upload' => 'Upload/src/Upload',
+        'Normalizer' => 'Normalizer/src/Normalizer',
     );
 
     public static function getApplication(){

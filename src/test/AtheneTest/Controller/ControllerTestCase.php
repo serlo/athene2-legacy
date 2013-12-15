@@ -4,7 +4,7 @@ namespace AtheneTest\Controller;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use AtheneTest\Bootstrap;
 
-abstract class ControllerTestCaseDONTUSEME extends AbstractHttpControllerTestCase
+abstract class ControllerTestCase extends AbstractHttpControllerTestCase
 {
 
     protected $traceError = true;

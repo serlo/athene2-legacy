@@ -39,8 +39,7 @@ return array(
         )
     ),
     'class_resolver' => array(
-        'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Service\ContextService',
-        'Contexter\Service\ContextServiceInterface' => 'Contexter\Service\ContextService',
+        'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Context',
         'Contexter\Entity\TypeInterface' => 'Contexter\Entity\Type',
         'Contexter\Entity\RouteInterface' => 'Contexter\Entity\Route',
         'Contexter\Entity\RouteParameterInterface' => 'Contexter\Entity\RouteParameter'

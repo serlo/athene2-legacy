@@ -15,7 +15,7 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Model\TaxonomyTermModelAwareInterface;
 
-interface TermServiceInterface extends Normalizable, TaxonomyTermModelInterface, SharedTaxonomyManagerAwareInterface
+interface TermServiceInterface extends TaxonomyTermModelInterface, SharedTaxonomyManagerAwareInterface
 {
 
     /**
