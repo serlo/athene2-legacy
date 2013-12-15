@@ -29,7 +29,7 @@ class DiscussionControllerListener extends AbstractMvcListener
     {
         $language = $e->getParam('language')->getEntity();
         $user = $e->getParam('user')->getEntity();
-        $discussion = $e->getParam('discussion')->getEntity();
+        $discussion = $e->getParam('discussion');
         
         $params = array(
             array(
@@ -51,9 +51,7 @@ class DiscussionControllerListener extends AbstractMvcListener
     {
         $user = $e->getParam('user')->getEntity();
         $language = $e->getParam('language')->getEntity();
-        $discussion = $e->getParam('discussion')
-            ->getEntity()
-            ->getUuidEntity();
+        $discussion = $e->getParam('discussion')->getUuidEntity();
         
         $params = array(
             array(
@@ -62,7 +60,7 @@ class DiscussionControllerListener extends AbstractMvcListener
             )
         );
         
-        $comment = $e->getParam('comment')->getEntity();
+        $comment = $e->getParam('comment');
         $this->logEvent('discussion/comment/create', $language, $user, $comment, $params);
     }
 
@@ -80,8 +78,8 @@ class DiscussionControllerListener extends AbstractMvcListener
             'onComment'
         ));
     }
-    
-    protected function getMonitoredClass ()
+
+    protected function getMonitoredClass()
     {
         return 'Discussion\Controller\DiscussionController';
     }

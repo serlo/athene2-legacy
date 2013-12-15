@@ -13,7 +13,7 @@
 			    <hr>
                 <div class="btn-group btn-group-x">
                     <?php if($this->discussion->isDiscussion()): ?>
-                        <?php $vote = ($this->discussion->hasUserVoted($this->user)) ? 'down' : 'up'; ?>    
+                        <?php $vote = ($this->discussion->hasUserVoted($this->user->getEntity())) ? 'down' : 'up'; ?>    
                         <a
     						href="<?php echo $this->url('discussion/discussion/vote', array('comment' => $this->discussion->getId(), 'vote' => $vote)); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>"><span
     						class="glyphicon glyphicon-chevron-<?php print $vote; ?>"></span> 
@@ -41,7 +41,7 @@
 				<div class="list-group">  
                     <?php foreach($this->discussion->getChildren() as $comment): ?>
                         <div class="list-group-item">
-                            <?php echo $this->partial('discussion/discussion/show', array('discussion' => $comment, 'user' => $this->user)); ?>
+                            <?php echo $this->partial('discussion/discussion/show', array('discussion' => $comment, 'user' => $this->user->getEntity())); ?>
                         </div>
                     <?php endforeach; ?>
                 </div>

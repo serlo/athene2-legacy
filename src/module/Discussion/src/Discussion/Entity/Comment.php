@@ -97,6 +97,11 @@ class Comment extends UuidEntity implements CommentInterface
      */
     protected $content;
 
+    public function isDiscussion()
+    {
+        return ! $this->hasParent();
+    }
+    
     public function getArchived()
     {
         return $this->archived;

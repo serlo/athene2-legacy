@@ -33,16 +33,6 @@ return array(
             )
         )
     ),
-    'uuid_manager' => array(
-        'resolver' => array(
-            'Discussion\Entity\CommentInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
-            {
-                /* @var $discussionManager \Discussion\DiscussionManager */
-                $discussionManager = $serviceLocator->get('Discussion\DiscussionManager');
-                return $discussionManager->getComment($uuid->getId());
-            }
-        )
-    ),
     'view_helpers' => array(
         'factories' => array(
             'discussion' => function ($pluginManager)
@@ -54,17 +44,10 @@ return array(
                 $sharedTaxonomyManager = $pluginManager->getServiceLocator()->get('Taxonomy\Manager\SharedTaxonomyManager');
                 $plugin->setDiscussionManager($discussionManager);
                 $plugin->setUserManager($userManager);
-                $plugin->setConfig($pluginManager->getServiceLocator()
-                    ->get('config')['discussion']['filters']);
                 $plugin->setLanguageManager($languageManager);
                 $plugin->setSharedTaxonomyManager($sharedTaxonomyManager);
                 return $plugin;
             }
-        )
-    ),
-    'discussion' => array(
-        'filters' => array(
-            'taxonomy' => 'Discussion\Filter\TaxonomyFilter'
         )
     ),
     'taxonomy' => array(
@@ -72,7 +55,7 @@ return array(
             'comments' => array(
                 'callback' => function (ServiceLocatorInterface $sm, $collection)
                 {
-                    return new CommentCollection($collection, $sm->get('Discussion\DiscussionManager'));
+                    return new $collection();
                 }
             )
         ),
@@ -102,8 +85,7 @@ return array(
     ),
     'class_resolver' => array(
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
-        'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote',
-        'Discussion\Service\DiscussionServiceInterface' => 'Discussion\Service\DiscussionService'
+        'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote'
     ),
     'router' => array(
         'routes' => array(
@@ -224,8 +206,7 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Provider\ParamProvider' => array(
-                ),
+                __NAMESPACE__ . '\Provider\ParamProvider' => array(),
                 'Discussion\Controller\DiscussionController' => array(
                     'setDiscussionManager' => array(
                         'required' => true
@@ -239,21 +220,12 @@ return array(
                     'setUserManager' => array(
                         'required' => true
                     )
-                ),
-                'Discussion\Service\DiscussionService' => array(
-                    'setObjectManager' => array(
-                        'required' => true
-                    )
-                ),
-                'Discussion\Filter\PluginManager' => array()
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
                 'Discussion\DiscussionManagerInterface' => 'Discussion\DiscussionManager'
-            ),
-            'Discussion\Service\DiscussionService' => array(
-                'shared' => false
             )
         )
     ),
@@ -263,9 +235,6 @@ return array(
             {
                 $config = $sm->get('config');
                 $class = new DiscussionManager();
-                
-                $class->setConfig($config['discussion']);
-                $class->setServiceLocator($sm->get('ServiceManager'));
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
