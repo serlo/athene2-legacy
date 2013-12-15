@@ -74,12 +74,7 @@ class Post extends UuidEntity implements PostInterface
         $this->publish = new DateTime();
         $this->date = new DateTime();
     }
-
-    public function getEntity()
-    {
-        return $this;
-    }
-
+    
     public function getAuthor()
     {
         return $this->author;

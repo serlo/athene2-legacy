@@ -20,7 +20,7 @@ use Blog\Exception;
 
 class BlogManager implements BlogManagerInterface
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function getBlog($id)
     {

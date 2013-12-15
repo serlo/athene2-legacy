@@ -29,12 +29,6 @@ interface PostModelInterface extends TaxonomyTermModelAwareInterface, Wrapable, 
     public function getId();
 
     /**
-     *
-     * @return self
-     */
-    public function getEntity();
-
-    /**
      * Gets the content.
      *
      * @return string
