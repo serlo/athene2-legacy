@@ -18,7 +18,7 @@ use Contexter\Form\UrlForm;
 
 class ContextController extends AbstractActionController
 {
-    use \Contexter\Manager\ContextManagerAwareTrait,\Contexter\Router\RouterAwareTrait;
+    use\Contexter\Manager\ContextManagerAwareTrait,\Contexter\Router\RouterAwareTrait;
 
     public function manageAction()
     {
@@ -63,8 +63,10 @@ class ContextController extends AbstractActionController
                             $useParameters[$key] = $parameters[$key];
                         }
                     }
+                    
                     $context = $this->getContextManager()->add($data['object'], $data['type'], $data['title']);
-                    $context->addRoute($data['route'], $useParameters);
+                    $this->getContextManager()->addRoute($context, $data['route'], $useParameters);
+                    
                     $this->getContextManager()->flush();
                     $this->redirect()->toUrl($uri);
                     return false;

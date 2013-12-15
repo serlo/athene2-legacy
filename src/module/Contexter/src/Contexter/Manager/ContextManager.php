@@ -11,41 +11,41 @@
  */
 namespace Contexter\Manager;
 
-use Contexter\Entity;
 use Contexter\Exception;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
-use Contexter\Collection\ContextCollection;
+use Contexter\Entity\ContextInterface;
 
 class ContextManager implements ContextManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait;
+
+    public function addRoute(ContextInterface $context, $routeName, array $params = array())
+    {
+        /* @var $route Entity\RouteInterface */
+        $route = $this->getClassResolver()->resolve('Contexter\Entity\RouteInterface');
+        $route->setName($routeName);
+        $route->addParameters($params);
+        $route->setContext($context);
+        $context->addRoute($route);
+        $this->getObjectManager()->persist($route);
+        return $route;
+    }
 
     public function getContext($id)
     {
-        if (! is_numeric($id)) {
-            throw new Exception\InvalidArgumentException(sprintf('Expected id to be numeric but got "%s"', gettype($id)));
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
+        $context = $this->getObjectManager()->find($className, $id);
+        
+        if (! is_object($context)) {
+            throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
         }
         
-        if (! $this->hasInstance($id)) {
-            $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
-            $context = $this->getObjectManager()->find($className, $id);
-            
-            if (! is_object($context)) {
-                throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
-            }
-            $this->addInstance($context->getId(), $this->createService($context));
-        }
-        
-        return $this->getInstance($id);
+        return $context;
     }
 
     public function getRoute($id)
     {
-        if (! is_numeric($id)) {
-            throw new Exception\InvalidArgumentException(sprintf('Expected id to be numeric but got "%s"', gettype($id)));
-        }
-        
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
         $object = $this->getObjectManager()->find($className, $id);
         if (! is_object($object)) {
@@ -85,7 +85,7 @@ class ContextManager implements ContextManagerInterface
         $type->addContext($context);
         
         $this->getObjectManager()->persist($context);
-        return $this->createService($context);
+        return $context;
     }
 
     public function findTypeByName($name, $createOnFallback = false)
@@ -114,8 +114,7 @@ class ContextManager implements ContextManagerInterface
         $results = $this->getObjectManager()
             ->getRepository($className)
             ->findAll();
-        $collection = new ArrayCollection($results);
-        return new ContextCollection($collection, $this);
+        return new ArrayCollection($results);
     }
 
     public function findAllTypeNames()
@@ -132,23 +131,10 @@ class ContextManager implements ContextManagerInterface
         return $this;
     }
 
-    protected function getTypeClassName()
-    {
-        return $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-    }
-
     protected function getTypeRepository()
     {
-        $className = $this->getTypeClassName();
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
         return $this->getObjectManager()->getRepository($className);
-    }
-
-    protected function createService(Entity\ContextInterface $context)
-    {
-        /* @var $instance ContextInterface */
-        $instance = $this->createInstance('Contexter\ContextInterface');
-        $instance->setEntity($context);
-        return $instance;
     }
 
     protected function findAllTypes()

@@ -31,13 +31,13 @@ class PageController extends AbstractController
             return;
         }
         
-        if (! $this->params('forwarded')) {
+        /*if (! $this->params('forwarded')) {
             try {
                 $alias = $this->getAliasManager()->findAliasByObject($entity->getEntity()
                     ->getUuidEntity());
                 $this->redirect()->toUrl('/alias/' . $alias->getAlias());
             } catch (AliasNotFoundException $e) {}
-        }
+        }*/
         
         try {
             $model = new \Zend\View\Model\ViewModel(array(

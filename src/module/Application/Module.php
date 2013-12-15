@@ -34,12 +34,6 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager = $e->getApplication()->getEventManager();
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function ($e)
-        {
-            $result = $e->getResult();
-            $result->setTerminal(TRUE);
-        });
         $t = $e->getTarget();
         
         $t->getEventManager()->attach($t->getServiceManager()

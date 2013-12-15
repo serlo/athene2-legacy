@@ -25,7 +25,8 @@ class FirewallHydrator
     use \Page\Manager\PageManagerAwareTrait;
     use  \Language\Manager\LanguageManagerAwareTrait;
 	use \Common\Traits\RouterAwareTrait;
-    
+	use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+	
 	/**
 	 * 
 	 * @var RouteMatch
@@ -35,6 +36,8 @@ class FirewallHydrator
     /**
 	 * @return the $routeMatch
 	 */
+
+	
 	public function getRouteMatch() {
 		return $this->routeMatch;
 	}
@@ -48,19 +51,18 @@ class FirewallHydrator
 
 	public function getRoles()
     {
-        
+      
+         return array(
+             'login'
+             // 'roles' => $this->getObject()->getRoles(),
+         ); /*
+        $pageService = $this->pageManager->getPageRepository(66);
+        return $pageService->getRoles();
     	
-    	
-    	
+    	/*
         return array(
             'sysadmin'
         // 'roles' => $this->getObject()->getRoles(),
-                );
-    }
-
-    protected function validObject($object)
-    {
-        if (! $object instanceof PageRepositoryInterface)
-            throw new Exception\InvalidArgumentException(sprintf('Expected PostInterface but got `%s`', get_class($object)));
+                );*/
     }
 }

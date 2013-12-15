@@ -38,13 +38,9 @@ return [
                     'login'
                 ]
             ],
-
             'ZfcRbac\Guard\ControllerGuard' => [
                 [
-                    'controller' => 'Entity\Plugin\Page\Controller\PageController',
-                    'actions' => [
-                        'index',
-                    ],
+                    'controller' => 'Application\Controller\IndexController',
                     'roles' => [
                         'login'
                     ]

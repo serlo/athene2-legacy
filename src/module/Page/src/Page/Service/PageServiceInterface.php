@@ -19,12 +19,6 @@ interface PageServiceInterface
      */
     public function getCurrentRevision();
 
-    /**
-     *
-     * @param numeric $id            
-     * @return PageRevisionInterface
-     */
-    public function getRevision($id);
 
     /**
      *

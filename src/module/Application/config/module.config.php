@@ -17,7 +17,7 @@ return array(
                 'options' => array(
                     'route' => '/',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
+                        'controller' => 'Application\Controller\IndexController',
                         'action' => 'index'
                     )
                 )
@@ -66,7 +66,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\IndexController' => 'Application\Controller\IndexController'
         )
     ),
     'doctrine' => array(

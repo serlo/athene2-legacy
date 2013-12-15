@@ -12,7 +12,10 @@
  */
 namespace Common;
 
-class Module
+use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+
+class Module implements BootstrapListenerInterface
 {
 
     public function getConfig()
@@ -29,5 +32,17 @@ class Module
                 )
             )
         );
+    }
+
+    public function onBootstrap(EventInterface $event)
+    {
+        /* @var \Zend\Mvc\Application $application */
+        $application = $event->getTarget();
+        $serviceManager = $application->getServiceManager();
+        $eventManager = $application->getEventManager();
+        
+        $guard = $serviceManager->get('Common\Guard\HydratableControllerGuard');
+        
+        $eventManager->attachAggregate($guard);
     }
 }

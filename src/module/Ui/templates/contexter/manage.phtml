@@ -11,7 +11,7 @@
 	    <?php /* @var $element \Contexter\Service\ContextServiceInterface */ ?>
 	    <?php foreach($this->elements as $element):?>
 		<tr>
-			<td><a href="<?php echo $element->getUrl(); ?>"><?php echo $element->getTitle(); ?></a>
+			<td><a href="<?php echo $this->url('uuid/router', array('id' => $element->getId())); ?>"><?php echo $element->getTitle(); ?></a>
 			</td>
 			<td>
     		     <?php foreach($element->getRoutes() as $route): ?>

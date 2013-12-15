@@ -38,10 +38,10 @@ class AliasController extends AbstractActionController
         $request->setUri($source);
         
         $routeMatch = $router->match($request);
-        $this->getServiceLocator()
+        /*$this->getServiceLocator()
             ->get('Application')
             ->getMvcEvent()
-            ->setRouteMatch($routeMatch);
+            ->setRouteMatch($routeMatch);*/
         
         if ($routeMatch === NULL)
             throw new Alias\Exception\RuntimeException(sprintf('Could not match a route for `%s`', $source));
