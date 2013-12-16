@@ -96,7 +96,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
         return $this;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -131,7 +131,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * @param mixed $date            
      * @return $this
      */
-    public function setDate(\DateTime $date)
+    public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
         return $this;

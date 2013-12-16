@@ -15,5 +15,14 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 abstract class AbstractController extends AbstractActionController
 {
-    use \Entity\Manager\EntityManagerAwareTrait;
+    use\Entity\Manager\EntityManagerAwareTrait;
+
+    /**
+     * 
+     * @return \Entity\Entity\EntityInterface
+     */
+    public function getEntity()
+    {
+        return $this->getEntityManager()->getEntity($this->params('id'));
+    }
 }

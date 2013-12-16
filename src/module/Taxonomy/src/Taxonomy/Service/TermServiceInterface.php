@@ -13,7 +13,7 @@ use Common\Normalize\Normalizable;
 use Taxonomy\Manager\SharedTaxonomyManagerAwareInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Collection\TermCollection;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 
 interface TermServiceInterface extends TaxonomyTermModelInterface, SharedTaxonomyManagerAwareInterface
 {
@@ -67,7 +67,7 @@ interface TermServiceInterface extends TaxonomyTermModelInterface, SharedTaxonom
      * 
      * @param unknown $targetField
      * @param array $allowedTaxonomies
-     * @return TaxonomyTermModelAwareInterface[]
+     * @return TaxonomyTermEntityAwareInterface[]
      */
     public function getAssociatedRecursive($targetField, array $allowedTaxonomies = array());
     

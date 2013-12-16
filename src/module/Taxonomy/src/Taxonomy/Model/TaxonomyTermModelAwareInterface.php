@@ -11,7 +11,7 @@
  */
 namespace Taxonomy\Model;
 
-interface TaxonomyTermModelAwareInterface
+interface TaxonomyTermEntityAwareInterface
 {
     /**
      * 

@@ -40,7 +40,7 @@ class RepositoryFake implements RepositoryInterface
     /*
      * (non-PHPdoc) @see \Versioning\Entity\RepositoryInterface::newRevision()
      */
-    public function newRevision()
+    public function createRevision()
     {
         $revision = new RevisionFake();
         $revision->setRepository($this);

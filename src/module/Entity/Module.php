@@ -16,28 +16,32 @@ use Zend\Stdlib\ArrayUtils;
 class Module
 {
 
-    public static $listeners = array(
-        'Entity\Plugin\Link\Listener\EntityControllerListener',
-        'Entity\Plugin\License\Listener\EntityControllerListener',
+    public static $listeners = [
+        /*'Entity\Plugin\Link\Listener\EntityControllerListener',
         'Entity\Plugin\Repository\Listener\EntityControllerListener',
         'Entity\Plugin\Taxonomy\Listener\EntityControllerListener',
         'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener',
         'Entity\Plugin\LearningResource\Listener\EntityControllerListener',
         'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener',
         'Entity\Plugin\Link\Listener\LinkControllerListener',
-        'Entity\Plugin\Page\Listener\PageControllerListener',
         'Entity\Plugin\Repository\Listener\RepositoryControllerListener',
-        'Entity\Plugin\Taxonomy\Listener\TaxonomyControllerListener'
-    );
+        'Entity\Plugin\Taxonomy\Listener\TaxonomyControllerListener'*/
+    ];
 
-    public function getConfig()
+    public 
+
+    function getConfig()
     {
-        $module = include __DIR__ . '/config/module.config.php';
-        $types = include __DIR__ . '/config/plugins/plugins.config.php';
-        $plugins = include __DIR__ . '/config/types/types.config.php';
-        $merge = ArrayUtils::merge($module, $types);
-        $merge = ArrayUtils::merge($merge, $plugins);
-        return $merge;
+        $include = [
+            'module',
+            'route'
+        ];
+        $config = [];
+        
+        foreach ($include as $file) {
+            $config = ArrayUtils::merge($config, include __DIR__ . '/config/' . $file . '.config.php');
+        }
+        return $config;
     }
 
     public function getAutoloaderConfig()

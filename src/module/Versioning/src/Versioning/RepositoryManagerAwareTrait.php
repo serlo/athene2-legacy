@@ -15,12 +15,14 @@ trait RepositoryManagerAwareTrait
 {
 
     /**
+     * The RepositoryManager
      *
      * @var RepositoryManagerInterface
      */
     protected $repositoryManager;
 
     /**
+     * Gets the RepositoryManager
      *
      * @return RepositoryManagerInterface $repositoryManager
      */
@@ -30,6 +32,7 @@ trait RepositoryManagerAwareTrait
     }
 
     /**
+     * Sets the RepositoryManager
      *
      * @param RepositoryManagerInterface $repositoryManager            
      * @return $this

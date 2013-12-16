@@ -67,25 +67,6 @@ class RepositoryPlugin extends AbstractPlugin
             ->getRepository($repository);
     }
 
-    public function getRevisionForm($hydrate = true)
-    {
-        $form = $this->getOption('revision_form');
-        
-        if (! class_exists($form))
-            throw new Exception\ClassNotFoundException(sprintf('Class %s not found!', $form));
-        
-        $form = new $form();
-        if ($hydrate && $this->hasCurrentRevision()) {
-            $data = array();
-            foreach ($this->getFields() as $field) {
-                $data[$field] = $this->getCurrentRevision()->get($field);
-            }
-            $form->setData($data);
-        }
-        
-        return $form;
-    }
-
     public function getFields()
     {
         return $this->getOption('fields');
@@ -175,31 +156,6 @@ class RepositoryPlugin extends AbstractPlugin
     {
         $this->getRepository()->checkoutRevision($revisionId);
         return $this;
-    }
-
-    public function commitRevision(Form $form, UserServiceInterface $user)
-    {
-        $repository = $this->getRepository();
-        
-        $revision = $this->getEntityService()
-            ->getEntity()
-            ->newRevision();
-        
-        $this->getUuidManager()->injectUuid($revision);
-        
-        $revision->setAuthor($user->getEntity());
-        
-        $repository->addRevision($revision);
-        
-        foreach ($form->getData() as $key => $value) {
-            if (is_string($key) && is_string($value)) {
-                $revision->set($key, $value);
-            }
-        }
-        
-        $this->getObjectManager()->persist($revision);
-        
-        return $revision;
     }
 
     public function removeRevision($revisionId)

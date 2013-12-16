@@ -15,13 +15,13 @@ use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\Common\Collections\Collection;
 use Language\Entity\LanguageEntityInterface;
-use Term\Model\TermModelAwareInterface;
+use Term\Entity\TermEntityAwareInterface;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 use Common\Model\Wrapable;
 use Uuid\Entity\UuidHolder;
 
 
-interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable, UuidHolder
+interface TaxonomyTermModelInterface extends TermEntityAwareInterface, Wrapable, UuidHolder
 {
 
     /**
@@ -99,7 +99,7 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable, 
     /**
      * 
      * @param string $association
-     * @return TaxonomyTermModelAwareInterface[]
+     * @return TaxonomyTermEntityAwareInterface[]
      */
     public function getAssociated($association);
     
@@ -113,18 +113,18 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable, 
     /**
      * 
      * @param string $association
-     * @param TaxonomyTermModelAwareInterface $object
+     * @param TaxonomyTermEntityAwareInterface $object
      * @return bool
      */
-    public function isAssociated($association, TaxonomyTermModelAwareInterface $object);
+    public function isAssociated($association, TaxonomyTermEntityAwareInterface $object);
     
     /**
      * 
      * @param string $association
-     * @param TaxonomyTermModelAwareInterface $object
+     * @param TaxonomyTermEntityAwareInterface $object
      * @return $this
      */
-    public function associateObject($association, TaxonomyTermModelAwareInterface $object);
+    public function associateObject($association, TaxonomyTermEntityAwareInterface $object);
     
     /**
      * 
@@ -138,10 +138,10 @@ interface TaxonomyTermModelInterface extends TermModelAwareInterface, Wrapable, 
     /**
      * 
      * @param string $field
-     * @param TaxonomyTermModelAwareInterface $object
+     * @param TaxonomyTermEntityAwareInterface $object
      * @return $this
      */
-    public function removeAssociation($field, TaxonomyTermModelAwareInterface $object);
+    public function removeAssociation($field, TaxonomyTermEntityAwareInterface $object);
     
     /**
      * 

@@ -11,20 +11,21 @@
  */
 namespace Entity\Controller;
 
-use Entity\Form\LicenseForm;
 use Zend\View\Model\ViewModel;
+use License\Form\UpdateLicenseForm;
 
 class LicenseController extends AbstractController
 {
-    use\Language\Manager\LanguageManagerAwareTrait, \License\Manager\LicenseManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait,\License\Manager\LicenseManagerAwareTrait;
 
     public function updateAction()
     {
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $licenses = $this->getLicenseManager()->findLicensesByLanguage($language);
+        $entity = $this->getEntity();
         
-        $form = new LicenseForm($licenses);
-
+        $form = new UpdateLicenseForm($licenses);
+        
         $view = new ViewModel(array(
             'form' => $form
         ));
@@ -34,10 +35,10 @@ class LicenseController extends AbstractController
                 ->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->getPlugin()->setLicense((int) $data['license']);
-                $this->getEntityManager()
-                    ->getObjectManager()
-                    ->flush();
+                
+                $this->getLicenseManager()->injectLicense($entity, (int) $data['license']);
+                $this->getLicenseManager()->flush();
+                
                 $this->redirect()->toUrl($this->referer()
                     ->fromStorage());
             }

@@ -12,13 +12,13 @@
 namespace Blog\Model;
 
 use User\Model\UserModelInterface;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 use DateTime;
 use Common\Model\Wrapable;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Uuid\Entity\UuidHolder;
 
-interface PostModelInterface extends TaxonomyTermModelAwareInterface, Wrapable, UuidHolder
+interface PostModelInterface extends TaxonomyTermEntityAwareInterface, Wrapable, UuidHolder
 {
 
     /**

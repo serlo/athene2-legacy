@@ -17,43 +17,21 @@ use Term\Service\TermServiceInterface;
 use Term\Exception\TermNotFoundException;
 use Language\Model\LanguageModelInterface;
 use Common\Filter\Slugify;
-use Term\Exception;
-use Term\Entity\TermEntityInterface;
 
 class TermManager implements TermManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\ClassResolver\ClassResolverAwareTrait;
 
-    /**
-     *
-     * @param TermServiceInterface $termService            
-     */
-    private function addTerm(TermServiceInterface $termService)
+    public function getTerm($id)
     {
-        $this->addInstance($termService->getId(), $termService);
-        return $this;
-    }
-
-    public function getTerm($idOrObject)
-    {
-        if (is_numeric($idOrObject)) {
-        } elseif ($idOrObject instanceof TermEntityInterface){
-            $idOrObject = $idOrObject->getId();
-        } else {
-            throw new Exception\InvalidArgumentException();
+        $instance = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Term\Entity\TermEntityInterface'), $id);
+        
+        if (! is_object($instance)) {
+            throw new TermNotFoundException($id);
         }
         
-        if (! $this->hasInstance($idOrObject)) {
-            $instance = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Term\Entity\TermEntityInterface'), $idOrObject);
-            
-            if (! is_object($instance))
-                throw new TermNotFoundException($idOrObject);
-            
-            $this->addTerm($this->createInstanceFromEntity($instance));
-        }
-        
-        return $this->getInstance($idOrObject);
+        return $instance;
     }
 
     public function findTermBySlug($slug, LanguageModelInterface $language)
@@ -66,11 +44,10 @@ class TermManager implements TermManagerInterface
             'language' => $language->getId()
         ));
         
-        if (! is_object($entity))
+        if (! is_object($entity)) {
             throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $slug, $language->getId()));
-        
-        $this->addTerm($this->createInstanceFromEntity($entity));
-        return $this->getInstance($entity->getId());
+        }
+        return $entity;
     }
 
     public function findTermByName($name, LanguageModelInterface $language)
@@ -83,11 +60,11 @@ class TermManager implements TermManagerInterface
             'language' => $language->getId()
         ));
         
-        if (! is_object($entity))
+        if (! is_object($entity)) {
             throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $name, $language->getId()));
+        }
         
-        $this->addTerm($this->createInstanceFromEntity($entity));
-        return $this->getInstance($entity->getId());
+        return $entity;
     }
 
     public function createTerm($name, $slug = NULL, LanguageModelInterface $language)
@@ -99,14 +76,5 @@ class TermManager implements TermManagerInterface
         $entity->setSlug(($slug ? $slug : $filter->filter($name)));
         $this->getObjectManager()->persist($entity);
         return $entity;
-    }
-
-    protected function createInstanceFromEntity($entity)
-    {
-        /* @var $instance TermServiceInterface */
-        $instance = $this->createInstance('Term\Service\TermServiceInterface');
-        $instance->setEntity($entity);
-        $instance->setManager($this);
-        return $instance;
     }
 }

@@ -31,25 +31,24 @@ class EntityController extends AbstractActionController
             'entity' => $entity,
             'user' => $this->getUserManager()
                 ->getUserFromAuthenticator(),
-            'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+            'language' => $this->getLanguageManager()
+                ->getLanguageFromRequest(),
             'query' => $this->params()
                 ->fromQuery()
         ));
         
-        $this->getEntityManager()
-            ->getObjectManager()
-            ->flush($entity->getEntity());
+        $this->getEntityManager()->flush();
         
         $response = $this->getEventManager()->trigger('create.postFlush', $this, array(
             'entity' => $entity,
             'data' => $this->params()
                 ->fromQuery(),
             'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
+                ->getUserFromAuthenticator()
         ));
         
         $this->checkResponse($response);
-        return '';
+        return false;
     }
 
     public function checkResponse(ResponseCollection $response)
@@ -62,12 +61,17 @@ class EntityController extends AbstractActionController
             }
         }
         
-        if (! $redirected)
+        if (! $redirected) {
             $this->redirect()->toReferer();
+        }
     }
-    
-    protected function getEntity($id = NULL){
-        if($id === NULL) $id = $this->params('entity');
+
+    protected function getEntity($id = NULL)
+    {
+        if ($id === NULL) {
+            $id = $this->params('entity');
+        }
+        
         return $this->getEntityManager()->getEntity($id);
     }
 }

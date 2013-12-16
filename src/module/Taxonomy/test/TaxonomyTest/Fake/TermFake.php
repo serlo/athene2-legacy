@@ -191,7 +191,7 @@ class TermFake implements TaxonomyTermModelInterface
 	/* (non-PHPdoc)
      * @see \Taxonomy\Model\TaxonomyTermModelInterface::isAssociated()
      */
-    public function isAssociated ($association,\Taxonomy\Model\TaxonomyTermModelAwareInterface $object)
+    public function isAssociated ($association,\Taxonomy\Model\TaxonomyTermEntityAwareInterface $object)
     {
         // TODO Auto-generated method stub
         
@@ -200,7 +200,7 @@ class TermFake implements TaxonomyTermModelInterface
 	/* (non-PHPdoc)
      * @see \Taxonomy\Model\TaxonomyTermModelInterface::associateObject()
      */
-    public function associateObject ($association,\Taxonomy\Model\TaxonomyTermModelAwareInterface $object)
+    public function associateObject ($association,\Taxonomy\Model\TaxonomyTermEntityAwareInterface $object)
     {
         // TODO Auto-generated method stub
         
@@ -218,7 +218,7 @@ class TermFake implements TaxonomyTermModelInterface
 	/* (non-PHPdoc)
      * @see \Taxonomy\Model\TaxonomyTermModelInterface::removeAssociation()
      */
-    public function removeAssociation ($field,\Taxonomy\Model\TaxonomyTermModelAwareInterface $object)
+    public function removeAssociation ($field,\Taxonomy\Model\TaxonomyTermEntityAwareInterface $object)
     {
         // TODO Auto-generated method stub
         
@@ -333,7 +333,7 @@ class TermFake implements TaxonomyTermModelInterface
     }
 
 	/* (non-PHPdoc)
-     * @see \Term\Model\TermModelAwareInterface::setTerm()
+     * @see \Term\Entity\TermEntityAwareInterface::setTerm()
      */
     public function setTerm (\Term\Model\TermModelInterface $term)
     {
@@ -342,7 +342,7 @@ class TermFake implements TaxonomyTermModelInterface
     }
 
 	/* (non-PHPdoc)
-     * @see \Term\Model\TermModelAwareInterface::getTerm()
+     * @see \Term\Entity\TermEntityAwareInterface::getTerm()
      */
     public function getTerm ()
     {

@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
 use Taxonomy\Model\TaxonomyTermModelInterface;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 
 /**
@@ -288,7 +288,7 @@ class Comment extends UuidEntity implements CommentInterface
     }
     
 	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermModelAwareInterface::addTaxonomyTerm()
+     * @see \Taxonomy\Model\TaxonomyTermEntityAwareInterface::addTaxonomyTerm()
      */
     public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
     {
@@ -297,7 +297,7 @@ class Comment extends UuidEntity implements CommentInterface
     }
 
 	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermModelAwareInterface::removeTaxonomyTerm()
+     * @see \Taxonomy\Model\TaxonomyTermEntityAwareInterface::removeTaxonomyTerm()
      */
     public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
     {
@@ -306,7 +306,7 @@ class Comment extends UuidEntity implements CommentInterface
     }
 
 	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermModelAwareInterface::getTaxonomyTerms()
+     * @see \Taxonomy\Model\TaxonomyTermEntityAwareInterface::getTaxonomyTerms()
      */
     public function getTaxonomyTerms()
     {

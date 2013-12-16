@@ -18,7 +18,7 @@ use Contexter\Entity\ContextInterface;
 
 class ContextManager implements ContextManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Type\TypeManagerAwareTrait;
 
     public function addRoute(ContextInterface $context, $routeName, array $params = array())
     {
@@ -88,24 +88,9 @@ class ContextManager implements ContextManagerInterface
         return $context;
     }
 
-    public function findTypeByName($name, $createOnFallback = false)
+    public function findTypeByName($name)
     {
-        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-        
-        /* @var $type Entity\TypeInterface */
-        $type = $this->getTypeRepository()->findOneBy(array(
-            'name' => $name
-        ));
-        
-        if (! is_object($type) && $createOnFallback) {
-            $type = $this->getClassResolver()->resolve('Contexter\Entity\TypeInterface');
-            $type->setName($name);
-            $this->getObjectManager()->persist($type);
-        } elseif (! is_object($type) && ! $createOnFallback) {
-            throw new Exception\RuntimeException(sprintf('Type `%s` not found', $name));
-        }
-        
-        return $type;
+        return $this->getTypeManager()->findTypeByName($name);
     }
 
     public function findAll()
@@ -139,9 +124,6 @@ class ContextManager implements ContextManagerInterface
 
     protected function findAllTypes()
     {
-        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-        return new ArrayCollection($this->getObjectManager()
-            ->getRepository($className)
-            ->findAll());
+        return $this->getTypeManager()->findAllTypes();
     }
 }

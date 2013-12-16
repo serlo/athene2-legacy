@@ -16,23 +16,22 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
+    use \Entity\Manager\EntityManagerAwareTrait;
 
     public function onCreate(Event $e)
     {
-        /* var $entity \Entity\Service\EntityServiceInterface */
+        /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
         $data = $e->getParam('query');
         $user = $e->getParam('user');
         $language = $e->getParam('language');
         
+        $options = $data[$scope];
+        
+        $entity->addChild
+        
         /* var $entity \Entity\Manager\EntityManagerInterface */
-        $entityManager = $entity->getEntityManager();
-        if (count($entity->getScopesForPlugin('link'))) {
-            $found = false;
-            foreach ($entity->getScopesForPlugin('link') as $scope) {
-                if (array_key_exists($scope, $data)) {
-                    $options = $data[$scope];
-                    
+        
                     $toEntity = $entityManager->getEntity($options['to_entity']);
                     $found = true;
                     
@@ -46,9 +45,6 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
                         'user' => $user,
                         'language' => $language
                     ));
-                }
-            }
-        }
     }
     
     /*

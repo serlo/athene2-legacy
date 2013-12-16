@@ -18,7 +18,7 @@ use Entity\Entity\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Term\Model\TermModelInterface;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 
 /**
  * A
@@ -195,7 +195,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         );
     }
 
-    public function isAssociated($association, TaxonomyTermModelAwareInterface $object)
+    public function isAssociated($association, TaxonomyTermEntityAwareInterface $object)
     {
         $associations = $this->getEntity()->getAssociated($association);
         return $associations->contains($object);
@@ -224,7 +224,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->getTaxonomy()->getLanguage();
     }
 
-    public function associateObject($field, TaxonomyTermModelAwareInterface $entity)
+    public function associateObject($field, TaxonomyTermEntityAwareInterface $entity)
     {
         $method = 'add' . ucfirst($field);
         if (! method_exists($this, $method)) {
@@ -246,7 +246,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->$method($objectId, $order);
     }
 
-    public function removeAssociation($field, TaxonomyTermModelAwareInterface $entity)
+    public function removeAssociation($field, TaxonomyTermEntityAwareInterface $entity)
     {
         $method = 'remove' . ucfirst($field);
         if (! method_exists($this, $method)) {

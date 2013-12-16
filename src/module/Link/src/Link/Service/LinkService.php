@@ -9,31 +9,83 @@
 namespace Link\Service;
 
 use Link\Entity\LinkableInterface;
+use Link\Entity\LinkInterface;
 use Link\Exception;
+use Type\Entity\TypeInterface;
 
 class LinkService implements LinkServiceInterface
 {
     
-    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Link\Manager\LinkManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
 
     /**
      *
-     * @return LinkableInterface
+     * @var LinkableInterface
      */
+    protected $entity;
+
     public function getEntity()
     {
         return $this->entity;
     }
 
-    /**
-     *
-     * @param LinkableInterface $entity            
-     * @return $this
-     */
+    public function associate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0)
+    {
+        $type = $this->getTypeManager()->findTypeByName($typeName);
+        $link = $parent->createLink();
+        
+        $link->setParent($parent);
+        $link->setChild($child);
+        $link->setType($type);
+        $link->setPosition($position);
+        
+        $this->getObjectManager()->persist($link);
+        return $this;
+    }
+
+    public function dissociate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0)
+    {
+        $type = $this->getTypeManager()->findTypeByName($typeName);
+        $link = $this->findLinkByChild($parent, $child, $type);
+        if ($link) {
+            $this->getObjectManager()->remove($link);
+        }
+        return $this;
+    }
+
+    public function sortChildren(LinkableInterface $parent, $typename, array $children)
+    {
+        
+    }
+
+    public function sortParents(LinkableInterface $child, $typename, array $parents);
+
     public function setEntity(LinkableInterface $entity)
     {
         $this->entity = $entity;
         return $this;
+    }
+
+    protected function findLinkByChild(LinkableInterface $element, LinkableInterface $child, TypeInterface $type)
+    {
+        /* @var $link LinkInterface */
+        foreach ($element->getChildLinks() as $link) {
+            if ($link->getChild() === $child && $link->getType() === $type) {
+                return $link;
+            }
+        }
+        return NULL;
+    }
+
+    protected function findLinkByParent(LinkableInterface $element, LinkableInterface $parent, TypeInterface $type)
+    {
+        /* @var $link LinkInterface */
+        foreach ($element->getParentLinks() as $link) {
+            if ($link->getParent() === $parent && $link->getType() === $type) {
+                return $link;
+            }
+        }
+        return NULL;
     }
 
     public function getParent($id)
@@ -71,7 +123,7 @@ class LinkService implements LinkServiceInterface
             $entity = $this->getEntity()->positionChild($link, $this->getLinkManager()
                 ->getEntity(), $position);
             $this->getObjectManager()->persist($entity);
-            $position++;
+            $position ++;
         }
         return $this;
     }
@@ -87,7 +139,7 @@ class LinkService implements LinkServiceInterface
             $entity = $this->getEntity()->positionParent($link, $this->getLinkManager()
                 ->getEntity(), $position);
             $this->getObjectManager()->persist($entity);
-            $position++;
+            $position ++;
         }
         return $this;
     }

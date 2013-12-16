@@ -9,80 +9,58 @@
 namespace Link\Service;
 
 use Link\Entity\LinkableInterface;
-use Doctrine\Common\Collections\Collection;
 
 interface LinkServiceInterface
 {
 
     /**
-     * Returns the children
      *
-     * @return Collection
-     */
-    public function getChildren();
-
-    /**
-     * Returns the parents
-     *
-     * @return Collection
-     */
-    public function getParents();
-
-    /**
-     * Adds a parent
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $child            
-     * @return $this
-     */
-    public function addParent($parent);
-
-    /**
-     * Adds a child
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $child            
-     * @return $this
-     */
-    public function addChild($child);
-
-    /**
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $child            
-     * @return $this
-     */
-    public function removeChild($child);
-
-    /**
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $parent            
-     * @return $this
-     */
-    public function removeParent($parent);
-
-    /**
-     *
-     * @param int $id            
      * @return LinkableInterface
      */
-    public function getParent($id);
+    public function getEntity();
 
     /**
      *
-     * @param int $id            
-     * @return LinkableInterface
+     * @param LinkableInterface $parent            
+     * @param LinkableInterface $child            
+     * @param string $typeName            
+     * @param number $position            
+     * @return self
      */
-    public function getChild($id);
+    public function associate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0);
 
     /**
      *
+     * @param LinkableInterface $parent            
+     * @param LinkableInterface $child            
+     * @param string $typeName            
+     * @param number $position            
+     * @return self
+     */
+    public function dissociate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0);
+
+    /**
+     *
+     * @param LinkableInterface $parent            
+     * @param string $typename            
      * @param array $children            
-     * @return $this
+     * @return self
      */
-    public function orderChildren(array $children);
+    public function sortChildren(LinkableInterface $parent, $typename, array $children);
 
     /**
      *
-     * @param array $parents            
-     * @return $this
+     * @param LinkableInterface $parent            
+     * @param string $typename            
+     * @param array $children            
+     * @return self
      */
-    public function orderParents(array $parents);
+    public function sortParents(LinkableInterface $child, $typename, array $parents);
+
+    /**
+     *
+     * @param LinkableInterface $entity            
+     * @return self
+     */
+    public function setEntity(LinkableInterface $entity);
 }

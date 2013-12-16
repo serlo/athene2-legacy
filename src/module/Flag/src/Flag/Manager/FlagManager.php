@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class FlagManager implements FlagManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Type\TypeManagerAwareTrait;
 
     public function getFlag($id)
     {
@@ -30,41 +30,9 @@ class FlagManager implements FlagManagerInterface
         return $this->getInstance($flag);
     }
 
-    public function getType($id)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Flag\Entity\TypeInterface');
-        $type = $this->getObjectManager()->find($className, $id);
-        
-        if (! is_object($type)) {
-            throw new Exception\RuntimeException(sprintf('Type not found by id %d', $id));
-        }
-        
-        return $type;
-    }
-
-    public function findTypeByName($name)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Flag\Entity\TypeInterface');
-        $type = $this->getObjectManager()
-            ->getRepository($className)
-            ->findOneBy(array(
-            'name' => $name
-        ));
-        
-        if (! is_object($type)) {
-            throw new Exception\RuntimeException(sprintf('Type not found by name %s', $name));
-        }
-        
-        return $type;
-    }
-
     public function findAllTypes()
     {
-        $className = $this->getClassResolver()->resolveClassName('Flag\Entity\TypeInterface');
-        $types = $this->getObjectManager()
-            ->getRepository($className)
-            ->findAll();
-        return $types;
+        return $this->getTypeManager()->findAllTypes();
     }
 
     public function findAllFlags()

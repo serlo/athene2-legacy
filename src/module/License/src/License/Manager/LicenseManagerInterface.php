@@ -16,8 +16,9 @@ use Language\Model\LanguageModelInterface;
 use License\Form\LicenseForm;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use License\Entity\LicenseAwareInterface;
+use Common\ObjectManager\Flushable;
 
-interface LicenseManagerInterface extends ObjectManagerAwareInterface
+interface LicenseManagerInterface extends ObjectManagerAwareInterface, Flushable
 {
 
     /**

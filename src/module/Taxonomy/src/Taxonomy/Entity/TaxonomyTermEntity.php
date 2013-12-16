@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
 use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 
 /**
  * @ORM\Entity
@@ -89,7 +89,7 @@ class TaxonomyTermEntity implements TaxonomyTermNodeModelInterface
         return $this;
     }
 
-    public function setObject(TaxonomyTermModelAwareInterface $entity)
+    public function setObject(TaxonomyTermEntityAwareInterface $entity)
     {
         $this->entity = $entity;
         return $this;

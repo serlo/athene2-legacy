@@ -13,8 +13,9 @@ namespace Flag\Entity;
 
 use Uuid\Entity\UuidInterface;
 use User\Entity\UserInterface;
+use Type\Entity\TypeAwareInterface;
 
-interface FlagInterface
+interface FlagInterface extends TypeAwareInterface
 {
 
     /**
@@ -49,12 +50,6 @@ interface FlagInterface
 
     /**
      *
-     * @return TypeInterface
-     */
-    public function getType();
-
-    /**
-     *
      * @param UuidInterface $uuid            
      * @return $this
      */
@@ -73,11 +68,4 @@ interface FlagInterface
      * @return $this
      */
     public function setReporter(UserInterface $user);
-
-    /**
-     *
-     * @param TypeInterface $type            
-     * @return $this
-     */
-    public function setType(TypeInterface $type);
 }

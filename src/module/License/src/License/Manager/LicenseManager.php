@@ -19,7 +19,7 @@ use License\Entity\LicenseInterface;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -50,7 +50,7 @@ class LicenseManager implements LicenseManagerInterface
         $title = $defaults[$code];
         return $this->findLicenseByTitleAndLanguage($title, $language);
     }
-    
+
     public function findLicenseByTitleAndLanguage($title, LanguageModelInterface $language)
     {
         if (! is_string($title))
@@ -149,5 +149,11 @@ class LicenseManager implements LicenseManagerInterface
             ->findBy(array(
             'language' => $languageService->getEntity()
         ));
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
     }
 }

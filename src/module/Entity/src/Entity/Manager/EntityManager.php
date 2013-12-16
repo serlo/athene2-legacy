@@ -13,18 +13,18 @@ namespace Entity\Manager;
 
 use Entity\Exception;
 use Language\Model\LanguageModelInterface;
+use Entity\Entity\EntityInterface;
+use Entity\Options\EntityOptions;
 
 class EntityManager implements EntityManagerInterface
 {
-    use \Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
+    use\Type\TypeManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
-        return array(
-            'types' => array(),
-            'plugins' => array(),
-            'listeners' => array()
-        );
+        return [
+            'types' => []
+        ];
     }
 
     public function getEntity($id)
@@ -32,26 +32,20 @@ class EntityManager implements EntityManagerInterface
         $entity = $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('Entity\Entity\EntityInterface'), $id);
         
-        if (! is_object($entity)){
-            throw new Exception\EntityNotFoundException(sprintf('Entity with ID %s not found.', $id));
+        if (! is_object($entity)) {
+            throw new Exception\EntityNotFoundException(sprintf('Entity "%d" not found.', $id));
         }
         
-        $this->addInstance($entity->getId(), $this->createService($entity));
-        
-        return $this->getInstance($id);
+        return $this->buildEntity($entity);
     }
 
     public function createEntity($typeName, array $data = array(), LanguageModelInterface $languageService)
     {
-        $type = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Entity\Entity\TypeInterface'))
-            ->findOneBy(array(
-            'name' => $typeName
-        ));
+        $type = $this->getTypeManager()->findTypeByName($typeName);
         
-        if (! is_object($type))
-            throw new Exception\RuntimeException(sprintf('Type %s not found', $typeName));
+        if (! is_object($type)) {
+            throw new Exception\RuntimeException(sprintf('Type "%s" not found', $typeName));
+        }
         
         $entity = $this->getClassResolver()->resolve('Entity\Entity\EntityInterface');
         
@@ -62,38 +56,29 @@ class EntityManager implements EntityManagerInterface
         
         $this->getObjectManager()->persist($entity);
         
-        return $entity;
+        return $this->buildEntity($entity);
     }
 
-    /*public function purgeEntity($id)
+    public function getOptions(EntityInterface $entity)
     {
-        $entity = $this->getEntity($id);
-        $this->getObjectManager()->remove($entity->getEntity());
-        $this->removeInstance($id);
-        $entity = NULL;
-        return $this;
-    }*/
+        $typeName = $entity->getType()->getName();
+        if (! array_key_exists($typeName, $this->getOption('types'))) {
+            throw new Exception\RuntimeException(sprintf('Type "%s" not found in configuration.', $entity->getType()->getName()));
+        }
+        
+        return new EntityOptions($this->getOption('types')[$typeName]);
+    }
 
-    /*protected function createService(EntityInterface $entity)
+    public function flush()
     {
-        $instance = $this->createInstance('Entity\Service\EntityServiceInterface');
-        
-        if (! array_key_exists($entity->getType()->getName(), $this->getOption('types')))
-            throw new Exception\RuntimeException(sprintf('Type %s not found in configuration.', $entity->getType()->getName()));
-        
-        if (! array_key_exists('plugins', $this->getOption('types')[$entity->getType()
-            ->getName()]))
-            throw new Exception\RuntimeException('Must define plugins');
-        
-        $config = $this->getOption('types')[$entity->getType()
-            ->getName()];
-        
-        $instance->setEventManager($this->getEventManager());
-        $instance->setPluginManager($this->getPluginManager());
-        $instance->setEntityManager($this);
-        $instance->setEntity($entity);
-        $instance->setConfig($config);
-        
-        return $instance;
-    }*/
+        $this->getObjectManager()->flush();
+        return $this;
+    }
+
+    protected function buildEntity(EntityInterface $entity)
+    {
+        $config = $this->getOptions($entity);
+        $entity->setOptions($config);
+        return $entity;
+    }
 }

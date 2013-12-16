@@ -60,7 +60,7 @@ class Revision extends UuidEntity implements RevisionInterface
      *
      * @return field_type $date
      */
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -70,7 +70,7 @@ class Revision extends UuidEntity implements RevisionInterface
      * @param field_type $date            
      * @return $this
      */
-    public function setDate(\DateTime $date)
+    public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -116,6 +116,11 @@ class Revision extends UuidEntity implements RevisionInterface
         $entity->set('value', $value);
         $this->fields->add($entity);
         return $entity;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
     }
     
     /*

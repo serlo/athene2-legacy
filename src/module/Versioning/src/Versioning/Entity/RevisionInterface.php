@@ -13,54 +13,55 @@ use DateTime;
 
 interface RevisionInterface
 {
+
     /**
-     * 
+     *
      * @return int
      */
     public function getId();
-    
+
     /**
      * Returns the repository
-     * 
+     *
      * @return RepositoryInterface
      */
-    public function getRepository ();
-    
-    /**
-     * Sets the repository
-     * 
-     * @param RepositoryInterface $repository
-     * @return $this
-     */
-    public function setRepository(RepositoryInterface $repository);
-    
+    public function getRepository();
+
     /**
      * Gets the date´
-     * 
-     * @return \DateTime
+     *
+     * @return DateTime
      */
-    public function getDate();
-    
+    public function getTimestamp();
+
     /**
      * Gets the author
-     * 
+     *
      * @return UserInterface
      */
     public function getAuthor();
-    
+
     /**
      * Sets the date
-     * 
-     * @param \DateTime $date
-     * @return $this
+     *
+     * @param DateTime $date            
+     * @return self
      */
-    public function setDate(DateTime $date);
-    
+    public function setTimestamp(DateTime $date);
+
     /**
      * Sets the author
-     * 
-     * @param UserInterface $user
-     * @return $this
+     *
+     * @param UserInterface $user            
+     * @return self
      */
     public function setAuthor(UserInterface $user);
+
+    /**
+     * Sets the repository
+     *
+     * @param RepositoryInterface $repository            
+     * @return self
+     */
+    public function setRepository(RepositoryInterface $repository);
 }

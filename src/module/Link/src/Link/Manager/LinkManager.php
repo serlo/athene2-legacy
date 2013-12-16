@@ -12,21 +12,11 @@
 namespace Link\Manager;
 
 use Link\Entity\LinkableInterface;
-use Link\Exception;
 
 class LinkManager extends AbstractManager implements LinkManagerInterface
 {
-    use\Common\Traits\EntityDelegatorTrait;
+    use\Common\Traits\InstanceManagerTrait;
 
-    /**
-     * 
-     * @return LinkableInterface
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
-    
     public function getLink(LinkableInterface $entity)
     {
         $id = $entity->getId();
@@ -40,7 +30,6 @@ class LinkManager extends AbstractManager implements LinkManagerInterface
     {
         $instance = parent::createInstance('Link\Service\LinkServiceInterface');
         $instance->setEntity($entity);
-        $instance->setLinkManager($this);
         return $instance;
     }
 }

@@ -23,6 +23,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Context implements ContextInterface
 {
+    use \Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -36,11 +37,6 @@ class Context implements ContextInterface
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $object;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Type", inversedBy="context")
-     */
-    protected $type;
 
     /**
      * @ORM\Column(type="string")
@@ -72,11 +68,6 @@ class Context implements ContextInterface
         return $this->object->getHolder();
     }
 
-    public function getType()
-    {
-        return $this->type;
-    }
-
     public function getTitle()
     {
         return $this->title;
@@ -85,12 +76,6 @@ class Context implements ContextInterface
     public function setObject(UuidInterface $object)
     {
         $this->object = $object;
-        return $this;
-    }
-
-    public function setType(TypeInterface $type)
-    {
-        $this->type = $type;
         return $this;
     }
 

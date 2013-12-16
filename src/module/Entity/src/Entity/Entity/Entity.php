@@ -16,14 +16,15 @@ use Link\Entity\LinkableInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RevisionInterface;
-use Link\Entity\LinkTypeInterface;
 use Link\Entity\LinkInterface;
 use Entity\Exception;
 use License\Entity\LicenseInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Taxonomy\Model\TaxonomyTermNodeModelInterface;
-use Entity\Model\TypeModelInterface;
 use Language\Model\LanguageModelInterface;
+use Doctrine\Common\Collections\Criteria;
+use Entity\Options\EntityOptions;
+use Type\Entity\TypeInterface;
 
 /**
  * An entity.
@@ -33,6 +34,7 @@ use Language\Model\LanguageModelInterface;
  */
 class Entity extends UuidEntity implements EntityInterface
 {
+    use\Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -78,12 +80,6 @@ class Entity extends UuidEntity implements EntityInterface
     protected $termTaxonomyEntities;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Type", inversedBy="entities")
-     * @ORM\JoinColumn(name="entity_type_id", referencedColumnName="id")
-     */
-    protected $type;
-
-    /**
      * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     protected $date;
@@ -99,6 +95,12 @@ class Entity extends UuidEntity implements EntityInterface
      */
     protected $license;
 
+    /**
+     *
+     * @var EntityOptions
+     */
+    protected $options;
+
     public function __construct()
     {
         $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
@@ -109,12 +111,11 @@ class Entity extends UuidEntity implements EntityInterface
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->terms = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
-        $this->fieldOrder = array();
     }
 
-    public function getEntity()
+    public function getOptions()
     {
-        return $this;
+        return $this->options;
     }
 
     public function getLicense()
@@ -122,20 +123,9 @@ class Entity extends UuidEntity implements EntityInterface
         return $this->license;
     }
 
-    public function setLicense(LicenseInterface $license)
-    {
-        $this->license = $license;
-        return $this;
-    }
-
     public function getCurrentRevision()
     {
         return $this->currentRevision;
-    }
-
-    public function getType()
-    {
-        return $this->type;
     }
 
     public function getLanguage()
@@ -153,10 +143,10 @@ class Entity extends UuidEntity implements EntityInterface
         return $this->revisions;
     }
 
-    public function setType(TypeModelInterface $type)
+    public function getRevision($id)
     {
-        $this->type = $type;
-        return $this;
+        return $this->revisions->matching(Criteria::create(Criteria::expr()->eq('id', $id)))
+            ->current();
     }
 
     public function setCurrentRevision(RevisionInterface $currentRevision)
@@ -177,7 +167,7 @@ class Entity extends UuidEntity implements EntityInterface
         return $this;
     }
 
-    public function newRevision()
+    public function createRevision()
     {
         $revision = new Revision();
         $revision->setRepository($this);
@@ -186,7 +176,7 @@ class Entity extends UuidEntity implements EntityInterface
 
     public function getTaxonomyTerms()
     {
-        $collection = new \Doctrine\Common\Collections\ArrayCollection();
+        $collection = new ArrayCollection();
         
         foreach ($this->termTaxonomyEntities as $rel) {
             $collection->add($rel->getTaxonomyTerm());
@@ -195,12 +185,12 @@ class Entity extends UuidEntity implements EntityInterface
         return $collection;
     }
 
-    public function getChildren(LinkTypeInterface $type)
+    public function getChildren($typeName)
     {
         $collection = new ArrayCollection();
         
         foreach ($this->getChildLinks() as $link) {
-            if ($link->getType() === $type) {
+            if ($link->getType()->getName() === $typeName) {
                 $collection->add($link->getChild());
             }
         }
@@ -208,12 +198,12 @@ class Entity extends UuidEntity implements EntityInterface
         return $collection;
     }
 
-    public function getParents(LinkTypeInterface $type)
+    public function getParents($typeName)
     {
         $collection = new ArrayCollection();
         
         foreach ($this->getParentLinks() as $link) {
-            if ($link->getType() === $type) {
+            if ($link->getType()->getName() === $typeName) {
                 $collection->add($link->getParent());
             }
         }
@@ -221,71 +211,20 @@ class Entity extends UuidEntity implements EntityInterface
         return $collection;
     }
 
-    public function positionChild(LinkableInterface $child, LinkTypeInterface $type, $position)
+    public function setLicense(LicenseInterface $license)
     {
-        $link = $this->findChildLink($child, $type);
-        $link->setPosition($position);
-        return $link;
-    }
-
-    public function positionParent(LinkableInterface $parent, LinkTypeInterface $type, $position)
-    {
-        $link = $this->findParentLink($parent, $type);
-        $link->setPosition($position);
-        return $link;
-    }
-
-    public function removeChildLink(LinkInterface $link)
-    {
-        $this->getChildLinks()->removeElement($link);
+        $this->license = $license;
         return $this;
     }
 
-    public function removeParentLink(LinkInterface $link)
+    public function createLink()
     {
-        $this->getParentLinks()->removeElement($link);
-        return $this;
+        return new EntityLink();
     }
 
-    public function removeChild(LinkableInterface $child, LinkTypeInterface $type)
+    public function setOptions(EntityOptions $options)
     {
-        $link = $this->findChildLink($child, $type);
-        $this->removeChildLink($link);
-        $child->removeParentLink($link);
-        return $this;
-    }
-
-    public function removeParent(LinkableInterface $parent, LinkTypeInterface $type)
-    {
-        $link = $this->findParentLink($parent, $type);
-        $this->removeParentLink($link);
-        $parent->removeChildLink($link);
-        return $this;
-    }
-
-    public function addChild(LinkableInterface $child, LinkTypeInterface $type, $order = -1)
-    {
-        if ($order == - 1) {
-            $order = $this->getLinkOrderOffset($child, $type, 'child') + 1;
-        }
-        $link = new EntityLink($type, $order);
-        $link->setParent($this);
-        $link->setChild($child);
-        $this->getChildLinks()->add($link);
-        $child->getParentLinks()->add($link);
-        return $this;
-    }
-
-    public function addParent(LinkableInterface $parent, LinkTypeInterface $type, $order = -1)
-    {
-        if ($order == - 1) {
-            $order = $this->getLinkOrderOffset($parent, $type, 'parent') + 1;
-        }
-        $link = new EntityLink($type, $order);
-        $link->setParent($parent);
-        $link->setChild($this);
-        $this->getParentLinks()->add($link);
-        $parent->getChildLinks()->add($link);
+        $this->options = $options;
         return $this;
     }
 
@@ -306,6 +245,12 @@ class Entity extends UuidEntity implements EntityInterface
         return $this;
     }
 
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+        return $this;
+    }
+
     public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
     {
         if ($node === NULL) {
@@ -322,66 +267,12 @@ class Entity extends UuidEntity implements EntityInterface
         $this->termTaxonomyEntities->removeElement($node);
     }
 
-    protected function findParentLink(LinkableInterface $parent, LinkTypeInterface $type)
-    {
-        foreach ($this->getParentLinks() as $link) {
-            if ($link->getParent() === $parent && $link->getType() === $type) {
-                return $link;
-            }
-        }
-        throw new Exception\RuntimeException(sprintf('`%s` is not a `%s` child of `%s`.', $this->getId(), $type->getName(), $parent->getId()));
-    }
-
-    protected function findChildLink(LinkableInterface $child, LinkTypeInterface $type)
-    {
-        foreach ($this->getChildLinks() as $link) {
-            if ($link->getChild() === $child && $link->getType() === $type) {
-                return $link;
-            }
-        }
-        throw new Exception\RuntimeException(sprintf('`%s` is not a `%s` parent of `%s`.', $this->getId(), $type->getName(), $child->getId()));
-    }
-
-    protected function findParentLinks(LinkTypeInterface $type)
-    {
-        $links = new ArrayCollection();
-        foreach ($this->getParentLinks() as $link) {
-            if ($link->getType() === $type) {
-                $links->add($link);
-            }
-        }
-        return $links;
-    }
-
-    protected function findChildLinks(LinkTypeInterface $type)
-    {
-        $links = new ArrayCollection();
-        foreach ($this->getChildLinks() as $link) {
-            if ($link->getType() === $type) {
-                $links->add($link);
-            }
-        }
-        return $links;
-    }
-
-    protected function getLinkOrderOffset(LinkableInterface $link, LinkTypeInterface $type, $field)
-    {
-        $method = 'find' . ucfirst($field) . 'Links';
-        $e = $this->$method($type)->last();
-        
-        if (! is_object($e)) {
-            return 0;
-        } else {
-            return $e->getPosition();
-        }
-    }
-
-    protected function getParentLinks()
+    public function getParentLinks()
     {
         return $this->parentLinks;
     }
 
-    protected function getChildLinks()
+    public function getChildLinks()
     {
         return $this->childLinks;
     }

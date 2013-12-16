@@ -30,20 +30,6 @@ interface FlagManagerInterface extends ObjectManagerAwareInterface, Flushable
 
     /**
      *
-     * @param int $id            
-     * @return TypeInterface
-     */
-    public function getType($id);
-
-    /**
-     *
-     * @param string $name            
-     * @return TypeInterface
-     */
-    public function findTypeByName($name);
-
-    /**
-     *
      * @return FlagCollection FlagServiceInterface[]
      */
     public function findAllFlags();
@@ -60,13 +46,13 @@ interface FlagManagerInterface extends ObjectManagerAwareInterface, Flushable
      * @return $this
      */
     public function removeFlag($id);
-    
+
     /**
-     * 
-     * @param int $type
-     * @param string $content
-     * @param int $uuid
-     * @param UserServiceInterface $reporter
+     *
+     * @param int $type            
+     * @param string $content            
+     * @param int $uuid            
+     * @param UserServiceInterface $reporter            
      * @return FlagServiceInterface
      */
     public function addFlag($type, $content, $uuid, UserServiceInterface $reporter);

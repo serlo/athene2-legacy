@@ -22,6 +22,7 @@ use User\Entity\UserInterface;
  */
 class Flag implements FlagInterface
 {
+    use \Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -35,13 +36,7 @@ class Flag implements FlagInterface
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $object;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Type", inversedBy="flags")
-     * @ORM\JoinColumn(name="flag_type_id", referencedColumnName="id")
-     */
-    protected $type;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      */
@@ -71,12 +66,7 @@ class Flag implements FlagInterface
     {
         return $this->object;
     }
-
-    public function getType()
-    {
-        return $this->type;
-    }
-
+    
     public function getReporter()
     {
         return $this->reporter;
@@ -90,12 +80,6 @@ class Flag implements FlagInterface
     public function setObject(UuidInterface $object)
     {
         $this->object = $object;
-        return $this;
-    }
-
-    public function setType(TypeInterface $type)
-    {
-        $this->type = $type;
         return $this;
     }
 

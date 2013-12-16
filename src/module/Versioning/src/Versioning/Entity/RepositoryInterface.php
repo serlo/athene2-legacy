@@ -26,11 +26,19 @@ interface RepositoryInterface
     public function getRevisions ();
     
     /**
-     * Creates a new revision and adds it to the repository
+     * Creates a new revision
      * 
      * @return RevisionInterface
      */
-    public function newRevision();
+    public function createRevision();
+    
+    /**
+     * Returns a revision
+     * 
+     * @param int $id
+     * @return RevisionInterface
+     */
+    public function getRevision($id);
     
     /**
      * 

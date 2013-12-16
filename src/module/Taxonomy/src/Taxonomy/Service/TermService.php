@@ -18,7 +18,7 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Exception\TermNotFoundException;
 use Common\Normalize\Normalized;
 use Taxonomy\Exception\RuntimeException;
-use Taxonomy\Model\TaxonomyTermModelAwareInterface;
+use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 use Uuid\Entity\UuidInterface;
 
 class TermService implements TermServiceInterface
@@ -160,7 +160,7 @@ class TermService implements TermServiceInterface
         return $callback($this->getServiceLocator(), $this->getEntity()->getAssociated($targetField));
     }
 
-    public function isAssociated($association, TaxonomyTermModelAwareInterface $object)
+    public function isAssociated($association, TaxonomyTermEntityAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         return $this->getEntity()->isAssociated($association, $object);
@@ -172,7 +172,7 @@ class TermService implements TermServiceInterface
         return $this;
     }
 
-    public function removeAssociation($association, TaxonomyTermModelAwareInterface $object)
+    public function removeAssociation($association, TaxonomyTermEntityAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         $this->getEntity()->removeAssociation($association, $object);
@@ -185,7 +185,7 @@ class TermService implements TermServiceInterface
             ->getTerm());
     }
 
-    public function associateObject($association, TaxonomyTermModelAwareInterface $object)
+    public function associateObject($association, TaxonomyTermEntityAwareInterface $object)
     {
         $this->isLinkAllowedWithException($association);
         $this->getEntity()->associateObject($association, $object);

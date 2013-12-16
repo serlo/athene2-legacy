@@ -41,7 +41,7 @@ class RevisionFake implements RevisionInterface
 	/* (non-PHPdoc)
      * @see \Versioning\Entity\RevisionInterface::getTimestamp()
      */
-    public function getDate ()
+    public function getTimestamp ()
     {
         return $this->date;
     }
@@ -57,7 +57,7 @@ class RevisionFake implements RevisionInterface
 	/* (non-PHPdoc)
      * @see \Versioning\Entity\RevisionInterface::setDate()
      */
-    public function setDate (\DateTime $date)
+    public function setTimestamp (\DateTime $date)
     {
         $this->date = $date;
         return $this;

@@ -144,7 +144,7 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
 		
 	}
 	
-	public function newRevision() {
+	public function createRevision() {
 	    $revision = new PageRevision();
 	    $revision->setRepository($this);
 	    return $revision;

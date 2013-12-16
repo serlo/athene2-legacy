@@ -49,11 +49,11 @@ interface TaxonomyTermNodeModelInterface
      * @param object $object
      * @return self
      */
-    public function setObject(TaxonomyTermModelAwareInterface $object);
+    public function setObject(TaxonomyTermEntityAwareInterface $object);
     
     /**
      * 
-     * @return TaxonomyTermModelAwareInterface
+     * @return TaxonomyTermEntityAwareInterface
      */
     public function getObject();
 }
