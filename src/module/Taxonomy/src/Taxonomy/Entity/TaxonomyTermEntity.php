@@ -13,15 +13,12 @@ namespace Taxonomy\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Model\TaxonomyTermNodeModelInterface;
-use Taxonomy\Model\TaxonomyTermModelInterface;
-use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy_entity")
  */
-class TaxonomyTermEntity implements TaxonomyTermNodeModelInterface
+class TaxonomyTermEntity implements TaxonomyTermNodeInterface
 {
 
     /**
@@ -56,7 +53,7 @@ class TaxonomyTermEntity implements TaxonomyTermNodeModelInterface
      */
     protected $position;
 
-    public function __construct(TaxonomyTermModelInterface $termTaxonomy, EntityInterface $entity)
+    public function __construct(TaxonomyTermInterface $termTaxonomy, EntityInterface $entity)
     {
         $this->setTaxonomyTerm($termTaxonomy);
         $this->setObject($entity);
@@ -83,13 +80,13 @@ class TaxonomyTermEntity implements TaxonomyTermNodeModelInterface
         return $this->position;
     }
 
-    public function setTaxonomyTerm(TaxonomyTermModelInterface $termTaxonomy)
+    public function setTaxonomyTerm(TaxonomyTermInterface $termTaxonomy)
     {
         $this->termTaxonomy = $termTaxonomy;
         return $this;
     }
 
-    public function setObject(TaxonomyTermEntityAwareInterface $entity)
+    public function setObject(TaxonomyTermAwareInterface $entity)
     {
         $this->entity = $entity;
         return $this;

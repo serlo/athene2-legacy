@@ -16,12 +16,12 @@ use Language\Model\LanguageModelAwareInterface;
 use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkableInterface;
 use License\Entity\LicenseAwareInterface;
-use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use DateTime;
 use Type\Entity\TypeAwareInterface;
 use Entity\Options\EntityOptions;
 
-interface EntityInterface extends UuidHolder, LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermEntityAwareInterface, TypeAwareInterface
+interface EntityInterface extends UuidHolder, LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermAwareInterface, TypeAwareInterface
 {
 
     /**
@@ -52,16 +52,18 @@ interface EntityInterface extends UuidHolder, LanguageModelAwareInterface, Repos
     /**
      * Returns the children
      *
-     * @param string $type            
+     * @param string $linkyType  
+     * @param string $childType                
      * @return Collection
      */
-    public function getChildren($typeName);
+    public function getChildren($linkyType, $childType = NULL);
 
     /**
      * Returns the parents
      *
-     * @param string $type            
+     * @param string $linkyType       
+     * @param string $parentType           
      * @return Collection
      */
-    public function getParents($typeName);
+    public function getParents($linkyType, $parentType = NULL);
 }

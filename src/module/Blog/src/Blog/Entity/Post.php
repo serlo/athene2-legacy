@@ -12,14 +12,14 @@
 namespace Blog\Entity;
 
 use Uuid\Entity\UuidEntity;
-use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Blog\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
-use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 use Uuid\Entity\UuidInterface;
 use User\Model\UserModelInterface;
 use DateTime;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermNodeInterface;
 
 /**
  * A blog post.
@@ -74,7 +74,7 @@ class Post extends UuidEntity implements PostInterface
         $this->publish = new DateTime();
         $this->date = new DateTime();
     }
-    
+
     public function getAuthor()
     {
         return $this->author;
@@ -111,7 +111,7 @@ class Post extends UuidEntity implements PostInterface
         return $this;
     }
 
-    public function setBlog(TaxonomyTermModelInterface $category)
+    public function setBlog(TaxonomyTermInterface $category)
     {
         $this->category = $category;
         return $this;
@@ -153,12 +153,12 @@ class Post extends UuidEntity implements PostInterface
         return $this->getPublish() < new DateTime();
     }
 
-    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
     {
         $this->setBlog($taxonomyTerm);
     }
 
-    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
     {
         throw new Exception\RuntimeException('You can\'t unset the category - it is required!');
     }

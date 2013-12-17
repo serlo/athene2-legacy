@@ -9,9 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+
+/* @var $exercise \Entity\Entity\EntityInterface */
 $exercise = $this->entity;
 ?>
-<?php if($exercise->repository()->hasCurrentRevision()): ?>
+<?php if($exercise->hasCurrentRevision()): ?>
     <div class="list-group-item">
         <?php echo $this->partial('entity/view/default', array('entity' => $this->entity, 'hideActions' => array('detail'))); ?>
     </div>

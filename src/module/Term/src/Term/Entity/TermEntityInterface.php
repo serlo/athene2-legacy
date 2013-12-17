@@ -11,10 +11,9 @@
  */
 namespace Term\Entity;
 
-use Term\Model\TermModelInterface;
 use Language\Model\LanguageModelAwareInterface;
 
-interface TermEntityInterface extends TermModelInterface, LanguageModelAwareInterface
+interface TermEntityInterface extends LanguageModelAwareInterface
 {
 
     /**
@@ -48,10 +47,4 @@ interface TermEntityInterface extends TermModelInterface, LanguageModelAwareInte
      * @return $this
      */
     public function setSlug($slug);
-
-    /**
-     *
-     * @return TermModelInterface
-     */
-    public function getEntity();
 }

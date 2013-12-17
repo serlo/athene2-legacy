@@ -1,9 +1,10 @@
 <?php
+/* @var $module \Entity\Entity\EntityInterface */
 $module = $this->entity;
-if($module->repository()->hasCurrentRevision()): ?>
-    <?php $revision = $module->repository()->getCurrentRevision(); ?>
+if($module->hasCurrentRevision()): ?>
+    <?php $revision = $module->getCurrentRevision(); ?>
     <li class="list-group-item">
-        <a href="<?php echo $this->url('entity/plugin/page', array('entity' => $module->getId())); ?>" class="module">
+        <a href="<?php echo $this->url('entity/page', array('entity' => $module->getId())); ?>" class="module">
         	<?php echo $revision->get('title'); ?>
         </a>
     </li>

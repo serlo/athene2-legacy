@@ -18,9 +18,8 @@ use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Model\TaxonomyTermModelInterface;
-use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
-use Taxonomy\Model\TaxonomyTermNodeModelInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermNodeInterface;
 
 /**
  * Comment ORM Entity
@@ -30,7 +29,7 @@ use Taxonomy\Model\TaxonomyTermNodeModelInterface;
  */
 class Comment extends UuidEntity implements CommentInterface
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment")
@@ -101,7 +100,7 @@ class Comment extends UuidEntity implements CommentInterface
     {
         return ! $this->hasParent();
     }
-    
+
     public function getArchived()
     {
         return $this->archived;
@@ -286,31 +285,21 @@ class Comment extends UuidEntity implements CommentInterface
     {
         return $this->findVotesByUser($user)->count() === 1;
     }
-    
-	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermEntityAwareInterface::addTaxonomyTerm()
-     */
-    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
     {
         $this->terms->add($taxonomyTerm);
         return $this;
     }
 
-	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermEntityAwareInterface::removeTaxonomyTerm()
-     */
-    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
     {
         $this->terms->removeElement($taxonomyTerm);
         return $this;
     }
 
-	/* (non-PHPdoc)
-     * @see \Taxonomy\Model\TaxonomyTermEntityAwareInterface::getTaxonomyTerms()
-     */
     public function getTaxonomyTerms()
     {
         return $this->terms;
     }
-
 }

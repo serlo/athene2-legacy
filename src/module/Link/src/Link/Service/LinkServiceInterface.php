@@ -15,12 +15,6 @@ interface LinkServiceInterface
 
     /**
      *
-     * @return LinkableInterface
-     */
-    public function getEntity();
-
-    /**
-     *
      * @param LinkableInterface $parent            
      * @param LinkableInterface $child            
      * @param string $typeName            
@@ -42,25 +36,18 @@ interface LinkServiceInterface
     /**
      *
      * @param LinkableInterface $parent            
-     * @param string $typename            
+     * @param string $typeName            
      * @param array $children            
      * @return self
      */
-    public function sortChildren(LinkableInterface $parent, $typename, array $children);
+    public function sortChildren(LinkableInterface $parent, $typeName, array $children);
 
     /**
      *
-     * @param LinkableInterface $parent            
-     * @param string $typename            
-     * @param array $children            
+     * @param LinkableInterface $child            
+     * @param string $typeName            
+     * @param array $parents            
      * @return self
      */
-    public function sortParents(LinkableInterface $child, $typename, array $parents);
-
-    /**
-     *
-     * @param LinkableInterface $entity            
-     * @return self
-     */
-    public function setEntity(LinkableInterface $entity);
+    public function sortParents(LinkableInterface $child, $typeName, array $parents);
 }

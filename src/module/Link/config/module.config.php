@@ -9,10 +9,6 @@
 namespace Link;
 
 return [
-    'class_resolver' => [
-        'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService',
-        'Link\Manager\LinkManagerInterface' => 'Link\Manager\LinkManager'
-    ],
     'di' => [
         'definition' => [
             'class' => [
@@ -23,23 +19,12 @@ return [
                     'setTypeManager' => [
                         'required' => true
                     ]
-                ],
-                'Link\Manager\LinkManager' => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ]
                 ]
             ]
         ],
         'instance' => [
             'preferences' => [
-                'Link\Manager\LinkManagerInterface' => 'Link\Manager\LinkManager'
-            ],
-            'Link\Service\LinkService' => [
-                'shared' => false
+                'Link\Service\LinkServiceInterface' => 'Link\Service\LinkService'
             ]
         ]
     ],

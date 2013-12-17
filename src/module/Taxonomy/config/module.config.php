@@ -167,6 +167,7 @@ return array(
                 $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $instance->setTermManager($sm->get('Term\Manager\TermManager'));
+                $instance->setTypeManager($sm->get('Type\TypeManager'));
                 return $instance;
             }),
             'Taxonomy\Router\TermRouter' => (function ($sm)

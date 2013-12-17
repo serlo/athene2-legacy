@@ -16,7 +16,8 @@ class Module
 
     public static $listeners = array(
         'Alias\Listener\BlogControllerListener',
-        'Alias\Listener\PageControllerListener'
+        'Alias\Listener\PageControllerListener',
+        'Alias\Listener\RepositoryControllerListener'
     );
 
     public function getConfig()

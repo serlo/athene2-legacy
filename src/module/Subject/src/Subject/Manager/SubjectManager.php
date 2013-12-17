@@ -53,9 +53,9 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         if (! is_string($name))
             throw new InvalidArgumentException();
         
-        $term = $this->getSharedTaxonomyManager()
-            ->findTaxonomyByName($this->getOption('taxonomy'), $language)
-            ->findTermByAncestors((array) $name);
+        $taxonomy = $this->getSharedTaxonomyManager()
+            ->findTaxonomyByName($this->getOption('taxonomy'), $language);
+        $term = $taxonomy->findTermByAncestors((array) $name);
         
         if (! $this->hasInstance($term->getId())) {
             $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));

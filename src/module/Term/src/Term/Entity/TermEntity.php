@@ -11,7 +11,6 @@
  */
 namespace Term\Entity;
 
-use Language\Entity\LanguageEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Language\Model\LanguageModelInterface;
 
@@ -30,26 +29,20 @@ class TermEntity implements TermEntityInterface
      * @ORM\GeneratedValue
      */
     protected $id;
-
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
-     */
-    protected $language;
-
-    /**
-     * @ORM\Column(type="text",length=255)
+     * @ORM\Column(type="text")
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="text",length=255)
+     * @ORM\Column(type="text")
      */
     protected $slug;
 
     /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="term")
      */
-    private $termTaxonomies;
+    protected $termTaxonomies;
 
     public function getId()
     {

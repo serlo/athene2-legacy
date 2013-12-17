@@ -9,24 +9,35 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Plugin\License\Listener;
+namespace Taxonomy\Listener;
 
-use Common\Listener\AbstractSharedListenerAggregate;
 use Zend\EventManager\Event;
+use Common\Listener\AbstractSharedListenerAggregate;
+
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
+    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+
     public function onCreate(Event $e)
     {
         /* var $entity \Entity\Service\EntityServiceInterface */
         $entity = $e->getParam('entity');
-        if($entity->hasPlugin('license')){
-            $entity->license()->inject();
-        }
+        $data = $e->getParam('query');
+        
+        $options = $data['taxonomy'];
+        
+        $term = $this->getSharedTaxonomyManager()->getTerm($options['term']);
+        
+        $term->associateObject('entities', $entity);
+        
+        $e->getTarget()
+            ->getEventManager()
+            ->trigger('addToTerm', $this, array(
+            'entity' => $entity,
+            'term' => $term
+        ));
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
+
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
@@ -34,10 +45,7 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
             'onCreate'
         ), 2);
     }
-    
-    /*
-     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
-     */
+
     protected function getMonitoredClass()
     {
         return 'Entity\Controller\EntityController';

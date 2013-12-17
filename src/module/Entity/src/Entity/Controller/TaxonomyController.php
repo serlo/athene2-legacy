@@ -22,9 +22,6 @@ class TaxonomyController extends AbstractController
         $plugin = $this->getPlugin();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         
-        $subject = $this->getEntityService()
-            ->provider()
-            ->getSubjectSlug();
         /* @var $plugin \Entity\Plugin\Taxonomy\TaxonomyPlugin */
         $taxonomy = $plugin->getSharedTaxonomyManager()->findTaxonomyByName('subject', $language);
         

@@ -10,9 +10,8 @@ use ZfcRbac\Guard\AbstractGuard;
  */
 class HydratableControllerGuard extends AbstractGuard
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
-    use\Page\Manager\PageManagerAwareTrait;
-
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Page\Manager\PageManagerAwareTrait;
+    
     /**
      * Set a lower priority for controller guards than for route guards, so that they are
      * always executed after them
@@ -64,9 +63,6 @@ class HydratableControllerGuard extends AbstractGuard
     {
         foreach ($rules as $rule) {
             $provider = new $rule['role_provider']();
-            
-            $provider->setServiceLocator(($this->getServiceLocator()));
-            $provider->setPageManager($this->getPageManager());
             
             $roles = $provider->getRoles();
             

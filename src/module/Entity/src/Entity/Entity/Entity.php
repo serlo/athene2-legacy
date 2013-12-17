@@ -25,6 +25,8 @@ use Language\Model\LanguageModelInterface;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Options\EntityOptions;
 use Type\Entity\TypeInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermNodeInterface;
 
 /**
  * An entity.
@@ -34,7 +36,7 @@ use Type\Entity\TypeInterface;
  */
 class Entity extends UuidEntity implements EntityInterface
 {
-    use\Type\Entity\TypeAwareTrait;
+    use \Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -185,12 +187,15 @@ class Entity extends UuidEntity implements EntityInterface
         return $collection;
     }
 
-    public function getChildren($typeName)
+    public function getChildren($linkyType, $childType = NULL)
     {
         $collection = new ArrayCollection();
         
         foreach ($this->getChildLinks() as $link) {
-            if ($link->getType()->getName() === $typeName) {
+            $childTypeName = $link->getChild()
+                ->getType()
+                ->getName();
+            if ($link->getType()->getName() === $linkyType && ($childType === NULL || ($childType !== NULL && $childTypeName === $childType))) {
                 $collection->add($link->getChild());
             }
         }
@@ -198,12 +203,15 @@ class Entity extends UuidEntity implements EntityInterface
         return $collection;
     }
 
-    public function getParents($typeName)
+    public function getParents($linkyType, $parentType = NULL)
     {
         $collection = new ArrayCollection();
         
         foreach ($this->getParentLinks() as $link) {
-            if ($link->getType()->getName() === $typeName) {
+            $childTypeName = $link->getChild()
+                ->getType()
+                ->getName();
+            if ($link->getType()->getName() === $linkyType && ($parentType === NULL || ($parentType !== NULL && $childTypeName === $parentType))) {
                 $collection->add($link->getParent());
             }
         }
@@ -251,7 +259,7 @@ class Entity extends UuidEntity implements EntityInterface
         return $this;
     }
 
-    public function addTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
     {
         if ($node === NULL) {
             throw new Exception\InvalidArgumentException('Missing parameter node');
@@ -259,7 +267,7 @@ class Entity extends UuidEntity implements EntityInterface
         $this->termTaxonomyEntities->add($node);
     }
 
-    public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL)
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
     {
         if ($node === NULL) {
             throw new Exception\InvalidArgumentException('Missing parameter node');

@@ -15,7 +15,7 @@ trait TypeAwareTrait
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Type")
+     * @ORM\ManyToOne(targetEntity="Type\Entity\Type")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     protected $type;

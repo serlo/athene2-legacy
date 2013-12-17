@@ -20,6 +20,7 @@ use Common\Normalize\Normalized;
 use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 use Uuid\Entity\UuidInterface;
+use Term\Entity\TermEntityInterface;
 
 class TermService implements TermServiceInterface
 {
@@ -305,7 +306,7 @@ class TermService implements TermServiceInterface
         return $this;
     }
 
-    public function setTerm(\Term\Model\TermModelInterface $term)
+    public function setTerm(TermEntityInterface $term)
     {
         $this->getEntity()->setTerm($term->getEntity());
         return $this;

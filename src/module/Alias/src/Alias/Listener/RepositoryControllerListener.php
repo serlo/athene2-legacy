@@ -9,41 +9,41 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Listener;
+namespace Alias\Listener;
 
-use Entity\Result\UrlResult;
 use Zend\EventManager\Event;
 use Common\Listener\AbstractSharedListenerAggregate;
 
-class EntityControllerListener extends AbstractSharedListenerAggregate
+class RepositoryControllerListener extends AbstractSharedListenerAggregate
 {
 
-    public function onCreate(Event $e)
+    public function onCheckout(Event $e)
     {
         /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
+        $language = $e->getParam('language');
         
-        $result = new UrlResult();
-        $result->setResult($e->getTarget()
-            ->assemble(array(
-            'entity' => $entity->getId()
-        ), array(
-            'name' => 'entity/repository/add-revision'
-        )));
+        $url = $e->getTarget()
+            ->url()
+            ->fromRoute('entity/view', array(
+            'id' => $entity->getId()
+        ));
         
-        return $result;
+        $this->getAliasManager()->autoAlias('entity', $url, $entity->getUuidEntity(), $language);
     }
-
+    
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create.postFlush', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'checkout', array(
             $this,
-            'onCreate'
-        ), - 1000);
+            'onCheckout'
+        ));
+        
+        return $this;
     }
-
+    
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\EntityController';
+        return 'Entity\Controller\RepositoryController';
     }
 }

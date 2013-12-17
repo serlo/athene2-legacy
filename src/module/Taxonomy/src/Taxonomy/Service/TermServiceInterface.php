@@ -15,7 +15,7 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Collection\TermCollection;
 use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 
-interface TermServiceInterface extends TaxonomyTermModelInterface, SharedTaxonomyManagerAwareInterface
+interface TermServiceInterface //extends TaxonomyTermModelInterface, SharedTaxonomyManagerAwareInterface
 {
 
     /**

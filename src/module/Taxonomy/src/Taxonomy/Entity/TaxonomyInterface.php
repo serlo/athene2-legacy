@@ -11,7 +11,9 @@
  */
 namespace Taxonomy\Entity;
 
-interface TaxonomyInterface
+use Type\Entity\TypeAwareInterface;
+
+interface TaxonomyInterface extends TypeAwareInterface
 {
 
     public function getLanguage();
@@ -22,11 +24,7 @@ interface TaxonomyInterface
 
     public function setId($id);
 
-    public function getType();
-
-    public function setType($type);
-
     public function getTerms();
-    
+
     public function getName();
 }

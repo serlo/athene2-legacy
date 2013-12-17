@@ -40,6 +40,9 @@ return [
                     'setServiceLocator' => [
                         'required' => true
                     ],
+                    'setTypeManager' => [
+                        'required' => true
+                    ],
                     'setObjectManager' => [
                         'required' => true
                     ],

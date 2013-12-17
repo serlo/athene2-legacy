@@ -35,5 +35,5 @@
 <?php elseif($solution->repository()->hasHead()): ?>
     <?php echo $this->translate('This solution is waiting for approval. It will be soon available!'); ?>
 <?php else: ?>
-    <?php echo sprintf($this->translate('This solution has no content. Do you want to create %sone%s?'), '<a href="' . $this->url('entity/plugin/repository/add-revision', ['entity' => $solution->getId()] ). '">', '</a>'); ?>
+    <?php echo sprintf($this->translate('This solution has no content. Do you want to create %sone%s?'), '<a href="' . $this->url('entity/repository/add-revision', ['entity' => $solution->getId()] ). '">', '</a>'); ?>
 <?php endif; ?>

@@ -1,4 +1,4 @@
-<?php /* @var $entity \Entity\Service\EntityServiceInterface */ ?>
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
 <?php $entity = $this->entity;?>
 
 <div class="btn-group">
@@ -6,9 +6,9 @@
         <?php echo $this->translate('Editing'); ?> <span class="caret"></span>
     </button>
         <ul class="dropdown-menu" role="menu">
-            <?php if($entity->hasPlugin('repository')): ?>
+            <?php if($entity->getOptions()->isComponentEnabled('repository')): ?>
                 <!-- Edit Revision -->
-                <?php $url = $this->url('entity/plugin/repository/add-revision', array('entity' => $entity->getId())); ?>
+                <?php $url = $this->url('entity/repository/add-revision', array('entity' => $entity->getId())); ?>
                 <?php if($this->guard()->hasAccessToUrl($url)): ?>
                     <li>
                         <a href="<?php echo $url; ?>">
@@ -18,7 +18,7 @@
                     </li>
                 <?php endif; ?>
                 <!-- Versioning history -->
-                <?php $url = $this->url('entity/plugin/repository/history',array('entity' => $entity->getId())); ?>
+                <?php $url = $this->url('entity/repository/history',array('entity' => $entity->getId())); ?>
                 <?php if($this->guard()->hasAccessToUrl($url)): ?>
                     <li>
                         <a href="<?php echo $url; ?>">
@@ -31,21 +31,20 @@
                     </li>
                 <?php endif; ?>
             <?php endif; ?>
-            <?php foreach($entity->getScopesForPlugin('link') as $scope): ?>
-                <?php $plugin = $entity->$scope(); ?>
-                <?php foreach($plugin->getTypes() as $type => $options): ?>
-                    <?php if(($plugin->doesAssociationAllowMultiples() && $plugin->owns($type)) || (!$plugin->doesAssociationAllowMultiples() && !is_object($plugin->findChild()))): ?>
-                        <?php $url = $this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
-                        <?php if($this->guard()->hasAccessToUrl($url)): ?>
-                        	<li>
-                            	<a href="<?php echo $url; ?>">
-                                    <span class="glyphicon glyphicon-file"></span>
-                                    <?php echo sprintf($this->translate('Add %s'), $type); ?>
-                            	</a>
-                        	<li>
-                    	<?php endif; ?>
+            <?php foreach($entity->getOptions()->getAllowedChildren() as $child): ?>
+                <?php if($entity->getOptions()->areMultipleChildrenAllowed($child) || (!$entity->getOptions()->areMultipleChildrenAllowed($child) && $entity->getChildren('link')->count() < 1)): ?>
+                    <?php $url = '';//$this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
+                    <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                    	<li>
+                    	FIX ME PLS THX KK
+                    	
+                        	<a href="<?php echo $url; ?>">
+                                <span class="glyphicon glyphicon-file"></span>
+                                <?php echo sprintf($this->translate('Add %s'), $child); ?>
+                        	</a>
+                    	<li>
                 	<?php endif; ?>
-                <?php endforeach; ?>
+            	<?php endif; ?>
             <?php endforeach; ?>
         </ul>
 </div>
@@ -55,7 +54,7 @@
         <?php echo $this->translate('Data'); ?> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <?php if($entity->hasPlugin('license')): ?>
+        <?php if($entity->getOptions()->isComponentEnabled('license')): ?>   
             <!-- License -->
             <?php $url = $this->url('license/detail',array('id' => $entity->license()->getId())); ?>
             <?php if($this->guard()->hasAccessToUrl($url)): ?>
@@ -97,9 +96,9 @@
             </li>
         <?php endif; ?>
         
-        <?php if($entity->hasPlugin('taxonomy')): ?>
+        <?php if($entity->getOptions()->isComponentEnabled('taxonomy')): ?>   
             <!-- Change taxonomy term(s) -->
-            <?php $url = $this->url('entity/plugin/taxonomy/update',array('entity' => $entity->getId())); ?>
+            <?php $url = $this->url('entity/taxonomy/update',array('entity' => $entity->getId())); ?>
             <?php if($this->guard()->hasAccessToUrl($url)): ?>
                 <li>
                     <a href="<?php echo $url; ?>">
@@ -122,8 +121,8 @@
         <?php endif; ?>
         
         <!-- License -->
-        <?php if($entity->hasPlugin('license')): ?>
-            <?php $url = $this->url('entity/plugin/license/update', array('entity' => $entity->getId())); ?>
+        <?php if($entity->getOptions()->isComponentEnabled('license')): ?>   
+            <?php $url = $this->url('entity/license/update', array('entity' => $entity->getId())); ?>
             <?php if($this->guard()->hasAccessToUrl($url)): ?>
                 <li>
                     <a href="<?php echo $url; ?>">

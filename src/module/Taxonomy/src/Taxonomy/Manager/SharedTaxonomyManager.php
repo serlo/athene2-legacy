@@ -22,7 +22,7 @@ use Taxonomy\Model\TaxonomyTermModelInterface;
 
 class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Type\TypeManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -58,20 +58,12 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         if (! is_string($name))
             throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($name)));
         
-        $type = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Taxonomy\Entity\TaxonomyTypeInterface'))
-            ->findOneBy(array(
-            'name' => $name
+        $type = $this->getTypeManager()->findTypeByName($name);
+        
+        $entity = $this->getObjectManager()->getRepository($this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface'))->findOneBy(array(
+            'type' => $type->getId(),
+            'language' => $language->getId()
         ));
-        
-        if (! is_object($type))
-            throw new InvalidArgumentException(sprintf('Taxonomy type %s not found', $name));
-        
-        $entity = $type->getTaxonomies()
-            ->matching(Criteria::create()->where(Criteria::expr()->eq('language', $language->getEntity()))
-            ->setMaxResults(1))
-            ->first();
         
         if (! is_object($entity))
             throw new NotFoundException(sprintf('Could not find Taxonomy %s by language %s.', $name, $language->getId()));

@@ -176,6 +176,9 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
         
     }
     
+    public function getRevision($id){
+        throw new \EXCEPTION();
+    }
 
 
     public function populate(array $data = array())

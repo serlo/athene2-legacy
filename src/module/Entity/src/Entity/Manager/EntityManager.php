@@ -18,14 +18,7 @@ use Entity\Options\EntityOptions;
 
 class EntityManager implements EntityManagerInterface
 {
-    use\Type\TypeManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Entity\Plugin\PluginManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'types' => []
-        ];
-    }
+    use\Type\TypeManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function getEntity($id)
     {
@@ -36,7 +29,7 @@ class EntityManager implements EntityManagerInterface
             throw new Exception\EntityNotFoundException(sprintf('Entity "%d" not found.', $id));
         }
         
-        return $this->buildEntity($entity);
+        return $entity;
     }
 
     public function createEntity($typeName, array $data = array(), LanguageModelInterface $languageService)
@@ -56,7 +49,7 @@ class EntityManager implements EntityManagerInterface
         
         $this->getObjectManager()->persist($entity);
         
-        return $this->buildEntity($entity);
+        return $entity;
     }
 
     public function getOptions(EntityInterface $entity)
@@ -73,12 +66,5 @@ class EntityManager implements EntityManagerInterface
     {
         $this->getObjectManager()->flush();
         return $this;
-    }
-
-    protected function buildEntity(EntityInterface $entity)
-    {
-        $config = $this->getOptions($entity);
-        $entity->setOptions($config);
-        return $entity;
     }
 }

@@ -3,208 +3,147 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Entity;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Entity\Collection\EntityCollection;
+use Entity\Options\ModuleOptions;
 
-return array(
-    'taxonomy' => array(
-        'associations' => array(
-            'entities' => array(
-                'callback' => function (ServiceLocatorInterface $sm, $collection)
-                {
-                    return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
-                },
-                'options' => array(
+return [
+    'taxonomy' => [
+        'associations' => [
+            'entities' => [
+                'options' => [
                     'template' => 'entity/view/minimalistic/default'
-                )
-            )
-        )
-    ),
-    'uuid_router' => array(
-        'routes' => array(
-            'entity' => '/entity/view/%d',
-            'entityRevision' => '/entity/repository/compare/%d'
-        )
-    ),
-    'uuid_manager' => array(
-        'resolver' => array(
-            'Entity\Entity\EntityInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
-            {
-                /* @var $entityManager \Entity\Manager\EntityManagerInterface */
-                $entityManager = $serviceLocator->get('Entity\Manager\EntityManager');
-                return $entityManager->getEntity($uuid->getId());
-            }
-        )
-    ),
-    'class_resolver' => array(
+                ]
+            ]
+        ]
+    ],
+    'class_resolver' => [
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
-        'Entity\Entity\TypeInterface' => 'Entity\Entity\Type',
-        'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
-    ),
-    'router' => array(
-        'routes' => array(
-            'entity' => array(
+        'Entity\Entity\TypeInterface' => 'Entity\Entity\Type'
+    ],
+    'router' => [
+        'routes' => [
+            'entity' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/entity',
-                    'defaults' => array()
-                ),
-                'child_routes' => array(
-                    'create' => array(
+                    'defaults' => []
+                ],
+                'child_routes' => [
+                    'create' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/create/:type',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Entity\Controller\EntityController',
                                 'action' => 'create'
-                            )
-                        )
-                    ),
-                    'trash' => array(
+                            ]
+                        ]
+                    ],
+                    'trash' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/trash/:entity',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Entity\Controller\EntityController',
                                 'action' => 'trash'
-                            )
-                        )
-                    ),
-                    'restore' => array(
+                            ]
+                        ]
+                    ],
+                    'restore' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/restore/:entity',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Entity\Controller\EntityController',
                                 'action' => 'restore'
-                            )
-                        )
-                    ),
-                    'purge' => array(
+                            ]
+                        ]
+                    ],
+                    'purge' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/purge/:entity',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Entity\Controller\EntityController',
                                 'action' => 'purge'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             'Entity\Controller\EntityController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Entity\Controller\EntityController' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setUserManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                'Entity\Service\EntityService' => array(
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => 'true'
-                    ),
-                    'setRepositoryManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setAuthService' => array(
-                        'required' => 'true'
-                    ),
-                    'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLinkManager' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
-                'Entity\Factory\EntityFactoryInterface' => 'Entity\Factory\EntityFactory',
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Entity\Service\EntityServiceInterface' => 'EventManager',
-                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
-                'Link\LinkManagerInterface' => 'Link\LinkManager',
-                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
+        ],
+        'definition' => [
+            'class' => [
+                'Entity\Controller\EntityController' => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ]
+                ],
+                'Entity\Manager\EntityManager' => [
+                    'setUuidManager' => [
+                        'required' => true
+                    ],
+                    'setObjectManager' => [
+                        'required' => true
+                    ],
+                    'setClassResolver' => [
+                        'required' => true
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 'Entity\Manager\EntityManagerInterface' => 'Entity\Manager\EntityManager'
-            ),
-            'Entity\Service\EntityService' => array(
-                'shared' => false
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Entity\Plugin\PluginManager' => (function ($sm)
+            ]
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            'Entity\Options\ModuleOptions' => function (ServiceLocatorInterface $sm)
             {
-                $config = $sm->get('config');
-                $config = new \Zend\ServiceManager\Config($config['entity']['plugins']);
-                $class = new \Entity\Plugin\PluginManager($config);
-                return $class;
-            }),
-            'Entity\Manager\EntityManager' => (function ($sm)
-            {
-                $config = $sm->get('config');
-                $class = new \Entity\Manager\EntityManager();
-                
-                $class->setConfig($config['entity']);
-                $class->setPluginManager($sm->get('Entity\Plugin\PluginManager'));
-                $class->setServiceLocator($sm->get('ServiceManager'));
-                $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                
-                return $class;
-            })
-        )
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
+                return new ModuleOptions($sm->get('config')['entity']);
+            }
+        ]
+    ],
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view'
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

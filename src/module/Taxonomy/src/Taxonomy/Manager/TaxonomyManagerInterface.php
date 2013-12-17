@@ -13,7 +13,6 @@ namespace Taxonomy\Manager;
 
 use Taxonomy\Service\TermServiceInterface;
 use Taxonomy\Collection\TermCollection;
-use Taxonomy\Entity\TaxonomyTypeInterface;
 
 interface TaxonomyManagerInterface
 {
@@ -60,18 +59,6 @@ interface TaxonomyManagerInterface
      * @return int $id
      */
     public function getId();
-
-    /**
-     *
-     * @return TaxonomyTypeInterface
-     */
-    public function getType();
-
-    /**
-     *
-     * @param TaxonomyTypeInterface $type            
-     */
-    public function setType(TaxonomyTypeInterface $type);
 
     /**
      *

@@ -8,13 +8,13 @@
         <?php endif; ?>
     </section>
     <section>    
-        <div class="sortable" data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'exercises', 'entity' => $this->entity->getId())); ?>" data-depth="1" data-active="false">
+        <div class="sortable" data-action="<?php echo $this->url('entity/link/order', array('scope' => 'exercises', 'entity' => $this->entity->getId())); ?>" data-depth="1" data-active="false">
             <ol class="sortable-list">
             	<?php foreach($this->entity->exercises()->findChildren() as $child): ?>
                     <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
                         <span class="sortable-handle"></span>
                         <div class="sortable-item-inner">
-                            <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $this->entity, 'hideActions' => array('detail', 'taxonomy'))); ?>
+                            <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $this->entity)); ?>
                         </div>
                     </li>
             	<?php endforeach; ?>

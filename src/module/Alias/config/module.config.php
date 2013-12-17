@@ -11,7 +11,7 @@
  */
 namespace Alias;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
+
 return [
     'alias_manager' => [
         'aliases' => [
@@ -19,6 +19,11 @@ return [
                 'tokenize' => 'blog/{category}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
                 'fallback' => 'blog/{category}/{id}-{title}'
+            ],
+            'entity' => [
+                'tokenize' => '{path}/{title}',
+                'fallback' => '{path}/{type}/{title}-{id}',
+                'provider' => 'Entity\Provider\TokenProvider'
             ]
         ]
     ],

@@ -9,11 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+/* @var $video \Entity\Entity\EntityInterface */
 $video = $this->entity;
-if($video->repository()->hasCurrentRevision()): ?>
-    <?php $revision = $video->repository()->getCurrentRevision(); ?>
+if($video->hasCurrentRevision()): ?>
+    <?php $revision = $video->getCurrentRevision(); ?>
     <li class="list-group-item">
-        <a href="<?php echo $this->url('entity/plugin/page', array('entity' => $video->getId())); ?>">
+        <a href="<?php echo $this->url('entity/page', array('entity' => $video->getId())); ?>">
         	<?php echo $revision->get('title'); ?>
         </a>
     </li>

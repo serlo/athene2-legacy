@@ -15,20 +15,9 @@ use Zend\Stdlib\ArrayUtils;
 
 class Module
 {
-
     public static $listeners = [
-        /*'Entity\Plugin\Link\Listener\EntityControllerListener',
-        'Entity\Plugin\Repository\Listener\EntityControllerListener',
-        'Entity\Plugin\Taxonomy\Listener\EntityControllerListener',
-        'Entity\Plugin\Pathauto\Listener\RepositoryControllerListener',
-        'Entity\Plugin\LearningResource\Listener\EntityControllerListener',
-        'Entity\Plugin\LearningResource\Listener\EntityTaxonomyPluginControllerListener',
-        'Entity\Plugin\Link\Listener\LinkControllerListener',
-        'Entity\Plugin\Repository\Listener\RepositoryControllerListener',
-        'Entity\Plugin\Taxonomy\Listener\TaxonomyControllerListener'*/
+        'Entity\Listener\EntityControllerListener'
     ];
-
-    public 
 
     function getConfig()
     {

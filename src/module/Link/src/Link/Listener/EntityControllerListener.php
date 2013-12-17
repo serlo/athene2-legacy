@@ -9,37 +9,54 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Plugin\Taxonomy\Listener;
+namespace Link\Listener;
 
 use Zend\EventManager\Event;
 use Common\Listener\AbstractSharedListenerAggregate;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Entity\Manager\EntityManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
 
     public function onCreate(Event $e)
     {
-        /* var $entity \Entity\Service\EntityServiceInterface */
+        /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
         $data = $e->getParam('query');
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         
-        foreach ($entity->getScopesForPlugin('taxonomy') as $scope) {
-            if (array_key_exists($scope, $data)) {
-                
-                $options = $data[$scope];
-                $term = $this->getSharedTaxonomyManager()->getTerm($options['term']);
-                
-                $entity->plugin($scope)->addToTerm($term->getId());
-                
-                $e->getTarget()
-                    ->getEventManager()
-                    ->trigger('addToTerm', $this, array(
-                    'entity' => $entity,
-                    'term' => $term
-                ));
-            }
+        $type = 'link';
+        
+        $options = $data[$type];
+        
+        if (isset($options['child'])) {
+            $child = $this->getEntityManager()->getEntity($options['child']);
+            
+            $this->getLinkService()->associate($entity, $child, $type);
+            
+            $eventData = [
+                'entity' => $entity,
+                'child' => $child,
+                'user' => $user,
+                'language' => $language
+            ];
+        } elseif (isset($options['parent'])) {
+            $parent = $this->getEntityManager()->getEntity($options['child']);
+            
+            $this->getLinkService()->associate($parent, $entity, $type);
+            
+            $eventData = [
+                'entity' => $entity,
+                'parent' => $parent,
+                'user' => $user,
+                'language' => $language
+            ];
         }
+        
+        $e->getTarget()
+            ->getEventManager()
+            ->trigger('link', $this, $eventData);
     }
     
     /*

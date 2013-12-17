@@ -8,7 +8,7 @@
 	
 	<!-- Overview -->
     <section>
-        <div class="sortable"  data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'pages', 'entity' => $this->entity->getId())); ?>"  data-depth="1" data-active="false">
+        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('scope' => 'pages', 'entity' => $this->entity->getId())); ?>"  data-depth="1" data-active="false">
             <ol class="sortable-list">
                 <?php foreach($this->entity->pages()->findChildren() as $page):?>
                     <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
@@ -47,7 +47,7 @@
                             <div class="col-md-6"><h4><?php echo $revision->get('title'); ?></h4></div>
                             <div class="col-md-6">
                                 <div class="pull-right btn-group">
-                                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $page, 'hide' => array('taxonomy', 'detail'))); ?>
+                                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $page)); ?>
                                 </div>
                             </div>
                         </div>

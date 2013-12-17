@@ -16,13 +16,12 @@ use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Exception;
-use Taxonomy\Entity\TaxonomyTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 
 class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
 
     public function getTerm($id)
     {
@@ -120,12 +119,6 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
     public function getName()
     {
         return $this->getEntity()->getName();
-    }
-
-    public function setType(TaxonomyTypeInterface $type)
-    {
-        $this->getEntity()->setType($type);
-        return $this;
     }
 
     public function findTerms(array $types)

@@ -17,5 +17,12 @@ return array(
             'ClassResolver\ClassResolver' => 'ClassResolver\ClassResolverFactory'
         ]
     ],
+    'di' => [
+        'instance' => [
+            'preferences' => [
+                __NAMESPACE__ . '\ClassResolverInterface' => __NAMESPACE__ . '\ClassResolver'
+            ]
+        ]
+    ],
     'class_resolver' => []
 );

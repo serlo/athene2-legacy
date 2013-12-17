@@ -9,14 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Plugin\Repository\Listener;
+namespace Entity\View\Helper;
 
-use Entity\Listener\AbstractDispatchListener;
+use Zend\View\Helper\AbstractHelper;
 
-class RepositoryControllerListener extends AbstractDispatchListener
+class EntityHelper extends AbstractHelper
 {
-    public function getMonitoredClass()
-    {
-        return 'Entity\Plugin\Repository\Controller\RepositoryController';
-    }
+    
 }

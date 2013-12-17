@@ -30,7 +30,7 @@ class TaxonomyController extends AbstractController
         }
         
         if ($term && $term->isAssociationAllowed('entities')) {
-            foreach ($term->getAssociated('entities')->asService() as $entity) {
+            foreach ($term->getAssociated('entities') as $entity) {
                 if (! $entity->getTrashed()) {
                     $entities[] = $entity;
                 }

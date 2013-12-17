@@ -12,13 +12,14 @@
 namespace Blog\Model;
 
 use User\Model\UserModelInterface;
-use Taxonomy\Model\TaxonomyTermEntityAwareInterface;
 use DateTime;
 use Common\Model\Wrapable;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Uuid\Entity\UuidHolder;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
-interface PostModelInterface extends TaxonomyTermEntityAwareInterface, Wrapable, UuidHolder
+interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidHolder
 {
 
     /**
@@ -88,10 +89,10 @@ interface PostModelInterface extends TaxonomyTermEntityAwareInterface, Wrapable,
     /**
      * Sets the category.
      *
-     * @param TaxonomyTermModelInterface $category            
+     * @param TaxonomyTermInterface $category            
      * @return $this
      */
-    public function setBlog(TaxonomyTermModelInterface $category);
+    public function setBlog(TaxonomyTermInterface $category);
 
     /**
      * Sets the creation date.

@@ -22,7 +22,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Taxonomy implements TaxonomyInterface
 {
-
+    use \Type\Entity\TypeAwareTrait;
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -40,12 +41,7 @@ class Taxonomy implements TaxonomyInterface
      * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
      */
     protected $language;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="TaxonomyType", inversedBy="taxonomies")
-     * @ORM\JoinColumn(name="taxonomy_type_id", referencedColumnName="id")
-     */
-    protected $type;
+    
 
     public function __construct()
     {
@@ -94,26 +90,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      *
-     * @return field_type $type
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     *
-     * @param field_type $type            
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     *
      * @return \Doctrine\Common\Collections\ArrayCollection $terms
      */
     public function getTerms()
@@ -128,7 +104,7 @@ class Taxonomy implements TaxonomyInterface
 
     public function getName()
     {
-        return is_object($this->getType()) ? $this->getType()->getName() : '';
+        return $this->getType()->getName();
     }
 
     public function getSaplings()
