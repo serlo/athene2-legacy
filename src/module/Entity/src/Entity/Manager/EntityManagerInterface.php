@@ -34,11 +34,4 @@ interface EntityManagerInterface extends Flushable
      * @return EntityInterface
      */
     public function createEntity($type, array $data = array(), LanguageModelInterface $language);
-
-    /**
-     *
-     * @param EntityInterface $entity            
-     * @return EntityOptions
-     */
-    public function getOptions(EntityInterface $entity);
 }

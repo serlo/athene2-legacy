@@ -12,8 +12,46 @@
 namespace Entity\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Entity\Options\ModuleOptions;
+use Entity\Entity\EntityInterface;
+use Entity\Options\EntityOptions;
 
 class EntityHelper extends AbstractHelper
 {
-    
+
+    /**
+     *
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     *
+     * @return ModuleOptions $moduleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     *
+     * @param ModuleOptions $moduleOptions            
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param EntityInterface $entity
+     * @return EntityOptions
+     */
+    public function getOptions(EntityInterface $entity)
+    {
+        return $this->getModuleOptions()->getType($entity->getType()
+            ->getName());
+    }
 }

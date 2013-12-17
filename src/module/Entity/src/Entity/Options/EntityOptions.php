@@ -21,195 +21,76 @@ class EntityOptions extends AbstractOptions
      *
      * @var array
      */
-    protected $enabledComponents = [];
+    protected $availableComponents = [
+        'Entity\Options\RepositoryOptions',
+        'Entity\Options\LinkOptions'
+    ];
 
     /**
      *
      * @var array
      */
-    protected $allowedChildren = [];
+    protected $components = [];
 
     /**
      *
-     * @var array
+     * @param string $component            
+     * @return array $components
      */
-    protected $allowedParents = [];
-
-    /**
-     *
-     * @var array
-     */
-    protected $repository = [];
-
-    /**
-     *
-     * @return array $enabledComponents
-     */
-    public function getEnabledComponents()
+    public function getComponent($component)
     {
-        return $this->enabledComponents;
-    }
-
-    /**
-     *
-     * @return array $allowedChildren
-     */
-    public function getAllowedChildren()
-    {
-        return $this->allowedChildren;
-    }
-
-    /**
-     *
-     * @return array $allowedParents
-     */
-    public function getAllowedParents()
-    {
-        return $this->allowedParents;
-    }
-
-    public function getRepositoryForm()
-    {
-        if (! array_key_exists('form', $this->repository)) {
-            throw new Exception\RuntimeException('No form has been set');
+        if (! $this->hasComponent($component)) {
+            throw new Exception\RuntimeException(sprintf('Component "%s" not enabled.', $component));
         }
-        return $this->repository['form'];
-    }
 
-    public function getRepositoryFields()
-    {
-        if (! array_key_exists('fields', $this->repository)) {
-            throw new Exception\RuntimeException('No fields have been set');
-        }
-        return $this->repository['fields'];
-    }
-
-    /**
-     *
-     * @param array $component            
-     * @return boolean
-     */
-    public function isComponentEnabled(array $component)
-    {
-        return in_array($component, $this->getEnabledComponents());
-    }
-
-    /**
-     *
-     * @param unknown $parent            
-     * @return boolean
-     */
-    public function isParentAllowed($parent)
-    {
-        return $this->getParent($parent) !== NULL;
-    }
-
-    /**
-     *
-     * @param string $child            
-     * @return boolean
-     */
-    public function isChildAllowed($child)
-    {
-        return $this->getChild($child) !== NULL;
-    }
-
-    public function areMultipleChildrenAllowed($child)
-    {
-        $child = $this->getChild($child);
-        if ($child === NULL) {
-            return false;
+        $options = $this->components[$component];
+        
+        if(!$options instanceof AbstractOptions){
+            $instance = $this->findComponent($component);
+            $instance->setFromArray($options);
+            $this->components[$component] = $options = $instance;
         }
         
-        return array_key_exists('many', $child) ? $child['many'] : false;
+        return $options;
     }
 
     /**
      *
-     * @param string $parent            
-     * @return boolean
+     * @param string $component            
+     * @return bool
      */
-    public function areMultipleParentsAllowed($parent)
+    public function hasComponent($component)
     {
-        $parent = $this->getParent($parent);
-        if ($parent === NULL) {
-            return false;
+        return array_key_exists($component, $this->components);
+    }
+
+    /**
+     *
+     * @param array $components            
+     */
+    public function setComponents($components)
+    {
+        $this->components = $components;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $key
+     * @throws Exception\RuntimeException
+     * @return AbstractOptions
+     */
+    protected function findComponent($key)
+    {
+        foreach ($this->availableComponents as & $availableComponent) {
+            if (! is_object($availableComponent)) {
+                $availableComponent = new $availableComponent();
+            }
+            if ($availableComponent->isValid($key)) {
+                return $availableComponent;
+            }
         }
         
-        return array_key_exists('many', $parent) ? $parent['many'] : false;
-    }
-
-    /**
-     *
-     * @param array $enabledComponents            
-     * @return $this
-     */
-    public function setEnabledComponents(array $enabledComponents)
-    {
-        $this->enabledComponents = $enabledComponents;
-        return $this;
-    }
-
-    /**
-     *
-     * @param array $allowedChildren            
-     * @return $this
-     */
-    public function setAllowedChildren(array $allowedChildren)
-    {
-        $this->allowedChildren = $allowedChildren;
-        return $this;
-    }
-
-    /**
-     *
-     * @param array $allowedParents            
-     * @return $this
-     */
-    public function setAllowedParents(array $allowedParents)
-    {
-        $this->allowedParents = $allowedParents;
-        return $this;
-    }
-
-    /**
-     *
-     * @param array $repository            
-     * @return $this
-     */
-    public function setRepository(array $repository)
-    {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    /**
-     *
-     * @param string $type            
-     * @return array NULL
-     */
-    protected function getChild($type)
-    {
-        foreach ($this->getAllowedChildren() as $child) {
-            if ($child['type'] == $type) {
-                return $child;
-            }
-        }
-        return NULL;
-    }
-
-    /**
-     *
-     * @param string $type            
-     * @return array NULL
-     */
-    protected function getParent($type)
-    {
-        foreach ($this->getAllowedParents() as $parent) {
-            if ($parent['type'] == $type) {
-                return $parent;
-            }
-        }
-        return NULL;
+        throw new Exception\RuntimeException(sprintf('Could not find a suitable component for "%s"', $key));
     }
 }

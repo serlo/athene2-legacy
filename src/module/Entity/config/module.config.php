@@ -13,7 +13,6 @@ namespace Entity;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Entity\Options\ModuleOptions;
-
 return [
     'taxonomy' => [
         'associations' => [
@@ -119,15 +118,15 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Entity\Options\ModuleOptions' => function (ServiceLocatorInterface $sm)
-            {
-                return new ModuleOptions($sm->get('config')['entity']);
-            }
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Options\ModuleOptionsFactory'
         ]
     ],
     'view_manager' => [
         'template_path_stack' => [
             __DIR__ . '/../view'
+        ],
+        'factories' => [
+            'entity' => __NAMESPACE__ . 'Factory\EntityHelperFactory'
         ]
     ],
     'doctrine' => [

@@ -18,7 +18,7 @@ use Entity\Options\EntityOptions;
 
 class EntityManager implements EntityManagerInterface
 {
-    use\Type\TypeManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Type\TypeManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function getEntity($id)
     {
@@ -50,16 +50,6 @@ class EntityManager implements EntityManagerInterface
         $this->getObjectManager()->persist($entity);
         
         return $entity;
-    }
-
-    public function getOptions(EntityInterface $entity)
-    {
-        $typeName = $entity->getType()->getName();
-        if (! array_key_exists($typeName, $this->getOption('types'))) {
-            throw new Exception\RuntimeException(sprintf('Type "%s" not found in configuration.', $entity->getType()->getName()));
-        }
-        
-        return new EntityOptions($this->getOption('types')[$typeName]);
     }
 
     public function flush()

@@ -1,12 +1,13 @@
 <?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
 <?php $entity = $this->entity;?>
-
+<?php /* @var $options \Entity\Options\EntityOptions */ ?>
+<?php $options = $this->entity()->getOptions($entity); ?>
 <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
         <?php echo $this->translate('Editing'); ?> <span class="caret"></span>
     </button>
         <ul class="dropdown-menu" role="menu">
-            <?php if($entity->getOptions()->isComponentEnabled('repository')): ?>
+            <?php if($options->hasComponent('repository')): ?>
                 <!-- Edit Revision -->
                 <?php $url = $this->url('entity/repository/add-revision', array('entity' => $entity->getId())); ?>
                 <?php if($this->guard()->hasAccessToUrl($url)): ?>
@@ -31,21 +32,25 @@
                     </li>
                 <?php endif; ?>
             <?php endif; ?>
-            <?php foreach($entity->getOptions()->getAllowedChildren() as $child): ?>
-                <?php if($entity->getOptions()->areMultipleChildrenAllowed($child) || (!$entity->getOptions()->areMultipleChildrenAllowed($child) && $entity->getChildren('link')->count() < 1)): ?>
-                    <?php $url = '';//$this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
-                    <?php if($this->guard()->hasAccessToUrl($url)): ?>
-                    	<li>
-                    	FIX ME PLS THX KK
-                    	
-                        	<a href="<?php echo $url; ?>">
-                                <span class="glyphicon glyphicon-file"></span>
-                                <?php echo sprintf($this->translate('Add %s'), $child); ?>
-                        	</a>
-                    	<li>
+            <?php if($options->hasComponent('link')): ?>
+                <?php /* @var $componentOptions \Entity\Options\LinkOptions */ ?>
+                <?php $componentOptions = $options->getComponent('link'); ?>
+                <?php foreach($componentOptions->getAllowedChildren() as $child): ?>
+                    <?php if($entity->getOptions()->areMultipleChildrenAllowed($child) || (!$entity->getOptions()->areMultipleChildrenAllowed($child) && $entity->getChildren('link')->count() < 1)): ?>
+                        <?php $url = '';//$this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
+                        <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                        	<li>
+                        	FIX ME PLS THX KK
+                        	
+                            	<a href="<?php echo $url; ?>">
+                                    <span class="glyphicon glyphicon-file"></span>
+                                    <?php echo sprintf($this->translate('Add %s'), $child); ?>
+                            	</a>
+                        	<li>
+                    	<?php endif; ?>
                 	<?php endif; ?>
-            	<?php endif; ?>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+        	<?php endif; ?>
         </ul>
 </div>
 
