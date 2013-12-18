@@ -65,6 +65,11 @@ class PageService implements PageServiceInterface, Normalizable
         $this->entity->getRoles();
     }
     
+    public function findAllRoles(){
+       $this->getObjectManager()->getRepository('User\Entity\Role')
+            ->findAll();
+    }
+    
     public function getRoleById($id)
     {
         $repository = $this->getObjectManager()->getRepository('User\Entity\Role');

@@ -19,6 +19,7 @@ use Page\Entity\PageRepositoryInterface;
 use Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
 use Language\Service\LanguageServiceInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class PageManager implements PageManagerInterface
 {
@@ -29,6 +30,7 @@ class PageManager implements PageManagerInterface
     use \Language\Manager\LanguageManagerAwareTrait;
     use \User\Manager\UserManagerAwareTrait;
     use \License\Manager\LicenseManagerAwareTrait;
+    
     
     /*
      * (non-PHPdoc) @see \Page\Manager\PageManagerInterface::getPageRepository()
@@ -96,6 +98,25 @@ class PageManager implements PageManagerInterface
         $instance->getRepositoryManager()->addRepository($entity);
         return $instance;
     }
+    
+    public function editPageRepository(array $data,$pageService) {
+        $pageService->getEntity()->setRoles(new ArrayCollection());
+        
+        for ($i = 0; $i <= $pageService->countRoles(); $i ++) {
+        
+            if (array_key_exists($i, $data['roles'])) {
+                $role = $pageService->getRoleById($data['roles'][$i]);
+                if ($role != null) {
+                    $pageService->setRole($role);
+                }
+            }
+        }
+        
+        $this->getObjectManager()->persist($pageService->getEntity());
+        
+        return $pageService;
+        
+    }
 
     public function createPageRepository(array $data, $language)
     {
@@ -103,13 +124,15 @@ class PageManager implements PageManagerInterface
         
         $pageRepository->populate($data);
         
+        
+        
         $pageRepository->setLanguage($language);
         $pageService = $this->createService($pageRepository);
         
         for ($i = 0; $i <= $pageService->countRoles(); $i ++) {
             
             if (array_key_exists($i, $data['roles'])) {
-                $role = $pageService->getRoleById($i);
+                $role = $pageService->getRoleById($data['roles'][$i]);
                 if ($role != null) {
                     $pageRepository->setRole($role);
                 }
@@ -122,18 +145,20 @@ class PageManager implements PageManagerInterface
     }
 
     public function createRevision(PageRepositoryInterface $repository, array $data)
-    {
+    {  
+        $pageservice = $this->createService($repository);
         $revision = $this->createPageRevisionEntity();
         $revision->populate($data);
         $revision->setAuthor($data['author']);
         $revision->untrash();
         $revision->setRepository($repository);
-        $repository->addRevision($revision);
-        $pageservice = $this->createService($repository);
+        $repositoryService=$pageservice->getRepositoryManager()
+        ->getRepository($repository);
+        $repositoryService->addRevision($revision);/*
         $pageservice->getRepositoryManager()
             ->getRepository($repository)
-            ->addRevision($revision);
-        $repository->setCurrentRevision($revision);
+            ->addRevision($revision);*/
+        $repositoryService->checkOutRevision($revision->getId());
         
         $this->getObjectManager()->persist($repository);
         $this->getObjectManager()->persist($revision);

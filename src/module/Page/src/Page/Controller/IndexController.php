@@ -75,11 +75,13 @@ class IndexController extends AbstractActionController
             ->getId();
         $pageService = $this->getPageService();
         
+        
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
+                $this->getPageManager()->editPageRepository($array,$pageService);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('page/article', array(
                     'repositoryid' =>  $pageService->getRepositoryId()
@@ -120,8 +122,6 @@ class IndexController extends AbstractActionController
                 $array['author'] = $this->getUserManager()->getUserFromAuthenticator()->getEntity();
                 $page = $this->getPageManager()->createRevision($repository, $array);
                 $this->getObjectManager()->flush();
-                
-            
                 
                 $this->redirect()->toRoute('page/article',array('repositoryid'=>$pageService->getRepositoryId()));
             }

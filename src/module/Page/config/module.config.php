@@ -129,18 +129,17 @@ return array(
     'service_manager' => array(
         'invokables' => array(),
         
-        'factories' => array(
+       /* 'factories' => array(
             'Page\Provider\FirewallHydrator' => function ($sm)
             {
                 $srv = new \Page\Provider\FirewallHydrator();
                 // $srv->setObjectManager($sm->get('EntityManager'));
-                $srv->setRouteMatch($sm->get('RouteMatch'));
-                $srv->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
                 $srv->setPageManager($sm->get('Page\Manager\PageManager'));
+               // $srv->setServiceLocator($sm);
                 return $srv;
             }
             
-        )
+        )*/
     ),
     'class_resolver' => array(
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',

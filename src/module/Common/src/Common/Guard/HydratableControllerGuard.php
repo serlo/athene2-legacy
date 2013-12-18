@@ -34,6 +34,8 @@ class HydratableControllerGuard extends AbstractGuard
      */
     protected $rules = [];
 
+    protected $provider;
+
     /**
      * Constructor
      *
@@ -55,6 +57,7 @@ class HydratableControllerGuard extends AbstractGuard
     public function setRules(array $rules)
     {
         $this->rules = [];
+        
         $this->addRules($rules);
     }
 
@@ -74,30 +77,18 @@ class HydratableControllerGuard extends AbstractGuard
      */
     public function addRules(array $rules)
     {
-        foreach ($rules as $rule) {
-            $provider = new $rule['role_provider']();
-            
-            $provider->setServiceLocator(($this->getServiceLocator()));
-            $provider->setPageManager($this->getPageManager());
-            
-            $roles = $provider->getRoles();
-            
-            if (! is_array($roles)) {
-                $roles = array(
-                    $roles
-                );
-            }
-            
+        foreach ($rules as $rule) { // die(serialize($rule));
+            $this->provider = $rule['role_provider'];
             $controller = strtolower($rule['controller']);
             $actions = isset($rule['actions']) ? (array) $rule['actions'] : [];
             
             if (empty($actions)) {
-                $this->rules[$controller][0] = $roles;
+                $this->rules[$controller][0] = 'true';
                 continue;
             }
             
             foreach ($actions as $action) {
-                $this->rules[$controller][strtolower($action)] = $roles;
+                $this->rules[$controller][strtolower($action)] = 'true';
             }
         }
     }
@@ -120,15 +111,22 @@ class HydratableControllerGuard extends AbstractGuard
         // we check if there are rules set globally for the whole controllers (see the index "0"), and finally
         // if nothing is matched, we fallback to the protection policy logic
         
+        if ($this->provider == null)
+            return true;
+        
         if (isset($this->rules[$controller][$action])) {
-            $allowedRoles = $this->rules[$controller][$action];
+            // $allowedRoles = $this->rules[$controller][$action];
         } elseif (isset($this->rules[$controller][0])) {
-            $allowedRoles = $this->rules[$controller][0];
+            // $allowedRoles = $this->rules[$controller][0];
         } else {
             return true;
         }
         
-        if (in_array('*', $allowedRoles)) {
+        $provider = new $this->provider($event);
+        $provider->setServiceLocator($this->getServiceLocator());
+        $allowedRoles = $provider->getRoles();
+        
+        if (in_array('*', $allowedRoles) || in_array('guest', $allowedRoles)) {
             return true;
         }
         
