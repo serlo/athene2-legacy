@@ -45,12 +45,10 @@ return array(
     'taxonomy' => array(
         'types' => array(
             'root' => array(
-                'options' => array(
-                    'allowed_parents' => array(),
-                    'radix_enabled' => true,
-                    'templates' => array(
-                        'update' => 'taxonomy/taxonomy/update'
-                    )
+                'allowed_parents' => array(),
+                'radix_enabled' => true,
+                'templates' => array(
+                    'update' => 'taxonomy/taxonomy/update'
                 )
             )
         )
