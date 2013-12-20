@@ -11,9 +11,9 @@
  */
 namespace Term\Entity;
 
-use Language\Model\LanguageModelAwareInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface TermEntityInterface extends LanguageModelAwareInterface
+interface TermEntityInterface extends LanguageAwareInterface
 {
 
     /**

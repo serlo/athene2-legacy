@@ -12,14 +12,38 @@
 namespace Subject\Service;
 
 use Subject\Exception\PluginNotFoundException;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Subject\Entity\SubjectInterface;
 use Zend\Stdlib\ArrayUtils;
 
 class SubjectService implements SubjectServiceInterface, SubjectInterface
 {
-    use \Taxonomy\Service\TermServiceAwareTrait,\Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait;
+    use\Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait;
 
-    protected function getDefaultConfig()
+    /**
+     * 
+     * @var TaxonomyTermInterface
+     */
+    protected $taxonomyTerm;
+    
+    /**
+     * @return the $taxonomyTerm
+     */
+    public function getTermService()
+    {
+        return $this->taxonomyTerm;
+    }
+
+	/**
+     * @param \Taxonomy\Entity\TaxonomyTermInterface $taxonomyTerm
+     */
+    public function setTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm)
+    {
+        $this->taxonomyTerm = $taxonomyTerm;
+        return $this;
+    }
+
+	protected function getDefaultConfig()
     {
         return array(
             'plugins' => array()

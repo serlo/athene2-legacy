@@ -1,18 +1,20 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
 <article>
 	<header>
         <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
         </div>
         <div class="clearfix"></div>
 	</header>
 	
 	<!-- Overview -->
     <section>
-        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('scope' => 'pages', 'entity' => $this->entity->getId())); ?>"  data-depth="1" data-active="false">
+        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('scope' => 'pages', 'entity' => $entity->getId())); ?>"  data-depth="1" data-active="false">
             <ol class="sortable-list">
-                <?php foreach($this->entity->pages()->findChildren() as $page):?>
-                    <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
-                        <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+                <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
+                    <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>
+                        <?php $revision = $page->getCurrentRevision();?>
                         <li class="sortable-item" data-id="<?php echo $page->getId(); ?>">
                             <span class="sortable-handle"></span>
                             <div class="sortable-item-inner">
@@ -38,9 +40,9 @@
     
     <!-- Detailview -->
     <section>
-        <?php foreach($this->entity->pages()->findChildren() as $page):?>
-            <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
-                <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+        <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
+            <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>
+                <?php $revision = $page->getCurrentRevision();?>
             	<article class="panel panel-default">
                     <header id="<?php echo $page->getId(); ?>" class="panel-heading">
                         <div class="row">
@@ -63,6 +65,6 @@
     
     <!-- Discussions -->
     <section>
-        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $this->entity)); ?>
+        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
     </section>
 </article>

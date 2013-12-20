@@ -1,15 +1,17 @@
-<?php $revision = $this->entity->getCurrentRevision();?>
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php $revision = $entity->getCurrentRevision();?>
 <article>
 	<header>
 		<div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity, 'hide' => $this->hideActions)); ?>
+            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity, 'hide' => $this->hideActions)); ?>
         </div>
 	</header>
 	<section>
-        <?php echo $this->partial('entity/page/video/youtube', array('content' => $revision->get('content'), 'discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user)); ?>
+        <?php echo $this->partial('entity/page/video/youtube', array('content' => $revision->get('content'), 'discussion' => $this->discussion, 'entity' => $entity, 'user' => $this->user)); ?>
     </section>
 	<hr>
 	<section>
-        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $this->entity)); ?>
+        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
     </section>
 </article>

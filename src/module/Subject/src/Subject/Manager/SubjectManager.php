@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Language\Model\LanguageModelInterface;
 use Taxonomy\Service\TermServiceInterface;
 use Subject\Exception\RuntimeException;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
@@ -74,7 +75,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $collection;
     }
 
-    private function createInstanceFromEntity(TermServiceInterface $entity)
+    private function createInstanceFromEntity(TaxonomyTermInterface $entity)
     {
         $entity = $entity->getEntity();
         $name = strtolower($entity->getName());
@@ -84,7 +85,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
-        $instance->setTermService($this->getSharedTaxonomyManager()
+        $instance->setTaxonomyTerm($this->getSharedTaxonomyManager()
             ->getTerm($entity->getId()));
         $instance->setConfig($config);
         return $instance;

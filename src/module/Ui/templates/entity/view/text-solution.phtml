@@ -1,4 +1,6 @@
-<?php $solution = $this->entity; ?>
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php $solution = $entity; ?>
 <?php $hasHint = strlen($solution->getCurrentRevision()->get('hint')) > 0; ?>
 <?php if($solution->hasCurrentRevision() && !$solution->getTrashed()): ?>
     <article class="panel-group collapse" id="solution-<?php echo $solution->getId(); ?>">
@@ -19,7 +21,7 @@
         <section class="panel panel-default">
             <div class="panel-heading">
                 <div class="pull-right btn-group">
-                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
                 </div>
                 <h4 class="panel-title">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-content-<?php echo $solution->getId(); ?>"><?php echo $this->translate('Solution'); ?></a>

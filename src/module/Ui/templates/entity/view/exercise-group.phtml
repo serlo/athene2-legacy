@@ -1,20 +1,22 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
 <article>
     <div class="pull-right btn-group">
-        <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+        <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
     </div>
     <section>
-        <?php if($this->entity->hasCurrentRevision()): ?>
-            <?php echo $this->entity->getCurrentRevision()->get('content'); ?>
+        <?php if($entity->hasCurrentRevision()): ?>
+            <?php echo $entity->getCurrentRevision()->get('content'); ?>
         <?php endif; ?>
     </section>
     <section>    
-        <div class="sortable" data-action="<?php echo $this->url('entity/link/order', array('scope' => 'exercises', 'entity' => $this->entity->getId())); ?>" data-depth="1" data-active="false">
+        <div class="sortable" data-action="<?php echo $this->url('entity/link/order', array('scope' => 'exercises', 'entity' => $entity->getId())); ?>" data-depth="1" data-active="false">
             <ol class="sortable-list">
-            	<?php foreach($this->entity->exercises()->findChildren() as $child): ?>
+            	<?php foreach($entity->getChildren('link', 'grouped-text-exercise') as $child): ?>
                     <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
                         <span class="sortable-handle"></span>
                         <div class="sortable-item-inner">
-                            <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $this->entity)); ?>
+                            <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $entity)); ?>
                         </div>
                     </li>
             	<?php endforeach; ?>
