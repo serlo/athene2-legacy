@@ -25,7 +25,7 @@ use Link\Entity\LinkableInterface;
  */
 class EntityLink implements LinkInterface
 {
-    use\Type\Entity\TypeAwareTrait;
+    use \Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id

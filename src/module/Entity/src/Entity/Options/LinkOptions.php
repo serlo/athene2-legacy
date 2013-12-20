@@ -11,49 +11,10 @@
  */
 namespace Entity\Options;
 
-use Zend\Stdlib\AbstractOptions;
-use Entity\Exception;
-
-class LinkOptions extends AbstractOptions implements ComponentOptionsInterface
+class LinkOptions extends AbstractLinkOptions
 {
-
-    protected $links = [];
-
-    public function getAllowedTypes($linkType)
+    public function getLinkType()
     {
-        if (! $this->isLinkTypeAllowed($linkType)) {
-            throw new Exception\RuntimeException(sprintf('Link type "%s" not found.', $linkType));
-        }
-        return array_keys($this->links[$linkType]);
-    }
-
-    public function isTypeAllowed($linkType, $type)
-    {
-        return in_array($type, $this->getAllowedTypes($linkType));
-    }
-
-    public function allowsMany($linkType, $type)
-    {
-        if (! $this->isTypeAllowed($linkType, $type)) {
-            throw new Exception\RuntimeException(sprintf('Link type "%s" with element type "%s" not allowed.', $linkType, $type));
-        }
-        
-        return array_key_exists('allowsMany', $this->links[$linkType][$type]) ? $this->links[$linkType][$type] : false;
-    }
-
-    public function isLinkTypeAllowed($linkType)
-    {
-        return array_key_exists($linkType, $this->links);
-    }
-
-    public function isValid($key)
-    {
-        return $key == 'links';
-    }
-    
-    public function setLinks($links)
-    {
-        $this->links = $links;
-        return $this;
+        return 'link';
     }
 }

@@ -12,36 +12,37 @@ use Doctrine\ORM\PersistentCollection;
 
 interface RepositoryInterface
 {
+
     /**
-     * 
+     *
      * @return int
      */
     public function getId();
-    
+
     /**
      * Returns the revisions
-     * 
+     *
      * @return PersistentCollection
      */
-    public function getRevisions ();
-    
+    public function getRevisions();
+
     /**
      * Creates a new revision
-     * 
+     *
      * @return RevisionInterface
      */
     public function createRevision();
-    
+
     /**
      * Returns a revision
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return RevisionInterface
      */
     public function getRevision($id);
-    
+
     /**
-     * 
+     *
      * @return RevisionInterface
      */
     public function getCurrentRevision();
@@ -53,23 +54,35 @@ interface RepositoryInterface
     public function hasCurrentRevision();
 
     /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
+     *
+     * @param RevisionInterface $revision            
+     * @return self
      */
     public function setCurrentRevision(RevisionInterface $revision);
-    
+
     /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
+     *
+     * @param RevisionInterface $revision            
+     * @return self
      */
     public function addRevision(RevisionInterface $revision);
+
+    /**
+     *
+     * @param RevisionInterface $revision            
+     * @return self
+     */
+    public function removeRevision(RevisionInterface $revision);
+
+    /**
+     *
+     * @return bool
+     */
+    public function isUnrevised();
     
     /**
      * 
-     * @param RevisionInterface $revision
-     * @return $this
+     * @return RevisionInterface
      */
-    public function removeRevision(RevisionInterface $revision);
+    public function getHead();
 }

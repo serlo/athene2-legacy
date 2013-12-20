@@ -12,7 +12,6 @@
 namespace Link\Entity;
 
 use Type\Entity\TypeAwareInterface;
-use Type\Entity\TypeInterface;
 
 interface LinkInterface extends TypeAwareInterface
 {

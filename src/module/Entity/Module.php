@@ -23,6 +23,7 @@ class Module
     {
         $include = [
             'module',
+            'types',
             'route'
         ];
         $config = [];

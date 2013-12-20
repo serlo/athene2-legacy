@@ -100,14 +100,6 @@ class SharedTaxonomyManager extends AbstractManager implements SharedTaxonomyMan
         return $return;
     }
 
-    public function getCallback($link)
-    {
-        if (! array_key_exists($link, $this->getOption('associations')))
-            throw new RuntimeException(sprintf('Callback for type %s not found', $link));
-        
-        return $this->getOption('associations')[$link]['callback'];
-    }
-
     public function getAllowedChildrenTypes($type, LanguageModelInterface $language)
     {
         $collection = new ArrayCollection();

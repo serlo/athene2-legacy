@@ -6,51 +6,51 @@
     <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
         <?php echo $this->translate('Editing'); ?> <span class="caret"></span>
     </button>
-        <ul class="dropdown-menu" role="menu">
-            <?php if($options->hasComponent('repository')): ?>
-                <!-- Edit Revision -->
-                <?php $url = $this->url('entity/repository/add-revision', array('entity' => $entity->getId())); ?>
-                <?php if($this->guard()->hasAccessToUrl($url)): ?>
-                    <li>
-                        <a href="<?php echo $url; ?>">
-                            <span class="glyphicon glyphicon-edit"></span>
-                            <?php echo $this->translate('Edit'); ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <!-- Versioning history -->
-                <?php $url = $this->url('entity/repository/history',array('entity' => $entity->getId())); ?>
-                <?php if($this->guard()->hasAccessToUrl($url)): ?>
-                    <li>
-                        <a href="<?php echo $url; ?>">
-                            <span class="glyphicon glyphicon-time"></span>
-                            <?php echo $this->translate('Repository history'); ?>
-                            <?php if($entity->plugin('repository')->isUnrevised()): ?>
-                                <span class="label label-warning"><?php echo $this->translate('new')?></span>
-                            <?php endif; ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
+    <ul class="dropdown-menu" role="menu">
+        <?php if($options->hasComponent('repository')): ?>
+            <!-- Edit Revision -->
+            <?php $url = $this->url('entity/repository/add-revision', array('entity' => $entity->getId())); ?>
+            <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                <li>
+                    <a href="<?php echo $url; ?>">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <?php echo $this->translate('Edit'); ?>
+                    </a>
+                </li>
             <?php endif; ?>
-            <?php if($options->hasComponent('link')): ?>
-                <?php /* @var $componentOptions \Entity\Options\LinkOptions */ ?>
-                <?php $componentOptions = $options->getComponent('link'); ?>
-                <?php foreach($componentOptions->getAllowedChildren() as $child): ?>
-                    <?php if($entity->getOptions()->areMultipleChildrenAllowed($child) || (!$entity->getOptions()->areMultipleChildrenAllowed($child) && $entity->getChildren('link')->count() < 1)): ?>
-                        <?php $url = '';//$this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
-                        <?php if($this->guard()->hasAccessToUrl($url)): ?>
-                        	<li>
-                        	FIX ME PLS THX KK
-                        	
-                            	<a href="<?php echo $url; ?>">
-                                    <span class="glyphicon glyphicon-file"></span>
-                                    <?php echo sprintf($this->translate('Add %s'), $child); ?>
-                            	</a>
-                        	<li>
-                    	<?php endif; ?>
+            <!-- Versioning history -->
+            <?php $url = $this->url('entity/repository/history',array('entity' => $entity->getId())); ?>
+            <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                <li>
+                    <a href="<?php echo $url; ?>">
+                        <span class="glyphicon glyphicon-time"></span>
+                        <?php echo $this->translate('Repository history'); ?>
+                        <?php if($entity->isUnrevised()): ?>
+                            <span class="label label-warning"><?php echo $this->translate('new')?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if($options->hasComponent('link')): ?>
+            <?php /* @var $componentOptions \Entity\Options\LinkOptions */ ?>
+            <?php $componentOptions = $options->getComponent('link'); ?>
+            <?php foreach($componentOptions->getAllowedChildren() as $child): ?>
+                <?php if($componentOptions->allowsManyParents($child) || (!$componentOptions->allowsManyParents($child) && $entity->getChildren('link')->count() < 1)): ?>
+                    <?php $url = '';//$this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
+                    <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                    	<li>
+                    	FIX ME PLS THX KK
+                    	
+                        	<a href="<?php echo $url; ?>">
+                                <span class="glyphicon glyphicon-file"></span>
+                                <?php echo sprintf($this->translate('Add %s'), $child); ?>
+                        	</a>
+                    	<li>
                 	<?php endif; ?>
-                <?php endforeach; ?>
-        	<?php endif; ?>
+            	<?php endif; ?>
+            <?php endforeach; ?>
+    	<?php endif; ?>
         </ul>
 </div>
 
@@ -59,9 +59,9 @@
         <?php echo $this->translate('Data'); ?> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <?php if($entity->getOptions()->isComponentEnabled('license')): ?>   
+        <?php if($options->hasComponent('license')): ?>   
             <!-- License -->
-            <?php $url = $this->url('license/detail',array('id' => $entity->license()->getId())); ?>
+            <?php $url = $this->url('license/detail',array('id' => $entity->getLicense()->getId())); ?>
             <?php if($this->guard()->hasAccessToUrl($url)): ?>
                 <li>
                     <a href="<?php echo $url; ?>">
@@ -101,7 +101,7 @@
             </li>
         <?php endif; ?>
         
-        <?php if($entity->getOptions()->isComponentEnabled('taxonomy')): ?>   
+        <?php if($options->hasComponent('taxonomy')): ?>   
             <!-- Change taxonomy term(s) -->
             <?php $url = $this->url('entity/taxonomy/update',array('entity' => $entity->getId())); ?>
             <?php if($this->guard()->hasAccessToUrl($url)): ?>
@@ -126,7 +126,7 @@
         <?php endif; ?>
         
         <!-- License -->
-        <?php if($entity->getOptions()->isComponentEnabled('license')): ?>   
+        <?php if($options->hasComponent('license')): ?>   
             <?php $url = $this->url('entity/license/update', array('entity' => $entity->getId())); ?>
             <?php if($this->guard()->hasAccessToUrl($url)): ?>
                 <li>

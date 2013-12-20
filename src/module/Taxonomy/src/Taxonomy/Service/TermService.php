@@ -157,8 +157,7 @@ class TermService implements TermServiceInterface
     public function getAssociated($targetField)
     {
         $this->isLinkAllowedWithException($targetField);
-        $callback = $this->getCallbackForLink($targetField);
-        return $callback($this->getServiceLocator(), $this->getEntity()->getAssociated($targetField));
+        return $this->getEntity()->getAssociated($targetField);
     }
 
     public function isAssociated($association, TaxonomyTermEntityAwareInterface $object)

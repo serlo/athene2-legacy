@@ -12,19 +12,14 @@
 namespace Entity\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Link\Entity\LinkableInterface;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RevisionInterface;
-use Link\Entity\LinkInterface;
 use Entity\Exception;
 use License\Entity\LicenseInterface;
-use Taxonomy\Model\TaxonomyTermModelInterface;
-use Taxonomy\Model\TaxonomyTermNodeModelInterface;
 use Language\Model\LanguageModelInterface;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Options\EntityOptions;
-use Type\Entity\TypeInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 
@@ -36,7 +31,7 @@ use Taxonomy\Entity\TaxonomyTermNodeInterface;
  */
 class Entity extends UuidEntity implements EntityInterface
 {
-    use \Type\Entity\TypeAwareTrait;
+    use\Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -283,5 +278,15 @@ class Entity extends UuidEntity implements EntityInterface
     public function getChildLinks()
     {
         return $this->childLinks;
+    }
+
+    public function isUnrevised()
+    {
+        return ! $this->hasCurrentRevision() || ($this->hasCurrentRevision() && $this->getHead() !== $this->getCurrentRevision());
+    }
+
+    public function getHead()
+    {
+        return $this->revisions->first();
     }
 }

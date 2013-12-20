@@ -35,7 +35,7 @@ class ModuleOptions extends AbstractOptions
 
     public function getType($type)
     {
-    	if(array_key_exists($type, $this->types)){
+    	if(!array_key_exists($type, $this->types)){
     	    throw new Exception\RuntimeException(sprintf('Type "%s" not found.', $type));
     	}
     	

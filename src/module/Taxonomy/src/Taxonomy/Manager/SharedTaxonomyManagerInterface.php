@@ -38,12 +38,6 @@ interface SharedTaxonomyManagerInterface
 
     /**
      *
-     * @param unknown $link            
-     */
-    public function getCallback($link);
-
-    /**
-     *
      * @param int $id            
      * @return $this
      */
