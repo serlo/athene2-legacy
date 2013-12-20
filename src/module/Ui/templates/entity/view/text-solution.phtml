@@ -1,6 +1,6 @@
 <?php $solution = $this->entity; ?>
-<?php $hasHint = strlen($solution->repository()->getCurrentRevision()->get('hint')) > 0; ?>
-<?php if($solution->repository()->hasCurrentRevision() && !$solution->getTrashed()): ?>
+<?php $hasHint = strlen($solution->getCurrentRevision()->get('hint')) > 0; ?>
+<?php if($solution->hasCurrentRevision() && !$solution->getTrashed()): ?>
     <article class="panel-group collapse" id="solution-<?php echo $solution->getId(); ?>">
         <?php if($hasHint): ?>
             <section class="panel panel-default">
@@ -11,7 +11,7 @@
                 </div>
                 <div id="solution-hint-<?php echo $solution->getId(); ?>" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        <?php echo $solution->repository()->getCurrentRevision()->get('hint'); ?>
+                        <?php echo $solution->getCurrentRevision()->get('hint'); ?>
                     </div>
                 </div>
             </section>
@@ -27,12 +27,12 @@
             </div>
             <div id="solution-content-<?php echo $solution->getId(); ?>" class="panel-collapse collapse<?php echo $hasHint ? '' : ' in'?>">
                 <div class="panel-body">
-                    <?php echo $solution->repository()->getCurrentRevision()->get('content'); ?>
+                    <?php echo $solution->getCurrentRevision()->get('content'); ?>
                 </div>
             </div>
         </section>
     </article>
-<?php elseif($solution->repository()->hasHead()): ?>
+<?php elseif($solution->hasHead()): ?>
     <?php echo $this->translate('This solution is waiting for approval. It will be soon available!'); ?>
 <?php else: ?>
     <?php echo sprintf($this->translate('This solution has no content. Do you want to create %sone%s?'), '<a href="' . $this->url('entity/repository/add-revision', ['entity' => $solution->getId()] ). '">', '</a>'); ?>

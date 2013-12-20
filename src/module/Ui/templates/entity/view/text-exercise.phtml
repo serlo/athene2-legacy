@@ -12,7 +12,7 @@
 $exercise = $this->entity;
 $solution = $exercise->solution()->findChild();
 ?>
-<?php if($exercise->repository()->hasCurrentRevision()): ?>
+<?php if($exercise->hasCurrentRevision()): ?>
     <article>
         <div class="pull-right btn-group">
     	   <?php if(is_object($solution)): ?>
@@ -21,7 +21,7 @@ $solution = $exercise->solution()->findChild();
            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
         </div>
     	<section>
-            <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
+            <?php $revision = $exercise->getCurrentRevision(); ?>
             <?php echo $revision->get('content'); ?>
         </section>
     	<?php if(is_object($solution)): ?>

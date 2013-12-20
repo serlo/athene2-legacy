@@ -7,8 +7,8 @@
         <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
     </div>
     <section>
-        <?php if($this->entity->repository()->hasCurrentRevision()): ?>
-            <?php echo  $this->entity->repository()->getCurrentRevision()->get('content'); ?>
+        <?php if($this->entity->hasCurrentRevision()): ?>
+            <?php echo  $this->entity->getCurrentRevision()->get('content'); ?>
         <?php endif; ?>
     </section>
     <div class="clearfix"></div>
