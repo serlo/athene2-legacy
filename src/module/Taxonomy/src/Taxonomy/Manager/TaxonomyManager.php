@@ -12,39 +12,30 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Collection\TermCollection;
 use Taxonomy\Exception\TermNotFoundException;
-use Taxonomy\Exception\InvalidArgumentException;
 use Taxonomy\Exception;
-use Doctrine\Common\Collections\ArrayCollection;
-use Taxonomy\Model\TaxonomyTermModelInterface;
 
-class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
+class TaxonomyManager implements TaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait;
 
     public function getTerm($id)
     {
-        if (! is_numeric($id))
-            throw new InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
+        $entity = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $id);
         
-        if (! $this->hasInstance($id)) {
-            $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $id);
-            
-            if (! is_object($entity))
-                throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
-            
-            $this->addInstance($entity->getId(), $this->createService($entity));
+        if (! is_object($entity)) {
+            throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
         }
         
-        return $this->getInstance($id);
+        return $entity;
     }
 
-    public function findTermByAncestors(array $ancestors)
+    public function findTermByTaxonomyAndSLugs(array $ancestors)
     {
-        if (! count($ancestors))
+        if (! count($ancestors)) {
             throw new Exception\RuntimeException('Ancestors are empty');
+        }
         
         $terms = $this->getEntity()->getSaplings();
         $ancestorsFound = 0;
@@ -66,121 +57,17 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
             }
         }
         
-        if (! is_object($found))
-            throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $ancestors)));
-        
-        if ($ancestorsFound != count($ancestors))
-            throw new TermNotFoundException(sprintf('Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1', implode(',', $ancestors), $ancestorsFound, count($ancestors)));
+        if (! is_object($found)) {
+            throw new Exception\TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $ancestors)));
+        }
+        if ($ancestorsFound != count($ancestors)) {
+            throw new Exception\TermNotFoundException(sprintf('Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1', implode(',', $ancestors), $ancestorsFound, count($ancestors)));
+        }
         
         if (! $this->hasInstance($found->getId())) {
             $this->addInstance($found->getId(), $this->createService($found));
         }
         
         return $this->getInstance($found->getId());
-    }
-
-    public function getSaplings()
-    {
-        $collection = $this->getEntity()->getSaplings();
-        return new TermCollection($collection, $this->getSharedTaxonomyManager());
-    }
-
-    public function getAllowedChildrenTypes()
-    {
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
-            ->getName(), $this->getLanguage());
-    }
-
-    public function getAllowedParentTypes()
-    {
-        $collection = new ArrayCollection();
-        foreach ($this->getOption('allowed_parents') as $taxonomy) {
-            $collection->add($this->getSharedTaxonomyManager()
-                ->findTaxonomyByName($taxonomy, $this->getLanguage()));
-        }
-        return $collection;
-    }
-
-    public function allowsParentType($type)
-    {
-        return in_array($type, $this->getOption('allowed_parents'));
-    }
-
-    public function getId()
-    {
-        return $this->getEntity()->getId();
-    }
-
-    public function getType()
-    {
-        return $this->getEntity()->getType();
-    }
-
-    public function getName()
-    {
-        return $this->getEntity()->getName();
-    }
-
-    public function findTerms(array $types)
-    {
-        $collection = $this->getEntity()
-            ->getTerms()
-            ->filter(function (TaxonomyTermModelInterface $term) use($types)
-        {
-            return in_array($term->getTaxonomy()
-                ->getName(), $types);
-        });
-        return new TermCollection($collection, $this->getSharedTaxonomyManager());
-    }
-
-    public function getTerms()
-    {
-        return new TermCollection($this->getEntity()->getTerms(), $this->getSharedTaxonomyManager());
-    }
-
-    public function setTerms($terms)
-    {
-        $this->getEntity()->setTerms($terms);
-        return $this;
-    }
-
-    public function addTerm(TaxonomyTermModelInterface $term)
-    {
-        $this->getEntity()
-            ->getTerms()
-            ->add($term);
-        return $this;
-    }
-
-    public function getRadixEnabled()
-    {
-        return $this->getOption('radix_enabled');
-    }
-
-    protected function createService(TaxonomyTermModelInterface $entity)
-    {
-        /* @var $instance \Taxonomy\Service\TermServiceInterface */
-        $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
-        $instance->setEntity($entity);
-        if ($entity->getTaxonomy() !== $this->getEntity()) {
-            $instance->setManager($this->getSharedTaxonomyManager()
-                ->getTaxonomy($entity->getTaxonomy()
-                ->getId()));
-        } else {
-            $instance->setManager($this);
-        }
-        return $instance;
-    }
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'templates' => array(
-                'update' => 'taxonomy/taxonomy/update'
-            ),
-            'allowed_parents' => array(),
-            'allowed_associations' => array(),
-            'radix_enabled' => true
-        );
     }
 }

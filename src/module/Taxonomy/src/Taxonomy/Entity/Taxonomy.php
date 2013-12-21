@@ -13,6 +13,8 @@ namespace Taxonomy\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Language\Entity\LanguageEntityInterface;
+use Taxonomy\Exception;
 
 /**
  * A Taxonomy.
@@ -23,7 +25,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Taxonomy implements TaxonomyInterface
 {
     use \Type\Entity\TypeAwareTrait;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -41,57 +43,22 @@ class Taxonomy implements TaxonomyInterface
      * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
      */
     protected $language;
-    
 
     public function __construct()
     {
         $this->terms = new ArrayCollection();
     }
 
-    /**
-     *
-     * @return field_type $language
-     */
     public function getLanguage()
     {
         return $this->language;
     }
 
-    /**
-     *
-     * @param field_type $language            
-     * @return $this
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-        return $this;
-    }
-
-    /**
-     *
-     * @return field_type $id
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @param field_type $id            
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection $terms
-     */
     public function getTerms()
     {
         return $this->terms;
@@ -107,7 +74,13 @@ class Taxonomy implements TaxonomyInterface
         return $this->getType()->getName();
     }
 
-    public function getSaplings()
+    public function setLanguage(LanguageEntityInterface $language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    public function getChildren()
     {
         $collection = new ArrayCollection();
         $terms = $this->getTerms();
@@ -117,5 +90,38 @@ class Taxonomy implements TaxonomyInterface
             }
         }
         return $collection;
+    }
+
+    public function findTermBySlugPath(array $slugs)
+    {
+        $terms = $this->getChildren();
+        $ancestorsFound = 0;
+        $found = NULL;
+        foreach ($slugs as &$element) {
+            if (is_string($element) && strlen($element) > 0) {
+                $element = strtolower($element);
+                foreach ($terms as $term) {
+                    $found = false;
+                    if (strtolower($term->getSlug()) == strtolower($element)) {
+                        $terms = $term->getChildren();
+                        $found = $term;
+                        $ancestorsFound ++;
+                        break;
+                    }
+                }
+                if (! is_object($found)) {
+                    break;
+                }
+            }
+        }
+        
+        if (! is_object($found)) {
+            throw new Exception\TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $slugs)));
+        }
+        if ($ancestorsFound != count($slugs)) {
+            throw new Exception\TermNotFoundException(sprintf('Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1', implode(',', $slugs), $ancestorsFound, count($slugs)));
+        }
+        
+        return $found;
     }
 }
