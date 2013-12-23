@@ -359,17 +359,7 @@ class UserController extends AbstractUserController
         $this->redirect()->toReferer();
         return false;
     }
-
-    public function purgeAction()
-    {
-        $this->getUserManager()->purgeUser($this->params('id', null));
-        $this->getUserManager()
-            ->getObjectManager()
-            ->flush();
-        $this->redirect()->toReferer();
-        return false;
-    }
-
+    
     public function removeRoleAction()
     {
         $user = $this->getUserManager()->getUser($this->params('user'));

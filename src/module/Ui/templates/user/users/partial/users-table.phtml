@@ -25,7 +25,7 @@
             <tr>
                 <td><a href="<?php echo $this->url('user/profile', array('id' => $user->getId())); ?>"><?php echo $user->getUsername(); ?></a></td>
                 <td><?php echo $user->getEmail(); ?></td>
-                <td><?php echo implode(', ', $user->getRoles()); ?></td>
+                <td><?php echo implode(', ', $user->getRoles()->toArray()); ?></td>
                 <td><span class="timeago" title="<?php echo $user->getLastLogin() ? $this->timeago()->format($user->getLastLogin()) : ''; ?>"></span></td>
                 <td><?php echo $user->getLogins(); ?></td>
             </tr>

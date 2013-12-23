@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="col-md-2">
 				<strong><?php echo $this->discussion->getAuthor()->getUsername(); ?></strong>
-				<p class="timeago" title="<?php echo $this->discussion->getDate()->format("Y-m-d H:i:s"); ?>"></p>
+				<p class="timeago" title="<?php echo $this->discussion->getTimestamp()->format("Y-m-d H:i:s"); ?>"></p>
 			    <hr>
                 <div class="btn-group btn-group-x">
                     <?php if($this->discussion->isDiscussion()): ?>

@@ -12,13 +12,39 @@
 namespace User\Manager;
 
 use User\Exception\UserNotFoundException;
-use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Exception;
+use User\Hydrator\UserHydrator;
 
 class UserManager implements UserManagerInterface
 {
-    use\Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+
+    /**
+     *
+     * @var UserHydrator
+     */
+    protected $hydrator;
+
+    /**
+     *
+     * @return UserHydrator
+     */
+    public function getHydrator()
+    {
+        return $this->hydrator;
+    }
+
+    /**
+     *
+     * @param UserHydrator $hydrator            
+     * @return self
+     */
+    public function setHydrator(UserHydrator $hydrator)
+    {
+        $this->hydrator = $hydrator;
+        return $this;
+    }
 
     public function getUser($id)
     {
@@ -92,19 +118,9 @@ class UserManager implements UserManagerInterface
     public function createUser(array $data)
     {
         $user = $this->getClassResolver()->resolve('User\Entity\UserInterface');
-        $this->getUuidManager()->injectUuid($user);
-        $user->populate($data);
+        $this->getHydrator()->hydrate($data, $user);
         $this->getObjectManager()->persist($user);
         return $user;
-    }
-
-    public function purgeUser($id)
-    {
-        $user = $this->getUser($id);
-        $this->removeInstance($user->getId());
-        $this->getObjectManager()->remove($user->getEntity());
-        unset($user);
-        return $this;
     }
 
     public function findAllUsers()

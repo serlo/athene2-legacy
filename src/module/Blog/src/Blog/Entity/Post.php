@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Blog\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidInterface;
-use User\Model\UserModelInterface;
+use User\Entity\UserInterface;
 use DateTime;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
@@ -105,7 +105,7 @@ class Post extends UuidEntity implements PostInterface
         return $this->publish;
     }
 
-    public function setAuthor(UserModelInterface $author)
+    public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
         return $this;

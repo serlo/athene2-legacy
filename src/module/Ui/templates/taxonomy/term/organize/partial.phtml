@@ -19,9 +19,9 @@ if (! isset($this->isChild)) : ?>
     			<span class="caret"></span>
     		</a>
     		<ul class="dropdown-menu">
-                <?php foreach($this->term->getAllowedChildrenTypes() as $taxonomy):?>
+                <?php foreach($this->taxonomy()->getOptions($this->term)->getAllowedChildren() as $taxonomy):?>
                     <li><a
-    				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy->getName(); ?></a></li>
+    				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $taxonomy, 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy; ?></a></li>
                 <?php endforeach;?>
     		</ul>
     	</div>

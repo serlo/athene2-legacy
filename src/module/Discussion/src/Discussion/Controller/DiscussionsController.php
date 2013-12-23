@@ -20,8 +20,7 @@ class DiscussionsController extends AbstractController
     public function indexAction()
     {
         $discussions = array();
-        $forums = $this->getTaxonomyManager()->getChildren();
-        
+        $forums = $this->getTaxonomy()->getChildren();
         $forum = $this->getTermService();
         
         if (is_object($forum)) {
@@ -40,7 +39,7 @@ class DiscussionsController extends AbstractController
         return $view;
     }
 
-    protected function getTaxonomyManager()
+    protected function getTaxonomy()
     {
         return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $this->getLanguageManager()
             ->getLanguageFromRequest());

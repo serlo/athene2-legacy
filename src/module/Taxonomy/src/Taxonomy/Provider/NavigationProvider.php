@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager

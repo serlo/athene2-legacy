@@ -77,18 +77,12 @@ return array(
                 'rootable' => false
             ),
             'subject' => array(
-                'templates' => array(
-                    'update' => 'taxonomy/taxonomy/update'
-                ),
                 'allowed_parents' => array(
                     'root'
                 ),
                 'rootable' => false
             ),
             'school-type' => array(
-                'templates' => array(
-                    'update' => 'taxonomy/taxonomy/update'
-                ),
                 'allowed_parents' => array(
                     'subject',
                     'school-type'

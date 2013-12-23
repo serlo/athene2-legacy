@@ -16,6 +16,7 @@
 				<directory suffix=".php">../../module/Ui/assets</directory>
 				<directory suffix="config.php">../../module</directory>
 				<directory suffix="Module.php">../../module</directory>
+				<directory suffix="Test.php">../../module</directory>
 			</exclude>
 		</whitelist>
 	</filter>

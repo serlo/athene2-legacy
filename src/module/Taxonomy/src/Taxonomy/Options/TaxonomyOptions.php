@@ -73,6 +73,16 @@ class TaxonomyOptions extends AbstractOptions
 
     /**
      *
+     * @param string $child            
+     * @return boolean
+     */
+    public function isParentAllowed($parent)
+    {
+        return in_array($parent, $this->allowedParents);
+    }
+
+    /**
+     *
      * @return bool $rootable
      */
     public function isRootable()

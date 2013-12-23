@@ -55,13 +55,6 @@ interface UserManagerInterface
 
     /**
      *
-     * @param numeric $id            
-     * @return self
-     */
-    public function purgeUser($id);
-
-    /**
-     *
      * @return EntityRepository
      */
     public function findAllUsers();

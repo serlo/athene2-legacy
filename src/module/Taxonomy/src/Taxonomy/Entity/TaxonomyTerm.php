@@ -297,9 +297,6 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     {
         $collection = new ArrayCollection();
         
-        if (empty($allowedTaxonomies)) {
-            return $collection;
-        }
         $this->iterAssociationNodes($collection, $this, $associations, $allowedTaxonomies);
         
         return $collection;
@@ -373,15 +370,15 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $collection;
     }
 
-    protected function iterAssociationNodes(Collection $collection, TaxonomyTermInterface $term, $associations, array $allowedTaxonomies = [])
+    protected function iterAssociationNodes(Collection $collection, TaxonomyTermInterface $term, $associations, array $allowedTaxonomies)
     {
-        foreach ($this->getAssociated($associations) as $link) {
+        foreach ($term->getAssociated($associations) as $link) {
             $collection->add($link);
         }
         
         foreach ($term->getChildren() as $child) {
-            if (in_array($child->getTaxonomy()->getName(), $allowedTaxonomies)) {
-                $this->prepareAssociations($collection, $child, $associations, $allowedTaxonomies);
+            if (empty($allowedTaxonomies) || in_array($child->getTaxonomy()->getName(), $allowedTaxonomies)) {
+                $this->iterAssociationNodes($collection, $child, $associations, $allowedTaxonomies);
             }
         }
     }

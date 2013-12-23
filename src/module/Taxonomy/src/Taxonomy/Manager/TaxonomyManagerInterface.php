@@ -52,9 +52,10 @@ interface TaxonomyManagerInterface
     /**
      * 
      * @param array $data
+     * @param LanguageInterface $language
      * @return TaxonomyTermInterface
      */
-    public function createTerm(array $data);
+    public function createTerm(array $data, LanguageInterface $language);
 
     /**
      * 

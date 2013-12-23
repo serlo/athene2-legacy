@@ -45,16 +45,6 @@ return array(
                 $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
                 return $form;
             },
-            __NAMESPACE__ . '\Manager\UserManager' => function ($sm)
-            {
-                $instance = new Manager\UserManager();
-                $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $instance->setAuthenticationService($sm->get('Zend\Authentication\AuthenticationService'));
-                $instance->setServiceLocator($sm);
-                $instance->setObjectManager($sm->get('EntityManager'));
-                $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                return $instance;
-            },
             __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
         )
     ),
@@ -112,6 +102,23 @@ return array(
         ),
         'definition' => array(
             'class' => array(
+                __NAMESPACE__ . '\Manager\UserManager' => array(
+                    'setClassResolver' => array(
+                        'required' => true
+                    ),
+                    'setAuthenticationService' => array(
+                        'required' => true
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => true
+                    ),
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setHydrator' => array(
+                        'required' => true
+                    )
+                ),
                 'User\Notification\Service\NotificationService' => array(
                     'setEventManager' => array(
                         'required' => true
@@ -458,15 +465,6 @@ return array(
                             'route' => '/remove/:id',
                             'defaults' => array(
                                 'action' => 'remove'
-                            )
-                        )
-                    ),
-                    'purge' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/purge/:id',
-                            'defaults' => array(
-                                'action' => 'purge'
                             )
                         )
                     )

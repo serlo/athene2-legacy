@@ -157,12 +157,12 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $found;
     }
 
-    public function createTerm(array $data)
+    public function createTerm(array $data, LanguageInterface $language)
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
         
         if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
-            $data['taxonomy'] = $this->getTaxonomy($data['taxonomy']);
+            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $language);
         }
         if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
             $data['parent'] = $this->getTerm($data['parent']);

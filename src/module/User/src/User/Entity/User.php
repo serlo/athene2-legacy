@@ -213,12 +213,4 @@ class User extends UuidEntity implements UserInterface
         }
         return false;
     }
-
-    private function injectArray($key, array $array, $default = NULL)
-    {
-        if (array_key_exists($key, $array)) {
-            $this->$key = $array[$key];
-        }
-        return $this;
-    }
 }

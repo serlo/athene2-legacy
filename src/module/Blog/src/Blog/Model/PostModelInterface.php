@@ -11,7 +11,7 @@
  */
 namespace Blog\Model;
 
-use User\Model\UserModelInterface;
+use User\Entity\UserInterface;
 use DateTime;
 use Common\Model\Wrapable;
 use Taxonomy\Model\TaxonomyTermModelInterface;
@@ -113,10 +113,10 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
     /**
      * Sets the author.
      *
-     * @param UserModelInterface $author            
+     * @param UserInterface $author            
      * @return self
      */
-    public function setAuthor(UserModelInterface $author);
+    public function setAuthor(UserInterface $author);
 
     /**
      * Sets the publish date.

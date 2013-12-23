@@ -95,16 +95,6 @@ class TaxonomyTermHydrator implements HydratorInterface
 
     /**
      *
-     * @param TaxonomyTermInterface $object            
-     * @return boolean
-     */
-    protected function isValid(TaxonomyTermInterface $object)
-    {
-        return true;
-    }
-
-    /**
-     *
      * @param array $data            
      * @param TaxonomyTermInterface $object            
      * @throws Exception\RuntimeException
@@ -123,9 +113,9 @@ class TaxonomyTermHydrator implements HydratorInterface
         } elseif ( $data['parent'] instanceof TaxonomyTermInterface) {
             $parentType = $data['parent']->getTaxonomy()->getName();
             $objectType = $data['taxonomy']->getName();
-            $parentOptions = $this->getModuleOptions()->getType($objectType);
+            $objectOptions = $this->getModuleOptions()->getType($objectType);
             
-            if (! $parentOptions->isChildAllowed($objectType)) {
+            if (! $objectOptions->isParentAllowed($parentType)) {
                 throw new Exception\RuntimeException(sprintf('Parent "%s" does not allow child "%s"', $parentType, $objectType));
             }
         } else {

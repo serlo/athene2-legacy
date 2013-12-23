@@ -13,7 +13,7 @@ namespace Blog\Manager;
 
 use Language\Entity\LanguageInterface;
 use Blog\Hydrator\PostHydrator;
-use User\Model\UserModelInterface;
+use User\Entity\UserInterface;
 use DateTime;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Blog\Exception;
@@ -68,7 +68,7 @@ class BlogManager implements BlogManagerInterface
         return $this;
     }
 
-    public function createPost(TaxonomyTermInterface $taxonomy, UserModelInterface $author, $title, $content, DateTime $publish = NULL)
+    public function createPost(TaxonomyTermInterface $taxonomy, UserInterface $author, $title, $content, DateTime $publish = NULL)
     {
         if ($publish === NULL) {
             $publish = new \DateTime("now");

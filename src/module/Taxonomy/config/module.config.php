@@ -11,9 +11,7 @@
  */
 namespace Taxonomy;
 
-/**
- * @codeCoverageIgnore
- */
+use Taxonomy\View\Helper\TaxonomyHelper;
 return [
     'term_router' => [
         'routes' => []
@@ -23,14 +21,22 @@ return [
         __NAMESPACE__ . '\Entity\TaxonomyInterface' => __NAMESPACE__ . '\Entity\Taxonomy',
         __NAMESPACE__ . '\Entity\TaxonomyTermInterface' => __NAMESPACE__ . '\Entity\TaxonomyTerm'
     ],
+    'view_helpers' => [
+        'factories' => [
+            'taxonomy' => function ($helperPluginManager)
+            {
+                $plugin = new TaxonomyHelper();
+                $plugin->setModuleOptions($helperPluginManager->getServiceLocator()
+                    ->get('Taxonomy\Options\ModuleOptions'));
+                return $plugin;
+            }
+        ]
+    ],
     'taxonomy' => [
         'types' => [
             'root' => [
                 'allowed_parents' => [],
-                'rootable' => true,
-                'templates' => [
-                    'update' => 'taxonomy/taxonomy/update'
-                ]
+                'rootable' => true
             ]
         ]
     ],
