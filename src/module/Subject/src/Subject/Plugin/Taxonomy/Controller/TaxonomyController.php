@@ -17,6 +17,7 @@ use Zend\View\Model\ViewModel;
 
 class TaxonomyController extends AbstractController
 {
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
     public function indexAction()
     {
@@ -26,21 +27,18 @@ class TaxonomyController extends AbstractController
         $entities = array();
         
         if($this->params('path', NULL)){
-            $term = $plugin->findTermByAncestors(explode('/', $this->params('path', NULL)));
+            $term = $subjectService->getEntity()->findChildBySlugs(explode('/', $this->params('path', NULL)));
         }
         
-        if ($term && $term->isAssociationAllowed('entities')) {
             foreach ($term->getAssociated('entities') as $entity) {
                 if (! $entity->getTrashed()) {
                     $entities[] = $entity;
                 }
             }
-        }
         
         $view = new ViewModel(array(
             'term' => $term,
             'terms' => $term ? $term->getChildren() : $plugin->getRootFolders($this->params('subject')),
-            'acceptsEntities' => $term ? $term->isAssociationAllowed('entities') : false,
             'subject' => $subjectService,
             'plugin' => $plugin,
             'links' => $entities

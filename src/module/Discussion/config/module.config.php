@@ -41,7 +41,7 @@ return array(
                 $discussionManager = $pluginManager->getServiceLocator()->get('Discussion\DiscussionManager');
                 $userManager = $pluginManager->getServiceLocator()->get('User\Manager\UserManager');
                 $languageManager = $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
-                $sharedTaxonomyManager = $pluginManager->getServiceLocator()->get('Taxonomy\Manager\SharedTaxonomyManager');
+                $sharedTaxonomyManager = $pluginManager->getServiceLocator()->get('Taxonomy\Manager\TaxonomyManager');
                 $plugin->setDiscussionManager($discussionManager);
                 $plugin->setUserManager($userManager);
                 $plugin->setLanguageManager($languageManager);
@@ -51,35 +51,23 @@ return array(
         )
     ),
     'taxonomy' => array(
-        'associations' => array(
-            'comments' => array(
-                'callback' => function (ServiceLocatorInterface $sm, $collection)
-                {
-                    return new $collection();
-                }
-            )
-        ),
         'types' => array(
             'forum-category' => array(
-                'options' => array(
-                    'allowed_parents' => array(
-                        'subject',
-                        'root'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_parents' => array(
+                    'subject',
+                    'root'
+                ),
+                'rootable' => false
             ),
             'forum' => array(
-                'options' => array(
-                    'allowed_associations' => array(
-                        'comments'
-                    ),
-                    'allowed_parents' => array(
-                        'forum',
-                        'forum-category'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_associations' => array(
+                    'comments'
+                ),
+                'allowed_parents' => array(
+                    'forum',
+                    'forum-category'
+                ),
+                'rootable' => false
             )
         )
     ),
@@ -238,7 +226,7 @@ return array(
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\TaxonomyManager'));
                 
                 return $class;
             }

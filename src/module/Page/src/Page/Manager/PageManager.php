@@ -19,13 +19,12 @@ use Page\Entity\PageRepositoryInterface;
 use Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
 use Page\Service\PageServiceInterface;
-use Language\Entity\LanguageEntityInterface;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 
 class PageManager implements PageManagerInterface
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Language\Model\LanguageModelAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\EntityDelegatorTrait;
     use \Page\Manager\PageManagerAwareTrait;
     use \Uuid\Manager\UuidManagerAwareTrait;
     use \Language\Manager\LanguageManagerAwareTrait;
@@ -143,7 +142,7 @@ class PageManager implements PageManagerInterface
     
     } 
     
-    public function findAllRepositorys(LanguageModelInterface $language){
+    public function findAllRepositorys(LanguageInterface $language){
         return
              $this->getObjectManager()
             ->getRepository($this->getClassResolver()

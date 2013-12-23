@@ -14,7 +14,7 @@ namespace Discussion;
 use User\Service\UserServiceInterface;
 use Uuid\Entity\UuidInterface;
 use Discussion\Entity\CommentInterface;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Discussion\Service\CommentServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
@@ -39,7 +39,7 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
     /**
      * 
      * @param UuidInterface $object
-     * @param LanguageModelInterface $language
+     * @param LanguageInterface $language
      * @param UserServiceInterface $author
      * @param int $forum
      * @param string $title
@@ -47,17 +47,17 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
      * @param CommentInterface $parent
      * @return CommentServiceInterface
      */
-    public function startDiscussion(UuidInterface $object, LanguageModelInterface $language, UserServiceInterface $author, $forum, $title, $content);
+    public function startDiscussion(UuidInterface $object, LanguageInterface $language, UserServiceInterface $author, $forum, $title, $content);
     
     /**
      * 
      * @param CommentInterface $discussion
-     * @param LanguageModelInterface $language
+     * @param LanguageInterface $language
      * @param UserServiceInterface $author
      * @param string $content
      * @return CommentServiceInterface
      */
-    public function commentDiscussion(CommentInterface $discussion, LanguageModelInterface $language, UserServiceInterface $author, $content);
+    public function commentDiscussion(CommentInterface $discussion, LanguageInterface $language, UserServiceInterface $author, $content);
     
     /**
      * 
@@ -68,8 +68,8 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
     
     /**
      * 
-     * @param LanguageModelInterface $language
+     * @param LanguageInterface $language
      * @return CommentServiceInterface[]
      */
-    public function findDiscussionsByLanguage(LanguageModelInterface $language);
+    public function findDiscussionsByLanguage(LanguageInterface $language);
 }

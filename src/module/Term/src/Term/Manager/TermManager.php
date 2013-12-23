@@ -15,7 +15,7 @@ namespace Term\Manager;
 
 use Term\Entity\TaxonomyTermInterface;
 use Term\Exception\TermNotFoundException;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Common\Filter\Slugify;
 
 class TermManager implements TermManagerInterface
@@ -34,7 +34,7 @@ class TermManager implements TermManagerInterface
         return $instance;
     }
 
-    public function findTermBySlug($slug, LanguageModelInterface $language)
+    public function findTermBySlug($slug, LanguageInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -50,7 +50,7 @@ class TermManager implements TermManagerInterface
         return $entity;
     }
 
-    public function findTermByName($name, LanguageModelInterface $language)
+    public function findTermByName($name, LanguageInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -67,7 +67,7 @@ class TermManager implements TermManagerInterface
         return $entity;
     }
 
-    public function createTerm($name, $slug = NULL, LanguageModelInterface $language)
+    public function createTerm($name, $slug = NULL, LanguageInterface $language)
     {
         $filter = new Slugify();
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');

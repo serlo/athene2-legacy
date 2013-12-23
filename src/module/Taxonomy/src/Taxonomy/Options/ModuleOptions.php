@@ -41,7 +41,10 @@ class ModuleOptions extends AbstractOptions
         }
         
         if (! is_object($this->types[$type])) {
-            $this->types[$type] = new TaxonomyOptions($this->types[$type]);
+            $options = array_merge([
+                'allowed_children' => $this->aggregateAllowedChildren($type)
+            ], $this->types[$type]);
+            $this->types[$type] = new TaxonomyOptions($options);
         }
         
         return $this->types[$type];
@@ -56,5 +59,21 @@ class ModuleOptions extends AbstractOptions
     {
         $this->types = $types;
         return $this;
+    }
+
+    /**
+     *
+     * @param string $needle            
+     * @return array
+     */
+    protected function aggregateAllowedChildren($needle)
+    {
+        $children = [];
+        foreach ($this->types as $key => $type) {
+            if (array_key_exists('allowed_parents', $type) && in_array($needle, $type['allowed_parents'])) {
+                $children[] = $key;
+            }
+        }
+        return $children;
     }
 }

@@ -24,7 +24,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->termServiceMock = new TermService();
         $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
-        $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
+        $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\TaxonomyManager');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
         
         $this->taxonomyManager->setObjectManager($this->entityManagerMock);
@@ -51,7 +51,7 @@ class TaxonomyManagerTest extends AbstractTestCase
                 'allowed_parents' => array(
                     'foobarSimple'
                 ),
-                'radix_enabled' => false
+                'rootable' => false
             )
         );
         $this->taxonomyManager->setConfig($this->config);

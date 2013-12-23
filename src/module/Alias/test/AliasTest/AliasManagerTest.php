@@ -48,7 +48,7 @@ class AliasManagerTest extends ManagerTest
 
     protected function fakeLanguage($id)
     {
-        return $this->mockEntity('Language\Model\LanguageModelInterface', $id);
+        return $this->mockEntity('Language\Entity\LanguageInterface', $id);
     }
 
     public function testFindSourceByAlias()

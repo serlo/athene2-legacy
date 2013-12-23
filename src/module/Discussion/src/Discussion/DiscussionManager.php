@@ -13,7 +13,7 @@ namespace Discussion;
 
 use Discussion\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Discussion\Entity\CommentInterface;
 
 class DiscussionManager implements DiscussionManagerInterface
@@ -51,7 +51,7 @@ class DiscussionManager implements DiscussionManagerInterface
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::findDiscussionsOn()
      */
-    public function findDiscussionsByLanguage(LanguageModelInterface $language)
+    public function findDiscussionsByLanguage(LanguageInterface $language)
     {
         $discussions = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -80,7 +80,7 @@ class DiscussionManager implements DiscussionManagerInterface
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
      */
-    public function startDiscussion(\Uuid\Entity\UuidInterface $object, \Language\Model\LanguageModelInterface $language, \User\Service\UserServiceInterface $author, $forum, $title, $content)
+    public function startDiscussion(\Uuid\Entity\UuidInterface $object, \Language\Entity\LanguageInterface $language, \User\Service\UserServiceInterface $author, $forum, $title, $content)
     {
         if ($object->is('comment')) {
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
@@ -98,7 +98,8 @@ class DiscussionManager implements DiscussionManagerInterface
         $comment->setTitle($title);
         $comment->setContent($content);
         $comment->setStatus(1);
-        $forum->associateObject('comments', $comment);
+        
+        $this->getTaxonomyManager()->associateWith($forum->getId(), 'comments', $comment);
         
         $this->getObjectManager()->persist($comment);
         
@@ -108,7 +109,7 @@ class DiscussionManager implements DiscussionManagerInterface
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::comment()
      */
-    public function commentDiscussion(CommentInterface $discussion, \Language\Model\LanguageModelInterface $language, \User\Service\UserServiceInterface $author, $content)
+    public function commentDiscussion(CommentInterface $discussion, \Language\Entity\LanguageInterface $language, \User\Service\UserServiceInterface $author, $content)
     {
         if ($discussion->hasParent()) {
             throw new Exception\RuntimeException(sprintf('You are trying to comment on a comment, but only commenting a discussion is allowed (comments have parents whilst discussions do not).'));

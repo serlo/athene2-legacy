@@ -52,78 +52,64 @@ return array(
     'taxonomy' => array(
         'types' => array(
             'topic-folder' => array(
-                'options' => array(
-                    'allowed_associations' => array(
-                        'entities'
-                    ),
-                    'allowed_parents' => array(
-                        'topic'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_associations' => array(
+                    'entities'
+                ),
+                'allowed_parents' => array(
+                    'topic'
+                ),
+                'rootable' => false
             ),
             'topic' => array(
-                'options' => array(
-                    'allowed_associations' => array(
-                        'entities'
-                    ),
-                    'allowed_parents' => array(
-                        'abstract-topic'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_associations' => array(
+                    'entities'
+                ),
+                'allowed_parents' => array(
+                    'abstract-topic'
+                ),
+                'rootable' => false
             ),
             'abstract-topic' => array(
-                'options' => array(
-                    'allowed_parents' => array(
-                        'subject',
-                        'abstract-topic'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_parents' => array(
+                    'subject',
+                    'abstract-topic'
+                ),
+                'rootable' => false
             ),
             'subject' => array(
-                'options' => array(
-                    'templates' => array(
-                        'update' => 'taxonomy/taxonomy/update'
-                    ),
-                    'allowed_parents' => array(
-                        'root'
-                    ),
-                    'radix_enabled' => false
-                )
+                'templates' => array(
+                    'update' => 'taxonomy/taxonomy/update'
+                ),
+                'allowed_parents' => array(
+                    'root'
+                ),
+                'rootable' => false
             ),
             'school-type' => array(
-                'options' => array(
-                    'templates' => array(
-                        'update' => 'taxonomy/taxonomy/update'
-                    ),
-                    'allowed_parents' => array(
-                        'subject',
-                        'school-type'
-                    ),
-                    'radix_enabled' => false
-                )
+                'templates' => array(
+                    'update' => 'taxonomy/taxonomy/update'
+                ),
+                'allowed_parents' => array(
+                    'subject',
+                    'school-type'
+                ),
+                'rootable' => false
             ),
             'curriculum' => array(
-                'options' => array(
-                    'allowed_parents' => array(
-                        'school-type'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_parents' => array(
+                    'school-type'
+                ),
+                'rootable' => false
             ),
             'curriculum-folder' => array(
-                'options' => array(
-                    'allowed_associations' => array(
-                        'entities'
-                    ),
-                    'allowed_parents' => array(
-                        'curriculum',
-                        'curriculum-folder'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_associations' => array(
+                    'entities'
+                ),
+                'allowed_parents' => array(
+                    'curriculum',
+                    'curriculum-folder'
+                ),
+                'rootable' => false
             )
         )
     ),
@@ -134,28 +120,21 @@ return array(
                 {
                     $class = new Plugin\Taxonomy\TaxonomyPlugin();
                     $class->setTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\TaxonomyManager'));
                     return $class;
-                },/*
-                'topic' => function  ($sm)
-                {
-                    $class = new Plugin\Topic\TopicPlugin();
-                    $class->setTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
-                    return $class;
-                },*/
+                },
                 'curriculum' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\TaxonomyManager'));
                     return $class;
                 },
                 'taxonomyFilter' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
                     $class->setTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\TaxonomyManager'));
                     $class->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     return $class;
@@ -201,7 +180,7 @@ return array(
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 $class->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\TaxonomyManager'));
                 
                 return $class;
             })

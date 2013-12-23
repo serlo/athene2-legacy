@@ -11,7 +11,7 @@
  */
 namespace TaxonomyTest;
 
-use Taxonomy\Manager\SharedTaxonomyManager;
+use Taxonomy\Manager\TaxonomyManager;
 use Doctrine\DBAL\LockMode;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -45,7 +45,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
                 'foobarSimple' => array(
                     'options' => array(
                         'allowed_associations' => array(),
-                        'radix_enabled' => true
+                        'rootable' => true
                     )
                 ),
                 'foobar' => array(
@@ -53,7 +53,7 @@ class SharedTaxonomyManagerTest extends \PHPUnit_Framework_TestCase
                         'allowed_parents' => array(
                             'foobarSimple'
                         ),
-                        'radix_enabled' => false
+                        'rootable' => false
                     )
                 )
             )

@@ -76,7 +76,7 @@ interface TaxonomyTermInterface
 
     /**
      *
-     * @return LanguageEntityInterface
+     * @return LanguageInterface
      */
     public function getLanguage();
 
@@ -106,7 +106,7 @@ interface TaxonomyTermInterface
      *
      * @param string $association            
      * @param TaxonomyTermAwareInterface $object            
-     * @return $this
+     * @return self
      */
     public function associateObject($association, TaxonomyTermAwareInterface $object);
 
@@ -115,7 +115,7 @@ interface TaxonomyTermInterface
      * @param string $association            
      * @param int $objectId            
      * @param int $position            
-     * @return $this
+     * @return self
      */
     public function positionAssociatedObject($association, $objectId, $position);
 
@@ -123,35 +123,35 @@ interface TaxonomyTermInterface
      *
      * @param string $field            
      * @param TaxonomyTermAwareInterface $object            
-     * @return $this
+     * @return self
      */
     public function removeAssociation($field, TaxonomyTermAwareInterface $object);
 
     /**
      *
      * @param TaxonomyInterface $taxonomy            
-     * @return $this
+     * @return self
      */
     public function setTaxonomy(TaxonomyInterface $taxonomy);
 
     /**
      *
      * @param string $description            
-     * @return $this
+     * @return self
      */
     public function setDescription($description);
 
     /**
      *
      * @param self $parent            
-     * @return $this
+     * @return self
      */
     public function setParent(self $parent);
 
     /**
      *
      * @param int $position            
-     * @return $this
+     * @return self
      */
     public function setPosition($position);
 
@@ -161,6 +161,13 @@ interface TaxonomyTermInterface
      * @return TaxonomyTermModelInterface
      */
     public function findAncestorByTypeName($name);
+    
+    /**
+     * 
+     * @param array $slugs      
+     * @return self
+     */
+    public function findChildBySlugs(array $slugs);
 
     /**
      *

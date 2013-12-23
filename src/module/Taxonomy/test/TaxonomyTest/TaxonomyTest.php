@@ -13,7 +13,7 @@ namespace TaxonomyTest;
 
 use AtheneTest\TestCase\Model;
 use Taxonomy\Entity\Taxonomy;
-use Language\Entity\LanguageEntity;
+use Language\Entity\Language;
 use Taxonomy\Entity\TaxonomyType;
 
 class TaxonomyTest extends Model
@@ -30,7 +30,7 @@ class TaxonomyTest extends Model
     protected function getData()
     {
         return array(
-            'language' => new LanguageEntity(),
+            'language' => new Language(),
             'id' => '1',
             'type' => new TaxonomyType(),
             'name' => ''

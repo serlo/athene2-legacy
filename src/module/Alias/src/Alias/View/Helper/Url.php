@@ -30,6 +30,7 @@ class Url extends ZendUrl
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $alias = $aliasManager->findAliasBySource($link, $language);
         
+        
         if ($alias) {
             $link = $this->getOption('uri_head') . '/' . $alias;
         }

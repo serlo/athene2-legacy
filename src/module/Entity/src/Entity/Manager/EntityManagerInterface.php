@@ -12,7 +12,7 @@
 namespace Entity\Manager;
 
 use Entity\Entity\EntityInterface;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Common\ObjectManager\Flushable;
 use Entity\Options\EntityOptions;
 
@@ -30,8 +30,8 @@ interface EntityManagerInterface extends Flushable
      *
      * @param string $type            
      * @param array $data            
-     * @param LanguageModelInterface $language            
+     * @param LanguageInterface $language            
      * @return EntityInterface
      */
-    public function createEntity($type, array $data = array(), LanguageModelInterface $language);
+    public function createEntity($type, array $data = array(), LanguageInterface $language);
 }

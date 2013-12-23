@@ -34,7 +34,7 @@ abstract class BlogManagerTest extends ManagerTest
 
     protected function prepareSharedTaxonomyManager()
     {
-        $mock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
+        $mock = $this->getMock('Taxonomy\Manager\TaxonomyManager');
         $this->blogManager->setTaxonomyManager($mock);
         return $mock;
     }
@@ -70,7 +70,7 @@ abstract class BlogManagerTest extends ManagerTest
 
     protected function mockLanguage()
     {
-        return $this->getMock('Language\Model\LanguageModelInterface');
+        return $this->getMock('Language\Entity\LanguageInterface');
     }
 
     public function testGetBlog()

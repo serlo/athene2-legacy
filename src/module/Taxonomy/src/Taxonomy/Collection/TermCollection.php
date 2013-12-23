@@ -12,7 +12,7 @@
 namespace Taxonomy\Collection;
 
 use Common\Collection\AbstractDelegatorCollection;
-use Taxonomy\Manager\SharedTaxonomyManagerInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Exception\InvalidArgumentException;
 
 class TermCollection extends AbstractDelegatorCollection

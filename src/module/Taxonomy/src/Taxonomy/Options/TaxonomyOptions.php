@@ -18,10 +18,21 @@ class TaxonomyOptions extends AbstractOptions
 
     protected $allowedChildren = [];
 
+    protected $allowedParents = [];
+
     protected $rootable;
 
     protected $allowedAssociations = [];
-    
+
+    /**
+     *
+     * @return array $allowedParents
+     */
+    public function getAllowedParents()
+    {
+        return $this->allowedParents;
+    }
+
     /**
      *
      * @return array $allowedAssociations
@@ -41,15 +52,14 @@ class TaxonomyOptions extends AbstractOptions
     }
 
     /**
-     * 
-     * @param string $association
+     *
+     * @param string $association            
      * @return boolean
      */
     public function isAssociationAllowed($association)
     {
         return in_array($this->getAllowedAssociations());
     }
-    
 
     /**
      *
@@ -100,6 +110,17 @@ class TaxonomyOptions extends AbstractOptions
     public function setAllowedAssociations($allowedAssociations)
     {
         $this->allowedAssociations = $allowedAssociations;
+        return $this;
+    }
+
+    /**
+     *
+     * @param array $allowedParents            
+     * @return self
+     */
+    public function setAllowedParents($allowedParents)
+    {
+        $this->allowedParents = $allowedParents;
         return $this;
     }
 }

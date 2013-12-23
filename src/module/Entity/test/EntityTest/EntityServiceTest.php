@@ -24,7 +24,7 @@ class EntityServiceTest extends \PHPUnit_Framework_TestCase
         
         $this->pluginManagerMock = $this->getMock('Entity\Plugin\PluginManager');
         $this->entityMock = $this->getMock('Entity\Entity\Entity');
-        $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
+        $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\TaxonomyManager');
         
         $this->entityService = new Service\EntityService();
         $this->entityService->setPluginManager($this->pluginManagerMock);

@@ -18,32 +18,34 @@ use Zend\Stdlib\ArrayUtils;
 
 class SubjectService implements SubjectServiceInterface, SubjectInterface
 {
-    use\Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Subject\Entity\SubjectDelegatorTrait,\Subject\Plugin\PluginManagerAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Subject\Manager\SubjectManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait;
 
     /**
-     * 
+     *
      * @var TaxonomyTermInterface
      */
-    protected $taxonomyTerm;
-    
+    protected $entity;
+
     /**
-     * @return the $taxonomyTerm
+     *
+     * @return the $entity
      */
-    public function getTermService()
+    public function getEntity()
     {
-        return $this->taxonomyTerm;
+        return $this->entity;
     }
 
-	/**
-     * @param \Taxonomy\Entity\TaxonomyTermInterface $taxonomyTerm
+    /**
+     *
+     * @param \Taxonomy\Entity\TaxonomyTermInterface $entity            
      */
-    public function setTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm)
+    public function setEntity(TaxonomyTermInterface $taxonomyTerm)
     {
-        $this->taxonomyTerm = $taxonomyTerm;
+        $this->entity = $taxonomyTerm;
         return $this;
     }
 
-	protected function getDefaultConfig()
+    protected function getDefaultConfig()
     {
         return array(
             'plugins' => array()
@@ -52,7 +54,7 @@ class SubjectService implements SubjectServiceInterface, SubjectInterface
 
     public function getLanguage()
     {
-        return $this->getTermService()->getLanguage();
+        return $this->getEntity()->getLanguage();
     }
 
     public function getId()

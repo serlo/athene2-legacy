@@ -41,8 +41,8 @@ return array(
     'di' => array(
         'definition' => array(
             'class' => array(
-                'Language\Service\LanguageService' => array(),
-                'Language\Manager\LanguageManager' => array(
+                __NAMESPACE__ . '\Service\LanguageService' => array(),
+                __NAMESPACE__ . '\Manager\LanguageManager' => array(
                     'setClassResolver' => array(
                         'required' => 'true'
                     ),
@@ -60,16 +60,12 @@ return array(
         ),
         'instance' => array(
             'preferences' => array(
-                'Language\Manager\LanguageManagerInterface' => 'Language\Manager\LanguageManager'
+                __NAMESPACE__ . '\Manager\LanguageManagerInterface' => __NAMESPACE__ . '\Manager\LanguageManager'
             ),
-            'Language\Service\LanguageService' => array(
-                'shared' => false
-            )
         )
     ),
     'class_resolver' => array(
-        'Language\Entity\LanguageEntityInterface' => 'Language\Entity\LanguageEntity',
-        'Language\Model\LanguageModelInterface' => 'Language\Service\LanguageService'
+        __NAMESPACE__ . '\Entity\LanguageInterface' => __NAMESPACE__ . '\Entity\Language',
     )
 );
 

@@ -23,7 +23,8 @@
 		"zf-commons/zfc-base" : "0.*",
 		"zendframework/zendframework" : "2.2.*",
 		"foolz/sphinxql-query-builder" : "dev-master",
-    	"neilime/zf2-twb-bundle": "dev-master"
+    	"neilime/zf2-twb-bundle": "dev-master",
+    	"zendframework/zend-developer-tools": "dev-master"
 	},
 	"minimum-stability" : "dev",
     "autoload": {

@@ -13,7 +13,7 @@ namespace TaxonomyTest;
 
 use AtheneTest\TestCase\Model;
 use Taxonomy\Entity\Taxonomy;
-use Language\Entity\LanguageEntity;
+use Language\Entity\Language;
 use Taxonomy\Entity\TaxonomyType;
 use Doctrine\Common\Collections\ArrayCollection;
 

@@ -29,7 +29,7 @@ class SubjectManagerTest extends \PHPUnit_Framework_TestCase
             )
         ));
         
-        $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
+        $this->sharedTaxonomyManagerMock = $this->getMock('Taxonomy\Manager\TaxonomyManager');
         $this->termServiceMock = $this->getMock('Taxonomy\Service\TermService');
         $this->termTaxonomyMock = $this->getMock('Taxonomy\Entity\TaxonomyTerm');
         $this->languageManagerMock = $this->getMock('Language\Manager\LanguageManager');

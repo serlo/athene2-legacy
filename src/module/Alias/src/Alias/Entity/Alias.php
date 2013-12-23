@@ -13,7 +13,7 @@ namespace Alias\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Uuid\Entity\UuidInterface;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 
 /**
  * @ORM\Entity
@@ -40,7 +40,7 @@ class Alias implements AliasInterface
     protected $source;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
@@ -94,7 +94,7 @@ class Alias implements AliasInterface
         return $this;
     }
 
-    public function setLanguage(LanguageModelInterface $language)
+    public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
         return $this;

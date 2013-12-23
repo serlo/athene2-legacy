@@ -222,6 +222,18 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         });
     }
 
+    public function findChildBySlugs(array $slugs)
+    {
+        $slug = array_shift($slugs);
+        
+        foreach ($this->getChildren() as $child) {
+            if ($child->getSlug() == $slug) {
+                return $child->findChildBySlugs($slugs);
+            }
+        }
+        return $this;
+    }
+
     public function isAssociated($association, TaxonomyTermAwareInterface $object)
     {
         $associations = $this->getEntity()->getAssociated($association);

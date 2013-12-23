@@ -24,7 +24,7 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->pageManager = new PageManager();
-        $this->languageMock = $this->getMock('Language\Entity\LanguageEntity');
+        $this->languageMock = $this->getMock('Language\Entity\Language');
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->userMock = $this->getMock('User\Entity\User');
         $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);

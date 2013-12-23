@@ -24,10 +24,10 @@ class TaxonomyController extends AbstractController
         
         /* @var $plugin \Entity\Plugin\Taxonomy\TaxonomyPlugin */
         $taxonomy = $plugin->getTaxonomyManager()->findTaxonomyByName('subject', $language);
-        
-        $saplings = $taxonomy->findTermByAncestors(array(
+
+        $term = $this->getTaxonomyManager()->findTerm($taxonomy,[
             'mathe'
-        ))->getChildren();
+        ])->getChildren();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();

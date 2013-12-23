@@ -11,7 +11,7 @@
  */
 namespace Blog\Manager;
 
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Blog\Hydrator\PostHydrator;
 use User\Model\UserModelInterface;
 use DateTime;
@@ -27,7 +27,7 @@ class BlogManager implements BlogManagerInterface
         return $this->getTaxonomyManager()->getTerm($id);
     }
 
-    public function findAllBlogs(LanguageModelInterface $languageService)
+    public function findAllBlogs(LanguageInterface $languageService)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $languageService);
         return $taxonomy->getChildren();
@@ -86,10 +86,10 @@ class BlogManager implements BlogManagerInterface
             'publish' => $publish
         ], $post);
         
-        $taxonomy->associateObject('blogPosts', $post);
+        $this->getTaxonomyManager()->associateWith($taxonomy->getId(), 'blogPosts', $post);
         
         $this->getObjectManager()->persist($post);
-        $this->getObjectManager()->persist($taxonomy->getEntity());
+        $this->getObjectManager()->persist($taxonomy);
         
         return $post;
     }

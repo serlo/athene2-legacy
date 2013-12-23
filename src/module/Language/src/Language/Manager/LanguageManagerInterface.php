@@ -11,7 +11,7 @@
  */
 namespace Language\Manager;
 
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface LanguageManagerInterface
@@ -19,33 +19,33 @@ interface LanguageManagerInterface
 
     /**
      * 
-     * @return LanguageModelInterface
+     * @return LanguageInterface
      */
     public function getFallbackLanugage();
 
     /**
      * 
-     * @return LanguageModelInterface
+     * @return LanguageInterface
      */
     public function getLanguageFromRequest();
 
     /**
      * 
      * @param int $id
-     * @return LanguageModelInterface
+     * @return LanguageInterface
      */
     public function getLanguage($id);
     
     /**
      * 
      * @param string $code
-     * @return LanguageModelInterface
+     * @return LanguageInterface
      */
     public function findLanguageByCode($code);
     
     /**
      * 
-     * @return Collection|LanguageModelInterface[]
+     * @return Collection|LanguageInterface[]
      */
     public function findAllLanguages();
 }

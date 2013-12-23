@@ -20,7 +20,7 @@ use Taxonomy\Options\ModuleOptions;
 class TaxonomyTermHydrator implements HydratorInterface
 {
     
-    use \Taxonomy\Manager\TaxonomyManagerAwareTrait,\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -30,7 +30,7 @@ class TaxonomyTermHydrator implements HydratorInterface
 
     /**
      *
-     * @return \Taxonomy\Options\ModuleOptions $moduleOptions
+     * @return ModuleOptions $moduleOptions
      */
     public function getModuleOptions()
     {
@@ -39,10 +39,10 @@ class TaxonomyTermHydrator implements HydratorInterface
 
     /**
      *
-     * @param \Taxonomy\Options\ModuleOptions $moduleOptions            
+     * @param ModuleOptions $moduleOptions            
      * @return $this
      */
-    public function setModuleOptions($moduleOptions)
+    public function setModuleOptions(ModuleOptions $moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
         return $this;
@@ -57,14 +57,15 @@ class TaxonomyTermHydrator implements HydratorInterface
      */
     public function extract($object)
     {
+        $term = $object->getTerm();
         return [
             'id' => $object->getId(),
             'term' => [
-                'id' => $object->getTerm()->getId(),
-                'name' => $object->getTerm()->getName(),
-                'slug' => $object->getTerm()->getSlug()
+                'id' => $term !== NULL ? $term->getId() : NULL,
+                'name' => $term !== NULL ? $term->getName() : NULL,
+                'slug' => $term !== NULL ? $term->getSlug() : NULL,
             ],
-            'taxonomy' => $object->getTaxonomy()->getId(),
+            'taxonomy' => $object->getTaxonomy() !== NULL ? $object->getTaxonomy()->getId() : NULL,
             'parent' => $object->getParent(),
             'description' => $object->getDescription()
         ];
@@ -83,7 +84,7 @@ class TaxonomyTermHydrator implements HydratorInterface
         
         $data = $this->validate($data, $object);
         
-        $this->getUuidManager()->injectUuid($object, $object->getId());
+        $this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
         $object->setTaxonomy($data['taxonomy']);
         $object->setTerm($data['term']);
         $object->setDescription($data['description']);
@@ -112,30 +113,23 @@ class TaxonomyTermHydrator implements HydratorInterface
     protected function validate(array $data, TaxonomyTermInterface $object)
     {
         if (isset($data['taxonomy'])) {
-            if (is_numeric($data['taxonomy'])) {
-                $data['taxonomy'] = $this->getTaxonomyManager()->getTaxonomy($data['taxonomy']);
-            }
-            $options = $this->getModuleOptions()->getType($data['taxonomy']);
+            $options = $this->getModuleOptions()->getType($data['taxonomy']->getName());
         }
         
         $parent = $data['parent'];
         
         if ($data['parent'] === NULL && ! $options->isRootable()) {
             throw new Exception\RuntimeException(sprintf('Taxonomy "%s" is not rootable.', $data['taxonomy']->getName()));
-        } elseif (is_numeric($data['parent']) || $data['parent'] instanceof TaxonomyTermInterface) {
-            if (is_numeric($data['parent'])) {
-                $data['parent'] = $this->getTaxonomyManager()->getTerm($data['parent']);
-            }
-            
+        } elseif ( $data['parent'] instanceof TaxonomyTermInterface) {
             $parentType = $data['parent']->getTaxonomy()->getName();
-            $objectType = $object->getTaxonomy()->getName();
+            $objectType = $data['taxonomy']->getName();
             $parentOptions = $this->getModuleOptions()->getType($objectType);
             
             if (! $parentOptions->isChildAllowed($objectType)) {
-                throw new Exception\RuntimeException('Parent "%s" does not allow child "%s"', $parentType, $objectType);
+                throw new Exception\RuntimeException(sprintf('Parent "%s" does not allow child "%s"', $parentType, $objectType));
             }
         } else {
-            throw new Exception\RuntimeException('Parent must be numeric or TaxonomyTermInterface, got "%s"', is_object($data['parent']) ? get_class($data['parent']) : gettype($data['parent']));
+            throw new Exception\RuntimeException('Parent must be TaxonomyTermInterface, got "%s"', is_object($data['parent']) ? get_class($data['parent']) : gettype($data['parent']));
         }
         
         try {

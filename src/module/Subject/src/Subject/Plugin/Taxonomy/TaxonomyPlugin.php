@@ -30,7 +30,7 @@ class TaxonomyPlugin extends AbstractPlugin
                 'index' => 'subject/plugin/taxonomy/index',
                 'taxonomy' => 'subject/plugin/taxonomy/taxonomy',
                 'links' => 'subject/plugin/taxonomy/entities',
-                'branches' =>  'subject/plugin/taxonomy/branches',
+                'branches' => 'subject/plugin/taxonomy/branches',
                 'sort-entities' => 'subject/plugin/taxonomy/sort-entities'
             )
         );
@@ -52,11 +52,12 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function getPathToTermAsUri(TaxonomyTermInterface $term)
     {
-        return substr($this->_getPathToTermAsUri($term), 0 , -1);
+        return substr($this->_getPathToTermAsUri($term), 0, - 1);
     }
-    
-    private function _getPathToTermAsUri(TaxonomyTermInterface $term){
-        return ($term->getTaxonomy()->getName() != $this->getOption('taxonomy_parent')) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';        
+
+    private function _getPathToTermAsUri(TaxonomyTermInterface $term)
+    {
+        return ($term->getTaxonomy()->getName() != $this->getOption('taxonomy_parent')) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }
 
     public function getTermManager()
@@ -108,11 +109,13 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function getRootFolders($taxonomyParentType)
     {
-        $return = $this->getTaxonomyManager()
-            ->findTaxonomyByName($this->getOption('taxonomy_parent'), $this->getSubjectService()
-            ->getLanguage())
-            ->findTermByAncestors((array) $taxonomyParentType)
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy_parent'), $this->getSubjectService()
+            ->getLanguage());
+        
+        $term = $this->getTaxonomyManager()
+            ->findTerm($taxonomy, (array) $taxonomyParentType)
             ->findChildrenByTaxonomyNames((array) $this->getOption('taxonomy'));
-        return $return;
+        
+        return $term;
     }
 }

@@ -12,8 +12,7 @@
 namespace Term\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Language\Model\LanguageModelInterface;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 
 /**
  * A Term.
@@ -46,7 +45,7 @@ class TermEntity implements TermEntityInterface
     protected $termTaxonomies;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      */
     protected $language;
 
@@ -75,7 +74,7 @@ class TermEntity implements TermEntityInterface
         return $this->slug;
     }
 
-    public function setLanguage(LanguageEntityInterface $language)
+    public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
         return $this;

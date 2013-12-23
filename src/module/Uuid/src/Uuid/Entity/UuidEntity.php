@@ -17,11 +17,19 @@ class UuidEntity implements UuidHolder
 
     public function getUuid()
     {
+        if($this->getUuidEntity() === NULL){
+            return NULL;
+        }
+        
         return $this->getUuidEntity()->getUuid();
     }
 
     public function getId()
     {
+        if($this->getUuidEntity() === NULL){
+            return NULL;
+        }
+        
         return $this->getUuidEntity()->getId();
     }
 

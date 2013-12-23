@@ -15,7 +15,7 @@ use Common\Traits;
 use Alias\Exception;
 use Uuid\Entity\UuidInterface;
 use Common\Filter\Slugify;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Alias\Options\ManagerOptions;
 
 class AliasManager implements AliasManagerInterface
@@ -48,7 +48,7 @@ class AliasManager implements AliasManagerInterface
         return $this;
     }
 
-    public function autoAlias($name, $source, UuidInterface $object, LanguageModelInterface $language)
+    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language)
     {
         if (! is_string($name) || ! is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected name and source to be string but got "%s" and "%s"', gettype($name), gettype($source)));
@@ -70,7 +70,7 @@ class AliasManager implements AliasManagerInterface
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
     }
 
-    public function findSourceByAlias($alias, LanguageModelInterface $language)
+    public function findSourceByAlias($alias, LanguageInterface $language)
     {
         if (! is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected alias to be string but got "%s"', gettype($alias)));
@@ -89,7 +89,7 @@ class AliasManager implements AliasManagerInterface
         return $entity->getSource();
     }
 
-    public function findAliasBySource($source, LanguageModelInterface $language)
+    public function findAliasBySource($source, LanguageInterface $language)
     {
         if (! is_string($source))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
@@ -105,7 +105,7 @@ class AliasManager implements AliasManagerInterface
         return $entity->getAlias();
     }
 
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageModelInterface $language)
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
     {
         if (! is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));

@@ -9,34 +9,37 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Model;
+namespace Language\Entity;
 
-trait LanguageModelAwareTrait
+interface LanguageInterface
 {
 
     /**
+     * Returns the code.
+     * echo $language->getCode(); // prints: 'de'
      *
-     * @var LanguageModelInterface
+     * @return string $code
      */
-    protected $language;
+    public function getCode();
 
     /**
+     * Sets the code
      *
-     * @return LanguageModelInterface $language
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     *
-     * @param LanguageModelInterface $language            
+     * @param field_type $code            
      * @return $this
      */
-    public function setLanguage(LanguageModelInterface $language)
-    {
-        $this->language = $language;
-        return $this;
-    }
+    public function setCode($code);
+
+    /**
+     * Gets the id
+     *
+     * @return int $id
+     */
+    public function getId();
+
+    /**
+     *
+     * @return bool
+     */
+    public function getEntity();
 }

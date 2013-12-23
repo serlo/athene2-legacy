@@ -12,9 +12,9 @@
 namespace Alias\Entity;
 
 use Uuid\Entity\UuidInterface;
-use Language\Model\LanguageModelAwareInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface AliasInterface extends LanguageModelAwareInterface
+interface AliasInterface extends LanguageAwareInterface
 {
 
     /**

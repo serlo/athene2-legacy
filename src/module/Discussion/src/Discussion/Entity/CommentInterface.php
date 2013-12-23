@@ -12,7 +12,7 @@
 namespace Discussion\Entity;
 
 use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 use User\Entity\UserInterface;
 use Doctrine\Common\Collections\Collection;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
@@ -35,14 +35,14 @@ interface CommentInterface extends TaxonomyTermAwareInterface
 
     /**
      *
-     * @param LanguageEntityInterface $language            
+     * @param LanguageInterface $language            
      * @return $this
      */
-    public function setLanguage(LanguageEntityInterface $language);
+    public function setLanguage(LanguageInterface $language);
 
     /**
      *
-     * @return LanguageEntityInterface
+     * @return LanguageInterface
      */
     public function getLanguage();
 

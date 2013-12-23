@@ -22,7 +22,7 @@ class LanguageManager implements LanguageManagerInterface
 
     /**
      *
-     * @var \Language\Model\LanguageModelInterface
+     * @var \Language\Entity\LanguageInterface
      */
     protected $requestLanguage;
 
@@ -36,7 +36,7 @@ class LanguageManager implements LanguageManagerInterface
     {
         $collection = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Language\Entity\LanguageEntityInterface'))
+            ->resolveClassName('Language\Entity\LanguageInterface'))
             ->findAll();
         return new ArrayCollection($collection);
     }
@@ -65,7 +65,7 @@ class LanguageManager implements LanguageManagerInterface
 
     public function getLanguage($id)
     {
-        $className = $this->getClassResolver()->resolveClassName('Language\Entity\LanguageEntityInterface');
+        $className = $this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface');
         
         $language = $this->getObjectManager()->find($className, $id);
         
@@ -84,7 +84,7 @@ class LanguageManager implements LanguageManagerInterface
         
         $language = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Language\Entity\LanguageEntityInterface'))
+            ->resolveClassName('Language\Entity\LanguageInterface'))
             ->findOneBy(array(
             'code' => $code
         ));

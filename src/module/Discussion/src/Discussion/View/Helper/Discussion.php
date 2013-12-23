@@ -126,7 +126,7 @@ class Discussion extends AbstractHelper
     {
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
-        $term = $taxonomy->findTermByAncestors([
+        $term = $this->getTaxonomyManager()->findTerm($taxonomy, [
             'root',
             'discussions'
         ]);
@@ -156,7 +156,7 @@ class Discussion extends AbstractHelper
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $this->getLanguageManager()
             ->getLanguageFromRequest());
-        
+
         foreach ($forums as $forum) {
             $current = $this->getTaxonomyManager()->createTerm([
                 'term' => [

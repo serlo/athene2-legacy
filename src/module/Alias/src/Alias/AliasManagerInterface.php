@@ -13,43 +13,43 @@ namespace Alias;
 
 use Uuid\Entity\UuidInterface;
 use Uuid\Entity\UuidHolder;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 
 interface AliasManagerInterface
 {
     /**
      *
      * @param string $source
-     * @param LanguageModelInterface $language            
+     * @param LanguageInterface $language            
      * @return string
      */
-    public function findAliasBySource($source, LanguageModelInterface $language);
+    public function findAliasBySource($source, LanguageInterface $language);
 
     /**
      *
      * @param string $alias            
-     * @param LanguageModelInterface $language            
+     * @param LanguageInterface $language            
      * @return string
      */
-    public function findSourceByAlias($alias, LanguageModelInterface $language);
+    public function findSourceByAlias($alias, LanguageInterface $language);
 
     /**
      *
      * @param string $source            
      * @param string $alias            
-     * @param LanguageModelInterface $language            
+     * @param LanguageInterface $language            
      * @param UuidInterface $uuid            
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageModelInterface $language);
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
     
     /**
      * 
      * @param string $name
      * @param string $source
      * @param UuidInterface $object
-     * @param LanguageModelInterface $language
+     * @param LanguageInterface $language
      * @return self
      */
-    public function autoAlias($name, $source, UuidInterface $object, LanguageModelInterface $language);
+    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language);
 }

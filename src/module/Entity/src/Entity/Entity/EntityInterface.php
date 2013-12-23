@@ -12,7 +12,7 @@
 namespace Entity\Entity;
 
 use Uuid\Entity\UuidHolder;
-use Language\Model\LanguageModelAwareInterface;
+use Language\Entity\LanguageAwareInterface;
 use Versioning\Entity\RepositoryInterface;
 use Link\Entity\LinkableInterface;
 use License\Entity\LicenseAwareInterface;
@@ -21,7 +21,7 @@ use DateTime;
 use Type\Entity\TypeAwareInterface;
 use Entity\Options\EntityOptions;
 
-interface EntityInterface extends UuidHolder, LanguageModelAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermAwareInterface, TypeAwareInterface
+interface EntityInterface extends UuidHolder, LanguageAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermAwareInterface, TypeAwareInterface
 {
 
     /**

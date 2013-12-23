@@ -12,7 +12,7 @@
 namespace Event\Listener;
 
 use User\Entity\UserInterface;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Uuid\Entity\UuidInterface;
 use Uuid\Entity\UuidHolder;
@@ -27,13 +27,13 @@ abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
      * The EventType is automatically generated through the controller.
      *
      * @param string $name            
-     * @param LanguageEntityInterface $language            
+     * @param LanguageInterface $language            
      * @param UserInterface $actor          
      * @param array $params  
      * @param $uuid            
      * @return void
      */
-    public function logEvent($name, LanguageEntityInterface $language, UserInterface $actor, $uuid, array $params = array())
+    public function logEvent($name, LanguageInterface $language, UserInterface $actor, $uuid, array $params = array())
     {
         if($uuid instanceof UuidHolder)
             $uuid = $uuid->getUuidEntity();

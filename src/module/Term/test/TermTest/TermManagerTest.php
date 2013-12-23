@@ -45,7 +45,7 @@ class TermManagerTest extends ManagerTest
 
     protected function mockLanguage($id)
     {
-        $language = $this->mockEntity('Language\Model\LanguageModelInterface', $id);
+        $language = $this->mockEntity('Language\Entity\LanguageInterface', $id);
         $language->expects($this->any())
             ->method('getEntity')
             ->will($this->returnValue($language));

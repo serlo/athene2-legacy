@@ -16,14 +16,14 @@ interface LanguageAwareInterface
 
     /**
      *
-     * @param LanguageEntityInterface $language            
+     * @param LanguageInterface $language            
      * @return self
      */
-    public function setLanguage(LanguageEntityInterface $language);
+    public function setLanguage(LanguageInterface $language);
 
     /**
      *
-     * @return LanguageEntityInterface
+     * @return LanguageInterface
      */
     public function getLanguage();
 }

@@ -11,8 +11,98 @@
  */
 namespace Event\Entity;
 
-use Event\Model\EventLogModelInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidInterface;
+use Uuid\Entity\UuidHolder;
+use Datetime;
+use Event\Entity\EventInterface;
+use Event\Entity\EventParameterInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface EventLogInterface extends EventLogModelInterface
+interface EventLogInterface extends LanguageAwareInterface
+
 {
+
+    /**
+     * Returns the id.
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * Gets the associated object (uuid).
+     *
+     * @return UuidHolder
+     */
+    public function getObject();
+
+    /**
+     *
+     * @return Datetime
+     */
+    public function getTimestamp();
+
+    /**
+     * Gets the actor.
+     *
+     * @return UserInterface
+     */
+    public function getActor();
+
+    /**
+     * Gets the event.
+     *
+     * @return EventInterface
+     */
+    public function getEvent();
+
+    /**
+     *
+     * @return self
+     */
+    public function getEntity();
+
+    /**
+     *
+     * @return EventParameterInterface[]
+     */
+    public function getParameters();
+
+    /**
+     *
+     * @return UuidHolder
+     */
+    public function getParameter($name);
+
+    /**
+     *
+     * @param EventParameterInterface $parameter            
+     * @return $this
+     */
+    public function addParameter(EventParameterInterface $parameter);
+
+    /**
+     * Sets the associated object (uuid)
+     *
+     * @param UuidInterface $uuid            
+     * @return $this
+     */
+    public function setObject(UuidInterface $uuid);
+
+    /**
+     * Sets the event.
+     *
+     * @param EventInterface $event            
+     * @return $this
+     */
+    public function setEvent(EventInterface $event);
+
+    /**
+     * Sets the actor.
+     *
+     * @param UserInterface $actor            
+     * @return $this
+     */
+    public function setActor(UserInterface $actor);
 }

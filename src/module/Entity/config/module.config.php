@@ -12,15 +12,6 @@
 namespace Entity;
 
 return [
-    'taxonomy' => [
-        'associations' => [
-            'entities' => [
-                'options' => [
-                    'template' => 'entity/view/minimalistic/default'
-                ]
-            ]
-        ]
-    ],
     'class_resolver' => [
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
         'Entity\Entity\TypeInterface' => 'Entity\Entity\Type'

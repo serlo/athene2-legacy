@@ -26,7 +26,7 @@ abstract class LanguageManagerTest extends \PHPUnit_Framework_TestCase
         $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
         $this->classResolverMock = $this->getMock('ClassResolver\ClassResolver');
         $this->languageServiceMock = $this->getMock('Language\Service\LanguageService');
-        $this->languageMock = $this->getMock('Language\Entity\LanguageEntity');
+        $this->languageMock = $this->getMock('Language\Entity\Language');
         $this->entityManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->entityRepositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()

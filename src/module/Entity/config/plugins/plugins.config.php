@@ -75,7 +75,7 @@ return array(
                 {
                     $instance = new Plugin\Taxonomy\TaxonomyPlugin();
                     $instance->setTaxonomyManager($sm->getServiceLocator()
-                        ->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                        ->get('Taxonomy\Manager\TaxonomyManager'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
                     $instance->setObjectManager($sm->getServiceLocator()

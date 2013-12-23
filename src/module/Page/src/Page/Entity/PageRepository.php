@@ -35,7 +35,7 @@ class PageRepository extends UuidEntity implements RepositoryInterface, PageRepo
     protected $roles;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity") *
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language") *
      */
     protected $language;
 

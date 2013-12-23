@@ -13,7 +13,7 @@ namespace Taxonomy\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 use Taxonomy\Exception;
 
 /**
@@ -40,7 +40,7 @@ class Taxonomy implements TaxonomyInterface
     protected $terms;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      */
     protected $language;
 
@@ -74,7 +74,7 @@ class Taxonomy implements TaxonomyInterface
         return $this->getType()->getName();
     }
 
-    public function setLanguage(LanguageEntityInterface $language)
+    public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
         return $this;

@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Versioning\Entity\RevisionInterface;
 use Entity\Exception;
 use License\Entity\LicenseInterface;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\Criteria;
 use Entity\Options\EntityOptions;
 use Taxonomy\Entity\TaxonomyTermInterface;
@@ -82,7 +82,7 @@ class Entity extends UuidEntity implements EntityInterface
     protected $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\LanguageEntity", inversedBy="entities")
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
@@ -152,7 +152,7 @@ class Entity extends UuidEntity implements EntityInterface
         return $this;
     }
 
-    public function setLanguage(LanguageModelInterface $language)
+    public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
         return $this;

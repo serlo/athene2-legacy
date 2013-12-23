@@ -12,7 +12,7 @@
 namespace Taxonomy\Manager;
 
 use Taxonomy\Entity\TaxonomyInterface;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 
@@ -44,10 +44,10 @@ interface TaxonomyManagerInterface
     /**
      * 
      * @param string $name
-     * @param LanguageEntityInterface $language
+     * @param LanguageInterface $language
      * @return TaxonomyInterface
      */
-    public function findTaxonomyByName($name, LanguageEntityInterface $language);
+    public function findTaxonomyByName($name, LanguageInterface $language);
 
     /**
      * 

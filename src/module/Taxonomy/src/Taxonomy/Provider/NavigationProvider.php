@@ -17,8 +17,8 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
-    
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+
     /**
      *
      * @var array
@@ -43,39 +43,40 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
      *
      * @var TaxonomyTermInterface
      */
-    protected $termService;
+    protected $term;
 
-    public function getTermService()
+    public function getTerm()
     {
-        if (! is_object($this->termService)) {
-            $this->termService = $this->getTaxonomyManager()
-                ->findTaxonomyByName($this->getOption('parent')['type'], $this->getLanguageManager()
-                ->findLanguageByCode($this->getOption('language')))
-                ->findTermByAncestors((array) $this->getOption('parent')['slug']);
+        if (! is_object($this->term)) {
+            $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('parent')['type'], $this->getLanguageManager()
+                ->findLanguageByCode($this->getOption('language')));
+            
+            $this->term = $this->getTaxonomyManager()->findTerm($taxonomy, (array) $this->getOption('parent')['slug']);
         }
-        return $this->termService;
+        return $this->term;
     }
 
     public function providePagesConfig()
     {
-        if ($this->getObjectManager()->isOpen())
-            $this->getObjectManager()->refresh($this->getTermService()
-                ->getEntity());
+        if ($this->getObjectManager()->isOpen()){
+            $this->getObjectManager()->refresh($this->getTerm());
+        }
         
-        $terms = $this->getTermService()->findChildrenByTaxonomyNames($this->getOption('types'));
+        $terms = $this->getTerm()->findChildrenByTaxonomyNames($this->getOption('types'));
         $return = $this->iterTerms($terms, $this->getOption('max_depth'));
-        $this->termService = NULL;
+        $this->term = NULL;
         return $return;
     }
 
     protected function iterTerms($terms, $depth)
     {
-        if ($depth == 0)
-            return array();
+        if ($depth < 1){
+            return [];
+        }
         
-        $return = array();
+        $return = [];
         foreach ($terms as $term) {
-            if(!$term->isTrashed()){
+            if (! $term->isTrashed()) {
                 $current = array();
                 $current['route'] = $this->getOption('route');
                 

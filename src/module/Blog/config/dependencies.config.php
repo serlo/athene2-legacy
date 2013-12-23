@@ -9,8 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Blog\Collection\PostCollection;
+namespace Blog;
 
 return [
     'alias_manager' => [
@@ -23,25 +22,15 @@ return [
         ]
     ],
     'taxonomy' => [
-        'associations' => [
-            'blogPosts' => [
-                'callback' => function (ServiceLocatorInterface $sm, $collection)
-                {
-                    return $collection;
-                }
-            ]
-        ],
         'types' => [
             'blog' => [
-                'options' => [
                     'allowed_associations' => [
                         'blogPosts'
                     ],
                     'allowed_parents' => [
                         'root'
                     ],
-                    'radix_enabled' => false
-                ]
+                    'rootable' => false
             ]
         ]
     ]

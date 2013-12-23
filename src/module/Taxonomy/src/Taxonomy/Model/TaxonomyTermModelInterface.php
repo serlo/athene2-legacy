@@ -14,7 +14,7 @@ namespace Taxonomy\Model;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use Doctrine\Common\Collections\Collection;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 use Term\Entity\TermEntityAwareInterface;
 use Taxonomy\Entity\TaxonomyTypeInterface;
 use Common\Model\Wrapable;

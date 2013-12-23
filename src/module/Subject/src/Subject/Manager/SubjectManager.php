@@ -13,7 +13,7 @@ namespace Subject\Manager;
 
 use Subject\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Subject\Exception\RuntimeException;
 
@@ -48,14 +48,14 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $this->getInstance($id);
     }
 
-    public function findSubjectByString($name, LanguageModelInterface $language)
+    public function findSubjectByString($name, LanguageInterface $language)
     {
         if (! is_string($name))
             throw new InvalidArgumentException();
         
         $taxonomy = $this->getTaxonomyManager()
             ->findTaxonomyByName($this->getOption('taxonomy'), $language);
-        $term = $taxonomy->findTermByAncestors((array) $name);
+        $term = $this->getTaxonomyManager()->findTerm($taxonomy, (array) $name);
         
         if (! $this->hasInstance($term->getId())) {
             $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));
@@ -64,7 +64,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         return $this->getInstance($term->getId());
     }
 
-    public function findSubjectsByLanguage(LanguageModelInterface $language)
+    public function findSubjectsByLanguage(LanguageInterface $language)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $language);
         $collection = new ArrayCollection();
@@ -76,7 +76,6 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     private function createInstanceFromEntity(TaxonomyTermInterface $entity)
     {
-        $entity = $entity->getEntity();
         $name = strtolower($entity->getName());
         $languageService = $this->getLanguageManager()->getLanguage($entity->getLanguage()->getId());
         
@@ -84,8 +83,6 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
-        $instance->setTaxonomyTerm($this->getTaxonomyManager()
-            ->getTerm($entity->getId()));
         $instance->setConfig($config);
         return $instance;
     }

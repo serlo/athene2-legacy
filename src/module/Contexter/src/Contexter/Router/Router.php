@@ -17,7 +17,7 @@ use Contexter\Adapter\AdapterInterface;
 use Contexter\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Http\Request;
-use Contexter\Entity\TypeInterface;
+use Type\Entity\TypeInterface;
 
 class Router implements RouterInterface
 {

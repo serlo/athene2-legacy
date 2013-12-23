@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="language")
  */
-class LanguageEntity implements LanguageEntityInterface
+class Language implements LanguageInterface
 {
 
     /**

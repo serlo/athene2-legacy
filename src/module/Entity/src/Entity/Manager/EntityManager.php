@@ -12,7 +12,7 @@
 namespace Entity\Manager;
 
 use Entity\Exception;
-use Language\Model\LanguageModelInterface;
+use Language\Entity\LanguageInterface;
 use Entity\Entity\EntityInterface;
 use Entity\Options\EntityOptions;
 
@@ -32,7 +32,7 @@ class EntityManager implements EntityManagerInterface
         return $entity;
     }
 
-    public function createEntity($typeName, array $data = array(), LanguageModelInterface $languageService)
+    public function createEntity($typeName, array $data = array(), LanguageInterface $languageService)
     {
         $type = $this->getTypeManager()->findTypeByName($typeName);
         

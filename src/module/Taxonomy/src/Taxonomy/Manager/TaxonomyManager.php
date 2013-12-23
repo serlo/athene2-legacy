@@ -13,15 +13,16 @@
 namespace Taxonomy\Manager;
 
 use Taxonomy\Exception;
-use Language\Entity\LanguageEntityInterface;
+use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Options\ModuleOptions;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {
-    use\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Model\LanguageModelAwareTrait,\Term\Manager\TermManagerAwareTrait;
+    use\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
 
     /**
      *
@@ -78,7 +79,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function getTerm($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface');
-        $entity = $this->getObjectManager()->find($className, (int) $id);
+        $entity = $this->getObjectManager()->find($className, $id);
         
         if (! is_object($entity)) {
             throw new Exception\TermNotFoundException(sprintf('Term with id %s not found', $id));
@@ -99,7 +100,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $entity;
     }
 
-    public function findTaxonomyByName($name, LanguageEntityInterface $language)
+    public function findTaxonomyByName($name, LanguageInterface $language)
     {
         $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
         
@@ -160,6 +161,13 @@ class TaxonomyManager implements TaxonomyManagerInterface
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
         
+        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
+            $data['taxonomy'] = $this->getTaxonomy($data['taxonomy']);
+        }
+        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
+            $data['parent'] = $this->getTerm($data['parent']);
+        }
+        
         $this->getHydrator()->hydrate($data, $term);
         $this->getObjectManager()->persist($term);
         
@@ -169,6 +177,13 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function updateTerm($id, array $data)
     {
         $term = $this->getTerm($id);
+        
+        if (isset($data['taxonomy'])) {
+            $data['taxonomy'] = $this->getTaxonomy($data['taxonomy']);
+        }
+        if (isset($data['parent'])) {
+            $data['parent'] = $this->getTerm($data['parent']);
+        }
         
         $this->getHydrator()->hydrate($data, $term);
         $this->getObjectManager()->persist($term);
