@@ -33,7 +33,7 @@ trait UserManagerAwareTrait
     /**
      *
      * @param \User\Manager\UserManagerInterface $userManager            
-     * @return $this
+     * @return self
      */
     public function setUserManager (UserManagerInterface $userManager)
     {

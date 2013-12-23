@@ -52,7 +52,7 @@ class FlagManager implements FlagManagerInterface
         return $this;
     }
 
-    public function addFlag($typeId, $content, $uuid, \User\Service\UserServiceInterface $reporter)
+    public function addFlag($typeId, $content, $uuid, \User\Entity\UserInterface $reporter)
     {
         $type = $this->getType($typeId);
         $object = $this->getUuidManager()->getUuid($uuid);

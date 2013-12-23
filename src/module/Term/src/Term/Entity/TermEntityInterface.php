@@ -37,14 +37,14 @@ interface TermEntityInterface extends LanguageAwareInterface
     /**
      *
      * @param string $name            
-     * @return $this
+     * @return self
      */
     public function setName($name);
 
     /**
      *
      * @param string $slug            
-     * @return $this
+     * @return self
      */
     public function setSlug($slug);
 }

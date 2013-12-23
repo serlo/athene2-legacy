@@ -11,15 +11,14 @@
  */
 namespace Normalizer\Strategy;
 
-use Page\Entity\PageRepository;
-use Page\Entity\PageRepositoryInterface;
+use Discussion\Entity\CommentInterface;
 
-class PageRepositoryStrategy extends AbstractStrategy
+class CommentStrategy extends AbstractStrategy
 {
 
     /**
      *
-     * @return PageRepository
+     * @return CommentInterface
      */
     public function getObject()
     {
@@ -28,51 +27,43 @@ class PageRepositoryStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getTitle();
+        return $this->getObject()->hasParent() ? $this->getObject()->getParent()->getTitle() : $this->getObject()->getTitle();
     }
 
     protected function getTimestamp()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getDate();
+        return $this->getObject()->getTimestamp();
     }
 
     protected function getContent()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getContent();
+        return $this->getObject()->getContent();
     }
 
     protected function getPreview()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getContent();
+        return substr($this->getContent(), 0, 120) . '...';
     }
 
     protected function getType()
     {
-        return 'Page repository';
+        return $this->getObject()->hasParent() ? 'comment' : 'parent';
     }
 
     protected function getRouteName()
     {
-        return 'page/article';
+        return 'discussion/view';
     }
 
     protected function getRouteParams()
     {
-        return array(
-            'repositoryid' => $this->getObject()->getId()
-        );
+        return [
+            'id' =>  $this->getObject()->hasParent() ?  $this->getObject()->getParent()->getId() : $this->getObject()->getId()
+        ];
     }
 
     public function isValid($object)
     {
-        return $object instanceof PageRepositoryInterface;
+        return $object instanceof CommentInterface;
     }
 }

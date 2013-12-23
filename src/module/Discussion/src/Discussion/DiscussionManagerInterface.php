@@ -11,7 +11,7 @@
  */
 namespace Discussion;
 
-use User\Service\UserServiceInterface;
+use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 use Discussion\Entity\CommentInterface;
 use Language\Entity\LanguageInterface;
@@ -40,31 +40,31 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
      * 
      * @param UuidInterface $object
      * @param LanguageInterface $language
-     * @param UserServiceInterface $author
+     * @param UserInterface $author
      * @param int $forum
      * @param string $title
      * @param string $content
      * @param CommentInterface $parent
      * @return CommentServiceInterface
      */
-    public function startDiscussion(UuidInterface $object, LanguageInterface $language, UserServiceInterface $author, $forum, $title, $content);
+    public function startDiscussion(UuidInterface $object, LanguageInterface $language, UserInterface $author, $forum, $title, $content);
     
     /**
      * 
      * @param CommentInterface $discussion
      * @param LanguageInterface $language
-     * @param UserServiceInterface $author
+     * @param UserInterface $author
      * @param string $content
      * @return CommentServiceInterface
      */
-    public function commentDiscussion(CommentInterface $discussion, LanguageInterface $language, UserServiceInterface $author, $content);
+    public function commentDiscussion(CommentInterface $discussion, LanguageInterface $language, UserInterface $author, $content);
     
     /**
      * 
-     * @param UserServiceInterface $user
+     * @param UserInterface $user
      * @return CommentServiceInterface[]
      */
-    public function findParticipatedDiscussions(UserServiceInterface $user);
+    public function findParticipatedDiscussions(UserInterface $user);
     
     /**
      * 

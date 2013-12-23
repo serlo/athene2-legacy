@@ -142,7 +142,7 @@ class EventManager implements EventManagerInterface
      * @param Entity\EventLogInterface $log            
      * @param array $parameter            
      * @throws Exception\RuntimeException
-     * @return $this
+     * @return self
      */
     protected function addParameter(Entity\EventLogInterface $log, array $parameter)
     {

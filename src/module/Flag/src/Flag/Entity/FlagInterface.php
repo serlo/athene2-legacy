@@ -51,21 +51,21 @@ interface FlagInterface extends TypeAwareInterface
     /**
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $uuid);
 
     /**
      *
      * @param string $content            
-     * @return $this
+     * @return self
      */
     public function setContent($content);
 
     /**
      *
      * @param UserInterface $user            
-     * @return $this
+     * @return self
      */
     public function setReporter(UserInterface $user);
 }

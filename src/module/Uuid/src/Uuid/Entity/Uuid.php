@@ -95,7 +95,7 @@ class Uuid implements UuidInterface
     /**
      *
      * @param bool $trashed            
-     * @return $this
+     * @return self
      */
     public function setTrashed($trashed)
     {

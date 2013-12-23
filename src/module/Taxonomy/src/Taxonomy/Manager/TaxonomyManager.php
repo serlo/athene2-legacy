@@ -194,6 +194,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function associateWith($id, $association, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
+        
         $taxonomy = $term->getTaxonomy();
         
         if (! $this->getModuleOptions()
@@ -202,7 +203,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
             throw new Exception\RuntimeException(sprintf('Taxonomy "%s" does not allow associations "%s"', $taxonomy->getName(), $association));
         }
         
-        $this->getEntity()->associateObject($association, $object);
+        $term->associateObject($association, $object);
         $this->getObjectManager()->persist($term);
         
         return $this;

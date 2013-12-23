@@ -54,7 +54,7 @@ interface UuidHolder
     /**
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setUuid(UuidInterface $uuid);
 }

@@ -34,7 +34,7 @@ class Tokenizer implements TokenizerInterface
     /**
      *
      * @param ProviderInterface $provider            
-     * @return $this
+     * @return self
      */
     protected function setProvider(Provider\ProviderInterface $provider)
     {

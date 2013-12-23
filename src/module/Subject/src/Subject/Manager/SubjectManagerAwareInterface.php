@@ -24,7 +24,7 @@ interface SubjectManagerAwareInterface
      * Sets the SubjectManager
      * 
      * @param SubjectManagerInterface $subject
-     * @return $this
+     * @return self
      */
     public function setSubjectManager(SubjectManagerInterface $subject);
 }

@@ -17,7 +17,7 @@ interface TermManagerAwareInterface
      * Sets the TermManager.
      * 
      * @param TaxonomyManagerInterface $termManager
-     * @return $this
+     * @return self
      */
     public function setTermManager(TermManagerInterface $termManager);
     

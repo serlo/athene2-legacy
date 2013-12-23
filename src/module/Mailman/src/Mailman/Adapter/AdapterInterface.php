@@ -19,14 +19,14 @@ interface AdapterInterface
      * @param string $from
      * @param string $subject
      * @param string $body
-     * @return $this
+     * @return self
      */
     public function addMail($to, $from, $subject, $body);
     
     /**
      * sends all mail in the queue
      * 
-     * @return $this
+     * @return self
      */
     public function flush();
 }

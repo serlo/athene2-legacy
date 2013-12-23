@@ -42,7 +42,7 @@ class TermFake implements TaxonomyTermModelInterface
     /**
      *
      * @param field_type $id            
-     * @return $this
+     * @return self
      */
     public function setId($id)
     {
@@ -53,7 +53,7 @@ class TermFake implements TaxonomyTermModelInterface
     /**
      *
      * @param field_type $slug            
-     * @return $this
+     * @return self
      */
     public function setSlug($slug)
     {
@@ -73,7 +73,7 @@ class TermFake implements TaxonomyTermModelInterface
     /**
      *
      * @param field_type $children            
-     * @return $this
+     * @return self
      */
     public function setChildren($children)
     {

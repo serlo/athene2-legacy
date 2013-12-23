@@ -11,15 +11,15 @@
  */
 namespace Normalizer\Strategy;
 
-use Page\Entity\PageRepository;
-use Page\Entity\PageRepositoryInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use DateTime;
 
-class PageRepositoryStrategy extends AbstractStrategy
+class TaxonomyTermStrategy extends AbstractStrategy
 {
 
     /**
      *
-     * @return PageRepository
+     * @return TaxonomyTermInterface
      */
     public function getObject()
     {
@@ -28,51 +28,43 @@ class PageRepositoryStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getTitle();
+        return $this->getObject()->getName();
     }
 
     protected function getTimestamp()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getDate();
+        return new DateTime();
     }
 
     protected function getContent()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getContent();
+        return $this->getObject()->getDescription();
     }
 
     protected function getPreview()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getContent();
+        return $this->getObject()->getName();
     }
 
     protected function getType()
     {
-        return 'Page repository';
+        return $this->getObject()
+            ->getTaxonomy()
+            ->getName();
     }
 
     protected function getRouteName()
     {
-        return 'page/article';
+        return 'home';
     }
 
     protected function getRouteParams()
     {
-        return array(
-            'repositoryid' => $this->getObject()->getId()
-        );
+        return [];
     }
 
     public function isValid($object)
     {
-        return $object instanceof PageRepositoryInterface;
+        return $object instanceof TaxonomyTermInterface;
     }
 }

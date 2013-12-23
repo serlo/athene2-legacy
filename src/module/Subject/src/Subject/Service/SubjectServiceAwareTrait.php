@@ -32,7 +32,7 @@ trait SubjectServiceAwareTrait
     /**
      *
      * @param SubjectServiceInterface $subjectService            
-     * @return $this
+     * @return self
      */
     public function setSubjectService(SubjectServiceInterface $subjectService)
     {

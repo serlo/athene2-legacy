@@ -26,7 +26,7 @@ interface LanguageInterface
      * Sets the code
      *
      * @param field_type $code            
-     * @return $this
+     * @return self
      */
     public function setCode($code);
 

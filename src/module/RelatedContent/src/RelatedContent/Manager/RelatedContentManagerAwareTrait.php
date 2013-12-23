@@ -32,7 +32,7 @@ trait RelatedContentManagerAwareTrait
     /**
      *
      * @param RelatedContentManagerInterface $relatedContentManager            
-     * @return $this
+     * @return self
      */
     public function setRelatedContentManager(RelatedContentManagerInterface $relatedContentManager)
     {

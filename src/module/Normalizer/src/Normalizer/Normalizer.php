@@ -22,7 +22,10 @@ class Normalizer implements NormalizerInterface
      * @var Strategy\StrategyInterface[]
      */
     protected $strategies = [
-        'Normalizer\Strategy\PageRepositoryStrategy'
+        'Normalizer\Strategy\PageRepositoryStrategy',
+        'Normalizer\Strategy\EntityStrategy',
+        'Normalizer\Strategy\TaxonomyTermStrategy',
+        'Normalizer\Strategy\CommentStrategy'
     ];
 
     public function normalize($object)

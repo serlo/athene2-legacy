@@ -24,7 +24,7 @@ trait RbacServiceAwareTrait
     /**
      *
      * @param \ZfcRbac\Service\Rbac $rbacService            
-     * @return $this
+     * @return self
      */
     public function setRbacService($rbacService)
     {

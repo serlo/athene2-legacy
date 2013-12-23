@@ -28,14 +28,14 @@ interface ExternalInterface extends TypeInterface
     /**
      *
      * @param string $title            
-     * @return $this
+     * @return self
      */
     public function setTitle($title);
 
     /**
      *
      * @param string $url            
-     * @return $this
+     * @return self
      */
     public function setUrl($url);
 }

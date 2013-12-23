@@ -44,7 +44,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     /**
      *
      * @param $manager
-     * @return $this
+     * @return self
      */
     public function setManager($manager)
     {
@@ -65,7 +65,7 @@ abstract class AbstractDelegatorCollection implements Collection, Selectable
     /**
      *
      * @param new Collections\ArrayCollection( $collection
-     * @return $this
+     * @return self
      */
     public function setCollection (Collection $collection)
     {

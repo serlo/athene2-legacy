@@ -80,7 +80,7 @@ class DiscussionManager implements DiscussionManagerInterface
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
      */
-    public function startDiscussion(\Uuid\Entity\UuidInterface $object, \Language\Entity\LanguageInterface $language, \User\Service\UserServiceInterface $author, $forum, $title, $content)
+    public function startDiscussion(\Uuid\Entity\UuidInterface $object, \Language\Entity\LanguageInterface $language, \User\Entity\UserInterface $author, $forum, $title, $content)
     {
         if ($object->is('comment')) {
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
@@ -109,7 +109,7 @@ class DiscussionManager implements DiscussionManagerInterface
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::comment()
      */
-    public function commentDiscussion(CommentInterface $discussion, \Language\Entity\LanguageInterface $language, \User\Service\UserServiceInterface $author, $content)
+    public function commentDiscussion(CommentInterface $discussion, \Language\Entity\LanguageInterface $language, \User\Entity\UserInterface $author, $content)
     {
         if ($discussion->hasParent()) {
             throw new Exception\RuntimeException(sprintf('You are trying to comment on a comment, but only commenting a discussion is allowed (comments have parents whilst discussions do not).'));
@@ -135,7 +135,7 @@ class DiscussionManager implements DiscussionManagerInterface
     /*
      * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::findParticipatedDiscussions()
      */
-    public function findParticipatedDiscussions(\User\Service\UserServiceInterface $user)
+    public function findParticipatedDiscussions(\User\Entity\UserInterface $user)
     {
         // TODO Auto-generated method stub
     }

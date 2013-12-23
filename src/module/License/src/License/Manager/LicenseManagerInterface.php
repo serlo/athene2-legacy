@@ -38,7 +38,7 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface, Flushable
     /**
      * 
      * @param int $id
-     * @return $this
+     * @return self
      */
     public function removeLicense($id);
 
@@ -58,7 +58,7 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface, Flushable
     /**
      * 
      * @param LicenseForm $form
-     * @return $this
+     * @return self
      */
     public function updateLicense(LicenseForm $form);
     
@@ -73,7 +73,7 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface, Flushable
      * 
      * @param LicenseAwareInterface $object
      * @param LicenseInterface $license
-     * @return $this
+     * @return self
      */
     public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = NULL);
 }

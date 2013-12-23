@@ -32,7 +32,7 @@ trait PluginManagerAwareTrait
     /**
      *
      * @param PluginManagerInterface $pluginManager            
-     * @return $this
+     * @return self
      */
     public function setPluginManager(PluginManagerInterface $pluginManager)
     {

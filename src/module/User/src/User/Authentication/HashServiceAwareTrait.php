@@ -32,7 +32,7 @@ trait HashServiceAwareTrait
     /**
      *
      * @param HashServiceInterface $hashService            
-     * @return $this
+     * @return self
      */
     public function setHashService(HashServiceInterface $hashService)
     {

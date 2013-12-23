@@ -32,7 +32,7 @@ trait MailmanAwareTrait
     /**
      *
      * @param MailmanInterface $mailman            
-     * @return $this
+     * @return self
      */
     public function setMailman(MailmanInterface $mailman)
     {

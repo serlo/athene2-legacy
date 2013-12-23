@@ -54,7 +54,7 @@ class Subscription implements SubscriptionInterface
     /**
      *
      * @param field_type $notifyMailman            
-     * @return $this
+     * @return self
      */
     public function setNotifyMailman($notifyMailman)
     {

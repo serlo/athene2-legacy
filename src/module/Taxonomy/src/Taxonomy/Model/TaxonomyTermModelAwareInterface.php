@@ -25,7 +25,7 @@ interface TaxonomyTermEntityAwareInterface
      * 
      * @param TaxonomyTermModelInterface $taxonomyTerm
      * @param TaxonomyTermNodeModelInterface $node
-     * @return $this
+     * @return self
      */
     public function removeTaxonomyTerm(TaxonomyTermModelInterface $taxonomyTerm, TaxonomyTermNodeModelInterface $node = NULL);
     

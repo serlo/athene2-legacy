@@ -28,7 +28,7 @@ class Result implements ResultInterface
     /**
      *
      * @param field_type $result            
-     * @return $this
+     * @return self
      */
     public function setResult($result)
     {

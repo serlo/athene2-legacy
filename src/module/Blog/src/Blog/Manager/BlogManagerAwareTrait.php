@@ -32,7 +32,7 @@ trait BlogManagerAwareTrait
     /**
      *
      * @param BlogManagerInterface $blogManager            
-     * @return $this
+     * @return self
      */
     public function setBlogManager(BlogManagerInterface $blogManager)
     {

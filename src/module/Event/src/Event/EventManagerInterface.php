@@ -34,7 +34,7 @@ interface EventManagerInterface
      * @param UserInterface $actor
      * @param UuidInterface $uuid
      * @param array $parameters
-     * @return $this
+     * @return self
      */
     public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array());
     

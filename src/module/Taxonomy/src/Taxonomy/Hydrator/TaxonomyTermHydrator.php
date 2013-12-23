@@ -40,7 +40,7 @@ class TaxonomyTermHydrator implements HydratorInterface
     /**
      *
      * @param ModuleOptions $moduleOptions            
-     * @return $this
+     * @return self
      */
     public function setModuleOptions(ModuleOptions $moduleOptions)
     {

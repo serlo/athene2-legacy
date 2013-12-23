@@ -34,7 +34,7 @@ trait ObjectManagerAwareTrait
     /**
      *
      * @param \Doctrine\Common\Persistence\ObjectManager $objectManager            
-     * @return $this
+     * @return self
      */
     public function setObjectManager(ObjectManager $objectManager)
     {

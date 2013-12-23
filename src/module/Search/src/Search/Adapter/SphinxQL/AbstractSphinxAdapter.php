@@ -36,7 +36,7 @@ abstract class AbstractSphinxAdapter implements AdapterInterface
     /**
      *
      * @param Connection $connection            
-     * @return $this
+     * @return self
      */
     public function setConnection(Connection $connection)
     {

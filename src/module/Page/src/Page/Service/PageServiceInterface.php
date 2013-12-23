@@ -29,14 +29,14 @@ interface PageServiceInterface
     /**
      *
      * @param PageRevisionInterface $revision            
-     * @return $this
+     * @return self
      */
     public function setCurrentRevision($revision);
 
     /**
      *
      * @param numeric $id            
-     * @return $this
+     * @return self
      */
     public function deleteRevision($id);
 

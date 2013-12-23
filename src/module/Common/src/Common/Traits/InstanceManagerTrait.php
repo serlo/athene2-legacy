@@ -36,7 +36,7 @@ trait InstanceManagerTrait
     /**
      *
      * @param boolean $checkClassInheritance            
-     * @return $this
+     * @return self
      */
     public function setCheckClassInheritance($checkClassInheritance)
     {
@@ -50,7 +50,7 @@ trait InstanceManagerTrait
      * @param string $name            
      * @param object $instance            
      * @throws \Exception
-     * @return $this
+     * @return self
      */
     protected function addInstance($name, $instance)
     {

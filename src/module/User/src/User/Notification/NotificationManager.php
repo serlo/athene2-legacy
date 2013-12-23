@@ -51,7 +51,7 @@ class NotificationManager implements NotificationManagerInterface
         return $this->getInstance($notification->getId());
     }
     
-    public function findNotificationsBySubsriber(\User\Service\UserServiceInterface $userService)
+    public function findNotificationsBySubsriber(\User\Entity\UserInterface $userService)
     {
         $notifications = $this->getObjectManager()
             ->getRepository($this->getClassResolver()

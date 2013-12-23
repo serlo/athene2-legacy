@@ -32,7 +32,7 @@ trait ConfigAwareTrait
     /**
      *
      * @param field_type $config            
-     * @return $this
+     * @return self
      */
     public function setConfig(array $config)
     {

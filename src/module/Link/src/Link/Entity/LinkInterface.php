@@ -43,21 +43,21 @@ interface LinkInterface extends TypeAwareInterface
     /**
      *
      * @param int $position            
-     * @return $this
+     * @return self
      */
     public function setPosition($position);
 
     /**
      *
      * @param LinkableInterface $child            
-     * @return $this
+     * @return self
      */
     public function setChild(LinkableInterface $child);
 
     /**
      *
      * @param LinkableInterface $parent            
-     * @return $this
+     * @return self
      */
     public function setParent(LinkableInterface $parent);
 }

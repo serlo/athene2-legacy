@@ -36,7 +36,7 @@ class RelatedContentHelper extends AbstractHelper
     /**
      *
      * @param UuidHolder $object            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidHolder $object)
     {

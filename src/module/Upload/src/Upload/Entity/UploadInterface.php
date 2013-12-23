@@ -53,28 +53,28 @@ interface UploadInterface
     /**
      *
      * @param string $location            
-     * @return $this
+     * @return self
      */
     public function setLocation($location);
 
     /**
      *
      * @param int $size            
-     * @return $this
+     * @return self
      */
     public function setSize($size);
 
     /**
      *
      * @param string $filename            
-     * @return $this
+     * @return self
      */
     public function setFilename($filename);
 
     /**
      *
      * @param string $type            
-     * @return $this
+     * @return self
      */
     public function setType($type);
 }

@@ -32,7 +32,7 @@ trait DiscussionManagerAwareTrait
     /**
      *
      * @param DiscussionManagerInterface $discussionManager            
-     * @return $this
+     * @return self
      */
     public function setDiscussionManager(DiscussionManagerInterface $discussionManager)
     {

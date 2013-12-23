@@ -47,7 +47,7 @@ abstract class AbstractPlugin implements PluginInterface
 
 	/**
      * @param field_type $name
-     * @return $this
+     * @return self
      */
     public function setName ($name)
     {
@@ -57,7 +57,7 @@ abstract class AbstractPlugin implements PluginInterface
 
 	/**
      * @param field_type $scope
-     * @return $this
+     * @return self
      */
     public function setScope ($scope)
     {
@@ -75,7 +75,7 @@ abstract class AbstractPlugin implements PluginInterface
 
 	/**
      * @param string $identity
-     * @return $this
+     * @return self
      */
     public function setIdentity($identity)
     {

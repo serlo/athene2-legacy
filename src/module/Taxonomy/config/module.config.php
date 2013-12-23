@@ -186,6 +186,9 @@ return [
                     'setTypeManager' => [
                         'required' => true
                     ],
+                    'setModuleOptions' => [
+                        'required' => true
+                    ],
                     'setHydrator' => [
                         'required' => true
                     ]

@@ -35,7 +35,7 @@ trait TaxonomyManagerAwareTrait
     /**
      *
      * @param TaxonomyManagerInterface $termManager            
-     * @return $this
+     * @return self
      */
     public function setTaxonomyManager (TaxonomyManagerInterface $termManager)
     {

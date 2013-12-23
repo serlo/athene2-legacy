@@ -32,7 +32,7 @@ trait TokenizerAwareTrait
     /**
      *
      * @param TokenizerInterface $tokenizer            
-     * @return $this
+     * @return self
      */
     public function setTokenizer(TokenizerInterface $tokenizer)
     {

@@ -68,7 +68,7 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
      * Sets the title.
      *
      * @param string $title            
-     * @return $this
+     * @return self
      */
     public function setTitle($title);
 
@@ -90,7 +90,7 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
      * Sets the category.
      *
      * @param TaxonomyTermInterface $category            
-     * @return $this
+     * @return self
      */
     public function setBlog(TaxonomyTermInterface $category);
 
@@ -98,7 +98,7 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
      * Sets the creation date.
      *
      * @param Datetime $date            
-     * @return $this
+     * @return self
      */
     public function setTimestamp(Datetime $date);
 
@@ -106,7 +106,7 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
      * Sets the content.
      *
      * @param string $content            
-     * @return $this
+     * @return self
      */
     public function setContent($content);
 
@@ -114,7 +114,7 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
      * Sets the author.
      *
      * @param UserModelInterface $author            
-     * @return $this
+     * @return self
      */
     public function setAuthor(UserModelInterface $author);
 
@@ -122,7 +122,7 @@ interface PostModelInterface extends TaxonomyTermAwareInterface, Wrapable, UuidH
      * Sets the publish date.
      *
      * @param Datetime $publish            
-     * @return $this
+     * @return self
      */
     public function setPublish(Datetime $publish = NULL);
 }

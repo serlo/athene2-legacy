@@ -67,7 +67,7 @@ class RevisionField {
 
 	/**
 	 * @param field_type $entityRevisionId
-	 * @return $this
+	 * @return self
 	 */
 	public function setRevision($entityRevision) {
 		$this->revision = $entityRevision;
@@ -76,7 +76,7 @@ class RevisionField {
 
 	/**
 	 * @param field_type $field
-	 * @return $this
+	 * @return self
 	 */
 	public function setField($field) {
 		$this->field = $field;
@@ -85,7 +85,7 @@ class RevisionField {
 
 	/**
 	 * @param field_type $value
-	 * @return $this
+	 * @return self
 	 */
 	public function setValue($value) {
 		$this->value = $value;

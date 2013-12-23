@@ -29,7 +29,7 @@ class InstanceFake
     /**
      *
      * @param field_type $id            
-     * @return $this
+     * @return self
      */
     public function setId ($id)
     {

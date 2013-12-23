@@ -50,14 +50,14 @@ interface AdapterInterface
     /**
      *
      * @param RouteMatch $routeMatch            
-     * @return $this
+     * @return self
      */
     public function setRouteMatch(RouteMatch $routeMatch);
 
     /**
      *
      * @param AbstractActionController $controller            
-     * @return $this
+     * @return self
      */
     public function setController(AbstractActionController $controller);
 }

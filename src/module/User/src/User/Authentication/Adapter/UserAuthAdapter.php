@@ -23,7 +23,7 @@ class UserAuthAdapter implements AdapterInterface
     /**
      *
      * @param string $email            
-     * @return $this
+     * @return self
      */
     public function setIdentity($email)
     {
@@ -34,7 +34,7 @@ class UserAuthAdapter implements AdapterInterface
     /**
      *
      * @param string $password            
-     * @return $this
+     * @return self
      */
     public function setCredential($password)
     {

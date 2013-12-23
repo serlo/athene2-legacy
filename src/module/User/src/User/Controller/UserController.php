@@ -19,7 +19,7 @@ use Zend\Form\Form;
 
 class UserController extends AbstractUserController
 {
-    use\Common\Traits\ConfigAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Common\Traits\AuthenticationServiceAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function getObjectManager()
     {
@@ -66,7 +66,7 @@ class UserController extends AbstractUserController
      *
      * @param string $name            
      * @param Form $form            
-     * @return $this
+     * @return self
      */
     public function setForm($name, Form $form)
     {
@@ -341,9 +341,10 @@ class UserController extends AbstractUserController
 
     public function profileAction()
     {
-        $view = new ViewModel(array(
-            'user' => $this->getUserManager()->getUser($this->params('id'))
-        ));
+        $view = new ViewModel([
+            'user' => $this->getUserManager()->getUser($this->params('id')),
+            'unassociatedRoles' => $this->getUserManager()->getUnassociatedRoles($this->params('id'))
+        ]);
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
         return $view;

@@ -31,7 +31,7 @@ class PageService implements PageServiceInterface
     /**
      *
      * @param PageManagerInterface $manager            
-     * @return $this
+     * @return self
      */
     public function setManager(PageManagerInterface $manager)
     {

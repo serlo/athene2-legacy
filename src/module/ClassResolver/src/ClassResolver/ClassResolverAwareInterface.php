@@ -16,14 +16,14 @@ interface ClassResolverAwareInterface
 
     /**
      *
-     * @return $this
+     * @return self
      */
     public function getClassResolver();
 
     /**
      *
      * @param ClassResolverInterface $classResolver            
-     * @return $this
+     * @return self
      */
     public function setClassResolver(ClassResolverInterface $classResolver);
 }

@@ -32,7 +32,7 @@ trait MetadataManagerAwareTrait
     /**
      *
      * @param MetadataManagerInterface $metadataManager            
-     * @return $this
+     * @return self
      */
     public function setMetadataManager(MetadataManagerInterface $metadataManager)
     {

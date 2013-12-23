@@ -43,21 +43,21 @@ interface MetadataInterface
     /**
      *
      * @param UuidInterface $object            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $object);
 
     /**
      *
      * @param MetadataKeyInterface $key            
-     * @return $this
+     * @return self
      */
     public function setKey(MetadataKeyInterface $key);
 
     /**
      *
      * @param unknown $value            
-     * @return $this
+     * @return self
      */
     public function setValue($value);
 }

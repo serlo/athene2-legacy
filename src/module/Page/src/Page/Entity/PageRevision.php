@@ -129,7 +129,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * Sets the date
      *
      * @param mixed $date            
-     * @return $this
+     * @return self
      */
     public function setTimestamp(\DateTime $date)
     {
@@ -141,7 +141,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * Sets the author
      *
      * @param EntityInterface $user            
-     * @return $this
+     * @return self
      */
     public function setAuthor(UserInterface $author)
     {

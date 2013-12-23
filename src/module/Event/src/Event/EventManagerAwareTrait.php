@@ -38,7 +38,7 @@ trait EventManagerAwareTrait
      * Sets the EventManager
      *
      * @param EventManagerInterface $eventManager            
-     * @return $this
+     * @return self
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {

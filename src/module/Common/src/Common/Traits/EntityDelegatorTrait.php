@@ -28,7 +28,7 @@ trait EntityDelegatorTrait
     /**
      *
      * @param field_type $entity            
-     * @return $this
+     * @return self
      */
     public function setEntity($entity)
     {

@@ -33,12 +33,6 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE__ . '\Service\UserService' => function ($sm)
-            {
-                $srv = new Service\UserService();
-                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                return $srv;
-            },
             'Zend\Authentication\AuthenticationService' => function ($sm)
             {
                 $instance = new AuthenticationService();
@@ -103,7 +97,6 @@ return array(
     'class_resolver' => array(
         'User\Entity\UserInterface' => 'User\Entity\User',
         'User\Entity\RoleInterface' => 'User\Entity\Role',
-        'User\Service\UserServiceInterface' => 'User\Service\UserService',
         'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
         'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationService',
         'User\Notification\Entity\NotificationInterface' => 'User\Entity\Notification',

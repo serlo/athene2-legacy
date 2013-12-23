@@ -34,7 +34,7 @@ trait RouterAwareTrait
     /**
      *
      * @param RouteInterface $router            
-     * @return $this
+     * @return self
      */
     public function setRouter(RouteInterface $router)
     {

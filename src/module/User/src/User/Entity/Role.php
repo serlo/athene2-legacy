@@ -91,7 +91,7 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
     /**
      *
      * @param field_type $name            
-     * @return $this
+     * @return self
      */
     public function setName($name)
     {
@@ -102,7 +102,7 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
     /**
      *
      * @param field_type $description            
-     * @return $this
+     * @return self
      */
     public function setDescription($description)
     {
@@ -149,16 +149,6 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
         
         return count($result) > 0;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::addChild()
-     */
-    /*public function addChild($child)
-    {
-        $role = new self();
-        $this->children->add($child);
-        return $this;
-    }*/
 
     public function __toString()
     {

@@ -44,7 +44,7 @@ class Discussion extends AbstractHelper
     /**
      *
      * @param field_type $reference            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $object)
     {
@@ -64,7 +64,7 @@ class Discussion extends AbstractHelper
     /**
      *
      * @param boolean $archived            
-     * @return $this
+     * @return self
      */
     public function setArchived($archived)
     {

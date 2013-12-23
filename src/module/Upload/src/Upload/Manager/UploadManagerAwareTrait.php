@@ -32,7 +32,7 @@ trait UploadManagerAwareTrait
     /**
      *
      * @param UploadManagerInterface $uploadManager            
-     * @return $this
+     * @return self
      */
     public function setUploadManager(UploadManagerInterface $uploadManager)
     {

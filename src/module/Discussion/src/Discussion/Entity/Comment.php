@@ -140,7 +140,7 @@ class Comment extends UuidEntity implements CommentInterface
         return $this->author;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }

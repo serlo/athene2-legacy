@@ -34,7 +34,7 @@ trait EntityManagerAwareTrait
     /**
      *
      * @param EntityManager $entityManager            
-     * @return $this
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {

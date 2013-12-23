@@ -68,7 +68,7 @@ class Revision extends UuidEntity implements RevisionInterface
     /**
      *
      * @param field_type $date            
-     * @return $this
+     * @return self
      */
     public function setTimestamp(\DateTime $date)
     {
@@ -88,7 +88,7 @@ class Revision extends UuidEntity implements RevisionInterface
     /**
      *
      * @param field_type $author            
-     * @return $this
+     * @return self
      */
     public function setAuthor(UserInterface $author)
     {

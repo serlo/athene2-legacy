@@ -11,11 +11,9 @@
  */
 namespace User\Manager;
 
-use User\Entity\UserInterface;
 use User\Exception\UserNotFoundException;
 use User\Collection\UserCollection;
 use Doctrine\Common\Collections\ArrayCollection;
-use User\Exception\InvalidArgumentException;
 use User\Exception;
 
 class UserManager implements UserManagerInterface
@@ -24,20 +22,13 @@ class UserManager implements UserManagerInterface
 
     public function getUser($id)
     {
-        if (! is_numeric($id))
-            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
-        
-        if (! $this->hasInstance($id)) {
-            $user = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('User\Entity\UserInterface'), $id);
-            if (! $user)
-                throw new UserNotFoundException(sprintf('User %s not found', $id));
-            
-            $instance = $this->createService($user);
-            $this->addInstance($user->getId(), $instance);
+        $user = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('User\Entity\UserInterface'), $id);
+        if (! $user) {
+            throw new UserNotFoundException(sprintf('User %s not found', $id));
         }
         
-        return $this->getInstance($id);
+        return $user;
     }
 
     public function getUserFromAuthenticator()
@@ -64,9 +55,12 @@ class UserManager implements UserManagerInterface
         $user = $this->getUserEntityRepository()->findOneBy(array(
             'token' => $username
         ));
-        if (! $user)
+        
+        if (! $user) {
             throw new UserNotFoundException(sprintf('User %s not found', $username));
-        return $this->getUser($user->getId());
+        }
+        
+        return $user;
     }
 
     public function findUserByUsername($username)
@@ -74,9 +68,12 @@ class UserManager implements UserManagerInterface
         $user = $this->getUserEntityRepository()->findOneBy(array(
             'username' => $username
         ));
-        if (! $user)
+        
+        if (! $user) {
             throw new UserNotFoundException(sprintf('User %s not found', $username));
-        return $this->getUser($user->getId());
+        }
+        
+        return $user;
     }
 
     public function findUserByEmail($email)
@@ -84,9 +81,12 @@ class UserManager implements UserManagerInterface
         $user = $this->getUserEntityRepository()->findOneBy(array(
             'email' => $email
         ));
-        if (! $user)
+        
+        if (! $user) {
             throw new UserNotFoundException(sprintf('User with email %s not found', $email));
-        return $this->getUser($user->getId());
+        }
+        
+        return $user;
     }
 
     public function createUser(array $data)
@@ -95,9 +95,7 @@ class UserManager implements UserManagerInterface
         $this->getUuidManager()->injectUuid($user);
         $user->populate($data);
         $this->getObjectManager()->persist($user);
-        $instance = $this->createService($user);
-        $this->addInstance($user->getId(), $instance);
-        return $instance;
+        return $user;
     }
 
     public function purgeUser($id)
@@ -111,11 +109,10 @@ class UserManager implements UserManagerInterface
 
     public function findAllUsers()
     {
-        $collection = new ArrayCollection($this->getObjectManager()
+        return new ArrayCollection($this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('User\Entity\UserInterface'))
             ->findAll());
-        return new UserCollection($collection, $this);
     }
 
     public function findAllRoles()
@@ -145,18 +142,16 @@ class UserManager implements UserManagerInterface
         ));
     }
 
+    public function getUnassociatedRoles($id)
+    {
+        $userRoles = $this->getUser($id)->getRoles();
+        $allRoles = $this->findAllRoles();
+        return array_diff($allRoles, $userRoles);
+    }
+
     protected function getUserEntityRepository()
     {
         return $this->getObjectManager()->getRepository($this->getClassResolver()
             ->resolveClassName('User\Entity\UserInterface'));
-    }
-
-    protected function createService(UserInterface $entity)
-    {
-        /* @var $instance \User\Service\UserServiceInterface */
-        $instance = $this->createInstance('User\Service\UserServiceInterface');
-        $instance->setEntity($entity);
-        $instance->setUserManager($this);
-        return $instance;
     }
 }

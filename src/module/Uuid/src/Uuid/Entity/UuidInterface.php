@@ -29,7 +29,7 @@ interface UuidInterface
     /**
      *
      * @param string $uuid            
-     * @return $this
+     * @return self
      */
     public function setUuid ($uuid);
     

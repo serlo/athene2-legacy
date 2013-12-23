@@ -24,7 +24,7 @@ interface SubjectServiceInterface
     /**
      *
      * @param array $config            
-     * @return $this
+     * @return self
      */
     public function whitelistPlugins(array $config);
 
@@ -46,7 +46,7 @@ interface SubjectServiceInterface
      *
      * @param name $scope            
      * @param mixed $plugin            
-     * @return $this
+     * @return self
      */
     public function whitelistPlugin($scope, $plugin);
 

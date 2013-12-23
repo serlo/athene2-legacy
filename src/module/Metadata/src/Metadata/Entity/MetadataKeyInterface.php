@@ -29,7 +29,7 @@ interface MetadataKeyInterface
     /**
      *
      * @param string $name            
-     * @return $this
+     * @return self
      */
     public function setName($name);
 }

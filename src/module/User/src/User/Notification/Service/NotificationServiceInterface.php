@@ -72,7 +72,7 @@ interface NotificationServiceInterface
     /**
      * 
      * @param mixed $timestamp
-     * @return $this
+     * @return self
      */
     public function setTimestamp($timestamp);
 }

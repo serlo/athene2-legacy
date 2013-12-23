@@ -20,7 +20,7 @@ interface SubscriptionInterface
     /**
      *
      * @param UserInterface $user            
-     * @return $this
+     * @return self
      */
     public function setSubscriber(UserInterface $user);
 
@@ -33,7 +33,7 @@ interface SubscriptionInterface
     /**
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setSubscribedObject(UuidInterface $uuid);
 
@@ -52,7 +52,7 @@ interface SubscriptionInterface
     /**
      *
      * @var bool
-     * @return $this
+     * @return self
      */
     public function setNotifyMailman($notifyMailman);
 }

@@ -40,7 +40,7 @@ class AliasManager implements AliasManagerInterface
     /**
      *
      * @param ManagerOptions $options            
-     * @return $this
+     * @return self
      */
     public function setOptions(ManagerOptions $options)
     {

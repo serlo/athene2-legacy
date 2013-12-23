@@ -34,7 +34,7 @@ interface TypeInterface
     /**
      * 
      * @param HolderInterface $container
-     * @return $this
+     * @return self
      */
     public function setHolder(HolderInterface $holder);
 }

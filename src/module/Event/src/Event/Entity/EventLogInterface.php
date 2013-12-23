@@ -78,7 +78,7 @@ interface EventLogInterface extends LanguageAwareInterface
     /**
      *
      * @param EventParameterInterface $parameter            
-     * @return $this
+     * @return self
      */
     public function addParameter(EventParameterInterface $parameter);
 
@@ -86,7 +86,7 @@ interface EventLogInterface extends LanguageAwareInterface
      * Sets the associated object (uuid)
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $uuid);
 
@@ -94,7 +94,7 @@ interface EventLogInterface extends LanguageAwareInterface
      * Sets the event.
      *
      * @param EventInterface $event            
-     * @return $this
+     * @return self
      */
     public function setEvent(EventInterface $event);
 
@@ -102,7 +102,7 @@ interface EventLogInterface extends LanguageAwareInterface
      * Sets the actor.
      *
      * @param UserInterface $actor            
-     * @return $this
+     * @return self
      */
     public function setActor(UserInterface $actor);
 }

@@ -32,7 +32,7 @@ trait LicenseManagerAwareTrait
     /**
      *
      * @param LicenseManagerInterface $licenseManager            
-     * @return $this
+     * @return self
      */
     public function setLicenseManager(LicenseManagerInterface $licenseManager)
     {

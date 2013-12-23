@@ -19,14 +19,14 @@ interface AdapterInterface extends AI
     /**
      * 
      * @param unknown $email
-     * @return $this
+     * @return self
      */
     public function setIdentity($email);
 
     /**
      * 
      * @param striong $password
-     * @return $this
+     * @return self
      */
     public function setCredential($password);
 }

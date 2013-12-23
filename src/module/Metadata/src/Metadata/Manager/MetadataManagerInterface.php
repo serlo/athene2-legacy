@@ -27,7 +27,7 @@ interface MetadataManagerInterface
     /**
      *
      * @param int $id            
-     * @return $this
+     * @return self
      */
     public function removeMetadata($id);
 

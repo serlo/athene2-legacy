@@ -32,7 +32,7 @@ trait FormableTrait
     /**
      *
      * @param \Zend\Form\Form $form            
-     * @return $this
+     * @return self
      */
     public function setForm(\Zend\Form\Form $form)
     {

@@ -58,7 +58,7 @@ class TaxonomyOptions extends AbstractOptions
      */
     public function isAssociationAllowed($association)
     {
-        return in_array($this->getAllowedAssociations());
+        return in_array($association, $this->getAllowedAssociations());
     }
 
     /**
@@ -83,7 +83,7 @@ class TaxonomyOptions extends AbstractOptions
     /**
      *
      * @param array $allowedChildren            
-     * @return $this
+     * @return self
      */
     public function setAllowedChildren(array $allowedChildren)
     {

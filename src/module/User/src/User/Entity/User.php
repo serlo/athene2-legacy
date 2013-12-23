@@ -196,6 +196,13 @@ class User extends UuidEntity implements UserInterface
         return $this;
     }
 
+    public function updateLoginData()
+    {
+        $this->setLogins($this->getLogins() + 1);
+        $this->setLastLogin(new DateTime());
+        return $this;
+    }
+
     public function hasRole(RoleInterface $role)
     {
         $roles = $this->getRoles();

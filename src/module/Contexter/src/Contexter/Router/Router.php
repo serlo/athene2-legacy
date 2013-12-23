@@ -137,7 +137,7 @@ class Router implements RouterInterface
     /**
      *
      * @param RouteMatch $routeMatch            
-     * @return $this
+     * @return self
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {

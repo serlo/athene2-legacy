@@ -110,7 +110,7 @@ class License implements LicenseInterface
     /**
      *
      * @param field_type $title            
-     * @return $this
+     * @return self
      */
     public function setTitle($title)
     {
@@ -121,7 +121,7 @@ class License implements LicenseInterface
     /**
      *
      * @param field_type $url            
-     * @return $this
+     * @return self
      */
     public function setUrl($url)
     {
@@ -132,7 +132,7 @@ class License implements LicenseInterface
     /**
      *
      * @param field_type $content            
-     * @return $this
+     * @return self
      */
     public function setContent($content)
     {
@@ -143,7 +143,7 @@ class License implements LicenseInterface
     /**
      *
      * @param field_type $iconHref            
-     * @return $this
+     * @return self
      */
     public function setIconHref($iconHref)
     {
@@ -154,7 +154,7 @@ class License implements LicenseInterface
     /**
      *
      * @param field_type $language            
-     * @return $this
+     * @return self
      */
     public function setLanguage(LanguageInterface $language)
     {

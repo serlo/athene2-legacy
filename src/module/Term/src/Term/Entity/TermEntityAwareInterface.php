@@ -17,7 +17,7 @@ interface TermEntityAwareInterface
     /**
      *
      * @param TermEntityInterface $term            
-     * @return $this
+     * @return self
      */
     public function setTerm(TermEntityInterface $term);
 

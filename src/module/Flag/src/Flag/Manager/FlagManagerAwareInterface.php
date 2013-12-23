@@ -23,7 +23,7 @@ interface FlagManagerAwareInterface
     /**
      *
      * @param FlagManagerInterface $flagManager            
-     * @return $this
+     * @return self
      */
     public function setFlagManager(FlagManagerInterface $flagManager);
 }

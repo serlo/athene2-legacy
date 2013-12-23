@@ -42,7 +42,7 @@
                   <?php echo $this->translate('Add role'); ?> <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu nav nav-list">
-                    <?php foreach($this->user->getUnassociatedRoles() as $role): ?>
+                    <?php foreach($this->unassociatedRoles as $role): ?>
                     <li>
                         <a href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $role->getName(); ?></a>
                     </li>

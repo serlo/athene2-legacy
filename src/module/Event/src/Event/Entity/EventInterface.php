@@ -39,7 +39,7 @@ interface EventInterface
      * Sets the event's name.
      *
      * @param string $name            
-     * @return $this
+     * @return self
      */
     public function setName($name);
 
@@ -47,7 +47,7 @@ interface EventInterface
      * Sets the event's description.
      *
      * @param string $description            
-     * @return $this
+     * @return self
      */
     public function setDescription($description);
 }

@@ -19,7 +19,7 @@ interface VoteInterface
     /**
      *
      * @param UserInterface $user            
-     * @return $this
+     * @return self
      */
     public function setUser(UserInterface $user);
 
@@ -32,7 +32,7 @@ interface VoteInterface
     /**
      *
      * @param CommentInterface $comment            
-     * @return $this
+     * @return self
      */
     public function setComment(CommentInterface $comment);
 
@@ -45,7 +45,7 @@ interface VoteInterface
     /**
      *
      * @param int $type            
-     * @return $this
+     * @return self
      */
     public function setVote($type);
 

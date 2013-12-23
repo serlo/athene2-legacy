@@ -102,7 +102,7 @@ class Normalized implements NormalizedInterface
     /**
      *
      * @param string $routeName            
-     * @return $this
+     * @return self
      */
     public function setRouteName($routeName)
     {
@@ -113,7 +113,7 @@ class Normalized implements NormalizedInterface
     /**
      *
      * @param multitype: $routeParams            
-     * @return $this
+     * @return self
      */
     public function setRouteParams($routeParams)
     {
@@ -124,7 +124,7 @@ class Normalized implements NormalizedInterface
     /**
      *
      * @param string $title            
-     * @return $this
+     * @return self
      */
     public function setTitle($title)
     {
@@ -135,7 +135,7 @@ class Normalized implements NormalizedInterface
     /**
      *
      * @param string $preview            
-     * @return $this
+     * @return self
      */
     public function setPreview($preview)
     {
@@ -146,7 +146,7 @@ class Normalized implements NormalizedInterface
     /**
      *
      * @param DateTime $timestamp            
-     * @return $this
+     * @return self
      */
     public function setTimestamp(DateTime $timestamp)
     {
@@ -157,7 +157,7 @@ class Normalized implements NormalizedInterface
     /**
      *
      * @param string $content            
-     * @return $this
+     * @return self
      */
     public function setContent($content)
     {

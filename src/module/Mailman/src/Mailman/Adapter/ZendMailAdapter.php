@@ -39,7 +39,7 @@ class ZendMailAdapter implements AdapterInterface
     /**
      *
      * @param \Zend\Mail\Transport\SmtpOptions $smtpOptions            
-     * @return $this
+     * @return self
      */
     public function setSmtpOptions(SmtpOptions $smtpOptions)
     {

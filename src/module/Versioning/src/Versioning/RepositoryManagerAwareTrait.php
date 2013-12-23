@@ -35,7 +35,7 @@ trait RepositoryManagerAwareTrait
      * Sets the RepositoryManager
      *
      * @param RepositoryManagerInterface $repositoryManager            
-     * @return $this
+     * @return self
      */
     public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
     {

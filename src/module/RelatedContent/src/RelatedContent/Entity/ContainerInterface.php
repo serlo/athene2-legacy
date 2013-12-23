@@ -30,7 +30,7 @@ interface ContainerInterface
     /**
      * 
      * @param HolderInterface $holder
-     * @return $this
+     * @return self
      */
     public function addHolder(HolderInterface $holder);
 }

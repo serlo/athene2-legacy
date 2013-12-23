@@ -29,14 +29,14 @@ interface CommentInterface extends TaxonomyTermAwareInterface
     /**
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $uuid);
 
     /**
      *
      * @param LanguageInterface $language            
-     * @return $this
+     * @return self
      */
     public function setLanguage(LanguageInterface $language);
 
@@ -45,6 +45,12 @@ interface CommentInterface extends TaxonomyTermAwareInterface
      * @return LanguageInterface
      */
     public function getLanguage();
+    
+    /**
+     * 
+     * @return DateTime
+     */
+    public function getTimestamp();
 
     /**
      *
@@ -55,14 +61,14 @@ interface CommentInterface extends TaxonomyTermAwareInterface
     /**
      *
      * @param UserInterface $user            
-     * @return $this
+     * @return self
      */
     public function setAuthor(UserInterface $user);
 
     /**
      *
      * @param CommentInterface $comment            
-     * @return $this
+     * @return self
      */
     public function setParent(CommentInterface $comment);
 
@@ -81,7 +87,7 @@ interface CommentInterface extends TaxonomyTermAwareInterface
     /**
      *
      * @param CommentInterface $comment            
-     * @return $this
+     * @return self
      */
     public function addChild(CommentInterface $comment);
 
@@ -94,7 +100,7 @@ interface CommentInterface extends TaxonomyTermAwareInterface
     /**
      *
      * @param string $title            
-     * @return $this
+     * @return self
      */
     public function setTitle($title);
 
@@ -107,7 +113,7 @@ interface CommentInterface extends TaxonomyTermAwareInterface
     /**
      *
      * @param string $content            
-     * @return $this
+     * @return self
      */
     public function setContent($content);
 
@@ -138,28 +144,28 @@ interface CommentInterface extends TaxonomyTermAwareInterface
     /**
      *
      * @param bool $archived            
-     * @return $this
+     * @return self
      */
     public function setArchived($archived);
 
     /**
      *
      * @param UserInterface $user  
-     * @return $this
+     * @return self
      */
     public function upVote(UserInterface $user);
 
     /**
      *
      * @param UserInterface $user
-     * @return $this
+     * @return self
      */
     public function downVote(UserInterface $user);
     
     /**
      * 
      * @param UserInterface $user
-     * @return $this
+     * @return self
      */
     public function hasUserVoted(UserInterface $user);
 }

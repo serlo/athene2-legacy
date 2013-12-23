@@ -12,7 +12,7 @@
 namespace Flag\Manager;
 
 use Flag\Entity\TypeInterface;
-use User\Service\UserServiceInterface;
+use User\Entity\UserInterface;
 use Flag\Service\FlagServiceInterface;
 use Flag\Collection\FlagCollection;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
@@ -43,7 +43,7 @@ interface FlagManagerInterface extends ObjectManagerAwareInterface, Flushable
     /**
      *
      * @param int $id            
-     * @return $this
+     * @return self
      */
     public function removeFlag($id);
 
@@ -52,8 +52,8 @@ interface FlagManagerInterface extends ObjectManagerAwareInterface, Flushable
      * @param int $type            
      * @param string $content            
      * @param int $uuid            
-     * @param UserServiceInterface $reporter            
+     * @param UserInterface $reporter            
      * @return FlagServiceInterface
      */
-    public function addFlag($type, $content, $uuid, UserServiceInterface $reporter);
+    public function addFlag($type, $content, $uuid, UserInterface $reporter);
 }

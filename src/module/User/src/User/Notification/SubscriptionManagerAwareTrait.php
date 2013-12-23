@@ -32,7 +32,7 @@ trait SubscriptionManagerAwareTrait
     /**
      *
      * @param SubscriptionManagerInterface $subscriptionManager            
-     * @return $this
+     * @return self
      */
     public function setSubscriptionManager(SubscriptionManagerInterface $subscriptionManager)
     {

@@ -11,15 +11,14 @@
  */
 namespace Normalizer\Strategy;
 
-use Page\Entity\PageRepository;
-use Page\Entity\PageRepositoryInterface;
+use Entity\Entity\EntityInterface;
 
-class PageRepositoryStrategy extends AbstractStrategy
+class EntityStrategy extends AbstractStrategy
 {
 
     /**
      *
-     * @return PageRepository
+     * @return EntityInterface
      */
     public function getObject()
     {
@@ -28,51 +27,45 @@ class PageRepositoryStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getTitle();
+        return $this->getObject()->getId();
     }
 
     protected function getTimestamp()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getDate();
+        return $this->getObject()->getTimestamp();
     }
 
     protected function getContent()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getContent();
+        return $this->getObject()->getId();
     }
 
     protected function getPreview()
     {
-        return $this->getObject()
-            ->getCurrentRevision()
-            ->getContent();
+        return $this->getObject()->getId();
     }
 
     protected function getType()
     {
-        return 'Page repository';
+        return $this->getObject()
+            ->getType()
+            ->getName();
     }
 
     protected function getRouteName()
     {
-        return 'page/article';
+        return 'entity/page';
     }
 
     protected function getRouteParams()
     {
-        return array(
-            'repositoryid' => $this->getObject()->getId()
-        );
+        return [
+            'entity' => $this->getObject()->getId()
+        ];
     }
 
     public function isValid($object)
     {
-        return $object instanceof PageRepositoryInterface;
+        return $object instanceof EntityInterface;
     }
 }
