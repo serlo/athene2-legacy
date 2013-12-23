@@ -91,37 +91,4 @@ class Taxonomy implements TaxonomyInterface
         }
         return $collection;
     }
-
-    public function findTermBySlugPath(array $slugs)
-    {
-        $terms = $this->getChildren();
-        $ancestorsFound = 0;
-        $found = NULL;
-        foreach ($slugs as &$element) {
-            if (is_string($element) && strlen($element) > 0) {
-                $element = strtolower($element);
-                foreach ($terms as $term) {
-                    $found = false;
-                    if (strtolower($term->getSlug()) == strtolower($element)) {
-                        $terms = $term->getChildren();
-                        $found = $term;
-                        $ancestorsFound ++;
-                        break;
-                    }
-                }
-                if (! is_object($found)) {
-                    break;
-                }
-            }
-        }
-        
-        if (! is_object($found)) {
-            throw new Exception\TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $slugs)));
-        }
-        if ($ancestorsFound != count($slugs)) {
-            throw new Exception\TermNotFoundException(sprintf('Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1', implode(',', $slugs), $ancestorsFound, count($slugs)));
-        }
-        
-        return $found;
-    }
 }

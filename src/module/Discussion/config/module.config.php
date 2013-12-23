@@ -45,7 +45,7 @@ return array(
                 $plugin->setDiscussionManager($discussionManager);
                 $plugin->setUserManager($userManager);
                 $plugin->setLanguageManager($languageManager);
-                $plugin->setSharedTaxonomyManager($sharedTaxonomyManager);
+                $plugin->setTaxonomyManager($sharedTaxonomyManager);
                 return $plugin;
             }
         )
@@ -199,7 +199,7 @@ return array(
                     'setLanguageManager' => array(
                         'required' => true
                     ),
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     ),
                     'setUserManager' => array(
@@ -238,7 +238,7 @@ return array(
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $class->setSharedTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
                 
                 return $class;
             }

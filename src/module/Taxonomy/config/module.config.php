@@ -20,27 +20,12 @@ return array(
     'term_router' => array(
         'routes' => array()
     ),
-    'uuid_router' => array(
-        'routes' => array(
-            'taxonomyTerm' => '/taxonomy/term/route/%d',
-        )
-    ),
-    'uuid_manager' => array(
-        'resolver' => array(
-            __NAMESPACE__ . '\Entity\TaxonomyTerm' => function ($uuid, ServiceLocatorInterface $serviceLocator)
-            {
-                /* @var $sharedTaxonomyManager \Taxonomy\Manager\SharedTaxonomyManager */
-                $sharedTaxonomyManager = $serviceLocator->get('Taxonomy\Manager\SharedTaxonomyManager');
-                return $sharedTaxonomyManager->getTerm($uuid->getId());
-            }
-        )
-    ),
     'class_resolver' => array(
         'Taxonomy\Manager\TaxonomyManagerInterface' => 'Taxonomy\Manager\TaxonomyManager',
         'Taxonomy\Entity\TaxonomyTypeInterface' => 'Taxonomy\Entity\TaxonomyType',
         'Taxonomy\Entity\TaxonomyInterface' => 'Taxonomy\Entity\Taxonomy',
         'Taxonomy\Entity\TaxonomyTermInterface' => 'Taxonomy\Entity\TaxonomyTerm',
-        'Taxonomy\Service\TermServiceInterface' => 'Taxonomy\Service\TermService'
+        'Taxonomy\Entity\TaxonomyTermInterface' => 'Taxonomy\Service\TermService'
     ),
     'taxonomy' => array(
         'types' => array(
@@ -174,7 +159,7 @@ return array(
                 $instance = new TermRouter();
                 $instance->setConfig($config['term_router']);
                 $instance->setServiceLocator($sm);
-                $instance->setSharedTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $instance->setTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
                 $instance->setRouter($sm->get('router'));
                 return $instance;
             })
@@ -194,7 +179,7 @@ return array(
                     )
                 ),
                 'Taxonomy\Controller\TermController' => array(
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     ),
                     'setLanguageManager' => array(
@@ -203,6 +188,17 @@ return array(
                     'setUserManager' => array(
                         'required' => true
                     )
+                ),
+                'Taxonomy\Hydrator\TaxonomyTermHydrator' => array(
+                    'setTaxonomyManager' => array(
+                        'required' => true
+                    ),
+                    'setTermManager' => array(
+                        'required' => true
+                    ),
+                    'setUuidManager' => array(
+                        'required' => true
+                    ),
                 ),
                 'Taxonomy\Controller\TermRouterController' => array(
                     'setTermRouter' => array(
@@ -224,12 +220,12 @@ return array(
                     )
                 ),
                 'Taxonomy\Controller\TaxonomyController' => array(
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     )
                 ),
                 'Taxonomy\Controller\RouterController' => array(
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     )
                 ),
@@ -243,7 +239,7 @@ return array(
                     'setClassResolver' => array(
                         'required' => true
                     ),
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     ),
                     'setTermRouter' => array(
@@ -251,7 +247,7 @@ return array(
                     )
                 ),
                 'Taxonomy\Provider\NavigationProvider' => array(
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     ),
                     'setServiceLocator' => array(

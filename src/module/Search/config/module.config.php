@@ -54,7 +54,7 @@ return array(
                     'setConnection' => array(
                         'required' => true
                     ),
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     )
                 ),

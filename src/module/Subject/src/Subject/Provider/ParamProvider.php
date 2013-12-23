@@ -12,7 +12,7 @@
 namespace Subject\Provider;
 
 use Taxonomy\Router\ParamProviderInterface;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Router\AbstractParamProvider;
 
 class ParamProvider extends AbstractParamProvider implements ParamProviderInterface
@@ -28,12 +28,12 @@ class ParamProvider extends AbstractParamProvider implements ParamProviderInterf
         );
     }
 
-    protected function getPathToTermAsUri(TermServiceInterface $term)
+    protected function getPathToTermAsUri(TaxonomyTermInterface $term)
     {
         return substr($this->_getPathToTermAsUri($term), 0, - 1);
     }
 
-    protected function _getPathToTermAsUri(TermServiceInterface $term)
+    protected function _getPathToTermAsUri(TaxonomyTermInterface $term)
     {
         return ($term->getTaxonomy()->getName() != 'subject') ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }

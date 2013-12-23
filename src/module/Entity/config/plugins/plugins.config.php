@@ -74,7 +74,7 @@ return array(
                 'taxonomy' => function ($sm)
                 {
                     $instance = new Plugin\Taxonomy\TaxonomyPlugin();
-                    $instance->setSharedTaxonomyManager($sm->getServiceLocator()
+                    $instance->setTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     $instance->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
@@ -338,7 +338,7 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Plugin\Taxonomy\Listener\EntityControllerListener' => array(
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     )
                 ),

@@ -11,8 +11,10 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Service\TermServiceInterface;
-use Taxonomy\Collection\TermCollection;
+use Taxonomy\Entity\TaxonomyInterface;
+use Language\Entity\LanguageEntityInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
 
 interface TaxonomyManagerInterface
 {
@@ -20,55 +22,54 @@ interface TaxonomyManagerInterface
     /**
      *
      * @param numeric $id            
-     * @return TermServiceInterface
+     * @return TaxonomyTermInterface
      */
     public function getTerm($id);
 
     /**
-     * Finds a Term by its ancestors.
-     *
-     * <code>
-     * $param = array(0 => 'path', 1 => 'to', 2 => 'something');
-     * $this->findTermByAncestors(); // returns "something"
-     * </code>
-     *
-     * Note that the first array element needs to be a sapling node
-     *
-     * @param array $ancestors            
-     * @return TermServiceInterface
+     * 
+     * @param TaxonomyInterface $taxonomy
+     * @param array $ancestors
+     * @return TaxonomyTermInterface
      */
-    public function findTermByAncestors(array $ancestors);
-
-    /**
-     * Returns the nodes on the highest level.
-     * Nodes on the highest level do either not have a parent node or do have a different taxonomy type than their parents.
-     *
-     * @return \Taxonomy\Collection\TermCollection
-     */
-    public function getSaplings();
-
-    /**
-     *
-     * @param string $type            
-     * @return bool
-     */
-    public function allowsParentType($type);
-
-    /**
-     *
-     * @return int $id
-     */
-    public function getId();
-
-    /**
-     *
-     * @return TermCollection
-     */
-    public function getTerms();
+    public function findTerm(TaxonomyInterface $taxonomy, array $ancestors);
     
     /**
      * 
-     * @return bool
+     * @param numeric $id
+     * @return TaxonomyInterface
      */
-    public function getRadixEnabled();
+    public function getTaxonomy($id);
+
+    /**
+     * 
+     * @param string $name
+     * @param LanguageEntityInterface $language
+     * @return TaxonomyInterface
+     */
+    public function findTaxonomyByName($name, LanguageEntityInterface $language);
+
+    /**
+     * 
+     * @param array $data
+     * @return TaxonomyTermInterface
+     */
+    public function createTerm(array $data);
+
+    /**
+     * 
+     * @param int $id
+     * @param array $data
+     * @return self
+     */
+    public function updateTerm($id, array $data);
+    
+    /**
+     * 
+     * @param string $association
+     * @param int $id
+     * @param TaxonomyTermAwareInterface $with
+     * @return self
+     */
+    public function associateWith($id, $association, TaxonomyTermAwareInterface $with);
 }

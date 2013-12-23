@@ -13,12 +13,12 @@ namespace Subject\Plugin\Taxonomy;
 
 use Subject\Plugin\AbstractPlugin;
 use Subject\Exception\InvalidArgumentException;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Zend\Stdlib\ArrayUtils;
 
 class TaxonomyPlugin extends AbstractPlugin
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -38,7 +38,7 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function addEntity($entity, $to)
     {
-        $term = $this->getSharedTaxonomyManager()->getTerm($to);
+        $term = $this->getTaxonomyManager()->getTerm($to);
         
         if (! $term->knowsAncestor($this->getSubjectService()
             ->getTermService()))
@@ -50,18 +50,18 @@ class TaxonomyPlugin extends AbstractPlugin
         return $this;
     }
 
-    public function getPathToTermAsUri(TermServiceInterface $term)
+    public function getPathToTermAsUri(TaxonomyTermInterface $term)
     {
         return substr($this->_getPathToTermAsUri($term), 0 , -1);
     }
     
-    private function _getPathToTermAsUri(TermServiceInterface $term){
+    private function _getPathToTermAsUri(TaxonomyTermInterface $term){
         return ($term->getTaxonomy()->getName() != $this->getOption('taxonomy_parent')) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';        
     }
 
     public function getTermManager()
     {
-        return $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $this->getSubjectService()
+        return $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $this->getSubjectService()
             ->getLanguage());
     }
 
@@ -101,11 +101,6 @@ class TaxonomyPlugin extends AbstractPlugin
         return $this->getTermManager()->getTerm($term);
     }
 
-    public function findTermByAncestors($ancestors)
-    {
-        return $this->getSubjectService()->getTermService()->getDescendantBySlugs(ArrayUtils::merge(array($this->getSubjectService()->getName()),$ancestors));
-    }
-
     public function getAll()
     {
         return $this->getTermManager()->getTerms();
@@ -113,7 +108,7 @@ class TaxonomyPlugin extends AbstractPlugin
 
     public function getRootFolders($taxonomyParentType)
     {
-        $return = $this->getSharedTaxonomyManager()
+        $return = $this->getTaxonomyManager()
             ->findTaxonomyByName($this->getOption('taxonomy_parent'), $this->getSubjectService()
             ->getLanguage())
             ->findTermByAncestors((array) $taxonomyParentType)

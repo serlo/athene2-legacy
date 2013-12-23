@@ -13,7 +13,7 @@ namespace Entity\Plugin\Pathauto\Provider;
 
 use Token\Provider\ProviderInterface;
 use Entity\Exception;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Entity\Service\EntityServiceInterface;
 use Token\Provider\AbstractProvider;
 
@@ -37,7 +37,7 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
                     ->taxonomy()
                     ->getTerms();
                 foreach ($terms as $term) {
-                    /* @var $term TermServiceInterface */
+                    /* @var $term TaxonomyTermInterface */
                     $subject = $this->findSubject($term);
                 }
                 $foundPlugin = true;
@@ -70,7 +70,7 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
         return $this->data;
     }
 
-    private function findSubject(TermServiceInterface $term)
+    private function findSubject(TaxonomyTermInterface $term)
     {
         if ($term->getTaxonomy()->getName() == 'subject') {
             return $term->getName();

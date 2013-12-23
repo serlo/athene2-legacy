@@ -46,7 +46,7 @@ return [
                     ]
                 ],
                 __NAMESPACE__ . '\Manager\BlogManager' => [
-                    'setSharedTaxonomyManager' => [
+                    'setTaxonomyManager' => [
                         'required' => true
                     ],
                     'setServiceLocator' => [

@@ -23,7 +23,7 @@ class TaxonomyController extends AbstractController
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         
         /* @var $plugin \Entity\Plugin\Taxonomy\TaxonomyPlugin */
-        $taxonomy = $plugin->getSharedTaxonomyManager()->findTaxonomyByName('subject', $language);
+        $taxonomy = $plugin->getTaxonomyManager()->findTaxonomyByName('subject', $language);
         
         $saplings = $taxonomy->findTermByAncestors(array(
             'mathe'
@@ -39,7 +39,7 @@ class TaxonomyController extends AbstractController
                             
                             $this->getEventManager()->trigger('addToTerm', $this, array(
                                 'entity' => $plugin->getEntityService(),
-                                'term' => $plugin->getSharedTaxonomyManager()
+                                'term' => $plugin->getTaxonomyManager()
                                     ->getTerm($term)
                             ));
                         }
@@ -49,7 +49,7 @@ class TaxonomyController extends AbstractController
                             
                             $this->getEventManager()->trigger('removeFromTerm', $this, array(
                                 'entity' => $plugin->getEntityService(),
-                                'term' => $plugin->getSharedTaxonomyManager()
+                                'term' => $plugin->getTaxonomyManager()
                                     ->getTerm($term)
                             ));
                         }

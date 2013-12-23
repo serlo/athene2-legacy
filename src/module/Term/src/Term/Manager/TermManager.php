@@ -13,7 +13,7 @@
  */
 namespace Term\Manager;
 
-use Term\Service\TermServiceInterface;
+use Term\Entity\TaxonomyTermInterface;
 use Term\Exception\TermNotFoundException;
 use Language\Model\LanguageModelInterface;
 use Common\Filter\Slugify;

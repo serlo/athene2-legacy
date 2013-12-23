@@ -50,7 +50,7 @@ class TermController extends AbstractController
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
-                $this->getSharedTaxonomyManager()->updateTerm($this->params('id'), $form->getData());
+                $this->getTaxonomyManager()->updateTerm($this->params('id'), $form->getData());
                 
                 $this->getEventManager()->trigger('update', $this, array(
                     'term' => $term,
@@ -59,7 +59,7 @@ class TermController extends AbstractController
                     'post' => $form->getData()
                 ));
                 
-                $this->getSharedTaxonomyManager()
+                $this->getTaxonomyManager()
                     ->getObjectManager()
                     ->flush();
                 $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
@@ -97,7 +97,7 @@ class TermController extends AbstractController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $term = $this->getSharedTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
+                $term = $this->getTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
                     ->getLanguageFromRequest());
                 
                 $this->getEventManager()->trigger('create', $this, array(
@@ -107,7 +107,7 @@ class TermController extends AbstractController
                     'post' => $form->getData()
                 ));
                 
-                $this->getSharedTaxonomyManager()
+                $this->getTaxonomyManager()
                     ->getObjectManager()
                     ->flush();
 
@@ -133,7 +133,7 @@ class TermController extends AbstractController
                 $i++;
             }
             
-            $this->getSharedTaxonomyManager()
+            $this->getTaxonomyManager()
                 ->getObjectManager()
                 ->flush();
             
@@ -155,7 +155,7 @@ class TermController extends AbstractController
     {
         $data = $this->params()->fromPost('sortable', array());
         $this->iterWeight($data, $this->params('term'));
-        $this->getSharedTaxonomyManager()
+        $this->getTaxonomyManager()
             ->getObjectManager()
             ->flush();
         return '';
@@ -173,7 +173,7 @@ class TermController extends AbstractController
                 $entity->setParent(NULL);
             }
             $entity->setPosition($weight);
-            $this->getSharedTaxonomyManager()->getObjectManager()->persist($entity->getEntity());
+            $this->getTaxonomyManager()->getObjectManager()->persist($entity->getEntity());
             
             if($oldParent !== $entity->getParent()){
                 $this->getEventManager()->trigger('parent-change', $this, array(

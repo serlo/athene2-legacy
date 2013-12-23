@@ -15,22 +15,22 @@ use Language\Model\LanguageModelInterface;
 use Blog\Hydrator\PostHydrator;
 use User\Model\UserModelInterface;
 use DateTime;
-use Taxonomy\Model\TaxonomyTermModelInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Blog\Exception;
 
 class BlogManager implements BlogManagerInterface
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     public function getBlog($id)
     {
-        return $this->getSharedTaxonomyManager()->getTerm($id);
+        return $this->getTaxonomyManager()->getTerm($id);
     }
 
     public function findAllBlogs(LanguageModelInterface $languageService)
     {
-        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('blog', $languageService);
-        return $taxonomy->getSaplings();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $languageService);
+        return $taxonomy->getChildren();
     }
 
     public function getPost($id)
@@ -68,7 +68,7 @@ class BlogManager implements BlogManagerInterface
         return $this;
     }
 
-    public function createPost(TaxonomyTermModelInterface $taxonomy, UserModelInterface $author, $title, $content, DateTime $publish = NULL)
+    public function createPost(TaxonomyTermInterface $taxonomy, UserModelInterface $author, $title, $content, DateTime $publish = NULL)
     {
         if ($publish === NULL) {
             $publish = new \DateTime("now");

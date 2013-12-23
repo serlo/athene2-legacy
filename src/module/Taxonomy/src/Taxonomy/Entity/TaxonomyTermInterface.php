@@ -11,9 +11,7 @@
  */
 namespace Taxonomy\Entity;
 
-use Taxonomy\Model\TaxonomyTermModelInterface;
-
-interface TaxonomyTermInterface extends TaxonomyTermModelInterface
+interface TaxonomyTermInterface
 {
 
     /**

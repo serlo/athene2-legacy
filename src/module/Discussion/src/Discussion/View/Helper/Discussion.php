@@ -13,11 +13,11 @@ namespace Discussion\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Uuid\Entity\UuidInterface;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 class Discussion extends AbstractHelper
 {
-    use \Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected $discussions, $object;
 
@@ -77,7 +77,7 @@ class Discussion extends AbstractHelper
         return $this->forum;
     }
 
-    public function setForum(TermServiceInterface $forum)
+    public function setForum(TaxonomyTermInterface $forum)
     {
         $this->forum = $forum;
         return $this;
@@ -125,7 +125,7 @@ class Discussion extends AbstractHelper
     public function findForum(array $forums)
     {
         $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $language);
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
         $term = $taxonomy->findTermByAncestors([
             'root',
             'discussions'
@@ -134,7 +134,7 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    protected function iterForums(array $forums, TermServiceInterface $current)
+    protected function iterForums(array $forums, TaxonomyTermInterface $current)
     {
         if (empty($forums)) {
             return $current;
@@ -152,13 +152,13 @@ class Discussion extends AbstractHelper
         return $this->createForums($forums, $current);
     }
 
-    protected function createForums(array $forums, TermServiceInterface $current)
+    protected function createForums(array $forums, TaxonomyTermInterface $current)
     {
-        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('forum', $this->getLanguageManager()
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $this->getLanguageManager()
             ->getLanguageFromRequest());
         
         foreach ($forums as $forum) {
-            $current = $this->getSharedTaxonomyManager()->createTerm([
+            $current = $this->getTaxonomyManager()->createTerm([
                 'term' => [
                     'name' => $forum
                 ],
@@ -167,11 +167,11 @@ class Discussion extends AbstractHelper
             ]);
         }
         
-        $this->getSharedTaxonomyManager()
+        $this->getTaxonomyManager()
             ->getObjectManager()
             ->flush();
         
-        return $this->getSharedTaxonomyManager()->getTerm($current);
+        return $this->getTaxonomyManager()->getTerm($current);
     }
 
     protected function getDefaultConfig()

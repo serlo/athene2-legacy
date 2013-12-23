@@ -18,20 +18,26 @@ interface TaxonomyInterface extends TypeAwareInterface, LanguageAwareInterface
 {
 
     /**
-     * 
+     *
      * @return int
      */
     public function getId();
 
     /**
-     * 
+     *
      * @return TaxonomyTermInterface[]
      */
     public function getTerms();
 
     /**
-     * 
+     *
      * @return string
      */
     public function getName();
+
+    /**
+     *
+     * @return TaxonomyTermInterface[]
+     */
+    public function getChildren();
 }

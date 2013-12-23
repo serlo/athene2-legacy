@@ -16,7 +16,7 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
     public function onCreate(Event $e)
     {
@@ -26,7 +26,7 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         
         $options = $data['taxonomy'];
         
-        $term = $this->getSharedTaxonomyManager()->getTerm($options['term']);
+        $term = $this->getTaxonomyManager()->getTerm($options['term']);
         
         $term->associateObject('entities', $entity);
         

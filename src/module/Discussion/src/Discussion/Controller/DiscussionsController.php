@@ -15,12 +15,12 @@ use Zend\View\Model\ViewModel;
 
 class DiscussionsController extends AbstractController
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function indexAction()
     {
         $discussions = array();
-        $forums = $this->getTaxonomyManager()->getSaplings();
+        $forums = $this->getTaxonomyManager()->getChildren();
         
         $forum = $this->getTermService();
         
@@ -42,7 +42,7 @@ class DiscussionsController extends AbstractController
 
     protected function getTaxonomyManager()
     {
-        return $this->getSharedTaxonomyManager()->findTaxonomyByName('forum-category', $this->getLanguageManager()
+        return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $this->getLanguageManager()
             ->getLanguageFromRequest());
     }
 
@@ -53,6 +53,6 @@ class DiscussionsController extends AbstractController
             return NULL;
         }
         
-        return $this->getSharedTaxonomyManager()->getTerm($id);
+        return $this->getTaxonomyManager()->getTerm($id);
     }
 }

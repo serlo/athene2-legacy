@@ -22,7 +22,7 @@ trait TermManagerAwareTrait
 
     /**
      *
-     * @return TaxonomyManagerInterface $termManager
+     * @return TaxonomyManagerInterface
      */
     public function getTermManager()
     {
@@ -32,7 +32,7 @@ trait TermManagerAwareTrait
     /**
      *
      * @param TaxonomyManagerInterface $termManager            
-     * @return $this
+     * @return self
      */
     public function setTermManager(TermManagerInterface $termManager)
     {

@@ -37,8 +37,8 @@ class TaxonomyTest extends Model
         );
     }
 
-    public function testGetSaplings()
+    public function testgetChildren()
     {
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->getObject()->getSaplings());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->getObject()->getChildren());
     }
 }

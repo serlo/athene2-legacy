@@ -32,7 +32,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $this->taxonomyManager->setEntity($this->taxonomyMock);
         $this->taxonomyManager->setLanguageService($this->languageServiceMock);
         $this->taxonomyManager->setServiceLocator($this->serviceLocatorMock);
-        $this->taxonomyManager->setSharedTaxonomyManager($this->sharedTaxonomyManagerMock);
+        $this->taxonomyManager->setTaxonomyManager($this->sharedTaxonomyManagerMock);
         
         $this->serviceLocatorMock->expects($this->any())
             ->method('get')
@@ -129,7 +129,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
         
         $this->taxonomyMock->expects($this->atLeastOnce())
-            ->method('getSaplings')
+            ->method('getChildren')
             ->will($this->returnValue($terms));
         $this->taxonomyManager->setEntity($this->taxonomyMock);
         
@@ -156,7 +156,7 @@ class TaxonomyManagerTest extends AbstractTestCase
         $terms = (new TermFakeFactory())->createTree($this->taxonomyMock);
         
         $this->taxonomyMock->expects($this->once())
-            ->method('getSaplings')
+            ->method('getChildren')
             ->will($this->returnValue($terms));
         $this->taxonomyManager->setEntity($this->taxonomyMock);
         $this->assertEquals('bar', $this->taxonomyManager->findTermByAncestors(array(
@@ -168,12 +168,12 @@ class TaxonomyManagerTest extends AbstractTestCase
             ->getSlug());
     }
 
-    public function testGetSaplings()
+    public function testgetChildren()
     {
         $this->taxonomyMock->expects($this->once())
-            ->method('getSaplings')
+            ->method('getChildren')
             ->will($this->returnValue(new ArrayCollection()));
         
-        $this->assertInstanceOf('Taxonomy\Collection\TermCollection', $this->taxonomyManager->getSaplings());
+        $this->assertInstanceOf('Taxonomy\Collection\TermCollection', $this->taxonomyManager->getChildren());
     }
 }

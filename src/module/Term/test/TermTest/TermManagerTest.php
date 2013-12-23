@@ -34,7 +34,7 @@ class TermManagerTest extends ManagerTest
         
         $this->prepareClassResolver([
             'Term\Entity\TermEntityInterface' => 'Term\Entity\TermEntity',
-            'Term\Service\TermServiceInterface' => 'Term\Service\TermService'
+            'Term\Entity\TaxonomyTermInterface' => 'Term\Service\TermService'
         ]);
     }
 

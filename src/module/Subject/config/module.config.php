@@ -133,28 +133,28 @@ return array(
                 'taxonomy' => function ($sm)
                 {
                     $class = new Plugin\Taxonomy\TaxonomyPlugin();
-                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                    $class->setTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },/*
                 'topic' => function  ($sm)
                 {
                     $class = new Plugin\Topic\TopicPlugin();
-                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                    $class->setTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },*/
                 'curriculum' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
-                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                    $class->setTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     return $class;
                 },
                 'taxonomyFilter' => function ($sm)
                 {
                     $class = new Plugin\Curriculum\CurriculumPlugin();
-                    $class->setSharedTaxonomyManager($sm->getServiceLocator()
+                    $class->setTaxonomyManager($sm->getServiceLocator()
                         ->get('Taxonomy\Manager\SharedTaxonomyManager'));
                     $class->setEntityManager($sm->getServiceLocator()
                         ->get('Entity\Manager\EntityManager'));
@@ -201,7 +201,7 @@ return array(
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
                 $class->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-                $class->setSharedTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
                 
                 return $class;
             })
@@ -353,7 +353,7 @@ return array(
                     'setSubjectManager' => array(
                         'required' => true
                     ),
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     ),
                     'setPluginManager' => array(

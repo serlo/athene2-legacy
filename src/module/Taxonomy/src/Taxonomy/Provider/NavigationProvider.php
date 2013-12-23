@@ -13,11 +13,11 @@
 namespace Taxonomy\Provider;
 
 use Zend\Stdlib\ArrayUtils;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait; // , \Common\Traits\ConfigAwareTrait;
     
     /**
      *
@@ -41,14 +41,14 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
 
     /**
      *
-     * @var TermServiceInterface
+     * @var TaxonomyTermInterface
      */
     protected $termService;
 
     public function getTermService()
     {
         if (! is_object($this->termService)) {
-            $this->termService = $this->getSharedTaxonomyManager()
+            $this->termService = $this->getTaxonomyManager()
                 ->findTaxonomyByName($this->getOption('parent')['type'], $this->getLanguageManager()
                 ->findLanguageByCode($this->getOption('language')))
                 ->findTermByAncestors((array) $this->getOption('parent')['slug']);
@@ -83,8 +83,6 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
                     'path' => $this->getPathToTermAsUri($term)
                 ));
                 
-                // getPathToTermAsUri
-                
                 $current['label'] = $term->getName();
                 $children = $term->findChildrenByTaxonomyNames($this->getOption('types'));
                 if (count($children)) {
@@ -96,12 +94,12 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
         return $return;
     }
 
-    private function getPathToTermAsUri(TermServiceInterface $term)
+    private function getPathToTermAsUri(TaxonomyTermInterface $term)
     {
         return substr($this->_getPathToTermAsUri($term), 0, - 1);
     }
 
-    private function _getPathToTermAsUri(TermServiceInterface $term)
+    private function _getPathToTermAsUri(TaxonomyTermInterface $term)
     {
         return (! in_array($term->getTaxonomy()->getName(), (array) $this->getOption('parent')['type'])) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }

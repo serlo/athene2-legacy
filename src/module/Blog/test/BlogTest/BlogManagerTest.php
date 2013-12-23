@@ -35,7 +35,7 @@ abstract class BlogManagerTest extends ManagerTest
     protected function prepareSharedTaxonomyManager()
     {
         $mock = $this->getMock('Taxonomy\Manager\SharedTaxonomyManager');
-        $this->blogManager->setSharedTaxonomyManager($mock);
+        $this->blogManager->setTaxonomyManager($mock);
         return $mock;
     }
 
@@ -105,7 +105,7 @@ abstract class BlogManagerTest extends ManagerTest
             ->will($this->returnValue($taxonomyManager));
         
         $taxonomyManager->expects($this->once())
-            ->method('getSaplings')
+            ->method('getChildren')
             ->will($this->returnValue([
             $this->mockTermService(1),
             $this->mockTermService(1),

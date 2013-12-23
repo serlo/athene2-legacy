@@ -74,7 +74,7 @@ class SubjectManagerTest extends \PHPUnit_Framework_TestCase
             ->method('resolveClassName')
             ->will($this->returnValue('Subject\Service\SubjectService'));
         
-        $this->subjectManager->setSharedTaxonomyManager($this->sharedTaxonomyManagerMock);
+        $this->subjectManager->setTaxonomyManager($this->sharedTaxonomyManagerMock);
         $this->subjectManager->setLanguageManager($this->languageManagerMock);
         $this->subjectManager->setClassResolver($this->classResolverMock);
         $this->subjectManager->setServiceLocator($this->serviceLocatorMock);

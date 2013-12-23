@@ -20,6 +20,17 @@ class TaxonomyOptions extends AbstractOptions
 
     protected $rootable;
 
+    protected $allowedAssociations = [];
+    
+    /**
+     *
+     * @return array $allowedAssociations
+     */
+    public function getAllowedAssociations()
+    {
+        return $this->allowedAssociations;
+    }
+
     /**
      *
      * @return array $allowedChildren
@@ -28,13 +39,25 @@ class TaxonomyOptions extends AbstractOptions
     {
         return $this->allowedChildren;
     }
-    
+
     /**
      * 
-     * @param string $child
+     * @param string $association
      * @return boolean
      */
-    public function isChildAllowed($child){
+    public function isAssociationAllowed($association)
+    {
+        return in_array($this->getAllowedAssociations());
+    }
+    
+
+    /**
+     *
+     * @param string $child            
+     * @return boolean
+     */
+    public function isChildAllowed($child)
+    {
         return in_array($child, $this->allowedChildren);
     }
 
@@ -66,6 +89,17 @@ class TaxonomyOptions extends AbstractOptions
     public function setRootable($rootable)
     {
         $this->rootable = $rootable;
+        return $this;
+    }
+
+    /**
+     *
+     * @param array $allowedAssociations            
+     * @return self
+     */
+    public function setAllowedAssociations($allowedAssociations)
+    {
+        $this->allowedAssociations = $allowedAssociations;
         return $this;
     }
 }

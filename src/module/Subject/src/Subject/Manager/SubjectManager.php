@@ -14,13 +14,12 @@ namespace Subject\Manager;
 use Subject\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Language\Model\LanguageModelInterface;
-use Taxonomy\Service\TermServiceInterface;
-use Subject\Exception\RuntimeException;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Subject\Exception\RuntimeException;
 
 class SubjectManager extends AbstractManager implements SubjectManagerInterface
 {
-    use \Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait;
+    use \Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function __construct(array $config)
     {
@@ -42,7 +41,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
             throw new InvalidArgumentException();
         
         if (! $this->hasInstance($id)) {
-            $term = $this->getSharedTaxonomyManager()->getTerm((int) $id);
+            $term = $this->getTaxonomyManager()->getTerm((int) $id);
             $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));
         }
         
@@ -54,7 +53,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         if (! is_string($name))
             throw new InvalidArgumentException();
         
-        $taxonomy = $this->getSharedTaxonomyManager()
+        $taxonomy = $this->getTaxonomyManager()
             ->findTaxonomyByName($this->getOption('taxonomy'), $language);
         $term = $taxonomy->findTermByAncestors((array) $name);
         
@@ -67,9 +66,9 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
 
     public function findSubjectsByLanguage(LanguageModelInterface $language)
     {
-        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $language);
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $language);
         $collection = new ArrayCollection();
-        foreach ($taxonomy->getSaplings() as $subject) {
+        foreach ($taxonomy->getChildren() as $subject) {
             $collection->add($this->getSubject($subject->getId()));
         }
         return $collection;
@@ -85,7 +84,7 @@ class SubjectManager extends AbstractManager implements SubjectManagerInterface
         
         $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
         $instance->setEntity($entity);
-        $instance->setTaxonomyTerm($this->getSharedTaxonomyManager()
+        $instance->setTaxonomyTerm($this->getTaxonomyManager()
             ->getTerm($entity->getId()));
         $instance->setConfig($config);
         return $instance;

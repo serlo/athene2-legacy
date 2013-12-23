@@ -29,7 +29,7 @@ class EntityServiceTest extends \PHPUnit_Framework_TestCase
         $this->entityService = new Service\EntityService();
         $this->entityService->setPluginManager($this->pluginManagerMock);
         $this->entityService->setEntity($this->entityMock);
-        $this->entityService->setSharedTaxonomyManager($this->sharedTaxonomyManagerMock);
+        $this->entityService->setTaxonomyManager($this->sharedTaxonomyManagerMock);
         $this->entityService->setConfig(array(
             'plugins' => array(
                 'fooplugin' => array(

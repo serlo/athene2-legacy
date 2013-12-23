@@ -18,7 +18,7 @@ use Discussion\Entity\CommentInterface;
 
 class DiscussionManager implements DiscussionManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     protected $serviceInterface = 'Discussion\Service\DiscussionServiceInterface';
 
@@ -86,7 +86,7 @@ class DiscussionManager implements DiscussionManagerInterface
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
         }
         
-        $forum = $this->getSharedTaxonomyManager()->getTerm((int) $forum);
+        $forum = $this->getTaxonomyManager()->getTerm((int) $forum);
         
         $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $comment = new $className();
