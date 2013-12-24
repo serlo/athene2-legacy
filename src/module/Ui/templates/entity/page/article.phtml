@@ -1,4 +1,3 @@
 <?php echo $this->pageHeader($this->entity->getCurrentRevision()->get('title'))->setSubtitle('Article')->render(); ?>
-<?php echo $this->partial('entity/view/default', array('discussion' => $this->discussion, 'entity' => $this->entity, 'user' => $this->user, 'hideActions' => array('detail'))); ?>
-
+<?php echo $this->partial('entity/view/default', ['entity' => $this->entity]); ?>
 <?php $this->registry()->add('gen', $this->related($this->entity)); ?>

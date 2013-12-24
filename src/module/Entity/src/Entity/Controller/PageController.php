@@ -9,44 +9,38 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Entity\Plugin\Page\Controller;
+namespace Entity\Controller;
 
-use Entity\Plugin\Controller\AbstractController;
 use Versioning\Exception\RevisionNotFoundException;
 use Entity\Exception\EntityNotFoundException;
-use Zend\Mvc\Router\Http\RouteMatch;
 use Alias\Exception\AliasNotFoundException;
 
 class PageController extends AbstractController
 {
-    use \Language\Manager\LanguageManagerAwareTrait,\Alias\AliasManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use \Alias\AliasManagerAwareTrait;
 
     public function indexAction()
     {
         try {
-            $page = $plugin = $this->getPlugin();
-            $entity = $this->getEntityService();
+            $entity = $this->getEntity();
         } catch (EntityNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
         
-        /*if (! $this->params('forwarded')) {
+        if (! $this->params('forwarded')) {
             try {
                 $alias = $this->getAliasManager()->findAliasByObject($entity->getEntity()
                     ->getUuidEntity());
                 $this->redirect()->toUrl('/alias/' . $alias->getAlias());
             } catch (AliasNotFoundException $e) {}
-        }*/
+        }
         
         try {
             $model = new \Zend\View\Model\ViewModel(array(
-                'entity' => $entity,
-                'plugin' => $page,
-                'user' => $this->getUserManager()->getUserFromAuthenticator(),
+                'entity' => $entity
             ));
-            $this->layout($plugin->getLayout());
-            $model->setTemplate($page->getTemplate());
+            $model->setTemplate('entity/page/default');
             return $model;
         } catch (RevisionNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);

@@ -71,7 +71,12 @@ return [
     ],
     'di' => [
         'allowed_controllers' => [
-            'Entity\Controller\EntityController'
+            __NAMESPACE__ . 'Entity\Controller\EntityController',
+            //__NAMESPACE__ . '\Plugin\Repository\Controller\RepositoryController',
+            __NAMESPACE__ . '\Controller\PageController',
+            //__NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
+            //__NAMESPACE__ . '\Plugin\Link\Controller\LinkController',
+            //__NAMESPACE__ . '\Plugin\License\Controller\LicenseController'
         ],
         'definition' => [
             'class' => [
@@ -96,7 +101,15 @@ return [
                     'setClassResolver' => [
                         'required' => true
                     ]
-                ]
+                ],
+                __NAMESPACE__ . '\Controller\PageController' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ],
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                ],
             ]
         ],
         'instance' => [

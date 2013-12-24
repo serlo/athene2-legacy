@@ -23,6 +23,6 @@ abstract class AbstractController extends AbstractActionController
      */
     public function getEntity()
     {
-        return $this->getEntityManager()->getEntity($this->params('id'));
+        return $this->getEntityManager()->getEntity($this->params('entity'));
     }
 }

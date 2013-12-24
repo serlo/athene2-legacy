@@ -13,12 +13,10 @@ namespace Entity\Manager;
 
 use Entity\Exception;
 use Language\Entity\LanguageInterface;
-use Entity\Entity\EntityInterface;
-use Entity\Options\EntityOptions;
 
 class EntityManager implements EntityManagerInterface
 {
-    use\Type\TypeManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Type\TypeManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     public function getEntity($id)
     {
