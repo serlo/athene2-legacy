@@ -23,10 +23,15 @@ class Upload extends UuidEntity implements UploadInterface
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="upload")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\Column(type="integer")
      */
     protected $id;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="upload", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    protected $uuid;
 
     /**
      * @ORM\Column(type="string", unique=true, length=60)

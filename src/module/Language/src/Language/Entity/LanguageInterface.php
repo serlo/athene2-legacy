@@ -16,7 +16,10 @@ interface LanguageInterface
 
     /**
      * Returns the code.
+     * 
+     * <code>
      * echo $language->getCode(); // prints: 'de'
+     * </code>
      *
      * @return string $code
      */
@@ -36,10 +39,4 @@ interface LanguageInterface
      * @return int $id
      */
     public function getId();
-
-    /**
-     *
-     * @return bool
-     */
-    public function getEntity();
 }

@@ -1,9 +1,11 @@
 <?php /* @var $subject \Subject\Service\SubjectService */ ?>
 <?php $subject = $this->subject; ?>
 <?php echo $this->pageHeader($this->subject->getName())->setSubtitle('Home')->render(); ?>
+
 <h3><?php echo $this->translate('Start learning now!'); ?></h3>
+
 <div class="row">
-    <?php $scopes = $subject->getScopesForPlugin('taxonomy');?>
+    <?php $scopes = $this->subject()->getOptions($this->subject)->getAllowedTaxonomies();?>
     <?php foreach($scopes as $scope): ?>
         <div class="col-md-<?php echo (int) (12 / count($scopes));?>">
             <div class="jumbotron">

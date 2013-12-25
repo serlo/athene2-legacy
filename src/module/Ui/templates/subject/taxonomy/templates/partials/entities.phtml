@@ -33,13 +33,13 @@ $table = array(
             			     <span class="glyphicon glyphicon-file"></span> <span class="caret"></span>
             			</a>
             			<ul class="dropdown-menu">
-                            <?php /*foreach($this->plugin->getEnabledEntityTypes() as $type):?>
+                            <?php foreach($this->subject()->getOptions($this->subject)->getAllowedEntities() as $type):?>
             				    <li>
             				        <a href="<?php echo $this->url('entity/create', array('type' => $type), array('query' => array( 'taxonomy' => array( 'term' => $this->term->getId())))); ?>">
-            					       <?php echo $this->plugin->getEntityTypeLabel($type, 'singular');?>
+            					       <?php echo $this->translate($type);?>
         					       </a>
         					   </li>
-            				<?php endforeach;*/ ?>
+            				<?php endforeach; ?>
             			</ul>
         			</div>
     			<?php endif; ?>

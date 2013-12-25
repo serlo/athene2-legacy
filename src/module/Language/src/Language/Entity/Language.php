@@ -33,7 +33,7 @@ class Language implements LanguageInterface
      * @ORM\Column(type="string", length=2)
      */
     protected $code;
-    
+
     public function getCode()
     {
         return $this->code;
@@ -43,21 +43,10 @@ class Language implements LanguageInterface
     {
         return $this->id;
     }
-    
-    public function getEntity()
-    {
-        return $this;
-    }
-    
+
     public function setCode($code)
     {
         $this->code = $code;
-        return $this;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
         return $this;
     }
 }

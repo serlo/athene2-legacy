@@ -28,9 +28,11 @@ class TaxonomyController extends AbstractController
             $term = $subject->findChildBySlugs(explode('/', $this->params('path', NULL)));
         }
         
-        foreach ($term->getAssociated('entities') as $entity) {
-            if (! $entity->getTrashed()) {
-                $entities[] = $entity;
+        if($term){
+            foreach ($term->getAssociated('entities') as $entity) {
+                if (! $entity->getTrashed()) {
+                    $entities[] = $entity;
+                }
             }
         }
         

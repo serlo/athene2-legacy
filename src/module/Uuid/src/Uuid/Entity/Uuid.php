@@ -39,47 +39,47 @@ class Uuid implements UuidInterface
     protected $trashed;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $entity;
 
     /**
-     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $taxonomyTerm;
 
     /**
-     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $upload;
 
     /**
-     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $comment;
 
     /**
-     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $blogPost;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $entityRevision;
 
     /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $pageRepository;
 
     /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="uuid", fetch="EXTRA_LAZY")
      */
     protected $pageRevision;
 

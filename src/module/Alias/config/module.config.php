@@ -11,7 +11,6 @@
  */
 namespace Alias;
 
-
 return [
     'alias_manager' => [
         'aliases' => [

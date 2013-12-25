@@ -32,15 +32,21 @@ class Comment extends UuidEntity implements CommentInterface
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\Column(type="integer")
      */
     protected $id;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    protected $uuid;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
+     * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $object;
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist"})
@@ -122,7 +128,7 @@ class Comment extends UuidEntity implements CommentInterface
 
     public function getObject()
     {
-        return $this->uuid;
+        return $this->object;
     }
 
     public function getParent()
@@ -162,7 +168,7 @@ class Comment extends UuidEntity implements CommentInterface
 
     public function setObject(UuidInterface $uuid)
     {
-        $this->uuid = $uuid;
+        $this->object = $uuid;
         return $this;
     }
 

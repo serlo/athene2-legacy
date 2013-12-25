@@ -35,10 +35,15 @@ class Entity extends UuidEntity implements EntityInterface
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entity")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\Column(type="integer")
      */
     protected $id;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entity", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    protected $uuid;
 
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist", "remove"},

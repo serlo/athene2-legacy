@@ -14,6 +14,8 @@ namespace Uuid\Entity;
 class UuidEntity implements UuidHolder
 {
     protected $id;
+    
+    protected $uuid;
 
     public function getUuid()
     {
@@ -25,23 +27,19 @@ class UuidEntity implements UuidHolder
     }
 
     public function getId()
-    {
-        if($this->getUuidEntity() === NULL){
-            return NULL;
-        }
-        
-        return $this->getUuidEntity()->getId();
+    {   
+        return $this->uuid;
     }
 
     public function setUuid(UuidInterface $uuid)
     {
-        $this->id = $uuid;
+        $this->uuid = $uuid;
         return $this;
     }
 
     public function getUuidEntity()
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function getTrashed()

@@ -37,14 +37,6 @@ return [
                 'entity/create' => [
                     'login'
                 ]
-            ],
-            'ZfcRbac\Guard\ControllerGuard' => [
-                [
-                    'controller' => 'Application\Controller\IndexController',
-                    'roles' => [
-                        'login'
-                    ]
-                ],
             ]
         ]
     ]

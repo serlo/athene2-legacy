@@ -14,7 +14,6 @@ namespace Subject\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 use Subject\Options\ModuleOptions;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Subject\Exception;
 
 class SubjectHelper extends AbstractHelper
 {
@@ -52,5 +51,27 @@ class SubjectHelper extends AbstractHelper
     {
         $this->moduleOptions = $moduleOptions;
         return $this;
+    }
+
+    /**
+     * 
+     * @param TaxonomyTermInterface $term
+     * @param string $parent
+     * @return string
+     */
+    public function slugify(TaxonomyTermInterface $term, $parent = 'subject')
+    {
+        return substr($this->processSlugs($term, $parent), 0, - 1);
+    }
+
+    /**
+     * 
+     * @param TaxonomyTermInterface $term
+     * @param string $parent
+     * @return string
+     */
+    protected function processSlugs(TaxonomyTermInterface $term, $parent)
+    {
+        return ($term->getTaxonomy()->getName() != $parent) ? $this->processSlugs($term->getParent(), $parent) . $term->getSlug() . '/' : '';
     }
 }

@@ -20,8 +20,7 @@ interface SubjectManagerInterface
 
     /**
      *
-     * @param
-     *            int
+     * @param int $id            
      * @return SubjectServiceInterface
      */
     public function getSubject($id);

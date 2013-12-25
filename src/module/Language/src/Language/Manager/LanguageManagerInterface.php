@@ -18,34 +18,34 @@ interface LanguageManagerInterface
 {
 
     /**
-     * 
+     *
      * @return LanguageInterface
      */
     public function getFallbackLanugage();
 
     /**
-     * 
+     *
      * @return LanguageInterface
      */
     public function getLanguageFromRequest();
 
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return LanguageInterface
      */
     public function getLanguage($id);
-    
+
     /**
-     * 
-     * @param string $code
+     *
+     * @param string $code            
      * @return LanguageInterface
      */
     public function findLanguageByCode($code);
-    
+
     /**
-     * 
-     * @return Collection|LanguageInterface[]
+     *
+     * @return Collection LanguageInterface[]
      */
     public function findAllLanguages();
 }
