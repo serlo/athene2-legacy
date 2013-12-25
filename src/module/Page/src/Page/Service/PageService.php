@@ -11,13 +11,18 @@ class PageService implements PageServiceInterface
     
     use \Common\Traits\ObjectManagerAwareTrait;
     use \Versioning\RepositoryManagerAwareTrait;
-    use\Common\Traits\EntityAwareTrait;
 
     /**
      *
      * @var PageManagerInterface
      */
     protected $manager;
+    
+    protected $entity;
+    
+    public function setEntity($entity){
+        $this->entity = $entity;
+    }
 
     /**
      *
@@ -126,7 +131,7 @@ class PageService implements PageServiceInterface
 
     public function getRepositoryId()
     {
-        return $this->getEntity()->getId();
+        return $this->entity->getId();
     }
 }
 

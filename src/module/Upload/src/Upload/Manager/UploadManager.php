@@ -53,7 +53,8 @@ class UploadManager implements UploadManagerInterface
         if (! is_object($entity)) {
             throw new Exception\UploadNotFoundException(sprintf('Upload "%s" not found', $id));
         }
-        return $entity
+        
+        return $entity;
     }
 
     public static function findParentPath($path)

@@ -3,11 +3,11 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @author	    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	    LGPL-3.0
+ * @license	    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright	Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace AtheneTest;
 
@@ -26,59 +26,6 @@ class Bootstrap
     protected static $serviceManager;
     
     protected static $application;
-
-    protected static $testingNamespaces = array(
-        'LanguageTest' => 'Language/test/LanguageTest',
-        'Language' => 'Language/src/Language',
-        'ClassResolverTest' => 'ClassResolver/test/ClassResolverTest',
-        'EntityTest' => 'Entity/test/EntityTest',
-        'ClassResolver' => 'ClassResolver/src/ClassResolver',
-        'TaxonomyTest' => 'Taxonomy/test/TaxonomyTest',
-        'Taxonomy' => 'Taxonomy/src/Taxonomy',
-        'CommonTest' => 'Common/test/CommonTest',
-        'Common' => 'Common/src/Common',
-        'VersioningTest' => 'Versioning/test/VersioningTest',
-        'Versioning' => 'Versioning/src/Versioning',
-        'UserTest' => 'User/test/UserTest',
-        'User' => 'User/src/User',
-        'SubjectTest' => 'Subject/test/SubjectTest',
-        'Subject' => 'Subject/src/Subject',
-        'Term' => 'Term/src/Term',
-        'TermTest' => 'Term/test/TermTest',
-        'UuidTest' => 'Uuid/test/UuidTest',
-        'Uuid' => 'Uuid/src/Uuid',
-        'EntityTest' => 'Entity/test/EntityTest',
-        'Entity' => 'Entity/src/Entity',
-        'Application' => 'Application/src/Application',
-        'Ui' => 'Ui/src/Ui',
-        'Link' => 'Link/src/Link',
-        'LinkTest' => 'Link/test/LinkTest',
-        'Language' => 'Language/src/Language',
-        'LanguageTest' => 'Language/test/LanguageTest',
-        'Page' => 'Page/src/Page',
-        'Event' => 'Event/src/Event',
-        'Blog' => 'Blog/src/Blog',
-        'Token' => 'Token/src/Token',
-        'PageTest' => 'Page/test/PageTest',
-        'TokenTest' => 'Token/test/TokenTest',
-        'Metadata' => 'Metadata/src/Metadata',
-        'License' => 'License/src/License',
-        'LicenseTest' => 'License/test/LicenseTest',
-        'Alias' => 'Alias/src/Alias',
-        'AliasTest' => 'Alias/test/AliasTest',
-        'Contexter' => 'Contexter/src/Contexter',
-        'ContexterTest' => 'Contexter/test/ContexterTest',
-        'Discussion' => 'Discussion/src/Discussion',
-        'DiscussionTest' => 'Discussion/test/DiscussionTest',
-        'Flag' => 'Flag/src/Flag',
-        'FlagTest' => 'Flag/test/FlagTest',
-        'Mailman' => 'Mailman/src/Mailman',
-        'MailmanTest' => 'Mailman/test/MailmanTest',
-        'RelatedContent' => 'RelatedContent/src/RelatedContent',
-        'Search' => 'Search/src/Search',
-        'Upload' => 'Upload/src/Upload',
-        'Normalizer' => 'Normalizer/src/Normalizer',
-    );
 
     public static function getApplication(){
         return static::$application;
@@ -133,8 +80,15 @@ class Bootstrap
         );
         
         $modulePath = self::findParentPath('module');
-        foreach (static::$testingNamespaces as $namespace => $path) {
-            $namespaces[$namespace] = $modulePath . '/' . $path;
+        
+        if ($handle = opendir(static::findParentPath('src/module') )) {
+            while (false !== ($file = readdir($handle))) {
+                if (substr($file, 0, 1) != '.') {
+                    $namespaces[$file] = $modulePath . '/' . $file . '/src/' . $file;
+                    $namespaces[$file . 'Test'] = $modulePath . '/' . $file . '/test/' . $file . 'Test';
+                }
+            }
+            closedir($handle);
         }
         
         AutoloaderFactory::factory(array(
