@@ -15,9 +15,9 @@ class Module
 {
 
     public static $listeners = array(
-        //'Event\Listener\RepositoryPluginControllerListener',
+        'Event\Listener\RepositoryControllerListener',
         'Event\Listener\DiscussionControllerListener',
-        //'Event\Listener\TaxonomyTermControllerListener',
+        'Event\Listener\TaxonomyTermControllerListener',
         'Event\Listener\UuidControllerListener',
         'Event\Listener\EntityControllerListener'
     );

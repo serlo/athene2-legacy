@@ -18,8 +18,8 @@ class TaxonomyTermControllerListener extends AbstractMvcListener
 
     public function onCreate(Event $e)
     {
-        $language = $e->getParam('language')->getEntity();
-        $user = $e->getParam('user')->getEntity();
+        $language = $e->getParam('language');
+        $user = $e->getParam('user');
         $term = $e->getParam('term');
         
         $this->logEvent('taxonomy/term/create', $language, $user, $term);
@@ -27,20 +27,20 @@ class TaxonomyTermControllerListener extends AbstractMvcListener
 
     public function onUpdate(Event $e)
     {
-        $language = $e->getParam('language')->getEntity();
-        $user = $e->getParam('user')->getEntity();
-        $term = $e->getParam('term')->getEntity();
+        $language = $e->getParam('language');
+        $user = $e->getParam('user');
+        $term = $e->getParam('term');
         
         $this->logEvent('taxonomy/term/update', $language, $user, $term);
     }
 
     public function onParentChange(Event $e)
     {
-        $language = $e->getParam('language')->getEntity();
-        $user = $e->getParam('user')->getEntity();
-        $term = $e->getParam('term')->getEntity();
-        $old = $e->getParam('old')->getEntity()->getUuidEntity();
-        $new = $e->getParam('new')->getEntity()->getUuidEntity();
+        $language = $e->getParam('language');
+        $user = $e->getParam('user');
+        $term = $e->getParam('term');
+        $old = $e->getParam('old')->getUuidEntity();
+        $new = $e->getParam('new')->getUuidEntity();
         
         $params = array(
             array(

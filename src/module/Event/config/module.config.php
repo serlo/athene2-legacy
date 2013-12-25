@@ -80,7 +80,7 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Listener\RepositoryPluginControllerListener' => array(
+                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => array(
                     'setEventManager' => array(
                         'required' => true
                     )

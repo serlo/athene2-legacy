@@ -13,7 +13,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class RepositoryPluginControllerListener extends AbstractMvcListener
+class RepositoryControllerListener extends AbstractMvcListener
 {
 
     /**
@@ -67,6 +67,6 @@ class RepositoryPluginControllerListener extends AbstractMvcListener
 
     protected function getMonitoredClass()
     {
-        return 'Entity\Plugin\Repository\Controller\RepositoryController';
+        return 'Entity\Controller\RepositoryController';
     }
 }
