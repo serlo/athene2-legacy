@@ -1,0 +1,22 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php $solution = $entity->getChildren('link', 'text-solution')->first(); ?>
+<article>
+    <div class="pull-right btn-group">
+	   <?php if(is_object($solution)): ?>
+           <a class="btn-default btn btn-xs" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">=</a>
+	   <?php endif; ?>
+        <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
+    </div>
+    <section>
+        <?php if($entity->hasCurrentRevision()): ?>
+            <?php echo  $entity->getCurrentRevision()->get('content'); ?>
+        <?php endif; ?>
+    </section>
+    <div class="clearfix"></div>
+    <?php if(is_object($solution)): ?>
+        <section class="panel-group" id="solutions-<?php echo $solution->getId(); ?>">
+    	   <?php echo $this->partial('entity/view/default',array('entity' => $solution, 'hideActions' => array('detail', 'taxonomy'))); ?>
+        </section>
+    <?php endif; ?>
+</article>

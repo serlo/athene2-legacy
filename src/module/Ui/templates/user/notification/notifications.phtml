@@ -1,0 +1,26 @@
+<!-- REMOVE ME DATEFORMAT -->
+<?php $this->plugin("dateFormat")->setTimezone("America/New_York")->setLocale("de_DE"); ?>
+
+
+<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle"
+	href="#"><span class="glyphicon glyphicon-comment"></span></a>
+	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+	    <?php if(count($this->notifications) == 0):?>
+        <li role="presentation" class="disabled"><a role="menuitem"
+			tabindex="-1" href="#"><?php echo sprintf($this->translate('You have no notifications.')); ?></a></li>
+	    <?php else: ?>
+        <?php foreach($this->notifications as $notification): ?>
+            <?php $name = $notification->getEventName(); ?>
+            <li role="presentation" class="<?php $notification->getSeen() ? '' : 'active ' ?>">
+                <?php if($this->resolver('user/notification/type/'.$name)):?>
+                    <?php echo $this->partial('user/notification/type/'.$name, array('notification' => $notification)); ?>
+                <?php else: ?>
+                    <a role="menuitem" tabindex="-1" href="#">
+                        <?php echo sprintf($this->translate('Event %s, User %s, Uuid %s'), $name, $notification->getActors()->current()->getUsername(), $notification->getObjects()->current()->getId()); ?>
+                        <small><?php echo $this->timeago()->render($notification->getTimestamp()); ?></small>
+                    </a>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+        <?php endif; ?>
+	</ul></li>
