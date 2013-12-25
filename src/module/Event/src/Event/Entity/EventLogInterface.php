@@ -24,14 +24,14 @@ interface EventLogInterface extends LanguageAwareInterface
 {
 
     /**
-     * Returns the id.
+     * Returns the id
      *
      * @return int
      */
     public function getId();
 
     /**
-     * Gets the associated object (uuid).
+     * Gets the associated object (uuid)
      *
      * @return UuidHolder
      */
@@ -44,18 +44,25 @@ interface EventLogInterface extends LanguageAwareInterface
     public function getTimestamp();
 
     /**
-     * Gets the actor.
+     * Gets the actor
      *
      * @return UserInterface
      */
     public function getActor();
 
     /**
-     * Gets the event.
+     * Gets the event
      *
      * @return EventInterface
      */
     public function getEvent();
+    
+    /**
+     * Returns the name
+     * 
+     * @return string
+     */
+    public function getName();
 
     /**
      *

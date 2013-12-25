@@ -15,8 +15,11 @@ use Zend\Stdlib\ArrayUtils;
 
 class Module
 {
+
     public static $listeners = [
-        'Entity\Listener\EntityControllerListener'
+        'Entity\Listener\EntityControllerListener',
+        'Entity\Listener\RepositoryControllerListener',
+        'Entity\Listener\PageControllerListener'
     ];
 
     function getConfig()

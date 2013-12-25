@@ -105,6 +105,11 @@ class EventLog implements EventLogInterface
         return $this->event;
     }
 
+    public function getName()
+    {
+        return $this->getEvent()->getName();
+    }
+
     public function getObject()
     {
         return $this->uuid->getHolder();
