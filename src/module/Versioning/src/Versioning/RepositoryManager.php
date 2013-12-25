@@ -20,6 +20,7 @@ class RepositoryManager implements RepositoryManagerInterface
     public function getRepository(RepositoryInterface $repository)
     {
         $id = $this->getUniqId($repository);
+        
         if (! $this->hasInstance($id)) {
             $this->createService($repository);
         }
@@ -32,7 +33,6 @@ class RepositoryManager implements RepositoryManagerInterface
         $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
         $name = $this->getUniqId($repository);
         
-        $instance->setIdentifier($name);
         $instance->setRepository($repository);
         $this->addInstance($name, $instance);
         

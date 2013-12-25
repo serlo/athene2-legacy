@@ -173,7 +173,7 @@ class TermController extends AbstractController
                 $entity->setParent(NULL);
             }
             $entity->setPosition($weight);
-            $this->getTaxonomyManager()->getObjectManager()->persist($entity->getEntity());
+            $this->getTaxonomyManager()->getObjectManager()->persist($entity);
             
             if($oldParent !== $entity->getParent()){
                 $this->getEventManager()->trigger('parent-change', $this, array(

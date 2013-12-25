@@ -18,7 +18,7 @@ use User\Hydrator\UserHydrator;
 
 class UserManager implements UserManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
 
     /**
      *
@@ -163,6 +163,18 @@ class UserManager implements UserManagerInterface
         $userRoles = $this->getUser($id)->getRoles();
         $allRoles = $this->findAllRoles();
         return array_diff($allRoles, $userRoles);
+    }
+
+    public function persist($object)
+    {
+        $this->getObjectManager()->persist($object);
+        return $this;
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
     }
 
     protected function getUserEntityRepository()

@@ -17,12 +17,11 @@ use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
 use Uuid\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
-use Uuid\Collection\UuidCollection;
 
 class UuidManager implements UuidManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
-    use \Common\Traits\ConfigAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ConfigAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -39,8 +38,7 @@ class UuidManager implements UuidManagerInterface
             ->findBy(array(
             'trashed' => $trashed
         ));
-        $collection = new ArrayCollection($entities);
-        return new UuidCollection($collection, $this);
+        return new ArrayCollection($entities);
     }
 
     public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL)
@@ -54,22 +52,14 @@ class UuidManager implements UuidManagerInterface
 
     public function getUuid($key)
     {
-        if (! is_numeric($key)) {
-            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($key)));
+        $entity = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Uuid\Entity\UuidInterface'), $key);
+        
+        if (! is_object($entity)) {
+            throw new NotFoundException(sprintf('Could not find %s', $key));
         }
         
-        if (! $this->hasInstance($key)) {
-            $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Uuid\Entity\UuidInterface'), (int) $key);
-            
-            if (! is_object($entity)) {
-                throw new NotFoundException(sprintf('Could not find %s', $key));
-            }
-            
-            $this->addInstance($key, $entity);
-        }
-        
-        return $this->getInstance($key);
+        return $entity;
     }
 
     public function findUuidByName($string)
@@ -77,7 +67,7 @@ class UuidManager implements UuidManagerInterface
         if (! is_string($string)) {
             throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($string)));
         }
-            
+        
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Uuid\Entity\UuidInterface'))
@@ -88,12 +78,8 @@ class UuidManager implements UuidManagerInterface
         if (! $entity) {
             throw new NotFoundException(sprintf('Could not find %s', $string));
         }
-            
-        if (! $this->hasInstance($entity->getId())) {
-            $this->addInstance($entity->getId(), $entity);
-        }
         
-        return $this->getUuid($entity->getId());
+        return $entity;
     }
 
     public function createUuid()

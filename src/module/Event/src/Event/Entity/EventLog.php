@@ -16,7 +16,6 @@ use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity
@@ -74,11 +73,6 @@ class EventLog implements EventLogInterface
     public function getParameters()
     {
         return $this->parameters;
-    }
-
-    public function getEntity()
-    {
-        return $this;
     }
 
     public function getParameter($name)

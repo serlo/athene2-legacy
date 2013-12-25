@@ -106,8 +106,8 @@ class UserController extends AbstractUserController
                         'email' => $data['email']
                     ));
                     
-                    $user->persist();
-                    $user->flush();
+                    $this->getUserManager()->persist($user);
+                    $this->getUserManager()->flush();
                     
                     $this->redirect()->toUrl($this->params('ref', '/'));
                 }
@@ -148,13 +148,12 @@ class UserController extends AbstractUserController
                 $this->getEventManager()->trigger('register', $this, array(
                     'user' => $user,
                     'language' => $this->getLanguageManager()
-                        ->getLanguageFromRequest()
-                        ->getEntity(),
+                        ->getLanguageFromRequest(),
                     'data' => $data
                 ));
                 
-                $user->persist();
-                $user->flush();
+                $this->getUserManager()->persist($user);
+                $this->getUserManager()->flush();
                 
                 $this->redirect()->toUrl($this->params('ref', '/'));
                 return '';
@@ -188,13 +187,12 @@ class UserController extends AbstractUserController
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
                         $user->generateToken();
                         
-                        $user->persist();
-                        
                         $this->getEventManager()->trigger('restore-password', $this, array(
                             'user' => $user
                         ));
                         
-                        $user->flush();
+                        $this->getUserManager()->persist($user);
+                        $this->getUserManager()->flush();
                         
                         $this->flashmessenger()->addSuccessMessage('You have been sent an email with instructions on how to restore your password!');
                         $this->redirect()->toRoute('home');
@@ -222,8 +220,8 @@ class UserController extends AbstractUserController
                     $user->setPassword($data['password']);
                     $user->generateToken();
                     
-                    $user->persist();
-                    $user->flush();
+                    $this->getUserManager()->persist($user);
+                    $this->getUserManager()->flush();
                     
                     $this->redirect()->toRoute('user/login');
                 }
@@ -242,8 +240,9 @@ class UserController extends AbstractUserController
             $role = $this->getUserManager()->findRoleByName('login');
             $user->addRole($role);
             $user->generateToken();
-            $user->persist();
-            $user->flush();
+            
+            $this->getUserManager()->persist($user);
+            $this->getUserManager()->flush();
             $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
         } catch (UserNotFoundException $e) {
             $this->flashMessenger()->addErrorMessage('I couldn\'t find an account by that token.');
@@ -276,8 +275,9 @@ class UserController extends AbstractUserController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $user->setEmail($data['email']);
-                $user->persist();
-                $user->flush();
+                
+                $this->getUserManager()->persist($user);
+                $this->getUserManager()->flush();
             }
         } else {
             $data = array(
@@ -317,8 +317,9 @@ class UserController extends AbstractUserController
                 
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);
-                    $user->persist();
-                    $user->flush();
+                    
+                    $this->getUserManager()->persist($user);
+                    $this->getUserManager()->flush();
                     $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
                     $this->redirect()->toRoute('user/me');
                     return '';
@@ -354,12 +355,13 @@ class UserController extends AbstractUserController
     {
         $user = $this->getUserManager()->getUser($this->params('id', null));
         $user->setTrashed(true);
-        $user->persist();
-        $user->flush();
+        
+        $this->getUserManager()->persist($user);
+        $this->getUserManager()->flush();
         $this->redirect()->toReferer();
         return false;
     }
-    
+
     public function removeRoleAction()
     {
         $user = $this->getUserManager()->getUser($this->params('user'));

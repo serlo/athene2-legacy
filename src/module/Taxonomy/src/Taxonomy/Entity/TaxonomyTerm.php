@@ -32,15 +32,10 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-    
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="taxonomyTerm", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Taxonomy",inversedBy="terms")
@@ -241,7 +236,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
 
     public function isAssociated($association, TaxonomyTermAwareInterface $object)
     {
-        $associations = $this->getEntity()->getAssociated($association);
+        $associations = $this->getAssociated($association);
         return $associations->contains($object);
     }
 

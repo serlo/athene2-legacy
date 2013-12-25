@@ -25,15 +25,10 @@ class User extends UuidEntity implements UserInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-    
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $id;
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
@@ -86,11 +81,6 @@ class User extends UuidEntity implements UserInterface
         $this->removed = false;
         $this->logins = 0;
         $this->generateToken();
-    }
-
-    public function getEntity()
-    {
-        return $this;
     }
 
     public function getToken()

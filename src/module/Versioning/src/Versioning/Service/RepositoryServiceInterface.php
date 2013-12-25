@@ -47,4 +47,12 @@ interface RepositoryServiceInterface
      * @return self
      */
     public function checkoutRevision($id);
+    
+    /**
+     * Finds an revision
+     * 
+     * @param int $id
+     * @return RevisionInterface
+     */
+    public function findRevision($id);
 }

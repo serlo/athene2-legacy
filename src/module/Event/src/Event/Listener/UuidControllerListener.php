@@ -15,25 +15,24 @@ use Zend\EventManager\Event;
 
 class UuidControllerListener extends AbstractMvcListener
 {
-    
+
     public function onRestore(Event $e)
     {
         $object = $e->getParam('object');
-        $user = $e->getParam('user')->getEntity();
-        $language = $e->getParam('language')->getEntity();
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         $this->logEvent('uuid/restore', $language, $user, $object);
     }
-    
+
     public function onTrash(Event $e)
     {
         $object = $e->getParam('object');
-        $user = $e->getParam('user')->getEntity();
-        $language = $e->getParam('language')->getEntity();
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         $this->logEvent('uuid/trash', $language, $user, $object);
     }
-    
-    
-    public function attachShared (\Zend\EventManager\SharedEventManagerInterface $events)
+
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'trash', array(
             $this,
@@ -44,8 +43,8 @@ class UuidControllerListener extends AbstractMvcListener
             'onRestore'
         ));
     }
-    
-    protected function getMonitoredClass ()
+
+    protected function getMonitoredClass()
     {
         return 'Uuid\Controller\UuidController';
     }

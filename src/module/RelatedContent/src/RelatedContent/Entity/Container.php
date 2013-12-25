@@ -24,15 +24,10 @@ class Container extends UuidEntity implements ContainerInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-    
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="Holder",

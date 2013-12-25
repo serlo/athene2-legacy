@@ -20,15 +20,10 @@ class PageRepository extends UuidEntity implements RepositoryInterface, PageRepo
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-    
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRepository", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $id;
 
     /**
      * @ORM\ManyToMany(targetEntity="User\Entity\Role")

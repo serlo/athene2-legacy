@@ -177,11 +177,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function updateTerm($id, array $data)
     {
         $term = $this->getTerm($id);
-        
-        if (isset($data['taxonomy'])) {
-            $data['taxonomy'] = $this->getTaxonomy($data['taxonomy']);
+
+        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
+            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $term->getLanguage());
         }
-        if (isset($data['parent'])) {
+        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
             $data['parent'] = $this->getTerm($data['parent']);
         }
         

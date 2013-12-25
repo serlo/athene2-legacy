@@ -34,14 +34,6 @@ interface RepositoryInterface
     public function createRevision();
 
     /**
-     * Returns a revision
-     *
-     * @param int $id            
-     * @return RevisionInterface
-     */
-    public function getRevision($id);
-
-    /**
      *
      * @return RevisionInterface
      */
@@ -79,9 +71,9 @@ interface RepositoryInterface
      * @return bool
      */
     public function isUnrevised();
-    
+
     /**
-     * 
+     *
      * @return RevisionInterface
      */
     public function getHead();

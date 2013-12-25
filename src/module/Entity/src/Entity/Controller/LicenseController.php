@@ -16,7 +16,7 @@ use License\Form\UpdateLicenseForm;
 
 class LicenseController extends AbstractController
 {
-    use \Language\Manager\LanguageManagerAwareTrait,\License\Manager\LicenseManagerAwareTrait;
+    use\Language\Manager\LanguageManagerAwareTrait,\License\Manager\LicenseManagerAwareTrait;
 
     public function updateAction()
     {

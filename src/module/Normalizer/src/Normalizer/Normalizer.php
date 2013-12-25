@@ -25,7 +25,8 @@ class Normalizer implements NormalizerInterface
         'Normalizer\Strategy\PageRepositoryStrategy',
         'Normalizer\Strategy\EntityStrategy',
         'Normalizer\Strategy\TaxonomyTermStrategy',
-        'Normalizer\Strategy\CommentStrategy'
+        'Normalizer\Strategy\CommentStrategy',
+        'Normalizer\Strategy\UserStrategy'
     ];
 
     public function normalize($object)

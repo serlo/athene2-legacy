@@ -19,7 +19,7 @@ use License\Entity\LicenseInterface;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -90,11 +90,11 @@ class LicenseManager implements LicenseManagerInterface
     /*
      * (non-PHPdoc) @see \License\Manager\LicenseManagerInterface::addLicense()
      */
-    public function addLicense(LicenseForm $form, LanguageInterface $languageService)
+    public function addLicense(LicenseForm $form, LanguageInterface $language)
     {
         /* @var $entity \License\Entity\LicenseInterface */
         $entity = $form->getObject();
-        $entity->setLanguage($languageService->getEntity());
+        $entity->setLanguage($language);
         $form->bind($entity);
         $this->getObjectManager()->persist($entity);
         return $this;
@@ -147,8 +147,14 @@ class LicenseManager implements LicenseManagerInterface
         return $this->getObjectManager()
             ->getRepository($className)
             ->findBy(array(
-            'language' => $languageService->getEntity()
+            'language' => $languageService
         ));
+    }
+
+    public function persist($object)
+    {
+        $this->getObjectManager()->persist($object);
+        return $this;
     }
 
     public function flush()

@@ -13,10 +13,37 @@ namespace Flag\Manager;
 
 use Flag\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
+use Flag\Options\ModuleOptions;
 
 class FlagManager implements FlagManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Type\TypeManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Type\TypeManagerAwareTrait;
+
+    /**
+     *
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     *
+     * @return ModuleOptions $moduleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     *
+     * @param ModuleOptions $moduleOptions            
+     * @return self
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+        return $this;
+    }
 
     public function getFlag($id)
     {
@@ -26,13 +53,22 @@ class FlagManager implements FlagManagerInterface
         if (! is_object($flag)) {
             throw new Exception\FlagNotFoundException(sprintf('Flag not found by id %d', $id));
         }
-        
-        return $this->getInstance($flag);
+        return $flag;
     }
 
     public function findAllTypes()
     {
-        return $this->getTypeManager()->findAllTypes();
+        $collection = new ArrayCollection();
+        foreach ($this->getModuleOptions()->getTypes() as $type) {
+            $collection->add($this->getTypeManager()
+                ->findTypeByName($type));
+        }
+        return $collection;
+    }
+
+    public function getType($id)
+    {
+        return $this->getTypeManager()->getType($id);
     }
 
     public function findAllFlags()
@@ -52,7 +88,7 @@ class FlagManager implements FlagManagerInterface
         return $this;
     }
 
-    public function addFlag($typeId, $content, $uuid, \User\Entity\UserInterface $reporter)
+    public function addFlag($typeId, $content, $uuid,\User\Entity\UserInterface $reporter)
     {
         $type = $this->getType($typeId);
         $object = $this->getUuidManager()->getUuid($uuid);
@@ -60,11 +96,17 @@ class FlagManager implements FlagManagerInterface
         /* @var $flag \Flag\Entity\FlagInterface */
         $flag = $this->getClassResolver()->resolve('Flag\Entity\FlagInterface');
         $flag->setContent($content);
-        $flag->setReporter($reporter->getEntity());
+        $flag->setReporter($reporter);
         $flag->setType($type);
         $flag->setObject($object);
         $this->getObjectManager()->persist($flag);
-        return $this->createService($flag);
+        return $flag;
+    }
+
+    public function persist($object)
+    {
+        $this->getObjectManager()->persist($object);
+        return $this;
     }
 
     public function flush()

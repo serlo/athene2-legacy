@@ -22,12 +22,6 @@ interface UserInterface extends UuidHolder, IdentityInterface
 
     /**
      *
-     * @return self
-     */
-    public function getEntity();
-
-    /**
-     *
      * @return string
      */
     public function getEmail();

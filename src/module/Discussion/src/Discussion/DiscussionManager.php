@@ -71,7 +71,7 @@ class DiscussionManager implements DiscussionManagerInterface
             ->getRepository($this->getClassResolver()
             ->resolveClassName($this->entityInterface))
             ->findBy(array(
-            'uuid' => $uuid->getId(),
+            'object' => $uuid->getId(),
             'archived' => $archived
         ));
         return new ArrayCollection($discussions);
@@ -93,8 +93,8 @@ class DiscussionManager implements DiscussionManagerInterface
         /* @var $comment Entity\CommentInterface */
         $this->getUuidManager()->injectUuid($comment);
         $comment->setObject($object);
-        $comment->setLanguage($language->getEntity());
-        $comment->setAuthor($author->getEntity());
+        $comment->setLanguage($language);
+        $comment->setAuthor($author);
         $comment->setTitle($title);
         $comment->setContent($content);
         $comment->setStatus(1);
@@ -120,8 +120,8 @@ class DiscussionManager implements DiscussionManagerInterface
         $this->getUuidManager()->injectUuid($comment);
         /* @var $comment Entity\CommentInterface */
         $comment->setParent($discussion);
-        $comment->setLanguage($language->getEntity());
-        $comment->setAuthor($author->getEntity());
+        $comment->setLanguage($language);
+        $comment->setAuthor($author);
         $comment->setContent($content);
         $comment->setStatus(1);
         

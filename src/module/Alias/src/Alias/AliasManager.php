@@ -131,7 +131,7 @@ class AliasManager implements AliasManagerInterface
         $class = $this->getClassResolver()->resolve('Alias\Entity\AliasInterface');
         
         $class->setSource($source);
-        $class->setLanguage($language->getEntity());
+        $class->setLanguage($language);
         $class->setAlias($alias);
         $class->setObject($uuid);
         

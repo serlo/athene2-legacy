@@ -39,47 +39,47 @@ class Uuid implements UuidInterface
     protected $trashed;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $entity;
 
     /**
-     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $taxonomyTerm;
 
     /**
-     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $upload;
 
     /**
-     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $comment;
 
     /**
-     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $blogPost;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $entityRevision;
 
     /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $pageRepository;
 
     /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="uuid", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $pageRevision;
 

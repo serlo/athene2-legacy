@@ -14,16 +14,17 @@ namespace Entity\Plugin\Pathauto\Provider;
 use Token\Provider\ProviderInterface;
 use Entity\Exception;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Entity\Service\EntityServiceInterface;
 use Token\Provider\AbstractProvider;
+use Entity\Entity\EntityInterface;
 
 class TokenProvider extends AbstractProvider implements ProviderInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     protected $data = NULL;
-    
-    public function getTranslator(){
+
+    public function getTranslator()
+    {
         return $this->getServiceLocator()->get('translator');
     }
 
@@ -57,7 +58,6 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
                 ->get('title');
             $foundPlugin = true;
             $type = $this->getObject()
-                ->getEntity()
                 ->getType()
                 ->getName();
             
@@ -80,13 +80,13 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
             return $this->findSubject($term->getParent());
         }
     }
-	/* (non-PHPdoc)
-     * @see \Token\Provider\AbstractProvider::validObject()
+    /*
+     * (non-PHPdoc) @see \Token\Provider\AbstractProvider::validObject()
      */
-    protected function validObject ($object)
+    protected function validObject($object)
     {
-        if(!$object instanceof EntityServiceInterface)
-            throw new Exception\InvalidArgumentException(sprintf('Expected EntityServiceInterface but got `%s`', get_class($object)));
+        if (! $object instanceof EntityInterface){
+            throw new Exception\InvalidArgumentException(sprintf('Expected EntityInterface but got `%s`', get_class($object)));
+        }
     }
-
 }

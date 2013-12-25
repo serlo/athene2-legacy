@@ -17,7 +17,7 @@ use Alias\Exception\AliasNotFoundException;
 
 class PageController extends AbstractController
 {
-    use \Alias\AliasManagerAwareTrait;
+    use\Alias\AliasManagerAwareTrait;
 
     public function indexAction()
     {
@@ -30,8 +30,7 @@ class PageController extends AbstractController
         
         if (! $this->params('forwarded')) {
             try {
-                $alias = $this->getAliasManager()->findAliasByObject($entity->getEntity()
-                    ->getUuidEntity());
+                $alias = $this->getAliasManager()->findAliasByObject($entity->getUuidEntity());
                 $this->redirect()->toUrl('/alias/' . $alias->getAlias());
             } catch (AliasNotFoundException $e) {}
         }

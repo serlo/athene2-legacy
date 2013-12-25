@@ -35,7 +35,7 @@ class RepositoryPluginControllerListener extends AbstractListener
                     $user = $e->getParam('user');
                     $entity = $e->getParam('entity');
                     $notifyMailman = $param['mailman'] === '1' ? true : false;
-                    $this->subscribe($user, $entity->getEntity()->getUuidEntity(), $notifyMailman);
+                    $this->subscribe($user, $entity->getUuidEntity(), $notifyMailman);
                 }
             }
         }
@@ -54,6 +54,6 @@ class RepositoryPluginControllerListener extends AbstractListener
 
     protected function getMonitoredClass()
     {
-        return 'Entity\Plugin\Repository\Controller\RepositoryController';
+        return 'Entity\Controller\RepositoryController';
     }
 }

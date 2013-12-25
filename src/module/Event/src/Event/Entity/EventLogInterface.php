@@ -59,12 +59,6 @@ interface EventLogInterface extends LanguageAwareInterface
 
     /**
      *
-     * @return self
-     */
-    public function getEntity();
-
-    /**
-     *
      * @return EventParameterInterface[]
      */
     public function getParameters();

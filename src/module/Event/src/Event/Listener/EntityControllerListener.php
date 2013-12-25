@@ -18,21 +18,21 @@ class EntityControllerListener extends AbstractMvcListener
     
     public function onCreate(Event $e)
     {
-        $entity = $e->getParam('entity')->getEntity();
-        $user = $e->getParam('user')->getEntity();
-        $language = $e->getParam('language')->getEntity();
+        $entity = $e->getParam('entity');
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         $this->logEvent('entity/create', $language, $user, $entity);
     }
     
     public function onLink(Event $e)
     {
-        $entity = $e->getParam('entity')->getEntity();
-        $user = $e->getParam('user')->getEntity();
-        $language = $e->getParam('language')->getEntity();
+        $entity = $e->getParam('entity');
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         
         $params = array(array(
             'name' => 'parent',
-            'object' => $e->getParam('parent')->getEntity()->getUuidEntity()
+            'object' => $e->getParam('parent')->getUuidEntity()
         ));
         
         $this->logEvent('entity/link/create', $language, $user, $entity, $params);

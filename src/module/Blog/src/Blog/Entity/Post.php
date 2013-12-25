@@ -31,15 +31,10 @@ class Post extends UuidEntity implements PostInterface
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="blogPost")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $id;
     
 
     /**

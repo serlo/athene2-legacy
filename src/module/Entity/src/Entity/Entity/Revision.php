@@ -17,8 +17,6 @@ use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
-use Common\Normalize\Normalizable;
-use Common\Normalize\Normalized;
 
 /**
  * An entity link.
@@ -31,15 +29,10 @@ class Revision extends UuidEntity implements RevisionInterface
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
-    
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")

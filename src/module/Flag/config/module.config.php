@@ -3,118 +3,136 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Flag;
 
-return array(
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+return [
+    'flag' => [
+        'types' => [
+            'spam',
+            'offensive',
+            'other'
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+                ]
+            ]
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\FlagController'
-        ),
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\Manager\FlagManager' => array(
-                    'setClassResolver' => array(
+        ],
+        'definition' => [
+            'class' => [
+                __NAMESPACE__ . '\Manager\FlagManager' => [
+                    'setClassResolver' => [
                         'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
+                    ],
+                    'setTypeManager' => [
                         'required' => 'true'
-                    ),
-                    'setUuidManager' => array(
+                    ],
+                    'setObjectManager' => [
+                        'required' => 'true'
+                    ],
+                    'setUuidManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\FlagController' => array(
-                    'setFlagManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setUserManager' => array(
+                    ],
+                    'setModuleOptions' => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\FlagController' => [
+                    'setFlagManager' => [
+                        'required' => 'true'
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\FlagManagerInterface' => __NAMESPACE__ . '\Manager\FlagManager'
-            ),
-        )
-    ),
-    'class_resolver' => array(
+            ]
+        ]
+    ],
+    'class_resolver' => [
         __NAMESPACE__ . '\Entity\FlagInterface' => __NAMESPACE__ . '\Entity\Flag',
         __NAMESPACE__ . '\Entity\TypeInterface' => __NAMESPACE__ . '\Entity\Type',
         __NAMESPACE__ . '\Service\FlagServiceInterface' => __NAMESPACE__ . '\Service\FlagService'
-    ),
-    'router' => array(
-        'routes' => array(
-            'flag' => array(
+    ],
+    'router' => [
+        'routes' => [
+            'flag' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/flag',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\FlagController'
-                    )
-                ),
-                'child_routes' => array(
-                    'manage' => array(
+                    ]
+                ],
+                'child_routes' => [
+                    'manage' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/manage[/:type]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'manage'
-                            )
-                        )
-                    ),
-                    'add' => array(
+                            ]
+                        ]
+                    ],
+                    'add' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/add/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'add'
-                            )
-                        )
-                    ),
-                    'detail' => array(
+                            ]
+                        ]
+                    ],
+                    'detail' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/detail/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'detail'
-                            )
-                        )
-                    ),
-                    'remove' => array(
+                            ]
+                        ]
+                    ],
+                    'remove' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/remove/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'remove'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

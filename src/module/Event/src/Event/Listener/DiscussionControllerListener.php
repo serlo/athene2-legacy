@@ -27,8 +27,8 @@ class DiscussionControllerListener extends AbstractMvcListener
      */
     public function onStart(Event $e)
     {
-        $language = $e->getParam('language')->getEntity();
-        $user = $e->getParam('user')->getEntity();
+        $language = $e->getParam('language');
+        $user = $e->getParam('user');
         $discussion = $e->getParam('discussion');
         
         $params = array(
@@ -49,8 +49,8 @@ class DiscussionControllerListener extends AbstractMvcListener
      */
     public function onComment(Event $e)
     {
-        $user = $e->getParam('user')->getEntity();
-        $language = $e->getParam('language')->getEntity();
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         $discussion = $e->getParam('discussion')->getUuidEntity();
         
         $params = array(

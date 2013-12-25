@@ -28,13 +28,6 @@ interface NotificationManagerInterface
 
     /**
      *
-     * @param Entity\NotificationInterface $notification  
-     * @return Service\NotificationServiceInterface
-     */
-    public function getNotificationService(Entity\NotificationInterface $notification);
-
-    /**
-     *
      * @param UserInterface $userService            
      * @return ArrayCollection
      */

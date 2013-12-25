@@ -71,16 +71,27 @@ return [
     ],
     'di' => [
         'allowed_controllers' => [
-            __NAMESPACE__ . 'Entity\Controller\EntityController',
-            //__NAMESPACE__ . '\Plugin\Repository\Controller\RepositoryController',
+            __NAMESPACE__ . '\Controller\EntityController',
+            __NAMESPACE__ . '\Controller\RepositoryController',
             __NAMESPACE__ . '\Controller\PageController',
             //__NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
             //__NAMESPACE__ . '\Plugin\Link\Controller\LinkController',
-            //__NAMESPACE__ . '\Plugin\License\Controller\LicenseController'
+            __NAMESPACE__ . '\Controller\LicenseController'
         ],
         'definition' => [
             'class' => [
-                'Entity\Controller\EntityController' => [
+                __NAMESPACE__ . '\Controller\LicenseController' => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setLicenseManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\EntityController' => [
                     'setEntityManager' => [
                         'required' => true
                     ],
@@ -91,7 +102,32 @@ return [
                         'required' => true
                     ]
                 ],
-                'Entity\Manager\EntityManager' => [
+                __NAMESPACE__ . '\Controller\RepositoryController' => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ],
+                    'setRepositoryManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\PageController' => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Manager\EntityManager' => [
                     'setUuidManager' => [
                         'required' => true
                     ],

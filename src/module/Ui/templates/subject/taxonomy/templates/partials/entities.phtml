@@ -54,7 +54,7 @@ $table = array(
     <hr />
     <div class="entities">
         <?php foreach($this->links as $link): ?>
-            <?php $partial = $this->partial('subject/plugin/taxonomy/entity/default', array('entity' => $link)); ?>
+            <?php $partial = $this->partial('subject/taxonomy/entity/default', array('entity' => $link)); ?>
             <?php switch($link->getType()->getName()){ 
                 case 'article': $table['left'] .= $partial; break; ?>
                 <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>

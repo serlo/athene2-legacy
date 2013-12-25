@@ -80,7 +80,7 @@ class BlogManager implements BlogManagerInterface
         
         $hydrator = new PostHydrator();
         $hydrator->hydrate([
-            'author' => $author->getEntity(),
+            'author' => $author,
             'title' => $title,
             'content' => $content,
             'publish' => $publish

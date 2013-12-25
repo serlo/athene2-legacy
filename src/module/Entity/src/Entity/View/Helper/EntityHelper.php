@@ -15,6 +15,7 @@ use Zend\View\Helper\AbstractHelper;
 use Entity\Options\ModuleOptions;
 use Entity\Entity\EntityInterface;
 use Entity\Options\EntityOptions;
+use Entity\Exception;
 
 class EntityHelper extends AbstractHelper
 {
@@ -45,13 +46,39 @@ class EntityHelper extends AbstractHelper
     }
 
     /**
-     * 
-     * @param EntityInterface $entity
+     *
+     * @param EntityInterface $entity            
      * @return EntityOptions
      */
     public function getOptions(EntityInterface $entity)
     {
         return $this->getModuleOptions()->getType($entity->getType()
             ->getName());
+    }
+
+    public function renderDiscussions(EntityInterface $entity)
+    {
+        $view = $this->getView();
+        $uuid = $entity->getUuidEntity();
+        $forum = [
+            $this->findTaxonomyTerm($entity, 'subject')->getName(),
+            $entity->getType()->getName()
+        ];
+        
+        return $view->discussion($uuid)
+            ->findForum($forum)
+            ->render();
+    }
+
+    public function findTaxonomyTerm(EntityInterface $entity, $type)
+    {
+        /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */
+        foreach ($entity->getTaxonomyTerms() as $term) {
+            $ancestor = $term->findAncestorByTypeName($type);
+            if ($ancestor) {
+                return $ancestor;
+            }
+        }
+        throw new Exception\RuntimeException(sprintf('Entity does not have an taxonomy term ancestor "%s"', $type));
     }
 }

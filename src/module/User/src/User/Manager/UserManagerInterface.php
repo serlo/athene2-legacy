@@ -14,8 +14,9 @@ namespace User\Manager;
 use User\Entity\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use User\Entity\RoleInterface;
+use Common\ObjectManager\Flushable;
 
-interface UserManagerInterface
+interface UserManagerInterface extends Flushable
 {
 
     /**

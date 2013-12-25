@@ -54,11 +54,6 @@ class TermEntity implements TermEntityInterface
         return $this->id;
     }
 
-    public function getEntity()
-    {
-        return $this;
-    }
-
     public function getLanguage()
     {
         return $this->language;

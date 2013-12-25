@@ -55,7 +55,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
             $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
             /* @var $entity \User\Notification\Entity\SubscriptionInterface */
             $entity = new $class();
-            $entity->setSubscriber($user->getEntity());
+            $entity->setSubscriber($user);
             $entity->setSubscribedObject($object);
             $entity->setNotifyMailman($notifyMailman === TRUE);
             $this->getObjectManager()->persist($entity);

@@ -29,7 +29,6 @@ class BlogControllerListener extends AbstractListener
         $actor = $e->getParam('actor');
         $data = $e->getParam('data');
         $language = $e->getParam('language');
-        $entity = $post->getEntity();
         
         $url = $e->getTarget()
             ->url()
@@ -38,7 +37,7 @@ class BlogControllerListener extends AbstractListener
             'post' => $post->getId()
         ));
         
-        $this->getAliasManager()->autoAlias('blogPost', $url, $entity->getUuidEntity(), $language);
+        $this->getAliasManager()->autoAlias('blogPost', $url, $post->getUuidEntity(), $language);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

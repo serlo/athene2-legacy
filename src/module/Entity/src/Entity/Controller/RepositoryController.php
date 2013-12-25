@@ -18,14 +18,12 @@ use Entity\Entity\EntityInterface;
 
 class RepositoryController extends AbstractController
 {
-    use \User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait;
 
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
-        $user = $this->getUserManager()
-            ->getUserFromAuthenticator()
-            ->getEntity();
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         
         $view = new ViewModel(array(
             'entity' => $entity
@@ -38,22 +36,29 @@ class RepositoryController extends AbstractController
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
-                $revision = $this->getEntityManager()->commitRevision($entity, $form, $user);
+                $data = $form->getData();
+                $language = $this->getLanguageManager()->getLanguageFromRequest();
+                
+                $revision = $this->getRepositoryManager()
+                    ->getRepository($entity)
+                    ->commitRevision($data, $user);
                 
                 $this->getEventManager()->trigger('add-revision', $this, array(
                     'entity' => $entity,
                     'user' => $user,
-                    'language' => $this->getLanguageManager()
-                        ->getLanguageFromRequest(),
+                    'language' => $language,
                     'revision' => $revision,
                     'post' => $this->params()
                         ->fromPost()
                 ));
                 
                 $this->getEntityManager()->flush();
+                
                 $this->flashMessenger()->addSuccessMessage('Your revision has been saved, it will be available once it get\'s approved');
+                
                 $this->redirect()->toUrl($this->referer()
                     ->fromStorage());
+                
                 return false;
             }
         } else {
@@ -103,10 +108,10 @@ class RepositoryController extends AbstractController
     public function checkoutAction()
     {
         $entity = $this->getEntity();
-        $revision = $entity->getRevision($this->params('revision'));
-        $entity->setCurrentRevision($revision);
-        
         $user = $this->getUserManager()->getUserFromAuthenticator();
+        $repository = $this->getRepositoryManager()->getRepository($entity);
+        $revision = $repository->findRevision($this->params('revision'));
+        $repository->checkoutRevision($revision->getId());
         
         $this->getEventManager()->trigger('checkout', $this, array(
             'entity' => $entity,
@@ -125,13 +130,14 @@ class RepositoryController extends AbstractController
         return false;
     }
 
-    protected function getRevision(EntityInterface $repository, $id = null)
+    protected function getRevision(EntityInterface $entity, $id = null)
     {
+        $repository = $this->getRepositoryManager()->getRepository($entity);
         try {
             if ($id === NULL) {
-                return $repository->getCurrentRevision();
+                return $entity->getCurrentRevision();
             } else {
-                return $repository->getRevision($id);
+                return $repository->findRevision($id);
             }
         } catch (RevisionNotFoundException $e) {
             return NULL;

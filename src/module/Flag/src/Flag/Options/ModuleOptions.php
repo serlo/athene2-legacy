@@ -10,23 +10,32 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft f√ºr freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Common\ObjectManager;
+namespace Flag\Options;
 
-interface Flushable
+use Zend\Stdlib\AbstractOptions;
+
+class ModuleOptions extends AbstractOptions
 {
 
-    /**
-     * Persists an object
-     *
-     * @param object $object            
-     * @return self
-     */
-    public function persist($object);
+    protected $types = [];
 
     /**
-     * Flushes the objectmanager
      *
+     * @return array $types
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     *
+     * @param array $types            
      * @return self
      */
-    public function flush();
+    public function setTypes(array $types)
+    {
+        $this->types = $types;
+        return $this;
+    }
 }

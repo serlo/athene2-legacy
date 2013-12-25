@@ -13,10 +13,11 @@ namespace Versioning\Service;
 
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\UserInterface;
+use Versioning\Exception;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait;
 
     /**
      *
@@ -26,13 +27,24 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function getRepository()
     {
-        return $this->getEntity();
+        return $this->repository;
     }
 
     public function setRepository(RepositoryInterface $repository)
     {
-        $this->setEntity($repository);
+        $this->repository = $repository;
         return $this;
+    }
+    
+    public function findRevision($id)
+    {
+        foreach($this->getRepository()->getRevisions() as $revision){
+            if($revision->getId() == $id){
+                return $revision;
+            }
+        }
+        
+        throw new Exception\RevisionNotFoundException(sprintf('Revision "%d" not found', $id));
     }
 
     public function commitRevision(array $data, UserInterface $user)
@@ -58,7 +70,7 @@ class RepositoryService implements RepositoryServiceInterface
 
     public function checkoutRevision($id)
     {
-        $revision = $this->getRepository()->getRevision($id);
+        $revision = $this->findRevision($id);
         $this->getRepository()->setCurrentRevision($revision);
         
         $this->getObjectManager()->persist($this->getRepository());

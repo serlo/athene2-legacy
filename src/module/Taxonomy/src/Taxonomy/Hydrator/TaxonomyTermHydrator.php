@@ -20,7 +20,7 @@ use Taxonomy\Options\ModuleOptions;
 class TaxonomyTermHydrator implements HydratorInterface
 {
     
-    use \Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -63,9 +63,9 @@ class TaxonomyTermHydrator implements HydratorInterface
             'term' => [
                 'id' => $term !== NULL ? $term->getId() : NULL,
                 'name' => $term !== NULL ? $term->getName() : NULL,
-                'slug' => $term !== NULL ? $term->getSlug() : NULL,
+                'slug' => $term !== NULL ? $term->getSlug() : NULL
             ],
-            'taxonomy' => $object->getTaxonomy() !== NULL ? $object->getTaxonomy()->getId() : NULL,
+            'taxonomy' => $object->getTaxonomy(),
             'parent' => $object->getParent(),
             'description' => $object->getDescription()
         ];
@@ -80,8 +80,8 @@ class TaxonomyTermHydrator implements HydratorInterface
      */
     public function hydrate(array $data, $object)
     {
-        $data = ArrayUtils::merge($this->extract($object), $data);
         
+        $data = ArrayUtils::merge($this->extract($object), $data);
         $data = $this->validate($data, $object);
         
         $this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
@@ -110,7 +110,7 @@ class TaxonomyTermHydrator implements HydratorInterface
         
         if ($data['parent'] === NULL && ! $options->isRootable()) {
             throw new Exception\RuntimeException(sprintf('Taxonomy "%s" is not rootable.', $data['taxonomy']->getName()));
-        } elseif ( $data['parent'] instanceof TaxonomyTermInterface) {
+        } elseif ($data['parent'] instanceof TaxonomyTermInterface) {
             $parentType = $data['parent']->getTaxonomy()->getName();
             $objectType = $data['taxonomy']->getName();
             $objectOptions = $this->getModuleOptions()->getType($objectType);
@@ -123,9 +123,7 @@ class TaxonomyTermHydrator implements HydratorInterface
         }
         
         try {
-            $data['term'] = $this->getTermManager()
-                ->findTermByName($data['term']['name'], $data['taxonomy']->getLanguage())
-                ->getEntity();
+            $data['term'] = $this->getTermManager()->findTermByName($data['term']['name'], $data['taxonomy']->getLanguage());
         } catch (\Term\Exception\TermNotFoundException $e) {
             $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], NULL, $data['taxonomy']->getLanguage());
         }

@@ -30,7 +30,7 @@ class EntityManager implements EntityManagerInterface
         return $entity;
     }
 
-    public function createEntity($typeName, array $data = array(), LanguageInterface $languageService)
+    public function createEntity($typeName, array $data = array(), LanguageInterface $language)
     {
         $type = $this->getTypeManager()->findTypeByName($typeName);
         
@@ -42,12 +42,18 @@ class EntityManager implements EntityManagerInterface
         
         $this->getUuidManager()->injectUuid($entity);
         
-        $entity->setLanguage($languageService->getEntity());
+        $entity->setLanguage($language);
         $entity->setType($type);
         
         $this->getObjectManager()->persist($entity);
         
         return $entity;
+    }
+
+    public function persist($object)
+    {
+        $this->getObjectManager()->persist($object);
+        return $this;
     }
 
     public function flush()

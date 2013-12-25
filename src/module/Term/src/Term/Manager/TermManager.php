@@ -13,14 +13,13 @@
  */
 namespace Term\Manager;
 
-use Term\Entity\TaxonomyTermInterface;
 use Term\Exception\TermNotFoundException;
 use Language\Entity\LanguageInterface;
 use Common\Filter\Slugify;
 
 class TermManager implements TermManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\ClassResolver\ClassResolverAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     public function getTerm($id)
     {
@@ -72,7 +71,7 @@ class TermManager implements TermManagerInterface
         $filter = new Slugify();
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
         $entity->setName($name);
-        $entity->setLanguage($language->getEntity());
+        $entity->setLanguage($language);
         $entity->setSlug(($slug ? $slug : $filter->filter($name)));
         $this->getObjectManager()->persist($entity);
         return $entity;

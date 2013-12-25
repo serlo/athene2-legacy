@@ -17,7 +17,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 
 class Discussion extends AbstractHelper
 {
-    use \Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected $discussions, $object;
 
@@ -142,7 +142,9 @@ class Discussion extends AbstractHelper
         
         $forum = current($forums);
         
-        foreach ($current->findChildrenByTaxonomyNames(['forum']) as $child) {
+        foreach ($current->findChildrenByTaxonomyNames([
+            'forum'
+        ]) as $child) {
             if ($child->getSlug() == $forum) {
                 array_shift($forums);
                 return $this->iterForums($forums, $child);
@@ -154,17 +156,17 @@ class Discussion extends AbstractHelper
 
     protected function createForums(array $forums, TaxonomyTermInterface $current)
     {
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $this->getLanguageManager()
-            ->getLanguageFromRequest());
-
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $language);
+        
         foreach ($forums as $forum) {
             $current = $this->getTaxonomyManager()->createTerm([
                 'term' => [
                     'name' => $forum
                 ],
                 'parent' => $current,
-                'taxonomy' => $taxonomy->getId()
-            ]);
+                'taxonomy' => $taxonomy
+            ], $language);
         }
         
         $this->getTaxonomyManager()
@@ -177,14 +179,14 @@ class Discussion extends AbstractHelper
     protected function getDefaultConfig()
     {
         return [
-            'template'  => 'discussion/discussions',
-            'form'      => array(
-                'discussion'    => 'Discussion\Form\DiscussionForm',
-                'comment'       => 'Discussion\Form\CommentForm'
+            'template' => 'discussion/discussions',
+            'form' => array(
+                'discussion' => 'Discussion\Form\DiscussionForm',
+                'comment' => 'Discussion\Form\CommentForm'
             ),
-            'root'              => 'root',
-            'forum'             => 'forum',
-            'forum_category'    => 'forum-category'
+            'root' => 'root',
+            'forum' => 'forum',
+            'forum_category' => 'forum-category'
         ];
     }
 }

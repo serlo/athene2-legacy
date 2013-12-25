@@ -24,7 +24,7 @@ use Language\Entity\LanguageInterface;
 class PageManager implements PageManagerInterface
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\EntityDelegatorTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;//,\Common\Traits\EntityDelegatorTrait;
     use \Page\Manager\PageManagerAwareTrait;
     use \Uuid\Manager\UuidManagerAwareTrait;
     use \Language\Manager\LanguageManagerAwareTrait;

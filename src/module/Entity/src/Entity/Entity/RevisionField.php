@@ -19,7 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision_field")
  */
-class RevisionField {
+class RevisionField
+{
 
     /**
      * @ORM\Id
@@ -27,82 +28,96 @@ class RevisionField {
      * @ORM\GeneratedValue
      */
     protected $id;
-    
-	/**
-	 * @ORM\ManyToOne(targetEntity="Revision", inversedBy="fields")
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Revision", inversedBy="fields")
      * @ORM\JoinColumn(name="entity_revision_id", referencedColumnName="id")
-	 **/
-	protected $revision;
-    
-    /** @ORM\Column(type="string") */
+     */
+    protected $revision;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $field;
-    
-    /** @ORM\Column(type="string") */
+
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $value;
 
     /**
-	 * @return field_type $entityRevisionId
-	 */
-	public function getRevision() {
-		return $this->revision;
-	}
-	
-	public function getName(){
-		return $this->getField();
-	}
+     *
+     * @return field_type $entityRevisionId
+     */
+    public function getRevision()
+    {
+        return $this->revision;
+    }
 
-	/**
-	 * @return field_type $field
-	 */
-	public function getField() {
-		return $this->field;
-	}
+    /**
+     *
+     * @return field_type $field
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
 
-	/**
-	 * @return field_type $value
-	 */
-	public function getValue() {
-		return $this->value;
-	}
+    /**
+     *
+     * @return field_type $value
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * @param field_type $entityRevisionId
-	 * @return self
-	 */
-	public function setRevision($entityRevision) {
-		$this->revision = $entityRevision;
-		return $this;
-	}
+    /**
+     *
+     * @param field_type $entityRevisionId            
+     * @return self
+     */
+    public function setRevision($entityRevision)
+    {
+        $this->revision = $entityRevision;
+        return $this;
+    }
 
-	/**
-	 * @param field_type $field
-	 * @return self
-	 */
-	public function setField($field) {
-		$this->field = $field;
-		return $this;
-	}
+    /**
+     *
+     * @param field_type $field            
+     * @return self
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
+        return $this;
+    }
 
-	/**
-	 * @param field_type $value
-	 * @return self
-	 */
-	public function setValue($value) {
-		$this->value = $value;
-		return $this;
-	}
+    /**
+     *
+     * @param field_type $value            
+     * @return self
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
 
-	public function __construct($revision, $field)
+    public function __construct($revision, $field)
     {
         $this->revision = $revision;
         $this->field = $field;
     }
-    
-    public function get($property){
+
+    public function get($property)
+    {
         return $this->$property;
     }
-    
-    public function set($property, $value){
+
+    public function set($property, $value)
+    {
         return $this->$property = $value;
     }
 }

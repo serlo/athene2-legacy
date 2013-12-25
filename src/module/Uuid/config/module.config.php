@@ -3,154 +3,119 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Uuid;
 
-use Uuid\Manager\UuidManager;
-/**
- * @codeCoverageIgnore
- */
-return array(
-    'class_resolver' => array(
+return [
+    'class_resolver' => [
         'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
-    ),
-    'uuid_manager' => array(),
-    'router' => array(
-        'routes' => array(
-            'uuid' => array(
+    ],
+    'router' => [
+        'routes' => [
+            'uuid' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
-                'options' => array(
+                'options' => [
                     'route' => '/uuid'
-                ),
-                'child_routes' => array(
-                    'trash' => array(
+                ],
+                'child_routes' => [
+                    'trash' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/trash/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'trash'
-                            )
-                        )
-                    ),
-                    'recycle-bin' => array(
+                            ]
+                        ]
+                    ],
+                    'recycle-bin' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/recycle-bin',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'recycleBin'
-                            )
-                        )
-                    ),
-                    'restore' => array(
+                            ]
+                        ]
+                    ],
+                    'restore' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/restore/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'restore'
-                            )
-                        )
-                    ),
-                    'purge' => array(
+                            ]
+                        ]
+                    ],
+                    'purge' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/purge/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'purge'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Uuid\Router\UuidRouter' => function ($sm)
-            {
-                $router = new \Uuid\Router\UuidRouter();
-                $config = $sm->get('config')['uuid_router'];
-                $router->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                $router->setConfig($config);
-                return $router;
-            },
-            'Uuid\Manager\UuidManager' => function($sm){
-                $config = $sm->get('config');
-                $manager = new UuidManager();
-                $manager->setConfig($config['uuid_manager']);
-                $manager->setServiceLocator($sm);
-                $manager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $manager->setObjectManager($sm->get('EntityManager'));
-                return $manager;
-            }
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
-            'Uuid\Controller\RouterController',
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             'Uuid\Controller\UuidController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Uuid\Controller\UuidController' => array(
-                    'setUuidManager' => array(
+        ],
+        'definition' => [
+            'class' => [
+                'Uuid\Controller\UuidController' => [
+                    'setUuidManager' => [
                         'required' => true
-                    ),
-                    'setUserManager' => array(
+                    ],
+                    'setUserManager' => [
                         'required' => true
-                    ),
-                    'setLanguageManager' => array(
+                    ],
+                    'setLanguageManager' => [
                         'required' => true
-                    )
-                ),
-                'Uuid\Controller\RouterController' => array(
-                    'setUuidRouter' => array(
-                        'required' => true
-                    )
-                ),
-                'Uuid\Manager\UuidManager' => array(
-                    'setObjectManager' => array(
+                    ]
+                ],
+                'Uuid\Manager\UuidManager' => [
+                    'setObjectManager' => [
                         'required' => 'true'
-                    ),
-                    'setServiceLocator' => array(
+                    ],
+                    'setClassResolver' => [
                         'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
                 'Uuid\Router\UuidRouterInterface' => 'Uuid\Router\UuidRouter'
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

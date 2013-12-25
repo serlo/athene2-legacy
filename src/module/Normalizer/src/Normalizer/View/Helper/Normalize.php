@@ -12,6 +12,7 @@
 namespace Normalizer\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Uuid\Entity\UuidInterface;
 
 class Normalize extends AbstractHelper
 {
@@ -53,6 +54,10 @@ class Normalize extends AbstractHelper
 
     protected function normalize($object)
     {
+        if($object instanceof UuidInterface){
+            $object = $object->getHolder();
+        }
+        
         return $this->getNormalizer()->normalize($object);
     }
 }

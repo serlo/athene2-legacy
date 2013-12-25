@@ -24,11 +24,9 @@ class RepositoryPluginControllerListener extends AbstractMvcListener
 
     public function onAddRevision(Event $e)
     {
-        $entity = $e->getParam('entity')
-            ->getEntity()
-            ->getUuidEntity();
-        $user = $e->getParam('user')->getEntity();
-        $language = $e->getParam('language')->getEntity();
+        $entity = $e->getParam('entity')->getUuidEntity();
+        $user = $e->getParam('user');
+        $language = $e->getParam('language');
         $revision = $e->getParam('revision');
         
         $this->logEvent('entity/revision/add', $language, $user, $revision, array(
@@ -41,12 +39,10 @@ class RepositoryPluginControllerListener extends AbstractMvcListener
 
     public function onCheckout(Event $e)
     {
-        $user = $e->getParam('user')->getEntity();
+        $user = $e->getParam('user');
         $revision = $e->getParam('revision');
-        $entity = $e->getParam('entity')
-            ->getEntity()
-            ->getUuidEntity();
-        $language = $e->getParam('language')->getEntity();
+        $entity = $e->getParam('entity')->getUuidEntity();
+        $language = $e->getParam('language');
         
         $this->logEvent('entity/revision/checkout', $language, $user, $revision, array(
             array(
