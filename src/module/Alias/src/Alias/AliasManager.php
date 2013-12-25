@@ -115,6 +115,11 @@ class AliasManager implements AliasManagerInterface
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
         }
         
+        try {
+            $this->findSourceByAlias($alias, $language);
+            $alias = $aliasFallback;
+        } catch (Exception\AliasNotFoundException $e) {}
+        
         $filter = new Slugify();
         
         $slugified = array();

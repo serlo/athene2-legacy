@@ -157,6 +157,11 @@ return [
                         'required' => true
                     ]
                 ],
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
+                    'setTaxonomyManager' => [
+                        'required' => true
+                    ]
+                ],
                 __NAMESPACE__ . '\Controller\TermController' => [
                     'setTaxonomyManager' => [
                         'required' => true

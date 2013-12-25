@@ -19,7 +19,6 @@ return array(
             __NAMESPACE__ . '\Manager\RelatedContentManager' => function (ServiceLocatorInterface $sl)
             {
                 $instance = new Manager\RelatedContentManager();
-                $instance->setServiceLocator($sl);
                 $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
                 $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
                 $instance->setObjectManager($sl->get('EntityManager'));

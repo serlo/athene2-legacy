@@ -76,7 +76,12 @@ return [
                         'required' => true
                     ]
                 ],
-                'Alias\AliasManager' => [
+                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\AliasManager' => [
                     'setClassResolver' => [
                         'required' => true
                     ],

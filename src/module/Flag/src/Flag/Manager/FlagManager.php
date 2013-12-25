@@ -84,7 +84,6 @@ class FlagManager implements FlagManagerInterface
     {
         $flag = $this->getFlag($id);
         $this->getObjectManager()->remove($flag);
-        $this->removeInstance($id);
         return $this;
     }
 

@@ -25,11 +25,10 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         
         $result = new UrlResult();
         $result->setResult($e->getTarget()
-            ->assemble(array(
+            ->url()
+            ->fromRoute('entity/repository/add-revision', [
             'entity' => $entity->getId()
-        ), array(
-            'name' => 'entity/repository/add-revision'
-        )));
+        ]));
         
         return $result;
     }

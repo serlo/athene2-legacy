@@ -17,7 +17,7 @@ use Upload\Entity\Upload;
 
 class UploadManager implements UploadManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -46,21 +46,14 @@ class UploadManager implements UploadManagerInterface
 
     public function getUpload($id)
     {
-        if (! is_int($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`', gettype($id)));
+        /* @var $entity \Upload\Entity\UploadInterface */
+        $entity = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Upload\Entity\UploadInterface'), $id);
         
-        if (! $this->hasInstance($id)) {
-            /* @var $entity \Upload\Entity\UploadInterface */
-            $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Upload\Entity\UploadInterface'), $id);
-            
-            if (! is_object($entity))
-                throw new Exception\UploadNotFoundException(sprintf('Upload %s not found', $id));
-            
-            $this->addInstance($id, $entity);
+        if (! is_object($entity)) {
+            throw new Exception\UploadNotFoundException(sprintf('Upload "%s" not found', $id));
         }
-        
-        return $this->getInstance($id);
+        return $entity
     }
 
     public static function findParentPath($path)
@@ -75,8 +68,9 @@ class UploadManager implements UploadManagerInterface
         }
         return $dir . '/' . $path;
     }
-    
-    protected function addUpload($filename, $location, $size, $type){
+
+    protected function addUpload($filename, $location, $size, $type)
+    {
         $entity = new Upload();
         $this->getUuidManager()->injectUuid($entity);
         $entity->setFilename($filename);

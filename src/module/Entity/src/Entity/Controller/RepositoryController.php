@@ -15,22 +15,43 @@ namespace Entity\Controller;
 use Versioning\Exception\RevisionNotFoundException;
 use Zend\View\Model\ViewModel;
 use Entity\Entity\EntityInterface;
+use Entity\Options\ModuleOptions;
+use Zend\Form\Form;
 
 class RepositoryController extends AbstractController
 {
     use \User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait;
+
+    /**
+     *
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     *
+     * @param ModuleOptions $moduleOptions            
+     * @return self
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+        return $this;
+    }
 
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
         $user = $this->getUserManager()->getUserFromAuthenticator();
         
+        /* @var $form \Zend\Form\Form */
+        $form = $this->getForm($entity);
+        
         $view = new ViewModel(array(
-            'entity' => $entity
+            'entity' => $entity,
+            'form' => $form
         ));
         
-        /* @var $form \Zend\Form\Form */
-        $form = $this->getEntityManager()->getRevisionForm($entity);
         
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
@@ -66,7 +87,6 @@ class RepositoryController extends AbstractController
         }
         
         $view->setTemplate('entity/repository/update-revision');
-        $view->setVariable('form', $form);
         
         return $view;
     }
@@ -130,6 +150,12 @@ class RepositoryController extends AbstractController
         return false;
     }
 
+    /**
+     *
+     * @param EntityInterface $entity            
+     * @param string $id            
+     * @return \Versioning\Service\RevisionInterface NULL
+     */
     protected function getRevision(EntityInterface $entity, $id = null)
     {
         $repository = $this->getRepositoryManager()->getRepository($entity);
@@ -142,5 +168,19 @@ class RepositoryController extends AbstractController
         } catch (RevisionNotFoundException $e) {
             return NULL;
         }
+    }
+
+    /**
+     *
+     * @param EntityInterface $entity            
+     * @return Form
+     */
+    protected function getForm(EntityInterface $entity)
+    {
+        $form = $this->moduleOptions->getType($entity->getType()
+            ->getName())
+            ->getComponent('repository')
+            ->getForm();
+        return $this->getServiceLocator()->get($form);
     }
 }

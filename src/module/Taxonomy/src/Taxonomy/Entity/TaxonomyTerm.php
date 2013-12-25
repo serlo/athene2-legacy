@@ -314,6 +314,30 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return false;
     }
 
+    public function slugify($stopAtType = NULL, $delimiter = '/')
+    {
+        return substr($this->processSlugs($this, $stopAtType, $delimiter), 0, - 1);
+    }
+
+    /**
+     *
+     * @param TaxonomyTermInterface $term            
+     * @param string $parent            
+     * @return string
+     */
+    protected function processSlugs(TaxonomyTermInterface $term, $stopAtType, $delimiter)
+    {
+        // return ($term->getTaxonomy()->getName() != $stopAtType && $term->hasParent()) ? $this->processSlugs($term->getParent(), $stopAtType) . $term->getSlug() . '/' : '';
+        $slug = '';
+        if ($term->getTaxonomy()->getName() != $stopAtType) {
+            if ($term->hasParent()) {
+                $slug = $this->processSlugs($term->getParent(), $stopAtType, $delimiter);
+            }
+            $slug .= $term->getSlug() . $delimiter;
+        }
+        return $slug;
+    }
+
     /**
      *
      * @return ArrayCollection TaxonomyTermNodeInterface[]

@@ -3,11 +3,11 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @author	    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	    LGPL-3.0
+ * @license	    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
+ * @copyright   Copyright (c) 2013 Gesellschaft f√ºr freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity;
 
@@ -16,66 +16,13 @@ return [
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
         'Entity\Entity\TypeInterface' => 'Entity\Entity\Type'
     ],
-    'router' => [
-        'routes' => [
-            'entity' => [
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => [
-                    'route' => '/entity',
-                    'defaults' => []
-                ],
-                'child_routes' => [
-                    'create' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route' => '/create/:type',
-                            'defaults' => [
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'create'
-                            ]
-                        ]
-                    ],
-                    'trash' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route' => '/trash/:entity',
-                            'defaults' => [
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'trash'
-                            ]
-                        ]
-                    ],
-                    'restore' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route' => '/restore/:entity',
-                            'defaults' => [
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'restore'
-                            ]
-                        ]
-                    ],
-                    'purge' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route' => '/purge/:entity',
-                            'defaults' => [
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'purge'
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ],
     'di' => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\EntityController',
             __NAMESPACE__ . '\Controller\RepositoryController',
             __NAMESPACE__ . '\Controller\PageController',
-            //__NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
-            //__NAMESPACE__ . '\Plugin\Link\Controller\LinkController',
+            // __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
+            // __NAMESPACE__ . '\Plugin\Link\Controller\LinkController',
             __NAMESPACE__ . '\Controller\LicenseController'
         ],
         'definition' => [
@@ -114,6 +61,9 @@ return [
                     ],
                     'setRepositoryManager' => [
                         'required' => true
+                    ],
+                    'setModuleOptions' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\PageController' => [
@@ -136,6 +86,9 @@ return [
                     ],
                     'setClassResolver' => [
                         'required' => true
+                    ],
+                    'setTypeManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\PageController' => [
@@ -144,8 +97,13 @@ return [
                     ],
                     'setEntityManager' => [
                         'required' => true
-                    ],
+                    ]
                 ],
+                __NAMESPACE__ . '\Provider\TokenProvider' => [
+                    'setServiceLocator' => [
+                        'required' => true
+                    ]
+                ]
             ]
         ],
         'instance' => [

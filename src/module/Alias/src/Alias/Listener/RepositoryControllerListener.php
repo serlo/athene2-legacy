@@ -16,6 +16,7 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class RepositoryControllerListener extends AbstractSharedListenerAggregate
 {
+    use \Alias\AliasManagerAwareTrait;
 
     public function onCheckout(Event $e)
     {
@@ -25,13 +26,13 @@ class RepositoryControllerListener extends AbstractSharedListenerAggregate
         
         $url = $e->getTarget()
             ->url()
-            ->fromRoute('entity/view', array(
-            'id' => $entity->getId()
+            ->fromRoute('entity/page', array(
+            'entity' => $entity->getId()
         ));
         
         $this->getAliasManager()->autoAlias('entity', $url, $entity->getUuidEntity(), $language);
     }
-    
+
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'checkout', array(
@@ -41,7 +42,7 @@ class RepositoryControllerListener extends AbstractSharedListenerAggregate
         
         return $this;
     }
-    
+
     protected function getMonitoredClass()
     {
         return 'Entity\Controller\RepositoryController';

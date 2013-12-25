@@ -17,7 +17,7 @@ use Versioning\Exception;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -50,7 +50,7 @@ class RepositoryService implements RepositoryServiceInterface
     public function commitRevision(array $data, UserInterface $user)
     {
         $repository = $this->getRepository();
-        $revision = $repository->newRevision();
+        $revision = $repository->createRevision();
         
         $this->getUuidManager()->injectUuid($revision);
         $revision->setAuthor($user);

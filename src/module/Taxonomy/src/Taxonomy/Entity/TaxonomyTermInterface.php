@@ -175,4 +175,12 @@ interface TaxonomyTermInterface
      * @return bool
      */
     public function knowsAncestor(self $ancestor);
+
+    /**
+     *          
+     * @param string $stopAtType       
+     * @param string $delimiter            
+     * @return string
+     */
+    public function slugify($stopAtType = NULL, $delimiter = '/');
 }

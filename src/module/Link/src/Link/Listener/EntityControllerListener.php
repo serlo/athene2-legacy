@@ -28,6 +28,10 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         
         $type = 'link';
         
+        if(!array_key_exists($type, $data)){
+            return;
+        }
+        
         $options = $data[$type];
         
         if (isset($options['child'])) {

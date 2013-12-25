@@ -14,7 +14,7 @@ namespace Entity\Listener;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Zend\Mvc\MvcEvent;
 use Zend\EventManager\Event;
-use Entity\Plugin\Controller\AbstractController;
+use Entity\Controller\AbstractController;
 use Zend\Mvc\Router\RouteMatch;
 
 abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate

@@ -12,7 +12,6 @@
 namespace RelatedContent\Manager;
 
 use RelatedContent\Exception;
-use RelatedContent\Result;
 use Doctrine\Common\Collections\ArrayCollection;
 use RelatedContent\Entity\ContainerInterface;
 use RelatedContent\Entity;
@@ -22,7 +21,7 @@ use RelatedContent\Result\CategoryResult;
 
 class RelatedContentManager implements RelatedContentManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\RouterAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Common\Traits\RouterAwareTrait;
 
     public function getContainer($id)
     {
@@ -47,18 +46,9 @@ class RelatedContentManager implements RelatedContentManagerInterface
      */
     public function aggregateRelatedContent($id)
     {
-        if (! is_int($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected integer but got `%d`', $id));
+        $related = $this->getContainer($id);
         
-        if (! $this->hasInstance($id)) {
-            $related = $this->getContainer($id);
-            
-            $results = $this->aggregate($related);
-            
-            $this->addInstance($id, $results);
-        }
-        
-        return $this->getInstance($id);
+        return $results = $this->aggregate($related);
     }
 
     public function addExternal($container, $title, $url)

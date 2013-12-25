@@ -89,8 +89,6 @@ class UuidManager implements UuidManagerInterface
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush($entity);
         
-        $this->addInstance($entity->getId(), $entity);
-        
         return $entity;
     }
 

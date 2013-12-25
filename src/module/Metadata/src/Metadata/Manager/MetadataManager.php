@@ -15,24 +15,17 @@ use Metadata\Exception;
 
 class MetadataManager implements MetadataManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     public function getMetadata($id)
     {
-        if (! is_numeric($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
+        $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
+        $entity = $this->getObjectManager()->find($className, $id);
         
-        if (! $this->hasInstance($id)) {
-            $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
-            $entity = $this->getObjectManager()->find($className, $id);
-            
-            if (! is_object($entity))
-                throw new Exception\MetadataNotFoundException(sprintf('Could not find metadata by id `%s`', $id));
-            
-            $this->addInstance($id, $entity);
+        if (! is_object($entity)) {
+            throw new Exception\MetadataNotFoundException(sprintf('Could not find metadata by id `%s`', $id));
         }
-        
-        return $this->getInstance($id);
+        return $entity;
     }
 
     public function findMetadataByObject(\Uuid\Entity\UuidInterface $object)
@@ -88,9 +81,10 @@ class MetadataManager implements MetadataManagerInterface
             'key' => $key->getId(),
             'value' => $value
         ));
-            
-        if (! is_object($entity))
+        
+        if (! is_object($entity)) {
             throw new Exception\MetadataNotFoundException(sprintf('Could not find metadata by object `%s`, key `%s` and value `%s`', $object->getId(), $key, $value));
+        }
         
         return $entity;
     }

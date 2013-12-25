@@ -12,7 +12,12 @@ return [
     'di' => [
         'definition' => [
             'class' => [
-                'Link\Service\LinkService' => [
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
+                    'setLinkService' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Service\LinkService' => [
                     'setObjectManager' => [
                         'required' => true
                     ],

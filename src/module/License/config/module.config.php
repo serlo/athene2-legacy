@@ -46,7 +46,12 @@ return [
                     'setLanguageManager' => [
                         'required' => 'true'
                     ]
-                ]
+                ],
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
+                    'setLicenseManager' => [
+                        'required' => true
+                    ]
+                ],
             ]
         ],
         'instance' => [
