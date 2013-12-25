@@ -28,7 +28,7 @@ class UuidEntity implements UuidHolder
 
     public function getId()
     {   
-        return $this->uuid;
+        return $this->id;
     }
 
     public function setUuid(UuidInterface $uuid)
