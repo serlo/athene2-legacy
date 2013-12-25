@@ -139,7 +139,7 @@ return [
                             'order' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/order/:scope/:entity',
+                                    'route' => '/order/:type/:entity',
                                     'defaults' => [
                                         'action' => 'orderChildren'
                                     ]
@@ -148,7 +148,7 @@ return [
                             'move' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/move/:scope/:entity[/:from]',
+                                    'route' => '/move/:type/:entity[/:from]',
                                     'defaults' => [
                                         'action' => 'move'
                                     ]

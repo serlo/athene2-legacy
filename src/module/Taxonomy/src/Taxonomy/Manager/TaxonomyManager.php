@@ -22,7 +22,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {
-    use\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
 
     /**
      *
@@ -161,10 +161,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
         
-        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
+        if (isset($data['taxonomy']) && ! $data['taxonomy'] instanceof TaxonomyInterface) {
             $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $language);
         }
-        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
+        if (isset($data['parent']) && ! $data['parent'] instanceof TaxonomyTermInterface) {
             $data['parent'] = $this->getTerm($data['parent']);
         }
         
@@ -177,11 +177,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function updateTerm($id, array $data)
     {
         $term = $this->getTerm($id);
-
-        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
+        
+        if (isset($data['taxonomy']) && ! $data['taxonomy'] instanceof TaxonomyInterface) {
             $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $term->getLanguage());
         }
-        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
+        if (isset($data['parent']) && ! $data['parent'] instanceof TaxonomyTermInterface) {
             $data['parent'] = $this->getTerm($data['parent']);
         }
         
@@ -204,6 +204,16 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
         
         $term->associateObject($association, $object);
+        $this->getObjectManager()->persist($term);
+        
+        return $this;
+    }
+
+    public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object)
+    {
+        $term = $this->getTerm($id);
+        
+        $term->removeAssociation($association, $object);
         $this->getObjectManager()->persist($term);
         
         return $this;

@@ -27,50 +27,59 @@ interface TaxonomyManagerInterface
     public function getTerm($id);
 
     /**
-     * 
-     * @param TaxonomyInterface $taxonomy
-     * @param array $ancestors
+     *
+     * @param TaxonomyInterface $taxonomy            
+     * @param array $ancestors            
      * @return TaxonomyTermInterface
      */
     public function findTerm(TaxonomyInterface $taxonomy, array $ancestors);
-    
+
     /**
-     * 
-     * @param numeric $id
+     *
+     * @param numeric $id            
      * @return TaxonomyInterface
      */
     public function getTaxonomy($id);
 
     /**
-     * 
-     * @param string $name
-     * @param LanguageInterface $language
+     *
+     * @param string $name            
+     * @param LanguageInterface $language            
      * @return TaxonomyInterface
      */
     public function findTaxonomyByName($name, LanguageInterface $language);
 
     /**
-     * 
-     * @param array $data
-     * @param LanguageInterface $language
+     *
+     * @param array $data            
+     * @param LanguageInterface $language            
      * @return TaxonomyTermInterface
      */
     public function createTerm(array $data, LanguageInterface $language);
 
     /**
-     * 
-     * @param int $id
-     * @param array $data
+     *
+     * @param int $id            
+     * @param array $data            
      * @return self
      */
     public function updateTerm($id, array $data);
-    
+
     /**
-     * 
-     * @param string $association
+     *
      * @param int $id
+     * @param string $association
      * @param TaxonomyTermAwareInterface $with
      * @return self
      */
     public function associateWith($id, $association, TaxonomyTermAwareInterface $with);
+
+    /**
+     *
+     * @param int $id
+     * @param string $association
+     * @param TaxonomyTermAwareInterface $object
+     * @return self
+     */
+    public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object);
 }

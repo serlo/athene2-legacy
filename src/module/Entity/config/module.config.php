@@ -7,7 +7,7 @@
  * @license	    LGPL-3.0
  * @license	    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright   Copyright (c) 2013 Gesellschaft f√ºr freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright	Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity;
 
@@ -21,12 +21,31 @@ return [
             __NAMESPACE__ . '\Controller\EntityController',
             __NAMESPACE__ . '\Controller\RepositoryController',
             __NAMESPACE__ . '\Controller\PageController',
-            // __NAMESPACE__ . '\Plugin\Taxonomy\Controller\TaxonomyController',
-            // __NAMESPACE__ . '\Plugin\Link\Controller\LinkController',
+            __NAMESPACE__ . '\Controller\TaxonomyController',
+            __NAMESPACE__ . '\Controller\LinkController',
             __NAMESPACE__ . '\Controller\LicenseController'
         ],
         'definition' => [
             'class' => [
+                __NAMESPACE__ . '\Controller\TaxonomyController' => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setTaxonomyManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                ],
+                __NAMESPACE__ . '\Controller\LinkController' => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setLinkService' => [
+                        'required' => true
+                    ],
+                ],
                 __NAMESPACE__ . '\Controller\LicenseController' => [
                     'setEntityManager' => [
                         'required' => true
@@ -67,13 +86,10 @@ return [
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\PageController' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ],
                     'setEntityManager' => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager' => [
                         'required' => true
                     ]
                 ],
@@ -88,14 +104,6 @@ return [
                         'required' => true
                     ],
                     'setTypeManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Controller\PageController' => [
-                    'setAliasManager' => [
-                        'required' => true
-                    ],
-                    'setEntityManager' => [
                         'required' => true
                     ]
                 ],

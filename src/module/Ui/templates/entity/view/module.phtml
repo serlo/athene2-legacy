@@ -10,7 +10,7 @@
 	
 	<!-- Overview -->
     <section>
-        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('scope' => 'pages', 'entity' => $entity->getId())); ?>"  data-depth="1" data-active="false">
+        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('type' => 'link', 'entity' => $entity->getId())); ?>"  data-depth="1" data-active="false">
             <ol class="sortable-list">
                 <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
                     <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>

@@ -11,25 +11,29 @@
  */
 namespace Entity\Controller;
 
-use Entity\Plugin\Link\Form\MoveForm;
+use Entity\Form\MoveForm;
 use Zend\View\Model\ViewModel;
 
 class LinkController extends AbstractController
 {
+    use \Link\Service\LinkServiceAwareTrait;
 
     public function orderChildrenAction()
     {
-        $entity = $this->getEntityService();
-        foreach ($entity->getScopesForPlugin('link') as $scope) {
-            if ($scope == $this->params('scope')) {
-                $data = $this->params()->fromPost()['sortable'];
-                $entity->plugin($scope)->orderChildren($data);
-            }
+        $entity = $this->getEntity();
+        
+        if ($this->getRequest()->isPost()) {
+            $scope = $this->params('type');
+            $data = $this->params()->fromPost()['sortable'];
+            
+            $data = $this->prepareDataForOrdering($data);
+            
+            $this->getLinkService()->sortChildren($entity, $scope, $data);
+            
+            $this->getEntityManager()->flush();
         }
-        $this->getEntityManager()
-            ->getObjectManager()
-            ->flush();
-        return '';
+        
+        return false;
     }
 
     public function moveAction()
@@ -62,7 +66,8 @@ class LinkController extends AbstractController
                     ->getObjectManager()
                     ->flush();
                 
-                $this->redirect()->toUrl($this->referer()->fromStorage());
+                $this->redirect()->toUrl($this->referer()
+                    ->fromStorage());
             }
         }
         $this->referer()->store();
@@ -73,5 +78,14 @@ class LinkController extends AbstractController
         $view->setTemplate('entity/plugin/link/move');
         $this->layout('layout/1-col');
         return $view;
+    }
+
+    protected function prepareDataForOrdering($data)
+    {
+        $return = [];
+        foreach ($data as $child) {
+            $return[] = $child['id'];
+        }
+        return $return;
     }
 }

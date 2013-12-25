@@ -52,6 +52,7 @@ class LinkService implements LinkServiceInterface
             if ($child instanceof LinkableInterface) {
                 $child = $child->getId();
             }
+            
             $link = $this->findLinkByChild($parent, $child, $type);
             
             if ($link !== NULL) {
@@ -89,7 +90,7 @@ class LinkService implements LinkServiceInterface
     {
         /* @var $link LinkInterface */
         foreach ($element->getChildLinks() as $link) {
-            if ($link->getChild()->getId() === $childId && $link->getType() === $type) {
+            if ($link->getChild()->getId() == $childId && $link->getType() === $type) {
                 return $link;
             }
         }

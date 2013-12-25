@@ -15,65 +15,51 @@ use Zend\View\Model\ViewModel;
 
 class TaxonomyController extends AbstractController
 {
-    use \Language\Manager\LanguageManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
     public function updateAction()
     {
-        $plugin = $this->getPlugin();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
-        
-        /* @var $plugin \Entity\Plugin\Taxonomy\TaxonomyPlugin */
-        $taxonomy = $plugin->getTaxonomyManager()->findTaxonomyByName('subject', $language);
-
-        $term = $this->getTaxonomyManager()->findTerm($taxonomy,[
-            'mathe'
-        ])->getChildren();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
+        $entity = $this->getEntity();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             if (array_key_exists('terms', $data)) {
-                foreach ($data['terms'] as $term => $added) {
+                foreach ($data['terms'] as $termId => $added) {
+                    
+                    $term = $this->getTaxonomyManager()->getTerm($termId);
+                    
                     if ($added == 1) {
-                        if (! $plugin->hasTerm($term)) {
-                            $plugin->addToTerm($term);
-                            
-                            $this->getEventManager()->trigger('addToTerm', $this, array(
-                                'entity' => $plugin->getEntityService(),
-                                'term' => $plugin->getTaxonomyManager()
-                                    ->getTerm($term)
-                            ));
-                        }
+                        $this->getTaxonomyManager()->associateWith($termId, 'entities', $entity);
+                        $event = 'addToTerm';
                     } elseif ($added == 0) {
-                        if ($plugin->hasTerm($term)) {
-                            $plugin->removeFromTerm($term);
-                            
-                            $this->getEventManager()->trigger('removeFromTerm', $this, array(
-                                'entity' => $plugin->getEntityService(),
-                                'term' => $plugin->getTaxonomyManager()
-                                    ->getTerm($term)
-                            ));
-                        }
+                        $this->getTaxonomyManager()->removeAssociation($termId, 'entities', $entity);
+                        $event = 'removeFromTerm';
                     }
+                    
+                    $this->getEventManager()->trigger($event, $this, array(
+                        'entity' => $entity,
+                        'term' => $term
+                    ));
                 }
-                $this->getEventManager()->trigger('update', $this, array(
-                    'entity' => $this->getEntityService(),
-                    'post' => $data
-                ));
-                $plugin->getObjectManager()->flush();
-                $this->redirect()->toUrl($data['ref']);
-                return '';
+                
+                $this->getEntityManager()->flush();
+                $this->redirect()->toUrl($this->referer()
+                    ->fromStorage());
+                
+                return false;
             }
         } else {
-            $ref = $this->referer()->toUrl();
+            $this->referer()->store();
         }
         
         $view = new ViewModel(array(
-            'terms' => $saplings,
-            'plugin' => $plugin,
-            'entity' => $this->getEntityService(),
-            'ref' => $ref
+            'terms' => $taxonomy->getChildren(),
+            'entity' => $entity
         ));
-        $view->setTemplate('entity/plugin/taxonomy/update');
+        
+        $view->setTemplate('entity/taxonomy/update');
         return $view;
     }
 }

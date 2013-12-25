@@ -10,7 +10,7 @@
         <?php endif; ?>
     </section>
     <section>    
-        <div class="sortable" data-action="<?php echo $this->url('entity/link/order', array('scope' => 'exercises', 'entity' => $entity->getId())); ?>" data-depth="1" data-active="false">
+        <div class="sortable" data-action="<?php echo $this->url('entity/link/order', array('type' => 'link', 'entity' => $entity->getId())); ?>" data-depth="1" data-active="false">
             <ol class="sortable-list">
             	<?php foreach($entity->getChildren('link', 'grouped-text-exercise') as $child): ?>
                     <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
