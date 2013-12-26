@@ -16,7 +16,7 @@ use Language\Entity\LanguageInterface;
 
 class EntityManager implements EntityManagerInterface
 {
-    use\Type\TypeManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use \Type\TypeManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\FlushableTrait;
 
     public function getEntity($id)
     {
@@ -45,20 +45,13 @@ class EntityManager implements EntityManagerInterface
         $entity->setLanguage($language);
         $entity->setType($type);
         
+        $this->getEventManager()->trigger('create', $this, [
+            'entity' => $entity,
+            'data' => $data
+        ]);
+        
         $this->getObjectManager()->persist($entity);
         
         return $entity;
-    }
-
-    public function persist($object)
-    {
-        $this->getObjectManager()->persist($object);
-        return $this;
-    }
-
-    public function flush()
-    {
-        $this->getObjectManager()->flush();
-        return $this;
     }
 }

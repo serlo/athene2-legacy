@@ -152,7 +152,7 @@ return [
         ],
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
+                __NAMESPACE__ . '\Listener\EntityManagerListener' => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ]

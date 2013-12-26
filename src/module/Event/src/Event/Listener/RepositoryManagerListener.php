@@ -13,7 +13,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class RepositoryControllerListener extends AbstractMvcListener
+class RepositoryManagerListener extends AbstractMvcListener
 {
 
     /**
@@ -24,37 +24,37 @@ class RepositoryControllerListener extends AbstractMvcListener
 
     public function onAddRevision(Event $e)
     {
-        $entity = $e->getParam('entity')->getUuidEntity();
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
+        $repository = $e->getParam('repository')->getUuidEntity();
         $revision = $e->getParam('revision');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
         
         $this->logEvent('entity/revision/add', $language, $user, $revision, array(
             array(
                 'name' => 'repository',
-                'object' => $entity
+                'object' => $repository
             )
         ));
     }
 
     public function onCheckout(Event $e)
     {
-        $user = $e->getParam('user');
         $revision = $e->getParam('revision');
-        $entity = $e->getParam('entity')->getUuidEntity();
-        $language = $e->getParam('language');
+        $repository = $e->getParam('repository')->getUuidEntity();
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
         
         $this->logEvent('entity/revision/checkout', $language, $user, $revision, array(
             array(
                 'name' => 'repository',
-                'object' => $entity
+                'object' => $repository
             )
         ));
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'add-revision', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'commit', array(
             $this,
             'onAddRevision'
         ), 1);
@@ -67,6 +67,6 @@ class RepositoryControllerListener extends AbstractMvcListener
 
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\RepositoryController';
+        return 'Versioning\RepositoryManager';
     }
 }

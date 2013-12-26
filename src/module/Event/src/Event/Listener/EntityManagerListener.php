@@ -9,38 +9,32 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace License\Listener;
+namespace Event\Listener;
 
-use Common\Listener\AbstractSharedListenerAggregate;
 use Zend\EventManager\Event;
 
-class EntityControllerListener extends AbstractSharedListenerAggregate
+class EntityManagerListener extends AbstractMvcListener
 {
-    use \License\Manager\LicenseManagerAwareTrait;
-    
+
     public function onCreate(Event $e)
     {
-        /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
-        $this->getLicenseManager()->injectLicense($entity);
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
+        $this->logEvent('entity/create', $language, $user, $entity);
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
+
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
             $this,
             'onCreate'
-        ), 2);
+        ));
     }
-    
-    /*
-     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
-     */
+
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\EntityController';
+        return 'Entity\Manager\EntityManager';
     }
 }

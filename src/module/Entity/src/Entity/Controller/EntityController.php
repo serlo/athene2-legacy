@@ -17,7 +17,7 @@ use Entity\Result;
 
 class EntityController extends AbstractActionController
 {
-    use\Entity\Manager\EntityManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function createAction()
     {
@@ -26,16 +26,6 @@ class EntityController extends AbstractActionController
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $entity = $this->getEntityManager()->createEntity($type, $this->params()
             ->fromQuery(), $language);
-        
-        $this->getEventManager()->trigger('create', $this, array(
-            'entity' => $entity,
-            'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
-            'language' => $this->getLanguageManager()
-                ->getLanguageFromRequest(),
-            'query' => $this->params()
-                ->fromQuery()
-        ));
         
         $this->getEntityManager()->flush();
         

@@ -18,7 +18,7 @@ use Uuid\Entity\UuidHolder;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait;
 
     /**
      *
@@ -53,9 +53,7 @@ class RepositoryService implements RepositoryServiceInterface
         $repository = $this->getRepository();
         $revision = $repository->createRevision();
         
-        if ($revision instanceof UuidHolder) {
-            $this->getUuidManager()->injectUuid($revision);
-        }
+        $this->getUuidManager()->injectUuid($revision);
         
         $revision->setAuthor($user);
         
@@ -67,6 +65,12 @@ class RepositoryService implements RepositoryServiceInterface
             }
         }
         
+        $this->getRepositoryManager()->getEventManager()->trigger('commit', $this, [
+            'repository' => $this->getRepository(),
+            'revision' => $revision,
+            'data' => $data
+        ]);
+        
         $this->getObjectManager()->persist($revision);
         
         return $revision;
@@ -76,6 +80,11 @@ class RepositoryService implements RepositoryServiceInterface
     {
         $revision = $this->findRevision($id);
         $this->getRepository()->setCurrentRevision($revision);
+        
+        $this->getRepositoryManager()->getEventManager()->trigger('checkout', $this, [
+            'repository' => $this->getRepository(),
+            'revision' => $revision
+        ]);
         
         $this->getObjectManager()->persist($this->getRepository());
         return $this;

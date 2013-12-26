@@ -60,7 +60,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\TaxonomyManager' => [
+                __NAMESPACE__ . '\Listener\TaxonomyManagerListener' => [
                     'setEventManager' => [
                         'required' => true
                     ],
@@ -71,8 +71,30 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\DiscussionControllerListener' => [
+                __NAMESPACE__ . '\Listener\DiscussionManagerListener' => [
                     'setEventManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\RepositoryManagerListener' => [
+                    'setEventManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\EntityManagerListener' => [
+                    'setEventManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
                         'required' => true
                     ]
                 ],
@@ -87,11 +109,6 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
-                    'setEventManager' => [
-                        'required' => true
-                    ]
-                ],
                 __NAMESPACE__ . '\Listener\UuidManagerListener' => [
                     'setEventManager' => [
                         'required' => true
@@ -100,11 +117,6 @@ return [
                         'required' => true
                     ],
                     'setUserManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => [
-                    'setEventManager' => [
                         'required' => true
                     ]
                 ]

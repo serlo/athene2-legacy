@@ -11,11 +11,9 @@
  */
 namespace Common\Traits;
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-
-trait FlushableTrait implements ObjectManagerAwareInterface
+trait FlushableTrait
 {
-
+    
     public function flush()
     {
         $this->getObjectManager()->flush();

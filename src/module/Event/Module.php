@@ -15,12 +15,12 @@ class Module
 {
 
     public static $listeners = array(
-        'Event\Listener\RepositoryControllerListener',
-        'Event\Listener\DiscussionControllerListener',
-        'Event\Listener\TaxonomyManager',
+        'Event\Listener\RepositoryManagerListener',
+        'Event\Listener\DiscussionManagerListener',
+        'Event\Listener\TaxonomyManagerListener',
         'Event\Listener\UuidManagerListener',
         'Event\Listener\LinkServiceListener',
-        'Event\Listener\EntityControllerListener'
+        'Event\Listener\EntityManagerListener'
     );
 
     public function getConfig()

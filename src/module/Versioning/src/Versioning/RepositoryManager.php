@@ -15,7 +15,7 @@ use Versioning\Entity\RepositoryInterface;
 
 class RepositoryManager implements RepositoryManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\InstanceManagerTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     public function getRepository(RepositoryInterface $repository)
     {
@@ -34,6 +34,7 @@ class RepositoryManager implements RepositoryManagerInterface
         $name = $this->getUniqId($repository);
         
         $instance->setRepository($repository);
+        $instance->setRepositoryManager($this);
         $this->addInstance($name, $instance);
         
         return $this;

@@ -52,7 +52,6 @@ class RepositoryController extends AbstractController
             'form' => $form
         ));
         
-        
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
@@ -60,18 +59,9 @@ class RepositoryController extends AbstractController
                 $data = $form->getData();
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
                 
-                $revision = $this->getRepositoryManager()
+                $this->getRepositoryManager()
                     ->getRepository($entity)
                     ->commitRevision($data, $user);
-                
-                $this->getEventManager()->trigger('add-revision', $this, array(
-                    'entity' => $entity,
-                    'user' => $user,
-                    'language' => $language,
-                    'revision' => $revision,
-                    'post' => $this->params()
-                        ->fromPost()
-                ));
                 
                 $this->getEntityManager()->flush();
                 
@@ -135,10 +125,7 @@ class RepositoryController extends AbstractController
         
         $this->getEventManager()->trigger('checkout', $this, array(
             'entity' => $entity,
-            'revision' => $revision,
-            'user' => $user,
-            'language' => $this->getLanguageManager()
-                ->getLanguageFromRequest()
+            'revision' => $revision
         ));
         
         $this->getEntityManager()->flush();

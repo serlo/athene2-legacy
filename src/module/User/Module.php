@@ -14,7 +14,7 @@ class Module
 {
 
     public static $listeners = [
-        'User\Notification\Listener\RepositoryPluginControllerListener',
+        'User\Notification\Listener\RepositoryManagerListener',
         'User\Notification\Listener\DiscussionControllerListener'
     ];
 

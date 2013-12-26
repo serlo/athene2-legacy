@@ -16,13 +16,13 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class RepositoryControllerListener extends AbstractSharedListenerAggregate
 {
-    use \Alias\AliasManagerAwareTrait;
+    use \Alias\AliasManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
     public function onCheckout(Event $e)
     {
         /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
-        $language = $e->getParam('language');
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
         
         $url = $e->getTarget()
             ->url()

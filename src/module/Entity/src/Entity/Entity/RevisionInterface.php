@@ -13,9 +13,8 @@ namespace Entity\Entity;
 
 use DateTime;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
 
-interface RevisionInterface extends \Versioning\Entity\RevisionInterface, UuidHolder
+interface RevisionInterface extends \Versioning\Entity\RevisionInterface
 {
 
     /**

@@ -13,29 +13,28 @@ namespace User\Notification\Listener;
 
 use Zend\EventManager\Event;
 
-class RepositoryPluginControllerListener extends AbstractListener
+class RepositoryManagerListener extends AbstractListener
 {
-
+    use \User\Manager\UserManagerAwareTrait;
+    
     /**
      *
      * @var array
      */
     protected $listeners = array();
 
-    public function onAddRevisionSubscribe(Event $e)
+    public function onCommitRevision(Event $e)
     {
-        $user = $e->getParam('user');
-        $entity = $e->getParam('entity');
-        $reference = NULL;
+        $repository = $e->getParam('repository');
+        $data = $e->getParam('data');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         
-        foreach ($e->getParam('post') as $params) {
+        foreach ($data as $params) {
             if (is_array($params) && array_key_exists('subscription', $params)) {
                 $param = $params['subscription'];
                 if ($param['subscribe'] === '1') {
-                    $user = $e->getParam('user');
-                    $entity = $e->getParam('entity');
                     $notifyMailman = $param['mailman'] === '1' ? true : false;
-                    $this->subscribe($user, $entity->getUuidEntity(), $notifyMailman);
+                    $this->subscribe($user, $repository->getUuidEntity(), $notifyMailman);
                 }
             }
         }
@@ -46,14 +45,14 @@ class RepositoryPluginControllerListener extends AbstractListener
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'add-revision', array(
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'commit', array(
             $this,
-            'onAddRevisionSubscribe'
+            'onCommitRevision'
         ), 2);
     }
 
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\RepositoryController';
+        return 'Versioning\RepositoryManager';
     }
 }

@@ -14,7 +14,7 @@ namespace Taxonomy\Listener;
 use Zend\EventManager\Event;
 use Common\Listener\AbstractSharedListenerAggregate;
 
-class EntityControllerListener extends AbstractSharedListenerAggregate
+class EntityManagerListener extends AbstractSharedListenerAggregate
 {
     use\Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
@@ -22,21 +22,13 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
     {
         /* var $entity \Entity\Service\EntityServiceInterface */
         $entity = $e->getParam('entity');
-        $data = $e->getParam('query');
+        $data = $e->getParam('data');
         
         if(array_key_exists('taxonomy', $data)) {
             $options = $data['taxonomy'];
             
             $term = $this->getTaxonomyManager()->getTerm($options['term']);
-            
-            $term->associateObject('entities', $entity);
-            
-            $e->getTarget()
-                ->getEventManager()
-                ->trigger('addToTerm', $this, array(
-                'entity' => $entity,
-                'term' => $term
-            ));
+            $this->getTaxonomyManager()->associateWith($options['term'], 'entities', $entity);
         }
     }
 
@@ -50,6 +42,6 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
 
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\EntityController';
+        return 'Entity\Manager\EntityManager';
     }
 }

@@ -16,7 +16,7 @@ class Module
 {
 
     public static $listeners = [
-        'Taxonomy\Listener\EntityControllerListener',
+        'Taxonomy\Listener\EntityManagerListener',
     ];
 
     public function getConfig ()

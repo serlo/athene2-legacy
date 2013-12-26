@@ -47,7 +47,7 @@ return [
                         'required' => 'true'
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
+                __NAMESPACE__ . '\Listener\EntityManagerListener' => [
                     'setLicenseManager' => [
                         'required' => true
                     ]

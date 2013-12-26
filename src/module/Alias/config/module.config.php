@@ -79,6 +79,9 @@ return [
                 __NAMESPACE__ . '\Listener\RepositoryControllerListener' => [
                     'setAliasManager' => [
                         'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\AliasManager' => [

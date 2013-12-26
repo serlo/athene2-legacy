@@ -14,7 +14,7 @@ namespace Link\Listener;
 use Zend\EventManager\Event;
 use Common\Listener\AbstractSharedListenerAggregate;
 
-class EntityControllerListener extends AbstractSharedListenerAggregate
+class EntityManagerListener extends AbstractSharedListenerAggregate
 {
     use\Entity\Manager\EntityManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Options\ModuleOptionsAwareTrait;
 
@@ -22,7 +22,7 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
     {
         /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
-        $data = $e->getParam('query');
+        $data = $e->getParam('data');
         
         if (! array_key_exists('link', $data)) {
             return;
@@ -70,6 +70,6 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
      */
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\EntityController';
+        return 'Entity\Manager\EntityManager';
     }
 }

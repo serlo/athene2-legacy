@@ -13,8 +13,9 @@ namespace Versioning;
 
 use Versioning\Service\RepositoryServiceInterface;
 use Versioning\Entity\RepositoryInterface;
+use Zend\EventManager\EventManagerAwareInterface;
 
-interface RepositoryManagerInterface
+interface RepositoryManagerInterface extends EventManagerAwareInterface
 {
 
     /**

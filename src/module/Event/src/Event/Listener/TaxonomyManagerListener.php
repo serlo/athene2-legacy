@@ -13,7 +13,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class TaxonomyManager extends AbstractMvcListener
+class TaxonomyManagerListener extends AbstractMvcListener
 {
 
     public function onCreate(Event $e)
@@ -34,6 +34,36 @@ class TaxonomyManager extends AbstractMvcListener
         $this->logEvent('taxonomy/term/update', $language, $user, $term);
     }
 
+    public function onAssociate(Event $e)
+    {
+        $term = $e->getParam('term');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
+        $this->logEvent('taxonomy/term/associate', $language, $user, $term, [
+            [
+                'name' => 'object',
+                'object' => $e->getParam('object')
+                    ->getUuidEntity()
+            ]
+        ]);
+    }
+
+    public function onDissociate(Event $e)
+    {
+        $term = $e->getParam('term');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
+        $this->logEvent('taxonomy/term/dissociate', $language, $user, $term, [
+            [
+                'name' => 'object',
+                'object' => $e->getParam('object')
+                    ->getUuidEntity()
+            ]
+        ]);
+    }
+
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
@@ -44,6 +74,16 @@ class TaxonomyManager extends AbstractMvcListener
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'update', array(
             $this,
             'onUpdate'
+        ));
+        
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'associate', array(
+            $this,
+            'onAssociate'
+        ));
+        
+        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'dissociate', array(
+            $this,
+            'onDissociate'
         ));
     }
 

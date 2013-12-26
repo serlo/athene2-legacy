@@ -17,7 +17,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 
 class Discussion extends AbstractHelper
 {
-    use\Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Discussion\DiscussionManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\User\Manager\UserManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected $discussions, $object;
 
@@ -141,11 +141,13 @@ class Discussion extends AbstractHelper
         }
         
         $forum = current($forums);
-        
-        foreach ($current->findChildrenByTaxonomyNames([
+        $children = $current->findChildrenByTaxonomyNames([
             'forum'
-        ]) as $child) {
-            if ($child->getSlug() == $forum) {
+        ]);
+        
+        foreach ($children as $child) 
+        {
+            if ($child->getName() == $forum || $child->getSlug() == $forum) {
                 array_shift($forums);
                 return $this->iterForums($forums, $child);
             }

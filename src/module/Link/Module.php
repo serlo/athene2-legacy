@@ -15,7 +15,7 @@ class Module
 {
 
     public static $listeners = [
-        'Link\Listener\EntityControllerListener'
+        'Link\Listener\EntityManagerListener'
     ];
 
     public function getConfig()

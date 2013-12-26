@@ -18,7 +18,7 @@ use Discussion\Entity\CommentInterface;
 
 class DiscussionManager implements DiscussionManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use \Zend\EventManager\EventManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Taxonomy\Manager\TaxonomyManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     protected $serviceInterface = 'Discussion\Service\DiscussionServiceInterface';
 
@@ -101,6 +101,13 @@ class DiscussionManager implements DiscussionManagerInterface
         
         $this->getTaxonomyManager()->associateWith($forum->getId(), 'comments', $comment);
         
+        $this->getEventManager()->trigger('start', $this, [
+            'user' => $author,
+            'on' => $object,
+            'discussion' => $comment,
+            'language' => $language
+        ]);
+        
         $this->getObjectManager()->persist($comment);
         
         return $comment;
@@ -114,7 +121,6 @@ class DiscussionManager implements DiscussionManagerInterface
         if ($discussion->hasParent()) {
             throw new Exception\RuntimeException(sprintf('You are trying to comment on a comment, but only commenting a discussion is allowed (comments have parents whilst discussions do not).'));
         }
-        
         $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $comment = new $className();
         $this->getUuidManager()->injectUuid($comment);
@@ -126,6 +132,13 @@ class DiscussionManager implements DiscussionManagerInterface
         $comment->setStatus(1);
         
         $discussion->addChild($comment);
+        
+        $this->getEventManager()->trigger('comment', $this, array(
+            'user' => $author,
+            'comment' => $comment,
+            'discussion' => $discussion,
+            'language' => $language
+        ));
         
         $this->getObjectManager()->persist($comment);
         

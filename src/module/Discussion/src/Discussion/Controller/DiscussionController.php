@@ -47,14 +47,6 @@ class DiscussionController extends AbstractController
                 
                 $discussion = $this->getDiscussionManager()->startDiscussion($object, $language, $author, $forum, $title, $content);
                 
-                $this->getEventManager()->trigger('start', $this, array(
-                    'user' => $author,
-                    'on' => $object,
-                    'discussion' => $discussion,
-                    'language' => $language,
-                    'post' => $form->getData()
-                ));
-                
                 $this->getDiscussionManager()
                     ->getObjectManager()
                     ->flush();
@@ -92,14 +84,6 @@ class DiscussionController extends AbstractController
                 $content = $form->getData()['content'];
                 
                 $comment = $this->getDiscussionManager()->commentDiscussion($discussion, $language, $author, $content);
-
-                $this->getEventManager()->trigger('comment', $this, array(
-                    'user' => $author,
-                    'comment' => $comment,
-                    'discussion' => $discussion,
-                    'language' => $language,
-                    'post' => $form->getData()
-                ));
                 
                 $this->getDiscussionManager()
                     ->getObjectManager()

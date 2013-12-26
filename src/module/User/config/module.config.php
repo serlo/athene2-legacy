@@ -124,14 +124,6 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Notification\Listener\EntityControllerListener' => array(
-                    'setNotificationLogManager' => array(
-                        'required' => true
-                    ),
-                    'setUuidManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Notification\Listener\DiscussionControllerListener' => array(
                     'setNotificationLogManager' => array(
                         'required' => true
@@ -140,11 +132,14 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Notification\Listener\RepositoryPluginControllerListener' => array(
+                __NAMESPACE__ . '\Notification\Listener\RepositoryManagerListener' => array(
                     'setNotificationLogManager' => array(
                         'required' => true
                     ),
                     'setSubscriptionManager' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
                         'required' => true
                     )
                 ),

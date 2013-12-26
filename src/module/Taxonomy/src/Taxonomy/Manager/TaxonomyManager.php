@@ -22,7 +22,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {
-    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\FlushableTrait;
+    use\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\FlushableTrait;
 
     /**
      *
@@ -214,6 +214,12 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
         
         $term->associateObject($association, $object);
+        
+        $this->getEventManager()->trigger('associate', $this, array(
+            'object' => $object,
+            'term' => $term
+        ));
+        
         $this->getObjectManager()->persist($term);
         
         return $this;
@@ -224,6 +230,12 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $term = $this->getTerm($id);
         
         $term->removeAssociation($association, $object);
+        
+        $this->getEventManager()->trigger('dissociate', $this, array(
+            'object' => $object,
+            'term' => $term
+        ));
+        
         $this->getObjectManager()->persist($term);
         
         return $this;

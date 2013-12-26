@@ -16,7 +16,7 @@ use Zend\EventManager\Event;
 /**
  * Event Listener for Discussion\Controller\DiscussionController
  */
-class DiscussionControllerListener extends AbstractMvcListener
+class DiscussionManagerListener extends AbstractMvcListener
 {
 
     /**
@@ -81,6 +81,6 @@ class DiscussionControllerListener extends AbstractMvcListener
 
     protected function getMonitoredClass()
     {
-        return 'Discussion\Controller\DiscussionController';
+        return 'Discussion\DiscussionManager';
     }
 }
