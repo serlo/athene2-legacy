@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class UuidManager implements UuidManagerInterface
 {
     use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
-    use\Common\Traits\ConfigAwareTrait;
+    use\Common\Traits\ConfigAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -82,6 +82,32 @@ class UuidManager implements UuidManagerInterface
         return $entity;
     }
 
+    public function trashUuid($id)
+    {
+        $uuid = $this->getUuid($id);
+        $uuid->setTrashed(true);
+        
+        $this->getEventManager()->trigger('trash', $this, [
+            'object' => $uuid
+        ]);
+        
+        $this->persist($uuid);
+        return $this;
+    }
+
+    public function restoreUuid($id)
+    {
+        $uuid = $this->getUuid($id);
+        $uuid->setTrashed(false);
+        
+        $this->getEventManager()->trigger('restore', $this, [
+            'object' => $uuid
+        ]);
+        
+        $this->persist($uuid);
+        return $this;
+    }
+
     public function createUuid()
     {
         $entity = $this->getClassResolver()->resolve('Uuid\Entity\UuidInterface');
@@ -100,6 +126,18 @@ class UuidManager implements UuidManagerInterface
                 return $callback($holder, $this->getServiceLocator());
         }
         return $holder;
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
+    }
+
+    public function persist($object)
+    {
+        $this->getObjectManager()->persist($object);
+        return $this;
     }
 
     protected function ambigousToUuid($idOrObject)

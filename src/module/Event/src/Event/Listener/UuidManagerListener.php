@@ -13,22 +13,24 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class UuidControllerListener extends AbstractMvcListener
+class UuidManagerListener extends AbstractMvcListener
 {
 
     public function onRestore(Event $e)
     {
         $object = $e->getParam('object');
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
         $this->logEvent('uuid/restore', $language, $user, $object);
     }
 
     public function onTrash(Event $e)
     {
         $object = $e->getParam('object');
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
         $this->logEvent('uuid/trash', $language, $user, $object);
     }
 
@@ -46,6 +48,6 @@ class UuidControllerListener extends AbstractMvcListener
 
     protected function getMonitoredClass()
     {
-        return 'Uuid\Controller\UuidController';
+        return 'Uuid\Manager\UuidManager';
     }
 }

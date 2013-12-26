@@ -86,8 +86,14 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\UuidControllerListener' => [
+                __NAMESPACE__ . '\Listener\UuidManagerListener' => [
                     'setEventManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
                         'required' => true
                     ]
                 ],

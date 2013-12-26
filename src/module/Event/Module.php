@@ -18,7 +18,7 @@ class Module
         'Event\Listener\RepositoryControllerListener',
         'Event\Listener\DiscussionControllerListener',
         'Event\Listener\TaxonomyTermControllerListener',
-        'Event\Listener\UuidControllerListener',
+        'Event\Listener\UuidManagerListener',
         'Event\Listener\LinkServiceListener',
         'Event\Listener\EntityControllerListener'
     );
