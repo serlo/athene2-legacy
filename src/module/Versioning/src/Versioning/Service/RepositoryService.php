@@ -14,10 +14,11 @@ namespace Versioning\Service;
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\UserInterface;
 use Versioning\Exception;
+use Uuid\Entity\UuidHolder;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
     /**
      *
@@ -35,11 +36,11 @@ class RepositoryService implements RepositoryServiceInterface
         $this->repository = $repository;
         return $this;
     }
-    
+
     public function findRevision($id)
     {
-        foreach($this->getRepository()->getRevisions() as $revision){
-            if($revision->getId() == $id){
+        foreach ($this->getRepository()->getRevisions() as $revision) {
+            if ($revision->getId() == $id) {
                 return $revision;
             }
         }
@@ -52,7 +53,10 @@ class RepositoryService implements RepositoryServiceInterface
         $repository = $this->getRepository();
         $revision = $repository->createRevision();
         
-        $this->getUuidManager()->injectUuid($revision);
+        if ($revision instanceof UuidHolder) {
+            $this->getUuidManager()->injectUuid($revision);
+        }
+        
         $revision->setAuthor($user);
         
         $repository->addRevision($revision);

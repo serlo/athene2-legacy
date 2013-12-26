@@ -9,10 +9,7 @@
 namespace Versioning\Entity;
 
 use User\Entity\UserInterface;
-use DateTime;
-use Uuid\Entity\UuidHolder;
-
-interface RevisionInterface extends UuidHolder
+interface RevisionInterface
 {
 
     /**
@@ -29,26 +26,12 @@ interface RevisionInterface extends UuidHolder
     public function getRepository();
 
     /**
-     * Gets the date´
+     * Sets the repository
      *
-     * @return DateTime
-     */
-    public function getTimestamp();
-
-    /**
-     * Gets the author
-     *
-     * @return UserInterface
-     */
-    public function getAuthor();
-
-    /**
-     * Sets the date
-     *
-     * @param DateTime $date            
+     * @param RepositoryInterface $repository            
      * @return self
      */
-    public function setTimestamp(DateTime $date);
+    public function setRepository(RepositoryInterface $repository);
 
     /**
      * Sets the author
@@ -57,12 +40,4 @@ interface RevisionInterface extends UuidHolder
      * @return self
      */
     public function setAuthor(UserInterface $user);
-
-    /**
-     * Sets the repository
-     *
-     * @param RepositoryInterface $repository            
-     * @return self
-     */
-    public function setRepository(RepositoryInterface $repository);
 }

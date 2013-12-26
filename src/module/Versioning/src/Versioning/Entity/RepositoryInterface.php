@@ -65,16 +65,4 @@ interface RepositoryInterface
      * @return self
      */
     public function removeRevision(RevisionInterface $revision);
-
-    /**
-     *
-     * @return bool
-     */
-    public function isUnrevised();
-
-    /**
-     *
-     * @return RevisionInterface
-     */
-    public function getHead();
 }
