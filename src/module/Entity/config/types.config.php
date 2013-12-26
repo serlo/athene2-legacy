@@ -28,7 +28,9 @@ return [
                                 'multiple' => false
                             ]
                         ]
-                    ]
+                    ],
+                    'license' => [],
+                    'taxonomy' => []
                 ]
             ],
             'exercise-group' => [
@@ -45,7 +47,9 @@ return [
                                 'multiple' => true
                             ]
                         ]
-                    ]
+                    ],
+                    'license' => [],
+                    'taxonomy' => []
                 ]
             ],
             'grouped-text-exercise' => [
@@ -67,7 +71,8 @@ return [
                                 'multiple' => false
                             ]
                         ]
-                    ]
+                    ],
+                    'license' => []
                 ]
             ],
             'text-solution' => [
@@ -88,7 +93,8 @@ return [
                                 'multiple' => false
                             ]
                         ]
-                    ]
+                    ],
+                    'license' => []
                 ]
             ],
             'video' => [
@@ -100,7 +106,7 @@ return [
                             'content',
                             'reasoning'
                         ]
-                    ],
+                    ]
                 ]
             ],
             'article' => [
@@ -113,6 +119,8 @@ return [
                             'content'
                         ]
                     ],
+                    'license' => [],
+                    'taxonomy' => []
                 ]
             ],
             'module' => [
@@ -129,7 +137,9 @@ return [
                                 'multiple' => true
                             ]
                         ]
-                    ]
+                    ],
+                    'license' => [],
+                    'taxonomy' => []
                 ]
             ],
             'module-page' => [
@@ -148,7 +158,8 @@ return [
                                 'multiple' => false
                             ]
                         ]
-                    ]
+                    ],
+                    'license' => []
                 ]
             ]
         ]

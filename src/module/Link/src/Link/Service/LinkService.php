@@ -34,9 +34,9 @@ class LinkService implements LinkServiceInterface
     public function dissociate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0)
     {
         $type = $this->getTypeManager()->findTypeByName($typeName);
-        $link = $this->findLinkByChild($parent, $child, $type);
+        $link = $this->findLinkByChild($parent, $child->getId(), $type);
         
-        if ($link) {
+        if (is_object($link)) {
             $this->getObjectManager()->remove($link);
         }
         

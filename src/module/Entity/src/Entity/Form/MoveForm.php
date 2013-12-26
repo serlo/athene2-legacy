@@ -25,13 +25,6 @@ class MoveForm extends Form
         $this->setInputFilter($filter);
         
         $this->add(array(
-            'name' => 'from',
-            'attributes' => array(
-                'type' => 'hidden'
-            )
-        ));
-        
-        $this->add(array(
             'name' => 'to',
             'attributes' => array(
                 'type' => 'text',
@@ -54,28 +47,12 @@ class MoveForm extends Form
         ));
         
         $filter->add(array(
-            'name' => 'from',
-            'required' => true,
-            'validators' => array(
-                array(
-                    'name' => 'int'
-                )
-            )
-        ));
-        
-        $filter->add(array(
             'name' => 'to',
             'required' => true,
             'validators' => array(
                 array(
                     'name' => 'int'
                 ),
-                array(
-                    'name' => 'Common\Validator\NotIdentical',
-                    'options' => array(
-                        'token' => 'from'
-                    )
-                )
             )
         ));
     }

@@ -99,6 +99,21 @@
             </li>
         <?php endif; ?>
         
+        <?php if($options->hasComponent('link')): ?>
+            <?php foreach($entity->getParents('link') as $parentLink):?>
+                <!-- Change parents -->
+                <?php $url = $this->url('entity/link/move',array('entity' => $entity->getId(), 'from' => $parentLink->getId(), 'type' => 'link')); ?>
+                <?php if($this->guard()->hasAccessToUrl($url)): ?>
+                    <li>
+                        <a href="<?php echo $url; ?>">
+                            <span class="glyphicon glyphicon-map-marker"></span>
+                            <?php echo sprintf($this->translate('Change parent "%s"'), $parentLink->getType()->getName()); ?>   
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?> 
+        <?php endif; ?>
+        
         <?php if($options->hasComponent('taxonomy')): ?>   
             <!-- Change taxonomy term(s) -->
             <?php $url = $this->url('entity/taxonomy/update',array('entity' => $entity->getId())); ?>

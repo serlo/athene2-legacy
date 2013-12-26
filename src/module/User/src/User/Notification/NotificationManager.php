@@ -24,8 +24,6 @@ class NotificationManager implements NotificationManagerInterface
     {
         $notification = $this->aggregateNotification($user, $log);
         
-        // TODO aggregation
-        
         $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationEventInterface');
         /* @var $notificationLog \User\Notification\Entity\NotificationEventInterface */
         $notificationLog = new $className();
@@ -50,7 +48,7 @@ class NotificationManager implements NotificationManagerInterface
             ->resolveClassName('User\Notification\Entity\NotificationInterface'))
             ->findBy(array(
             'user' => $userService->getId()
-        ));
+        ), ['id' => 'desc']);
         return new ArrayCollection($notifications);
     }
 
@@ -62,9 +60,6 @@ class NotificationManager implements NotificationManagerInterface
      */
     protected function aggregateNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
     {
-        /*
-         * $query = $this->getObjectManager()->createQuery(sprintf('SELECT n FROM %s n JOIN %s ne WITH (ne.notification = n.id) JOIN %s nl WITH (nl.id = ne.eventLog) WHERE n.user = %d AND nl.object = %d ORDER BY n.id DESC', $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface'), $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationEventInterface'), $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationLogInterface'), $user->getId(), $log->getObject()->getId())); $result = $query->getResult(); if (count($result)) { return $result[0]; }
-         */
         $className = $this->getClassResolver()->resolveClassName('User\Notification\Entity\NotificationInterface');
         return new $className();
     }

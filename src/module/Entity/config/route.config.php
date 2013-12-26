@@ -148,7 +148,7 @@ return [
                             'move' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/move/:type/:entity[/:from]',
+                                    'route' => '/move/:type/:entity/:from',
                                     'defaults' => [
                                         'action' => 'move'
                                     ]

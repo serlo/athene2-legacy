@@ -21,7 +21,7 @@ use Event\Entity\EventLogInterface;
 
 class EventManager implements EventManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
 
     protected $inMemoryEvents = array();
 
@@ -35,11 +35,12 @@ class EventManager implements EventManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         $repository = $this->getObjectManager()->getRepository($className);
         
-        $results = $repository->findBy(array(
+        $results = $repository->findBy([
             'actor' => $userId
-        ), array(
+        ], [
             'id' => 'desc'
-        ));
+        ]);
+        
         $collection = new ArrayCollection($results);
         return $collection;
     }
@@ -52,18 +53,18 @@ class EventManager implements EventManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         $repository = $this->getObjectManager()->getRepository($className);
         
-        $results = $repository->findBy(array(
+        $results = $repository->findBy([
             'uuid' => $objectId
-        ));
+        ]);
         
         if ($recursive) {
             $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterInterface');
             
             $parameters = $this->getObjectManager()
                 ->getRepository($className)
-                ->findBy(array(
+                ->findBy([
                 'uuid' => $objectId
-            ));
+            ]);
             
             /* @var $parameter \Event\Entity\EventParameterInterface */
             foreach ($parameters as $parameter) {
@@ -76,7 +77,15 @@ class EventManager implements EventManagerInterface
                 }
             }
         }
-        $collection = new ArrayCollection($results);
+        
+        $collection = [];
+        foreach ($results as $result) {
+            $collection[$result->getId()] = $result;
+        }
+        ksort($collection);
+        rsort($collection);
+        $collection = new ArrayCollection($collection);
+        
         return $collection;
     }
 

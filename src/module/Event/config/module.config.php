@@ -3,26 +3,26 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Event;
 
 use Event\View\Helper\EventLog;
-return array(
-    'event_manager' => array(),
-    'class_resolver' => array(
+return [
+    'event_manager' => [],
+    'class_resolver' => [
         'Event\Entity\EventLogInterface' => 'Event\Entity\EventLog',
         'Event\Entity\EventInterface' => 'Event\Entity\Event',
         'Event\Entity\EventParameterInterface' => 'Event\Entity\EventParameter',
         'Event\Entity\EventParameterNameInterface' => 'Event\Entity\EventParameterName',
         'Event\Service\EventServiceInterface' => 'Event\Service\EventService'
-    ),
-    'view_helpers' => array(
-        'factories' => array(
+    ],
+    'view_helpers' => [
+        'factories' => [
             'events' => function ($sm)
             {
                 $instance = new EventLog();
@@ -30,110 +30,110 @@ return array(
                     ->get('Event\EventManager'));
                 return $instance;
             }
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\EventController'
-        ),
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\EventManager' => array(
-                    'setClassResolver' => array(
+        ],
+        'definition' => [
+            'class' => [
+                __NAMESPACE__ . '\EventManager' => [
+                    'setClassResolver' => [
                         'required' => true
-                    ),
-                    'setObjectManager' => array(
+                    ],
+                    'setObjectManager' => [
                         'required' => true
-                    ),
-                    'setServiceLocator' => array(
+                    ],
+                    'setServiceLocator' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Service\EventService' => array(
-                    'setUuidManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Service\EventService' => [
+                    'setUuidManager' => [
                         'required' => true
-                    ),
-                    'setLanguageManager' => array(
+                    ],
+                    'setLanguageManager' => [
                         'required' => true
-                    ),
-                    'setUserManager' => array(
+                    ],
+                    'setUserManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\TaxonomyTermControllerListener' => array(
-                    'setEventManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\TaxonomyTermControllerListener' => [
+                    'setEventManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\DiscussionControllerListener' => array(
-                    'setEventManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\DiscussionControllerListener' => [
+                    'setEventManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\EntityControllerListener' => array(
-                    'setEventManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\EntityControllerListener' => [
+                    'setEventManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\UuidControllerListener' => array(
-                    'setEventManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\UuidControllerListener' => [
+                    'setEventManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => array(
-                    'setEventManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => [
+                    'setEventManager' => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 __NAMESPACE__ . '\EventManagerInterface' => __NAMESPACE__ . '\EventManager'
-            ),
-            __NAMESPACE__ . '\Service\EventService' => array(
+            ],
+            __NAMESPACE__ . '\Service\EventService' => [
                 'shared' => false
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    ),
-    'router' => array(
-        'routes' => array(
-            'event' => array(
+                ]
+            ]
+        ]
+    ],
+    'router' => [
+        'routes' => [
+            'event' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/event',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\EventController'
-                    )
-                ),
-                'child_routes' => array(
-                    'history' => array(
+                    ]
+                ],
+                'child_routes' => [
+                    'history' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/history/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'history'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

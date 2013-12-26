@@ -16,7 +16,7 @@ use Zend\View\Model\ViewModel;
 
 class LinkController extends AbstractController
 {
-    use \Link\Service\LinkServiceAwareTrait;
+    use\Link\Service\LinkServiceAwareTrait;
 
     public function orderChildrenAction()
     {
@@ -38,16 +38,10 @@ class LinkController extends AbstractController
 
     public function moveAction()
     {
-        $entity = $this->getEntityService();
-        $scope = $this->params('scope');
-        $form = new MoveForm();
+        $entity = $this->getEntity();
+        $type = $this->params('type');
         
-        $form->setData(array(
-            'from' => $this->params()
-                ->fromPost('from', NULL) !== NULL ? $this->params()
-                ->fromPost('from') : $this->params()
-                ->fromRoute('from', NULL)
-        ));
+        $form = new MoveForm();
         
         if ($this->getRequest()->isPost()) {
             
@@ -56,11 +50,12 @@ class LinkController extends AbstractController
             
             if ($form->isValid()) {
                 $data = $form->getData();
-                $from = $this->getEntityManager()->getEntity($data['from']);
+                
+                $from = $this->getEntityManager()->getEntity($this->params('from'));
                 $to = $this->getEntityManager()->getEntity($data['to']);
                 
-                $entity->plugin($scope)->remove($from);
-                $entity->plugin($scope)->add($to);
+                $this->getLinkService()->dissociate($from, $entity, $type);
+                $this->getLinkService()->associate($to, $entity, $type);
                 
                 $this->getEntityManager()
                     ->getObjectManager()
@@ -69,13 +64,14 @@ class LinkController extends AbstractController
                 $this->redirect()->toUrl($this->referer()
                     ->fromStorage());
             }
+        } else {
+            $this->referer()->store();
         }
-        $this->referer()->store();
         
         $view = new ViewModel(array(
             'form' => $form
         ));
-        $view->setTemplate('entity/plugin/link/move');
+        $view->setTemplate('entity/link/move');
         $this->layout('layout/1-col');
         return $view;
     }
