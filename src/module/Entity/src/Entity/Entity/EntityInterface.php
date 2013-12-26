@@ -19,7 +19,6 @@ use License\Entity\LicenseAwareInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use DateTime;
 use Type\Entity\TypeAwareInterface;
-use Entity\Options\EntityOptions;
 
 interface EntityInterface extends UuidHolder, LanguageAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface, TaxonomyTermAwareInterface, TypeAwareInterface
 {
@@ -37,23 +36,10 @@ interface EntityInterface extends UuidHolder, LanguageAwareInterface, Repository
     public function setTimestamp(DateTime $date);
 
     /**
-     *
-     * @param EntityOptions $options            
-     * @return self
-     */
-    public function setOptions(EntityOptions $options);
-
-    /**
-     *
-     * @return EntityOptions
-     */
-    public function getOptions();
-
-    /**
      * Returns the children
      *
-     * @param string $linkyType  
-     * @param string $childType                
+     * @param string $linkyType            
+     * @param string $childType            
      * @return Collection
      */
     public function getChildren($linkyType, $childType = NULL);
@@ -61,9 +47,21 @@ interface EntityInterface extends UuidHolder, LanguageAwareInterface, Repository
     /**
      * Returns the parents
      *
-     * @param string $linkyType       
-     * @param string $parentType           
+     * @param string $linkyType            
+     * @param string $parentType            
      * @return Collection
      */
     public function getParents($linkyType, $parentType = NULL);
+
+    /**
+     *
+     * @return bool
+     */
+    public function isUnrevised();
+
+    /**
+     *
+     * @return RevisionInterface
+     */
+    public function getHead();
 }

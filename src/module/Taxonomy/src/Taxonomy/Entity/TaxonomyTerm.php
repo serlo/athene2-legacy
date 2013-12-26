@@ -327,7 +327,6 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
      */
     protected function processSlugs(TaxonomyTermInterface $term, $stopAtType, $delimiter)
     {
-        // return ($term->getTaxonomy()->getName() != $stopAtType && $term->hasParent()) ? $this->processSlugs($term->getParent(), $stopAtType) . $term->getSlug() . '/' : '';
         $slug = '';
         if ($term->getTaxonomy()->getName() != $stopAtType) {
             if ($term->hasParent()) {

@@ -80,7 +80,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
                 $current['route'] = $this->getOption('route');
                 
                 $current['params'] = ArrayUtils::merge($this->getOption('params'), array(
-                    'path' => $this->getPathToTermAsUri($term)
+                    'path' => $term->slugify($this->getOption('parent')['type'])
                 ));
                 
                 $current['label'] = $term->getName();
@@ -92,15 +92,5 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
             }
         }
         return $return;
-    }
-
-    private function getPathToTermAsUri(TaxonomyTermInterface $term)
-    {
-        return substr($this->_getPathToTermAsUri($term), 0, - 1);
-    }
-
-    private function _getPathToTermAsUri(TaxonomyTermInterface $term)
-    {
-        return (! in_array($term->getTaxonomy()->getName(), (array) $this->getOption('parent')['type'])) ? $this->_getPathToTermAsUri($term->getParent()) . $term->getSlug() . '/' : '';
     }
 }

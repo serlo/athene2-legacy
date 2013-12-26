@@ -152,11 +152,6 @@ return [
         ],
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Hydrator\Navigation' => [
-                    'setLanguageManager' => [
-                        'required' => true
-                    ]
-                ],
                 __NAMESPACE__ . '\Listener\EntityControllerListener' => [
                     'setTaxonomyManager' => [
                         'required' => true
