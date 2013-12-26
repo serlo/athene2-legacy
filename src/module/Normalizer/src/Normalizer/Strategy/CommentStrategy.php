@@ -42,7 +42,7 @@ class CommentStrategy extends AbstractStrategy
 
     protected function getPreview()
     {
-        return substr($this->getContent(), 0, 120) . '...';
+        return $this->getContent();
     }
 
     protected function getType()

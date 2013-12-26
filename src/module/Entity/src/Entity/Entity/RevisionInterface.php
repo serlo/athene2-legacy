@@ -15,11 +15,11 @@ use DateTime;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidHolder;
 
-interface RevisionInterface extends  \Versioning\Entity\RevisionInterface, UuidHolder
+interface RevisionInterface extends \Versioning\Entity\RevisionInterface, UuidHolder
 {
 
     /**
-     * Gets the date´
+     * Gets the date
      *
      * @return DateTime
      */
@@ -35,8 +35,23 @@ interface RevisionInterface extends  \Versioning\Entity\RevisionInterface, UuidH
     /**
      * Sets the date
      *
-     * @param DateTime $date            
+     * @param DateTime $date
      * @return self
      */
     public function setTimestamp(DateTime $date);
+
+    /**
+     *
+     * @param string $field
+     * @return string
+     */
+    public function get($field);
+
+    /**
+     *
+     * @param string $name
+     * @param string $value
+     * @return RevisionField
+     */
+    public function set($name, $value);
 }

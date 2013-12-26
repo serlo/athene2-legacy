@@ -13,6 +13,7 @@ namespace Normalizer\Strategy;
 
 use Normalizer\Exception\RuntimeException;
 use Normalizer\Entity\Normalized;
+use Common\Filter\PreviewFilter;
 
 abstract class AbstractStrategy implements StrategyInterface
 {
@@ -32,11 +33,19 @@ abstract class AbstractStrategy implements StrategyInterface
         
         $this->setObject($object);
         
+        $preview = $this->getPreview();
+        $filter = new PreviewFilter();
+        $preview = $filter->filter($preview);
+        
+        $title = $this->getTitle();
+        $filter = new PreviewFilter(200, '...');
+        $title = $filter->filter($title);
+        
         $normalized = new Normalized();
-        $normalized->setTitle($this->getTitle());
+        $normalized->setTitle($title);
         $normalized->setTimestamp($this->getTimestamp());
         $normalized->setContent($this->getContent());
-        $normalized->setPreview($this->getPreview());
+        $normalized->setPreview($preview);
         $normalized->setType($this->getType());
         $normalized->setRouteName($this->getRouteName());
         $normalized->setRouteParams($this->getRouteParams());

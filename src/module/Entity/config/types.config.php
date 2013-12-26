@@ -118,7 +118,7 @@ return [
             'module' => [
                 'components' => [
                     'repository' => [
-                        'revision_form' => __NAMESPACE__ . '\Form\ModuleForm',
+                        'form' => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
                             'title'
                         ]

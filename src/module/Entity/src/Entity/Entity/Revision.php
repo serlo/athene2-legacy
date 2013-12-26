@@ -99,9 +99,12 @@ class Revision extends UuidEntity implements RevisionInterface
         $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
             ->setFirstResult(0)
             ->setMaxResults(1);
+        
         $data = $this->fields->matching($criteria);
-        if (count($data) == 0)
+        
+        if (count($data) == 0) {
             return null;
+        }
         
         return $data[0]->get('value');
     }

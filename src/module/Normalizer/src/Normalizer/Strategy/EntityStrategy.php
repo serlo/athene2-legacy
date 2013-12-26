@@ -27,7 +27,7 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getObject()->getId();
+        return $this->getField('title', 'content');
     }
 
     protected function getTimestamp()
@@ -37,12 +37,12 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getContent()
     {
-        return $this->getObject()->getId();
+        return $this->getField('content');
     }
 
     protected function getPreview()
     {
-        return $this->getObject()->getId();
+        return $this->getField('summary', 'content');
     }
 
     protected function getType()
@@ -67,5 +67,24 @@ class EntityStrategy extends AbstractStrategy
     public function isValid($object)
     {
         return $object instanceof EntityInterface;
+    }
+
+    protected function getField($field, $fallback = NULL)
+    {
+        if ($this->getObject()->hasCurrentRevision()) {
+            $revision = $this->getObject()->getCurrentRevision();
+        } elseif (is_object($this->getObject()->getHead())) {
+            $revision = $this->getObject()->getHead();
+        } else {
+            return $this->getObject()->getId();
+        }
+        
+        if ($revision->get($field) !== NULL) {
+            return $revision->get($field);
+        } elseif ($fallback !== NULL && $revision->get($fallback) !== NULL) {
+            return $revision->get($fallback);
+        } else {
+            return $this->getObject()->getId();
+        }
     }
 }

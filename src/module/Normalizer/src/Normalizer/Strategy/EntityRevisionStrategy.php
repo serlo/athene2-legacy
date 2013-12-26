@@ -73,4 +73,15 @@ class EntityRevisionStrategy extends AbstractStrategy
     {
         return $object instanceof Revision;
     }
+
+    protected function getField($field, $fallback = NULL)
+    {
+        if ($this->getObject()->get($field) !== NULL) {
+            return $this->getObject()->get($field);
+        } elseif ($fallback !== NULL && $this->getObject()->get($fallback) !== NULL) {
+            return $this->getObject()->get($fallback);
+        } else {
+            return $this->getObject()->getId();
+        }
+    }
 }

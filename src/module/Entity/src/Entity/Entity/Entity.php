@@ -168,7 +168,7 @@ class Entity extends UuidEntity implements EntityInterface
 
     public function isUnrevised()
     {
-        return (! $this->hasCurrentRevision() && $this->hasHead()) || ($this->hasCurrentRevision() && $this->getHead() !== $this->getCurrentRevision());
+        return (! $this->hasCurrentRevision() && $this->getHead()) || ($this->hasCurrentRevision() && $this->getHead() !== $this->getCurrentRevision());
     }
 
     public function createLink()
