@@ -23,8 +23,6 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         /* var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
         $data = $e->getParam('query');
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
         
         if (! array_key_exists('link', $data)) {
             return;
@@ -43,14 +41,8 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
             
             $this->getLinkService()->associate($parent, $child, $linkOptions);
             
-            $eventData = [
-                'entity' => $entity,
-                'child' => $child,
-                'parent' => $entity,
-                'user' => $user,
-                'language' => $language
-            ];
         } elseif (isset($options['parent'])) {
+            
             $parent = $entity;
             $child = $this->getEntityManager()->getEntity($options['child']);
             $linkOptions = $this->getModuleOptions()
@@ -59,19 +51,7 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
                 ->getComponent($type);
             
             $this->getLinkService()->associate($parent, $child, $linkOptions);
-            
-            $eventData = [
-                'entity' => $entity,
-                'parent' => $parent,
-                'child' => $entity,
-                'user' => $user,
-                'language' => $language
-            ];
         }
-        
-        $e->getTarget()
-            ->getEventManager()
-            ->trigger('link', $this, $eventData);
     }
     
     /*

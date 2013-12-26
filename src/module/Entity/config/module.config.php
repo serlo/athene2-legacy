@@ -47,12 +47,6 @@ return [
                     ],
                     'setModuleOptions' => [
                         'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager' => [
-                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\LicenseController' => [

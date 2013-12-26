@@ -70,8 +70,14 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\LinkControllerListener' => [
+                __NAMESPACE__ . '\Listener\LinkServiceListener' => [
                     'setEventManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
                         'required' => true
                     ]
                 ],

@@ -17,7 +17,7 @@ use Link\Exception;
 class LinkService implements LinkServiceInterface
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
     public function associate(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $parentOptions, $position = 0)
     {
@@ -33,6 +33,11 @@ class LinkService implements LinkServiceInterface
         $link->setType($type);
         $link->setPosition($position);
         
+        $this->getEventManager()->trigger('link', $this, [
+            'entity' => $child,
+            'parent' => $parent
+        ]);
+        
         $this->getObjectManager()->persist($link);
         return $this;
     }
@@ -45,6 +50,12 @@ class LinkService implements LinkServiceInterface
         $link = $this->findLinkByChild($parent, $child->getId(), $type);
         
         if (is_object($link)) {
+            
+            $this->getEventManager()->trigger('unlink', $this, [
+                'entity' => $child,
+                'parent' => $parent
+            ]);
+            
             $this->getObjectManager()->remove($link);
         }
         

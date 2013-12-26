@@ -24,30 +24,11 @@ class EntityControllerListener extends AbstractMvcListener
         $this->logEvent('entity/create', $language, $user, $entity);
     }
     
-    public function onLink(Event $e)
-    {
-        $entity = $e->getParam('entity');
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
-        
-        $params = array(array(
-            'name' => 'parent',
-            'object' => $e->getParam('parent')->getUuidEntity()
-        ));
-        
-        $this->logEvent('entity/link/create', $language, $user, $entity, $params);
-    }
-    
-    
     public function attachShared (\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
             $this,
             'onCreate'
-        ));
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'link', array(
-            $this,
-            'onLink'
         ));
     }
     

@@ -19,7 +19,7 @@ class Module
         'Event\Listener\DiscussionControllerListener',
         'Event\Listener\TaxonomyTermControllerListener',
         'Event\Listener\UuidControllerListener',
-        'Event\Listener\LinkControllerListener',
+        'Event\Listener\LinkServiceListener',
         'Event\Listener\EntityControllerListener'
     );
 
@@ -42,12 +42,12 @@ class Module
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
         foreach (static::$listeners as $listener) {
+            $serviceManager = $e->getApplication()->getServiceManager();
+            $listener = $serviceManager->get($listener);
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()
-                ->attachAggregate($e->getApplication()
-                ->getServiceManager()
-                ->get($listener));
+                ->attachAggregate($listener);
         }
     }
 }

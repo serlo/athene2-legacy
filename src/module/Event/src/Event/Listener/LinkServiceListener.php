@@ -13,14 +13,14 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class LinkControllerListener extends AbstractMvcListener
+class LinkServiceListener extends AbstractMvcListener
 {
-
+    
     public function onLink(Event $e)
     {
         $entity = $e->getParam('entity');
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
         
         $params = array(
             array(
@@ -35,8 +35,8 @@ class LinkControllerListener extends AbstractMvcListener
     public function onUnLink(Event $e)
     {
         $entity = $e->getParam('entity');
-        $user = $e->getParam('user');
-        $language = $e->getParam('language');
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
         
         $params = array(
             array(
@@ -54,6 +54,7 @@ class LinkControllerListener extends AbstractMvcListener
             $this,
             'onUnlink'
         ));
+        
         $this->listeners[] = $events->attach($this->getMonitoredClass(), 'link', array(
             $this,
             'onLink'
@@ -62,6 +63,6 @@ class LinkControllerListener extends AbstractMvcListener
 
     protected function getMonitoredClass()
     {
-        return 'Entity\Controller\LinkController';
+        return 'Link\Service\LinkService';
     }
 }
