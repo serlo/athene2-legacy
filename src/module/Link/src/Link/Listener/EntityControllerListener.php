@@ -16,7 +16,7 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
-    use \Entity\Manager\EntityManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
+    use\Entity\Manager\EntityManagerAwareTrait,\Link\Service\LinkServiceAwareTrait,\Entity\Options\ModuleOptionsAwareTrait;
 
     public function onCreate(Event $e)
     {
@@ -36,8 +36,12 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         if (isset($options['child'])) {
             $child = $entity;
             $parent = $this->getEntityManager()->getEntity($options['child']);
+            $linkOptions = $this->getModuleOptions()
+                ->getType($parent->getType()
+                ->getName())
+                ->getComponent($type);
             
-            $this->getLinkService()->associate($parent, $child, $type);
+            $this->getLinkService()->associate($parent, $child, $linkOptions);
             
             $eventData = [
                 'entity' => $entity,
@@ -49,8 +53,12 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         } elseif (isset($options['parent'])) {
             $parent = $entity;
             $child = $this->getEntityManager()->getEntity($options['child']);
+            $linkOptions = $this->getModuleOptions()
+                ->getType($parent->getType()
+                ->getName())
+                ->getComponent($type);
             
-            $this->getLinkService()->associate($parent, $child, $type);
+            $this->getLinkService()->associate($parent, $child, $linkOptions);
             
             $eventData = [
                 'entity' => $entity,

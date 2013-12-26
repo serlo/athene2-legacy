@@ -11,14 +11,20 @@ namespace Link\Service;
 use Link\Entity\LinkableInterface;
 use Link\Entity\LinkInterface;
 use Type\Entity\TypeInterface;
+use Link\Options\LinkOptionsInterface;
+use Link\Exception;
 
 class LinkService implements LinkServiceInterface
 {
     
     use \Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
 
-    public function associate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0)
+    public function associate(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $parentOptions, $position = 0)
     {
+        $this->isValidChild($parent, $child, $parentOptions);
+        
+        $typeName = $parentOptions->getLinkType();
+        
         $type = $this->getTypeManager()->findTypeByName($typeName);
         $link = $parent->createLink();
         
@@ -31,8 +37,10 @@ class LinkService implements LinkServiceInterface
         return $this;
     }
 
-    public function dissociate(LinkableInterface $parent, LinkableInterface $child, $typeName, $position = 0)
+    public function dissociate(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $parentOptions, $position = 0)
     {
+        $typeName = $parentOptions->getLinkType();
+        
         $type = $this->getTypeManager()->findTypeByName($typeName);
         $link = $this->findLinkByChild($parent, $child->getId(), $type);
         
@@ -106,5 +114,28 @@ class LinkService implements LinkServiceInterface
             }
         }
         return NULL;
+    }
+
+    protected function isValidChild(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $options)
+    {
+        $childType = $child->getType()->getName();
+        $parentType = $parent->getType()->getName();
+        
+        if (! $options->isChildAllowed($childType)) {
+            throw new Exception\RuntimeException(sprintf('Child type "%s" is not allowed.', $childType));
+        }
+        
+        if (! $options->allowsManyChildren($childType)) {
+            /* @var $childLink \Link\Entity\LinkInterface */
+            foreach ($parent->getChildLinks() as $childLink) {
+                if ($childLink->getChild()
+                    ->getType()
+                    ->getName() == $childType) {
+                    throw new Exception\RuntimeException(sprintf('Child type "%s" does not allow multiple children.', $childType));
+                }
+            }
+        }
+        
+        return true;
     }
 }

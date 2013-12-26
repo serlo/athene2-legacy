@@ -70,6 +70,11 @@ return [
                         'required' => true
                     ]
                 ],
+                __NAMESPACE__ . '\Listener\LinkControllerListener' => [
+                    'setEventManager' => [
+                        'required' => true
+                    ]
+                ],
                 __NAMESPACE__ . '\Listener\EntityControllerListener' => [
                     'setEventManager' => [
                         'required' => true

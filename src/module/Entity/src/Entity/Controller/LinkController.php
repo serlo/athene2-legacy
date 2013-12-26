@@ -16,7 +16,7 @@ use Zend\View\Model\ViewModel;
 
 class LinkController extends AbstractController
 {
-    use\Link\Service\LinkServiceAwareTrait;
+    use\Link\Service\LinkServiceAwareTrait,\Entity\Options\ModuleOptionsAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function orderChildrenAction()
     {
@@ -53,9 +53,42 @@ class LinkController extends AbstractController
                 
                 $from = $this->getEntityManager()->getEntity($this->params('from'));
                 $to = $this->getEntityManager()->getEntity($data['to']);
+                $user = $this->getUserManager()->getUserFromAuthenticator();
+                $language = $this->getLanguageManager()->getLanguageFromRequest();
                 
-                $this->getLinkService()->dissociate($from, $entity, $type);
-                $this->getLinkService()->associate($to, $entity, $type);
+                $options = $this->getModuleOptions()
+                    ->getType($from->getType()
+                    ->getName())
+                    ->getComponent($type);
+                
+                $this->getLinkService()->dissociate($from, $entity, $options);
+                
+                $eventData = [
+                    'entity' => $entity,
+                    'parent' => $from,
+                    'child' => $entity,
+                    'user' => $user,
+                    'language' => $language
+                ];
+                
+                $this->getEventManager()->trigger('unlink', $this, $eventData);
+                
+                $options = $this->getModuleOptions()
+                    ->getType($to->getType()
+                    ->getName())
+                    ->getComponent($type);
+                
+                $this->getLinkService()->associate($to, $entity, $options);
+                
+                $eventData = [
+                    'entity' => $entity,
+                    'parent' => $to,
+                    'child' => $entity,
+                    'user' => $user,
+                    'language' => $language
+                ];
+                
+                $this->getEventManager()->trigger('link', $this, $eventData);
                 
                 $this->getEntityManager()
                     ->getObjectManager()

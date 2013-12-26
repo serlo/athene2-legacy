@@ -8,7 +8,6 @@
  */
 namespace Link\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Type\Entity\TypeInterface;
 
 interface LinkableInterface
@@ -19,6 +18,12 @@ interface LinkableInterface
      * @return int
      */
     public function getId();
+    
+    /**
+     * 
+     * @return TypeInterface
+     */
+    public function getType();
 
     /**
      *

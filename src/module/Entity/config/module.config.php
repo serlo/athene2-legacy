@@ -36,7 +36,7 @@ return [
                     ],
                     'setLanguageManager' => [
                         'required' => true
-                    ],
+                    ]
                 ],
                 __NAMESPACE__ . '\Controller\LinkController' => [
                     'setEntityManager' => [
@@ -45,6 +45,15 @@ return [
                     'setLinkService' => [
                         'required' => true
                     ],
+                    'setModuleOptions' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ]
                 ],
                 __NAMESPACE__ . '\Controller\LicenseController' => [
                     'setEntityManager' => [

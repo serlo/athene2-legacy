@@ -19,6 +19,7 @@ class Module
         'Event\Listener\DiscussionControllerListener',
         'Event\Listener\TaxonomyTermControllerListener',
         'Event\Listener\UuidControllerListener',
+        'Event\Listener\LinkControllerListener',
         'Event\Listener\EntityControllerListener'
     );
 

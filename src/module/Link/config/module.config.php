@@ -18,7 +18,10 @@ return [
                     ],
                     'setEntityManager' => [
                         'required' => true
-                    ]
+                    ],
+                    'setModuleOptions' => [
+                        'required' => true
+                    ], 
                 ],
                 __NAMESPACE__ . '\Service\LinkService' => [
                     'setObjectManager' => [

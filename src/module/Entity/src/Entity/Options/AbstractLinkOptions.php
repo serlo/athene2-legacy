@@ -13,8 +13,9 @@ namespace Entity\Options;
 
 use Zend\Stdlib\AbstractOptions;
 use Entity\Exception;
+use Link\Options\LinkOptionsInterface;
 
-abstract class AbstractLinkOptions extends AbstractOptions implements ComponentOptionsInterface
+abstract class AbstractLinkOptions extends AbstractOptions implements ComponentOptionsInterface, LinkOptionsInterface
 {
 
     protected $type;
@@ -53,7 +54,7 @@ abstract class AbstractLinkOptions extends AbstractOptions implements ComponentO
         
         return array_key_exists('multiple', $this->parents[$type]) ? $this->parents[$type]['multiple'] : false;
     }
-    
+
     public function allowsManyChildren($type)
     {
         if (! $this->isChildAllowed($type)) {
