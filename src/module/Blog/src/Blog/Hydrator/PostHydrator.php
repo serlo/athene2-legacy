@@ -13,8 +13,8 @@ namespace Blog\Hydrator;
 
 use Zend\Stdlib\Hydrator\HydratorInterface;
 use Blog\Exception;
-use Blog\Model\PostModelInterface;
 use Zend\Stdlib\ArrayUtils;
+use Blog\Entity\PostInterface;
 
 class PostHydrator implements HydratorInterface
 {
@@ -40,8 +40,8 @@ class PostHydrator implements HydratorInterface
     {
         $data = ArrayUtils::merge($this->extract($object), $data);
         
-        if (! $object instanceof PostModelInterface) {
-            throw new Exception\InvalidArgumentException(sprintf('Expected object to be PostModelInterface but got "%s"', get_class($object)));
+        if (! $object instanceof PostInterface) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected object to be PostInterface but got "%s"', get_class($object)));
         }
         
         foreach ($this->keys as $key) {

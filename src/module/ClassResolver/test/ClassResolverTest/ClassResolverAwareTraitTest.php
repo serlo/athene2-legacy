@@ -18,9 +18,7 @@ class ClassResolverAwareTraitTest extends \PHPUnit_Framework_TestCase
 
     protected $trait;
 
-    public 
-
-    function setUp()
+    public function setUp()
     {
         $this->trait = new ClassResolverAware();
     }
