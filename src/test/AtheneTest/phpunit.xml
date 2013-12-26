@@ -2,8 +2,8 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="true">
 	<testsuites>
-		<testsuite name="Athene2 Alias Test Suite">
-			<directory>../../module/Alias/test</directory>
+		<testsuite name="ClassResolver Test Suite">
+			<directory>../../module/ClassResolver/test</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

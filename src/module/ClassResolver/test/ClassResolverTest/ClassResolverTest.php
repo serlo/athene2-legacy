@@ -15,9 +15,6 @@ use ClassResolver\ClassResolver;
 use Zend\ServiceManager\ServiceManager;
 use ClassResolverTest\Fake\Foo;
 
-/**
- * @codeCoverageIgnore
- */
 class ClassResolverTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -30,7 +27,8 @@ class ClassResolverTest extends \PHPUnit_Framework_TestCase
         $this->classResolver = new ClassResolver([
             'ClassResolverTest\Fake\FailInterface' => 'ClassResolverTest\Fake\Foo',
             'ClassResolverTest\Fake\FooInterface' => 'ClassResolverTest\Fake\Foo',
-            'ClassResolverTest\Fake\BarInterface' => 'ClassResolverTest\Fake\Bar'
+            'ClassResolverTest\Fake\BarInterface' => 'ClassResolverTest\Fake\Bar',
+            'ClassResolverTest\Fake\SuperFailInterface' => 'ClassResolverTest\Fake\SuperFail',
         ]);
     }
 
@@ -71,6 +69,14 @@ class ClassResolverTest extends \PHPUnit_Framework_TestCase
     public function testInvalidArgumentException()
     {
         $this->classResolver->resolveClassName(array());
+    }
+
+    /**
+     * @expectedException \ClassResolver\Exception\RuntimeException
+     */
+    public function testClassNotFound()
+    {
+        $this->classResolver->resolveClassName('ClassResolverTest\Fake\SuperFailInterface');
     }
 
     /**
