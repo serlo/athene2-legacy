@@ -37,12 +37,12 @@ abstract class AbstractLinkOptions extends AbstractOptions implements ComponentO
 
     public function isParentAllowed($type)
     {
-        return in_array($type, $this->getAllowedChildren());
+        return in_array($type, $this->getAllowedParents());
     }
 
     public function isChildAllowed($type)
     {
-        return in_array($type, $this->getAllowedParents());
+        return in_array($type, $this->getAllowedChildren());
     }
 
     public function allowsManyParents($type)
@@ -51,7 +51,7 @@ abstract class AbstractLinkOptions extends AbstractOptions implements ComponentO
             throw new Exception\RuntimeException(sprintf('Link type "%s" does not allow parent "%s".', $this->getLinkType(), $type));
         }
         
-        return array_key_exists('multiple', $this->parents) ? $this->parents['multiples'] : false;
+        return array_key_exists('multiple', $this->parents[$type]) ? $this->parents[$type]['multiple'] : false;
     }
     
     public function allowsManyChildren($type)
@@ -60,7 +60,7 @@ abstract class AbstractLinkOptions extends AbstractOptions implements ComponentO
             throw new Exception\RuntimeException(sprintf('Link "%s" does not allow child "%s".', $this->getLinkType(), $type));
         }
         
-        return array_key_exists('multiple', $this->children) ? $this->children['multiples'] : false;
+        return array_key_exists('multiple', $this->children[$type]) ? $this->children[$type]['multiple'] : false;
     }
 
     public function isValid($key)

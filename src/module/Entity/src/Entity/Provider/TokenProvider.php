@@ -29,6 +29,8 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
     public function getData()
     {
         if (! is_array($this->data)) {
+            $path = $this->getObject()->getId();
+            
             /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */
             foreach ($this->getObject()->getTaxonomyTerms() as $term) {
                 $path = $term->slugify('root');

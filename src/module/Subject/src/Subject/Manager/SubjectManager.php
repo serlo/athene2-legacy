@@ -59,15 +59,7 @@ class SubjectManager implements SubjectManagerInterface
 
     protected function getEntities(TaxonomyTermInterface $term)
     {
-        return $term->getAssociatedRecursive('entities', array(
-            'abstract-topic',
-            'topic',
-            'topic-folder',
-            'subject',
-            'curriculum',
-            'curriculum-folder',
-            'school-type'
-        ));
+        return $term->getAssociatedRecursive('entities');
     }
 
     protected function iterEntities(Collection $entities, Collection $collection, $callback)
@@ -92,7 +84,7 @@ class SubjectManager implements SubjectManagerInterface
 
     protected function isTrashed(EntityInterface $entity, Collection $collection)
     {
-        if ($entity->getTrashed() === TRUE) {
+        if ($entity->getTrashed()) {
             $collection->add($entity);
         }
     }

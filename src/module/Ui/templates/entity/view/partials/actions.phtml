@@ -35,16 +35,14 @@
         <?php if($options->hasComponent('link')): ?>
             <?php /* @var $componentOptions \Entity\Options\LinkOptions */ ?>
             <?php $componentOptions = $options->getComponent('link'); ?>
-            <?php foreach($componentOptions->getAllowedChildren() as $child): ?>
-                <?php if($componentOptions->allowsManyParents($child) || (!$componentOptions->allowsManyParents($child) && $entity->getChildren('link')->count() < 1)): ?>
-                    <?php $url = '';//$this->url('entity/create', array('action' => 'create', 'type' => $type), array('query' => array($options['inversed_by'] => array('to_entity' => $entity->getId())))); ?>
+            <?php foreach($componentOptions->getAllowedChildren() as $type): ?>
+                <?php if($componentOptions->allowsManyChildren($type) || (!$componentOptions->allowsManyChildren($type) && $entity->getChildren('link')->count() < 1)): ?>
+                    <?php $url = $this->url('entity/create', ['type' => $type], ['query' => ['link' => ['type' => 'link', 'child' => $entity->getId()]]]); ?>
                     <?php if($this->guard()->hasAccessToUrl($url)): ?>
                     	<li>
-                    	FIX ME PLS THX KK
-                    	
                         	<a href="<?php echo $url; ?>">
                                 <span class="glyphicon glyphicon-file"></span>
-                                <?php echo sprintf($this->translate('Add %s'), $child); ?>
+                                <?php echo sprintf($this->translate('Add %s'), $type); ?>
                         	</a>
                     	<li>
                 	<?php endif; ?>

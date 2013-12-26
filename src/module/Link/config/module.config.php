@@ -15,6 +15,9 @@ return [
                 __NAMESPACE__ . '\Listener\EntityControllerListener' => [
                     'setLinkService' => [
                         'required' => true
+                    ],
+                    'setEntityManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Service\LinkService' => [

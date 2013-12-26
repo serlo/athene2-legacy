@@ -22,12 +22,10 @@ return [
                             'content'
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => [],
                     'link' => [
                         'children' => [
                             'text-solution' => [
-                                'multiple' => true
+                                'multiple' => false
                             ]
                         ]
                     ]
@@ -41,8 +39,6 @@ return [
                             'content'
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => [],
                     'link' => [
                         'children' => [
                             'grouped-text-exercise' => [
@@ -60,12 +56,8 @@ return [
                             'content'
                         ]
                     ],
-                    'license' => [],
                     'link' => [
                         'children' => [
-                            'text-solution' => [
-                                'multiple' => true
-                            ],
                             'text-solution' => [
                                 'multiple' => false
                             ]
@@ -87,7 +79,6 @@ return [
                             'content'
                         ]
                     ],
-                    'license' => [],
                     'link' => [
                         'parents' => [
                             'text-exercise' => [
@@ -110,8 +101,6 @@ return [
                             'reasoning'
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => []
                 ]
             ],
             'article' => [
@@ -124,8 +113,6 @@ return [
                             'content'
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => []
                 ]
             ],
             'module' => [
@@ -136,8 +123,6 @@ return [
                             'title'
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => [],
                     'link' => [
                         'children' => [
                             'module-page' => [
@@ -157,7 +142,6 @@ return [
                             'content'
                         ]
                     ],
-                    'license' => [],
                     'link' => [
                         'parents' => [
                             'module' => [

@@ -16,7 +16,7 @@ use Common\Listener\AbstractSharedListenerAggregate;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
-    use\Entity\Manager\EntityManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait,\Link\Service\LinkServiceAwareTrait;
 
     public function onCreate(Event $e)
     {
@@ -26,33 +26,36 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         $user = $e->getParam('user');
         $language = $e->getParam('language');
         
-        $type = 'link';
-        
-        if(!array_key_exists($type, $data)){
+        if (! array_key_exists('link', $data)) {
             return;
         }
         
-        $options = $data[$type];
+        $options = $data['link'];
+        $type = $options['type'];
         
         if (isset($options['child'])) {
-            $child = $this->getEntityManager()->getEntity($options['child']);
+            $child = $entity;
+            $parent = $this->getEntityManager()->getEntity($options['child']);
             
-            $this->getLinkService()->associate($entity, $child, $type);
+            $this->getLinkService()->associate($parent, $child, $type);
             
             $eventData = [
                 'entity' => $entity,
                 'child' => $child,
+                'parent' => $entity,
                 'user' => $user,
                 'language' => $language
             ];
         } elseif (isset($options['parent'])) {
-            $parent = $this->getEntityManager()->getEntity($options['child']);
+            $parent = $entity;
+            $child = $this->getEntityManager()->getEntity($options['child']);
             
-            $this->getLinkService()->associate($parent, $entity, $type);
+            $this->getLinkService()->associate($parent, $child, $type);
             
             $eventData = [
                 'entity' => $entity,
                 'parent' => $parent,
+                'child' => $entity,
                 'user' => $user,
                 'language' => $language
             ];

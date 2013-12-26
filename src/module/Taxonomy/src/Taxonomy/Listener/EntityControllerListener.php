@@ -24,18 +24,20 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         $entity = $e->getParam('entity');
         $data = $e->getParam('query');
         
-        $options = $data['taxonomy'];
-        
-        $term = $this->getTaxonomyManager()->getTerm($options['term']);
-        
-        $term->associateObject('entities', $entity);
-        
-        $e->getTarget()
-            ->getEventManager()
-            ->trigger('addToTerm', $this, array(
-            'entity' => $entity,
-            'term' => $term
-        ));
+        if(array_key_exists('taxonomy', $data)) {
+            $options = $data['taxonomy'];
+            
+            $term = $this->getTaxonomyManager()->getTerm($options['term']);
+            
+            $term->associateObject('entities', $entity);
+            
+            $e->getTarget()
+                ->getEventManager()
+                ->trigger('addToTerm', $this, array(
+                'entity' => $entity,
+                'term' => $term
+            ));
+        }
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
