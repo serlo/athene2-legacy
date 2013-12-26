@@ -46,10 +46,7 @@ return [
                     'post' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/post',
-                            'defaults' => [
-                                'action' => 'view'
-                            ]
+                            'route' => '/post'
                         ],
                         'child_routes' => [
                             'create' => [

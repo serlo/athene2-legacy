@@ -24,7 +24,6 @@ class BlogControllerListener extends AbstractListener
      */
     public function onUpdate(Event $e)
     {
-        $blog = $e->getParam('blog');
         $post = $e->getParam('post');
         $actor = $e->getParam('actor');
         $data = $e->getParam('data');
@@ -33,7 +32,6 @@ class BlogControllerListener extends AbstractListener
         $url = $e->getTarget()
             ->url()
             ->fromRoute('blog/post/view', array(
-            'blog' => $blog->getId(),
             'post' => $post->getId()
         ));
         

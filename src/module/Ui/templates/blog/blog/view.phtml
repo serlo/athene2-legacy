@@ -5,7 +5,7 @@
             	class="glyphicon glyphicon-file"></span></a>
         <?php endif; ?>
         <?php if($this->guard()->hasAccessToRoute('blog/view-all')): ?>
-            <a href="<?php echo $this->url('blog/view-all', array('id' => $this->blog->getId())); ?>" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-inbox"></span></a>
+            <a href="<?php echo $this->url('blog/view-all', array('id' => $this->blog->getId())); ?>" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-calendar"></span></a>
         <?php endif; ?>
     </div>
 	<h1><?php echo $this->translate('Blog'); ?> <small><?php echo $this->blog->getName(); ?></small>

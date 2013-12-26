@@ -14,6 +14,8 @@ namespace Blog\Manager;
 use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Blog\Entity\PostInterface;
+use User\Entity\UserInterface;
+use DateTime;
 
 interface BlogManagerInterface
 {
@@ -24,25 +26,45 @@ interface BlogManagerInterface
      * @return TaxonomyTermInterface
      */
     public function getBlog($id);
-    
+
     /**
-     * 
-     * @param LanguageInterface $languageService
+     *
+     * @param LanguageInterface $languageService            
      * @return TaxonomyTermInterface[]
      */
     public function findAllBlogs(LanguageInterface $languageService);
-    
+
     /**
      * Make changes persistent
-     * 
+     *
      * @return self
      */
     public function flush();
-    
+
     /**
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      * @return PostInterface
      */
     public function getPost($id);
+
+    /**
+     *
+     * @param int $id            
+     * @param string $title            
+     * @param string $content            
+     * @param DateTime $publish            
+     * @return self
+     */
+    public function updatePost($id, $title, $content, DateTime $publish = NULL);
+
+    /**
+     *
+     * @param int $id            
+     * @param string $title            
+     * @param string $content            
+     * @param DateTime $publish            
+     * @return PostInterface
+     */
+    public function createPost(TaxonomyTermInterface $taxonomy, UserInterface $author, $title, $content, DateTime $publish = NULL);
 }
