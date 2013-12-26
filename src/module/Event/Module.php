@@ -17,7 +17,7 @@ class Module
     public static $listeners = array(
         'Event\Listener\RepositoryControllerListener',
         'Event\Listener\DiscussionControllerListener',
-        'Event\Listener\TaxonomyTermControllerListener',
+        'Event\Listener\TaxonomyManager',
         'Event\Listener\UuidManagerListener',
         'Event\Listener\LinkServiceListener',
         'Event\Listener\EntityControllerListener'

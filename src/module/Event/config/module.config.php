@@ -60,8 +60,14 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\TaxonomyTermControllerListener' => [
+                __NAMESPACE__ . '\Listener\TaxonomyManager' => [
                     'setEventManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
                         'required' => true
                     ]
                 ],

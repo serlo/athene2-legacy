@@ -15,8 +15,9 @@ use Taxonomy\Entity\TaxonomyInterface;
 use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
+use Common\ObjectManager\Flushable;
 
-interface TaxonomyManagerInterface
+interface TaxonomyManagerInterface extends Flushable
 {
 
     /**

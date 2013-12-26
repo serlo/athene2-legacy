@@ -22,7 +22,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {
-    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait,\Common\Traits\FlushableTrait;
 
     /**
      *
@@ -169,6 +169,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
         
         $this->getHydrator()->hydrate($data, $term);
+        
+        $this->getEventManager()->trigger('create', $this, [
+            'term' => $term
+        ]);
+        
         $this->getObjectManager()->persist($term);
         
         return $term;
@@ -186,6 +191,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
         
         $this->getHydrator()->hydrate($data, $term);
+        
+        $this->getEventManager()->trigger('update', $this, [
+            'term' => $term
+        ]);
+        
         $this->getObjectManager()->persist($term);
         
         return $term;

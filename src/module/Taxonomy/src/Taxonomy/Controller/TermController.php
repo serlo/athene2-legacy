@@ -18,17 +18,18 @@ class TermController extends AbstractController
 {
     use \User\Manager\UserManagerAwareTrait;
 
-    public function organizeAction(){
+    public function organizeAction()
+    {
         $term = $this->getTerm();
-    
+        
         $view = new ViewModel(array(
-            'term' => $term,
+            'term' => $term
         ));
-    
+        
         $view->setTemplate('taxonomy/term/organize');
         return $view;
     }
-    
+
     public function updateAction()
     {
         $id = $this->params('id');
@@ -52,18 +53,10 @@ class TermController extends AbstractController
             if ($form->isValid()) {
                 $this->getTaxonomyManager()->updateTerm($this->params('id'), $form->getData());
                 
-                $this->getEventManager()->trigger('update', $this, array(
-                    'term' => $term,
-                    'user' => $this->getUserManager()->getUserFromAuthenticator(),
-                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
-                    'post' => $form->getData()
-                ));
-                
-                $this->getTaxonomyManager()
-                    ->getObjectManager()
-                    ->flush();
+                $this->getTaxonomyManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
-                $this->redirect()->toUrl($this->referer()->fromStorage());
+                $this->redirect()->toUrl($this->referer()
+                    ->fromStorage());
             }
         }
         $this->referer()->store();
@@ -74,7 +67,7 @@ class TermController extends AbstractController
     public function createAction()
     {
         $form = new TermForm();
-
+        
         $form->setData(array(
             'taxonomy' => $this->params('taxonomy'),
             'parent' => $this->params('parent', null)
@@ -100,19 +93,11 @@ class TermController extends AbstractController
                 $term = $this->getTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
                     ->getLanguageFromRequest());
                 
-                $this->getEventManager()->trigger('create', $this, array(
-                    'term' => $term,
-                    'user' => $this->getUserManager()->getUserFromAuthenticator(),
-                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
-                    'post' => $form->getData()
-                ));
+                $this->getTaxonomyManager()->flush();
                 
-                $this->getTaxonomyManager()
-                    ->getObjectManager()
-                    ->flush();
-
                 $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
-                $this->redirect()->toUrl($this->referer()->fromStorage());
+                $this->redirect()->toUrl($this->referer()
+                    ->fromStorage());
             }
         }
         $this->referer()->store();
@@ -121,16 +106,16 @@ class TermController extends AbstractController
 
     public function orderAssociatedAction()
     {
-        $association = $this->params('association');        
+        $association = $this->params('association');
         $termService = $this->getTerm($this->params('term'));
         
-        if($this->getRequest()->isPost()){
+        if ($this->getRequest()->isPost()) {
             $associations = $this->params()->fromPost('sortable', array());
             $i = 0;
             
             foreach ($associations as $a) {
                 $termService->positionAssociatedObject($association, $a['id'], $i);
-                $i++;
+                $i ++;
             }
             
             $this->getTaxonomyManager()
@@ -138,7 +123,7 @@ class TermController extends AbstractController
                 ->flush();
             
             return '';
-        }   
+        }
         
         $associations = $termService->getAssociated($association);
         $view = new ViewModel(array(
@@ -148,7 +133,7 @@ class TermController extends AbstractController
         ));
         $view->setTemplate('taxonomy/term/order-associated');
         
-        return $view;     
+        return $view;
     }
 
     public function orderAction()
@@ -163,32 +148,18 @@ class TermController extends AbstractController
 
     protected function iterWeight($terms, $parent = NULL)
     {
-        $weight = 1;
+        $position = 1;
         foreach ($terms as $term) {
-            $entity = $this->getTerm($term['id']);
-            $oldParent = $entity->getParent();
-            if ($parent) {
-                $entity->setParent($this->getTerm($parent));
-            } else {
-                $entity->setParent(NULL);
-            }
-            $entity->setPosition($weight);
-            $this->getTaxonomyManager()->getObjectManager()->persist($entity);
             
-            if($oldParent !== $entity->getParent()){
-                $this->getEventManager()->trigger('parent-change', $this, array(
-                    'term' => $entity,
-                    'old' => $oldParent,
-                    'new' => $entity->getParent(),
-                    'user' => $this->getUserManager()->getUserFromAuthenticator(),
-                    'language' => $this->getLanguageManager()->getLanguageFromRequest(),
-                ));
-            }
+            $this->getTaxonomyManager()->updateTerm($term['id'], [
+                'parent' => $parent,
+                'position' => $position
+            ]);
             
             if (isset($term['children'])) {
                 $this->iterWeight($term['children'], $term['id']);
             }
-            $weight ++;
+            $position ++;
         }
         return true;
     }

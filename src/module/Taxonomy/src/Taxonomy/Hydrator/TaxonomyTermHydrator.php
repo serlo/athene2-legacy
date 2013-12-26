@@ -67,7 +67,8 @@ class TaxonomyTermHydrator implements HydratorInterface
             ],
             'taxonomy' => $object->getTaxonomy(),
             'parent' => $object->getParent(),
-            'description' => $object->getDescription()
+            'description' => $object->getDescription(),
+            'position' => $object->getPosition()
         ];
     }
 
@@ -89,6 +90,7 @@ class TaxonomyTermHydrator implements HydratorInterface
         $object->setTerm($data['term']);
         $object->setDescription($data['description']);
         $object->setParent($data['parent']);
+        $object->setPosition($data['position']);
         
         return $object;
     }
