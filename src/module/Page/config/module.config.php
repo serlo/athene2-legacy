@@ -9,7 +9,7 @@ return array(
     ),
     'uuid_router' => array(
         'routes' => array(
-            'pageRepository' => '/page/view/%d',
+            'pageRepository' => '/page/view/%d'
         )
     ),
     'router' => array(
@@ -126,12 +126,11 @@ return array(
             )
         )
     ),
-
+    
     'class_resolver' => array(
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
         'Page\Entity\PageRevisionInterface' => 'Page\Entity\PageRevision',
-        'Page\Entity\PageInterface' => 'Page\Entity\Page',
-        'Page\Service\PageServiceInterface' => 'Page\Service\PageService'
+        'Page\Entity\PageInterface' => 'Page\Entity\Page'
     ),
     'zfc_rbac' => array(
         
@@ -157,7 +156,12 @@ return array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'editRepository','createRevision','trashRevision','deleteRevision','deleteRepository','showRevisions'
+                        'editRepository',
+                        'createRevision',
+                        'trashRevision',
+                        'deleteRevision',
+                        'deleteRepository',
+                        'showRevisions'
                     ),
                     'role_provider' => 'Page\Provider\FirewallHydrator'
                 )
@@ -170,15 +174,7 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-            
-                'Page\Service\PageService' => array(
-                    'setRepositoryManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    )
-                ),
+
                 'Page\Controller\IndexController' => array(
                     'setObjectManager' => array(
                         'required' => 'true'
@@ -197,6 +193,9 @@ return array(
                     )
                 ),
                 'Page\Manager\PageManager' => array(
+                    'setRepositoryManager' => array(
+                        'required' => 'true'
+                    ),
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
@@ -216,7 +215,8 @@ return array(
                         'required' => true
                     ),
                     'setLicenseManager' => array(
-                        'required' => true)
+                        'required' => true
+                    )
                 )
             )
         ),

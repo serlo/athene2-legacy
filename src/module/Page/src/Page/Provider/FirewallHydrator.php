@@ -36,13 +36,13 @@ class FirewallHydrator
         if ($id === null) {
             $id = $routeMatch->getParam('id');
         }
-        $pageService = $this->getPageManager()->getPageRepository($id);
+        $pageRepository = $this->getPageManager()->getPageRepository($id);
         
-        $allRoles = $pageService->findAllRoles();
+        $allRoles = $this->getPageManager()->findAllRoles();
         $array = array();
         
        foreach ($allRoles as $role) {
-            if ($pageService->hasRole($role))
+            if ($pageRepository->hasRole($role))
                 $array[] = $role->getName();
         }
         
