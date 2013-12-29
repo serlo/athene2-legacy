@@ -9,9 +9,9 @@ use Common\Normalize\Normalized;
 class PageService implements PageServiceInterface, Normalizable
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait;
-    use \Versioning\RepositoryManagerAwareTrait;
-    use\Common\Traits\EntityAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait;
+    use\Versioning\RepositoryManagerAwareTrait;
+    use \Common\Traits\EntityAwareTrait;
 
     /**
      *
@@ -41,16 +41,8 @@ class PageService implements PageServiceInterface, Normalizable
 
     public function getCurrentRevision()
     {
-        return $this->getRepository()->getCurrentRevision();
-    }
-
-    public function getRevision($id)
-    {
-        $revision = $this->getRepository()->getRevision($id);
-        if (! $revision->isTrashed())
-            return $revision;
-        else
-            return null;
+        $repository = $this->getRepository();
+        return $repository->getCurrentRevision();
     }
 
     public function hasCurrentRevision()
@@ -67,6 +59,18 @@ class PageService implements PageServiceInterface, Normalizable
     public function setRole(RoleInterface $role)
     {
         $this->entity->setRole($role);
+    }
+
+    public function getRoles()
+    {
+        $this->entity->getRoles();
+    }
+
+    public function findAllRoles()
+    {
+        return $this->getObjectManager()
+            ->getRepository('User\Entity\Role')
+            ->findAll();
     }
 
     public function getRoleById($id)
@@ -89,42 +93,30 @@ class PageService implements PageServiceInterface, Normalizable
     {
         return $this->entity->hasRole($role);
     }
-
-    public function hasPermission($userService)
-    {
-        if ($userService == null)
-            return false;
-        
-        $roles = $this->entity->getRoles();
-        foreach ($roles as $roleEntity) {
-            if ($userService->hasRole($roleEntity->getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /*
+     * public function hasPermission($userService) { if ($userService == null) return false; $roles = $this->entity->getRoles(); foreach ($roles as $roleEntity) { if ($userService->hasRole($roleEntity->getName())) { return true; } } return false; }
+     */
     protected function getRepository()
     {
-        return $this->getRepositoryManager()->getRepository($this->entity);
+        $repositoryManager = $this->getRepositoryManager();
+        $repository = $repositoryManager->getRepository($this->entity);
+        return $repository;
     }
 
     public function deleteRevision($id)
     {
         $repository = $this->getRepository();
-        $revision = $this->getRevision($id);
+        $revision = $this->getManager()->getRevision($id);
         $repository->removeRevision($id);
         $this->getObjectManager()->remove($revision);
-        $this->getObjectManager()->flush();
+        
         return $this;
     }
 
     public function trashRevision($id)
     {
-        $repository = $this->getRepository();
-        $revision = $this->getRevision($id);
+        $revision = $this->getManager()->getRevision($id);
         $revision->trash();
-        $this->getObjectManager()->flush();
         return $this;
     }
 

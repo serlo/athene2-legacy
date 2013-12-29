@@ -85,7 +85,7 @@ return array(
                                     'route' => '/delete',
                                     'defaults' => array(
                                         'controller' => 'Page\Controller\IndexController',
-                                        'action' => 'deleteRepository'
+                                        'action' => 'trashRepository'
                                     )
                                 )
                             ),
@@ -106,7 +106,7 @@ return array(
                                     'route' => '/:revisionid/delete',
                                     'defaults' => array(
                                         'controller' => 'Page\Controller\IndexController',
-                                        'action' => 'deleteRevision'
+                                        'action' => 'trashRevision'
                                     )
                                 )
                             ),
@@ -126,40 +126,21 @@ return array(
             )
         )
     ),
-    'service_manager' => array(
-        'invokables' => array(),
-        
-        'factories' => array(
-            'Page\Provider\FirewallHydrator' => function ($sm)
-            {
-                $srv = new \Page\Provider\FirewallHydrator();
-                // $srv->setObjectManager($sm->get('EntityManager'));
-                $srv->setRouteMatch($sm->get('RouteMatch'));
-                $srv->setLanguageManager($sm->get('Language\Manager\LanguageManager'));
-                $srv->setPageManager($sm->get('Page\Manager\PageManager'));
-                return $srv;
-            }
-        )
-    ),
+
     'class_resolver' => array(
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
         'Page\Entity\PageRevisionInterface' => 'Page\Entity\PageRevision',
         'Page\Entity\PageInterface' => 'Page\Entity\Page',
         'Page\Service\PageServiceInterface' => 'Page\Service\PageService'
     ),
-    'zfcrbac' => array(
-        'firewalls' => array(
-            'ZfcRbac\Firewall\Controller' => array(
+    'zfc_rbac' => array(
+        
+        'guards' => array(
+            'ZfcRbac\Guard\ControllerGuard' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
                         'createRepository',
-                        'showRevisions',
-                        'setCurrentRevision',
-                        'showRevision',
-                        'createRevision',
-                        'deleteRevision',
-                        'deleteRepository',
                         'index'
                     ),
                     'roles' => 'moderator'
@@ -167,17 +148,16 @@ return array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'article',
-                        'editRepository'
+                        'article'
                     ),
                     'roles' => 'guest'
                 )
             ),
-            'Common\Firewall\HydratableController' => array(
+            'Common\Guard\HydratableControllerGuard' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'editRepository'
+                        'editRepository','createRevision','trashRevision','deleteRevision','deleteRepository','showRevisions'
                     ),
                     'role_provider' => 'Page\Provider\FirewallHydrator'
                 )
@@ -190,14 +170,7 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                'Page\Provider\FirewallHydrator' => array(
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setPageManager' => array(
-                        'required' => 'true'
-                    )
-                ),
+            
                 'Page\Service\PageService' => array(
                     'setRepositoryManager' => array(
                         'required' => 'true'
@@ -241,7 +214,9 @@ return array(
                     ),
                     'setUserManager' => array(
                         'required' => true
-                    )
+                    ),
+                    'setLicenseManager' => array(
+                        'required' => true)
                 )
             )
         ),

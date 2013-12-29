@@ -3,6 +3,7 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
+ * @author  Jakob Pfab (jakob.pfab@serlo.org)
  * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
@@ -11,56 +12,40 @@
  */
 namespace Page\Provider;
 
-use Page\Entity\PageRepositoryInterface;
-use Page\Exception;
-use Page\Manager\PageManager;
-use Zend\Http\Request;
-use Language\Manager\LanguageManager;
-use Zend\Mvc\Router\RouteMatch;
-
+use Zend\Mvc\MvcEvent;
 
 class FirewallHydrator
 {
     
-    use \Page\Manager\PageManagerAwareTrait;
-    use  \Language\Manager\LanguageManagerAwareTrait;
-	use \Common\Traits\RouterAwareTrait;
-    
-	/**
-	 * 
-	 * @var RouteMatch
-	 */
-	protected $routeMatch;
-	
-    /**
-	 * @return the $routeMatch
-	 */
-	public function getRouteMatch() {
-		return $this->routeMatch;
-	}
+    use\Page\Manager\PageManagerAwareTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-	/**
-	 * @param \Zend\Mvc\Router\RouteMatch $routeMatch
-	 */
-	public function setRouteMatch(RouteMatch $routeMatch) {
-		$this->routeMatch = $routeMatch;
-	}
+    protected $event;
 
-	public function getRoles()
+    public function __construct(MvcEvent $event)
     {
-        
-    	
-    	
-    	
-        return array(
-            'sysadmin'
-        // 'roles' => $this->getObject()->getRoles(),
-                );
+        $this->event = $event;
     }
 
-    protected function validObject($object)
+    public function getRoles()
     {
-        if (! $object instanceof PageRepositoryInterface)
-            throw new Exception\InvalidArgumentException(sprintf('Expected PostInterface but got `%s`', get_class($object)));
+        $this->setPageManager($this->getServiceLocator()
+            ->get('Page\Manager\PageManager'));
+        $routeMatch = $this->event->getRouteMatch();
+        $id = $routeMatch->getParam('repositoryid');
+        if ($id === null) {
+            $id = $routeMatch->getParam('id');
+        }
+        $pageService = $this->getPageManager()->getPageRepository($id);
+        
+        $allRoles = $pageService->findAllRoles();
+        $array = array();
+        
+       foreach ($allRoles as $role) {
+            if ($pageService->hasRole($role))
+                $array[] = $role->getName();
+        }
+        
+        return $array;
     }
 }

@@ -20,12 +20,12 @@ class CreateRepositoryFilter extends InputFilter
     public function __construct ($objectManager)
     {        
 
-       
+       /*
         $this->add(array(
             'name' => 'slug',
             'required' => true
 
         ));
-     
+     */
     }
 }

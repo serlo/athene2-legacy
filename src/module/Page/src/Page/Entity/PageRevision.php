@@ -6,6 +6,8 @@ use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
 
 /**
  * A Page Revision.
@@ -13,7 +15,7 @@ use Uuid\Entity\UuidEntity;
  * @ORM\Entity
  * @ORM\Table(name="page_revision")
  */
-class PageRevision extends UuidEntity implements RevisionInterface, PageRevisionInterface
+class PageRevision extends UuidEntity implements RevisionInterface, PageRevisionInterface, Normalizable
 {
 
     /**
@@ -59,8 +61,9 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      */
     public function delete()
     {
-        return $this;
-    }
+    $this->page_repository->removeRevision($this);
+    return $this;
+     }
     
     /*
      * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::trash()
@@ -100,9 +103,18 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
         return $this->date;
     }
 
+    public function setContent($content){
+        $this->content=$content;
+        return $this;
+    }
     public function getContent()
     {
         return $this->content;
+    }
+    
+    public function setTitle($title){
+        $this->title=$title;
+        return $this;
     }
 
     public function getTitle()
@@ -142,7 +154,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
     public function populate(array $data = array())
     {
         $this->injectFromArray('author', $data);
-        $this->injectFromArray('username', $data);
         $this->injectFromArray('title', $data);
         $this->injectFromArray('content', $data);
         $this->injectFromArray('date', $data);
@@ -157,4 +168,21 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
             $this->$key = $default;
         }
     }
+	/* (non-PHPdoc)
+     * @see \Common\Normalize\Normalizable::normalize()
+     */
+    public function normalize()
+    {
+        $normalized = new Normalized();
+        $normalized->setTitle($this
+            ->getUuid());
+        $normalized->setRouteName('page/article/revision');
+        $normalized->setRouteParams(array(
+            'repositoryid' => $this->getRepository()->getId(),
+            'id' => $this->getId()
+        ));
+        return $normalized;
+        
+    }
+
 }
