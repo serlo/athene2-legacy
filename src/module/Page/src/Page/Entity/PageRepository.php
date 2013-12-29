@@ -9,6 +9,9 @@ use User\Entity\RoleInterface;
 use License\Entity\LicenseAwareInterface;
 use License\Entity\LicenseInterface;
 
+use Common\Normalize\Normalizable;
+use Common\Normalize\Normalized;
+
 /**
  * A page repository.
  *
@@ -16,7 +19,7 @@ use License\Entity\LicenseInterface;
  * @ORM\Table(name="page_repository")
  * 
  */
-class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface,LicenseAwareInterface 
+class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface,LicenseAwareInterface,Normalizable 
 {
 
     /**
@@ -217,8 +220,18 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
         
     }
     
-
-
+    public function normalize()
+    {
+        $normalized = new Normalized();
+        $normalized->setTitle($this
+            ->getUuid());
+        $normalized->setRouteName('page/article');
+        $normalized->setRouteParams(array(
+            'repositoryid' => $this->getId()
+        ));
+        return $normalized;
+    
+    }
     
 }
 

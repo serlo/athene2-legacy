@@ -85,7 +85,7 @@ return array(
                                     'route' => '/delete',
                                     'defaults' => array(
                                         'controller' => 'Page\Controller\IndexController',
-                                        'action' => 'deleteRepository'
+                                        'action' => 'trashRepository'
                                     )
                                 )
                             ),
@@ -106,7 +106,7 @@ return array(
                                     'route' => '/:revisionid/delete',
                                     'defaults' => array(
                                         'controller' => 'Page\Controller\IndexController',
-                                        'action' => 'deleteRevision'
+                                        'action' => 'trashRevision'
                                     )
                                 )
                             ),
@@ -126,21 +126,7 @@ return array(
             )
         )
     ),
-    'service_manager' => array(
-        'invokables' => array(),
-        
-       /* 'factories' => array(
-            'Page\Provider\FirewallHydrator' => function ($sm)
-            {
-                $srv = new \Page\Provider\FirewallHydrator();
-                // $srv->setObjectManager($sm->get('EntityManager'));
-                $srv->setPageManager($sm->get('Page\Manager\PageManager'));
-               // $srv->setServiceLocator($sm);
-                return $srv;
-            }
-            
-        )*/
-    ),
+
     'class_resolver' => array(
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
         'Page\Entity\PageRevisionInterface' => 'Page\Entity\PageRevision',
@@ -148,18 +134,13 @@ return array(
         'Page\Service\PageServiceInterface' => 'Page\Service\PageService'
     ),
     'zfc_rbac' => array(
+        
         'guards' => array(
-          /*  'ZfcRbac\Firewall\Controller' => array(
+            'ZfcRbac\Guard\ControllerGuard' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
                         'createRepository',
-                        'showRevisions',
-                        'setCurrentRevision',
-                        'showRevision',
-                        'createRevision',
-                        'deleteRevision',
-                        'deleteRepository',
                         'index'
                     ),
                     'roles' => 'moderator'
@@ -167,17 +148,16 @@ return array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'article',
-                        'editRepository'
+                        'article'
                     ),
                     'roles' => 'guest'
                 )
-            ),*/
+            ),
             'Common\Guard\HydratableControllerGuard' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
-                        'editRepository'
+                        'editRepository','createRevision','trashRevision','deleteRevision','deleteRepository','showRevisions'
                     ),
                     'role_provider' => 'Page\Provider\FirewallHydrator'
                 )

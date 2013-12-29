@@ -154,10 +154,7 @@ class PageManager implements PageManagerInterface
         $revision->setRepository($repository);
         $repositoryService=$pageservice->getRepositoryManager()
         ->getRepository($repository);
-        $repositoryService->addRevision($revision);/*
-        $pageservice->getRepositoryManager()
-            ->getRepository($repository)
-            ->addRevision($revision);*/
+        $repositoryService->addRevision($revision);
         $repositoryService->checkOutRevision($revision->getId());
         
         $this->getObjectManager()->persist($repository);
@@ -174,4 +171,6 @@ class PageManager implements PageManagerInterface
             'language' => $language->getId()
         ));
     }
+    
+   
 }

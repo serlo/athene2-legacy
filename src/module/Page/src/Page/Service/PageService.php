@@ -9,9 +9,9 @@ use Common\Normalize\Normalized;
 class PageService implements PageServiceInterface, Normalizable
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait;
-    use \Versioning\RepositoryManagerAwareTrait;
-    use\Common\Traits\EntityAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait;
+    use\Versioning\RepositoryManagerAwareTrait;
+    use \Common\Traits\EntityAwareTrait;
 
     /**
      *
@@ -61,15 +61,18 @@ class PageService implements PageServiceInterface, Normalizable
         $this->entity->setRole($role);
     }
 
-    public function getRoles(){
+    public function getRoles()
+    {
         $this->entity->getRoles();
     }
-    
-    public function findAllRoles(){
-       $this->getObjectManager()->getRepository('User\Entity\Role')
+
+    public function findAllRoles()
+    {
+        return $this->getObjectManager()
+            ->getRepository('User\Entity\Role')
             ->findAll();
     }
-    
+
     public function getRoleById($id)
     {
         $repository = $this->getObjectManager()->getRepository('User\Entity\Role');
@@ -90,25 +93,13 @@ class PageService implements PageServiceInterface, Normalizable
     {
         return $this->entity->hasRole($role);
     }
-/*
-    public function hasPermission($userService)
-    {
-        if ($userService == null)
-            return false;
-        
-        $roles = $this->entity->getRoles();
-        foreach ($roles as $roleEntity) {
-            if ($userService->hasRole($roleEntity->getName())) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
+    /*
+     * public function hasPermission($userService) { if ($userService == null) return false; $roles = $this->entity->getRoles(); foreach ($roles as $roleEntity) { if ($userService->hasRole($roleEntity->getName())) { return true; } } return false; }
+     */
     protected function getRepository()
     {
         $repositoryManager = $this->getRepositoryManager();
-        $repository =  $repositoryManager->getRepository($this->entity);
+        $repository = $repositoryManager->getRepository($this->entity);
         return $repository;
     }
 
@@ -118,7 +109,7 @@ class PageService implements PageServiceInterface, Normalizable
         $revision = $this->getManager()->getRevision($id);
         $repository->removeRevision($id);
         $this->getObjectManager()->remove($revision);
-
+        
         return $this;
     }
 

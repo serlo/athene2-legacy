@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -11,7 +12,6 @@
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Common;
-
 return array(
     'zfc_rbac' => [
         'guard_manager' => [

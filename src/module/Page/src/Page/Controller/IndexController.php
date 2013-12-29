@@ -174,13 +174,25 @@ class IndexController extends AbstractActionController
     
     public function trashRevisionAction()
     {
-        $pageService = $this->getPageService();
         $id = $this->params('revisionid');
-        
-        $pageService->trashRevision($id);
+        $revision = $this->getPageManager()->getRevision($id);
+        $revision->setTrashed(true);
+        $this->getObjectManager()->persist($revision);
+        $this->getObjectManager()->flush();
         $this->redirect()->toRoute('page/article/revisions',array('repositoryid'=>$this->params('repositoryid')));
     }
 
+    public function trashRepositoryAction()
+    {
+        $pageService = $this->getPageService();
+        $repository = $pageService->getEntity();
+        $repository->setTrashed(true);
+        $this->getObjectManager()->persist($repository);
+        $this->getObjectManager()->flush();
+        $this->redirect()->toRoute('page');
+    }
+    
+    
     public function deleteRevisionAction()
     {
         $id = $this->params('revisionid');

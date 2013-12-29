@@ -12,52 +12,40 @@
  */
 namespace Page\Provider;
 
-use Page\Entity\PageRepositoryInterface;
-use Page\Exception;
-use Page\Manager\PageManager;
-use Zend\Http\Request;
-use Language\Manager\LanguageManager;
-use Zend\Mvc\Router\RouteMatch;
-use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\MvcEvent;
-
 
 class FirewallHydrator
 {
     
-    use \Page\Manager\PageManagerAwareTrait;
-	use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-	
+    use\Page\Manager\PageManagerAwareTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-	protected $event;
-	
+    protected $event;
 
-	public function __construct(MvcEvent $event){
-	    $this->event=$event;
-
-	    
-	}
-	
-	
-	public function getRoles()
+    public function __construct(MvcEvent $event)
     {
-        $this->setPageManager($this->getServiceLocator()->get('Page\Manager\PageManager'));
+        $this->event = $event;
+    }
+
+    public function getRoles()
+    {
+        $this->setPageManager($this->getServiceLocator()
+            ->get('Page\Manager\PageManager'));
         $routeMatch = $this->event->getRouteMatch();
         $id = $routeMatch->getParam('repositoryid');
-        if ($id==null) $id = $routeMatch->getParam('id');
-        $pageService =  $this->getPageManager()->getPageRepository($id);
- 
+        if ($id === null) {
+            $id = $routeMatch->getParam('id');
+        }
+        $pageService = $this->getPageManager()->getPageRepository($id);
         
-        $allRoles= $pageService->findAllRoles();
+        $allRoles = $pageService->findAllRoles();
         $array = array();
-        $i =  1;
-        while ($i<=$pageService->countRoles()){
-            if ($pageService->hasRole($pageService->getRoleById($i))) $array[]=$pageService->getRoleById($i)->getName();
-            $i++;
+        
+       foreach ($allRoles as $role) {
+            if ($pageService->hasRole($role))
+                $array[] = $role->getName();
         }
         
         return $array;
     }
-    
-
 }
