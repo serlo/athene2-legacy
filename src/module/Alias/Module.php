@@ -13,16 +13,18 @@ namespace Alias;
 
 class Module
 {
-    protected $listeners = array(
+
+    public static $listeners = array(
         'Alias\Listener\BlogControllerListener',
-        'Alias\Listener\PageControllerListener'
+        'Alias\Listener\PageControllerListener',
+        'Alias\Listener\RepositoryControllerListener'
     );
-    
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -33,14 +35,14 @@ class Module
             )
         );
     }
-    
+
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        foreach ($this->listeners as $listener) {
+        foreach (self::$listeners as $listener) {
             $e->getApplication()
-            ->getEventManager()
-            ->getSharedManager()
-            ->attachAggregate($e->getApplication()
+                ->getEventManager()
+                ->getSharedManager()
+                ->attachAggregate($e->getApplication()
                 ->getServiceManager()
                 ->get($listener));
         }

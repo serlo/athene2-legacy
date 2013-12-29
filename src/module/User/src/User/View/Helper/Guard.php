@@ -68,7 +68,7 @@ class Guard extends AbstractHelper
     /**
      *
      * @param Application $application            
-     * @return $this
+     * @return self
      */
     public function setApplication(Application $application)
     {
@@ -79,7 +79,7 @@ class Guard extends AbstractHelper
     /**
      *
      * @param GuardPluginManager $setGuardPluginManager            
-     * @return $this
+     * @return self
      */
     public function setGuardPluginManager(GuardPluginManager $setGuardPluginManager)
     {
@@ -99,7 +99,7 @@ class Guard extends AbstractHelper
     /**
      *
      * @param RouteInterface $router            
-     * @return $this
+     * @return self
      */
     public function setRouter(RouteInterface $router)
     {

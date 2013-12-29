@@ -60,7 +60,7 @@ interface RelatedContentManagerInterface
     /**
      *
      * @param int $id            
-     * @return $this
+     * @return self
      */
     public function removeRelatedContent($id);
 
@@ -68,7 +68,7 @@ interface RelatedContentManagerInterface
      *
      * @param int $holder            
      * @param int $position            
-     * @return $this
+     * @return self
      */
     public function positionHolder($holder, $position);
 }

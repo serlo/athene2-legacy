@@ -15,11 +15,12 @@ class Module
 {
 
     public static $listeners = array(
-        'Event\Listener\RepositoryPluginControllerListener',
-        'Event\Listener\DiscussionControllerListener',
-        'Event\Listener\TaxonomyTermControllerListener',
-        'Event\Listener\UuidControllerListener',
-        'Event\Listener\EntityControllerListener'
+        'Event\Listener\RepositoryManagerListener',
+        'Event\Listener\DiscussionManagerListener',
+        'Event\Listener\TaxonomyManagerListener',
+        'Event\Listener\UuidManagerListener',
+        'Event\Listener\LinkServiceListener',
+        'Event\Listener\EntityManagerListener'
     );
 
     public function getConfig()
@@ -41,12 +42,12 @@ class Module
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
         foreach (static::$listeners as $listener) {
+            $serviceManager = $e->getApplication()->getServiceManager();
+            $listener = $serviceManager->get($listener);
             $e->getApplication()
                 ->getEventManager()
                 ->getSharedManager()
-                ->attachAggregate($e->getApplication()
-                ->getServiceManager()
-                ->get($listener));
+                ->attachAggregate($listener);
         }
     }
 }

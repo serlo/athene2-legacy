@@ -3,108 +3,108 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
-return array(
-    array(
+return [
+    [
         'label' => 'Mathe',
         'route' => 'subject',
-        'params' => array(
+        'params' => [
             'subject' => 'mathe'
-        ),
-        'pages' => array(
-            array(
+        ],
+        'pages' => [
+            [
                 'label' => 'Startseite',
                 'route' => 'subject',
-                'params' => array(
+                'params' => [
                     'subject' => 'mathe'
-                ),
+                ],
                 'icon' => 'home'
-            ),
-            array(
+            ],
+            [
                 'label' => 'Lehrplan',
-                'route' => 'subject/plugin/taxonomy/curriculum',
-                'params' => array(
+                'route' => 'subject/taxonomy',
+                'params' => [
                     'subject' => 'mathe'
-                ),
+                ],
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
-                'options' => array(
-                    'parent' => array(
+                'options' => [
+                    'parent' => [
                         'slug' => 'mathe',
                         'type' => 'subject'
-                    ),
-                    'types' => array(
+                    ],
+                    'types' => [
                         'school-type',
                         'curriculum'
-                    ),
+                    ],
                     'language' => 'de',
-                    'route' => 'subject/plugin/taxonomy/topic',
+                    'route' => 'subject/taxonomy',
                     'max_depth' => 10,
-                    'params' => array(
+                    'params' => [
                         'subject' => 'mathe'
-                    )
-                ),
+                    ]
+                ],
                 'icon' => 'map-marker'
-            ),
-            array(
+            ],
+            [
                 'label' => 'Lernen',
-                'route' => 'subject/plugin/taxonomy/topic',
-                'params' => array(
+                'route' => 'subject/taxonomy',
+                'params' => [
                     'subject' => 'mathe'
-                ),
+                ],
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
-                'options' => array(
-                    'parent' => array(
+                'options' => [
+                    'parent' => [
                         'slug' => 'mathe',
                         'type' => 'subject'
-                    ),
-                    'types' => array(
+                    ],
+                    'types' => [
                         'abstract-topic',
                         'topic'
-                    ),
+                    ],
                     'language' => 'de',
-                    'route' => 'subject/plugin/taxonomy/topic',
+                    'route' => 'subject/taxonomy',
                     'max_depth' => 10,
-                    'params' => array(
+                    'params' => [
                         'subject' => 'mathe'
-                    )
-                ),
+                    ]
+                ],
                 'icon' => 'book'
-            ),
-            array(
+            ],
+            [
                 'label' => 'Verwalten',
                 'uri' => '#',
-                'pages' => array(
-                    array(
+                'pages' => [
+                    [
                         'label' => 'Neue Bearbeitungen',
-                        'route' => 'subject/plugin/entity',
-                        'params' => array(
+                        'route' => 'subject/entity',
+                        'params' => [
                             'subject' => 'mathe',
                             'action' => 'unrevised'
-                        )
-                    ),
-                    array(
+                        ]
+                    ],
+                    [
                         'label' => 'Papierkorb',
-                        'route' => 'subject/plugin/entity',
-                        'params' => array(
+                        'route' => 'subject/entity',
+                        'params' => [
                             'subject' => 'mathe',
                             'action' => 'trash-bin'
-                        )
-                    ),
-                    array(
+                        ]
+                    ],
+                    [
                         'label' => 'Taxonomie verwalten',
                         'route' => 'taxonomy/term/organize',
-                        'params' => array(
+                        'params' => [
                             'id' => '5'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'icon' => 'cog'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

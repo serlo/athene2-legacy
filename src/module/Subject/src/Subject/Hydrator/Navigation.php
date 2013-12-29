@@ -16,7 +16,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class Navigation implements HydratorInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+    use \Subject\Manager\SubjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
 
     protected $path;
 

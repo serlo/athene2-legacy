@@ -15,15 +15,13 @@ use Zend\Mvc\Router\RouteMatch;
 use Contexter\Entity;
 use Contexter\Adapter\AdapterInterface;
 use Contexter\Exception;
-use Zend\Stdlib\ArrayUtils;
-use Contexter\Collection\ContextCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Http\Request;
-use Contexter\Entity\TypeInterface;
+use Type\Entity\TypeInterface;
 
 class Router implements RouterInterface
 {
-    use\Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\ContexterAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use \Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\Manager\ContextManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     /**
      *
@@ -58,8 +56,9 @@ class Router implements RouterInterface
             $routeMatch = $this->matchUri($uri);
             $this->setRouteMatch($routeMatch);
         } else {
-            if (! is_object($this->getRouteMatch()))
+            if (! is_object($this->getRouteMatch())) {
                 throw new \Contexter\Exception\RuntimeException(sprintf('No RouteMatch set!'));
+            }
         }
         
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
@@ -69,7 +68,7 @@ class Router implements RouterInterface
         );
         
         if ($type) {
-            $type = $this->getContexter()->findTypeByName($type);
+            $type = $this->getContextManager()->findTypeByName($type);
         }
         
         $routes = $this->getObjectManager()
@@ -99,7 +98,7 @@ class Router implements RouterInterface
         $requestedAction = $this->getRouteMatch()->getParam('action');
         $adapters = $this->getOption('adapters');
         foreach ($adapters as $adapter) {
-            foreach($adapter['controllers'] as $controller){
+            foreach ($adapter['controllers'] as $controller) {
                 $action = isset($controller['action']) ? ($controller['action'] === $requestedAction) : true;
                 if ($controller['controller'] === $requestedController && $action) {
                     $controller = $requestedController;
@@ -112,6 +111,7 @@ class Router implements RouterInterface
                 }
             }
         }
+        
         throw new Exception\RuntimeException(sprintf('No suitable adapter found for controller `%s`', $requestedController));
     }
 
@@ -137,7 +137,7 @@ class Router implements RouterInterface
     /**
      *
      * @param RouteMatch $routeMatch            
-     * @return $this
+     * @return self
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {
@@ -174,7 +174,7 @@ class Router implements RouterInterface
         /* @var $route Entity\RouteInterface */
         foreach ($routes as $route) {
             if ($route->getContext()->getType() === $type && $this->matchesParameters($route)) {
-                $context = $this->getContexter()->getContext($route->getContext()
+                $context = $this->getContextManager()->getContext($route->getContext()
                     ->getId());
                 $result->add($context);
             }
@@ -203,7 +203,7 @@ class Router implements RouterInterface
 
     protected function matchesParameter(Entity\RouteParameterInterface $parameter)
     {
-        $parameters = $this->getAdapter()->getParameters();
+        $parameters = $this->getAdapter()->getParams();
         if (array_key_exists($parameter->getKey(), $parameters) && $parameters[$parameter->getKey()] === $parameter->getValue()) {
             return true;
         }

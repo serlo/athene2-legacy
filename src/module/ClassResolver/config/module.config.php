@@ -12,16 +12,17 @@
 namespace ClassResolver;
 
 return array(
-    'service_manager' => array(
-        'factories' => array(
-            'ClassResolver\ClassResolver' => (function ($sm)
-            {
-                $config = $sm->get('config')['class_resolver'];
-                $instance = new ClassResolver($config);
-                $instance->setServiceLocator($sm);
-                return $instance;
-            })
-        )
-    ),
-    'class_resolver' => array()
+    'service_manager' => [
+        'factories' => [
+            'ClassResolver\ClassResolver' => 'ClassResolver\ClassResolverFactory'
+        ]
+    ],
+    'di' => [
+        'instance' => [
+            'preferences' => [
+                __NAMESPACE__ . '\ClassResolverInterface' => __NAMESPACE__ . '\ClassResolver'
+            ]
+        ]
+    ],
+    'class_resolver' => []
 );

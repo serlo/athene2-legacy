@@ -7,95 +7,85 @@
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c) 2013 Gesellschaft f√ºr freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Subject\Manager;
 
-use Subject\Exception\InvalidArgumentException;
+use Language\Entity\LanguageInterface;
+use Entity\Entity\EntityInterface;
+use Doctrine\Common\Collections\Collection;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Service\LanguageServiceInterface;
-use Taxonomy\Service\TermServiceInterface;
-use Subject\Exception\RuntimeException;
 
-class SubjectManager extends AbstractManager implements SubjectManagerInterface
+class SubjectManager implements SubjectManagerInterface
 {
-    use \Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Subject\Plugin\PluginManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Taxonomy\Service\TermServiceAwareTrait;
-
-    public function __construct(array $config)
-    {
-        $this->setConfig($config);
-    }
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'taxonomy' => 'subject',
-            'instances' => array(),
-            'plugins' => array()
-        );
-    }
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
     public function getSubject($id)
     {
-        if (! is_numeric($id))
-            throw new InvalidArgumentException();
+        $term = $this->getTaxonomyManager()->getTerm($id);
         
-        if (! $this->hasInstance($id)) {
-            $term = $this->getSharedTaxonomyManager()->getTerm((int) $id);
-            $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));
-        }
-        
-        return $this->getInstance($id);
+        return $term;
     }
 
-    public function findSubjectByString($name, LanguageServiceInterface $language)
+    public function findSubjectByString($name, LanguageInterface $language)
     {
-        if (! is_string($name))
-            throw new InvalidArgumentException();
-        
-        $term = $this->getSharedTaxonomyManager()
-            ->findTaxonomyByName($this->getOption('taxonomy'), $language)
-            ->findTermByAncestors((array) $name);
-        
-        if (! $this->hasInstance($term->getId())) {
-            $this->addInstance($term->getId(), $this->createInstanceFromEntity($term));
-        }
-        
-        return $this->getInstance($term->getId());
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $language);
+        $term = $this->getTaxonomyManager()->findTerm($taxonomy, (array) $name);
+        return $term;
     }
 
-    public function findSubjectsByLanguage(LanguageServiceInterface $language)
+    public function findSubjectsByLanguage(LanguageInterface $language)
     {
-        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName($this->getOption('taxonomy'), $language);
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $language);
+        return $taxonomy->getChildren();
+    }
+
+    public function getTrashedEntities(TaxonomyTermInterface $term)
+    {
+        $entities = $this->getEntities($term);
         $collection = new ArrayCollection();
-        foreach ($taxonomy->getSaplings() as $subject) {
-            $collection->add($this->getSubject($subject->getId()));
-        }
+        $this->iterEntities($entities, $collection, 'isTrashed');
         return $collection;
     }
 
-    private function createInstanceFromEntity(TermServiceInterface $entity)
+    public function getUnrevisedEntities(TaxonomyTermInterface $term)
     {
-        $entity = $entity->getEntity();
-        $name = strtolower($entity->getName());
-        $languageService = $this->getLanguageManager()->getLanguage($entity->getLanguage()->getId());
-        
-        $config = $this->findInstanceConfig($name, $languageService->getCode());
-        
-        $instance = $this->createInstance('Subject\Service\SubjectServiceInterface');
-        $instance->setEntity($entity);
-        $instance->setTermService($this->getSharedTaxonomyManager()
-            ->getTerm($entity->getId()));
-        $instance->setConfig($config);
-        return $instance;
+        $entities = $this->getEntities($term);
+        $collection = new ArrayCollection();
+        $this->iterEntities($entities, $collection, 'isRevised');
+        return $collection;
     }
 
-    private function findInstanceConfig($name, $language)
+    protected function getEntities(TaxonomyTermInterface $term)
     {
-        foreach ($this->getOption('instances') as $instance) {
-            if ($instance['name'] == $name && $instance['language'] == $language)
-                return $instance;
+        return $term->getAssociatedRecursive('entities');
+    }
+
+    protected function iterEntities(Collection $entities, Collection $collection, $callback)
+    {
+        foreach ($entities as $entity) {
+            $this->$callback($entity, $collection);
+            $this->iterLinks($entity, $collection, $callback);
         }
-        throw new RuntimeException(sprintf('Could not find a configuration for `%s - %s`', $name, $language));
+    }
+
+    protected function iterLinks(EntityInterface $entity, $collection, $callback)
+    {
+        $this->iterEntities($entity->getChildren('link'), $collection, $callback);
+    }
+
+    protected function isRevised(EntityInterface $entity, Collection $collection)
+    {
+        if ($entity->isUnrevised() && ! $collection->contains($entity)) {
+            $collection->add($entity);
+        }
+    }
+
+    protected function isTrashed(EntityInterface $entity, Collection $collection)
+    {
+        if ($entity->getTrashed()) {
+            $collection->add($entity);
+        }
     }
 }

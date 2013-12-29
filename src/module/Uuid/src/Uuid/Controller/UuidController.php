@@ -16,7 +16,7 @@ use Zend\View\Model\ViewModel;
 
 class UuidController extends AbstractActionController
 {
-    use\Uuid\Manager\UuidManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Uuid\Manager\UuidManagerAwareTrait;
 
     public function recycleBinAction()
     {
@@ -31,20 +31,10 @@ class UuidController extends AbstractActionController
     public function trashAction()
     {
         $id = $this->params('id');
-        $uuid = $this->getUuidManager()->getUuid($id);
-        $uuid->setTrashed(true);
+        $uuid = $this->getUuidManager()->trashUuid($id);
         
-        $this->getEventManager()->trigger('trash', $this, array(
-            'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
-            'object' => $uuid,
-            'language' => $this->getLanguageManager()
-                ->getLanguageFromRequest()
-        ));
+        $this->getUuidManager()->flush();
         
-        $this->getUuidManager()
-            ->getObjectManager()
-            ->flush();
         $this->redirect()->toReferer();
         return false;
     }
@@ -52,20 +42,10 @@ class UuidController extends AbstractActionController
     public function restoreAction()
     {
         $id = $this->params('id');
-        $uuid = $this->getUuidManager()->getUuid($id);
-        $uuid->setTrashed(false);
+        $uuid = $this->getUuidManager()->restoreUuid($id);
         
-        $this->getEventManager()->trigger('restore', $this, array(
-            'user' => $this->getUserManager()
-                ->getUserFromAuthenticator(),
-            'object' => $uuid,
-            'language' => $this->getLanguageManager()
-                ->getLanguageFromRequest()
-        ));
+        $this->getUuidManager()->flush();
         
-        $this->getUuidManager()
-            ->getObjectManager()
-            ->flush();
         $this->redirect()->toReferer();
         return false;
     }

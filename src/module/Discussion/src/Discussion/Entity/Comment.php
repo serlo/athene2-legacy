@@ -18,8 +18,8 @@ use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Entity\TaxonomyTermAware;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermNodeInterface;
 
 /**
  * Comment ORM Entity
@@ -27,20 +27,21 @@ use Taxonomy\Entity\TaxonomyTermInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
+class Comment extends UuidEntity implements CommentInterface
 {
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
+     * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $object;
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist"})
@@ -96,6 +97,11 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
      */
     protected $content;
 
+    public function isDiscussion()
+    {
+        return ! $this->hasParent();
+    }
+
     public function getArchived()
     {
         return $this->archived;
@@ -117,7 +123,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
 
     public function getObject()
     {
-        return $this->uuid;
+        return $this->object;
     }
 
     public function getParent()
@@ -135,7 +141,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
         return $this->author;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -157,7 +163,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
 
     public function setObject(UuidInterface $uuid)
     {
-        $this->uuid = $uuid;
+        $this->object = $uuid;
         return $this;
     }
 
@@ -280,21 +286,21 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
     {
         return $this->findVotesByUser($user)->count() === 1;
     }
-    
-    public function getTermTaxonomies()
+
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
+    {
+        $this->terms->add($taxonomyTerm);
+        return $this;
+    }
+
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
+    {
+        $this->terms->removeElement($taxonomyTerm);
+        return $this;
+    }
+
+    public function getTaxonomyTerms()
     {
         return $this->terms;
-    }
-    
-    public function addTaxonomy(TaxonomyTermInterface $termTaxonomy)
-    {
-        $this->terms->add($termTaxonomy);
-        return $this;
-    }
-    
-    public function removeTaxonomy(TaxonomyTermInterface $termTaxonomy)
-    {
-        $this->terms->removeElement($termTaxonomy);
-        return $this;
     }
 }

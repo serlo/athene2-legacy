@@ -11,23 +11,28 @@
  */
 namespace Contexter\Adapter;
 
-use Zend\Stdlib\ArrayUtils;
-
 class EntityPluginControllerAdapter extends AbstractAdapter
 {
-    use \Language\Manager\LanguageManagerAwareTrait;
-    
-    public function getParameters()
+    use\Language\Manager\LanguageManagerAwareTrait;
+
+    public function getProvidedParams()
     {
-        $params = $this->getParametersFromRouteMatch();
-        $entityService = $this->getController()->getEntityService($params['entity']);
-        $array = array(
-            'type' => $entityService->getType()->getName(),
-            'language' => $this->getLanguageManager()->getLanguageFromRequest()->getCode()
-        );
-        if($entityService->hasPlugin('learningResource')){
-            $array['subject'] = $entityService->learningResource()->getDefaultSubject()->getSlug();
+        $params         = $this->getRouteParams();
+        $entityService  = $this->getController()->getEntityService($params['entity']);
+        
+        $array = [
+            'type'      => $entityService->getType()->getName(),
+            'language'  => $this->getLanguageManager()
+                            ->getLanguageFromRequest()
+                            ->getCode()
+        ];
+        
+        if ($entityService->hasPlugin('learningResource')) {
+            $array['subject'] = $entityService->learningResource()
+                ->getDefaultSubject()
+                ->getSlug();
         }
-        return ArrayUtils::merge($params, $array);
+        
+        return $array;
     }
 }

@@ -11,67 +11,94 @@
  */
 namespace Blog\Manager;
 
+use Language\Entity\LanguageInterface;
+use Blog\Hydrator\PostHydrator;
+use User\Entity\UserInterface;
+use DateTime;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Blog\Exception;
-use Taxonomy\Service\TermServiceInterface;
-use Blog\Entity\PostInterface;
-use Language\Service\LanguageServiceInterface;
 
-class BlogManager extends InstanceManager implements BlogManagerInterface
+class BlogManager implements BlogManagerInterface
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function getBlog($id)
     {
-        if (! is_numeric($id))
-            throw new Exception\InvalidArgumentException(sprintf('Expected int but got `%s`.', gettype($id)));
-        
-        if (! $this->hasInstance($id)) {
-            $category = $this->getSharedTaxonomyManager()->getTerm($id);
-            $service = $this->createService($category);
-            $this->addInstance($id, $service);
-        }
-        
-        return $this->getInstance($id);
-    }
-    
-    public function findAllBlogs(LanguageServiceInterface $languageService){
-        $taxonomy = $this->getSharedTaxonomyManager()->findTaxonomyByName('blog', $languageService);
-        $blogs = array();
-        foreach($taxonomy->getSaplings() as $blog){
-            $blogs[] = $this->getBlog($blog->getId());
-        }
-        return $blogs;
+        return $this->getTaxonomyManager()->getTerm($id);
     }
 
-    public function getPost(PostInterface $post)
+    public function findAllBlogs(LanguageInterface $languageService)
     {
-        $id = $post->getCategory()->getId();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $languageService);
+        return $taxonomy->getChildren();
+    }
+
+    public function getPost($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Blog\Entity\PostInterface');
+        $post = $this->getObjectManager()->find($className, $id);
         
-        if (! $this->hasInstance($id)) {
-            $category = $this->getSharedTaxonomyManager()->getTerm($post->getCategory());
-            $service = $this->createService($category);
-            $this->addInstance($id, $service);
+        if (! is_object($post)) {
+            throw new Exception\PostNotFoundException(sprintf('Could not find post "%d"', $id));
         }
         
-        return $this->getInstance($id)->getPost($post->getId());
+        return $post;
     }
 
-    public function findBlogByCategory($name, \Language\Service\LanguageServiceInterface $language)
+    public function trashPost($id)
     {
-        // todo
+        $post = $this->getPost($id);
+        $post->setTrashed(true);
+        $this->getObjectManager()->persist($post);
+        return $this;
     }
 
-    /**
-     *
-     * @param TermServiceInterface $category            
-     * @return PostManagerInterface
-     */
-    protected function createService(TermServiceInterface $category)
+    public function updatePost($id, $title, $content, DateTime $publish = NULL)
     {
-        /* @var $postManager PostManagerInterface */
-        $postManager = parent::createInstance('Blog\Manager\PostManagerInterface');
-        $postManager->setTermService($category);
-        $postManager->setBlogManager($this);
-        return $postManager;
+        $post = $this->getPost($id);
+        
+        $hydrator = new PostHydrator();
+        $hydrator->hydrate([
+            'title' => $title,
+            'content' => $content,
+            'publish' => $publish
+        ], $post);
+        
+        $this->getObjectManager()->persist($post);
+        return $this;
+    }
+
+    public function createPost(TaxonomyTermInterface $taxonomy, UserInterface $author, $title, $content, DateTime $publish = NULL)
+    {
+        if ($publish === NULL) {
+            $publish = new \DateTime("now");
+        }
+        
+        /* @var $post PostInterface */
+        $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
+        $this->getUuidManager()->injectUuid($post);
+        
+        $hydrator = new PostHydrator();
+        $hydrator->hydrate([
+            'author' => $author,
+            'title' => $title,
+            'content' => $content,
+            'publish' => $publish
+        ], $post);
+        
+        $post->setLanguage($this->getLanguageManager()->getLanguageFromRequest());
+        
+        $this->getTaxonomyManager()->associateWith($taxonomy->getId(), 'blogPosts', $post);
+        
+        $this->getObjectManager()->persist($post);
+        $this->getObjectManager()->persist($taxonomy);
+        
+        return $post;
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+        return $this;
     }
 }

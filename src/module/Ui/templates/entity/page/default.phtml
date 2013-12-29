@@ -1,0 +1,6 @@
+<?php $name = $this->entity->getType()->getName(); ?>
+<?php if($this->resolver('entity/page/'.$name)):?>
+    <?php echo $this->partial('entity/page/'.$name, ['entity' => $this->entity]); ?>
+<?php else: ?>
+    <?php echo $this->translate('No template found.'); ?>
+<?php endif;?>

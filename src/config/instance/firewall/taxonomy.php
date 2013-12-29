@@ -19,6 +19,9 @@ return [
                 'taxonomy/term/order' => [
                     'moderator'
                 ],
+                'taxonomy/term/organize-all' => [
+                    'moderator'
+                ],
                 'taxonomy/term/organize' => [
                     'moderator'
                 ],

@@ -29,9 +29,7 @@ class DiscussionControllerListener extends AbstractListener
             $param = $params['subscription'];
             if ($param['subscribe'] === '1') {
                 $user = $e->getParam('user');
-                $discussion = $e->getParam('discussion')
-                    ->getEntity()
-                    ->getUuidEntity();
+                $discussion = $e->getParam('discussion')->getUuidEntity();
                 $notifyMailman = $param['mailman'] === '1' ? true : false;
                 $this->subscribe($user, $discussion, $notifyMailman);
             }
@@ -45,12 +43,8 @@ class DiscussionControllerListener extends AbstractListener
             $param = $params['subscription'];
             if ($param['subscribe'] === '1') {
                 $user = $e->getParam('user');
-                $discussion = $e->getParam('discussion')
-                    ->getEntity()
-                    ->getUuidEntity();
-                $comment = $e->getParam('comment')
-                    ->getEntity()
-                    ->getUuidEntity();
+                $discussion = $e->getParam('discussion')->getUuidEntity();
+                $comment = $e->getParam('comment')->getUuidEntity();
                 $notifyMailman = $param['mailman'] === '1' ? true : false;
                 
                 $this->subscribe($user, $discussion, $notifyMailman); // We want to subscribe to the discussion
@@ -74,8 +68,9 @@ class DiscussionControllerListener extends AbstractListener
             'onCommentSubscribe'
         ), 2);
     }
-    
-    protected function getMonitoredClass(){
+
+    protected function getMonitoredClass()
+    {
         return 'Discussion\Controller\DiscussionController';
     }
 }

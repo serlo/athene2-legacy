@@ -11,118 +11,122 @@
  */
 namespace Alias;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-return array(
-    'alias_manager' => array(
-        'aliases' => array(
-            'blogPost' => array(
+return [
+    'alias_manager' => [
+        'aliases' => [
+            'blogPost' => [
                 'tokenize' => 'blog/{category}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
                 'fallback' => 'blog/{category}/{id}-{title}'
-            )/*
-            'page' => array(
-                'tokenize' => 'page/{id}',
-                'provider' => 'Page\Provider\TokenizerProvider',
-                'fallback' => 'page/{id}-{id}'
-            )*/
-        )
-    ),
-    'class_resolver' => array(
+            ],
+            'entity' => [
+                'tokenize' => '{path}/{title}',
+                'fallback' => '{path}/{type}/{title}-{id}',
+                'provider' => 'Entity\Provider\TokenProvider'
+            ]
+        ]
+    ],
+    'class_resolver' => [
         __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
-    ),
-    'router' => array(
-        'routes' => array(
-            'alias' => array(
+    ],
+    'router' => [
+        'routes' => [
+            'alias' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/alias/:alias',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Alias\Controller\AliasController',
                         'action' => 'forward'
-                    ),
-                    'constraints' => array(
+                    ],
+                    'constraints' => [
                         'alias' => '(.)+'
-                    )
-                ),
+                    ]
+                ],
                 'may_terminate' => true
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Alias\AliasManager' => function (ServiceLocatorInterface $sm)
-            {
-                $config = $sm->get('config')['alias_manager'];
-                
-                $service = new AliasManager();
-                $service->setConfig($config);
-                $service->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $service->setObjectManager($sm->get('EntityManager'));
-                $service->setTokenizer($sm->get('Token\Tokenizer'));
-                
-                return $service;
-            }
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+            ]
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            'Alias\Options\ManagerOptions' => 'Alias\Factory\ManagerOptionsFactory'
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             'Alias\Controller\AliasController'
-        ),
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\Controller\AliasController' => array(
-                    'setAliasManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                /*'Alias\AliasManager' => array(
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    )
-                )*/
-                __NAMESPACE__ . '\Listener\BlogControllerListener' => array(
-                    'setAliasManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\PageControllerListener' => array(
-                    'setAliasManager' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+        ],
+        'definition' => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\AliasController' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\BlogControllerListener' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\PageControllerListener' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => [
+                    'setAliasManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\AliasManager' => [
+                    'setClassResolver' => [
+                        'required' => true
+                    ],
+                    'setOptions' => [
+                        'required' => true
+                    ],
+                    'setObjectManager' => [
+                        'required' => true
+                    ],
+                    'setTokenizer' => [
+                        'required' => true
+                    ],
+                    'setUuidManager' => [
+                        'required' => true
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 __NAMESPACE__ . '\AliasManagerInterface' => __NAMESPACE__ . '\AliasManager'
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    ),
-    'view_helpers' => array(
-        'factories' => array(
+                ]
+            ]
+        ]
+    ],
+    'view_helpers' => [
+        'factories' => [
             'url' => function ($helperPluginManager)
             {
                 $serviceLocator = $helperPluginManager->getServiceLocator();
@@ -146,6 +150,6 @@ return array(
                 
                 return $view_helper;
             }
-        )
-    )
-);
+        ]
+    ]
+];

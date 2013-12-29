@@ -15,17 +15,16 @@ use Zend\View\Model\ViewModel;
 
 class DiscussionsController extends AbstractController
 {
-    use\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\User\Manager\UserManagerAwareTrait;
 
     public function indexAction()
     {
         $discussions = array();
-        $forums = $this->getTaxonomyManager()->getSaplings();
-        
+        $forums = $this->getTaxonomy()->getChildren();
         $forum = $this->getTermService();
         
-        if(is_object($forum)){
-            $discussions = $forum->getAssociated('comments', true);
+        if (is_object($forum)) {
+            $discussions = $forum->getAssociatedRecursive('comments');
             $forums = $forum->getChildren();
         }
         
@@ -39,20 +38,20 @@ class DiscussionsController extends AbstractController
         $view->setTemplate('discussion/discussions/index');
         return $view;
     }
-    
-    protected function getTaxonomyManager(){
-        return $this->getSharedTaxonomyManager()->findTaxonomyByName('forum-category', $this->getLanguageManager()
+
+    protected function getTaxonomy()
+    {
+        return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $this->getLanguageManager()
             ->getLanguageFromRequest());
     }
-    
+
     protected function getTermService($id = NULL)
     {
+        $id = $this->params('id', $id);
         if ($id === NULL) {
-            $id = $this->params('id', NULL);
-            if($id === NULL)
-                return NULL;
+            return NULL;
         }
         
-        return $this->getSharedTaxonomyManager()->getTerm($id);
+        return $this->getTaxonomyManager()->getTerm($id);
     }
 }

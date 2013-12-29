@@ -13,7 +13,7 @@ namespace User\Notification;
 
 use User\Collection\UserCollection;
 use Uuid\Entity\UuidInterface;
-use User\Service\UserServiceInterface;
+use User\Entity\UserInterface;
 use Uuid\Entity\UuidHolder;
 
 interface SubscriptionManagerInterface
@@ -28,11 +28,11 @@ interface SubscriptionManagerInterface
     
     /**
      * 
-     * @param UserServiceInterface $user
+     * @param UserInterface $user
      * @param UuidInterface $object
      * @param bool $notifyMailman
-     * @return $this
+     * @return self
      */
-    public function subscribe(UserServiceInterface $user, UuidInterface $object, $notifyMailman);
-    public function isUserSubscribed(UserServiceInterface $user, UuidInterface $object);
+    public function subscribe(UserInterface $user, UuidInterface $object, $notifyMailman);
+    public function isUserSubscribed(UserInterface $user, UuidInterface $object);
 }

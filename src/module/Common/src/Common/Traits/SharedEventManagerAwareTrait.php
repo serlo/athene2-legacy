@@ -34,7 +34,7 @@ trait SharedEventManagerAwareTrait
     /**
      *
      * @param SharedEventManagerInterface $sharedEventManager            
-     * @return $this
+     * @return self
      */
     public function setSharedEventManager(SharedEventManagerInterface $sharedEventManager)
     {

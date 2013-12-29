@@ -11,33 +11,52 @@
  */
 namespace Uuid\Entity;
 
-interface UuidHolder
+use Markdown\Entity\CacheableInterface;
+
+interface UuidHolder extends CacheableInterface
 {
+
     /**
-     * @return string
-     */
-    public function getUuid ();
-    
-    /**
+     *
      * @return int
      */
-    public function getId ();
-    
+    public function getId();
+
     /**
-     * 
-     * @param UuidInterface $uuid
-     * @return $this
+     *
+     * @return string
      */
-    public function setUuid (UuidInterface $uuid = null);
-    
+    public function getUuid();
+
     /**
+     *
+     * @return string
+     */
+    public function getHolderName();
+
+    /**
+     *
      * @return UuidInterface
      */
     public function getUuidEntity();
-    
-    public function getTrashed();
-    
-    public function setTrashed($voided);
 
-    public function getHolderName();
+    /**
+     *
+     * @return bool
+     */
+    public function getTrashed();
+
+    /**
+     *
+     * @param string $trashed            
+     * @return self
+     */
+    public function setTrashed($trashed);
+
+    /**
+     *
+     * @param UuidInterface $uuid            
+     * @return self
+     */
+    public function setUuid(UuidInterface $uuid);
 }

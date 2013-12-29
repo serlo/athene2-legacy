@@ -6,6 +6,7 @@
 !.gitignore
 !.gitmodules
 !.travis.yml
+!.gitattributes
 deployment.properties
 phpdoc-*.log
 docs/

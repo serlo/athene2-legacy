@@ -72,7 +72,7 @@ class Result implements ResultInterface
     /**
      *
      * @param string $name            
-     * @return $this
+     * @return self
      */
     public function setName($name)
     {
@@ -83,7 +83,7 @@ class Result implements ResultInterface
     /**
      *
      * @param number $id            
-     * @return $this
+     * @return self
      */
     public function setId($id)
     {
@@ -94,7 +94,7 @@ class Result implements ResultInterface
     /**
      *
      * @param array $routeParams            
-     * @return $this
+     * @return self
      */
     public function setRouteParams(array $routeParams)
     {
@@ -105,7 +105,7 @@ class Result implements ResultInterface
     /**
      *
      * @param string $routeName            
-     * @return $this
+     * @return self
      */
     public function setRouteName($routeName)
     {

@@ -16,7 +16,6 @@ use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity
@@ -75,17 +74,17 @@ class EventLog implements EventLogInterface
     {
         return $this->parameters;
     }
-    
+
     public function getParameter($name)
     {
-        foreach($this->getParameters() as $parameter){
-            if($parameter->getName() == $name){
+        foreach ($this->getParameters() as $parameter) {
+            if ($parameter->getName() == $name) {
                 return $parameter->getObject()->getHolder();
             }
         }
         return NULL;
     }
-    
+
     public function getLanguage()
     {
         return $this->language;
@@ -106,6 +105,11 @@ class EventLog implements EventLogInterface
         return $this->event;
     }
 
+    public function getName()
+    {
+        return $this->getEvent()->getName();
+    }
+
     public function getObject()
     {
         return $this->uuid->getHolder();
@@ -115,7 +119,7 @@ class EventLog implements EventLogInterface
     {
         return $this->date;
     }
-    
+
     public function setActor(UserInterface $actor)
     {
         $this->actor = $actor;

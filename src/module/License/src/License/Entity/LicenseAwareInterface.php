@@ -16,7 +16,7 @@ interface LicenseAwareInterface
     /**
      * 
      * @param LicenseInterface $license
-     * @return $this
+     * @return self
      */
     public function setLicense(LicenseInterface $license);
     

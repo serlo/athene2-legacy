@@ -35,7 +35,7 @@ class WorkerController extends AbstractActionController
     /**
      *
      * @param NotificationWorker $notificationWorker            
-     * @return $this
+     * @return self
      */
     public function setNotificationWorker(NotificationWorker $notificationWorker)
     {

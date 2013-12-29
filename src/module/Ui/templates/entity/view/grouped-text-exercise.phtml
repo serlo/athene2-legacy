@@ -1,11 +1,16 @@
-<?php $solution = $this->entity->solution()->findChild(); ?>
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php $solution = $entity->getChildren('link', 'text-solution')->first(); ?>
 <article>
     <div class="pull-right btn-group">
-        <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+	   <?php if(is_object($solution)): ?>
+           <a class="btn-default btn btn-xs" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">=</a>
+	   <?php endif; ?>
+        <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
     </div>
     <section>
-        <?php if($this->entity->repository()->hasCurrentRevision()): ?>
-            <?php echo  $this->entity->repository()->getCurrentRevision()->get('content'); ?>
+        <?php if($entity->hasCurrentRevision()): ?>
+            <?php echo  $entity->getCurrentRevision()->get('content'); ?>
         <?php endif; ?>
     </section>
     <div class="clearfix"></div>

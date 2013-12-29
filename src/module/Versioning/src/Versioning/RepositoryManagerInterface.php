@@ -13,49 +13,16 @@ namespace Versioning;
 
 use Versioning\Service\RepositoryServiceInterface;
 use Versioning\Entity\RepositoryInterface;
+use Zend\EventManager\EventManagerAwareInterface;
 
-interface RepositoryManagerInterface
+interface RepositoryManagerInterface extends EventManagerAwareInterface
 {
 
     /**
+     * Returns a RepositoryService
      *
-     * @param string|RepositoryServiceInterface $repository
+     * @param RepositoryInterface $repository            
      * @return RepositoryServiceInterface
      */
-    public function addRepository(RepositoryInterface $repository);
-
-    /**
-     *
-     * @param RepositoryServiceInterface $repository
-     * @return $this
-     */
-    public function removeRepository(RepositoryInterface $repository);
-
-    /**
-     *
-     * @param array $repositories
-     * @return $this
-     */
-    public function addRepositories(array $repositories);
-
-    /**
-     *
-     * @param string $repository
-     * @return RepositoryInterface
-     */
     public function getRepository(RepositoryInterface $repository);
-
-    /**
-     * Returns all repositories
-     *
-     * @return array
-     */
-    public function getRepositories();
-    
-    /**
-     * 
-     * @param RepositoryInterface $repository
-     * @return bool
-     */
-    public function hasRepository(RepositoryInterface $repository);
 }

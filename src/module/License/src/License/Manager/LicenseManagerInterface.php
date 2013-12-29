@@ -12,12 +12,13 @@
 namespace License\Manager;
 
 use License\Entity\LicenseInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Entity\LanguageInterface;
 use License\Form\LicenseForm;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use License\Entity\LicenseAwareInterface;
+use Common\ObjectManager\Flushable;
 
-interface LicenseManagerInterface extends ObjectManagerAwareInterface
+interface LicenseManagerInterface extends ObjectManagerAwareInterface, Flushable
 {
 
     /**
@@ -30,14 +31,14 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface
     /**
      * 
      * @param LicenseForm $form
-     * @param LanguageServiceInterface $language
+     * @param LanguageInterface $language
      */
-    public function addLicense(LicenseForm $form, LanguageServiceInterface $language);
+    public function addLicense(LicenseForm $form, LanguageInterface $language);
 
     /**
      * 
      * @param int $id
-     * @return $this
+     * @return self
      */
     public function removeLicense($id);
 
@@ -49,15 +50,15 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface
     
     /**
      * 
-     * @param LanguageServiceInterface $languageService
+     * @param LanguageInterface $languageService
      * @return LicenseInterface[]
      */
-    public function findLicensesByLanguage(LanguageServiceInterface $languageService);
+    public function findLicensesByLanguage(LanguageInterface $languageService);
     
     /**
      * 
      * @param LicenseForm $form
-     * @return $this
+     * @return self
      */
     public function updateLicense(LicenseForm $form);
     
@@ -72,7 +73,7 @@ interface LicenseManagerInterface extends ObjectManagerAwareInterface
      * 
      * @param LicenseAwareInterface $object
      * @param LicenseInterface $license
-     * @return $this
+     * @return self
      */
     public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = NULL);
 }

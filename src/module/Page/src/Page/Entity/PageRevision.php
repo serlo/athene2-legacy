@@ -18,7 +18,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRevision")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRevision", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
@@ -59,8 +59,9 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      */
     public function delete()
     {
-        return $this;
-    }
+    $this->page_repository->removeRevision($this);
+    return $this;
+     }
     
     /*
      * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::trash()
@@ -95,14 +96,23 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
         return $this;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
 
+    public function setContent($content){
+        $this->content=$content;
+        return $this;
+    }
     public function getContent()
     {
         return $this->content;
+    }
+    
+    public function setTitle($title){
+        $this->title=$title;
+        return $this;
     }
 
     public function getTitle()
@@ -119,9 +129,9 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * Sets the date
      *
      * @param mixed $date            
-     * @return $this
+     * @return self
      */
-    public function setDate(\DateTime $date)
+    public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -131,7 +141,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * Sets the author
      *
      * @param EntityInterface $user            
-     * @return $this
+     * @return self
      */
     public function setAuthor(UserInterface $author)
     {
@@ -142,7 +152,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
     public function populate(array $data = array())
     {
         $this->injectFromArray('author', $data);
-        $this->injectFromArray('username', $data);
         $this->injectFromArray('title', $data);
         $this->injectFromArray('content', $data);
         $this->injectFromArray('date', $data);

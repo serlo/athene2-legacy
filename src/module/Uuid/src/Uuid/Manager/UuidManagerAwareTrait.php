@@ -32,7 +32,7 @@ trait UuidManagerAwareTrait
     /**
      *
      * @param \Uuid\Manager\UuidManagerInterface $uuidManager            
-     * @return $this
+     * @return self
      */
     public function setUuidManager(\Uuid\Manager\UuidManagerInterface $uuidManager)
     {

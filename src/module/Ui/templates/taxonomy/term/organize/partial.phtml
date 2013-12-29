@@ -12,17 +12,23 @@
 $classes = array();
 
 if (! isset($this->isChild)) : ?>
-    <div class="panel">
-        <div class="panel-body">
-            <?php echo $this->partial('taxonomy/term/organize/actions', array('term' => $this->term)); ?>
-        </div>
-    </div>
+    <div class="pull-right btn-group">
+    	<div class="btn-group group-dropdown">
+    		<a class="btn btn-default btn-xs dropdown-toggle"
+    			data-toggle="dropdown" href="#">  <span class="glyphicon glyphicon-plus"></span>
+    			<span class="caret"></span>
+    		</a>
+    		<ul class="dropdown-menu">
+                <?php foreach($this->taxonomy()->getOptions($this->term)->getAllowedChildren() as $taxonomy):?>
+                    <li><a
+    				href="<?php echo $this->url('taxonomy/term/create', array('taxonomy' => $taxonomy, 'parent' => $this->term->getId())); ?>"><?php echo $taxonomy; ?></a></li>
+                <?php endforeach;?>
+    		</ul>
+    	</div>
+	</div>
+    <h3><?php echo $this->term->getName(); ?></h3>
+    <hr>
     <div class="sortable" data-active="false" data-action="<?php echo $this->url('taxonomy/term/order', array('term' => $this->term->getId())); ?>">
-        <div class="sortable-actions">
-    		<button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button>
-            <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Save new order'); ?></button>
-            <button class="btn btn-default sortable-abort-action is-hidden"><?php print $this->translate('Cancel'); ?></button>
-        </div>
 <?php endif; ?>
         <ol class="sortable-list"
     		data-id="<?php echo $this->term->getId(); ?>">
@@ -38,10 +44,15 @@ if (! isset($this->isChild)) : ?>
             <?php endforeach; ?>
         </ol>
 <?php if (!isset($this->isChild) && $this->guard()->hasAccessToRoute('taxonomy/term/order')) : ?>
-        <div class="sortable-actions">
-    		<button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button>
-            <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Save new order'); ?></button>
-            <button class="btn btn-default sortable-abort-action is-hidden"><?php print $this->translate('Cancel'); ?></button>
+        <div class="panel panel-default clearfix">
+            <div class="panel-heading">
+                <h5 class="panel-title"><?php echo $this->translate('Tools'); ?></h5>
+            </div>
+            <div class="sortable-actions pull-right panel-body">
+        		<button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button>
+                <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate('Save new order'); ?></button>
+                <button class="btn btn-default sortable-abort-action is-hidden"><?php print $this->translate('Cancel'); ?></button>
+        	</div>
     	</div>
     </div>
 <?php endif; ?>

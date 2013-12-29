@@ -8,7 +8,7 @@
  */
 namespace Link\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Type\Entity\TypeInterface;
 
 interface LinkableInterface
 {
@@ -18,72 +18,28 @@ interface LinkableInterface
      * @return int
      */
     public function getId();
-
+    
     /**
-     * Returns the children
-     *
-     * @param LinkTypeInterface $type            
-     * @return Collection
+     * 
+     * @return TypeInterface
      */
-    public function getChildren(LinkTypeInterface $type);
-
-    /**
-     * Returns the parents
-     *
-     * @param LinkTypeInterface $type            
-     * @return Collection
-     */
-    public function getParents(LinkTypeInterface $type);
-
-    /**
-     * Adds a child
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
-     */
-    public function addChild(LinkableInterface $parent, LinkTypeInterface $type);
-
-    /**
-     * Adds a parent
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
-     */
-    public function addParent(LinkableInterface $parent, LinkTypeInterface $type);
+    public function getType();
 
     /**
      *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
+     * @return LinkInterface
      */
-    public function removeChild(LinkableInterface $parent, LinkTypeInterface $type);
+    public function createLink();
 
     /**
      *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
+     * @return LinkInterface[]
      */
-    public function removeParent(LinkableInterface $parent, LinkTypeInterface $type);
+    public function getParentLinks();
 
     /**
-     *
-     * @param LinkableInterface $child            
-     * @param LinkTypeInterface $type            
-     * @param int $position            
-     * @return $this
+     * 
+     * @return LinkInterface[]
      */
-    public function positionChild(LinkableInterface $child, LinkTypeInterface $type, $position);
-
-    /**
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @param int $position            
-     * @return $this
-     */
-    public function positionParent(LinkableInterface $parent, LinkTypeInterface $type, $position);
+    public function getChildLinks();
 }

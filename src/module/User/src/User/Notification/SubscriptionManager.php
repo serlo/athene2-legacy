@@ -14,7 +14,7 @@ namespace User\Notification;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Uuid\Entity\UuidInterface;
-use User\Service\UserServiceInterface;
+use User\Entity\UserInterface;
 use Uuid\Entity\UuidHolder;
 
 class SubscriptionManager implements SubscriptionManagerInterface
@@ -38,7 +38,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
         return $collection;
     }
 
-    public function isUserSubscribed(UserServiceInterface $user, UuidInterface $object)
+    public function isUserSubscribed(UserInterface $user, UuidInterface $object)
     {
         return is_object($this->getObjectManager()
             ->getRepository($this->getClassResolver()
@@ -49,13 +49,13 @@ class SubscriptionManager implements SubscriptionManagerInterface
         )));
     }
 
-    public function subscribe(UserServiceInterface $user, UuidInterface $object, $notifyMailman)
+    public function subscribe(UserInterface $user, UuidInterface $object, $notifyMailman)
     {
         if(!$this->isUserSubscribed($user, $object)){
             $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
             /* @var $entity \User\Notification\Entity\SubscriptionInterface */
             $entity = new $class();
-            $entity->setSubscriber($user->getEntity());
+            $entity->setSubscriber($user);
             $entity->setSubscribedObject($object);
             $entity->setNotifyMailman($notifyMailman === TRUE);
             $this->getObjectManager()->persist($entity);

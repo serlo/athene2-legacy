@@ -36,7 +36,7 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
     /**
      *
      * @param PhpRenderer $renderer            
-     * @return $this
+     * @return self
      */
     public function setRenderer(PhpRenderer $renderer)
     {

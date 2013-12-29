@@ -29,6 +29,7 @@ return array(
                 $instance->setObjectManager($sl->get('EntityManager'));
                 $instance->setServiceLocator($sl);
                 $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
+                $instance->setLanguageManager($sl->get('Language\Manager\LanguageManager'));
                 return $instance;
             }
         )

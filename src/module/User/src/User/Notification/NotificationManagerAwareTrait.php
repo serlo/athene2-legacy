@@ -32,7 +32,7 @@ trait NotificationManagerAwareTrait
     /**
      *
      * @param NotificationManagerInterface $notificationManager            
-     * @return $this
+     * @return self
      */
     public function setNotificationManager(NotificationManagerInterface $notificationManager)
     {

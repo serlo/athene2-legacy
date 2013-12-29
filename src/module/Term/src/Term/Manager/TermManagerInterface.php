@@ -12,8 +12,8 @@
  */
 namespace Term\Manager;
 
-use Term\Service\TermServiceInterface;
-use Language\Service\LanguageServiceInterface;
+use Term\Entity\TaxonomyTermInterface;
+use Language\Entity\LanguageInterface;
 
 interface TermManagerInterface
 {
@@ -22,31 +22,31 @@ interface TermManagerInterface
      *
      * @param string $name            
      * @param string $slug            
-     * @param LanguageServiceInterface $language            
-     * @return TermServiceInterface
+     * @param LanguageInterface $language            
+     * @return TaxonomyTermInterface
      */
-    public function createTerm($name, $slug = NULL, LanguageServiceInterface $language);
+    public function createTerm($name, $slug = NULL, LanguageInterface $language);
 
     /**
      *
-     * @param TermServiceInterface|int|string $term            
-     * @return TermServiceInterface
+     * @param TaxonomyTermInterface|int|string $term            
+     * @return TaxonomyTermInterface
      */
     public function getTerm($term);
 
     /**
      *
      * @param unknown $name            
-     * @param LanguageServiceInterface $language            
-     * @return TermServiceInterface
+     * @param LanguageInterface $language            
+     * @return TaxonomyTermInterface
      */
-    public function findTermByName($name, LanguageServiceInterface $language);
+    public function findTermByName($name, LanguageInterface $language);
 
     /**
      *
      * @param unknown $slug            
-     * @param LanguageServiceInterface $language            
-     * @return TermServiceInterface
+     * @param LanguageInterface $language            
+     * @return TaxonomyTermInterface
      */
-    public function findTermBySlug($slug, LanguageServiceInterface $language);
+    public function findTermBySlug($slug, LanguageInterface $language);
 }

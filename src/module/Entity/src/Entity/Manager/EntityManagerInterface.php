@@ -9,38 +9,29 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-
 namespace Entity\Manager;
 
-use Entity\Service\EntityServiceInterface;
 use Entity\Entity\EntityInterface;
-use Language\Service\LanguageServiceInterface;
+use Language\Entity\LanguageInterface;
+use Common\ObjectManager\Flushable;
+use Entity\Options\EntityOptions;
 
-interface EntityManagerInterface
+interface EntityManagerInterface extends Flushable
 {
+
     /**
-     * 
-     * @param int $id
-     * @return EntityServiceInterface
+     *
+     * @param int $id            
+     * @return EntityInterface
      */
     public function getEntity($id);
-    
-    /**
-     * 
-     * @param string $type
-     * @param array $data
-     * @param LanguageServiceInterface $language
-     * @return EntityServiceInterface
-     */
-    public function createEntity($type, array $data = array(), LanguageServiceInterface $language);
 
     /**
-     * 
-     * @param string $slug
-     * @param LanguageServiceInterface $languageService
-     * @return EntityServiceInterface
+     *
+     * @param string $type            
+     * @param array $data            
+     * @param LanguageInterface $language            
+     * @return EntityInterface
      */
-    public function findEntityBySlug($slug, LanguageServiceInterface $languageService);
-    
-    public function purgeEntity($id);
+    public function createEntity($type, array $data = array(), LanguageInterface $language);
 }

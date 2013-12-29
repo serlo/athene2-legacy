@@ -17,8 +17,6 @@ use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
-use Common\Normalize\Normalizable;
-use Common\Normalize\Normalized;
 
 /**
  * An entity link.
@@ -26,12 +24,12 @@ use Common\Normalize\Normalized;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends UuidEntity implements RevisionInterface, Normalizable
+class Revision extends UuidEntity implements RevisionInterface
 {
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
@@ -60,7 +58,7 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
      *
      * @return field_type $date
      */
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -68,9 +66,9 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
     /**
      *
      * @param field_type $date            
-     * @return $this
+     * @return self
      */
-    public function setDate(\DateTime $date)
+    public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -88,7 +86,7 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
     /**
      *
      * @param field_type $author            
-     * @return $this
+     * @return self
      */
     public function setAuthor(UserInterface $author)
     {
@@ -101,9 +99,12 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
         $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
             ->setFirstResult(0)
             ->setMaxResults(1);
+        
         $data = $this->fields->matching($criteria);
-        if (count($data) == 0)
+        
+        if (count($data) == 0) {
             return null;
+        }
         
         return $data[0]->get('value');
     }
@@ -116,6 +117,11 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
         $entity->set('value', $value);
         $this->fields->add($entity);
         return $entity;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
     }
     
     /*
@@ -143,20 +149,5 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
     public function __construct()
     {
         $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $normalized->setTimestamp($this->getDate());
-        $normalized->setTitle($this->get('title') ? $this->get('title') : $this->getUuid());
-        $normalized->setContent($this->get('content'));
-        $normalized->setRouteName('entity/plugin/repository/compare');
-        $normalized->setRouteParams(array(
-            'revision' => $this->getId(),
-            'entity' => $this->getRepository()
-                ->getId()
-        ));
-        return $normalized;
     }
 }

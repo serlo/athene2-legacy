@@ -19,7 +19,7 @@ interface HolderInterface
     /**
      *
      * @param ContainerInterface $container            
-     * @return $this
+     * @return self
      */
     public function setContainer(ContainerInterface $container);
 
@@ -32,7 +32,7 @@ interface HolderInterface
     /**
      *
      * @param int $position            
-     * @return $this
+     * @return self
      */
     public function setPosition($position);
 }

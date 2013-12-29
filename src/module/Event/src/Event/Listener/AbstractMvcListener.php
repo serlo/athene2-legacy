@@ -14,13 +14,12 @@ namespace Event\Listener;
 use User\Entity\UserInterface;
 use Language\Entity\LanguageInterface;
 use Common\Listener\AbstractSharedListenerAggregate;
-use Uuid\Entity\UuidInterface;
 use Uuid\Entity\UuidHolder;
 use Event\Exception\RuntimeException;
 
 abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
 {
-    use \Event\EventManagerAwareTrait;
+    use\Event\EventManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     /**
      * Tells the EventManager to log a certain event.
@@ -28,21 +27,23 @@ abstract class AbstractMvcListener extends AbstractSharedListenerAggregate
      *
      * @param string $name            
      * @param LanguageInterface $language            
-     * @param UserInterface $actor          
-     * @param array $params  
-     * @param $uuid            
+     * @param UserInterface $actor            
+     * @param array $params            
+     * @param
+     *            $uuid
      * @return void
      */
     public function logEvent($name, LanguageInterface $language, UserInterface $actor, $uuid, array $params = array())
     {
-        if($uuid instanceof UuidHolder)
+        if ($uuid instanceof UuidHolder)
             $uuid = $uuid->getUuidEntity();
         
         $this->getEventManager()->logEvent($name, $language, $actor, $uuid, $params);
     }
-    
-    public function __construct(){
-        if(!class_exists($this->getMonitoredClass()))
+
+    public function __construct()
+    {
+        if (! class_exists($this->getMonitoredClass()))
             throw new RuntimeException(sprintf('The class you are trying to attach to does not exist: %s', $this->getMonitoredClass()));
     }
 }

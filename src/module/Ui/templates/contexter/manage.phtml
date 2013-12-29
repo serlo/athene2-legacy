@@ -8,10 +8,10 @@
 		</tr>
 	</thead>
 	<tbody>
-	    <?php /* @var $element \Contexter\ContextInterface */ ?>
+	    <?php /* @var $element \Contexter\Entity\ContextInterface */ ?>
 	    <?php foreach($this->elements as $element):?>
 		<tr>
-			<td><a href="<?php echo $element->getUrl(); ?>"><?php echo $element->getTitle(); ?></a>
+			<td><a href="<?php echo $this->normalize()->toUrl($element->getObject()); ?>"><?php echo $element->getTitle(); ?></a>
 			</td>
 			<td>
     		     <?php foreach($element->getRoutes() as $route): ?>

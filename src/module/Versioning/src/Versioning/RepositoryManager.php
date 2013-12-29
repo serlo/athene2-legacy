@@ -12,62 +12,36 @@
 namespace Versioning;
 
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Exception\RuntimeException;
 
 class RepositoryManager implements RepositoryManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait;
+    use \Common\Traits\InstanceManagerTrait,\Zend\EventManager\EventManagerAwareTrait;
 
-    protected static $instance;
-
-    public function __construct()
+    public function getRepository(RepositoryInterface $repository)
     {
-        if (isset($instance))
-            throw new RuntimeException('The RepositoryManager has already been instanciated');
+        $id = $this->getUniqId($repository);
         
-        static::$instance = $this;
+        if (! $this->hasInstance($id)) {
+            $this->createService($repository);
+        }
+        
+        return $this->getInstance($id);
+    }
+
+    protected function createService(RepositoryInterface $repository)
+    {
+        $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
+        $name = $this->getUniqId($repository);
+        
+        $instance->setRepository($repository);
+        $instance->setRepositoryManager($this);
+        $this->addInstance($name, $instance);
+        
+        return $this;
     }
 
     protected function getUniqId(RepositoryInterface $repository)
     {
         return get_class($repository) . '::' . $repository->getId();
-    }
-
-    public function addRepository(RepositoryInterface $repository)
-    {
-        $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
-        $name = $this->getUniqId($repository);
-        $instance->setIdentifier($name);
-        $instance->setRepository($repository);
-        $this->addInstance($name, $instance);
-        return $this;
-    }
-
-    public function hasRepository(RepositoryInterface $repository)
-    {
-        return $this->hasInstance($this->getUniqId($repository));
-    }
-
-    public function removeRepository(RepositoryInterface $repository)
-    {
-        return $this->removeInstance($this->getUniqId($repository));
-    }
-
-    public function addRepositories(array $repositories)
-    {
-        foreach ($repositories as $repository) {
-            $this->addRepository($repository);
-        }
-        return $this;
-    }
-
-    public function getRepository(RepositoryInterface $repository)
-    {
-        return $this->getInstance($this->getUniqId($repository));
-    }
-
-    public function getRepositories()
-    {
-        return $this->getInstances();
     }
 }

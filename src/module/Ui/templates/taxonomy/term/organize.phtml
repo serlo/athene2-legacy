@@ -10,5 +10,5 @@
 * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
 */
 ?>
-<h1 class="page-header"><?php echo $this->translate('Organize taxonomy'); ?> <small><?php echo $this->term->getName(); ?></small></h1>
+<?php echo $this->pageHeader('Organize taxonomy')->setSubtitle($this->term->getName())->render();?>
 <?php echo $this->partial('taxonomy/term/organize/partial', array('term' => $this->term)); ?>

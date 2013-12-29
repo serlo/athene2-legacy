@@ -14,30 +14,34 @@ namespace Blog\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Blog\Form\PostForm;
+use DateTime;
 
 class BlogController extends AbstractActionController
 {
-    use \Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Blog\Manager\BlogManagerAwareTrait,\User\Manager\UserManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function indexAction()
     {
         $blogs = $this->getBlogManager()->findAllBlogs($this->getLanguageManager()
             ->getLanguageFromRequest());
+        
         $view = new ViewModel(array(
             'blogs' => $blogs
         ));
+        
         $view->setTemplate('blog/blog/blogs');
         return $view;
     }
 
     public function viewPostAction()
     {
-        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
-        $post = $blog->getPost($this->params('post'));
+        $post = $this->getBlogManager()->getPost($this->params('post'));
+        
         $view = new ViewModel(array(
-            'blog' => $blog,
+            'blog' => $post->getBlog(),
             'post' => $post
         ));
+        
         $view->setTemplate('blog/blog/post/view');
         return $view;
     }
@@ -45,10 +49,16 @@ class BlogController extends AbstractActionController
     public function viewAllAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        $posts = $blog->getAssociated('blogPosts')->filter(function ($e)
+        {
+            return !$e->isPublished() && ! $e->isTrashed();
+        });
+        
         $view = new ViewModel(array(
             'blog' => $blog,
-            'posts' => $blog->findAllPosts()
+            'posts' => $posts
         ));
+        
         $view->setTemplate('blog/blog/view-all');
         return $view;
     }
@@ -56,35 +66,34 @@ class BlogController extends AbstractActionController
     public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        $posts = $blog->getAssociated('blogPosts')->filter(function ($e)
+        {
+            return $e->isPublished() && ! $e->isTrashed();
+        });
+        
         $view = new ViewModel(array(
             'blog' => $blog,
-            'posts' => $blog->findPublishedPosts()
+            'posts' => $posts
         ));
+        
         $view->setTemplate('blog/blog/view');
         return $view;
     }
 
     public function trashAction()
     {
-        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
-        $post = $blog->getPost($this->params('post'));
-        $post->setTrashed(true);
-        $post->getObjectManager()->flush();
+        $this->getBlogManager()
+            ->trashPost($this->params('post'))
+            ->flush();
         $this->redirect()->toReferer();
-        return '';
+        return false;
     }
 
     public function updateAction()
     {
-        $blog = $this->getBlogManager()->getBlog($this->params('blog'));
-        $post = $blog->getPost($this->params('post'));
+        $post = $this->getBlogManager()->getPost($this->params('post'));
         
         $form = new PostForm();
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('blog/post/update', array(
-            'blog' => $this->params('blog'),
-            'post' => $this->params('post')
-        )));
         
         $form->setData(array(
             'title' => $post->getTitle(),
@@ -97,39 +106,32 @@ class BlogController extends AbstractActionController
             if ($form->isValid()) {
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 $data = $form->getData();
-                $title = $data['title'];
-                $content = $data['content'];
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $publish = new \DateTime('now');
+                $publish = new DateTime();
+                
                 if ($data['publish']) {
                     $dateData = explode('.', $data['publish']);
-                    $day = $dateData[0];
-                    $month = $dateData[1];
-                    $year = $dateData[2];
-                    $publish = (new \Datetime())->setDate($year, $month, $day);
-                    $publish->setTime(0, 0, 0);
+                    $publish = (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
                 }
                 
-                $blog->updatePost($post->getId(), $title, $content, $publish);
+                $this->getBlogManager()->updatePost($post->getId(), $data['title'], $data['content'], $publish);
                 
                 $this->getEventManager()->trigger('post.update', $this, array(
-                    'blog' => $blog,
                     'post' => $post,
                     'actor' => $author,
                     'data' => $data,
                     'language' => $language
                 ));
                 
-                $blog->getObjectManager()->flush();
+                $this->getBlogManager()->flush();
                 
-                $this->redirect()->toRoute('blog/view', array(
-                    'id' => $this->params('blog')
+                $this->redirect()->toRoute('blog/post/view', array(
+                    'post' => $this->params('post')
                 ));
             }
         }
         
         $view = new ViewModel(array(
-            'blog' => $blog,
             'post' => $post,
             'form' => $form
         ));
@@ -144,30 +146,28 @@ class BlogController extends AbstractActionController
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         
         $form = new PostForm();
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('blog/post/create', array(
-            'id' => $this->params('id')
-        )));
         
         if ($this->getRequest()->isPost()) {
+            
             $data = $this->params()->fromPost();
             $form->setData($data);
+            
             if ($form->isValid()) {
-                $author = $this->getUserManager()->getUserFromAuthenticator();
+                
                 $data = $form->getData();
-                $title = $data['title'];
-                $content = $data['content'];
-                $publish = new \DateTime('now');
+                
+                $publish = new DateTime();
+                $author = $this->getUserManager()->getUserFromAuthenticator();
+                
                 if ($data['publish']) {
                     $dateData = explode('.', $data['publish']);
-                    $day = $dateData[0];
-                    $month = $dateData[1];
-                    $year = $dateData[2];
-                    $publish = (new \Datetime())->setDate($year, $month, $day);
-                    $publish->setTime(0, 0, 0);
+                    $publish = (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
                 }
+                
+                
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $post = $blog->createPost($author, $title, $content, $publish);
+                
+                $post = $this->getBlogManager()->createPost($blog, $author, $data['title'], $data['content'], $publish);
                 
                 $this->getEventManager()->trigger('post.create', $this, array(
                     'blog' => $blog,
@@ -177,7 +177,7 @@ class BlogController extends AbstractActionController
                     'language' => $language
                 ));
                 
-                $blog->getObjectManager()->flush();
+                $this->getBlogManager()->flush();
                 
                 $this->redirect()->toRoute('blog/view', array(
                     'id' => $this->params('id')

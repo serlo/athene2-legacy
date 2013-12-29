@@ -15,98 +15,89 @@ use Common\Traits;
 use Alias\Exception;
 use Uuid\Entity\UuidInterface;
 use Common\Filter\Slugify;
-use Uuid\Entity\UuidHolder;
+use Language\Entity\LanguageInterface;
+use Alias\Options\ManagerOptions;
 
 class AliasManager implements AliasManagerInterface
 {
-    use Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Token\TokenizerAwareTrait;
+    use Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Token\TokenizerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
 
-    protected function getDefaultConfig()
+    /**
+     *
+     * @var ManagerOptions
+     */
+    protected $options;
+
+    /**
+     *
+     * @return ManagerOptions $options
+     */
+    public function getOptions()
     {
-        return array(
-            'aliases' => array()
-        );
+        return $this->options;
     }
 
-    public function autoAlias($name, $source, UuidHolder $object,\Language\Service\LanguageServiceInterface $language)
+    /**
+     *
+     * @param ManagerOptions $options            
+     * @return self
+     */
+    public function setOptions(ManagerOptions $options)
     {
-        if (! is_string($name) || ! is_string($source))
-            throw new Exception\InvalidArgumentException(sprintf('Expected string but got `%s`', gettype($name)));
+        $this->options = $options;
+        return $this;
+    }
+
+    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language)
+    {
+        if (! is_string($name) || ! is_string($source)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected name and source to be string but got "%s" and "%s"', gettype($name), gettype($source)));
+        }
         
-        if (! array_key_exists($name, $this->getOption('aliases')))
-            throw new Exception\RuntimeException(sprintf('No configuration found for `%s`', $name));
+        if (! array_key_exists($name, $this->getOptions()->getAliases())) {
+            throw new Exception\RuntimeException(sprintf('No configuration found for "%s"', $name));
+        }
         
-        $options = $this->getOption('aliases')[$name];
+        $options = $this->getOptions()->getAliases()[$name];
         $provider = $options['provider'];
         $tokenString = $options['tokenize'];
         $fallbackString = $options['fallback'];
+        $service = $this->getUuidManager()->createService($object);
         
-        $alias = $this->getTokenizer()->transliterate($provider, $object, $tokenString);
-        $aliasFallback = $this->getTokenizer()->transliterate($provider, $object, $fallbackString);
+        $alias = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
+        $aliasFallback = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
         
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
     }
-    
-    /*
-     * (non-PHPdoc) @see \Alias\AliasManagerInterface::findSourceByAlias()
-     */
-    public function findSourceByAlias($alias,\Language\Service\LanguageServiceInterface $language)
+
+    public function findSourceByAlias($alias, LanguageInterface $language)
     {
-        if (! is_string($alias))
-            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
-            
-            /* @var $entity Entity\AliasInterface */
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Alias\Entity\AliasInterface'))
-            ->findOneBy(array(
+        if (! is_string($alias)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected alias to be string but got "%s"', gettype($alias)));
+        }
+        
+        /* @var $entity Entity\AliasInterface */
+        $entity = $this->getAliasRepository()->findOneBy([
             'alias' => $alias,
             'language' => $language->getId()
-        ));
+        ]);
         
-        if (! is_object($entity))
+        if (! is_object($entity)) {
             throw new Exception\AliasNotFoundException(sprintf('Alias `%s` not found.', $alias));
+        }
         
         return $entity->getSource();
     }
-    
-    /*
-     * (non-PHPdoc) @see \Alias\AliasManagerInterface::findAliasBySource()
-     */
-    public function findAliasEntityBySource($source,\Language\Service\LanguageServiceInterface $language)
+
+    public function findAliasBySource($source, LanguageInterface $language)
     {
         if (! is_string($source))
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
         
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Alias\Entity\AliasInterface'))
-            ->findOneBy(array(
+        $entity = $this->getAliasRepository()->findOneBy([
             'source' => $source,
             'language' => $language->getId()
-        ));
-        
-        if (! is_object($entity))
-            return false;
-        
-        return $entity;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Alias\AliasManagerInterface::findAliasBySource()
-     */
-    public function findAliasBySource($source,\Language\Service\LanguageServiceInterface $language)
-    {
-        if (! is_string($source))
-            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
-        
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Alias\Entity\AliasInterface'))
-            ->findOneBy(array(
-            'source' => $source,
-            'language' => $language->getId()
-        ));
+        ]);
         
         if (! is_object($entity))
             return false;
@@ -114,33 +105,20 @@ class AliasManager implements AliasManagerInterface
         return $entity->getAlias();
     }
 
-    public function findAliasByUuid(UuidInterface $uuid)
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
     {
-        
-        /* @var $entity Entity\AliasInterface */
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Alias\Entity\AliasInterface'))
-            ->findOneBy(array(
-            'uuid' => $uuid->getId()
-        ));
-        
-        if (! is_object($entity))
-            throw new Exception\AliasNotFoundException(sprintf('Alias not found by uuid.', $uuid->getId()));
-        
-        return $entity;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Alias\AliasManagerInterface::createAlias()
-     */
-    public function createAlias($source, $alias, $aliasFallback, UuidHolder $uuid,\Language\Service\LanguageServiceInterface $language)
-    {
-        if (! is_string($alias))
+        if (! is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
+        }
         
-        if (! is_string($source))
+        if (! is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
+        }
+        
+        try {
+            $this->findSourceByAlias($alias, $language);
+            $alias = $aliasFallback;
+        } catch (Exception\AliasNotFoundException $e) {}
         
         $filter = new Slugify();
         
@@ -150,26 +128,40 @@ class AliasManager implements AliasManagerInterface
         }
         $alias = implode('/', $slugified);
         
-        try {
-            $this->findAliasByUuid($uuid->getUuidEntity());
+        if (is_object($this->findAliasByObject($uuid))) {
             return $this;
-            
-            try {
-                $source = $this->findAliasEntityBySource($alias, $language);
-            } catch (Exception\AliasNotFoundException $e) {
-                $alias = $aliasFallback;
-            }
-        } catch (Exception\AliasNotFoundException $e) {}
+        }
         
-        $class = $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
-        $class = new $class();
         /* @var $class Entity\AliasInterface */
+        $class = $this->getClassResolver()->resolve('Alias\Entity\AliasInterface');
+        
         $class->setSource($source);
-        $class->setLanguage($language->getEntity());
+        $class->setLanguage($language);
         $class->setAlias($alias);
-        $class->setUuid($uuid->getUuidEntity());
+        $class->setObject($uuid);
+        
         $this->getObjectManager()->persist($class);
         
         return $this;
+    }
+
+    protected function findAliasByObject(UuidInterface $uuid)
+    {
+        /* @var $entity Entity\AliasInterface */
+        $entity = $this->getAliasRepository()->findOneBy([
+            'uuid' => $uuid->getId()
+        ]);
+        
+        return $entity;
+    }
+
+    protected function getEntityClassName()
+    {
+        return $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
+    }
+
+    protected function getAliasRepository()
+    {
+        return $this->getObjectManager()->getRepository($this->getEntityClassName());
     }
 }

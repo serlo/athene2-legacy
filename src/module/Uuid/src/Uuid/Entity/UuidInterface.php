@@ -11,7 +11,9 @@
  */
 namespace Uuid\Entity;
 
-interface UuidInterface
+use Markdown\Entity\CacheableInterface;
+
+interface UuidInterface extends CacheableInterface
 {
 
     /**
@@ -29,17 +31,9 @@ interface UuidInterface
     /**
      *
      * @param string $uuid            
-     * @return $this
+     * @return self
      */
     public function setUuid ($uuid);
-    
-    /**
-     * Sets an entities $id to this Uuid
-     * 
-     * @param UuidHolder $entity
-     * @return $this
-     */
-    public function hydrate(UuidHolder $entity);
     
     public function getTrashed();
     
@@ -50,4 +44,6 @@ interface UuidInterface
     public function getHolderName();
     
     public function getHolder();
+    
+    public function setHolder($key, $object);
 }

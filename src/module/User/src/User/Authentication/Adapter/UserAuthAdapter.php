@@ -16,14 +16,14 @@ use User\Exception\UserNotFoundException;
 
 class UserAuthAdapter implements AdapterInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\User\Authentication\HashServiceAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\User\Authentication\HashServiceAwareTrait;
 
     private $email, $password;
 
     /**
      *
      * @param string $email            
-     * @return $this
+     * @return self
      */
     public function setIdentity($email)
     {
@@ -34,7 +34,7 @@ class UserAuthAdapter implements AdapterInterface
     /**
      *
      * @param string $password            
-     * @return $this
+     * @return self
      */
     public function setCredential($password)
     {
@@ -56,6 +56,13 @@ class UserAuthAdapter implements AdapterInterface
                 ->findOneBy(array(
                 'email' => $this->email
             ));
+                
+            $role = $this->getObjectManager()
+                ->getRepository('User\Entity\Role')
+                ->findOneBy(array(
+                'name' => 'login'
+            ));
+            
             $hashedPassword = $user->getPassword();
             $password = $this->getHashService()->hashPassword($this->password, $this->getHashService()
                 ->findSalt($hashedPassword));
@@ -64,7 +71,7 @@ class UserAuthAdapter implements AdapterInterface
                     return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
                         'Ihr Benutzerkonto wurde gelöscht.'
                     ));
-                } elseif (! $user->hasRole('login')) {
+                } elseif (! $user->hasRole($role)) {
                     return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
                         'Sie haben ihren Account noch nicht aktiviert.'
                     ));

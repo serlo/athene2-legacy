@@ -11,7 +11,11 @@
  */
 namespace Blog\Manager;
 
-use Language\Service\LanguageServiceInterface;
+use Language\Entity\LanguageInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Blog\Entity\PostInterface;
+use User\Entity\UserInterface;
+use DateTime;
 
 interface BlogManagerInterface
 {
@@ -19,22 +23,48 @@ interface BlogManagerInterface
     /**
      *
      * @param int $id            
-     * @return PostManagerInterface
+     * @return TaxonomyTermInterface
      */
     public function getBlog($id);
 
     /**
      *
-     * @param string $name            
-     * @param LanguageServiceInterface $language            
-     * @return PostManagerInterface
+     * @param LanguageInterface $languageService            
+     * @return TaxonomyTermInterface[]
      */
-    public function findBlogByCategory($name, LanguageServiceInterface $language);
-    
+    public function findAllBlogs(LanguageInterface $languageService);
+
     /**
-     * 
-     * @param LanguageServiceInterface $languageService
-     * @return PostManagerInterface[]
+     * Make changes persistent
+     *
+     * @return self
      */
-    public function findAllBlogs(LanguageServiceInterface $languageService);
+    public function flush();
+
+    /**
+     *
+     * @param int $id            
+     * @return PostInterface
+     */
+    public function getPost($id);
+
+    /**
+     *
+     * @param int $id            
+     * @param string $title            
+     * @param string $content            
+     * @param DateTime $publish            
+     * @return self
+     */
+    public function updatePost($id, $title, $content, DateTime $publish = NULL);
+
+    /**
+     *
+     * @param int $id            
+     * @param string $title            
+     * @param string $content            
+     * @param DateTime $publish            
+     * @return PostInterface
+     */
+    public function createPost(TaxonomyTermInterface $taxonomy, UserInterface $author, $title, $content, DateTime $publish = NULL);
 }

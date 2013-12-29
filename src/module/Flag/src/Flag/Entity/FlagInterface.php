@@ -13,8 +13,10 @@ namespace Flag\Entity;
 
 use Uuid\Entity\UuidInterface;
 use User\Entity\UserInterface;
+use Type\Entity\TypeAwareInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface FlagInterface
+interface FlagInterface extends TypeAwareInterface, LanguageAwareInterface
 {
 
     /**
@@ -40,44 +42,31 @@ interface FlagInterface
      * @return UserInterface
      */
     public function getReporter();
-    
-    /**
-     * 
-     * @return \DateTime
-     */
-    public function getTimestamp ();
 
     /**
      *
-     * @return TypeInterface
+     * @return \DateTime
      */
-    public function getType();
+    public function getTimestamp();
 
     /**
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $uuid);
 
     /**
      *
      * @param string $content            
-     * @return $this
+     * @return self
      */
     public function setContent($content);
 
     /**
      *
      * @param UserInterface $user            
-     * @return $this
+     * @return self
      */
     public function setReporter(UserInterface $user);
-
-    /**
-     *
-     * @param TypeInterface $type            
-     * @return $this
-     */
-    public function setType(TypeInterface $type);
 }

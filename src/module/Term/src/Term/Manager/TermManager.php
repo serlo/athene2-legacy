@@ -13,96 +13,67 @@
  */
 namespace Term\Manager;
 
-use Term\Service\TermServiceInterface;
 use Term\Exception\TermNotFoundException;
-use Language\Service\LanguageServiceInterface;
+use Language\Entity\LanguageInterface;
 use Common\Filter\Slugify;
-use Term\Exception;
 
 class TermManager implements TermManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Common\Traits\InstanceManagerTrait;
-
-    /**
-     *
-     * @param TermServiceInterface $termService            
-     */
-    private function addTerm(TermServiceInterface $termService)
-    {
-        $this->addInstance($termService->getId(), $termService);
-        return $this;
-    }
+    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
 
     public function getTerm($id)
     {
-        if (! is_numeric($id)) {
-            throw new Exception\InvalidArgumentException();
+        $instance = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Term\Entity\TermEntityInterface'), $id);
+        
+        if (! is_object($instance)) {
+            throw new TermNotFoundException($id);
         }
         
-        if (! $this->hasInstance($id)) {
-            $instance = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Term\Entity\TermInterface'), $id);
-            
-            if (! is_object($instance))
-                throw new TermNotFoundException($id);
-            
-            $this->addTerm($this->createInstanceFromEntity($instance));
-        }
-        
-        return $this->getInstance($id);
+        return $instance;
     }
 
-    public function findTermBySlug($slug, LanguageServiceInterface $language)
+    public function findTermBySlug($slug, LanguageInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Term\Entity\TermInterface'))
+            ->resolveClassName('Term\Entity\TermEntityInterface'))
             ->findOneBy(array(
             'slug' => $slug,
             'language' => $language->getId()
         ));
         
-        if (! is_object($entity))
+        if (! is_object($entity)) {
             throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $slug, $language->getId()));
-        
-        $this->addTerm($this->createInstanceFromEntity($entity));
-        return $this->getInstance($entity->getId());
+        }
+        return $entity;
     }
 
-    public function findTermByName($name, LanguageServiceInterface $language)
+    public function findTermByName($name, LanguageInterface $language)
     {
         $entity = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
-            ->resolveClassName('Term\Entity\TermInterface'))
+            ->resolveClassName('Term\Entity\TermEntityInterface'))
             ->findOneBy(array(
             'name' => $name,
             'language' => $language->getId()
         ));
         
-        if (! is_object($entity))
+        if (! is_object($entity)) {
             throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $name, $language->getId()));
+        }
         
-        $this->addTerm($this->createInstanceFromEntity($entity));
-        return $this->getInstance($entity->getId());
-    }
-
-    public function createTerm($name, $slug = NULL, LanguageServiceInterface $language)
-    {
-        $filter = new Slugify();
-        $entity = $this->getClassResolver()->resolve('Term\Entity\TermInterface');
-        $entity->setName($name);
-        $entity->setLanguage($language->getEntity());
-        $entity->setSlug(($slug ? $slug : $filter->filter($name)));
-        $this->getObjectManager()->persist($entity);
         return $entity;
     }
 
-    protected function createInstanceFromEntity($entity)
+    public function createTerm($name, $slug = NULL, LanguageInterface $language)
     {
-        /* @var $instance TermServiceInterface */
-        $instance = $this->createInstance('Term\Service\TermServiceInterface');
-        $instance->setEntity($entity);
-        $instance->setManager($this);
-        return $instance;
+        $filter = new Slugify();
+        $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
+        $entity->setName($name);
+        $entity->setLanguage($language);
+        $entity->setSlug(($slug ? $slug : $filter->filter($name)));
+        $this->getObjectManager()->persist($entity);
+        return $entity;
     }
 }

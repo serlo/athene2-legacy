@@ -14,17 +14,20 @@ namespace Entity\Listener;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Zend\Mvc\MvcEvent;
 use Zend\EventManager\Event;
-use Entity\Plugin\Controller\AbstractController;
+use Entity\Controller\AbstractController;
 use Zend\Mvc\Router\RouteMatch;
 
 abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
 {
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
+    /*
+     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
      */
-    public function attachShared (\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $events->attach($this->getMonitoredClass(), MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'));
+        $events->attach($this->getMonitoredClass(), MvcEvent::EVENT_DISPATCH, array(
+            $this,
+            'onDispatch'
+        ));
     }
 
     public function onDispatch(Event $event)
@@ -33,21 +36,24 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
         if ($controller instanceof AbstractController) {
             /* @var $controller AbstractController */
             
-            if ($controller->getEntityService()->hasPlugin('learningResource')) {
-                $subject = $controller->getEntityService()
-                    ->learningResource()
-                    ->getDefaultSubject()
-                    ->getSlug();
-                
-                if ($subject !== NULL) {
-                    $routeMatch = new RouteMatch(array(
-                        'subject' => $subject
-                    ));
-                    $routeMatch->setMatchedRouteName('subject');
-                    $controller->getServiceLocator()
-                        ->get('Ui\Navigation\DefaultNavigationFactory')
-                        ->setRouteMatch($routeMatch);
+            $entity = $controller->getEntity();
+            $subject = null;
+            
+            foreach ($entity->getTaxonomyTerms() as $term) {
+                $subject = $term->findAncestorByTypeName('subject');
+                if ($subject) {
+                    break;
                 }
+            }
+            
+            if ($subject !== null) {
+                $routeMatch = new RouteMatch(array(
+                    'subject' => $subject->getSlug()
+                ));
+                $routeMatch->setMatchedRouteName('subject');
+                $controller->getServiceLocator()
+                    ->get('Ui\Navigation\DefaultNavigationFactory')
+                    ->setRouteMatch($routeMatch);
             }
         }
     }

@@ -14,56 +14,173 @@ namespace Taxonomy\Entity;
 interface TaxonomyTermInterface
 {
 
+    /**
+     *
+     * @return string
+     */
     public function getDescription();
 
+    /**
+     *
+     * @return bool
+     */
     public function hasParent();
 
+    /**
+     *
+     * @return bool
+     */
     public function hasChildren();
 
-    public function setDescription($description);
-
+    /**
+     *
+     * @return TaxonomyInterface
+     */
     public function getTaxonomy();
 
+    /**
+     *
+     * @return TaxonomyTypeInterface
+     */
+    public function getType();
+
+    /**
+     *
+     * @return Collection
+     */
     public function getChildren();
 
+    /**
+     *
+     * @return self
+     */
     public function getParent();
 
+    /**
+     *
+     * @return string
+     */
     public function getName();
 
+    /**
+     *
+     * @return string
+     */
     public function getSlug();
 
-    public function setTaxonomy($taxonomy);
+    /**
+     *
+     * @return int
+     */
+    public function getPosition();
 
-    public function setChildren($children);
-
-    public function setParent($parent);
-
-    public function getWeight();
-
-    public function setWeight($weight);
-
-    public function getTerm();
-
-    public function setTerm($term);
-
-    public function getArrayCopy();
-
-    public function getAssociated($field);
-
-    public function countAssociated($field);
-
-    public function addAssociation($field, $entity);
-
-    public function removeAssociation($field, $entity);
-
+    /**
+     *
+     * @return LanguageInterface
+     */
     public function getLanguage();
 
     /**
      *
-     * @param string $association
-     * @param int $of
-     * @param int $order
-     * @return object
+     * @param string $association            
+     * @return TaxonomyTermAwareInterface[]
      */
-    public function orderAssociated($association, $of, $order);
+    public function getAssociated($association);
+
+    /**
+     *
+     * @param string $association            
+     * @return int
+     */
+    public function countAssociations($association);
+
+    /**
+     *
+     * @param string $association            
+     * @param TaxonomyTermAwareInterface $object            
+     * @return bool
+     */
+    public function isAssociated($association, TaxonomyTermAwareInterface $object);
+
+    /**
+     *
+     * @param string $association            
+     * @param TaxonomyTermAwareInterface $object            
+     * @return self
+     */
+    public function associateObject($association, TaxonomyTermAwareInterface $object);
+
+    /**
+     *
+     * @param string $association            
+     * @param int $objectId            
+     * @param int $position            
+     * @return self
+     */
+    public function positionAssociatedObject($association, $objectId, $position);
+
+    /**
+     *
+     * @param string $field            
+     * @param TaxonomyTermAwareInterface $object            
+     * @return self
+     */
+    public function removeAssociation($field, TaxonomyTermAwareInterface $object);
+
+    /**
+     *
+     * @param TaxonomyInterface $taxonomy            
+     * @return self
+     */
+    public function setTaxonomy(TaxonomyInterface $taxonomy);
+
+    /**
+     *
+     * @param string $description            
+     * @return self
+     */
+    public function setDescription($description);
+
+    /**
+     *
+     * @param self $parent            
+     * @return self
+     */
+    public function setParent(self $parent);
+
+    /**
+     *
+     * @param int $position            
+     * @return self
+     */
+    public function setPosition($position);
+
+    /**
+     *
+     * @param string $name            
+     * @return TaxonomyTermModelInterface
+     */
+    public function findAncestorByTypeName($name);
+    
+    /**
+     * 
+     * @param array $slugs      
+     * @return self
+     */
+    public function findChildBySlugs(array $slugs);
+
+    /**
+     *
+     * @param self $ancestor            
+     * @return bool
+     */
+    public function knowsAncestor(self $ancestor);
+
+    /**
+     *          
+     * @param string $stopAtType       
+     * @param string $delimiter            
+     * @return string
+     */
+    public function slugify($stopAtType = NULL, $delimiter = '/');
 }

@@ -11,7 +11,6 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Zend\Permissions\Rbac\AbstractRole;
 
 /**
  * A role.
@@ -19,7 +18,7 @@ use Zend\Permissions\Rbac\AbstractRole;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role extends AbstractRole implements RoleInterface
+class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
 {
 
     /**
@@ -46,11 +45,11 @@ class Role extends AbstractRole implements RoleInterface
     protected $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles")
+     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles", indexBy="name")
      * @ORM\JoinTable(name="role_permission")
      */
     protected $permissions;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
      */
@@ -92,7 +91,7 @@ class Role extends AbstractRole implements RoleInterface
     /**
      *
      * @param field_type $name            
-     * @return $this
+     * @return self
      */
     public function setName($name)
     {
@@ -103,7 +102,7 @@ class Role extends AbstractRole implements RoleInterface
     /**
      *
      * @param field_type $description            
-     * @return $this
+     * @return self
      */
     public function setDescription($description)
     {
@@ -142,44 +141,17 @@ class Role extends AbstractRole implements RoleInterface
         $this->permissions->add($permission);
         return $this;
     }
-    
-    public function hasPermission($name)
+
+    public function hasPermission($permission)
     {
-        $found = $this->permissions->filter(function($e) use($name){
-            return $e->getName() === $name;
-        });
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('name', (string) $permission));
+        $result = $this->permissions->matching($criteria);
         
-        if ($found->count() > 0) {
-            return true;
-        }
-
-        $it = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($it as $leaf) {
-            /** @var RoleInterface $leaf */
-            if ($leaf->hasPermission($name)) {
-                return true;
-            }
-        }
-
-        return false;
+        return count($result) > 0;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::addChild()
-     */
-    public function addChild($child)
+
+    public function __toString()
     {
-        $role = new self();
-        $this->children->add($child);
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::setParent()
-     */
-    public function setParent($parent)
-    {
-        parent::setParent($parent);
-        return $this;
+        return $this->getName();
     }
 }

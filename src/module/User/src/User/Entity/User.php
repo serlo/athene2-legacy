@@ -11,6 +11,7 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uuid\Entity\UuidEntity;
+use DateTime;
 
 /**
  * A user.
@@ -24,7 +25,7 @@ class User extends UuidEntity implements UserInterface
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
@@ -73,31 +74,26 @@ class User extends UuidEntity implements UserInterface
      */
     protected $date;
 
-    /**
-     *
-     * @return field_type $token
-     */
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+        $this->ads_enabled = true;
+        $this->removed = false;
+        $this->logins = 0;
+        $this->generateToken();
+    }
+
     public function getToken()
     {
         return $this->token;
     }
 
-    /**
-     *
-     * @param field_type $token            
-     * @return $this
-     */
     public function generateToken()
     {
         $this->token = hash('crc32b', uniqid('user.token.', true));
-        ;
         return $this;
     }
 
-    /**
-     *
-     * @return array $email
-     */
     public function getEmail()
     {
         return $this->email;
@@ -108,115 +104,60 @@ class User extends UuidEntity implements UserInterface
         return $this->username;
     }
 
-    /**
-     *
-     * @return array $password
-     */
     public function getPassword()
     {
         return $this->password;
     }
 
-    /**
-     *
-     * @return number $logins
-     */
     public function getLogins()
     {
         return $this->logins;
     }
 
-    /**
-     *
-     * @return field_type $last_login
-     */
     public function getLastLogin()
     {
         return $this->last_login;
     }
 
-    /**
-     *
-     * @return field_type $date
-     */
     public function getDate()
     {
         return $this->date;
     }
 
-    /**
-     *
-     * @param array $email            
-     * @return $this
-     */
     public function setEmail($email)
     {
         $this->email = $email;
         return $this;
     }
 
-    /**
-     *
-     * @param array $username            
-     * @return $this
-     */
     public function setUsername($username)
     {
         $this->username = $username;
         return $this;
     }
 
-    /**
-     *
-     * @param array $password            
-     * @return $this
-     */
     public function setPassword($password)
     {
         $this->password = $password;
         return $this;
     }
 
-    /**
-     *
-     * @param number $logins            
-     * @return $this
-     */
     public function setLogins($logins)
     {
         $this->logins = $logins;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $last_login            
-     * @return $this
-     */
-    public function setLastLogin($last_login)
+    public function setLastLogin(DateTime $last_login)
     {
         $this->last_login = $last_login;
         return $this;
     }
 
-    /**
-     *
-     * @param field_type $date            
-     * @return $this
-     */
-    public function setDate($date)
+    public function setDate(DateTime $date)
     {
         $this->date = $date;
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->roles = new ArrayCollection();
-        $this->ads_enabled = true;
-        $this->removed = false;
-        $this->logins = 0;
-        $this->generateToken();
     }
 
     public function addRole(RoleInterface $role)
@@ -236,11 +177,6 @@ class User extends UuidEntity implements UserInterface
         return $this->roles;
     }
 
-    /**
-     * Populate from an array.
-     *
-     * @param array $data            
-     */
     public function populate(array $data = array())
     {
         $this->injectArray('email', $data);
@@ -255,37 +191,21 @@ class User extends UuidEntity implements UserInterface
         return $this;
     }
 
-    private function injectArray($key, array $array, $default = NULL)
+    public function updateLoginData()
     {
-        if (array_key_exists($key, $array)) {
-            $this->$key = $array[$key];
-        }
+        $this->setLogins($this->getLogins() + 1);
+        $this->setLastLogin(new DateTime());
         return $this;
     }
 
-    public function hasRole($id)
+    public function hasRole(RoleInterface $role)
     {
         $roles = $this->getRoles();
         foreach ($roles as $roleEntity) {
-            if (is_numeric($id)) {
-                if ($roleEntity->getId() == $id) {
-                    return true;
-                }
-            } elseif (is_string($id)) {
-                if ($roleEntity->getName() == $id) {
-                    return true;
-                }
+            if ($role === $roleEntity) {
+                return true;
             }
         }
         return false;
-    }
-
-    public function getRoleNames()
-    {
-        $return = array();
-        foreach ($this->getRoles() as $role) {
-            $return[] = $role->getName();
-        }
-        return $return;
     }
 }

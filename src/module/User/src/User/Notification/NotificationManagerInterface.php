@@ -11,7 +11,6 @@
  */
 namespace User\Notification;
 
-use User\Service\UserServiceInterface;
 use User\Entity\UserInterface;
 use Event\Entity\EventLogInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,21 +22,14 @@ interface NotificationManagerInterface
      *
      * @param UserInterface $user            
      * @param EventLogInterface $eventLog            
-     * @return $this
+     * @return self
      */
     public function createNotification(UserInterface $user, EventLogInterface $eventLog);
 
     /**
      *
-     * @param Entity\NotificationInterface $notification  
-     * @return Service\NotificationServiceInterface
-     */
-    public function getNotificationService(Entity\NotificationInterface $notification);
-
-    /**
-     *
-     * @param UserServiceInterface $userService            
+     * @param UserInterface $userService            
      * @return ArrayCollection
      */
-    public function findNotificationsBySubsriber(UserServiceInterface $userService);
+    public function findNotificationsBySubsriber(UserInterface $userService);
 }

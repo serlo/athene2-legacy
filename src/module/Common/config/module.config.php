@@ -13,32 +13,18 @@
 namespace Common;
 
 return array(
-    'di' => array(
-        'allowed_controllers' => array(
-            __NAMESPACE__ . '\Controller\IndexController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Common\Firewall\HydratableController' => array(
-                    'setServiceLocator' => array(
-                        'required' => true
-                    )
-                )
-            )
-        )
-    ),
-    'view_helpers' => array(
-        'invokables' => array()
-    ),
+    'zfc_rbac' => [
+        'guard_manager' => [
+            'factories' => [
+                'Common\Guard\HydratableControllerGuard' => 'Common\Guard\Factory\HydratableControllerGuardFactory'
+            ]
+        ]
+    ]
+    ,
     'controller_plugins' => array(
         'invokables' => array(
             'referer' => 'Common\Controller\Plugin\RefererProvider',
             'redirect' => 'Common\Controller\Plugin\RedirectHelper'
-        )
-    ),
-    'view_helpers' => array(
-        'invokables' => array(
-            'normalize' => 'Common\View\Helper\Normalize'
         )
     )
 );

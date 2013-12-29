@@ -12,6 +12,7 @@
 namespace Uuid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Uuid\Exception;
 
 /**
  * @ORM\Entity
@@ -38,47 +39,47 @@ class Uuid implements UuidInterface
     protected $trashed;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $entity;
 
     /**
-     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $taxonomyTerm;
 
     /**
-     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $upload;
 
     /**
-     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $comment;
 
     /**
-     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $blogPost;
 
     /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $entityRevision;
 
     /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $pageRepository;
 
     /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $pageRevision;
 
@@ -94,7 +95,7 @@ class Uuid implements UuidInterface
     /**
      *
      * @param bool $trashed            
-     * @return $this
+     * @return self
      */
     public function setTrashed($trashed)
     {
@@ -109,7 +110,8 @@ class Uuid implements UuidInterface
                 return $key;
             }
         }
-        return NULL;
+        
+        throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
     }
 
     public function getHolder()
@@ -119,15 +121,8 @@ class Uuid implements UuidInterface
                 return $value;
             }
         }
-        return NULL;
-    }
-
-    public function is($type)
-    {
-        if (property_exists($this, $type)) {
-            return is_object($this->$type);
-        }
-        return false;
+        
+        throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
     }
 
     function __construct()
@@ -152,21 +147,19 @@ class Uuid implements UuidInterface
         return $this;
     }
 
-    public function hydrate(UuidHolder $entity)
+    public function is($type)
     {
-        $entity->setUuid($this);
-        return $this;
+        if (property_exists($this, $type)) {
+            return is_object($this->$type);
+        }
+        return false;
     }
 
-    /**
-     * Without this, the whole thing breaks at
-     * 
-     * Object of class DoctrineORMModule\Proxy\__CG__\Uuid\Entity\Uuid could not be converted to string in D:\workspace\athene2\src\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php on line 2891
-     * 
-     * @return string
-     */
-    public function __toString()
+    public function setHolder($key, $object)
     {
-        return (string) $this->id;
+        if (property_exists($this, $key)) {
+            $this->$key = $object;
+        }
+        return $this;
     }
 }

@@ -13,5 +13,4 @@ namespace Discussion;
 
 abstract class AbstractDiscussionManager
 {
-    use \Common\Traits\InstanceManagerTrait, \Common\Traits\ConfigAwareTrait;
 }

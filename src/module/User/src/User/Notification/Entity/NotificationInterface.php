@@ -22,7 +22,7 @@ interface NotificationInterface
     /**
      *
      * @param bool $seen            
-     * @return $this
+     * @return self
      */
     public function setSeen($seen);
 
@@ -47,7 +47,7 @@ interface NotificationInterface
     /**
      *
      * @param Entity\User $user            
-     * @return $this
+     * @return self
      */
     public function setUser(Entity\UserInterface $user);
 
@@ -60,7 +60,7 @@ interface NotificationInterface
     /**
      *
      * @param NotificationEventInterface $event            
-     * @return $this
+     * @return self
      */
     public function addEvent(NotificationEventInterface $event);
 

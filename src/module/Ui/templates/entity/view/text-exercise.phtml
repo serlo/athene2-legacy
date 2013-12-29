@@ -1,24 +1,17 @@
-<?php
-/**
- *
- * Athene2 - Advanced Learning Resources Manager
- *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
- */
-$exercise = $this->entity;
-$solution = $exercise->solution()->findChild();
-?>
-<?php if($exercise->repository()->hasCurrentRevision()): ?>
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php $exercise = $this->entity; ?>
+<?php $solution = $entity->getChildren('link', 'text-solution')->first(); ?>
+<?php if($exercise->hasCurrentRevision()): ?>
     <article>
         <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+    	   <?php if(is_object($solution)): ?>
+               <a class="btn-default btn btn-xs accordion-toggle" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">=</a>
+    	   <?php endif; ?>
+           <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
         </div>
     	<section>
-            <?php $revision = $exercise->repository()->getCurrentRevision(); ?>
+            <?php $revision = $exercise->getCurrentRevision(); ?>
             <?php echo $revision->get('content'); ?>
         </section>
     	<?php if(is_object($solution)): ?>

@@ -9,150 +9,144 @@
 namespace Link\Service;
 
 use Link\Entity\LinkableInterface;
+use Link\Entity\LinkInterface;
+use Type\Entity\TypeInterface;
+use Link\Options\LinkOptionsInterface;
 use Link\Exception;
 
 class LinkService implements LinkServiceInterface
 {
     
-    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Link\Manager\LinkManagerAwareTrait,\Common\Traits\EntityDelegatorTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Type\TypeManagerAwareTrait,\Zend\EventManager\EventManagerAwareTrait;
 
-    /**
-     *
-     * @return LinkableInterface
-     */
-    public function getEntity()
+    public function associate(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $parentOptions, $position = 0)
     {
-        return $this->entity;
-    }
-
-    /**
-     *
-     * @param LinkableInterface $entity            
-     * @return $this
-     */
-    public function setEntity(LinkableInterface $entity)
-    {
-        $this->entity = $entity;
+        $this->isValidChild($parent, $child, $parentOptions);
+        
+        $typeName = $parentOptions->getLinkType();
+        
+        $type = $this->getTypeManager()->findTypeByName($typeName);
+        $link = $parent->createLink();
+        
+        $link->setParent($parent);
+        $link->setChild($child);
+        $link->setType($type);
+        $link->setPosition($position);
+        
+        $this->getEventManager()->trigger('link', $this, [
+            'entity' => $child,
+            'parent' => $parent
+        ]);
+        
+        $this->getObjectManager()->persist($link);
         return $this;
     }
 
-    public function getParent($id)
+    public function dissociate(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $parentOptions, $position = 0)
     {
-        $parents = $this->getEntity()
-            ->getParents($this->getLinkManager()
-            ->getEntity())
-            ->filter(function (LinkableInterface $link) use($id)
-        {
-            return $link->getId() == $id;
-        });
-        return $parents->current();
+        $typeName = $parentOptions->getLinkType();
+        
+        $type = $this->getTypeManager()->findTypeByName($typeName);
+        $link = $this->findLinkByChild($parent, $child->getId(), $type);
+        
+        if (is_object($link)) {
+            
+            $this->getEventManager()->trigger('unlink', $this, [
+                'entity' => $child,
+                'parent' => $parent
+            ]);
+            
+            $this->getObjectManager()->remove($link);
+        }
+        
+        return $this;
     }
 
-    public function getChild($id)
+    public function sortChildren(LinkableInterface $parent, $typeName, array $children)
     {
-        $children = $this->getEntity()
-            ->getChildren($this->getLinkManager()
-            ->getEntity())
-            ->filter(function (LinkableInterface $link) use($id)
-        {
-            return $link->getId() == $id;
-        });
-        return $children->current();
-    }
-
-    public function orderChildren(array $children)
-    {
-        $position = 0;
+        $type = $this->getTypeManager()->findTypeByName($typeName);
+        $i = 0;
+        
         foreach ($children as $child) {
-            if (! array_key_exists('id', $child)) {
-                throw new Exception\RuntimeException(sprintf('Key `id` not found. Array should look like `array(array(\'id\' => 1), array(\'id\' => 2))`'));
+            if ($child instanceof LinkableInterface) {
+                $child = $child->getId();
             }
-            $link = $this->getChild($child['id']);
-            $entity = $this->getEntity()->positionChild($link, $this->getLinkManager()
-                ->getEntity(), $position);
-            $this->getObjectManager()->persist($entity);
-            $position++;
+            
+            $link = $this->findLinkByChild($parent, $child, $type);
+            
+            if ($link !== NULL) {
+                $link->setPosition($i);
+                $this->getObjectManager()->persist($link);
+            }
+            $i ++;
         }
+        
         return $this;
     }
 
-    public function orderParents(array $parents)
+    public function sortParents(LinkableInterface $child, $typeName, array $parents)
     {
-        $position = 0;
+        $type = $this->getTypeManager()->findTypeByName($typeName);
+        $i = 0;
+        
         foreach ($parents as $parent) {
-            if (! array_key_exists('id', $parent)) {
-                throw new Exception\RuntimeException(sprintf('Key `id` not found. Array should look like `array(array(\'id\' => 1), array(\'id\' => 2))`'));
+            if ($parent instanceof LinkableInterface) {
+                $parent = $parent->getId();
             }
-            $link = $this->getChild($parent['id']);
-            $entity = $this->getEntity()->positionParent($link, $this->getLinkManager()
-                ->getEntity(), $position);
-            $this->getObjectManager()->persist($entity);
-            $position++;
+            $link = $this->findLinkByChild($child, $parent, $type);
+            
+            if ($link !== NULL) {
+                $link->setPosition($i);
+                $this->getObjectManager()->persist($link);
+            }
+            $i ++;
         }
-        return $this;
-    }
-
-    public function removeChild($child)
-    {
-        if (! ($child instanceof LinkServiceInterface || $child instanceof LinkableInterface))
-            throw new \InvalidArgumentException();
-        
-        if ($child instanceof LinkServiceInterface)
-            $child = $child->getEntity();
-        
-        $this->getEntity()->removeChild($child, $this->getLinkManager()
-            ->getEntity());
-    }
-
-    public function removeParent($parent)
-    {
-        if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkableInterface))
-            throw new \InvalidArgumentException();
-        
-        if ($parent instanceof LinkServiceInterface)
-            $parent = $parent->getEntity();
-        
-        $this->getEntity()->removeParent($parent, $this->getLinkManager()
-            ->getEntity());
-    }
-
-    public function getChildren()
-    {
-        return $this->getEntity()->getChildren($this->getLinkManager()
-            ->getEntity());
-    }
-
-    public function getParents()
-    {
-        return $this->getEntity()->getParents($this->getLinkManager()
-            ->getEntity());
-    }
-
-    public function addParent($parent, $order = NULL)
-    {
-        if (! ($parent instanceof LinkServiceInterface || $parent instanceof LinkableInterface))
-            throw new \InvalidArgumentException();
-        
-        if ($parent instanceof LinkServiceInterface)
-            $parent = $parent->getEntity();
-        
-        $this->getEntity()->addParent($parent, $this->getLinkManager()
-            ->getEntity(), $order);
         
         return $this;
     }
 
-    public function addChild($child, $oder = NULL)
+    protected function findLinkByChild(LinkableInterface $element, $childId, TypeInterface $type)
     {
-        if (! ($child instanceof LinkServiceInterface || $child instanceof LinkableInterface))
-            throw new \InvalidArgumentException();
+        /* @var $link LinkInterface */
+        foreach ($element->getChildLinks() as $link) {
+            if ($link->getChild()->getId() == $childId && $link->getType() === $type) {
+                return $link;
+            }
+        }
+        return NULL;
+    }
+
+    protected function findLinkByParent(LinkableInterface $element, $parentId, TypeInterface $type)
+    {
+        /* @var $link LinkInterface */
+        foreach ($element->getParentLinks() as $link) {
+            if ($link->getParent()->getId() === $parentId && $link->getType() === $type) {
+                return $link;
+            }
+        }
+        return NULL;
+    }
+
+    protected function isValidChild(LinkableInterface $parent, LinkableInterface $child, LinkOptionsInterface $options)
+    {
+        $childType = $child->getType()->getName();
+        $parentType = $parent->getType()->getName();
         
-        if ($child instanceof LinkServiceInterface)
-            $child = $child->getEntity();
+        if (! $options->isChildAllowed($childType)) {
+            throw new Exception\RuntimeException(sprintf('Child type "%s" is not allowed.', $childType));
+        }
         
-        $this->getEntity()->addChild($child, $this->getLinkManager()
-            ->getEntity(), $oder);
+        if (! $options->allowsManyChildren($childType)) {
+            /* @var $childLink \Link\Entity\LinkInterface */
+            foreach ($parent->getChildLinks() as $childLink) {
+                if ($childLink->getChild()
+                    ->getType()
+                    ->getName() == $childType) {
+                    throw new Exception\RuntimeException(sprintf('Child type "%s" does not allow multiple children.', $childType));
+                }
+            }
+        }
         
-        return $this;
+        return true;
     }
 }

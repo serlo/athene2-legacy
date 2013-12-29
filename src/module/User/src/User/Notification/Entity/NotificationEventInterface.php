@@ -24,7 +24,7 @@ interface NotificationEventInterface
     /**
      *
      * @param EventLogInterface $eventLog            
-     * @return $this;
+     * @return self;
      */
     public function setEventLog(EventLogInterface $eventLog);
 
@@ -43,7 +43,7 @@ interface NotificationEventInterface
     /**
      *
      * @param NotificationInterface $notification            
-     * @return $this
+     * @return self
      */
     public function setNotification(NotificationInterface $notification);
 }

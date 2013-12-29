@@ -6,18 +6,23 @@ use User\Entity\RoleInterface;
 use Common\Normalize\Normalizable;
 use Common\Normalize\Normalized;
 
-class PageService implements PageServiceInterface, Normalizable
+class PageService implements PageServiceInterface
 {
     
     use \Common\Traits\ObjectManagerAwareTrait;
     use \Versioning\RepositoryManagerAwareTrait;
-    use\Common\Traits\EntityAwareTrait;
 
     /**
      *
      * @var PageManagerInterface
      */
     protected $manager;
+    
+    protected $entity;
+    
+    public function setEntity($entity){
+        $this->entity = $entity;
+    }
 
     /**
      *
@@ -31,7 +36,7 @@ class PageService implements PageServiceInterface, Normalizable
     /**
      *
      * @param PageManagerInterface $manager            
-     * @return $this
+     * @return self
      */
     public function setManager(PageManagerInterface $manager)
     {
@@ -41,16 +46,8 @@ class PageService implements PageServiceInterface, Normalizable
 
     public function getCurrentRevision()
     {
-        return $this->getRepository()->getCurrentRevision();
-    }
-
-    public function getRevision($id)
-    {
-        $revision = $this->getRepository()->getRevision($id);
-        if (! $revision->isTrashed())
-            return $revision;
-        else
-            return null;
+        $repository = $this->getRepository();
+        return $repository->getCurrentRevision();
     }
 
     public function hasCurrentRevision()
@@ -69,6 +66,10 @@ class PageService implements PageServiceInterface, Normalizable
         $this->entity->setRole($role);
     }
 
+    public function getRoles(){
+        $this->entity->getRoles();
+    }
+    
     public function getRoleById($id)
     {
         $repository = $this->getObjectManager()->getRepository('User\Entity\Role');
@@ -89,7 +90,7 @@ class PageService implements PageServiceInterface, Normalizable
     {
         return $this->entity->hasRole($role);
     }
-
+/*
     public function hasPermission($userService)
     {
         if ($userService == null)
@@ -102,48 +103,35 @@ class PageService implements PageServiceInterface, Normalizable
             }
         }
         return false;
-    }
+    }*/
 
     protected function getRepository()
     {
-        return $this->getRepositoryManager()->getRepository($this->entity);
+        $repositoryManager = $this->getRepositoryManager();
+        $repository =  $repositoryManager->getRepository($this->entity);
+        return $repository;
     }
 
     public function deleteRevision($id)
     {
         $repository = $this->getRepository();
-        $revision = $this->getRevision($id);
+        $revision = $this->getManager()->getRevision($id);
         $repository->removeRevision($id);
         $this->getObjectManager()->remove($revision);
-        $this->getObjectManager()->flush();
+
         return $this;
     }
 
     public function trashRevision($id)
     {
-        $repository = $this->getRepository();
-        $revision = $this->getRevision($id);
+        $revision = $this->getManager()->getRevision($id);
         $revision->trash();
-        $this->getObjectManager()->flush();
         return $this;
     }
 
     public function getRepositoryId()
     {
-        return $this->getEntity()->getId();
-    }
-
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $repository = $this->getRepository();
-        $normalized->setTitle($this->getEntity()
-            ->getUuid());
-        $normalized->setRouteName('page/article');
-        $normalized->setRouteParams(array(
-            'repositoryid' => $this->getRepositoryId()
-        ));
-        return $normalized;
+        return $this->entity->getId();
     }
 }
 

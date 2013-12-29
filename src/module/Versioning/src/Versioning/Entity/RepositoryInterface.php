@@ -9,31 +9,33 @@
 namespace Versioning\Entity;
 
 use Doctrine\ORM\PersistentCollection;
+use Uuid\Entity\UuidHolder;
 
-interface RepositoryInterface
+interface RepositoryInterface extends UuidHolder
 {
+
     /**
-     * 
+     *
      * @return int
      */
     public function getId();
-    
+
     /**
      * Returns the revisions
-     * 
+     *
      * @return PersistentCollection
      */
-    public function getRevisions ();
-    
+    public function getRevisions();
+
     /**
-     * Creates a new revision and adds it to the repository
-     * 
+     * Creates a new revision
+     *
      * @return RevisionInterface
      */
-    public function newRevision();
-    
+    public function createRevision();
+
     /**
-     * 
+     *
      * @return RevisionInterface
      */
     public function getCurrentRevision();
@@ -45,23 +47,23 @@ interface RepositoryInterface
     public function hasCurrentRevision();
 
     /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
+     *
+     * @param RevisionInterface $revision            
+     * @return self
      */
     public function setCurrentRevision(RevisionInterface $revision);
-    
+
     /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
+     *
+     * @param RevisionInterface $revision            
+     * @return self
      */
     public function addRevision(RevisionInterface $revision);
-    
+
     /**
-     * 
-     * @param RevisionInterface $revision
-     * @return $this
+     *
+     * @param RevisionInterface $revision            
+     * @return self
      */
     public function removeRevision(RevisionInterface $revision);
 }

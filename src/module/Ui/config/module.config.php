@@ -9,6 +9,8 @@
  * @link https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+namespace Ui;
+
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mvc\Application;
 use Ui\View\Helper\PageHeader;
@@ -16,6 +18,17 @@ use ZfcRbac\Guard\GuardInterface;
 use Ui\View\Helper\Brand;
 
 return array(
+    'di' => [
+        'definition' => [
+            'class' => [
+                __NAMESPACE__ . '\Provider\LanguageAwareNavigationProvider' => [
+                    'setLanguageManager' => [
+                        'required' => true
+                    ]
+                ]
+            ]
+        ]
+    ],
     'navigation' => array(
         'hydratables' => array(
             'default' => array(
@@ -52,7 +65,7 @@ return array(
         'factories' => array(
             'currentLanguage' => function ($helperPluginManager)
             {
-                $plugin = new Ui\View\Helper\ActiveLanguage();
+                $plugin = new View\Helper\ActiveLanguage();
                 $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
                 
                 // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
@@ -85,7 +98,7 @@ return array(
         'factories' => array(
             'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm)
             {
-                $service = new Ui\Renderer\PhpDebugRenderer();
+                $service = new Renderer\PhpDebugRenderer();
                 $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
                 $service->setHelperPluginManager($sm->get('ViewHelperManager'));
                 return $service;

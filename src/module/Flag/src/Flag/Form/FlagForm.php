@@ -16,11 +16,12 @@ use Zend\InputFilter\InputFilter;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Element\Submit;
+use Doctrine\Common\Collections\Collection;
 
 class FlagForm extends Form
 {
 
-    public function __construct(array $types)
+    public function __construct(Collection $types)
     {
         parent::__construct('context');
         $this->setAttribute('method', 'post');

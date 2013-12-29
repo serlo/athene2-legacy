@@ -1,0 +1,91 @@
+#
+#        
+# Entity 
+#        
+#
+
+source entitySource
+{
+	type			= mysql
+
+	sql_host		= localhost
+	sql_user		= root
+	sql_pass		=
+	sql_db			= serlo
+	sql_port		= 3306
+	
+	sql_query = SELECT ent.id as id, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter, m.value as subject, CRC32(m.value) as subject_filter FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN entity_type as et ON ent.entity_type_id = et.id JOIN metadata_key as mk JOIN metadata m ON m.uuid_id = ent.id AND m.key_id = mk.id WHERE mk.name = 'subject'
+
+
+	sql_field_string = value
+	sql_field_string = type
+	sql_attr_uint	 = type_filter
+}
+
+
+index entityIndex
+{
+	type			= plain
+	source			= entitySource
+
+	path			= %%PATH%%/data/entityIndex
+	charset_type		= utf-8
+}
+
+#
+#        
+# Taxonomy term
+#        
+#
+
+source taxonomyTermSource
+{
+	type			= mysql
+
+	sql_host		= localhost
+	sql_user		= root
+	sql_pass		=
+	sql_db			= serlo
+	sql_port		= 3306
+	
+	sql_query = SELECT tt.id as id, t.name as name, tty.name as type, CRC32(tty.name) as type_filter FROM term_taxonomy as tt JOIN term as t ON tt.term_id = t.id JOIN taxonomy as ta ON tt.taxonomy_id = ta.id JOIN taxonomy_type as tty ON ta.taxonomy_type_id = tty.id
+
+
+	sql_field_string = name
+	sql_field_string = type
+	sql_attr_uint	 = type_filter
+}
+
+
+index taxonomyTermIndex
+{
+	type			= plain
+	source			= taxonomyTermSource
+
+	path			= %%PATH%%/data/taxonomyTermIndex
+	charset_type		= utf-8
+}
+
+
+
+indexer
+{
+	mem_limit		= 32M
+}
+
+searchd
+{
+	listen			= 9312
+	listen			= 9306:mysql41
+	log			= %%PATH%%/log/searchd.log
+	query_log		= %%PATH%%/log/query.log
+	read_timeout		= 5
+	max_children		= 30
+	pid_file		= %%PATH%%/log/searchd.pid
+	max_matches		= 1000
+	seamless_rotate		= 1
+	preopen_indexes		= 1
+	unlink_old		= 1
+	workers			= threads # for RT to work
+	binlog_path		= %%PATH%%/data
+}

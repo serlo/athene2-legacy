@@ -21,14 +21,16 @@ return array(
             'comment' => '/discussion/%d'
         )
     ),
-    'uuid_manager' => array(
-        'resolver' => array(
-            'Discussion\Entity\CommentInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
-            {
-                /* @var $discussionManager \Discussion\DiscussionManager */
-                $discussionManager = $serviceLocator->get('Discussion\DiscussionManager');
-                return $discussionManager->getComment($uuid->getId());
-            }
+    'term_router' => array(
+        'routes' => array(
+            'forum' => array(
+                'route' => 'discussion/discussions',
+                'param_provider' => 'Discussion\Provider\ParamProvider'
+            ),
+            'forum-category' => array(
+                'route' => 'discussion/discussions',
+                'param_provider' => 'Discussion\Provider\ParamProvider'
+            )
         )
     ),
     'view_helpers' => array(
@@ -39,59 +41,39 @@ return array(
                 $discussionManager = $pluginManager->getServiceLocator()->get('Discussion\DiscussionManager');
                 $userManager = $pluginManager->getServiceLocator()->get('User\Manager\UserManager');
                 $languageManager = $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
-                $sharedTaxonomyManager = $pluginManager->getServiceLocator()->get('Taxonomy\Manager\SharedTaxonomyManager');
+                $sharedTaxonomyManager = $pluginManager->getServiceLocator()->get('Taxonomy\Manager\TaxonomyManager');
                 $plugin->setDiscussionManager($discussionManager);
                 $plugin->setUserManager($userManager);
-                $plugin->setConfig($pluginManager->getServiceLocator()
-                    ->get('config')['discussion']['filters']);
                 $plugin->setLanguageManager($languageManager);
-                $plugin->setSharedTaxonomyManager($sharedTaxonomyManager);
+                $plugin->setTaxonomyManager($sharedTaxonomyManager);
                 return $plugin;
             }
         )
     ),
-    'discussion' => array(
-        'filters' => array(
-            'taxonomy' => 'Discussion\Filter\TaxonomyFilter'
-        )
-    ),
     'taxonomy' => array(
-        'associations' => array(
-            'comments' => array(
-                'callback' => function (ServiceLocatorInterface $sm, $collection)
-                {
-                    return new CommentCollection($collection, $sm->get('Discussion\DiscussionManager'));
-                },
-            )
-        ),
         'types' => array(
             'forum-category' => array(
-                'options' => array(
-                    'allowed_parents' => array(
-                        'subject',
-                        'root'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_parents' => array(
+                    'subject',
+                    'root'
+                ),
+                'rootable' => false
             ),
             'forum' => array(
-                'options' => array(
-                    'allowed_associations' => array(
-                        'comments'
-                    ),
-                    'allowed_parents' => array(
-                        'forum',
-                        'forum-category'
-                    ),
-                    'radix_enabled' => false
-                )
+                'allowed_associations' => array(
+                    'comments'
+                ),
+                'allowed_parents' => array(
+                    'forum',
+                    'forum-category'
+                ),
+                'rootable' => false
             )
         )
     ),
     'class_resolver' => array(
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
-        'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote',
-        'Discussion\Service\DiscussionServiceInterface' => 'Discussion\Service\DiscussionService'
+        'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote'
     ),
     'router' => array(
         'routes' => array(
@@ -205,13 +187,14 @@ return array(
                     'setLanguageManager' => array(
                         'required' => true
                     ),
-                    'setSharedTaxonomyManager' => array(
+                    'setTaxonomyManager' => array(
                         'required' => true
                     ),
                     'setUserManager' => array(
                         'required' => true
                     )
                 ),
+                __NAMESPACE__ . '\Provider\ParamProvider' => array(),
                 'Discussion\Controller\DiscussionController' => array(
                     'setDiscussionManager' => array(
                         'required' => true
@@ -225,21 +208,12 @@ return array(
                     'setUserManager' => array(
                         'required' => true
                     )
-                ),
-                'Discussion\Service\DiscussionService' => array(
-                    'setObjectManager' => array(
-                        'required' => true
-                    )
-                ),
-                'Discussion\Filter\PluginManager' => array()
+                )
             )
         ),
         'instance' => array(
             'preferences' => array(
                 'Discussion\DiscussionManagerInterface' => 'Discussion\DiscussionManager'
-            ),
-            'Discussion\Service\DiscussionService' => array(
-                'shared' => false
             )
         )
     ),
@@ -249,13 +223,10 @@ return array(
             {
                 $config = $sm->get('config');
                 $class = new DiscussionManager();
-                
-                $class->setConfig($config['discussion']);
-                $class->setServiceLocator($sm->get('ServiceManager'));
                 $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
                 $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
                 $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $class->setSharedTaxonomyManager($sm->get('Taxonomy\Manager\SharedTaxonomyManager'));
+                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\TaxonomyManager'));
                 
                 return $class;
             }

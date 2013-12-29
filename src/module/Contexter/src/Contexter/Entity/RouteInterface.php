@@ -43,21 +43,21 @@ interface RouteInterface
     /**
      *
      * @param string $name            
-     * @return $this
+     * @return self
      */
     public function setName($name);
 
     /**
      *
      * @param ContextInterface $context            
-     * @return $this
+     * @return self
      */
     public function setContext(ContextInterface $context);
 
     /**
      * 
      * @param array $parameters
-     * @return $this
+     * @return self
      */
     public function addParameters(array $parameters);
     
@@ -65,7 +65,7 @@ interface RouteInterface
      * 
      * @param string $key
      * @param string $value
-     * @return $this
+     * @return self
      */
 	public function addParameter($key, $value);
 }

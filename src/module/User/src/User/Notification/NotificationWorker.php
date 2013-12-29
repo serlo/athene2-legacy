@@ -53,7 +53,7 @@ class NotificationWorker
      */
     protected function getWorkload(){
         $offset = $this->findOffset();
-        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('Event\Entity\EventLog'), $offset));
+        $query = $this->getObjectManager()->createQuery(sprintf('SELECT el FROM %s el WHERE el.id > %d ORDER BY el.id ASC', $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface'), $offset));
         return $query->getResult();
     }
 

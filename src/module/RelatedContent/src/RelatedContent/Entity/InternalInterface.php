@@ -30,14 +30,14 @@ interface InternalInterface extends TypeInterface
     /**
      * 
      * @param string $title
-     * @return $this
+     * @return self
      */
     public function setTitle($title);
     
     /**
      * 
      * @param UuidInterface $uuid
-     * @return $this
+     * @return self
      */
     public function setReference(UuidInterface $uuid);
 }

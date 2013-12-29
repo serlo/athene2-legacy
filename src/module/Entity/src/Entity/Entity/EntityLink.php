@@ -14,7 +14,6 @@ namespace Entity\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Link\Entity\LinkInterface;
 use Link\Entity\LinkableInterface;
-use Link\Entity\LinkTypeInterface;
 
 /**
  * An
@@ -26,6 +25,7 @@ use Link\Entity\LinkTypeInterface;
  */
 class EntityLink implements LinkInterface
 {
+    use \Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -51,22 +51,9 @@ class EntityLink implements LinkInterface
     public $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EntityLinkType")
-     * @ORM\JoinColumn(name="entity_link_type_id",
-     * referencedColumnName="id")
-     */
-    public $type;
-
-    /**
      * @ORM\Column(name="`order`", type="integer")
      */
     public $order;
-
-    public function __construct(LinkTypeInterface $type, $order)
-    {
-        $this->type = $type;
-        $this->order = $order;
-    }
 
     public function getPosition()
     {
@@ -94,11 +81,6 @@ class EntityLink implements LinkInterface
         return $this->parent;
     }
 
-    public function getType()
-    {
-        return $this->type;
-    }
-
     public function setChild(LinkableInterface $child)
     {
         $this->child = $child;
@@ -108,12 +90,6 @@ class EntityLink implements LinkInterface
     public function setParent(LinkableInterface $parent)
     {
         $this->parent = $parent;
-        return $this;
-    }
-
-    public function setType(LinkTypeInterface $type)
-    {
-        $this->type = $type;
         return $this;
     }
 }

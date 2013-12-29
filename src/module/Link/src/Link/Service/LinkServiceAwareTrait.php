@@ -33,7 +33,7 @@ trait LinkServiceAwareTrait
     /**
      *
      * @param LinkServiceInterface $linkService            
-     * @return $this
+     * @return self
      */
     public function setLinkService (LinkServiceInterface $linkService)
     {

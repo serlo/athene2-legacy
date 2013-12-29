@@ -15,7 +15,7 @@ use Search\Result;
 
 class TaxonomyTermAdapter extends AbstractSphinxAdapter
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait;
 
     protected $types = array(
         'topic',
@@ -55,7 +55,7 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
         $results = $spinxQuery->execute();
         
         foreach ($results as $result) {
-            $term = $this->getSharedTaxonomyManager()->getTerm($result['id']);
+            $term = $this->getTaxonomyManager()->getTerm($result['id']);
             $resultInstance = new Result\Result();
             $resultInstance->setName($result['name']);
             $resultInstance->setId($result['id']);

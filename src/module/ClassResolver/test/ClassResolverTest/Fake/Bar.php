@@ -11,9 +11,6 @@
  */
 namespace ClassResolverTest\Fake;
 
-/**
- * @codeCoverageIgnore
- */
 class Bar implements BarInterface
 {
 }

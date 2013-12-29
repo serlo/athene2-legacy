@@ -33,12 +33,6 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE__ . '\Service\UserService' => function ($sm)
-            {
-                $srv = new Service\UserService();
-                $srv->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                return $srv;
-            },
             'Zend\Authentication\AuthenticationService' => function ($sm)
             {
                 $instance = new AuthenticationService();
@@ -50,16 +44,6 @@ return array(
             {
                 $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
                 return $form;
-            },
-            __NAMESPACE__ . '\Manager\UserManager' => function ($sm)
-            {
-                $instance = new Manager\UserManager();
-                $instance->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $instance->setAuthenticationService($sm->get('Zend\Authentication\AuthenticationService'));
-                $instance->setServiceLocator($sm);
-                $instance->setObjectManager($sm->get('EntityManager'));
-                $instance->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                return $instance;
             },
             __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
         )
@@ -103,7 +87,6 @@ return array(
     'class_resolver' => array(
         'User\Entity\UserInterface' => 'User\Entity\User',
         'User\Entity\RoleInterface' => 'User\Entity\Role',
-        'User\Service\UserServiceInterface' => 'User\Service\UserService',
         'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
         'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationService',
         'User\Notification\Entity\NotificationInterface' => 'User\Entity\Notification',
@@ -119,16 +102,25 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                'User\Notification\Service\NotificationService' => array(
-                    'setEventManager' => array(
+                __NAMESPACE__ . '\Manager\UserManager' => array(
+                    'setClassResolver' => array(
+                        'required' => true
+                    ),
+                    'setAuthenticationService' => array(
+                        'required' => true
+                    ),
+                    'setServiceLocator' => array(
+                        'required' => true
+                    ),
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setHydrator' => array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Notification\Listener\EntityControllerListener' => array(
-                    'setNotificationLogManager' => array(
-                        'required' => true
-                    ),
-                    'setUuidManager' => array(
+                'User\Notification\Service\NotificationService' => array(
+                    'setEventManager' => array(
                         'required' => true
                     )
                 ),
@@ -140,11 +132,14 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Notification\Listener\RepositoryPluginControllerListener' => array(
+                __NAMESPACE__ . '\Notification\Listener\RepositoryManagerListener' => array(
                     'setNotificationLogManager' => array(
                         'required' => true
                     ),
                     'setSubscriptionManager' => array(
+                        'required' => true
+                    ),
+                    'setUserManager' => array(
                         'required' => true
                     )
                 ),
@@ -465,15 +460,6 @@ return array(
                             'route' => '/remove/:id',
                             'defaults' => array(
                                 'action' => 'remove'
-                            )
-                        )
-                    ),
-                    'purge' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/purge/:id',
-                            'defaults' => array(
-                                'action' => 'purge'
                             )
                         )
                     )

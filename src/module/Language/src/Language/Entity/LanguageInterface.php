@@ -15,7 +15,11 @@ interface LanguageInterface
 {
 
     /**
-     * Returns the code. echo $language->getCode(); // prints: 'de'
+     * Returns the code.
+     * 
+     * <code>
+     * echo $language->getCode(); // prints: 'de'
+     * </code>
      *
      * @return string $code
      */
@@ -25,7 +29,7 @@ interface LanguageInterface
      * Sets the code
      *
      * @param field_type $code            
-     * @return $this
+     * @return self
      */
     public function setCode($code);
 

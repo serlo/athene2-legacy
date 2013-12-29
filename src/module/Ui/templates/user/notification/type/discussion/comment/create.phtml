@@ -1,0 +1,9 @@
+<?php $event = $this->notification->getEvents()->current(); ?>
+<?php $user = $this->normalize()->toTitle($event->getActor()); ?>
+<?php $discussion = $this->normalize()->toTitle($event->getParameter('discussion')); ?>
+<?php $content = $this->normalize()->toPreview($event->getObject()); ?>
+
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('discussion')); ?>">
+    <?php echo sprintf($this->translate('<strong>%s</strong> commented on discussion "%s": "%s"'), $user , $discussion, $content);?>    
+    <small> - <?php echo $this->timeago()->render($this->notification->getTimestamp()); ?></small>
+</a>

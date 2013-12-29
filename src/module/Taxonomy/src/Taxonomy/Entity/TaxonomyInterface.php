@@ -11,22 +11,33 @@
  */
 namespace Taxonomy\Entity;
 
-interface TaxonomyInterface
+use Type\Entity\TypeAwareInterface;
+use Language\Entity\LanguageAwareInterface;
+
+interface TaxonomyInterface extends TypeAwareInterface, LanguageAwareInterface
 {
 
-    public function getLanguage();
-
-    public function setLanguage($language);
-
+    /**
+     *
+     * @return int
+     */
     public function getId();
 
-    public function setId($id);
-
-    public function getType();
-
-    public function setType($type);
-
+    /**
+     *
+     * @return TaxonomyTermInterface[]
+     */
     public function getTerms();
-    
+
+    /**
+     *
+     * @return string
+     */
     public function getName();
+
+    /**
+     *
+     * @return TaxonomyTermInterface[]
+     */
+    public function getChildren();
 }

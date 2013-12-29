@@ -5,13 +5,11 @@
         </a>
     </h4>	    
     <div class="list-group">
-        <?php if($term->isAssociationAllowed('entities')): ?>
-            <?php foreach($term->getAssociated('entities') as $entity): ?>
-                <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
-                    <?php echo $this->partial('subject/plugin/taxonomy/entity/default', array('entity' => $entity)); ?>
-                <?php endif; ?>
-            <?php endforeach;?>
-        <?php endif;?>
+        <?php foreach($term->getAssociated('entities') as $entity): ?>
+            <?php if($this->plugin->isTypeEnabled($entity->getType()->getName() && !$entity->getTrashed())): ?>
+                <?php echo $this->partial('subject/plugin/taxonomy/entity/default', array('entity' => $entity)); ?>
+            <?php endif; ?>
+        <?php endforeach;?>
     </div>
 <hr>
 <?php endforeach; ?>

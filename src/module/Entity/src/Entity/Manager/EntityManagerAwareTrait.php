@@ -32,7 +32,7 @@ trait EntityManagerAwareTrait
     /**
      *
      * @param \Entity\Manager\EntityManagerInterface $entityManager            
-     * @return $this
+     * @return self
      */
     public function setEntityManager(\Entity\Manager\EntityManagerInterface $entityManager)
     {

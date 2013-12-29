@@ -32,7 +32,7 @@ trait ClassResolverAwareTrait
     /**
      *
      * @param \ClassResolver\ClassResolverInterface $classResolver            
-     * @return $this
+     * @return self
      */
     public function setClassResolver(\ClassResolver\ClassResolverInterface $classResolver)
     {

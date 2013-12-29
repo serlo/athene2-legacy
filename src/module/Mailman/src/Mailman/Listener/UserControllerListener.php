@@ -20,7 +20,7 @@ class UserControllerListener extends AbstractListener
 
     public function onRegister(Event $e)
     {
-        /* @var $user \User\Service\UserServiceInterface */
+        /* @var $user \User\Entity\UserInterface */
         $user = $e->getParam('user');
         
         $subject = new ViewModel();
@@ -39,7 +39,7 @@ class UserControllerListener extends AbstractListener
 
     public function onRestore(Event $e)
     {
-        /* @var $user \User\Service\UserServiceInterface */
+        /* @var $user \User\Entity\UserInterface */
         $user = $e->getParam('user');
         
         $subject = new ViewModel();

@@ -87,7 +87,7 @@ class Notification implements NotificationInterface
     /**
      *
      * @param field_type $user            
-     * @return $this
+     * @return self
      */
     public function setUser(UserInterface $user)
     {
@@ -98,7 +98,7 @@ class Notification implements NotificationInterface
     /**
      *
      * @param field_type $seen            
-     * @return $this
+     * @return self
      */
     public function setSeen($seen)
     {

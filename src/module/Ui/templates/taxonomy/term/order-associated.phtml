@@ -7,10 +7,7 @@
             <li class="sortable-item" data-id="<?php echo $associated->getId(); ?>">
                 <span class="sortable-handle"></span>
                 <div class="sortable-item-inner">
-                    <?php $template = $this->term->getTemplateForAssociation($this->association); ?>
-                    <?php if($this->association === 'entities'): ?>
-                        <?php echo $this->partial($template, array('entity' => $associated)); ?>
-                    <?php endif; ?>
+                    <?php echo $this->normalize()->toTitle($associated); ?> <sup><small><?php echo $this->normalize()->toType($associated); ?></small></sup>
                 </div>
             </li>
         <?php endforeach; ?>

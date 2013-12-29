@@ -11,67 +11,62 @@
  */
 namespace Alias\Entity;
 
-use Language\Entity\LanguageInterface;
 use Uuid\Entity\UuidInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface AliasInterface
+interface AliasInterface extends LanguageAwareInterface
 {
 
     /**
+     * Returns the ID
      *
-     * @return $this;
+     * @return int
      */
     public function getId();
 
     /**
+     * Returns the source
      *
-     * @return $this;
+     * @return string
      */
     public function getSource();
 
     /**
+     * Returns the alias
      *
-     * @param string $source            
-     * @return $this;
+     * @return string
+     */
+    public function getAlias();
+    
+    /**
+     * Gets the object
+     *
+     * @return UuidInterface
+     */
+    public function getObject();
+
+    /**
+     * Sets the source
+     *
+     * @param string $source      
+     * @return self
      */
     public function setSource($source);
 
     /**
-     *
-     * @return $this;
-     */
-    public function getAlias();
-
-    /**
+     * Sets the alias
      *
      * @param string $alias            
-     * @return $this;
+     * @return self
      */
     public function setAlias($alias);
-
+    
     /**
-     *
-     * @return LanguageInterface
-     */
-    public function getLanguage();
-
-    /**
-     *
-     * @param LanguageInterface $language            
-     * @return $this;
-     */
-    public function setLanguage(LanguageInterface $language);
-
-    /**
+     * Sets the object
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
-    public function setUuid(UuidInterface $uuid);
+    public function setObject(UuidInterface $uuid);
 
-    /**
-     *
-     * @return $this
-     */
-    public function getUuid();
 }

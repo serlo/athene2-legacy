@@ -12,10 +12,9 @@
 namespace ClassResolverTest;
 
 use ClassResolver\ClassResolver;
+use Zend\ServiceManager\ServiceManager;
+use ClassResolverTest\Fake\Foo;
 
-/**
- * @codeCoverageIgnore
- */
 class ClassResolverTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -25,11 +24,12 @@ class ClassResolverTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         
-        $this->classResolver = new ClassResolver(array(
+        $this->classResolver = new ClassResolver([
             'ClassResolverTest\Fake\FailInterface' => 'ClassResolverTest\Fake\Foo',
             'ClassResolverTest\Fake\FooInterface' => 'ClassResolverTest\Fake\Foo',
-            'ClassResolverTest\Fake\BarInterface' => 'ClassResolverTest\Fake\Bar'
-        ));
+            'ClassResolverTest\Fake\BarInterface' => 'ClassResolverTest\Fake\Bar',
+            'ClassResolverTest\Fake\SuperFailInterface' => 'ClassResolverTest\Fake\SuperFail',
+        ]);
     }
 
     public function testResolveClassName()
@@ -44,11 +44,46 @@ class ClassResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame($this->classResolver->resolve('ClassResolverTest\Fake\FooInterface'), $this->classResolver->resolve('ClassResolverTest\Fake\FooInterface'));
     }
 
+    public function testResolveFromServiceManager()
+    {
+        $serviceManager = new ServiceManager();
+        $service = new Foo();
+        
+        $serviceManager->setService('ClassResolverTest\Fake\Foo', $service);
+        $this->classResolver->setServiceLocator($serviceManager);
+        
+        $this->assertSame($service, $this->classResolver->resolve('ClassResolverTest\Fake\FooInterface', true));
+    }
+
     /**
-     * @expectedException \ClassResolver\RuntimeException
+     * @expectedException \ClassResolver\Exception\RuntimeException
      */
     public function testResolveException()
     {
         $this->classResolver->resolve('ClassResolverTest\Fake\FailInterface');
+    }
+
+    /**
+     * @expectedException \ClassResolver\Exception\InvalidArgumentException
+     */
+    public function testInvalidArgumentException()
+    {
+        $this->classResolver->resolveClassName(array());
+    }
+
+    /**
+     * @expectedException \ClassResolver\Exception\RuntimeException
+     */
+    public function testClassNotFound()
+    {
+        $this->classResolver->resolveClassName('ClassResolverTest\Fake\SuperFailInterface');
+    }
+
+    /**
+     * @expectedException \ClassResolver\Exception\RuntimeException
+     */
+    public function testNotResolvable()
+    {
+        $this->classResolver->resolveClassName('NotResolvable');
     }
 }

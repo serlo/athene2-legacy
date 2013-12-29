@@ -29,7 +29,7 @@ trait LanguageManagerAwareTrait
 
 	/**
      * @param LanguageManagerInterface $languageManager
-     * @return $this
+     * @return self
      */
     public function setLanguageManager (LanguageManagerInterface $languageManager)
     {

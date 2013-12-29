@@ -12,11 +12,13 @@
 namespace Contexter\Entity;
 
 use Uuid\Entity\UuidInterface;
+use Contexter\Entity\TypeInterface;
+use Contexter\Entity\RouteInterface;
 use Doctrine\Common\Collections\Collection;
+use Type\Entity\TypeAwareInterface;
 
-interface ContextInterface
+interface ContextInterface extends TypeAwareInterface
 {
-
     /**
      *
      * @return int
@@ -37,12 +39,6 @@ interface ContextInterface
 
     /**
      *
-     * @return TypeInterface
-     */
-    public function getType();
-
-    /**
-     *
      * @return Collection
      */
     public function getRoutes();
@@ -50,28 +46,21 @@ interface ContextInterface
     /**
      *
      * @param UuidInterface $uuid            
-     * @return $this
+     * @return self
      */
     public function setObject(UuidInterface $uuid);
 
     /**
      *
      * @param string $title            
-     * @return $this
+     * @return self
      */
     public function setTitle($title);
 
     /**
      *
-     * @param TypeInterface $type            
-     * @return $this
-     */
-    public function setType(TypeInterface $type);
-
-    /**
-     *
      * @param RouteInterface $route            
-     * @return $this
+     * @return self
      */
     public function addRoute(RouteInterface $route);
 }

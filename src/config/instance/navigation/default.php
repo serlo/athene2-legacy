@@ -33,10 +33,7 @@ return array(
                         'pages' => array(
                             array(
                                 'label' => 'Manage taxonomies',
-                                'route' => 'taxonomy/term/organize',
-                                'params' => array(
-                            	   'id' => NULL
-                                ),
+                                'route' => 'taxonomy/term/organize-all',
                                 'pages' => array(
                                     array(
                                         'route' => 'taxonomy/term/action',
@@ -70,6 +67,10 @@ return array(
                             array(
                                 'label' => 'Manage roles',
                                 'route' => 'users/roles'
+                            ),
+                            array(
+                                'route' => 'users/role',
+                                'visible' => false
                             )
                         )
                     ),
@@ -81,7 +82,13 @@ return array(
                     array(
                         'label' => 'Flags',
                         'icon' => 'flag',
-                        'route' => 'flag/manage'
+                        'route' => 'flag/manage',
+                        'pages' => array(
+                            array(
+                                'route' => 'flag/detail',
+                                'visible' => false
+                            ),
+                        )
                     ),
                     array(
                         'label' => 'Licenses',
@@ -105,6 +112,7 @@ return array(
                 )
             ),
             'blog' => array(
+                'label' => 'Blog',
                 'uri' => '#',
                 'pages' => array(
                     array(
@@ -138,6 +146,32 @@ return array(
                         'label' => 'Diskussionen',
                         'route' => 'discussion/discussions',
                         'icon' => 'comment'
+                    ),
+                    array(
+                        'route' => 'user/login',
+                        'visible' => false
+                    ),
+                    array(
+                        'route' => 'user/register',
+                        'visible' => false
+                    ),
+                    array(
+                        'route' => 'user/me',
+                        'visible' => false
+                    ),
+                    array(
+                        'route' => 'user/profile',
+                        'visible' => false
+                    )
+                )
+            ),
+            'home' => array(
+                'label' => 'Home',
+                'route' => 'home',
+                'pages' => array(
+                    array(
+                        'route' => 'home',
+                        'visible' => false
                     )
                 )
             )

@@ -11,16 +11,10 @@
  */
 namespace Link\Entity;
 
-interface LinkInterface
-{
+use Type\Entity\TypeAwareInterface;
 
-    /**
-     *
-     * @param LinkTypeInterface $type            
-     * @param int $order            
-     * @return void
-     */
-    public function __construct(LinkTypeInterface $type, $order);
+interface LinkInterface extends TypeAwareInterface
+{
 
     /**
      *
@@ -42,12 +36,6 @@ interface LinkInterface
 
     /**
      *
-     * @return LinkTypeInterface
-     */
-    public function getType();
-
-    /**
-     *
      * @return LinkableInterface
      */
     public function getParent();
@@ -55,28 +43,21 @@ interface LinkInterface
     /**
      *
      * @param int $position            
-     * @return $this
+     * @return self
      */
     public function setPosition($position);
 
     /**
      *
      * @param LinkableInterface $child            
-     * @return $this
+     * @return self
      */
     public function setChild(LinkableInterface $child);
 
     /**
      *
      * @param LinkableInterface $parent            
-     * @return $this
+     * @return self
      */
     public function setParent(LinkableInterface $parent);
-
-    /**
-     *
-     * @param LinkTypeInterface $type            
-     * @return $this
-     */
-    public function setType(LinkTypeInterface $type);
 }

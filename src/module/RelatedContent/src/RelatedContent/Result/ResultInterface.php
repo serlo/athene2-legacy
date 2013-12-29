@@ -29,7 +29,7 @@ interface ResultInterface
     /**
      * 
      * @var TypeInterface $object
-     * @return $this
+     * @return self
      */
     public function setObject(TypeInterface $object);
     

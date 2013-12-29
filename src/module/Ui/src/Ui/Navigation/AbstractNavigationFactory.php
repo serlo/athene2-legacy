@@ -37,7 +37,7 @@ abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
 
 	/**
      * @param RouteMatch $routeMatch
-     * @return $this
+     * @return self
      */
     public function setRouteMatch (RouteMatch $routeMatch)
     {

@@ -11,22 +11,10 @@
  */
 namespace Alias\Listener;
 
-use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\EventManager\SharedEventManagerInterface;
+use Common\Listener\AbstractSharedListenerAggregate;
 
-abstract class AbstractListener implements SharedListenerAggregateInterface
+abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
     use \Alias\AliasManagerAwareTrait;
-
-    /**
-     * An array containing all registered listeners.
-     *
-     * @var array
-     */
-    protected $listeners = array();
-    
-    public function detachShared(SharedEventManagerInterface $events)
-    {
-        throw new \Exception('not implemented');
-    }
 }

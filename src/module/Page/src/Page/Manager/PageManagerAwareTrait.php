@@ -33,7 +33,7 @@ trait PageManagerAwareTrait
     /**
      *
      * @param \Page\Manager\PageManagerInterface $pageManager            
-     * @return $this
+     * @return self
      */
     public function setPageManager (PageManagerInterface $pageManager)
     {

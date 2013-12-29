@@ -11,61 +11,48 @@
  */
 namespace User\Manager;
 
-use User\Service\UserServiceInterface;
+use User\Entity\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use User\Entity\RoleInterface;
+use Common\ObjectManager\Flushable;
 
-interface UserManagerInterface
+interface UserManagerInterface extends Flushable
 {
 
     /**
      *
      * @param numeric $id            
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function getUser($id);
 
     /**
      *
      * @param string $token            
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function findUserByToken($token);
 
     /**
      *
      * @param string $username            
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function findUserByUsername($username);
 
     /**
      *
      * @param string $email            
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function findUserByEmail($email);
 
     /**
      *
      * @param array $data            
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function createUser(array $data);
-
-    /**
-     *
-     * @param numeric $id            
-     * @return $this
-     */
-    public function purgeUser($id);
-
-    /**
-     *
-     * @param numeric $id            
-     * @return $this
-     */
-    public function trashUser($id);
 
     /**
      *
@@ -95,7 +82,7 @@ interface UserManagerInterface
 
     /**
      *
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function getUserFromAuthenticator();
 }

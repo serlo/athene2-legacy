@@ -24,8 +24,8 @@ interface EventManagerInterface
      *
      * Example:
      * <code>
-     * $eventManager->logEvent('eventA', $languageEntityA, $userEntityA, $objectEntityA);
-     * $eventManager->logEvent('eventB', $languageEntityB, $userEntityB, $objectEntityB); 
+     * $eventManager->logEvent('eventA', $LanguageA, $userEntityA, $objectEntityA);
+     * $eventManager->logEvent('eventB', $LanguageB, $userEntityB, $objectEntityB); 
      * $eventManager->getObjectManager()->flush(); // Making the changes above persistent
      * </code>
      * 
@@ -34,7 +34,7 @@ interface EventManagerInterface
      * @param UserInterface $actor
      * @param UuidInterface $uuid
      * @param array $parameters
-     * @return $this
+     * @return self
      */
     public function logEvent($eventName, LanguageInterface $language, UserInterface $actor, UuidInterface $uuid, array $parameters = array());
     

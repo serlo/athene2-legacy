@@ -11,129 +11,82 @@
  */
 namespace Versioning\Service;
 
-use Versioning\Entity\RevisionInterface;
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Exception\RevisionNotFoundException;
+use User\Entity\UserInterface;
+use Versioning\Exception;
+use Uuid\Entity\UuidHolder;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use \Zend\EventManager\EventManagerAwareTrait,\Common\Traits\EntityDelegatorTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Versioning\RepositoryManagerAwareTrait;
 
-    private $identifier;
+    /**
+     *
+     * @var RepositoryInterface
+     */
+    protected $repository;
 
     public function getRepository()
     {
-        return $this->getEntity();
-    }
-
-    public function countRevisions()
-    {
-        return $this->getRevisions()->count();
+        return $this->repository;
     }
 
     public function setRepository(RepositoryInterface $repository)
     {
-        $this->setEntity($repository);
+        $this->repository = $repository;
         return $this;
     }
 
-    public function setIdentifier($identifier)
+    public function findRevision($id)
     {
-        $this->identifier = $identifier;
-        return $this;
-    }
-
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
-
-    public function addRevision(RevisionInterface $revision)
-    {
-        $revisions = $this->getRevisions();
+        foreach ($this->getRepository()->getRevisions() as $revision) {
+            if ($revision->getId() == $id) {
+                return $revision;
+            }
+        }
         
-        $revision->setRepository($this->getEntity());
-        $this->getEntity()->addRevision($revision);
-        
-        return $this;
+        throw new Exception\RevisionNotFoundException(sprintf('Revision "%d" not found', $id));
     }
 
-    public function removeRevision($id)
+    public function commitRevision(array $data, UserInterface $user)
     {
-        $revision = $this->getRevision($id);
+        $repository = $this->getRepository();
+        $revision = $repository->createRevision();
         
-        $id = $revision->getId();
-        $this->getRevisions()->removeElement($revision);
+        $this->getUuidManager()->injectUuid($revision);
         
-        return $this;
-    }
-
-    public function hasRevision($id)
-    {
-        if (! is_numeric($id))
-            throw new \Versioning\Exception\InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
+        $revision->setAuthor($user);
         
-        return $this->getRevisions()
-            ->filter(function ($e) use($id)
-        {
-            return $e->getId() == $id;
-        })
-            ->count();
-    }
-
-    public function getRevision($id)
-    {
-        if (! is_numeric($id))
-            throw new \Versioning\Exception\InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
+        $repository->addRevision($revision);
         
-        if (! $this->hasRevision($id))
-            throw new RevisionNotFoundException("A revision with the ID `$id` does not exist in the repository `$this->identifier`.");
+        foreach ($data as $key => $value) {
+            if (is_string($key) && is_string($value)) {
+                $revision->set($key, $value);
+            }
+        }
         
-        return $this->getRevisions()
-            ->filter(function ($e) use($id)
-        {
-            return $e->getId() == $id;
-        })
-            ->current();
-    }
-
-    public function getRevisions()
-    {
-        return $this->getEntity()->getRevisions();
-    }
-
-    public function getHead()
-    {
-        return $this->getRevisions()->first();
-    }
-
-    public function hasHead()
-    {
-        return $this->getRevisions()->count();
+        $this->getRepositoryManager()->getEventManager()->trigger('commit', $this, [
+            'repository' => $this->getRepository(),
+            'revision' => $revision,
+            'data' => $data
+        ]);
+        
+        $this->getObjectManager()->persist($revision);
+        
+        return $revision;
     }
 
     public function checkoutRevision($id)
     {
-        $revision = $this->getRevision($id);
-        $this->getEntity()->setCurrentRevision($revision);
-        return $this;
-    }
-
-    public function getCurrentRevision()
-    {
-        if (! $this->hasCurrentRevision())
-            throw new RevisionNotFoundException();
+        $revision = $this->findRevision($id);
+        $this->getRepository()->setCurrentRevision($revision);
         
-        return $this->getEntity()->getCurrentRevision();
-    }
-
-    public function hasCurrentRevision()
-    {
-        return $this->getEntity()->hasCurrentRevision();
-    }
-
-    public function isUnrevised()
-    {
-        return ($this->hasCurrentRevision() && $this->getCurrentRevision() !== $this->getHead()) || (! $this->hasCurrentRevision() && $this->getRevisions()->count() > 0);
+        $this->getRepositoryManager()->getEventManager()->trigger('checkout', $this, [
+            'repository' => $this->getRepository(),
+            'revision' => $revision
+        ]);
+        
+        $this->getObjectManager()->persist($this->getRepository());
+        return $this;
     }
 }
