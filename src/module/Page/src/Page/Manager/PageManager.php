@@ -18,18 +18,19 @@ use Page\Entity\Page;
 use Page\Entity\PageRepositoryInterface;
 use Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
-use Page\Service\PageServiceInterface;
 use Language\Entity\LanguageInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class PageManager implements PageManagerInterface
 {
     
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;//,\Common\Traits\EntityDelegatorTrait;
-    use \Page\Manager\PageManagerAwareTrait;
-    use \Uuid\Manager\UuidManagerAwareTrait;
-    use \Language\Manager\LanguageManagerAwareTrait;
-    use \User\Manager\UserManagerAwareTrait;
-    use \License\Manager\LicenseManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Page\Manager\PageManagerAwareTrait;
+    use\Uuid\Manager\UuidManagerAwareTrait;
+    use\Language\Manager\LanguageManagerAwareTrait;
+    use\User\Manager\UserManagerAwareTrait;
+    use\License\Manager\LicenseManagerAwareTrait;
+    use\Versioning\RepositoryManagerAwareTrait;
     
     /*
      * (non-PHPdoc) @see \Page\Manager\PageManagerInterface::getPageRepository()
@@ -40,14 +41,14 @@ class PageManager implements PageManagerInterface
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
         $revision = $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('Page\Entity\PageRevisionInterface'), $id);
-        if (!$revision)
+        if (! $revision)
             throw new PageNotFoundException(sprintf('Page Revision %s not found', $id));
-         
-        // $revision = $this->getRepository()->getRevision($id);
-        if (! $revision->isTrashed())
+        
+        if (! $revision->isTrashed()) {
             return $revision;
-        else
-            return null;
+        } else {
+            throw new PageNotFoundException(sprintf('Page Revision %s is trashed', $id));
+        }
     }
 
     public function getPageRepository($id)
@@ -55,18 +56,18 @@ class PageManager implements PageManagerInterface
         if (! is_numeric($id))
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
         
-        if (! $this->hasInstance($id)) {
-            $pageRepository = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Page\Entity\PageRepositoryInterface'), $id);
-            if (! $pageRepository)
-                throw new PageNotFoundException(sprintf('PageRepository %s not found', $id));
-            
-            $instance = $this->createService($pageRepository);
-            $this->addInstance($pageRepository->getId(), $instance);
-            return $instance;
+        $pageRepository = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Page\Entity\PageRepositoryInterface'), $id);
+        
+        if (! is_object($pageRepository)) {
+            throw new PageNotFoundException(sprintf('Page Repository "%d" not found.', $id));
         }
         
-        return $this->getInstance($id);
+        if (! $pageRepository->isTrashed()) {
+            return $pageRepository;
+        } else {
+            throw new PageNotFoundException(sprintf('Page Repository "%d" is trashed.', $id));
+        }
     }
 
     protected function createPageRevisionEntity()
@@ -84,18 +85,28 @@ class PageManager implements PageManagerInterface
         
         $license = $this->getLicenseManager()->getLicense(1); // Finds a license with the id 3
         $this->getLicenseManager()->injectLicense($repository, $license);
-       // $this->getLicenseManager()->injectLicense($repository);
+        // $this->getLicenseManager()->injectLicense($repository);7
+        $repository->setTrashed(false);
         return $repository;
     }
 
-    protected function createService(PageRepositoryInterface $entity)
+    public function editPageRepository(array $data, PageRepositoryInterface $pageRepository)
     {
-        /* @var $instance \Page\Service\PageServiceInterface */
-        $instance = $this->createInstance('Page\Service\PageServiceInterface');
-        $instance->setEntity($entity);
-        $instance->setManager($this);
-        $instance->getRepositoryManager()->addRepository($entity);
-        return $instance;
+        $pageRepository->setRoles(new ArrayCollection());
+        
+        for ($i = 0; $i <= $this->countRoles(); $i ++) {
+            
+            if (array_key_exists($i, $data['roles'])) {
+                $role = $this->getRoleById($data['roles'][$i]);
+                if ($role != null) {
+                    $pageRepository->setRole($role);
+                }
+            }
+        }
+        
+        $this->getObjectManager()->persist($pageRepository);
+        
+        return $pageRepository;
     }
 
     public function createPageRepository(array $data, $language)
@@ -105,12 +116,11 @@ class PageManager implements PageManagerInterface
         $pageRepository->populate($data);
         
         $pageRepository->setLanguage($language);
-        $pageService = $this->createService($pageRepository);
         
-        for ($i = 0; $i <= $pageService->countRoles(); $i ++) {
+        for ($i = 0; $i <= $this->countRoles(); $i ++) {
             
             if (array_key_exists($i, $data['roles'])) {
-                $role = $pageService->getRoleById($i);
+                $role = $this->getRoleById($data['roles'][$i]);
                 if ($role != null) {
                     $pageRepository->setRole($role);
                 }
@@ -118,8 +128,7 @@ class PageManager implements PageManagerInterface
         }
         
         $this->getObjectManager()->persist($pageRepository);
-        
-        return $pageService;
+        return $pageRepository;
     }
 
     public function createRevision(PageRepositoryInterface $repository, array $data)
@@ -127,28 +136,52 @@ class PageManager implements PageManagerInterface
         $revision = $this->createPageRevisionEntity();
         $revision->populate($data);
         $revision->setAuthor($data['author']);
-        $revision->untrash();
         $revision->setRepository($repository);
+        $repository = $this->getRepositoryManager()->getRepository($repository);
         $repository->addRevision($revision);
-        $pageservice = $this->createService($repository);
-        $pageservice->getRepositoryManager()
-            ->getRepository($repository)
-            ->addRevision($revision);
-        $repository->setCurrentRevision($revision);
-        
+        $repository->checkOutRevision($revision->getId());
+        $revision->setTrashed(false);
         $this->getObjectManager()->persist($repository);
         $this->getObjectManager()->persist($revision);
-        return $pageservice;
-    
-    } 
-    
-    public function findAllRepositorys(LanguageInterface $language){
-        return
-             $this->getObjectManager()
+        return $repository;
+    }
+
+    public function findAllRepositorys(LanguageInterface $language)
+    {
+        $pageRepositorys = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Page\Entity\PageRepositoryInterface'))
             ->findBy(array(
             'language' => $language->getId()
         ));
+        $repositorys = array();
+        foreach ($pageRepositorys as $repository) {
+            if (! $repository->isTrashed()) {
+            	$repositorys[]=$repository;
+            }
+        }
+        return $repositorys;
+    }
+
+    private function countRoles()
+    {
+        $roles = $this->findAllRoles();
+        return count($roles);
+    }
+
+    private function getRoleById($id)
+    {
+        $repository = $this->getObjectManager()->getRepository('User\Entity\Role');
+        $role = $repository->findOneBy(array(
+            'id' => $id
+        ));
+        return $role;
+    }
+
+    public function findAllRoles()
+    {
+        return $this->getObjectManager()
+            ->getRepository('User\Entity\Role')
+            ->findAll();
     }
 }

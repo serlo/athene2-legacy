@@ -6,10 +6,12 @@ namespace Page\Form;
 use Zend\Form\Form;
 
 class RepositoryForm extends Form {
+    protected $objectManager;
+    
 	public function __construct($objectManager) {
 		parent::__construct ( 'createRepository' );
 		$filter = new CreateRepositoryFilter ( $objectManager );
-		
+		$this->objectManager = $objectManager;
 		$this->setAttribute ( 'method', 'post' );
 		$this->setAttribute ( 'class', 'form-horizontal' );
 		
@@ -34,14 +36,7 @@ class RepositoryForm extends Form {
 				'name' => 'roles',
 				'options' => array (
 						'label' => 'Welche Benutzer sollen die Seite bearbeiten können?',
-						'value_options' => array (
-								'1' => 'Guest',
-								'2' => 'User',
-								'3' => 'Helper',
-								'4' => 'Moderator',
-								'5' => 'Admin',
-								'6' => 'Sysadmin' 
-						) 
+						'value_options' => $this->findRolesArray() 
 				),
 				'attributes' => array (
 						'class' => 'form-control' 
@@ -57,5 +52,17 @@ class RepositoryForm extends Form {
 						'id' => 'submitbutton' 
 				) 
 		) );
+	}
+	
+	private function findRolesArray(){
+	    $repository = $this->objectManager->getRepository('User\Entity\Role');
+	    $roles = $repository->findAll();
+	    $i = 1;
+	    $array = array();
+	    foreach ($roles as $role) {
+	        $array[$i] = $role->getName();
+	        $i++;
+	    }
+	    return $array;
 	}
 }

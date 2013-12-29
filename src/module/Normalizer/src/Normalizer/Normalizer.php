@@ -23,6 +23,7 @@ class Normalizer implements NormalizerInterface
      */
     protected $strategies = [
         'Normalizer\Strategy\PageRepositoryStrategy',
+        'Normalizer\Strategy\PageRevisionStrategy',
         'Normalizer\Strategy\EntityStrategy',
         'Normalizer\Strategy\TaxonomyTermStrategy',
         'Normalizer\Strategy\CommentStrategy',

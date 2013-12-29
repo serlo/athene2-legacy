@@ -1,17 +1,30 @@
 <?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author  Jakob Pfab (jakob.pfab@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license	LGPL-3.0
+ * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
 namespace Common\Guard;
 
 use Zend\Mvc\MvcEvent;
-use ZfcRbac\Service\AuthorizationService;
+use ZfcRbac\Service\RoleService;
 use ZfcRbac\Guard\AbstractGuard;
 
 /**
- * A controller guard can protect a controller and a set of actions
+ * A hydratable controller guard can protect a controller and a set of actions
+ * and hydrate the roles with a
  */
 class HydratableControllerGuard extends AbstractGuard
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \Page\Manager\PageManagerAwareTrait;
-    
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use \Page\Manager\PageManagerAwareTrait;
+
     /**
      * Set a lower priority for controller guards than for route guards, so that they are
      * always executed after them
@@ -32,6 +45,23 @@ class HydratableControllerGuard extends AbstractGuard
      * @var array
      */
     protected $rules = [];
+    
+    /**
+     * @var RoleService
+     */
+    protected $roleService;
+
+    /**
+     * Constructor
+     *
+     * @param RoleService $roleService            
+     * @param array $rules            
+     */
+    public function __construct(RoleService $roleService, array $rules = [])
+    {
+        $this->roleService = $roleService;
+        $this->setRules($rules);
+    }
 
     /**
      * Set the rules (it overrides any existing rules)
@@ -42,6 +72,7 @@ class HydratableControllerGuard extends AbstractGuard
     public function setRules(array $rules)
     {
         $this->rules = [];
+        
         $this->addRules($rules);
     }
 
@@ -62,26 +93,17 @@ class HydratableControllerGuard extends AbstractGuard
     public function addRules(array $rules)
     {
         foreach ($rules as $rule) {
-            $provider = new $rule['role_provider']();
-            
-            $roles = $provider->getRoles();
-            
-            if (! is_array($roles)) {
-                $roles = array(
-                    $roles
-                );
-            }
             
             $controller = strtolower($rule['controller']);
             $actions = isset($rule['actions']) ? (array) $rule['actions'] : [];
             
             if (empty($actions)) {
-                $this->rules[$controller][0] = $roles;
+                $this->rules[$controller][0] = $rule['role_provider'];
                 continue;
             }
             
             foreach ($actions as $action) {
-                $this->rules[$controller][strtolower($action)] = $roles;
+                $this->rules[$controller][strtolower($action)] = $rule['role_provider'];
             }
         }
     }
@@ -98,6 +120,7 @@ class HydratableControllerGuard extends AbstractGuard
         // If no rules apply, it is considered as granted or not based on the protection policy
         if (! isset($this->rules[$controller])) {
             return true;
+            // return $this->protectionPolicy === self::POLICY_ALLOW;
         }
         
         // Algorithm is as follow: we first check if there is an exact match (controller + action), if not
@@ -105,18 +128,23 @@ class HydratableControllerGuard extends AbstractGuard
         // if nothing is matched, we fallback to the protection policy logic
         
         if (isset($this->rules[$controller][$action])) {
-            $allowedRoles = $this->rules[$controller][$action];
+            $providerName = $this->rules[$controller][$action];
         } elseif (isset($this->rules[$controller][0])) {
-            $allowedRoles = $this->rules[$controller][0];
+            $providerName = $this->rules[$controller][0];
         } else {
             return true;
+            // return $this->protectionPolicy === self::POLICY_ALLOW;
         }
+        
+        $provider = new $providerName($event);
+        $provider->setServiceLocator($this->getServiceLocator());
+        $allowedRoles = $provider->getRoles();
         
         if (in_array('*', $allowedRoles)) {
             return true;
         }
         
-        return $this->isAllowed($allowedRoles);
+         return $this->roleService->matchIdentityRoles($allowedRoles);
     }
 }
     

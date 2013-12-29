@@ -12,9 +12,9 @@
  */
 namespace PageTest\Controller;
 
-//use AtheneTest\Controller\Athene2ApplicationTestCase;
+use AtheneTest\Controller\Athene2ApplicationTestCase;
 
-abstract class PageControllerTest //extends Athene2ApplicationTestCase
+class PageControllerTest extends Athene2ApplicationTestCase
 
 {
 
@@ -22,7 +22,7 @@ abstract class PageControllerTest //extends Athene2ApplicationTestCase
 
     public function setUp()
     {
-        //parent::setUp();
+        parent::setUp();
         $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->pageServiceMock = $this->getMock('Page\Service\PageService');

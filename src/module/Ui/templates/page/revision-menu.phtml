@@ -18,7 +18,7 @@ else {
 		<?php if ($this->revision!=''&&$this->revision->getRepository()->getCurrentRevision()!=$this->revision): ?>
 		<a
 		href="<?php if ($id!=null) echo $this->url('page/article/deleterevision',array('repositoryid'=>$this->repositoryid,'revisionid'=>$id))?>"
-		class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('delete'); ?></a>
+		class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('trash'); ?></a>
 	<a
 		href="<?php echo $this->url('page/article/revision/setCurrent',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
 		class="btn btn-link glyphicon glyphicon-ok"><?php echo $this->translate('setCurrent'); ?></a>

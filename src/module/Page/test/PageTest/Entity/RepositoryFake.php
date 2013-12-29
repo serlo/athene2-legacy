@@ -77,7 +77,7 @@ class RepositoryFake implements PageRepositoryInterface
     /**
      *
      * @param multitype: $revisions            
-     * @return self
+     * @return $this
      */
     public function setRevisions($revisions)
     {
@@ -88,7 +88,7 @@ class RepositoryFake implements PageRepositoryInterface
     /**
      *
      * @param field_type $currentRevision            
-     * @return self
+     * @return $this
      */
     public function setCurrentRevision(PageRevisionInterface $currentRevision)
     {

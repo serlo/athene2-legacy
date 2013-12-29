@@ -18,7 +18,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRevision", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRevision")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
@@ -49,41 +49,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      */
     protected $date;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"})
-     */
-    protected $trashed;
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::delete()
-     */
-    public function delete()
-    {
-    $this->page_repository->removeRevision($this);
-    return $this;
-     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::trash()
-     */
-    public function trash()
-    {
-        $this->trashed = TRUE;
-        return $this;
-    }
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::getRepository()
-     */
-    public function untrash()
-    {
-        $this->trashed = FALSE;
-        return $this;
-    }
-
-    public function isTrashed()
-    {
-        return $this->trashed;
-    }
 
     public function getRepository()
     {
@@ -96,7 +61,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
         return $this;
     }
 
-    public function getTimestamp()
+    public function getDate()
     {
         return $this->date;
     }
@@ -129,9 +94,9 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * Sets the date
      *
      * @param mixed $date            
-     * @return self
+     * @return $this
      */
-    public function setTimestamp(\DateTime $date)
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
         return $this;
@@ -141,7 +106,7 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      * Sets the author
      *
      * @param EntityInterface $user            
-     * @return self
+     * @return $this
      */
     public function setAuthor(UserInterface $author)
     {
@@ -166,4 +131,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
             $this->$key = $default;
         }
     }
+	
+
 }
