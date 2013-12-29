@@ -20,6 +20,7 @@ use User\Entity\UserInterface;
 use DateTime;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
+use Language\Entity\LanguageInterface;
 
 /**
  * A blog post.
@@ -29,13 +30,19 @@ use Taxonomy\Entity\TaxonomyTermNodeInterface;
  */
 class Post extends UuidEntity implements PostInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="blogPost")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
-    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     */
+    protected $language;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -73,6 +80,11 @@ class Post extends UuidEntity implements PostInterface
     {
         $this->publish = new DateTime();
         $this->date = new DateTime();
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     public function getAuthor()
@@ -138,6 +150,12 @@ class Post extends UuidEntity implements PostInterface
     public function setPublish(DateTime $publish = NULL)
     {
         $this->publish = $publish;
+        return $this;
+    }
+
+    public function setLanguage(LanguageInterface $language)
+    {
+        $this->language = $language;
         return $this;
     }
 

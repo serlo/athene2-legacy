@@ -60,6 +60,9 @@ return [
                     ],
                     'setUuidManager' => [
                         'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
                     ]
                 ]
             ]

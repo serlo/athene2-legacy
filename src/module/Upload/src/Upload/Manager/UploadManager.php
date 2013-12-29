@@ -17,7 +17,7 @@ use Upload\Entity\Upload;
 
 class UploadManager implements UploadManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -78,6 +78,8 @@ class UploadManager implements UploadManagerInterface
         $entity->setLocation($location);
         $entity->setSize($size);
         $entity->setType($type);
+        $entity->setLanguage($this->getLanguageManager()
+            ->getLanguageFromRequest());
         $this->getObjectManager()->persist($entity);
         return $entity;
     }

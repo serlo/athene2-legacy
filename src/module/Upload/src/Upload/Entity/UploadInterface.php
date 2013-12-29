@@ -11,7 +11,9 @@
  */
 namespace Upload\Entity;
 
-interface UploadInterface
+use Language\Entity\LanguageAwareInterface;
+
+interface UploadInterface extends LanguageAwareInterface
 {
 
     /**

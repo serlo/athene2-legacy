@@ -61,6 +61,9 @@ return [
                     ],
                     'setModuleOptions' => [
                         'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\FlagController' => [

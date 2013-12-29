@@ -14,8 +14,9 @@ namespace Flag\Entity;
 use Uuid\Entity\UuidInterface;
 use User\Entity\UserInterface;
 use Type\Entity\TypeAwareInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface FlagInterface extends TypeAwareInterface
+interface FlagInterface extends TypeAwareInterface, LanguageAwareInterface
 {
 
     /**
@@ -41,12 +42,12 @@ interface FlagInterface extends TypeAwareInterface
      * @return UserInterface
      */
     public function getReporter();
-    
+
     /**
-     * 
+     *
      * @return \DateTime
      */
-    public function getTimestamp ();
+    public function getTimestamp();
 
     /**
      *

@@ -20,7 +20,7 @@ use Blog\Exception;
 
 class BlogManager implements BlogManagerInterface
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     public function getBlog($id)
     {
@@ -85,6 +85,8 @@ class BlogManager implements BlogManagerInterface
             'content' => $content,
             'publish' => $publish
         ], $post);
+        
+        $post->setLanguage($this->getLanguageManager()->getLanguageFromRequest());
         
         $this->getTaxonomyManager()->associateWith($taxonomy->getId(), 'blogPosts', $post);
         

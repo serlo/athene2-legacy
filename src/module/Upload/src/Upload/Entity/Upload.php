@@ -13,6 +13,7 @@ namespace Upload\Entity;
 
 use Uuid\Entity\UuidEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Language\Entity\LanguageInterface;
 
 /**
  * @ORM\Entity
@@ -27,6 +28,12 @@ class Upload extends UuidEntity implements UploadInterface
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     */
+    protected $language;
 
     /**
      * @ORM\Column(type="string", unique=true, length=60)
@@ -52,17 +59,22 @@ class Upload extends UuidEntity implements UploadInterface
      * @ORM\Column(type="datetime")
      */
     protected $timestamp;
-    
+
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
     public function getLocation()
     {
         return $this->location;
     }
-    
+
     public function getSize()
     {
         return $this->size;
     }
-    
+
     public function getFilename()
     {
         return $this->name;
@@ -99,6 +111,12 @@ class Upload extends UuidEntity implements UploadInterface
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
+    }
+
+    public function setLanguage(LanguageInterface $language)
+    {
+        $this->language = $language;
         return $this;
     }
 }
