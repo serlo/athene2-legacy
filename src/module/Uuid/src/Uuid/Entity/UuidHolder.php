@@ -11,7 +11,9 @@
  */
 namespace Uuid\Entity;
 
-interface UuidHolder
+use Markdown\Entity\CacheableInterface;
+
+interface UuidHolder extends CacheableInterface
 {
 
     /**

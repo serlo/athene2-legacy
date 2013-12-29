@@ -48,7 +48,8 @@ return array(
         'Metadata',
         'License',
         'Normalizer',
-        'Type'
+        'Type',
+        'Markdown'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
