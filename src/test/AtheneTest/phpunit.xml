@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="Bootstrap.php" colors="true">
+	<testsuites>
+		<testsuite name="ClassResolver Test Suite">
+			<directory>../../module/ClassResolver/test</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../../module</directory>
+			<exclude>
+				<directory suffix=".php">../../vendor</directory>
+				<directory suffix=".php">../../config</directory>
+				<directory suffix=".php">../../data</directory>
+				<directory suffix=".php">../../module/Ui/assets</directory>
+				<directory suffix="config.php">../../module</directory>
+				<directory suffix="Module.php">../../module</directory>
+				<directory suffix="Test.php">../../module</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+</phpunit>

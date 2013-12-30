@@ -1,0 +1,8 @@
+<?php echo $this->pageHeader('Searchresults')->render(); ?>
+<?php echo $this->form()->render($this->form); ?>
+
+<ul>
+    <?php foreach ($this->results as $result): ?>
+        <?php echo $this->partial('search/container', array('container' => $result)); ?>
+    <?php endforeach; ?>
+</ul>

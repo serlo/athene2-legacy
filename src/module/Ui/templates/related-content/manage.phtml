@@ -1,0 +1,68 @@
+<?php $rows = 4; ?>
+<?php $col = 12 / $rows; ?>
+<div class="page-header">
+    <h1><?php echo $this->translate('Manage related content'); ?></h1>
+</div>
+<div class="row">
+    <div class="col-md-<?php echo $col; ?>">
+        <strong><?php echo $this->translate('Title'); ?></strong>
+    </div>
+    <div class="col-md-<?php echo $col; ?>">
+        <strong><?php echo $this->translate('Url'); ?></strong>
+    </div>
+    <div class="col-md-<?php echo $col; ?>">
+        <strong><?php echo $this->translate('Type'); ?></strong>
+    </div>
+    <div class="col-md-<?php echo $col; ?>">
+        <strong><?php echo $this->translate('Actions'); ?></strong>
+    </div>
+</div>
+<hr>
+<div class="clearfix sortable" data-action="<?php echo $this->url('related-content/order'); ?>" data-depth="1" data-active="false">
+    <ol class="sortable-list">
+        <?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
+        <?php foreach($this->aggregated as $related): ?>
+            <li class="sortable-item" data-id="<?php echo $related->getId(); ?>">
+                <span class="sortable-handle"></span>
+                <div class="sortable-item-inner row">
+                    <div class="col-md-<?php echo $col; ?>">
+                        <?php echo $related->getTitle(); ?>
+                    </div>
+                    <div class="col-md-<?php echo $col; ?>">
+                        <?php if($related->getUrl()): ?>
+                            <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getUrl(); ?></a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-md-<?php echo $col; ?>">
+                        <?php echo $this->translate($related->getType()); ?>
+                    </div>
+                    <div class="col-md-<?php echo $col; ?>">
+                        <a href="<?php echo $this->url('related-content/remove', array('id' => $related->getId())); ?>" class="btn btn-xs btn-warning"><span class="glyphicon glyphicon-trash"></span></a>
+                    </div>
+                </div>
+            </li>
+        <?php endforeach; ?>
+    </ol>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="sortable-actions btn-group">
+                <button class="btn btn-sm btn-default sortable-activate-action">
+                    <span class="glyphicon glyphicon-sort"></span>
+                </button>
+                <button class="btn btn-sm btn-success sortable-save-action is-hidden">
+                    <span class="glyphicon glyphicon-floppy-save"></span>
+                </button>
+                <button class="btn btn-sm btn-default sortable-abort-action is-hidden">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="btn-group">
+                <a class="btn btn-success btn-sm" href="<?php echo $this->url('related-content/add-category', array('id' => $this->id)); ?>"><?php echo $this->translate('Add category'); ?></a>
+                <a class="btn btn-success btn-sm" href="<?php echo $this->url('related-content/add-internal', array('id' => $this->id)); ?>"><?php echo $this->translate('Add internal'); ?></a>
+                <a class="btn btn-success btn-sm" href="<?php echo $this->url('related-content/add-external', array('id' => $this->id)); ?>"><?php echo $this->translate('Add external'); ?></a>
+            </div>
+        </div>
+    </div>
+</div>

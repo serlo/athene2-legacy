@@ -1,0 +1,33 @@
+<div class="page-header">
+	<a href="<?php echo $this->url('page/createrepository');?>"
+		class="glyphicon glyphicon-plus"><?php echo $this->translate('new page');?></a>
+	<h1><?php echo $this->translate('Pages'); ?></h1>
+</div>
+
+<div class="list-group">
+    <?php
+				
+foreach ( $this->repositorys as $repository ) :
+					$repositoryid = $repository->getId ();
+					?>
+    <a class="list-group-item"
+		href="<?php echo $this->url('page/article', array('repositoryid' => $repositoryid));?>">
+		
+		
+		<?php
+					
+if ($repository->hasCurrentRevision ())
+						echo $repository->getCurrentRevision ()->getTitle ();
+					else
+						echo $this->translate ( 'no current revision set' );
+					?>
+	</a> <a
+		href="<?php echo $this->url('page/article/editrepository',array('repositoryid'=>$repositoryid));?>"
+		class="glyphicon glyphicon-edit"><?php echo $this->translate('edit');?></a>
+	<a
+		href="<?php echo $this->url('page/article/deleterepository',array('repositoryid'=>$repositoryid));?>"
+		class="glyphicon glyphicon-remove"><?php echo $this->translate('delete'); ?></a>
+	<br>
+	<br>
+    <?php endforeach; ?>
+</div>
