@@ -11,7 +11,9 @@
  */
 namespace Language\Entity;
 
-interface LanguageInterface
+use Authorization\Entity\PermissionAwareInterface;
+
+interface LanguageInterface extends PermissionAwareInterface
 {
 
     /**
