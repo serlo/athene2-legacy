@@ -18,7 +18,9 @@ return [
                 [
                     'controller' => __NAMESPACE__ . '\Controller\BlogController',
                     'actions' => [
-                        'update'
+                        'update',
+                        'trash',
+                        'create'
                     ],
                     'roles' => [
                         'admin'

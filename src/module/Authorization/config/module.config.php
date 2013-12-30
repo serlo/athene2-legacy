@@ -15,6 +15,7 @@ return [
     'zfc_rbac' => [
         'guard_manager' => [
             'factories' => [
+                __NAMESPACE__ . '\Guard\HydratableControllerGuard' => __NAMESPACE__ . '\Factory\HydratableControllerGuardFactory',
                 __NAMESPACE__ . '\Guard\AssertiveControllerGuard' => __NAMESPACE__ . '\Factory\AssertiveControllerGuardFactory'
             ]
         ]

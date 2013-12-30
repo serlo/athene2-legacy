@@ -13,13 +13,6 @@
 namespace Common;
 
 return [
-    'zfc_rbac' => [
-        'guard_manager' => [
-            'factories' => [
-                'Common\Guard\HydratableControllerGuard' => 'Common\Guard\Factory\HydratableControllerGuardFactory'
-            ]
-        ]
-    ],
     'controller_plugins' => [
         'invokables' => [
             'referer' => 'Common\Controller\Plugin\RefererProvider',

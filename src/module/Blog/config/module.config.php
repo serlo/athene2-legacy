@@ -82,4 +82,3 @@ return [
         __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager'
     ]
 ];
-

@@ -3,178 +3,180 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
-return array(
-    'navigation' => array(
-        'default' => array(
-            'restricted' => array(
+return [
+    'navigation' => [
+        'default' => [
+            'restricted' => [
                 'label' => 'Backend',
                 'uri' => '#',
-                'pages' => array(
-                    array(
+                'pages' => [
+                    [
                         'label' => 'Home',
                         'icon' => 'home',
                         'route' => 'backend'
-                    ),
-                    array(
+                    ],
+                    [
                         'label' => 'Pages',
                         'route' => 'page',
                         'icon' => 'paperclip'
-                    ),
-                    array(
+                    ],
+                    [
                         'label' => 'Taxonomy',
                         'uri' => '#',
                         'icon' => 'book',
-                        'pages' => array(
-                            array(
+                        'pages' => [
+                            [
                                 'label' => 'Manage taxonomies',
                                 'route' => 'taxonomy/term/organize-all',
-                                'pages' => array(
-                                    array(
+                                'pages' => [
+                                    [
                                         'route' => 'taxonomy/term/action',
                                         'visible' => false
-                                    ),
-                                    array(
+                                    ],
+                                    [
                                         'route' => 'taxonomy/term/create',
                                         'visible' => false
-                                    ),
-                                    array(
+                                    ],
+                                    [
                                         'route' => 'taxonomy/term/update',
                                         'visible' => false
-                                    ),
-                                    array(
+                                    ],
+                                    [
                                         'route' => 'taxonomy/term/sort-associated',
                                         'visible' => false
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    array(
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
                         'label' => 'Users',
                         'icon' => 'user',
                         'uri' => '#',
-                        'pages' => array(
-                            array(
+                        'pages' => [
+                            [
                                 'label' => 'Manage users',
                                 'route' => 'users'
-                            ),
-                            array(
+                            ],
+                            [
                                 'label' => 'Manage roles',
                                 'route' => 'users/roles'
-                            ),
-                            array(
+                            ],
+                            [
                                 'route' => 'users/role',
                                 'visible' => false
-                            )
-                        )
-                    ),
-                    array(
+                            ]
+                        ]
+                    ],
+                    [
                         'label' => 'Recycle bin',
                         'icon' => 'trash',
                         'route' => 'uuid/recycle-bin'
-                    ),
-                    array(
+                    ],
+                    [
                         'label' => 'Flags',
                         'icon' => 'flag',
                         'route' => 'flag/manage',
-                        'pages' => array(
-                            array(
+                        'pages' => [
+                            [
                                 'route' => 'flag/detail',
                                 'visible' => false
-                            ),
-                        )
-                    ),
-                    array(
+                            ]
+                        ]
+                    ],
+                    [
                         'label' => 'Licenses',
                         'icon' => 'tags',
                         'route' => 'license/manage',
-                        'pages' => array(
-                            array(
+                        'pages' => [
+                            [
                                 'route' => 'license/add',
                                 'visible' => false
-                            ),
-                            array(
+                            ],
+                            [
                                 'route' => 'license/update',
                                 'visible' => false
-                            ),
-                            array(
+                            ],
+                            [
                                 'route' => 'license/detail',
                                 'visible' => false
-                            )
-                        )
-                    )
-                )
-            ),
-            'blog' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'blog' => [
                 'label' => 'Blog',
-                'uri' => '#',
-                'pages' => array(
-                    array(
+                'route' => 'blog',
+                'pages' => [
+                    [
                         'label' => 'Blogs',
                         'route' => 'blog',
-                        'icon' => 'home'
-                    ),
-                    array(
+                        'icon' => 'home',
+                        'pages' => [
+                            [
+                                'route' => 'blog/post/create',
+                                'visible' => false
+                            ],
+                            [
+                                'route' => 'blog/post/view',
+                                'visible' => false
+                            ]
+                        ]
+                    ],
+                    [
                         'label' => 'Develop',
                         'route' => 'blog/view',
-                        'params' => array(
+                        'params' => [
                             'id' => 63
-                        )
-                    ),
-                    array(
-                        'route' => 'blog/post/create',
-                        'visible' => false
-                    ),
-                    array(
-                        'route' => 'blog/post/view',
-                        'visible' => false
-                    )
-                )
-            ),
-            'community' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'community' => [
                 'label' => 'Community',
                 'route' => 'discussion',
-                'params' => array(),
-                'pages' => array(
-                    array(
+                'params' => [],
+                'pages' => [
+                    [
                         'label' => 'Diskussionen',
                         'route' => 'discussion/discussions',
                         'icon' => 'comment'
-                    ),
-                    array(
+                    ],
+                    [
                         'route' => 'user/login',
                         'visible' => false
-                    ),
-                    array(
+                    ],
+                    [
                         'route' => 'user/register',
                         'visible' => false
-                    ),
-                    array(
+                    ],
+                    [
                         'route' => 'user/me',
                         'visible' => false
-                    ),
-                    array(
+                    ],
+                    [
                         'route' => 'user/profile',
                         'visible' => false
-                    )
-                )
-            ),
-            'home' => array(
+                    ]
+                ]
+            ],
+            'home' => [
                 'label' => 'Home',
                 'route' => 'home',
-                'pages' => array(
-                    array(
+                'pages' => [
+                    [
                         'route' => 'home',
                         'visible' => false
-                    )
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

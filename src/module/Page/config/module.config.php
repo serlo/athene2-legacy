@@ -152,7 +152,7 @@ return array(
                     'roles' => 'guest'
                 )
             ),
-            'Common\Guard\HydratableControllerGuard' => array(
+            'Authorization\Guard\HydratableControllerGuard' => array(
                 array(
                     'controller' => 'Page\Controller\IndexController',
                     'actions' => array(
