@@ -45,7 +45,7 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
     protected $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles", indexBy="name")
+     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles", indexBy="name", fetch="EAGER")
      * @ORM\JoinTable(name="role_permission")
      */
     protected $permissions;
@@ -144,10 +144,7 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
 
     public function hasPermission($permission)
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('name', (string) $permission));
-        $result = $this->permissions->matching($criteria);
-        
-        return count($result) > 0;
+        return isset($this->permissions[(string) $permission]);
     }
 
     public function __toString()

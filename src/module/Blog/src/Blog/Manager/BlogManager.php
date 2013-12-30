@@ -20,7 +20,9 @@ use Blog\Exception;
 
 class BlogManager implements BlogManagerInterface
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait,\Authorization\Service\AuthorizationAssertionTrait;
 
     public function getBlog($id)
     {
@@ -48,6 +50,9 @@ class BlogManager implements BlogManagerInterface
     public function trashPost($id)
     {
         $post = $this->getPost($id);
+        
+        $this->assertGranted('blog.trashPost', $post);
+        
         $post->setTrashed(true);
         $this->getObjectManager()->persist($post);
         return $this;
@@ -56,6 +61,8 @@ class BlogManager implements BlogManagerInterface
     public function updatePost($id, $title, $content, DateTime $publish = NULL)
     {
         $post = $this->getPost($id);
+        
+        $this->assertGranted('blog.updatePost', $post);
         
         $hydrator = new PostHydrator();
         $hydrator->hydrate([
@@ -70,6 +77,10 @@ class BlogManager implements BlogManagerInterface
 
     public function createPost(TaxonomyTermInterface $taxonomy, UserInterface $author, $title, $content, DateTime $publish = NULL)
     {
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
+        $this->assertGranted('blog.createPost', $language);
+        
         if ($publish === NULL) {
             $publish = new \DateTime("now");
         }
@@ -86,7 +97,7 @@ class BlogManager implements BlogManagerInterface
             'publish' => $publish
         ], $post);
         
-        $post->setLanguage($this->getLanguageManager()->getLanguageFromRequest());
+        $post->setLanguage($language);
         
         $this->getTaxonomyManager()->associateWith($taxonomy->getId(), 'blogPosts', $post);
         

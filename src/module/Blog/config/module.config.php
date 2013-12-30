@@ -63,6 +63,9 @@ return [
                     ],
                     'setLanguageManager' => [
                         'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
                     ]
                 ]
             ]

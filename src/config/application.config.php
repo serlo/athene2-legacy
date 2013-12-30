@@ -49,7 +49,8 @@ return array(
         'License',
         'Normalizer',
         'Type',
-        'Markdown'
+        'Markdown',
+        'Authorization'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
