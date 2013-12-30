@@ -169,6 +169,16 @@ class RepositoryController extends AbstractController
             ->getName())
             ->getComponent('repository')
             ->getForm();
-        return $this->getServiceLocator()->get($form);
+        $form = $this->getServiceLocator()->get($form);
+        
+        if ($entity->hasCurrentRevision()) {
+            $data = [];
+            foreach ($entity->getCurrentRevision()->getFields() as $field) {
+                $data[$field->getField()] = $field->getValue();
+            }
+            $form->setData($data);
+        }
+        
+        return $form;
     }
 }

@@ -34,6 +34,16 @@ class Language implements LanguageInterface
      */
     protected $code;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User\Entity\Permission")
+     */
+    protected $permission;
+
+    public function getPermission()
+    {
+        return $this->permission;
+    }
+
     public function getCode()
     {
         return $this->code;

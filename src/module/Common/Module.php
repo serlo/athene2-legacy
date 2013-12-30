@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 
  * Athene2 - Advanced Learning Resources Manager
@@ -12,12 +11,8 @@
  */
 namespace Common;
 
-use Zend\EventManager\EventInterface;
-use Zend\ModuleManager\Feature\BootstrapListenerInterface;
-
-class Module implements BootstrapListenerInterface
+class Module
 {
-
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -32,17 +27,5 @@ class Module implements BootstrapListenerInterface
                 )
             )
         );
-    }
-
-    public function onBootstrap(EventInterface $event)
-    {
-        /* @var \Zend\Mvc\Application $application */
-        $application = $event->getTarget();
-        $serviceManager = $application->getServiceManager();
-        $eventManager = $application->getEventManager();
-        
-        $guard = $serviceManager->get('Common\Guard\HydratableControllerGuard');
-        
-        $eventManager->attachAggregate($guard);
     }
 }

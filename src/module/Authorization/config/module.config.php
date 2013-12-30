@@ -12,11 +12,24 @@
 namespace Authorization;
 
 return [
+    'zfc_rbac' => [
+        'guard_manager' => [
+            'factories' => [
+                __NAMESPACE__ . '\Guard\HydratableControllerGuard' => __NAMESPACE__ . '\Factory\HydratableControllerGuardFactory',
+                __NAMESPACE__ . '\Guard\AssertiveControllerGuard' => __NAMESPACE__ . '\Factory\AssertiveControllerGuardFactory'
+            ]
+        ]
+    ],
     'di' => [
         'definition' => [
             'class' => [
                 __NAMESPACE__ . '\Service\AuthorizationService' => [
                     'setAuthorizationService' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Assertion\LanguageAssertion' => [
+                    'setLanguageManager' => [
                         'required' => true
                     ]
                 ]

@@ -63,6 +63,9 @@ return [
                     ],
                     'setLanguageManager' => [
                         'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
                     ]
                 ]
             ]
@@ -79,4 +82,3 @@ return [
         __NAMESPACE__ . '\Manager\PostManagerInterface' => __NAMESPACE__ . '\Manager\PostManager'
     ]
 ];
-

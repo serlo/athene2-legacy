@@ -24,13 +24,13 @@ return [
     'taxonomy' => [
         'types' => [
             'blog' => [
-                    'allowed_associations' => [
-                        'blogPosts'
-                    ],
-                    'allowed_parents' => [
-                        'root'
-                    ],
-                    'rootable' => false
+                'allowed_associations' => [
+                    'blogPosts'
+                ],
+                'allowed_parents' => [
+                    'root'
+                ],
+                'rootable' => false
             ]
         ]
     ]
