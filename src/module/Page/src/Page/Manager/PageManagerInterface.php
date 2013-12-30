@@ -4,6 +4,7 @@ namespace Page\Manager;
 use Page\Entity\PageRevisionInterface;
 use Page\Entity\PageRepositoryInterface;
 use Language\Entity\LanguageInterface;
+use User\Entity\UserInterface;
 
 interface PageManagerInterface
 {
@@ -32,6 +33,6 @@ interface PageManagerInterface
 	 * @param array $data
      * @return PageRepositoryInterface;
 	 */
-	public function createRevision(PageRepositoryInterface $repository, array $data);
+	public function createRevision(PageRepositoryInterface $repository, array $data,UserInterface $user);
 }
 

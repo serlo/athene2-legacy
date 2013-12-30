@@ -131,6 +131,10 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
             $this->$key = $default;
         }
     }
+    public function set($key, $value)
+    {
+            $this->$key = $value;
+    }
 	
 
 }

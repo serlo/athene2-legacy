@@ -20,6 +20,7 @@ use Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
 use Language\Entity\LanguageInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use User\Entity\UserInterface;
 
 class PageManager implements PageManagerInterface
 {
@@ -53,6 +54,7 @@ class PageManager implements PageManagerInterface
 
     public function getPageRepository($id)
     {
+        
         if (! is_numeric($id))
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
         
@@ -70,22 +72,13 @@ class PageManager implements PageManagerInterface
         }
     }
 
-    protected function createPageRevisionEntity()
-    {
-        $revision = $this->getClassResolver()->resolve('Page\Entity\PageRevisionInterface');
-        $uuidManager = $this->getUuidManager();
-        $uuidManager->injectUuid($revision);
-        return $revision;
-    }
 
     protected function createPageRepositoryEntity()
     {
         $repository = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
         $this->getUuidManager()->injectUuid($repository);
-        
         $license = $this->getLicenseManager()->getLicense(1); // Finds a license with the id 3
         $this->getLicenseManager()->injectLicense($repository, $license);
-        // $this->getLicenseManager()->injectLicense($repository);7
         $repository->setTrashed(false);
         return $repository;
     }
@@ -93,56 +86,28 @@ class PageManager implements PageManagerInterface
     public function editPageRepository(array $data, PageRepositoryInterface $pageRepository)
     {
         $pageRepository->setRoles(new ArrayCollection());
-        
-        for ($i = 0; $i <= $this->countRoles(); $i ++) {
-            
-            if (array_key_exists($i, $data['roles'])) {
-                $role = $this->getRoleById($data['roles'][$i]);
-                if ($role != null) {
-                    $pageRepository->setRole($role);
-                }
-            }
-        }
-        
+        $this->setRoles($data,$pageRepository);
         $this->getObjectManager()->persist($pageRepository);
-        
         return $pageRepository;
     }
 
     public function createPageRepository(array $data, $language)
     {
         $pageRepository = $this->createPageRepositoryEntity();
-        
         $pageRepository->populate($data);
-        
         $pageRepository->setLanguage($language);
-        
-        for ($i = 0; $i <= $this->countRoles(); $i ++) {
-            
-            if (array_key_exists($i, $data['roles'])) {
-                $role = $this->getRoleById($data['roles'][$i]);
-                if ($role != null) {
-                    $pageRepository->setRole($role);
-                }
-            }
-        }
-        
+        $this->setRoles($data,$pageRepository);
         $this->getObjectManager()->persist($pageRepository);
         return $pageRepository;
     }
 
-    public function createRevision(PageRepositoryInterface $repository, array $data)
+    public function createRevision(PageRepositoryInterface $repository, array $data,UserInterface $user)
     {
-        $revision = $this->createPageRevisionEntity();
-        $revision->populate($data);
-        $revision->setAuthor($data['author']);
-        $revision->setRepository($repository);
         $repository = $this->getRepositoryManager()->getRepository($repository);
-        $repository->addRevision($revision);
-        $repository->checkOutRevision($revision->getId());
-        $revision->setTrashed(false);
-        $this->getObjectManager()->persist($repository);
+        $revision = $repository->commitRevision($data,$user);
         $this->getObjectManager()->persist($revision);
+        $this->getObjectManager()->persist($repository->getRepository());
+        $repository->checkOutRevision($revision->getId());
         return $repository;
     }
 
@@ -168,20 +133,22 @@ class PageManager implements PageManagerInterface
         $roles = $this->findAllRoles();
         return count($roles);
     }
-
-    private function getRoleById($id)
-    {
-        $repository = $this->getObjectManager()->getRepository('User\Entity\Role');
-        $role = $repository->findOneBy(array(
-            'id' => $id
-        ));
-        return $role;
+    
+    private function setRoles(array $data,PageRepositoryInterface $pageRepository){
+        for ($i = 0; $i <= $this->countRoles(); $i ++) {
+        
+            if (array_key_exists($i, $data['roles'])) {
+                $role = $this->getUserManager()->findRole($data['roles'][$i]);
+                if ($role != null) {
+                    $pageRepository->setRole($role);
+                }
+            }
+        }
     }
+
 
     public function findAllRoles()
     {
-        return $this->getObjectManager()
-            ->getRepository('User\Entity\Role')
-            ->findAll();
+        return $this->getUserManager()->findAllRoles();
     }
 }

@@ -98,7 +98,7 @@ class IndexController extends AbstractActionController
 
     public function createRevisionAction()
     {
-        $us = $this->getUserManager()->getUserFromAuthenticator();
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = new RevisionForm($this->getObjectManager());
         $id = $this->params('id');
         $language = $this->getLanguageManager()
@@ -117,8 +117,8 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $array['author'] = $this->getUserManager()->getUserFromAuthenticator();
-                $this->getPageManager()->createRevision($pageRepository, $array);
+                $array['author'] = $user;
+                $this->getPageManager()->createRevision($pageRepository, $array,$user);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('page/article',array('repositoryid'=>$pageRepository->getId()));
             }
