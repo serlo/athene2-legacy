@@ -1,0 +1,57 @@
+<?php
+/**
+ * 
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author  Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license LGPL-3.0
+ * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+echo $this->doctype();
+?>
+<!--[if lt IE 9 ]>    <html class="old-ie fuelux" lang="<?php echo $this->currentLanguage(); ?>"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="fuelux" lang="<?php echo $this->currentLanguage(); ?>"> <!--<![endif]-->
+<?php print $this->partial('layout/partials/head'); ?>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<body>
+    <header>
+        <div id="serlo-menu" class="navbar navbar-default">
+            <nav class="navbar-inner">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ul class="nav navbar-nav pull-left">
+                            <li><a href="#">Athene2 Editor</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav pull-right">
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div id="editor-helpers"><span class="helper">Helper</span></div>
+        </div>
+        <div id="content"></div>
+    </header>
+    <?php echo $this->partial('layout/partials/main.phtml'); ?>
+    <section id="editor-wrap">
+        <div id="preview" class="editor-main content-editor">
+            <div class="editor-main-inner content">
+
+            </div>
+        </div>
+        <div id="main" class="editor-main">
+            <div class="editor-main-inner">
+                
+            </div>
+        </div>
+        <div id="editor-actions">
+            <div class="pull-right">
+                <button class="btn btn-success">Save</button>
+                <a>Cancel</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -76,8 +76,9 @@ class RepositoryController extends AbstractController
             $this->referer()->store();
         }
         
-        $view->setTemplate('entity/repository/update-revision');
+        $this->layout('athene2-editor');
         
+        $view->setTemplate('entity/repository/update-revision');
         return $view;
     }
 

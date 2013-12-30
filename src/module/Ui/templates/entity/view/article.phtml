@@ -7,7 +7,8 @@
             <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity, 'hide' => $this->hideActions)); ?>
         </div>
     </header>
-    <?php echo $revision->get('content'); ?>
+    <?php echo $this->markdown()->toHtml($revision->get('content')); ?>
+    <?php // echo $revision->get('content'); ?>
     <hr>
     <section>
         <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>

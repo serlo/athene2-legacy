@@ -46,6 +46,7 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
+            'athene2-editor' => __DIR__ . '/../templates/editor/layout.phtml',
             'layout/home' => __DIR__ . '/../templates/layout/serlo-home.phtml',
             'layout/1-col' => __DIR__ . '/../templates/layout/1-col.phtml',
             'layout/layout' => __DIR__ . '/../templates/layout/2-col.phtml',
@@ -128,6 +129,13 @@ return array(
                 'mixin' => false
             )
         ),
+
+        'routes' => array(
+            'entity/repository/add-revision' => array(
+                '@editor_scripts',
+                '@editor_styles'
+            )
+        ),
         
         'modules' => array(
             'ui' => array(
@@ -148,6 +156,17 @@ return array(
                             'CssRewriteFilter' => array(
                                 'name' => 'Assetic\Filter\CssRewriteFilter'
                             )
+                        )
+                    ),
+                    'editor_scripts' => array(
+                        'assets' => array(
+                            '../node_modules/athene2-editor/build/scripts/editor.js'
+                        )
+                    ),
+                    'editor_styles' => array(
+                        'assets' => array(
+                            '../node_modules/athene2-editor/build/styles/main.css',
+                            '../node_modules/athene2-editor/build/styles/editor.css'
                         )
                     ),
                     'main_fonts' => array(
