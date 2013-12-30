@@ -24,12 +24,12 @@ class AdForm extends Form
         parent::__construct('createAd');
         $this->setAttribute('class', 'clearfix');
         
-        $filter = new AdFilter();
+        //$filter = new AdFilter();
         
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
         
-        $this->setInputFilter($filter);
+        //$this->setInputFilter($filter);
         $this->add(array(
             'name' => 'title',
             'type' => 'text',

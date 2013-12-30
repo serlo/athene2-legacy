@@ -1,0 +1,19 @@
+
+<div class="page-header">
+	<h1><?php echo $this->translate('Ads'); ?></h1>
+</div>
+
+<div class="list-group">
+    
+    
+<?php
+
+foreach ( $this->ads as $ad ) :	?>
+    <p class="list-group-item">
+		
+		<?php echo $ad->getTitle();
+		      echo $ad->getContent();?>
+		
+	</p> 
+    <?php endforeach; ?>
+</div>

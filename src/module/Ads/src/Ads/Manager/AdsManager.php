@@ -16,6 +16,7 @@ use Ads\Manager\AdsManagerInterface;
 use Ads\Entity\AdInterface;
 use Ads\Exception\AdNotFoundException;
 use Page\Exception\InvalidArgumentException;
+use Language\Entity\LanguageInterface;
 
 class AdsManager implements AdsManagerInterface
 {
@@ -56,6 +57,19 @@ class AdsManager implements AdsManagerInterface
         $this->getObjectManager()->persist($ad);
         return $ad;
     }
+    
+    public function findAllAds(LanguageInterface $language)
+    {
+        $ads = $this->getObjectManager()
+        ->getRepository($this->getClassResolver()
+            ->resolveClassName('Ads\Entity\AdInterface'))
+            ->findBy(array(
+                'language' => $language->getId()
+            ));
+          
+            return $ads;
+    }
+    
 
  
 }

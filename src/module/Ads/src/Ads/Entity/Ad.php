@@ -73,7 +73,9 @@ class Ad implements AdInterface
      */
     protected $views;
     
-  
+  public function getId(){
+      return $this->id;
+  }
 
     public function setContent($content){
         $this->content=$content;
