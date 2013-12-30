@@ -17,7 +17,7 @@ use Upload\Entity\Upload;
 
 class UploadManager implements UploadManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Uuid\Manager\UuidManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait,\Common\Traits\ConfigAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     public function getDefaultConfig()
     {

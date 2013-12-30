@@ -101,9 +101,6 @@ class IndexController extends AbstractActionController
         $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = new RevisionForm($this->getObjectManager());
         $id = $this->params('id');
-        $language = $this->getLanguageManager()
-        ->getLanguageFromRequest();
-        $language_id = $language->getId();
         $pageRepository = $this->getPageRepository();
         
         if ($id != NULL) {

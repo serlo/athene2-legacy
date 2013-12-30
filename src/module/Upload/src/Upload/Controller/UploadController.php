@@ -42,8 +42,6 @@ class UploadController extends AbstractActionController
     
             $form->setData($post);
             if ($form->isValid()) {
-                $data = $form->getData();
-                $upload = $this->getUploadManager()->upload($data['file']);
                 $this->getUploadManager()->getObjectManager()->flush();
                 return new JsonModel(array(
                     'success' => true,
