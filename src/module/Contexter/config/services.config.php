@@ -51,6 +51,9 @@ return [
                     ],
                     'setUuidManager' => [
                         'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
                     ]
                 ]
             ]
