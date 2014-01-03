@@ -46,20 +46,14 @@ class ArticleForm extends Form
             'name' => 'reasoning',
             'required' => true,
             'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
+                
             )
         ));
         
         $inputFilter->add(array(
             'name' => 'content',
             'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
+            'filters' => array()
         ));
         
         $this->setInputFilter($inputFilter);
