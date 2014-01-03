@@ -119,9 +119,10 @@ return array(
     'assetic_configuration' => array(
         'webPath' => realpath('public/assets'),
         'basePath' => 'assets',
-        
+
         'default' => array(
             'assets' => array(
+                '@libs',
                 '@scripts',
                 '@styles'
             ),
@@ -132,7 +133,10 @@ return array(
 
         'routes' => array(
             'entity/repository/add-revision' => array(
+                '@libs',
+                // 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
                 '@editor_scripts',
+                '@styles',
                 '@editor_styles'
             )
         ),
@@ -141,10 +145,14 @@ return array(
             'ui' => array(
                 'root_path' => __DIR__ . '/../assets/build',
                 'collections' => array(
-                    'scripts' => array(
+                    'libs' => array(
                         'assets' => array(
                             'bower_components/modernizr/modernizr.js',
                             'bower_components/requirejs/require.js',
+                        )
+                    ),
+                    'scripts' => array(
+                        'assets' => array(
                             'scripts/main.js'
                         )
                     ),
@@ -165,7 +173,6 @@ return array(
                     ),
                     'editor_styles' => array(
                         'assets' => array(
-                            '../node_modules/athene2-editor/build/styles/main.css',
                             '../node_modules/athene2-editor/build/styles/editor.css'
                         )
                     ),
