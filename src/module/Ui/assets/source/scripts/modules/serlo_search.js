@@ -1,5 +1,5 @@
 /*global define*/
-define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Router) {
+define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, _, Common, t, Router) {
     "use strict";
     var Search,
         SearchResults,
@@ -90,6 +90,11 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         this.$el.find('.active').removeClass('active');
         var $next = this.$links.eq(this.activeFocus);
         $next.addClass('active');
+    };
+
+    SearchResults.prototype.noResults = function () {
+        var $li = $('<li class="header">').text(t('No results found.'));
+        this.$el.append($li);
     };
 
     Search = function (options) {
@@ -185,22 +190,23 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         });
 
         self.ajax.success(function (data) {
-            self.onResult(data);
+            self.onResult(data, typeof result !== 'object' || data.length === 0);
         }).fail(function () {
             self.$input.blur();
             Common.genericError();
         });
     };
 
-    Search.prototype.onResult = function (result) {
+    Search.prototype.onResult = function (result, noResults) {
         var self = this;
         if (self.$el.hasClass(self.options.inFocusClass)) {
             self.results.clear();
-            if (result.length) {
+            if (!noResults) {
                 self.$el.addClass(self.options.hasResultsClass);
                 self.results.show(result);
             } else {
                 self.$el.removeClass(self.options.hasResultsClass);
+                self.results.noResults();
             }
         }
     };
