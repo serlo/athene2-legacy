@@ -12,12 +12,12 @@
 namespace Contexter\Entity;
 
 use Uuid\Entity\UuidInterface;
-use Contexter\Entity\TypeInterface;
 use Contexter\Entity\RouteInterface;
 use Doctrine\Common\Collections\Collection;
 use Type\Entity\TypeAwareInterface;
+use Language\Entity\LanguageAwareInterface;
 
-interface ContextInterface extends TypeAwareInterface
+interface ContextInterface extends TypeAwareInterface, LanguageAwareInterface
 {
     /**
      *

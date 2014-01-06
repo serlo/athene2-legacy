@@ -15,13 +15,19 @@ use Contexter\Exception;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
 use Contexter\Entity\ContextInterface;
+use Language\Entity\LanguageInterface;
 
 class ContextManager implements ContextManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait, Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait,\Type\TypeManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use Router\RouterAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+    use\Type\TypeManagerAwareTrait,\Authorization\Service\AuthorizationAssertionTrait;
+    use\Language\Manager\LanguageManagerAwareTrait;
 
     public function addRoute(ContextInterface $context, $routeName, array $params = array())
     {
+        $this->assertGranted('contexter.addRoute', $context);
+        
         /* @var $route Entity\RouteInterface */
         $route = $this->getClassResolver()->resolve('Contexter\Entity\RouteInterface');
         $route->setName($routeName);
@@ -58,6 +64,7 @@ class ContextManager implements ContextManagerInterface
     public function removeRoute($id)
     {
         $route = $this->getRoute($id);
+        $this->assertGranted('contexter.removeRoute', $route->getContext());
         $this->getObjectManager()->remove($route);
         return $this;
     }
@@ -65,6 +72,7 @@ class ContextManager implements ContextManagerInterface
     public function removeContext($id)
     {
         $context = $this->getContext($id);
+        $this->assertGranted('contexter.removeContext', $context);
         $this->getObjectManager()->remove($context);
         $this->removeInstance($id);
         return $this;
@@ -72,6 +80,10 @@ class ContextManager implements ContextManagerInterface
 
     public function add($objectId, $type, $title)
     {
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        
+        $this->assertGranted('contexter.addContext', $language);
+        
         $object = $this->getUuidManager()->getUuid($objectId);
         
         $type = $this->findTypeByName($type);
@@ -80,6 +92,7 @@ class ContextManager implements ContextManagerInterface
         $context = $this->getClassResolver()->resolve('Contexter\Entity\ContextInterface');
         $context->setTitle($title);
         $context->setObject($object);
+        $context->setLanguage($language);
         
         $context->setType($type);
         $type->addContext($context);
@@ -104,7 +117,7 @@ class ContextManager implements ContextManagerInterface
 
     public function findAllTypeNames()
     {
-        return $this->findAllTypes()->map(function (\Contexter\Entity\TypeInterface $e)
+        return $this->findAllTypes()->map(function (\Type\Entity\TypeInterface $e)
         {
             return $e->getName();
         });

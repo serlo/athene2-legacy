@@ -23,7 +23,7 @@ return [
                         'create'
                     ],
                     'roles' => [
-                        'admin'
+                        'blogger'
                     ],
                     'assertion' => 'Authorization\Assertion\LanguageAssertion'
                 ],
