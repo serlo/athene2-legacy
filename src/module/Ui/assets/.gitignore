@@ -5,3 +5,4 @@ source/bower_components
 .grunt
 !.bowerrc
 !.jshintrc
+/build
