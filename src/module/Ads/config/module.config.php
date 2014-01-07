@@ -23,21 +23,75 @@ return array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
                 'options' => array(
-                    'route' => '/ads',
+                    'route' => '/horizon',
                     'defaults' => array(
                         'controller' => 'Ads\Controller\AdsController',
                         'action' => 'index'
                     )
                 ),
                 'child_routes' => array(
-                    'createad' => array(
+                    'shuffle' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/shuffle',
+                            'defaults' => array(
+                                'controller' => 'Ads\Controller\AdsController',
+                                'action' => 'shuffle'
+                            )
+                        )
+                    ),
+                    
+                    'add' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
                             'route' => '/add',
                             'defaults' => array(
                                 'controller' => 'Ads\Controller\AdsController',
                                 'action' => 'add'
+                            )
+                        )
+                    ),
+                    'ad' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:id',
+                            'defaults' => array(
+                                'controller' => 'Ads\Controller\AdsController',
+                                'action' => 'add'
+                            )
+                        ),
+                        'child_routes' => array(
+                            'delete' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/delete',
+                                    'defaults' => array(
+                                        'controller' => 'Ads\Controller\AdsController',
+                                        'action' => 'delete'
+                                    )
+                                )
+                            ),
+                            'out' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/out',
+                                    'defaults' => array(
+                                        'controller' => 'Ads\Controller\AdsController',
+                                        'action' => 'out'
+                                    )
+                                )
+                            ),
+                            'edit' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/edit',
+                                    'defaults' => array(
+                                        'controller' => 'Ads\Controller\AdsController',
+                                        'action' => 'edit'
+                                    )
+                                )
                             )
                         )
                     )
@@ -47,8 +101,7 @@ return array(
     ),
     
     'class_resolver' => array(
-        'Ads\Entity\AdInterface' => 'Ads\Entity\Ad',
-        
+        'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
     ),
     'zfc_rbac' => array(
         
@@ -57,10 +110,9 @@ return array(
                 array(
                     'controller' => 'Ads\Controller\AdsController',
                     'actions' => array(
-                        'createRepository',
                         'index'
                     ),
-                    'roles' => 'moderator'
+                    'roles' => 'guest'
                 ),
                 array(
                     'controller' => 'Ads\Controller\AdsController',
@@ -139,5 +191,7 @@ return array(
         )
     )
 );
+
+
 
 

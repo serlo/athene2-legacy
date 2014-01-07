@@ -52,6 +52,11 @@ class Ad implements AdInterface
      * @ORM\Column(type="text",length=255)
      */
     protected $title;
+    
+    /**
+     * @ORM\Column(type="text",length=255)
+     */
+    protected $url;
 
     /**
      * @ORM\Column(type="text")
@@ -95,6 +100,12 @@ class Ad implements AdInterface
     {
         return $this->title;
     }
+    
+    public function getFrequency()
+    {
+        return $this->frequency;
+    }
+    
 
     public function setAuthor(UserInterface $author)
     {
@@ -127,6 +138,20 @@ class Ad implements AdInterface
         return $this->clicks;
     }
 
+    public function getImage(){
+        return $this->image;
+    }
+    
+    public function setUrl($url){
+        $this->url=$url;
+        return $this;
+    }
+    
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    
 
     public function populate(array $data = array())
     {
@@ -137,6 +162,7 @@ class Ad implements AdInterface
         $this->injectFromArray('language', $data);
         $this->injectFromArray('frequency', $data);
         $this->injectFromArray('clicks', $data);
+        $this->injectFromArray('url', $data);
         $this->injectFromArray('views', $data);
         return $this;
     }

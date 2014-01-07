@@ -1,19 +1,68 @@
+<div class="page-header ">
+	<h1><?php echo $this->translate('Horizon'); ?><a href=""> <span
+			class="glyphicon glyphicon-info-sign"></span>
+		</a>
+	</h1>
+	<a href="<?php echo $this->url('ads/add');?>">
 
-<div class="page-header">
-	<h1><?php echo $this->translate('Ads'); ?></h1>
+		<button type="button" class="btn btn-default ">
+			<span class="glyphicon glyphicon-pencil"></span>
+
+        <?php echo $this->translate('new'); ?></button>
+	</a>
 </div>
 
-<div class="list-group">
-    
-    
+<div style="height: 500px;">
 <?php
 
-foreach ( $this->ads as $ad ) :	?>
-    <p class="list-group-item">
-		
-		<?php echo $ad->getTitle();
-		      echo $ad->getContent();?>
-		
-	</p> 
-    <?php endforeach; ?>
+foreach ($this->ads as $ad) :
+    ?>
+
+
+
+<div class="well"
+		style="text-align: justify; width: 200px; min-height: 450px; float: left; margin-left: 10px; background-color: white;">
+
+<a href="<?php echo $this->url('ads/ad/edit',array('id'=>$ad->getId()));?>"
+			class=" glyphicon glyphicon-pencil badge  pull-right"
+			style="background-color: #39B616; font-size: 0.6em;"> </a> <a
+			href="<?php echo $this->url('ads/ad/delete',array('id'=>$ad->getId()));?>"
+			class="glyphicon glyphicon-remove badge  pull-right"
+			style="background-color: #b94a48; font-size: 0.6em;"> </a> <br>
+			
+		<span style="font-size: 1.1em;"> <a href="<?php echo $ad->getUrl();?>"  target="_blank">   	<?php echo $ad->getTitle();?>	</a>
+		</span><br>
+		<span style="font-size: 0.8em;">
+ <?php
+    
+echo $this->translate('frequency');
+    echo ' ';
+
+        for ($i = 1; $i <= 3; $i ++) {
+            if ($ad->getFrequency() >= $i)
+                echo '<span class="glyphicon glyphicon-star"></span>';
+            else
+                echo '<span class="glyphicon glyphicon-star-empty"></span>';
+        }
+    
+    ?><br>
+ <?php echo $this->translate('views'); echo ' '.$ad->getViews(); ?><br>
+ <?php echo $this->translate('clicks'); echo ' '.$ad->getClicks(); ?><br>
+
+		</span>
+
+		<hr>
+		<img alt="<?php echo $ad->getTitle();?>"
+			src="<?php echo $ad->getImage()->getLocation();?>" width="160px" /> <span
+			style="font-size: 0.85em;">	<?php echo $ad->getContent();?> </span>
+
+
+
+
+	</div>
+
+
+<?php endforeach; ?>
 </div>
+
+

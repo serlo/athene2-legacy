@@ -11,7 +11,7 @@
  */
 namespace Ads\Exception;
 
-class AddNotFoundException extends \Exception
+class AdNotFoundException extends \Exception
 {
 
     function __construct($ad)

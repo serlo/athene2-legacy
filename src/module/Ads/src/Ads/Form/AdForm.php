@@ -15,7 +15,7 @@ use Zend\Form\Form;
 use Ads\Form\AdFilter;
 use Zend\Form\Element\File;
 use Zend\Form\Element\Submit;
-
+use Zend\Form\Element\Select;
 class AdForm extends Form
 {
 
@@ -44,6 +44,19 @@ class AdForm extends Form
         ));
         
         $this->add(array(
+            'name' => 'url',
+            'type' => 'text',
+            'attributes' => array(
+                'placeholder' => 'Add Url',
+                'required' => 'required',
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Url'
+            )
+        ));
+        
+        $this->add(array(
             'name' => 'content',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
@@ -56,18 +69,21 @@ class AdForm extends Form
             )
         ));
         
-        $this->add(array(
-            'name' => 'frequency',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'Add Frequency',
-                'required' => 'required',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Frequenz'
-            )
+
+        
+
+        
+        $select = new Select('frequency');
+        $select->setLabel('frequency');
+        $select->setValueOptions(    array(
+                '0' => 'Never',
+                '1' => 'Less',
+                '2' => 'Normal',
+                '3' => 'More'
         ));
+        $select->setValue('2');
+        
+        $this->add($select);
         
         $this->add((new File('file'))->setLabel('Bild hochladen')
             ->setAttribute('required', 'required'));

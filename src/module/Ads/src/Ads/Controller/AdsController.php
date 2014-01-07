@@ -18,11 +18,11 @@ use Zend\Form\Form;
 
 class AdsController extends AbstractActionController
 {
-    use\Language\Manager\LanguageManagerAwareTrait;
-    use\Common\Traits\ObjectManagerAwareTrait;
-    use\User\Manager\UserManagerAwareTrait;
-    use\Ads\Manager\AdsManagerAwareTrait;
-    use\Upload\Manager\UploadManagerAwareTrait;
+    use \Language\Manager\LanguageManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait;
+    use \User\Manager\UserManagerAwareTrait;
+    use \Ads\Manager\AdsManagerAwareTrait;
+    use \Upload\Manager\UploadManagerAwareTrait;
 
     public function indexAction()
     {
@@ -56,6 +56,7 @@ class AdsController extends AbstractActionController
                 $array['image'] = $upload;
                 $array['author'] = $user;
                 $array['language'] = $language;
+                
                 $this->getAdsManager()->createAd($array);
                 
                 $this->getObjectManager()->flush();
@@ -70,5 +71,72 @@ class AdsController extends AbstractActionController
         ));
         $view->setTemplate('ads/form.phtml');
         return $view;
+    }
+
+    public function deleteAction()
+    {
+        $id = $this->params('id');
+        $ad = $this->getAdsManager()->getAd($id);
+        $this->getAdsManager()->remove($ad);
+        $this->getObjectManager()->flush();
+        $this->redirect()->toRoute('ads');
+    }
+
+    public function shuffleAction()
+    {
+        $ads = $this->getAdsManager()->findShuffledAds($this->getLanguageManager()
+            ->getLanguageFromRequest(), 3);
+        $view = new ViewModel(array(
+            'ads' => $ads
+        ));
+        $view->setTemplate('ads/shuffle.phtml');
+        $this->getObjectManager()->flush();
+        return $view;
+    }
+
+    public function editAction()
+    {
+        $form = new AdForm();
+        $id = $this->params('id');
+        $language = $this->getLanguageManager();
+        $ad = $this->getAdsManager()->getAd($id);
+        
+        $form->get('content')->setValue($ad->getContent());
+        $form->get('title')->setValue($ad->getTitle());
+        $form->get('frequency')->setValue($ad->getFrequency());
+        $form->get('file')->setValue($ad->getImage());
+        $form->get('file')->setAttribute('required',false);
+        $form->get('file')->setLabel('Bild ändern');
+        $form->get('url')->setValue($ad->getUrl());
+        
+        $ad = $this->getAdsManager()->getAd($id);
+        
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $array = $form->getData();
+                $this->getAdsManager()->editAd($array, $ad);
+                $this->getObjectManager()->flush();
+                $this->redirect()->toRoute('ads');
+            }
+        }
+        
+        $view = new ViewModel(array(
+            'form' => $form,
+            'title' => 'Ad bearbeiten'
+        ));
+        $view->setTemplate('ads/form.phtml');
+        return $view;
+    }
+
+    public function outAction()
+    {
+        $id = $this->params('id');
+        $ad = $this->getAdsManager()->getAd($id);
+        $ad->setClicks($ad->getClicks() + 1);
+        $this->getObjectManager()->persist($ad);
+        $this->getObjectManager()->flush();       
+        $this->redirect()->toUrl($ad->getUrl());
     }
 }

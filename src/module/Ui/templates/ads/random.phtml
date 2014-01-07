@@ -1,0 +1,28 @@
+
+<a href="" style="font-size: 0.9em;" class="pull-left"> <?php echo $this->translate('Horizon'); ?><span class="glyphicon glyphicon-info-sign"></span> </a>
+	<br>
+ <?php
+
+foreach ($this->ads as $ad) :
+    ?>
+
+
+
+<div class="row">
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img data-src="holder.js/300x200" alt="...">
+      <div class="caption">
+        <h3>Thumbnail label</h3>
+        <p>...</p>
+        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?php endforeach; ?>
+
+
+

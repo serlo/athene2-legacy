@@ -21,9 +21,9 @@ use Language\Entity\LanguageInterface;
 class AdsManager implements AdsManagerInterface
 {
     
-    use\Common\Traits\ObjectManagerAwareTrait;
-    use \ClassResolver\ClassResolverAwareTrait;
-    use \Upload\Manager\UploadManagerAwareTrait;
+    use \Common\Traits\ObjectManagerAwareTrait;
+    use\ClassResolver\ClassResolverAwareTrait;
+    use\Upload\Manager\UploadManagerAwareTrait;
 
     public function getAd($id)
     {
@@ -33,9 +33,8 @@ class AdsManager implements AdsManagerInterface
             ->resolveClassName('Ads\Entity\AdInterface'), $id);
         if (! $add)
             throw new AdNotFoundException(sprintf('%s', $id));
-            return $add;
+        return $add;
     }
-
 
     protected function createAdEntity()
     {
@@ -45,31 +44,75 @@ class AdsManager implements AdsManagerInterface
 
     public function editAd(array $data, AdInterface $add)
     {
+        if (substr($data[url], 0, 3) == 'www') {
+            $data[url] = 'http://' . $data[url];
+        }
         $add->populate($data);
         $this->getObjectManager()->persist($add);
         return $add;
     }
 
     public function createAd(array $data)
-    {   $data['clicks']=$data['views']=0;
+    {
+        if (substr($data[url], 0, 3) == 'www') {
+            $data[url] = 'http://' . $data[url];
+        }
+        $data['clicks'] = $data['views'] = 0;
         $ad = $this->createAdEntity();
         $ad->populate($data);
         $this->getObjectManager()->persist($ad);
         return $ad;
     }
-    
+
     public function findAllAds(LanguageInterface $language)
     {
         $ads = $this->getObjectManager()
-        ->getRepository($this->getClassResolver()
+            ->getRepository($this->getClassResolver()
             ->resolveClassName('Ads\Entity\AdInterface'))
             ->findBy(array(
-                'language' => $language->getId()
-            ));
-          
-            return $ads;
+            'language' => $language->getId()
+        ));
+        
+        return $ads;
+    }
+
+    public function remove(AdInterface $ad)
+    {
+        $this->getObjectManager()->remove($ad);
+    }
+
+    public function findShuffledAds(LanguageInterface $language, $number)
+    {
+        $allAds = $this->findAllAds($language);
+        $adsScaled = array();
+        $ads = array();
+        $numberAds = $y = 0;
+        foreach ($allAds as $ad) {
+            
+            for ($i = 0; $i < $ad->getFrequency(); $i ++) {
+                $adsScaled[$numberAds + $i] = $y;
+            }
+            $numberAds = $numberAds + $ad->getFrequency();
+            $y ++;
+        }
+        
+        $random = mt_rand(0, $numberAds - 1);
+        
+        for ($i = 0; $i < $number; $i ++) {
+            $random = mt_rand(0, $numberAds - 1);
+            while (in_array( $allAds[$adsScaled[$random]], $ads)) {
+                $random = mt_rand(0, $numberAds - 1);
+            }
+            
+            $ads[$i] = $allAds[$adsScaled[$random]];
+        }
+        
+        foreach ($ads as $ad) {
+            $ad->setViews($ad->getViews()+1);
+            $this->getObjectManager()->persist($ad);
+        }
+        
+        return $ads;
     }
     
-
- 
 }
