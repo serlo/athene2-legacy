@@ -11,3 +11,4 @@ deployment.properties
 phpdoc-*.log
 docs/
 coverage/
+/composer.lock
