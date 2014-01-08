@@ -14,7 +14,7 @@ echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf
 # Install basic stuff
 apt-get -y update
 apt-get install -y python-software-properties python g++ make python-software-properties
-apt-get install -y apache2 mysql-server-5.5 git
+apt-get install -y apache2 mysql-server-5.5 git sphinxsearch
 
 # Add repositories with current versions
 sudo add-apt-repository -y ppa:chris-lea/node.js
@@ -83,6 +83,16 @@ service apache2 restart
 
 # Remove automatically generated index.html
 rm /var/www/index.html
+
+# Install sphinxsearch
+echo START=yes > /etc/default/sphinxsearch
+cp /var/www/sphinxsearch/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
+mkdir /var/lib/sphinxsearch/log
+indexer --all
+searchd
+
+# Mysql stuff
+mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
 
 # Permission stuff
 #chown www-data:vagrant /var/www/src/data -R

@@ -47,11 +47,11 @@ class EntityAdapter extends AbstractSphinxAdapter
         foreach($results as $result){
             $entity = $this->getEntityManager()->getEntity($result['id']);
             $result = new Result\Result();
-            $result->setName($entity->normalize()->getTitle());
+            $result->setName($this->getNormalizer()->normalize($entity)->getTitle());
             $result->setId($entity->getId());
             $result->setObject($entity);
-            $result->setRouteName($entity->normalize()->getRouteName());
-            $result->setRouteParams($entity->normalize()->getRouteParams());
+            $result->setRouteName($this->getNormalizer()->normalize($entity)->getRouteName());
+            $result->setRouteParams($this->getNormalizer()->normalize($entity)->getRouteParams());
             $container->addResult($result);
         }
         

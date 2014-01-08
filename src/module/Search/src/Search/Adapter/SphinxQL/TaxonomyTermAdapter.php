@@ -11,11 +11,12 @@
  */
 namespace Search\Adapter\SphinxQL;
 
+use Normalizer\NormalizerAwareTrait;
 use Search\Result;
 
 class TaxonomyTermAdapter extends AbstractSphinxAdapter
 {
-    use \Taxonomy\Manager\TaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait, NormalizerAwareTrait;
 
     protected $types = array(
         'topic',
@@ -60,8 +61,8 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
             $resultInstance->setName($result['name']);
             $resultInstance->setId($result['id']);
             $resultInstance->setObject($term);
-            $resultInstance->setRouteName($term->normalize()->getRouteName());
-            $resultInstance->setRouteParams($term->normalize()->getRouteParams());
+            $resultInstance->setRouteName($this->getNormalizer()->normalize($term)->getRouteName());
+            $resultInstance->setRouteParams($this->getNormalizer()->normalize($term)->getRouteParams());
             $container->addResult($resultInstance);
         }
         
