@@ -48,7 +48,10 @@ return array(
                     ),
                     'setEntityManager' => array(
                         'required' => true
-                    )
+                    ),
+                    'setNormalizer' => [
+                        'required' => true
+                    ]
                 ),
                 __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter' => array(
                     'setConnection' => array(
@@ -56,7 +59,10 @@ return array(
                     ),
                     'setTaxonomyManager' => array(
                         'required' => true
-                    )
+                    ),
+                    'setNormalizer' => [
+                        'required' => true
+                    ]
                 ),
                 __NAMESPACE__ . '\Controller\SearchController' => array(
                     'setSearchService' => array(

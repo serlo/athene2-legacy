@@ -38,7 +38,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Taxonomy",inversedBy="terms")
+     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\Taxonomy",inversedBy="terms")
      */
     protected $taxonomy;
 

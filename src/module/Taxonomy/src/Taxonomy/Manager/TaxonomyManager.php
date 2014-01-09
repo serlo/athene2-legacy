@@ -114,7 +114,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
         ]);
         
         if (! is_object($entity)) {
-            throw new Exception\RuntimeException(sprintf('Taxonomy "%s" (language: "$s") not found', $name, $language->getCode()));
+            /* @var $entity \Taxonomy\Entity\TaxonomyInterface */
+            $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyInterface');
+            $entity->setLanguage($language);
+            $entity->setType($type);
+            $this->getObjectManager()->persist($entity);
         }
         
         return $entity;

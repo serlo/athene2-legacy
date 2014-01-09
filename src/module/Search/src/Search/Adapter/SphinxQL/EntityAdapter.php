@@ -11,11 +11,12 @@
  */
 namespace Search\Adapter\SphinxQL;
 
+use Normalizer\NormalizerAwareTrait;
 use Search\Result;
 
 class EntityAdapter extends AbstractSphinxAdapter
 {
-    use \Entity\Manager\EntityManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait, NormalizerAwareTrait;
 
     protected $types = array('article', 'video', 'module');
     

@@ -65,7 +65,35 @@ index taxonomyTermIndex
 	charset_type		= utf-8
 }
 
+#########
+#
+# DELTAS
+#
+#########
 
+source entityDelta : entitySource
+{
+}
+
+source taxonomyTermDelta : taxonomyTermSource
+{
+}
+
+index entityDelta : entityIndex
+{
+	path			= /var/lib/sphinxsearch/data/entityIndex.delta
+}
+
+index taxonomyTermDelta : taxonomyTermIndex
+{
+	path			= /var/lib/sphinxsearch/data/taxonomyTermIndex.delta
+}
+
+#########
+#
+# Indexer
+#
+#########
 
 indexer
 {

@@ -13,7 +13,7 @@ return [
     'zfc_rbac' => [
         'guards' => [
             'ZfcRbac\Guard\RouteGuard' => [
-                /*'taxonomy/term/sort-associated' => [
+                'taxonomy/term/sort-associated' => [
                     'moderator'
                 ],
                 'taxonomy/term/order' => [
@@ -36,7 +36,7 @@ return [
                 ],
                 'taxonomy/term/sort-associated' => [
                     'moderator'
-                ]*/
+                ]
             ]
         ]
     ]

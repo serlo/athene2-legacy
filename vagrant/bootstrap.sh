@@ -86,10 +86,17 @@ rm /var/www/index.html
 
 # Install sphinxsearch
 echo START=yes > /etc/default/sphinxsearch
-cp /var/www/sphinxsearch/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
+cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
 mkdir /var/lib/sphinxsearch/log
 indexer --all
 searchd
+
+# Install crontab
+#echo new cron into cron file
+echo "* * * * * indexer --all --rotate" >> sphinxcron
+#install new cron file
+crontab sphinxcron
+rm sphinxcron
 
 # Mysql stuff
 mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
