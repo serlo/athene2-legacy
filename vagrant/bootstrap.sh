@@ -84,6 +84,9 @@ service apache2 restart
 # Remove automatically generated index.html
 rm /var/www/index.html
 
+# Mysql stuff
+mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
+
 # Install sphinxsearch
 echo START=yes > /etc/default/sphinxsearch
 cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
@@ -98,9 +101,6 @@ echo "* * * * * indexer --all --rotate" >> sphinxcron
 crontab sphinxcron
 rm sphinxcron
 
-# Mysql stuff
-mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
-
 # Permission stuff
 #chown www-data:vagrant /var/www/src/data -R
 #chown www-data:vagrant /var/www/src/public/assets -R
@@ -109,6 +109,7 @@ mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
 
 # Run athene2 startup scripts
 su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
+su - www-data -c "cd /var/www/src/module/Ui/assets && npm update --no-bin-links"
 su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
 su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
 su - www-data -c "cd /var/www/ && php composer.phar self-update"

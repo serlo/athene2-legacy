@@ -11,4 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, host: 4567, guest: 80
   config.vm.network :forwarded_port, host: 3456, guest: 3306
   config.vm.synced_folder "../", "/var/www", :owner => "www-data", :group => "www-data"
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+  end
 end
