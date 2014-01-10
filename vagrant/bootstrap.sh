@@ -115,5 +115,4 @@ su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-e
 su - www-data -c "cd /var/www/ && php composer.phar self-update"
 su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar install"
 su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar update"
-su - www-data -c "cd /var/www/src/module/Ui/assets && grunt language-update"
 su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
