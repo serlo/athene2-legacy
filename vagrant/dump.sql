@@ -1233,6 +1233,7 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (7, 'contexter.removeRout
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.removeContext');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.addContext');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (10, 'contexter.addRoute');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (11, 'login');
 
 COMMIT;
 
@@ -1257,7 +1258,7 @@ INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (1,
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (2, 'login', 3, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (3, 'reviewer', 4, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (4, 'helper', 5, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (5, 'admin', 6, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (5, 'admin', 7, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (6, 'horizonhelper', NULL, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (7, 'moderator', 8, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (8, 'ambassador', 9, NULL);
@@ -1371,8 +1372,8 @@ COMMIT;
 START TRANSACTION;
 USE `serlo`;
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (3, 1, 1, NULL, NULL, NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (4, 2, 2, 1, NULL, NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (5, 3, 3, 1, NULL, NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (4, 2, 2, 3, NULL, NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (5, 3, 3, 3, NULL, NULL);
 
 COMMIT;
 
@@ -1382,10 +1383,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
+INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 11);
+INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 11);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 2);
-INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 12);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 2);
-INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 12);
 
 COMMIT;
 
@@ -1405,6 +1406,7 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 7
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 8);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 9);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 10);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 11);
 
 COMMIT;
 
