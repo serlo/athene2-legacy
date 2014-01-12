@@ -1133,7 +1133,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `serlo`.`metadata_key` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`metadata_key` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `key_UNIQUE` (`name` ASC))

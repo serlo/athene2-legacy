@@ -20,11 +20,8 @@ class EntityAdapter extends AbstractSphinxAdapter
 
     protected $types = array('article', 'video', 'module');
     
-    public function search($query)
+    public function search($query, Result\Container $container)
     {
-        $container = new Result\Container();
-        $container->setName('entity');
-        
         foreach($this->types as $type){
             $resultContainer = $this->searchTypes($query, $type);
             $container->addContainer($resultContainer);

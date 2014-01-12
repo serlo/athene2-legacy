@@ -19,6 +19,29 @@ use Zend\EventManager\Event;
 
 class TaxonomyManagerListener extends AbstractListener
 {
+
+    public function onCreate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term = $e->getParam('term');
+
+        if ($term->hasParent()) {
+            $parent = $term->getParent();
+            $this->addMetadata($parent, $term);
+        }
+    }
+
+    public function onUpdate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term = $e->getParam('term');
+
+        if ($term->hasParent()) {
+            $parent = $term->getParent();
+            $this->addMetadata($parent, $term);
+        }
+    }
+
     public function onAssociate(Event $e)
     {
         /* @var $term TaxonomyTermInterface */
@@ -26,10 +49,7 @@ class TaxonomyManagerListener extends AbstractListener
         $object = $e->getParam('object');
 
         if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidEntity) {
-            while ($term->hasParent()) {
-                $this->getMetadataManager()->addMetadata($object->getUuidEntity(), $term->getTaxonomy()->getName(), $term->getName());
-                $term = $term->getParent();
-            }
+            $this->addMetadata($object, $term);
         }
     }
 
@@ -40,30 +60,78 @@ class TaxonomyManagerListener extends AbstractListener
         $object = $e->getParam('object');
 
         if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidEntity) {
-            while ($term->hasParent()) {
-                try {
-                    $metadata = $this->getMetadataManager()->findMetadataByObjectAndKeyAndValue($object->getUuidEntity(), $term->getTaxonomy()->getName(), $term->getName());
-                    $this->getMetadataManager()->removeMetadata($metadata->getId());
-                } catch (MetadataNotFoundException $e) {}
-            }
+            $this->removeMetadata($object, $term);
         }
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'associate', array(
-            $this,
-            'onAssociate'
-        ));
+        $this->listeners[] = $events->attach(
+            $this->getMonitoredClass(),
+            'create',
+            array(
+                $this,
+                'onCreate'
+            )
+        );
 
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'dissociate', array(
-            $this,
-            'onDissociate'
-        ));
+        $this->listeners[] = $events->attach(
+            $this->getMonitoredClass(),
+            'update',
+            array(
+                $this,
+                'onUpdate'
+            )
+        );
+
+        $this->listeners[] = $events->attach(
+            $this->getMonitoredClass(),
+            'associate',
+            array(
+                $this,
+                'onAssociate'
+            )
+        );
+
+        $this->listeners[] = $events->attach(
+            $this->getMonitoredClass(),
+            'dissociate',
+            array(
+                $this,
+                'onDissociate'
+            )
+        );
     }
 
     protected function getMonitoredClass()
     {
         return 'Taxonomy\Manager\TaxonomyManager';
+    }
+
+    protected function addMetadata(UuidEntity $object, TaxonomyTermInterface $term)
+    {
+        while ($term->hasParent()) {
+            $this->getMetadataManager()->addMetadata(
+                $object->getUuidEntity(),
+                $term->getTaxonomy()->getName(),
+                $term->getName()
+            );
+            $term = $term->getParent();
+        }
+    }
+
+    protected function removeMetdata($object, TaxonomyTermInterface $term)
+    {
+        while ($term->hasParent()) {
+            try {
+                $metadata = $this->getMetadataManager()->findMetadataByObjectAndKeyAndValue(
+                    $object->getUuidEntity(),
+                    $term->getTaxonomy()->getName(),
+                    $term->getName()
+                );
+                $this->getMetadataManager()->removeMetadata($metadata->getId());
+            } catch (MetadataNotFoundException $e) {
+            }
+        }
     }
 }

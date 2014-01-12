@@ -13,9 +13,9 @@ source entitySource
 	sql_pass		= athene2
 	sql_db			= serlo
 	sql_port		= 3306
-	
-	sql_query = SELECT CRC32(erf.id * ent.id * m.id) as id, ent.id as eid, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter, m.value as metadata FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id JOIN metadata m ON m.uuid_id = ent.id
-#	sql_query = SELECT erf.id as id, ent.id as eid, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id
+
+	sql_query_pre   = SET @a := 0;
+	sql_query       = SELECT @a := @a + 1 as id, ent.id as eid, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter, m.value as metadata FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id JOIN metadata m ON m.uuid_id = ent.id
 
 	sql_field_string = type
 	sql_field_string = field
@@ -33,6 +33,9 @@ index entityIndex
 	source			= entitySource
 	path			= /var/lib/sphinxsearch/data/entityIndex
 	charset_type	= utf-8
+
+	enable_star     = 1
+	min_prefix_len  = 2
 }
 
 #
@@ -67,6 +70,9 @@ index taxonomyTermIndex
 
 	path			= /var/lib/sphinxsearch/data/taxonomyTermIndex
 	charset_type	= utf-8
+
+	enable_star     = 1
+	min_prefix_len  = 2
 }
 
 #########
@@ -117,6 +123,6 @@ searchd
 	seamless_rotate	= 1
 	preopen_indexes	= 1
 	unlink_old		= 1
-	workers			= threads # for RT to work
+    workers			= threads # for RT to work
 	binlog_path		= /var/lib/sphinxsearch/data
 }

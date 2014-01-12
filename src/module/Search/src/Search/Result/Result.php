@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -58,12 +58,12 @@ class Result implements ResultInterface
     {
         return $this->object;
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function getId()
     {
         return $this->id;
@@ -71,51 +71,51 @@ class Result implements ResultInterface
 
     /**
      *
-     * @param string $name            
-     * @return self
+     * @param string $name
+     * @return void
      */
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
     }
 
     /**
      *
-     * @param number $id            
-     * @return self
+     * @param number $id
+     * @return void
      */
     public function setId($id)
     {
         $this->id = $id;
-        return $this;
     }
 
     /**
      *
-     * @param array $routeParams            
-     * @return self
+     * @param array $routeParams
+     * @return void
      */
     public function setRouteParams(array $routeParams)
     {
         $this->routeParams = $routeParams;
-        return $this;
     }
 
     /**
      *
-     * @param string $routeName            
-     * @return self
+     * @param string $routeName
+     * @return void
      */
     public function setRouteName($routeName)
     {
         $this->routeName = $routeName;
-        return $this;
     }
 
+    /**
+     *
+     * @param mixed $object
+     * @return void
+     */
     public function setObject($object)
     {
         $this->object = $object;
-        return $this;
     }
 }
