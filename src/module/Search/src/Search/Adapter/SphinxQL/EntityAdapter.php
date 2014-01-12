@@ -39,14 +39,14 @@ class EntityAdapter extends AbstractSphinxAdapter
         $container->setName($type);
         
         $spinxQuery = $this->forge();
-        $spinxQuery->select('value', 'id')
+        $spinxQuery->select('value', 'eid')
             ->from('entityIndex')
-            ->match('value', $query)
+            ->match('value', $query . '*')
             ->match('type', $type);
         $results = $spinxQuery->execute();
         
         foreach($results as $result){
-            $entity = $this->getEntityManager()->getEntity($result['id']);
+            $entity = $this->getEntityManager()->getEntity($result['eid']);
             $result = new Result\Result();
             $result->setName($this->getNormalizer()->normalize($entity)->getTitle());
             $result->setId($entity->getId());

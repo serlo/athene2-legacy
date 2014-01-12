@@ -1,54 +1,59 @@
 <?php
 /**
- * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ *
+ * @author Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @copyright 2013 by www.serlo.org
  * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL]
  */
 namespace Metadata;
 
-return array(
-    'class_resolver' => array(
+return [
+    'class_resolver' => [
         __NAMESPACE__ . '\Entity\MetadataInterface' => __NAMESPACE__ . '\Entity\Metadata',
         __NAMESPACE__ . '\Entity\MetadataKeyInterface' => __NAMESPACE__ . '\Entity\MetadataKey'
-    ),
-    'di' => array(
-        'definition' => array(
-            'class' => array(
-                __NAMESPACE__ . '\Manager\MetadataManager' => array(
-                    'setServiceLocator' => array(
+    ],
+    'di' => [
+        'definition' => [
+            'class' => [
+                __NAMESPACE__ . '\Manager\MetadataManager' => [
+                    'setServiceLocator' => [
                         'required' => 'true'
-                    ),
-                    'setObjectManager' => array(
+                    ],
+                    'setObjectManager' => [
                         'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
+                    ],
+                    'setClassResolver' => [
                         'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\TaxonomyManagerListener' => [
+                    'setMetadataManager' => [
+                        'required' => 'true'
+                    ]
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\MetadataManagerInterface' => __NAMESPACE__ . '\Manager\MetadataManager'
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

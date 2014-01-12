@@ -14,11 +14,15 @@ source entitySource
 	sql_db			= serlo
 	sql_port		= 3306
 	
-	sql_query = SELECT ent.id as id, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter, m.value as subject, CRC32(m.value) as subject_filter FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id JOIN metadata_key as mk JOIN metadata m ON m.uuid_id = ent.id AND m.key_id = mk.id WHERE mk.name = 'subject'
+	sql_query = SELECT CRC32(erf.id * ent.id * m.id) as id, ent.id as eid, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter, m.value as metadata FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id JOIN metadata m ON m.uuid_id = ent.id
+#	sql_query = SELECT erf.id as id, ent.id as eid, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id
 
-
-	sql_field_string = value
 	sql_field_string = type
+	sql_field_string = field
+	sql_field_string = value
+	sql_field_string = metadata
+	sql_attr_uint	 = id
+	sql_attr_uint	 = eid
 	sql_attr_uint	 = type_filter
 }
 
@@ -62,7 +66,7 @@ index taxonomyTermIndex
 	source			= taxonomyTermSource
 
 	path			= /var/lib/sphinxsearch/data/taxonomyTermIndex
-	charset_type		= utf-8
+	charset_type	= utf-8
 }
 
 #########

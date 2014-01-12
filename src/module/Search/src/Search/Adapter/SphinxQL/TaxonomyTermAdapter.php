@@ -44,9 +44,9 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
         $spinxQuery = $this->forge();
         $spinxQuery->select('name', 'id', 'type')
             ->from('taxonomyTermIndex')
-            ->match('name', $query)
+            ->match('name', '"' . $query . '*"')
             ->match('type', $type);
-        
+
         /**
          * TODO use 64bit PHP (which isn't supported on windows)
          * PHP is a bitch and doesn't support bigint/uint

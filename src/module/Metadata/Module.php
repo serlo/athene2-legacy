@@ -11,10 +11,12 @@
  */
 namespace Metadata;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
     public static $listeners = array(
-        //'Metadata\Listener\EntityControllerListener',
+        'Metadata\Listener\TaxonomyManagerListener',
         //'Metadata\Listener\EntityTaxonomyPluginControllerListener'
     );
 
@@ -34,7 +36,7 @@ class Module
         );
     }
 
-    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    public function onBootstrap(MvcEvent $e)
     {
         foreach (static::$listeners as $listener) {
             $e->getApplication()

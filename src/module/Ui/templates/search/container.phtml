@@ -5,7 +5,7 @@
     <ul>
     <?php /* @var $result \Search\Result\ResultInterface */?>
     <?php foreach($this->container->getResults() as $result): ?>
-        <li><a href="<?php echo $this->url('uuid/router', array('uuid' => $result->getId())); ?>"><?php echo $result->getName(); ?></a></li>
+        <li><a href="<?php echo $this->normalize()->toUrl($result->getObject()); ?>"><?php echo $this->normalize()->toTitle($result->getObject()); ?></a></li>
     <?php endforeach; ?>
     
     </ul>

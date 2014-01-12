@@ -43,14 +43,6 @@ class ArticleForm extends Form
         ));
         
         $inputFilter->add(array(
-            'name' => 'reasoning',
-            'required' => true,
-            'filters' => array(
-                
-            )
-        ));
-        
-        $inputFilter->add(array(
             'name' => 'content',
             'required' => true,
             'filters' => array()

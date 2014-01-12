@@ -12,8 +12,9 @@
 namespace Metadata\Listener;
 
 use Common\Listener\AbstractSharedListenerAggregate;
+use Metadata\Manager\MetadataManagerAwareTrait;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
-    use \Metadata\Manager\MetadataManagerAwareTrait;
+    use MetadataManagerAwareTrait;
 }
