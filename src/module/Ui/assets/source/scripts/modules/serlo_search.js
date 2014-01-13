@@ -64,8 +64,14 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             this.focusNext();
             return;
         case Common.KeyCode.enter:
-            Router.navigate(this.$el.find('.active').children().first().attr('href'));
-            this.$input.blur();
+            if (undefined !== this.$links && this.$links.length) {
+                Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
+                this.$input.blur();
+            } else {
+                Router.post('/search', {
+                    q: this.$input.val()
+                });
+            }
             break;
         }
     };
@@ -191,15 +197,14 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
 
         self.ajax.success(function (data) {
             self.onResult(data, typeof data !== 'object' || data.length === 0);
-        }).fail(function () {
+        }).error(function () {
             self.$input.blur();
-            Common.genericError();
         });
     };
 
     Search.prototype.onResult = function (result, noResults) {
         var self = this;
-        console.log(result, noResults);
+
         if (self.$el.hasClass(self.options.inFocusClass)) {
             self.results.clear();
             if (!noResults) {
