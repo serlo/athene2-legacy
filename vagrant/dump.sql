@@ -1407,6 +1407,8 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 8
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 9);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 10);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 11);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 5);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 6);
 
 COMMIT;
 

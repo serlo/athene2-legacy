@@ -71,6 +71,20 @@ echo "<VirtualHost *:80>
 	</Directory>
 </VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
+echo "
+sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
+sudo indexer --all
+sudo searchd
+sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && npm install --no-bin-links\"
+sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && npm update --no-bin-links\"
+sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && bower install\"
+sudo su - www-data -c \"pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js\"
+sudo su - www-data -c \"cd /var/www/ && php composer.phar self-update\"
+sudo su - www-data -c \"cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar install\"
+sudo su - www-data -c \"cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar update\"
+sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && grunt build\"
+" > /home/vagrant/reboot.sh
+
 # Xdebug fix
 sed -i '$ a\xdebug.max_nesting_level = 500' /etc/php5/apache2/php.ini
 
@@ -83,6 +97,10 @@ service apache2 restart
 
 # Remove automatically generated index.html
 rm /var/www/index.html
+
+# Mysql
+sudo sed -i "s/bind-address.*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
+mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
 
 # Mysql stuff
 mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
@@ -97,6 +115,13 @@ searchd
 # Install crontab
 #echo new cron into cron file
 echo "* * * * * indexer --all --rotate" >> sphinxcron
+#install new cron file
+crontab sphinxcron
+rm sphinxcron
+
+# Install startup stuff
+#echo new cron into cron file
+echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
 #install new cron file
 crontab sphinxcron
 rm sphinxcron
