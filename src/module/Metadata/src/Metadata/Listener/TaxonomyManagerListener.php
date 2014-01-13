@@ -111,11 +111,14 @@ class TaxonomyManagerListener extends AbstractListener
     protected function addMetadata(UuidEntity $object, TaxonomyTermInterface $term)
     {
         while ($term->hasParent()) {
-            $this->getMetadataManager()->addMetadata(
-                $object->getUuidEntity(),
-                $term->getTaxonomy()->getName(),
-                $term->getName()
-            );
+            try {
+                $this->getMetadataManager()->addMetadata(
+                    $object->getUuidEntity(),
+                    $term->getTaxonomy()->getName(),
+                    $term->getName()
+                );
+            } catch (MetadataNotFoundException $e) {
+            }
             $term = $term->getParent();
         }
     }
