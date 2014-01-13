@@ -11,6 +11,7 @@
  */
 namespace Metadata\Listener;
 
+use Metadata\Exception\DuplicateMetadata;
 use Metadata\Exception\MetadataNotFoundException;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
@@ -117,7 +118,7 @@ class TaxonomyManagerListener extends AbstractListener
                     $term->getTaxonomy()->getName(),
                     $term->getName()
                 );
-            } catch (MetadataNotFoundException $e) {
+            } catch (DuplicateMetadata $e) {
             }
             $term = $term->getParent();
         }
