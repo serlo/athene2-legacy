@@ -44,6 +44,17 @@ interface AliasManagerInterface
     public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
     
     /**
+     *
+     * @param string $alias
+     * @param string $aliasFallback
+     * @param LanguageInterface $language
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function editAlias( $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+    
+    
+    /**
      * 
      * @param string $name
      * @param string $source

@@ -176,6 +176,9 @@ return array(
             'class' => array(
 
                 'Page\Controller\IndexController' => array(
+                    'setAliasManager' => array(
+                        'required' => 'true'
+                    ),
                     'setObjectManager' => array(
                         'required' => 'true'
                     ),

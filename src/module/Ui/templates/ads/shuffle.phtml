@@ -11,11 +11,11 @@ foreach ($this->ads as $ad) :
 <div class="well " style="text-align:justify;margin-bottom:4x;padding-top:4x;width: 23.5%;min-width:151px;max-width:401px; min-height: 385px; float: left; margin-left: 10px;background-color: white;">
 
 
-    <a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" style="font-size:1.2em;"  target="_blank">   	<?php echo $ad->getTitle();?>	
+    <a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="_blank">   	<?php echo $ad->getTitle();?>	
 	<hr>
 	<img alt="<?php echo $ad->getTitle();?>"
 		src="<?php echo $ad->getImage()->getLocation();?>"  style="width:100%;max-width:100%" /></a><br>
-        <span style="font-size:0.85em;">	<?php echo $ad->getContent();?></span>
+        <small>	<?php echo $ad->getContent();?></small>
         	
 
 	

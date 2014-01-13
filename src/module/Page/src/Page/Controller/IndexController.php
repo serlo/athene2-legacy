@@ -15,7 +15,7 @@ class IndexController extends AbstractActionController
     use \Page\Manager\PageManagerAwareTrait;
     use \Common\Traits\ObjectManagerAwareTrait;
     use\User\Manager\UserManagerAwareTrait;
-    
+    use \Alias\AliasManagerAwareTrait;
     
     public function indexAction()
     {
@@ -69,17 +69,23 @@ class IndexController extends AbstractActionController
     {
         $form = new RepositoryForm($this->getObjectManager());
         
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
+        $language = $this->getLanguageManager()
+            ->getLanguageFromRequest();
         $pageRepository = $this->getPageRepository();
-        
+        $form->get('slug')->setValue($this->getAliasManager()->findAliasByObject($pageRepository->getUuidEntity())->getAlias());
+        $roles = array();
+        foreach ($pageRepository->getRoles() as $role)
+        {
+            $roles[]=$role->getId();
+        }   
+        $form->get('roles')->setValue($roles);
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
+                $this->getAliasManager()->editAlias($array[slug], $array[slug].$pageRepository->getId(),$pageRepository->getUuidEntity(),  $language);
                 $this->getPageManager()->editPageRepository($array,$pageRepository);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('page/article', array(

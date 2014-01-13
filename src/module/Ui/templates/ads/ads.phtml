@@ -22,39 +22,36 @@ foreach ($this->ads as $ad) :
 
 <div class="well"
 		style="text-align: justify; width: 200px; min-height: 450px; float: left; margin-left: 10px; background-color: white;">
-
-<a href="<?php echo $this->url('ads/ad/edit',array('id'=>$ad->getId()));?>"
-			class=" glyphicon glyphicon-pencil badge  pull-right"
-			style="background-color: #39B616; font-size: 0.6em;"> </a> <a
+		<small><a
+			href="<?php echo $this->url('ads/ad/edit',array('id'=>$ad->getId()));?>"
+			class="btn btn-success btn-xs pull-right"> <span
+				class="glyphicon glyphicon-pencil"></span></a> <a
 			href="<?php echo $this->url('ads/ad/delete',array('id'=>$ad->getId()));?>"
-			class="glyphicon glyphicon-remove badge  pull-right"
-			style="background-color: #b94a48; font-size: 0.6em;"> </a> <br>
-			
-		<span style="font-size: 1.1em;"> <a href="<?php echo $ad->getUrl();?>"  target="_blank">   	<?php echo $ad->getTitle();?>	</a>
-		</span><br>
-		<span style="font-size: 0.8em;">
+			class="btn btn-danger btn-xs  pull-right"><span
+				class="glyphicon glyphicon-remove"></span> </a> </small> <br> <a
+			href="<?php echo $ad->getUrl();?>" target="_blank">  	<?php echo $ad->getTitle();?>	</a>
+		<br> <small>
  <?php
     
-echo $this->translate('frequency');
+    echo $this->translate('frequency');
     echo ' ';
-
-        for ($i = 1; $i <= 3; $i ++) {
-            if ($ad->getFrequency() >= $i)
-                echo '<span class="glyphicon glyphicon-star"></span>';
-            else
-                echo '<span class="glyphicon glyphicon-star-empty"></span>';
-        }
+    
+    for ($i = 1; $i <= 3; $i ++) {
+        if ($ad->getFrequency() >= $i)
+            echo '<span class="glyphicon glyphicon-star"></span>';
+        else
+            echo '<span class="glyphicon glyphicon-star-empty"></span>';
+    }
     
     ?><br>
  <?php echo $this->translate('views'); echo ' '.$ad->getViews(); ?><br>
  <?php echo $this->translate('clicks'); echo ' '.$ad->getClicks(); ?><br>
 
-		</span>
 
+		</small>
 		<hr>
-		<img alt="<?php echo $ad->getTitle();?>"
-			src="<?php echo $ad->getImage()->getLocation();?>" width="160px" /> <span
-			style="font-size: 0.85em;">	<?php echo $ad->getContent();?> </span>
+		<small> <img alt="<?php echo $ad->getTitle();?>"
+			src="<?php echo $ad->getImage()->getLocation();?>" width="160px" />	<?php echo $ad->getContent();?></small>
 
 
 
