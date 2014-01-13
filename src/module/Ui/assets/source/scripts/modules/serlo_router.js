@@ -8,30 +8,30 @@ define(function () {
     }
 
     function post(path, params, method) {
-        var form,
-            key,
-            hiddenField;
+        var key,
+            $form,
+            $hiddenField;
 
-        method = method || "post"; // Set method to post by default if not specified.
+        method = method || "post";
+        params = params || {};
 
-        // The rest of this code assumes you are not using a library.
-        // It can be made less wordy if you use one.
-        form = document.createElement("form");
-        form.setAttribute("method", method);
-        form.setAttribute("action", path);
+        $form = $("<form>").attr({
+            method: method,
+            action: path
+        });
 
         for (key in params) {
             if (params.hasOwnProperty(key)) {
-                hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", params[key]);
-                form.appendChild(hiddenField);
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: key,
+                    value: params[key]
+                }).appendTo($form);
             }
         }
 
-        document.body.appendChild(form);
-        form.submit();
+        $form.appendTo('body');
+        $form.submit();
     }
 
     function reload() {
