@@ -84,7 +84,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
 require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     "use strict";
 
-    if (MathJax) {
+    if (typeof MathJax !== undefined) {
         MathJax.Hub.Config({
             displayAlign: 'left',
             extensions: ["tex2jax.js"],
