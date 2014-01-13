@@ -162,7 +162,7 @@ class UserManager implements UserManagerInterface
     {
         $userRoles = $this->getUser($id)->getRoles();
         $allRoles = $this->findAllRoles();
-        return array_diff($allRoles, $userRoles);
+        return array_diff($allRoles, $userRoles->toArray());
     }
 
     public function persist($object)
