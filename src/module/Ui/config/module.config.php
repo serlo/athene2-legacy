@@ -11,11 +11,11 @@
  */
 namespace Ui;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Mvc\Application;
-use Ui\View\Helper\PageHeader;
-use ZfcRbac\Guard\GuardInterface;
 use Ui\View\Helper\Brand;
+use Ui\View\Helper\PageHeader;
+use Zend\Mvc\Application;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcRbac\Guard\GuardInterface;
 
 return array(
     'di' => [
@@ -135,6 +135,18 @@ return array(
             'entity/repository/add-revision' => array(
                 '@libs',
                 // 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ),
+            'blog/post/create' => array(
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ),
+            'blog/post/update' => array(
+                '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'

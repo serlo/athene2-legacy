@@ -11,10 +11,10 @@
  */
 namespace Blog\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Blog\Form\PostForm;
 use DateTime;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class BlogController extends AbstractActionController
 {
@@ -137,6 +137,7 @@ class BlogController extends AbstractActionController
         ));
         
         $view->setTemplate('blog/blog/post/update');
+        $this->layout('athene2-editor');
         
         return $view;
     }
@@ -191,6 +192,7 @@ class BlogController extends AbstractActionController
         ));
         
         $view->setTemplate('blog/blog/post/create');
+        $this->layout('athene2-editor');
         
         return $view;
     }

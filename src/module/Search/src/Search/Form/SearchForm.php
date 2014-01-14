@@ -11,10 +11,10 @@
  */
 namespace Search\Form;
 
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Submit;
 
 class SearchForm extends Form
 {

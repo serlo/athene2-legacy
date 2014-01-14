@@ -11,9 +11,9 @@
  */
 namespace Search\Adapter\SphinxQL;
 
-use Search\Adapter\AdapterInterface;
 use Foolz\SphinxQL\Connection;
 use Foolz\SphinxQL\SphinxQL;
+use Search\Adapter\AdapterInterface;
 
 abstract class AbstractSphinxAdapter implements AdapterInterface
 {

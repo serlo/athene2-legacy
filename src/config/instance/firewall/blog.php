@@ -23,9 +23,9 @@ return [
                         'create'
                     ],
                     'roles' => [
-                        'blogger'
+                        'langhelper'
                     ],
-                    'assertion' => 'Authorization\Assertion\LanguageAssertion'
+                    'assertion' => 'Authorization\Assertion\RequestLanguageAssertion'
                 ],
             ]
         ]

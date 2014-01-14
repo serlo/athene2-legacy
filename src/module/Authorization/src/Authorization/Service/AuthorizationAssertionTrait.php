@@ -12,6 +12,7 @@
 namespace Authorization\Service;
 
 use ZfcRbac\Exception\UnauthorizedException;
+use ZfcRbac\Service\AuthorizationServiceAwareTrait;
 
 trait AuthorizationAssertionTrait
 {
@@ -23,13 +24,11 @@ trait AuthorizationAssertionTrait
      * @param string $permission
      * @param mixed  $context
      * @throws UnauthorizedException
-     * @return boolean
+     * @return void
      */
     protected function assertGranted($permission, $context = null){
         if(! $this->getAuthorizationService()->isGranted($permission, $context)){
             throw new UnauthorizedException();
         }
-
-        return true;
     }
 }

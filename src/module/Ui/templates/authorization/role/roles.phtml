@@ -1,0 +1,12 @@
+<?php echo $this->pageHeader('Roles')->render(); ?>
+<div class="list-group">
+    <?php foreach($this->roles as $role): ?>
+        <a class="list-group-item" href="<?php echo $this->url('authorization/role/show', array('role' => $role->getId())); ?>">
+            <h4 class="list-group-item-heading">
+                <span class="badge pull-right"><?php echo $role->getUsers()->count(); ?></span>
+                <?php echo $role->getName(); ?>
+            </h4>
+            <p class="list-group-item-text"><?php echo $role->getDescription(); ?></p>
+        </a>
+    <?php endforeach; ?>
+</div>

@@ -13,14 +13,14 @@
  */
 namespace User;
 
-use User\View\Helper\Authenticator;
-use User\View\Helper\Notification;
-use User\View\Helper\Rbac;
-use User\View\Helper\Guard;
-use User\Entity\UserInterface;
+use User\Authentication\AuthenticationService;
 use User\Authentication\HashFilter;
 use User\Authentication\Storage\UserRepository;
-use User\Authentication\AuthenticationService;
+use User\Entity\UserInterface;
+use User\View\Helper\Authenticator;
+use User\View\Helper\Guard;
+use User\View\Helper\Notification;
+use User\View\Helper\Rbac;
 
 /**
  * @codeCoverageIgnore
@@ -97,8 +97,7 @@ return array(
         'allowed_controllers' => array(
             __NAMESPACE__ . '\Controller\UsersController',
             __NAMESPACE__ . '\Controller\UserController',
-            __NAMESPACE__ . '\Notification\Controller\WorkerController',
-            __NAMESPACE__ . '\Controller\RoleController'
+            __NAMESPACE__ . '\Notification\Controller\WorkerController'
         ),
         'definition' => array(
             'class' => array(
@@ -215,9 +214,6 @@ return array(
                 __NAMESPACE__ . '\Controller\UsersController' => array(
                     'setUserManager' => array(
                         'required' => true
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Controller\UserController' => array(
@@ -231,11 +227,6 @@ return array(
                         'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\RoleController' => array(
-                    'setUserManager' => array(
                         'required' => true
                     )
                 )
@@ -285,26 +276,6 @@ return array(
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\UsersController',
                         'action' => 'users'
-                    )
-                ),
-                'child_routes' => array(
-                    'roles' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/roles',
-                            'defaults' => array(
-                                'action' => 'roles'
-                            )
-                        )
-                    ),
-                    'role' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/role/:role',
-                            'defaults' => array(
-                                'action' => 'role'
-                            )
-                        )
                     )
                 )
             ),

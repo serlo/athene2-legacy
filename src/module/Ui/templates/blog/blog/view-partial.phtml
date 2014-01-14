@@ -15,7 +15,7 @@
     				<h3><a href="<?php echo $this->url('blog/post/view', array('post' => $post->getId())); ?>"><?php echo $post->getTitle(); ?></a> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?><?php if(!$post->isPublished()) echo ' - <i>' . $this->translate('unpublished') . '</i>'; ?></small></h3>
     			</header>
     			<hr>
-                <?php echo $post->getContent(); ?>
+                <?php echo $this->markdown()->toHtml($post->getContent()); ?>
             </article>
     	</li>
     <?php endforeach; ?>

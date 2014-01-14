@@ -1223,17 +1223,23 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (1, 'blog.createPost');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (2, 'blog.updatePost');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (3, 'blog.trashPost');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (4, 'blog.purgePost');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (1, 'blog.post.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (2, 'blog.post.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (3, 'blog.post.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (4, 'blog.post.purge');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (5, 'german');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (6, 'english');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (7, 'contexter.removeRoute');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.removeContext');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.addContext');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (10, 'contexter.addRoute');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (7, 'contexter.route.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.context.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.context.add');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (10, 'contexter.route.add');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (11, 'login');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (12, 'authorization.role.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (13, 'authorization.role.sysadmin.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.role.german.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.role.english.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.permission.add');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.permission.remove');
 
 COMMIT;
 
@@ -1409,6 +1415,12 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 1
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 11);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 5);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 6);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 12);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 13);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (12, 14);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (13, 15);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 16);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 17);
 
 COMMIT;
 

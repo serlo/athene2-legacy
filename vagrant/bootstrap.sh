@@ -72,6 +72,7 @@ echo "<VirtualHost *:80>
 </VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
 echo "
+sudo killall searchd
 sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
 sudo indexer --all
 sudo searchd
@@ -113,15 +114,13 @@ indexer --all
 searchd
 
 # Install crontab
-#echo new cron into cron file
-echo "* * * * * indexer --all --rotate" >> sphinxcron
-#install new cron file
+echo "* * * * * indexer --all --rotate" > sphinxcron
+echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
 crontab sphinxcron
 rm sphinxcron
 
 # Install startup stuff
 #echo new cron into cron file
-echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
 #install new cron file
 crontab sphinxcron
 rm sphinxcron
