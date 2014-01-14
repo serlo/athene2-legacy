@@ -1196,6 +1196,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
   `frequency` FLOAT NOT NULL DEFAULT 1,
   `clicks` INT NOT NULL DEFAULT 0,
   `views` INT NOT NULL DEFAULT 0,
+  `url` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_ads_language1_idx` (`language_id` ASC),
   INDEX `fk_ads_upload1_idx` (`image_id` ASC),
