@@ -11,10 +11,10 @@
  */
 namespace Authorization\Factory;
 
+use Authorization\Guard\AssertiveControllerGuard;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\MutableCreationOptionsInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Authorization\Guard\AssertiveControllerGuard;
 
 class AssertiveControllerGuardFactory implements FactoryInterface, MutableCreationOptionsInterface
 {
@@ -44,10 +44,14 @@ class AssertiveControllerGuardFactory implements FactoryInterface, MutableCreati
         
         /* @var \ZfcRbac\Service\RoleService $roleService */
         $roleService = $parentLocator->get('ZfcRbac\Service\RoleService');
+
+        /* @var \ZfcRbac\Service\AuthorizationService $authorizationService */
+        $authorizationService = $parentLocator->get('ZfcRbac\Service\AuthorizationService');
         
         $controllerGuard = new AssertiveControllerGuard($roleService, $this->options);
         $controllerGuard->setProtectionPolicy($moduleOptions->getProtectionPolicy());
         $controllerGuard->setServiceLocator($parentLocator);
+        $controllerGuard->setAuthorizationService($authorizationService);
         
         return $controllerGuard;
     }

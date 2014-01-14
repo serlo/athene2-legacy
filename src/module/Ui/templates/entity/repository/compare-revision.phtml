@@ -1,7 +1,7 @@
 <?php echo $this->pageHeader('Compare revisions')->setSubtitle($this->entity->getUuid())->render(); ?>
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#display" data-toggle="tab"><?php echo $this->translate('Revision'); ?> (#<?php echo $this->revision->getId();?>)</a></li>
-	<?php if($this->currentRevision){ ?>
+	<?php if($this->currentRevision && $this->currentRevision->getId() !== $this->revision->getId()){ ?>
 	<li><a href="#current" data-toggle="tab"><?php echo $this->translate('Aktuelle Revision'); ?> (#<?php echo $this->currentRevision->getId();?>)</a></li>
 	<?php } ?>
 </ul>

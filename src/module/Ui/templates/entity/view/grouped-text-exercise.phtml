@@ -10,7 +10,14 @@
     </div>
     <section>
         <?php if($entity->hasCurrentRevision()): ?>
-            <?php echo  $entity->getCurrentRevision()->get('content'); ?>
+            <?php
+                $content = $entity->getCurrentRevision()->get('content');
+                try {
+                    echo $this->markdown()->toHtml($content);
+                } catch (Exception $e) {
+                    echo $content;
+                }
+            ?>
         <?php endif; ?>
     </section>
     <div class="clearfix"></div>

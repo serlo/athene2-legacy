@@ -3,7 +3,19 @@
     	<?php foreach($this->revision->getFields() as $field): ?>
     	<section>
             <h3><?php echo $field->getField(); ?></h3>
-    	    <?php echo $field->getValue(); ?>
+            <?php
+                $content = $field->getValue();
+                if ($field->getField() === 'content' ||
+                    $field->getField() === 'reasoning') {
+                    try {
+                        echo $this->markdown()->toHtml($content);
+                    } catch (Exception $e) {
+                        echo $content;
+                    }    
+                } else {
+                    echo $content;
+                }
+            ?>
         </section>
         <hr>
     	<?php endforeach; ?>

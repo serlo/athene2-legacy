@@ -20,7 +20,7 @@ return [
                     'moderator'
                 ],
                 'taxonomy/term/organize-all' => [
-                    'moderator'
+                    'sysadmin'
                 ],
                 'taxonomy/term/organize' => [
                     'moderator'

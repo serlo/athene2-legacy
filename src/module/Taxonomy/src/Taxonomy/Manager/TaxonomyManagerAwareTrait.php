@@ -11,8 +11,6 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Manager\TaxonomyManagerInterface;
-
 trait TaxonomyManagerAwareTrait
 {
 

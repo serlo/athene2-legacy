@@ -35,6 +35,11 @@ return [
                     ]
                 ]
             ]
+        ],
+        'instance' => [
+            'preferences' => [
+                __NAMESPACE__ . '\NormalizerInterface' => __NAMESPACE__ . '\Normalizer'
+            ]
         ]
     ]
 ];

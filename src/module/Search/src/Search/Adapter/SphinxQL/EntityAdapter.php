@@ -11,19 +11,17 @@
  */
 namespace Search\Adapter\SphinxQL;
 
+use Normalizer\NormalizerAwareTrait;
 use Search\Result;
 
 class EntityAdapter extends AbstractSphinxAdapter
 {
-    use \Entity\Manager\EntityManagerAwareTrait;
+    use \Entity\Manager\EntityManagerAwareTrait, NormalizerAwareTrait;
 
     protected $types = array('article', 'video', 'module');
     
-    public function search($query)
+    public function search($query, Result\Container $container)
     {
-        $container = new Result\Container();
-        $container->setName('entity');
-        
         foreach($this->types as $type){
             $resultContainer = $this->searchTypes($query, $type);
             $container->addContainer($resultContainer);
@@ -38,20 +36,20 @@ class EntityAdapter extends AbstractSphinxAdapter
         $container->setName($type);
         
         $spinxQuery = $this->forge();
-        $spinxQuery->select('value', 'id')
+        $spinxQuery->select('value', 'eid')
             ->from('entityIndex')
-            ->match('value', $query)
+            ->match('value', $query . '*')
             ->match('type', $type);
         $results = $spinxQuery->execute();
         
         foreach($results as $result){
-            $entity = $this->getEntityManager()->getEntity($result['id']);
+            $entity = $this->getEntityManager()->getEntity($result['eid']);
             $result = new Result\Result();
-            $result->setName($entity->normalize()->getTitle());
+            $result->setName($this->getNormalizer()->normalize($entity)->getTitle());
             $result->setId($entity->getId());
             $result->setObject($entity);
-            $result->setRouteName($entity->normalize()->getRouteName());
-            $result->setRouteParams($entity->normalize()->getRouteParams());
+            $result->setRouteName($this->getNormalizer()->normalize($entity)->getRouteName());
+            $result->setRouteParams($this->getNormalizer()->normalize($entity)->getRouteParams());
             $container->addResult($result);
         }
         

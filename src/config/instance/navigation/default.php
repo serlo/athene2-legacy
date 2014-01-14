@@ -56,20 +56,23 @@ return [
                         ]
                     ],
                     [
-                        'label' => 'Users',
-                        'icon' => 'user',
+                        'label' => 'Authorization',
+                        'icon' => 'lock',
                         'uri' => '#',
                         'pages' => [
                             [
-                                'label' => 'Manage users',
-                                'route' => 'users'
-                            ],
-                            [
                                 'label' => 'Manage roles',
-                                'route' => 'users/roles'
-                            ],
+                                'route' => 'authorization/roles'
+                            ]
+                        ]
+                    ],
+                    [
+                        'label' => 'Users',
+                        'icon' => 'user',
+                        'route' => 'users',
+                        'pages' => [
                             [
-                                'route' => 'users/role',
+                                'route' => 'authorization/role/show',
                                 'visible' => false
                             ]
                         ]
@@ -128,13 +131,6 @@ return [
                                 'route' => 'blog/post/view',
                                 'visible' => false
                             ]
-                        ]
-                    ],
-                    [
-                        'label' => 'Develop',
-                        'route' => 'blog/view',
-                        'params' => [
-                            'id' => 63
                         ]
                     ]
                 ]

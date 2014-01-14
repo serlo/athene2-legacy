@@ -11,11 +11,11 @@
  */
 namespace Ui;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Mvc\Application;
-use Ui\View\Helper\PageHeader;
-use ZfcRbac\Guard\GuardInterface;
 use Ui\View\Helper\Brand;
+use Ui\View\Helper\PageHeader;
+use Zend\Mvc\Application;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcRbac\Guard\GuardInterface;
 
 return array(
     'di' => [
@@ -46,6 +46,7 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
+            'athene2-editor' => __DIR__ . '/../templates/editor/layout.phtml',
             'layout/home' => __DIR__ . '/../templates/layout/serlo-home.phtml',
             'layout/1-col' => __DIR__ . '/../templates/layout/1-col.phtml',
             'layout/layout' => __DIR__ . '/../templates/layout/2-col.phtml',
@@ -118,9 +119,10 @@ return array(
     'assetic_configuration' => array(
         'webPath' => realpath('public/assets'),
         'basePath' => 'assets',
-        
+
         'default' => array(
             'assets' => array(
+                '@libs',
                 '@scripts',
                 '@styles'
             ),
@@ -128,15 +130,41 @@ return array(
                 'mixin' => false
             )
         ),
+
+        'routes' => array(
+            'entity/repository/add-revision' => array(
+                '@libs',
+                // 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ),
+            'blog/post/create' => array(
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ),
+            'blog/post/update' => array(
+                '@libs',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            )
+        ),
         
         'modules' => array(
             'ui' => array(
                 'root_path' => __DIR__ . '/../assets/build',
                 'collections' => array(
-                    'scripts' => array(
+                    'libs' => array(
                         'assets' => array(
                             'bower_components/modernizr/modernizr.js',
                             'bower_components/requirejs/require.js',
+                        )
+                    ),
+                    'scripts' => array(
+                        'assets' => array(
                             'scripts/main.js'
                         )
                     ),
@@ -148,6 +176,16 @@ return array(
                             'CssRewriteFilter' => array(
                                 'name' => 'Assetic\Filter\CssRewriteFilter'
                             )
+                        )
+                    ),
+                    'editor_scripts' => array(
+                        'assets' => array(
+                            '../node_modules/athene2-editor/build/scripts/editor.js'
+                        )
+                    ),
+                    'editor_styles' => array(
+                        'assets' => array(
+                            '../node_modules/athene2-editor/build/styles/editor.css'
                         )
                     ),
                     'main_fonts' => array(

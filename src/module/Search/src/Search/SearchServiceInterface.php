@@ -11,8 +11,6 @@
  */
 namespace Search;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 interface SearchServiceInterface
 {
     /**
@@ -32,14 +30,14 @@ interface SearchServiceInterface
      * 
      * @param string $query
      * @param array $adapters
-     * @return Result\Results
+     * @return Result\Con
      */
     public function search($query, array $adapters);
-    
+
     /**
-     * 
-     * @param Result\Results $results
+     *
+     * @param Result\ContainerInterface $container
      * @return array
      */
-    public function simplifyResults(Result\Results $results);
+    public function ajaxify(Result\ContainerInterface $container);
 }
