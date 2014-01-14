@@ -47,6 +47,8 @@ class RoleController extends AbstractActionController
 
     public function removePermissionAction()
     {
+        $this->assertGranted('authorization.permission.remove');
+
         $this->getRoleService()->removeRolePermission($this->params('role'), $this->params('permission'));
         $this->getRoleService()->flush();
         $this->redirect()->toUrl($this->referer()->toUrl());
@@ -55,6 +57,8 @@ class RoleController extends AbstractActionController
 
     public function addPermissionAction()
     {
+        $this->assertGranted('authorization.permission.add');
+
         $permissions = $this->getPermissionService()->findAllPermissions();
         $role = $this->getRoleService()->getRole($this->params('role'));
         $permissions = array_diff($permissions, $role->getPermissions()->toArray());
@@ -84,6 +88,9 @@ class RoleController extends AbstractActionController
 
     public function addUserAction()
     {
+        $role = $this->getRoleService()->getRole($this->params('role'));
+        $this->assertGranted('authorization.role.identity.modify', $role);
+
         $form = new UserForm();
         $error = false;
         $user = null;
@@ -120,6 +127,9 @@ class RoleController extends AbstractActionController
 
     public function removeUserAction()
     {
+        $role = $this->getRoleService()->getRole($this->params('role'));
+        $this->assertGranted('authorization.role.identity.modify', $role);
+
         $form = new UserForm();
         $error = false;
         $user = null;

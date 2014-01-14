@@ -38,6 +38,11 @@ return [
             'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion'
         ]
     ],
+    'controller_plugins' => [
+        'invokables' => [
+            'assertGranted' => 'Authorization\Controller\Plugin\AssertGranted'
+        ]
+    ],
     'class_resolver' => [
         __NAMESPACE__ . '\Entity\RoleInterface' => 'User\Entity\Role',
         __NAMESPACE__ . '\Entity\PermissionInterface' => 'User\Entity\Permission'
