@@ -58,6 +58,13 @@ interface DiscussionManagerInterface extends ObjectManagerAwareInterface
      * @return CommentServiceInterface
      */
     public function commentDiscussion(CommentInterface $discussion, LanguageInterface $language, UserInterface $author, $content);
+
+    /**
+     *
+     * @param int $commentId
+     * @return void
+     */
+    public function toggleArchived($commentId);
     
     /**
      * 

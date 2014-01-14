@@ -49,6 +49,7 @@ class BlogController extends AbstractActionController
     public function viewAllAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        $this->assertGranted('blog.posts.view_all', $blog);
 
         $posts = $blog->getAssociated('blogPosts')->filter(function ($e)
         {

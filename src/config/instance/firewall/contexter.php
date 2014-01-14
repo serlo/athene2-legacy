@@ -14,13 +14,12 @@ namespace Contexter;
 return [
     'zfc_rbac' => [
         'guards' => [
-            'Authorization\Guard\AssertiveControllerGuard' => [
+            'ZfcRbac\Guard\ControllerGuard' => [
                 [
                     'controller' => __NAMESPACE__ . '\Controller\ContextController',
                     'roles' => [
                         'admin'
-                    ],
-                    'assertion' => 'Authorization\Assertion\LanguageAssertion'
+                    ]
                 ],
             ]
         ]

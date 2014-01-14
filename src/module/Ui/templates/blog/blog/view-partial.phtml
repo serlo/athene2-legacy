@@ -5,10 +5,10 @@
     		<article>
     			<header>
     			    <div class="pull-right btn-group">
-    			         <?php if($this->guard()->hasAccessToRoute('blog/post/update')): ?>
+                         <?php if($this->isGranted('blog.post.update', $post)): ?>
     			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/update', array('post' => $post->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
     		             <?php endif; ?>
-    			         <?php if($this->guard()->hasAccessToRoute('uuid/trash')): ?>
+                        <?php if($this->isGranted('blog.post.trash', $post)): ?>
     			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
     			         <?php endif; ?>
     			    </div>

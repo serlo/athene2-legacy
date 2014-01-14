@@ -1,251 +1,235 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @license   LGPL-3.0
+ * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link      https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Discussion;
 
-use Discussion\DiscussionManager;
-use Discussion\View\Helper\Discussion;
-use Discussion\Collection\CommentCollection;
-use Zend\ServiceManager\ServiceLocatorInterface;
-return array(
-    'uuid_router' => array(
-        'routes' => array(
+return [
+    'uuid_router' => [
+        'routes' => [
             'comment' => '/discussion/%d'
-        )
-    ),
-    'term_router' => array(
-        'routes' => array(
-            'forum' => array(
+        ]
+    ],
+    'term_router' => [
+        'routes' => [
+            'forum' => [
                 'route' => 'discussion/discussions',
                 'param_provider' => 'Discussion\Provider\ParamProvider'
-            ),
-            'forum-category' => array(
+            ],
+            'forum-category' => [
                 'route' => 'discussion/discussions',
                 'param_provider' => 'Discussion\Provider\ParamProvider'
-            )
-        )
-    ),
-    'view_helpers' => array(
-        'factories' => array(
-            'discussion' => function ($pluginManager)
-            {
-                $plugin = new Discussion();
-                $discussionManager = $pluginManager->getServiceLocator()->get('Discussion\DiscussionManager');
-                $userManager = $pluginManager->getServiceLocator()->get('User\Manager\UserManager');
-                $languageManager = $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
-                $sharedTaxonomyManager = $pluginManager->getServiceLocator()->get('Taxonomy\Manager\TaxonomyManager');
-                $plugin->setDiscussionManager($discussionManager);
-                $plugin->setUserManager($userManager);
-                $plugin->setLanguageManager($languageManager);
-                $plugin->setTaxonomyManager($sharedTaxonomyManager);
-                return $plugin;
-            }
-        )
-    ),
-    'taxonomy' => array(
-        'types' => array(
-            'forum-category' => array(
-                'allowed_parents' => array(
+            ]
+        ]
+    ],
+    'view_helpers' => [
+        'factories' => [
+            'discussion' => __NAMESPACE__ . '\Factory\DiscussionHelperFactory'
+        ]
+    ],
+    'taxonomy' => [
+        'types' => [
+            'forum-category' => [
+                'allowed_parents' => [
                     'subject',
                     'root'
-                ),
+                ],
                 'rootable' => false
-            ),
-            'forum' => array(
-                'allowed_associations' => array(
+            ],
+            'forum' => [
+                'allowed_associations' => [
                     'comments'
-                ),
-                'allowed_parents' => array(
+                ],
+                'allowed_parents' => [
                     'forum',
                     'forum-category'
-                ),
+                ],
                 'rootable' => false
-            )
-        )
-    ),
-    'class_resolver' => array(
+            ]
+        ]
+    ],
+    'class_resolver' => [
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
         'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote'
-    ),
-    'router' => array(
-        'routes' => array(
-            'discussion' => array(
+    ],
+    'router' => [
+        'routes' => [
+            'discussion' => [
                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
+                'options' => [
                     'route' => ''
-                ),
+                ],
                 'may_terminate' => false,
-                'child_routes' => array(
-                    'view' => array(
+                'child_routes' => [
+                    'view' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/discussion/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionController',
                                 'action' => 'view'
-                            )
-                        )
-                    ),
-                    'discussions' => array(
+                            ]
+                        ]
+                    ],
+                    'discussions' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/discussions[/:id]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionsController',
                                 'action' => 'index'
-                            )
-                        )
-                    ),
-                    'discussion' => array(
+                            ]
+                        ]
+                    ],
+                    'discussion' => [
                         'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/discussion',
-                            'defaults' => array()
-                        ),
-                        'child_routes' => array(
-                            'start' => array(
+                            'defaults' => []
+                        ],
+                        'child_routes' => [
+                            'start' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route' => '/start/:on',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action' => 'start'
-                                    )
-                                )
-                            ),
-                            'comment' => array(
+                                    ]
+                                ]
+                            ],
+                            'comment' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route' => '/comment/:discussion',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action' => 'comment'
-                                    )
-                                )
-                            ),
-                            'vote' => array(
+                                    ]
+                                ]
+                            ],
+                            'vote' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route' => '/vote/:vote/:comment',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action' => 'vote'
-                                    ),
-                                    'constraints' => array(
+                                    ],
+                                    'constraints' => [
                                         'vote' => 'up|down'
-                                    )
-                                )
-                            ),
-                            'trash' => array(
+                                    ]
+                                ]
+                            ],
+                            'trash' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route' => '/trash/:comment',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action' => 'trash'
-                                    )
-                                )
-                            ),
-                            'archive' => array(
+                                    ]
+                                ]
+                            ],
+                            'archive' => [
                                 'type' => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route' => '/archive/:comment',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action' => 'archive'
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'di' => [
+        'allowed_controllers' => [
             'Discussion\Controller\DiscussionController',
             'Discussion\Controller\DiscussionsController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Discussion\Controller\DiscussionsController' => array(
-                    'setDiscussionManager' => array(
+        ],
+        'definition' => [
+            'class' => [
+                'Discussion\Controller\DiscussionsController' => [
+                    'setDiscussionManager' => [
                         'required' => true
-                    ),
-                    'setDiscussionFilterChain' => array(
+                    ],
+                    'setDiscussionFilterChain' => [
                         'required' => true
-                    ),
-                    'setLanguageManager' => array(
+                    ],
+                    'setLanguageManager' => [
                         'required' => true
-                    ),
-                    'setTaxonomyManager' => array(
+                    ],
+                    'setTaxonomyManager' => [
                         'required' => true
-                    ),
-                    'setUserManager' => array(
+                    ],
+                    'setUserManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Provider\ParamProvider' => array(),
-                'Discussion\Controller\DiscussionController' => array(
-                    'setDiscussionManager' => array(
+                    ]
+                ],
+                'Discussion\DiscussionManager' => [
+                    'setObjectManager' => [
                         'required' => true
-                    ),
-                    'setUuidManager' => array(
+                    ],
+                    'setUuidManager' => [
                         'required' => true
-                    ),
-                    'setLanguageManager' => array(
+                    ],
+                    'setClassResolver' => [
                         'required' => true
-                    ),
-                    'setUserManager' => array(
+                    ],
+                    'setTaxonomyManager' => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
+                    ]
+                ],
+                'Discussion\Controller\DiscussionController' => [
+                    'setDiscussionManager' => [
+                        'required' => true
+                    ],
+                    'setUuidManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setUserManager' => [
+                        'required' => true
+                    ],
+                ]
+            ]
+        ],
+        'instance' => [
+            'preferences' => [
                 'Discussion\DiscussionManagerInterface' => 'Discussion\DiscussionManager'
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Discussion\DiscussionManager' => function ($sm)
-            {
-                $config = $sm->get('config');
-                $class = new DiscussionManager();
-                $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $class->setTaxonomyManager($sm->get('Taxonomy\Manager\TaxonomyManager'));
-                
-                return $class;
-            }
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine' => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

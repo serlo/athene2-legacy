@@ -1241,6 +1241,8 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.role.
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.role.english.identity.modify');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.permission.add');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.permission.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (18, 'contexter.context.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (19, 'blog.posts.view_all');
 
 COMMIT;
 
@@ -1422,6 +1424,8 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (12, 1
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (13, 15);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 16);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 17);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 18);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 19);
 
 COMMIT;
 

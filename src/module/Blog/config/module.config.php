@@ -17,7 +17,8 @@ return [
             'blog.post.create' => 'Authorization\Assertion\LanguageAssertion',
             'blog.post.update' => 'Authorization\Assertion\LanguageAssertion',
             'blog.post.trash' => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.delete' => 'Authorization\Assertion\LanguageAssertion'
+            'blog.post.delete' => 'Authorization\Assertion\LanguageAssertion',
+            'blog.posts.view_all' => 'Authorization\Assertion\LanguageAssertion'
         ]
     ],
     'doctrine' => [
