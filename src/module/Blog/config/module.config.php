@@ -12,6 +12,14 @@
 namespace Blog;
 
 return [
+    'zfc_rbac' => [
+        'assertion_map' => [
+            'blog.post.create' => 'Authorization\Assertion\LanguageAssertion',
+            'blog.post.update' => 'Authorization\Assertion\LanguageAssertion',
+            'blog.post.trash' => 'Authorization\Assertion\LanguageAssertion',
+            'blog.post.delete' => 'Authorization\Assertion\LanguageAssertion'
+        ]
+    ],
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [

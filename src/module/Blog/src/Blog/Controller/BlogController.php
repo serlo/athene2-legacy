@@ -49,6 +49,7 @@ class BlogController extends AbstractActionController
     public function viewAllAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
+
         $posts = $blog->getAssociated('blogPosts')->filter(function ($e)
         {
             return !$e->isPublished() && ! $e->isTrashed();
@@ -82,9 +83,11 @@ class BlogController extends AbstractActionController
 
     public function trashAction()
     {
-        $this->getBlogManager()
-            ->trashPost($this->params('post'))
-            ->flush();
+        $post = $this->getBlogManager()->getPost($this->params('post'));
+        $this->assertGranted('blog.post.trash', $post);
+
+        $this->getBlogManager()->trashPost($this->params('post'));
+        $this->getBlogManager()->flush();
         $this->redirect()->toReferer();
         return false;
     }
@@ -92,6 +95,7 @@ class BlogController extends AbstractActionController
     public function updateAction()
     {
         $post = $this->getBlogManager()->getPost($this->params('post'));
+        $this->assertGranted('blog.post.update', $post);
         
         $form = new PostForm();
         
@@ -104,25 +108,10 @@ class BlogController extends AbstractActionController
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $author = $this->getUserManager()->getUserFromAuthenticator();
                 $data = $form->getData();
-                $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $publish = new DateTime();
-                
-                if ($data['publish']) {
-                    $dateData = explode('.', $data['publish']);
-                    $publish = (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
-                }
+                $publish = $this->toDateTime($data['publish']);
                 
                 $this->getBlogManager()->updatePost($post->getId(), $data['title'], $data['content'], $publish);
-                
-                $this->getEventManager()->trigger('post.update', $this, array(
-                    'post' => $post,
-                    'actor' => $author,
-                    'data' => $data,
-                    'language' => $language
-                ));
-                
                 $this->getBlogManager()->flush();
                 
                 $this->redirect()->toRoute('blog/post/view', array(
@@ -144,42 +133,23 @@ class BlogController extends AbstractActionController
 
     public function createAction()
     {
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $this->assertGranted('blog.post.create', $language);
+
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
         
         $form = new PostForm();
         
         if ($this->getRequest()->isPost()) {
-            
             $data = $this->params()->fromPost();
             $form->setData($data);
-            
             if ($form->isValid()) {
-                
                 $data = $form->getData();
-                
-                $publish = new DateTime();
                 $author = $this->getUserManager()->getUserFromAuthenticator();
-                
-                if ($data['publish']) {
-                    $dateData = explode('.', $data['publish']);
-                    $publish = (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
-                }
-                
-                
-                $language = $this->getLanguageManager()->getLanguageFromRequest();
-                
-                $post = $this->getBlogManager()->createPost($blog, $author, $data['title'], $data['content'], $publish);
-                
-                $this->getEventManager()->trigger('post.create', $this, array(
-                    'blog' => $blog,
-                    'post' => $post,
-                    'actor' => $author,
-                    'data' => $data,
-                    'language' => $language
-                ));
-                
+                $publish = $this->toDateTime($data['publish']);
+
+                $this->getBlogManager()->createPost($blog, $author, $data['title'], $data['content'], $publish);
                 $this->getBlogManager()->flush();
-                
                 $this->redirect()->toRoute('blog/view', array(
                     'id' => $this->params('id')
                 ));
@@ -195,5 +165,14 @@ class BlogController extends AbstractActionController
         $this->layout('athene2-editor');
         
         return $view;
+    }
+
+    protected function toDateTime($publish = null){
+        if ($publish) {
+            $dateData = explode('.', $data['publish']);
+            return (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
+        } else {
+            return new DateTime();
+        }
     }
 }

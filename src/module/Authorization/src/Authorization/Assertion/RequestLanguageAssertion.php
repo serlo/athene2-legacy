@@ -22,6 +22,6 @@ class RequestLanguageAssertion implements ControllerAssertionInterface
     {
         $language = $this->getLanguageManager()->getLanguageFromRequest();
 
-        return $authorizationService->isGranted($language->getPermission());
+        return (new LanguageAssertion())->assert($authorizationService, $language);
     }
 }
