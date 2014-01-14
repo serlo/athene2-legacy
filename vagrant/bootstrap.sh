@@ -71,20 +71,29 @@ echo "<VirtualHost *:80>
 	</Directory>
 </VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
-echo "
-sudo killall searchd
+echo '
 sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
 sudo indexer --all
 sudo searchd
-sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && npm install --no-bin-links\"
-sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && npm update --no-bin-links\"
-sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && bower install\"
-sudo su - www-data -c \"pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js\"
-sudo su - www-data -c \"cd /var/www/ && php composer.phar self-update\"
-sudo su - www-data -c \"cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar install\"
-sudo su - www-data -c \"cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar update\"
-sudo su - www-data -c \"cd /var/www/src/module/Ui/assets && grunt build\"
-" > /home/vagrant/reboot.sh
+sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm update --no-bin-links"
+sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
+sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
+sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
+sudo su - www-data -c "cd /var/www/ && php composer.phar self-update"
+sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar install"
+sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar update"
+' > /home/vagrant/startup.sh
+
+echo '
+# Listen and start after the vagrant-mounted event
+start on vagrant-mounted
+stop on runlevel [!2345]
+
+exec /home/vagrant/startup.sh
+' > /etc/init/athene2startup.conf
+
+
+echo "sudo mysql -u root --password=\"athene2\" < /var/www/vagrant/dump.sql" > /home/vagrant/updatedb.sh
 
 # Xdebug fix
 sed -i '$ a\xdebug.max_nesting_level = 500' /etc/php5/apache2/php.ini
@@ -103,15 +112,9 @@ rm /var/www/index.html
 sudo sed -i "s/bind-address.*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
 mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
 
-# Mysql stuff
-mysql -u root --password="athene2" < /var/www/vagrant/dump.sql
-
 # Install sphinxsearch
 echo START=yes > /etc/default/sphinxsearch
-cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
 mkdir /var/lib/sphinxsearch/log
-indexer --all
-searchd
 
 # Install crontab
 echo "* * * * * indexer --all --rotate" > sphinxcron
@@ -119,24 +122,10 @@ echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
 crontab sphinxcron
 rm sphinxcron
 
-# Install startup stuff
-#echo new cron into cron file
-#install new cron file
-crontab sphinxcron
-rm sphinxcron
+sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
 
-# Permission stuff
-#chown www-data:vagrant /var/www/src/data -R
-#chown www-data:vagrant /var/www/src/public/assets -R
-#chmod 775 /var/www/src/data -R
-#chmod 775 /var/www/src/public/assets -R
-
-# Run athene2 startup scripts
-su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
-su - www-data -c "cd /var/www/src/module/Ui/assets && npm update --no-bin-links"
-su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
-su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
-su - www-data -c "cd /var/www/ && php composer.phar self-update"
-su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar install"
-su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=900 php composer.phar update"
-su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
+# Run scripts
+chmod +x /home/vagrant/updatedb.sh
+chmod +x /home/vagrant/startup.sh
+/home/vagrant/updatedb.sh
+/home/vagrant/startup.sh
