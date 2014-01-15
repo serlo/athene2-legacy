@@ -1,4 +1,4 @@
-<?php if($this->isGranted('discussion.create')) ?>
+<?php if ($this->isGranted('discussion.create')): ?>
     <h4><?php echo $this->translate('Start a new discussion'); ?></h4>
     <hr>
     <?php echo $this->form()->render($this->form, null); ?>

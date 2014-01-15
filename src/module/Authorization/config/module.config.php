@@ -10,6 +10,7 @@
  */
 namespace Authorization;
 
+use Authorization\Assertion\RequestLanguageAssertion;
 use Authorization\Assertion\RoleAssertion;
 
 return [
@@ -22,13 +23,21 @@ return [
         ],
         'assertion_manager' => [
             'factories' => [
-                'Authorization\Assertion\RoleAssertion' => function ($pluginManager) {
+                'Authorization\Assertion\RoleAssertion'            => function ($pluginManager) {
                         $instance = new RoleAssertion();
                         $instance->setLanguageManager(
                             $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager')
                         );
                         $instance->setPermissionService(
                             $pluginManager->getServiceLocator()->get(__NAMESPACE__ . '\Service\PermissionService')
+                        );
+
+                        return $instance;
+                    },
+                'Authorization\Assertion\RequestLanguageAssertion' => function ($pluginManager) {
+                        $instance = new RequestLanguageAssertion();
+                        $instance->setLanguageManager(
+                            $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager')
                         );
 
                         return $instance;

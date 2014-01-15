@@ -25,16 +25,18 @@ class UserManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instance = new UserManager();
-        $objectManager = $serviceLocator->get('doctrine.entitymanager.orm_default');
-        $authService = $serviceLocator->get('Zend\Authentication\AuthenticationService');
-        $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
-        $hydrator = $serviceLocator->get('User\Hydrator\UserHydrator');
+        $instance             = new UserManager();
+        $objectManager        = $serviceLocator->get('doctrine.entitymanager.orm_default');
+        $authService          = $serviceLocator->get('Zend\Authentication\AuthenticationService');
+        $classResolver        = $serviceLocator->get('ClassResolver\ClassResolver');
+        $hydrator             = $serviceLocator->get('User\Hydrator\UserHydrator');
+        $authorizationService = $serviceLocator->get('ZfcRbac\Service\AuthorizationService');
 
         $instance->setObjectManager($objectManager);
         $instance->setClassResolver($classResolver);
         $instance->setHydrator($hydrator);
         $instance->setAuthenticationService($authService);
+        $instance->setAuthorizationService($authorizationService);
 
         return $instance;
     }

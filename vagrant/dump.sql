@@ -1291,6 +1291,7 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (64, 'page.revision.creat
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (65, 'page.revision.trash');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (66, 'page.revision.purge');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (67, 'page.revision.checkout');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (68, 'contexter.context.manage');
 
 COMMIT;
 
@@ -1522,20 +1523,7 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 64
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 65);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 66);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 67);
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `serlo`.`url_alias`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `serlo`;
-INSERT INTO `serlo`.`url_alias` (`id`, `language_id`, `uuid_id`, `source`, `alias`) VALUES (1, 1, 29, '/entity/view/29', 'mathe/artikel/brche-addieren-und-subtrahieren');
-INSERT INTO `serlo`.`url_alias` (`id`, `language_id`, `uuid_id`, `source`, `alias`) VALUES (2, 1, 31, '/entity/view/31', 'mathe/video/brche-addieren-und-subtrahieren');
-INSERT INTO `serlo`.`url_alias` (`id`, `language_id`, `uuid_id`, `source`, `alias`) VALUES (3, 1, 33, '/entity/view/33', 'mathe/artikel/assoziativgesetz');
-INSERT INTO `serlo`.`url_alias` (`id`, `language_id`, `uuid_id`, `source`, `alias`) VALUES (4, 1, 35, '/entity/view/35', 'mathe/artikel/betrag');
-INSERT INTO `serlo`.`url_alias` (`id`, `language_id`, `uuid_id`, `source`, `alias`) VALUES (5, 1, 38, '/entity/view/38', 'mathe/artikel/brche');
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 68);
 
 COMMIT;
 

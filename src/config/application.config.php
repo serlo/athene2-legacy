@@ -1,17 +1,16 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
     // This should be an array of module namespaces used in the application.
-    'modules' => array(
+    'modules'                 => array(
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcBase',
@@ -27,7 +26,7 @@ return array(
         'User',
         'Versioning',
         'Entity',
-    	'Link',
+        'Link',
         'Subject',
         'Term',
         'Uuid',
@@ -54,18 +53,16 @@ return array(
         //'OcraDiCompiler',
         //'ZendDiCompiler',
     ),
-
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => array(
         // This should be an array of paths in which modules reside.
         // If a string key is provided, the listener will consider that a module
         // namespace, the value of that key the specific path to that module's
         // Module class.
-        'module_paths' => array(
+        'module_paths'      => array(
             __DIR__ . '/../module',
             __DIR__ . '/../vendor'
         ),
-
         // An array of paths from which to glob configuration files after
         // modules are loaded. These effectively overide configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
@@ -75,7 +72,6 @@ return array(
             'config/instance/navigation/*.php',
             'config/instance/firewall/*.php',
         ),
-
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
@@ -100,7 +96,6 @@ return array(
         // that weren't loaded.
         // 'check_dependencies' => true,
     ),
-
     // Used to create an own service manager. May contain one or more child arrays.
     //'service_listener_options' => array(
     //     array(
@@ -111,7 +106,7 @@ return array(
     //     ),
     // )
 
-   // Initial configuration with which to seed the ServiceManager.
-   // Should be compatible with Zend\ServiceManager\Config.
-   // 'service_manager' => array(),
+    // Initial configuration with which to seed the ServiceManager.
+    // Should be compatible with Zend\ServiceManager\Config.
+    // 'service_manager' => array(),
 );

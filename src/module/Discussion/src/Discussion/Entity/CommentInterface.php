@@ -11,12 +11,12 @@
 namespace Discussion\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageAwareInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
-interface CommentInterface extends TaxonomyTermAwareInterface
+interface CommentInterface extends TaxonomyTermAwareInterface, LanguageAwareInterface
 {
 
     /**
@@ -29,17 +29,6 @@ interface CommentInterface extends TaxonomyTermAwareInterface
      * @return self
      */
     public function setObject(UuidInterface $uuid);
-
-    /**
-     * @param LanguageInterface $language
-     * @return self
-     */
-    public function setLanguage(LanguageInterface $language);
-
-    /**
-     * @return LanguageInterface
-     */
-    public function getLanguage();
 
     /**
      * @return DateTime

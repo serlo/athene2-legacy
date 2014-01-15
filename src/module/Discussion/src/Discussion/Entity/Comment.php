@@ -28,7 +28,6 @@ use Uuid\Entity\UuidInterface;
  */
 class Comment extends UuidEntity implements CommentInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
