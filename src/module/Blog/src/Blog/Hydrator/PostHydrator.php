@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -12,53 +11,22 @@
 namespace Blog\Hydrator;
 
 use Blog\Entity\PostInterface;
-use Blog\Exception;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\Hydrator\HydratorInterface;
 
-class PostHydrator implements HydratorInterface
+class PostHydrator extends AbstractKeyHydrator
 {
-
-    protected $keys = [
-        'author',
-        'title',
-        'publish',
-        'content',
-        'language'
-    ];
-
-    public function extract($object)
+    protected function getKeys()
     {
-        $data = [];
-        foreach ($this->keys as $key) {
-            $method = 'get' . ucfirst($key);
-            $data['key'] = $object->$method();
-        }
-        return $data;
+        return [
+            'author',
+            'title',
+            'publish',
+            'content',
+            'language'
+        ];
     }
 
-    public function hydrate(array $data, $object)
+    protected function isValid($object)
     {
-        $data = ArrayUtils::merge($this->extract($object), $data);
-
-        if (!$object instanceof PostInterface) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Expected object to be PostInterface but got "%s"',
-                get_class($object)
-            ));
-        }
-
-        foreach ($this->keys as $key) {
-            $method = 'set' . ucfirst($key);
-            $value = $this->getKey($data, $key);
-            if ($value !== null) {
-                $object->$method($value);
-            }
-        }
-    }
-
-    protected function getKey(array $data, $key)
-    {
-        return array_key_exists($key, $data) ? $data[$key] : null;
+        return $object instanceof PostInterface;
     }
 }

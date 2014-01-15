@@ -11,15 +11,16 @@
  */
 namespace License\Manager;
 
-use License\Exception;
-use License\Form\LicenseForm;
+use ClassResolver\ClassResolverAwareTrait;
 use Language\Entity\LanguageInterface;
 use License\Entity\LicenseAwareInterface;
 use License\Entity\LicenseInterface;
+use License\Exception;
+use License\Form\LicenseForm;
 
 class LicenseManager implements LicenseManagerInterface
 {
-    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
 
     protected function getDefaultConfig()
     {

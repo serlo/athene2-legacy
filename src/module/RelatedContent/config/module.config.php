@@ -11,8 +11,9 @@
  */
 namespace RelatedContent;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use RelatedContent\View\Helper\RelatedContentHelper;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 return array(
     'service_manager' => array(
         'factories' => array(
@@ -21,7 +22,7 @@ return array(
                 $instance = new Manager\RelatedContentManager();
                 $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
                 $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
-                $instance->setObjectManager($sl->get('EntityManager'));
+                $instance->setObjectManager($sl->get('Doctrine\ORM\EntityManager'));
                 $instance->setRouter($sl->get('router'));
                 return $instance;
             }

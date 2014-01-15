@@ -11,14 +11,11 @@
  */
 namespace Flag\Manager;
 
+use Common\ObjectManager\Flushable;
 use Flag\Entity\TypeInterface;
 use User\Entity\UserInterface;
-use Flag\Service\FlagServiceInterface;
-use Flag\Collection\FlagCollection;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Common\ObjectManager\Flushable;
 
-interface FlagManagerInterface extends ObjectManagerAwareInterface, Flushable
+interface FlagManagerInterface extends Flushable
 {
 
     /**

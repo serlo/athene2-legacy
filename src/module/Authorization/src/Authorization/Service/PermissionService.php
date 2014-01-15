@@ -2,11 +2,11 @@
 /**
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @author       Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license      LGPL-3.0
  * @license      http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
+ * @link         https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright    Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Authorization\Service;
 
@@ -25,7 +25,7 @@ class PermissionService implements PermissionServiceInterface
 
     public function getPermission($id)
     {
-        $className = $this->getClassResolver()->resolveClassName($this->interface);
+        $className  = $this->getClassResolver()->resolveClassName($this->interface);
         $permission = $this->getObjectManager()->find($className, $id);
 
         if (!is_object($permission)) {
@@ -37,7 +37,7 @@ class PermissionService implements PermissionServiceInterface
 
     public function findPermissionByName($name)
     {
-        $className = $this->getClassResolver()->resolveClassName($this->interface);
+        $className  = $this->getClassResolver()->resolveClassName($this->interface);
         $repository = $this->getObjectManager()->getRepository($className);
         $permission = $repository->findOneBy(['name' => $name]);
 
@@ -50,8 +50,9 @@ class PermissionService implements PermissionServiceInterface
 
     public function findAllPermissions()
     {
-        $className = $this->getClassResolver()->resolveClassName($this->interface);
+        $className  = $this->getClassResolver()->resolveClassName($this->interface);
         $repository = $this->getObjectManager()->getRepository($className);
+
         return $repository->findAll();
     }
 }

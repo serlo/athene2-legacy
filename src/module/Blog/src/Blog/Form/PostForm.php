@@ -1,13 +1,12 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license    LGPL-3.0
- * @license    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Blog\Form;
 
@@ -39,9 +38,9 @@ class PostForm extends Form
 
         $inputFilter->add(
             array(
-                'name' => 'title',
+                'name'     => 'title',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array(
                         'name' => 'HtmlEntities'
                     )
@@ -51,7 +50,7 @@ class PostForm extends Form
 
         $inputFilter->add(
             array(
-                'name' => 'content',
+                'name'     => 'content',
                 'required' => true
             )
         );

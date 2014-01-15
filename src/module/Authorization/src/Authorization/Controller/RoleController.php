@@ -2,11 +2,11 @@
 /**
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @author       Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license      LGPL-3.0
  * @license      http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
+ * @link         https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright    Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Authorization\Controller;
 
@@ -29,6 +29,7 @@ class RoleController extends AbstractActionController
             'roles' => $this->getRoleService()->findAllRoles()
         ));
         $view->setTemplate('authorization/role/roles');
+
         return $view;
     }
 
@@ -38,7 +39,7 @@ class RoleController extends AbstractActionController
         $role = $this->getRoleService()->getRole($role);
 
         $view = new ViewModel(array(
-            'role' => $role,
+            'role'  => $role,
             'users' => $role->getUsers()
         ));
 
@@ -52,6 +53,7 @@ class RoleController extends AbstractActionController
         $this->getRoleService()->removeRolePermission($this->params('role'), $this->params('permission'));
         $this->getRoleService()->flush();
         $this->redirect()->toUrl($this->referer()->toUrl());
+
         return null;
     }
 
@@ -60,9 +62,9 @@ class RoleController extends AbstractActionController
         $this->assertGranted('authorization.permission.add');
 
         $permissions = $this->getPermissionService()->findAllPermissions();
-        $role = $this->getRoleService()->getRole($this->params('role'));
+        $role        = $this->getRoleService()->getRole($this->params('role'));
         $permissions = array_diff($permissions, $role->getPermissions()->toArray());
-        $form = new PermissionForm($permissions);
+        $form        = new PermissionForm($permissions);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
@@ -72,6 +74,7 @@ class RoleController extends AbstractActionController
                 $this->getRoleService()->grantRolePermission($this->params('role'), $data['permission']);
                 $this->getRoleService()->flush();
                 $this->redirect()->toUrl($this->referer()->fromStorage());
+
                 return null;
             }
         } else {
@@ -83,6 +86,7 @@ class RoleController extends AbstractActionController
         ]);
 
         $view->setTemplate('authorization/role/permission/add');
+
         return $view;
     }
 
@@ -91,9 +95,9 @@ class RoleController extends AbstractActionController
         $role = $this->getRoleService()->getRole($this->params('role'));
         $this->assertGranted('authorization.role.identity.modify', $role);
 
-        $form = new UserForm();
+        $form  = new UserForm();
         $error = false;
-        $user = null;
+        $user  = null;
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
@@ -105,10 +109,11 @@ class RoleController extends AbstractActionController
                     $this->getRoleService()->grantIdentityRole($this->params('role'), $user->getId());
                     $this->getRoleService()->flush();
                     $this->redirect()->toUrl($this->referer()->fromStorage());
+
                     return null;
                 } catch (UserNotFoundException $e) {
                     $error = true;
-                    $user = $data['user'];
+                    $user  = $data['user'];
                 }
             }
         } else {
@@ -117,11 +122,12 @@ class RoleController extends AbstractActionController
 
         $view = new ViewModel([
             'error' => $error,
-            'form' => $form,
-            'user' => $user
+            'form'  => $form,
+            'user'  => $user
         ]);
 
         $view->setTemplate('authorization/role/user/add');
+
         return $view;
     }
 
@@ -130,9 +136,9 @@ class RoleController extends AbstractActionController
         $role = $this->getRoleService()->getRole($this->params('role'));
         $this->assertGranted('authorization.role.identity.modify', $role);
 
-        $form = new UserForm();
+        $form  = new UserForm();
         $error = false;
-        $user = null;
+        $user  = null;
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
@@ -144,10 +150,11 @@ class RoleController extends AbstractActionController
                     $this->getRoleService()->removeIdentityRole($this->params('role'), $user->getId());
                     $this->getRoleService()->flush();
                     $this->redirect()->toUrl($this->referer()->fromStorage());
+
                     return null;
                 } catch (UserNotFoundException $e) {
                     $error = true;
-                    $user = $data['user'];
+                    $user  = $data['user'];
                 }
             }
         } else {
@@ -156,11 +163,12 @@ class RoleController extends AbstractActionController
 
         $view = new ViewModel([
             'error' => $error,
-            'form' => $form,
-            'user' => $user
+            'form'  => $form,
+            'user'  => $user
         ]);
 
         $view->setTemplate('authorization/role/user/remove');
+
         return $view;
     }
 }

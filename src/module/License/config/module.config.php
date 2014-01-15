@@ -8,8 +8,6 @@
  */
 namespace License;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use License\Manager\LicenseManager;
 return [
     'license_manager' => [
         'defaults' => []
@@ -20,31 +18,29 @@ return [
     'class_resolver' => [
         __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
     ],
-    'service_manager' => [
-        'factories' => [
-            __NAMESPACE__ . '\Manager\LicenseManager' => function (ServiceLocatorInterface $serviceLocator)
-            {
-                $instance = new LicenseManager();
-                $instance->setServiceLocator($serviceLocator);
-                $instance->setObjectManager($serviceLocator->get('EntityManager'));
-                $instance->setClassResolver($serviceLocator->get('ClassResolver\ClassResolver'));
-                $instance->setLanguageManager($serviceLocator->get('Language\Manager\LanguageManager'));
-                return $instance;
-            }
-        ]
-    ],
     'di' => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\LicenseController'
         ],
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Controller\LicenseController' => [
-                    'setLicenseManager' => [
-                        'required' => 'true'
+                __NAMESPACE__ . '\Manager\LicenseManager'  => [
+                    'setObjectManager' => [
+                        'required' => true
+                    ],
+                    'setClassResolver' => [
+                        'required' => true
                     ],
                     'setLanguageManager' => [
-                        'required' => 'true'
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\LicenseController' => [
+                    'setLicenseManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Listener\EntityManagerListener' => [

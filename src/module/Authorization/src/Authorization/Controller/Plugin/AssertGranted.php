@@ -19,7 +19,7 @@ class AssertGranted extends AbstractPlugin
      * Assert that access is granted
      *
      * @param string $permission
-     * @param mixed $context
+     * @param mixed  $context
      * @throws UnauthorizedException
      * @return void
      */

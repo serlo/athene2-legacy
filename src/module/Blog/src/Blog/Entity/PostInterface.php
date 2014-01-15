@@ -1,23 +1,22 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Blog\Entity;
 
-use User\Entity\UserInterface;
 use DateTime;
-use Taxonomy\Model\TaxonomyTermModelInterface;
-use Uuid\Entity\UuidHolder;
+use Language\Entity\LanguageAwareInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Language\Entity\LanguageAwareInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidHolder;
 
 interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, LanguageAwareInterface
 {
@@ -46,13 +45,11 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Gets the publish date.
      *
-     *
      * @return DateTime
      */
     public function getPublish();
 
     /**
-     *
      * @return int
      */
     public function isPublished();
@@ -67,7 +64,7 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Sets the title.
      *
-     * @param string $title            
+     * @param string $title
      * @return self
      */
     public function setTitle($title);
@@ -89,7 +86,7 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Sets the category.
      *
-     * @param TaxonomyTermInterface $category            
+     * @param TaxonomyTermInterface $category
      * @return self
      */
     public function setBlog(TaxonomyTermInterface $category);
@@ -97,7 +94,7 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Sets the creation date.
      *
-     * @param Datetime $date            
+     * @param Datetime $date
      * @return self
      */
     public function setTimestamp(Datetime $date);
@@ -105,7 +102,7 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Sets the content.
      *
-     * @param string $content            
+     * @param string $content
      * @return self
      */
     public function setContent($content);
@@ -113,7 +110,7 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Sets the author.
      *
-     * @param UserInterface $author            
+     * @param UserInterface $author
      * @return self
      */
     public function setAuthor(UserInterface $author);
@@ -121,8 +118,8 @@ interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, Language
     /**
      * Sets the publish date.
      *
-     * @param Datetime $publish            
+     * @param Datetime $publish
      * @return self
      */
-    public function setPublish(Datetime $publish = NULL);
+    public function setPublish(Datetime $publish = null);
 }
