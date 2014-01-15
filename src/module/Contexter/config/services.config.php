@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org]
@@ -17,39 +16,39 @@ return [
             __NAMESPACE__ . '\Router\Router' => __NAMESPACE__ . '\Factory\RouterFactory'
         ]
     ],
-    'di' => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\ContextController'
         ],
-        'definition' => [
+        'definition'          => [
             'class' => [
                 __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter' => [
                     'setLanguageManager' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\ContextController' => [
+                __NAMESPACE__ . '\Controller\ContextController'          => [
                     'setContextManager' => [
                         'required' => true
                     ],
-                    'setRouter' => [
+                    'setRouter'         => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Manager\ContextManager' => [
-                    'setServiceLocator' => [
+                __NAMESPACE__ . '\Manager\ContextManager'                => [
+                    'setServiceLocator'       => [
                         'required' => true
                     ],
-                    'setTypeManager' => [
+                    'setTypeManager'          => [
                         'required' => true
                     ],
-                    'setObjectManager' => [
+                    'setObjectManager'        => [
                         'required' => true
                     ],
-                    'setClassResolver' => [
+                    'setClassResolver'        => [
                         'required' => true
                     ],
-                    'setUuidManager' => [
+                    'setUuidManager'          => [
                         'required' => true
                     ],
                     'setAuthorizationService' => [
@@ -58,10 +57,10 @@ return [
                 ]
             ]
         ],
-        'instance' => [
+        'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\ContextManagerInterface' => __NAMESPACE__ . '\Manager\ContextManager',
-                __NAMESPACE__ . '\Router\RouterInterface' => __NAMESPACE__ . '\Router\Router'
+                __NAMESPACE__ . '\Router\RouterInterface'          => __NAMESPACE__ . '\Router\Router'
             ]
         ]
     ]

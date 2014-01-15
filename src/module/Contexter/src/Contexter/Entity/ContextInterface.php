@@ -18,45 +18,38 @@ use Uuid\Entity\UuidInterface;
 interface ContextInterface extends TypeAwareInterface, LanguageAwareInterface
 {
     /**
-     *
      * @return int
      */
     public function getId();
 
     /**
-     *
      * @return UuidInterface
      */
     public function getObject();
 
     /**
-     *
      * @return string
      */
     public function getTitle();
 
     /**
-     *
      * @return Collection
      */
     public function getRoutes();
 
     /**
-     *
      * @param UuidInterface $uuid
      * @return self
      */
     public function setObject(UuidInterface $uuid);
 
     /**
-     *
      * @param string $title
      * @return self
      */
     public function setTitle($title);
 
     /**
-     *
      * @param RouteInterface $route
      * @return self
      */

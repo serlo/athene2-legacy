@@ -22,7 +22,7 @@ class DiscussionsController extends AbstractController
     public function indexAction()
     {
         $forums = $this->getTaxonomy()->getChildren();
-        $forum = $this->getTermService();
+        $forum  = $this->getTermService();
 
         if (is_object($forum)) {
             $forums = $forum->getChildren();
@@ -30,24 +30,26 @@ class DiscussionsController extends AbstractController
 
         $view = new ViewModel([
             'forums' => $forums,
-            'forum' => $forum,
-            'user' => $this->getUserManager()->getUserFromAuthenticator()
+            'forum'  => $forum,
+            'user'   => $this->getUserManager()->getUserFromAuthenticator()
         ]);
 
         $view->setTemplate('discussion/discussions/index');
+
         return $view;
     }
 
     protected function getTaxonomy()
     {
-        $language = $this->getLanguageManager()
-            ->getLanguageFromRequest();
+        $language = $this->getLanguageManager()->getLanguageFromRequest();
+
         return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $language);
     }
 
     protected function getTermService($id = null)
     {
         $id = $this->params('id', $id);
+
         return $id ? $this->getTaxonomyManager()->getTerm($id) : null;
     }
 }

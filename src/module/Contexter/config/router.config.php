@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -15,33 +14,33 @@ return [
     'router' => [
         'routes' => [
             'contexter' => [
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => [
-                    'route' => '/context',
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route'    => '/context',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\ContextController'
                     ]
                 ],
                 'child_routes' => [
                     'select-uri' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/select-uri',
+                            'route'    => '/select-uri',
                             'defaults' => [
                                 'action' => 'selectUri'
                             ]
                         ]
                     ],
-                    'route' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
+                    'route'      => [
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
                             'route' => '/route'
                         ],
                         'child_routes' => [
                             'remove' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/remove/:id',
+                                    'route'    => '/remove/:id',
                                     'defaults' => [
                                         'action' => 'removeRoute'
                                     ]
@@ -49,28 +48,28 @@ return [
                             ]
                         ]
                     ],
-                    'remove' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'remove'     => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/remove/:id',
+                            'route'    => '/remove/:id',
                             'defaults' => [
                                 'action' => 'remove'
                             ]
                         ]
                     ],
-                    'add' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'add'        => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/add',
+                            'route'    => '/add',
                             'defaults' => [
                                 'action' => 'add'
                             ]
                         ]
                     ],
-                    'manage' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'manage'     => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/manage',
+                            'route'    => '/manage',
                             'defaults' => [
                                 'action' => 'manage'
                             ]

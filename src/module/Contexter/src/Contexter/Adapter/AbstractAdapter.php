@@ -20,13 +20,11 @@ abstract class AbstractAdapter implements AdapterInterface
     use RouterAwareTrait;
 
     /**
-     *
      * @var RouteMatch
      */
     protected $routeMatch;
 
     /**
-     *
      * @var AnbstractActionController
      */
     protected $controller;
@@ -44,6 +42,7 @@ abstract class AbstractAdapter implements AdapterInterface
     public function setController(AbstractActionController $controller)
     {
         $this->controller = $controller;
+
         return $this;
     }
 
@@ -55,6 +54,7 @@ abstract class AbstractAdapter implements AdapterInterface
     public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
+
         return $this;
     }
 

@@ -18,21 +18,22 @@ abstract class AbstractKeyHydrator implements HydratorInterface
 {
     public function extract($object)
     {
-        if(!$this->isValid($object)){
+        if (!$this->isValid($object)) {
             throw new RuntimeException();
         }
 
         $data = [];
         foreach ($this->getKeys() as $key) {
-            $method = 'get' . ucfirst($key);
+            $method      = 'get' . ucfirst($key);
             $data['key'] = $object->$method();
         }
+
         return $data;
     }
 
     public function hydrate(array $data, $object)
     {
-        if(!$this->isValid($object)){
+        if (!$this->isValid($object)) {
             throw new RuntimeException();
         }
 
@@ -40,7 +41,7 @@ abstract class AbstractKeyHydrator implements HydratorInterface
 
         foreach ($this->getKeys() as $key) {
             $method = 'set' . ucfirst($key);
-            $value = $this->getKey($data, $key);
+            $value  = $this->getKey($data, $key);
             if ($value !== null) {
                 $object->$method($value);
             }

@@ -12,7 +12,6 @@ namespace Discussion\Hydrator;
 
 use Common\Hydrator\AbstractKeyHydrator;
 use Discussion\Entity\CommentInterface;
-use InvalidArgumentException;
 
 class CommentHydrator extends AbstractKeyHydrator
 {
@@ -21,7 +20,7 @@ class CommentHydrator extends AbstractKeyHydrator
      */
     protected function getKeys()
     {
-        return ['object', 'language', 'author', 'content', 'status', 'parent'];
+        return ['object', 'language', 'author', 'content', 'archived', 'parent'];
     }
 
     /**

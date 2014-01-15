@@ -30,6 +30,7 @@ class ContextController extends AbstractActionController
             'elements' => $elements
         ));
         $view->setTemplate('contexter/manage');
+
         return $view;
     }
 
@@ -41,27 +42,26 @@ class ContextController extends AbstractActionController
 
         if ($uri === null) {
             $this->redirect()->toRoute('contexter/select-uri');
+
             return false;
         } else {
             $routeMatch = $this->getRouter()->matchUri($uri);
             $this->getRouter()->setRouteMatch($routeMatch);
-            $types = $this->getContextManager()->findAllTypeNames();
-            $parameters = $this->getRouter()
-                ->getAdapter()
-                ->getProvidedParams();
-            $form = new ContextForm($parameters, $types->toArray());
-            $form->setData(array(
-                'route' => $routeMatch->getMatchedRouteName()
-            ));
+            $types      = $this->getContextManager()->findAllTypeNames();
+            $parameters = $this->getRouter()->getAdapter()->getProvidedParams();
+            $form       = new ContextForm($parameters, $types->toArray());
+            $form->setData(
+                array(
+                    'route' => $routeMatch->getMatchedRouteName()
+                )
+            );
             if ($this->getRequest()->isPost()) {
-                $form->setData($this->getRequest()
-                    ->getPost());
+                $form->setData(
+                    $this->getRequest()->getPost()
+                );
                 if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    $useParameters = $this->getRouter()
-                        ->getAdapter()
-                        ->getRouteParams();
+                    $data          = $form->getData();
+                    $useParameters = $this->getRouter()->getAdapter()->getRouteParams();
 
                     foreach ($data['parameters'] as $key => $value) {
                         if ($value === '1' && array_key_exists($key, $parameters)) {
@@ -74,6 +74,7 @@ class ContextController extends AbstractActionController
 
                     $this->getContextManager()->flush();
                     $this->redirect()->toUrl($uri);
+
                     return false;
                 }
             }
@@ -82,6 +83,7 @@ class ContextController extends AbstractActionController
             'form' => $form
         ));
         $view->setTemplate('contexter/add/form');
+
         return $view;
     }
 
@@ -94,16 +96,19 @@ class ContextController extends AbstractActionController
             'form' => $form
         ));
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()
-                ->getPost());
+            $form->setData(
+                $this->getRequest()->getPost()
+            );
             if ($form->isValid()) {
                 $data = $form->getData();
                 $url = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri'];
                 $this->redirect()->toUrl($url);
+
                 return false;
             }
         }
         $view->setTemplate('contexter/add/url-form');
+
         return $view;
     }
 
@@ -117,6 +122,7 @@ class ContextController extends AbstractActionController
             'context' => $context
         ));
         $view->setTemplate('contexter/update');
+
         return $view;
     }
 
@@ -126,6 +132,7 @@ class ContextController extends AbstractActionController
         $this->getContextManager()->removeContext($id);
         $this->getContextManager()->flush();
         $this->redirect()->toReferer();
+
         return false;
     }
 
@@ -135,6 +142,7 @@ class ContextController extends AbstractActionController
         $this->getContextManager()->removeRoute($id);
         $this->getContextManager()->flush();
         $this->redirect()->toReferer();
+
         return false;
     }
 }

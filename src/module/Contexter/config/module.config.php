@@ -11,13 +11,13 @@
 namespace Contexter;
 
 return [
-    'zfc_rbac' => [
+    'zfc_rbac'               => [
         'assertion_map' => [
-            'blog.post.create' => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.update' => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.trash' => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.delete' => 'Authorization\Assertion\LanguageAssertion',
-            'blog.posts.view_all' => 'Authorization\Assertion\LanguageAssertion'
+            'contexter.context.add'    => 'Authorization\Assertion\RequestLanguageAssertion',
+            'contexter.context.remove' => 'Authorization\Assertion\LanguageAssertion',
+            'contexter.context.manage' => 'Authorization\Assertion\LanguageAssertion',
+            'contexter.route.add'      => 'Authorization\Assertion\LanguageAssertion',
+            'contexter.route.add'      => 'Authorization\Assertion\LanguageAssertion',
         ]
     ],
     'Manager\ContextManager' => [
@@ -35,18 +35,18 @@ return [
             ]
         ]
     ],
-    'view_helpers' => [
+    'view_helpers'           => [
         'factories' => [
             'contexter' => __NAMESPACE__ . '\Factory\ContexterHelperFactory'
         ]
     ],
-    'class_resolver' => [
+    'class_resolver'         => [
         'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Context',
-        'Contexter\Entity\TypeInterface' => 'Contexter\Entity\Type',
+        'Contexter\Entity\TypeInterface'  => 'Contexter\Entity\Type',
         'Contexter\Entity\RouteInterface' => 'Contexter\Entity\Route',
         'Contexter\Entity\RouteParameterInterface' => 'Contexter\Entity\RouteParameter'
     ],
-    'doctrine' => [
+    'doctrine'               => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

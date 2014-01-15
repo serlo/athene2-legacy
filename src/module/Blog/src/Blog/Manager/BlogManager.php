@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -38,13 +37,14 @@ class BlogManager implements BlogManagerInterface
     public function findAllBlogs(LanguageInterface $languageService)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $languageService);
+
         return $taxonomy->getChildren();
     }
 
     public function getPost($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Blog\Entity\PostInterface');
-        $post = $this->getObjectManager()->find($className, $id);
+        $post      = $this->getObjectManager()->find($className, $id);
 
         if (!is_object($post)) {
             throw new Exception\PostNotFoundException(sprintf('Could not find post "%d"', $id));
@@ -61,6 +61,7 @@ class BlogManager implements BlogManagerInterface
 
         $post->setTrashed(true);
         $this->getObjectManager()->persist($post);
+
         return $this;
     }
 
@@ -73,7 +74,7 @@ class BlogManager implements BlogManagerInterface
         $hydrator = new PostHydrator();
         $hydrator->hydrate(
             [
-                'title' => $title,
+                'title'   => $title,
                 'content' => $content,
                 'publish' => $publish
             ],
@@ -81,6 +82,7 @@ class BlogManager implements BlogManagerInterface
         );
 
         $this->getObjectManager()->persist($post);
+
         return $this;
     }
 
@@ -101,10 +103,10 @@ class BlogManager implements BlogManagerInterface
         $hydrator = new PostHydrator();
         $hydrator->hydrate(
             [
-                'author' => $author,
-                'title' => $title,
-                'content' => $content,
-                'publish' => $publish ? $publish : new DateTime(),
+                'author'   => $author,
+                'title'    => $title,
+                'content'  => $content,
+                'publish'  => $publish ? $publish : new DateTime(),
                 'language' => $language
             ],
             $post
@@ -121,6 +123,7 @@ class BlogManager implements BlogManagerInterface
     public function flush()
     {
         $this->getObjectManager()->flush();
+
         return $this;
     }
 }

@@ -39,6 +39,7 @@ class ContextManager implements ContextManagerInterface
         $route->setContext($context);
         $context->addRoute($route);
         $this->getObjectManager()->persist($route);
+
         return $route;
     }
 
@@ -53,7 +54,7 @@ class ContextManager implements ContextManagerInterface
     public function getRoute($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
-        $object = $this->getObjectManager()->find($className, $id);
+        $object    = $this->getObjectManager()->find($className, $id);
         if (!is_object($object)) {
             throw new Exception\RuntimeException(sprintf('Could not find a route by the id of %d', $id));
         }
@@ -73,7 +74,7 @@ class ContextManager implements ContextManagerInterface
     public function getContext($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
-        $context = $this->getObjectManager()->find($className, $id);
+        $context   = $this->getObjectManager()->find($className, $id);
 
         if (!is_object($context)) {
             throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
@@ -101,6 +102,7 @@ class ContextManager implements ContextManagerInterface
         $type->addContext($context);
 
         $this->getObjectManager()->persist($context);
+
         return $context;
     }
 
@@ -112,17 +114,18 @@ class ContextManager implements ContextManagerInterface
     public function findAll()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
-        $results = $this->getObjectManager()
-            ->getRepository($className)
-            ->findAll();
+        $results   = $this->getObjectManager()->getRepository($className)->findAll();
+
         return new ArrayCollection($results);
     }
 
     public function findAllTypeNames()
     {
-        return $this->findAllTypes()->map(function (\Type\Entity\TypeInterface $e) {
-            return $e->getName();
-        });
+        return $this->findAllTypes()->map(
+            function (\Type\Entity\TypeInterface $e) {
+                return $e->getName();
+            }
+        );
     }
 
     protected function findAllTypes()
@@ -133,6 +136,7 @@ class ContextManager implements ContextManagerInterface
     protected function getTypeRepository()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
+
         return $this->getObjectManager()->getRepository($className);
     }
 }

@@ -23,95 +23,122 @@ class DiscussionController extends AbstractController
 
     public function startAction()
     {
+        $this->assertGranted('discussion.create');
+
         $form = new DiscussionForm();
 
-        $ref = $this->params()->fromQuery('ref', $this->referer()
-            ->toUrl('/'));
+        $ref = $this->params()->fromQuery(
+            'ref',
+            $this->referer()->toUrl('/')
+        );
 
-        $form->setAttribute('action', $this->url()
-                ->fromRoute('discussion/discussion/start', array(
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'discussion/discussion/start',
+                array(
                     'on' => $this->params('on')
-                )) . '?ref=' . $ref);
+                )
+            ) . '?ref=' . $ref
+        );
 
         $view = new ViewModel(array(
             'form' => $form
         ));
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()
-                ->getPost());
+            $form->setData(
+                $this->getRequest()->getPost()
+            );
             if ($form->isValid()) {
-                $object = $this->getUuidManager()->getUuid($this->params('on'));
+                $object   = $this->getUuidManager()->getUuid($this->params('on'));
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $author = $this->getUserManager()->getUserFromAuthenticator();
-                $title = $form->getData()['title'];
-                $content = $form->getData()['content'];
-                $forum = $form->getData()['forum'];
+                $author   = $this->getUserManager()->getUserFromAuthenticator();
+                $title    = $form->getData()['title'];
+                $content  = $form->getData()['content'];
+                $forum    = $form->getData()['forum'];
 
-                $discussion = $this->getDiscussionManager()->startDiscussion($object, $language, $author, $forum, $title, $content);
+                $discussion = $this->getDiscussionManager()->startDiscussion(
+                    $object,
+                    $language,
+                    $author,
+                    $forum,
+                    $title,
+                    $content
+                );
 
-                $this->getDiscussionManager()
-                    ->getObjectManager()
-                    ->flush();
+                $this->getDiscussionManager()->getObjectManager()->flush();
 
                 $this->redirect()->toUrl($ref);
             }
         }
 
         $view->setTemplate('discussion/discussion/start');
+
         return $view;
     }
 
     public function commentAction()
     {
+        $discussion = $this->getDiscussionManager()->getDiscussion($this->params('discussion'));
+        $this->assertGranted('discussion.comment.create', $discussion);
+
         $form = new CommentForm();
 
-        $ref = $this->params()->fromQuery('ref', $this->referer()
-            ->toUrl('/'));
+        $ref = $this->params()->fromQuery(
+            'ref',
+            $this->referer()->toUrl('/')
+        );
 
-        $form->setAttribute('action', $this->url()
-                ->fromRoute('discussion/discussion/start', array(
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'discussion/discussion/start',
+                array(
                     'on' => $this->params('discussion')
-                )) . '?ref=' . $ref);
+                )
+            ) . '?ref=' . $ref
+        );
 
         $view = new ViewModel(array(
             'form' => $form
         ));
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()
-                ->getPost());
+            $form->setData(
+                $this->getRequest()->getPost()
+            );
             if ($form->isValid()) {
-                $discussion = $this->getDiscussionManager()->getDiscussion($this->params('discussion'));
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
-                $author = $this->getUserManager()->getUserFromAuthenticator();
-                $content = $form->getData()['content'];
+                $author   = $this->getUserManager()->getUserFromAuthenticator();
+                $content  = $form->getData()['content'];
 
                 $comment = $this->getDiscussionManager()->commentDiscussion($discussion, $language, $author, $content);
 
-                $this->getDiscussionManager()
-                    ->getObjectManager()
-                    ->flush();
+                $this->getDiscussionManager()->getObjectManager()->flush();
 
                 $this->redirect()->toUrl($ref);
             }
         }
 
         $view->setTemplate('discussion/discussion/start');
+
         return $view;
     }
 
     public function voteAction()
     {
         $discussion = $this->getDiscussionManager()->getComment($this->params('comment'));
+        $this->assertGranted('discussion.vote', $discussion);
+
         $user = $this->getUserManager()->getUserFromAuthenticator();
 
         if ($this->params('vote') == 'down') {
-            if ($discussion->downVote($user) === NULL) {
+            if ($discussion->downVote($user) === null) {
                 $this->flashMessenger()->addErrorMessage('You can\'t downvote this comment.');
             } else {
                 $this->flashMessenger()->addSuccessMessage('You have downvoted this comment.');
             }
         } else {
-            if ($discussion->upVote($user) === NULL) {
+            if ($discussion->upVote($user) === null) {
                 $this->flashMessenger()->addErrorMessage('You can\'t upvote this comment.');
             } else {
                 $this->flashMessenger()->addSuccessMessage('You have upvoted this comment.');
@@ -120,24 +147,29 @@ class DiscussionController extends AbstractController
 
         $this->getDiscussionManager()->flush();
         $this->redirect()->toReferer();
+
         return null;
     }
 
     public function archiveAction()
     {
+        $discussion = $this->getDiscussionManager()->getComment($this->params('comment'));
+        $this->assertGranted('discussion.archive', $discussion);
         $this->getDiscussionManager()->toggleArchived($this->params('comment'));
         $this->getDiscussionManager()->flush();
         $this->redirect()->toReferer();
+
         return null;
     }
 
     public function showAction()
     {
         $discussion = $this->getDiscussion();
-        $view = new ViewModel(array(
+        $view       = new ViewModel(array(
             'discussion' => $discussion
         ));
         $view->setTemplate('discussion/discussion/show');
+
         return $view;
     }
 

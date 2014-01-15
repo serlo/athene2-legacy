@@ -18,20 +18,16 @@ class EntityPluginControllerAdapter extends AbstractAdapter
 
     public function getProvidedParams()
     {
-        $params         = $this->getRouteParams();
-        $entityService  = $this->getController()->getEntityService($params['entity']);
+        $params        = $this->getRouteParams();
+        $entityService = $this->getController()->getEntityService($params['entity']);
 
         $array = [
-            'type'      => $entityService->getType()->getName(),
-            'language'  => $this->getLanguageManager()
-                            ->getLanguageFromRequest()
-                            ->getCode()
+            'type'     => $entityService->getType()->getName(),
+            'language' => $this->getLanguageManager()->getLanguageFromRequest()->getCode()
         ];
 
         if ($entityService->hasPlugin('learningResource')) {
-            $array['subject'] = $entityService->learningResource()
-                ->getDefaultSubject()
-                ->getSlug();
+            $array['subject'] = $entityService->learningResource()->getDefaultSubject()->getSlug();
         }
 
         return $array;

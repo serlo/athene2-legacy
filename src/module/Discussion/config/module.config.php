@@ -11,12 +11,24 @@
 namespace Discussion;
 
 return [
-    'uuid_router' => [
+    'zfc_rbac'     => [
+        'assertion_map' => [
+            'discussion.create'         => 'Authorization\Assertion\RequestLanguageAssertion',
+            'discussion.trash'          => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.purge'          => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.vote'           => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.archive'        => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.comment.create' => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.comment.trash'  => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.comment.purge'  => 'Authorization\Assertion\LanguageAssertion',
+        ]
+    ],
+    'uuid_router'  => [
         'routes' => [
             'comment' => '/discussion/%d'
         ]
     ],
-    'term_router' => [
+    'term_router'  => [
         'routes' => [
             'forum' => [
                 'route' => 'discussion/discussions',
@@ -33,7 +45,7 @@ return [
             'discussion' => __NAMESPACE__ . '\Factory\DiscussionHelperFactory'
         ]
     ],
-    'taxonomy' => [
+    'taxonomy'     => [
         'types' => [
             'forum-category' => [
                 'allowed_parents' => [
@@ -58,17 +70,17 @@ return [
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
         'Discussion\Entity\VoteInterface' => 'Discussion\Entity\Vote'
     ],
-    'router' => [
+    'router'       => [
         'routes' => [
             'discussion' => [
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
                     'route' => ''
                 ],
                 'may_terminate' => false,
                 'child_routes' => [
-                    'view' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'view'        => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/discussion/:id',
                             'defaults' => [
@@ -78,7 +90,7 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/discussions[/:id]',
                             'defaults' => [
@@ -87,15 +99,15 @@ return [
                             ]
                         ]
                     ],
-                    'discussion' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
+                    'discussion'  => [
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
                             'route' => '/discussion',
                             'defaults' => []
                         ],
                         'child_routes' => [
-                            'start' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'start'   => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route' => '/start/:on',
                                     'defaults' => [
@@ -105,7 +117,7 @@ return [
                                 ]
                             ],
                             'comment' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route' => '/comment/:discussion',
                                     'defaults' => [
@@ -114,8 +126,8 @@ return [
                                     ]
                                 ]
                             ],
-                            'vote' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'vote'    => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route' => '/vote/:vote/:comment',
                                     'defaults' => [
@@ -127,8 +139,8 @@ return [
                                     ]
                                 ]
                             ],
-                            'trash' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'trash'   => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route' => '/trash/:comment',
                                     'defaults' => [
@@ -138,7 +150,7 @@ return [
                                 ]
                             ],
                             'archive' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route' => '/archive/:comment',
                                     'defaults' => [
@@ -153,7 +165,7 @@ return [
             ]
         ]
     ],
-    'di' => [
+    'di'           => [
         'allowed_controllers' => [
             'Discussion\Controller\DiscussionController',
             'Discussion\Controller\DiscussionsController'
@@ -173,15 +185,15 @@ return [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setUserManager' => [
+                    'setUserManager'     => [
                         'required' => true
                     ]
                 ],
-                'Discussion\DiscussionManager' => [
+                'Discussion\DiscussionManager'                => [
                     'setObjectManager' => [
                         'required' => true
                     ],
-                    'setUuidManager' => [
+                    'setUuidManager'   => [
                         'required' => true
                     ],
                     'setClassResolver' => [
@@ -194,7 +206,7 @@ return [
                         'required' => true
                     ]
                 ],
-                'Discussion\Controller\DiscussionController' => [
+                'Discussion\Controller\DiscussionController'  => [
                     'setDiscussionManager' => [
                         'required' => true
                     ],
@@ -210,13 +222,13 @@ return [
                 ]
             ]
         ],
-        'instance' => [
+        'instance'   => [
             'preferences' => [
                 'Discussion\DiscussionManagerInterface' => 'Discussion\DiscussionManager'
             ]
         ]
     ],
-    'doctrine' => [
+    'doctrine'     => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

@@ -17,44 +17,37 @@ interface AdapterInterface
 {
 
     /**
-     *
      * @return array
      */
     public function getProvidedParams();
 
     /**
-     *
      * @return array
      */
     public function getRouteParams();
 
     /**
-     *
      * @return array
      */
     public function getParams();
 
     /**
-     *
      * @return array
      */
     public function getKeys();
 
     /**
-     *
      * @return AbstractActionController
      */
     public function getController();
 
     /**
-     *
      * @param RouteMatch $routeMatch
      * @return self
      */
     public function setRouteMatch(RouteMatch $routeMatch);
 
     /**
-     *
      * @param AbstractActionController $controller
      * @return self
      */

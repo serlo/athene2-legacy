@@ -1,34 +1,40 @@
-body>header {
-	background-color: black;
-	height: 37px;
-	width: 100%;
-	margin-bottom: 30px;
-	color: white;
+body > header {
+    background-color: black;
+    height: 37px;
+    width: 100%;
+    margin-bottom: 30px;
+    color: white;
 }
-body>header a {
-	color: white;
+
+body > header a {
+    color: white;
 }
-.caret-white
-{
-	border-top-color: white !important;
-	border-bottom-color: white !important;
+
+.caret-white {
+    border-top-color: white !important;
+    border-bottom-color: white !important;
 }
+
 #logo {
-	color: white;
-	font-size: 25px;
+    color: white;
+    font-size: 25px;
 }
+
 #logo > strong {
     position: relative;
     top: 8px;
 }
+
 #webEdu {
-	margin-top: 50px;
+    margin-top: 50px;
 }
+
 #navSide {
-	background-color: #FFFFFF;
+    background-color: #FFFFFF;
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
 }
+
 #navRight {
-	margin-top: 7px;
+    margin-top: 7px;
 }

@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -73,12 +72,14 @@ class Route implements RouteInterface
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setContext(ContextInterface $context)
     {
         $this->context = $context;
+
         return $this;
     }
 
@@ -87,6 +88,7 @@ class Route implements RouteInterface
         foreach ($parameters as $key => $value) {
             $this->addParameter($key, $value);
         }
+
         return $this;
     }
 
@@ -97,6 +99,7 @@ class Route implements RouteInterface
         $parameter->setValue($value);
         $parameter->setRoute($this);
         $this->parameters->add($parameter);
+
         return $this;
     }
 }
