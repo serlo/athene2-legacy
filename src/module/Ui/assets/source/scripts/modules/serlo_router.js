@@ -1,5 +1,5 @@
 /*global define, window*/
-define(function () {
+define(['jquery'], function ($) {
     "use strict";
     var Router;
 
@@ -9,8 +9,7 @@ define(function () {
 
     function post(path, params, method) {
         var key,
-            $form,
-            $hiddenField;
+            $form;
 
         method = method || "post";
         params = params || {};
