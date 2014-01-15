@@ -6,5 +6,6 @@
     "Close" : "Schließen",
     "When asynchronously trying to load a ressource, I came across an error: %s" : "",
     "You are using an outdated web browser. Please consider an update!" : "",
-    "No results found." : "Keine Ergebnisse gefunden."
+    "No results found." : "Keine Ergebnisse gefunden.",
+    "No results found for \"%s\"." : ""
 }
