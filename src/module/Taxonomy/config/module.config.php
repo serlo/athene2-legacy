@@ -12,6 +12,7 @@
 namespace Taxonomy;
 
 use Taxonomy\View\Helper\TaxonomyHelper;
+
 return [
     'term_router' => [
         'routes' => []
@@ -183,10 +184,10 @@ return [
                     ]
                 ],
                 __NAMESPACE__ . '\Manager\TaxonomyManager' => [
-                    'setObjectManager' => [
+                    'setClassResolver' => [
                         'required' => true
                     ],
-                    'setClassResolver' => [
+                    'setObjectManager' => [
                         'required' => true
                     ],
                     'setTypeManager' => [

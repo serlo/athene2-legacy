@@ -13,7 +13,6 @@ namespace Type;
 
 trait TypeManagerAwareTrait
 {
-
     /**
      * The type manager
      *

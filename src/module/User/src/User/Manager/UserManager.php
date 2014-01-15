@@ -11,14 +11,15 @@
  */
 namespace User\Manager;
 
-use User\Exception\UserNotFoundException;
+use ClassResolver\ClassResolverAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use User\Exception\UserNotFoundException;
 use User\Exception;
 use User\Hydrator\UserHydrator;
 
 class UserManager implements UserManagerInterface
 {
-    use \Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait,\Common\Traits\AuthenticationServiceAwareTrait;
+    use ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait;
 
     /**
      *

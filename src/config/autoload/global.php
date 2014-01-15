@@ -1,5 +1,6 @@
 <?php
 use Zend\ServiceManager\ServiceLocatorInterface;
+
 /**
  * Global Configuration Override
  *
@@ -44,9 +45,6 @@ return array(
         )
     ),
     'service_manager' => array(
-        'aliases' => array(
-            'EntityManager' => 'Doctrine\ORM\EntityManager'
-        ),
         'factories' => array(
             'Zend\Mail\Transport\SmtpOptions' => function (ServiceLocatorInterface $sm)
             {

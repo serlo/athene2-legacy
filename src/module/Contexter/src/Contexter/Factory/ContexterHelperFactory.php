@@ -18,7 +18,7 @@ class ContexterHelperFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $plugin = new \Contexter\View\Helper\Contexter();
-        $router = $helperPluginManager->getServiceLocator()
+        $router = $serviceLocator->getServiceLocator()
             ->get('Contexter\Router\Router');
         $plugin->setRouter($router);
         return $plugin;

@@ -23,16 +23,16 @@ return [
             'class' => [
                 'Term\Manager\TermManager' => [
                     'setObjectManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setServiceLocator' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setLanguageManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setClassResolver' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ]
             ]

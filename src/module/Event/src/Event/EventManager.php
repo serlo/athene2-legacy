@@ -11,17 +11,17 @@
  */
 namespace Event;
 
-use User\Entity\UserInterface;
-use Language\Entity\LanguageInterface;
-use Event\Exception;
-use Uuid\Entity\UuidInterface;
-use Event\Collection\EventCollection;
+use ClassResolver\ClassResolverAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Event\Entity\EventLogInterface;
+use Event\Collection\EventCollection;
+use Event\Exception;
+use Language\Entity\LanguageInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidInterface;
 
 class EventManager implements EventManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
     protected $inMemoryEvents = array();
 

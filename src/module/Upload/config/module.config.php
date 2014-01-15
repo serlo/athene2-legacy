@@ -11,8 +11,9 @@
  */
 namespace Upload;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Upload\Manager\UploadManager;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 return array(
     'class_resolver' => array(
         'Upload\Entity\UploadInterface' => 'Upload\Entity\Upload'
@@ -26,7 +27,7 @@ return array(
                 $config = $sl->get('config')['upload_manager'];
                 $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
                 $instance->setConfig($config);
-                $instance->setObjectManager($sl->get('EntityManager'));
+                $instance->setObjectManager($sl->get('Doctrine\ORM\EntityManager'));
                 //$instance->setServiceLocator($sl);
                 $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
                 $instance->setLanguageManager($sl->get('Language\Manager\LanguageManager'));
@@ -43,7 +44,7 @@ return array(
             'class' => array(
                 'Upload\Controller\UploadController' => array(
                     'setUploadManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
             )

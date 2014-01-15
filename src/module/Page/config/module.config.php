@@ -177,13 +177,13 @@ return array(
 
                 'Page\Controller\IndexController' => array(
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setPageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setUserManager' => array(
                         'required' => true
@@ -194,19 +194,19 @@ return array(
                 ),
                 'Page\Manager\PageManager' => array(
                     'setRepositoryManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setLanguageManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setUuidManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setObjectManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setClassResolver' => array(
-                        'required' => 'true'
+                        'required' => true
                     ),
                     'setServiceLocator' => array(
                         'required' => true

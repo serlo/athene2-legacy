@@ -35,13 +35,13 @@ return [
             'class' => [
                 'Admin\Controller\HomeController' => [
                     'setEntityManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setLanguageManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setUserManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ]
             ]

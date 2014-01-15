@@ -27,7 +27,7 @@ class RouterFactory implements FactoryInterface
         $instance->setRouteMatch($serviceManager->get('Application')
             ->getMvcEvent()
             ->getRouteMatch());
-        $instance->setObjectManager($serviceManager->get('EntityManager'));
+        $instance->setObjectManager($serviceManager->get('Doctrine\ORM\EntityManager'));
         $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
         $instance->setContextManager($serviceManager->get('Contexter\Manager\ContextManager'));
         return $instance;

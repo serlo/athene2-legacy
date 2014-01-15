@@ -10,7 +10,7 @@
  */
 namespace Discussion\Factory;
 
-
+use Discussion\View\Helper\Discussion;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

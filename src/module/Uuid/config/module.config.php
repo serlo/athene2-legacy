@@ -87,10 +87,10 @@ return [
                 ],
                 'Uuid\Manager\UuidManager' => [
                     'setObjectManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setClassResolver' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ]
             ]

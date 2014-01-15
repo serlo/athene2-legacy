@@ -11,14 +11,15 @@
  */
 namespace User\Notification;
 
-use User\Notification\Entity\NotificationLogInterface;
-use Event\Entity\EventLogInterface;
+use ClassResolver\ClassResolverAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Event\Entity\EventLogInterface;
+use User\Notification\Entity\NotificationLogInterface;
 
 class NotificationManager implements NotificationManagerInterface
 {
     
-    use\Common\Traits\InstanceManagerTrait,\Common\Traits\ObjectManagerAwareTrait;
+    use ClassResolverAwareTrait,\Common\Traits\ObjectManagerAwareTrait;
 
     public function createNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
     {
