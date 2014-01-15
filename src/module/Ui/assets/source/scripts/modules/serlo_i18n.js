@@ -17,7 +17,8 @@ i18n.de = {
     "Close" : "Schließen",
     "When asynchronously trying to load a ressource, I came across an error: %s" : "",
     "You are using an outdated web browser. Please consider an update!" : "",
-    "No results found." : "Keine Ergebnisse gefunden."
+    "No results found." : "Keine Ergebnisse gefunden.",
+    "No results found for \"%s\"." : ""
 };
 
 i18n.en = {
@@ -28,7 +29,8 @@ i18n.en = {
     "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : "",
     "When asynchronously trying to load a ressource, I came across an error: %s" : "",
     "You are using an outdated web browser. Please consider an update!" : "",
-    "No results found." : ""
+    "No results found." : "",
+    "No results found for \"%s\"." : ""
 };
 
 return i18n;

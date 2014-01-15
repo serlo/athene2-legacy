@@ -20,9 +20,12 @@ class TaxonomyController extends AbstractController
 
     public function updateAction()
     {
+        $entity = $this->getEntity();
+        $this->assertGranted('entity.link.create', $entity);
+        $this->assertGranted('entity.link.purge', $entity);
+
         $language = $this->getLanguageManager()->getLanguageFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
-        $entity = $this->getEntity();
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -41,10 +44,10 @@ class TaxonomyController extends AbstractController
                     $this->getEventManager()->trigger(
                         $event,
                         $this,
-                        array(
+                        [
                             'entity' => $entity,
                             'term'   => $term
-                        )
+                        ]
                     );
                 }
 
@@ -60,7 +63,7 @@ class TaxonomyController extends AbstractController
         }
 
         $view = new ViewModel(array(
-            'terms' => $taxonomy->getChildren(),
+            'terms'  => $taxonomy->getChildren(),
             'entity' => $entity
         ));
         $view->setTemplate('entity/taxonomy/update');

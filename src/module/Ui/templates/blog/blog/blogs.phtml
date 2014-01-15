@@ -15,6 +15,7 @@
 <div class="list-group">
     <?php foreach ($this->blogs as $blog): ?>
         <a class="list-group-item"
-           href="<?php echo $this->url('blog/view', array('id' => $blog->getId())); ?>"><?php echo $blog->getName(); ?></a>
+           href="<?php echo $this->url('blog/view',
+               array('id' => $blog->getId())); ?>"><?php echo $blog->getName(); ?></a>
     <?php endforeach; ?>
 </div>

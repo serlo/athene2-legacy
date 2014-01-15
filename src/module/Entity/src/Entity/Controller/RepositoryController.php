@@ -44,6 +44,8 @@ class RepositoryController extends AbstractController
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
+        $this->assertGranted('entity.revision.add', $entity);
+
         $user = $this->getUserManager()->getUserFromAuthenticator();
 
         /* @var $form \Zend\Form\Form */
@@ -51,7 +53,7 @@ class RepositoryController extends AbstractController
 
         $view = new ViewModel(array(
             'entity' => $entity,
-            'form' => $form
+            'form'   => $form
         ));
 
         if ($this->getRequest()->isPost()) {
@@ -59,7 +61,7 @@ class RepositoryController extends AbstractController
                 $this->getRequest()->getPost()
             );
             if ($form->isValid()) {
-                $data = $form->getData();
+                $data     = $form->getData();
                 $language = $this->getLanguageManager()->getLanguageFromRequest();
 
                 $this->getRepositoryManager()->getRepository($entity)->commitRevision($data, $user);
@@ -89,13 +91,13 @@ class RepositoryController extends AbstractController
     {
         $entity = $this->getEntity();
 
-        $revision = $this->getRevision($entity, $this->params('revision'));
+        $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
 
         $view = new ViewModel(array(
             'currentRevision' => $currentRevision,
-            'revision' => $revision,
-            'entity'   => $entity
+            'revision'        => $revision,
+            'entity'          => $entity
         ));
 
         $view->setTemplate('entity/repository/compare-revision');
@@ -109,8 +111,8 @@ class RepositoryController extends AbstractController
         $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
 
         $view = new ViewModel(array(
-            'entity'    => $entity,
-            'revisions' => $entity->getRevisions(),
+            'entity'          => $entity,
+            'revisions'       => $entity->getRevisions(),
             'currentRevision' => $currentRevision
         ));
 
@@ -121,10 +123,12 @@ class RepositoryController extends AbstractController
 
     public function checkoutAction()
     {
-        $entity   = $this->getEntity();
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
+        $entity     = $this->getEntity();
+        $this->assertGranted('entity.revision.checkout', $entity);
+
+        $user       = $this->getUserManager()->getUserFromAuthenticator();
         $repository = $this->getRepositoryManager()->getRepository($entity);
-        $revision = $repository->findRevision($this->params('revision'));
+        $revision   = $repository->findRevision($this->params('revision'));
         $repository->checkoutRevision($revision->getId());
 
         $this->getEventManager()->trigger(

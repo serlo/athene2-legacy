@@ -12,15 +12,18 @@ namespace Alias;
 
 use Alias\Exception;
 use Alias\Options\ManagerOptions;
+use ClassResolver\ClassResolverAwareTrait;
 use Common\Filter\Slugify;
 use Common\Traits;
 use Language\Entity\LanguageInterface;
+use Token\TokenizerAwareTrait;
 use Uuid\Entity\UuidInterface;
+use Uuid\Manager\UuidManagerAwareTrait;
 
 class AliasManager implements AliasManagerInterface
 {
-    use Traits\ObjectManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait, \Token\TokenizerAwareTrait,
-        \Uuid\Manager\UuidManagerAwareTrait;
+    use Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use TokenizerAwareTrait, UuidManagerAwareTrait;
 
     /**
      * @var ManagerOptions
@@ -60,13 +63,12 @@ class AliasManager implements AliasManagerInterface
             throw new Exception\RuntimeException(sprintf('No configuration found for "%s"', $name));
         }
 
-        $options        = $this->getOptions()->getAliases()[$name];
-        $provider       = $options['provider'];
-        $tokenString    = $options['tokenize'];
+        $options = $this->getOptions()->getAliases()[$name];
+        $provider = $options['provider'];
+        $tokenString = $options['tokenize'];
         $fallbackString = $options['fallback'];
-        $service        = $this->getUuidManager()->createService($object);
-
-        $alias         = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
+        $service = $this->getUuidManager()->createService($object);
+        $alias = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
         $aliasFallback = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
 
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
@@ -84,7 +86,7 @@ class AliasManager implements AliasManagerInterface
         /* @var $entity Entity\AliasInterface */
         $entity = $this->getAliasRepository()->findOneBy(
             [
-                'alias'    => $alias,
+                'alias' => $alias,
                 'language' => $language->getId()
             ]
         );
@@ -107,7 +109,7 @@ class AliasManager implements AliasManagerInterface
 
         $entity = $this->getAliasRepository()->findOneBy(
             [
-                'source'   => $source,
+                'source' => $source,
                 'language' => $language->getId()
             ]
         );
