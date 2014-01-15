@@ -2,7 +2,7 @@
   "name": "frontend-boilerplate",
   "version": "0.0.0",
   "dependencies": {
-    "athene2-editor": "~0.0.1"
+    "athene2-editor": "~0.0.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
