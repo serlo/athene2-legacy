@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         this.setActiveItem();
     };
 
-    SearchResults.prototype.onKey = function (e) {
+    SearchResults.prototype.onKey = function (e, isSearching) {
         switch (e.keyCode) {
         case Common.KeyCode.up:
             e.preventDefault();
@@ -64,6 +64,10 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             this.focusNext();
             return;
         case Common.KeyCode.enter:
+            if (isSearching) {
+                break;
+            }
+
             if (undefined !== this.$links && this.$links.length) {
                 Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
                 this.$input.blur();
@@ -98,8 +102,8 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         $next.addClass('active');
     };
 
-    SearchResults.prototype.noResults = function () {
-        var $li = $('<li class="header">').text(t('No results found.'));
+    SearchResults.prototype.noResults = function (string) {
+        var $li = $('<li class="header">').text(t('No results found for "%s".', string));
         this.$el.append($li);
     };
 
@@ -107,6 +111,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         var self = this;
 
         self.options = $.extend({}, defaults, options || {});
+        self.isSearching = false;
         self.$el = $(self.options.wrapperSelector);
         self.$input = $(self.options.inputSelector);
         self.results = new SearchResults(self.options.resultWrapper, self.$input);
@@ -154,9 +159,11 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
                     clearAndHide();
                 }
             })
-            .keydown(function (e) {
+            .keyup(function (e) {
                 var value = Common.trim($(this).val() || "");
-                self.results.onKey(e);
+                
+                self.results.onKey(e, self.isSearching);
+
                 if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
                     return true;
                 }
@@ -187,6 +194,12 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
     Search.prototype.performSearch = function (string) {
         var self = this;
 
+        self.isSearching = true;
+
+        if (self.ajax) {
+            self.ajax.abort();
+        }
+
         self.ajax = $.ajax({
             url: self.options.url,
             data: {
@@ -196,24 +209,40 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         });
 
         self.ajax.success(function (data) {
-            self.onResult(data, typeof data !== 'object' || data.length === 0);
+            // Only do anything if this
+            // was the last xhr call!
+            if (arguments[2] === self.ajax) {
+                if (typeof data !== 'object' || data.length === 0) {
+                    self.onNoResult(string);
+                } else {
+                    self.onResult(data);
+                }
+                self.isSearching = false;
+            }
         }).error(function () {
+            // xhr object has been aborted
+            // simply ignore.
+            if (arguments[1] === 'abort') {
+                return;
+            }
             self.$input.blur();
+            Common.genericError(arguments);
         });
     };
 
-    Search.prototype.onResult = function (result, noResults) {
-        var self = this;
+    Search.prototype.onResult = function (result) {
+        if (this.$el.hasClass(this.options.inFocusClass)) {
+            this.results.clear();
+            this.$el.addClass(this.options.hasResultsClass);
+            this.results.show(result);
+        }
+    };
 
-        if (self.$el.hasClass(self.options.inFocusClass)) {
-            self.results.clear();
-            if (!noResults) {
-                self.$el.addClass(self.options.hasResultsClass);
-                self.results.show(result);
-            } else {
-                self.$el.removeClass(self.options.hasResultsClass);
-                self.results.noResults();
-            }
+    Search.prototype.onNoResult = function (string) {
+        if (this.$el.hasClass(this.options.inFocusClass)) {
+            this.results.clear();
+            this.$el.addClass(this.options.hasResultsClass);
+            this.results.noResults(string);
         }
     };
 
