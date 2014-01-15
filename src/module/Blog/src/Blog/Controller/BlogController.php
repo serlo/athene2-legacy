@@ -101,7 +101,8 @@ class BlogController extends AbstractActionController
         
         $form->setData(array(
             'title' => $post->getTitle(),
-            'content' => $post->getContent()
+            'content' => $post->getContent(),
+            'publish' => $post->getPublish()->format('d.m.Y')
         ));
         
         if ($this->getRequest()->isPost()) {
