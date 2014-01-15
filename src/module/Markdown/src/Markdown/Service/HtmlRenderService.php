@@ -12,9 +12,9 @@
 namespace Markdown\Service;
 
 use DNode\DNode;
-use React\EventLoop\StreamSelectLoop;
-use Markdown\Options\ModuleOptions;
 use Markdown\Exception;
+use Markdown\Options\ModuleOptions;
+use React\EventLoop\StreamSelectLoop;
 
 class HtmlRenderService implements RenderServiceInterface
 {
@@ -80,6 +80,7 @@ class HtmlRenderService implements RenderServiceInterface
             $remote->render($input, function ($output, $exception = NULL, $error = NULL) use(&$rendered, $connection)
             {
                 if ($exception !== null) {
+                    $connection->end();
                     throw new Exception\RuntimeException(sprintf('Bridge threw exception "%s" with message "%s".', $exception, $error));
                 }
                 $rendered = $output;
