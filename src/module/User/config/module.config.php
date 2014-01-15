@@ -33,18 +33,17 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Zend\Authentication\AuthenticationService' => function ($sm)
-            {
-                $instance = new AuthenticationService();
-                $instance->setAdapter($sm->get('User\Authentication\Adapter\UserAuthAdapter'));
-                $instance->setStorage($sm->get('User\Authentication\Storage\UserSessionStorage'));
-                return $instance;
-            },
-            __NAMESPACE__ . '\Form\Register' => function ($sm)
-            {
-                $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
-                return $form;
-            },
+            __NAMESPACE__ . '\Manager\UserManager' => __NAMESPACE__ . '\Factory\UserManagerFactory',
+            'Zend\Authentication\AuthenticationService' => function ($sm) {
+                    $instance = new AuthenticationService();
+                    $instance->setAdapter($sm->get('User\Authentication\Adapter\UserAuthAdapter'));
+                    $instance->setStorage($sm->get('User\Authentication\Storage\UserSessionStorage'));
+                    return $instance;
+                },
+            __NAMESPACE__ . '\Form\Register' => function ($sm) {
+                    $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
+                    return $form;
+                },
             __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
         )
     ),
@@ -55,33 +54,30 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
-            'notifications' => function ($sm)
-            {
-                $helper = new Notification();
-                $helper->setUserManager($sm->getServiceLocator()
-                    ->get('User\Manager\UserManager'));
-                $helper->setNotificationManager($sm->getServiceLocator()
-                    ->get('User\Notification\NotificationManager'));
-                return $helper;
-            },
-            'authentication' => function ($sm)
-            {
-                $helper = new Authenticator();
-                $helper->setAuthenticationService($sm->getServiceLocator()
-                    ->get('Zend\Authentication\AuthenticationService'));
-                return $helper;
-            },
-            'guard' => function ($sm)
-            {
-                $helper = new Guard();
-                $helper->setGuardPluginManager($sm->getServiceLocator()
-                    ->get('ZfcRbac\Guard\GuardPluginManager'));
-                $helper->setApplication($sm->getServiceLocator()
-                    ->get('Application'));
-                $helper->setRouter($sm->getServiceLocator()
-                    ->get('router'));
-                return $helper;
-            }
+            'notifications' => function ($sm) {
+                    $helper = new Notification();
+                    $helper->setUserManager($sm->getServiceLocator()
+                        ->get('User\Manager\UserManager'));
+                    $helper->setNotificationManager($sm->getServiceLocator()
+                        ->get('User\Notification\NotificationManager'));
+                    return $helper;
+                },
+            'authentication' => function ($sm) {
+                    $helper = new Authenticator();
+                    $helper->setAuthenticationService($sm->getServiceLocator()
+                        ->get('Zend\Authentication\AuthenticationService'));
+                    return $helper;
+                },
+            'guard' => function ($sm) {
+                    $helper = new Guard();
+                    $helper->setGuardPluginManager($sm->getServiceLocator()
+                        ->get('ZfcRbac\Guard\GuardPluginManager'));
+                    $helper->setApplication($sm->getServiceLocator()
+                        ->get('Application'));
+                    $helper->setRouter($sm->getServiceLocator()
+                        ->get('router'));
+                    return $helper;
+                }
         )
     ),
     'class_resolver' => array(
@@ -101,23 +97,6 @@ return array(
         ),
         'definition' => array(
             'class' => array(
-                __NAMESPACE__ . '\Manager\UserManager' => array(
-                    'setClassResolver' => array(
-                        'required' => true
-                    ),
-                    'setAuthenticationService' => array(
-                        'required' => true
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    ),
-                    'setHydrator' => array(
-                        'required' => true
-                    )
-                ),
                 'User\Notification\Service\NotificationService' => array(
                     'setEventManager' => array(
                         'required' => true
@@ -460,14 +439,13 @@ return array(
                 'identity_property' => 'email',
                 'credential_property' => 'password',
                 'storage' => 'User\Authentication\Storage\UserRepository',
-                'credential_callable' => function (UserInterface $user, $passwordGiven)
-                {
-                    $filter = new HashFilter();
-                    $salt = $filter->findSalt($user->getPassword());
-                    $passwordGiven = $filter->hashPassword($passwordGiven, $salt);
-                    
-                    return $user->getPassword() === $passwordGiven && $user->hasRole('login') && ! $user->isTrashed();
-                }
+                'credential_callable' => function (UserInterface $user, $passwordGiven) {
+                        $filter = new HashFilter();
+                        $salt = $filter->findSalt($user->getPassword());
+                        $passwordGiven = $filter->hashPassword($passwordGiven, $salt);
+
+                        return $user->getPassword() === $passwordGiven && $user->hasRole('login') && !$user->isTrashed();
+                    }
             )
         )
     )
