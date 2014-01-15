@@ -25,6 +25,8 @@ class LicenseController extends AbstractController
         $licenses = $this->getLicenseManager()->findLicensesByLanguage($language);
         $entity   = $this->getEntity();
 
+        $this->assertGranted('entity.license.update', $entity);
+
         $form = new UpdateLicenseForm($licenses);
 
         $view = new ViewModel(array(

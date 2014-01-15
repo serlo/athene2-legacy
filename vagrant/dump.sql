@@ -1,18 +1,20 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
+SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
+SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `serlo` ;
-CREATE SCHEMA IF NOT EXISTS `serlo` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `serlo` ;
+DROP SCHEMA IF EXISTS `serlo`;
+CREATE SCHEMA IF NOT EXISTS `serlo`
+  DEFAULT CHARACTER SET utf8
+  COLLATE utf8_general_ci;
+USE `serlo`;
 
 -- -----------------------------------------------------
 -- Table `serlo`.`permission`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`permission` ;
+DROP TABLE IF EXISTS `serlo`.`permission`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`permission` (
-  `id` INT NOT NULL,
+  `id`   INT          NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
   ENGINE = InnoDB;
@@ -21,15 +23,15 @@ CREATE TABLE IF NOT EXISTS `serlo`.`permission` (
 -- -----------------------------------------------------
 -- Table `serlo`.`language`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`language` ;
+DROP TABLE IF EXISTS `serlo`.`language`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`language` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `permission_id` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `code` VARCHAR(2) NOT NULL,
-  `dateformat` VARCHAR(45) NOT NULL,
-  `timeformat` VARCHAR(45) NOT NULL,
+  `id`            INT          NOT NULL AUTO_INCREMENT,
+  `permission_id` INT          NOT NULL,
+  `name`          VARCHAR(255) NOT NULL,
+  `code`          VARCHAR(2)   NOT NULL,
+  `dateformat`    VARCHAR(45)  NOT NULL,
+  `timeformat`    VARCHAR(45)  NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC),
   UNIQUE INDEX `code_UNIQUE` (`code` ASC),
@@ -45,12 +47,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`language` (
 -- -----------------------------------------------------
 -- Table `serlo`.`role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`role` ;
+DROP TABLE IF EXISTS `serlo`.`role`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`role` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(32) NOT NULL,
-  `parent_id` INT(11) NULL,
+  `id`          INT(11)      NOT NULL AUTO_INCREMENT,
+  `name`        VARCHAR(32)  NOT NULL,
+  `parent_id`   INT(11)      NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uniq_name` (`name` ASC),
@@ -66,12 +68,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role` (
 -- -----------------------------------------------------
 -- Table `serlo`.`uuid`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`uuid` ;
+DROP TABLE IF EXISTS `serlo`.`uuid`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`uuid` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uuid` VARCHAR(30) NOT NULL,
-  `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
+  `id`      BIGINT      NOT NULL AUTO_INCREMENT,
+  `uuid`    VARCHAR(30) NOT NULL,
+  `trashed` TINYINT(1)  NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC))
   ENGINE = InnoDB;
@@ -80,19 +82,19 @@ CREATE TABLE IF NOT EXISTS `serlo`.`uuid` (
 -- -----------------------------------------------------
 -- Table `serlo`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`user` ;
+DROP TABLE IF EXISTS `serlo`.`user`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`user` (
-  `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL DEFAULT 1,
-  `email` VARCHAR(127) NOT NULL,
-  `username` VARCHAR(32) NOT NULL DEFAULT '',
-  `password` CHAR(50) NOT NULL,
-  `logins` INT(10) NOT NULL DEFAULT '0',
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ads_enabled` TINYINT(1) NOT NULL DEFAULT 0,
-  `token` VARCHAR(32) NOT NULL,
-  `last_login` TIMESTAMP NULL,
+  `id`          BIGINT       NOT NULL,
+  `language_id` INT          NOT NULL DEFAULT 1,
+  `email`       VARCHAR(127) NOT NULL,
+  `username`    VARCHAR(32)  NOT NULL DEFAULT '',
+  `password`    CHAR(50)     NOT NULL,
+  `logins`      INT(10)      NOT NULL DEFAULT '0',
+  `date`        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ads_enabled` TINYINT(1)   NOT NULL DEFAULT 0,
+  `token`       VARCHAR(32)  NOT NULL,
+  `last_login`  TIMESTAMP    NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uniq_username` (`username` ASC),
   UNIQUE INDEX `uniq_email` (`email` ASC),
@@ -115,15 +117,15 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user` (
 -- -----------------------------------------------------
 -- Table `serlo`.`user_token`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`user_token` ;
+DROP TABLE IF EXISTS `serlo`.`user_token`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`user_token` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `user_id` INT(11) NOT NULL,
+  `id`         INT(11)     NOT NULL AUTO_INCREMENT,
+  `user_id`    INT(11)     NOT NULL,
   `user_agent` VARCHAR(40) NOT NULL,
-  `token` VARCHAR(32) NOT NULL,
-  `created` INT(10) NOT NULL,
-  `expires` INT(10) NOT NULL,
+  `token`      VARCHAR(32) NOT NULL,
+  `created`    INT(10)     NOT NULL,
+  `expires`    INT(10)     NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uniq_token` (`token` ASC))
   ENGINE = InnoDB
@@ -133,10 +135,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user_token` (
 -- -----------------------------------------------------
 -- Table `serlo`.`type`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`type` ;
+DROP TABLE IF EXISTS `serlo`.`type`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`type` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id`   INT          NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `className_UNIQUE` (`name` ASC))
@@ -146,15 +148,15 @@ CREATE TABLE IF NOT EXISTS `serlo`.`type` (
 -- -----------------------------------------------------
 -- Table `serlo`.`license`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`license` ;
+DROP TABLE IF EXISTS `serlo`.`license`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`license` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `url` VARCHAR(255) NOT NULL,
-  `content` TEXT NULL,
-  `icon_href` VARCHAR(255) NULL,
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `language_id` INT          NOT NULL,
+  `title`       VARCHAR(255) NOT NULL,
+  `url`         VARCHAR(255) NOT NULL,
+  `content`     TEXT         NULL,
+  `icon_href`   VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_license_language1_idx` (`language_id` ASC),
   UNIQUE INDEX `title_UNIQUE` (`title` ASC, `language_id` ASC),
@@ -169,15 +171,15 @@ CREATE TABLE IF NOT EXISTS `serlo`.`license` (
 -- -----------------------------------------------------
 -- Table `serlo`.`entity`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`entity` ;
+DROP TABLE IF EXISTS `serlo`.`entity`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`entity` (
-  `id` BIGINT NOT NULL,
-  `type_id` INT NOT NULL,
-  `language_id` INT NOT NULL,
-  `license_id` INT NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `current_revision_id` INT NULL,
+  `id`                  BIGINT    NOT NULL,
+  `type_id`             INT       NOT NULL,
+  `language_id`         INT       NOT NULL,
+  `license_id`          INT       NOT NULL,
+  `date`                TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `current_revision_id` INT       NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_entity_language1_idx` (`language_id` ASC),
   INDEX `fk_entity_entity_factory1_idx` (`type_id` ASC),
@@ -209,14 +211,14 @@ CREATE TABLE IF NOT EXISTS `serlo`.`entity` (
 -- -----------------------------------------------------
 -- Table `serlo`.`entity_link`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`entity_link` ;
+DROP TABLE IF EXISTS `serlo`.`entity_link`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`entity_link` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `id`        BIGINT NOT NULL AUTO_INCREMENT,
   `parent_id` BIGINT NOT NULL,
-  `child_id` BIGINT NOT NULL,
-  `type_id` INT NOT NULL,
-  `order` INT NULL,
+  `child_id`  BIGINT NOT NULL,
+  `type_id`   INT    NOT NULL,
+  `order`     INT    NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_entity_link_entity1_idx` (`parent_id` ASC),
   INDEX `fk_entity_link_entity2_idx` (`child_id` ASC),
@@ -243,13 +245,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`entity_link` (
 -- -----------------------------------------------------
 -- Table `serlo`.`page_repository`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`page_repository` ;
+DROP TABLE IF EXISTS `serlo`.`page_repository`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`page_repository` (
-  `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
-  `license_id` INT NOT NULL DEFAULT 1,
-  `current_revision_id` INT NULL,
+  `id`                  BIGINT NOT NULL,
+  `language_id`         INT    NOT NULL,
+  `license_id`          INT    NOT NULL DEFAULT 1,
+  `current_revision_id` INT    NULL,
   INDEX `fk_page_repository_uuid2_idx` (`id` ASC),
   INDEX `fk_page_repository_language1_idx` (`language_id` ASC),
   PRIMARY KEY (`id`),
@@ -275,16 +277,16 @@ CREATE TABLE IF NOT EXISTS `serlo`.`page_repository` (
 -- -----------------------------------------------------
 -- Table `serlo`.`page_revision`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`page_revision` ;
+DROP TABLE IF EXISTS `serlo`.`page_revision`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`page_revision` (
-  `id` BIGINT NOT NULL,
-  `author_id` BIGINT NOT NULL,
-  `page_repository_id` BIGINT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `content` LONGTEXT NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
+  `id`                 BIGINT       NOT NULL,
+  `author_id`          BIGINT       NOT NULL,
+  `page_repository_id` BIGINT       NOT NULL,
+  `title`              VARCHAR(255) NOT NULL,
+  `content`            LONGTEXT     NOT NULL,
+  `date`               TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trashed`            TINYINT(1)   NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   INDEX `fk_page_revision_page_repository1_idx` (`page_repository_id` ASC),
   INDEX `fk_page_revision_user1_idx` (`author_id` ASC),
@@ -310,11 +312,11 @@ CREATE TABLE IF NOT EXISTS `serlo`.`page_revision` (
 -- -----------------------------------------------------
 -- Table `serlo`.`taxonomy`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`taxonomy` ;
+DROP TABLE IF EXISTS `serlo`.`taxonomy`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`taxonomy` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `type_id` INT NOT NULL,
+  `id`          INT NOT NULL AUTO_INCREMENT,
+  `type_id`     INT NOT NULL,
   `language_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_taxonomy_language1_idx` (`language_id` ASC),
@@ -335,13 +337,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`taxonomy` (
 -- -----------------------------------------------------
 -- Table `serlo`.`term`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`term` ;
+DROP TABLE IF EXISTS `serlo`.`term`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `slug` VARCHAR(255) NOT NULL,
+  `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+  `language_id` INT          NOT NULL,
+  `name`        VARCHAR(255) NOT NULL,
+  `slug`        VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uq_term_name_language` (`name` ASC),
   UNIQUE INDEX `uq_term_slug_language` (`slug` ASC),
@@ -357,15 +359,15 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term` (
 -- -----------------------------------------------------
 -- Table `serlo`.`term_taxonomy`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`term_taxonomy` ;
+DROP TABLE IF EXISTS `serlo`.`term_taxonomy`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy` (
-  `id` BIGINT NOT NULL,
-  `taxonomy_id` INT NOT NULL,
-  `term_id` BIGINT NOT NULL,
-  `parent_id` BIGINT NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `weight` INT NULL,
+  `id`          BIGINT NOT NULL,
+  `taxonomy_id` INT    NOT NULL,
+  `term_id`     BIGINT NOT NULL,
+  `parent_id`   BIGINT NULL DEFAULT NULL,
+  `description` TEXT   NULL DEFAULT NULL,
+  `weight`      INT    NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_term_taxonomy_taxonomy1_idx` (`taxonomy_id` ASC),
   INDEX `fk_term_taxonomy_term1_idx` (`term_id` ASC),
@@ -397,17 +399,17 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy` (
 -- -----------------------------------------------------
 -- Table `serlo`.`blog_post`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`blog_post` ;
+DROP TABLE IF EXISTS `serlo`.`blog_post`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
-  `id` BIGINT NOT NULL,
-  `author_id` BIGINT NOT NULL,
-  `category_id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `content` LONGTEXT NOT NULL,
-  `publish` TIMESTAMP NULL DEFAULT NULL,
+  `id`          BIGINT       NOT NULL,
+  `author_id`   BIGINT       NOT NULL,
+  `category_id` BIGINT       NOT NULL,
+  `language_id` INT          NOT NULL,
+  `title`       VARCHAR(255) NOT NULL,
+  `date`        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `content`     LONGTEXT     NOT NULL,
+  `publish`     TIMESTAMP    NULL DEFAULT NULL,
   INDEX `fk_blog_post_user1_idx` (`author_id` ASC),
   INDEX `fk_blog_post_term_taxonomy1_idx` (`category_id` ASC),
   INDEX `fk_blog_post_uuid1_idx` (`id` ASC),
@@ -439,13 +441,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
 -- -----------------------------------------------------
 -- Table `serlo`.`entity_revision`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`entity_revision` ;
+DROP TABLE IF EXISTS `serlo`.`entity_revision`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`entity_revision` (
-  `id` BIGINT NOT NULL,
-  `author_id` BIGINT NOT NULL,
-  `repository_id` BIGINT NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id`            BIGINT    NOT NULL,
+  `author_id`     BIGINT    NOT NULL,
+  `repository_id` BIGINT    NOT NULL,
+  `date`          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_revision_entity1_idx` (`repository_id` ASC),
   INDEX `fk_entity_revision_user2_idx` (`author_id` ASC),
@@ -471,13 +473,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`entity_revision` (
 -- -----------------------------------------------------
 -- Table `serlo`.`entity_revision_field`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`entity_revision_field` ;
+DROP TABLE IF EXISTS `serlo`.`entity_revision_field`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`entity_revision_field` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `field` VARCHAR(255) NOT NULL,
-  `entity_revision_id` BIGINT NOT NULL,
-  `value` LONGTEXT NOT NULL,
+  `id`                 INT          NOT NULL AUTO_INCREMENT,
+  `field`              VARCHAR(255) NOT NULL,
+  `entity_revision_id` BIGINT       NOT NULL,
+  `value`              LONGTEXT     NOT NULL,
   PRIMARY KEY (`id`, `field`),
   INDEX `fk_entity_revision_field_entity_revision1_idx` (`entity_revision_id` ASC),
   CONSTRAINT `fk_entity_revision_field_entity_revision1`
@@ -491,10 +493,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`entity_revision_field` (
 -- -----------------------------------------------------
 -- Table `serlo`.`role_user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`role_user` ;
+DROP TABLE IF EXISTS `serlo`.`role_user`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`role_user` (
-  `user_id` BIGINT NOT NULL,
+  `user_id` BIGINT  NOT NULL,
   `role_id` INT(11) NOT NULL,
   PRIMARY KEY (`role_id`, `user_id`),
   INDEX `fk_role_user_role1_idx` (`role_id` ASC),
@@ -516,11 +518,11 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_user` (
 -- -----------------------------------------------------
 -- Table `serlo`.`role_permission`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`role_permission` ;
+DROP TABLE IF EXISTS `serlo`.`role_permission`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`role_permission` (
-  `role_id` INT(11) NOT NULL,
-  `permission_id` INT NOT NULL,
+  `role_id`       INT(11) NOT NULL,
+  `permission_id` INT     NOT NULL,
   PRIMARY KEY (`role_id`, `permission_id`),
   INDEX `fk_role_has_permission_permission1_idx` (`permission_id` ASC),
   INDEX `fk_role_has_permission_role1_idx` (`role_id` ASC),
@@ -540,13 +542,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_permission` (
 -- -----------------------------------------------------
 -- Table `serlo`.`term_taxonomy_entity`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`term_taxonomy_entity` ;
+DROP TABLE IF EXISTS `serlo`.`term_taxonomy_entity`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_entity` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `entity_id` BIGINT NOT NULL,
-  `term_taxonomy_id` BIGINT NOT NULL,
-  `position` SMALLINT NOT NULL DEFAULT 0,
+  `id`               BIGINT   NOT NULL AUTO_INCREMENT,
+  `entity_id`        BIGINT   NOT NULL,
+  `term_taxonomy_id` BIGINT   NOT NULL,
+  `position`         SMALLINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_entity_has_term_taxonomy_term_taxonomy1_idx` (`term_taxonomy_id` ASC),
   INDEX `fk_entity_has_term_taxonomy_entity1_idx` (`entity_id` ASC),
@@ -566,18 +568,18 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_entity` (
 -- -----------------------------------------------------
 -- Table `serlo`.`comment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`comment` ;
+DROP TABLE IF EXISTS `serlo`.`comment`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`comment` (
-  `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
-  `author_id` BIGINT NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `archived` TINYINT(1) NOT NULL DEFAULT FALSE,
-  `uuid_id` BIGINT NULL,
-  `parent_id` BIGINT NULL,
-  `title` VARCHAR(255) NULL,
-  `content` LONGTEXT NULL,
+  `id`          BIGINT       NOT NULL,
+  `language_id` INT          NOT NULL,
+  `author_id`   BIGINT       NOT NULL,
+  `date`        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `archived`    TINYINT(1)   NOT NULL DEFAULT FALSE,
+  `uuid_id`     BIGINT       NULL,
+  `parent_id`   BIGINT       NULL,
+  `title`       VARCHAR(255) NULL,
+  `content`     LONGTEXT     NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_comment_uuid_idx` (`id` ASC),
   INDEX `fk_comment_language1_idx` (`language_id` ASC),
@@ -615,11 +617,11 @@ CREATE TABLE IF NOT EXISTS `serlo`.`comment` (
 -- -----------------------------------------------------
 -- Table `serlo`.`page_repository_role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`page_repository_role` ;
+DROP TABLE IF EXISTS `serlo`.`page_repository_role`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`page_repository_role` (
-  `page_repository_id` BIGINT NOT NULL,
-  `role_id` INT(11) NOT NULL,
+  `page_repository_id` BIGINT  NOT NULL,
+  `role_id`            INT(11) NOT NULL,
   PRIMARY KEY (`page_repository_id`, `role_id`),
   INDEX `fk_page_repository_has_role_role2_idx` (`role_id` ASC),
   INDEX `fk_page_repository_has_role_page_repository1_idx` (`page_repository_id` ASC),
@@ -639,12 +641,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`page_repository_role` (
 -- -----------------------------------------------------
 -- Table `serlo`.`event`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`event` ;
+DROP TABLE IF EXISTS `serlo`.`event`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`event` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `description` TEXT NULL,
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `name`        VARCHAR(255) NOT NULL,
+  `description` TEXT         NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
   ENGINE = InnoDB;
@@ -653,15 +655,15 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event` (
 -- -----------------------------------------------------
 -- Table `serlo`.`event_log`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`event_log` ;
+DROP TABLE IF EXISTS `serlo`.`event_log`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`event_log` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `actor_id` BIGINT NOT NULL,
-  `event_id` INT NOT NULL,
-  `uuid_id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id`          BIGINT    NOT NULL AUTO_INCREMENT,
+  `actor_id`    BIGINT    NOT NULL,
+  `event_id`    INT       NOT NULL,
+  `uuid_id`     BIGINT    NOT NULL,
+  `language_id` INT       NOT NULL,
+  `date`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_event_fired_event1_idx` (`event_id` ASC),
   INDEX `fk_event_log_uuid1_idx` (`uuid_id` ASC),
@@ -693,13 +695,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_log` (
 -- -----------------------------------------------------
 -- Table `serlo`.`notification`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`notification` ;
+DROP TABLE IF EXISTS `serlo`.`notification`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`notification` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT NOT NULL,
-  `seen` TINYINT(1) NOT NULL DEFAULT FALSE,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id`      INT        NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT     NOT NULL,
+  `seen`    TINYINT(1) NOT NULL DEFAULT FALSE,
+  `date`    TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_notification_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_notification_user1`
@@ -713,12 +715,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`notification` (
 -- -----------------------------------------------------
 -- Table `serlo`.`subscription`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`subscription` ;
+DROP TABLE IF EXISTS `serlo`.`subscription`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`subscription` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uuid_id` BIGINT NOT NULL,
-  `user_id` BIGINT NOT NULL,
+  `id`             INT        NOT NULL AUTO_INCREMENT,
+  `uuid_id`        BIGINT     NOT NULL,
+  `user_id`        BIGINT     NOT NULL,
   `notify_mailman` TINYINT(1) NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   INDEX `fk_subscription_uuid1_idx` (`uuid_id` ASC),
@@ -740,14 +742,14 @@ CREATE TABLE IF NOT EXISTS `serlo`.`subscription` (
 -- -----------------------------------------------------
 -- Table `serlo`.`url_alias`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`url_alias` ;
+DROP TABLE IF EXISTS `serlo`.`url_alias`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`url_alias` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
-  `uuid_id` BIGINT NOT NULL,
-  `source` VARCHAR(255) NOT NULL,
-  `alias` VARCHAR(255) NOT NULL,
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `language_id` INT          NOT NULL,
+  `uuid_id`     BIGINT       NOT NULL,
+  `source`      VARCHAR(255) NOT NULL,
+  `alias`       VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `alias_UNIQUE` (`alias` ASC),
   INDEX `fk_url_alias_language1_idx` (`language_id` ASC),
@@ -768,13 +770,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`url_alias` (
 -- -----------------------------------------------------
 -- Table `serlo`.`comment_vote`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`comment_vote` ;
+DROP TABLE IF EXISTS `serlo`.`comment_vote`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`comment_vote` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `comment_id` BIGINT NOT NULL,
-  `user_id` BIGINT NOT NULL,
-  `vote` TINYINT NOT NULL DEFAULT 1,
+  `id`         INT     NOT NULL AUTO_INCREMENT,
+  `comment_id` BIGINT  NOT NULL,
+  `user_id`    BIGINT  NOT NULL,
+  `vote`       TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_comment_has_user_user1_idx` (`user_id` ASC),
   INDEX `fk_comment_has_user_comment1_idx` (`comment_id` ASC),
@@ -795,10 +797,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`comment_vote` (
 -- -----------------------------------------------------
 -- Table `serlo`.`term_taxonomy_comment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`term_taxonomy_comment` ;
+DROP TABLE IF EXISTS `serlo`.`term_taxonomy_comment`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_comment` (
-  `comment_id` BIGINT NOT NULL,
+  `comment_id`       BIGINT NOT NULL,
   `term_taxonomy_id` BIGINT NOT NULL,
   PRIMARY KEY (`comment_id`, `term_taxonomy_id`),
   INDEX `fk_comment_has_term_taxonomy_term_taxonomy2_idx` (`term_taxonomy_id` ASC),
@@ -819,16 +821,16 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_comment` (
 -- -----------------------------------------------------
 -- Table `serlo`.`upload`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`upload` ;
+DROP TABLE IF EXISTS `serlo`.`upload`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`upload` (
-  `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
-  `location` VARCHAR(255) NOT NULL,
-  `size` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `type` VARCHAR(20) NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id`          BIGINT       NOT NULL,
+  `language_id` INT          NOT NULL,
+  `location`    VARCHAR(255) NOT NULL,
+  `size`        INT          NOT NULL,
+  `name`        VARCHAR(255) NOT NULL,
+  `type`        VARCHAR(20)  NOT NULL,
+  `timestamp`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE INDEX `location_UNIQUE` (`location` ASC),
   INDEX `fk_upload_uuid1_idx` (`id` ASC),
   PRIMARY KEY (`id`),
@@ -849,7 +851,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`upload` (
 -- -----------------------------------------------------
 -- Table `serlo`.`related_content_container`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`related_content_container` ;
+DROP TABLE IF EXISTS `serlo`.`related_content_container`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`related_content_container` (
   `id` BIGINT NOT NULL,
@@ -866,12 +868,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`related_content_container` (
 -- -----------------------------------------------------
 -- Table `serlo`.`related_content`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`related_content` ;
+DROP TABLE IF EXISTS `serlo`.`related_content`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`related_content` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id`           INT    NOT NULL AUTO_INCREMENT,
   `container_id` BIGINT NOT NULL,
-  `position` INT NOT NULL DEFAULT 0,
+  `position`     INT    NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_related_content_related_content_container1_idx` (`container_id` ASC),
   CONSTRAINT `fk_related_content_related_content_container1`
@@ -885,12 +887,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`related_content` (
 -- -----------------------------------------------------
 -- Table `serlo`.`related_content_internal`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`related_content_internal` ;
+DROP TABLE IF EXISTS `serlo`.`related_content_internal`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`related_content_internal` (
-  `id` INT NOT NULL,
-  `reference_id` BIGINT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
+  `id`           INT          NOT NULL,
+  `reference_id` BIGINT       NOT NULL,
+  `title`        VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_related_internal_uuid1_idx` (`reference_id` ASC),
   INDEX `fk_related_content_internal_related_content1_idx` (`id` ASC),
@@ -910,11 +912,11 @@ CREATE TABLE IF NOT EXISTS `serlo`.`related_content_internal` (
 -- -----------------------------------------------------
 -- Table `serlo`.`related_content_external`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`related_content_external` ;
+DROP TABLE IF EXISTS `serlo`.`related_content_external`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`related_content_external` (
-  `id` INT NOT NULL,
-  `url` VARCHAR(255) NOT NULL,
+  `id`    INT          NOT NULL,
+  `url`   VARCHAR(255) NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_related_content_external_related_content1_idx` (`id` ASC),
@@ -929,10 +931,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`related_content_external` (
 -- -----------------------------------------------------
 -- Table `serlo`.`related_content_category`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`related_content_category` ;
+DROP TABLE IF EXISTS `serlo`.`related_content_category`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`related_content_category` (
-  `id` INT NOT NULL,
+  `id`   INT          NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_related_content_category_related_content1_idx` (`id` ASC),
@@ -947,14 +949,14 @@ CREATE TABLE IF NOT EXISTS `serlo`.`related_content_category` (
 -- -----------------------------------------------------
 -- Table `serlo`.`context`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`context` ;
+DROP TABLE IF EXISTS `serlo`.`context`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`context` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uuid_id` BIGINT NOT NULL,
-  `type_id` INT NOT NULL,
-  `language_id` INT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `uuid_id`     BIGINT       NOT NULL,
+  `type_id`     INT          NOT NULL,
+  `language_id` INT          NOT NULL,
+  `title`       VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_context_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_context_type1_idx` (`type_id` ASC),
@@ -980,11 +982,11 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context` (
 -- -----------------------------------------------------
 -- Table `serlo`.`context_route`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`context_route` ;
+DROP TABLE IF EXISTS `serlo`.`context_route`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`context_route` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `context_id` INT NOT NULL,
+  `id`         INT          NOT NULL AUTO_INCREMENT,
+  `context_id` INT          NOT NULL,
   `route_name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_context_route_context1_idx` (`context_id` ASC),
@@ -999,13 +1001,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context_route` (
 -- -----------------------------------------------------
 -- Table `serlo`.`context_route_parameter`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`context_route_parameter` ;
+DROP TABLE IF EXISTS `serlo`.`context_route_parameter`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`context_route_parameter` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `context_route_id` INT NOT NULL,
-  `key` VARCHAR(255) NOT NULL,
-  `value` VARCHAR(255) NOT NULL,
+  `id`               INT          NOT NULL AUTO_INCREMENT,
+  `context_route_id` INT          NOT NULL,
+  `key`              VARCHAR(255) NOT NULL,
+  `value`            VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_context_route_parameter_context_route1_idx` (`context_route_id` ASC),
   CONSTRAINT `fk_context_route_parameter_context_route1`
@@ -1019,16 +1021,16 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context_route_parameter` (
 -- -----------------------------------------------------
 -- Table `serlo`.`flag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`flag` ;
+DROP TABLE IF EXISTS `serlo`.`flag`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`flag` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uuid_id` BIGINT NOT NULL,
-  `type_id` INT NOT NULL,
-  `reporter_id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
-  `content` TEXT NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id`          INT       NOT NULL AUTO_INCREMENT,
+  `uuid_id`     BIGINT    NOT NULL,
+  `type_id`     INT       NOT NULL,
+  `reporter_id` BIGINT    NOT NULL,
+  `language_id` INT       NOT NULL,
+  `content`     TEXT      NOT NULL,
+  `timestamp`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_Flag_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_flag_user1_idx` (`reporter_id` ASC),
@@ -1060,10 +1062,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`flag` (
 -- -----------------------------------------------------
 -- Table `serlo`.`event_parameter_name`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`event_parameter_name` ;
+DROP TABLE IF EXISTS `serlo`.`event_parameter_name`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter_name` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id`   INT          NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
   ENGINE = InnoDB;
@@ -1072,13 +1074,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter_name` (
 -- -----------------------------------------------------
 -- Table `serlo`.`event_parameter`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`event_parameter` ;
+DROP TABLE IF EXISTS `serlo`.`event_parameter`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `log_id` BIGINT NOT NULL,
+  `id`      INT    NOT NULL AUTO_INCREMENT,
+  `log_id`  BIGINT NOT NULL,
   `uuid_id` BIGINT NOT NULL,
-  `name_id` INT NOT NULL,
+  `name_id` INT    NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_event_parameter_event_log1_idx` (`log_id` ASC),
   INDEX `fk_event_parameter_uuid1_idx` (`uuid_id` ASC),
@@ -1105,12 +1107,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter` (
 -- -----------------------------------------------------
 -- Table `serlo`.`notification_event`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`notification_event` ;
+DROP TABLE IF EXISTS `serlo`.`notification_event`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`notification_event` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `notification_id` INT NOT NULL,
-  `event_log_id` BIGINT NOT NULL,
+  `id`              INT    NOT NULL AUTO_INCREMENT,
+  `notification_id` INT    NOT NULL,
+  `event_log_id`    BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_notification_event_notification1_idx` (`notification_id` ASC),
   INDEX `fk_notification_event_event_log1_idx` (`event_log_id` ASC),
@@ -1130,10 +1132,10 @@ CREATE TABLE IF NOT EXISTS `serlo`.`notification_event` (
 -- -----------------------------------------------------
 -- Table `serlo`.`metadata_key`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`metadata_key` ;
+DROP TABLE IF EXISTS `serlo`.`metadata_key`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`metadata_key` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id`   INT          NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `key_UNIQUE` (`name` ASC))
@@ -1143,13 +1145,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`metadata_key` (
 -- -----------------------------------------------------
 -- Table `serlo`.`metadata`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`metadata` ;
+DROP TABLE IF EXISTS `serlo`.`metadata`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`metadata` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uuid_id` BIGINT NOT NULL,
-  `key_id` INT NOT NULL,
-  `value` VARCHAR(255) NOT NULL,
+  `id`      INT          NOT NULL AUTO_INCREMENT,
+  `uuid_id` BIGINT       NOT NULL,
+  `key_id`  INT          NOT NULL,
+  `value`   VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_metadata_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_metadata_metadata_key1_idx` (`key_id` ASC),
@@ -1169,12 +1171,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`metadata` (
 -- -----------------------------------------------------
 -- Table `serlo`.`html_cache`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`html_cache` ;
+DROP TABLE IF EXISTS `serlo`.`html_cache`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`html_cache` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `guid` VARCHAR(255) NOT NULL,
-  `content` LONGTEXT NOT NULL,
+  `id`      INT          NOT NULL AUTO_INCREMENT,
+  `guid`    VARCHAR(255) NOT NULL,
+  `content` LONGTEXT     NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `html_cache_guid` (`guid` ASC),
   UNIQUE INDEX `guid_UNIQUE` (`guid` ASC))
@@ -1184,19 +1186,19 @@ CREATE TABLE IF NOT EXISTS `serlo`.`html_cache` (
 -- -----------------------------------------------------
 -- Table `serlo`.`ads`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`ads` ;
+DROP TABLE IF EXISTS `serlo`.`ads`;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
-  `image_id` BIGINT NOT NULL,
-  `author_id` BIGINT NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `content` TEXT NOT NULL,
-  `frequency` FLOAT NOT NULL DEFAULT 1,
-  `clicks` INT NOT NULL DEFAULT 0,
-  `views` INT NOT NULL DEFAULT 0,
-  `url` VARCHAR(255) NOT NULL,
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `language_id` INT          NOT NULL,
+  `image_id`    BIGINT       NOT NULL,
+  `author_id`   BIGINT       NOT NULL,
+  `title`       VARCHAR(255) NOT NULL,
+  `content`     TEXT         NOT NULL,
+  `frequency`   FLOAT        NOT NULL DEFAULT 1,
+  `clicks`      INT          NOT NULL DEFAULT 0,
+  `views`       INT          NOT NULL DEFAULT 0,
+  `url`         VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_ads_language1_idx` (`language_id` ASC),
   INDEX `fk_ads_upload1_idx` (`image_id` ASC),
@@ -1292,6 +1294,7 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (65, 'page.revision.trash
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (66, 'page.revision.purge');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (67, 'page.revision.checkout');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (68, 'contexter.context.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (69, 'entity.link.order');
 
 COMMIT;
 
@@ -1301,8 +1304,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`language` (`id`, `permission_id`, `name`, `code`, `dateformat`, `timeformat`) VALUES (1, 5, 'Deutsch', 'de', 'DMY', 'Y:M');
-INSERT INTO `serlo`.`language` (`id`, `permission_id`, `name`, `code`, `dateformat`, `timeformat`) VALUES (2, 6, 'English', 'en', 'MDY', 'Y:M');
+INSERT INTO `serlo`.`language` (`id`, `permission_id`, `name`, `code`, `dateformat`, `timeformat`)
+VALUES (1, 5, 'Deutsch', 'de', 'DMY', 'Y:M');
+INSERT INTO `serlo`.`language` (`id`, `permission_id`, `name`, `code`, `dateformat`, `timeformat`)
+VALUES (2, 6, 'English', 'en', 'MDY', 'Y:M');
 
 COMMIT;
 
@@ -1349,8 +1354,12 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`user` (`id`, `language_id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (1, 1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234', NULL);
-INSERT INTO `serlo`.`user` (`id`, `language_id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (2, 1, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL);
+INSERT INTO `serlo`.`user` (`id`, `language_id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`)
+VALUES (1, 1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234',
+        NULL);
+INSERT INTO `serlo`.`user` (`id`, `language_id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`)
+VALUES
+  (2, 1, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL);
 
 COMMIT;
 
@@ -1395,7 +1404,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES
+  (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt',
+   'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
 
 COMMIT;
 
@@ -1429,9 +1440,12 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (3, 1, 1, NULL, NULL, NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (4, 2, 2, 3, NULL, NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (5, 3, 3, 3, NULL, NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`)
+VALUES (3, 1, 1, NULL, NULL, NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`)
+VALUES (4, 2, 2, 3, NULL, NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`)
+VALUES (5, 3, 3, 3, NULL, NULL);
 
 COMMIT;
 
@@ -1524,6 +1538,7 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 65
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 66);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 67);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 68);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 69);
 
 COMMIT;
 
@@ -1542,6 +1557,6 @@ INSERT INTO `serlo`.`metadata_key` (`id`, `name`) VALUES (5, 'author');
 COMMIT;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET SQL_MODE = @OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;

@@ -11,6 +11,11 @@
 namespace Entity;
 
 return [
+    'zfc_rbac' => [
+        'assertion_map' => [
+            'entity.license.update' => 'Authorization\Assertion\LanguageAssertion',
+        ]
+    ],
     'class_resolver'  => [
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
         'Entity\Entity\TypeInterface'   => 'Entity\Entity\Type'
