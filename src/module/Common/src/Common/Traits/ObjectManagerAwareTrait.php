@@ -12,6 +12,7 @@
 namespace Common\Traits;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 
 trait ObjectManagerAwareTrait
 {
@@ -36,7 +37,7 @@ trait ObjectManagerAwareTrait
      * @param \Doctrine\Common\Persistence\ObjectManager $objectManager            
      * @return self
      */
-    public function setObjectManager(ObjectManager $objectManager)
+    public function setObjectManager(EntityManager $objectManager)
     {
         $this->objectManager = $objectManager;
         return $this;

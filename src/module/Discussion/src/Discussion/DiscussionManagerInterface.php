@@ -18,7 +18,7 @@ use Language\Entity\LanguageInterface;
 use Discussion\Service\CommentServiceInterface;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
-interface DiscussionManagerInterface extends ObjectManagerAwareInterface
+interface DiscussionManagerInterface
 {
     /**
      * Returns a comment

@@ -12,14 +12,7 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
-        'ZendDeveloperTools',
         'Application',
-        'AsseticBundle',
-        'DoctrineModule',
-        'DoctrineORMModule',
-        'ZfcBase',
-        'ZfcRbac',
-        'TwbBundle',
         'Common',
         'Ui',
         'Admin',
@@ -50,7 +43,16 @@ return array(
         'Normalizer',
         'Type',
         'Markdown',
-        'Authorization'
+        'Authorization',
+        'OcraDiCompiler',
+        //'ZendDiCompiler',
+        'AsseticBundle',
+        'DoctrineModule',
+        'DoctrineORMModule',
+        'ZfcBase',
+        'ZfcRbac',
+        'TwbBundle',
+        'ZendDeveloperTools'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
