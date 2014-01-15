@@ -18,7 +18,7 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use License\Entity\LicenseAwareInterface;
 use Common\ObjectManager\Flushable;
 
-interface LicenseManagerInterface extends ObjectManagerAwareInterface, Flushable
+interface LicenseManagerInterface extends Flushable
 {
 
     /**

@@ -48,13 +48,13 @@ return [
             'class' => [
                 __NAMESPACE__ . '\Manager\FlagManager' => [
                     'setClassResolver' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setTypeManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setObjectManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setUuidManager' => [
                         'required' => true
@@ -68,7 +68,7 @@ return [
                 ],
                 __NAMESPACE__ . '\Controller\FlagController' => [
                     'setFlagManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setUserManager' => [
                         'required' => true

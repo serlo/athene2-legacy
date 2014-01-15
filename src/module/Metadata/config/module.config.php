@@ -18,18 +18,18 @@ return [
             'class' => [
                 __NAMESPACE__ . '\Manager\MetadataManager' => [
                     'setServiceLocator' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setObjectManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ],
                     'setClassResolver' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Listener\TaxonomyManagerListener' => [
                     'setMetadataManager' => [
-                        'required' => 'true'
+                        'required' => true
                     ]
                 ]
             ]
