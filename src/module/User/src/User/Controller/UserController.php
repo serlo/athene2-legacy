@@ -254,9 +254,11 @@ class UserController extends AbstractUserController
 
     public function meAction()
     {
-        $view = new ViewModel(array(
-            'user' => $this->getUserManager()->getUserFromAuthenticator()
-        ));
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $view = new ViewModel([
+            'user' => $user,
+            'unassociatedRoles' => $this->getUserManager()->getUnassociatedRoles($user->getId())
+        ]);
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
         return $view;
@@ -342,9 +344,10 @@ class UserController extends AbstractUserController
 
     public function profileAction()
     {
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         $view = new ViewModel([
-            'user' => $this->getUserManager()->getUser($this->params('id')),
-            'unassociatedRoles' => $this->getUserManager()->getUnassociatedRoles($this->params('id'))
+            'user' => $user,
+            'unassociatedRoles' => $this->getUserManager()->getUnassociatedRoles($user->getId())
         ]);
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
