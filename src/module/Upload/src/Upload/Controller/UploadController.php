@@ -11,6 +11,7 @@
  */
 namespace Upload\Controller;
 
+use Upload\Manager\UploadManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Upload\Form\UploadForm;
 use Zend\View\Model\ViewModel;
@@ -19,7 +20,7 @@ use Zend\View\Model\JsonModel;
 class UploadController extends AbstractActionController
 {
     
-    use \Upload\Manager\UploadManagerAwareTrait;
+    use UploadManagerAwareTrait;
     
     public function getAction(){
         $upload = $this->getUploadManager()->getUpload( (int) $this->params('id'));
