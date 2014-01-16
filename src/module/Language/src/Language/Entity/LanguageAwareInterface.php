@@ -10,17 +10,11 @@
  */
 namespace Language\Entity;
 
-interface LanguageAwareInterface
+interface LanguageAwareInterface extends LanguageProviderInterface
 {
-
     /**
      * @param LanguageInterface $language
      * @return self
      */
     public function setLanguage(LanguageInterface $language);
-
-    /**
-     * @return LanguageInterface
-     */
-    public function getLanguage();
 }

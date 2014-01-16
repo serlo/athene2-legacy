@@ -11,8 +11,8 @@
 namespace Authorization\Assertion;
 
 use Authorization\Exception\InvalidArgumentException;
-use Language\Entity\LanguageAwareInterface;
 use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageProviderInterface;
 use Language\Manager\LanguageManagerAwareTrait;
 use ZfcRbac\Service\AuthorizationService;
 
@@ -21,7 +21,7 @@ class LanguageAssertion implements ControllerAssertionInterface
     public function assert(AuthorizationService $authorizationService, $language = null)
     {
         if ($language instanceof LanguageInterface) {
-        } elseif ($language instanceof LanguageAwareInterface) {
+        } elseif ($language instanceof LanguageProviderInterface) {
             $language = $language->getLanguage();
         } else {
             throw new InvalidArgumentException(sprintf(
