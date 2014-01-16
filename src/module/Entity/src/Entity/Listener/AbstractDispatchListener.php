@@ -23,10 +23,14 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
      */
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $events->attach($this->getMonitoredClass(), MvcEvent::EVENT_DISPATCH, array(
-            $this,
-            'onDispatch'
-        ));
+        $events->attach(
+            $this->getMonitoredClass(),
+            MvcEvent::EVENT_DISPATCH,
+            array(
+                $this,
+                'onDispatch'
+            )
+        );
     }
 
     public function onDispatch(Event $event)
@@ -50,9 +54,9 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
                     'subject' => $subject->getSlug()
                 ));
                 $routeMatch->setMatchedRouteName('subject');
-                $controller->getServiceLocator()
-                    ->get('Ui\Navigation\DefaultNavigationFactory')
-                    ->setRouteMatch($routeMatch);
+                $controller->getServiceLocator()->get('Ui\Navigation\DefaultNavigationFactory')->setRouteMatch(
+                    $routeMatch
+                );
             }
         }
     }

@@ -63,13 +63,13 @@ class AliasManager implements AliasManagerInterface
             throw new Exception\RuntimeException(sprintf('No configuration found for "%s"', $name));
         }
 
-        $options = $this->getOptions()->getAliases()[$name];
-        $provider = $options['provider'];
-        $tokenString = $options['tokenize'];
+        $options        = $this->getOptions()->getAliases()[$name];
+        $provider       = $options['provider'];
+        $tokenString    = $options['tokenize'];
         $fallbackString = $options['fallback'];
-        $service = $this->getUuidManager()->createService($object);
-        $alias = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
-        $aliasFallback = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
+        $service        = $this->getUuidManager()->createService($object);
+        $alias          = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
+        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
 
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
     }
@@ -86,7 +86,7 @@ class AliasManager implements AliasManagerInterface
         /* @var $entity Entity\AliasInterface */
         $entity = $this->getAliasRepository()->findOneBy(
             [
-                'alias' => $alias,
+                'alias'    => $alias,
                 'language' => $language->getId()
             ]
         );
@@ -109,7 +109,7 @@ class AliasManager implements AliasManagerInterface
 
         $entity = $this->getAliasRepository()->findOneBy(
             [
-                'source' => $source,
+                'source'   => $source,
                 'language' => $language->getId()
             ]
         );

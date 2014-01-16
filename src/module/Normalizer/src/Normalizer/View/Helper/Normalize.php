@@ -1,27 +1,28 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Normalizer\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Uuid\Entity\UuidInterface;
+use Zend\View\Helper\AbstractHelper;
 
 class Normalize extends AbstractHelper
 {
     use \Normalizer\NormalizerAwareTrait;
 
-    public function __invoke($object = NULL)
+    public function __invoke($object = null)
     {
-        if ($object === NULL)
+        if ($object === null) {
             return $this;
+        }
+
         return $this->normalize($object);
     }
 
@@ -43,21 +44,23 @@ class Normalize extends AbstractHelper
     public function toUrl($object)
     {
         $normalized = $this->normalize($object);
+
         return $this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams());
     }
 
     public function toAnchor($object)
     {
         $normalized = $this->normalize($object);
+
         return '<a href="' . $this->toUrl($object) . '">' . $normalized->getTitle() . '</a>';
     }
 
     protected function normalize($object)
     {
-        if($object instanceof UuidInterface){
+        if ($object instanceof UuidInterface) {
             $object = $object->getHolder();
         }
-        
+
         return $this->getNormalizer()->normalize($object);
     }
 }

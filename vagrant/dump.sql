@@ -1295,6 +1295,15 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (66, 'page.revision.purge
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (67, 'page.revision.checkout');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (68, 'contexter.context.manage');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (69, 'entity.link.order');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (70, 'entity.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (71, 'entity.revision.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (72, 'page.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (73, 'page.revision.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (74, 'discussion.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (75, 'discussion.comment.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (76, 'blog.post.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (77, 'taxonomy.term.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (78, 'uuid.restore');
 
 COMMIT;
 
@@ -1539,6 +1548,15 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 6
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 67);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 68);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 69);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 70);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (3, 71);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 72);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 73);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (7, 74);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (7, 75);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 76);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 77);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 78);
 
 COMMIT;
 

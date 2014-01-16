@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
  * @license   LGPL
@@ -42,10 +41,14 @@ class LinkService implements LinkServiceInterface
         $link->setType($type);
         $link->setPosition($position);
 
-        $this->getEventManager()->trigger('link', $this, [
-            'entity' => $child,
-            'parent' => $parent
-        ]);
+        $this->getEventManager()->trigger(
+            'link',
+            $this,
+            [
+                'entity' => $child,
+                'parent' => $parent
+            ]
+        );
 
         $this->getObjectManager()->persist($link);
 
@@ -66,10 +69,14 @@ class LinkService implements LinkServiceInterface
 
         if (is_object($link)) {
 
-            $this->getEventManager()->trigger('unlink', $this, [
-                'entity' => $child,
-                'parent' => $parent
-            ]);
+            $this->getEventManager()->trigger(
+                'unlink',
+                $this,
+                [
+                    'entity' => $child,
+                    'parent' => $parent
+                ]
+            );
 
             $this->getObjectManager()->remove($link);
         }
@@ -156,12 +163,12 @@ class LinkService implements LinkServiceInterface
         if (!$options->allowsManyChildren($childType)) {
             /* @var $childLink \Link\Entity\LinkInterface */
             foreach ($parent->getChildLinks() as $childLink) {
-                if ($childLink->getChild()
-                        ->getType()
-                        ->getName() == $childType
+                if ($childLink->getChild()->getType()->getName() == $childType
                 ) {
-                    throw new Exception\RuntimeException(sprintf('Child type "%s" does not allow multiple children.',
-                        $childType));
+                    throw new Exception\RuntimeException(sprintf(
+                        'Child type "%s" does not allow multiple children.',
+                        $childType
+                    ));
                 }
             }
         }

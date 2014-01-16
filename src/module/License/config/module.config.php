@@ -1,14 +1,21 @@
 <?php
 /**
- * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL]
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL]
  */
 namespace License;
 
 return [
+    'zfc_rbac'       => [
+        'assertion_map' => [
+            'licenses.manage' => 'Authorization\Assertion\LanguageAssertion',
+            'license.create'  => 'Authorization\Assertion\RequestLanguageAssertion',
+            'license.update'  => 'Authorization\Assertion\LanguageAssertion',
+            'license.purge'   => 'Authorization\Assertion\LanguageAssertion',
+        ]
+    ],
     'license_manager' => [
         'defaults' => []
     ],
@@ -18,13 +25,13 @@ return [
     'class_resolver' => [
         __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
     ],
-    'di' => [
+    'di'             => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\LicenseController'
         ],
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Manager\LicenseManager'  => [
+                __NAMESPACE__ . '\Manager\LicenseManager'       => [
                     'setObjectManager' => [
                         'required' => true
                     ],
@@ -50,13 +57,13 @@ return [
                 ],
             ]
         ],
-        'instance' => [
+        'instance'   => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\LicenseManagerInterface' => __NAMESPACE__ . '\Manager\LicenseManager'
             ]
         ]
     ],
-    'doctrine' => [
+    'doctrine'       => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -79,11 +86,11 @@ return [
             ]
         ]
     ],
-    'router' => [
+    'router'         => [
         'routes' => [
             'license' => [
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
                     'route' => '/license',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\LicenseController'
@@ -91,7 +98,7 @@ return [
                 ],
                 'child_routes' => [
                     'manage' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/manage',
                             'defaults' => [
@@ -99,8 +106,8 @@ return [
                             ]
                         ]
                     ],
-                    'add' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'add'    => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/add',
                             'defaults' => [
@@ -109,7 +116,7 @@ return [
                         ]
                     ],
                     'detail' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/detail/:id',
                             'defaults' => [
@@ -118,7 +125,7 @@ return [
                         ]
                     ],
                     'update' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/update/:id',
                             'defaults' => [
@@ -127,7 +134,7 @@ return [
                         ]
                     ],
                     'remove' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route' => '/remove/:id',
                             'defaults' => [

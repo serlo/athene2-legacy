@@ -11,17 +11,17 @@
 namespace Language;
 
 return [
-    'translator' => [
+    'translator'      => [
         'translation_file_patterns' => [
             [
-                'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern' => '%s.mo',
+                'type'        => 'gettext',
+                'base_dir'    => __DIR__ . '/../language',
+                'pattern'     => '%s.mo',
                 'text_domain' => 'default'
             ]
         ]
     ],
-    'doctrine' => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -30,7 +30,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
@@ -42,14 +42,14 @@ return [
             __NAMESPACE__ . '\Manager\LanguageManager' => __NAMESPACE__ . '\Factory\LanguageManagerFactory'
         ]
     ],
-    'di' => [
+    'di'              => [
         'instance' => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\LanguageManagerInterface' => __NAMESPACE__ . '\Manager\LanguageManager'
             ],
         ]
     ],
-    'class_resolver' => [
+    'class_resolver'  => [
         __NAMESPACE__ . '\Entity\LanguageInterface' => __NAMESPACE__ . '\Entity\Language',
     ]
 ];

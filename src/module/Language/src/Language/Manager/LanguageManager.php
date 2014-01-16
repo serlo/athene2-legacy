@@ -22,7 +22,6 @@ class LanguageManager implements LanguageManagerInterface
     private $fallBackLanguageId = 1;
 
     /**
-     *
      * @var \Language\Entity\LanguageInterface
      */
     protected $requestLanguage;
@@ -30,15 +29,16 @@ class LanguageManager implements LanguageManagerInterface
     public function setFallBackLanguage($id)
     {
         $this->fallBackLanguageId = $id;
+
         return $this;
     }
 
     public function findAllLanguages()
     {
-        $collection = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-                ->resolveClassName('Language\Entity\LanguageInterface'))
-            ->findAll();
+        $collection = $this->getObjectManager()->getRepository(
+            $this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface')
+        )->findAll();
+
         return new ArrayCollection($collection);
     }
 
@@ -49,8 +49,9 @@ class LanguageManager implements LanguageManagerInterface
 
     public function getLanguageFromRequest()
     {
-        if (!array_key_exists('HTTP_HOST', (array)$_SERVER))
+        if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
             $this->requestLanguage = $this->getFallbackLanugage();
+        }
 
         if (!$this->requestLanguage) {
             $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
@@ -61,6 +62,7 @@ class LanguageManager implements LanguageManagerInterface
                 $this->requestLanguage = $this->getFallbackLanugage();
             }
         }
+
         return $this->requestLanguage;
     }
 
@@ -83,12 +85,13 @@ class LanguageManager implements LanguageManagerInterface
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($code)));
         }
 
-        $language = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-                ->resolveClassName('Language\Entity\LanguageInterface'))
-            ->findOneBy(array(
-                'code' => $code
-            ));
+        $language = $this->getObjectManager()->getRepository(
+            $this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface')
+        )->findOneBy(
+                array(
+                    'code' => $code
+                )
+            );
 
         if (!is_object($language)) {
             throw new Exception\LanguageNotFoundException(sprintf('Language %s could not be found', $code));

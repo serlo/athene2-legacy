@@ -26,8 +26,8 @@ class LinkController extends AbstractController
 
         if ($this->getRequest()->isPost()) {
             $scope = $this->params('type');
-            $data = $this->params()->fromPost()['sortable'];
-            $data = $this->prepareDataForOrdering($data);
+            $data  = $this->params()->fromPost()['sortable'];
+            $data  = $this->prepareDataForOrdering($data);
 
             $this->getLinkService()->sortChildren($entity, $scope, $data);
             $this->getEntityManager()->flush();
@@ -39,8 +39,8 @@ class LinkController extends AbstractController
     public function moveAction()
     {
         $entity = $this->getEntity();
-        $type = $this->params('type');
-        $form = new MoveForm();
+        $type   = $this->params('type');
+        $form   = new MoveForm();
 
         $this->assertGranted('entity.link.create', $entity);
         $this->assertGranted('entity.link.purge', $entity);

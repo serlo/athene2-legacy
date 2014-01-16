@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Uuid\Entity;
 
@@ -84,7 +83,6 @@ class Uuid implements UuidInterface
     protected $pageRevision;
 
     /**
-     *
      * @return field_type $trashed
      */
     public function getTrashed()
@@ -93,13 +91,13 @@ class Uuid implements UuidInterface
     }
 
     /**
-     *
-     * @param bool $trashed            
+     * @param bool $trashed
      * @return self
      */
     public function setTrashed($trashed)
     {
-        $this->trashed = (bool) $trashed;
+        $this->trashed = (bool)$trashed;
+
         return $this;
     }
 
@@ -110,7 +108,7 @@ class Uuid implements UuidInterface
                 return $key;
             }
         }
-        
+
         throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
     }
 
@@ -121,13 +119,13 @@ class Uuid implements UuidInterface
                 return $value;
             }
         }
-        
+
         throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
     }
 
     function __construct()
     {
-        $this->uuid = hash('crc32b', uniqid('uuid.', true));
+        $this->uuid    = hash('crc32b', uniqid('uuid.', true));
         $this->trashed = false;
     }
 
@@ -144,6 +142,7 @@ class Uuid implements UuidInterface
     public function setUuid($uuid)
     {
         $this->uuid = $uuid;
+
         return $this;
     }
 
@@ -152,6 +151,7 @@ class Uuid implements UuidInterface
         if (property_exists($this, $type)) {
             return is_object($this->$type);
         }
+
         return false;
     }
 
@@ -160,6 +160,7 @@ class Uuid implements UuidInterface
         if (property_exists($this, $key)) {
             $this->$key = $object;
         }
+
         return $this;
     }
 }

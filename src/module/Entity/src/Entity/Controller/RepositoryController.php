@@ -44,7 +44,7 @@ class RepositoryController extends AbstractController
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
-        $this->assertGranted('entity.revision.add', $entity);
+        $this->assertGranted('entity.revision.create', $entity);
 
         $user = $this->getUserManager()->getUserFromAuthenticator();
 
@@ -123,7 +123,7 @@ class RepositoryController extends AbstractController
 
     public function checkoutAction()
     {
-        $entity     = $this->getEntity();
+        $entity = $this->getEntity();
         $this->assertGranted('entity.revision.checkout', $entity);
 
         $user       = $this->getUserManager()->getUserFromAuthenticator();

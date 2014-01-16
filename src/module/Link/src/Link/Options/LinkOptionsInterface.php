@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author         Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -15,35 +14,30 @@ interface LinkOptionsInterface
 {
 
     /**
-     *
      * @param string $type
      * @return bool
      */
     public function isParentAllowed($type);
 
     /**
-     *
      * @param string $type
      * @return bool
      */
     public function isChildAllowed($type);
 
     /**
-     *
      * @param string $type
      * @return bool
      */
     public function allowsManyParents($type);
 
     /**
-     *
      * @param string $type
      * @return bool
      */
     public function allowsManyChildren($type);
 
     /**
-     *
      * @return string
      */
     public function getLinkType();

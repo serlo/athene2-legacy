@@ -1,33 +1,51 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Uuid;
 
 return [
-    'class_resolver' => [
-        'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+        ]
     ],
-    'router' => [
+    'class_resolver'  => [
+        __NAMESPACE__ . '\Entity\UuidInterface' => __NAMESPACE__ . '\Entity\Uuid'
+    ],
+    'uuid'            => [
+        'permissions' => [
+            'entityRevision' => [
+                'trash'   => 'entity.revision.create',
+                'restore' => 'entity.revision.checkout',
+                'purge'   => 'entity.revision.checkout'
+            ],
+            'entity'         => [
+                'trash'   => 'entity.create',
+                'restore' => 'entity.checkout',
+                'purge'   => 'entity.checkout'
+            ]
+        ]
+    ],
+    'router'          => [
         'routes' => [
             'uuid' => [
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
-                'options' => [
+                'options'      => [
                     'route' => '/uuid'
                 ],
                 'child_routes' => [
-                    'trash' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'trash'       => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/trash/:id',
+                            'route'    => '/trash/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'trash'
@@ -35,29 +53,29 @@ return [
                         ]
                     ],
                     'recycle-bin' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/recycle-bin',
+                            'route'    => '/recycle-bin',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'recycleBin'
                             ]
                         ]
                     ],
-                    'restore' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'restore'     => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/restore/:id',
+                            'route'    => '/restore/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'restore'
                             ]
                         ]
                     ],
-                    'purge' => [
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'purge'       => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/purge/:id',
+                            'route'    => '/purge/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'purge'
@@ -68,13 +86,13 @@ return [
             ]
         ]
     ],
-    'di' => [
+    'di'              => [
         'allowed_controllers' => [
-            'Uuid\Controller\UuidController'
+            __NAMESPACE__ . '\Controller\UuidController'
         ],
-        'definition' => [
+        'definition'          => [
             'class' => [
-                'Uuid\Controller\UuidController' => [
+                __NAMESPACE__ . '\Controller\UuidController' => [
                     'setUuidManager' => [
                         'required' => true
                     ],
@@ -85,7 +103,7 @@ return [
                         'required' => true
                     ]
                 ],
-                'Uuid\Manager\UuidManager' => [
+                __NAMESPACE__ . '\Manager\UuidManager'       => [
                     'setObjectManager' => [
                         'required' => true
                     ],
@@ -95,14 +113,14 @@ return [
                 ]
             ]
         ],
-        'instance' => [
+        'instance'            => [
             'preferences' => [
-                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
-                'Uuid\Router\UuidRouterInterface' => 'Uuid\Router\UuidRouter'
+                __NAMESPACE__ . '\Manager\UuidManagerInterface' => __NAMESPACE__ . '\Manager\UuidManager',
+                __NAMESPACE__ . '\Router\UuidRouterInterface'   => __NAMESPACE__ . '\Router\UuidRouter'
             ]
         ]
     ],
-    'doctrine' => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

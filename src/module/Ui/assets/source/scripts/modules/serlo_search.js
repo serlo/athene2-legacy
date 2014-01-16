@@ -55,28 +55,28 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
 
     SearchResults.prototype.onKey = function (e, isSearching) {
         switch (e.keyCode) {
-        case Common.KeyCode.up:
-            e.preventDefault();
-            this.focusPrev();
-            return;
-        case Common.KeyCode.down:
-            e.preventDefault();
-            this.focusNext();
-            return;
-        case Common.KeyCode.enter:
-            if (isSearching) {
-                break;
-            }
+            case Common.KeyCode.up:
+                e.preventDefault();
+                this.focusPrev();
+                return;
+            case Common.KeyCode.down:
+                e.preventDefault();
+                this.focusNext();
+                return;
+            case Common.KeyCode.enter:
+                if (isSearching) {
+                    break;
+                }
 
-            if (undefined !== this.$links && this.$links.length) {
-                Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
-                this.$input.blur();
-            } else {
-                Router.post('/search', {
-                    q: this.$input.val()
-                });
-            }
-            break;
+                if (undefined !== this.$links && this.$links.length) {
+                    Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
+                    this.$input.blur();
+                } else {
+                    Router.post('/search', {
+                        q: this.$input.val()
+                    });
+                }
+                break;
         }
     };
 
@@ -110,7 +110,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
     Search = function (options) {
         var self = this;
 
-        self.options = $.extend({}, defaults, options || {});
+        self.options = $.extend({}, defaults, options || {});
         self.isSearching = false;
         self.$el = $(self.options.wrapperSelector);
         self.$input = $(self.options.inputSelector);
@@ -161,7 +161,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             })
             .keyup(function (e) {
                 var value = Common.trim($(this).val() || "");
-                
+
                 self.results.onKey(e, self.isSearching);
 
                 if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
@@ -169,12 +169,12 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
                 }
 
                 switch (e.keyCode) {
-                case Common.KeyCode.esc:
-                    self.$input.blur();
-                    break;
-                default:
-                    Common.expr(value.length < self.options.maxQueryLength || self.search(value));
-                    break;
+                    case Common.KeyCode.esc:
+                        self.$input.blur();
+                        break;
+                    default:
+                        Common.expr(value.length < self.options.maxQueryLength || self.search(value));
+                        break;
                 }
             });
     };
@@ -220,14 +220,14 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
                 self.isSearching = false;
             }
         }).error(function () {
-            // xhr object has been aborted
-            // simply ignore.
-            if (arguments[1] === 'abort') {
-                return;
-            }
-            self.$input.blur();
-            Common.genericError(arguments);
-        });
+                // xhr object has been aborted
+                // simply ignore.
+                if (arguments[1] === 'abort') {
+                    return;
+                }
+                self.$input.blur();
+                Common.genericError(arguments);
+            });
     };
 
     Search.prototype.onResult = function (result) {

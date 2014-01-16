@@ -21,12 +21,13 @@ class LanguageManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instance = new LanguageManager();
+        $instance      = new LanguageManager();
         $objectManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
 
         $instance->setObjectManager($objectManager);
         $instance->setClassResolver($classResolver);
+
         return $instance;
     }
 

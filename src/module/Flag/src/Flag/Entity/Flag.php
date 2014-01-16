@@ -1,20 +1,19 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Flag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Uuid\Entity\UuidInterface;
-use User\Entity\UserInterface;
 use Language\Entity\LanguageInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
@@ -57,7 +56,7 @@ class Flag implements FlagInterface
      * @ORM\Column(type="datetime", name="`timestamp`", options={"default"="CURRENT_TIMESTAMP"})
      */
     protected $timestamp;
-    
+
     public function getLanguage()
     {
         return $this->language;
@@ -91,24 +90,28 @@ class Flag implements FlagInterface
     public function setObject(UuidInterface $object)
     {
         $this->object = $object;
+
         return $this;
     }
 
     public function setReporter(UserInterface $reporter)
     {
         $this->reporter = $reporter;
+
         return $this;
     }
 
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
-    
+
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
+
         return $this;
     }
 }

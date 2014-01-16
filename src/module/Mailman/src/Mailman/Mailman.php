@@ -1,22 +1,20 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Mailman;
 
 class Mailman implements MailmanInterface
 {
-    use\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use\Common\Traits\ConfigAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     /**
-     *
      * @return string $defaultSender
      */
     public function getDefaultSender()
@@ -27,7 +25,7 @@ class Mailman implements MailmanInterface
     protected function getDefaultConfig()
     {
         return array(
-            'adapters' => array(),
+            'adapters'       => array(),
             'default_sender' => 'no-reply@serlo.org'
         );
     }
@@ -56,10 +54,14 @@ class Mailman implements MailmanInterface
     protected function loadAdapters()
     {
         foreach ($this->getOption('adapters') as $adapter) {
-            if (! array_key_exists($adapter, $this->adapters)) {
+            if (!array_key_exists($adapter, $this->adapters)) {
                 $this->adapters[$adapter] = $this->getServiceLocator()->get($adapter);
-                if (! $this->adapters[$adapter] instanceof Adapter\AdapterInterface)
-                    throw new Exception\RuntimeException(sprintf('%s does not implement AdapterInterface', get_class($this->adapters[$adapter])));
+                if (!$this->adapters[$adapter] instanceof Adapter\AdapterInterface) {
+                    throw new Exception\RuntimeException(sprintf(
+                        '%s does not implement AdapterInterface',
+                        get_class($this->adapters[$adapter])
+                    ));
+                }
             }
         }
     }

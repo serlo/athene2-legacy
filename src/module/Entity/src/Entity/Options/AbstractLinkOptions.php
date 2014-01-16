@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -81,8 +80,11 @@ abstract class AbstractLinkOptions extends AbstractOptions implements ComponentO
     public function allowsManyParents($type)
     {
         if (!$this->isParentAllowed($type)) {
-            throw new Exception\RuntimeException(sprintf('Link type "%s" does not allow parent "%s".',
-                $this->getLinkType(), $type));
+            throw new Exception\RuntimeException(sprintf(
+                'Link type "%s" does not allow parent "%s".',
+                $this->getLinkType(),
+                $type
+            ));
         }
 
         return array_key_exists('multiple', $this->parents[$type]) ? $this->parents[$type]['multiple'] : false;
@@ -91,8 +93,11 @@ abstract class AbstractLinkOptions extends AbstractOptions implements ComponentO
     public function allowsManyChildren($type)
     {
         if (!$this->isChildAllowed($type)) {
-            throw new Exception\RuntimeException(sprintf('Link "%s" does not allow child "%s".', $this->getLinkType(),
-                $type));
+            throw new Exception\RuntimeException(sprintf(
+                'Link "%s" does not allow child "%s".',
+                $this->getLinkType(),
+                $type
+            ));
         }
 
         return array_key_exists('multiple', $this->children[$type]) ? $this->children[$type]['multiple'] : false;

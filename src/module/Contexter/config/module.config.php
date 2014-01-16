@@ -24,11 +24,11 @@ return [
         'router' => [
             'adapters' => [
                 [
-                    'adapter' => __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter',
+                    'adapter'     => __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter',
                     'controllers' => [
                         [
                             'controller' => 'Entity\Plugin\Repository\Controller\RepositoryController',
-                            'action' => 'addRevision'
+                            'action'     => 'addRevision'
                         ]
                     ]
                 ]
@@ -41,9 +41,9 @@ return [
         ]
     ],
     'class_resolver'         => [
-        'Contexter\Entity\ContextInterface' => 'Contexter\Entity\Context',
-        'Contexter\Entity\TypeInterface'  => 'Contexter\Entity\Type',
-        'Contexter\Entity\RouteInterface' => 'Contexter\Entity\Route',
+        'Contexter\Entity\ContextInterface'        => 'Contexter\Entity\Context',
+        'Contexter\Entity\TypeInterface'           => 'Contexter\Entity\Type',
+        'Contexter\Entity\RouteInterface'          => 'Contexter\Entity\Route',
         'Contexter\Entity\RouteParameterInterface' => 'Contexter\Entity\RouteParameter'
     ],
     'doctrine'               => [
@@ -55,7 +55,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
