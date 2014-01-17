@@ -40,9 +40,6 @@ return [
                     ],
                     'setLanguageManager' => [
                         'required' => true
-                    ],
-                    'setAuthorizationService' => [
-                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\LinkController'       => [
@@ -53,9 +50,6 @@ return [
                         'required' => true
                     ],
                     'setModuleOptions' => [
-                        'required' => true
-                    ],
-                    'setAuthorizationService' => [
                         'required' => true
                     ]
                 ],
@@ -68,9 +62,6 @@ return [
                     ],
                     'setLicenseManager'  => [
                         'required' => true
-                    ],
-                    'setAuthorizationService' => [
-                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\EntityController'     => [
@@ -78,12 +69,6 @@ return [
                         'required' => true
                     ],
                     'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ],
-                    'setAuthorizationService' => [
                         'required' => true
                     ]
                 ],

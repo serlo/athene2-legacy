@@ -204,9 +204,6 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Hydrator\Navigation' => array(
-                    'setServiceLocator' => array(
-                        'required' => true
-                    ),
                     'setSubjectManager' => array(
                         'required' => true
                     ),

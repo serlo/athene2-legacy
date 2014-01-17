@@ -33,15 +33,6 @@ return [
         'definition'          => [
             'class' => [
                 'Admin\Controller\HomeController' => [
-                    'setEntityManager'   => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
                 ]
             ]
         ]

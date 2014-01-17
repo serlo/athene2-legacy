@@ -57,9 +57,6 @@ return [
                     'setTaxonomyManager'      => [
                         'required' => true
                     ],
-                    'setServiceLocator'       => [
-                        'required' => true
-                    ],
                     'setClassResolver'        => [
                         'required' => true
                     ],

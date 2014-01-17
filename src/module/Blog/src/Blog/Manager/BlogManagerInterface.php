@@ -11,6 +11,8 @@
 namespace Blog\Manager;
 
 use Blog\Entity\PostInterface;
+use ClassResolver\ClassResolverAwareInterface;
+use ClassResolver\ClassResolverAwareTrait;
 use DateTime;
 use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;

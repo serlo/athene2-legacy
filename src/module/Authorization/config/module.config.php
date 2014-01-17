@@ -14,6 +14,11 @@ use Authorization\Assertion\RequestLanguageAssertion;
 use Authorization\Assertion\RoleAssertion;
 
 return [
+    'zendDiCompiler' => array(
+        'scanDirectories' => array(
+            __DIR__ . '/../src'
+        ),
+    ),
     'zfc_rbac'           => [
         'guard_manager'     => [
             'factories' => [

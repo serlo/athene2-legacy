@@ -95,12 +95,6 @@ return [
                 __NAMESPACE__ . '\Controller\UuidController' => [
                     'setUuidManager' => [
                         'required' => true
-                    ],
-                    'setUserManager' => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Manager\UuidManager'       => [

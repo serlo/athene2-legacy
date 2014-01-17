@@ -97,7 +97,6 @@ return array(
         'User\Entity\UserInterface'                              => 'User\Entity\User',
         'User\Entity\RoleInterface'                              => 'User\Entity\Role',
         'User\Notification\Entity\NotificationEventInterface'    => 'User\Entity\NotificationEvent',
-        'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationService',
         'User\Notification\Entity\NotificationInterface'         => 'User\Entity\Notification',
         'User\Notification\Entity\SubscriptionInterface'         => 'User\Entity\Subscription',
         'User\Notification\Entity\NotificationLogInterface'      => 'User\Entity\NotificationLog'
@@ -110,23 +109,12 @@ return array(
         ),
         'definition'          => array(
             'class' => array(
-                'User\Notification\Service\NotificationService'                       => array(
-                    'setEventManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Notification\Listener\DiscussionControllerListener' => array(
-                    'setNotificationLogManager' => array(
-                        'required' => true
-                    ),
                     'setSubscriptionManager'    => array(
                         'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Notification\Listener\RepositoryManagerListener'    => array(
-                    'setNotificationLogManager' => array(
-                        'required' => true
-                    ),
                     'setSubscriptionManager'    => array(
                         'required' => true
                     ),
@@ -215,9 +203,6 @@ return array(
                     'setAuthenticationService' => array(
                         'required' => true
                     ),
-                    'setAuthAdapter'           => array(
-                        'required' => true
-                    ),
                     'setLanguageManager'       => array(
                         'required' => true
                     )
@@ -232,9 +217,6 @@ return array(
                 __NAMESPACE__ . '\Notification\SubscriptionManagerInterface'    => __NAMESPACE__ . '\Notification\SubscriptionManager',
                 __NAMESPACE__ . '\Notification\NotificationManagerInterface'    => __NAMESPACE__ . '\Notification\NotificationManager',
                 __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager'
-            ),
-            'User\Notification\Service\NotificationService' => array(
-                'shared' => false
             )
         )
     ),

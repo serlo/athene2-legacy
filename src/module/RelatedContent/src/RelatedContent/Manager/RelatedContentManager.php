@@ -13,6 +13,7 @@ namespace RelatedContent\Manager;
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\FlushableTrait;
+use Common\Traits\ObjectManagerAwareTrait;
 use Common\Traits\RouterAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use RelatedContent\Entity\ContainerInterface;

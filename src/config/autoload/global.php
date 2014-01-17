@@ -65,7 +65,8 @@ return array(
         'instance' => array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
+                'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default',
+                //'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
             )
         )
     ),
