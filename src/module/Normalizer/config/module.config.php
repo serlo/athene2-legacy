@@ -18,9 +18,10 @@ return [
     'view_helpers' => [
         'factories' => [
             'normalize' => function (ServiceLocatorInterface $serviceLocator) {
-                    $normalize = new Normalize();
+                    $normalize  = new Normalize();
+                    $normalizer = $serviceLocator->getServiceLocator()->get('Normalizer\Normalizer');
                     $normalize->setNormalizer(
-                        $serviceLocator->getServiceLocator()->get('Normalizer\Normalizer')
+                        $normalizer
                     );
 
                     return $normalize;
@@ -28,18 +29,51 @@ return [
         ]
     ],
     'di'           => [
-        'definition' => [
+        'allowed_controllers' => [
+            __NAMESPACE__ . '\Controller\SignpostController',
+        ],
+        'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Normalizer' => [
+                __NAMESPACE__ . '\Controller\SignpostController' => [
+                    'setNormalizer'  => [
+                        'required' => true
+                    ],
+                    'setUuidManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Normalizer'                    => [
                     'setServiceLocator' => [
                         'required' => true
                     ]
                 ]
             ]
         ],
-        'instance'   => [
+        'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\NormalizerInterface' => __NAMESPACE__ . '\Normalizer'
+            ]
+        ]
+    ],
+    'router'       => [
+        'routes' => [
+            'normalizer' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route' => ''
+                ],
+                'child_routes' => [
+                    'signpost' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route' => '/ref/:object',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\SignpostController',
+                                'action'     => 'index'
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]
     ]
