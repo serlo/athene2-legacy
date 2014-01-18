@@ -13,7 +13,8 @@ namespace Uuid;
 return [
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\UuidManager'   => __NAMESPACE__ . '\Factory\UuidManagerFactory'
         ]
     ],
     'class_resolver'  => [
@@ -96,21 +97,12 @@ return [
                     'setUuidManager' => [
                         'required' => true
                     ]
-                ],
-                __NAMESPACE__ . '\Manager\UuidManager'       => [
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ]
                 ]
             ]
         ],
         'instance'            => [
             'preferences' => [
-                __NAMESPACE__ . '\Manager\UuidManagerInterface' => __NAMESPACE__ . '\Manager\UuidManager',
-                __NAMESPACE__ . '\Router\UuidRouterInterface'   => __NAMESPACE__ . '\Router\UuidRouter'
+                __NAMESPACE__ . '\Manager\UuidManagerInterface' => __NAMESPACE__ . '\Manager\UuidManager'
             ]
         ]
     ],

@@ -377,7 +377,7 @@ class UserController extends AbstractUserController
 
     public function profileAction()
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $user = $this->getUserManager()->getUser($this->params('id'));
         $view = new ViewModel([
             'user' => $user
         ]);

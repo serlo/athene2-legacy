@@ -12,9 +12,11 @@ namespace Uuid\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception\InvalidArgumentException;
@@ -22,6 +24,7 @@ use Uuid\Exception\NotFoundException;
 use Uuid\Exception;
 use Uuid\Options\ModuleOptions;
 use Zend\EventManager\EventManagerAwareTrait;
+use ZfcRbac\Service\AuthorizationService;
 
 class UuidManager implements UuidManagerInterface
 {
@@ -35,11 +38,21 @@ class UuidManager implements UuidManagerInterface
     protected $moduleOptions;
 
     /**
-     * @param ModuleOptions $moduleOptions
+     * @param AuthorizationService   $authorizationService
+     * @param ClassResolverInterface $classResolver
+     * @param ModuleOptions          $moduleOptions
+     * @param ObjectManager          $objectManager
      */
-    public function setModuleOptions(ModuleOptions $moduleOptions)
-    {
-        $this->moduleOptions = $moduleOptions;
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ModuleOptions $moduleOptions,
+        ObjectManager $objectManager
+    ) {
+        $this->authorizationService = $authorizationService;
+        $this->classResolver        = $classResolver;
+        $this->objectManager        = $objectManager;
+        $this->moduleOptions        = $moduleOptions;
     }
 
     /**
