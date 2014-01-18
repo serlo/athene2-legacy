@@ -42,4 +42,9 @@ interface NormalizedInterface
      * @return string
      */
     public function getContent();
+
+    /**
+     * @return string
+     */
+    public function getType();
 }

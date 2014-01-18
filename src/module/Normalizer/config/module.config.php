@@ -28,18 +28,51 @@ return [
         ]
     ],
     'di'           => [
-        'definition' => [
+        'allowed_controllers' => [
+            __NAMESPACE__ . '\Controller\SignpostController',
+        ],
+        'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Normalizer' => [
+                __NAMESPACE__ . '\Controller\SignpostController' => [
+                    'setNormalizer'  => [
+                        'required' => true
+                    ],
+                    'setUuidManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Normalizer'                    => [
                     'setServiceLocator' => [
                         'required' => true
                     ]
                 ]
             ]
         ],
-        'instance'   => [
+        'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\NormalizerInterface' => __NAMESPACE__ . '\Normalizer'
+            ]
+        ]
+    ],
+    'router'       => [
+        'routes' => [
+            'normalizer' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route' => ''
+                ],
+                'child_routes' => [
+                    'taxonomy' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/signpost/:object',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\SignpostController',
+                                'action'     => 'index'
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]
     ]
