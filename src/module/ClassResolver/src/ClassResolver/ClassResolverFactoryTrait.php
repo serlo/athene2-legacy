@@ -8,19 +8,18 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Authorization\Factory;
+namespace ClassResolver;
 
-use Authorization\Controller\PermissionController;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class PermissionControllerFactory implements FactoryInterface
+trait ClassResolverFactoryTrait
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return ClassResolver
+     */
+    protected function getClassResolver(ServiceLocatorInterface $serviceLocator)
     {
-        $permissionService = $serviceLocator->getServiceLocator()->get('Authorization\Service\PermissionService');
-        $instance          = new PermissionController($permissionService);
-
-        return $instance;
+        return $serviceLocator->get('ClassResolver\ClassResolver');
     }
 }

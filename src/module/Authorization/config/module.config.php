@@ -29,7 +29,8 @@ return [
     ],
     'service_manager'    => [
         'factories' => [
-
+            'Authorization\Service\RoleService'       => __NAMESPACE__ . '\Factory\RoleServiceFactory',
+            'Authorization\Service\PermissionService' => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
         ]
     ],
     'controller_plugins' => [
@@ -45,14 +46,6 @@ return [
     'class_resolver'     => [
         __NAMESPACE__ . '\Entity\RoleInterface'       => 'User\Entity\Role',
         __NAMESPACE__ . '\Entity\PermissionInterface' => 'User\Entity\Permission'
-    ],
-    'di'                 => [
-        'instance' => [
-            'preferences' => [
-                __NAMESPACE__ . '\Service\RoleServiceInterface'       => __NAMESPACE__ . '\Service\RoleService',
-                __NAMESPACE__ . '\Service\PermissionServiceInterface' => __NAMESPACE__ . '\Service\PermissionService'
-            ]
-        ]
     ],
     'router'             => [
         'routes' => [

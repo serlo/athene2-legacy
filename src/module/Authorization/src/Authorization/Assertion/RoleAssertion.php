@@ -33,8 +33,7 @@ class RoleAssertion implements AssertionInterface
 
     public function assert(AuthorizationService $authorization, $role = null)
     {
-        $assertion = new RequestLanguageAssertion();
-        $assertion->setLanguageManager($this->getLanguageManager());
+        $assertion = new RequestLanguageAssertion($this->getLanguageManager());
         $checkName = 'authorization.role.' . $role->getName() . '.identity.modify';
 
         try {

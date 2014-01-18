@@ -25,7 +25,7 @@ apt-get -y update
 
 # Install php
 
-apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin php5-xdebug php5-cli
+apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin php5-xdebug php5-cli php-apc
 
 # Install nodejs related stuff
 

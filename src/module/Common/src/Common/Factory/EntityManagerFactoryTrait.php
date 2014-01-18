@@ -8,19 +8,20 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Authorization\Factory;
+namespace Common\Factory;
 
-use Authorization\Controller\PermissionController;
-use Zend\ServiceManager\FactoryInterface;
+use Doctrine\ORM\EntityManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class PermissionControllerFactory implements FactoryInterface
+trait EntityManagerFactoryTrait
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return EntityManager
+     */
+    public function getEntityManager(ServiceLocatorInterface $serviceLocator)
     {
-        $permissionService = $serviceLocator->getServiceLocator()->get('Authorization\Service\PermissionService');
-        $instance          = new PermissionController($permissionService);
-
-        return $instance;
+        return $serviceLocator->get('Doctrine\ORM\EntityManager');
     }
 }
+ 

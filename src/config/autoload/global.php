@@ -13,7 +13,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 return array(
     'page_header_helper' => array(
-        'brand' => 'www.serlo.org',
+        'brand'     => 'www.serlo.org',
         'delimiter' => ' - '
     ),
     'brand'              => array(
@@ -22,22 +22,22 @@ return array(
     'doctrine'           => array(
         'entitymanager' => array(
             'orm_default' => array(
-                'connection' => 'orm_default',
+                'connection'    => 'orm_default',
                 'configuration' => 'orm_default'
             )
         )
     ),
     'session'            => array(
-        'config'  => array(
+        'config'     => array(
             'class'   => 'Zend\Session\Config\SessionConfig',
             'options' => array(
-                'name'          => 'athene2',
+                'name'                => 'athene2',
                 'remember_me_seconds' => 6000,
-                'use_cookies'   => true,
-                'cookie_secure' => false
+                'use_cookies'         => true,
+                'cookie_secure'       => false
             )
         ),
-        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'storage'    => 'Zend\Session\Storage\SessionArrayStorage',
         'validators' => array(
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent'
@@ -49,13 +49,13 @@ return array(
                     $config = $sm->get('config')['smtp_options'];
 
                     return new \Zend\Mail\Transport\SmtpOptions($config);
-                }
+                },
         )
     ),
     'smtp_options'       => array(
-        'name'             => 'localhost.localdomain',
-        'host'             => 'localhost',
-        'connection_class' => 'login',
+        'name'              => 'localhost.localdomain',
+        'host'              => 'localhost',
+        'connection_class'  => 'login',
         'connection_config' => array(
             'username' => 'postmaster',
             'password' => ''
@@ -65,13 +65,13 @@ return array(
         'instance' => array(
             'preferences' => array(
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Doctrine\Common\Persistence\ObjectManager' => 'doctrine.entitymanager.orm_default',
-                //'Doctrine\Common\Persistence\ObjectManager' => 'Doctrine\ORM\EntityManager'
+                'Doctrine\Common\Persistence\ObjectManager'   => 'Doctrine\ORM\EntityManager'
             )
         )
     ),
     'sphinx'             => array(
         'host' => '127.0.0.1',
         'port' => 9306
-    )
+    ),
+    'zendDiCompiler'     => array(),
 );

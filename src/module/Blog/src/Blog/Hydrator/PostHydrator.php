@@ -11,6 +11,7 @@
 namespace Blog\Hydrator;
 
 use Blog\Entity\PostInterface;
+use Common\Hydrator\AbstractKeyHydrator;
 
 class PostHydrator extends AbstractKeyHydrator
 {

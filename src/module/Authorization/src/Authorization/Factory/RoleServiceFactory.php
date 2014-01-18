@@ -18,7 +18,7 @@ use User\Factory\UserManagerFactoryTrait;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class PermissionServiceFactory implements FactoryInterface
+class RoleServiceFactory implements FactoryInterface
 {
     use ClassResolverFactoryTrait, EntityManagerFactoryTrait, AuthorizationServiceFactoryTrait, UserManagerFactoryTrait;
 

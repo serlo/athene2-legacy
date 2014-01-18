@@ -14,20 +14,39 @@ use Authorization\Service\AuthorizationAssertionTrait;
 use Blog\Exception;
 use Blog\Hydrator\PostHydrator;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
 use DateTime;
+use Doctrine\Common\Persistence\ObjectManager;
 use Language\Entity\LanguageInterface;
 use Language\Manager\LanguageManagerAwareTrait;
+use Language\Manager\LanguageManagerInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Entity\UserInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
+use ZfcRbac\Service\AuthorizationService;
 
 class BlogManager implements BlogManagerInterface
 {
     use TaxonomyManagerAwareTrait, ObjectManagerAwareTrait;
     use ClassResolverAwareTrait, UuidManagerAwareTrait;
     use LanguageManagerAwareTrait, AuthorizationAssertionTrait;
+
+    public function __construct(
+        ClassResolverInterface $classResolver,
+        TaxonomyManagerInterface $taxonomyManager,
+        ObjectManager $objectManager,
+        LanguageManagerInterface $languageManager,
+        AuthorizationService $authorizationService
+    ) {
+        $this->classResolver   = $classResolver;
+        $this->taxonomyManager = $taxonomyManager;
+        $this->languageManager = $languageManager;
+        $this->objectManager   = $objectManager;
+        $this->setAuthorizationService($authorizationService);
+    }
 
     public function getBlog($id)
     {
