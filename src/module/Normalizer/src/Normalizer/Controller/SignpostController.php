@@ -26,7 +26,7 @@ class SignpostController extends AbstractActionController
         $routeParams = $normalized->getRouteParams();
         $type        = $normalized->getType();
 
-        $this->redirect()->toRoute($routeName, $routeParams, ['type' => $type]);
+        $this->redirect()->toRoute($routeName, $routeParams, ['query' => ['type' => $type]]);
     }
 }
  
