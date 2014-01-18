@@ -10,47 +10,26 @@
  */
 namespace Authorization;
 
-use Authorization\Assertion\RequestLanguageAssertion;
-use Authorization\Assertion\RoleAssertion;
-
 return [
-    'zendDiCompiler' => array(
-        'scanDirectories' => array(
-            __DIR__ . '/../src'
-        ),
-    ),
     'zfc_rbac'           => [
         'guard_manager'     => [
             'factories' => [
-                __NAMESPACE__ . '\Guard\HydratableControllerGuard' => __NAMESPACE__ . '\Factory\HydratableControllerGuardFactory',
-                __NAMESPACE__ . '\Guard\AssertiveControllerGuard'  => __NAMESPACE__ . '\Factory\AssertiveControllerGuardFactory'
+                __NAMESPACE__ . '\Guard\HydratableControllerGuard' => __NAMESPACE__ . '\Factory\HydratableControllerGuardFactory'
             ]
         ],
         'assertion_manager' => [
             'factories' => [
-                'Authorization\Assertion\RoleAssertion'            => function ($pluginManager) {
-                        $instance = new RoleAssertion();
-                        $instance->setLanguageManager(
-                            $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager')
-                        );
-                        $instance->setPermissionService(
-                            $pluginManager->getServiceLocator()->get(__NAMESPACE__ . '\Service\PermissionService')
-                        );
-
-                        return $instance;
-                    },
-                'Authorization\Assertion\RequestLanguageAssertion' => function ($pluginManager) {
-                        $instance = new RequestLanguageAssertion();
-                        $instance->setLanguageManager(
-                            $pluginManager->getServiceLocator()->get('Language\Manager\LanguageManager')
-                        );
-
-                        return $instance;
-                    }
+                'Authorization\Assertion\RoleAssertion'            => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
+                'Authorization\Assertion\RequestLanguageAssertion' => __NAMESPACE__ . '\Factory\RequestLanguageAssertionFactory',
             ]
         ],
         'assertion_map'     => [
             'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion'
+        ]
+    ],
+    'service_manager'    => [
+        'factories' => [
+
         ]
     ],
     'controller_plugins' => [
@@ -58,60 +37,17 @@ return [
             'assertGranted' => 'Authorization\Controller\Plugin\AssertGranted'
         ]
     ],
+    'controllers'        => [
+        'factories' => [
+            __NAMESPACE__ . '\Controller\RoleController' => __NAMESPACE__ . '\Factory\RoleControllerFactory'
+        ]
+    ],
     'class_resolver'     => [
         __NAMESPACE__ . '\Entity\RoleInterface'       => 'User\Entity\Role',
         __NAMESPACE__ . '\Entity\PermissionInterface' => 'User\Entity\Permission'
     ],
     'di'                 => [
-        'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\RoleController'
-        ],
-        'definition'          => [
-            'class' => [
-                __NAMESPACE__ . '\Controller\RoleController'          => [
-                    'setRoleService'       => [
-                        'required' => true
-                    ],
-                    'setUserManager'       => [
-                        'required' => true
-                    ],
-                    'setPermissionService' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Assertion\RequestLanguageAssertion' => [
-                    'setLanguageManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Service\RoleService'                => [
-                    'setObjectManager'        => [
-                        'required' => true
-                    ],
-                    'setUserManager'          => [
-                        'required' => true
-                    ],
-                    'setClassResolver'        => [
-                        'required' => true
-                    ],
-                    'setPermissionService'    => [
-                        'required' => true
-                    ],
-                    'setAuthorizationService' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Service\PermissionService'          => [
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ]
-                ]
-            ]
-        ],
-        'instance'            => [
+        'instance' => [
             'preferences' => [
                 __NAMESPACE__ . '\Service\RoleServiceInterface'       => __NAMESPACE__ . '\Service\RoleService',
                 __NAMESPACE__ . '\Service\PermissionServiceInterface' => __NAMESPACE__ . '\Service\PermissionService'

@@ -12,9 +12,13 @@ namespace Authorization\Service;
 
 use Authorization\Exception\RoleNotFoundException;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\ObjectManager\Flushable;
 use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Persistence\ObjectManager;
 use User\Manager\UserManagerAwareTrait;
+use User\Manager\UserManagerInterface;
+use ZfcRbac\Service\AuthorizationService;
 
 class RoleService implements RoleServiceInterface, Flushable
 {
@@ -22,6 +26,20 @@ class RoleService implements RoleServiceInterface, Flushable
         AuthorizationAssertionTrait;
 
     protected $interface = 'Authorization\Entity\RoleInterface';
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager,
+        PermissionServiceInterface $permissionService,
+        UserManagerInterface $userManager
+    ) {
+        $this->authorizationService = $authorizationService;
+        $this->classResolver        = $classResolver;
+        $this->objectManager        = $objectManager;
+        $this->userManager          = $userManager;
+        $this->permissionService    = $permissionService;
+    }
 
     public function findAllRoles()
     {

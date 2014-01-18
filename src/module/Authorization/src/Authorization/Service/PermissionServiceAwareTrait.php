@@ -18,15 +18,6 @@ trait PermissionServiceAwareTrait
     protected $permissionService;
 
     /**
-     * @param PermissionServiceInterface $permissionService
-     * @return void
-     */
-    public function setPermissionService(PermissionServiceInterface $permissionService)
-    {
-        $this->permissionService = $permissionService;
-    }
-
-    /**
      * @return PermissionServiceInterface
      */
     public function getPermissionService()
