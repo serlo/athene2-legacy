@@ -1,16 +1,15 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace User\Entity;
+namespace Notification\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use User\Notification\Entity\NotificationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use User\Entity\UserInterface;
 
 /**
  * @ORM\Entity
@@ -27,7 +26,7 @@ class Notification implements NotificationInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User\Entity\User")
      */
     protected $user;
 
@@ -58,7 +57,6 @@ class Notification implements NotificationInterface
     }
 
     /**
-     *
      * @return field_type $id
      */
     public function getId()
@@ -67,7 +65,6 @@ class Notification implements NotificationInterface
     }
 
     /**
-     *
      * @return field_type $user
      */
     public function getUser()
@@ -76,7 +73,6 @@ class Notification implements NotificationInterface
     }
 
     /**
-     *
      * @return field_type $seen
      */
     public function getSeen()
@@ -85,27 +81,27 @@ class Notification implements NotificationInterface
     }
 
     /**
-     *
-     * @param field_type $user            
+     * @param field_type $user
      * @return self
      */
     public function setUser(UserInterface $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     *
-     * @param field_type $seen            
+     * @param field_type $seen
      * @return self
      */
     public function setSeen($seen)
     {
         $this->seen = $seen;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getEvents()
      */
@@ -115,25 +111,25 @@ class Notification implements NotificationInterface
         foreach ($this->events as $event) {
             $events->add($event->getEventLog());
         }
+
         return $events;
     }
 
     public function getEventName()
     {
-        return $this->getEvents()
-            ->current()
-            ->getEvent()
-            ->getName();
+        return $this->getEvents()->current()->getEvent()->getName();
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::addEvent()
      */
-    public function addEvent(\User\Notification\Entity\NotificationEventInterface $event)
+    public function addEvent(NotificationEventInterface $event)
     {
         $this->events->add($event);
+
         return $this;
     }
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getActors()
      */
@@ -144,9 +140,10 @@ class Notification implements NotificationInterface
             /* @var $event NotificationEvent */
             $collection->add($event->getActor());
         }
+
         return $collection;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getObjects()
      */
@@ -157,9 +154,10 @@ class Notification implements NotificationInterface
             /* @var $event NotificationEvent */
             $collection->add($event->getObject());
         }
+
         return $collection;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationInterface::getParameters()
      */
@@ -170,12 +168,14 @@ class Notification implements NotificationInterface
             /* @var $event NotificationEvent */
             $collection->add($event->getParameters());
         }
+
         return $collection;
     }
 
     public function setTimestamp(\DateTime $timestamp)
     {
         $this->date = $timestamp;
+
         return $this;
     }
 }

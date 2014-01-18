@@ -9,27 +9,24 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Notification;
+namespace Notification;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Uuid\Entity\UuidInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
     use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
     
     /*
-     * (non-PHPdoc) @see \User\Notification\SubscriptionManagerInterface::findSubscribersByUuid()
+     * (non-PHPdoc) @see \Notification\SubscriptionManagerInterface::findSubscribersByUuid()
      */
     public function findSubscribersByUuid(\Uuid\Entity\UuidInterface $uuid)
     {
         $subscriptions = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
-            ->findBy(array(
+            ->getRepository($this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface'))->findBy(array(
             'object' => $uuid->getId()
         ));
         
@@ -41,9 +38,7 @@ class SubscriptionManager implements SubscriptionManagerInterface
     public function isUserSubscribed(UserInterface $user, UuidInterface $object)
     {
         return is_object($this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('User\Notification\Entity\SubscriptionInterface'))
-            ->findOneBy(array(
+            ->getRepository($this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface'))->findOneBy(array(
             'user' => $user->getId(),
             'object' => $object->getId()
         )));
@@ -52,8 +47,8 @@ class SubscriptionManager implements SubscriptionManagerInterface
     public function subscribe(UserInterface $user, UuidInterface $object, $notifyMailman)
     {
         if(!$this->isUserSubscribed($user, $object)){
-            $class = $this->getClassResolver()->resolveClassName('User\Notification\Entity\SubscriptionInterface');
-            /* @var $entity \User\Notification\Entity\SubscriptionInterface */
+            $class = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
+            /* @var $entity \Notification\Entity\SubscriptionInterface */
             $entity = new $class();
             $entity->setSubscriber($user);
             $entity->setSubscribedObject($object);

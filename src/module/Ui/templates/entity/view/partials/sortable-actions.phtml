@@ -1,4 +1,4 @@
-<?php if($this->guard()->hasAccessToRoute('entity/link/order')): ?>
+<?php if ($this->isGranted('entity.link.order', $entity)): ?>
     <button class="btn btn-xs btn-default sortable-activate-action">
         <span class="glyphicon glyphicon-sort"></span>
     </button>

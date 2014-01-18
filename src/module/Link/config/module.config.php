@@ -8,7 +8,7 @@
 namespace Link;
 
 return [
-    'di'           => [
+    'di'       => [
         'definition' => [
             'class' => [
                 __NAMESPACE__ . '\Listener\EntityManagerListener' => [
@@ -38,12 +38,7 @@ return [
             ]
         ]
     ],
-    'view_manager' => [
-        'template_path_stack' => [
-            __DIR__ . '/../view'
-        ]
-    ],
-    'doctrine'     => [
+    'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

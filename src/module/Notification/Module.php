@@ -5,10 +5,17 @@
  * @license   LGPL
  * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace User;
+namespace Notification;
+
+use Zend\Mvc\MvcEvent;
 
 class Module
 {
+
+    public static $listeners = [
+        'Notification\Listener\RepositoryManagerListener',
+        'Notification\Listener\DiscussionControllerListener'
+    ];
 
     public function getConfig()
     {
@@ -24,5 +31,14 @@ class Module
                 )
             )
         );
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        foreach (static::$listeners as $listener) {
+            $e->getApplication()->getEventManager()->getSharedManager()->attachAggregate(
+                $e->getApplication()->getServiceManager()->get($listener)
+            );
+        }
     }
 }

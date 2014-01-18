@@ -10,7 +10,7 @@
  */
 namespace Entity\Form;
 
-use User\Notification\Form\OptInFieldset;
+use Notification\Form\OptInFieldset;
 use Zend\Form\Element\Submit;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;

@@ -1,15 +1,15 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace User\Entity;
+namespace Notification\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use User\Notification\Entity\SubscriptionInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
@@ -43,7 +43,6 @@ class Subscription implements SubscriptionInterface
     protected $notifyMailman;
 
     /**
-     *
      * @return field_type $notifyMailman
      */
     public function getNotifyMailman()
@@ -52,25 +51,26 @@ class Subscription implements SubscriptionInterface
     }
 
     /**
-     *
-     * @param field_type $notifyMailman            
+     * @param field_type $notifyMailman
      * @return self
      */
     public function setNotifyMailman($notifyMailman)
     {
-        $this->notifyMailman = $notifyMailman === TRUE;
+        $this->notifyMailman = $notifyMailman === true;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::setSubscriber()
      */
-    public function setSubscriber(\User\Entity\UserInterface $user)
+    public function setSubscriber(UserInterface $user)
     {
         $this->user = $user;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::getSubscriber()
      */
@@ -78,16 +78,17 @@ class Subscription implements SubscriptionInterface
     {
         return $this->user;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::setSubscribedObject()
      */
-    public function setSubscribedObject(\Uuid\Entity\UuidInterface $uuid)
+    public function setSubscribedObject(UuidInterface $uuid)
     {
         $this->object = $uuid;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::getSubscribedObject()
      */

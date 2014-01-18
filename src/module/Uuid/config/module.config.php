@@ -20,6 +20,11 @@ return [
     'class_resolver'  => [
         __NAMESPACE__ . '\Entity\UuidInterface' => __NAMESPACE__ . '\Entity\Uuid'
     ],
+    'view_helper'     => [
+        'factories' => [
+            __NAMESPACE__ . '\View\Helper\UuidHelper' => __NAMESPACE__ . '\Factory\UuidHelper'
+        ]
+    ],
     'uuid'            => [
         'permissions' => [
             'entityRevision' => [

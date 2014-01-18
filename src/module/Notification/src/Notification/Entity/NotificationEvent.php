@@ -1,16 +1,13 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-namespace User\Entity;
+namespace Notification\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use User\Notification\Entity\NotificationEventInterface;
-use User\Notification\Entity\NotificationLogInterface;
 use Event\Entity\EventLogInterface;
 
 /**
@@ -19,7 +16,7 @@ use Event\Entity\EventLogInterface;
  */
 class NotificationEvent implements NotificationEventInterface
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -38,7 +35,7 @@ class NotificationEvent implements NotificationEventInterface
      * @ORM\JoinColumn(name="notification_id", referencedColumnName="id")
      */
     protected $notification;
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getEventLog()
      */
@@ -46,16 +43,17 @@ class NotificationEvent implements NotificationEventInterface
     {
         return $this->eventLog;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::setEventLog()
      */
     public function setEventLog(EventLogInterface $eventLog)
     {
         $this->eventLog = $eventLog;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getId()
      */
@@ -63,7 +61,7 @@ class NotificationEvent implements NotificationEventInterface
     {
         return $this->id;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::getNotification()
      */
@@ -71,13 +69,14 @@ class NotificationEvent implements NotificationEventInterface
     {
         return $this->notification;
     }
-    
+
     /*
      * (non-PHPdoc) @see \User\Notification\Entity\NotificationEventInterface::setNotification()
      */
-    public function setNotification(\User\Notification\Entity\NotificationInterface $notification)
+    public function setNotification(NotificationInterface $notification)
     {
         $this->notification = $notification;
+
         return $this;
     }
 }
