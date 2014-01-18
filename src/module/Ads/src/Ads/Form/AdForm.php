@@ -12,10 +12,12 @@
 namespace Ads\Form;
 
 use Zend\Form\Form;
-use Ads\Form\AdFilter;
-use Zend\Form\Element\File;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Select;
+use Zend\Form\Element\File;
+
 class AdForm extends Form
 {
 
@@ -24,78 +26,36 @@ class AdForm extends Form
         parent::__construct('createAd');
         $this->setAttribute('class', 'clearfix');
         
-        //$filter = new AdFilter();
+        // $filter = new AdFilter();
         
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
         
-        //$this->setInputFilter($filter);
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'Add Title',
-                'required' => 'required',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Titel'
-            )
-        ));
+        // $this->setInputFilter($filter);
         
-        $this->add(array(
-            'name' => 'url',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'Add Url',
-                'required' => 'required',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Url'
-            )
-        ));
+        $this->add((new Text('title'))->setLabel('Title:'))
+            ->setAttribute('required', 'required');
+        $this->add((new Text('url'))->setLabel('Url:'))
+            ->setAttribute('required', 'required');
+        $this->add((new Textarea('content'))->setLabel('Content:'))
+            ->setAttribute('required', 'required');
         
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-                'class' => 'ckeditor',
-                'placeholder' => 'Add Content',
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Inhalt'
-            )
-        ));
+       
         
-
-        
-
-        
-        $select = new Select('frequency');
-        $select->setLabel('frequency');
-        $select->setValueOptions(    array(
-                '0' => 'Never',
-                '1' => 'Less',
-                '2' => 'Normal',
-                '3' => 'More'
-        ));
-        $select->setValue('2');
-        
-        $this->add($select);
+       $this->add((new Select('frequency'))->setValueOptions(array(
+            '0' => 'Never',
+            '1' => 'Less',
+            '2' => 'Normal',
+            '3' => 'More'
+        ))
+            ->setAttribute('required', 'required')
+            ->setLabel('frequency')
+            ->setValue('2'));
         
         $this->add((new File('file'))->setLabel('Bild hochladen')
             ->setAttribute('required', 'required'));
         
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'class' => 'btn btn-success',
-                'type' => 'submit',
-                'value' => 'erstellen',
-                'id' => 'submitbutton'
-            )
-        ));
+        $this->add((new Submit('submit'))->setValue('Save')
+            ->setAttribute('class', 'btn btn-success pull-right'));
     }
 }

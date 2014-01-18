@@ -12,7 +12,6 @@
 
 namespace Ads\Manager;
 
-use Ads\Manager\AdsManagerInterface;
 trait AdsManagerAwareTrait
 {
 
@@ -24,8 +23,8 @@ trait AdsManagerAwareTrait
 
     /**
      *
-     * @return \Ads\Manager\AdsManagerInterface
-     *         $pageManager
+     * @return AdsManagerInterface
+     *        
      */
     public function getAdsManager ()
     {
@@ -34,7 +33,7 @@ trait AdsManagerAwareTrait
 
     /**
      *
-     * @param \Ads\Manager\AdsManagerInterface $adsManager            
+     * @param AdsManagerInterface $adsManager            
      * @return $this
      */
     public function setAdsManager (AdsManagerInterface $adsManager)

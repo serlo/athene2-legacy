@@ -2,36 +2,48 @@
 namespace Ads\Manager;
 
 use Language\Entity\LanguageInterface;
+use Ads\Entity\AdInterface;
 
 interface AdsManagerInterface
 {
     /**
      *
      * @param numeric $id
-     * @return PageRevisionInterface;
-     
-    public function getRevision($id);
-    /**
-     *
-     * @param numeric $id
-     * @return PageRepositoryInterface;
-     
-    public function getPageRepository($id);
+     * @return AdInterface
+      */
+    public function getAd($id);
     /**
      *
      * @param array $data
+     * @param AdInterface $ad
+     * @return AdInterface
+      */
+    public function updateAd(array $data, AdInterface $ad);
+     /**
+     *
+     * @param AdInterface $ad
+     * @return this
+      */
+    public function removeAd(AdInterface $ad);
+    /**
+     *
      * @param LanguageInterface $language
-     * @return PageRepositoryInterface;
-     
-	public function createPageRepository(array $data,$language);
-	/**
-	 *
-	 * @param RepositoryInterface $repository
-	 * @param array $data
-     * @return PageRepositoryInterface;
-	 
-	public function createRevision(PageRepositoryInterface $repository, array $data,UserInterface $user);
+     * @param numeric $number
+     * @return array
+     */
+    public function findShuffledAds(LanguageInterface $language, $number);
+    /**
+     *
+     * @param array $data
+     * @return AdInterface
+     */
+    public function createAd(array $data);
+    /**
+     *
+     * @param LanguageInterface $language
+     * @return AdInterface
+     */
+    public function findAllAds(LanguageInterface $language);
 
-*/
 }
 

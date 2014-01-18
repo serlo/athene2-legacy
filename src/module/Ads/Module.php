@@ -13,6 +13,7 @@ namespace Ads;
 
 class Module
 {
+    
 
 	public function getConfig ()
 	{
@@ -31,5 +32,3 @@ class Module
 	}
 	//
 }
-
-?>

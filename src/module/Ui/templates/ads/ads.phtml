@@ -1,16 +1,9 @@
-<div class="page-header ">
-	<h1><?php echo $this->translate('Horizon'); ?><a href=""> <span
-			class="glyphicon glyphicon-info-sign"></span>
-		</a>
-	</h1>
-	<a href="<?php echo $this->url('ads/add');?>">
 
-		<button type="button" class="btn btn-default ">
-			<span class="glyphicon glyphicon-pencil"></span>
-
-        <?php echo $this->translate('new'); ?></button>
-	</a>
-</div>
+<?php echo $this->pageHeader('horizon')->render();?>
+<a href="<?php echo $this->url('ads/add');?>" class="btn btn-default">
+	<span class="glyphicon glyphicon-pencil"></span>
+    <?php echo $this->translate('new'); ?> 
+</a>
 
 <div style="height: 500px;">
 <?php

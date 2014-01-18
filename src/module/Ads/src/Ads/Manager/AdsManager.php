@@ -17,6 +17,7 @@ use Ads\Entity\AdInterface;
 use Ads\Exception\AdNotFoundException;
 use Page\Exception\InvalidArgumentException;
 use Language\Entity\LanguageInterface;
+use Ads\Hydrator\AdHydrator;
 
 class AdsManager implements AdsManagerInterface
 {
@@ -27,12 +28,15 @@ class AdsManager implements AdsManagerInterface
 
     public function getAd($id)
     {
-        if (! is_numeric($id))
+        if (! is_numeric($id)) {
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
+        }
+        
         $add = $this->getObjectManager()->find($this->getClassResolver()
             ->resolveClassName('Ads\Entity\AdInterface'), $id);
-        if (! $add)
+        if (! $add) {
             throw new AdNotFoundException(sprintf('%s', $id));
+        }
         return $add;
     }
 
@@ -42,24 +46,26 @@ class AdsManager implements AdsManagerInterface
         return $ad;
     }
 
-    public function editAd(array $data, AdInterface $add)
+    public function updateAd(array $data, AdInterface $ad)
     {
-        if (substr($data[url], 0, 3) == 'www') {
-            $data[url] = 'http://' . $data[url];
+        if (substr($data['url'], 0, 3) == 'www') {
+            $data['url'] = 'http://' . $data['url'];
         }
-        $add->populate($data);
-        $this->getObjectManager()->persist($add);
-        return $add;
+        $hydrator = new AdHydrator();
+        $hydrator->hydrate($data, $ad);
+        $this->getObjectManager()->persist($ad);
+        return $ad;
     }
 
     public function createAd(array $data)
     {
-        if (substr($data[url], 0, 3) == 'www') {
-            $data[url] = 'http://' . $data[url];
+        if (substr($data['url'], 0, 3) == 'www') {
+            $data['url'] = 'http://' . $data['url'];
         }
         $data['clicks'] = $data['views'] = 0;
         $ad = $this->createAdEntity();
-        $ad->populate($data);
+        $hydrator = new AdHydrator();
+        $hydrator->hydrate($data, $ad);
         $this->getObjectManager()->persist($ad);
         return $ad;
     }
@@ -76,9 +82,10 @@ class AdsManager implements AdsManagerInterface
         return $ads;
     }
 
-    public function remove(AdInterface $ad)
+    public function removeAd(AdInterface $ad)
     {
         $this->getObjectManager()->remove($ad);
+        return this;
     }
 
     public function findShuffledAds(LanguageInterface $language, $number)
@@ -86,6 +93,9 @@ class AdsManager implements AdsManagerInterface
         $allAds = $this->findAllAds($language);
         $adsScaled = array();
         $ads = array();
+        if (count($allAds) < $number) {
+            return $ads;
+        }
         $numberAds = $y = 0;
         foreach ($allAds as $ad) {
             
@@ -100,7 +110,7 @@ class AdsManager implements AdsManagerInterface
         
         for ($i = 0; $i < $number; $i ++) {
             $random = mt_rand(0, $numberAds - 1);
-            while (in_array( $allAds[$adsScaled[$random]], $ads)) {
+            while (in_array($allAds[$adsScaled[$random]], $ads)) {
                 $random = mt_rand(0, $numberAds - 1);
             }
             
@@ -108,11 +118,10 @@ class AdsManager implements AdsManagerInterface
         }
         
         foreach ($ads as $ad) {
-            $ad->setViews($ad->getViews()+1);
+            $ad->setViews($ad->getViews() + 1);
             $this->getObjectManager()->persist($ad);
         }
         
         return $ads;
     }
-    
 }

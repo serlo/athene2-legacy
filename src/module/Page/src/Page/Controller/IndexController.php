@@ -85,7 +85,7 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $this->getAliasManager()->editAlias($array[slug], $array[slug].$pageRepository->getId(),$pageRepository->getUuidEntity(),  $language);
+                $this->getAliasManager()->updateAlias($array[slug], $array[slug].$pageRepository->getId(),$pageRepository->getUuidEntity(),  $language);
                 $this->getPageManager()->editPageRepository($array,$pageRepository);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('page/article', array(

@@ -18,7 +18,6 @@ use Zend\View\Model\JsonModel;
 
 class UploadController extends AbstractActionController
 {
-    
     use \Upload\Manager\UploadManagerAwareTrait;
     
     public function getAction(){
@@ -44,7 +43,6 @@ class UploadController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $upload = $this->getUploadManager()->upload($data['file']);
-                
                 $this->getUploadManager()->getObjectManager()->flush();
                 return new JsonModel(array(
                     'success' => true,

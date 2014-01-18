@@ -107,7 +107,7 @@ class AliasManager implements AliasManagerInterface
         return $entity->getAlias();
     }
 
-    public function editAlias($alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
+    public function updateAlias($alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
     {
         if (! is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));

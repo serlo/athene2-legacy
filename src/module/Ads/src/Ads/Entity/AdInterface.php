@@ -11,7 +11,75 @@
  */
 namespace Ads\Entity;
 
+use Language\Entity\LanguageInterface;
+use Upload\Entity\UploadInterface;
+use User\Entity\UserInterface;
+
 interface AdInterface {
+    
+    /**
+     * Gets the id.
+     *
+     * @return int
+     */
+    public function getId();
+    
+    /**
+     * Gets the content.
+     *
+     * @return string
+    */
+    public function getContent();
+    /**
+     * Gets the title.
+     *
+     * @return string
+     */
+    public function getTitle();
+    /**
+     * Gets the language.
+     *
+     * @return LanguageInterface
+     */
+    public function getLanguage();
+    
+    /**
+     * Gets the image.
+     *
+     * @return UploadInterface
+    */
+    public function getImage();
+    /**
+     * Gets the author.
+     *
+     * @return UserInterface
+    */
+    public function getAuthor();
+    /**
+     * Gets the frequency.
+     *
+     * @return float
+     */
+    public function getFrequency();
+    /**
+     * Gets the clicks.
+     *
+     * @return int
+    */
+    public function getClicks();
+    /**
+     * Gets the views.
+     *
+     * @return int
+    */
+    public function getViews();
+    /**
+     * Gets the url.
+     *
+     * @return string
+     */
+    public function getUrl();
+    
     
     
 }

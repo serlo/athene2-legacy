@@ -51,7 +51,7 @@ interface AliasManagerInterface
      * @param UuidInterface $uuid
      * @return Entity\AliasInterface
      */
-    public function editAlias( $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+    public function updateAlias( $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
     
     
     /**
@@ -63,4 +63,11 @@ interface AliasManagerInterface
      * @return self
      */
     public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language);
+
+    /**
+     *
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function findAliasByObject(UuidInterface $uuid);
 }

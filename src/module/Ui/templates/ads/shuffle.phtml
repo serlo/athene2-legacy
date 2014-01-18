@@ -1,26 +1,3 @@
-
-<a href="" style="font-size: 0.9em;" class="pull-left"> <?php echo $this->translate('Horizon'); ?><span class="glyphicon glyphicon-info-sign"></span> </a>
-	<br>
  <?php
-
-foreach ($this->ads as $ad) :
-    ?>
-
-
-
-<div class="well " style="text-align:justify;margin-bottom:4x;padding-top:4x;width: 23.5%;min-width:151px;max-width:401px; min-height: 385px; float: left; margin-left: 10px;background-color: white;">
-
-
-    <a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="_blank">   	<?php echo $ad->getTitle();?>	
-	<hr>
-	<img alt="<?php echo $ad->getTitle();?>"
-		src="<?php echo $ad->getImage()->getLocation();?>"  style="width:100%;max-width:100%" /></a><br>
-        <small>	<?php echo $ad->getContent();?></small>
-        	
-
-	
-
-</div>
-
-
-<?php endforeach; ?>
+echo $this->Horizon(3);
+ 

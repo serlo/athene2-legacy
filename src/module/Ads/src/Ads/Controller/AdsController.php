@@ -14,7 +14,6 @@ namespace Ads\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Ads\Form\AdForm;
-use Zend\Form\Form;
 
 class AdsController extends AbstractActionController
 {
@@ -77,7 +76,7 @@ class AdsController extends AbstractActionController
     {
         $id = $this->params('id');
         $ad = $this->getAdsManager()->getAd($id);
-        $this->getAdsManager()->remove($ad);
+        $this->getAdsManager()->removeAd($ad);
         $this->getObjectManager()->flush();
         $this->redirect()->toRoute('ads');
     }
@@ -116,7 +115,7 @@ class AdsController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $this->getAdsManager()->editAd($array, $ad);
+                $this->getAdsManager()->updateAd($array, $ad);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('ads');
             }

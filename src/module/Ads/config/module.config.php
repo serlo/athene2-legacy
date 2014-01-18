@@ -99,7 +99,20 @@ return array(
             )
         )
     ),
-    
+    'view_helpers' => array(
+        'factories' => array(
+            'Horizon' => function ($helperPluginManager)
+            {
+
+                $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
+                $adsManager = $helperPluginManager->getServiceLocator()->get('Ads\Manager\AdsManager');
+                $viewHelper = new View\Helper\Horizon();
+                $viewHelper->setAdsManager($adsManager);
+                $viewHelper->setLanguageManager($languageManager);
+                return $viewHelper;
+            }
+        )
+    ),
     'class_resolver' => array(
         'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
     ),
@@ -191,7 +204,3 @@ return array(
         )
     )
 );
-
-
-
-
