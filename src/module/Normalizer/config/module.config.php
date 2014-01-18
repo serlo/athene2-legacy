@@ -18,9 +18,10 @@ return [
     'view_helpers' => [
         'factories' => [
             'normalize' => function (ServiceLocatorInterface $serviceLocator) {
-                    $normalize = new Normalize();
+                    $normalize  = new Normalize();
+                    $normalizer = $serviceLocator->getServiceLocator()->get('Normalizer\Normalizer');
                     $normalize->setNormalizer(
-                        $serviceLocator->getServiceLocator()->get('Normalizer\Normalizer')
+                        $normalizer
                     );
 
                     return $normalize;
@@ -62,10 +63,10 @@ return [
                     'route' => ''
                 ],
                 'child_routes' => [
-                    'taxonomy' => [
+                    'signpost' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'    => '/signpost/:object',
+                            'route' => '/ref/:object',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\SignpostController',
                                 'action'     => 'index'
