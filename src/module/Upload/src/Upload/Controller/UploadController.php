@@ -11,11 +11,11 @@
  */
 namespace Upload\Controller;
 
+use Upload\Form\UploadForm;
 use Upload\Manager\UploadManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
-use Upload\Form\UploadForm;
-use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 
 class UploadController extends AbstractActionController
 {

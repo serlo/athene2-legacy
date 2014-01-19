@@ -1,20 +1,18 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author  Jakob Pfab (jakob.pfab@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Jakob Pfab (jakob.pfab@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Ads\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use User\Entity\UserInterface;
-use Ads\Entity\AdInterface;
 use Language\Entity\LanguageInterface;
+use User\Entity\UserInterface;
 
 /**
  * An Ad for 'Bildung im Netz'
@@ -86,6 +84,7 @@ class Ad implements AdInterface
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
@@ -97,6 +96,7 @@ class Ad implements AdInterface
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -113,12 +113,14 @@ class Ad implements AdInterface
     public function setFrequency($frequency)
     {
         $this->frequency = $frequency;
+
         return $this;
     }
-    
+
     public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
+
         return $this;
     }
 
@@ -130,6 +132,7 @@ class Ad implements AdInterface
     public function setViews($views)
     {
         $this->views = $views;
+
         return $this;
     }
 
@@ -141,6 +144,7 @@ class Ad implements AdInterface
     public function setClicks($clicks)
     {
         $this->clicks = $clicks;
+
         return $this;
     }
 
@@ -148,21 +152,23 @@ class Ad implements AdInterface
     {
         return $this->clicks;
     }
-    
+
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
+
         return $this;
     }
-    
+
     public function getLanguage()
     {
         return $this->language;
     }
-    
+
     public function setImage($image)
     {
         $this->image = $image;
+
         return $this;
     }
 
@@ -174,6 +180,7 @@ class Ad implements AdInterface
     public function setUrl($url)
     {
         $this->url = $url;
+
         return $this;
     }
 

@@ -1,95 +1,93 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author  Jakob Pfab (jakob.pfab@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Jakob Pfab (jakob.pfab@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Ads;
 
 return array(
-    'view_manager' => array(
+    'view_manager'   => array(
         'template_path_stack' => array(
             __DIR__ . '/../view'
         )
     ),
-    'router' => array(
+    'router'         => array(
         'routes' => array(
             'ads' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options' => array(
-                    'route' => '/horizon',
+                'options'       => array(
+                    'route'    => '/horizon',
                     'defaults' => array(
                         'controller' => 'Ads\Controller\AdsController',
-                        'action' => 'index'
+                        'action'     => 'index'
                     )
                 ),
-                'child_routes' => array(
+                'child_routes'  => array(
                     'shuffle' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options' => array(
-                            'route' => '/shuffle',
+                        'options'       => array(
+                            'route'    => '/shuffle',
                             'defaults' => array(
                                 'controller' => 'Ads\Controller\AdsController',
-                                'action' => 'shuffle'
+                                'action'     => 'shuffle'
                             )
                         )
                     ),
-                    
-                    'add' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'add'     => array(
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/add',
+                            'route'    => '/add',
                             'defaults' => array(
                                 'controller' => 'Ads\Controller\AdsController',
-                                'action' => 'add'
+                                'action'     => 'add'
                             )
                         )
                     ),
-                    'ad' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/:id',
+                    'ad'      => array(
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => array(
+                            'route'    => '/:id',
                             'defaults' => array(
                                 'controller' => 'Ads\Controller\AdsController',
-                                'action' => 'add'
+                                'action'     => 'add'
                             )
                         ),
                         'child_routes' => array(
                             'delete' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/delete',
+                                    'route'    => '/delete',
                                     'defaults' => array(
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'delete'
+                                        'action'     => 'delete'
                                     )
                                 )
                             ),
-                            'out' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'out'    => array(
+                                'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options' => array(
-                                    'route' => '/out',
+                                'options'       => array(
+                                    'route'    => '/out',
                                     'defaults' => array(
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'out'
+                                        'action'     => 'out'
                                     )
                                 )
                             ),
-                            'edit' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                            'edit'   => array(
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route' => '/edit',
+                                    'route'    => '/edit',
                                     'defaults' => array(
                                         'controller' => 'Ads\Controller\AdsController',
-                                        'action' => 'edit'
+                                        'action'     => 'edit'
                                     )
                                 )
                             )
@@ -99,95 +97,97 @@ return array(
             )
         )
     ),
-    'view_helpers' => array(
+    'view_helpers'   => array(
         'factories' => array(
-            'Horizon' => function ($helperPluginManager)
-            {
+            'Horizon' => function ($helperPluginManager) {
 
-                $languageManager = $helperPluginManager->getServiceLocator()->get('Language\Manager\LanguageManager');
-                $adsManager = $helperPluginManager->getServiceLocator()->get('Ads\Manager\AdsManager');
-                $viewHelper = new View\Helper\Horizon();
-                $viewHelper->setAdsManager($adsManager);
-                $viewHelper->setLanguageManager($languageManager);
-                return $viewHelper;
-            }
+                    $languageManager = $helperPluginManager->getServiceLocator()->get(
+                        'Language\Manager\LanguageManager'
+                    );
+                    $adsManager      = $helperPluginManager->getServiceLocator()->get('Ads\Manager\AdsManager');
+                    $viewHelper      = new View\Helper\Horizon();
+                    $viewHelper->setAdsManager($adsManager);
+                    $viewHelper->setLanguageManager($languageManager);
+
+                    return $viewHelper;
+                }
         )
     ),
     'class_resolver' => array(
         'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
     ),
-    'zfc_rbac' => array(
-        
+    'zfc_rbac'       => array(
+
         'guards' => array(
             'ZfcRbac\Guard\ControllerGuard' => array(
                 array(
                     'controller' => 'Ads\Controller\AdsController',
-                    'actions' => array(
+                    'actions'    => array(
                         'index'
                     ),
-                    'roles' => 'guest'
+                    'roles'      => 'guest'
                 ),
                 array(
                     'controller' => 'Ads\Controller\AdsController',
-                    'actions' => array(
+                    'actions'    => array(
                         'article'
                     ),
-                    'roles' => 'guest'
+                    'roles'      => 'guest'
                 )
             )
         )
     ),
-    'di' => array(
+    'di'             => array(
         'allowed_controllers' => array(
             __NAMESPACE__ . '\Controller\AdsController'
         ),
-        'definition' => array(
+        'definition'          => array(
             'class' => array(
-                
+
                 'Ads\Controller\AdsController' => array(
-                    'setObjectManager' => array(
+                    'setObjectManager'   => array(
                         'required' => 'true'
                     ),
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
-                    'setUserManager' => array(
+                    'setUserManager'     => array(
                         'required' => 'true'
                     ),
-                    'setAdsManager' => array(
+                    'setAdsManager'      => array(
                         'required' => true
                     ),
-                    'setUploadManager' => array(
+                    'setUploadManager'   => array(
                         'required' => true
                     )
                 ),
-                'Ads\Manager\AdsManager' => array(
-                    
+                'Ads\Manager\AdsManager'       => array(
+
                     'setLanguageManager' => array(
                         'required' => 'true'
                     ),
-                    'setClassResolver' => array(
+                    'setClassResolver'   => array(
                         'required' => 'true'
                     ),
-                    'setUserManager' => array(
+                    'setUserManager'     => array(
                         'required' => true
                     ),
-                    'setObjectManager' => array(
+                    'setObjectManager'   => array(
                         'required' => true
                     ),
-                    'setUploadManager' => array(
+                    'setUploadManager'   => array(
                         'required' => true
                     )
                 )
             )
         ),
-        'instance' => array(
+        'instance'            => array(
             'preferences' => array(
                 __NAMESPACE__ . '\Manager\AdsManagerInterface' => __NAMESPACE__ . '\Manager\AdsManager'
             )
         )
     ),
-    'doctrine' => array(
+    'doctrine'       => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -196,7 +196,7 @@ return array(
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 )
             ),
-            'orm_default' => array(
+            'orm_default'             => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )

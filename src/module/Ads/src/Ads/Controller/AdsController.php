@@ -1,19 +1,18 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author  Jakob Pfab (jakob.pfab@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Jakob Pfab (jakob.pfab@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Ads\Controller;
 
+use Ads\Form\AdForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Ads\Form\AdForm;
 
 class AdsController extends AbstractActionController
 {
@@ -25,50 +24,54 @@ class AdsController extends AbstractActionController
 
     public function indexAction()
     {
-        $ads = $this->getAdsManager()->findAllAds($this->getLanguageManager()
-            ->getLanguageFromRequest());
+        $ads  = $this->getAdsManager()->findAllAds(
+            $this->getLanguageManager()->getLanguageFromRequest()
+        );
         $view = new ViewModel(array(
             'ads' => $ads
         ));
         $view->setTemplate('ads/ads');
+
         return $view;
     }
 
     public function addAction()
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-        $form = new AdForm();
+        $user     = $this->getUserManager()->getUserFromAuthenticator();
+        $form     = new AdForm();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
-        
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $data = array_merge($data, $this->getRequest()
-                ->getFiles()
-                ->toArray());
-            
+            $data = array_merge(
+                $data,
+                $this->getRequest()->getFiles()->toArray()
+            );
+
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                
+
                 $upload = $this->getUploadManager()->upload($array['file']);
-                
-                $array['image'] = $upload;
-                $array['author'] = $user;
+
+                $array['image']    = $upload;
+                $array['author']   = $user;
                 $array['language'] = $language;
-                
+
                 $this->getAdsManager()->createAd($array);
-                
+
                 $this->getObjectManager()->flush();
-                
+
                 $this->redirect()->toRoute('ads');
             }
         }
-        
+
         $view = new ViewModel(array(
-            'form' => $form,
+            'form'  => $form,
             'title' => 'Ad erstellen'
         ));
         $view->setTemplate('ads/form.phtml');
+
         return $view;
     }
 
@@ -83,33 +86,36 @@ class AdsController extends AbstractActionController
 
     public function shuffleAction()
     {
-        $ads = $this->getAdsManager()->findShuffledAds($this->getLanguageManager()
-            ->getLanguageFromRequest(), 3);
+        $ads  = $this->getAdsManager()->findShuffledAds(
+            $this->getLanguageManager()->getLanguageFromRequest(),
+            3
+        );
         $view = new ViewModel(array(
             'ads' => $ads
         ));
         $view->setTemplate('ads/shuffle.phtml');
         $this->getObjectManager()->flush();
+
         return $view;
     }
 
     public function editAction()
     {
-        $form = new AdForm();
-        $id = $this->params('id');
+        $form     = new AdForm();
+        $id       = $this->params('id');
         $language = $this->getLanguageManager();
-        $ad = $this->getAdsManager()->getAd($id);
-        
+        $ad       = $this->getAdsManager()->getAd($id);
+
         $form->get('content')->setValue($ad->getContent());
         $form->get('title')->setValue($ad->getTitle());
         $form->get('frequency')->setValue($ad->getFrequency());
         $form->get('file')->setValue($ad->getImage());
-        $form->get('file')->setAttribute('required',false);
+        $form->get('file')->setAttribute('required', false);
         $form->get('file')->setLabel('Bild ändern');
         $form->get('url')->setValue($ad->getUrl());
-        
+
         $ad = $this->getAdsManager()->getAd($id);
-        
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
@@ -120,12 +126,13 @@ class AdsController extends AbstractActionController
                 $this->redirect()->toRoute('ads');
             }
         }
-        
+
         $view = new ViewModel(array(
-            'form' => $form,
+            'form'  => $form,
             'title' => 'Ad bearbeiten'
         ));
         $view->setTemplate('ads/form.phtml');
+
         return $view;
     }
 
@@ -135,7 +142,7 @@ class AdsController extends AbstractActionController
         $ad = $this->getAdsManager()->getAd($id);
         $ad->setClicks($ad->getClicks() + 1);
         $this->getObjectManager()->persist($ad);
-        $this->getObjectManager()->flush();       
+        $this->getObjectManager()->flush();
         $this->redirect()->toUrl($ad->getUrl());
     }
 }

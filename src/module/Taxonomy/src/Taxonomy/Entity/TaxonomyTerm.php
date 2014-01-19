@@ -12,13 +12,13 @@
 namespace Taxonomy\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Uuid\Entity\UuidEntity;
-use Taxonomy\Exception\RuntimeException;
-use Entity\Entity\EntityInterface;
-use Doctrine\ORM\Mapping as ORM;
-use Term\Entity\TermEntityInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Entity\Entity\EntityInterface;
+use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Term\Entity\TermEntityInterface;
+use Uuid\Entity\UuidEntity;
 
 /**
  * A
