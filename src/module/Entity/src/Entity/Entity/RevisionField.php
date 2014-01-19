@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity\Entity;
 
@@ -46,7 +45,6 @@ class RevisionField
     protected $value;
 
     /**
-     *
      * @return field_type $entityRevisionId
      */
     public function getRevision()
@@ -55,7 +53,6 @@ class RevisionField
     }
 
     /**
-     *
      * @return field_type $field
      */
     public function getField()
@@ -64,7 +61,6 @@ class RevisionField
     }
 
     /**
-     *
      * @return field_type $value
      */
     public function getValue()
@@ -73,42 +69,42 @@ class RevisionField
     }
 
     /**
-     *
-     * @param field_type $entityRevisionId            
+     * @param field_type $entityRevisionId
      * @return self
      */
     public function setRevision($entityRevision)
     {
         $this->revision = $entityRevision;
+
         return $this;
     }
 
     /**
-     *
-     * @param field_type $field            
+     * @param field_type $field
      * @return self
      */
     public function setField($field)
     {
         $this->field = $field;
+
         return $this;
     }
 
     /**
-     *
-     * @param field_type $value            
+     * @param field_type $value
      * @return self
      */
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
     public function __construct($revision, $field)
     {
         $this->revision = $revision;
-        $this->field = $field;
+        $this->field    = $field;
     }
 
     public function get($property)

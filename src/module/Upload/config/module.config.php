@@ -1,59 +1,59 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Upload;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Upload\Manager\UploadManager;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 return array(
-    'class_resolver' => array(
+    'class_resolver'  => array(
         'Upload\Entity\UploadInterface' => 'Upload\Entity\Upload'
     ),
-    'upload_manager' => array(),
+    'upload_manager'  => array(),
     'service_manager' => array(
         'factories' => array(
-            'Upload\Manager\UploadManager' => function (ServiceLocatorInterface $sl)
-            {
-                $instance = new UploadManager();
-                $config = $sl->get('config')['upload_manager'];
-                $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
-                $instance->setConfig($config);
-                $instance->setObjectManager($sl->get('EntityManager'));
-                $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
-                $instance->setLanguageManager($sl->get('Language\Manager\LanguageManager'));
-                return $instance;
-            }
+            'Upload\Manager\UploadManager' => function (ServiceLocatorInterface $sl) {
+                    $instance = new UploadManager();
+                    $config   = $sl->get('config')['upload_manager'];
+                    $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
+                    $instance->setConfig($config);
+                    $instance->setObjectManager($sl->get('Doctrine\ORM\EntityManager'));
+                    $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
+                    $instance->setLanguageManager($sl->get('Language\Manager\LanguageManager'));
+
+                    return $instance;
+                }
         )
     ),
-    'di' => array(
+    'di'              => array(
         'allowed_controllers' => array(
             'Upload\Controller\UploadController',
             'Taxonomy\Controller\TaxonomyController'
         ),
-        'definition' => array(
+        'definition'          => array(
             'class' => array(
                 'Upload\Controller\UploadController' => array(
                     'setUploadManager' => array(
-                        'required' => 'true'
+                        'required' => true
                     )
                 ),
             )
         ),
-        'instance' => array(
+        'instance'            => array(
             'preferences' => array(
                 'Upload\Manager\UploadManagerInterface' => 'Upload\Manager\UploadManager'
             ),
         )
     ),
-    'doctrine' => array(
+    'doctrine'        => array(
         'driver' => array(
             __NAMESPACE__ . '_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -62,34 +62,34 @@ return array(
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 )
             ),
-            'orm_default' => array(
+            'orm_default'             => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
             )
         )
     ),
-    'router' => array(
+    'router'          => array(
         'routes' => array(
             'upload' => array(
-                'type' => 'Segment',
+                'type'          => 'Segment',
                 'may_terminate' => true,
-                'options' => array(
-                    'route' => '/upload',
+                'options'       => array(
+                    'route'    => '/upload',
                     'defaults' => array(
                         'controller' => 'Upload\Controller\UploadController',
-                        'action' => 'upload'
+                        'action'     => 'upload'
                     )
                 ),
-                'child_routes' => array(
+                'child_routes'  => array(
                     'get' => array(
-                        'type' => 'Segment',
+                        'type'          => 'Segment',
                         'may_terminate' => true,
-                        'options' => array(
-                            'route' => '/get/:id',
+                        'options'       => array(
+                            'route'    => '/get/:id',
                             'defaults' => array(
                                 'controller' => 'Upload\Controller\UploadController',
-                                'action' => 'get'
+                                'action'     => 'get'
                             )
                         ),
                     )

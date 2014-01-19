@@ -1,7 +1,9 @@
 {
   "name": "frontend-boilerplate",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "athene2-editor": "~0.0.4"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
@@ -23,7 +25,7 @@
     "grunt-usemin": "~0.1.10",
     "grunt-mocha": "~0.4.0",
     "grunt-open": "~0.2.0",
-    "grunt-modernizr": "~0.3.0",
+    "grunt-modernizr": "~0.4.1",
     "grunt-svgmin": "~0.2.0",
     "grunt-concurrent": "~0.3.0",
     "load-grunt-tasks": "~0.1.0",

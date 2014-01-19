@@ -1,82 +1,78 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Contexter\Router;
 
-use Zend\Mvc\Router\RouteMatch;
-use Contexter\Entity;
 use Contexter\Adapter\AdapterInterface;
+use Contexter\Entity;
 use Contexter\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
-use Zend\Http\Request;
 use Type\Entity\TypeInterface;
+use Zend\Http\Request;
+use Zend\Mvc\Router\RouteMatch;
 
 class Router implements RouterInterface
 {
-    use \Common\Traits\RouterAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ConfigAwareTrait,\Contexter\Manager\ContextManagerAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use \Common\Traits\RouterAwareTrait, \Zend\ServiceManager\ServiceLocatorAwareTrait, \Common\Traits\ConfigAwareTrait,
+        \Contexter\Manager\ContextManagerAwareTrait, \Common\Traits\ObjectManagerAwareTrait,
+        \ClassResolver\ClassResolverAwareTrait;
 
     /**
-     *
      * @var RouteMatch
      */
     protected $routeMatch;
 
     /**
-     *
      * @var RouteMatch
      */
     protected $factoryRouteMatch;
 
     /**
-     *
      * @var array
      */
     protected $parameters;
 
     /**
-     *
      * @var AdapterInterface[]
      */
     protected $adapters;
-    
+
     /*
      * (non-PHPdoc) @see \Contexter\Router\RouterInterface::match()
      */
-    public function match($uri = NULL, $type = NULL)
+    public function match($uri = null, $type = null)
     {
-        if ($uri !== NULL) {
+        if ($uri !== null) {
             $routeMatch = $this->matchUri($uri);
             $this->setRouteMatch($routeMatch);
         } else {
-            if (! is_object($this->getRouteMatch())) {
+            if (!is_object($this->getRouteMatch())) {
                 throw new \Contexter\Exception\RuntimeException(sprintf('No RouteMatch set!'));
             }
         }
-        
+
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
-        
+
         $criteria = array(
             'name' => $this->getRouteMatch()->getMatchedRouteName()
         );
-        
+
         if ($type) {
             $type = $this->getContextManager()->findTypeByName($type);
         }
-        
-        $routes = $this->getObjectManager()
-            ->getRepository($className)
-            ->findBy($criteria);
-        
+
+        $routes = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+
         $result = $this->matchRoutes($routes, $type);
         $this->clear();
+
         return $result;
     }
 
@@ -85,18 +81,18 @@ class Router implements RouterInterface
         $request = new Request();
         $request->setUri($uri);
         $request->setMethod('post');
+
         return $this->getRouter()->match($request);
     }
 
     /**
-     *
      * @return AdapterInterface
      */
     public function getAdapter()
     {
         $requestedController = $this->getRouteMatch()->getParam('controller');
-        $requestedAction = $this->getRouteMatch()->getParam('action');
-        $adapters = $this->getOption('adapters');
+        $requestedAction     = $this->getRouteMatch()->getParam('action');
+        $adapters            = $this->getOption('adapters');
         foreach ($adapters as $adapter) {
             foreach ($adapter['controllers'] as $controller) {
                 $action = isset($controller['action']) ? ($controller['action'] === $requestedAction) : true;
@@ -105,20 +101,26 @@ class Router implements RouterInterface
                     /* @var $adapter AdapterInterface */
                     $adapter = $this->getServiceLocator()->get($adapter['adapter']);
                     $adapter->setRouteMatch($this->getRouteMatch());
-                    $adapter->setController($this->getServiceLocator()
-                        ->get($controller));
+                    $adapter->setController(
+                        $this->getServiceLocator()->get($controller)
+                    );
+
                     return $adapter;
                 }
             }
         }
-        
-        throw new Exception\RuntimeException(sprintf('No suitable adapter found for controller `%s`', $requestedController));
+
+        throw new Exception\RuntimeException(sprintf(
+            'No suitable adapter found for controller `%s`',
+            $requestedController
+        ));
     }
 
     public function hasAdapter()
     {
         try {
             $this->getAdapter();
+
             return true;
         } catch (Exception\RuntimeException $e) {
             return false;
@@ -126,7 +128,6 @@ class Router implements RouterInterface
     }
 
     /**
-     *
      * @return RouteMatch $routeMatch
      */
     public function getRouteMatch()
@@ -135,16 +136,16 @@ class Router implements RouterInterface
     }
 
     /**
-     *
-     * @param RouteMatch $routeMatch            
+     * @param RouteMatch $routeMatch
      * @return self
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {
-        if ($this->factoryRouteMatch === NULL) {
+        if ($this->factoryRouteMatch === null) {
             $this->factoryRouteMatch = $this->routeMatch;
         }
         $this->routeMatch = $routeMatch;
+
         return $this;
     }
 
@@ -160,12 +161,12 @@ class Router implements RouterInterface
         if (is_object($this->factoryRouteMatch)) {
             $this->setRouteMatch($this->factoryRouteMatch);
         }
+
         return $this;
     }
 
     /**
-     *
-     * @param array $routes            
+     * @param array $routes
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     protected function matchRoutes(array $routes, TypeInterface $type)
@@ -174,11 +175,13 @@ class Router implements RouterInterface
         /* @var $route Entity\RouteInterface */
         foreach ($routes as $route) {
             if ($route->getContext()->getType() === $type && $this->matchesParameters($route)) {
-                $context = $this->getContextManager()->getContext($route->getContext()
-                    ->getId());
+                $context = $this->getContextManager()->getContext(
+                    $route->getContext()->getId()
+                );
                 $result->add($context);
             }
         }
+
         return $result;
     }
 
@@ -188,7 +191,7 @@ class Router implements RouterInterface
         /* @var $parameter Entity\RouteParameterInterface */
         foreach ($route->getParameters() as $parameter) {
             $matching = $this->matchesParameter($parameter);
-            if (! $matching) {
+            if (!$matching) {
                 $passed = false;
                 break;
             } else {
@@ -198,15 +201,19 @@ class Router implements RouterInterface
         if ($passed === true) {
             return true;
         }
+
         return $passed;
     }
 
     protected function matchesParameter(Entity\RouteParameterInterface $parameter)
     {
         $parameters = $this->getAdapter()->getParams();
-        if (array_key_exists($parameter->getKey(), $parameters) && $parameters[$parameter->getKey()] === $parameter->getValue()) {
+        if (array_key_exists($parameter->getKey(), $parameters) && $parameters[$parameter->getKey(
+            )] === $parameter->getValue()
+        ) {
             return true;
         }
+
         return false;
     }
 }

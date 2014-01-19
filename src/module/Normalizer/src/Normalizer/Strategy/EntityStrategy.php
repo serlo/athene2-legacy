@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Normalizer\Strategy;
 
@@ -17,7 +16,6 @@ class EntityStrategy extends AbstractStrategy
 {
 
     /**
-     *
      * @return EntityInterface
      */
     public function getObject()
@@ -47,9 +45,7 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getType()
     {
-        return $this->getObject()
-            ->getType()
-            ->getName();
+        return $this->getObject()->getType()->getName();
     }
 
     protected function getRouteName()
@@ -69,7 +65,7 @@ class EntityStrategy extends AbstractStrategy
         return $object instanceof EntityInterface;
     }
 
-    protected function getField($field, $fallback = NULL)
+    protected function getField($field, $fallback = null)
     {
         if ($this->getObject()->hasCurrentRevision()) {
             $revision = $this->getObject()->getCurrentRevision();
@@ -78,10 +74,10 @@ class EntityStrategy extends AbstractStrategy
         } else {
             return $this->getObject()->getId();
         }
-        
-        if ($revision->get($field) !== NULL) {
+
+        if ($revision->get($field) !== null) {
             return $revision->get($field);
-        } elseif ($fallback !== NULL && $revision->get($fallback) !== NULL) {
+        } elseif ($fallback !== null && $revision->get($fallback) !== null) {
             return $revision->get($fallback);
         } else {
             return $this->getObject()->getId();

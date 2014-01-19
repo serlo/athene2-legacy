@@ -13,19 +13,19 @@
  */
 namespace Page\Manager;
 
-use Page\Manager\PageManagerInterface;
+use ClassResolver\ClassResolverAwareTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Language\Entity\LanguageInterface;
 use Page\Entity\Page;
 use Page\Entity\PageRepositoryInterface;
-use Page\Exception\PageNotFoundException;
 use Page\Exception\InvalidArgumentException;
-use Language\Entity\LanguageInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Page\Exception\PageNotFoundException;
 use User\Entity\UserInterface;
 
 class PageManager implements PageManagerInterface
 {
     
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
+    use\Common\Traits\ObjectManagerAwareTrait,ClassResolverAwareTrait;
     use\Page\Manager\PageManagerAwareTrait;
     use\Uuid\Manager\UuidManagerAwareTrait;
     use\Language\Manager\LanguageManagerAwareTrait;

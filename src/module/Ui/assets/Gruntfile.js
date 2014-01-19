@@ -219,14 +219,16 @@ module.exports = function (grunt) {
             dest: '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
         },
         modernizr: {
-            devFile: '<%= serlo.app %>/bower_components/modernizr/modernizr.js',
-            outputFile: '<%= serlo.dist %>/bower_components/modernizr/modernizr.js',
-            files: [
-                '<%= serlo.dist %>/scripts/{,*/}*.js',
-                '<%= serlo.dist %>/styles/{,*/}*.css',
-                '!<%= serlo.dist %>/scripts/vendor/*'
-            ],
-            uglify: true
+            
+                devFile: '<%= serlo.app %>/bower_components/modernizr/modernizr.js',
+                outputFile: '<%= serlo.dist %>/bower_components/modernizr/modernizr.js',
+                files: [
+                    '<%= serlo.dist %>/scripts/{,*/}*.js',
+                    '<%= serlo.dist %>/styles/{,*/}*.css',
+                    '!<%= serlo.dist %>/scripts/vendor/*'
+                ],
+                uglify: true
+            
         },
         concurrent: {
             server: [

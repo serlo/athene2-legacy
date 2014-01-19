@@ -15,31 +15,11 @@ use Zend\View\Model\ViewModel;
 
 class UsersController extends AbstractUserController
 {
-    use \Language\Manager\LanguageManagerAwareTrait;
-
     public function usersAction ()
     {
         $users = $this->getUserManager()->findAllUsers();
         $view = new ViewModel(array(
             'users' => $users
-        ));
-        return $view;
-    }
-
-    public function rolesAction ()
-    {
-        $view = new ViewModel(array(
-            'roles' => $this->getUserManager()->findAllRoles()
-        ));
-        return $view;
-    }
-
-    public function roleAction ()
-    {
-        $role = $this->getUserManager()->findRole($this->params('role'));
-        $view = new ViewModel(array(
-            'role' => $role,
-            'users' => $role->getUsers()
         ));
         return $view;
     }

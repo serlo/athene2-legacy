@@ -1,22 +1,26 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	    Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	    LGPL-3.0
- * @license	    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright	Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author         Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license        LGPL-3.0
+ * @license        http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link           https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright      Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity;
 
 return [
-    'class_resolver' => [
-        'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
-        'Entity\Entity\TypeInterface' => 'Entity\Entity\Type'
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'entity.license.update' => 'Authorization\Assertion\LanguageAssertion',
+        ]
     ],
-    'di' => [
+    'class_resolver'  => [
+        'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
+        'Entity\Entity\TypeInterface'   => 'Entity\Entity\Type'
+    ],
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\EntityController',
             __NAMESPACE__ . '\Controller\RepositoryController',
@@ -25,10 +29,10 @@ return [
             __NAMESPACE__ . '\Controller\LinkController',
             __NAMESPACE__ . '\Controller\LicenseController'
         ],
-        'definition' => [
+        'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\TaxonomyController' => [
-                    'setEntityManager' => [
+                __NAMESPACE__ . '\Controller\TaxonomyController'   => [
+                    'setEntityManager'   => [
                         'required' => true
                     ],
                     'setTaxonomyManager' => [
@@ -38,86 +42,89 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\LinkController' => [
+                __NAMESPACE__ . '\Controller\LinkController'       => [
                     'setEntityManager' => [
                         'required' => true
                     ],
-                    'setLinkService' => [
+                    'setLinkService'   => [
                         'required' => true
                     ],
                     'setModuleOptions' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\LicenseController' => [
-                    'setEntityManager' => [
+                __NAMESPACE__ . '\Controller\LicenseController'    => [
+                    'setEntityManager'   => [
                         'required' => true
                     ],
                     'setLanguageManager' => [
                         'required' => true
                     ],
-                    'setLicenseManager' => [
+                    'setLicenseManager'  => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\EntityController' => [
-                    'setEntityManager' => [
+                __NAMESPACE__ . '\Controller\EntityController'     => [
+                    'setEntityManager'   => [
                         'required' => true
                     ],
                     'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager' => [
                         'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\RepositoryController' => [
+                    'setEntityManager'        => [
+                        'required' => true
+                    ],
+                    'setLanguageManager'      => [
+                        'required' => true
+                    ],
+                    'setUserManager'          => [
+                        'required' => true
+                    ],
+                    'setRepositoryManager'    => [
+                        'required' => true
+                    ],
+                    'setModuleOptions'        => [
+                        'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\PageController'       => [
+                    'setAliasManager'  => [
+                        'required' => true
+                    ],
                     'setEntityManager' => [
                         'required' => true
-                    ],
-                    'setLanguageManager' => [
+                    ]
+                ],
+                __NAMESPACE__ . '\Manager\EntityManager'           => [
+                    'setUuidManager'          => [
                         'required' => true
                     ],
-                    'setUserManager' => [
+                    'setObjectManager'        => [
                         'required' => true
                     ],
-                    'setRepositoryManager' => [
+                    'setClassResolver'        => [
                         'required' => true
                     ],
-                    'setModuleOptions' => [
+                    'setTypeManager'          => [
+                        'required' => true
+                    ],
+                    'setAuthorizationService' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\PageController' => [
-                    'setAliasManager' => [
-                        'required' => true
-                    ],
-                    'setEntityManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Manager\EntityManager' => [
-                    'setUuidManager' => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setTypeManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Provider\TokenProvider' => [
+                __NAMESPACE__ . '\Provider\TokenProvider'          => [
                     'setServiceLocator' => [
                         'required' => true
                     ]
                 ]
             ]
         ],
-        'instance' => [
+        'instance'            => [
             'preferences' => [
                 'Entity\Manager\EntityManagerInterface' => 'Entity\Manager\EntityManager'
             ]
@@ -128,17 +135,12 @@ return [
             __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
         ]
     ],
-    'view_helpers' => [
+    'view_helpers'    => [
         'factories' => [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
         ]
     ],
-    'view_manager' => [
-        'template_path_stack' => [
-            __DIR__ . '/../view'
-        ]
-    ],
-    'doctrine' => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -147,7 +149,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]

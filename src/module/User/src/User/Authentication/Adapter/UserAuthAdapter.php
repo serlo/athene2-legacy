@@ -56,7 +56,7 @@ class UserAuthAdapter implements AdapterInterface
                 ->findOneBy(array(
                 'email' => $this->email
             ));
-                
+
             $role = $this->getObjectManager()
                 ->getRepository('User\Entity\Role')
                 ->findOneBy(array(

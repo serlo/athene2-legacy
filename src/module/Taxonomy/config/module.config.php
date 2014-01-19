@@ -1,135 +1,136 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Taxonomy;
 
 use Taxonomy\View\Helper\TaxonomyHelper;
+
 return [
-    'term_router' => [
+    'term_router'     => [
         'routes' => []
     ],
-    'class_resolver' => [
+    'class_resolver'  => [
         __NAMESPACE__ . '\Entity\TaxonomyTypeInterface' => __NAMESPACE__ . '\Entity\TaxonomyType',
-        __NAMESPACE__ . '\Entity\TaxonomyInterface' => __NAMESPACE__ . '\Entity\Taxonomy',
+        __NAMESPACE__ . '\Entity\TaxonomyInterface'     => __NAMESPACE__ . '\Entity\Taxonomy',
         __NAMESPACE__ . '\Entity\TaxonomyTermInterface' => __NAMESPACE__ . '\Entity\TaxonomyTerm'
     ],
-    'view_helpers' => [
+    'view_helpers'    => [
         'factories' => [
-            'taxonomy' => function ($helperPluginManager)
-            {
-                $plugin = new TaxonomyHelper();
-                $plugin->setModuleOptions($helperPluginManager->getServiceLocator()
-                    ->get('Taxonomy\Options\ModuleOptions'));
-                return $plugin;
-            }
+            'taxonomy' => function ($helperPluginManager) {
+                    $plugin = new TaxonomyHelper();
+                    $plugin->setModuleOptions(
+                        $helperPluginManager->getServiceLocator()->get('Taxonomy\Options\ModuleOptions')
+                    );
+
+                    return $plugin;
+                }
         ]
     ],
-    'taxonomy' => [
+    'taxonomy'        => [
         'types' => [
             'root' => [
                 'allowed_parents' => [],
-                'rootable' => true
+                'rootable'        => true
             ]
         ]
     ],
-    'router' => [
+    'router'          => [
         'routes' => [
             'taxonomy' => [
-                'type' => 'Segment',
-                'options' => [
-                    'route' => '/taxonomy',
+                'type'          => 'Segment',
+                'options'       => [
+                    'route'    => '/taxonomy',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\404'
                     ]
                 ],
                 'may_terminate' => true,
-                'child_routes' => [
+                'child_routes'  => [
                     'taxonomy' => [
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => [
-                            'route' => '/:action/:id',
+                            'route'    => '/:action/:id',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\TaxonomyController'
                             ]
                         ]
                     ],
-                    'term' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/term',
+                    'term'     => [
+                        'type'          => 'Segment',
+                        'options'       => [
+                            'route'    => '/term',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\TermController'
                             ]
                         ],
                         'may_terminate' => true,
-                        'child_routes' => [
-                            'action' => [
-                                'type' => 'Segment',
+                        'child_routes'  => [
+                            'action'          => [
+                                'type'    => 'Segment',
                                 'options' => [
                                     'route' => '/:action[/:id]'
                                 ]
                             ],
-                            'route' => [
-                                'type' => 'Segment',
+                            'route'           => [
+                                'type'    => 'Segment',
                                 'options' => [
-                                    'route' => '/route/:id',
+                                    'route'    => '/route/:id',
                                     'defaults' => [
                                         'controller' => __NAMESPACE__ . '\Controller\TermRouterController',
-                                        'action' => 'index'
+                                        'action'     => 'index'
                                     ]
                                 ]
                             ],
-                            'create' => [
-                                'type' => 'Segment',
+                            'create'          => [
+                                'type'    => 'Segment',
                                 'options' => [
-                                    'route' => '/create/:taxonomy/:parent',
+                                    'route'    => '/create/:taxonomy/:parent',
                                     'defaults' => [
                                         'action' => 'create'
                                     ]
                                 ]
                             ],
-                            'order' => [
-                                'type' => 'Segment',
+                            'order'           => [
+                                'type'    => 'Segment',
                                 'options' => [
-                                    'route' => '/order/:term',
+                                    'route'    => '/order/:term',
                                     'defaults' => [
                                         'action' => 'order'
                                     ]
                                 ]
                             ],
-                            'organize' => [
-                                'type' => 'Segment',
+                            'organize'        => [
+                                'type'    => 'Segment',
                                 'options' => [
-                                    'route' => '/organize/:id',
+                                    'route'    => '/organize/:id',
                                     'defaults' => [
                                         'action' => 'organize'
                                     ]
                                 ]
                             ],
-                            'organize-all' => [
-                                'type' => 'Segment',
+                            'organize-all'    => [
+                                'type'    => 'Segment',
                                 'options' => [
-                                    'route' => '/organize-all',
+                                    'route'    => '/organize-all',
                                     'defaults' => [
                                         'action' => 'organize'
                                     ]
                                 ]
                             ],
                             'sort-associated' => [
-                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route' => '/sort/:association/:term',
+                                    'route'    => '/sort/:association/:term',
                                     'defaults' => [
                                         'controller' => __NAMESPACE__ . '\Controller\TermController',
-                                        'action' => 'orderAssociated'
+                                        'action'     => 'orderAssociated'
                                     ]
                                 ]
                             ]
@@ -144,74 +145,74 @@ return [
             __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
         ]
     ],
-    'di' => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\TermController',
             __NAMESPACE__ . '\Controller\TaxonomyController',
             __NAMESPACE__ . '\Controller\TermRouterController'
         ],
-        'definition' => [
+        'definition'          => [
             'class' => [
                 __NAMESPACE__ . '\Listener\EntityManagerListener' => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\TermController' => [
+                __NAMESPACE__ . '\Controller\TermController'      => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
                     'setLanguageManager' => [
                         'required' => true
                     ],
-                    'setUserManager' => [
+                    'setUserManager'     => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator' => [
+                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setTermManager' => [
+                    'setTermManager'     => [
                         'required' => true
                     ],
-                    'setUuidManager' => [
+                    'setUuidManager'     => [
                         'required' => true
                     ],
-                    'setModuleOptions' => [
+                    'setModuleOptions'   => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Manager\TaxonomyManager' => [
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
+                __NAMESPACE__ . '\Manager\TaxonomyManager'        => [
                     'setClassResolver' => [
                         'required' => true
                     ],
-                    'setTypeManager' => [
+                    'setObjectManager' => [
+                        'required' => true
+                    ],
+                    'setTypeManager'   => [
                         'required' => true
                     ],
                     'setModuleOptions' => [
                         'required' => true
                     ],
-                    'setHydrator' => [
+                    'setHydrator'      => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\TaxonomyController' => [
+                __NAMESPACE__ . '\Controller\TaxonomyController'  => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Provider\NavigationProvider' => [
+                __NAMESPACE__ . '\Provider\NavigationProvider'    => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setServiceLocator' => [
+                    'setServiceLocator'  => [
                         'required' => true
                     ],
-                    'setObjectManager' => [
+                    'setObjectManager'   => [
                         'required' => true
                     ],
                     'setLanguageManager' => [
@@ -220,18 +221,13 @@ return [
                 ]
             ]
         ],
-        'instance' => [
+        'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\TaxonomyManagerInterface' => __NAMESPACE__ . '\Manager\TaxonomyManager'
             ]
         ]
     ],
-    'view_manager' => [
-        'template_path_stack' => [
-            __DIR__ . '/../view'
-        ]
-    ],
-    'doctrine' => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -240,7 +236,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]

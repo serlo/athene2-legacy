@@ -1,5 +1,5 @@
 <?php echo $this->pageHeader('Profile')->setSubtitle($this->user->getUsername())->render(); ?>
-<?php if($this->user->getLastLogin() !== NULL): ?>
+<?php if ($this->user->getLastLogin() !== null): ?>
     <div class="row">
         <div class="col-md-4">
             <strong><?php echo $this->translate('Last seen'); ?></strong>
@@ -16,41 +16,13 @@
     </div>
     <div class="col-md-3">
         <ul>
-            <?php foreach($this->user->getRoles() as $role): ?>
-                    <li>
-                        <?php $url = $this->url('user/role/remove', array('user' => $this->user->getId(), 'role' => $role->getId()));?>
-                        <?php if($this->guard()->hasAccessToUrl($url)): ?>
-                            <div class="dropdown">
-                                <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
-                                  <?php echo $role->getName(); ?> <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu nav nav-list">
-                                    <li><a href="<?php echo $url; ?>"><?php echo $this->translate('Remove role'); ?></a></li>
-                                </ul>
-                            </div>
-                        <?php else: ?>
-                          <?php echo $role->getName(); ?>
-                        <?php endif; ?>
-                    </li>
-            <?php endforeach; ?> 
+            <?php foreach ($this->user->getRoles() as $role): ?>
+                <li>
+                    <?php echo $role->getName(); ?>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </div>
-    <?php if($this->guard()->hasAccessToRoute('user/role/add')): ?>
-        <div class="col-md-7">
-            <div class="dropdown">
-                <a class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" href="#">
-                  <?php echo $this->translate('Add role'); ?> <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu nav nav-list">
-                    <?php foreach($this->unassociatedRoles as $role): ?>
-                    <li>
-                        <a href="<?php echo $this->url('user/role/add', array('user' => $this->user->getId(), 'role' => $role->getId()));?>"><?php echo $role->getName(); ?></a>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    <?php endif; ?>
 </div>
 <hr>
 <div class="row">

@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Alias\Listener;
 
@@ -19,36 +18,45 @@ class BlogControllerListener extends AbstractListener
     /**
      * Gets executed on post create & update
      *
-     * @param Event $e            
+     * @param Event $e
      * @return void
      */
     public function onUpdate(Event $e)
     {
-        $post = $e->getParam('post');
-        $actor = $e->getParam('actor');
-        $data = $e->getParam('data');
+        $post     = $e->getParam('post');
+        $actor    = $e->getParam('actor');
+        $data     = $e->getParam('data');
         $language = $e->getParam('language');
-        
-        $url = $e->getTarget()
-            ->url()
-            ->fromRoute('blog/post/view', array(
-            'post' => $post->getId()
-        ));
-        
+
+        $url = $e->getTarget()->url()->fromRoute(
+            'blog/post/view',
+            array(
+                'post' => $post->getId()
+            )
+        );
+
         $this->getAliasManager()->autoAlias('blogPost', $url, $post->getUuidEntity(), $language);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'post.create', array(
-            $this,
-            'onUpdate'
-        ));
-        
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'post.update', array(
-            $this,
-            'onUpdate'
-        ));
+        $this->listeners[] = $events->attach(
+            $this->getMonitoredClass(),
+            'post.create',
+            array(
+                $this,
+                'onUpdate'
+            )
+        );
+
+        $this->listeners[] = $events->attach(
+            $this->getMonitoredClass(),
+            'post.update',
+            array(
+                $this,
+                'onUpdate'
+            )
+        );
     }
 
     protected function getMonitoredClass()

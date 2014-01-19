@@ -1,22 +1,21 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
-use Versioning\Entity\RevisionInterface;
-use Versioning\Entity\RepositoryInterface;
+use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
+use Versioning\Entity\RepositoryInterface;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity link.
@@ -55,7 +54,6 @@ class Revision extends UuidEntity implements RevisionInterface
     protected $date;
 
     /**
-     *
      * @return field_type $date
      */
     public function getTimestamp()
@@ -64,18 +62,17 @@ class Revision extends UuidEntity implements RevisionInterface
     }
 
     /**
-     *
-     * @param field_type $date            
+     * @param field_type $date
      * @return self
      */
     public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
+
         return $this;
     }
 
     /**
-     *
      * @return field_type $author
      */
     public function getAuthor()
@@ -84,28 +81,28 @@ class Revision extends UuidEntity implements RevisionInterface
     }
 
     /**
-     *
-     * @param field_type $author            
+     * @param field_type $author
      * @return self
      */
     public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
+
         return $this;
     }
 
     public function get($field)
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
-            ->setFirstResult(0)
-            ->setMaxResults(1);
-        
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))->setFirstResult(0)->setMaxResults(
+            1
+        );
+
         $data = $this->fields->matching($criteria);
-        
+
         if (count($data) == 0) {
             return null;
         }
-        
+
         return $data[0]->get('value');
     }
 
@@ -116,6 +113,7 @@ class Revision extends UuidEntity implements RevisionInterface
         $entity->set('revision', $this);
         $entity->set('value', $value);
         $this->fields->add($entity);
+
         return $entity;
     }
 
@@ -123,7 +121,7 @@ class Revision extends UuidEntity implements RevisionInterface
     {
         return $this->fields;
     }
-    
+
     /*
      * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::delete()
      */
@@ -135,9 +133,10 @@ class Revision extends UuidEntity implements RevisionInterface
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::getRepository()
      */

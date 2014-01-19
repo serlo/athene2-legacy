@@ -8,7 +8,7 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-/*global define, require*/
+/*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification',
                     'moment', 'ajax_overlay', 'modals', 'sortable_list', 'timeago', 'moment_de'],
     function ($, Common, SideNavigation, t, Layout, Search, SystemNotification, moment, AjaxOverlay) {
@@ -83,6 +83,20 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
 
 require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     "use strict";
+
+    if (typeof MathJax !== undefined) {
+        MathJax.Hub.Config({
+            displayAlign: 'left',
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+                inlineMath: [["%%", "%%"]]
+            },
+            "HTML-CSS": {
+                scale: 100
+            }
+        });
+    }
 
     $(function () {
         Supporter.check();

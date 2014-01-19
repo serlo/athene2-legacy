@@ -11,38 +11,45 @@
  */
 namespace Search\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Search\Form\SearchForm;
-use Zend\View\Model\ViewModel;
+use Search\SearchServiceAwareTrait;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 
 class SearchController extends AbstractActionController
 {
-    use \Search\SearchServiceAwareTrait;
+    use SearchServiceAwareTrait;
 
     public function searchAction()
     {
-        $form = new SearchForm();
-        
-        $view = new ViewModel(array(
-            'form' => $form
-        ));
+        $form  = new SearchForm();
+
+        $view = new ViewModel([
+            'form' => $form,
+            'query' => ''
+        ]);
+
         $view->setTemplate('search/form');
-        
+        $this->layout('layout/1-col');
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()
                 ->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $results = $this->getSearchService()->search($data['q'], array(
+
+                $container = $this->getSearchService()->search($data['q'], array(
                     'entity',
                     'taxonomyTerm'
                 ));
-                
-                $view->setVariable('results', $results);
+
+                $view->setVariable('container', $container);
+                $view->setVariable('query', $data['q']);
                 $view->setTemplate('search/results');
             }
         }
+
         return $view;
     }
 
@@ -59,9 +66,9 @@ class SearchController extends AbstractActionController
                     'entity',
                     'taxonomyTerm'
                 ));
-                
-                $results = $this->getSearchService()->simplifyResults($results);
-                
+
+                $results = $this->getSearchService()->ajaxify($results);
+
                 $view = new JsonModel($results);
                 return $view;
             }
