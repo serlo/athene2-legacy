@@ -2,56 +2,30 @@
 namespace Page\Form;
 
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Submit;
 
 class RevisionForm extends Form
 {
-  public function __construct($objectManager)
-  {
-    parent::__construct('createRepository');
-    $filter = new RevisionFilter($objectManager);
-    
+
+    public function __construct($objectManager)
+    {
+        parent::__construct('createRepository');
+        $filter = new RevisionFilter($objectManager);
+        
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
         
         $this->setInputFilter($filter);
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'text',
-            'attributes' => array(
-                'placeholder' => 'Revision Title',
-                'required' => 'required',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Titel'
-            )
-        ));
+        $this->add((new Text('title'))->setLabel('Title:'))
+            ->setAttribute('required', 'required');
         
-        $this->add(array(
-            'name' => 'content',
-            'type' => 'Zend\Form\Element\Textarea',
-            'attributes' => array(
-                'class' => 'ckeditor',
-                'placeholder' => 'Revision Content',
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Inhalt:'
-            )
-        ));
-
-    $this->add(array(
-      'name' => 'submit',
-      'attributes' => array(
-        'class' => 'btn btn-success',
-        'type'  => 'submit',
-        'value' => 'erstellen',
-        'id'    => 'submitbutton'
-      )
-    ));
-
-
-  }
+        $this->add((new Textarea('content'))->setAttribute('class', 'ckeditor')
+            ->setLabel('Content:'))
+            ->setAttribute('required', 'required');
+        
+        $this->add((new Submit('submit'))->setValue('Save')
+            ->setAttribute('class', 'btn btn-success pull-right'));
+    }
 }

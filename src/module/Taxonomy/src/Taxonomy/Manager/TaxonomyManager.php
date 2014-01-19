@@ -12,13 +12,13 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Exception;
 use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyInterface;
-use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
-use Taxonomy\Options\ModuleOptions;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Exception;
+use Taxonomy\Hydrator\TaxonomyTermHydrator;
+use Taxonomy\Options\ModuleOptions;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {

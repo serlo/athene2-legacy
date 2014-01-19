@@ -39,6 +39,21 @@ interface AliasManagerInterface
     public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
 
     /**
+     *
+     * @param string $alias
+     * @param string $aliasFallback
+     * @param LanguageInterface $language
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function updateAlias( $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+    
+    
+    /**
+     * 
+     * @param string $name
+     * @param string $source
+     * @param UuidInterface $object
      * @param string            $name
      * @param string            $source
      * @param UuidInterface     $object
@@ -46,4 +61,11 @@ interface AliasManagerInterface
      * @return self
      */
     public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language);
+
+    /**
+     *
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function findAliasByObject(UuidInterface $uuid);
 }

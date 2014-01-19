@@ -11,8 +11,8 @@
  */
 namespace User\Authentication\Adapter;
 
-use Zend\Authentication\Result;
 use User\Exception\UserNotFoundException;
+use Zend\Authentication\Result;
 
 class UserAuthAdapter implements AdapterInterface
 {

@@ -16,9 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  * An entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="wiki_articles")
+ * @ORM\Table(name="wiki_article_translations")
  */
-class Article {
+class ArticleTranslation {
 
     /**
      * @ORM\Id
@@ -28,9 +28,10 @@ class Article {
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Article")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    protected $field;
+    protected $currentRevision;
 
 }
  

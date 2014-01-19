@@ -11,6 +11,7 @@
 namespace Alias;
 
 use Alias\Exception;
+use Alias\Exception\AliasNotFoundException;
 use Alias\Options\ManagerOptions;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Filter\Slugify;
@@ -120,6 +121,43 @@ class AliasManager implements AliasManagerInterface
         return $entity->getAlias();
     }
 
+    public function updateAlias($alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
+    {
+        if (!is_string($alias)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
+        }
+
+        $aliasEntity = $this->findAliasByObject($uuid);
+
+        if (!is_object($aliasEntity)) {
+            throw new AliasNotFoundException('Object has no alias to edit');
+        }
+
+        if ($aliasEntity->getAlias() == $alias) {
+            return $this;
+        }
+
+        try {
+            $this->findSourceByAlias($alias, $language);
+            $alias = $aliasFallback;
+        } catch (Exception\AliasNotFoundException $e) {
+        }
+
+        $filter = new Slugify();
+
+        $slugified = array();
+        foreach (explode('/', $alias) as $token) {
+            $slugified[] = $filter->filter($token);
+        }
+        $alias = implode('/', $slugified);
+
+        $aliasEntity->setAlias($alias);
+        $this->getObjectManager()->persist($aliasEntity);
+
+        return $this;
+
+    }
+
     public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
     {
         if (!is_string($alias)) {
@@ -161,7 +199,7 @@ class AliasManager implements AliasManagerInterface
         return $this;
     }
 
-    protected function findAliasByObject(UuidInterface $uuid)
+    public function findAliasByObject(UuidInterface $uuid)
     {
         /* @var $entity Entity\AliasInterface */
         $entity = $this->getAliasRepository()->findOneBy(

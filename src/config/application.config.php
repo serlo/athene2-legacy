@@ -11,25 +11,26 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules'                 => array(
+        'ZendDeveloperTools',
+        'Application',
+        'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
-        'ZendDeveloperTools',
-        'AsseticBundle',
         'Common',
-        'ClassResolver',
-        'Application',
         'Ui',
         'Admin',
         'User',
         'Versioning',
         'Entity',
+        'Taxonomy',
         'Link',
         'Subject',
         'Term',
         'Uuid',
+        'ClassResolver',
         'Language',
         'Event',
         'Mailman',
@@ -51,6 +52,7 @@ return array(
         'Authorization',
         'Taxonomy',
         'Notification',
+        'Ads',
         'Migrator'
     ),
     // These are various options for the listeners attached to the ModuleManager
