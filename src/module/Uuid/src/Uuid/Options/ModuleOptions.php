@@ -51,21 +51,20 @@ class ModuleOptions extends AbstractOptions
      * @return string
      * @throws Exception\RuntimeException
      */
-    public function getPermission($object, $action)
+    public function getPermission($scope, $action)
     {
-        $className = get_class($object);
-
-        if (!isset($this->permissions[$className])) {
-            $permissions = $this->$defaultPermissions;
+        $scope = (string) $scope;
+        if (!isset($this->permissions[$scope])) {
+            $permissions = $this->defaultPermissions;
         } else {
-            $permissions = $this->permissions[$className];
+            $permissions = $this->permissions[$scope];
         }
 
         if (!isset($permissions[$action])) {
             throw new Exception\RuntimeException(sprintf(
-                'Permission action "%s" for object "%s" not found',
+                'Permission action "%s" for scope "%s" not found',
                 $action,
-                $className
+                $scope
             ));
         }
 

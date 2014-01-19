@@ -34,13 +34,12 @@ class UuidHelper extends AbstractHelper
     public function getPermission($object, $action)
     {
         if ($object instanceof UuidHolder) {
+            $object = $object->getUuidEntity();
         } elseif ($object instanceof UuidInterface) {
-            $object = $object->getHolder();
         } else {
             throw new InvalidArgumentException;
         }
 
-        return $this->moduleOptions($object, $action);
+        return $this->moduleOptions->getPermission($object->getHolderName(), $action);
     }
 }
- 

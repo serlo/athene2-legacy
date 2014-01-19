@@ -24,7 +24,7 @@ class ModuleOptionsFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options = $serviceLocator->get('config')['versioning'];
+        $options = $serviceLocator->get('config')['uuid'];
 
         return new ModuleOptions($options);
     }

@@ -117,7 +117,7 @@ class UuidManager implements UuidManagerInterface
     public function trashUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid, 'trash');
+        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'trash');
         $this->assertGranted($permission, $uuid);
 
         $uuid->setTrashed(true);
@@ -135,7 +135,7 @@ class UuidManager implements UuidManagerInterface
     public function restoreUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid, 'restore');
+        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'restore');
         $this->assertGranted($permission, $uuid);
 
         $uuid->setTrashed(false);

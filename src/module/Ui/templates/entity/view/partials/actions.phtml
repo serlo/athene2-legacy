@@ -21,7 +21,6 @@
             <?php endif; ?>
 
             <!-- Versioning history -->
-            <?php if ($this->isGranted('entity.repository.history', $entity)): ?>
                 <li>
                     <a href="<?php echo $this->url(
                         'entity/repository/history',
@@ -33,8 +32,7 @@
                         <?php endif; ?>
                     </a>
                 </li>
-            <?php endif; ?>
-
+            
         <?php endif; ?>
         <?php if ($options->hasComponent('link')): ?>
         <?php /* @var $componentOptions \Entity\Options\LinkOptions */ ?>
