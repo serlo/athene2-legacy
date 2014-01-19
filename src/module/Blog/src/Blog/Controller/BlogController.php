@@ -107,14 +107,13 @@ class BlogController extends AbstractActionController
         $this->assertGranted('blog.post.update', $post);
 
         $form = new PostForm();
-
-        $form->setData(
-            array(
-                'title'   => $post->getTitle(),
-                'content' => $post->getContent()
-            )
-        );
-
+        
+        $form->setData(array(
+            'title' => $post->getTitle(),
+            'content' => $post->getContent(),
+            'publish' => $post->getPublish()->format('d.m.Y')
+        ));
+        
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
