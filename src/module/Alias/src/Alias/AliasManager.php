@@ -67,9 +67,8 @@ class AliasManager implements AliasManagerInterface
         $provider       = $options['provider'];
         $tokenString    = $options['tokenize'];
         $fallbackString = $options['fallback'];
-        $service        = $this->getUuidManager()->createService($object);
-        $alias          = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
-        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
+        $alias          = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $tokenString);
+        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $fallbackString);
 
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
     }
