@@ -11,6 +11,11 @@
 namespace Blog;
 
 return [
+    'zendDiCompiler' => [
+        'scanDirectories' => [
+            __DIR__ . '/../src'
+        ]
+    ],
     'zfc_rbac'       => [
         'assertion_map' => [
             'blog.post.create'    => 'Authorization\Assertion\LanguageAssertion',
@@ -55,9 +60,6 @@ return [
                 ],
                 __NAMESPACE__ . '\Manager\BlogManager'       => [
                     'setTaxonomyManager'      => [
-                        'required' => true
-                    ],
-                    'setServiceLocator'       => [
                         'required' => true
                     ],
                     'setClassResolver'        => [

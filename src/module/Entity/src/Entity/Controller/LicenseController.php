@@ -28,7 +28,6 @@ class LicenseController extends AbstractController
         $this->assertGranted('entity.license.update', $entity);
 
         $form = new UpdateLicenseForm($licenses);
-
         $view = new ViewModel(array(
             'form' => $form
         ));

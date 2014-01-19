@@ -11,12 +11,21 @@
 namespace Authorization\Controller;
 
 use Authorization\Service\PermissionServiceAwareTrait;
+use Authorization\Service\PermissionServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Helper\ViewModel;
 
 class PermissionController extends AbstractActionController
 {
     use PermissionServiceAwareTrait;
+
+    /**
+     * @param PermissionServiceInterface $permissionService
+     */
+    public function __construct(PermissionServiceInterface $permissionService)
+    {
+        $this->permissionService = $permissionService;
+    }
 
     public function permissionsAction()
     {

@@ -10,7 +10,7 @@
  */
 namespace Discussion\Form;
 
-use User\Notification\Form\OptInFieldset;
+use Notification\Form\OptInFieldset;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;

@@ -138,8 +138,8 @@ return [
 
                     $match = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
 
-                    $interface = 'Zend\Mvc\Router\\' . (\Zend\Console\Console::isConsole(
-                        ) ? 'Console' : 'Http') . '\RouteMatch';
+                    $interface = 'Zend\Mvc\Router\\' . (\Zend\Console\Console::isConsole() ? 'Console' :
+                            'Http') . '\RouteMatch';
 
                     if ($match instanceof $interface) {
                         $view_helper->setRouteMatch($match);

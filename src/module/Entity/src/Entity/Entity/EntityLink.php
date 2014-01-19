@@ -1,19 +1,18 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Link\Entity\LinkInterface;
 use Link\Entity\LinkableInterface;
+use Link\Entity\LinkInterface;
 
 /**
  * An
@@ -63,6 +62,7 @@ class EntityLink implements LinkInterface
     public function setPosition($position)
     {
         $this->order = $position;
+
         return $this;
     }
 
@@ -84,12 +84,14 @@ class EntityLink implements LinkInterface
     public function setChild(LinkableInterface $child)
     {
         $this->child = $child;
+
         return $this;
     }
 
     public function setParent(LinkableInterface $parent)
     {
         $this->parent = $parent;
+
         return $this;
     }
 }

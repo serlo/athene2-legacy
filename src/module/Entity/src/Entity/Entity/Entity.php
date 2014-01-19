@@ -1,25 +1,24 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\ArrayCollection;
-use Versioning\Entity\RevisionInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Entity\Exception;
-use License\Entity\LicenseInterface;
 use Language\Entity\LanguageInterface;
+use License\Entity\LicenseInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
+use Uuid\Entity\UuidEntity;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity.
@@ -92,13 +91,13 @@ class Entity extends UuidEntity implements EntityInterface
 
     public function __construct()
     {
-        $this->revisions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->childLinks = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parentLinks = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->terms = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->revisions            = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->childLinks           = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parentLinks          = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children             = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parents              = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->issues               = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->terms                = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
     }
 
@@ -136,28 +135,32 @@ class Entity extends UuidEntity implements EntityInterface
     {
         return $this->childLinks;
     }
-    
+
     public function setCurrentRevision(RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
+
         return $this;
     }
 
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
+
         return $this;
     }
 
     public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
+
         return $this;
     }
 
     public function setLicense(LicenseInterface $license)
     {
         $this->license = $license;
+
         return $this;
     }
 
@@ -168,7 +171,8 @@ class Entity extends UuidEntity implements EntityInterface
 
     public function isUnrevised()
     {
-        return (! $this->hasCurrentRevision() && $this->getHead()) || ($this->hasCurrentRevision() && $this->getHead() !== $this->getCurrentRevision());
+        return (!$this->hasCurrentRevision() && $this->getHead()) || ($this->hasCurrentRevision() && $this->getHead(
+            ) !== $this->getCurrentRevision());
     }
 
     public function createLink()
@@ -184,26 +188,28 @@ class Entity extends UuidEntity implements EntityInterface
     public function addRevision(RevisionInterface $revision)
     {
         $this->revisions->add($revision);
+
         return $this;
     }
 
     public function removeRevision(RevisionInterface $revision)
     {
         $this->revisions->removeElement($revision);
+
         return $this;
     }
 
-    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
     {
-        if ($node === NULL) {
+        if ($node === null) {
             throw new Exception\InvalidArgumentException('Missing parameter node');
         }
         $this->termTaxonomyEntities->add($node);
     }
 
-    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = NULL)
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
     {
-        if ($node === NULL) {
+        if ($node === null) {
             throw new Exception\InvalidArgumentException('Missing parameter node');
         }
         $this->termTaxonomyEntities->removeElement($node);
@@ -213,49 +219,50 @@ class Entity extends UuidEntity implements EntityInterface
     {
         $revision = new Revision();
         $revision->setRepository($this);
+
         return $revision;
     }
 
     public function getTaxonomyTerms()
     {
         $collection = new ArrayCollection();
-        
+
         foreach ($this->termTaxonomyEntities as $rel) {
             $collection->add($rel->getTaxonomyTerm());
         }
-        
+
         return $collection;
     }
 
-    public function getChildren($linkyType, $childType = NULL)
+    public function getChildren($linkyType, $childType = null)
     {
         $collection = new ArrayCollection();
-        
+
         foreach ($this->getChildLinks() as $link) {
-            $childTypeName = $link->getChild()
-                ->getType()
-                ->getName();
-            if ($link->getType()->getName() === $linkyType && ($childType === NULL || ($childType !== NULL && $childTypeName === $childType))) {
+            $childTypeName = $link->getChild()->getType()->getName();
+            if ($link->getType()->getName(
+                ) === $linkyType && ($childType === null || ($childType !== null && $childTypeName === $childType))
+            ) {
                 $collection->add($link->getChild());
             }
         }
-        
+
         return $collection;
     }
 
-    public function getParents($linkyType, $parentType = NULL)
+    public function getParents($linkyType, $parentType = null)
     {
         $collection = new ArrayCollection();
-        
+
         foreach ($this->getParentLinks() as $link) {
-            $childTypeName = $link->getChild()
-                ->getType()
-                ->getName();
-            if ($link->getType()->getName() === $linkyType && ($parentType === NULL || ($parentType !== NULL && $childTypeName === $parentType))) {
+            $childTypeName = $link->getChild()->getType()->getName();
+            if ($link->getType()->getName(
+                ) === $linkyType && ($parentType === null || ($parentType !== null && $childTypeName === $parentType))
+            ) {
                 $collection->add($link->getParent());
             }
         }
-        
+
         return $collection;
     }
 }

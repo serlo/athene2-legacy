@@ -1,24 +1,21 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Normalizer\Strategy;
 
-use Entity\Entity\EntityInterface;
 use Entity\Entity\Revision;
 
 class EntityRevisionStrategy extends AbstractStrategy
 {
 
     /**
-     *
      * @return Revision
      */
     public function getObject()
@@ -48,10 +45,7 @@ class EntityRevisionStrategy extends AbstractStrategy
 
     protected function getType()
     {
-        return $this->getObject()
-            ->getRepository()
-            ->getType()
-            ->getName() . 'Revision';
+        return $this->getObject()->getRepository()->getType()->getName() . 'Revision';
     }
 
     protected function getRouteName()
@@ -62,9 +56,7 @@ class EntityRevisionStrategy extends AbstractStrategy
     protected function getRouteParams()
     {
         return [
-            'entity' => $this->getObject()
-                ->getRepository()
-                ->getId(),
+            'entity'   => $this->getObject()->getRepository()->getId(),
             'revision' => $this->getObject()->getId()
         ];
     }
@@ -74,11 +66,11 @@ class EntityRevisionStrategy extends AbstractStrategy
         return $object instanceof Revision;
     }
 
-    protected function getField($field, $fallback = NULL)
+    protected function getField($field, $fallback = null)
     {
-        if ($this->getObject()->get($field) !== NULL) {
+        if ($this->getObject()->get($field) !== null) {
             return $this->getObject()->get($field);
-        } elseif ($fallback !== NULL && $this->getObject()->get($fallback) !== NULL) {
+        } elseif ($fallback !== null && $this->getObject()->get($fallback) !== null) {
             return $this->getObject()->get($fallback);
         } else {
             return $this->getObject()->getId();

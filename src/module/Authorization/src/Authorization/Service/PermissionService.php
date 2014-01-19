@@ -12,11 +12,23 @@ namespace Authorization\Service;
 
 use Authorization\Exception\PermissionNotFoundException;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class PermissionService implements PermissionServiceInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
+
+    /**
+     * @param ObjectManager          $objectManager
+     * @param ClassResolverInterface $classResolver
+     */
+    public function __construct(ClassResolverInterface $classResolver, ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+        $this->classResolver = $classResolver;
+    }
 
     /**
      * @var string

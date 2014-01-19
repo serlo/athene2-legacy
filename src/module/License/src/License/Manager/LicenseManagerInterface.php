@@ -1,79 +1,69 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace License\Manager;
 
-use License\Entity\LicenseInterface;
-use Language\Entity\LanguageInterface;
-use License\Form\LicenseForm;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use License\Entity\LicenseAwareInterface;
 use Common\ObjectManager\Flushable;
+use Language\Entity\LanguageInterface;
+use License\Entity\LicenseAwareInterface;
+use License\Entity\LicenseInterface;
+use License\Form\LicenseForm;
 
 interface LicenseManagerInterface extends Flushable
 {
 
     /**
-     * 
      * @param int $id
      * @return LicenseInterface
      */
     public function getLicense($id);
-    
+
     /**
-     * 
-     * @param LicenseForm $form
+     * @param LicenseForm       $form
      * @param LanguageInterface $language
      */
     public function addLicense(LicenseForm $form, LanguageInterface $language);
 
     /**
-     * 
      * @param int $id
-     * @return self
+     * @return void
      */
     public function removeLicense($id);
 
     /**
-     * 
      * @return LicenseInterface[]
      */
     public function findAllLicenses();
-    
+
     /**
-     * 
      * @param LanguageInterface $languageService
      * @return LicenseInterface[]
      */
     public function findLicensesByLanguage(LanguageInterface $languageService);
-    
+
     /**
-     * 
      * @param LicenseForm $form
-     * @return self
+     * @return void
      */
     public function updateLicense(LicenseForm $form);
-    
+
     /**
-     * 
      * @param int $id
      * @return LicenseForm
      */
-    public function getLicenseForm($id = NULL);
-    
+    public function getLicenseForm($id = null);
+
     /**
-     * 
      * @param LicenseAwareInterface $object
-     * @param LicenseInterface $license
-     * @return self
+     * @param LicenseInterface      $license
+     * @return void
      */
-    public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = NULL);
+    public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = null);
 }

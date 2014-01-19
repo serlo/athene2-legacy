@@ -1,7 +1,7 @@
 <?php
 /**
-* @authors Kanstantsin A Kamkou (2ka.by); Jeroen Herczeg; Timo Klement
-*/
+ * @authors Kanstantsin A Kamkou (2ka.by); Jeroen Herczeg; Timo Klement
+ */
 $html = array();
 //$html[] = '<div class="navbar navbar-fixed-top">';
 //$html[] = ' <div class="navbar-inner">';
@@ -9,23 +9,23 @@ $html = array();
 $html[] = ' <ul class="' . $this->navigation()->menu()->getUlClass() . '">';
 
 foreach ($this->container as $page) {
-    
+
     // visibility of the page
-    if (! $page->isVisible() || !$this->navigation()->accept($page)) {
+    if (!$page->isVisible() || !$this->navigation()->accept($page)) {
         continue;
     }
 
     // for Login/Logout/Register links:
     // check if menu item has 'needsIdentidy' set
-    if (! is_null($page->get('needsIdentity'))) {
+    if (!is_null($page->get('needsIdentity'))) {
         // check if current user is anonymous and compare to 'needsIdentity' value
-        if($this->authentication()->hasIdentity() !== $page->get('needsIdentity')) {
+        if ($this->isGranted('login') !== $page->get('needsIdentity')) {
             continue;
         }
     }
 
     // dropdown
-    $dropdown = ! empty($page->pages);
+    $dropdown = !empty($page->pages);
 
     // check for subpages
     // if exists, insert a dropdown class and a data-toggle attribute
@@ -33,16 +33,17 @@ foreach ($this->container as $page) {
     if (count($page->_pages) > 0) {
         // li-element with subpages
         $html[] = '<li' . ($dropdown ? ' class="dropdown"' : '') . '>';
-        $html[] = '<a href="' . ($dropdown ? '#' : $page->getHref()) . '" ' . 'class="dropdown-toggle" data-toggle="dropdown">';
+        $html[] = '<a href="' . ($dropdown ? '#' :
+                $page->getHref()) . '" ' . 'class="dropdown-toggle" data-toggle="dropdown">';
         if ($page->get('icon')) {
             $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
         }
         $html[] = $page->getLabel();
-        
+
         if ($dropdown) {
             $html[] = '<b class="caret"></b>';
         }
-        
+
         $html[] = '</a>';
     } else {
         // li-element without subpages
@@ -54,18 +55,21 @@ foreach ($this->container as $page) {
         $html[] = $page->getLabel();
         $html[] = '</a>';
     }
-    
-    if (! $dropdown) {
+
+    if (!$dropdown) {
         $html[] = '</li>';
         continue;
     }
-    
-    if($dropdown) {
+
+    if ($dropdown) {
         $html[] = '<ul class="dropdown-menu">';
-        $html[] = $this->partial('layout/navigation/partial/nested-dropdown-navigation-list', array('pages' => $page->pages));
+        $html[] = $this->partial(
+            'layout/navigation/partial/nested-dropdown-navigation-list',
+            array('pages' => $page->pages)
+        );
         $html[] = "</ul>";
     }
-    
+
     $html[] = "</li>";
 }
 

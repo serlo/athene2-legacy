@@ -1,22 +1,14 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace User;
 
-use Zend\Mvc\MvcEvent;
-
 class Module
 {
-
-    public static $listeners = [
-        'User\Notification\Listener\RepositoryManagerListener',
-        'User\Notification\Listener\DiscussionControllerListener'
-    ];
 
     public function getConfig()
     {
@@ -32,17 +24,5 @@ class Module
                 )
             )
         );
-    }
-
-    public function onBootstrap(MvcEvent $e)
-    {
-        foreach (static::$listeners as $listener) {
-            $e->getApplication()
-                ->getEventManager()
-                ->getSharedManager()
-                ->attachAggregate($e->getApplication()
-                ->getServiceManager()
-                ->get($listener));
-        }
     }
 }

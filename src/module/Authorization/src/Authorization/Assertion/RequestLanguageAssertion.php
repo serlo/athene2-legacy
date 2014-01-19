@@ -11,11 +11,17 @@
 namespace Authorization\Assertion;
 
 use Language\Manager\LanguageManagerAwareTrait;
+use Language\Manager\LanguageManagerInterface;
 use ZfcRbac\Service\AuthorizationService;
 
 class RequestLanguageAssertion implements ControllerAssertionInterface
 {
     use LanguageManagerAwareTrait;
+
+    public function __construct(LanguageManagerInterface $languageManager)
+    {
+        $this->languageManager = $languageManager;
+    }
 
     public function assert(AuthorizationService $authorizationService)
     {

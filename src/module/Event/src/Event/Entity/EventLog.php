@@ -1,21 +1,20 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Event\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Language\Entity\LanguageInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -82,7 +81,8 @@ class EventLog implements EventLogInterface
                 return $parameter->getObject()->getHolder();
             }
         }
-        return NULL;
+
+        return null;
     }
 
     public function getLanguage()
@@ -123,30 +123,35 @@ class EventLog implements EventLogInterface
     public function setActor(UserInterface $actor)
     {
         $this->actor = $actor;
+
         return $this;
     }
 
     public function setEvent(EventInterface $event)
     {
         $this->event = $event;
+
         return $this;
     }
 
     public function setObject(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
+
         return $this;
     }
 
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
+
         return $this;
     }
 
     public function addParameter(EventParameterInterface $parameter)
     {
         $this->parameters->add($parameter);
+
         return $this;
     }
 }

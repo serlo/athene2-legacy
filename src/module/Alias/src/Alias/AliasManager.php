@@ -12,15 +12,18 @@ namespace Alias;
 
 use Alias\Exception;
 use Alias\Options\ManagerOptions;
+use ClassResolver\ClassResolverAwareTrait;
 use Common\Filter\Slugify;
 use Common\Traits;
 use Language\Entity\LanguageInterface;
+use Token\TokenizerAwareTrait;
 use Uuid\Entity\UuidInterface;
+use Uuid\Manager\UuidManagerAwareTrait;
 
 class AliasManager implements AliasManagerInterface
 {
-    use Traits\ObjectManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait, \Token\TokenizerAwareTrait,
-        \Uuid\Manager\UuidManagerAwareTrait;
+    use Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use TokenizerAwareTrait, UuidManagerAwareTrait;
 
     /**
      * @var ManagerOptions
@@ -64,10 +67,8 @@ class AliasManager implements AliasManagerInterface
         $provider       = $options['provider'];
         $tokenString    = $options['tokenize'];
         $fallbackString = $options['fallback'];
-        $service        = $this->getUuidManager()->createService($object);
-
-        $alias         = $this->getTokenizer()->transliterate($provider, $service, $tokenString);
-        $aliasFallback = $this->getTokenizer()->transliterate($provider, $service, $fallbackString);
+        $alias          = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $tokenString);
+        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $fallbackString);
 
         return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
     }

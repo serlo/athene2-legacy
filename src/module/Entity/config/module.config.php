@@ -11,7 +11,7 @@
 namespace Entity;
 
 return [
-    'zfc_rbac' => [
+    'zfc_rbac'        => [
         'assertion_map' => [
             'entity.license.update' => 'Authorization\Assertion\LanguageAssertion',
         ]
@@ -70,25 +70,25 @@ return [
                     ],
                     'setLanguageManager' => [
                         'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\RepositoryController' => [
-                    'setEntityManager'     => [
+                    'setEntityManager'        => [
                         'required' => true
                     ],
-                    'setLanguageManager'   => [
+                    'setLanguageManager'      => [
                         'required' => true
                     ],
-                    'setUserManager'       => [
+                    'setUserManager'          => [
                         'required' => true
                     ],
-                    'setRepositoryManager' => [
+                    'setRepositoryManager'    => [
                         'required' => true
                     ],
-                    'setModuleOptions'     => [
+                    'setModuleOptions'        => [
+                        'required' => true
+                    ],
+                    'setAuthorizationService' => [
                         'required' => true
                     ]
                 ],
@@ -138,11 +138,6 @@ return [
     'view_helpers'    => [
         'factories' => [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
-        ]
-    ],
-    'view_manager'    => [
-        'template_path_stack' => [
-            __DIR__ . '/../view'
         ]
     ],
     'doctrine'        => [

@@ -13,15 +13,33 @@ namespace Authorization\Controller;
 use Authorization\Form\PermissionForm;
 use Authorization\Form\UserForm;
 use Authorization\Service\PermissionServiceAwareTrait;
+use Authorization\Service\PermissionServiceInterface;
 use Authorization\Service\RoleServiceAwareTrait;
+use Authorization\Service\RoleServiceInterface;
 use User\Exception\UserNotFoundException;
 use User\Manager\UserManagerAwareTrait;
+use User\Manager\UserManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class RoleController extends AbstractActionController
 {
     use RoleServiceAwareTrait, UserManagerAwareTrait, PermissionServiceAwareTrait;
+
+    /**
+     * @param PermissionServiceInterface $permissionService
+     * @param RoleServiceInterface       $roleService
+     * @param UserManagerInterface       $userManager
+     */
+    public function __construct(
+        PermissionServiceInterface $permissionService,
+        RoleServiceInterface $roleService,
+        UserManagerInterface $userManager
+    ) {
+        $this->roleService       = $roleService;
+        $this->userManager       = $userManager;
+        $this->permissionService = $permissionService;
+    }
 
     public function rolesAction()
     {

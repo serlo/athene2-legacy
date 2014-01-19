@@ -1,29 +1,28 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL]
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL]
  */
 namespace Metadata;
 
 return [
     'class_resolver' => [
-        __NAMESPACE__ . '\Entity\MetadataInterface' => __NAMESPACE__ . '\Entity\Metadata',
+        __NAMESPACE__ . '\Entity\MetadataInterface'    => __NAMESPACE__ . '\Entity\Metadata',
         __NAMESPACE__ . '\Entity\MetadataKeyInterface' => __NAMESPACE__ . '\Entity\MetadataKey'
     ],
-    'di' => [
+    'di'             => [
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Manager\MetadataManager' => [
+                __NAMESPACE__ . '\Manager\MetadataManager'          => [
                     'setServiceLocator' => [
                         'required' => true
                     ],
-                    'setObjectManager' => [
+                    'setObjectManager'  => [
                         'required' => true
                     ],
-                    'setClassResolver' => [
+                    'setClassResolver'  => [
                         'required' => true
                     ]
                 ],
@@ -34,13 +33,13 @@ return [
                 ]
             ]
         ],
-        'instance' => [
+        'instance'   => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\MetadataManagerInterface' => __NAMESPACE__ . '\Manager\MetadataManager'
             ]
         ]
     ],
-    'doctrine' => [
+    'doctrine'       => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -49,7 +48,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]

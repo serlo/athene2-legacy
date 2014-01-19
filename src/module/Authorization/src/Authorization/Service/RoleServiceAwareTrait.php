@@ -18,14 +18,6 @@ trait RoleServiceAwareTrait
     protected $roleService;
 
     /**
-     * @param RoleServiceInterface $roleService
-     */
-    public function setRoleService(RoleServiceInterface $roleService)
-    {
-        $this->roleService = $roleService;
-    }
-
-    /**
      * @return RoleServiceInterface
      */
     public function getRoleService()

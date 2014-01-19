@@ -174,9 +174,6 @@ return [
                     'setDiscussionManager'     => [
                         'required' => true
                     ],
-                    'setDiscussionFilterChain' => [
-                        'required' => true
-                    ],
                     'setLanguageManager'       => [
                         'required' => true
                     ],

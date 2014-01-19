@@ -14,9 +14,6 @@ use User\Authentication\AuthenticationService;
 use User\Authentication\HashFilter;
 use User\Authentication\Storage\UserRepository;
 use User\Entity\UserInterface;
-use User\View\Helper\Authenticator;
-use User\View\Helper\Guard;
-use User\View\Helper\Notification;
 use User\View\Helper\Rbac;
 
 /**
@@ -51,56 +48,13 @@ return array(
             __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
         )
     ),
-    'view_manager'    => array(
-        'template_path_stack' => array(
-            __DIR__ . '/../view'
-        )
-    ),
-    'view_helpers'    => array(
-        'factories' => array(
-            'notifications'  => function ($sm) {
-                    $helper = new Notification();
-                    $helper->setUserManager(
-                        $sm->getServiceLocator()->get('User\Manager\UserManager')
-                    );
-                    $helper->setNotificationManager(
-                        $sm->getServiceLocator()->get('User\Notification\NotificationManager')
-                    );
-
-                    return $helper;
-                },
-            'authentication' => function ($sm) {
-                    $helper = new Authenticator();
-                    $helper->setAuthenticationService(
-                        $sm->getServiceLocator()->get('Zend\Authentication\AuthenticationService')
-                    );
-
-                    return $helper;
-                },
-            'guard'          => function ($sm) {
-                    $helper = new Guard();
-                    $helper->setGuardPluginManager(
-                        $sm->getServiceLocator()->get('ZfcRbac\Guard\GuardPluginManager')
-                    );
-                    $helper->setApplication(
-                        $sm->getServiceLocator()->get('Application')
-                    );
-                    $helper->setRouter(
-                        $sm->getServiceLocator()->get('router')
-                    );
-
-                    return $helper;
-                }
-        )
-    ),
     'class_resolver'  => array(
-        'User\Entity\UserInterface'                              => 'User\Entity\User',
-        'User\Entity\RoleInterface'                              => 'User\Entity\Role',
-        'User\Notification\Entity\NotificationEventInterface'    => 'User\Entity\NotificationEvent',
-        'User\Notification\Service\NotificationServiceInterface' => 'User\Notification\Service\NotificationService',
-        'User\Notification\Entity\NotificationInterface'         => 'User\Entity\Notification',
-        'User\Notification\Entity\SubscriptionInterface'         => 'User\Entity\Subscription',
-        'User\Notification\Entity\NotificationLogInterface'      => 'User\Entity\NotificationLog'
+        'User\Entity\UserInterface'                           => 'User\Entity\User',
+        'User\Entity\RoleInterface'                           => 'User\Entity\Role',
+        'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
+        'User\Notification\Entity\NotificationInterface'      => 'User\Entity\Notification',
+        'User\Notification\Entity\SubscriptionInterface'      => 'User\Entity\Subscription',
+        'User\Notification\Entity\NotificationLogInterface'   => 'User\Entity\NotificationLog'
     ),
     'di'              => array(
         'allowed_controllers' => array(
@@ -110,27 +64,16 @@ return array(
         ),
         'definition'          => array(
             'class' => array(
-                'User\Notification\Service\NotificationService'                       => array(
-                    'setEventManager' => array(
-                        'required' => true
-                    )
-                ),
                 __NAMESPACE__ . '\Notification\Listener\DiscussionControllerListener' => array(
-                    'setNotificationLogManager' => array(
-                        'required' => true
-                    ),
-                    'setSubscriptionManager'    => array(
+                    'setSubscriptionManager' => array(
                         'required' => true
                     )
                 ),
                 __NAMESPACE__ . '\Notification\Listener\RepositoryManagerListener'    => array(
-                    'setNotificationLogManager' => array(
+                    'setSubscriptionManager' => array(
                         'required' => true
                     ),
-                    'setSubscriptionManager'    => array(
-                        'required' => true
-                    ),
-                    'setUserManager'            => array(
+                    'setUserManager'         => array(
                         'required' => true
                     )
                 ),
@@ -215,9 +158,6 @@ return array(
                     'setAuthenticationService' => array(
                         'required' => true
                     ),
-                    'setAuthAdapter'           => array(
-                        'required' => true
-                    ),
                     'setLanguageManager'       => array(
                         'required' => true
                     )
@@ -225,16 +165,13 @@ return array(
             )
         ),
         'instance'            => array(
-            'preferences'                                   => array(
+            'preferences' => array(
                 __NAMESPACE__ . '\Manager\UserManagerInterface'                 => __NAMESPACE__ . '\Manager\UserManager',
                 __NAMESPACE__ . '\Authentication\HashServiceInterface'          => __NAMESPACE__ . '\Authentication\HashService',
                 __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface'      => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
                 __NAMESPACE__ . '\Notification\SubscriptionManagerInterface'    => __NAMESPACE__ . '\Notification\SubscriptionManager',
                 __NAMESPACE__ . '\Notification\NotificationManagerInterface'    => __NAMESPACE__ . '\Notification\NotificationManager',
                 __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager'
-            ),
-            'User\Notification\Service\NotificationService' => array(
-                'shared' => false
             )
         )
     ),

@@ -26,7 +26,7 @@ class ContextController extends AbstractActionController
         $this->assertGranted('contexter.context.manage');
 
         $elements = $this->getContextManager()->findAll();
-        $view = new ViewModel(array(
+        $view     = new ViewModel(array(
             'elements' => $elements
         ));
         $view->setTemplate('contexter/manage');
@@ -101,7 +101,7 @@ class ContextController extends AbstractActionController
             );
             if ($form->isValid()) {
                 $data = $form->getData();
-                $url = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri'];
+                $url  = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri'];
                 $this->redirect()->toUrl($url);
 
                 return false;
@@ -114,7 +114,7 @@ class ContextController extends AbstractActionController
 
     public function updateAction()
     {
-        $id = $this->params('id');
+        $id      = $this->params('id');
         $context = $this->getContextManager()->getContext($id);
         $this->assertGranted('contexter.context.update', $context);
 

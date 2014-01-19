@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Normalizer\Strategy;
 
@@ -17,7 +16,6 @@ class CommentStrategy extends AbstractStrategy
 {
 
     /**
-     *
      * @return CommentInterface
      */
     public function getObject()
@@ -27,7 +25,8 @@ class CommentStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getObject()->hasParent() ? $this->getObject()->getParent()->getTitle() : $this->getObject()->getTitle();
+        return $this->getObject()->hasParent() ? $this->getObject()->getParent()->getTitle() :
+            $this->getObject()->getTitle();
     }
 
     protected function getTimestamp()
@@ -58,7 +57,8 @@ class CommentStrategy extends AbstractStrategy
     protected function getRouteParams()
     {
         return [
-            'id' =>  $this->getObject()->hasParent() ?  $this->getObject()->getParent()->getId() : $this->getObject()->getId()
+            'id' => $this->getObject()->hasParent() ? $this->getObject()->getParent()->getId() :
+                    $this->getObject()->getId()
         ];
     }
 

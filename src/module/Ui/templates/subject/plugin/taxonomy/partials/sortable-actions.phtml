@@ -1,4 +1,5 @@
-<?php if($this->guard()->hasAccessToRoute('entity/plugin/link/order')): ?>
+<?php // if($this->guard()->hasAccessToRoute('entity/plugin/link/order')): ?>
+<?php if ($this->isGranted('taxonomy.term.associated.sort', $this->term)): ?>
     <button class="btn btn-xs btn-default sortable-activate-action">
         <span class="glyphicon glyphicon-sort"></span>
     </button>

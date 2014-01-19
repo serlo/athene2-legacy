@@ -12,8 +12,10 @@ namespace Authorization\Assertion;
 
 use Authorization\Exception\PermissionNotFoundException;
 use Authorization\Service\PermissionServiceAwareTrait;
+use Authorization\Service\PermissionServiceInterface;
 use Authorization\Service\RoleServiceAwareTrait;
 use Language\Manager\LanguageManagerAwareTrait;
+use Language\Manager\LanguageManagerInterface;
 use ZfcRbac\Assertion\AssertionInterface;
 use ZfcRbac\Service\AuthorizationService;
 
@@ -21,10 +23,17 @@ class RoleAssertion implements AssertionInterface
 {
     use PermissionServiceAwareTrait, LanguageManagerAwareTrait;
 
+    public function __construct(
+        LanguageManagerInterface $languageManager,
+        PermissionServiceInterface $permissionService
+    ) {
+        $this->permissionService = $permissionService;
+        $this->languageManager   = $languageManager;
+    }
+
     public function assert(AuthorizationService $authorization, $role = null)
     {
-        $assertion = new RequestLanguageAssertion();
-        $assertion->setLanguageManager($this->getLanguageManager());
+        $assertion = new RequestLanguageAssertion($this->getLanguageManager());
         $checkName = 'authorization.role.' . $role->getName() . '.identity.modify';
 
         try {

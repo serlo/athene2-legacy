@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	    Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	    LGPL-3.0
- * @license	    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright	Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author         Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license        LGPL-3.0
+ * @license        http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link           https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright      Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Markdown\Entity;
 
@@ -38,7 +37,6 @@ class HtmlCache implements CacheInterface
     protected $content;
 
     /**
-     *
      * @return int $id
      */
     public function getId()
@@ -47,7 +45,6 @@ class HtmlCache implements CacheInterface
     }
 
     /**
-     *
      * @return string $guid
      */
     public function getGuid()
@@ -56,7 +53,6 @@ class HtmlCache implements CacheInterface
     }
 
     /**
-     *
      * @return string $content
      */
     public function getContent()
@@ -65,24 +61,24 @@ class HtmlCache implements CacheInterface
     }
 
     /**
-     *
-     * @param string $guid            
+     * @param string $guid
      * @return self
      */
     public function setGuid($guid)
     {
         $this->guid = $guid;
+
         return $this;
     }
 
     /**
-     *
-     * @param string $content            
+     * @param string $content
      * @return self
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

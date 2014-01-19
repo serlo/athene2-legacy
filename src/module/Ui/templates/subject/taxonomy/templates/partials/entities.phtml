@@ -27,7 +27,11 @@ $table = array(
     	</div>
     	<div class="col-md-3">
     		<div class="btn-group pull-right">
-    		    <?php if($this->guard()->hasAccessToRoute('entity/create')): ?>
+                <?php if ($this->isGranted('entity.create') && $this->isGranted(
+                        'taxonomy.term.associate',
+                        $this->term
+                    )
+                ): ?>
                     <div class="btn-group">
             			<a class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown" href="#">
             			     <span class="glyphicon glyphicon-file"></span> <span class="caret"></span>
@@ -43,8 +47,8 @@ $table = array(
             			</ul>
         			</div>
     			<?php endif; ?>
-    		    <?php if($this->guard()->hasAccessToRoute('taxonomy/term/sort-associated')): ?>
-        			<a class="btn btn-default btn-xs" href="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>">
+                <?php if ($this->isGranted('taxonomy.term.associated.sort', $this->term)): ?>
+                    <a class="btn btn-default btn-xs" href="<?php echo $this->url('taxonomy/term/sort-associated', array('association' => 'entities', 'term' => $this->term->getId())); ?>">
         			     <span class="glyphicon glyphicon-sort"></span>
         			</a>
     			<?php endif; ?>

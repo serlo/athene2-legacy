@@ -1,92 +1,91 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	    Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	    LGPL-3.0
- * @license	    http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright   Copyright (c) 2013 Gesellschaft f√ºr freie Bildung e.V. (http://www.open-education.eu/)
+ * @author         Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license        LGPL-3.0
+ * @license        http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link           https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright      Copyright (c) 2013 Gesellschaft f√ºr freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity;
 
 return [
     'entity' => [
         'types' => [
-            'text-exercise' => [
+            'text-exercise'         => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\TextExerciseForm',
+                        'form'   => __NAMESPACE__ . '\Form\TextExerciseForm',
                         'fields' => [
                             'content'
                         ]
                     ],
-                    'link' => [
+                    'link'       => [
                         'children' => [
                             'text-solution' => [
                                 'multiple' => false
                             ]
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => []
+                    'license'    => [],
+                    'taxonomy'   => []
                 ]
             ],
-            'exercise-group' => [
+            'exercise-group'        => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
+                        'form'   => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
                         'fields' => [
                             'content'
                         ]
                     ],
-                    'link' => [
+                    'link'       => [
                         'children' => [
                             'grouped-text-exercise' => [
                                 'multiple' => true
                             ]
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => []
+                    'license'    => [],
+                    'taxonomy'   => []
                 ]
             ],
             'grouped-text-exercise' => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\GroupedTextExerciseForm',
+                        'form'   => __NAMESPACE__ . '\Form\GroupedTextExerciseForm',
                         'fields' => [
                             'content'
                         ]
                     ],
-                    'link' => [
+                    'link'       => [
                         'children' => [
                             'text-solution' => [
                                 'multiple' => false
                             ]
                         ],
-                        'parents' => [
+                        'parents'  => [
                             'exercise-group' => [
                                 'multiple' => false
                             ]
                         ]
                     ],
-                    'license' => []
+                    'license'    => []
                 ]
             ],
-            'text-solution' => [
+            'text-solution'         => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\TextSolutionForm',
+                        'form'   => __NAMESPACE__ . '\Form\TextSolutionForm',
                         'fields' => [
                             'hint',
                             'content'
                         ]
                     ],
-                    'link' => [
+                    'link'       => [
                         'parents' => [
-                            'text-exercise' => [
+                            'text-exercise'         => [
                                 'multiple' => false
                             ],
                             'grouped-text-exercise' => [
@@ -94,13 +93,13 @@ return [
                             ]
                         ]
                     ],
-                    'license' => []
+                    'license'    => []
                 ]
             ],
-            'video' => [
+            'video'                 => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\VideoForm',
+                        'form'   => __NAMESPACE__ . '\Form\VideoForm',
                         'fields' => [
                             'title',
                             'content',
@@ -109,57 +108,57 @@ return [
                     ]
                 ]
             ],
-            'article' => [
+            'article'               => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\ArticleForm',
+                        'form'   => __NAMESPACE__ . '\Form\ArticleForm',
                         'fields' => [
                             'title',
                             'reasoning',
                             'content'
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => []
+                    'license'    => [],
+                    'taxonomy'   => []
                 ]
             ],
-            'module' => [
+            'module'                => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\ModuleForm',
+                        'form'   => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
                             'title'
                         ]
                     ],
-                    'link' => [
+                    'link'       => [
                         'children' => [
                             'module-page' => [
                                 'multiple' => true
                             ]
                         ]
                     ],
-                    'license' => [],
-                    'taxonomy' => []
+                    'license'    => [],
+                    'taxonomy'   => []
                 ]
             ],
-            'module-page' => [
+            'module-page'           => [
                 'components' => [
                     'repository' => [
-                        'form' => __NAMESPACE__ . '\Form\ModulePageForm',
+                        'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
                         'fields' => [
                             'title',
                             'reasoning',
                             'content'
                         ]
                     ],
-                    'link' => [
+                    'link'       => [
                         'parents' => [
                             'module' => [
                                 'multiple' => false
                             ]
                         ]
                     ],
-                    'license' => []
+                    'license'    => []
                 ]
             ]
         ]
