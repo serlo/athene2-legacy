@@ -1,0 +1,10 @@
+.*
+*.log
+deployment.properties
+docs/
+coverage/
+/composer.lock
+!.gitignore
+!.gitmodules
+!.travis.yml
+!.gitattributes

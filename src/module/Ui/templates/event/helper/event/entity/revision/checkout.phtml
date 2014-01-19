@@ -1,0 +1,4 @@
+<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+<?php $revision = $this->normalize()->toAnchor($this->event->getObject()); ?>
+<?php $entity = $this->normalize()->toAnchor($this->event->getParameter('repository')); ?>
+<?php echo sprintf($this->translate('%s set head of repository "%s" to "%s"'), $user, $entity, $revision); ?>

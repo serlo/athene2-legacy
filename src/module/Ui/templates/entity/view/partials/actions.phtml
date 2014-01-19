@@ -1,0 +1,179 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php /* @var $options \Entity\Options\EntityOptions */ ?>
+<?php $options = $this->entity()->getOptions($entity); ?>
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+        <?php echo $this->translate('Editing'); ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <?php if ($options->hasComponent('repository')): ?>
+            <!-- Edit Revision -->
+            <?php if ($this->isGranted('entity.revision.create', $entity)): ?>
+                <li>
+                    <a href="<?php echo $this->url(
+                        'entity/repository/add-revision',
+                        array('entity' => $entity->getId())
+                    ); ?>"> <span class="glyphicon glyphicon-edit"></span>
+                        <?php echo $this->translate('Edit'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Versioning history -->
+                <li>
+                    <a href="<?php echo $this->url(
+                        'entity/repository/history',
+                        array('entity' => $entity->getId())
+                    ); ?>"> <span class="glyphicon glyphicon-time"></span>
+                        <?php echo $this->translate('Repository history'); ?>
+                        <?php if ($entity->isUnrevised()): ?>
+                            <span class="label label-warning"><?php echo $this->translate('new') ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
+            
+        <?php endif; ?>
+        <?php if ($options->hasComponent('link')): ?>
+        <?php /* @var $componentOptions \Entity\Options\LinkOptions */ ?>
+        <?php $componentOptions = $options->getComponent('link'); ?>
+        <?php foreach ($componentOptions->getAllowedChildren() as $type): ?>
+        <?php if ($componentOptions->allowsManyChildren($type) || (!$componentOptions->allowsManyChildren(
+                $type
+            ) && $entity->getChildren('link')->count() < 1)): ?>
+        <?php if ($this->isGranted('entity.link.create', $entity)): ?>
+        <?php $url = $this->url(
+            'entity/create',
+            ['type' => $type],
+            ['query' => ['link' => ['type' => 'link', 'child' => $entity->getId()]]]
+        ); ?>
+        <li>
+            <a href="<?php echo $url; ?>"> <span class="glyphicon glyphicon-file"></span>
+                <?php echo sprintf($this->translate('Add %s'), $type); ?>
+            </a>
+        <li>
+            <?php endif; ?>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <?php endif; ?>
+    </ul>
+</div>
+
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+        <?php echo $this->translate('Data'); ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <?php if ($options->hasComponent('license')): ?>
+            <!-- License -->
+            <?php if ($this->isGranted('entity.license.update', $entity)): ?>
+                <li>
+                    <a href="<?php echo $this->url(
+                        'license/detail',
+                        array('id' => $entity->getLicense()->getId())
+                    ); ?>"> <span class="glyphicon glyphicon-leaf"></span>
+                        <?php echo $this->translate('License'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <!-- Event log -->
+        <?php if ($this->isGranted('entity.event.history', $entity)): ?>
+            <li>
+                <a href="<?php echo $this->url('event/history', array('id' => $entity->getId())); ?>">
+                    <span class="glyphicon glyphicon-hdd"></span>
+                    <?php echo $this->translate('Eventlog'); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
+
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+        <?php echo $this->translate('Manage'); ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <!-- Flag content -->
+        <?php if ($this->isGranted('flag.create', $entity)): ?>
+            <li>
+                <a href="<?php echo $this->url('flag/add', array('id' => $entity->getId())); ?>">
+                    <span class="glyphicon glyphicon-flag"></span>
+                    <?php echo $this->translate('Flag content'); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php if ($options->hasComponent('link')): ?>
+            <?php foreach ($entity->getParents('link') as $parentLink): ?>
+                <!-- Change parents -->
+                <?php if ($this->isGranted('entity.link.purge', $entity) && $this->isGranted(
+                        'entity.link.create',
+                        $entity
+                    )
+                ): ?>
+                    <li>
+                        <a href="<?php echo $this->url(
+                            'entity/link/move',
+                            array('entity' => $entity->getId(), 'from' => $parentLink->getId(), 'type' => 'link')
+                        ); ?>"> <span class="glyphicon glyphicon-map-marker"></span>
+                            <?php echo sprintf(
+                                $this->translate('Change parent "%s"'),
+                                $parentLink->getType()->getName()
+                            ); ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php if ($options->hasComponent('taxonomy')): ?>
+            <!-- Change taxonomy term(s) -->
+            <?php if ($this->isGranted('taxonomy.term.associate', $entity) && $this->isGranted(
+                    'taxonomy.term.dissociate',
+                    $entity
+                )
+            ): ?>
+                <li>
+                    <a href="<?php echo $this->url('entity/taxonomy/update', array('entity' => $entity->getId())); ?>">
+                        <span class="glyphicon glyphicon-map-marker"></span>
+                        <?php echo $this->translate('Taxonomy terms'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <!-- Manage related content -->
+        <?php if ($this->isGranted('related_content.manage', $entity)): ?>
+            <li>
+                <a href="<?php echo $this->url('related-content/manage', array('id' => $entity->getId())); ?>"> <span
+                        class="glyphicon glyphicon-link"></span>
+                    <?php echo $this->translate('Related content'); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <!-- License -->
+        <?php if ($options->hasComponent('license')): ?>
+            <?php if ($this->isGranted('entity.license.update', $entity)): ?>
+                <li>
+                    <a href="<?php echo $this->url('entity/license/update', array('entity' => $entity->getId())); ?>">
+                        <span class="glyphicon glyphicon-leaf"></span>
+                        <?php echo $this->translate('Change license'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <!-- Trash entity -->
+        <?php if ($this->isGranted('entity.trash', $entity)): ?>
+            <li>
+                <a href="<?php echo $this->url('uuid/trash', array('id' => $entity->getId())); ?>">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    <?php echo $this->translate('Trash'); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>

@@ -1,0 +1,111 @@
+<article>
+    <?php if ($this->discussion->isDiscussion()): ?>
+        <header>
+            <h4><?php echo $this->discussion->getTitle(); ?></h4>
+        </header>
+        <hr>
+    <?php endif; ?>
+    <section>
+        <div class="row">
+            <div class="col-md-2">
+                <strong><?php echo $this->discussion->getAuthor()->getUsername(); ?></strong>
+
+                <p class="timeago" title="<?php echo $this->discussion->getTimestamp()->format("Y-m-d H:i:s"); ?>"></p>
+                <hr>
+                <div class="btn-group btn-group-x">
+                    <?php if ($this->discussion->isDiscussion()): ?>
+                        <?php if ($this->isGranted('discussion.vote', $this->discussion)): ?>
+                            <?php $vote = $this->discussion->hasUserVoted($this->user) ? 'down' : 'up'; ?>
+                            <a href="<?php echo $this->url(
+                                'discussion/discussion/vote',
+                                array('comment' => $this->discussion->getId(), 'vote' => $vote)
+                            ); ?>" class="btn btn-xs btn<?php echo ($vote == 'up') ? '-default' : '-success'; ?>">
+                                <span class="glyphicon glyphicon-chevron-<?php print $vote; ?>"></span>
+                                <b><?php echo $this->discussion->countUpVotes(); ?></b> </a>
+                        <?php else: ?>
+                            <div class="btn btn-default btn-xs" disabled="disabled">
+                                <span class="glyphicon glyphicon-chevron-up"></span>
+                                <b><?php echo $this->discussion->countUpVotes(); ?></b>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($this->isGranted('discussion.archive', $this->discussion)): ?>
+                            <a href="<?php echo $this->url(
+                                'discussion/discussion/archive',
+                                array('comment' => $this->discussion->getId())
+                            ); ?>" class="btn btn-xs btn-<?php echo ($this->discussion->getArchived(
+                            )) ? 'primary' : 'default'; ?>">
+                                <span class="glyphicon glyphicon-inbox"></span>
+                            </a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php if ($this->discussion->isDiscussion()): ?>
+                        <?php if ($this->isGranted('discussion.trash', $this->discussion)): ?>
+                            <a
+                                href="<?php echo $this->url(
+                                    'uuid/trash',
+                                    array('id' => $this->discussion->getId())
+                                ); ?>"
+                                class="btn btn-xs btn-default dialog"
+                                data-content="<?php echo $this->translate(
+                                    'Do you really want to delete this discussion?'
+                                ); ?>">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <?php if ($this->isGranted('discussion.comment.trash', $this->discussion)): ?>
+                            <a
+                                href="<?php echo $this->url(
+                                    'uuid/trash',
+                                    array('id' => $this->discussion->getId())
+                                ); ?>"
+                                class="btn btn-xs btn-default dialog"
+                                data-content="<?php echo $this->translate(
+                                    'Do you really want to delete this comment?'
+                                ); ?>">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="col-md-10">
+            <?php echo $this->discussion->getContent(); ?>
+            </div>
+        </div>
+    </section>
+    <?php if ($this->discussion->isDiscussion()): ?>
+        <section>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <hr>
+                    <div class="list-group">
+                        <?php foreach ($this->discussion->getChildren() as $comment): ?>
+                            <div class="list-group-item">
+                                <?php echo $this->partial(
+                                    'discussion/discussion/show',
+                                    array('discussion' => $comment, 'user' => $this->user)
+                                ); ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php if (!$this->plugin->getArchived()): ?>
+                        <?php if ($this->isGranted('discussion.comment.create')): ?>
+                            <?php $form = $this->plugin->getForm('comment'); ?>
+                            <?php $form->setAttribute(
+                                'action',
+                                $this->url(
+                                    'discussion/discussion/comment',
+                                    array('discussion' => $this->discussion->getId())
+                                )
+                            ); ?>
+                            <?php $form->prepare(); ?>
+                            <?php echo $this->form()->render($form, null); ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+</article>

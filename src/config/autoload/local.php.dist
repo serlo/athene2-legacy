@@ -1,0 +1,53 @@
+<?php
+$dbParams = array(
+		'host' => 'localhost',
+		'port' => '3306',
+		'user' => 'root',
+		'password' => 'athene2',
+		'database' => 'serlo'
+);
+
+
+/**
+ *
+ * If Sphinx doesn't run on 127.0.0.1:9306, use this.
+ */
+// Sphinxql::addConnection('custom', 'yourhost.com', 9231);
+// Sphinxql::setConnection('custom');
+
+return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host' => $dbParams['host'],
+                    'port' => $dbParams['port'],
+                    'user' => $dbParams['user'],
+                    'password' => $dbParams['password'],
+                    'dbname' => $dbParams['database']
+                )
+            )
+        )
+    ),
+    'dbParams' => array(
+        'host' => $dbParams['host'],
+        'port' => $dbParams['port'],
+        'user' => $dbParams['user'],
+        'password' => $dbParams['password'],
+        'database' => $dbParams['database']
+    ),
+    'smtp_options' => array(
+    	'name' => 'localhost.localdomain',
+		'host' => '127.0.0.1',
+		'connection_class' => 'login',
+		'connection_config' => array(
+			'username' => 'user',
+			'password' => 'pass'
+		)
+	),
+    'sphinx' => array(
+        'host' => '127.0.0.1',
+        'port' => 9306
+    )
+);

@@ -1,0 +1,128 @@
+#
+#        
+# Entity 
+#        
+#
+
+source entitySource
+{
+	type			= mysql
+
+	sql_host		= localhost
+	sql_user		= root
+	sql_pass		= athene2
+	sql_db			= serlo
+	sql_port		= 3306
+
+	sql_query_pre   = SET @a := 0;
+	sql_query       = SELECT @a := @a + 1 as id, ent.id as eid, erf.field as field, CRC32(erf.field) as field_filter, erf.value as value, et.name as type, CRC32(et.name) as type_filter, m.value as metadata FROM entity_revision_field AS erf JOIN entity_revision AS er ON erf.entity_revision_id = er.id JOIN entity AS ent ON ent.current_revision_id = er.id JOIN type as et ON ent.type_id = et.id JOIN metadata m ON m.uuid_id = ent.id
+
+	sql_field_string = type
+	sql_field_string = field
+	sql_field_string = value
+	sql_field_string = metadata
+	sql_attr_uint	 = id
+	sql_attr_uint	 = eid
+	sql_attr_uint	 = type_filter
+}
+
+
+index entityIndex
+{
+	type			= plain
+	source			= entitySource
+	path			= /var/lib/sphinxsearch/data/entityIndex
+	charset_type	= utf-8
+
+	enable_star     = 1
+	min_prefix_len  = 2
+}
+
+#
+#        
+# Taxonomy term
+#        
+#
+
+source taxonomyTermSource
+{
+	type			= mysql
+
+	sql_host		= localhost
+	sql_user		= root
+	sql_pass		= athene2
+	sql_db			= serlo
+	sql_port		= 3306
+	
+	sql_query = SELECT tt.id as id, t.name as name, tty.name as type, CRC32(tty.name) as type_filter FROM term_taxonomy as tt JOIN term as t ON tt.term_id = t.id JOIN taxonomy as ta ON tt.taxonomy_id = ta.id JOIN type as tty ON ta.type_id = tty.id
+
+
+	sql_field_string = name
+	sql_field_string = type
+	sql_attr_uint	 = type_filter
+}
+
+
+index taxonomyTermIndex
+{
+	type			= plain
+	source			= taxonomyTermSource
+
+	path			= /var/lib/sphinxsearch/data/taxonomyTermIndex
+	charset_type	= utf-8
+
+	enable_star     = 1
+	min_prefix_len  = 2
+}
+
+#########
+#
+# DELTAS
+#
+#########
+
+source entityDelta : entitySource
+{
+}
+
+source taxonomyTermDelta : taxonomyTermSource
+{
+}
+
+index entityDelta : entityIndex
+{
+	path			= /var/lib/sphinxsearch/data/entityIndex.delta
+}
+
+index taxonomyTermDelta : taxonomyTermIndex
+{
+	path			= /var/lib/sphinxsearch/data/taxonomyTermIndex.delta
+}
+
+#########
+#
+# Indexer
+#
+#########
+
+indexer
+{
+	mem_limit		= 32M
+}
+
+searchd
+{
+	listen			= 9312
+	listen			= 9306:mysql41
+	log			    = /var/lib/sphinxsearch/log/searchd.log
+	query_log		= /var/lib/sphinxsearch/log/query.log
+	read_timeout	= 5
+	max_children	= 30
+	pid_file		= /var/lib/sphinxsearch/log/searchd.pid
+	max_matches		= 1000
+	seamless_rotate	= 1
+	preopen_indexes	= 1
+	unlink_old		= 1
+    workers			= threads # for RT to work
+	binlog_path		= /var/lib/sphinxsearch/data
+}

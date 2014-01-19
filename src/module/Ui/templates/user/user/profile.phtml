@@ -1,0 +1,35 @@
+<?php echo $this->pageHeader('Profile')->setSubtitle($this->user->getUsername())->render(); ?>
+<?php if ($this->user->getLastLogin() !== null): ?>
+    <div class="row">
+        <div class="col-md-4">
+            <strong><?php echo $this->translate('Last seen'); ?></strong>
+        </div>
+        <div class="col-md-8">
+            <?php echo $this->timeago()->format($this->user->getLastLogin()); ?>
+        </div>
+    </div>
+    <hr>
+<?php endif; ?>
+<div class="row">
+    <div class="col-md-2">
+        <strong><?php echo $this->translate('Roles'); ?></strong>
+    </div>
+    <div class="col-md-3">
+        <ul>
+            <?php foreach ($this->user->getRoles() as $role): ?>
+                <li>
+                    <?php echo $role->getName(); ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-2">
+        <strong><?php echo $this->translate('Activity log'); ?></strong>
+    </div>
+    <div class="col-md-10">
+        <?php echo $this->events()->renderUserLog($this->user->getId()); ?>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<article>
+	<header>
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
+        </div>
+        <div class="clearfix"></div>
+	</header>
+	
+	<!-- Overview -->
+    <section>
+        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('type' => 'link', 'entity' => $entity->getId())); ?>"  data-depth="1" data-active="false">
+            <ol class="sortable-list">
+                <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
+                    <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>
+                        <?php $revision = $page->getCurrentRevision();?>
+                        <li class="sortable-item" data-id="<?php echo $page->getId(); ?>">
+                            <span class="sortable-handle"></span>
+                            <div class="sortable-item-inner">
+                                <span class="glyphicon glyphicon-align-left"></span>
+                                <a href="<?php echo '#'.$page->getId(); ?>">
+                                    <?php echo $revision->get('title'); ?>
+                                </a>
+                            </div>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ol>            
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <div class="sortable-actions btn-group pull-right">
+                        <?php echo $this->partial('entity/view/partials/sortable-actions'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Detailview -->
+    <section>
+        <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
+            <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>
+                <?php $revision = $page->getCurrentRevision();?>
+            	<article class="panel panel-default">
+                    <header id="<?php echo $page->getId(); ?>" class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6"><h4><?php echo $revision->get('title'); ?></h4></div>
+                            <div class="col-md-6">
+                                <div class="pull-right btn-group">
+                                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $page)); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <section class="panel-body">
+                        <?php echo $revision->get('content'); ?>
+                    </section>
+                </article>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </section>
+    <hr>
+    
+    <!-- Discussions -->
+    <section>
+        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
+    </section>
+</article>

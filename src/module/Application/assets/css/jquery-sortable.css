@@ -1,0 +1,43 @@
+body.dragging, body.dragging * {
+    cursor: drag !important;
+}
+
+.dragged {
+    position: absolute;
+    opacity: 0.5;
+    z-index: 2000;
+}
+
+ol.sortable {
+    list-style-type: none;
+}
+
+ol.sortable li {
+    width: 100%;
+}
+
+ol.sortable li.placeholder {
+    position: relative;
+    border: black solid 1px;
+    margin: 0;
+    padding: 0;
+    min-height: 10px;
+    width: 100px;
+}
+
+ol.sortable li.placeholder:before {
+    position: absolute;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: transparent -moz-use-text-color transparent black;
+    border-image: none;
+    border-style: solid none solid solid;
+    border-width: 5px medium 5px 5px;
+    content: "";
+    height: 0;
+    left: -9px;
+    position: absolute;
+    width: 0;
+}

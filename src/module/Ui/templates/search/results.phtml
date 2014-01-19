@@ -1,0 +1,4 @@
+<?php echo $this->pageHeader('Search results')->setSubtitle($query)->render(); ?>
+<?php echo $this->form()->render($this->form); ?>
+
+<?php echo $this->partial('search/container', ['container' => $this->container]); ?>

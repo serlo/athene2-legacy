@@ -1,0 +1,11 @@
+<?php if (is_object($this->revision)): ?>
+    <article class="revision">
+        <?php foreach ($this->revision->getFields() as $field): ?>
+            <section>
+                <h3><?php echo $field->getField(); ?></h3>
+                <?php echo $this->markdown()->toHtml($field->getValue(), null, null); ?>
+            </section>
+            <hr>
+        <?php endforeach; ?>
+    </article>
+<?php endif; ?>

@@ -1,0 +1,3 @@
+<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+<?php $term = $this->event->getObject()->getName(); ?>
+<?php echo sprintf($this->translate('%s created a new taxonomy term: <strong>"%s"</strong>'), $user , $term);?>

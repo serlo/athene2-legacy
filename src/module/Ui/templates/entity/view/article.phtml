@@ -1,0 +1,22 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
+<?php $revision = $entity->getCurrentRevision();?>
+<article class="content">
+    <header>
+        <div class="pull-right btn-group">
+            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity, 'hide' => $this->hideActions)); ?>
+        </div>
+    </header>
+    <?php
+        $content = $revision->get('content');
+        try {
+            echo $this->markdown()->toHtml($content);
+        } catch (Exception $e) {
+            echo $content;
+        }
+    ?>
+    <hr>
+    <section>
+        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
+    </section>
+</article>
