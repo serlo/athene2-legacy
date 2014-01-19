@@ -1,0 +1,58 @@
+
+<?php echo $this->pageHeader('horizon')->render();?>
+<a href="<?php echo $this->url('ads/add');?>" class="btn btn-default">
+	<span class="glyphicon glyphicon-pencil"></span>
+    <?php echo $this->translate('new'); ?> 
+</a>
+
+<div style="height: 500px;">
+<?php
+
+foreach ($this->ads as $ad) :
+    ?>
+
+
+
+<div class="well"
+		style="text-align: justify; width: 200px; min-height: 450px; float: left; margin-left: 10px; background-color: white;">
+		<small><a
+			href="<?php echo $this->url('ads/ad/edit',array('id'=>$ad->getId()));?>"
+			class="btn btn-success btn-xs pull-right"> <span
+				class="glyphicon glyphicon-pencil"></span></a> <a
+			href="<?php echo $this->url('ads/ad/delete',array('id'=>$ad->getId()));?>"
+			class="btn btn-danger btn-xs  pull-right"><span
+				class="glyphicon glyphicon-remove"></span> </a> </small> <br> <a
+			href="<?php echo $ad->getUrl();?>" target="_blank">  	<?php echo $ad->getTitle();?>	</a>
+		<br> <small>
+ <?php
+    
+    echo $this->translate('frequency');
+    echo ' ';
+    
+    for ($i = 1; $i <= 3; $i ++) {
+        if ($ad->getFrequency() >= $i)
+            echo '<span class="glyphicon glyphicon-star"></span>';
+        else
+            echo '<span class="glyphicon glyphicon-star-empty"></span>';
+    }
+    
+    ?><br>
+ <?php echo $this->translate('views'); echo ' '.$ad->getViews(); ?><br>
+ <?php echo $this->translate('clicks'); echo ' '.$ad->getClicks(); ?><br>
+
+
+		</small>
+		<hr>
+		<small> <img alt="<?php echo $ad->getTitle();?>"
+			src="<?php echo $ad->getImage()->getLocation();?>" width="160px" />	<?php echo $ad->getContent();?></small>
+
+
+
+
+	</div>
+
+
+<?php endforeach; ?>
+</div>
+
+

@@ -10,26 +10,27 @@
  */
 return array(
     // This should be an array of module namespaces used in the application.
-    'modules'                 => array(
+    'modules' => array(
+        'ZendDeveloperTools',
+        'Application',
+        'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
-        'ZendDeveloperTools',
-        'AsseticBundle',
         'Common',
-        'ClassResolver',
-        'Application',
         'Ui',
         'Admin',
         'User',
         'Versioning',
         'Entity',
-        'Link',
+    	'Taxonomy',
+    	'Link',
         'Subject',
         'Term',
         'Uuid',
+        'ClassResolver',
         'Language',
         'Event',
         'Mailman',
@@ -50,8 +51,10 @@ return array(
         'Markdown',
         'Authorization',
         'Taxonomy',
-        'Notification'
+        'Notification',
+        'Ads'
     ),
+
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => array(
         // This should be an array of paths in which modules reside.
@@ -62,6 +65,7 @@ return array(
             __DIR__ . '/../module',
             __DIR__ . '/../vendor'
         ),
+
         // An array of paths from which to glob configuration files after
         // modules are loaded. These effectively overide configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
@@ -71,6 +75,7 @@ return array(
             'config/instance/navigation/*.php',
             'config/instance/firewall/*.php',
         ),
+
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
