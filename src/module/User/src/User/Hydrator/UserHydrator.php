@@ -11,9 +11,9 @@
  */
 namespace User\Hydrator;
 
-use Zend\Stdlib\Hydrator\HydratorInterface;
 use User\Entity\UserInterface;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class UserHydrator implements HydratorInterface
 {
@@ -25,8 +25,10 @@ class UserHydrator implements HydratorInterface
         
         return [
             'id' => $object->getId(),
+            'email' => $object->getEmail(),
             'username' => $object->getUsername(),
-            'password' => $object->getPassword()
+            'password' => $object->getPassword(),
+            'language' => $object->getL()
         ];
     }
 
@@ -38,6 +40,7 @@ class UserHydrator implements HydratorInterface
     	$this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
     	$object->setUsername($data['username']);
     	$object->setPassword($data['password']);
+        $object->setEmail($data['email']);
     	
     	return $object;
     }

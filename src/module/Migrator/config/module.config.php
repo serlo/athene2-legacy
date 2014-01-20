@@ -18,6 +18,7 @@ return [
         'definition'          => [
             'class' => [
                 __NAMESPACE__ . '\Controller\Worker' => [],
+                __NAMESPACE__ . '\Controller\PreConverterChain' => [],
                 __NAMESPACE__ . '\Migrator'          => [],
                 'Migrator\Worker\ArticleWorker'      => []
             ]

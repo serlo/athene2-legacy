@@ -12,11 +12,12 @@ namespace Migrator\Converter;
 
 use Pandoc\Pandoc;
 
-class LatexConverter implements Converter
+class LatexConverter extends AbstractConverter
 {
+    protected $lastResponse;
+
     public function convert($content)
     {
-
         $pandoc       = new Pandoc();
         $reg_exercise = '@<img(?:[^>]*)(?=(?:data-mathml="([^"]*)"|alt="([^"]*)")(?:[^>]*)(?:class="Wirisformula")|(?:class="Wirisformula")(?:[^>]*)(?:data-mathml="([^"]*)"|alt="([^"]*)"))(?:[^>]*)>@is';
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
@@ -45,7 +46,10 @@ class LatexConverter implements Converter
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
                 $response = " %%" . curl_exec($ch) . "%% ";
-                $content  = str_replace($match[0], $response, $content);
+
+                $this->flag($response);
+
+                $content = str_replace($match[0], $response, $content);
             }
             $replace = '';
         }
@@ -53,5 +57,11 @@ class LatexConverter implements Converter
         return $content;
     }
 
+    protected function flag($response)
+    {
+        if (stristr('\color[rgb]', $response)) {
+            $this->needsFlagging = true;
+        }
+    }
 }
 

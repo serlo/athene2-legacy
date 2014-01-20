@@ -10,7 +10,7 @@
  */
 namespace Migrator\Converter;
 
-class Html2Markdown implements Converter
+class Html2Markdown extends AbstractConverter
 {
     /**
      * @var DOMDocument The root of the document tree that holds our HTML.
