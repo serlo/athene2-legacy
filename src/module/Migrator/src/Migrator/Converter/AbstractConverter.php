@@ -10,12 +10,18 @@
  */
 namespace Migrator\Converter;
 
-interface Converter
+abstract class AbstractConverter implements Converter
 {
-    public function convert($text);
+    protected $needsFlagging = false;
 
-    public function needsFlagging();
+    public function needsFlagging()
+    {
+        return $this->needsFlagging;
+    }
 
-    public function clearFlag();
+    public function clearFlag()
+    {
+        $this->needsFlagging = false;
+    }
 }
  

@@ -16,7 +16,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class Migrator
 {
     protected $workers = [
-        'Migrator\Worker\ArticleWorker'
+        'Migrator\Worker\ArticleWorker',
+        //'Migrator\Worker\UserWorker'
     ];
 
     /**
@@ -48,4 +49,3 @@ class Migrator
         $this->cache->addItems($result->getMap());
     }
 }
- 

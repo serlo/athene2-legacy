@@ -10,12 +10,13 @@
  */
 namespace Migrator\Converter;
 
-interface Converter
+class PreConverterChain extends ConverterChain
 {
-    public function convert($text);
-
-    public function needsFlagging();
-
-    public function clearFlag();
+    protected $converters = [
+        'Migrator\Converter\GeogebraConverter',
+        'Migrator\Converter\BrinkmannConverter',
+        'Migrator\Converter\LatexConverter',
+        'Migrator\Converter\Html2Markdown',
+        'Migrator\Converter\TableConverter'
+    ];
 }
- 

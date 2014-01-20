@@ -12,8 +12,10 @@ namespace Migrator\Worker;
 
 use Doctrine\ORM\EntityManager;
 use Entity\Manager\EntityManager as LRManager;
+use Flag\Manager\FlagManagerInterface;
 use Language\Manager\LanguageManagerInterface;
 use Migrator\Converter\ConverterChain;
+use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
@@ -50,6 +52,11 @@ class ArticleWorker implements Worker
      */
     protected $userManager;
 
+    /**
+     * @var FlagManagerInterface
+     */
+    protected $flagManager;
+
     public function __construct(
         EntityManager $objectManager,
         LRManager $entityManager,
@@ -57,7 +64,8 @@ class ArticleWorker implements Worker
         LanguageManagerInterface $languageManager,
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
-        ConverterChain $converterChain
+        PreConverterChain $converterChain,
+        FlagManagerInterface $flagManager
     ) {
         $this->objectManager   = $objectManager;
         $this->entityManager   = $entityManager;
@@ -66,12 +74,14 @@ class ArticleWorker implements Worker
         $this->uuidManager     = $uuidManager;
         $this->userManager     = $userManagerInterface;
         $this->converterChain  = $converterChain;
+        $this->flagManager     = $flagManager;
     }
 
     public function migrate()
     {
         $results = [];
 
+        $user     = $this->userManager->getUserFromAuthenticator();
         $language = $this->languageManager->getLanguage(1);
         /** @var $articles \Migrator\Entity\ArticleTranslation[] */
         $articles = $this->objectManager->getRepository('Migrator\Entity\ArticleTranslation')->findAll();
@@ -82,6 +92,11 @@ class ArticleWorker implements Worker
                 $title   = $revision->getTitle();
 
                 $entity = $this->entityManager->createEntity('article', [], $language);
+
+                if ($this->converterChain->needsFlagging()) {
+                    $this->flagManager->addFlag(24, 'Flagged by migrator', $entity->getId(), $user);
+                }
+
                 /* @var $entity \Entity\Entity\EntityInterface */
                 $revision = $entity->createRevision();
                 $revision->set('title', $title);

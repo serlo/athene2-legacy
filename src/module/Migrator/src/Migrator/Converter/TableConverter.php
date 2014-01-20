@@ -10,7 +10,7 @@
  */
 namespace Migrator\Converter;
 
-class TableConverter implements Converter
+class TableConverter extends AbstractConverter
 {
     protected $maxcols = 24;
 
@@ -81,6 +81,7 @@ class TableConverter implements Converter
                         'col'     => $this->maxcols,
                         'content' => '<table class="table"><tr>' . $tableRow[0] . '</tr></table>'
                     );
+                    $this->needsFlagging = true;
                 }
 
                 $layout[] = $columns;

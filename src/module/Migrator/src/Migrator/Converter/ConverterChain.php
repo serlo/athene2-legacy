@@ -10,13 +10,9 @@
  */
 namespace Migrator\Converter;
 
-class ConverterChain implements Converter
+class ConverterChain extends AbstractConverter
 {
-    protected $converters = [
-        'Migrator\Converter\LatexConverter',
-        'Migrator\Converter\Html2Markdown',
-        'Migrator\Converter\TableConverter'
-    ];
+    protected $converters = [];
 
     public function convert($text)
     {
@@ -26,6 +22,10 @@ class ConverterChain implements Converter
                 $converter = new $converter();
             }
             $text = $converter->convert($text);
+            if ($converter->needsFlagging()) {
+                $this->needsFlagging = true;
+            }
+            $converter->clearFlag();
         }
 
         return $text;
