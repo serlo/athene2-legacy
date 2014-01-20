@@ -13,11 +13,14 @@ namespace Migrator\Converter;
 class ConverterChain implements Converter
 {
     protected $converters = [
+        'Migrator\Converter\LatexConverter',
+        'Migrator\Converter\Html2Markdown',
         'Migrator\Converter\TableConverter'
     ];
 
     public function convert($text)
     {
+        $text = utf8_encode($text);
         foreach ($this->converters as & $converter) {
             if (!is_object($converter)) {
                 $converter = new $converter();

@@ -10,9 +10,11 @@
  */
 namespace Migrator;
 
+use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Migrator {
+class Migrator
+{
     protected $workers = [
         'Migrator\Worker\ArticleWorker'
     ];
@@ -22,17 +24,28 @@ class Migrator {
      */
     protected $serviceLocator;
 
-    public function __construct(ServiceLocatorInterface $serviceLocator){
+    /**
+     * @var Filesystem
+     */
+    protected $cache;
+
+    public function __construct(ServiceLocatorInterface $serviceLocator, Filesystem $cache)
+    {
         $this->serviceLocator = $serviceLocator;
+        $this->cache          = $cache;
     }
 
-    public function migrate(){
+    public function migrate()
+    {
+        set_time_limit(3000);
         $result = new Result();
-        foreach($this->workers as $worker){
-            $worker = $serviceLocator->get($worker);
+        foreach ($this->workers as $worker) {
+            $worker  = $this->serviceLocator->get($worker);
             $results = $worker->migrate();
             $result->addResults($results);
         }
+
+        $this->cache->addItems($result->getMap());
     }
 }
  

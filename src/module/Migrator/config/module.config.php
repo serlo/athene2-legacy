@@ -13,28 +13,34 @@ namespace Migrator;
 return [
     'di'              => [
         'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\SignpostController',
+            __NAMESPACE__ . '\Controller\Worker',
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\SignpostController' => [
-                    'setNormalizer'  => [
-                        'required' => true
-                    ],
-                    'setUuidManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Normalizer'                    => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Controller\Worker' => [],
+                __NAMESPACE__ . '\Migrator'          => [],
+                'Migrator\Worker\ArticleWorker'      => []
             ]
         ],
         'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\NormalizerInterface' => __NAMESPACE__ . '\Normalizer'
+            ]
+        ]
+    ],
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [
+                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                ]
             ]
         ]
     ],
@@ -72,7 +78,7 @@ return [
                     );
 
                     return $cache;
-                },
+                }
         ),
     ),
 ];

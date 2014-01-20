@@ -26,7 +26,9 @@
         "foolz/sphinxql-query-builder": "dev-master",
         "neilime/zf2-twb-bundle": "dev-master#0687de1e01eb98821541c3ac80d3d5f3e0df29a4",
         "zendframework/zend-developer-tools": "dev-master",
-        "dnode/dnode": "dev-master"
+        "dnode/dnode": "dev-master",
+        "nickcernis/html-to-markdown": "dev-master",
+        "ryakad/pandoc-php": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {

@@ -16,9 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  * An entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="wiki_article_translations")
+ * @ORM\Table(name="serlo_dev.wiki_article_revisions")
  */
-class ArticleTranslation {
+class ArticleRevision
+{
 
     /**
      * @ORM\Id
@@ -28,10 +29,51 @@ class ArticleTranslation {
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Article")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     * @ORM\Column(type="string")
      */
-    protected $currentRevision;
+    protected $title;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $summary;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $content;
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
 }
  

@@ -115,7 +115,7 @@ class AliasManager implements AliasManagerInterface
         );
 
         if (!is_object($entity)) {
-            return false;
+            throw new Exception\AliasNotFoundException(sprintf('Alias `%s` not found.', $source));
         }
 
         return $entity->getAlias();
@@ -207,6 +207,10 @@ class AliasManager implements AliasManagerInterface
                 'uuid' => $uuid->getId()
             ]
         );
+
+        if (!is_object($entity)) {
+            throw new Exception\AliasNotFoundException();
+        }
 
         return $entity;
     }

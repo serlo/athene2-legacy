@@ -10,7 +10,37 @@
  */
 namespace Migrator\Controller;
 
-class Worker {
+use Migrator\Migrator;
+use Zend\Mvc\Controller\AbstractActionController;
 
+class Worker extends AbstractActionController
+{
+
+    /**
+     * @var Migrator
+     */
+    protected $migrator;
+
+    /**
+     * @param Migrator $migrator
+     */
+    public function __construct(Migrator $migrator)
+    {
+        $this->migrator = $migrator;
+    }
+
+    /**
+     * @return Migrator
+     */
+    public function getMigrator()
+    {
+        return $this->migrator;
+    }
+
+    public function indexAction()
+    {
+        $this->getMigrator()->migrate();
+        return '';
+    }
 }
  
