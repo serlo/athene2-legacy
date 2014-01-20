@@ -46,21 +46,26 @@ class UserWorker implements Worker
     {
         $users     = $this->objectManager->getRepository('Migrator\Entity\User');
         $validator = new EmailAddress();
+        $results   = ['user'];
 
         foreach ($users as $user) {
             if ($user->getEmail() == 'aeneas@q-mail.me' || !$validator->isValid($user->getEmail())) {
                 continue;
             }
 
-            $this->userManager->createUser(
+            $entity = $this->userManager->createUser(
                 [
                     'email'    => $user->getEmail(),
                     'username' => $user->getUsername(),
                     'password' => $user->getPassword()
                 ]
             );
+
+            $results['user'][$user->getId()] = $entity;
         }
 
         $this->userManager->flush();
+
+        return $results;
     }
 }

@@ -79,7 +79,7 @@ class ArticleWorker implements Worker
 
     public function migrate()
     {
-        $results = [];
+        $results = ['article'];
 
         $user     = $this->userManager->getUserFromAuthenticator();
         $language = $this->languageManager->getLanguage(1);
@@ -111,9 +111,9 @@ class ArticleWorker implements Worker
                 $this->objectManager->persist($revision);
                 $this->objectManager->persist($entity);
 
-                $this->taxonomyManager->associateWith(10, 'entities', $entity);
+                $this->taxonomyManager->associateWith(8, 'entities', $entity);
 
-                $results['article' . $article->getArticleId()] = $entity->getId();
+                $results['article'][$article->getArticleId()] = $entity;
             }
             break;
         }

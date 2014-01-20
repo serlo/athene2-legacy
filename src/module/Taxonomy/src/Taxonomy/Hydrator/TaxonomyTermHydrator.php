@@ -127,7 +127,7 @@ class TaxonomyTermHydrator implements HydratorInterface
         try {
             $data['term'] = $this->getTermManager()->findTermByName($data['term']['name'], $data['taxonomy']->getLanguage());
         } catch (\Term\Exception\TermNotFoundException $e) {
-            $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], NULL, $data['taxonomy']->getLanguage());
+            $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], null, $data['taxonomy']->getLanguage());
         }
         
         return $data;

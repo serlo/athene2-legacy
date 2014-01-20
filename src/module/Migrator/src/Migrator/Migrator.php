@@ -39,13 +39,14 @@ class Migrator
     public function migrate()
     {
         set_time_limit(3000);
-        $result = new Result();
+        $result = $this->serviceLocator->get('Migrator\Result');
+
         foreach ($this->workers as $worker) {
             $worker  = $this->serviceLocator->get($worker);
             $results = $worker->migrate();
             $result->addResults($results);
         }
 
-        $this->cache->addItems($result->getMap());
+        //$this->cache->addItems($result->getMap());
     }
 }
