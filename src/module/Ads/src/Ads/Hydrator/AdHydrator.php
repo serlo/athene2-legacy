@@ -22,7 +22,7 @@ class AdHydrator implements HydratorInterface
         'author',
         'title',
         'content',
-        'image',
+        'attachment',
         'language',
         'frequency',
         'clicks',

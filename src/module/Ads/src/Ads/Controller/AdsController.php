@@ -20,7 +20,7 @@ class AdsController extends AbstractActionController
     use \Common\Traits\ObjectManagerAwareTrait;
     use \User\Manager\UserManagerAwareTrait;
     use \Ads\Manager\AdsManagerAwareTrait;
-    use \Upload\Manager\UploadManagerAwareTrait;
+    use \Attachment\Manager\AttachmentManagerAwareTrait;
 
     public function indexAction()
     {
@@ -52,11 +52,11 @@ class AdsController extends AbstractActionController
             if ($form->isValid()) {
                 $array = $form->getData();
 
-                $upload = $this->getUploadManager()->upload($array['file']);
+                $upload = $this->getAttachmentManager()->upload($array['file']);
 
-                $array['image']    = $upload;
-                $array['author']   = $user;
-                $array['language'] = $language;
+                $array['attachment'] = $upload;
+                $array['author']     = $user;
+                $array['language']   = $language;
 
                 $this->getAdsManager()->createAd($array);
 
@@ -109,7 +109,7 @@ class AdsController extends AbstractActionController
         $form->get('content')->setValue($ad->getContent());
         $form->get('title')->setValue($ad->getTitle());
         $form->get('frequency')->setValue($ad->getFrequency());
-        $form->get('file')->setValue($ad->getImage());
+        $form->get('file')->setValue($ad->getAttachment());
         $form->get('file')->setAttribute('required', false);
         $form->get('file')->setLabel('Bild ändern');
         $form->get('url')->setValue($ad->getUrl());

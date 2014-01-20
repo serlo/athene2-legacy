@@ -1,39 +1,35 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license   LGPL-3.0
+ * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link      https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Upload\Entity;
+namespace Attachment\Entity;
 
-use Uuid\Entity\UuidEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="upload")
+ * @ORM\Table(name="attachment_file")
  */
-class Upload extends UuidEntity implements UploadInterface
+class File implements FileInterface
 {
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="upload", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Attachment", inversedBy="files")
      */
-    protected $language;
+    protected $attachment;
 
     /**
      * @ORM\Column(type="string", unique=true, length=60)
@@ -60,9 +56,9 @@ class Upload extends UuidEntity implements UploadInterface
      */
     protected $timestamp;
 
-    public function getLanguage()
+    public function getId()
     {
-        return $this->language;
+        return $this->id;
     }
 
     public function getLocation()
@@ -93,30 +89,28 @@ class Upload extends UuidEntity implements UploadInterface
     public function setLocation($location)
     {
         $this->location = $location;
+
         return $this;
     }
 
     public function setSize($size)
     {
         $this->size = $size;
+
         return $this;
     }
 
     public function setFilename($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setType($type)
     {
         $this->type = $type;
-        return $this;
-    }
 
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
         return $this;
     }
 }

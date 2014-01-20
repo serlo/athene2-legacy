@@ -10,8 +10,9 @@
  */
 namespace Ads\Entity;
 
+use Attachment\Entity\AttachmentInterface;
+use Attachment\Entity\FileInterface;
 use Language\Entity\LanguageInterface;
-use Upload\Entity\UploadInterface;
 use User\Entity\UserInterface;
 
 interface AdInterface
@@ -48,7 +49,14 @@ interface AdInterface
     /**
      * Gets the image.
      *
-     * @return UploadInterface
+     * @return AttachmentInterface
+     */
+    public function getAttachment();
+
+    /**
+     * Gets the image.
+     *
+     * @return FileInterface
      */
     public function getImage();
 
@@ -86,6 +94,4 @@ interface AdInterface
      * @return string
      */
     public function getUrl();
-
-
 }

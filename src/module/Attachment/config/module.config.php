@@ -8,20 +8,20 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Upload;
+namespace Attachment;
 
-use Upload\Manager\UploadManager;
+use Attachment\Manager\AttachmentManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 return array(
     'class_resolver'  => array(
-        'Upload\Entity\UploadInterface' => 'Upload\Entity\Upload'
+        'Attachment\Entity\AttachmentInterface' => 'Attachment\Entity\Attachment'
     ),
     'upload_manager'  => array(),
     'service_manager' => array(
         'factories' => array(
-            'Upload\Manager\UploadManager' => function (ServiceLocatorInterface $sl) {
-                    $instance = new UploadManager();
+            'Attachment\Manager\AttachmentManager' => function (ServiceLocatorInterface $sl) {
+                    $instance = new AttachmentManager();
                     $config   = $sl->get('config')['upload_manager'];
                     $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
                     $instance->setConfig($config);
@@ -35,13 +35,13 @@ return array(
     ),
     'di'              => array(
         'allowed_controllers' => array(
-            'Upload\Controller\UploadController',
+            'Attachment\Controller\AttachmentController',
             'Taxonomy\Controller\TaxonomyController'
         ),
         'definition'          => array(
             'class' => array(
-                'Upload\Controller\UploadController' => array(
-                    'setUploadManager' => array(
+                'Attachment\Controller\AttachmentController' => array(
+                    'setAttachmentManager' => array(
                         'required' => true
                     )
                 ),
@@ -49,7 +49,7 @@ return array(
         ),
         'instance'            => array(
             'preferences' => array(
-                'Upload\Manager\UploadManagerInterface' => 'Upload\Manager\UploadManager'
+                'Attachment\Manager\AttachmentManagerInterface' => 'Attachment\Manager\AttachmentManager'
             ),
         )
     ),
@@ -71,25 +71,31 @@ return array(
     ),
     'router'          => array(
         'routes' => array(
-            'upload' => array(
+            'attachment' => array(
                 'type'          => 'Segment',
-                'may_terminate' => true,
                 'options'       => array(
-                    'route'    => '/upload',
-                    'defaults' => array(
-                        'controller' => 'Upload\Controller\UploadController',
-                        'action'     => 'upload'
-                    )
+                    'route'    => '/attachment',
                 ),
                 'child_routes'  => array(
                     'get' => array(
                         'type'          => 'Segment',
                         'may_terminate' => true,
                         'options'       => array(
-                            'route'    => '/get/:id',
+                            'route'    => '/get/:id[/:file]',
                             'defaults' => array(
-                                'controller' => 'Upload\Controller\UploadController',
+                                'controller' => 'Attachment\Controller\AttachmentController',
                                 'action'     => 'get'
+                            )
+                        ),
+                    ),
+                    'create' => array(
+                        'type'          => 'Segment',
+                        'may_terminate' => true,
+                        'options'       => array(
+                            'route'    => '/create',
+                            'defaults' => array(
+                                'controller' => 'Attachment\Controller\AttachmentController',
+                                'action'     => 'attach'
                             )
                         ),
                     )
