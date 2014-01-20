@@ -45,7 +45,7 @@ class Solution
     protected $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="Folder")
+     * @ORM\ManyToOne(targetEntity="Folder")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;
