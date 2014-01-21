@@ -25,6 +25,7 @@ class AttachmentController extends AbstractActionController
     public function infoAction()
     {
         $attachment = $this->getAttachmentManager()->getAttachment($this->params('id'));
+
         return $this->createJsonResponse($attachment);
     }
 
@@ -54,6 +55,7 @@ class AttachmentController extends AbstractActionController
                 $data       = $form->getData();
                 $attachment = $this->getAttachmentManager()->attach($data['file'], $this->params('append'));
                 $this->getAttachmentManager()->getObjectManager()->flush();
+
                 return $this->createJsonResponse($attachment);
             }
         }
@@ -81,7 +83,7 @@ class AttachmentController extends AbstractActionController
         return new JsonModel(array(
             'success' => true,
             'id'      => $attachment->getId(),
-            $files
+            'files'   => $files
         ));
     }
 }
