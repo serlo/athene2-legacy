@@ -15,7 +15,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 return array(
     'class_resolver'  => array(
-        'Attachment\Entity\AttachmentInterface' => 'Attachment\Entity\Attachment'
+        'Attachment\Entity\AttachmentInterface' => 'Attachment\Entity\Attachment',
+        'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
     ),
     'upload_manager'  => array(),
     'service_manager' => array(
@@ -72,30 +73,38 @@ return array(
     'router'          => array(
         'routes' => array(
             'attachment' => array(
-                'type'          => 'Segment',
-                'options'       => array(
-                    'route'    => '/attachment',
+                'type'         => 'Segment',
+                'options'      => array(
+                    'route'      => '/attachment',
+                    'defaults' => array(
+                        'controller' => 'Attachment\Controller\AttachmentController',
+                    )
                 ),
-                'child_routes'  => array(
-                    'get' => array(
-                        'type'          => 'Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/get/:id[/:file]',
+                'child_routes' => array(
+                    'info'   => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/info/:id',
                             'defaults' => array(
-                                'controller' => 'Attachment\Controller\AttachmentController',
-                                'action'     => 'get'
+                                'action' => 'info'
                             )
                         ),
                     ),
-                    'create' => array(
-                        'type'          => 'Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/create',
+                    'file'   => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/file/:id[/:file]',
                             'defaults' => array(
-                                'controller' => 'Attachment\Controller\AttachmentController',
-                                'action'     => 'attach'
+                                'action' => 'file'
+                            )
+                        ),
+                    ),
+                    'upload' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/upload[/:append]',
+                            'defaults' => array(
+                                'action' => 'attach'
                             )
                         ),
                     )

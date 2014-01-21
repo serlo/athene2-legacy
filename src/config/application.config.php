@@ -39,7 +39,7 @@ return array(
         'Discussion',
         'Page',
         'Blog',
-        'Upload',
+        'Attachment',
         'RelatedContent',
         'Contexter',
         'Flag',

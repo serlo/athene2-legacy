@@ -10,6 +10,7 @@
  */
 namespace Attachment\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Language\Entity\LanguageInterface;
 use Uuid\Entity\UuidEntity;
@@ -40,9 +41,9 @@ class Attachment extends UuidEntity implements AttachmentInterface
      */
     protected $files;
 
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        $this->files = new ArrayCollection;
     }
 
     public function getLanguage()

@@ -86,6 +86,16 @@ class File implements FileInterface
         return $this->timestamp;
     }
 
+    public function setAttachment(AttachmentInterface $attachment)
+    {
+        $this->attachment = $attachment;
+    }
+
+    public function getAttachment()
+    {
+        return $this->attachment;
+    }
+
     public function setLocation($location)
     {
         $this->location = $location;

@@ -1514,6 +1514,8 @@ INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 11);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 11);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 2);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 2);
+INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (7, 2);
+INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (7, 11);
 
 COMMIT;
 

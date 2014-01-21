@@ -14,6 +14,11 @@ interface FileInterface
 {
 
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return \DateTime
      */
     public function getDateTime();
@@ -39,26 +44,37 @@ interface FileInterface
     public function getType();
 
     /**
+     * @return AttachmentInterface
+     */
+    public function getAttachment();
+
+    /**
+     * @param AttachmentInterface $attachment
+     * @return void
+     */
+    public function setAttachment(AttachmentInterface $attachment);
+
+    /**
      * @param string $location
-     * @return self
+     * @return void
      */
     public function setLocation($location);
 
     /**
      * @param int $size
-     * @return self
+     * @return void
      */
     public function setSize($size);
 
     /**
      * @param string $filename
-     * @return self
+     * @return void
      */
     public function setFilename($filename);
 
     /**
      * @param string $type
-     * @return self
+     * @return void
      */
     public function setType($type);
 }

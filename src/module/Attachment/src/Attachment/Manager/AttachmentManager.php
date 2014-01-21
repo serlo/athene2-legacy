@@ -10,15 +10,21 @@
  */
 namespace Attachment\Manager;
 
-use Attachment\Entity\Attachment;
-use Attachment\Entity\File;
+use Attachment\Entity\AttachmentInterface;
 use Attachment\Exception;
+use ClassResolver\ClassResolverAwareTrait;
+use Common\Traits\ConfigAwareTrait;
+use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Collections\Criteria;
+use Language\Manager\LanguageManagerAwareTrait;
+use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Filter\File\RenameUpload;
 
 class AttachmentManager implements AttachmentManagerInterface
 {
-    use \Uuid\Manager\UuidManagerAwareTrait, \ClassResolver\ClassResolverAwareTrait, \Common\Traits\ConfigAwareTrait,
-        \Common\Traits\ObjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+    use UuidManagerAwareTrait, ClassResolverAwareTrait;
+    use ConfigAwareTrait, ObjectManagerAwareTrait;
+    use LanguageManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -28,12 +34,11 @@ class AttachmentManager implements AttachmentManagerInterface
         );
     }
 
-    public function attach(array $file)
+    public function attach(array $file, $appendId = null)
     {
         $filename = $file['name'];
         $size     = $file['size'];
         $type     = $file['type'];
-        $tmp      = $file['tmp_name'];
         $pathinfo = pathinfo($filename);
         $hash     = uniqid() . '_' . hash('ripemd160', $filename) . '.' . $pathinfo['extension'];
 
@@ -42,7 +47,33 @@ class AttachmentManager implements AttachmentManagerInterface
         $filter      = new RenameUpload($location);
         $filter->filter($file);
 
-        return $this->addAttachment($filename, $webLocation, $size, $type);
+        if ($appendId) {
+            $attachment = $this->getAttachment($appendId);
+        } else {
+            $attachment = $this->createAttachment();
+        }
+
+        return $this->attachFile($attachment, $filename, $webLocation, $size, $type);
+    }
+
+    public function getFile($attachmentId, $fileId = null)
+    {
+        $attachment = $this->getAttachment($attachmentId);
+
+        if ($fileId) {
+            $matching = $attachment->getFiles()->matching(
+                Criteria::create()->where(Criteria::expr()->eq('id', $fileId))
+            );
+            $file     = $matching->first();
+
+            if (!is_object($file)) {
+                throw new Exception\FileNotFoundException(sprintf('Attachment found, but file id does not exist.'));
+            }
+
+            return $file;
+        } else {
+            return $attachment->getFirstFile();
+        }
     }
 
     public function getAttachment($id)
@@ -75,22 +106,29 @@ class AttachmentManager implements AttachmentManagerInterface
         return $dir . '/' . $path;
     }
 
-    protected function addAttachment($filename, $location, $size, $type)
+    protected function createAttachment()
     {
-        $attachment = new Attachment();
+        $attachment = $this->getClassResolver()->resolve('Attachment\Entity\AttachmentInterface');
         $this->getUuidManager()->injectUuid($attachment);
         $attachment->setLanguage(
             $this->getLanguageManager()->getLanguageFromRequest()
         );
+        $this->getObjectManager()->persist($attachment);
 
-        $file = new File();
+        return $attachment;
+    }
+
+    protected function attachFile(AttachmentInterface $attachment, $filename, $location, $size, $type)
+    {
+        $file = $this->getClassResolver()->resolve('Attachment\Entity\FileInterface');
         $file->setFilename($filename);
         $file->setLocation($location);
         $file->setSize($size);
         $file->setType($type);
 
+        $file->setAttachment($attachment);
         $attachment->addFile($file);
-        $this->getObjectManager()->persist($attachment);
+
         $this->getObjectManager()->persist($file);
 
         return $attachment;

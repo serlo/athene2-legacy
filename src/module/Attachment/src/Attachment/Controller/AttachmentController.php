@@ -10,6 +10,7 @@
  */
 namespace Attachment\Controller;
 
+use Attachment\Entity\AttachmentInterface;
 use Attachment\Form\AttachmentForm;
 use Attachment\Manager\AttachmentManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -21,9 +22,15 @@ class AttachmentController extends AbstractActionController
 
     use AttachmentManagerAwareTrait;
 
-    public function getAction()
+    public function infoAction()
     {
-        $upload = $this->getAttachmentManager()->getAttachment((int)$this->params('id'));
+        $attachment = $this->getAttachmentManager()->getAttachment($this->params('id'));
+        return $this->createJsonResponse($attachment);
+    }
+
+    public function fileAction()
+    {
+        $upload = $this->getAttachmentManager()->getFile($this->params('id'), $this->params('file'));
         $this->redirect()->toUrl($upload->getLocation());
 
         return false;
@@ -32,7 +39,7 @@ class AttachmentController extends AbstractActionController
     public function attachAction()
     {
         $form = new AttachmentForm();
-        $form->setAttribute('action', $this->url()->fromRoute('upload'));
+
         $view = new ViewModel(array(
             'form' => $form
         ));
@@ -44,21 +51,37 @@ class AttachmentController extends AbstractActionController
 
             $form->setData($post);
             if ($form->isValid()) {
-                $data   = $form->getData();
-                $upload = $this->getAttachmentManager()->attach($data['file']);
+                $data       = $form->getData();
+                $attachment = $this->getAttachmentManager()->attach($data['file'], $this->params('append'));
                 $this->getAttachmentManager()->getObjectManager()->flush();
-
-                return new JsonModel(array(
-                    'success'  => true,
-                    'location' => $this->url()->fromRoute('upload/get', array('id' => $upload->getId())),
-                    'size'     => $upload->getSize(),
-                    'id'       => $upload->getId(),
-                    'type'     => $upload->getType(),
-                    'filename' => $upload->getFilename()
-                ));
+                return $this->createJsonResponse($attachment);
             }
         }
 
         return $view;
+    }
+
+    protected function createJsonResponse(AttachmentInterface $attachment)
+    {
+
+        foreach ($attachment->getFiles() as $file) {
+            $url     = $this->url()->fromRoute(
+                'attachment/file',
+                ['id' => $attachment->getId(), 'file' => $file->getId()]
+            );
+            $files[] = [
+                'location' => $url,
+                'size'     => $file->getSize(),
+                'id'       => $file->getId(),
+                'type'     => $file->getType(),
+                'filename' => $file->getFilename()
+            ];
+        }
+
+        return new JsonModel(array(
+            'success' => true,
+            'id'      => $attachment->getId(),
+            $files
+        ));
     }
 }
