@@ -33,7 +33,7 @@ interface EventParameterInterface
     /**
      * @return UuidInterface
      */
-    public function getObject();
+    public function getValue();
 
     /**
      * @param EventLogInterface $log
@@ -48,8 +48,8 @@ interface EventParameterInterface
     public function setName(EventParameterNameInterface $name);
 
     /**
-     * @param UuidInterface $uuid
+     * @param UuidInterface|string $value
      * @return self
      */
-    public function setObject(UuidInterface $uuid);
+    public function setValue($value);
 }

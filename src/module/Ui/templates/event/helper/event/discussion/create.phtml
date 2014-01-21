@@ -1,4 +1,4 @@
 <?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php $discussion = $this->normalize()->toAnchor($this->event->getObject()); ?>
+<?php $discussion = $this->normalize()->toTitle($this->event->getObject()); ?>
 <?php $on = $this->normalize()->toAnchor($this->event->getParameter('on')); ?>
 <?php echo sprintf($this->translate('%s started a new discussion "%s" on %s'), $user , $discussion, $on);?>

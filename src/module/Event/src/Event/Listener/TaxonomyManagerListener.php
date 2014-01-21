@@ -47,7 +47,7 @@ class TaxonomyManagerListener extends AbstractMvcListener
             [
                 [
                     'name'   => 'object',
-                    'object' => $e->getParam('object')->getUuidEntity()
+                    'value' => $e->getParam('object')->getUuidEntity()
                 ]
             ]
         );
@@ -67,7 +67,7 @@ class TaxonomyManagerListener extends AbstractMvcListener
             [
                 [
                     'name'   => 'object',
-                    'object' => $e->getParam('object')->getUuidEntity()
+                    'value' => $e->getParam('object')->getUuidEntity()
                 ]
             ]
         );

@@ -71,16 +71,14 @@ class EventManager implements EventManagerInterface
         );
 
         if ($recursive) {
-            $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterInterface');
-
-            $parameters = $this->getObjectManager()->getRepository($className)->findBy(
+            $parameters = $this->getObjectManager()->getRepository('Event\Entity\EventParameterUuid')->findBy(
                 [
                     'uuid' => $objectId
                 ]
             );
 
-            /* @var $parameter \Event\Entity\EventParameterInterface */
             foreach ($parameters as $parameter) {
+                $parameter = $parameter->getEventParameter();
                 if (!empty($filters)) {
                     if (in_array($parameter->getName(), $filters)) {
                         $results[] = $parameter->getLog();
@@ -174,8 +172,8 @@ class EventManager implements EventManagerInterface
      */
     protected function addParameter(Entity\EventLogInterface $log, array $parameter)
     {
-        if (!array_key_exists('object', $parameter)) {
-            throw new Exception\RuntimeException(sprintf('No object given'));
+        if (!array_key_exists('value', $parameter)) {
+            throw new Exception\RuntimeException(sprintf('No value given'));
         }
         if (!array_key_exists('name', $parameter)) {
             throw new Exception\RuntimeException(sprintf('No name given'));
@@ -186,12 +184,6 @@ class EventManager implements EventManagerInterface
                 gettype($parameter['name'])
             ));
         }
-        if (!$parameter['object'] instanceof UuidInterface) {
-            throw new Exception\RuntimeException(sprintf(
-                'Parameter name should be UuidInterface, but got `%s`',
-                get_class($parameter['object'])
-            ));
-        }
 
         $name = $this->findParameterNameByName($parameter['name']);
 
@@ -199,7 +191,7 @@ class EventManager implements EventManagerInterface
         $entity = $this->getClassResolver()->resolve('Event\Entity\EventParameterInterface');
         $entity->setLog($log);
         $entity->setName($name);
-        $entity->setObject($parameter['object']);
+        $entity->setValue($parameter['value']);
         $log->addParameter($entity);
 
         $this->getObjectManager()->persist($entity);

@@ -1200,11 +1200,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`attachement_file`
+-- Table `serlo`.`attachment_file`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`attachement_file` ;
+DROP TABLE IF EXISTS `serlo`.`attachment_file` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`attachement_file` (
+CREATE TABLE IF NOT EXISTS `serlo`.`attachment_file` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `attachment_id` BIGINT NOT NULL,
   `size` INT NOT NULL,
@@ -1248,14 +1248,14 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`event_parameter_text`
+-- Table `serlo`.`event_parameter_string`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`event_parameter_text` ;
+DROP TABLE IF EXISTS `serlo`.`event_parameter_string` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter_text` (
+CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter_string` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `event_parameter_id` INT NOT NULL,
-  `content` TEXT NOT NULL,
+  `value` TEXT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_event_parameter_text_event_parameter1_idx` (`event_parameter_id` ASC),
   CONSTRAINT `fk_event_parameter_text_event_parameter1`
@@ -1401,7 +1401,6 @@ INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (5, 'id5', 0);
 INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (6, 'id6', 0);
 INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (7, 'id7', 0);
 INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (8, 'id8', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (9, 'id9', 0);
 
 COMMIT;
 
@@ -1413,7 +1412,7 @@ START TRANSACTION;
 USE `serlo`;
 INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234', NULL);
 INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (2, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL);
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (7, 'legacy@serlo.org', 'Legacy', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '7646', NULL);
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (6, 'legacy@serlo.org', 'Legacy', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '7646', NULL);
 
 COMMIT;
 
@@ -1499,8 +1498,8 @@ USE `serlo`;
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (3, 1, 1, NULL, NULL, NULL);
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (4, 2, 2, 3, NULL, NULL);
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (5, 3, 3, 3, NULL, NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (8, 4, 4, 5, 'Inhalte aus Serlo1', NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (9, 5, 5, 8, 'Artikel aus Serlo1', NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (7, 4, 4, 5, 'Inhalte aus Serlo1', NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (8, 5, 5, 7, 'Artikel aus Serlo1', NULL);
 
 COMMIT;
 
@@ -1514,8 +1513,8 @@ INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 11);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 11);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (1, 2);
 INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (2, 2);
-INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (7, 2);
-INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (7, 11);
+INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (6, 2);
+INSERT INTO `serlo`.`role_user` (`user_id`, `role_id`) VALUES (6, 11);
 
 COMMIT;
 

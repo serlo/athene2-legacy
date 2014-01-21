@@ -35,7 +35,7 @@ class RepositoryManagerListener extends AbstractMvcListener
             array(
                 array(
                     'name'   => 'repository',
-                    'object' => $repository
+                    'value' => $repository
                 )
             )
         );
@@ -56,7 +56,7 @@ class RepositoryManagerListener extends AbstractMvcListener
             array(
                 array(
                     'name'   => 'repository',
-                    'object' => $repository
+                    'value' => $repository
                 )
             )
         );

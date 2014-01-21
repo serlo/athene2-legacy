@@ -24,7 +24,7 @@ class LinkServiceListener extends AbstractMvcListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'object' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')->getUuidEntity()
             )
         );
 
@@ -40,7 +40,7 @@ class LinkServiceListener extends AbstractMvcListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'object' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')->getUuidEntity()
             )
         );
 

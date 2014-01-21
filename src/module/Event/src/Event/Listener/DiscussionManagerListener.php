@@ -33,7 +33,7 @@ class DiscussionManagerListener extends AbstractMvcListener
         $params = array(
             array(
                 'name'   => 'on',
-                'object' => $e->getParam('on')
+                'value' => $e->getParam('on')
             )
         );
 
@@ -55,7 +55,7 @@ class DiscussionManagerListener extends AbstractMvcListener
         $params = array(
             array(
                 'name'   => 'discussion',
-                'object' => $discussion
+                'value' => $discussion
             )
         );
 

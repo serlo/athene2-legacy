@@ -10,6 +10,8 @@
  */
 namespace Notification;
 
+use Uuid\Entity\UuidInterface;
+
 class NotificationWorker
 {
     use\Common\Traits\ObjectManagerAwareTrait, \User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait,
@@ -30,22 +32,16 @@ class NotificationWorker
                 }
             }
             foreach ($eventLog->getParameters() as $parameter) {
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($parameter->getObject()) as $subscriber)
-                {
-                    /* @var $subscriber \Entity\UserInterface */
-                    if ($subscriber !== $eventLog->getActor()) {
-                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                if ($parameter->getValue() instanceof UuidInterface) {
+                    foreach ($this->getSubscriptionManager()->findSubscribersByUuid($parameter->getValue()) as
+                             $subscriber) {
+                        /* @var $subscriber \Entity\UserInterface */
+                        if ($subscriber !== $eventLog->getActor()) {
+                            $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                        }
                     }
                 }
             }
-            /*if($eventLog->getReference() !== NULL){
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
-                    // @var $subscriber \Entity\UserInterface
-                    if($subscriber !== $eventLog->getActor()){
-                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
-                    }
-                }
-            }*/
         }
     }
 

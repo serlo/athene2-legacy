@@ -78,7 +78,11 @@ class EventLog implements EventLogInterface
     {
         foreach ($this->getParameters() as $parameter) {
             if ($parameter->getName() == $name) {
-                return $parameter->getObject()->getHolder();
+                if($parameter instanceof EventParameterUuid){
+                    return $parameter->getValue()->getHolder();
+                } else {
+                    return $parameter->getValue();
+                }
             }
         }
 
@@ -123,35 +127,25 @@ class EventLog implements EventLogInterface
     public function setActor(UserInterface $actor)
     {
         $this->actor = $actor;
-
-        return $this;
     }
 
     public function setEvent(EventInterface $event)
     {
         $this->event = $event;
-
-        return $this;
     }
 
     public function setObject(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
-
-        return $this;
     }
 
     public function addParameter(EventParameterInterface $parameter)
     {
         $this->parameters->add($parameter);
-
-        return $this;
     }
 }

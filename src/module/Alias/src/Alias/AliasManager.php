@@ -182,8 +182,9 @@ class AliasManager implements AliasManagerInterface
         }
         $alias = implode('/', $slugified);
 
-        if (is_object($this->findAliasByObject($uuid))) {
-            return $this;
+        try {
+            return $this->findAliasByObject($uuid);
+        } catch (Exception\AliasNotFoundException $e) {
         }
 
         /* @var $class Entity\AliasInterface */
@@ -196,7 +197,7 @@ class AliasManager implements AliasManagerInterface
 
         $this->getObjectManager()->persist($class);
 
-        return $this;
+        return $class;
     }
 
     public function findAliasByObject(UuidInterface $uuid)
