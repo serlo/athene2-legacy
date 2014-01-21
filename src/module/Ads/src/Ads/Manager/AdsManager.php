@@ -22,7 +22,7 @@ class AdsManager implements AdsManagerInterface
 
     use \Common\Traits\ObjectManagerAwareTrait;
     use\ClassResolver\ClassResolverAwareTrait;
-    use\Upload\Manager\UploadManagerAwareTrait;
+    use\Attachment\Manager\AttachmentManagerAwareTrait;
 
     public function getAd($id)
     {

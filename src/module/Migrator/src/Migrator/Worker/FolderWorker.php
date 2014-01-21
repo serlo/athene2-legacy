@@ -74,7 +74,7 @@ class FolderWorker implements Worker
     {
         $results       = ['folder'];
         $language      = $this->languageManager->getLanguageFromRequest();
-        $defaultParent = $this->taxonomyManager->getTerm(9);
+        $defaultParent = $this->taxonomyManager->getTerm(7);
 
         /* @var $folders \Migrator\Entity\Folder[] */
         $folders = $this->objectManager->getRepository('Migrator\Entity\Folder')->findAll();

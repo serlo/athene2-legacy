@@ -8,20 +8,21 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Upload;
+namespace Attachment;
 
-use Upload\Manager\UploadManager;
+use Attachment\Manager\AttachmentManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 return array(
     'class_resolver'  => array(
-        'Upload\Entity\UploadInterface' => 'Upload\Entity\Upload'
+        'Attachment\Entity\AttachmentInterface' => 'Attachment\Entity\Attachment',
+        'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
     ),
     'upload_manager'  => array(),
     'service_manager' => array(
         'factories' => array(
-            'Upload\Manager\UploadManager' => function (ServiceLocatorInterface $sl) {
-                    $instance = new UploadManager();
+            'Attachment\Manager\AttachmentManager' => function (ServiceLocatorInterface $sl) {
+                    $instance = new AttachmentManager();
                     $config   = $sl->get('config')['upload_manager'];
                     $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
                     $instance->setConfig($config);
@@ -35,13 +36,13 @@ return array(
     ),
     'di'              => array(
         'allowed_controllers' => array(
-            'Upload\Controller\UploadController',
+            'Attachment\Controller\AttachmentController',
             'Taxonomy\Controller\TaxonomyController'
         ),
         'definition'          => array(
             'class' => array(
-                'Upload\Controller\UploadController' => array(
-                    'setUploadManager' => array(
+                'Attachment\Controller\AttachmentController' => array(
+                    'setAttachmentManager' => array(
                         'required' => true
                     )
                 ),
@@ -49,7 +50,7 @@ return array(
         ),
         'instance'            => array(
             'preferences' => array(
-                'Upload\Manager\UploadManagerInterface' => 'Upload\Manager\UploadManager'
+                'Attachment\Manager\AttachmentManagerInterface' => 'Attachment\Manager\AttachmentManager'
             ),
         )
     ),
@@ -71,25 +72,39 @@ return array(
     ),
     'router'          => array(
         'routes' => array(
-            'upload' => array(
-                'type'          => 'Segment',
-                'may_terminate' => true,
-                'options'       => array(
-                    'route'    => '/upload',
+            'attachment' => array(
+                'type'         => 'Segment',
+                'options'      => array(
+                    'route'      => '/attachment',
                     'defaults' => array(
-                        'controller' => 'Upload\Controller\UploadController',
-                        'action'     => 'upload'
+                        'controller' => 'Attachment\Controller\AttachmentController',
                     )
                 ),
-                'child_routes'  => array(
-                    'get' => array(
-                        'type'          => 'Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/get/:id',
+                'child_routes' => array(
+                    'info'   => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/info/:id',
                             'defaults' => array(
-                                'controller' => 'Upload\Controller\UploadController',
-                                'action'     => 'get'
+                                'action' => 'info'
+                            )
+                        ),
+                    ),
+                    'file'   => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/file/:id[/:file]',
+                            'defaults' => array(
+                                'action' => 'file'
+                            )
+                        ),
+                    ),
+                    'upload' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/upload[/:append]',
+                            'defaults' => array(
+                                'action' => 'attach'
                             )
                         ),
                     )

@@ -11,10 +11,10 @@
  */
 namespace Ui\Navigation;
 
+use Zend\Mvc\ApplicationInterface;
+use Zend\Mvc\Router\RouteMatch;
 use Zend\Navigation\Service\AbstractNavigationFactory as ZendAbstractNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\ApplicationInterface;
 
 abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
 {    
@@ -27,10 +27,14 @@ abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
     /**
      * @return RouteMatch $routeMatch
      */
-    public function getRouteMatch (ApplicationInterface $application = NULL)
+    public function getRouteMatch (ApplicationInterface $application)
     {
         if(!is_object($this->routeMatch)){
-            $this->setRouteMatch($application->getMvcEvent()->getRouteMatch());
+            if(is_object($application->getMvcEvent()->getRouteMatch())){
+                $this->setRouteMatch($application->getMvcEvent()->getRouteMatch());
+            } else {
+                $this->setRouteMatch(new RouteMatch([]));
+            }
         }
         return $this->routeMatch;
     }

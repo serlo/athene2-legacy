@@ -36,7 +36,7 @@ class Ad implements AdInterface
     protected $language;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Upload\Entity\Upload")
+     * @ORM\ManyToOne(targetEntity="Attachment\Entity\Attachment")
      */
     protected $image;
 
@@ -165,16 +165,21 @@ class Ad implements AdInterface
         return $this->language;
     }
 
-    public function setImage($image)
+    public function setAttachment($image)
     {
         $this->image = $image;
 
         return $this;
     }
 
-    public function getImage()
+    public function getAttachment()
     {
         return $this->image;
+    }
+
+    public function getImage()
+    {
+        return $this->getAttachment()->getFirstFile();
     }
 
     public function setUrl($url)

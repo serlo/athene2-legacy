@@ -157,7 +157,7 @@ return array(
                     'setAdsManager'      => array(
                         'required' => true
                     ),
-                    'setUploadManager'   => array(
+                    'setAttachmentManager'   => array(
                         'required' => true
                     )
                 ),
@@ -175,7 +175,7 @@ return array(
                     'setObjectManager'   => array(
                         'required' => true
                     ),
-                    'setUploadManager'   => array(
+                    'setAttachmentManager'   => array(
                         'required' => true
                     )
                 )
