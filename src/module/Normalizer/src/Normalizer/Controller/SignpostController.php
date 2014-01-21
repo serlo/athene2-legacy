@@ -12,7 +12,10 @@ namespace Normalizer\Controller;
 
 use Normalizer\NormalizerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
+use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 
 class SignpostController extends AbstractActionController
 {
@@ -27,12 +30,10 @@ class SignpostController extends AbstractActionController
         $type        = $normalized->getType();
         $url         = $this->url()->fromRoute($routeName, $routeParams);
 
-        $this->redirect()->toRoute($routeName, $routeParams, ['query' => ['type' => $type]]);
+        //$this->redirect()->toRoute($routeName, $routeParams, ['query' => ['type' => $type]]);
 
-        return false;
+        //return false;
 
-        /** TODO REMOVE */
-        /*
         $router  = $this->getServiceLocator()->get('Router');
         $request = new Request();
 
@@ -50,17 +51,25 @@ class SignpostController extends AbstractActionController
 
         $params     = $routeMatch->getParams();
         $controller = $params['controller'];
-        $content    = $this->forward()->dispatch($controller, $params);
+        $response   = $this->forward()->dispatch($controller, $params);
 
-        $renderer = $this->getServiceLocator()->get('ViewRenderer');
+        // TODO: Do me a favor and remove this piece of cr*p with something that doesn't hack the whole thing
+        if ($response instanceof JsonModel) {
+            $response = new ViewModel(['data' => $response->getVariables()]);
+            $response->setTemplate('normalizer/json');
+        }
 
-        $content = $renderer->render($content);
-
-        $return = new JsonModel([
-            'id'      => $object->getId(),
-            'type'    => $type,
-            'content' => $content
+        $view = new ViewModel([
+            'id'   => $object->getId(),
+            'type' => $type,
+            '__disableTemplateDebugger' => true
         ]);
-        */
+
+        $view->addChild($response, 'response');
+
+        $view->setTemplate('normalizer/ref');
+        $view->setTerminal(true);
+
+        return $view;
     }
 }
