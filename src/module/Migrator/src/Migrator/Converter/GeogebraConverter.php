@@ -30,8 +30,11 @@ class GeogebraConverter extends AbstractConverter
             preg_match($reg3, $match[0], $srcResult);
             $srcResult[1] = str_replace('/uploads/', '/uploads/legacy/', $srcResult[1]);
 
-            $replace = '<img src="'.$srcResult[1].'" alt="legacy geogebra formula"></img>';
-            $replace .= '<a href="'.$altResult[1].'">Download original Geogebra file</a>';
+            $replace = '<img src="'.$srcResult[1].'" alt="legacy geogebra formula"></img>' . "\n";
+            $replace .= '<a href="'.$altResult[1].'">Download original Geogebra file</a>' . "\n";
+
+            $this->needsFlagging = true;
+
             // replacing the match with the view
             $content = str_replace($match[0], $replace, $content);
         }
