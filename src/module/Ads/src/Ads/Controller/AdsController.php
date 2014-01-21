@@ -52,7 +52,7 @@ class AdsController extends AbstractActionController
             if ($form->isValid()) {
                 $array = $form->getData();
 
-                $upload = $this->getAttachmentManager()->upload($array['file']);
+                $upload = $this->getAttachmentManager()->attach($array['file']);
 
                 $array['attachment'] = $upload;
                 $array['author']     = $user;
