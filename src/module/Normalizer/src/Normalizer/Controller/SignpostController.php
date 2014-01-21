@@ -25,8 +25,42 @@ class SignpostController extends AbstractActionController
         $routeName   = $normalized->getRouteName();
         $routeParams = $normalized->getRouteParams();
         $type        = $normalized->getType();
+        $url         = $this->url()->fromRoute($routeName, $routeParams);
 
         $this->redirect()->toRoute($routeName, $routeParams, ['query' => ['type' => $type]]);
+
+        return false;
+
+        /** TODO REMOVE */
+        /*
+        $router  = $this->getServiceLocator()->get('Router');
+        $request = new Request();
+
+        $request->setMethod(Request::METHOD_GET);
+        $request->setUri($url);
+
+        $routeMatch = $router->match($request);
+
+        if (!$routeMatch) {
+            throw new RuntimeException(sprintf(
+                'Could not match a route for `%s`',
+                $url
+            ));
+        }
+
+        $params     = $routeMatch->getParams();
+        $controller = $params['controller'];
+        $content    = $this->forward()->dispatch($controller, $params);
+
+        $renderer = $this->getServiceLocator()->get('ViewRenderer');
+
+        $content = $renderer->render($content);
+
+        $return = new JsonModel([
+            'id'      => $object->getId(),
+            'type'    => $type,
+            'content' => $content
+        ]);
+        */
     }
 }
- 
