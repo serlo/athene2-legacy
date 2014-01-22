@@ -82,6 +82,10 @@ class FolderWorker implements Worker
             $parent = $defaultParent;
             $name = utf8_encode($folder->getName());
 
+            if(!$name){
+                $name = 'empty name';
+            }
+
             $term = $this->taxonomyManager->createTerm([
                 'taxonomy' => 'topic',
                 'parent'   => $parent,
