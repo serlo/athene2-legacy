@@ -11,6 +11,7 @@
 namespace Event;
 
 use Event\Entity\EventInterface;
+use Event\Entity\EventLogInterface;
 use Language\Entity\LanguageInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
@@ -32,7 +33,7 @@ interface EventManagerInterface
      * @param UserInterface     $actor
      * @param UuidInterface     $uuid
      * @param array             $parameters
-     * @return self
+     * @return EventLogInterface
      */
     public function logEvent(
         $eventName,
@@ -51,16 +52,22 @@ interface EventManagerInterface
     public function findTypeByName($eventName);
 
     /**
-     * @param int    $objectId
-     * @param string $recursive
-     * @param array  $filter
-     * @return EventInterface[]
+     * @param int   $objectId
+     * @param bool  $recursive
+     * @param array $filter
+     * @return EventLogInterface[]
      */
     public function findEventsByObject($objectId, $recursive = true, array $filter = array());
 
     /**
+     * @param int $userId
+     * @return EventLogInterface[]
+     */
+    public function findEventsByActor($userId);
+
+    /**
      * @param int $id
-     * @return EventInterface
+     * @return EventLogInterface
      */
     public function getEvent($id);
 }

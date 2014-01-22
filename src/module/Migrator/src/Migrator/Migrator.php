@@ -17,7 +17,7 @@ class Migrator
 {
     protected $workers = [
         'Migrator\Worker\ArticleWorker',
-        //'Migrator\Worker\UserWorker'
+        'Migrator\Worker\FolderWorker'
     ];
 
     /**

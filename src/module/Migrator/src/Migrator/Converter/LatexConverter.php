@@ -10,15 +10,12 @@
  */
 namespace Migrator\Converter;
 
-use Pandoc\Pandoc;
-
 class LatexConverter extends AbstractConverter
 {
     protected $lastResponse;
 
     public function convert($content)
     {
-        $pandoc       = new Pandoc();
         $reg_exercise = '@<img(?:[^>]*)(?=(?:data-mathml="([^"]*)"|alt="([^"]*)")(?:[^>]*)(?:class="Wirisformula")|(?:class="Wirisformula")(?:[^>]*)(?:data-mathml="([^"]*)"|alt="([^"]*)"))(?:[^>]*)>@is';
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
 

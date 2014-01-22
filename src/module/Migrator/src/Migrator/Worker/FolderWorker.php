@@ -80,21 +80,29 @@ class FolderWorker implements Worker
         $folders = $this->objectManager->getRepository('Migrator\Entity\Folder')->findAll();
         foreach ($folders as $folder) {
             $parent = $defaultParent;
-            if ($folder->getParent() !== null) {
-                if (isset($results['folder'][$folder->getParent()->getId()])) {
-                    $parent = $results['folder'][$folder->getParent()->getId()];
-                }
-            }
+            $name = utf8_encode($folder->getName());
 
             $term = $this->taxonomyManager->createTerm([
                 'taxonomy' => 'topic',
                 'parent'   => $parent,
                 'term'     => [
-                    'name' => $folder->getName()
+                    'name' => $name
                 ]
             ], $language);
 
-            $results['folder'][$folder->getArticleId()] = $term;
+            $results['folder'][$folder->getId()] = $term;
+        }
+
+        foreach($folders as $folder){
+            $parent = $defaultParent;
+            if ($folder->getParent() !== null) {
+                if (isset($results['folder'][$folder->getParent()->getId()])) {
+                    $parent = $results['folder'][$folder->getParent()->getId()];
+                }
+            }
+            $term = $results['folder'][$folder->getId()];
+            $term->setParent($parent);
+            $this->objectManager->persist($term);
         }
 
         $this->taxonomyManager->flush();

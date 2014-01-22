@@ -88,8 +88,8 @@ class ArticleWorker implements Worker
         foreach ($articles as $article) {
             $revision = $article->getCurrentRevision();
             if (is_object($revision)) {
-                $content = $this->converterChain->convert($revision->getSummary() . $revision->getContent());
-                $title   = $revision->getTitle();
+                $content = $this->converterChain->convert(utf8_encode($revision->getSummary() . $revision->getContent()));
+                $title   = utf8_encode($revision->getTitle());
 
                 $entity = $this->entityManager->createEntity('article', [], $language);
 
@@ -115,7 +115,6 @@ class ArticleWorker implements Worker
 
                 $results['article'][$article->getArticleId()] = $entity;
             }
-            break;
         }
 
         $this->objectManager->flush();
