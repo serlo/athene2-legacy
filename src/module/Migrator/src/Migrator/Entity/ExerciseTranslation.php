@@ -71,7 +71,7 @@ class ExerciseTranslation
     /**
      * @return ExerciseSolution[]
      */
-    public function getSolutions()
+    public function getSolution()
     {
         return $this->solutions->first();
     }

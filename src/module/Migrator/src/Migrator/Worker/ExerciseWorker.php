@@ -12,8 +12,10 @@ namespace Migrator\Worker;
 
 use Doctrine\ORM\EntityManager;
 use Entity\Manager\EntityManager as LRManager;
+use Entity\Options\ModuleOptions;
 use Flag\Manager\FlagManagerInterface;
 use Language\Manager\LanguageManagerInterface;
+use Link\Service\LinkServiceInterface;
 use Migrator\Converter\ConverterChain;
 use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
@@ -57,6 +59,16 @@ class ExerciseWorker implements Worker
      */
     protected $flagManager;
 
+    /**
+     * @var LinkServiceInterface
+     */
+    protected $linkService;
+
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
     public function __construct(
         EntityManager $objectManager,
         LRManager $entityManager,
@@ -65,7 +77,9 @@ class ExerciseWorker implements Worker
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
         PreConverterChain $converterChain,
-        FlagManagerInterface $flagManager
+        FlagManagerInterface $flagManager,
+        LinkServiceInterface $linkService,
+    ModuleOptions $moduleOptions
     ) {
         $this->objectManager   = $objectManager;
         $this->entityManager   = $entityManager;
@@ -75,12 +89,12 @@ class ExerciseWorker implements Worker
         $this->userManager     = $userManagerInterface;
         $this->converterChain  = $converterChain;
         $this->flagManager     = $flagManager;
+        $this->linkService     = $linkService;
+        $this->moduleOptions = $moduleOptions;
     }
 
     public function migrate(array $results)
     {
-        $i        = 0;
-
         $user     = $this->userManager->getUserFromAuthenticator();
         $language = $this->languageManager->getLanguage(1);
 
@@ -88,39 +102,65 @@ class ExerciseWorker implements Worker
         $exercises = $this->objectManager->getRepository('Migrator\Entity\ExerciseTranslation')->findAll();
 
         foreach ($exercises as $exercise) {
-            $revision = $exercise->getCurrentRevision();
 
-            if (is_object($revision)) {
-                $content = $this->converterChain->convert(
-                    utf8_encode($revision->getSummary() . $revision->getContent())
-                );
-                $title   = utf8_encode($revision->getTitle());
+            $content = $this->converterChain->convert(
+                utf8_encode($exercise->getContent())
+            );
 
-                $entity = $this->entityManager->createEntity('article', [], $language);
-
-                if ($this->converterChain->needsFlagging()) {
-                    $this->flagManager->addFlag(24, 'Flagged by migrator', $entity->getId(), $user);
-                }
-
-                /* @var $entity \Entity\Entity\EntityInterface */
-                $revision = $entity->createRevision();
-                $revision->set('title', $title);
-                $revision->set('content', $content);
-
-                $revision->setAuthor($this->userManager->getUserFromAuthenticator());
-
-                $this->uuidManager->injectUuid($revision);
-                $this->uuidManager->flush();
-
-                $entity->setCurrentRevision($revision);
-                $this->objectManager->persist($revision);
-                $this->objectManager->persist($entity);
-
-                $this->taxonomyManager->associateWith(8, 'entities', $entity);
-
-                $results['article'][$exercise->getArticleId()] = $entity;
+            if ($this->converterChain->needsFlagging()) {
+                $this->flagManager->addFlag(24, 'Flagged by migrator', $lrExercise->getId(), $user);
             }
-            break;
+
+            if ($exercise->getExercise()->isGroup()) {
+                $lrExercise = $this->entityManager->createEntity('text-exercise-group', [], $language);
+            } elseif ($exercise->getExercise()->getParents()->count() > 0) {
+                $lrExercise = $this->entityManager->createEntity('grouped-text-exercise', [], $language);
+            } else {
+                $lrExercise = $this->entityManager->createEntity('text-exercise', [], $language);
+            }
+
+            $revision = $lrExercise->createRevision();
+            $revision->set('content', $content);
+            $revision->setAuthor($this->userManager->getUserFromAuthenticator());
+
+            $this->uuidManager->injectUuid($revision);
+            $this->uuidManager->flush();
+
+            $lrExercise->setCurrentRevision($revision);
+            $this->objectManager->persist($revision);
+            $this->objectManager->persist($lrExercise);
+
+            if (is_object($exercise->getSolution())) {
+                $solution   = $exercise->getSolution();
+                $lrSolution = $this->entityManager->createEntity('text-solution', [], $language);
+            }
+
+            if ($exercise->getExercise()->getParents()->count() > 0) {
+
+                /* DO ME */
+                $from    = $this->getEntityManager()->getEntity($this->params('from'));
+                $to      = $this->getEntityManager()->getEntity($data['to']);
+                $options = $this->getModuleOptions()->getType(
+                    $from->getType()->getName()
+                )->getComponent($type);
+
+                $this->getLinkService()->dissociate($from, $entity, $options);
+                $options = $this->getModuleOptions()->getType(
+                    $to->getType()->getName()
+                )->getComponent($type);
+                $this->getLinkService()->associate($to, $entity, $options);
+                /* DO ME */
+
+            } else {
+                $folders = $exercise->getExercise()->getFolders();
+                foreach ($folders as $folder) {
+                    $term = $results['folder'][$folder->getId()];
+                    $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise);
+                }
+            }
+
+            $results['exercise'][$exercise->getExercise()->getId()] = $lrExercise;
+
         }
 
         $this->objectManager->flush();
