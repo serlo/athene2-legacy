@@ -36,11 +36,12 @@ class AttachmentManager implements AttachmentManagerInterface
 
     public function attach(array $file, $appendId = null)
     {
-        $filename = $file['name'];
-        $size     = $file['size'];
-        $type     = $file['type'];
-        $pathinfo = pathinfo($filename);
-        $hash     = uniqid() . '_' . hash('ripemd160', $filename) . '.' . $pathinfo['extension'];
+        $filename  = $file['name'];
+        $size      = $file['size'];
+        $type      = $file['type'];
+        $pathinfo  = pathinfo($filename);
+        $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
+        $hash      = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
 
         $location    = $this->getOption('path') . '/' . $hash;
         $webLocation = $this->getOption('webpath') . '/' . $hash;
