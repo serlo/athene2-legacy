@@ -24,54 +24,52 @@ class AdsController extends AbstractActionController
 
     public function indexAction()
     {
-        $ads  = $this->getAdsManager()->findAllAds(
-            $this->getLanguageManager()->getLanguageFromRequest()
-        );
+        $ads = $this->getAdsManager()->findAllAds($this->getLanguageManager()
+            ->getLanguageFromRequest());
         $view = new ViewModel(array(
             'ads' => $ads
         ));
         $view->setTemplate('ads/ads');
-
+        
         return $view;
     }
 
     public function addAction()
     {
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $form     = new AdForm();
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+        $form = new AdForm();
         $language = $this->getLanguageManager()->getLanguageFromRequest();
-
+        
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $data = array_merge(
-                $data,
-                $this->getRequest()->getFiles()->toArray()
-            );
-
+            $data = array_merge($data, $this->getRequest()
+                ->getFiles()
+                ->toArray());
+            
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-
+                
                 $upload = $this->getAttachmentManager()->attach($array['file']);
-
+                
                 $array['attachment'] = $upload;
-                $array['author']     = $user;
-                $array['language']   = $language;
-
+                $array['author'] = $user;
+                $array['language'] = $language;
+                
                 $this->getAdsManager()->createAd($array);
-
+                
                 $this->getObjectManager()->flush();
-
+                
                 $this->redirect()->toRoute('ads');
             }
         }
-
+        
         $view = new ViewModel(array(
-            'form'  => $form,
+            'form' => $form,
             'title' => 'Ad erstellen'
         ));
         $view->setTemplate('ads/form.phtml');
-
+        
         return $view;
     }
 
@@ -86,53 +84,59 @@ class AdsController extends AbstractActionController
 
     public function shuffleAction()
     {
-        $ads  = $this->getAdsManager()->findShuffledAds(
-            $this->getLanguageManager()->getLanguageFromRequest(),
-            3
-        );
+        $ads = $this->getAdsManager()->findShuffledAds($this->getLanguageManager()
+            ->getLanguageFromRequest(), 3);
         $view = new ViewModel(array(
             'ads' => $ads
         ));
         $view->setTemplate('ads/shuffle.phtml');
         $this->getObjectManager()->flush();
-
+        
         return $view;
     }
 
     public function editAction()
     {
-        $form     = new AdForm();
-        $id       = $this->params('id');
+        $form = new AdForm();
+        $id = $this->params('id');
         $language = $this->getLanguageManager();
-        $ad       = $this->getAdsManager()->getAd($id);
-
+        $ad = $this->getAdsManager()->getAd($id);
+        
         $form->get('content')->setValue($ad->getContent());
         $form->get('title')->setValue($ad->getTitle());
         $form->get('frequency')->setValue($ad->getFrequency());
         $form->get('file')->setValue($ad->getAttachment());
         $form->get('file')->setAttribute('required', false);
-        $form->get('file')->setLabel('Bild ändern');
+        $form->get('file')->setLabel('Edit Image');
         $form->get('url')->setValue($ad->getUrl());
-
+        
         $ad = $this->getAdsManager()->getAd($id);
-
+        
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
+            $data = array_merge($data, $this->getRequest()
+                ->getFiles()
+                ->toArray());
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
+                if ($data['file']!=$ad->getAttachment())
+                {
+                    $upload = $this->getAttachmentManager()->attach($array['file']);
+                    $array['attachment'] = $upload;
+                }
                 $this->getAdsManager()->updateAd($array, $ad);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('ads');
             }
         }
-
+        
         $view = new ViewModel(array(
-            'form'  => $form,
+            'form' => $form,
             'title' => 'Ad bearbeiten'
         ));
         $view->setTemplate('ads/form.phtml');
-
+        
         return $view;
     }
 

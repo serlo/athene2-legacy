@@ -65,7 +65,7 @@ class AdsManager implements AdsManagerInterface
         if (substr($data['url'], 0, 3) == 'www') {
             $data['url'] = 'http://' . $data['url'];
         }
-        $data['clicks'] = $data['views'] = 0;
+        $data['clicks'] = 0;
         $ad             = $this->createAdEntity();
         $hydrator       = new AdHydrator();
         $hydrator->hydrate($data, $ad);
@@ -121,11 +121,6 @@ class AdsManager implements AdsManagerInterface
             }
 
             $ads[$i] = $allAds[$adsScaled[$random]];
-        }
-
-        foreach ($ads as $ad) {
-            $ad->setViews($ad->getViews() + 1);
-            $this->getObjectManager()->persist($ad);
         }
 
         return $ads;

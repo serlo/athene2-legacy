@@ -26,8 +26,7 @@ class AdHydrator implements HydratorInterface
         'language',
         'frequency',
         'clicks',
-        'url',
-        'views'
+        'url'
     ];
 
     public function extract($object)
