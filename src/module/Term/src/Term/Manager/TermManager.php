@@ -71,7 +71,6 @@ class TermManager implements TermManagerInterface
     {
         $filter = new Slugify();
         $slug   = ($slug ? $slug : $filter->filter($name));
-        var_dump($slug);
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
 
         $entity->setName($name);

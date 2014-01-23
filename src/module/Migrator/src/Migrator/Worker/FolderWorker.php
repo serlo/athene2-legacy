@@ -70,9 +70,8 @@ class FolderWorker implements Worker
         $this->flagManager     = $flagManager;
     }
 
-    public function migrate()
+    public function migrate(array $results)
     {
-        $results       = ['folder'];
         $language      = $this->languageManager->getLanguageFromRequest();
         $defaultParent = $this->taxonomyManager->getTerm(7);
 

@@ -29,6 +29,13 @@ class TableConverter extends AbstractConverter
 
         preg_match_all($pattern, $input, $tables, PREG_SET_ORDER);
 
+        if(empty($tables)){
+            $layout[][] = array(
+                'col'     => $this->maxcols,
+                'content' => $input
+            );
+        }
+
         $i = 0;
         foreach ($tables as $table) {
 

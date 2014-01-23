@@ -16,7 +16,6 @@ class ConverterChain extends AbstractConverter
 
     public function convert($text)
     {
-        $text = utf8_encode($text);
         foreach ($this->converters as & $converter) {
             if (!is_object($converter)) {
                 $converter = new $converter();

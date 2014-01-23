@@ -27,7 +27,8 @@ return array(
     ),
     'zfc_rbac'        => [
         'assertion_map' => [
-            'authorization.role.identity.modify' => 'User\Assertion\LoginAssertion'
+            'authorization.role.identity.modify' => 'User\Assertion\LoginAssertion',
+            'user.create'                        => 'User\Assertion\HasNoIdentityAssertion'
         ]
     ],
     'service_manager' => array(
@@ -49,87 +50,17 @@ return array(
         )
     ),
     'class_resolver'  => array(
-        'User\Entity\UserInterface'                           => 'User\Entity\User',
-        'User\Entity\RoleInterface'                           => 'User\Entity\Role',
-        'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
-        'User\Notification\Entity\NotificationInterface'      => 'User\Entity\Notification',
-        'User\Notification\Entity\SubscriptionInterface'      => 'User\Entity\Subscription',
-        'User\Notification\Entity\NotificationLogInterface'   => 'User\Entity\NotificationLog'
+        'User\Entity\UserInterface' => 'User\Entity\User',
+        'User\Entity\RoleInterface' => 'User\Entity\Role'
     ),
     'di'              => array(
         'allowed_controllers' => array(
             __NAMESPACE__ . '\Controller\UsersController',
-            __NAMESPACE__ . '\Controller\UserController',
-            __NAMESPACE__ . '\Notification\Controller\WorkerController'
+            __NAMESPACE__ . '\Controller\UserController'
         ),
         'definition'          => array(
             'class' => array(
-                __NAMESPACE__ . '\Notification\Listener\DiscussionControllerListener' => array(
-                    'setSubscriptionManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\Listener\RepositoryManagerListener'    => array(
-                    'setSubscriptionManager' => array(
-                        'required' => true
-                    ),
-                    'setUserManager'         => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\SubscriptionManager'                   => array(
-                    'setClassResolver' => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\NotificationManager'                   => array(
-                    'setClassResolver'  => array(
-                        'required' => true
-                    ),
-                    'setObjectManager'  => array(
-                        'required' => true
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\NotificationLogManager'                => array(
-                    'setClassResolver' => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    ),
-                    'setEventManager'  => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\NotificationWorker'                    => array(
-                    'setUserManager'         => array(
-                        'required' => true
-                    ),
-                    'setObjectManager'       => array(
-                        'required' => true
-                    ),
-                    'setSubscriptionManager' => array(
-                        'required' => true
-                    ),
-                    'setNotificationManager' => array(
-                        'required' => true
-                    ),
-                    'setClassResolver'       => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\Controller\WorkerController'           => array(
-                    'setNotificationWorker' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Authentication\Storage\UserSessionStorage'          => array(
+                __NAMESPACE__ . '\Authentication\Storage\UserSessionStorage' => array(
                     'setObjectManager' => array(
                         'required' => true
                     ),
@@ -137,7 +68,7 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter'             => array(
+                __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter'    => array(
                     'setHashService'   => array(
                         'required' => true
                     ),
@@ -145,13 +76,18 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Authentication\HashService'                         => array(),
-                __NAMESPACE__ . '\Controller\UsersController'                         => array(
+                __NAMESPACE__ . '\Authentication\HashService'                => array(),
+                __NAMESPACE__ . '\Controller\UsersController'                => array(
                     'setUserManager' => array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Controller\UserController'                          => array(
+                __NAMESPACE__ . '\Hydrator\UserHydrator'                     => array(
+                    'setUuidManager' => array(
+                        'required' => true
+                    )
+                ),
+                __NAMESPACE__ . '\Controller\UserController'                 => array(
                     'setUserManager'           => array(
                         'required' => true
                     ),
@@ -166,38 +102,15 @@ return array(
         ),
         'instance'            => array(
             'preferences' => array(
-                __NAMESPACE__ . '\Manager\UserManagerInterface'                 => __NAMESPACE__ . '\Manager\UserManager',
-                __NAMESPACE__ . '\Authentication\HashServiceInterface'          => __NAMESPACE__ . '\Authentication\HashService',
-                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface'      => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
-                __NAMESPACE__ . '\Notification\SubscriptionManagerInterface'    => __NAMESPACE__ . '\Notification\SubscriptionManager',
-                __NAMESPACE__ . '\Notification\NotificationManagerInterface'    => __NAMESPACE__ . '\Notification\NotificationManager',
-                __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager'
+                __NAMESPACE__ . '\Manager\UserManagerInterface'            => __NAMESPACE__ . '\Manager\UserManager',
+                __NAMESPACE__ . '\Authentication\HashServiceInterface'     => __NAMESPACE__ . '\Authentication\HashService',
+                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
             )
         )
     ),
     'router'          => array(
         'routes' => array(
-            'notification' => array(
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options'       => array(
-                    'route' => '/notification'
-                ),
-                'child_routes'  => array(
-                    'worker' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/worker',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Notification\Controller\WorkerController',
-                                'action'     => 'run'
-                            )
-                        )
-                    )
-                )
-            ),
-            'users'        => array(
+            'users' => array(
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
                 'options'       => array(
@@ -208,7 +121,7 @@ return array(
                     )
                 )
             ),
-            'user'         => array(
+            'user'  => array(
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
                 'options'       => array(

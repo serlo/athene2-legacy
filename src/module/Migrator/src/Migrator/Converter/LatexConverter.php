@@ -20,11 +20,8 @@ class LatexConverter extends AbstractConverter
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
-            if (isset($match[3])) {
-                $replace = $match[3];
-            } elseif (isset($match[2])) {
-                $replace = $match[2];
-            }
+            $replace = end($match);
+
 
             if (strlen($replace)) {
                 $replace = str_replace('¨', '"', $replace);
@@ -43,6 +40,8 @@ class LatexConverter extends AbstractConverter
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
                 $response = " %%" . curl_exec($ch) . "%% ";
+
+                usleep(25000);
 
                 $this->flag($response);
 

@@ -16,8 +16,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class Migrator
 {
     protected $workers = [
-        'Migrator\Worker\ArticleWorker',
-        'Migrator\Worker\FolderWorker'
+        //'Migrator\Worker\ArticleWorker',
+        'Migrator\Worker\FolderWorker',
+        //'Migrator\Worker\UserWorker'
     ];
 
     /**
@@ -38,13 +39,12 @@ class Migrator
 
     public function migrate()
     {
-        set_time_limit(3000);
+        set_time_limit(0);
         $result = $this->serviceLocator->get('Migrator\Result');
 
         foreach ($this->workers as $worker) {
             $worker  = $this->serviceLocator->get($worker);
-            $results = $worker->migrate();
-            $result->addResults($results);
+            $results = $worker->migrate($results);
         }
 
         //$this->cache->addItems($result->getMap());

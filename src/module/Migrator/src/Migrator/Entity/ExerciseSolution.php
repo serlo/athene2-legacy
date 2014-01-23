@@ -16,9 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  * An entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="serlo_dev.exercise_translations")
+ * @ORM\Table(name="serlo_dev.exercise_solution_revisions")
  */
-class ExerciseTranslation
+class ExerciseSolution
 {
 
     /**
@@ -28,19 +28,20 @@ class ExerciseTranslation
      */
     protected $id;
 
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $hint;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="ExerciseSolution", mappedBy="exercise")
-     */
-    protected $solutions;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Exercise", inversedBy="translations")
-     * @ORM\JoinColumn(name="exercise_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="ExerciseTranslation", inversedBy="solution")
+     * @ORM\JoinColumn(name="is_solution_id", referencedColumnName="id")
      */
     protected $exercise;
 
@@ -53,7 +54,7 @@ class ExerciseTranslation
     }
 
     /**
-     * @return Exercise
+     * @return ExerciseSolution
      */
     public function getExercise()
     {
@@ -63,16 +64,16 @@ class ExerciseTranslation
     /**
      * @return mixed
      */
-    public function getId()
+    public function getHint()
     {
-        return $this->id;
+        return $this->hint;
     }
 
     /**
-     * @return ExerciseSolution[]
+     * @return mixed
      */
-    public function getSolutions()
+    public function getId()
     {
-        return $this->solutions->first();
+        return $this->id;
     }
 }

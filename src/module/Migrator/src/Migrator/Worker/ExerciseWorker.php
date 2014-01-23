@@ -20,7 +20,7 @@ use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
 
-class ArticleWorker implements Worker
+class ExerciseWorker implements Worker
 {
     /**
      * @var EntityManager
@@ -83,10 +83,13 @@ class ArticleWorker implements Worker
 
         $user     = $this->userManager->getUserFromAuthenticator();
         $language = $this->languageManager->getLanguage(1);
-        /** @var $articles \Migrator\Entity\ArticleTranslation[] */
-        $articles = $this->objectManager->getRepository('Migrator\Entity\ArticleTranslation')->findAll();
-        foreach ($articles as $article) {
-            $revision = $article->getCurrentRevision();
+
+        /** @var $exercises \Migrator\Entity\ExerciseTranslation[] */
+        $exercises = $this->objectManager->getRepository('Migrator\Entity\ExerciseTranslation')->findAll();
+
+        foreach ($exercises as $exercise) {
+            $revision = $exercise->getCurrentRevision();
+
             if (is_object($revision)) {
                 $content = $this->converterChain->convert(
                     utf8_encode($revision->getSummary() . $revision->getContent())
@@ -115,7 +118,7 @@ class ArticleWorker implements Worker
 
                 $this->taxonomyManager->associateWith(8, 'entities', $entity);
 
-                $results['article'][$article->getArticleId()] = $entity;
+                $results['article'][$exercise->getArticleId()] = $entity;
             }
             break;
         }
