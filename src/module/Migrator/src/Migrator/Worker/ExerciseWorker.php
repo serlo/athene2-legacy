@@ -132,9 +132,10 @@ class ExerciseWorker implements Worker
             $this->objectManager->persist($revision);
             $this->objectManager->persist($lrExercise);
 
-            if (is_object($exercise->getSolution()) && $exercise->getExercise()->getChildren()->count() == 0) {
+            $solution   = $exercise->getSolution();
 
-                $solution   = $exercise->getSolution();
+            if (is_object($solution) && ($solution->getContent() || $solution->getHint()) && $exercise->getExercise()->getChildren()->count() == 0) {
+
                 $lrSolution = $this->entityManager->createEntity('text-solution', [], $language);
 
                 $content = $this->converterChain->convert(
