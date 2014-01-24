@@ -16,9 +16,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class Migrator
 {
     protected $workers = [
-        //'Migrator\Worker\ArticleWorker',
-        'Migrator\Worker\FolderWorker',
-        'Migrator\Worker\ExerciseWorker',
+        'Migrator\Worker\ArticleWorker',
+        //'Migrator\Worker\FolderWorker',
+        //'Migrator\Worker\ExerciseWorker',
         //'Migrator\Worker\UserWorker'
     ];
 

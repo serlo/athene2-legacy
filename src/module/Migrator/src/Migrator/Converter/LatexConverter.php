@@ -28,8 +28,9 @@ class LatexConverter extends AbstractConverter
                 $replace = str_replace('«', '<', $replace);
                 $replace = str_replace('»', '>', $replace);
                 $replace = str_replace('§', '&', $replace);
+                $replace = str_replace('&nbsp;', ' ', $replace);
 
-                $url    = 'http://www.wiris.net/demo/editor/mathml2latex';
+                /*$url    = 'http://www.wiris.net/demo/editor/mathml2latex';
                 $myvars = 'mml=' . urlencode($replace);
 
                 $ch = curl_init($url);
@@ -37,11 +38,26 @@ class LatexConverter extends AbstractConverter
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $myvars);
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
                 curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);*/
 
-                $response = " %%" . curl_exec($ch) . "%% ";
+                //$response = " %%" . curl_exec($ch) . "%% ";
 
-                usleep(25000);
+                $file = '/tmp/www-data/mml.xml';
+
+                file_put_contents($file, $replace);
+
+                ob_start();
+                passthru('xsltproc /var/www/vagrant/xsltml_2.0/mmltex.xsl '.$file);
+                $response = ob_get_contents();
+                ob_end_clean(); //Use this instead of ob_flush()
+
+                $response = trim($response);
+                $response = substr($response, 1);
+                $response = substr($response, 0, -1);
+                $response = trim($response);
+                $response = '%%'.$response.'%%';
+
+                //var_dump($response);
 
                 $this->flag($response);
 

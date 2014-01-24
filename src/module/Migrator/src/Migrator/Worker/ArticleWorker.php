@@ -116,7 +116,6 @@ class ArticleWorker implements Worker
 
                 $results['article'][$article->getArticleId()] = $entity;
             }
-            break;
         }
 
         $this->objectManager->flush();

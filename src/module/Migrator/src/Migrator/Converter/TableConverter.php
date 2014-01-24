@@ -54,6 +54,8 @@ class TableConverter extends AbstractConverter
             $pattern = "~(?:.*)(?:<tr(?:.*)>)(.*)(?:</tr(?:.*)>)~isU";
             preg_match_all($pattern, $table[2], $tableRows, PREG_SET_ORDER);
 
+            $fallback = '';
+
             foreach ($tableRows as $tableRow) {
                 $tableColumns = array();
 
@@ -81,16 +83,19 @@ class TableConverter extends AbstractConverter
                         );
                     }
                 } else {
-                    $columns[] = array(
-                        'col'     => $this->maxcols,
-                        'content' => '<table class="table"><tr>' . $tableRow[0] . '</tr></table>'
-                    );
+                    $fallback .= PHP_EOL . "<tr>" . $tableRow[0] . '</tr>' . PHP_EOL;
                     $this->needsFlagging = true;
                 }
 
                 $layout[] = $columns;
             }
-            $lastTable = $table;
+
+            if(strlen($fallback)){
+                $columns[] = array(
+                    'col'     => $this->maxcols,
+                    'content' => '<table>'.$fallback.'</table>'
+                );
+            }
         }
 
         // process non-tables behind last </table>
