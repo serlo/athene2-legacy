@@ -16,10 +16,6 @@ class TableConverter extends AbstractConverter
 
     public function convert($input)
     {
-        if (!stristr($input, '<table')) {
-            return $input;
-        }
-
         $layout = array();
 
         $subpattern = array();
@@ -29,11 +25,12 @@ class TableConverter extends AbstractConverter
 
         preg_match_all($pattern, $input, $tables, PREG_SET_ORDER);
 
-        if(empty($tables)){
+        if(!count($tables)){
             $layout[][] = array(
                 'col'     => $this->maxcols,
-                'content' => $input
+                'content' => !$input ? ' ' : $input
             );
+            return json_encode($layout);
         }
 
         $i = 0;

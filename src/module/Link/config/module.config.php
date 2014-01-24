@@ -23,12 +23,15 @@ return [
                     ],
                 ],
                 __NAMESPACE__ . '\Service\LinkService'            => [
-                    'setObjectManager' => [
+                    'setObjectManager'        => [
                         'required' => true
                     ],
-                    'setTypeManager'   => [
+                    'setTypeManager'          => [
                         'required' => true
-                    ]
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
+                    ],
                 ]
             ]
         ],

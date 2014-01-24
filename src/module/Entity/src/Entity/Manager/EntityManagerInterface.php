@@ -10,18 +10,11 @@
  */
 namespace Entity\Manager;
 
-use Common\ObjectManager\Flushable;
 use Entity\Entity\EntityInterface;
 use Language\Entity\LanguageInterface;
 
-interface EntityManagerInterface extends Flushable
+interface EntityManagerInterface
 {
-
-    /**
-     * @param int $id
-     * @return EntityInterface
-     */
-    public function getEntity($id);
 
     /**
      * @param string            $type
@@ -30,4 +23,10 @@ interface EntityManagerInterface extends Flushable
      * @return EntityInterface
      */
     public function createEntity($type, array $data = array(), LanguageInterface $language);
+
+    /**
+     * @param int $id
+     * @return EntityInterface
+     */
+    public function getEntity($id);
 }

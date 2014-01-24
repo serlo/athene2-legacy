@@ -41,9 +41,9 @@ class Exercise
 
     /**
      * @ORM\ManyToMany(targetEntity="Exercise", inversedBy="parents")
-     * @ORM\JoinTable(name="exercise_groups",
+     * @ORM\JoinTable(name="serlo_dev.exercise_groups",
      *      joinColumns={@ORM\JoinColumn(name="exercise_group_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="exercise_group", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="exercise_id", referencedColumnName="id")}
      *      )
      **/
     protected $children;
@@ -75,7 +75,7 @@ class Exercise
     }
 
     /**
-     * @return Folder[]
+     * @return ExerciseFolder[]
      */
     public function getFolders()
     {

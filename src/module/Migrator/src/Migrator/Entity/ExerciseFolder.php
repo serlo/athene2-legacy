@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="serlo_dev.exercise_folder_exercises")
  */
-class Exercise
+class ExerciseFolder
 {
 
     /**

@@ -107,7 +107,6 @@ class ArticleWorker implements Worker
                 $revision->setAuthor($this->userManager->getUserFromAuthenticator());
 
                 $this->uuidManager->injectUuid($revision);
-                $this->uuidManager->flush();
 
                 $entity->setCurrentRevision($revision);
                 $this->objectManager->persist($revision);

@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `serlo`.`uuid` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`uuid` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uuid` VARCHAR(30) NOT NULL,
+  `uuid` VARCHAR(224) NOT NULL,
   `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC))
@@ -1430,7 +1430,7 @@ USE `serlo`;
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (1, 'text-exercise');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (2, 'text-solution');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (3, 'article');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (4, 'exercise-group');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (4, 'text-exercise-group');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (5, 'grouped-text-exercise');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (6, 'video');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (7, 'module');

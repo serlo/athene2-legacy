@@ -12,7 +12,7 @@
         </div>
     	<section>
             <?php $revision = $exercise->getCurrentRevision(); ?>
-            <?php echo $revision->get('content'); ?>
+            <?php echo $this->markdown()->toHtml($revision->get('content')); ?>
         </section>
     	<?php if(is_object($solution)): ?>
     	    <section class="panel-group" id="solutions-<?php echo $solution->getId(); ?>">
