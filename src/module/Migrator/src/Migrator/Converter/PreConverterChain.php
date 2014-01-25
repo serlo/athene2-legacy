@@ -18,6 +18,7 @@ class PreConverterChain extends ConverterChain
         'Migrator\Converter\LatexConverter',
         'Migrator\Converter\SpoilerConverter',
         'Migrator\Converter\Html2Markdown',
-        'Migrator\Converter\TableConverter'
+        'Migrator\Converter\TableConverter',
+        'Migrator\Converter\UploadConverter'
     ];
 }

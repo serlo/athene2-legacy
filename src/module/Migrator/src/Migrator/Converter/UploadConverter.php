@@ -8,11 +8,16 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Migrator\Worker;
+namespace Migrator\Converter;
 
-interface Worker
+class UploadConverter extends AbstractConverter
 {
-    public function migrate(array & $results, array & $workload);
+    public function convert($text)
+    {
+        $pattern = '@\\\/uploads\\\/[^legacy]@isU';
+        $replace = '\\\/uploads\\\/legacy\\\/';
 
-    public function getWorkload();
-} 
+        return preg_replace($pattern, $replace, $text);
+    }
+}
+ 

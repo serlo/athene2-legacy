@@ -30,46 +30,49 @@ class SignpostController extends AbstractActionController
         $type        = $normalized->getType();
         $url         = $this->url()->fromRoute($routeName, $routeParams);
 
-        //$this->redirect()->toRoute($routeName, $routeParams, ['query' => ['type' => $type]]);
 
-        //return false;
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $router  = $this->getServiceLocator()->get('Router');
+            $request = new Request();
 
-        $router  = $this->getServiceLocator()->get('Router');
-        $request = new Request();
+            $request->setMethod(Request::METHOD_GET);
+            $request->setUri($url);
 
-        $request->setMethod(Request::METHOD_GET);
-        $request->setUri($url);
+            $routeMatch = $router->match($request);
 
-        $routeMatch = $router->match($request);
+            if (!$routeMatch) {
+                throw new RuntimeException(sprintf(
+                    'Could not match a route for `%s`',
+                    $url
+                ));
+            }
 
-        if (!$routeMatch) {
-            throw new RuntimeException(sprintf(
-                'Could not match a route for `%s`',
-                $url
-            ));
+            $params     = $routeMatch->getParams();
+            $controller = $params['controller'];
+            $response   = $this->forward()->dispatch($controller, $params);
+
+            // TODO: Do me a favor and remove this piece of cr*p with something that doesn't hack the whole thing
+            if ($response instanceof JsonModel) {
+                $response = new ViewModel(['data' => $response->getVariables()]);
+                $response->setTemplate('normalizer/json');
+            }
+
+            $view = new ViewModel([
+                'id'                        => $object->getId(),
+                'type'                      => $type,
+                '__disableTemplateDebugger' => true
+            ]);
+
+            $view->addChild($response, 'response');
+
+            $view->setTemplate('normalizer/ref');
+            $view->setTerminal(true);
+
+            return $view;
+        } else {
+            $this->redirect()->toRoute($routeName, $routeParams);
+
+            return false;
         }
-
-        $params     = $routeMatch->getParams();
-        $controller = $params['controller'];
-        $response   = $this->forward()->dispatch($controller, $params);
-
-        // TODO: Do me a favor and remove this piece of cr*p with something that doesn't hack the whole thing
-        if ($response instanceof JsonModel) {
-            $response = new ViewModel(['data' => $response->getVariables()]);
-            $response->setTemplate('normalizer/json');
-        }
-
-        $view = new ViewModel([
-            'id'   => $object->getId(),
-            'type' => $type,
-            '__disableTemplateDebugger' => true
-        ]);
-
-        $view->addChild($response, 'response');
-
-        $view->setTemplate('normalizer/ref');
-        $view->setTerminal(true);
-
-        return $view;
     }
 }

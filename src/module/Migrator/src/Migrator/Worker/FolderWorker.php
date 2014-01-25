@@ -70,7 +70,7 @@ class FolderWorker implements Worker
         $this->flagManager     = $flagManager;
     }
 
-    public function migrate(array $results)
+    public function migrate(array & $results, array &$workload)
     {
         $language      = $this->languageManager->getLanguageFromRequest();
         $defaultParent = $this->taxonomyManager->getTerm(7);
@@ -111,6 +111,10 @@ class FolderWorker implements Worker
         $this->taxonomyManager->flush();
 
         return $results;
+    }
+
+    public function getWorkload(){
+        return [];
     }
 }
  

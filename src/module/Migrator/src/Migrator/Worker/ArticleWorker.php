@@ -57,6 +57,8 @@ class ArticleWorker implements Worker
      */
     protected $flagManager;
 
+    protected $workload = [];
+
     public function __construct(
         EntityManager $objectManager,
         LRManager $entityManager,
@@ -77,9 +79,9 @@ class ArticleWorker implements Worker
         $this->flagManager     = $flagManager;
     }
 
-    public function migrate(array $results)
+    public function migrate(array & $results, array &$workload)
     {
-        $i        = 0;
+        $i = 0;
 
         $user     = $this->userManager->getUserFromAuthenticator();
         $language = $this->languageManager->getLanguage(1);
@@ -104,6 +106,16 @@ class ArticleWorker implements Worker
                 $revision->set('title', $title);
                 $revision->set('content', $content);
 
+                $workload[] = [
+                    'entity' => $revision,
+                    'work'   => [
+                        [
+                            'name'  => 'content',
+                            'value' => $content
+                        ],
+                    ]
+                ];
+
                 $revision->setAuthor($this->userManager->getUserFromAuthenticator());
 
                 $this->uuidManager->injectUuid($revision);
@@ -121,6 +133,10 @@ class ArticleWorker implements Worker
         $this->objectManager->flush();
 
         return $results;
+    }
+
+    public function getWorkload(){
+        return $this->workload;
     }
 }
  
