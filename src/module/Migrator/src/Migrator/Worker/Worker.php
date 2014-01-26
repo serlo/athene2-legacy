@@ -12,5 +12,5 @@ namespace Migrator\Worker;
 
 interface Worker
 {
-    public function migrate();
+    public function migrate(array $results);
 } 

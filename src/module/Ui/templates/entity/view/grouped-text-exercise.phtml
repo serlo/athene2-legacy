@@ -12,11 +12,7 @@
         <?php if($entity->hasCurrentRevision()): ?>
             <?php
                 $content = $entity->getCurrentRevision()->get('content');
-                try {
-                    echo $this->markdown()->toHtml($content);
-                } catch (Exception $e) {
-                    echo $content;
-                }
+                echo $this->markdown()->toHtml($content);
             ?>
         <?php endif; ?>
     </section>

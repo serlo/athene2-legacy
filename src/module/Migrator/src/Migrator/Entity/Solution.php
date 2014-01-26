@@ -45,10 +45,36 @@ class Solution
     protected $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @return mixed
      */
-    protected $parent;
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExerciseTranslationId()
+    {
+        return $this->exercise_translation_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHint()
+    {
+        return $this->hint;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
 }
  

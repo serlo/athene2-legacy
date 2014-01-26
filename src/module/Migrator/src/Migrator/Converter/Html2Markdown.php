@@ -26,7 +26,7 @@ class Html2Markdown extends AbstractConverter
      * @var array Class-wide options users can override.
      */
     private $options = array(
-        'header_style'    => 'setext',
+        'header_style'    => 'atx',
         // Set to "atx" to output H1 and H2 headers as # Header1 and ## Header2
         'suppress_errors' => true,
         // Set to false to show warnings when loading malformed HTML
@@ -103,6 +103,7 @@ class Html2Markdown extends AbstractConverter
         }
 
         $html = $this->get_markdown($html);
+
         return $html;
     }
 
@@ -207,11 +208,19 @@ class Html2Markdown extends AbstractConverter
             '&#xD;'
         );
         $markdown = str_replace($unwanted, '', $markdown); // Strip unwanted tags
-        $markdown = trim($markdown, "\n\r\0\x0B");
+        //$markdown = trim($markdown, "\n\r\0\x0B");
+        $markdown = trim($markdown, "\x00..\x1F");
 
-        $this->output = $markdown;
+        $this->output = $this->trimHereDoc($markdown);
 
-        return $markdown;
+        return $this->output;
+    }
+
+    function trimHereDoc($txt)
+    {
+        return $txt;
+
+        return implode("\n", array_map('trim', explode("\n", $txt)));
     }
 
 
@@ -234,19 +243,19 @@ class Html2Markdown extends AbstractConverter
                 break;
             case "h1":
             case "h2":
-                $markdown = $this->convert_header($tag, $node);
+                $markdown = PHP_EOL . $this->convert_header($tag, $node);
                 break;
             case "h3":
-                $markdown = "### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "### " . $value . PHP_EOL . PHP_EOL;
                 break;
             case "h4":
-                $markdown = "#### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "#### " . $value . PHP_EOL . PHP_EOL;
                 break;
             case "h5":
-                $markdown = "##### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "##### " . $value . PHP_EOL . PHP_EOL;
                 break;
             case "h6":
-                $markdown = "###### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "###### " . $value . PHP_EOL . PHP_EOL;
                 break;
             case "em":
             case "i":
@@ -264,14 +273,14 @@ class Html2Markdown extends AbstractConverter
                 $markdown = $this->convert_blockquote($node);
                 break;
             case "code":
-                $markdown = $this->convert_code($node);
+                $markdown = PHP_EOL . $this->convert_code($node);
                 break;
             case "ol":
             case "ul":
-                $markdown = $value . PHP_EOL;
+                $markdown = PHP_EOL . $value . PHP_EOL;
                 break;
             case "li":
-                $markdown = $this->convert_list($node);
+                $markdown = PHP_EOL . $this->convert_list($node);
                 break;
             case "img":
                 $markdown = $this->convert_image($node);

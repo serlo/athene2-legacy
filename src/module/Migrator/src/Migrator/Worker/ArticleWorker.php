@@ -77,9 +77,9 @@ class ArticleWorker implements Worker
         $this->flagManager     = $flagManager;
     }
 
-    public function migrate()
+    public function migrate(array $results)
     {
-        $results = ['article'];
+        $i        = 0;
 
         $user     = $this->userManager->getUserFromAuthenticator();
         $language = $this->languageManager->getLanguage(1);
@@ -88,8 +88,10 @@ class ArticleWorker implements Worker
         foreach ($articles as $article) {
             $revision = $article->getCurrentRevision();
             if (is_object($revision)) {
-                $content = $this->converterChain->convert($revision->getSummary() . $revision->getContent());
-                $title   = $revision->getTitle();
+                $content = $this->converterChain->convert(
+                    utf8_encode($revision->getSummary() . $revision->getContent())
+                );
+                $title   = utf8_encode($revision->getTitle());
 
                 $entity = $this->entityManager->createEntity('article', [], $language);
 
@@ -105,7 +107,6 @@ class ArticleWorker implements Worker
                 $revision->setAuthor($this->userManager->getUserFromAuthenticator());
 
                 $this->uuidManager->injectUuid($revision);
-                $this->uuidManager->flush();
 
                 $entity->setCurrentRevision($revision);
                 $this->objectManager->persist($revision);
@@ -115,7 +116,6 @@ class ArticleWorker implements Worker
 
                 $results['article'][$article->getArticleId()] = $entity;
             }
-            break;
         }
 
         $this->objectManager->flush();

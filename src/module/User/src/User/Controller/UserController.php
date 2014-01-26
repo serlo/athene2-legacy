@@ -138,7 +138,7 @@ class UserController extends AbstractUserController
 
     public function registerAction()
     {
-        if ($this->getAuthenticationService()->hasIdentity()) {
+        if (! $this->isGranted('user.create')) {
             $this->redirect()->toReferer();
         }
 
@@ -226,11 +226,11 @@ class UserController extends AbstractUserController
             $form->setAttribute(
                 'action',
                 $this->url()->fromRoute(
-                        'user/password/restore',
-                        array(
-                            'token' => $this->params('token')
-                        )
+                    'user/password/restore',
+                    array(
+                        'token' => $this->params('token')
                     )
+                )
             );
 
             $user = $this->getUserManager()->findUserByToken($this->params('token'));

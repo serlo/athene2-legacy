@@ -10,17 +10,19 @@
  */
 namespace User\Manager;
 
+use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use Common\Traits\AuthenticationServiceAwareTrait;
+use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Exception\UserNotFoundException;
 use User\Exception;
 use User\Hydrator\UserHydrator;
-use ZfcRbac\Service\AuthorizationServiceAwareTrait;
 
 class UserManager implements UserManagerInterface
 {
-    use ClassResolverAwareTrait, \Common\Traits\ObjectManagerAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait,
-        AuthorizationServiceAwareTrait;
+    use ClassResolverAwareTrait, ObjectManagerAwareTrait;
+    use AuthenticationServiceAwareTrait, AuthorizationAssertionTrait;
 
     /**
      * @var UserHydrator
@@ -125,6 +127,8 @@ class UserManager implements UserManagerInterface
 
     public function createUser(array $data)
     {
+        $this->assertGranted('user.create');
+
         $user = $this->getClassResolver()->resolve('User\Entity\UserInterface');
         $this->getHydrator()->hydrate($data, $user);
         $this->getObjectManager()->persist($user);
@@ -135,8 +139,8 @@ class UserManager implements UserManagerInterface
     public function findAllUsers()
     {
         return new ArrayCollection($this->getObjectManager()->getRepository(
-                $this->getClassResolver()->resolveClassName('User\Entity\UserInterface')
-            )->findAll());
+            $this->getClassResolver()->resolveClassName('User\Entity\UserInterface')
+        )->findAll());
     }
 
     public function persist($object)

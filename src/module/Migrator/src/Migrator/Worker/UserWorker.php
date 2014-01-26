@@ -10,10 +10,12 @@
  */
 namespace Migrator\Worker;
 
+use Authorization\Service\RoleServiceInterface;
 use Doctrine\ORM\EntityManager;
 use Migrator\Converter\ConverterChain;
 use User\Manager\UserManagerInterface;
 use Zend\Validator\EmailAddress;
+use ZfcRbac\Service\AuthorizationService;
 
 class UserWorker implements Worker
 {
@@ -32,24 +34,42 @@ class UserWorker implements Worker
      */
     protected $userManager;
 
+    /**
+     * @var AuthorizationService
+     */
+    protected $authorizationService;
+
+    /**
+     * @var RoleServiceInterface
+     */
+    protected $roleService;
+
     public function __construct(
         EntityManager $objectManager,
         UserManagerInterface $userManagerInterface,
-        ConverterChain $converterChain
+        ConverterChain $converterChain,
+        AuthorizationService $authorizationService,
+        RoleServiceInterface $roleService
     ) {
-        $this->objectManager  = $objectManager;
-        $this->userManager    = $userManagerInterface;
-        $this->converterChain = $converterChain;
+        $this->objectManager        = $objectManager;
+        $this->userManager          = $userManagerInterface;
+        $this->converterChain       = $converterChain;
+        $this->authorizationService = $authorizationService;
+        $this->roleService          = $roleService;
     }
 
-    public function migrate()
+    public function migrate(array $results)
     {
-        $users     = $this->objectManager->getRepository('Migrator\Entity\User');
+        $this->authorizationService->setAssertion('user.create', null);
+
+        $users     = $this->objectManager->getRepository('Migrator\Entity\User')->findAll();
         $validator = new EmailAddress();
-        $results   = ['user'];
 
         foreach ($users as $user) {
-            if ($user->getEmail() == 'aeneas@q-mail.me' || !$validator->isValid($user->getEmail())) {
+            if ($user->getUsername() == 'arekkas' || $user->getUsername() == 'devuser' || !$validator->isValid(
+                    $user->getEmail()
+                )
+            ) {
                 continue;
             }
 
@@ -61,7 +81,9 @@ class UserWorker implements Worker
                 ]
             );
 
-            $results['user'][$user->getId()] = $entity;
+            $this->roleService->grantIdentityRole(2, $entity->getId());
+
+            $this->userManager->results['user'][$user->getId()] = $entity;
         }
 
         $this->userManager->flush();

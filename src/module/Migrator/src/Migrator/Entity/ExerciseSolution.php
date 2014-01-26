@@ -16,9 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  * An entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="serlo_dev.exercise_folders")
+ * @ORM\Table(name="serlo_dev.exercise_solution_revisions")
  */
-class Folder
+class ExerciseSolution
 {
 
     /**
@@ -28,17 +28,46 @@ class Folder
      */
     protected $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity="FolderTranslation", mappedBy="folder")
-     * @ORM\JoinColumn(name="exercise_folder_id", referencedColumnName="id")
-     */
-    protected $translation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\Column(type="string")
      */
-    protected $parent;
+    protected $hint;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $content;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ExerciseTranslation", inversedBy="solution")
+     * @ORM\JoinColumn(name="is_solution_id", referencedColumnName="id")
+     */
+    protected $exercise;
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return ExerciseSolution
+     */
+    public function getExercise()
+    {
+        return $this->exercise;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHint()
+    {
+        return $this->hint;
+    }
 
     /**
      * @return mixed
@@ -47,21 +76,4 @@ class Folder
     {
         return $this->id;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->translation->first()->getName();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
 }
- 

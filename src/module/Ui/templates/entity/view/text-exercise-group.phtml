@@ -6,7 +6,7 @@
     </div>
     <section>
         <?php if($entity->hasCurrentRevision()): ?>
-            <?php echo $entity->getCurrentRevision()->get('content'); ?>
+            <?php echo $this->markdown()->toHtml($entity->getCurrentRevision()->get('content')); ?>
         <?php endif; ?>
     </section>
     <section>    

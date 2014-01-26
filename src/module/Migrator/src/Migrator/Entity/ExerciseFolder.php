@@ -16,9 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  * An entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="serlo_dev.exercise_folders")
+ * @ORM\Table(name="serlo_dev.exercise_folder_exercises")
  */
-class Folder
+class ExerciseFolder
 {
 
     /**
@@ -29,16 +29,32 @@ class Folder
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="FolderTranslation", mappedBy="folder")
+     * @ORM\ManyToOne(targetEntity="Folder")
      * @ORM\JoinColumn(name="exercise_folder_id", referencedColumnName="id")
      */
-    protected $translation;
+    protected $folder;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Exercise", inversedBy="folders")
+     * @ORM\JoinColumn(name="exercise_id", referencedColumnName="id")
      */
-    protected $parent;
+    protected $exercise;
+
+    /**
+     * @return Exercise
+     */
+    public function getExercise()
+    {
+        return $this->exercise;
+    }
+
+    /**
+     * @return Folder
+     */
+    public function getFolder()
+    {
+        return $this->folder;
+    }
 
     /**
      * @return mixed
@@ -48,20 +64,5 @@ class Folder
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->translation->first()->getName();
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
 }
- 

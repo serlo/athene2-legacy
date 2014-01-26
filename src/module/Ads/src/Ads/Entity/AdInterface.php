@@ -81,12 +81,6 @@ interface AdInterface
      */
     public function getClicks();
 
-    /**
-     * Gets the views.
-     *
-     * @return int
-     */
-    public function getViews();
 
     /**
      * Gets the url.

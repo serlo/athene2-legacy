@@ -71,10 +71,6 @@ class Ad implements AdInterface
      */
     protected $clicks;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $views;
 
     public function getId()
     {
@@ -129,17 +125,7 @@ class Ad implements AdInterface
         return $this->author;
     }
 
-    public function setViews($views)
-    {
-        $this->views = $views;
 
-        return $this;
-    }
-
-    public function getViews()
-    {
-        return $this->views;
-    }
 
     public function setClicks($clicks)
     {
@@ -165,9 +151,9 @@ class Ad implements AdInterface
         return $this->language;
     }
 
-    public function setAttachment($image)
+    public function setAttachment($attachment)
     {
-        $this->image = $image;
+        $this->image = $attachment;
 
         return $this;
     }

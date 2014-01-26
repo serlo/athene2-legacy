@@ -16,10 +16,6 @@ class TableConverter extends AbstractConverter
 
     public function convert($input)
     {
-        if (!stristr($input, '<table')) {
-            return $input;
-        }
-
         $layout = array();
 
         $subpattern = array();
@@ -28,6 +24,14 @@ class TableConverter extends AbstractConverter
         $pattern = "~(.*)(?:<table(?:.*)>)(.*)(?:</table(?:.*)>)~isU";
 
         preg_match_all($pattern, $input, $tables, PREG_SET_ORDER);
+
+        if(!count($tables)){
+            $layout[][] = array(
+                'col'     => $this->maxcols,
+                'content' => !$input ? ' ' : $input
+            );
+            return json_encode($layout);
+        }
 
         $i = 0;
         foreach ($tables as $table) {
@@ -49,6 +53,8 @@ class TableConverter extends AbstractConverter
             // <tr></tr> == new row
             $pattern = "~(?:.*)(?:<tr(?:.*)>)(.*)(?:</tr(?:.*)>)~isU";
             preg_match_all($pattern, $table[2], $tableRows, PREG_SET_ORDER);
+
+            $fallback = '';
 
             foreach ($tableRows as $tableRow) {
                 $tableColumns = array();
@@ -77,16 +83,19 @@ class TableConverter extends AbstractConverter
                         );
                     }
                 } else {
-                    $columns[] = array(
-                        'col'     => $this->maxcols,
-                        'content' => '<table class="table"><tr>' . $tableRow[0] . '</tr></table>'
-                    );
+                    $fallback .= PHP_EOL . "<tr>" . $tableRow[0] . '</tr>' . PHP_EOL;
                     $this->needsFlagging = true;
                 }
 
                 $layout[] = $columns;
             }
-            $lastTable = $table;
+
+            if(strlen($fallback)){
+                $columns[] = array(
+                    'col'     => $this->maxcols,
+                    'content' => '<table>'.$fallback.'</table>'
+                );
+            }
         }
 
         // process non-tables behind last </table>

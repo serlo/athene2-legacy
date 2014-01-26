@@ -42,7 +42,7 @@ class Slugify implements FilterInterface
         $text = preg_replace('~[^-\w]+~', '', $text);
 
         if (empty($text)) {
-            return 'n-a';
+            return false;
         }
 
         return $text;

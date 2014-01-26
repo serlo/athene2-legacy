@@ -3,6 +3,7 @@
 <?php $solution = $entity; ?>
 <?php if($solution->hasCurrentRevision() && !$solution->getTrashed()): ?>
     <?php $hasHint = strlen($solution->getCurrentRevision()->get('hint')) > 0; ?>
+    <?php $revision = $solution->getCurrentRevision(); ?>
     <article class="panel-group collapse" id="solution-<?php echo $solution->getId(); ?>">
         <?php if($hasHint): ?>
             <section class="panel panel-default">
@@ -13,7 +14,7 @@
                 </div>
                 <div id="solution-hint-<?php echo $solution->getId(); ?>" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        <?php echo $solution->getCurrentRevision()->get('hint'); ?>
+                        <?php echo $this->markdown()->toHtml($revision->get('hint')); ?>
                     </div>
                 </div>
             </section>
@@ -29,7 +30,7 @@
             </div>
             <div id="solution-content-<?php echo $solution->getId(); ?>" class="panel-collapse collapse<?php echo $hasHint ? '' : ' in'?>">
                 <div class="panel-body">
-                    <?php echo $solution->getCurrentRevision()->get('content'); ?>
+                    <?php echo $this->markdown()->toHtml($revision->get('content')); ?>
                 </div>
             </div>
         </section>

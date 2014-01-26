@@ -16,6 +16,7 @@ class PreConverterChain extends ConverterChain
         'Migrator\Converter\GeogebraConverter',
         'Migrator\Converter\BrinkmannConverter',
         'Migrator\Converter\LatexConverter',
+        'Migrator\Converter\SpoilerConverter',
         'Migrator\Converter\Html2Markdown',
         'Migrator\Converter\TableConverter'
     ];

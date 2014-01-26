@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `serlo`.`uuid` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`uuid` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uuid` VARCHAR(30) NOT NULL,
+  `uuid` VARCHAR(224) NOT NULL,
   `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC))
@@ -1351,6 +1351,11 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (77, 'taxonomy.term.resto
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (78, 'uuid.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (79, 'related_content.manage');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (80, 'taxonomy.term.associated.sort');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'user.login');
 
 COMMIT;
 
@@ -1425,7 +1430,7 @@ USE `serlo`;
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (1, 'text-exercise');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (2, 'text-solution');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (3, 'article');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (4, 'exercise-group');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (4, 'text-exercise-group');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (5, 'grouped-text-exercise');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (6, 'video');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (7, 'module');
@@ -1606,6 +1611,11 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 77
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 78);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 79);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 80);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 81);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 82);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 83);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 84);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 85);
 
 COMMIT;
 
