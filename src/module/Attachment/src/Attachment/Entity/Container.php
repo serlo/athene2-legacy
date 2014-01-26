@@ -13,14 +13,16 @@ namespace Attachment\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Language\Entity\LanguageInterface;
+use Type\Entity\TypeAwareTrait;
 use Uuid\Entity\UuidEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="attachment")
+ * @ORM\Table(name="attachment_container")
  */
-class Attachment extends UuidEntity implements AttachmentInterface
+class Container extends UuidEntity implements ContainerInterface
 {
+    use TypeAwareTrait;
 
     /**
      * @ORM\Id

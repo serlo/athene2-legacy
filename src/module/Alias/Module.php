@@ -10,13 +10,15 @@
  */
 namespace Alias;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
 
     public static $listeners = array(
         'Alias\Listener\BlogControllerListener',
         'Alias\Listener\PageControllerListener',
-        'Alias\Listener\RepositoryControllerListener'
+        'Alias\Listener\RepositoryManagerListener'
     );
 
     public function getConfig()
@@ -35,7 +37,7 @@ class Module
         );
     }
 
-    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
+    public function onBootstrap(MvcEvent $e)
     {
         foreach (self::$listeners as $listener) {
             $e->getApplication()->getEventManager()->getSharedManager()->attachAggregate(

@@ -10,17 +10,24 @@
  */
 namespace Attachment\Manager;
 
-use Attachment\Entity\AttachmentInterface;
+use Attachment\Entity\ContainerInterface;
 use Attachment\Entity\FileInterface;
 
 interface AttachmentManagerInterface
 {
     /**
-     * @param array $post
-     * @param int   $appendId
-     * @return AttachmentInterface
+     * @param array  $post
+     * @param string $type
+     * @param int    $appendId
+     * @return ContainerInterface
      */
-    public function attach(array $post, $appendId = null);
+    public function attach(array $post, $type = 'file', $appendId = null);
+
+    /**
+     * @param int $id
+     * @return ContainerInterface
+     */
+    public function getAttachment($id);
 
     /**
      * @param $attachmentId $id
@@ -28,10 +35,4 @@ interface AttachmentManagerInterface
      * @return FileInterface
      */
     public function getFile($attachmentId, $fileId = null);
-
-    /**
-     * @param int $id
-     * @return AttachmentInterface
-     */
-    public function getAttachment($id);
 }

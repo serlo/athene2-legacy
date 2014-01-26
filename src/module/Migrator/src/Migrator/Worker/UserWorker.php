@@ -58,7 +58,7 @@ class UserWorker implements Worker
         $this->roleService          = $roleService;
     }
 
-    public function migrate(array $results)
+    public function migrate(array & $results, array &$workload)
     {
         $this->authorizationService->setAssertion('user.create', null);
 
@@ -89,5 +89,9 @@ class UserWorker implements Worker
         $this->userManager->flush();
 
         return $results;
+    }
+
+    public function getWorkload(){
+        return  [];
     }
 }

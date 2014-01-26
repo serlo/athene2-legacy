@@ -13,11 +13,13 @@ namespace Migrator\Converter;
 class PreConverterChain extends ConverterChain
 {
     protected $converters = [
+        'Migrator\Converter\YoutubeConverter',
         'Migrator\Converter\GeogebraConverter',
         'Migrator\Converter\BrinkmannConverter',
-        'Migrator\Converter\LatexConverter',
+        //'Migrator\Converter\LatexConverter',
         'Migrator\Converter\SpoilerConverter',
         'Migrator\Converter\Html2Markdown',
-        'Migrator\Converter\TableConverter'
+        'Migrator\Converter\TableConverter',
+        'Migrator\Converter\UploadConverter'
     ];
 }

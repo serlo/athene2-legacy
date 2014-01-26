@@ -12,6 +12,7 @@ namespace Attachment\Form;
 
 use Zend\Form\Element\File;
 use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 
 class AttachmentForm extends Form
@@ -22,6 +23,8 @@ class AttachmentForm extends Form
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new File('file'))->setLabel('Upload file:'));
+        $this->add((new Text('type'))->setLabel('Set type:'));
+
         $this->add(
             (new Submit('submit'))->setValue('Upload')->setAttribute('class', 'btn btn-success pull-right')
         );

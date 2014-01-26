@@ -31,8 +31,8 @@ class GeogebraConverter extends AbstractConverter
             $srcResult[1] = str_replace('/uploads/', '/uploads/legacy/', $srcResult[1]);
             $altResult[1] = str_replace('/uploads/', '/uploads/legacy/', $altResult[1]);
 
-            $replace = '<img src="'.$srcResult[1].'" alt="legacy geogebra formula"></img>' . "\n";
-            $replace .= '<a href="'.$altResult[1].'">Download original Geogebra file</a>' . "\n";
+            $replace = '<img src="'.$srcResult[1].'" alt="legacy geogebra formula"></img>';
+            $replace .= PHP_EOL . PHP_EOL . '<a href="'.$altResult[1].'">Download original Geogebra file</a>';
 
             $this->needsFlagging = true;
 
