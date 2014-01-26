@@ -22,6 +22,7 @@ use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
+use Versioning\RepositoryManagerInterface;
 
 class ExerciseWorker implements Worker
 {
@@ -74,6 +75,11 @@ class ExerciseWorker implements Worker
 
     protected $workload = [];
 
+    /**
+     * @var RepositoryManagerInterface
+     */
+    protected $repositoryManager;
+
     public function __construct(
         EntityManager $objectManager,
         LRManager $entityManager,
@@ -84,18 +90,20 @@ class ExerciseWorker implements Worker
         PreConverterChain $converterChain,
         FlagManagerInterface $flagManager,
         LinkServiceInterface $linkService,
-        ModuleOptions $moduleOptions
+        ModuleOptions $moduleOptions,
+        RepositoryManagerInterface $repositoryManager
     ) {
-        $this->objectManager   = $objectManager;
-        $this->entityManager   = $entityManager;
-        $this->taxonomyManager = $taxonomyManager;
-        $this->languageManager = $languageManager;
-        $this->uuidManager     = $uuidManager;
-        $this->userManager     = $userManagerInterface;
-        $this->converterChain  = $converterChain;
-        $this->flagManager     = $flagManager;
-        $this->linkService     = $linkService;
-        $this->moduleOptions   = $moduleOptions;
+        $this->objectManager     = $objectManager;
+        $this->entityManager     = $entityManager;
+        $this->taxonomyManager   = $taxonomyManager;
+        $this->languageManager   = $languageManager;
+        $this->uuidManager       = $uuidManager;
+        $this->userManager       = $userManagerInterface;
+        $this->converterChain    = $converterChain;
+        $this->flagManager       = $flagManager;
+        $this->linkService       = $linkService;
+        $this->moduleOptions     = $moduleOptions;
+        $this->repositoryManager = $repositoryManager;
     }
 
     public function migrate(array & $results, array &$workload)
@@ -124,74 +132,6 @@ class ExerciseWorker implements Worker
                 $this->flagManager->addFlag(24, 'Flagged by migrator', $lrExercise->getId(), $user);
             }
 
-            $revision = $lrExercise->createRevision();
-            $revision->set('content', $content);
-
-            $workload[] = [
-                'entity' => $revision,
-                'work'   => [
-                    [
-                        'name'  => 'content',
-                        'value' => $content
-                    ],
-                ]
-            ];
-
-
-            $revision->setAuthor($this->userManager->getUserFromAuthenticator());
-
-            $this->uuidManager->injectUuid($revision);
-
-            $lrExercise->setCurrentRevision($revision);
-            $this->objectManager->persist($revision);
-            $this->objectManager->persist($lrExercise);
-
-            $solution = $exercise->getSolution();
-
-            if (is_object($solution) && (strlen(trim($solution->getContent())) || strlen(trim($solution->getHint()))) && $exercise->getExercise()
-                    ->getChildren()->count() == 0
-            ) {
-
-                $lrSolution = $this->entityManager->createEntity('text-solution', [], $language);
-
-                $content = $this->converterChain->convert(
-                    utf8_encode($solution->getContent())
-                );
-                $hint    = $this->converterChain->convert(
-                    utf8_encode($solution->getHint())
-                );
-
-                $revision = $lrSolution->createRevision();
-                $revision->set('hint', $hint);
-                $revision->set('content', $content);
-
-
-                $workload[] = [
-                    'entity' => $revision,
-                    'work'   => [
-                        [
-                            'name'  => 'content',
-                            'value' => $content
-                        ],
-                        [
-                            'name'  => 'hint',
-                            'value' => $hint
-                        ]
-                    ]
-                ];
-
-
-                $revision->setAuthor($this->userManager->getUserFromAuthenticator());
-
-                $this->uuidManager->injectUuid($revision);
-
-                $lrSolution->setCurrentRevision($revision);
-                $this->objectManager->persist($revision);
-                $this->objectManager->persist($lrSolution);
-
-                $this->doLink($lrExercise, $lrSolution);
-            }
-
             if ($exercise->getExercise()->getChildren()->count() > 0) {
                 foreach ($exercise->getExercise()->getChildren() as $child) {
                     $this->linkWorkload[] = [
@@ -207,6 +147,66 @@ class ExerciseWorker implements Worker
                     $term   = $results['folder'][$folder->getId()];
                     $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise);
                 }
+            }
+
+            $repository = $this->repositoryManager->getRepository($lrExercise);
+            $revision   = $repository->commitRevision(
+                ['content' => $content],
+                $user
+            );
+            $repository->checkoutRevision($revision->getId());
+
+            $workload[] = [
+                'entity' => $revision,
+                'work'   => [
+                    [
+                        'name'  => 'content',
+                        'value' => $content
+                    ],
+                ]
+            ];
+
+            $solution = $exercise->getSolution();
+
+            if (is_object($solution) && (strlen(trim($solution->getContent())) || strlen(
+                        trim($solution->getHint())
+                    )) && $exercise->getExercise()->getChildren()->count() == 0
+            ) {
+
+                $lrSolution = $this->entityManager->createEntity('text-solution', [], $language);
+
+                $content = $this->converterChain->convert(
+                    utf8_encode($solution->getContent())
+                );
+                $hint    = $this->converterChain->convert(
+                    utf8_encode($solution->getHint())
+                );
+
+                $repository = $this->repositoryManager->getRepository($lrSolution);
+                $revision   = $repository->commitRevision(
+                    ['content' => $content, 'hint' => $hint],
+                    $user
+                );
+                $repository->checkoutRevision($revision->getId());
+
+                $workload[] = [
+                    'entity' => $revision,
+                    'work'   => [
+                        [
+                            'name'  => 'content',
+                            'value' => $content
+                        ],
+                        [
+                            'name'  => 'hint',
+                            'value' => $hint
+                        ]
+                    ]
+                ];
+
+                $this->objectManager->persist($lrExercise);
+                $this->objectManager->persist($lrSolution);
+
+                $this->doLink($lrExercise, $lrSolution);
             }
 
             $results['exercise'][$exercise->getExercise()->getId()] = $lrExercise;

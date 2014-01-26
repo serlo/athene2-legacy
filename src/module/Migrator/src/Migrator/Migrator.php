@@ -19,7 +19,7 @@ class Migrator
         'Migrator\Worker\ArticleWorker',
         'Migrator\Worker\FolderWorker',
         'Migrator\Worker\ExerciseWorker',
-        'Migrator\Worker\UserWorker'
+        //'Migrator\Worker\UserWorker'
     ];
 
     /**
@@ -51,8 +51,8 @@ class Migrator
         }
 
         $worker  = $this->serviceLocator->get('Migrator\Worker\PostWorker');
-        $worker->migrate($workload, $results);
+        //$worker->migrate($workload, $results);
 
-        //$this->cache->addItems($result->getMap());
+        //$this->cache->addItems($results);
     }
 }

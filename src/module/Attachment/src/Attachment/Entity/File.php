@@ -27,7 +27,7 @@ class File implements FileInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Attachment", inversedBy="files")
+     * @ORM\ManyToOne(targetEntity="Container", inversedBy="files")
      */
     protected $attachment;
 
@@ -86,7 +86,7 @@ class File implements FileInterface
         return $this->timestamp;
     }
 
-    public function setAttachment(AttachmentInterface $attachment)
+    public function setAttachment(ContainerInterface $attachment)
     {
         $this->attachment = $attachment;
     }

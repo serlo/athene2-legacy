@@ -11,11 +11,12 @@
 namespace Normalizer\Strategy;
 
 use Attachment\Entity\AttachmentInterface;
+use Attachment\Entity\ContainerInterface;
 
 class AttachmentStrategy extends AbstractStrategy
 {
     /**
-     * @return AttachmentInterface
+     * @return ContainerInterface
      */
     public function getObject()
     {
@@ -44,7 +45,7 @@ class AttachmentStrategy extends AbstractStrategy
 
     protected function getType()
     {
-        return 'attachment';
+        return $this->getObject()->getType();
     }
 
     protected function getRouteName()
@@ -61,6 +62,6 @@ class AttachmentStrategy extends AbstractStrategy
 
     public function isValid($object)
     {
-        return $object instanceof AttachmentInterface;
+        return $object instanceof ContainerInterface;
     }
 }

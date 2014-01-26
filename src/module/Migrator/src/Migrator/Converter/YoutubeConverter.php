@@ -10,16 +10,14 @@
  */
 namespace Migrator\Converter;
 
-class PreConverterChain extends ConverterChain
+class YoutubeConverter extends AbstractConverter
 {
-    protected $converters = [
-        'Migrator\Converter\YoutubeConverter',
-        'Migrator\Converter\GeogebraConverter',
-        'Migrator\Converter\BrinkmannConverter',
-        //'Migrator\Converter\LatexConverter',
-        'Migrator\Converter\SpoilerConverter',
-        'Migrator\Converter\Html2Markdown',
-        'Migrator\Converter\TableConverter',
-        'Migrator\Converter\UploadConverter'
-    ];
+    public function convert($text)
+    {
+        $pattern = '@<iframe(?:[^>]*)(?=(?:src="([^"]*)"))(?:[^>]*)(?:[^>]*)>@isU';
+        $replace = '**[Youtube Video](\1)**';
+
+        return preg_replace($pattern, $replace, $text);
+    }
 }
+ 

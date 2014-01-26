@@ -19,6 +19,7 @@ use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
+use Versioning\RepositoryManagerInterface;
 
 class ArticleWorker implements Worker
 {
@@ -57,6 +58,11 @@ class ArticleWorker implements Worker
      */
     protected $flagManager;
 
+    /**
+     * @var RepositoryManagerInterface
+     */
+    protected $repositoryManager;
+
     protected $workload = [];
 
     public function __construct(
@@ -67,16 +73,18 @@ class ArticleWorker implements Worker
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
         PreConverterChain $converterChain,
-        FlagManagerInterface $flagManager
+        FlagManagerInterface $flagManager,
+        RepositoryManagerInterface $repositoryManager
     ) {
-        $this->objectManager   = $objectManager;
-        $this->entityManager   = $entityManager;
-        $this->taxonomyManager = $taxonomyManager;
-        $this->languageManager = $languageManager;
-        $this->uuidManager     = $uuidManager;
-        $this->userManager     = $userManagerInterface;
-        $this->converterChain  = $converterChain;
-        $this->flagManager     = $flagManager;
+        $this->objectManager     = $objectManager;
+        $this->entityManager     = $entityManager;
+        $this->taxonomyManager   = $taxonomyManager;
+        $this->languageManager   = $languageManager;
+        $this->uuidManager       = $uuidManager;
+        $this->userManager       = $userManagerInterface;
+        $this->converterChain    = $converterChain;
+        $this->flagManager       = $flagManager;
+        $this->repositoryManager = $repositoryManager;
     }
 
     public function migrate(array & $results, array &$workload)
@@ -101,10 +109,14 @@ class ArticleWorker implements Worker
                     $this->flagManager->addFlag(24, 'Flagged by migrator', $entity->getId(), $user);
                 }
 
-                /* @var $entity \Entity\Entity\EntityInterface */
-                $revision = $entity->createRevision();
-                $revision->set('title', $title);
-                $revision->set('content', $content);
+                $this->taxonomyManager->associateWith(8, 'entities', $entity);
+
+                $repository = $this->repositoryManager->getRepository($entity);
+                $revision = $repository->commitRevision(
+                    ['title' => $title, 'content' => $content],
+                    $user
+                );
+                $repository->checkoutRevision($revision->getId());
 
                 $workload[] = [
                     'entity' => $revision,
@@ -116,15 +128,7 @@ class ArticleWorker implements Worker
                     ]
                 ];
 
-                $revision->setAuthor($this->userManager->getUserFromAuthenticator());
-
-                $this->uuidManager->injectUuid($revision);
-
-                $entity->setCurrentRevision($revision);
-                $this->objectManager->persist($revision);
                 $this->objectManager->persist($entity);
-
-                $this->taxonomyManager->associateWith(8, 'entities', $entity);
 
                 $results['article'][$article->getArticleId()] = $entity;
             }
@@ -135,7 +139,8 @@ class ArticleWorker implements Worker
         return $results;
     }
 
-    public function getWorkload(){
+    public function getWorkload()
+    {
         return $this->workload;
     }
 }

@@ -18,6 +18,7 @@ use Common\Filter\Slugify;
 use Common\Traits;
 use Language\Entity\LanguageInterface;
 use Token\TokenizerAwareTrait;
+use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 
@@ -25,32 +26,14 @@ class AliasManager implements AliasManagerInterface
 {
     use Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
     use TokenizerAwareTrait, UuidManagerAwareTrait;
+    use Traits\RouterAwareTrait;
 
     /**
      * @var ManagerOptions
      */
     protected $options;
 
-    /**
-     * @return ManagerOptions $options
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param ManagerOptions $options
-     * @return self
-     */
-    public function setOptions(ManagerOptions $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language)
+    public function autoAlias($name, $source, UuidHolder $object, LanguageInterface $language)
     {
         if (!is_string($name) || !is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -68,10 +51,10 @@ class AliasManager implements AliasManagerInterface
         $provider       = $options['provider'];
         $tokenString    = $options['tokenize'];
         $fallbackString = $options['fallback'];
-        $alias          = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $tokenString);
-        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $fallbackString);
+        $alias          = $this->getTokenizer()->transliterate($provider, $object, $tokenString);
+        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object, $fallbackString);
 
-        return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
+        return $this->createAlias($source, $alias, $aliasFallback, $object->getUuidEntity(), $language);
     }
 
     public function findSourceByAlias($alias, LanguageInterface $language)
@@ -216,13 +199,30 @@ class AliasManager implements AliasManagerInterface
         return $entity;
     }
 
-    protected function getEntityClassName()
+    /**
+     * @return ManagerOptions $options
+     */
+    public function getOptions()
     {
-        return $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
+        return $this->options;
     }
 
     protected function getAliasRepository()
     {
         return $this->getObjectManager()->getRepository($this->getEntityClassName());
+    }
+
+    protected function getEntityClassName()
+    {
+        return $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
+    }
+
+    /**
+     * @param ManagerOptions $options
+     * @return void
+     */
+    public function setOptions(ManagerOptions $options)
+    {
+        $this->options = $options;
     }
 }

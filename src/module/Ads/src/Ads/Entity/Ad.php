@@ -36,7 +36,7 @@ class Ad implements AdInterface
     protected $language;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Attachment\Entity\Attachment")
+     * @ORM\ManyToOne(targetEntity="Attachment\Entity\Container")
      */
     protected $image;
 

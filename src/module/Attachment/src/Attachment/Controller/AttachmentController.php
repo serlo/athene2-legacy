@@ -10,7 +10,7 @@
  */
 namespace Attachment\Controller;
 
-use Attachment\Entity\AttachmentInterface;
+use Attachment\Entity\ContainerInterface;
 use Attachment\Form\AttachmentForm;
 use Attachment\Manager\AttachmentManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -21,21 +21,6 @@ class AttachmentController extends AbstractActionController
 {
 
     use AttachmentManagerAwareTrait;
-
-    public function infoAction()
-    {
-        $attachment = $this->getAttachmentManager()->getAttachment($this->params('id'));
-
-        return $this->createJsonResponse($attachment);
-    }
-
-    public function fileAction()
-    {
-        $upload = $this->getAttachmentManager()->getFile($this->params('id'), $this->params('file'));
-        $this->redirect()->toUrl($upload->getLocation());
-
-        return false;
-    }
 
     public function attachAction()
     {
@@ -49,11 +34,16 @@ class AttachmentController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $post = $request->getFiles()->toArray();
+            $post = array_merge($post, $request->getPost()->toArray());
 
             $form->setData($post);
             if ($form->isValid()) {
                 $data       = $form->getData();
-                $attachment = $this->getAttachmentManager()->attach($data['file'], $this->params('append'));
+                $attachment = $this->getAttachmentManager()->attach(
+                    $data['file'],
+                    $data['type'],
+                    $this->params('append')
+                );
                 $this->getAttachmentManager()->getObjectManager()->flush();
 
                 return $this->createJsonResponse($attachment);
@@ -63,7 +53,22 @@ class AttachmentController extends AbstractActionController
         return $view;
     }
 
-    protected function createJsonResponse(AttachmentInterface $attachment)
+    public function fileAction()
+    {
+        $upload = $this->getAttachmentManager()->getFile($this->params('id'), $this->params('file'));
+        $this->redirect()->toUrl($upload->getLocation());
+
+        return false;
+    }
+
+    public function infoAction()
+    {
+        $attachment = $this->getAttachmentManager()->getAttachment($this->params('id'));
+
+        return $this->createJsonResponse($attachment);
+    }
+
+    protected function createJsonResponse(ContainerInterface $attachment)
     {
 
         foreach ($attachment->getFiles() as $file) {
@@ -83,6 +88,7 @@ class AttachmentController extends AbstractActionController
         return new JsonModel(array(
             'success' => true,
             'id'      => $attachment->getId(),
+            'type'    => $attachment->getType()->getName(),
             'files'   => $files
         ));
     }

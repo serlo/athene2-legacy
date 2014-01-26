@@ -44,15 +44,15 @@ interface FileInterface
     public function getType();
 
     /**
-     * @return AttachmentInterface
+     * @return ContainerInterface
      */
     public function getAttachment();
 
     /**
-     * @param AttachmentInterface $attachment
+     * @param ContainerInterface $attachment
      * @return void
      */
-    public function setAttachment(AttachmentInterface $attachment);
+    public function setAttachment(ContainerInterface $attachment);
 
     /**
      * @param string $location

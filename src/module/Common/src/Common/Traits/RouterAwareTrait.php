@@ -30,12 +30,10 @@ trait RouterAwareTrait
 
     /**
      * @param RouteInterface $router
-     * @return self
+     * @return void
      */
     public function setRouter(RouteInterface $router)
     {
         $this->router = $router;
-
-        return $this;
     }
 }

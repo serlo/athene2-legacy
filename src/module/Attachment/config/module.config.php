@@ -15,7 +15,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 return array(
     'class_resolver'  => array(
-        'Attachment\Entity\AttachmentInterface' => 'Attachment\Entity\Attachment',
+        'Attachment\Entity\ContainerInterface' => 'Attachment\Entity\Container',
         'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
     ),
     'upload_manager'  => array(),
@@ -29,6 +29,7 @@ return array(
                     $instance->setObjectManager($sl->get('Doctrine\ORM\EntityManager'));
                     $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
                     $instance->setLanguageManager($sl->get('Language\Manager\LanguageManager'));
+                    $instance->setTypeManager($sl->get('Type\TypeManager'));
 
                     return $instance;
                 }
