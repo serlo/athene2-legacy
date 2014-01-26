@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `serlo`.`uuid` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`uuid` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uuid` VARCHAR(224) NOT NULL,
+  `uuid` VARCHAR(56) NOT NULL,
   `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC))
@@ -810,26 +810,33 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`attachment`
+-- Table `serlo`.`attachment_container`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`attachment` ;
+DROP TABLE IF EXISTS `serlo`.`attachment_container` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`attachment` (
+CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
   `id` BIGINT NOT NULL,
   `language_id` INT NOT NULL,
+  `type_id` INT NOT NULL,
   INDEX `fk_upload_uuid1_idx` (`id` ASC),
   PRIMARY KEY (`id`),
   INDEX `fk_upload_language1_idx` (`language_id` ASC),
+  INDEX `fk_attachment_type1_idx` (`type_id` ASC),
   CONSTRAINT `fk_upload_uuid1`
     FOREIGN KEY (`id`)
     REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_upload_language1`
     FOREIGN KEY (`language_id`)
     REFERENCES `serlo`.`language` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_attachment_type1`
+    FOREIGN KEY (`type_id`)
+    REFERENCES `serlo`.`type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1188,7 +1195,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ads_upload1`
     FOREIGN KEY (`image_id`)
-    REFERENCES `serlo`.`attachment` (`id`)
+    REFERENCES `serlo`.`attachment_container` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ads_user1`
@@ -1216,9 +1223,9 @@ CREATE TABLE IF NOT EXISTS `serlo`.`attachment_file` (
   INDEX `fk_attachement_file_attachment1_idx` (`attachment_id` ASC),
   CONSTRAINT `fk_attachement_file_attachment1`
     FOREIGN KEY (`attachment_id`)
-    REFERENCES `serlo`.`attachment` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `serlo`.`attachment_container` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1453,6 +1460,8 @@ INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (23, 'offensive');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (24, 'other');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (25, 'help');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (26, 'guideline');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (27, 'file');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (28, 'geogebra');
 
 COMMIT;
 
@@ -1463,6 +1472,13 @@ COMMIT;
 START TRANSACTION;
 USE `serlo`;
 INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (9, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
 
 COMMIT;
 

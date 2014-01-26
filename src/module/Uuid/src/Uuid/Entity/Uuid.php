@@ -48,7 +48,7 @@ class Uuid implements UuidInterface
     protected $taxonomyTerm;
 
     /**
-     * @ORM\OneToOne(targetEntity="Attachment\Entity\Attachment", mappedBy="id", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Attachment\Entity\Container", mappedBy="id", fetch="EXTRA_LAZY")
      */
     protected $attachment;
 

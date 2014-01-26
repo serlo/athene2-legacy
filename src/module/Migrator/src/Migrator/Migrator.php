@@ -17,8 +17,8 @@ class Migrator
 {
     protected $workers = [
         'Migrator\Worker\ArticleWorker',
-        //'Migrator\Worker\FolderWorker',
-        //'Migrator\Worker\ExerciseWorker',
+        'Migrator\Worker\FolderWorker',
+        'Migrator\Worker\ExerciseWorker',
         //'Migrator\Worker\UserWorker'
     ];
 
@@ -42,12 +42,17 @@ class Migrator
     {
         set_time_limit(0);
         $results = [];
+        $workload = [];
+
 
         foreach ($this->workers as $worker) {
             $worker  = $this->serviceLocator->get($worker);
-            $results = array_merge($results, $worker->migrate($results));
+            $worker->migrate($results, $workload);
         }
 
-        //$this->cache->addItems($result->getMap());
+        $worker  = $this->serviceLocator->get('Migrator\Worker\PostWorker');
+        //$worker->migrate($workload, $results);
+
+        //$this->cache->addItems($results);
     }
 }

@@ -86,12 +86,14 @@ class TableConverter extends AbstractConverter
                     $fallback .= PHP_EOL . "<tr>" . $tableRow[0] . '</tr>' . PHP_EOL;
                     $this->needsFlagging = true;
                 }
+            }
 
+            if(!empty($columns)){
                 $layout[] = $columns;
             }
 
             if(strlen($fallback)){
-                $columns[] = array(
+                $layout[][] = array(
                     'col'     => $this->maxcols,
                     'content' => '<table>'.$fallback.'</table>'
                 );

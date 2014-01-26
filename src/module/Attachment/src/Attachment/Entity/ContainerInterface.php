@@ -11,8 +11,9 @@
 namespace Attachment\Entity;
 
 use Language\Entity\LanguageAwareInterface;
+use Type\Entity\TypeAwareInterface;
 
-interface AttachmentInterface extends LanguageAwareInterface
+interface ContainerInterface extends LanguageAwareInterface, TypeAwareInterface
 {
     /**
      * @return int

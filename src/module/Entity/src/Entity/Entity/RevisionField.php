@@ -81,24 +81,18 @@ class RevisionField
 
     /**
      * @param field_type $field
-     * @return self
      */
     public function setField($field)
     {
         $this->field = $field;
-
-        return $this;
     }
 
     /**
      * @param field_type $value
-     * @return self
      */
     public function setValue($value)
     {
         $this->value = $value;
-
-        return $this;
     }
 
     public function __construct($revision, $field)
