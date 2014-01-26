@@ -186,7 +186,7 @@ class BlogController extends AbstractActionController
     protected function toDateTime($publish = null)
     {
         if ($publish) {
-            $dateData = explode('.', $data['publish']);
+            $dateData = explode('.', $publish);
 
             return (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
         } else {
