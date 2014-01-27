@@ -20,7 +20,7 @@
 				href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="__blank">
 				<button type="button" class="btn btn-default">
 				
-                    <?php echo $ad->getTitle();?>	
+                    <span class="link"><?php echo $ad->getTitle();?></span>	
                     <hr> <img alt="<?php echo $ad->getTitle();?>"
 						src="<?php echo $ad->getImage()->getLocation();?>"
 						class="img-responsive" /> <small>
