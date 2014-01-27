@@ -88,7 +88,7 @@ sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php compose
 ' >> /home/vagrant/startup.sh
 
 echo '
-sudo su - www-data -c "pm2 stop server.js"
+sudo su - www-data -c "pm2 dump && pm2 kill"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower cache clean"
 sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/node_modules"
@@ -96,7 +96,7 @@ sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/source/bower_componen
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
-sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
+sudo su - www-data -c "cd /var/www/src/module/Ui/assets/node_modules/athene2-editor && pm2 start server/server.js"
 ' >> /home/vagrant/uicleaner.sh
 
 echo '

@@ -4,6 +4,7 @@ deployment.properties
 docs/
 coverage/
 /composer.lock
+tmp/
 !.gitignore
 !.gitmodules
 !.travis.yml
