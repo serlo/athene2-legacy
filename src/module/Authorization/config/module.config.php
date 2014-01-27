@@ -24,7 +24,7 @@ return [
             ]
         ],
         'assertion_map'     => [
-            'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion'
+            'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion',
         ]
     ],
     'service_manager'    => [

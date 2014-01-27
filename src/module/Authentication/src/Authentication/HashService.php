@@ -9,7 +9,7 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Authentication;
+namespace Authentication;
 
 class HashService implements HashServiceInterface
 {
@@ -22,14 +22,11 @@ class HashService implements HashServiceInterface
     public function __construct(){
         $this->_config['salt_pattern'] = explode(',',$this->_config['salt_pattern']);
     }
-    
-    
+
     /**
-     * Creates a hashed password from a plaintext password, inserting salt
-     * based on the configured salt pattern.
-     *
-     * @param   string  plaintext password
-     * @return  string  hashed password string
+     * @param      $password
+     * @param bool $salt
+     * @return string
      */
     public function hashPassword($password, $salt = FALSE)
     {

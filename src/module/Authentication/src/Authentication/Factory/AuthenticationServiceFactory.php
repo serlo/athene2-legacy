@@ -8,17 +8,14 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Versioning\Factory;
+namespace Authentication\Factory;
 
-use ClassResolver\ClassResolverFactoryTrait;
-use Versioning\RepositoryManager;
+use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class RepositoryManagerFactory implements FactoryInterface
+class AuthenticationServiceFactory implements FactoryInterface
 {
-    use ClassResolverFactoryTrait;
-
     /**
      * Create service
      *
@@ -27,9 +24,11 @@ class RepositoryManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $classResolver = $this->getClassResolver($serviceLocator);
+        $instance = new AuthenticationService();
+        $instance->setAdapter($serviceLocator->get('Authentication\Adapter\UserAuthAdapter'));
+        $instance->setStorage($serviceLocator->get('Authentication\Storage\UserSessionStorage'));
 
-        return new RepositoryManager($classResolver, $serviceLocator);
+        return $instance;
     }
 
 }
