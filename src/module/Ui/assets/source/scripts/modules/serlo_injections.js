@@ -19,6 +19,7 @@ define(['jquery', 'common', 'translator'], function ($, Common, t) {
         $geogebraTemplate = $('<article class="geogebraweb" data-param-width="500" data-param-height="500" data-param-usebrowserforjs="true" data-param-enableRightClick="true"></article>');
 
     // terrible geogebra oninit handler..
+    // that doesnt work.....
     window.ggbOnInit = function (id) {
         if (ggbApplets[id]) {
             ggbApplets[id]();
@@ -43,8 +44,9 @@ define(['jquery', 'common', 'translator'], function ($, Common, t) {
                 $clone.attr("data-param-id", ggbAppletID);
                 $clone.attr("data-param-ggbbase64", btoa(xml));
 
+                // the following doesnt work.
                 ggbApplets[ggbAppletID] = function () {
-                    console.log('hier', this, arguments, xml);
+                    // console.log('hier', this, arguments, xml);
                 };
 
                 $that.html($clone);
@@ -132,7 +134,7 @@ define(['jquery', 'common', 'translator'], function ($, Common, t) {
                     handleResponse(arguments[0], arguments[2].getResponseHeader('Content-Type'));
                 })
                 .error(function () {
-                    $that.html(t('Could not load injection'));
+                    Common.log('Could not load injection');
                 });
         });
     };
