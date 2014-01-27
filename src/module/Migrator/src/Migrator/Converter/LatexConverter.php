@@ -46,6 +46,8 @@ class LatexConverter extends AbstractConverter
                     $this->needsFlagging = true;
                 }
 
+                curl_close($ch);
+
                 $this->flag($response);
 
                 $content = str_replace($match[0], $response, $content);

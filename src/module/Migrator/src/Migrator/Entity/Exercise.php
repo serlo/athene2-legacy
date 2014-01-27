@@ -30,6 +30,10 @@ class Exercise
     protected $id;
 
     /**
+     * @ORM\Column(type="integer", name="license_id")
+     */
+    protected $license;
+    /**
      * @ORM\Column(type="string", name="is_group")
      */
     protected $group;
@@ -85,17 +89,17 @@ class Exercise
     /**
      * @return mixed
      */
-    public function isGroup()
+    public function getId()
     {
-        return $this->group;
+        return $this->id;
     }
 
     /**
      * @return mixed
      */
-    public function getId()
+    public function getLicense()
     {
-        return $this->id;
+        return $this->license;
     }
 
     /**
@@ -112,6 +116,14 @@ class Exercise
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isGroup()
+    {
+        return $this->group;
     }
 }
  

@@ -10,11 +10,10 @@
  */
 namespace User;
 
-use User\Authentication\AuthenticationService;
 use User\Authentication\HashFilter;
 use User\Authentication\Storage\UserRepository;
 use User\Entity\UserInterface;
-use User\View\Helper\Rbac;
+use Zend\Authentication\AuthenticationService;
 
 /**
  * @codeCoverageIgnore

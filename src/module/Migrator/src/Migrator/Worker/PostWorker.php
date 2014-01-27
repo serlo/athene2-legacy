@@ -25,8 +25,14 @@ class PostWorker {
 
     public function migrate(array $workload, array $map){
         $converter = new PostConverter();
+        $i = 0;
+        $total = count($workload);
 
         foreach($workload as $do){
+
+            $i++;
+            echo (($i / $total) * 100) . " ($i of $total)\n";
+
             $entity = $do['entity'];
             foreach($do['work'] as $field){
                 $value = $converter->convert($field['value'], $map);

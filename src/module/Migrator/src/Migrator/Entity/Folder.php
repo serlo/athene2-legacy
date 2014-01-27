@@ -10,6 +10,7 @@
  */
 namespace Migrator\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,6 +40,24 @@ class Folder
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ExerciseFolder", mappedBy="folder")
+     */
+    protected $exercises;
+
+    public function __construct()
+    {
+        $this->exercises = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExercises()
+    {
+        return $this->exercises;
+    }
 
     /**
      * @return mixed
