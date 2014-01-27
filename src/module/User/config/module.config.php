@@ -10,42 +10,23 @@
  */
 namespace User;
 
-use User\Authentication\HashFilter;
-use User\Authentication\Storage\UserRepository;
-use User\Entity\UserInterface;
-use Zend\Authentication\AuthenticationService;
-
 /**
  * @codeCoverageIgnore
  */
 return array(
-    'uuid_router'     => array(
-        'routes' => array(
-            'user' => '/user/profile/%d'
-        )
-    ),
     'zfc_rbac'        => [
         'assertion_map' => [
-            'authorization.role.identity.modify' => 'User\Assertion\LoginAssertion',
-            'user.create'                        => 'User\Assertion\HasNoIdentityAssertion'
+            'user.create' => 'User\Assertion\HasNoIdentityAssertion'
         ]
     ],
     'service_manager' => array(
         'factories' => array(
-            __NAMESPACE__ . '\Manager\UserManager'                   => __NAMESPACE__ . '\Factory\UserManagerFactory',
-            'Zend\Authentication\AuthenticationService'              => function ($sm) {
-                    $instance = new AuthenticationService();
-                    $instance->setAdapter($sm->get('User\Authentication\Adapter\UserAuthAdapter'));
-                    $instance->setStorage($sm->get('User\Authentication\Storage\UserSessionStorage'));
-
-                    return $instance;
-                },
-            __NAMESPACE__ . '\Form\Register'                         => function ($sm) {
+            __NAMESPACE__ . '\Manager\UserManager' => __NAMESPACE__ . '\Factory\UserManagerFactory',
+            __NAMESPACE__ . '\Form\Register'       => function ($sm) {
                     $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
 
                     return $form;
                 },
-            __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
         )
     ),
     'class_resolver'  => array(
@@ -59,34 +40,17 @@ return array(
         ),
         'definition'          => array(
             'class' => array(
-                __NAMESPACE__ . '\Authentication\Storage\UserSessionStorage' => array(
-                    'setObjectManager' => array(
-                        'required' => true
-                    ),
-                    'setClassResolver' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter'    => array(
-                    'setHashService'   => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Authentication\HashService'                => array(),
-                __NAMESPACE__ . '\Controller\UsersController'                => array(
+                __NAMESPACE__ . '\Controller\UsersController' => array(
                     'setUserManager' => array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Hydrator\UserHydrator'                     => array(
+                __NAMESPACE__ . '\Hydrator\UserHydrator'      => array(
                     'setUuidManager' => array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\Controller\UserController'                 => array(
+                __NAMESPACE__ . '\Controller\UserController'  => array(
                     'setUserManager'           => array(
                         'required' => true
                     ),
@@ -101,9 +65,7 @@ return array(
         ),
         'instance'            => array(
             'preferences' => array(
-                __NAMESPACE__ . '\Manager\UserManagerInterface'            => __NAMESPACE__ . '\Manager\UserManager',
-                __NAMESPACE__ . '\Authentication\HashServiceInterface'     => __NAMESPACE__ . '\Authentication\HashService',
-                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface' => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
+                __NAMESPACE__ . '\Manager\UserManagerInterface' => __NAMESPACE__ . '\Manager\UserManager'
             )
         )
     ),
@@ -280,7 +242,7 @@ return array(
         )
     ),
     'doctrine'        => array(
-        'driver'         => array(
+        'driver' => array(
             __NAMESPACE__ . '_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
@@ -294,22 +256,5 @@ return array(
                 )
             )
         ),
-        'authentication' => array(
-            'orm_default' => array(
-                'object_manager'      => 'Doctrine\ORM\EntityManager',
-                'identity_class'      => 'User\Entity\User',
-                'identity_property'   => 'email',
-                'credential_property' => 'password',
-                'storage'             => 'User\Authentication\Storage\UserRepository',
-                'credential_callable' => function (UserInterface $user, $passwordGiven) {
-                        $filter        = new HashFilter();
-                        $salt          = $filter->findSalt($user->getPassword());
-                        $passwordGiven = $filter->hashPassword($passwordGiven, $salt);
-
-                        return $user->getPassword() === $passwordGiven && $user->hasRole('login') && !$user->isTrashed(
-                        );
-                    }
-            )
-        )
     )
 );

@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class TaxonomyManagerListener extends AbstractMvcListener
+class TaxonomyManagerListener extends AbstractListener
 {
 
     public function onCreate(Event $e)

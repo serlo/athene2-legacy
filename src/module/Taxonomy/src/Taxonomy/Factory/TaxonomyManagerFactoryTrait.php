@@ -8,29 +8,19 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Versioning\Factory;
+namespace Taxonomy\Factory;
 
-use ClassResolver\ClassResolverFactoryTrait;
-use Versioning\RepositoryManager;
-use Zend\ServiceManager\FactoryInterface;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class RepositoryManagerFactory implements FactoryInterface
+trait TaxonomyManagerFactoryTrait
 {
-    use ClassResolverFactoryTrait;
-
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return TaxonomyManagerInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function getTaxonomyManager(ServiceLocatorInterface $serviceLocator)
     {
-        $classResolver = $this->getClassResolver($serviceLocator);
-
-        return new RepositoryManager($classResolver, $serviceLocator);
+        return $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
     }
-
 }
- 

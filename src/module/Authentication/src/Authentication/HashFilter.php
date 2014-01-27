@@ -9,24 +9,11 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace User\Authentication\Adapter;
+namespace Authentication;
 
-use Zend\Authentication\Adapter\AdapterInterface as AI;
-
-interface AdapterInterface extends AI
+class HashFilter extends HashService implements \Zend\Filter\FilterInterface
 {
-
-    /**
-     * 
-     * @param unknown $email
-     * @return self
-     */
-    public function setIdentity($email);
-
-    /**
-     * 
-     * @param striong $password
-     * @return self
-     */
-    public function setCredential($password);
+	public function filter($value){
+        return $this->hashPassword($value);
+    }
 }

@@ -20,6 +20,7 @@ return array(
         'ZfcRbac',
         'TwbBundle',
         'Common',
+        'Authentication',
         'Ui',
         'Admin',
         'User',

@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class RepositoryManagerListener extends AbstractMvcListener
+class RepositoryManagerListener extends AbstractListener
 {
 
     /**

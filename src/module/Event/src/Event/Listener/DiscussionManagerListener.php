@@ -15,7 +15,7 @@ use Zend\EventManager\Event;
 /**
  * Event Listener for Discussion\Controller\DiscussionController
  */
-class DiscussionManagerListener extends AbstractMvcListener
+class DiscussionManagerListener extends AbstractListener
 {
 
     /**
