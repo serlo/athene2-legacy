@@ -17,12 +17,10 @@
 		    <div class="col-md-3 col-sm-4 col-xs-6 ">
 		  
 			<a
-				href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>">
-				<button type="well" class="btn btn-default">
-					<a
-						href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>"
-						target="_blank"> 
-                    <?php echo $ad->getTitle();?>	</a>
+				href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="__blank">
+				<button type="button" class="btn btn-default">
+				
+                    <?php echo $ad->getTitle();?>	
                     <hr> <img alt="<?php echo $ad->getTitle();?>"
 						src="<?php echo $ad->getImage()->getLocation();?>"
 						class="img-responsive" /> <small>

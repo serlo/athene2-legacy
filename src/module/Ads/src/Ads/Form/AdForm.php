@@ -16,6 +16,7 @@ use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
+use Zend\Form\Element\Url;
 
 class AdForm extends Form
 {
@@ -33,7 +34,7 @@ class AdForm extends Form
         // $this->setInputFilter($filter);
 
         $this->add((new Text('title'))->setLabel('Title:'))->setAttribute('required', 'required');
-        $this->add((new Text('url'))->setLabel('Url:'))->setAttribute('required', 'required');
+        $this->add((new Url('url'))->setLabel('Url:'))->setAttribute('required', 'required');
         $this->add((new Textarea('content'))->setLabel('Content:'))->setAttribute('required', 'required');
 
 
