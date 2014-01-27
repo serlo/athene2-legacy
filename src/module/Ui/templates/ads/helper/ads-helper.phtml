@@ -1,13 +1,17 @@
+        		<div class="col-md-1 col-sm-1 col-xs-1">
+</div>
+<div class="row">
 <small>
 <a href="">
     <?php echo $this->translate('Horizon'); ?>
     <span class="glyphicon glyphicon-info-sign"></span>
 </a></small>
-<br>
+</div>
+        		<div class="col-md-1 col-sm-1 col-xs-1">
+</div>
 
-        		
         		<?php  foreach ($this->ads as $ad) :?>
-        			<div class="col-xs-3">
+        			<div class="col-md-2 col-sm-3 col-xs-5">
         			<a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" ><button type="button" class="btn btn-default">
        <a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="_blank"> 
                 <?php echo $ad->getTitle();?>	
@@ -24,4 +28,3 @@
 
 <?php endforeach; ?>
 	
-

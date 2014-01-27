@@ -8,3 +8,4 @@ coverage/
 !.gitmodules
 !.travis.yml
 !.gitattributes
+/tmp
