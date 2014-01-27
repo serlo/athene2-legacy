@@ -1,30 +1,38 @@
-        		<div class="col-md-1 col-sm-1 col-xs-1">
-</div>
+<div class="container">
 <div class="row">
-<small>
-<a href="">
-    <?php echo $this->translate('Horizon'); ?>
-    <span class="glyphicon glyphicon-info-sign"></span>
-</a></small>
-</div>
-        		<div class="col-md-1 col-sm-1 col-xs-1">
-</div>
-
-        		<?php  foreach ($this->ads as $ad) :?>
-        			<div class="col-md-2 col-sm-3 col-xs-5">
-        			<a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" ><button type="button" class="btn btn-default">
-       <a href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="_blank"> 
-                <?php echo $ad->getTitle();?>	
-                <hr>
-	            <img alt="<?php echo $ad->getTitle();?>" src="<?php echo $ad->getImage()->getLocation();?>"  class="img-responsive" />
-        </a>
-        
-        <small>
-        	<?php echo $ad->getContent();?>
-        </small>
-</button></a>
-        </div>
-
-
-<?php endforeach; ?>
+	<div class="col-md-3 col-sm-4 col-xs-4 col-lg-2">
+		<small> <a href="">
+        <?php echo $this->translate('Horizon'); ?>
+        <span class="glyphicon glyphicon-info-sign"></span>
+		</a>
+		</small>
+	</div>
 	
+</div>
+</div>
+<div class="container">
+	<div class="row-fluid">
+
+		<?php  foreach ($this->ads as $ad) :?>
+		    <div class="col-md-3 col-sm-4 col-xs-6 ">
+		  
+			<a
+				href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>">
+				<button type="well" class="btn btn-default">
+					<a
+						href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>"
+						target="_blank"> 
+                    <?php echo $ad->getTitle();?>	</a>
+                    <hr> <img alt="<?php echo $ad->getTitle();?>"
+						src="<?php echo $ad->getImage()->getLocation();?>"
+						class="img-responsive" /> <small>
+        	           <?php echo $ad->getContent();?>
+                    </small>
+				
+				</button></a>
+			
+		
+		</div>
+        <?php endforeach; ?>
+        </div>
+</div>

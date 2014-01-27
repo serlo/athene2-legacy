@@ -1,16 +1,25 @@
-        <div class="row">
+<div class="container">
+<div class="row visible-xs">
+        <?php echo $this->Horizon(1);?>
+			<br>
+</div>
+<div class="row visible-sm visible-md visible-lg">
         <?php echo $this->Horizon(3);?>
-       
-        </div>
 
-<footer id="footer">    
-        <div class="container">
+</div>
+<div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">&nbsp;</div>
+</div>
+</div>
+
+<footer id="footer">
+	<div class="container">
         <?php
         echo $this->navigation('footer_navigation')
-                ->menu()
-                ->setUlClass('nav navbar-nav pull-left')
-                ->setPartial('layout/navigation/footer.phtml')
-                ->render();
+            ->menu()
+            ->setUlClass('nav navbar-nav pull-left')
+            ->setPartial('layout/navigation/footer.phtml')
+            ->render();
         ?>
     </div>
 </footer>
