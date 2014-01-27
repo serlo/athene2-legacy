@@ -91,7 +91,7 @@ class AdsManager implements AdsManagerInterface
     {
         $this->getObjectManager()->remove($ad);
 
-        return this;
+        return $this;
     }
 
     public function findShuffledAds(LanguageInterface $language, $number)
@@ -99,12 +99,12 @@ class AdsManager implements AdsManagerInterface
         $allAds    = $this->findAllAds($language);
         $adsScaled = array();
         $ads       = array();
-        if (count($allAds) < $number) {
-            return $ads;
-        }
+        $numberDisabledAds = 0;
         $numberAds = $y = 0;
         foreach ($allAds as $ad) {
-
+            if ($ad->getFrequency()==null) {
+                $numberDisabledAds++;
+            }
             for ($i = 0; $i < $ad->getFrequency(); $i++) {
                 $adsScaled[$numberAds + $i] = $y;
             }
@@ -112,6 +112,10 @@ class AdsManager implements AdsManagerInterface
             $y++;
         }
 
+        if ((count($allAds)-$numberDisabledAds) < $number) {
+            return $ads;
+        }
+        
         $random = mt_rand(0, $numberAds - 1);
 
         for ($i = 0; $i < $number; $i++) {
