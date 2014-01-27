@@ -15,7 +15,6 @@ use Zend\View\Model\ViewModel;
 
 class EventController extends AbstractActionController
 {
-
     public function historyAction()
     {
         $id   = $this->params('id');

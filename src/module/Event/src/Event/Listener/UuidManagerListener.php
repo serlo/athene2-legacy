@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class UuidManagerListener extends AbstractMvcListener
+class UuidManagerListener extends AbstractListener
 {
 
     public function onRestore(Event $e)
