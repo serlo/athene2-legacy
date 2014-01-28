@@ -107,14 +107,13 @@ class BlogController extends AbstractActionController
         $this->assertGranted('blog.post.update', $post);
 
         $form = new PostForm();
-
-        $form->setData(
-            array(
-                'title'   => $post->getTitle(),
-                'content' => $post->getContent()
-            )
-        );
-
+        
+        $form->setData(array(
+            'title' => $post->getTitle(),
+            'content' => $post->getContent(),
+            'publish' => $post->getPublish()->format('d.m.Y')
+        ));
+        
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
@@ -187,7 +186,7 @@ class BlogController extends AbstractActionController
     protected function toDateTime($publish = null)
     {
         if ($publish) {
-            $dateData = explode('.', $data['publish']);
+            $dateData = explode('.', $publish);
 
             return (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
         } else {

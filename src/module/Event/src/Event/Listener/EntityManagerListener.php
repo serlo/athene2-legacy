@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class EntityManagerListener extends AbstractMvcListener
+class EntityManagerListener extends AbstractListener
 {
 
     public function onCreate(Event $e)

@@ -59,15 +59,6 @@ class DiscussionManager implements DiscussionManagerInterface
         return $comment;
     }
 
-    public function removeComment($id)
-    {
-        $comment = $this->getComment($id);
-        $this->assertGranted('discussion.comment.remove', $comment);
-
-        $this->removeInstance($comment->getId());
-        $this->getObjectManager()->remove($comment);
-    }
-
     public function findDiscussionsByLanguage(LanguageInterface $language)
     {
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
@@ -95,16 +86,14 @@ class DiscussionManager implements DiscussionManagerInterface
         return new ArrayCollection($discussions);
     }
 
-    /*
-     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
-     */
     public function startDiscussion(
         UuidInterface $object,
         LanguageInterface $language,
         UserInterface $author,
         $forum,
         $title,
-        $content
+        $content,
+        $data = []
     ) {
         if ($object->is('comment')) {
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
@@ -136,10 +125,11 @@ class DiscussionManager implements DiscussionManagerInterface
             'start',
             $this,
             [
-                'user'       => $author,
+                'author'     => $author,
                 'on'         => $object,
                 'discussion' => $comment,
-                'language'   => $language
+                'language'   => $language,
+                'data'       => $data
             ]
         );
 
@@ -149,13 +139,15 @@ class DiscussionManager implements DiscussionManagerInterface
     }
 
     /*
-     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::comment()
+     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
      */
+
     public function commentDiscussion(
         CommentInterface $discussion,
         LanguageInterface $language,
         UserInterface $author,
-        $content
+        $content,
+        $data = []
     ) {
         $this->assertGranted('discussion.comment.create', $discussion);
 
@@ -187,18 +179,23 @@ class DiscussionManager implements DiscussionManagerInterface
         $this->getEventManager()->trigger(
             'comment',
             $this,
-            array(
-                'user'       => $author,
+            [
+                'author'     => $author,
                 'comment'    => $comment,
                 'discussion' => $discussion,
-                'language'   => $language
-            )
+                'language'   => $language,
+                'data'       => $data
+            ]
         );
 
         $this->getObjectManager()->persist($comment);
 
         return $comment;
     }
+
+    /*
+     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::comment()
+     */
 
     public function toggleArchived($commentId)
     {
@@ -212,5 +209,14 @@ class DiscussionManager implements DiscussionManagerInterface
     public function findParticipatedDiscussions(\User\Entity\UserInterface $user)
     {
         // TODO Auto-generated method stub
+    }
+
+    public function removeComment($id)
+    {
+        $comment = $this->getComment($id);
+        $this->assertGranted('discussion.comment.remove', $comment);
+
+        $this->removeInstance($comment->getId());
+        $this->getObjectManager()->remove($comment);
     }
 }

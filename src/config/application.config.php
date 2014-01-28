@@ -11,25 +11,27 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules'                 => array(
+        'ZendDeveloperTools',
+        'Application',
+        'AsseticBundle',
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
-        'ZendDeveloperTools',
-        'AsseticBundle',
         'Common',
-        'ClassResolver',
-        'Application',
+        'Authentication',
         'Ui',
         'Admin',
         'User',
         'Versioning',
         'Entity',
+        'Taxonomy',
         'Link',
         'Subject',
         'Term',
         'Uuid',
+        'ClassResolver',
         'Language',
         'Event',
         'Mailman',
@@ -38,7 +40,7 @@ return array(
         'Discussion',
         'Page',
         'Blog',
-        'Upload',
+        'Attachment',
         'RelatedContent',
         'Contexter',
         'Flag',
@@ -50,7 +52,9 @@ return array(
         'Markdown',
         'Authorization',
         'Taxonomy',
-        'Notification'
+        'Notification',
+        'Ads',
+        'Migrator'
     ),
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => array(

@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class TaxonomyManagerListener extends AbstractMvcListener
+class TaxonomyManagerListener extends AbstractListener
 {
 
     public function onCreate(Event $e)
@@ -47,7 +47,7 @@ class TaxonomyManagerListener extends AbstractMvcListener
             [
                 [
                     'name'   => 'object',
-                    'object' => $e->getParam('object')->getUuidEntity()
+                    'value' => $e->getParam('object')->getUuidEntity()
                 ]
             ]
         );
@@ -67,7 +67,7 @@ class TaxonomyManagerListener extends AbstractMvcListener
             [
                 [
                     'name'   => 'object',
-                    'object' => $e->getParam('object')->getUuidEntity()
+                    'value' => $e->getParam('object')->getUuidEntity()
                 ]
             ]
         );

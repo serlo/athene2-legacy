@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class LinkServiceListener extends AbstractMvcListener
+class LinkServiceListener extends AbstractListener
 {
 
     public function onLink(Event $e)
@@ -24,7 +24,7 @@ class LinkServiceListener extends AbstractMvcListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'object' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')->getUuidEntity()
             )
         );
 
@@ -40,7 +40,7 @@ class LinkServiceListener extends AbstractMvcListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'object' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')->getUuidEntity()
             )
         );
 

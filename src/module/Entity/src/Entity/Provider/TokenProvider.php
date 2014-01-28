@@ -20,40 +20,36 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
 
     protected $data = null;
 
-    public function getTranslator()
-    {
-        return $this->getServiceLocator()->get('translator');
-    }
-
     public function getData()
     {
-        if (!is_array($this->data)) {
-            $path = $this->getObject()->getId();
+        $path = $this->getObject()->getId();
 
-            /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */
-            foreach ($this->getObject()->getTaxonomyTerms() as $term) {
-                $path = $term->slugify('root');
-                break;
-            }
-
-            $title = $this->getObject()->getHead()->get('title');
-
-            $type = $this->getObject()->getType()->getName();
-
-            $this->data = array(
-                'path'  => $path,
-                'type'  => $this->getTranslator()->translate($type),
-                'title' => $title,
-                'id'    => $this->getObject()->getId(),
-            );
+        /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */
+        foreach ($this->getObject()->getTaxonomyTerms() as $term) {
+            $path = $term->slugify('root');
+            break;
         }
 
-        return $this->data;
+        $title = $this->getObject()->getHead()->get('title');
+
+        $type = $this->getObject()->getType()->getName();
+
+        return [
+            'path'  => $path,
+            'type'  => $this->getTranslator()->translate($type),
+            'title' => $title,
+            'id'    => $this->getObject()->getId(),
+        ];
     }
 
     protected function validObject($object)
     {
         $this->isValid($object);
+    }
+
+    public function getTranslator()
+    {
+        return $this->getServiceLocator()->get('translator');
     }
 
     protected function isValid(EntityInterface $object)

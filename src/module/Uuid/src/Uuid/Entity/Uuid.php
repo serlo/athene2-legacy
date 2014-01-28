@@ -48,9 +48,9 @@ class Uuid implements UuidInterface
     protected $taxonomyTerm;
 
     /**
-     * @ORM\OneToOne(targetEntity="Upload\Entity\Upload", mappedBy="id", fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity="Attachment\Entity\Container", mappedBy="id", fetch="EXTRA_LAZY")
      */
-    protected $upload;
+    protected $attachment;
 
     /**
      * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id", fetch="EXTRA_LAZY")
@@ -125,7 +125,7 @@ class Uuid implements UuidInterface
 
     function __construct()
     {
-        $this->uuid    = hash('crc32b', uniqid('uuid.', true));
+        $this->uuid    = hash('sha224', uniqid('uuid.', true));
         $this->trashed = false;
     }
 

@@ -9,11 +9,7 @@
     </header>
     <?php
         $content = $revision->get('content');
-        try {
-            echo $this->markdown()->toHtml($content);
-        } catch (Exception $e) {
-            echo $content;
-        }
+        echo $this->markdown()->toHtml($content);
     ?>
     <hr>
     <section>

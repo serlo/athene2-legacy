@@ -55,28 +55,28 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
 
     SearchResults.prototype.onKey = function (e, isSearching) {
         switch (e.keyCode) {
-            case Common.KeyCode.up:
-                e.preventDefault();
-                this.focusPrev();
-                return;
-            case Common.KeyCode.down:
-                e.preventDefault();
-                this.focusNext();
-                return;
-            case Common.KeyCode.enter:
-                if (isSearching) {
-                    break;
-                }
-
-                if (undefined !== this.$links && this.$links.length) {
-                    Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
-                    this.$input.blur();
-                } else {
-                    Router.post('/search', {
-                        q: this.$input.val()
-                    });
-                }
+        case Common.KeyCode.up:
+            e.preventDefault();
+            this.focusPrev();
+            return;
+        case Common.KeyCode.down:
+            e.preventDefault();
+            this.focusNext();
+            return;
+        case Common.KeyCode.enter:
+            if (isSearching) {
                 break;
+            }
+
+            if (undefined !== this.$links && this.$links.length) {
+                Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
+                this.$input.blur();
+            } else {
+                Router.post('/search', {
+                    q: this.$input.val()
+                });
+            }
+            break;
         }
     };
 
@@ -169,12 +169,12 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
                 }
 
                 switch (e.keyCode) {
-                    case Common.KeyCode.esc:
-                        self.$input.blur();
-                        break;
-                    default:
-                        Common.expr(value.length < self.options.maxQueryLength || self.search(value));
-                        break;
+                case Common.KeyCode.esc:
+                    self.$input.blur();
+                    break;
+                default:
+                    Common.expr(value.length < self.options.maxQueryLength || self.search(value));
+                    break;
                 }
             });
     };

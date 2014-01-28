@@ -53,15 +53,24 @@ function processTables($input)
             preg_match_all($pattern, $tableRow[0], $tableColumns, PREG_SET_ORDER);
             
             $columns = array();
-            
-            foreach ($tableColumns as $tableColumn) {
-                
-                // remove <td>, </td>
-                $pattern = "~(<td[^>]*>)|(</td[^>]*>)~isU";
-                $tableColumn[0] = preg_replace($pattern, '', $tableColumn[0]);
-                
+
+            $count = count($tableColumns);
+            if($count < 4){
+                foreach ($tableColumns as $tableColumn) {
+
+                    // remove <td>, </td>
+                    $pattern = "~(<td[^>]*>)|(</td[^>]*>)~isU";
+                    $tableColumn[0] = preg_replace($pattern, '', $tableColumn[0]);
+
+                    $columns[] = array(
+                        'col' => 12 / $count,
+                        'content' => $tableColumn[0]
+                    );
+                }
+            } else {
                 $columns[] = array(
-                    'content' => $tableColumn[0]
+                    'col' => 12,
+                    'content' => '<table><tr>'.$tableRow[0].'</tr></table>'
                 );
             }
             
@@ -80,53 +89,518 @@ function processTables($input)
 
 function input()
 {
-    return "
-        text vor tabelle
-        
-<table border=\"0\" style=\"width:100%;\">
-    <tbody>
-        <tr>
-            <td style=\"width:30%;\">
-                <h2>Exponentielles Wachstum</h2>
-            </td>
-            <td>aberdaf</td>
-            <td>aberdaf</td>
-        </tr>
-    </tbody>
+    return "Die **Addition**, umgangssprachlich auch **Plus-Rechnen** genannt, ist eine der vier [wiki=262]Grundrechenarten[/wiki]. In der Grundschule und in der Umgangssprache verwendet man meist den Ausdruck **Zusammenzlen** fÃ¼r die Addition von zwei oder mehr Zahlen, da Addition den Vorgang des ZÃ¤hlens beschreibt.
+
+Â 
+
+Die Elemente bzw. Operanden einer Addition werdenÂ **Summanden**Â und das ErgebnisÂ **Summe**Â genannt:Â 
+
+1. Summand + 2. Summand = Summe
+
+Eine Summe muss aber nicht nur aus 2 Summanden bestehen, sie kann auch aus mehreren Summanden bestehen.Â 
+
+Â 
+
+Im Allgemeinen ist die Addition nicht fÃ¼r fÃ¼r Zahlen definiert. Vektoren kann man zum Beispiel auch miteinander addieren. Die Grundrechenart, die eine Addition \"rÃ¼ckgÃ¤ngig\" macht, istÂ **[wiki=12]Subtraktion[/wiki]**.Â 
+
+Anschauung
+==========
+
+Die Addition beschreibt der Vorgang des ZusammenzÃ¤hlens. Â Man bringt also zwei Zahlen (oder zwei Sachen) zusammen, und macht daraus eine neue.
+
+Â 
+
+### Beispiel
+
+<table><tr><td>Nimmt man zwei Kreise, und tut 3 Kreise dazu, so bekommt man 5 Kreise.</td>
+
+<td>![7881_M0szn1FMdb.xml](/uploads/7882_Zr8ENblk1o.png)</td>
+
+</tr>
+
 </table>
-        text zwischen tabelle
-<table border=\"0\" style=\"width:100%;\">
-    <tbody>
-        <tr>
-            <td style=\"width:30%;\">
-                <h2>Exponentielles Wachstum</h2>
-            </td>
-        </tr>
-    </tbody>
+
+Â  Â 
+
+Rechenregeln
+============
+
+GrundsÃ¤tzlich gelten fÃ¼r die Addition folgende Rechengesetze:
+
+Â 
+
+Summanden vertauschen - KommutativgesetzÂ [wikilink]131[/wikilink]
+-----------------------------------------------------------------
+
+Man kann zwei Summanden miteinander vertauschen, ohne das Ergebnis zu verÃ¤ndern.
+
+Â 
+
+<table><tr><td>### Beispiel
+
+ Nimmt man nun 3 Kreise, und zÃ¤hlt 2 dazu, so bekommt man wieder 5 Kreise.</td>
+
+<td>![7883_ves6ZfxdeD.xml](/uploads/7884_Qdvczaa6WD.png)</td>
+
+</tr>
+
 </table>
-<table>
-    <tr>
-        <td herp=\"derp\">
-           <h2>Exponentielles Wachstum</h2>
-        </td>
-        <td>columnn2</td>
-    </tr>
+
+Â Â 
+
+Klammergesetz - Assoziativgesetz [wikilink]124[/wikilink]
+---------------------------------------------------------
+
+Beim Rechnen mit mehreren Zahlen benutzen wir Klammern um zu zeigen, welche Teile man zuerst rechnen will. Beim addieren darf man die Klammern beliebig umplatzieren, ohne das Ergebnis zu verÃ¤ndern.
+
+<table><tr><td>### Beispiel
+
+ZÃ¤hlt man 1 Kreis und 2 Kreise zuerst zusammen, dann 3 dazu, bekommt man 6 Kreise.
+
+ZÃ¤hlt man nun zuerst die zwei Kreise mit den 3 Kreisen zusammen, dann den einen Kreis dazu, bekommt man auch 6 Kreise.
+
+</td>
+
+<td>![7891_JT3ZPEhuGx.xml](/uploads/7892_IuG4ObbrA9.png)
+
+</td>
+
+</tr>
+
 </table>
-        
-<table>
-    <tbody>
-        <tr>
-            <td>columnn 1.1</td>
-            <td>columnn 1.2</td>
-            <td>columnn 1.3</td>
-        </tr>
-        <tr>
-            <td colspan=\"2\">columnn 1.1 + 1.2</td>
-            <td>columnn 1.3</td>
-        </tr>
-    </tbody>
-</table>   
-        text nach tabelle     
+
+Â  Â 
+
+Die besondere Zahl - Null
+-------------------------
+
+FÃ¼r die Zahl Null gilt:
+
+1. ZÃ¤hlt man zu etwas 0 dazu, so bleibt die Summe gleich.
+2. Wenn man zu eine Zahl etwas addiert und die Summe sich nicht Ã¤ndert, dann war es die Null, die man dazu addiert hat. Mit Formeln ausgedrÃ¼tckt: falls fÃ¼r zwei Zahlen a und b gilt a + b = a, dann muss gelten b = 0.
+
+Â  Â 
+
+Addition von kleine Zahlen
+==========================
+
+Es gibt verschiedene MÃ¶glichkeiten eine Summe von einstellige Zahlen zu berechnen.Â 
+
+Â  Â 
+
+Addition mit Zahlengerade [wikilink]390[/wikilink]
+
+Zahlengerade zu benutzen ist die anschaulichste MÃ¶glichkeit, eine einfache Summe zu berechnen. Um zum Beispiel Â 2 + 3Â zu berechnen, markiert man zuerst die Zahl 2 auf der Zahlengerade, und geht von dort aus um 3 nach rechts. Die nun markierte Zahl auf dem Zahlengerade ist dann das Ergebnis.Â 
+
+![7997_Gt90w4vq78.xml](/uploads/7998_DmDKGEe0jr.png)
+
+Mit dieser Methode kann man sich zwar die Addition gut vorstellen, sie ist aber nur fÃ¼r kleine Zahlen geeignet, und kostet sehr viel Zeit.
+
+Â Â 
+
+Merktabelle
+-----------
+
+Um spÃ¤ter grÃ¶ÃŸere Zahlen addieren zu kÃ¶nnen, ist es schneller die Summe von kleinen Zahlen auswendig zu lernen. (Wegen der KommutativitÃ¤t muss die Reihenfolge nicht beachtet werden.) Diese Tabelle schaut sehr riesig aus, ist aber nicht schwer zu merken, da man im Alltag ohnehin oft Sachen zusammenzÃ¤hlt.
+
+<table><tr><td>**+**</td>
+
+<td>**0**</td>
+
+<td>**1**</td>
+
+<td>**2**</td>
+
+<td>**3**</td>
+
+<td>**4**</td>
+
+<td>**5**</td>
+
+<td>**6**</td>
+
+<td>**7**</td>
+
+<td>**8**</td>
+
+<td>**9**</td>
+
+</tr>
+
+<tr><td>**0**</td>
+
+<td>0</td>
+
+<td>1</td>
+
+<td>2</td>
+
+<td>3</td>
+
+<td>4</td>
+
+<td>5</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+</tr>
+
+<tr><td>**1**</td>
+
+<td>1</td>
+
+<td>2</td>
+
+<td>3</td>
+
+<td>4</td>
+
+<td>5</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+</tr>
+
+<tr><td>**2**</td>
+
+<td>2</td>
+
+<td>3</td>
+
+<td>4</td>
+
+<td>5</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+</tr>
+
+<tr><td>**3**</td>
+
+<td>3</td>
+
+<td>4</td>
+
+<td>5</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+</tr>
+
+<tr><td>**4**</td>
+
+<td>4</td>
+
+<td>5</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+<td>13</td>
+
+</tr>
+
+<tr><td>**5**</td>
+
+<td>5</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+<td>13</td>
+
+<td>14</td>
+
+</tr>
+
+<tr><td>**6**</td>
+
+<td>6</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+<td>13</td>
+
+<td>14</td>
+
+<td>15</td>
+
+</tr>
+
+<tr><td>**7**</td>
+
+<td>7</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+<td>13</td>
+
+<td>14</td>
+
+<td>15</td>
+
+<td>16</td>
+
+</tr>
+
+<tr><td>**8 Â **</td>
+
+<td>8</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+<td>13</td>
+
+<td>14</td>
+
+<td>15</td>
+
+<td>16</td>
+
+<td>17</td>
+
+</tr>
+
+<tr><td>**9**</td>
+
+<td>9</td>
+
+<td>10</td>
+
+<td>11</td>
+
+<td>12</td>
+
+<td>13</td>
+
+<td>14</td>
+
+<td>15</td>
+
+<td>16</td>
+
+<td>17</td>
+
+<td>18</td>
+
+</tr>
+
+</table>
+
+Â Â 
+
+### Wie benutzt man die Merktabelle?
+
+- Suche am roten Randstreifen der erst Summand und liegt der Zeigefinger der linken Hand darauf.
+- Suche mit dem rechten Zeigefinger den zweiten Summand unter den blauen Zahlen.Â 
+- Bewege jetzt beide HÃ¤nde jeweils in den Reihen und Spalten aufeinander zu, bis sie sich treffen. Die Zahl, die jetzt unter beiden Zeigefinger liegt, ist das Ergebnis.
+
+### Â 
+
+### Beispiel
+
+In der folgenden Animation wird die Vorgehensweise anhand von dem Beispiel 2 + 3 = 5 gezeigt.
+
+Â Â 
+
+### Ãœbungsaufgaben
+
+Finde die folgende Summen in der Additionstabelle:
+
+1. 9 + 4
+2. 8 + 2
+
+Â [spoiler=LÃ¶sung]
+
+1. 9 + 4 = 13
+
+![Additionstabelle: 9 + 4](/uploads/8049_aBs4M1wzRD.png \"Additionstabelle: 9 + 4\")
+
+Â 
+
+2. 8 + 2 = 10
+
+![Additionstabelle:8+2](/uploads/8052_9kdm56PwrQ.png \"Additionstabelle:8+2\")
+
+Â Â [/spoiler]
+
+Â Â 
+
+Schriftliche AdditionÂ [wikilink]436[/wikilink]
+==============================================
+
+FÃ¼r Addition mit grÃ¶ÃŸeren Zahlen benutzt man die **schriftliche Addition**.
+
+Bei der schriftlichen Addition werden die Summanden untereinander geschrieben und dann von der Einerstelle ausgehend addiert. Bei mehreren Zahlen werden alle Summanden untereinander geschrieben, die Vorgehensweise ist wie bei zwei Zahlen.
+
+Â Â 
+
+Beispiel
+
+<table><tr><td>![Â«math xmlns=Â¨http://www.w3.org/1998/Math/MathMLÂ¨Â»Â«mtable columnalign=Â¨leftÂ¨ rowspacing=Â¨0Â¨Â»Â«mtrÂ»Â«mtdÂ»Â«menclose notation=Â¨bottomÂ¨Â»Â«mtableÂ»Â«mtrÂ»Â«mtdÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»3Â«/mnÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»6Â«/mnÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»5Â«/mnÂ»Â«/mtdÂ»Â«/mtrÂ»Â«mtrÂ»Â«mtdÂ»Â«moÂ»+Â«/moÂ»Â«/mtdÂ»Â«mtdÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mtdÂ»Â«mtdÂ»Â«msubÂ»Â«mnÂ»1Â«/mnÂ»Â«mnÂ»1Â«/mnÂ»Â«/msubÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»5Â«/mnÂ»Â«/mtdÂ»Â«/mtrÂ»Â«/mtableÂ»Â«/mencloseÂ»Â«/mtdÂ»Â«/mtrÂ»Â«mtrÂ»Â«mtdÂ»Â«mtableÂ»Â«mtrÂ»Â«mtdÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»3Â«/mnÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»8Â«/mnÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mtdÂ»Â«mtdÂ»Â«mnÂ»0Â«/mnÂ»Â«/mtdÂ»Â«/mtrÂ»Â«/mtableÂ»Â«/mtdÂ»Â«/mtrÂ»Â«/mtableÂ»Â«/mathÂ»](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=c0e33a2445c2dd88f2a86d3b181fc122.png \"Double click to edit\")Â Â </td>
+
+<td>1. **Einerstelle addieren:**Â ![Â«math xmlns=Â¨http://www.w3.org/1998/Math/MathMLÂ¨Â»Â«mnÂ»5Â«/mnÂ»Â«moÂ»+Â«/moÂ»Â«mnÂ»5Â«/mnÂ»Â«moÂ»=Â«/moÂ»Â«mnÂ»10Â«/mnÂ»Â«/mathÂ»](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=140cc0a93742ec69566ead0f64036421.png \"Double click to edit\")![Â«math xmlns=Â¨http://www.w3.org/1998/Math/MathMLÂ¨Â»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§#8658;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mathÂ»](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=fd14476735098f68773f1085beef42f4.png \"Double click to edit\")Â An der Einerstelle des Ergebnisses (unter dem Strich) steht eine 0 und es muss ein Zehner addiert werden![Â«math xmlns=Â¨http://www.w3.org/1998/Math/MathMLÂ¨Â»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§#8594;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mathÂ»](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=164da5eb93540f443b12b9f4733cd91b.png \"Double click to edit\")also 1 bei den 10ern anmerken.
+2. **Zehnerstelle addieren:**Â ![Â«math xmlns=Â¨http://www.w3.org/1998/Math/MathMLÂ¨Â»Â«mnÂ»6Â«/mnÂ»Â«moÂ»+Â«/moÂ»Â«mnÂ»1Â«/mnÂ»Â«moÂ»+Â«/moÂ»Â«mnÂ»1Â«/mnÂ»Â«moÂ»=Â«/moÂ»Â«mnÂ»8Â«/mnÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§#8658;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mathÂ»](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=5b6a9d6e5b2b0286d7d994cc2acb30b9.png \"Double click to edit\")Die Zehnerstelle des Ergebnisses ist 8.
+3. **Hunderterstellen addieren:Â **![Â«math xmlns=Â¨http://www.w3.org/1998/Math/MathMLÂ¨Â»Â«mnÂ»3Â«/mnÂ»Â«moÂ»+Â«/moÂ»Â«mnÂ»0Â«/mnÂ»Â«moÂ»=Â«/moÂ»Â«mnÂ»3Â«/mnÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§#8658;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«moÂ»Â§nbsp;Â«/moÂ»Â«/mathÂ»](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=925596a31bffec49a2eb2d590d59da80.png \"Double click to edit\")Die Hunderterstelle des Ergebnisses ist 3.
+
+</td>
+
+</tr>
+
+</table>
+
+Â Â 
+
+Tricks
+======
+
+Wegen der KommutativitÃ¤t und AssoziativitÃ¤t der Addition kann man die Reihenfolge der Summanden beliebig vertauschen. Das liefert einige praktische Tricks bei der Addition vor allem von mehreren Zahlen.
+
+Â  Â 
+
+10er sammeln
+------------
+
+Bevor man anfÃ¤ngt, mehrere Zahlen von Links nach Rechts zu addieren, kann man versuchen zuerst nach Zahlen zu suchen, die zusammen 10 ergeben. Denn Addition von 10er ist besonders einfach! DafÃ¼r mÃ¼ssen diese Zahlen ist nicht nebeneinander stehen, die Reihenfolge der Addition ist ja egal.
+
+###
+
+### Beispiel
+
+![showimage.php?formula=89cef236b9374be2ec](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=89cef236b9374be2ec2e354e611c0f70.png)
+
+Â  Â 
+
+Zahlen aufspalten
+-----------------
+
+Manchmal ist es einfacher, eine Zahl als eine Summe vorzustellen. Man kann damit oft die Addition auf Addition von einstellige Zahlen reduzieren und sich damit die schriftliche Addition ersparen. Ein einfaches Beispiel zeigt die Vorgehensweise:
+
+### Beispiel 1
+
+![showimage.php?formula=91a4b06c4e042866f4](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=91a4b06c4e042866f4fe4c8404facf31.png)
+
+Â  Â 
+
+Dieses Beispiel ist so einfach, dass man gar keine Tricks hÃ¤tte anwenden mÃ¼ssen. Allerdings gibt es auch andere Rechnungen, bei denen sich dieser Trick als nÃ¼tzlich erweist:
+
+### Beispiel 2
+
+![showimage.php?formula=0027f207a944776614](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=0027f207a944776614cf2990f306cd3b.png)
+
+Â  Â 
+
+Man kann diesen Trick auch in Kombination mit Multiplikation benutzen. Vor allem kann man die Einfachheit des Â \"Verdoppelns\" ausnutzen.
+
+### Beispiel 3
+
+![showimage.php?formula=850a72bb948d77d5c9](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=850a72bb948d77d5c94380627e4b4a58.png)
+
+Â  Â 
+
+Zahlen aufrunden
+----------------
+
+Ist eine Zahl fast \"rund\", das heiÃŸt nahe an einer 100er oder 10er Zahl, kann man es aunutzen um die Addition zu vereinfachen.
+
+### Beispiel
+
+![showimage.php?formula=6f64f1496fabaac169](/scripts/libs/tiny_mce/plugins/tiny_mce_wiris/integration/showimage.php?formula=6f64f1496fabaac169ea26bceff99536.png)
+
+Â  Â Â 
+
+Â 
+
+Besondere Additionen
+====================
+
+Â Addition kann man nicht nur fÃ¼r Zahlen definieren, auch andere Objekte. Siehe dazu
+
+- [wiki=94]BrÃ¼che addieren[/wiki]
+- [wiki=60]Vektoren addieren[/wiki]
+- Addition mit negativen Zahlen
         ";
 }
 

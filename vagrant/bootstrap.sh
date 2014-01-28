@@ -25,7 +25,8 @@ apt-get -y update
 
 # Install php
 
-apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin php5-xdebug php5-cli php-apc
+apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin
+apt-get install -y php5-xdebug php5-cli php-apc php-xml-parser
 
 # Install nodejs related stuff
 
@@ -69,7 +70,7 @@ echo "<VirtualHost *:80>
 		Order allow,deny
 		allow from all
 	</Directory>
-</VirtualHost>" >> /etc/apache2/sites-available/athene2.conf
+</VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
 echo '
 sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
@@ -84,10 +85,10 @@ sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athe
 sudo su - www-data -c "cd /var/www/ && php composer.phar self-update"
 sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar install"
 sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar update"
-' >> /home/vagrant/startup.sh
+' > /home/vagrant/startup.sh
 
 echo '
-sudo su - www-data -c "pm2 stop server.js"
+sudo su - www-data -c "pm2 dump && pm2 kill"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower cache clean"
 sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/node_modules"
@@ -95,8 +96,8 @@ sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/source/bower_componen
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
-sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
-' >> /home/vagrant/uicleaner.sh
+sudo su - www-data -c "cd /var/www/src/module/Ui/assets/node_modules/athene2-editor && pm2 start server/server.js"
+' > /home/vagrant/uicleaner.sh
 
 echo '
 # Listen and start after the vagrant-mounted event
@@ -104,7 +105,7 @@ start on vagrant-mounted
 stop on runlevel [!2345]
 
 exec /home/vagrant/startup.sh
-' >> /etc/init/athene2startup.conf
+' > /etc/init/athene2startup.conf
 
 
 echo "sudo mysql -u root --password=\"athene2\" < /var/www/vagrant/dump.sql" > /home/vagrant/updatedb.sh
@@ -131,10 +132,11 @@ echo START=yes > /etc/default/sphinxsearch
 mkdir /var/lib/sphinxsearch/log
 
 # Install crontab
-echo "* * * * * indexer --all --rotate" > sphinxcron
-echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
-crontab sphinxcron
-rm sphinxcron
+echo "* * * * * indexer --all --rotate" > cron
+echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
+echo "@reboot /home/vagrant/reboot.sh" >> cron
+crontab cron
+rm cron
 
 # Run scripts
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"

@@ -12,7 +12,7 @@ namespace Versioning\Service;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use Common\Traits\ObjectManagerAwareTrait;
-use User\Entity\UserInterface;
+use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\Entity\RepositoryInterface;
 use Versioning\Exception;
@@ -23,6 +23,7 @@ class RepositoryService implements RepositoryServiceInterface
 {
     use ObjectManagerAwareTrait, UuidManagerAwareTrait;
     use AuthorizationAssertionTrait, RepositoryManagerAwareTrait;
+    use UserManagerAwareTrait;
 
     /**
      * @var ModuleOptions
@@ -85,8 +86,10 @@ class RepositoryService implements RepositoryServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function commitRevision(array $data, UserInterface $user)
+    public function commitRevision(array $data)
     {
+        $user = $this->getAuthorizationService()->getIdentity();
+
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'commit');
         $this->assertGranted($permission, $repository);
@@ -111,7 +114,8 @@ class RepositoryService implements RepositoryServiceInterface
             [
                 'repository' => $this->getRepository(),
                 'revision'   => $revision,
-                'data'       => $data
+                'data'       => $data,
+                'author'     => $user
             ]
         );
 
@@ -125,6 +129,7 @@ class RepositoryService implements RepositoryServiceInterface
      */
     public function checkoutRevision($id)
     {
+        $user       = $this->getAuthorizationService()->getIdentity();
         $revision   = $this->findRevision($id);
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'checkout');
@@ -136,12 +141,33 @@ class RepositoryService implements RepositoryServiceInterface
             $this,
             [
                 'repository' => $this->getRepository(),
-                'revision'   => $revision
+                'revision'   => $revision,
+                'actor'      => $user
             ]
         );
 
         $this->getObjectManager()->persist($this->getRepository());
+    }
 
-        return $this;
+    public function rejectRevision($id, $reason = null)
+    {
+        $user       = $this->getAuthorizationService()->getIdentity();
+        $revision   = $this->findRevision($id);
+        $repository = $this->getRepository();
+        $permission = $this->getModuleOptions()->getPermission($repository, 'reject');
+        $this->assertGranted($permission, $repository);
+
+        $this->getRepositoryManager()->getEventManager()->trigger(
+            'reject',
+            $this,
+            [
+                'repository' => $this->getRepository(),
+                'revision'   => $revision,
+                'actor'      => $user,
+                'reason'     => $reason
+            ]
+        );
+
+        $this->getUuidManager()->trashUuid($id);
     }
 }

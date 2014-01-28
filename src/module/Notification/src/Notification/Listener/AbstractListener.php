@@ -25,7 +25,7 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate implemen
     public function __construct()
     {
         if (!class_exists($this->getMonitoredClass())) {
-            throw new \Exception\RuntimeException(sprintf(
+            throw new \RuntimeException(sprintf(
                 'The class you are trying to attach to does not exist: %s',
                 $this->getMonitoredClass()
             ));

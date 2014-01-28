@@ -16,6 +16,7 @@
 		'git submodule sync',
 		'git submodule update',
 		'git submodule status',
+        'sh ' . __DIR__ . '/../hyperdrive.sh'
 	);
  
 	// Run the commands for output

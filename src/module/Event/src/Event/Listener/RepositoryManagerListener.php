@@ -12,13 +12,51 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class RepositoryManagerListener extends AbstractMvcListener
+class RepositoryManagerListener extends AbstractListener
 {
 
     /**
      * @var array
      */
     protected $listeners = array();
+
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    {
+        $events->attach(
+            $this->getMonitoredClass(),
+            'commit',
+            array(
+                $this,
+                'onAddRevision'
+            ),
+            1
+        );
+
+        $events->attach(
+            $this->getMonitoredClass(),
+            'checkout',
+            array(
+                $this,
+                'onCheckout'
+            ),
+            -1
+        );
+
+        $events->attach(
+            $this->getMonitoredClass(),
+            'reject',
+            array(
+                $this,
+                'onReject'
+            ),
+            -1
+        );
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Versioning\RepositoryManager';
+    }
 
     public function onAddRevision(Event $e)
     {
@@ -34,8 +72,8 @@ class RepositoryManagerListener extends AbstractMvcListener
             $revision,
             array(
                 array(
-                    'name'   => 'repository',
-                    'object' => $repository
+                    'name'  => 'repository',
+                    'value' => $repository
                 )
             )
         );
@@ -45,7 +83,7 @@ class RepositoryManagerListener extends AbstractMvcListener
     {
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository')->getUuidEntity();
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
+        $user       = $e->getParam('actor');
         $language   = $this->getLanguageManager()->getLanguageFromRequest();
 
         $this->logEvent(
@@ -55,38 +93,36 @@ class RepositoryManagerListener extends AbstractMvcListener
             $revision,
             array(
                 array(
-                    'name'   => 'repository',
-                    'object' => $repository
+                    'name'  => 'repository',
+                    'value' => $repository
                 )
             )
         );
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function onReject(Event $e)
     {
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'commit',
-            array(
-                $this,
-                'onAddRevision'
-            ),
-            1
-        );
+        $revision   = $e->getParam('revision');
+        $repository = $e->getParam('repository')->getUuidEntity();
+        $user       = $e->getParam('actor');
+        $language   = $this->getLanguageManager()->getLanguageFromRequest();
+        $reason     = $e->getParam('reason');
 
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'checkout',
+        $this->logEvent(
+            'entity/revision/reject',
+            $language,
+            $user,
+            $revision,
             array(
-                $this,
-                'onCheckout'
-            ),
-            -1
+                array(
+                    'name'  => 'repository',
+                    'value' => $repository
+                ),
+                array(
+                    'name'  => 'reason',
+                    'value' => $reason
+                )
+            )
         );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'Versioning\RepositoryManager';
     }
 }

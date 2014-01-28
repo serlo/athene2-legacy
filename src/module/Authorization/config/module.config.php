@@ -24,7 +24,7 @@ return [
             ]
         ],
         'assertion_map'     => [
-            'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion'
+            'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion',
         ]
     ],
     'service_manager'    => [
@@ -46,6 +46,13 @@ return [
     'class_resolver'     => [
         __NAMESPACE__ . '\Entity\RoleInterface'       => 'User\Entity\Role',
         __NAMESPACE__ . '\Entity\PermissionInterface' => 'User\Entity\Permission'
+    ],
+    'di'                 => [
+        'instance' => [
+            'preferences' => [
+                __NAMESPACE__ . '\Service\RoleServiceInterface' => __NAMESPACE__ . '\Service\RoleService'
+            ],
+        ]
     ],
     'router'             => [
         'routes' => [

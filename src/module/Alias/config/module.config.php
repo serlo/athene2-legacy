@@ -48,7 +48,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Alias\Options\ManagerOptions' => 'Alias\Factory\ManagerOptionsFactory'
+            __NAMESPACE__ . '\Options\ManagerOptions' => __NAMESPACE__ . '\Factory\ManagerOptionsFactory',
+            __NAMESPACE__ . '\AliasManager'           => __NAMESPACE__ . '\Factory\AliasManagerFactory'
         ]
     ],
     'di'              => [
@@ -57,7 +58,7 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\AliasController'            => [
+                __NAMESPACE__ . '\Controller\AliasController'         => [
                     'setAliasManager'    => [
                         'required' => true
                     ],
@@ -65,17 +66,17 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\BlogControllerListener'       => [
+                __NAMESPACE__ . '\Listener\BlogControllerListener'    => [
                     'setAliasManager' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\PageControllerListener'       => [
+                __NAMESPACE__ . '\Listener\PageControllerListener'    => [
                     'setAliasManager' => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\RepositoryControllerListener' => [
+                __NAMESPACE__ . '\Listener\RepositoryManagerListener' => [
                     'setAliasManager'    => [
                         'required' => true
                     ],
@@ -83,23 +84,6 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\AliasManager'                          => [
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setOptions'       => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setTokenizer'     => [
-                        'required' => true
-                    ],
-                    'setUuidManager'   => [
-                        'required' => true
-                    ]
-                ]
             ]
         ],
         'instance'            => [
