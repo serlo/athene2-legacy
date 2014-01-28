@@ -13,10 +13,9 @@ namespace Discussion\Form;
 use Notification\Form\OptInFieldset;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Textarea;
-use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class CommentForm extends Form
+class CommentForm extends AbstractForm
 {
 
     function __construct()

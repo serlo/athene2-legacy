@@ -49,7 +49,8 @@ return [
         'permissions' => [
             'Entity\Entity\Entity' => [
                 'commit'   => 'entity.revision.create',
-                'checkout' => 'entity.revision.checkout'
+                'checkout' => 'entity.revision.checkout',
+                'reject' => 'entity.revision.trash'
             ]
         ]
     ]

@@ -14,7 +14,7 @@ class Module
 
     public static $listeners = [
         'Notification\Listener\RepositoryManagerListener',
-        'Notification\Listener\DiscussionControllerListener'
+        'Notification\Listener\DiscussionManagerListener'
     ];
 
     public function getConfig()

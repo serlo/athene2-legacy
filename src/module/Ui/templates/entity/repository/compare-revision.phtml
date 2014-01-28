@@ -26,8 +26,8 @@
                             <?php endif; ?>
                             <?php if ($this->isGranted('entity.revision.trash', $this->revision)): ?>
                                 <a class="btn btn-danger btn-sm" href="<?php echo $this->url(
-                                    'uuid/trash',
-                                    array('id' => $this->revision->getId())
+                                    'entity/repository/reject',
+                                    array('entity' => $this->entity->getId(), 'revision' => $this->revision->getId())
                                 ); ?>"> <span class="glyphicon glyphicon-trash"></span> </a>
                             <?php endif; ?>
                         <?php else: ?>

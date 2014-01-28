@@ -175,8 +175,7 @@ class ExerciseWorker implements Worker
 
             $repository = $this->repositoryManager->getRepository($lrExercise);
             $revision   = $repository->commitRevision(
-                ['content' => $content],
-                $user
+                ['content' => $content]
             );
             $repository->checkoutRevision($revision->getId());
 
@@ -208,8 +207,7 @@ class ExerciseWorker implements Worker
 
                 $repository = $this->repositoryManager->getRepository($lrSolution);
                 $revision   = $repository->commitRevision(
-                    ['content' => $content, 'hint' => $hint],
-                    $user
+                    ['content' => $content, 'hint' => $hint]
                 );
                 $repository->checkoutRevision($revision->getId());
 

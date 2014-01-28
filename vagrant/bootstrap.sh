@@ -132,10 +132,11 @@ echo START=yes > /etc/default/sphinxsearch
 mkdir /var/lib/sphinxsearch/log
 
 # Install crontab
-echo "* * * * * indexer --all --rotate" > sphinxcron
-echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
-crontab sphinxcron
-rm sphinxcron
+echo "* * * * * indexer --all --rotate" > cron
+echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
+echo "@reboot /home/vagrant/reboot.sh" >> cron
+crontab cron
+rm cron
 
 # Run scripts
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"

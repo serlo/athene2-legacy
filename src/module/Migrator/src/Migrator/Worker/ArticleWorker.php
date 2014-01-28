@@ -116,8 +116,7 @@ class ArticleWorker implements Worker
 
                 $repository = $this->repositoryManager->getRepository($entity);
                 $revision = $repository->commitRevision(
-                    ['title' => $title, 'content' => $content],
-                    $user
+                    ['title' => $title, 'content' => $content]
                 );
                 $repository->checkoutRevision($revision->getId());
 
