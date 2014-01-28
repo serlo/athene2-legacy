@@ -45,18 +45,24 @@ return [
             ]
         ]
     ],
-    'router'          => [
-        'routes' => [
-            'migrator' => [
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => [
-                    'route'    => '/migrate',
-                    'defaults' => [
-                        'controller' => __NAMESPACE__ . '\Controller\Worker',
-                        'action'     => 'index'
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'migrator' => [
+                    //'type'    => 'Zend\Mvc\Router\Http\Segment',
+                    'options' => [
+                        'route'    => 'migrate',
+                        'defaults' => [
+                            'controller' => __NAMESPACE__ . '\Controller\Worker',
+                            'action'     => 'index'
+                        ]
                     ]
                 ]
-            ]
+            )
+        )
+    ),
+    'router' => [
+        'routes' => [
         ]
     ],
     'service_manager' => array(

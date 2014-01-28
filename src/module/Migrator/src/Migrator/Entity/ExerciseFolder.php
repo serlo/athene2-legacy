@@ -29,7 +29,7 @@ class ExerciseFolder
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder")
+     * @ORM\ManyToOne(targetEntity="Folder", inversedBy="exercises")
      * @ORM\JoinColumn(name="exercise_folder_id", referencedColumnName="id")
      */
     protected $folder;

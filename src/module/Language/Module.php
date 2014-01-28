@@ -11,11 +11,39 @@
 namespace Language;
 
 use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
 class Module
 {
+
+    public function getAutoloaderConfig()
+    {
+        $autoloader                                   = [];
+
+        $autoloader['Zend\Loader\StandardAutoloader'] = [
+            'namespaces' => [
+                __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+            ]
+        ];
+
+        if (file_exists(__DIR__ . '/autoload_classmap.php')) {
+            return [
+                'Zend\Loader\ClassMapAutoloader' => [
+                    __DIR__ . '/autoload_classmap.php',
+                ]
+            ];
+
+        }
+
+        return $autoloader;
+    }
+
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
 
     public function onBootstrap(MvcEvent $e)
     {
@@ -46,7 +74,10 @@ class Module
 
         /* @var $translator Translator */
         $translator = $serviceManager->get('MvcTranslator');
-        $serviceManager->get('router')->setTranslator($translator);
+        $router     = $serviceManager->get('router');
+        if ($router instanceof TranslatorAwareInterface) {
+            $router->setTranslator($translator);
+        }
 
         $lm   = $serviceManager->get('Language\Manager\LanguageManager');
         $code = $lm->getLanguageFromRequest()->getCode();
@@ -59,21 +90,5 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-    }
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                )
-            )
-        );
     }
 }

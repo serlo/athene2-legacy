@@ -16,11 +16,11 @@ use Zend\View\Model\ViewModel;
 
 class AdsController extends AbstractActionController
 {
-    use \Language\Manager\LanguageManagerAwareTrait;
-    use \Common\Traits\ObjectManagerAwareTrait;
-    use \User\Manager\UserManagerAwareTrait;
-    use \Ads\Manager\AdsManagerAwareTrait;
-    use \Attachment\Manager\AttachmentManagerAwareTrait;
+    use\Language\Manager\LanguageManagerAwareTrait;
+    use\Common\Traits\ObjectManagerAwareTrait;
+    use\User\Manager\UserManagerAwareTrait;
+    use\Ads\Manager\AdsManagerAwareTrait;
+    use\Attachment\Manager\AttachmentManagerAwareTrait;
 
     public function indexAction()
     {
@@ -105,7 +105,6 @@ class AdsController extends AbstractActionController
         $form->get('content')->setValue($ad->getContent());
         $form->get('title')->setValue($ad->getTitle());
         $form->get('frequency')->setValue($ad->getFrequency());
-        $form->get('file')->setValue($ad->getAttachment());
         $form->get('file')->setAttribute('required', false);
         $form->get('file')->setLabel('Edit Image');
         $form->get('url')->setValue($ad->getUrl());
@@ -114,14 +113,17 @@ class AdsController extends AbstractActionController
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
+            
             $data = array_merge($data, $this->getRequest()
                 ->getFiles()
                 ->toArray());
+            
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                if ($data['file']!=$ad->getAttachment())
-                {
+                
+                if ($array['file']['error']==0) {
+                 
                     $upload = $this->getAttachmentManager()->attach($array['file']);
                     $array['attachment'] = $upload;
                 }

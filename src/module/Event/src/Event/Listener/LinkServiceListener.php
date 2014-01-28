@@ -12,7 +12,7 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class LinkServiceListener extends AbstractMvcListener
+class LinkServiceListener extends AbstractListener
 {
 
     public function onLink(Event $e)

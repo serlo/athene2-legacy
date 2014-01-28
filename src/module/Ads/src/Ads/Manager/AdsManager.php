@@ -19,110 +19,103 @@ use Page\Exception\InvalidArgumentException;
 
 class AdsManager implements AdsManagerInterface
 {
-
-    use \Common\Traits\ObjectManagerAwareTrait;
-    use\ClassResolver\ClassResolverAwareTrait;
-    use\Attachment\Manager\AttachmentManagerAwareTrait;
+    
+    use\Common\Traits\ObjectManagerAwareTrait;
+    use \ClassResolver\ClassResolverAwareTrait;
+    use \Attachment\Manager\AttachmentManagerAwareTrait;
 
     public function getAd($id)
     {
-        if (!is_numeric($id)) {
+        if (! is_numeric($id)) {
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
         }
-
-        $add = $this->getObjectManager()->find(
-            $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface'),
-            $id
-        );
-        if (!$add) {
+        
+        $add = $this->getObjectManager()->find($this->getClassResolver()
+            ->resolveClassName('Ads\Entity\AdInterface'), $id);
+        if (! $add) {
             throw new AdNotFoundException(sprintf('%s', $id));
         }
-
+        
         return $add;
     }
 
     protected function createAdEntity()
     {
         $ad = $this->getClassResolver()->resolve('Ads\Entity\AdInterface');
-
+        
         return $ad;
     }
 
     public function updateAd(array $data, AdInterface $ad)
     {
-        if (substr($data['url'], 0, 3) == 'www') {
-            $data['url'] = 'http://' . $data['url'];
-        }
         $hydrator = new AdHydrator();
         $hydrator->hydrate($data, $ad);
         $this->getObjectManager()->persist($ad);
-
+        
         return $ad;
     }
 
     public function createAd(array $data)
     {
-        if (substr($data['url'], 0, 3) == 'www') {
-            $data['url'] = 'http://' . $data['url'];
-        }
         $data['clicks'] = 0;
-        $ad             = $this->createAdEntity();
-        $hydrator       = new AdHydrator();
+        $ad = $this->createAdEntity();
+        $hydrator = new AdHydrator();
         $hydrator->hydrate($data, $ad);
         $this->getObjectManager()->persist($ad);
-
+        
         return $ad;
     }
 
     public function findAllAds(LanguageInterface $language)
     {
-        $ads = $this->getObjectManager()->getRepository(
-                $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface')
-            )->findBy(
-                array(
-                    'language' => $language->getId()
-                )
-            );
-
+        $ads = $this->getObjectManager()
+            ->getRepository($this->getClassResolver()
+            ->resolveClassName('Ads\Entity\AdInterface'))
+            ->findBy(array(
+            'language' => $language->getId()
+        ));
+        
         return $ads;
     }
 
     public function removeAd(AdInterface $ad)
     {
         $this->getObjectManager()->remove($ad);
-
-        return this;
+        
+        return $this;
     }
 
     public function findShuffledAds(LanguageInterface $language, $number)
     {
-        $allAds    = $this->findAllAds($language);
+        $allAds = $this->findAllAds($language);
         $adsScaled = array();
-        $ads       = array();
-        if (count($allAds) < $number) {
-            return $ads;
-        }
+        $ads = array();
+        $numberDisabledAds = 0;
         $numberAds = $y = 0;
         foreach ($allAds as $ad) {
-
-            for ($i = 0; $i < $ad->getFrequency(); $i++) {
+            if ($ad->getFrequency() == null) {
+                $numberDisabledAds ++;
+            }
+            for ($i = 0; $i < $ad->getFrequency(); $i ++) {
                 $adsScaled[$numberAds + $i] = $y;
             }
             $numberAds = $numberAds + $ad->getFrequency();
-            $y++;
+            $y ++;
         }
-
-        $random = mt_rand(0, $numberAds - 1);
-
-        for ($i = 0; $i < $number; $i++) {
+        
+        if ((count($allAds) - $numberDisabledAds) < $number) {
+            $number = count($allAds) - $numberDisabledAds;
+        }
+        
+        for ($i = 0; $i < $number; $i ++) {
             $random = mt_rand(0, $numberAds - 1);
             while (in_array($allAds[$adsScaled[$random]], $ads)) {
                 $random = mt_rand(0, $numberAds - 1);
             }
-
+            
             $ads[$i] = $allAds[$adsScaled[$random]];
         }
-
+        
         return $ads;
     }
 }

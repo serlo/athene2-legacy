@@ -14,10 +14,9 @@ use Notification\Form\OptInFieldset;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
-use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class DiscussionForm extends Form
+class DiscussionForm extends AbstractForm
 {
 
     function __construct()

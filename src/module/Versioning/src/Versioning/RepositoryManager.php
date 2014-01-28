@@ -10,13 +10,21 @@
  */
 namespace Versioning;
 
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\InstanceManagerTrait;
 use Versioning\Entity\RepositoryInterface;
 use Zend\EventManager\EventManagerAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class RepositoryManager implements RepositoryManagerInterface
 {
     use InstanceManagerTrait, EventManagerAwareTrait;
+
+    public function __construct(ClassResolverInterface $classResolver, ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        $this->classResolver  = $classResolver;
+    }
 
     public function getRepository(RepositoryInterface $repository)
     {
@@ -29,6 +37,11 @@ class RepositoryManager implements RepositoryManagerInterface
         return $this->getInstance($id);
     }
 
+    protected function getUniqId(RepositoryInterface $repository)
+    {
+        return get_class($repository) . '::' . $repository->getId();
+    }
+
     protected function createService(RepositoryInterface $repository)
     {
         $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
@@ -39,10 +52,5 @@ class RepositoryManager implements RepositoryManagerInterface
         $this->addInstance($name, $instance);
 
         return $this;
-    }
-
-    protected function getUniqId(RepositoryInterface $repository)
-    {
-        return get_class($repository) . '::' . $repository->getId();
     }
 }

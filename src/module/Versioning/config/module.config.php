@@ -10,7 +10,8 @@ namespace Versioning;
 return [
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\RepositoryManager'     => __NAMESPACE__ . '\Factory\RepositoryManagerFactory'
         ]
     ],
     'class_resolver'  => [
@@ -19,14 +20,6 @@ return [
     'di'              => [
         'definition' => [
             'class' => [
-                'Versioning\RepositoryManager'         => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ]
-                ],
                 'Versioning\Service\RepositoryService' => [
                     'setUuidManager'          => [
                         'required' => true
@@ -56,7 +49,8 @@ return [
         'permissions' => [
             'Entity\Entity\Entity' => [
                 'commit'   => 'entity.revision.create',
-                'checkout' => 'entity.revision.checkout'
+                'checkout' => 'entity.revision.checkout',
+                'reject' => 'entity.revision.trash'
             ]
         ]
     ]
