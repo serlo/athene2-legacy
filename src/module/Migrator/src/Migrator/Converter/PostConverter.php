@@ -66,7 +66,7 @@ class PostConverter extends AbstractConverter
             }
 
             $id   = $this->map['folder'][$match[1]]->getId();
-            $view = " >[Zum Thema](/ref/$id) ";
+            $view = " [Zum Thema](/ref/$id) ";
 
             // replacing the match with the view
             $content = str_replace($match[0], $view, $content);
@@ -89,7 +89,7 @@ class PostConverter extends AbstractConverter
             }
 
             $id   = $this->map['article'][$match[1]]->getId();
-            $view = " >[Artikel zum Thema](/ref/$id) ";
+            $view = " [Artikel zum Thema](/ref/$id) ";
 
             // replacing the match with the view
             $content = str_replace($match[0], $view, $content);
@@ -114,7 +114,7 @@ class PostConverter extends AbstractConverter
                     continue;
                 }
                 $id   = $this->map['article'][$match[1]]->getId();
-                $view = " >[$match[2]](/ref/$id) ";
+                $view = " [$match[2]](/ref/$id) ";
 
                 // replacing the match with the view
                 $content = str_replace($match[0], $view, $content);
