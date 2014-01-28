@@ -31,7 +31,7 @@
         'git submodule status',
         'sh ' . __DIR__ . '/../hyperdrive.sh',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && pm2 dump',
-        'cd ' . __DIR__ . '/../module/Ui/assets/ && npm clean',
+        'cd ' . __DIR__ . '/../module/Ui/assets/ && npm cache clean',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && npm install',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && npm update',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && pm2 start node_modules/athene2-editor/server/server.js',
@@ -53,6 +53,7 @@
         $output .= htmlentities(trim($tmp)) . "\n";
         echo $output;
         flush();
+        ob_flush();
     }
 
     // Make it pretty for manual user access (and why not?)
