@@ -15,22 +15,31 @@ use Event\EventManagerAwareTrait;
 use Event\EventManagerInterface;
 use Event\Exception\RuntimeException;
 use Language\Entity\LanguageInterface;
+use Language\Manager\LanguageManagerAwareTrait;
+use Language\Manager\LanguageManagerInterface;
 use User\Entity\UserInterface;
+use User\Manager\UserManagerAwareTrait;
+use User\Manager\UserManagerInterface;
 use Uuid\Entity\UuidHolder;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
-    use EventManagerAwareTrait;
+    use EventManagerAwareTrait, LanguageManagerAwareTrait, UserManagerAwareTrait;
 
-    public function __construct(EventManagerInterface $eventManager)
-    {
+    public function __construct(
+        EventManagerInterface $eventManager,
+        LanguageManagerInterface $languageManager,
+        UserManagerInterface $userManager
+    ) {
         if (!class_exists($this->getMonitoredClass())) {
             throw new RuntimeException(sprintf(
                 'The class you are trying to attach to does not exist: %s',
                 $this->getMonitoredClass()
             ));
         }
-        $this->eventManager = $eventManager;
+        $this->eventManager    = $eventManager;
+        $this->languageManager = $languageManager;
+        $this->userManager     = $userManager;
     }
 
     public function logEvent($name, LanguageInterface $language, UserInterface $actor, $uuid, array $params = array())

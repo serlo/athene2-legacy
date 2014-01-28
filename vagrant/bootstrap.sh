@@ -70,7 +70,7 @@ echo "<VirtualHost *:80>
 		Order allow,deny
 		allow from all
 	</Directory>
-</VirtualHost>" >> /etc/apache2/sites-available/athene2.conf
+</VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
 echo '
 sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
@@ -85,7 +85,7 @@ sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athe
 sudo su - www-data -c "cd /var/www/ && php composer.phar self-update"
 sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar install"
 sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar update"
-' >> /home/vagrant/startup.sh
+' > /home/vagrant/startup.sh
 
 echo '
 sudo su - www-data -c "pm2 dump && pm2 kill"
@@ -97,7 +97,7 @@ sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets/node_modules/athene2-editor && pm2 start server/server.js"
-' >> /home/vagrant/uicleaner.sh
+' > /home/vagrant/uicleaner.sh
 
 echo '
 # Listen and start after the vagrant-mounted event
@@ -105,7 +105,7 @@ start on vagrant-mounted
 stop on runlevel [!2345]
 
 exec /home/vagrant/startup.sh
-' >> /etc/init/athene2startup.conf
+' > /etc/init/athene2startup.conf
 
 
 echo "sudo mysql -u root --password=\"athene2\" < /var/www/vagrant/dump.sql" > /home/vagrant/updatedb.sh
