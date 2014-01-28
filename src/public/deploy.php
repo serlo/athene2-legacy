@@ -29,7 +29,7 @@
         'git submodule sync',
         'git submodule update',
         'git submodule status',
-        'sh ' . __DIR__ . '/../hyperdrive.sh',
+        'sh ' . __DIR__ . '/../../hyperdrive.sh',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && pm2 dump',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && npm cache clean',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && npm install',
