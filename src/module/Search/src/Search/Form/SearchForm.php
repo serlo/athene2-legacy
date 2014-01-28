@@ -11,10 +11,10 @@
  */
 namespace Search\Form;
 
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Submit;
 
 class SearchForm extends Form
 {
@@ -25,7 +25,7 @@ class SearchForm extends Form
         $inputFilter = new InputFilter('search');
         $this->setInputFilter($inputFilter);
         
-        $this->add((new Text('q'));
+        $this->add((new Text('q')));
         
         $this->add((new Submit('submit'))->setValue('search')
             ->setAttribute('class', 'btn btn-success pull-right'));

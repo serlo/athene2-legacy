@@ -3,83 +3,84 @@
  * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org]
  * @license	LGPL-3.0
  * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
-return array(
-    array(
+
+return [
+    [
         'label' => 'Permakultur',
         'route' => 'subject',
-        'params' => array(
+        'params' => [
             'subject' => 'permakultur'
-        ),
-        'pages' => array(
-            array(
+        ],
+        'pages' => [
+            [
                 'label' => 'Startseite',
                 'route' => 'subject',
-                'params' => array(
+                'params' => [
                     'subject' => 'permakultur'
-                ),
+                ],
                 'icon' => 'home'
-            ),
-            array(
+            ],
+            [
                 'label' => 'Lernen',
-                'route' => 'subject/plugin/taxonomy/topic',
-                'params' => array(
+                'route' => 'subject/taxonomy',
+                'params' => [
                     'subject' => 'permakultur'
-                ),
+                ],
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
-                'options' => array(
-                    'parent' => array(
+                'options' => [
+                    'parent' => [
                         'slug' => 'permakultur',
                         'type' => 'subject'
-                    ),
-                    'types' => array(
+                    ],
+                    'types' => [
                         'abstract-topic',
                         'topic'
-                    ),
+                    ],
                     'language' => 'de',
-                    'route' => 'subject/plugin/taxonomy/topic',
+                    'route' => 'subject/taxonomy',
                     'max_depth' => 10,
-                    'params' => array(
+                    'params' => [
                         'subject' => 'permakultur'
-                    )
-                ),
+                    ]
+                ],
                 'icon' => 'book'
-            ),
-            array(
+            ],
+            [
                 'label' => 'Verwalten',
                 'uri' => '#',
-                'pages' => array(
-                    array(
+                'pages' => [
+                    [
                         'label' => 'Neue Bearbeitungen',
-                        'route' => 'subject/plugin/entity',
-                        'params' => array(
+                        'route' => 'subject/entity',
+                        'params' => [
                             'subject' => 'permakultur',
                             'action' => 'unrevised'
-                        )
-                    ),
-                    array(
+                        ]
+                    ],
+                    [
                         'label' => 'Papierkorb',
-                        'route' => 'subject/plugin/entity',
-                        'params' => array(
+                        'route' => 'subject/entity',
+                        'params' => [
                             'subject' => 'permakultur',
                             'action' => 'trash-bin'
-                        )
-                    ),
-                    array(
+                        ]
+                    ],
+                    [
                         'label' => 'Taxonomie verwalten',
                         'route' => 'taxonomy/term/organize',
-                        'params' => array(
+                        'params' => [
                             'id' => '87'
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 'icon' => 'cog'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

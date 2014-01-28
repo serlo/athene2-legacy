@@ -1,25 +1,14 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
-
 namespace User;
 
-/**
- * @codeCoverageIgnore
- */
 class Module
 {
-
-    public static $listeners = array(
-        //'User\Notification\Listener\EntityControllerListener',
-        'User\Notification\Listener\RepositoryPluginControllerListener',
-        'User\Notification\Listener\DiscussionControllerListener',
-    );
 
     public function getConfig()
     {
@@ -28,24 +17,23 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                )
-            )
-        );
-    }
+        $autoloader                                   = [];
 
-    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
-    {
-        foreach (static::$listeners as $listener) {
-            $e->getApplication()
-                ->getEventManager()
-                ->getSharedManager()
-                ->attachAggregate($e->getApplication()
-                ->getServiceManager()
-                ->get($listener));
+        $autoloader['Zend\Loader\StandardAutoloader'] = [
+            'namespaces' => [
+                __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+            ]
+        ];
+
+        if (file_exists(__DIR__ . '/autoload_classmap.php')) {
+            return [
+                'Zend\Loader\ClassMapAutoloader' => [
+                    __DIR__ . '/autoload_classmap.php',
+                ]
+            ];
+
         }
+
+        return $autoloader;
     }
 }

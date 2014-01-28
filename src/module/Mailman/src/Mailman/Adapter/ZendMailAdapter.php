@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Mailman\Adapter;
 
@@ -20,7 +19,6 @@ class ZendMailAdapter implements AdapterInterface
 {
 
     /**
-     *
      * @var SmtpOptions
      */
     protected $smtpOptions;
@@ -28,7 +26,6 @@ class ZendMailAdapter implements AdapterInterface
     private static $instance;
 
     /**
-     *
      * @return \Zend\Mail\Transport\SmtpOptions $smtpOptions
      */
     public function getSmtpOptions()
@@ -37,27 +34,28 @@ class ZendMailAdapter implements AdapterInterface
     }
 
     /**
-     *
-     * @param \Zend\Mail\Transport\SmtpOptions $smtpOptions            
-     * @return $this
+     * @param \Zend\Mail\Transport\SmtpOptions $smtpOptions
+     * @return self
      */
     public function setSmtpOptions(SmtpOptions $smtpOptions)
     {
         $this->smtpOptions = $smtpOptions;
+
         return $this;
     }
 
     public function __construct()
     {
-        if (self::$instance)
+        if (self::$instance) {
             throw new Exception\RuntimeException('ZendMailAdapter does not allow multiple instances');
-        
+        }
+
         self::$instance = $this;
-        $this->queue = array();
+        $this->queue    = array();
     }
 
     protected $queue;
-    
+
     /*
      * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::addMail()
      */
@@ -70,9 +68,10 @@ class ZendMailAdapter implements AdapterInterface
         $message->setEncoding("UTF-8");
         $message->setSubject($subject);
         $this->queue[] = $message;
+
         return $this;
     }
-    
+
     /*
      * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::flush()
      */
@@ -83,6 +82,7 @@ class ZendMailAdapter implements AdapterInterface
         foreach ($this->queue as $message) {
             $transport->send($message);
         }
+
         return $this;
     }
 }

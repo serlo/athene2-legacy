@@ -11,11 +11,10 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Entity
  * @ORM\Table(name="permission")
  */
-class Permission
+class Permission implements PermissionInterface
 {
 
     /**
@@ -36,7 +35,16 @@ class Permission
      */
     protected $roles;
 
-	/**
+    /**
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      *
      * @return field_type $id
      */
@@ -55,10 +63,11 @@ class Permission
     }
 
     /**
-     * @param string $name
-     * @return $this
+     *
+     * @param string $name            
+     * @return self
      */
-    public function setName ($name)
+    public function setName($name)
     {
         $this->name = $name;
         return $this;

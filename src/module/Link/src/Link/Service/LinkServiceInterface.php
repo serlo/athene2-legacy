@@ -1,88 +1,59 @@
 <?php
 /**
- * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace Link\Service;
 
 use Link\Entity\LinkableInterface;
-use Doctrine\Common\Collections\Collection;
+use Link\Options\LinkOptionsInterface;
 
 interface LinkServiceInterface
 {
 
     /**
-     * Returns the children
-     *
-     * @return Collection
+     * @param LinkableInterface    $parent
+     * @param LinkableInterface    $child
+     * @param LinkOptionsInterface $parentOptions
+     * @param number               $position
+     * @return self
      */
-    public function getChildren();
+    public function associate(
+        LinkableInterface $parent,
+        LinkableInterface $child,
+        LinkOptionsInterface $parentOptions,
+        $position = 0
+    );
 
     /**
-     * Returns the parents
-     *
-     * @return Collection
+     * @param LinkableInterface    $parent
+     * @param LinkableInterface    $child
+     * @param LinkOptionsInterface $parentOptions
+     * @param number               $position
+     * @return self
      */
-    public function getParents();
+    public function dissociate(
+        LinkableInterface $parent,
+        LinkableInterface $child,
+        LinkOptionsInterface $parentOptions,
+        $position = 0
+    );
 
     /**
-     * Adds a parent
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $child            
-     * @return $this
+     * @param LinkableInterface $parent
+     * @param string            $typeName
+     * @param array             $children
+     * @return self
      */
-    public function addParent($parent);
+    public function sortChildren(LinkableInterface $parent, $typeName, array $children);
 
     /**
-     * Adds a child
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $child            
-     * @return $this
+     * @param LinkableInterface $child
+     * @param string            $typeName
+     * @param array             $parents
+     * @return self
      */
-    public function addChild($child);
-
-    /**
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $child            
-     * @return $this
-     */
-    public function removeChild($child);
-
-    /**
-     *
-     * @param LinkServiceInterface|LinkEntityInterface $parent            
-     * @return $this
-     */
-    public function removeParent($parent);
-
-    /**
-     *
-     * @param int $id            
-     * @return LinkableInterface
-     */
-    public function getParent($id);
-
-    /**
-     *
-     * @param int $id            
-     * @return LinkableInterface
-     */
-    public function getChild($id);
-
-    /**
-     *
-     * @param array $children            
-     * @return $this
-     */
-    public function orderChildren(array $children);
-
-    /**
-     *
-     * @param array $parents            
-     * @return $this
-     */
-    public function orderParents(array $parents);
+    public function sortParents(LinkableInterface $child, $typeName, array $parents);
 }

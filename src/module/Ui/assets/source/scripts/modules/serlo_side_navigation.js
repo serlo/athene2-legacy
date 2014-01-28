@@ -63,7 +63,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
      */
     MenuItem = function (data) {
         if (data.url === undefined || !data.title || !data.position || data.level === undefined) {
-            throw new Error("Not enough arguments");
+            Common.log('Invalid MenuItem', data);
         }
 
         eventScope(this);

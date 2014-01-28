@@ -28,7 +28,7 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      *
      * @param mixed $reference            
-     * @return $this
+     * @return self
      */
     public function setObject($object)
     {

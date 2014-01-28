@@ -1,6 +1,6 @@
 <?php
 return array(
-    'subject' => 'fach',
-	'topic' => 'thema',
+    'subject'    => 'fach',
+    'topic'      => 'thema',
     'curriculum' => 'lehrplan'
 );

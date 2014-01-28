@@ -11,90 +11,76 @@
  */
 namespace Taxonomy\Manager;
 
-use Language\Service\LanguageServiceInterface;
-use Taxonomy\Service\TermServiceInterface;
-use Taxonomy\Collection\TermCollection;
-use Taxonomy\Entity\TaxonomyTypeInterface;
+use Taxonomy\Entity\TaxonomyInterface;
+use Language\Entity\LanguageInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
+use Common\ObjectManager\Flushable;
 
-interface TaxonomyManagerInterface
+interface TaxonomyManagerInterface extends Flushable
 {
 
     /**
      *
      * @param numeric $id            
-     * @return TermServiceInterface
+     * @return TaxonomyTermInterface
      */
     public function getTerm($id);
 
     /**
-     * Finds a Term by its ancestors.
      *
-     * <code>
-     * $param = array(0 => 'path', 1 => 'to', 2 => 'something');
-     * $this->findTermByAncestors(); // returns "something"
-     * </code>
-     *
-     * Note that the first array element needs to be a sapling node
-     *
+     * @param TaxonomyInterface $taxonomy            
      * @param array $ancestors            
-     * @return TermServiceInterface
+     * @return TaxonomyTermInterface
      */
-    public function findTermByAncestors(array $ancestors);
-
-    /**
-     * Returns the nodes on the highest level.
-     * Nodes on the highest level do either not have a parent node or do have a different taxonomy type than their parents.
-     *
-     * @return \Taxonomy\Collection\TermCollection
-     */
-    public function getSaplings();
+    public function findTerm(TaxonomyInterface $taxonomy, array $ancestors);
 
     /**
      *
-     * @return array
+     * @param numeric $id            
+     * @return TaxonomyInterface
      */
-    public function getAllowedChildrenTypeNames();
+    public function getTaxonomy($id);
 
     /**
      *
-     * @param string $type            
-     * @return bool
+     * @param string $name            
+     * @param LanguageInterface $language            
+     * @return TaxonomyInterface
      */
-    public function allowsParentType($type);
+    public function findTaxonomyByName($name, LanguageInterface $language);
 
     /**
      *
-     * @return array
+     * @param array $data            
+     * @param LanguageInterface $language            
+     * @return TaxonomyTermInterface
      */
-    public function getAllowedParentTypeNames();
+    public function createTerm(array $data, LanguageInterface $language);
 
     /**
      *
-     * @return int $id
+     * @param int $id            
+     * @param array $data            
+     * @return self
      */
-    public function getId();
+    public function updateTerm($id, array $data);
 
     /**
      *
-     * @return TaxonomyTypeInterface
+     * @param int $id
+     * @param string $association
+     * @param TaxonomyTermAwareInterface $with
+     * @return self
      */
-    public function getType();
+    public function associateWith($id, $association, TaxonomyTermAwareInterface $with);
 
     /**
      *
-     * @param TaxonomyTypeInterface $type            
+     * @param int $id
+     * @param string $association
+     * @param TaxonomyTermAwareInterface $object
+     * @return self
      */
-    public function setType(TaxonomyTypeInterface $type);
-
-    /**
-     *
-     * @return TermCollection
-     */
-    public function getTerms();
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function getRadixEnabled();
+    public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object);
 }

@@ -1,89 +1,39 @@
 <?php
 /**
- * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace Link\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Type\Entity\TypeInterface;
 
 interface LinkableInterface
 {
 
     /**
-     *
      * @return int
      */
     public function getId();
 
     /**
-     * Returns the children
-     *
-     * @param LinkTypeInterface $type            
-     * @return Collection
+     * @return TypeInterface
      */
-    public function getChildren(LinkTypeInterface $type);
+    public function getType();
 
     /**
-     * Returns the parents
-     *
-     * @param LinkTypeInterface $type            
-     * @return Collection
+     * @return LinkInterface
      */
-    public function getParents(LinkTypeInterface $type);
+    public function createLink();
 
     /**
-     * Adds a child
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
+     * @return LinkInterface[]
      */
-    public function addChild(LinkableInterface $parent, LinkTypeInterface $type);
+    public function getParentLinks();
 
     /**
-     * Adds a parent
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
+     * @return LinkInterface[]
      */
-    public function addParent(LinkableInterface $parent, LinkTypeInterface $type);
-
-    /**
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
-     */
-    public function removeChild(LinkableInterface $parent, LinkTypeInterface $type);
-
-    /**
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @return $this
-     */
-    public function removeParent(LinkableInterface $parent, LinkTypeInterface $type);
-
-    /**
-     *
-     * @param LinkableInterface $child            
-     * @param LinkTypeInterface $type            
-     * @param int $position            
-     * @return $this
-     */
-    public function positionChild(LinkableInterface $child, LinkTypeInterface $type, $position);
-
-    /**
-     *
-     * @param LinkableInterface $parent            
-     * @param LinkTypeInterface $type            
-     * @param int $position            
-     * @return $this
-     */
-    public function positionParent(LinkableInterface $parent, LinkTypeInterface $type, $position);
+    public function getChildLinks();
 }

@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Alias\Entity;
 
@@ -51,92 +50,56 @@ class Alias implements AliasInterface
      */
     protected $uuid;
 
-    /**
-     *
-     * @return UuidInterface $uuid
-     */
-    public function getUuid()
-    {
-        return $this->uuid;
-    }
-
-    /**
-     *
-     * @param UuidInterface $uuid            
-     * @return $this
-     */
-    public function setUuid(UuidInterface $uuid)
-    {
-        $this->uuid = $uuid;
-        return $this;
-    }
-
-    /**
-     *
-     * @return int $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     *
-     * @return string $alias
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
-     *
-     * @return string $source
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
-    /**
-     *
-     * @return LanguageInterface $language
-     */
     public function getLanguage()
     {
         return $this->language;
     }
 
-    /**
-     *
-     * @param string $alias            
-     * @return $this
-     */
+    public function getObject()
+    {
+        return $this->uuid;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    public function getSource()
+    {
+        return $this->source;
+    }
+
     public function setAlias($alias)
     {
         $this->alias = $alias;
+
         return $this;
     }
 
-    /**
-     *
-     * @param string $source            
-     * @return $this
-     */
     public function setSource($source)
     {
         $this->source = $source;
+
         return $this;
     }
 
-    /**
-     *
-     * @param LanguageInterface $language            
-     * @return $this
-     */
+    public function setObject(UuidInterface $uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
+
         return $this;
     }
 }

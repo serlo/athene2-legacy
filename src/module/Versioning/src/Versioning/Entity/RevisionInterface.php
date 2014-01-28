@@ -9,56 +9,37 @@
 namespace Versioning\Entity;
 
 use User\Entity\UserInterface;
-interface RevisionInterface
+use Uuid\Entity\UuidHolder;
+
+interface RevisionInterface extends UuidHolder
 {
+
     /**
-     * 
+     *
      * @return int
      */
     public function getId();
-    
+
     /**
      * Returns the repository
-     * 
+     *
      * @return RepositoryInterface
      */
-    public function getRepository ();
-    
+    public function getRepository();
+
     /**
      * Sets the repository
-     * 
-     * @param RepositoryInterface $repository
-     * @return $this
+     *
+     * @param RepositoryInterface $repository            
+     * @return self
      */
     public function setRepository(RepositoryInterface $repository);
-    
-    /**
-     * Gets the date´
-     * 
-     * @return \DateTime
-     */
-    public function getDate();
-    
-    /**
-     * Gets the author
-     * 
-     * @return UserInterface
-     */
-    public function getAuthor();
-    
-    /**
-     * Sets the date
-     * 
-     * @param \DateTime $date
-     * @return $this
-     */
-    public function setDate(\DateTime $date);
-    
+
     /**
      * Sets the author
-     * 
-     * @param UserInterface $user
-     * @return $this
+     *
+     * @param UserInterface $user            
+     * @return self
      */
     public function setAuthor(UserInterface $user);
 }

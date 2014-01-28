@@ -1,0 +1,10 @@
+<?php
+//echo $this->response;
+//$this->render($this->response);
+echo json_encode(
+    [
+        'id' => $this->id,
+        'type' => $this->type,
+        'response' => $this->response
+    ]
+);

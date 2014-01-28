@@ -1,111 +1,199 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license LGPL-3.0
- * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link https://github.com/serlo-org/athene2 for the canonical source repository
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license   LGPL-3.0
+ * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Uuid\Manager;
 
+use Authorization\Service\AuthorizationAssertionTrait;
+use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
+use Common\Traits\FlushableTrait;
+use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Uuid\Collection\UuidCollection;
+use Uuid\Exception;
+use Uuid\Options\ModuleOptions;
+use Zend\EventManager\EventManagerAwareTrait;
+use ZfcRbac\Service\AuthorizationService;
 
 class UuidManager implements UuidManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Common\Traits\InstanceManagerTrait;
-    use\Common\Traits\ConfigAwareTrait;
+    use ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use EventManagerAwareTrait, FlushableTrait;
+    use AuthorizationAssertionTrait;
 
-    protected function getDefaultConfig()
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     * @param AuthorizationService   $authorizationService
+     * @param ClassResolverInterface $classResolver
+     * @param ModuleOptions          $moduleOptions
+     * @param ObjectManager          $objectManager
+     */
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ModuleOptions $moduleOptions,
+        ObjectManager $objectManager
+    ) {
+        $this->authorizationService = $authorizationService;
+        $this->classResolver        = $classResolver;
+        $this->objectManager        = $objectManager;
+        $this->moduleOptions        = $moduleOptions;
+    }
+
+    /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
     {
-        return array(
-            'resolver' => array()
-        );
+        return $this->moduleOptions;
     }
 
     public function findByTrashed($trashed)
     {
         $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
-        $entities = $this->getObjectManager()
-            ->getRepository($className)
-            ->findBy(array(
+        $criteria  = [
             'trashed' => $trashed
-        ));
-        $collection = new ArrayCollection($entities);
-        return new UuidCollection($collection, $this);
+        ];
+        $entities  = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+
+        return new ArrayCollection($entities);
     }
 
-    public function injectUuid(UuidHolder $entity, UuidInterface $uuid = NULL)
+    public function injectUuid(UuidHolder $entity, UuidInterface $uuid = null)
     {
-        if (! $uuid) {
+        if ($uuid === null) {
             $uuid = $this->createUuid();
         }
+
         return $entity->setUuid($uuid);
     }
 
     public function getUuid($key)
     {
-        if (! is_numeric($key))
-            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($key)));
-        
-        if (! $this->hasInstance($key)) {
-            $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Uuid\Entity\UuidInterface'), (int) $key);
-            
-            if (! is_object($entity))
-                throw new NotFoundException(sprintf('Could not find %s', $key));
-            
-            $this->addInstance($entity->getId(), $entity);
+        $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
+        $entity    = $this->getObjectManager()->find($className, $key);
+
+        if (!is_object($entity)) {
+            throw new NotFoundException(sprintf('Could not find %s', $key));
         }
-        
-        return $this->getInstance($key);
+
+        return $entity;
     }
 
     public function findUuidByName($string)
     {
-        if (! is_string($string))
+        if (!is_string($string)) {
             throw new InvalidArgumentException(sprintf('Expected string but got %s', gettype($string)));
-        
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Uuid\Entity\UuidInterface'))
-            ->findOneBy(array(
-            'uuid' => (string) $string
-        ));
-        
-        if (! $entity)
-            throw new NotFoundException(sprintf('Could not find %s', $string));
-        
-        if (! $this->hasInstance($entity->getId())) {
-            $this->addInstance($entity->getId(), $entity);
         }
-        
-        return $this->getUuid($entity->getId());
+
+        $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
+        $criteria  = [
+            'uuid' => (string)$string
+        ];
+        $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
+
+        if (!$entity) {
+            throw new NotFoundException(sprintf('Could not find %s', $string));
+        }
+
+        return $entity;
     }
 
-    public function getService($key)
+    public function trashUuid($id)
     {
-        $key = $this->getUuid($key)->getHolder();
-        foreach ($this->getOption('resolver') as $className => $callback) {
-            if ($key instanceof $className)
-                return $callback($key, $this->getServiceLocator());
-        }
-        return $key;
+        $uuid       = $this->getUuid($id);
+        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'trash');
+        $this->assertGranted($permission, $uuid);
+
+        $uuid->setTrashed(true);
+        $this->getObjectManager()->persist($uuid);
+
+        $this->getEventManager()->trigger(
+            'trash',
+            $this,
+            [
+                'object' => $uuid
+            ]
+        );
+    }
+
+    public function restoreUuid($id)
+    {
+        $uuid       = $this->getUuid($id);
+        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'restore');
+        $this->assertGranted($permission, $uuid);
+
+        $uuid->setTrashed(false);
+        $this->getObjectManager()->persist($uuid);
+
+        $this->getEventManager()->trigger(
+            'restore',
+            $this,
+            [
+                'object' => $uuid
+            ]
+        );
+    }
+
+    public function purgeUuid($id)
+    {
+        $uuid       = $this->getUuid($id);
+        $permission = $this->getModuleOptions()->getPermission($uuid, 'purge');
+        $this->assertGranted($permission, $uuid);
+
+        $this->getObjectManager()->remove($uuid);
+
+        $this->getEventManager()->trigger(
+            'purge',
+            $this,
+            [
+                'object' => $uuid
+            ]
+        );
     }
 
     public function createUuid()
     {
-        $entity = $this->createInstance('Uuid\Entity\UuidInterface');
+        $entity = $this->getClassResolver()->resolve('Uuid\Entity\UuidInterface');
+
         $this->getObjectManager()->persist($entity);
         $this->getObjectManager()->flush($entity);
-        $this->addInstance($entity->getId(), $entity);
+
         return $entity;
+    }
+
+    protected function ambiguousToUuid($idOrObject)
+    {
+        $uuid = null;
+
+        if (is_int($idOrObject)) {
+            $uuid = $this->getUuid($idOrObject);
+        } elseif ($idOrObject instanceof UuidHolder) {
+            $uuid = $idOrObject->getUuidEntity();
+        } elseif ($idOrObject instanceof UuidInterface) {
+            $uuid = $idOrObject;
+        } else {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Expected int, UuidHolder or UuidInterface but got "%s"',
+                (is_object($idOrObject) ? get_class($idOrObject) : gettype($idOrObject))
+            ));
+        }
+
+        return $uuid;
     }
 }

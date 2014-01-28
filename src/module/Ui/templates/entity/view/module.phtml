@@ -1,18 +1,20 @@
+<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
+<?php $entity = $this->entity; ?>
 <article>
 	<header>
         <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $this->entity)); ?>
+            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
         </div>
         <div class="clearfix"></div>
 	</header>
 	
 	<!-- Overview -->
     <section>
-        <div class="sortable"  data-action="<?php echo $this->url('entity/plugin/link/order', array('scope' => 'pages', 'entity' => $this->entity->getId())); ?>"  data-depth="1" data-active="false">
+        <div class="sortable"  data-action="<?php echo $this->url('entity/link/order', array('type' => 'link', 'entity' => $entity->getId())); ?>"  data-depth="1" data-active="false">
             <ol class="sortable-list">
-                <?php foreach($this->entity->pages()->findChildren() as $page):?>
-                    <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
-                        <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+                <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
+                    <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>
+                        <?php $revision = $page->getCurrentRevision();?>
                         <li class="sortable-item" data-id="<?php echo $page->getId(); ?>">
                             <span class="sortable-handle"></span>
                             <div class="sortable-item-inner">
@@ -30,11 +32,6 @@
                 <div class="col-md-4">
                     <div class="sortable-actions btn-group pull-right">
                         <?php echo $this->partial('entity/view/partials/sortable-actions'); ?>
-                        <?php if($this->guard()->hasAccessToRoute('entity/create')): ?>
-                    		<a class="btn btn-sm btn-default" href="<?php echo $this->url('entity/create', array('type' => 'module-page'), array('query' => array('module' => array('to_entity' => $this->entity->getId())))); ?>">
-                    			<span class="glyphicon glyphicon-file"></span>
-                    		</a>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -43,16 +40,16 @@
     
     <!-- Detailview -->
     <section>
-        <?php foreach($this->entity->pages()->findChildren() as $page):?>
-            <?php if($page->plugin('repository')->hasCurrentRevision() && !$page->getTrashed()):?>
-                <?php $revision = $page->plugin('repository')->getCurrentRevision();?>
+        <?php foreach($entity->getChildren('link', 'module-page') as $page):?>
+            <?php if($page->hasCurrentRevision() && !$page->getTrashed()):?>
+                <?php $revision = $page->getCurrentRevision();?>
             	<article class="panel panel-default">
                     <header id="<?php echo $page->getId(); ?>" class="panel-heading">
                         <div class="row">
-                            <div class="col-md-10"><?php echo $revision->get('title'); ?></div>
-                            <div class="col-md-2">
+                            <div class="col-md-6"><h4><?php echo $revision->get('title'); ?></h4></div>
+                            <div class="col-md-6">
                                 <div class="pull-right btn-group">
-                                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $page, 'hide' => array('taxonomy', 'detail'))); ?>
+                                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $page)); ?>
                                 </div>
                             </div>
                         </div>
@@ -68,6 +65,6 @@
     
     <!-- Discussions -->
     <section>
-        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $this->entity)); ?>
+        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
     </section>
 </article>

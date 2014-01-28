@@ -49,40 +49,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
      */
     protected $date;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"})
-     */
-    protected $trashed;
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::delete()
-     */
-    public function delete()
-    {
-        return $this;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::trash()
-     */
-    public function trash()
-    {
-        $this->trashed = TRUE;
-        return $this;
-    }
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::getRepository()
-     */
-    public function untrash()
-    {
-        $this->trashed = FALSE;
-        return $this;
-    }
-
-    public function isTrashed()
-    {
-        return $this->trashed;
-    }
 
     public function getRepository()
     {
@@ -100,9 +66,18 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
         return $this->date;
     }
 
+    public function setContent($content){
+        $this->content=$content;
+        return $this;
+    }
     public function getContent()
     {
         return $this->content;
+    }
+    
+    public function setTitle($title){
+        $this->title=$title;
+        return $this;
     }
 
     public function getTitle()
@@ -142,7 +117,6 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
     public function populate(array $data = array())
     {
         $this->injectFromArray('author', $data);
-        $this->injectFromArray('username', $data);
         $this->injectFromArray('title', $data);
         $this->injectFromArray('content', $data);
         $this->injectFromArray('date', $data);
@@ -157,4 +131,10 @@ class PageRevision extends UuidEntity implements RevisionInterface, PageRevision
             $this->$key = $default;
         }
     }
+    public function set($key, $value)
+    {
+            $this->$key = $value;
+    }
+	
+
 }

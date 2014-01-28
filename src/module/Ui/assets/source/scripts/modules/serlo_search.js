@@ -1,5 +1,5 @@
 /*global define*/
-define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Router) {
+define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, _, Common, t, Router) {
     "use strict";
     var Search,
         SearchResults,
@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         this.setActiveItem();
     };
 
-    SearchResults.prototype.onKey = function (e) {
+    SearchResults.prototype.onKey = function (e, isSearching) {
         switch (e.keyCode) {
         case Common.KeyCode.up:
             e.preventDefault();
@@ -64,8 +64,18 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
             this.focusNext();
             return;
         case Common.KeyCode.enter:
-            Router.navigate(this.$el.find('.active').children().first().attr('href'));
-            this.$input.blur();
+            if (isSearching) {
+                break;
+            }
+
+            if (undefined !== this.$links && this.$links.length) {
+                Router.navigate(this.$links.eq(this.activeFocus).children().first().attr('href'));
+                this.$input.blur();
+            } else {
+                Router.post('/search', {
+                    q: this.$input.val()
+                });
+            }
             break;
         }
     };
@@ -92,10 +102,16 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         $next.addClass('active');
     };
 
+    SearchResults.prototype.noResults = function (string) {
+        var $li = $('<li class="header">').text(t('No results found for "%s".', string));
+        this.$el.append($li);
+    };
+
     Search = function (options) {
         var self = this;
 
-        self.options = $.extend({}, defaults, options || {});
+        self.options = $.extend({}, defaults, options || {});
+        self.isSearching = false;
         self.$el = $(self.options.wrapperSelector);
         self.$input = $(self.options.inputSelector);
         self.results = new SearchResults(self.options.resultWrapper, self.$input);
@@ -143,9 +159,11 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
                     clearAndHide();
                 }
             })
-            .keydown(function (e) {
+            .keyup(function (e) {
                 var value = Common.trim($(this).val() || "");
-                self.results.onKey(e);
+
+                self.results.onKey(e, self.isSearching);
+
                 if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
                     return true;
                 }
@@ -176,6 +194,12 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
     Search.prototype.performSearch = function (string) {
         var self = this;
 
+        self.isSearching = true;
+
+        if (self.ajax) {
+            self.ajax.abort();
+        }
+
         self.ajax = $.ajax({
             url: self.options.url,
             data: {
@@ -185,23 +209,40 @@ define(['jquery', 'underscore', 'common', 'router'], function ($, _, Common, Rou
         });
 
         self.ajax.success(function (data) {
-            self.onResult(data);
-        }).fail(function () {
-            self.$input.blur();
-            Common.genericError();
-        });
+            // Only do anything if this
+            // was the last xhr call!
+            if (arguments[2] === self.ajax) {
+                if (typeof data !== 'object' || data.length === 0) {
+                    self.onNoResult(string);
+                } else {
+                    self.onResult(data);
+                }
+                self.isSearching = false;
+            }
+        }).error(function () {
+                // xhr object has been aborted
+                // simply ignore.
+                if (arguments[1] === 'abort') {
+                    return;
+                }
+                self.$input.blur();
+                Common.genericError(arguments);
+            });
     };
 
     Search.prototype.onResult = function (result) {
-        var self = this;
-        if (self.$el.hasClass(self.options.inFocusClass)) {
-            self.results.clear();
-            if (result.length) {
-                self.$el.addClass(self.options.hasResultsClass);
-                self.results.show(result);
-            } else {
-                self.$el.removeClass(self.options.hasResultsClass);
-            }
+        if (this.$el.hasClass(this.options.inFocusClass)) {
+            this.results.clear();
+            this.$el.addClass(this.options.hasResultsClass);
+            this.results.show(result);
+        }
+    };
+
+    Search.prototype.onNoResult = function (string) {
+        if (this.$el.hasClass(this.options.inFocusClass)) {
+            this.results.clear();
+            this.$el.addClass(this.options.hasResultsClass);
+            this.results.noResults(string);
         }
     };
 

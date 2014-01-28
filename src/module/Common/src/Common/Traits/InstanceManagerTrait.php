@@ -1,19 +1,18 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Common\Traits;
 
 trait InstanceManagerTrait
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait,\ClassResolver\ClassResolverAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, \ClassResolver\ClassResolverAwareTrait;
 
     /**
      * Array of all registered instances
@@ -25,7 +24,6 @@ trait InstanceManagerTrait
     private $checkClassInheritance = true;
 
     /**
-     *
      * @return boolean $checkClassInheritance
      */
     public function getCheckClassInheritance()
@@ -34,29 +32,30 @@ trait InstanceManagerTrait
     }
 
     /**
-     *
-     * @param boolean $checkClassInheritance            
-     * @return $this
+     * @param boolean $checkClassInheritance
+     * @return self
      */
     public function setCheckClassInheritance($checkClassInheritance)
     {
         $this->checkClassInheritance = $checkClassInheritance;
+
         return $this;
     }
 
     /**
      * Adds an instance.
      *
-     * @param string $name            
-     * @param object $instance            
+     * @param string $name
+     * @param object $instance
      * @throws \Exception
-     * @return $this
+     * @return self
      */
     protected function addInstance($name, $instance)
     {
-        if (! is_object($instance))
+        if (!is_object($instance)) {
             throw new \Exception('Please pass only objects.');
-        
+        }
+
         if ($this->hasInstance($name)) {
             if ($this->instances[$name] !== $instance) {
                 $unsetInstance = $this->instances[$name];
@@ -66,15 +65,16 @@ trait InstanceManagerTrait
                 return $this;
             }
         }
-        
+
         $this->instances[$name] = $instance;
+
         return $this;
     }
 
     /**
      * Checks if an instance is already registered.
      *
-     * @param string $name            
+     * @param string $name
      * @return boolean
      */
     protected function hasInstance($name)
@@ -85,22 +85,23 @@ trait InstanceManagerTrait
     /**
      * Returns an instance.
      *
-     * @param string $name            
+     * @param string $name
      * @throws \Exception
      * @return multitype:
      */
     protected function getInstance($name)
     {
-        if (! $this->hasInstance($name))
+        if (!$this->hasInstance($name)) {
             throw new \Exception('Instance `' . $name . '` not set.');
-        
+        }
+
         return $this->instances[$name];
     }
 
     /**
      * Creates an instance
      *
-     * @param string $instanceClassName            
+     * @param string $instanceClassName
      * @throws \InvalidArgumentException
      * @return $instanceClassName
      */
@@ -109,10 +110,13 @@ trait InstanceManagerTrait
         $class = $this->getClassResolver()->resolveClassName($class);
         $this->getServiceLocator()->setShared($class, $shared);
         $instance = $this->getServiceLocator()->get($class);
-        
-        if ($this->checkClassInheritance && ! $instance instanceof $class)
-            throw new \InvalidArgumentException('Expeted ' . $class . ' but got ' . get_class($instance));
-        
+
+        if ($this->checkClassInheritance && !$instance instanceof $class) {
+            throw new \InvalidArgumentException('Expeted ' . $class . ' but got ' . get_class(
+                    $instance
+                ));
+        }
+
         return $instance;
     }
 
@@ -123,8 +127,10 @@ trait InstanceManagerTrait
 
     public function removeInstance($name)
     {
-        if ($this->hasInstance($name))
+        if ($this->hasInstance($name)) {
             unset($this->instances[$name]);
+        }
+
         return $this;
     }
 }

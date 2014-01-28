@@ -1,57 +1,117 @@
 <?php
 /**
- *
- *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license LGPL-3.0
- * @license http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link https://github.com/serlo-org/athene2 for the canonical source repository
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license   LGPL-3.0
+ * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Taxonomy\Manager;
 
+use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
+use Common\Traits\FlushableTrait;
+use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Persistence\ObjectManager;
+use Language\Entity\LanguageInterface;
+use Taxonomy\Entity\TaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Collection\TermCollection;
-use Language\Service\LanguageServiceInterface;
-use Taxonomy\Exception\RuntimeException;
-use Taxonomy\Exception\TermNotFoundException;
-use Taxonomy\Exception\InvalidArgumentException;
-use Taxonomy\Entity\TaxonomyTypeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Taxonomy\Service\TermServiceInterface;
+use Taxonomy\Exception;
+use Taxonomy\Hydrator\TaxonomyTermHydrator;
+use Taxonomy\Options\ModuleOptions;
+use Type\TypeManagerAwareTrait;
+use Type\TypeManagerInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 
-class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterface
+class TaxonomyManager implements TaxonomyManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\Language\Service\LanguageServiceAwareTrait,\Common\Traits\EntityDelegatorTrait,\Taxonomy\Manager\SharedTaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait;
+    use ClassResolverAwareTrait, ObjectManagerAwareTrait;
+    use TypeManagerAwareTrait, EventManagerAwareTrait;
+    use FlushableTrait;
+
+    /**
+     * @var TaxonomyTermHydrator
+     */
+    protected $hydrator;
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    public function __construct(
+        ClassResolverInterface $classResolver,
+        ModuleOptions $moduleOptions,
+        ObjectManager $objectManager,
+        TaxonomyTermHydrator $hydrator,
+        TypeManagerInterface $typeManager
+    ) {
+        $this->classResolver = $classResolver;
+        $this->moduleOptions = $moduleOptions;
+        $this->objectManager = $objectManager;
+        $this->hydrator      = $hydrator;
+        $this->typeManager   = $typeManager;
+    }
 
     public function getTerm($id)
     {
-        if (! is_numeric($id))
-            throw new InvalidArgumentException(sprintf('Expected int but got %s', gettype($id)));
-        
-        if (! $this->hasInstance($id)) {
-            $entity = $this->getObjectManager()->find($this->getClassResolver()
-                ->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface'), (int) $id);
-            
-            if (! is_object($entity))
-                throw new TermNotFoundException(sprintf('Term with id %s not found', $id));
-            
-            $this->addInstance($entity->getId(), $this->createService($entity));
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface');
+        $entity    = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($entity)) {
+            throw new Exception\TermNotFoundException(sprintf('Term with id %s not found', $id));
         }
-        
-        return $this->getInstance($id);
+
+        return $entity;
     }
 
-    public function findTermByAncestors(array $ancestors)
+    public function getTaxonomy($id)
     {
-        if (! count($ancestors))
-            throw new RuntimeException('Ancestors are empty');
-        
-        $terms = $this->getEntity()->getSaplings();
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
+        $entity    = $this->getObjectManager()->find($className, (int)$id);
+
+        if (!is_object($entity)) {
+            throw new Exception\RuntimeException(sprintf('Term with id %s not found', $id));
+        }
+
+        return $entity;
+    }
+
+    public function findTaxonomyByName($name, LanguageInterface $language)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
+
+        $type = $this->getTypeManager()->findTypeByName($name);
+
+        $entity = $this->getObjectManager()->getRepository($className)->findOneBy(
+            [
+                'type'     => $type->getId(),
+                'language' => $language->getId()
+            ]
+        );
+
+        if (!is_object($entity)) {
+            /* @var $entity \Taxonomy\Entity\TaxonomyInterface */
+            $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyInterface');
+            $entity->setLanguage($language);
+            $entity->setType($type);
+            $this->getObjectManager()->persist($entity);
+        }
+
+        return $entity;
+    }
+
+    public function findTerm(TaxonomyInterface $taxonomy, array $ancestors)
+    {
+        if (!count($ancestors)) {
+            throw new Exception\RuntimeException('Ancestors are empty');
+        }
+
+        $terms          = $taxonomy->getChildren();
         $ancestorsFound = 0;
-        $found = false;
+        $found          = false;
         foreach ($ancestors as &$element) {
             if (is_string($element) && strlen($element) > 0) {
                 $element = strtolower($element);
@@ -60,147 +120,172 @@ class TaxonomyManager extends AbstractManager implements TaxonomyManagerInterfac
                     if (strtolower($term->getSlug()) == strtolower($element)) {
                         $terms = $term->getChildren();
                         $found = $term;
-                        $ancestorsFound ++;
+                        $ancestorsFound++;
                         break;
                     }
                 }
-                if (! is_object($found))
+                if (!is_object($found)) {
                     break;
+                }
             }
         }
-        
-        if (! is_object($found))
-            throw new TermNotFoundException(sprintf('Could not find term with acestors: %s', implode(',', $ancestors)));
-        
-        if ($ancestorsFound != count($ancestors))
-            throw new TermNotFoundException(sprintf('Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1', implode(',', $ancestors), $ancestorsFound, count($ancestors)));
-        
-        if (! $this->hasInstance($found->getId())) {
-            $this->addInstance($found->getId(), $this->createService($found));
+
+        if (!is_object($found)) {
+            throw new Exception\TermNotFoundException(sprintf(
+                'Could not find term with acestors: %s',
+                implode(',', $ancestors)
+            ));
         }
-        
-        return $this->getInstance($found->getId());
-    }
 
-    public function getSaplings()
-    {
-        $collection = $this->getEntity()->getSaplings();
-        return new TermCollection($collection, $this->getSharedTaxonomyManager());
-    }
-
-    public function getAllowedChildrenTypeNames()
-    {
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypeNames($this->getEntity()
-            ->getName());
-    }
-
-    public function getAllowedParentTypeNames()
-    {
-        return $this->getOption('allowed_parents');
-    }
-
-    public function getAllowedChildrenTypes()
-    {
-        return $this->getSharedTaxonomyManager()->getAllowedChildrenTypes($this->getEntity()
-            ->getName(), $this->getLanguageService());
-    }
-
-    public function getAllowedParentTypes()
-    {
-        $collection = new ArrayCollection();
-        foreach ($this->getOption('allowed_parents') as $taxonomy) {
-            $collection->add($this->getSharedTaxonomyManager()
-                ->findTaxonomyByName($taxonomy, $this->getLanguageService()));
+        if ($ancestorsFound != count($ancestors)) {
+            throw new Exception\TermNotFoundException(sprintf(
+                'Could not find term with acestors: %s. Ancestor ratio %s:%s does not equal 1:1',
+                implode(',', $ancestors),
+                $ancestorsFound,
+                count($ancestors)
+            ));
         }
-        return $collection;
+
+        return $found;
     }
 
-    public function allowsParentType($type)
+    public function createTerm(array $data, LanguageInterface $language)
     {
-        return in_array($type, $this->getOption('allowed_parents'));
-    }
+        $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
 
-    public function getId()
-    {
-        return $this->getEntity()->getId();
-    }
-
-    public function getType()
-    {
-        return $this->getEntity()->getType();
-    }
-
-    public function getName()
-    {
-        return $this->getEntity()->getName();
-    }
-
-    public function setType(TaxonomyTypeInterface $type)
-    {
-        $this->getEntity()->setType($type);
-        return $this;
-    }
-
-    public function findTerms(array $types)
-    {
-        $collection = $this->getEntity()
-            ->getTerms()
-            ->filter(function (TaxonomyTermInterface $term) use($types)
-        {
-            return in_array($term->getTaxonomy()
-                ->getName(), $types);
-        });
-        return new TermCollection($collection, $this->getSharedTaxonomyManager());
-    }
-
-    public function getTerms()
-    {
-        return new TermCollection($this->getEntity()->getTerms(), $this->getSharedTaxonomyManager());
-    }
-
-    public function setTerms($terms)
-    {
-        $this->getEntity()->setTerms($terms);
-        return $this;
-    }
-
-    public function addTerm(TaxonomyTermInterface $term)
-    {
-        $this->getEntity()
-            ->getTerms()
-            ->add($term);
-        return $this;
-    }
-
-    protected function createService(TaxonomyTermInterface $entity)
-    {
-        /* @var $instance \Taxonomy\Service\TermServiceInterface */
-        $instance = $this->createInstance('Taxonomy\Service\TermServiceInterface');
-        $instance->setTaxonomyTerm($entity);
-        if ($entity->getTaxonomy() !== $this->getEntity()) {
-            $instance->setManager($this->getSharedTaxonomyManager()
-                ->getTaxonomy($entity->getTaxonomy()
-                ->getId()));
-        } else {
-            $instance->setManager($this);
+        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
+            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $language);
         }
-        return $instance;
-    }
+        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
+            $data['parent'] = $this->getTerm($data['parent']);
+        }
 
-    public function getRadixEnabled()
-    {
-        return $this->getOption('radix_enabled');
-    }
+        $this->getHydrator()->hydrate($data, $term);
 
-    protected function getDefaultConfig()
-    {
-        return array(
-            'templates' => array(
-                'update' => 'taxonomy/taxonomy/update'
-            ),
-            'allowed_parents' => array(),
-            'allowed_associations' => array(),
-            'radix_enabled' => true
+        $this->getEventManager()->trigger(
+            'create',
+            $this,
+            [
+                'term' => $term
+            ]
         );
+
+        $this->getObjectManager()->persist($term);
+
+        return $term;
+    }
+
+    public function updateTerm($id, array $data)
+    {
+        $term = $this->getTerm($id);
+
+        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
+            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $term->getLanguage());
+        }
+        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
+            $data['parent'] = $this->getTerm($data['parent']);
+        }
+
+        $this->getHydrator()->hydrate($data, $term);
+
+        $this->getEventManager()->trigger(
+            'update',
+            $this,
+            [
+                'term' => $term
+            ]
+        );
+
+        $this->getObjectManager()->persist($term);
+
+        return $term;
+    }
+
+    public function associateWith($id, $association, TaxonomyTermAwareInterface $object)
+    {
+        $term = $this->getTerm($id);
+
+        $taxonomy = $term->getTaxonomy();
+
+        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($association)) {
+            throw new Exception\RuntimeException(sprintf(
+                'Taxonomy "%s" does not allow associations "%s"',
+                $taxonomy->getName(),
+                $association
+            ));
+        }
+
+        $term->associateObject($association, $object);
+
+        $this->getEventManager()->trigger(
+            'associate',
+            $this,
+            array(
+                'object' => $object,
+                'term'   => $term
+            )
+        );
+
+        $this->getObjectManager()->persist($term);
+
+        return $this;
+    }
+
+    public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object)
+    {
+        $term = $this->getTerm($id);
+
+        $term->removeAssociation($association, $object);
+
+        $this->getEventManager()->trigger(
+            'dissociate',
+            $this,
+            array(
+                'object' => $object,
+                'term'   => $term
+            )
+        );
+
+        $this->getObjectManager()->persist($term);
+
+        return $this;
+    }
+
+    /**
+     * @return TaxonomyTermHydrator $hydrator
+     */
+    public function getHydrator()
+    {
+        return $this->hydrator;
+    }
+
+    /**
+     * @param TaxonomyTermHydrator $hydrator
+     * @return self
+     */
+    public function setHydrator(TaxonomyTermHydrator $hydrator)
+    {
+        $this->hydrator = $hydrator;
+
+        return $this;
+    }
+
+    /**
+     * @return ModuleOptions $moduleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     * @return self
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+
+        return $this;
     }
 }

@@ -1,77 +1,71 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Alias\Entity;
 
-use Language\Entity\LanguageInterface;
+use Language\Entity\LanguageAwareInterface;
 use Uuid\Entity\UuidInterface;
 
-interface AliasInterface
+interface AliasInterface extends LanguageAwareInterface
 {
 
     /**
+     * Returns the ID
      *
-     * @return $this;
+     * @return int
      */
     public function getId();
 
     /**
+     * Returns the source
      *
-     * @return $this;
+     * @return string
      */
     public function getSource();
 
     /**
+     * Returns the alias
      *
-     * @param string $source            
-     * @return $this;
-     */
-    public function setSource($source);
-
-    /**
-     *
-     * @return $this;
+     * @return string
      */
     public function getAlias();
 
     /**
+     * Gets the object
      *
-     * @param string $alias            
-     * @return $this;
+     * @return UuidInterface
+     */
+    public function getObject();
+
+    /**
+     * Sets the source
+     *
+     * @param string $source
+     * @return self
+     */
+    public function setSource($source);
+
+    /**
+     * Sets the alias
+     *
+     * @param string $alias
+     * @return self
      */
     public function setAlias($alias);
 
     /**
+     * Sets the object
      *
-     * @return LanguageInterface
+     * @param UuidInterface $uuid
+     * @return self
      */
-    public function getLanguage();
+    public function setObject(UuidInterface $uuid);
 
-    /**
-     *
-     * @param LanguageInterface $language            
-     * @return $this;
-     */
-    public function setLanguage(LanguageInterface $language);
-
-    /**
-     *
-     * @param UuidInterface $uuid            
-     * @return $this
-     */
-    public function setUuid(UuidInterface $uuid);
-
-    /**
-     *
-     * @return $this
-     */
-    public function getUuid();
 }

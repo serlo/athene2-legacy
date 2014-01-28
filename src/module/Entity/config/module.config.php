@@ -1,210 +1,159 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author         Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license        LGPL-3.0
+ * @license        http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link           https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright      Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Entity\Collection\EntityCollection;
-
-return array(
-    'taxonomy' => array(
-        'associations' => array(
-            'entities' => array(
-                'callback' => function (ServiceLocatorInterface $sm, $collection)
-                {
-                    return new EntityCollection($collection, $sm->get('Entity\Manager\EntityManager'));
-                },
-                'options' => array(
-                    'template' => 'entity/view/minimalistic/default'
-                )
-            )
-        )
-    ),
-    'uuid_router' => array(
-        'routes' => array(
-            'entity' => '/entity/view/%d',
-            'entityRevision' => '/entity/repository/compare/%d'
-        )
-    ),
-    'uuid_manager' => array(
-        'resolver' => array(
-            'Entity\Entity\EntityInterface' => function ($uuid, ServiceLocatorInterface $serviceLocator)
-            {
-                /* @var $entityManager \Entity\Manager\EntityManagerInterface */
-                $entityManager = $serviceLocator->get('Entity\Manager\EntityManager');
-                return $entityManager->getEntity($uuid->getId());
-            }
-        )
-    ),
-    'class_resolver' => array(
+return [
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'entity.license.update' => 'Authorization\Assertion\LanguageAssertion',
+        ]
+    ],
+    'class_resolver'  => [
         'Entity\Entity\EntityInterface' => 'Entity\Entity\Entity',
-        'Entity\Entity\TypeInterface' => 'Entity\Entity\Type',
-        'Entity\Service\EntityServiceInterface' => 'Entity\Service\EntityService'
-    ),
-    'router' => array(
-        'routes' => array(
-            'entity' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/entity',
-                    'defaults' => array()
-                ),
-                'child_routes' => array(
-                    'create' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/create/:type',
-                            'defaults' => array(
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'create'
-                            )
-                        )
-                    ),
-                    'trash' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/trash/:entity',
-                            'defaults' => array(
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'trash'
-                            )
-                        )
-                    ),
-                    'restore' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/restore/:entity',
-                            'defaults' => array(
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'restore'
-                            )
-                        )
-                    ),
-                    'purge' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/purge/:entity',
-                            'defaults' => array(
-                                'controller' => 'Entity\Controller\EntityController',
-                                'action' => 'purge'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
-            'Entity\Controller\EntityController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Entity\Controller\EntityController' => array(
-                    'setEntityManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setUserManager' => array(
-                        'required' => 'true'
-                    )
-                ),
-                'Entity\Service\EntityService' => array(
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => 'true'
-                    ),
-                    'setRepositoryManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setAuthService' => array(
-                        'required' => 'true'
-                    ),
-                    'setSharedTaxonomyManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setLinkManager' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Auth\Service\AuthServiceInterface' => 'Auth\Service\AuthService',
-                'Entity\Factory\EntityFactoryInterface' => 'Entity\Factory\EntityFactory',
-                'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
-                'Entity\Service\EntityServiceInterface' => 'EventManager',
-                'Versioning\RepositoryManagerInterface' => 'Versioning\RepositoryManager',
-                'Link\LinkManagerInterface' => 'Link\LinkManager',
-                'Taxonomy\SharedTaxonomyManagerInterface' => 'Taxonomy\SharedTaxonomyManager',
+        'Entity\Entity\TypeInterface'   => 'Entity\Entity\Type'
+    ],
+    'di'              => [
+        'allowed_controllers' => [
+            __NAMESPACE__ . '\Controller\EntityController',
+            __NAMESPACE__ . '\Controller\RepositoryController',
+            __NAMESPACE__ . '\Controller\PageController',
+            __NAMESPACE__ . '\Controller\TaxonomyController',
+            __NAMESPACE__ . '\Controller\LinkController',
+            __NAMESPACE__ . '\Controller\LicenseController'
+        ],
+        'definition'          => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\TaxonomyController'   => [
+                    'setEntityManager'   => [
+                        'required' => true
+                    ],
+                    'setTaxonomyManager' => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\LinkController'       => [
+                    'setEntityManager' => [
+                        'required' => true
+                    ],
+                    'setLinkService'   => [
+                        'required' => true
+                    ],
+                    'setModuleOptions' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\LicenseController'    => [
+                    'setEntityManager'   => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ],
+                    'setLicenseManager'  => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\EntityController'     => [
+                    'setEntityManager'   => [
+                        'required' => true
+                    ],
+                    'setLanguageManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\RepositoryController' => [
+                    'setEntityManager'        => [
+                        'required' => true
+                    ],
+                    'setLanguageManager'      => [
+                        'required' => true
+                    ],
+                    'setUserManager'          => [
+                        'required' => true
+                    ],
+                    'setRepositoryManager'    => [
+                        'required' => true
+                    ],
+                    'setModuleOptions'        => [
+                        'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\PageController'       => [
+                    'setAliasManager'  => [
+                        'required' => true
+                    ],
+                    'setEntityManager' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Manager\EntityManager'           => [
+                    'setUuidManager'          => [
+                        'required' => true
+                    ],
+                    'setObjectManager'        => [
+                        'required' => true
+                    ],
+                    'setClassResolver'        => [
+                        'required' => true
+                    ],
+                    'setTypeManager'          => [
+                        'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
+                    ]
+                ],
+                __NAMESPACE__ . '\Provider\TokenProvider'          => [
+                    'setServiceLocator' => [
+                        'required' => true
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 'Entity\Manager\EntityManagerInterface' => 'Entity\Manager\EntityManager'
-            ),
-            'Entity\Service\EntityService' => array(
-                'shared' => false
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Entity\Plugin\PluginManager' => (function ($sm)
-            {
-                $config = $sm->get('config');
-                $config = new \Zend\ServiceManager\Config($config['entity']['plugins']);
-                $class = new \Entity\Plugin\PluginManager($config);
-                return $class;
-            }),
-            'Entity\Manager\EntityManager' => (function ($sm)
-            {
-                $config = $sm->get('config');
-                $class = new \Entity\Manager\EntityManager();
-                
-                $class->setConfig($config['entity']);
-                $class->setPluginManager($sm->get('Entity\Plugin\PluginManager'));
-                $class->setServiceLocator($sm->get('ServiceManager'));
-                $class->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                $class->setObjectManager($sm->get('Doctrine\ORM\EntityManager'));
-                $class->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                
-                return $class;
-            })
-        )
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            __DIR__ . '/../view'
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+        ]
+    ],
+    'view_helpers'    => [
+        'factories' => [
+            'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
+        ]
+    ],
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

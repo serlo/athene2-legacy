@@ -11,9 +11,9 @@
  */
 namespace Search\Adapter\SphinxQL;
 
-use Search\Adapter\AdapterInterface;
 use Foolz\SphinxQL\Connection;
 use Foolz\SphinxQL\SphinxQL;
+use Search\Adapter\AdapterInterface;
 
 abstract class AbstractSphinxAdapter implements AdapterInterface
 {
@@ -36,7 +36,7 @@ abstract class AbstractSphinxAdapter implements AdapterInterface
     /**
      *
      * @param Connection $connection            
-     * @return $this
+     * @return self
      */
     public function setConnection(Connection $connection)
     {

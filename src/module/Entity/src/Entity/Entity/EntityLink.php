@@ -1,20 +1,18 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Link\Entity\LinkInterface;
 use Link\Entity\LinkableInterface;
-use Link\Entity\LinkTypeInterface;
+use Link\Entity\LinkInterface;
 
 /**
  * An
@@ -26,6 +24,7 @@ use Link\Entity\LinkTypeInterface;
  */
 class EntityLink implements LinkInterface
 {
+    use \Type\Entity\TypeAwareTrait;
 
     /**
      * @ORM\Id
@@ -51,22 +50,9 @@ class EntityLink implements LinkInterface
     public $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EntityLinkType")
-     * @ORM\JoinColumn(name="entity_link_type_id",
-     * referencedColumnName="id")
-     */
-    public $type;
-
-    /**
      * @ORM\Column(name="`order`", type="integer")
      */
     public $order;
-
-    public function __construct(LinkTypeInterface $type, $order)
-    {
-        $this->type = $type;
-        $this->order = $order;
-    }
 
     public function getPosition()
     {
@@ -76,6 +62,7 @@ class EntityLink implements LinkInterface
     public function setPosition($position)
     {
         $this->order = $position;
+
         return $this;
     }
 
@@ -94,26 +81,17 @@ class EntityLink implements LinkInterface
         return $this->parent;
     }
 
-    public function getType()
-    {
-        return $this->type;
-    }
-
     public function setChild(LinkableInterface $child)
     {
         $this->child = $child;
+
         return $this;
     }
 
     public function setParent(LinkableInterface $parent)
     {
         $this->parent = $parent;
-        return $this;
-    }
 
-    public function setType(LinkTypeInterface $type)
-    {
-        $this->type = $type;
         return $this;
     }
 }

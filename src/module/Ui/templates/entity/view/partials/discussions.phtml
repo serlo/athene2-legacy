@@ -1,14 +1,1 @@
-<?php $forum = $this->entity->plugin('provider')->getSubjectSlug() . '/issues/' . $this->entity->getType()->getName(); ?>
-<div class="tab-content">
-    <h3><?php echo $this->translate('Discussions'); ?></h3>
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#current" data-toggle="tab"><?php echo $this->translate('Current'); ?></a></li>
-        <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
-    </ul>
-    <div class="tab-pane active" id="current">
-        <?php echo $this->discussion($this->entity->getUuidEntity(), $forum, false)->render(); ?>
-    </div>
-    <div class="tab-pane" id="archived">
-        <?php echo $this->discussion($this->entity->getUuidEntity(), $forum, true)->render(); ?>
-    </div>
-</div>
+<?php echo $this->entity()->renderDiscussions($this->entity); ?>

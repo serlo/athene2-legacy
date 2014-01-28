@@ -1,31 +1,40 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Versioning;
 
+use ClassResolver\ClassResolverInterface;
+use Common\Traits\InstanceManagerTrait;
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Exception\RuntimeException;
+use Zend\EventManager\EventManagerAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class RepositoryManager implements RepositoryManagerInterface
 {
-    use \Common\Traits\InstanceManagerTrait;
+    use InstanceManagerTrait, EventManagerAwareTrait;
 
-    protected static $instance;
-
-    public function __construct()
+    public function __construct(ClassResolverInterface $classResolver, ServiceLocatorInterface $serviceLocator)
     {
-        if (isset($instance))
-            throw new RuntimeException('The RepositoryManager has already been instanciated');
-        
-        static::$instance = $this;
+        $this->serviceLocator = $serviceLocator;
+        $this->classResolver  = $classResolver;
+    }
+
+    public function getRepository(RepositoryInterface $repository)
+    {
+        $id = $this->getUniqId($repository);
+
+        if (!$this->hasInstance($id)) {
+            $this->createService($repository);
+        }
+
+        return $this->getInstance($id);
     }
 
     protected function getUniqId(RepositoryInterface $repository)
@@ -33,41 +42,15 @@ class RepositoryManager implements RepositoryManagerInterface
         return get_class($repository) . '::' . $repository->getId();
     }
 
-    public function addRepository(RepositoryInterface $repository)
+    protected function createService(RepositoryInterface $repository)
     {
         $instance = $this->createInstance('Versioning\Service\RepositoryServiceInterface');
-        $name = $this->getUniqId($repository);
-        $instance->setIdentifier($name);
+        $name     = $this->getUniqId($repository);
+
         $instance->setRepository($repository);
+        $instance->setRepositoryManager($this);
         $this->addInstance($name, $instance);
+
         return $this;
-    }
-
-    public function hasRepository(RepositoryInterface $repository)
-    {
-        return $this->hasInstance($this->getUniqId($repository));
-    }
-
-    public function removeRepository(RepositoryInterface $repository)
-    {
-        return $this->removeInstance($this->getUniqId($repository));
-    }
-
-    public function addRepositories(array $repositories)
-    {
-        foreach ($repositories as $repository) {
-            $this->addRepository($repository);
-        }
-        return $this;
-    }
-
-    public function getRepository(RepositoryInterface $repository)
-    {
-        return $this->getInstance($this->getUniqId($repository));
-    }
-
-    public function getRepositories()
-    {
-        return $this->getInstances();
     }
 }

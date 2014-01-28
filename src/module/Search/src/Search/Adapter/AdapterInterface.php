@@ -11,14 +11,14 @@
  */
 namespace Search\Adapter;
 
-use Search\Result\ContainerInterface;
+use Search\Result;
 
 interface AdapterInterface
 {
     /**
      * 
      * @param string $query
-     * @return ContainerInterface[]
+     * @return Result\ContainerInterface[]
      */
-    public function search($query);
+    public function search($query, Result\Container $container);
 }

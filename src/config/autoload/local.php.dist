@@ -3,7 +3,7 @@ $dbParams = array(
 		'host' => 'localhost',
 		'port' => '3306',
 		'user' => 'root',
-		'password' => '____',
+		'password' => 'athene2',
 		'database' => 'serlo'
 );
 

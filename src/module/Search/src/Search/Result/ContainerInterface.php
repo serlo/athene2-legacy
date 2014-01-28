@@ -17,14 +17,14 @@ interface ContainerInterface
     /**
      *
      * @param ResultInterface $reuslt            
-     * @return $this
+     * @return void
      */
     public function addResult(ResultInterface $reuslt);
     
     /**
      * 
      * @param ContainerInterface $container
-     * @return $this
+     * @return void
      */
     public function addContainer(ContainerInterface $container);
     

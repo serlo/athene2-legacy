@@ -23,7 +23,7 @@ trait SubjectManagerAwareTrait
     /**
      *
      * @param SubjectManagerInterface $subjectManager            
-     * @return $this
+     * @return self
      */
     public function setSubjectManager(SubjectManagerInterface $subjectManager)
     {

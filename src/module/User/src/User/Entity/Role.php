@@ -8,10 +8,8 @@
  */
 namespace User\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
-use Zend\Permissions\Rbac\AbstractRole;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A role.
@@ -19,7 +17,7 @@ use Zend\Permissions\Rbac\AbstractRole;
  * @ORM\Entity
  * @ORM\Table(name="role")
  */
-class Role extends AbstractRole implements RoleInterface
+class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
 {
 
     /**
@@ -28,88 +26,33 @@ class Role extends AbstractRole implements RoleInterface
      * @ORM\GeneratedValue
      */
     protected $id;
-
     /**
      * @ORM\Column(type="string") *
      */
     protected $name;
-
     /**
      * @ORM\Column(type="string", nullable=true) *
      */
     protected $description;
-
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="roles")
      * @ORM\JoinTable(name="role_user")
      */
     protected $users;
-
     /**
-     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles")
+     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles", indexBy="name", fetch="EAGER")
      * @ORM\JoinTable(name="role_permission")
      */
     protected $permissions;
-    
     /**
      * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
      */
     protected $children;
-
     /**
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     protected $parent;
-
-    /**
-     *
-     * @return field_type $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     *
-     * @return field_type $name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     *
-     * @return field_type $description
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     *
-     * @param field_type $name            
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     *
-     * @param field_type $description            
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        return $this;
-    }
 
     public function __construct()
     {
@@ -118,16 +61,29 @@ class Role extends AbstractRole implements RoleInterface
         $this->children = new ArrayCollection();
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
     public function addUser(UserInterface $user)
     {
         $this->users->add($user);
-        return $this;
     }
 
     public function removeUser(UserInterface $user)
     {
         $this->users->removeElement($user);
-        return $this;
     }
 
     public function getUsers()
@@ -135,51 +91,39 @@ class Role extends AbstractRole implements RoleInterface
         return $this->users;
     }
 
-    public function addPermission($name)
+    public function getPermissions()
     {
-        $permission = new Permission();
-        $permission->setName($name);
+        return $this->permissions;
+    }
+
+    public function addPermission($permission)
+    {
         $this->permissions->add($permission);
-        return $this;
     }
-    
-    public function hasPermission($name)
-    {
-        $found = $this->permissions->filter(function($e) use($name){
-            return $e->getName() === $name;
-        });
-        
-        if ($found->count() > 0) {
-            return true;
-        }
 
-        $it = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($it as $leaf) {
-            /** @var RoleInterface $leaf */
-            if ($leaf->hasPermission($name)) {
-                return true;
-            }
-        }
+    public function removePermission($permission)
+    {
+        $this->permissions->removeElement($permission);
+    }
 
-        return false;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::addChild()
-     */
-    public function addChild($child)
+    public function hasPermission($permission)
     {
-        $role = new self();
-        $this->children->add($child);
-        return $this;
+        return isset($this->permissions[(string)$permission]);
     }
-    
-    /*
-     * (non-PHPdoc) @see \Zend\Permissions\Rbac\RoleInterface::setParent()
-     */
-    public function setParent($parent)
+
+    public function __toString()
     {
-        parent::setParent($parent);
+        return $this->getName();
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
         return $this;
     }
 }

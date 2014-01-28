@@ -12,6 +12,8 @@
 namespace Ui\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Zend\Config\Processor\Filter;
+use Zend\Filter\StripTags;
 
 class PageHeader extends AbstractHelper
 {
@@ -49,7 +51,8 @@ class PageHeader extends AbstractHelper
             } else {
                 $headTitle = $this->text . $delimiter . $this->getOption('brand');
             }
-            $this->getView()->headTitle($headTitle);
+            $filter = new StripTags();
+            $this->getView()->headTitle($filter->filter($headTitle));
         }
         return $this->getView()->partial($this->getOption('template'), array(
             'text' => $this->text,

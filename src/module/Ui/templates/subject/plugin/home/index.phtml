@@ -1,7 +1,14 @@
-<div class="jumbotron">
-	<h1><?php echo $this->subject->getName(); ?></h1>
-	<p></p>
-	<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-		nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-		erat, sed diam voluptua. At vero eos et accusam et.</p>
+<?php /* @var $subject \Subject\Service\SubjectService */ ?>
+<?php $subject = $this->subject; ?>
+<?php echo $this->pageHeader($this->subject->getName())->setSubtitle('Home')->render(); ?>
+<h3><?php echo $this->translate('Start learning now!'); ?></h3>
+<div class="row">
+    <?php $scopes = $subject->getScopesForPlugin('taxonomy');?>
+    <?php foreach($scopes as $scope): ?>
+        <div class="col-md-<?php echo (int) (12 / count($scopes));?>">
+            <div class="jumbotron">
+            	<h4><?php echo $this->translate(ucfirst($scope)); ?></h4>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>

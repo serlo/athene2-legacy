@@ -8,10 +8,10 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-/*global define, require*/
-define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'modals', 'sortable_list', 'timeago', 'moment_de'],
-    function ($, Common, SideNavigation, t, Layout, Search, SystemNotification, moment, AjaxOverlay) {
+/*global define, require, MathJax*/
+define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'content', 'search', 'system_notification',
+                    'moment', 'ajax_overlay', 'modals', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de'],
+    function ($, Common, SideNavigation, t, Layout, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
             ajaxOverlay;
@@ -30,8 +30,30 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 SystemNotification.error();
             });
             // initialize contextuals whenever a new context is added
+
+            Content.add(function ($context) {
+                // init sortable lists in context
+                $('.sortable', $context).SortableList();
+                // init timeago fields in context
+                $('.timeago', $context).TimeAgo();
+                // init dialogues in context
+                $('.dialog', $context).SerloModals();
+                // init datepicker
+                $('.datepicker', $context).datepicker({
+                    format: 'dd.mm.yyyy'
+                });
+                // init datepicker for dateranges
+                $('.input-daterange', $context).datepicker({
+                    format: 'dd.mm.yyyy'
+                });
+                // init spoilers
+                $('.spoiler').Spoiler();
+                // init injections
+                $('.injection').Injections();
+            });
+
             Common.addEventListener('new context', function ($context) {
-                initContextuals($context);
+                Content.init($context);
             });
 
             // initialize the side navigation
@@ -42,7 +64,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             ajaxOverlay = new AjaxOverlay({
                 on: {
                     contentOpened: function () {
-                        initContextuals(this.$el);
+                        Content.init(this.$el);
                     },
                     error: function (err) {
                         ajaxOverlay.shutDownAjaxContent();
@@ -57,23 +79,6 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
             Layout.init();
         }
 
-        function initContextuals($context) {
-            // init sortable lists in context
-            $('.sortable', $context).SortableList();
-            // init timeago fields in context
-            $('.timeago', $context).TimeAgo();
-            // init dialogues in context
-            $('.dialog', $context).SerloModals();
-            // init datepicker
-            $('.datepicker', $context).datepicker({
-                format: 'dd.mm.yyyy'
-            });
-            // init datepicker for dateranges
-            $('.input-daterange', $context).datepicker({
-                format: 'dd.mm.yyyy'
-            });
-        }
-
         return {
             initialize: function ($context) {
                 init($context);
@@ -83,6 +88,20 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
 
 require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     "use strict";
+
+    if (typeof MathJax !== undefined) {
+        MathJax.Hub.Config({
+            displayAlign: 'left',
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+                inlineMath: [["%%", "%%"]]
+            },
+            "HTML-CSS": {
+                scale: 100
+            }
+        });
+    }
 
     $(function () {
         Supporter.check();

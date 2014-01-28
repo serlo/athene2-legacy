@@ -1,169 +1,130 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org]
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
 namespace Uuid;
 
-use Uuid\Manager\UuidManager;
-/**
- * @codeCoverageIgnore
- */
-return array(
-    'class_resolver' => array(
-        'Uuid\Entity\UuidInterface' => 'Uuid\Entity\Uuid'
-    ),
-    'uuid_router' => array(
-        'routes' => array()
-    ),
-    'uuid_manager' => array(),
-    'router' => array(
-        'routes' => array(
-            'uuid' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+return [
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\UuidManager'   => __NAMESPACE__ . '\Factory\UuidManagerFactory'
+        ]
+    ],
+    'class_resolver'  => [
+        __NAMESPACE__ . '\Entity\UuidInterface' => __NAMESPACE__ . '\Entity\Uuid'
+    ],
+    'view_helpers'     => [
+        'factories' => [
+            'uuid' => __NAMESPACE__ . '\Factory\UuidHelperFactory'
+        ]
+    ],
+    'uuid'            => [
+        'permissions' => [
+            'entityRevision' => [
+                'trash'   => 'entity.revision.create',
+                'restore' => 'entity.revision.checkout',
+                'purge' => 'entity.revision.purge'
+            ],
+            'entity'         => [
+                'trash'   => 'entity.create',
+                'restore' => 'entity.checkout',
+                'purge' => 'entity.purge'
+            ]
+        ]
+    ],
+    'router'          => [
+        'routes' => [
+            'uuid' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
-                'options' => array(
+                'options'      => [
                     'route' => '/uuid'
-                ),
-                'child_routes' => array(
-                    'router' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/route/:uuid',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Controller\RouterController',
-                                'action' => 'assemble'
-                            )
-                        )
-                    ),
-                    'trash' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/trash/:id',
-                            'defaults' => array(
+                ],
+                'child_routes' => [
+                    'trash'       => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/trash/:id',
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'trash'
-                            )
-                        )
-                    ),
-                    'recycle-bin' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/recycle-bin',
-                            'defaults' => array(
+                            ]
+                        ]
+                    ],
+                    'recycle-bin' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/recycle-bin',
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'recycleBin'
-                            )
-                        )
-                    ),
-                    'restore' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/restore/:id',
-                            'defaults' => array(
+                            ]
+                        ]
+                    ],
+                    'restore'     => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/restore/:id',
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'restore'
-                            )
-                        )
-                    ),
-                    'purge' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/purge/:id',
-                            'defaults' => array(
+                            ]
+                        ]
+                    ],
+                    'purge'       => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/purge/:id',
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\UuidController',
                                 'action' => 'purge'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Uuid\Router\UuidRouter' => function ($sm)
-            {
-                $router = new \Uuid\Router\UuidRouter();
-                $config = $sm->get('config')['uuid_router'];
-                $router->setUuidManager($sm->get('Uuid\Manager\UuidManager'));
-                $router->setConfig($config);
-                return $router;
-            },
-            'Uuid\Manager\UuidManager' => function($sm){
-                $config = $sm->get('config');
-                $manager = new UuidManager();
-                $manager->setConfig($config['uuid_manager']);
-                $manager->setServiceLocator($sm);
-                $manager->setClassResolver($sm->get('ClassResolver\ClassResolver'));
-                $manager->setObjectManager($sm->get('EntityManager'));
-                return $manager;
-            }
-        )
-    ),
-    'di' => array(
-        'allowed_controllers' => array(
-            'Uuid\Controller\RouterController',
-            'Uuid\Controller\UuidController'
-        ),
-        'definition' => array(
-            'class' => array(
-                'Uuid\Controller\UuidController' => array(
-                    'setUuidManager' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'di'              => [
+        'allowed_controllers' => [
+            __NAMESPACE__ . '\Controller\UuidController'
+        ],
+        'definition'          => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\UuidController' => [
+                    'setUuidManager' => [
                         'required' => true
-                    ),
-                    'setUserManager' => array(
-                        'required' => true
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => true
-                    )
-                ),
-                'Uuid\Controller\RouterController' => array(
-                    'setUuidRouter' => array(
-                        'required' => true
-                    )
-                ),
-                'Uuid\Manager\UuidManager' => array(
-                    'setObjectManager' => array(
-                        'required' => 'true'
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => 'true'
-                    ),
-                    'setClassResolver' => array(
-                        'required' => 'true'
-                    )
-                )
-            )
-        ),
-        'instance' => array(
-            'preferences' => array(
-                'Uuid\Manager\UuidManagerInterface' => 'Uuid\Manager\UuidManager',
-                'Uuid\Router\UuidRouterInterface' => 'Uuid\Router\UuidRouter'
-            )
-        )
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
+                __NAMESPACE__ . '\Manager\UuidManagerInterface' => __NAMESPACE__ . '\Manager\UuidManager'
+            ]
+        ]
+    ],
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

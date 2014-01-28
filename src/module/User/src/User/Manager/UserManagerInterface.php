@@ -1,101 +1,59 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace User\Manager;
 
-use User\Service\UserServiceInterface;
+use Common\ObjectManager\Flushable;
 use Doctrine\ORM\EntityRepository;
-use User\Entity\RoleInterface;
+use User\Entity\UserInterface;
 
-interface UserManagerInterface
+interface UserManagerInterface extends Flushable
 {
 
     /**
-     *
-     * @param numeric $id            
-     * @return UserServiceInterface
+     * @param numeric $id
+     * @return UserInterface
      */
     public function getUser($id);
 
     /**
-     *
-     * @param string $token            
-     * @return UserServiceInterface
+     * @param string $token
+     * @return UserInterface
      */
     public function findUserByToken($token);
 
     /**
-     *
-     * @param string $username            
-     * @return UserServiceInterface
+     * @param string $username
+     * @return UserInterface
      */
     public function findUserByUsername($username);
 
     /**
-     *
-     * @param string $email            
-     * @return UserServiceInterface
+     * @param string $email
+     * @return UserInterface
      */
     public function findUserByEmail($email);
 
     /**
-     *
-     * @param array $data            
-     * @return UserServiceInterface
+     * @param array $data
+     * @return UserInterface
      */
     public function createUser(array $data);
 
     /**
-     *
-     * @param numeric $id            
-     * @return $this
-     */
-    public function purgeUser($id);
-
-    /**
-     *
-     * @param numeric $id            
-     * @return $this
-     */
-    public function trashUser($id);
-
-    /**
-     *
      * @return EntityRepository
      */
     public function findAllUsers();
 
     /**
-     *
-     * @return EntityRepository
-     */
-    public function findAllRoles();
-
-    /**
-     *
-     * @param int $roleId            
-     * @return RoleInterface
-     */
-    public function findRole($roleId);
-
-    /**
-     *
-     * @param string $role            
-     * @return RoleInterface
-     */
-    public function findRoleByName($name);
-
-    /**
-     *
-     * @return UserServiceInterface
+     * @return UserInterface
      */
     public function getUserFromAuthenticator();
 }

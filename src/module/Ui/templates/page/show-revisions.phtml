@@ -43,7 +43,7 @@ foreach ($this->revisions as $revision) :
 <?php if ($revision->getRepository()->getCurrentRevision()!=$revision):?>
 <a
 	href="<?php echo $this->url('page/article/deleterevision',array('repositoryid'=>$this->repositoryid,'revisionid'=>$id))?>"
-	class="glyphicon glyphicon-trash"><?php echo $this->translate('delete');?> </a>
+	class="glyphicon glyphicon-trash"><?php echo $this->translate('trash');?> </a>
 <a
 	href="<?php echo $this->url('page/article/revision/setCurrent',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
 	class="glyphicon glyphicon-ok"><?php echo $this->translate('current') ?></a>

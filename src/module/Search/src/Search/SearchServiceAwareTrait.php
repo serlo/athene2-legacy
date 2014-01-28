@@ -32,7 +32,7 @@ trait SearchServiceAwareTrait
     /**
      *
      * @param SearchServiceInterface $searchService            
-     * @return $this
+     * @return self
      */
     public function setSearchService(SearchServiceInterface $searchService)
     {

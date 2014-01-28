@@ -1,104 +1,103 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return array(
     'navigation' => array(
         'footer' => array(
             array(
                 'label' => 'Über Serlo',
-                'uri' => '#',
+                'uri'   => '#',
                 'pages' => array(
                     array(
                         'label' => 'Auf einen Blick',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Bildungsbegriff',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Blog',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Verein',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Presse',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Impressum',
-                        'uri' => '#'
+                        'uri'   => '#'
                     )
                 )
             ),
             array(
                 'label' => 'Mitmachen',
-                'uri' => '#',
+                'uri'   => '#',
                 'pages' => array(
                     array(
                         'label' => 'Wie läuft\'s?',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Was kann ich tun?',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Als LehrerIn',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Als StudentIn',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Spenden',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Jobs',
-                        'uri' => '#'
+                        'uri'   => '#'
                     )
                 )
             ),
             array(
                 'label' => 'Hilfe',
-                'uri' => '#',
+                'uri'   => '#',
                 'pages' => array(
                     array(
                         'label' => 'Frag die Community',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Supportformular',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Problem melden',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Kontakt',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Admins der Fächer',
-                        'uri' => '#'
+                        'uri'   => '#'
                     ),
                     array(
                         'label' => 'Kontaktformular',
-                        'uri' => '#'
+                        'uri'   => '#'
                     )
                 )
             )

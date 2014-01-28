@@ -11,12 +11,16 @@ var i18n = {};
 
 i18n.de = {
     "Visit %s overview" : "Zur %s Übersicht",
-    "An error occured, please reload." : "",
-    "Order successfully saved" : "",
-    "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : "",
+    "An error occured, please reload." : "Es gab einen unerwarteten Fehler. Bitte laden Sie die Seite neu.",
+    "Order successfully saved" : "Reihenfolge erfolgreich gespeichert",
+    "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : "Ihr Browser unterstützt die folgenden Technologien nicht: %s <br>Bitte installieren Sie eine neuere Version Ihres Browsers!",
     "Close" : "Schließen",
     "When asynchronously trying to load a ressource, I came across an error: %s" : "",
-    "You are using an outdated web browser. Please consider an update!" : ""
+    "You are using an outdated web browser. Please consider an update!" : "",
+    "No results found." : "Keine Ergebnisse gefunden.",
+    "No results found for \"%s\"." : "",
+    "Illegal injection found" : "",
+    "Could not load injection" : ""
 };
 
 i18n.en = {
@@ -26,7 +30,11 @@ i18n.en = {
     "Order successfully saved" : "",
     "Your browser doesnt support the following technologies: %s <br>Please update your browser!" : "",
     "When asynchronously trying to load a ressource, I came across an error: %s" : "",
-    "You are using an outdated web browser. Please consider an update!" : ""
+    "You are using an outdated web browser. Please consider an update!" : "",
+    "No results found." : "",
+    "No results found for \"%s\"." : "",
+    "Illegal injection found" : "",
+    "Could not load injection" : ""
 };
 
 return i18n;

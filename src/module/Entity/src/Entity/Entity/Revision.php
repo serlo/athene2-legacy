@@ -1,24 +1,22 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Entity\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Versioning\Entity\RevisionInterface;
-use Versioning\Entity\RepositoryInterface;
+use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidEntity;
-use Common\Normalize\Normalizable;
-use Common\Normalize\Normalized;
+use Versioning\Entity\RepositoryInterface;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity link.
@@ -26,12 +24,12 @@ use Common\Normalize\Normalized;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends UuidEntity implements RevisionInterface, Normalizable
+class Revision extends UuidEntity implements RevisionInterface
 {
 
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
@@ -56,107 +54,90 @@ class Revision extends UuidEntity implements RevisionInterface, Normalizable
      */
     protected $date;
 
-    /**
-     *
-     * @return field_type $date
-     */
-    public function getDate()
+    public function __construct()
     {
-        return $this->date;
+        $this->fields = new ArrayCollection();
     }
 
-    /**
-     *
-     * @param field_type $date            
-     * @return $this
-     */
-    public function setDate(\DateTime $date)
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
-     *
-     * @return field_type $author
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     *
-     * @param field_type $author            
-     * @return $this
-     */
-    public function setAuthor(UserInterface $author)
-    {
-        $this->author = $author;
-        return $this;
-    }
-
-    public function get($field)
-    {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))
-            ->setFirstResult(0)
-            ->setMaxResults(1);
-        $data = $this->fields->matching($criteria);
-        if (count($data) == 0)
-            return null;
-        
-        return $data[0]->get('value');
-    }
-
-    public function set($name, $value)
-    {
-        $entity = new RevisionField($name, $this->getId());
-        $entity->set('field', $name);
-        $entity->set('revision', $this);
-        $entity->set('value', $value);
-        $this->fields->add($entity);
-        return $entity;
-    }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::delete()
-     */
     public function delete()
     {
         return $this;
     }
 
+    public function get($field)
+    {
+        $field = $this->getField($field);
+
+        if (!is_object($field)) {
+            return $field;
+        }
+
+        return $field->getValue();
+    }
+
+    protected function getField($field)
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))->setFirstResult(0)->setMaxResults(
+            1
+        );
+
+        $data = $this->fields->matching($criteria);
+
+        if (empty($data)) {
+            return null;
+        }
+
+        return $data[0];
+    }
+
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(UserInterface $author)
+    {
+        $this->author = $author;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    public function getTimestamp()
+    {
+        return $this->date;
+    }
+
+    public function set($name, $value)
+    {
+        $entity = $this->getField($name);
+
+        if (!is_object($entity)) {
+            $entity = new RevisionField($name, $this->getId());
+            $this->fields->add($entity);
+        }
+
+        $entity->set('field', $name);
+        $entity->set('revision', $this);
+        $entity->set('value', $value);
+
+        return $entity;
+    }
+
+    public function setTimestamp(\DateTime $date)
+    {
+        $this->date = $date;
+    }
+
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
-        return $this;
     }
-    
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::getRepository()
-     */
+
     public function getRepository()
     {
         return $this->repository;
-    }
-
-    public function __construct()
-    {
-        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function normalize()
-    {
-        $normalized = new Normalized();
-        $normalized->setTimestamp($this->getDate());
-        $normalized->setTitle($this->get('title') ? $this->get('title') : $this->getUuid());
-        $normalized->setContent($this->get('content'));
-        $normalized->setRouteName('entity/plugin/repository/compare');
-        $normalized->setRouteParams(array(
-            'revision' => $this->getId(),
-            'entity' => $this->getRepository()
-                ->getId()
-        ));
-        return $normalized;
     }
 }

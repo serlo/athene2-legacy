@@ -1,21 +1,22 @@
 <ul class="list-group">
+    <?php /* @var $post \Blog\Entity\PostInterface */ ?>
     <?php foreach($this->posts as $post): ?>
-    <li class="list-group-item">
-		<article>
-			<header>
-			    <div class="pull-right btn-group">
-			         <?php if($this->guard()->hasAccessToRoute('blog/post/update')): ?>
-			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/update', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
-		             <?php endif; ?>
-			         <?php if($this->guard()->hasAccessToRoute('blog/post/trash')): ?>
-			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
-			         <?php endif; ?>
-			    </div>
-				<h3><a href="<?php echo $this->url('blog/post/view', array('blog' => $this->blog->getId(), 'post' => $post->getId())); ?>"><?php echo $post->getTitle(); ?></a> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?><?php if(!$post->isPublished()) echo ' - <i>' . $this->translate('unpublished') . '</i>'; ?></small></h3>
-			</header>
-			<hr>
-            <?php echo $post->getContent(); ?>
-        </article>
-	</li>
+        <li class="list-group-item">
+    		<article>
+    			<header>
+    			    <div class="pull-right btn-group">
+                         <?php if($this->isGranted('blog.post.update', $post)): ?>
+    			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/update', array('post' => $post->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
+    		             <?php endif; ?>
+                        <?php if($this->isGranted('blog.post.trash', $post)): ?>
+    			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
+    			         <?php endif; ?>
+    			    </div>
+    				<h3><a href="<?php echo $this->url('blog/post/view', array('post' => $post->getId())); ?>"><?php echo $post->getTitle(); ?></a> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?><?php if(!$post->isPublished()) echo ' - <i>' . $this->translate('unpublished') . '</i>'; ?></small></h3>
+    			</header>
+    			<hr>
+                <?php echo $this->markdown()->toHtml($post->getContent()); ?>
+            </article>
+    	</li>
     <?php endforeach; ?>
 </ul>

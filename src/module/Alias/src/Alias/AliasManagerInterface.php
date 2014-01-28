@@ -1,62 +1,72 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Alias;
 
-use Language\Service\LanguageServiceInterface;
-use Uuid\Entity\UuidInterface;
+use Language\Entity\LanguageInterface;
 use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
 interface AliasManagerInterface
 {
-
     /**
-     *
-     * @param UuidInterface $uuid            
-     * @return \Alias\Entity\AliasInterface
-     */
-    public function findAliasByUuid(UuidInterface $uuid);
-
-    /**
-     *
-     * @param string $source
-     * @param LanguageServiceInterface $language            
+     * @param string            $source
+     * @param LanguageInterface $language
      * @return string
      */
-    public function findAliasBySource($source, LanguageServiceInterface $language);
+    public function findAliasBySource($source, LanguageInterface $language);
 
     /**
-     *
-     * @param string $alias            
-     * @param LanguageServiceInterface $language            
+     * @param string            $alias
+     * @param LanguageInterface $language
      * @return string
      */
-    public function findSourceByAlias($alias, LanguageServiceInterface $language);
+    public function findSourceByAlias($alias, LanguageInterface $language);
 
     /**
-     *
-     * @param string $source            
-     * @param string $alias            
-     * @param LanguageServiceInterface $language            
-     * @param UuidHolder $uuid            
+     * @param string            $source
+     * @param string            $alias
+     * @param LanguageInterface $language
+     * @param UuidInterface     $uuid
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, UuidHolder $uuid, \Language\Service\LanguageServiceInterface $language);
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+
+    /**
+     *
+     * @param string $alias
+     * @param string $aliasFallback
+     * @param LanguageInterface $language
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function updateAlias( $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+    
     
     /**
      * 
      * @param string $name
      * @param string $source
      * @param UuidHolder $object
-     * @param \Language\Service\LanguageServiceInterface $language
+     * @param string            $name
+     * @param string            $source
+     * @param UuidInterface     $object
+     * @param LanguageInterface $language
+     * @return self
      */
-    public function autoAlias($name, $source, UuidHolder $object, \Language\Service\LanguageServiceInterface $language);
+    public function autoAlias($name, $source, UuidHolder $object, LanguageInterface $language);
+
+    /**
+     *
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function findAliasByObject(UuidInterface $uuid);
 }

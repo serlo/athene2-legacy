@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Common\Filter;
 
@@ -20,46 +19,42 @@ class Slugify implements FilterInterface
      */
     public function filter($value)
     {
-        return self::toAscii($value);
+        return self::slugify($value);
     }
 
     static protected function slugify($text)
     {
         // replace non letter or digits by -
         $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-        
+
         // trim
         $text = trim($text, '-');
-        
+
         // transliterate
         if (function_exists('iconv')) {
             $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
         }
-        
+
         // lowercase
         $text = strtolower($text);
-        
+
         // remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
-        
+
         if (empty($text)) {
-            return 'n-a';
+            return false;
         }
-        
+
         return $text;
     }
 
-    static protected function toAscii($str, $replace = array(), $delimiter = '-')
+    static protected function toAscii($str, $delimiter = '-')
     {
-        if (! empty($replace)) {
-            $str = str_replace((array) $replace, ' ', $str);
-        }
-        
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
         $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
-        
+
         return $clean;
     }
 }

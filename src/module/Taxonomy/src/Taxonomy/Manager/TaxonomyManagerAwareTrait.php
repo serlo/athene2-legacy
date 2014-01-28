@@ -11,8 +11,6 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Manager\TaxonomyManagerInterface;
-
 trait TaxonomyManagerAwareTrait
 {
 
@@ -20,7 +18,7 @@ trait TaxonomyManagerAwareTrait
      *
      * @var TaxonomyManagerInterface
      */
-    protected $termManager;
+    protected $taxonomyManager;
 
     /**
      *
@@ -29,17 +27,17 @@ trait TaxonomyManagerAwareTrait
      */
     public function getTaxonomyManager ()
     {
-        return $this->termManager;
+        return $this->taxonomyManager;
     }
 
     /**
      *
      * @param TaxonomyManagerInterface $termManager            
-     * @return $this
+     * @return self
      */
     public function setTaxonomyManager (TaxonomyManagerInterface $termManager)
     {
-        $this->termManager = $termManager;
+        $this->taxonomyManager = $termManager;
         return $this;
     }
 }

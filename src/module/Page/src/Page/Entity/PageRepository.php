@@ -4,9 +4,11 @@ namespace Page\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Uuid\Entity\UuidEntity;
 use Versioning\Entity\RepositoryInterface;
-use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Entity\RoleInterface;
+use License\Entity\LicenseAwareInterface;
+use License\Entity\LicenseInterface;
+
 
 /**
  * A page repository.
@@ -15,7 +17,7 @@ use User\Entity\RoleInterface;
  * @ORM\Table(name="page_repository")
  * 
  */
-class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface
+class PageRepository extends UuidEntity implements RepositoryInterface,PageRepositoryInterface,LicenseAwareInterface 
 {
 
     /**
@@ -52,6 +54,22 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
 	 */
 	protected $revisions;
 	
+	/**
+	 * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
+	 */
+	protected $license;
+	
+	public function getLicense ()
+	{
+	    return $this->license;
+	}
+	
+	public function setLicense (LicenseInterface $license)
+	{
+	    $this->license = $license;
+	    return $this;
+	}
+	
 	public function __construct()
 	{
 	    $this->revisions = new ArrayCollection();
@@ -85,12 +103,14 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
     public function setRole(RoleInterface $role)
     {
         $this->roles->add($role);
+        return $this;
     }
     
     public function setRoles(ArrayCollection $roles)
     {
         $this->roles->clear();
-        $this->roles=$roles();
+        $this->roles=$roles;
+        return $this;
     }
     
     public function hasRole(RoleInterface $role){
@@ -105,6 +125,7 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
     }
 
 
@@ -114,37 +135,21 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
     public function setRevisions($revisions)
     {
         $this->revisions = $revisions;
+        return $this;
     }
-
-	public function __get ($property)
-	{
-		return $this->$property;
-	}
-
-	/**
-	 * Magic setter to save protected properties.
-	 *
-	 * @param string $property
-	 * @param mixed $value
-	 *
-	 */
-	public function __set ($property, $value)
-	{
-		$this->$property = $value;
-	}
 
 	
 	public function getRevisions() {
-		
-		return $this->revisions;
+		$revisions = array();
+		foreach ($this->revisions as $revision){
+		    if (!$revision->isTrashed()) {
+		        $revisions[]=$revision;
+		    }
+		}
+		return $revisions;
 		
 	}
-	
-	public function newRevision() {
-	    $revision = new PageRevision();
-	    $revision->setRepository($this);
-	    return $revision;
-	}
+
 	
 	/* (non-PHPdoc)
      * @see \Versioning\Entity\RepositoryInterface::getCurrentRevision()
@@ -168,14 +173,14 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
     public function setCurrentRevision(\Versioning\Entity\RevisionInterface $revision)
     {
         $this->current_revision=$revision;
+        return $this;
         
     }
     
 
 
     public function populate(array $data = array())
-    {  // CHECK THIS AGAIN
-        $this->injectFromArray('role', $data);
+    {  
         $this->injectFromArray('language', $data);
         $this->injectFromArray('current_revision', $data);
         return $this;
@@ -208,15 +213,22 @@ class PageRepository extends UuidEntity implements RepositoryInterface,PageRepos
         
        if ( $this->getCurrentRevision() == $revision)
          $this->current_revision=NULL;
-        
-       
-        
         $this->revisions->removeElement($revision);
-     
+        return $this;
         
     }
     
 
+	/* (non-PHPdoc)
+     * @see \Versioning\Entity\RepositoryInterface::createRevision()
+     */
+    public function createRevision()
+    {
+        $revision = new PageRevision();
+	    $revision->setRepository($this);
+	    return $revision;
+        
+    }
 
     
 }

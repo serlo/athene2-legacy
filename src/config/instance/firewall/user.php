@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 return [
     'zfc_rbac' => [
@@ -15,36 +14,37 @@ return [
             'ZfcRbac\Guard\ControllerGuard' => [
                 [
                     'controller' => 'User\Controller\UserController',
-                    'actions' => [
+                    'actions'    => [
                         'profile',
                         'login',
                         'register',
                         'restorePassword',
                         'activate'
                     ],
-                    'roles' => [
+                    'roles'      => [
                         'guest'
                     ]
                 ],
                 [
                     'controller' => 'User\Controller\UserController',
-                    'actions' => [
+                    'actions'    => [
                         'me',
                         'logout',
                         'settings',
                         'changePassword'
                     ],
-                    'roles' => [
+                    'roles'      => [
                         'login'
                     ]
                 ],
                 [
                     'controller' => 'User\Controller\UserController',
-                    'actions' => [
+                    'actions'    => [
                         'addRole',
-                        'removeRole'
+                        'removeRole',
+                        'purge'
                     ],
-                    'roles' => [
+                    'roles'      => [
                         'sysadmin'
                     ]
                 ]

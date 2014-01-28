@@ -1,25 +1,24 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Discussion\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Uuid\Entity\UuidInterface;
-use Language\Entity\LanguageInterface;
-use User\Entity\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Uuid\Entity\UuidEntity;
 use Doctrine\Common\Collections\Criteria;
-use Taxonomy\Entity\TaxonomyTermAware;
+use Doctrine\ORM\Mapping as ORM;
+use Language\Entity\LanguageInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermNodeInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidEntity;
+use Uuid\Entity\UuidInterface;
 
 /**
  * Comment ORM Entity
@@ -27,20 +26,20 @@ use Taxonomy\Entity\TaxonomyTermInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
+class Comment extends UuidEntity implements CommentInterface
 {
-
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment")
+     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
+     * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
-    protected $uuid;
+    protected $object;
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist"})
@@ -96,6 +95,11 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
      */
     protected $content;
 
+    public function isDiscussion()
+    {
+        return !$this->hasParent();
+    }
+
     public function getArchived()
     {
         return $this->archived;
@@ -104,20 +108,21 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
     public function setArchived($archived)
     {
         $this->archived = $archived;
+
         return $this;
     }
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
-        $this->votes = new ArrayCollection();
-        $this->terms = new ArrayCollection();
+        $this->votes    = new ArrayCollection();
+        $this->terms    = new ArrayCollection();
         $this->archived = false;
     }
 
     public function getObject()
     {
-        return $this->uuid;
+        return $this->object;
     }
 
     public function getParent()
@@ -135,7 +140,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
         return $this->author;
     }
 
-    public function getDate()
+    public function getTimestamp()
     {
         return $this->date;
     }
@@ -157,43 +162,50 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
 
     public function setObject(UuidInterface $uuid)
     {
-        $this->uuid = $uuid;
+        $this->object = $uuid;
+
         return $this;
     }
 
     public function setParent(CommentInterface $comment)
     {
         $this->parent = $comment;
+
         return $this;
     }
 
     public function setLanguage(LanguageInterface $language)
     {
         $this->language = $language;
+
         return $this;
     }
 
     public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
+
         return $this;
     }
 
     public function setStatus($status)
     {
         $this->status = $status;
+
         return $this;
     }
 
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
@@ -205,6 +217,7 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
     public function addChild(CommentInterface $comment)
     {
         $this->children->add($comment);
+
         return $this;
     }
 
@@ -220,22 +233,20 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
 
     public function countUpVotes()
     {
-        return $this->getVotes()
-            ->filter(function (VoteInterface $v)
-        {
-            return $v->getVote() === 1;
-        })
-            ->count();
+        return $this->getVotes()->filter(
+            function (VoteInterface $v) {
+                return $v->getVote() === 1;
+            }
+        )->count();
     }
 
     public function countDownVotes()
     {
-        return $this->getVotes()
-            ->filter(function (VoteInterface $v)
-        {
-            return $v->getVote() === - 1;
-        })
-            ->count();
+        return $this->getVotes()->filter(
+            function (VoteInterface $v) {
+                return $v->getVote() === -1;
+            }
+        )->count();
     }
 
     protected function createVote(UserInterface $user, $vote)
@@ -245,34 +256,38 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
         $entity->setVote($vote);
         $entity->setComment($this);
         $this->getVotes()->add($entity);
+
         return $entity;
     }
 
     protected function findVotesByUser(UserInterface $user)
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('user', $user))
-            ->setFirstResult(0)
-            ->setMaxResults(1);
-        
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('user', $user))->setFirstResult(0)->setMaxResults(1);
+
         return $this->getVotes()->matching($criteria);
     }
 
     public function upVote(UserInterface $user)
     {
-        if ($this->findVotesByUser($user)->count() > 0)
-            return NULL;
-        
+        if ($this->findVotesByUser($user)->count() > 0) {
+            return null;
+        }
+
         $this->createVote($user, 1);
+
         return $this;
     }
 
     public function downVote(UserInterface $user)
     {
-        if ($this->findVotesByUser($user)->count() === 0)
-            return NULL;
-        
-        $this->getVotes()->removeElement($this->findVotesByUser($user)
-            ->current());
+        if ($this->findVotesByUser($user)->count() === 0) {
+            return null;
+        }
+
+        $this->getVotes()->removeElement(
+            $this->findVotesByUser($user)->current()
+        );
+
         return $this;
     }
 
@@ -280,21 +295,23 @@ class Comment extends UuidEntity implements CommentInterface, TaxonomyTermAware
     {
         return $this->findVotesByUser($user)->count() === 1;
     }
-    
-    public function getTermTaxonomies()
+
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
+    {
+        $this->terms->add($taxonomyTerm);
+
+        return $this;
+    }
+
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
+    {
+        $this->terms->removeElement($taxonomyTerm);
+
+        return $this;
+    }
+
+    public function getTaxonomyTerms()
     {
         return $this->terms;
-    }
-    
-    public function addTaxonomy(TaxonomyTermInterface $termTaxonomy)
-    {
-        $this->terms->add($termTaxonomy);
-        return $this;
-    }
-    
-    public function removeTaxonomy(TaxonomyTermInterface $termTaxonomy)
-    {
-        $this->terms->removeElement($termTaxonomy);
-        return $this;
     }
 }

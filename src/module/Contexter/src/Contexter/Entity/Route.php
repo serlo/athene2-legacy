@@ -1,18 +1,17 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license   LGPL-3.0
+ * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Contexter\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Comment ORM Entity
@@ -73,12 +72,14 @@ class Route implements RouteInterface
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setContext(ContextInterface $context)
     {
         $this->context = $context;
+
         return $this;
     }
 
@@ -87,6 +88,7 @@ class Route implements RouteInterface
         foreach ($parameters as $key => $value) {
             $this->addParameter($key, $value);
         }
+
         return $this;
     }
 
@@ -97,6 +99,7 @@ class Route implements RouteInterface
         $parameter->setValue($value);
         $parameter->setRoute($this);
         $this->parameters->add($parameter);
+
         return $this;
     }
 }

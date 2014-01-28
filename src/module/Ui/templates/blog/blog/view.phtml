@@ -1,14 +1,28 @@
+<?php
+/**
+ * Athene2 - Advanced Learning Resources Manager
+ *
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license   LGPL-3.0
+ * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link      https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ */
+?>
 <div class="page-header">
     <div class="pull-right btn-group">
-        <?php if($this->guard()->hasAccessToRoute('blog/post/create')): ?>
-            <a class="btn btn-default btn-sm" href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
-            	class="glyphicon glyphicon-file"></span></a>
+        <?php if ($this->isGranted('blog.post.create', $this->blog)): ?>
+            <a class="btn btn-default btn-sm"
+               href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
+                    class="glyphicon glyphicon-file"></span></a>
         <?php endif; ?>
-        <?php if($this->guard()->hasAccessToRoute('blog/view-all')): ?>
-            <a href="<?php echo $this->url('blog/view-all', array('id' => $this->blog->getId())); ?>" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-inbox"></span></a>
+        <?php if ($this->isGranted('blog.posts.view_all', $this->blog)): ?>
+            <a href="<?php echo $this->url('blog/view-all', array('id' => $this->blog->getId())); ?>"
+               class="btn btn-default btn-sm"><span class="glyphicon glyphicon-calendar"></span></a>
         <?php endif; ?>
     </div>
-	<h1><?php echo $this->translate('Blog'); ?> <small><?php echo $this->blog->getName(); ?></small>
-	</h1>
+    <h1><?php echo $this->translate('Blog'); ?>
+        <small><?php echo $this->blog->getName(); ?></small>
+    </h1>
 </div>
 <?php echo $this->partial('blog/blog/view-partial', array('posts' => $this->posts, 'blog' => $this->blog)); ?>

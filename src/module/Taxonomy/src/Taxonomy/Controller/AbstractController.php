@@ -15,18 +15,18 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractController extends AbstractActionController
 {
-    use \Taxonomy\Manager\SharedTaxonomyManagerAwareTrait;
+    use \Taxonomy\Manager\TaxonomyManagerAwareTrait;
     use\Language\Manager\LanguageManagerAwareTrait;
     
     protected function getTerm($id = NULL){
         if($id === NULL){
             if($this->params('id', NULL) === NULL) {
-                return $this->getSharedTaxonomyManager()->findTaxonomyByName('root', $this->getLanguageManager()->getLanguageFromRequest())->getSaplings()->first();            
+                return $this->getTaxonomyManager()->findTaxonomyByName('root', $this->getLanguageManager()->getLanguageFromRequest())->getChildren()->first();            
             } else {
-                return $this->getSharedTaxonomyManager()->getTerm($this->params('id'));
+                return $this->getTaxonomyManager()->getTerm($this->params('id'));
             }
         } else {
-            return $this->getSharedTaxonomyManager()->getTerm($id);            
+            return $this->getTaxonomyManager()->getTerm($id);            
         }
     }
 }

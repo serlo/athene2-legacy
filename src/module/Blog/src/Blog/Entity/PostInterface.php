@@ -1,20 +1,24 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Blog\Entity;
 
-use User\Entity\UserInterface;
+use DateTime;
+use Language\Entity\LanguageAwareInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Model\TaxonomyTermModelInterface;
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidHolder;
 
-interface PostInterface
+interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, LanguageAwareInterface
 {
 
     /**
@@ -32,12 +36,23 @@ interface PostInterface
     public function getContent();
 
     /**
-     * Sets the content.
+     * Gets the creation date.
      *
-     * @param string $content            
-     * @return $this
+     * @return Datetime
      */
-    public function setContent($content);
+    public function getTimestamp();
+
+    /**
+     * Gets the publish date.
+     *
+     * @return DateTime
+     */
+    public function getPublish();
+
+    /**
+     * @return int
+     */
+    public function isPublished();
 
     /**
      * Gets the title.
@@ -49,18 +64,10 @@ interface PostInterface
     /**
      * Sets the title.
      *
-     * @param string $title            
-     * @return $this
+     * @param string $title
+     * @return self
      */
     public function setTitle($title);
-
-    /**
-     * Sets the author.
-     *
-     * @param UserInterface $author            
-     * @return $this
-     */
-    public function setAuthor(UserInterface $author);
 
     /**
      * Gets the author.
@@ -72,46 +79,47 @@ interface PostInterface
     /**
      * Gets the category.
      *
-     * @return TaxonomyTermInterface $category
+     * @return TaxonomyTermModelInterface
      */
-    public function getCategory();
+    public function getBlog();
 
     /**
      * Sets the category.
      *
-     * @param TaxonomyTermInterface $category            
-     * @return $this
+     * @param TaxonomyTermInterface $category
+     * @return self
      */
-    public function setCategory(TaxonomyTermInterface $category);
+    public function setBlog(TaxonomyTermInterface $category);
 
     /**
      * Sets the creation date.
      *
-     * @param \Datetime $date            
-     * @return $this
+     * @param Datetime $date
+     * @return self
      */
-    public function setTimestamp(\Datetime $date);
+    public function setTimestamp(Datetime $date);
+
+    /**
+     * Sets the content.
+     *
+     * @param string $content
+     * @return self
+     */
+    public function setContent($content);
+
+    /**
+     * Sets the author.
+     *
+     * @param UserInterface $author
+     * @return self
+     */
+    public function setAuthor(UserInterface $author);
 
     /**
      * Sets the publish date.
      *
-     * @param \Datetime $publish            
-     * @return $this
+     * @param Datetime $publish
+     * @return self
      */
-    public function setPublish(\Datetime $publish = NULL);
-
-    /**
-     * Gets the creation date.
-     *
-     * @return \Datetime
-     */
-    public function getTimestamp();
-
-    /**
-     * Gets the publish date.
-     *
-     *
-     * @return \DateTime
-     */
-    public function getPublish();
+    public function setPublish(Datetime $publish = null);
 }
