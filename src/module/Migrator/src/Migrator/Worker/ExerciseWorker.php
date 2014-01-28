@@ -16,6 +16,7 @@ use Entity\Manager\EntityManagerInterface as LRManager;
 use Entity\Options\ModuleOptions;
 use Flag\Manager\FlagManagerInterface;
 use Language\Manager\LanguageManagerInterface;
+use License\Manager\LicenseManagerInterface;
 use Link\Service\LinkServiceInterface;
 use Migrator\Converter\ConverterChain;
 use Migrator\Converter\PreConverterChain;
@@ -26,6 +27,16 @@ use Versioning\RepositoryManagerInterface;
 
 class ExerciseWorker implements Worker
 {
+    protected $licenses = [
+        64 => 2,
+        66 => 3,
+        70 => 4,
+        71 => 5,
+        72 => 6,
+        73 => 7,
+        89 => 8
+    ];
+
     /**
      * @var EntityManager
      */
@@ -80,6 +91,11 @@ class ExerciseWorker implements Worker
      */
     protected $repositoryManager;
 
+    /**
+     * @var LicenseManagerInterface
+     */
+    protected $licenseManager;
+
     public function __construct(
         EntityManager $objectManager,
         LRManager $entityManager,
@@ -91,7 +107,8 @@ class ExerciseWorker implements Worker
         FlagManagerInterface $flagManager,
         LinkServiceInterface $linkService,
         ModuleOptions $moduleOptions,
-        RepositoryManagerInterface $repositoryManager
+        RepositoryManagerInterface $repositoryManager,
+        LicenseManagerInterface $licenseManager
     ) {
         $this->objectManager     = $objectManager;
         $this->entityManager     = $entityManager;
@@ -104,6 +121,7 @@ class ExerciseWorker implements Worker
         $this->linkService       = $linkService;
         $this->moduleOptions     = $moduleOptions;
         $this->repositoryManager = $repositoryManager;
+        $this->licenseManager    = $licenseManager;
     }
 
     public function migrate(array & $results, array &$workload)
@@ -113,8 +131,12 @@ class ExerciseWorker implements Worker
 
         /** @var $exercises \Migrator\Entity\ExerciseTranslation[] */
         $exercises = $this->objectManager->getRepository('Migrator\Entity\ExerciseTranslation')->findAll();
+        $total = count($exercises);
+        $i = 0;
 
         foreach ($exercises as $exercise) {
+            $i++;
+            echo (($i / $total) * 100) . " ($i of $total)\n";
 
             $content = $this->converterChain->convert(
                 utf8_encode($exercise->getContent())
@@ -128,8 +150,10 @@ class ExerciseWorker implements Worker
                 $lrExercise = $this->entityManager->createEntity('text-exercise', [], $language);
             }
 
-            if ($this->converterChain->needsFlagging()) {
-                $this->flagManager->addFlag(24, 'Flagged by migrator', $lrExercise->getId(), $user);
+            if ($exercise->getExercise()->getLicense() !== null) {
+                $license = $this->licenses[$exercise->getExercise()->getLicense()];
+                $license = $this->licenseManager->getLicense($license);
+                $this->licenseManager->injectLicense($lrExercise, $license);
             }
 
             if ($exercise->getExercise()->getChildren()->count() > 0) {
@@ -151,8 +175,7 @@ class ExerciseWorker implements Worker
 
             $repository = $this->repositoryManager->getRepository($lrExercise);
             $revision   = $repository->commitRevision(
-                ['content' => $content],
-                $user
+                ['content' => $content]
             );
             $repository->checkoutRevision($revision->getId());
 
@@ -184,8 +207,7 @@ class ExerciseWorker implements Worker
 
                 $repository = $this->repositoryManager->getRepository($lrSolution);
                 $revision   = $repository->commitRevision(
-                    ['content' => $content, 'hint' => $hint],
-                    $user
+                    ['content' => $content, 'hint' => $hint]
                 );
                 $repository->checkoutRevision($revision->getId());
 

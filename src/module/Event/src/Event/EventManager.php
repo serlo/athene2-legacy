@@ -11,8 +11,10 @@
 namespace Event;
 
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
+use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Event\Collection\EventCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Event\Exception;
 use Language\Entity\LanguageInterface;
 use User\Entity\UserInterface;
@@ -20,11 +22,16 @@ use Uuid\Entity\UuidInterface;
 
 class EventManager implements EventManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
     protected $inMemoryEvents = array();
-
     protected $inMemoryParameterNames = array();
+
+    public function __construct(ClassResolverInterface $classResolver, ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+        $this->classResolver = $classResolver;
+    }
 
     public function findEventsByActor($userId)
     {

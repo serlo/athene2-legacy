@@ -29,9 +29,9 @@ return array(
         )
     ),
     'class_resolver' => array(
-        'Notification\Entity\NotificationEventInterface' => 'Notification\Entity\NotificationEvent',
-        'Notification\Entity\NotificationInterface'      => 'Notification\Entity\Notification',
-        'Notification\Entity\SubscriptionInterface'      => 'Notification\Entity\Subscription'
+        __NAMESPACE__ . '\Entity\NotificationEventInterface' => __NAMESPACE__ . '\Entity\NotificationEvent',
+        __NAMESPACE__ . '\Entity\NotificationInterface'      => __NAMESPACE__ . '\Entity\Notification',
+        __NAMESPACE__ . '\Entity\SubscriptionInterface'      => __NAMESPACE__ . '\Entity\Subscription'
     ),
     'di'             => array(
         'allowed_controllers' => array(
@@ -39,7 +39,7 @@ return array(
         ),
         'definition'          => array(
             'class' => array(
-                __NAMESPACE__ . '\Listener\DiscussionControllerListener' => array(
+                __NAMESPACE__ . '\Listener\DiscussionManagerListener' => array(
                     'setSubscriptionManager' => array(
                         'required' => true
                     )
@@ -52,7 +52,7 @@ return array(
                         'required' => true
                     )
                 ),
-                __NAMESPACE__ . '\SubscriptionManager'      => array(
+                __NAMESPACE__ . '\SubscriptionManager'                   => array(
                     'setClassResolver' => array(
                         'required' => true
                     ),
@@ -102,30 +102,20 @@ return array(
             )
         )
     ),
-    'router'         => array(
-        'routes' => array(
-            'notification' => array(
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options'       => array(
-                    'route' => '/notification'
-                ),
-                'child_routes'  => array(
-                    'worker' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/worker',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Notification\Controller\WorkerController',
-                                'action'     => 'run'
-                            )
+    'console'        => array(
+        'router' => array(
+            'routes' => array(
+                'notification-worker' => array(
+                    'options' => array(
+                        'route'    => 'notification worker',
+                        'defaults' => array(
+                            'controller' => __NAMESPACE__ . '\Controller\WorkerController',
+                            'action'     => 'run'
                         )
                     )
-                )
-            ),
-
-        )
+                ),
+            )
+        ),
     ),
     'doctrine'       => array(
         'driver' => array(

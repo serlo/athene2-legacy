@@ -24,7 +24,9 @@ return array(
     ),
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\SubjectManager' => __NAMESPACE__ . '\Factory\SubjectManagerFactory',
+            __NAMESPACE__ . '\Hydrator\Navigation' => __NAMESPACE__ . '\Factory\NavigationFactory'
         ]
     ],
     'view_helpers'    => [
@@ -196,19 +198,6 @@ return array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Hydrator\Navigation'           => array(
-                    'setSubjectManager'  => array(
-                        'required' => true
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Manager\SubjectManager'        => array(
-                    'setTaxonomyManager' => array(
                         'required' => true
                     )
                 )

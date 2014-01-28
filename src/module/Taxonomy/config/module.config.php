@@ -142,7 +142,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\TaxonomyManager' => __NAMESPACE__ . '\Factory\TaxonomyManagerFactory'
         ]
     ],
     'di'              => [
@@ -180,23 +181,6 @@ return [
                         'required' => true
                     ],
                     'setModuleOptions'   => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Manager\TaxonomyManager'        => [
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setTypeManager'   => [
-                        'required' => true
-                    ],
-                    'setModuleOptions' => [
-                        'required' => true
-                    ],
-                    'setHydrator'      => [
                         'required' => true
                     ]
                 ],

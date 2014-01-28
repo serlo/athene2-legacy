@@ -11,6 +11,7 @@
 namespace Migrator\Controller;
 
 use Migrator\Migrator;
+use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class Worker extends AbstractActionController
@@ -22,11 +23,17 @@ class Worker extends AbstractActionController
     protected $migrator;
 
     /**
+     * @var AuthenticationService
+     */
+    protected $authenticationService;
+
+    /**
      * @param Migrator $migrator
      */
-    public function __construct(Migrator $migrator)
+    public function __construct(Migrator $migrator, AuthenticationService $authenticationService)
     {
         $this->migrator = $migrator;
+        $this->authenticationService = $authenticationService;
     }
 
     /**
@@ -39,6 +46,12 @@ class Worker extends AbstractActionController
 
     public function indexAction()
     {
+        $adapter = $this->authenticationService->getAdapter();
+        $adapter->setIdentity('legacy@serlo.org');
+        $adapter->setCredential('123456');
+
+        $this->authenticationService->authenticate();
+
         $this->getMigrator()->migrate();
         return '';
     }

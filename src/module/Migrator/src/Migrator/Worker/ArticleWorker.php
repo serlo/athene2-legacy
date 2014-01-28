@@ -95,7 +95,14 @@ class ArticleWorker implements Worker
         $language = $this->languageManager->getLanguage(1);
         /** @var $articles \Migrator\Entity\ArticleTranslation[] */
         $articles = $this->objectManager->getRepository('Migrator\Entity\ArticleTranslation')->findAll();
+
+        $total = count($articles);
+        $i = 0;
         foreach ($articles as $article) {
+
+            $i++;
+            echo (($i / $total) * 100) . " ($i of $total)\n";
+
             $revision = $article->getCurrentRevision();
             if (is_object($revision)) {
                 $content = $this->converterChain->convert(
@@ -105,16 +112,11 @@ class ArticleWorker implements Worker
 
                 $entity = $this->entityManager->createEntity('article', [], $language);
 
-                if ($this->converterChain->needsFlagging()) {
-                    $this->flagManager->addFlag(24, 'Flagged by migrator', $entity->getId(), $user);
-                }
-
                 $this->taxonomyManager->associateWith(8, 'entities', $entity);
 
                 $repository = $this->repositoryManager->getRepository($entity);
                 $revision = $repository->commitRevision(
-                    ['title' => $title, 'content' => $content],
-                    $user
+                    ['title' => $title, 'content' => $content]
                 );
                 $repository->checkoutRevision($revision->getId());
 

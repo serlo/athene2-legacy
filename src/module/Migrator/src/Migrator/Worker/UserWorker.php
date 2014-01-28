@@ -76,7 +76,7 @@ class UserWorker implements Worker
             $entity = $this->userManager->createUser(
                 [
                     'email'    => $user->getEmail(),
-                    'username' => $user->getUsername(),
+                    'username' => utf8_encode($user->getUsername()),
                     'password' => $user->getPassword()
                 ]
             );

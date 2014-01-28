@@ -104,7 +104,7 @@ class PageManager implements PageManagerInterface
     public function createRevision(PageRepositoryInterface $repository, array $data,UserInterface $user)
     {
         $repository = $this->getRepositoryManager()->getRepository($repository);
-        $revision = $repository->commitRevision($data,$user);
+        $revision = $repository->commitRevision($data);
         $this->getObjectManager()->persist($revision);
         $this->getObjectManager()->persist($repository->getRepository());
         $repository->checkOutRevision($revision->getId());

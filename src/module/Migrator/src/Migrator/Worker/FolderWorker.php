@@ -86,7 +86,7 @@ class FolderWorker implements Worker
             }
 
             $term = $this->taxonomyManager->createTerm([
-                'taxonomy' => 'topic',
+                'taxonomy' => $folder->getExercises()->count() ? 'topic' : 'abstract-topic' ,
                 'parent'   => $parent,
                 'term'     => [
                     'name' => $name

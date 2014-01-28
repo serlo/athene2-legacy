@@ -19,7 +19,7 @@ class Migrator
         'Migrator\Worker\ArticleWorker',
         'Migrator\Worker\FolderWorker',
         'Migrator\Worker\ExerciseWorker',
-        //'Migrator\Worker\UserWorker'
+        'Migrator\Worker\UserWorker'
     ];
 
     /**
@@ -41,18 +41,33 @@ class Migrator
     public function migrate()
     {
         set_time_limit(0);
-        $results = [];
+        $results  = [];
         $workload = [];
 
+        $time_start = microtime(true);
 
+        $i = 0;
         foreach ($this->workers as $worker) {
-            $worker  = $this->serviceLocator->get($worker);
+            $i++;
+            $worker = $this->serviceLocator->get($worker);
             $worker->migrate($results, $workload);
+
+            $idResults = [];
+            foreach($results as $type => $result){
+                foreach($result as $key => $result){
+                    $idResults[$type][$key] = $result->getId();
+                }
+            }
+
+            file_put_contents ("/var/www/src/data/migration-$i.dat", print_r($idResults, true));
         }
 
-        $worker  = $this->serviceLocator->get('Migrator\Worker\PostWorker');
-        //$worker->migrate($workload, $results);
+        $worker = $this->serviceLocator->get('Migrator\Worker\PostWorker');
+        $worker->migrate($workload, $results);
 
-        //$this->cache->addItems($results);
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+
+        echo "Migration took $time seconds";
     }
 }

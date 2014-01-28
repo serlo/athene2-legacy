@@ -16,7 +16,8 @@ class LatexConverter extends AbstractConverter
 
     public function convert($content)
     {
-        $reg_exercise = '@<img(?:[^>]*)(?=(?:data-mathml="([^"]*)"|alt="([^"]*)")(?:[^>]*)(?:class="Wirisformula")|(?:class="Wirisformula")(?:[^>]*)(?:data-mathml="([^"]*)"|alt="([^"]*)"))(?:[^>]*)>@is';
+//        $reg_exercise = '@<img(?:[^>]*)(?=(?:data-mathml="([^"]*)"|alt="(?=([^"]*)math([^"]*))([^"]*)")(?:[^>]*)(?:class="Wirisformula")|(?:class="Wirisformula")(?:[^>]*)(?:data-mathml="([^"]*)"|alt="(?=([^"]*)math([^"]*))([^"]*)"))(?:[^>]*)>@is';
+        $reg_exercise = '@<img(?:[^>]*)"(((?:[^"]*)MathML(?:[^"]*)))"(?:[^>]*)>@is';
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
@@ -29,24 +30,35 @@ class LatexConverter extends AbstractConverter
                 $replace = str_replace('§', '&', $replace);
 
                 $url    = 'http://www.wiris.net/demo/editor/mathml2latex';
-                $myvars = 'mml=' . urlencode($replace);
+                $postdata = http_build_query(
+                    array(
+                        'mml' => $replace
+                    )
+                );
 
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $myvars);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $opts = array(
+                    'http' => array(
+                        'method'  => 'POST',
+                        'header'  => 'Content-type: application/x-www-form-urlencoded',
+                        'content' => $postdata
+                    )
+                );
 
-                $response = "%%" . curl_exec($ch) . "%%";
+                $context  = stream_context_create($opts);
+                $response = file_get_contents($url, false, $context);
+
+                $response = "%%" . $response . "%%";
                 $response = PHP_EOL . $response . PHP_EOL;
 
-                if(curl_getinfo($ch, CURLINFO_HTTP_CODE) == 500){
-                    $response = PHP_EOL . '**Formula contained invalid data: conversion impossible.**' . PHP_EOL;
+                if(!isset($http_response_header) || empty($http_response_header) || stristr($http_response_header[0], '500')){
+                    $response = PHP_EOL . '**Could not convert formula (timeout or invalid formula).**' . PHP_EOL;
+                    echo "\n $match[0] \n";
                     $this->needsFlagging = true;
+
+                    print_r($match);
                 }
 
-                $this->flag($response);
+                //$this->flag($response);
 
                 $content = str_replace($match[0], $response, $content);
             }
@@ -62,7 +74,8 @@ class LatexConverter extends AbstractConverter
         }
     }
 
-    protected function depr(){
+    protected function depr()
+    {
 
         $file = '/tmp/mml.xml';
 
@@ -74,9 +87,6 @@ class LatexConverter extends AbstractConverter
         passthru('xsltproc /var/www/vagrant/xsltml_2.0/mmltex.xsl ' . $file);
         $response = ob_get_contents();
         ob_end_clean(); //Use this instead of ob_flush()
-
-        var_dump($response);
-        die();
 
         $response = trim($response);
         $response = substr($response, 1);
