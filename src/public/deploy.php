@@ -39,7 +39,7 @@
         'cd ' . __DIR__ . '/../module/Ui/assets/ && bower cache clean',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && bower install',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && bower update',
-        'sh ' . __DIR__ . '/../../hyperdrive.sh',
+        'cd ' . __DIR__ . '/../ && sh hyperdrive.sh',
         'cd ' . __DIR__ . '/../module/Ui/assets/ && grunt build',
         'cd ' . __DIR__ . '/../../ && php composer.phar self-update',
         'cd ' . __DIR__ . '/../../ && php composer.phar update',
