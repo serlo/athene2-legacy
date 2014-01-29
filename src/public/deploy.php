@@ -40,7 +40,7 @@
         '(cd ' . __DIR__ . '/../module/Ui/assets/;bower install)',
         '(cd ' . __DIR__ . '/../module/Ui/assets/;bower update)',
         '(cd ' . __DIR__ . '/../;sh hyperdrive.sh)',
-        '(cd ' . __DIR__ . '/../module/Ui/assets/;grunt build)',
+        '(cd ' . __DIR__ . '/../module/Ui/assets/;grunt build --debug --stack --verbose)',
         '(cd ' . __DIR__ . '/../../;php-cli composer.phar self-update)',
         '(cd ' . __DIR__ . '/../../;php-cli composer.phar update)',
     );
