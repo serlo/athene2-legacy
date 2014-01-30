@@ -59,7 +59,7 @@ class ChangePasswordForm extends Form
             'required' => true,
             'filters' => array(
                 array(
-                    'name' => 'User\Authentication\HashFilter'
+                    'name' => 'Authentication\HashFilter'
                 )
             )
         ));

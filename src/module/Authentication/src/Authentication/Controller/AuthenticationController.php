@@ -16,6 +16,7 @@ use Common\Traits\AuthenticationServiceAwareTrait;
 use User\Exception\UserNotFoundException;
 use User\Form\ChangePasswordForm;
 use User\Form\Login;
+use User\Form\LostPassword;
 use User\Form\SelectUserForm;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
@@ -125,9 +126,9 @@ class AuthenticationController extends AbstractActionController
                 }
             }
         } else {
-            $form = $this->getForm('restore_password');
+            $form = new LostPassword();
             $url  = $this->url()->fromRoute(
-                'user/password/restore',
+                'authentication/password/restore',
                 array(
                     'token' => $this->params('token')
                 )
@@ -136,7 +137,7 @@ class AuthenticationController extends AbstractActionController
 
             $user = $this->getUserManager()->findUserByToken($this->params('token'));
 
-            $view->setTemplate('user/user/reset-password/restore');
+            $view->setTemplate('authentication/reset-password/restore');
 
             if ($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();

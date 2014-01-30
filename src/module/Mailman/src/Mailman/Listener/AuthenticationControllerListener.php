@@ -15,11 +15,11 @@ use Zend\EventManager\SharedEventManagerInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
 use Zend\View\Model\ViewModel;
 
-class UserControllerListener extends AbstractListener
+class AuthenticationControllerListener extends AbstractListener
 {
     use TranslatorAwareTrait;
 
-    public function onRegister(Event $e)
+    public function onRestore(Event $e)
     {
         /* @var $user \User\Entity\UserInterface */
         $user = $e->getParam('user');
@@ -29,8 +29,8 @@ class UserControllerListener extends AbstractListener
             'user' => $user
         ));
 
-        $subject->setTemplate('mailman/messages/register/subject');
-        $body->setTemplate('mailman/messages/register/body');
+        $subject->setTemplate('mailman/messages/restore-password/subject');
+        $body->setTemplate('mailman/messages/restore-password/body');
 
         $this->getMailman()->send(
             $user->getEmail(),
@@ -44,10 +44,10 @@ class UserControllerListener extends AbstractListener
     {
         $events->attach(
             $this->getMonitoredClass(),
-            'register',
+            'restore-password',
             array(
                 $this,
-                'onRegister'
+                'onRestore'
             ),
             -1
         );
@@ -55,7 +55,7 @@ class UserControllerListener extends AbstractListener
 
     protected function getMonitoredClass()
     {
-        return 'User\Controller\UserController';
+        return 'Authentication\Controller\AuthenticationController';
     }
 
 }

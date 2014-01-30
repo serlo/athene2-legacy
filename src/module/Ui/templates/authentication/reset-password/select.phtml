@@ -1,6 +1,4 @@
-<div class="page-header">
-    <h1><?php echo $this->translate('Restore password'); ?></h1>
-</div>
+<?php echo $this->pageHeader('Restore password')->render(); ?>
 <?php foreach($this->messages as $message): ?>
     <?php echo $this->translate($message); ?>
 <?php endforeach; ?>

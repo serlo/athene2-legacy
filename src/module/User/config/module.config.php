@@ -103,24 +103,6 @@ return array(
                             )
                         )
                     ),
-                    'password'  => array(
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
-                            'route' => '/password'
-                        ),
-                        'child_routes' => array(
-                            'restore' => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/restore[/:token]',
-                                    'defaults' => array(
-                                        'action' => 'restorePassword'
-                                    )
-                                )
-                            )
-                        )
-                    ),
                     'profile'   => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
