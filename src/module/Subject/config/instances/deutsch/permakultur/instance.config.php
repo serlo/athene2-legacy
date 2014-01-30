@@ -2,18 +2,15 @@
 return [
     'subject' => [
         'instances' => [
-            'de' => [
-                'mathe' => [
+            'deutsch' => [
+                'permakultur' => [
                     'allowed_taxonomies' => [
-                        'abstract-topic',
-                        'school-type'
+                        'abstract-topic'
                     ],
                     'allowed_entities' => [
                         'article',
-                        'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
                     ]
                 ]
             ]

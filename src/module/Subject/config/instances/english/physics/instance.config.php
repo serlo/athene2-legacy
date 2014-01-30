@@ -1,10 +1,10 @@
 <?php
 return array(
-    'subjects' => array(
+    'subject' => array(
         'instances' => array(
             array(
-                'name' => 'math',
-                'language' => 'en',
+                'name' => 'physics',
+                'instance' => 'english',
                 'plugins' => array(
                     array(
                         'name' => 'topic',
@@ -22,7 +22,7 @@ return array(
                                         'singular' => 'Exercise',
                                         'plural' => 'Exercises'
                                     ),
-                                    'template' => 'subject/plugin/taxonomy/entity/exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/text-exercise'
                                 ),
                                 'article' => array(
                                     'labels' => array(
@@ -36,7 +36,7 @@ return array(
                                         'singular' => 'Exercise group',
                                         'plural' => 'Exercise groups'
                                     ),
-                                    'template' => 'subject/plugin/taxonomy/entity/exercise'
+                                    'template' => 'subject/plugin/taxonomy/entity/exercise-group'
                                 ),
                                 'video' => array(
                                     'labels' => array(

@@ -116,7 +116,7 @@ class AttachmentManager implements AttachmentManagerInterface
         $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
         $this->getUuidManager()->injectUuid($attachment);
         $attachment->setInstance(
-            $this->getInstanceManager()->getTenantFromRequest()
+            $this->getInstanceManager()->getInstanceFromRequest()
         );
         $this->getObjectManager()->persist($attachment);
 

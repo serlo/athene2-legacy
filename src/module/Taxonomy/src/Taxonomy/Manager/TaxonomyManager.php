@@ -88,7 +88,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $entity = $this->getObjectManager()->getRepository($className)->findOneBy(
             [
                 'type'     => $type->getId(),
-                'language' => $instance->getId()
+                'instance' => $instance->getId()
             ]
         );
 

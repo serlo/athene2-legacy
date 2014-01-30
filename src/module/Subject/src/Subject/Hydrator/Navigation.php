@@ -26,13 +26,13 @@ class Navigation implements HydratorInterface
     public function __construct(InstanceManagerInterface $instanceManager, SubjectManagerInterface $subjectManager)
     {
         $this->subjectManager  = $subjectManager;
-        $this->tenantManager = $instanceManager;
+        $this->instanceManager = $instanceManager;
     }
 
     public function hydrateConfig(array &$config)
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
-        $subjects = $this->getSubjectManager()->findSubjectsByLanguage($instance);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $subjects = $this->getSubjectManager()->findSubjectsByInstance($instance);
         foreach ($subjects as $subject) {
             $config = ArrayUtils::merge(
                 $config,

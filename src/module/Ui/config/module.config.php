@@ -20,7 +20,7 @@ return array(
     'di'                    => [
         'definition' => [
             'class' => [
-                __NAMESPACE__ . '\Provider\LanguageAwareNavigationProvider' => [
+                __NAMESPACE__ . '\Provider\InstanceAwareNavigationProvider' => [
                     'setInstanceManager' => [
                         'required' => true
                     ]
@@ -63,14 +63,14 @@ return array(
     ),
     'view_helpers'          => array(
         'factories'  => array(
-            'pageHeader'      => function ($helperPluginManager) {
+            'pageHeader' => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
                     $plugin = new PageHeader();
                     $plugin->setConfig($config);
 
                     return $plugin;
                 },
-            'brand'           => function ($helperPluginManager) {
+            'brand'      => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('config')['brand'];
                     $plugin = new Brand();
                     $plugin->setConfig($config);
@@ -80,7 +80,8 @@ return array(
         ),
         'invokables' => array(
             'timeago'  => 'Ui\View\Helper\Timeago',
-            'registry' => 'Ui\View\Helper\Registry'
+            'registry' => 'Ui\View\Helper\Registry',
+            'currentLanguage' => 'Ui\View\Helper\ActiveLanguage'
         )
     ),
     'page_header_helper'    => array(),

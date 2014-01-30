@@ -59,13 +59,13 @@ class DiscussionManager implements DiscussionManagerInterface
         return $comment;
     }
 
-    public function findDiscussionsByLanguage(InstanceInterface $instance)
+    public function findDiscussionsByInstance(InstanceInterface $instance)
     {
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
         $discussions      = $objectRepository->findAll(
             array(
-                'language' => $instance->getId()
+                'instance' => $instance->getId()
             )
         );
 
@@ -111,7 +111,7 @@ class DiscussionManager implements DiscussionManagerInterface
         $hydrator->hydrate(
             [
                 'object'   => $object,
-                'language' => $instance,
+                'instance' => $instance,
                 'author'   => $author,
                 'title'    => $title,
                 'content'  => $content
@@ -128,7 +128,7 @@ class DiscussionManager implements DiscussionManagerInterface
                 'author'     => $author,
                 'on'         => $object,
                 'discussion' => $comment,
-                'language'   => $instance,
+                'instance'   => $instance,
                 'data'       => $data
             ]
         );
@@ -137,10 +137,6 @@ class DiscussionManager implements DiscussionManagerInterface
 
         return $comment;
     }
-
-    /*
-     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
-     */
 
     public function commentDiscussion(
         CommentInterface $discussion,
@@ -167,7 +163,7 @@ class DiscussionManager implements DiscussionManagerInterface
         $hydrator->hydrate(
             [
                 'parent'   => $discussion,
-                'language' => $instance,
+                'instance' => $instance,
                 'author'   => $author,
                 'content'  => $content
             ],
@@ -183,7 +179,7 @@ class DiscussionManager implements DiscussionManagerInterface
                 'author'     => $author,
                 'comment'    => $comment,
                 'discussion' => $discussion,
-                'language'   => $instance,
+                'instance'   => $instance,
                 'data'       => $data
             ]
         );

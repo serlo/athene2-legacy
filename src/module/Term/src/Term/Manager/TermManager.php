@@ -41,12 +41,12 @@ class TermManager implements TermManagerInterface
             )->findOneBy(
                 array(
                     'slug'     => $slug,
-                    'language' => $instance->getId()
+                    'instance' => $instance->getId()
                 )
             );
 
         if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $slug, $instance->getId()));
+            throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $slug, $instance->getId()));
         }
 
         return $entity;
@@ -59,12 +59,12 @@ class TermManager implements TermManagerInterface
             )->findOneBy(
                 array(
                     'name'     => $name,
-                    'language' => $instance->getId()
+                    'instance' => $instance->getId()
                 )
             );
 
         if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $name, $instance->getId()));
+            throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $name, $instance->getId()));
         }
 
         return $entity;

@@ -19,7 +19,7 @@ class EntityManagerListener extends AbstractListener
     {
         $entity   = $e->getParam('entity');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent('entity/create', $instance, $user, $entity);
     }

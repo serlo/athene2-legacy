@@ -7,12 +7,17 @@
  */
 namespace Instance\Factory;
 
+use ClassResolver\ClassResolverFactoryTrait;
+use Common\Factory\EntityManagerFactoryTrait;
 use Instance\Manager\InstanceManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class LanguageManagerFactory implements FactoryInterface
+class InstanceManagerFactory implements FactoryInterface
 {
+    use EntityManagerFactoryTrait;
+    use ClassResolverFactoryTrait;
+
     /**
      * Create service
      *
@@ -22,8 +27,8 @@ class LanguageManagerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $instance      = new InstanceManager();
-        $objectManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
+        $objectManager = $this->getEntityManager($serviceLocator);
+        $classResolver = $this->getClassResolver($serviceLocator);
 
         $instance->setObjectManager($objectManager);
         $instance->setClassResolver($classResolver);

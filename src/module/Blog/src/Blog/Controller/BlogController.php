@@ -23,7 +23,7 @@ class BlogController extends AbstractActionController
     public function indexAction()
     {
         $blogs = $this->getBlogManager()->findAllBlogs(
-            $this->getInstanceManager()->getTenantFromRequest()
+            $this->getInstanceManager()->getInstanceFromRequest()
         );
 
         $view = new ViewModel(array(
@@ -146,7 +146,7 @@ class BlogController extends AbstractActionController
 
     public function createAction()
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('blog.post.create', $instance);
 
         $blog = $this->getBlogManager()->getBlog($this->params('id'));

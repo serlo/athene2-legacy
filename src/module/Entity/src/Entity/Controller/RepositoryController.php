@@ -51,7 +51,7 @@ class RepositoryController extends AbstractController
             );
             if ($form->isValid()) {
                 $data     = $form->getData();
-                $instance = $this->getInstanceManager()->getTenantFromRequest();
+                $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
                 $this->getRepositoryManager()->getRepository($entity)->commitRevision($data);
                 $this->getEntityManager()->flush();

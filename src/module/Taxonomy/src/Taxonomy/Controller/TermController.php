@@ -91,7 +91,7 @@ class TermController extends AbstractController
             $form->setData($data);
             if ($form->isValid()) {
                 $term = $this->getTaxonomyManager()->createTerm($form->getData(), $this->getInstanceManager()
-                    ->getTenantFromRequest());
+                    ->getInstanceFromRequest());
                 
                 $this->getTaxonomyManager()->flush();
                 

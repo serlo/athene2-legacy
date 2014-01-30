@@ -128,7 +128,7 @@ class Discussion extends AbstractHelper
 
     public function findForum(array $forums)
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
         $term     = $this->getTaxonomyManager()->findTerm(
             $taxonomy,
@@ -168,7 +168,7 @@ class Discussion extends AbstractHelper
 
     protected function createForums(array $forums, TaxonomyTermInterface $current)
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
 
         foreach ($forums as $forum) {

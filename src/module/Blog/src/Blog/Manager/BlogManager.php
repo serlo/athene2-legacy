@@ -43,7 +43,7 @@ class BlogManager implements BlogManagerInterface
     ) {
         $this->classResolver   = $classResolver;
         $this->taxonomyManager = $taxonomyManager;
-        $this->tenantManager = $instanceManager;
+        $this->instanceManager = $instanceManager;
         $this->objectManager   = $objectManager;
         $this->setAuthorizationService($authorizationService);
     }
@@ -112,7 +112,7 @@ class BlogManager implements BlogManagerInterface
         $content,
         DateTime $publish = null
     ) {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('blog.post.create', $instance);
 
         /* @var $post PostInterface */
@@ -126,7 +126,7 @@ class BlogManager implements BlogManagerInterface
                 'title'    => $title,
                 'content'  => $content,
                 'publish'  => $publish ? $publish : new DateTime(),
-                'language' => $instance
+                'instance' => $instance
             ],
             $post
         );

@@ -117,7 +117,7 @@ class PageManager implements PageManagerInterface
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Page\Entity\PageRepositoryInterface'))
             ->findBy(array(
-            'language' => $instance->getId()
+            'instance' => $instance->getId()
         ));
         $repositorys = array();
         foreach ($pageRepositorys as $repository) {

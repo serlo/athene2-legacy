@@ -19,27 +19,27 @@ interface InstanceManagerInterface
     /**
      * @return Collection InstanceInterface[]
      */
-    public function findAllTenants();
+    public function findAllInstances();
 
     /**
      * @param string $name
      * @return InstanceInterface
      */
-    public function findTenantByName($name);
+    public function findInstanceByName($name);
 
     /**
      * @return InstanceInterface
      */
-    public function getDefaultTenant();
+    public function getDefaultInstance();
 
     /**
      * @param int $id
      * @return InstanceInterface
      */
-    public function getTenant($id);
+    public function getInstance($id);
 
     /**
      * @return InstanceInterface
      */
-    public function getTenantFromRequest();
+    public function getInstanceFromRequest();
 }

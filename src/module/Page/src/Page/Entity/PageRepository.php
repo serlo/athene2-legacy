@@ -167,7 +167,7 @@ class PageRepository extends UuidEntity implements PageRepositoryInterface
 
     public function populate(array $data = array())
     {
-        $this->injectFromArray('language', $data);
+        $this->injectFromArray('instance', $data);
         $this->injectFromArray('current_revision', $data);
 
         return $this;

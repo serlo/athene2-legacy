@@ -21,11 +21,11 @@ class LicenseController extends AbstractActionController
 
     public function manageAction()
     {
-        $instanceService = $this->getInstanceManager()->getTenantFromRequest();
+        $instanceService = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('licenses.manage', $instanceService);
 
         $view = new ViewModel(array(
-            'licenses' => $this->getLicenseManager()->findLicensesByLanguage($instanceService)
+            'licenses' => $this->getLicenseManager()->findLicensesByInstance($instanceService)
         ));
         $view->setTemplate('license/manage');
 
@@ -88,7 +88,7 @@ class LicenseController extends AbstractActionController
             if ($form->isValid()) {
                 $this->getLicenseManager()->addLicense(
                     $form,
-                    $this->getInstanceManager()->getTenantFromRequest()
+                    $this->getInstanceManager()->getInstanceFromRequest()
                 );
                 $this->getLicenseManager()->getObjectManager()->flush();
                 $this->redirect()->toUrl(

@@ -23,7 +23,7 @@ class EntityPluginControllerAdapter extends AbstractAdapter
 
         $array = [
             'type'     => $entityService->getType()->getName(),
-            'language' => $this->getInstanceManager()->getTenantFromRequest()->getName()
+            'instance' => $this->getInstanceManager()->getInstanceFromRequest()->getName()
         ];
 
         if ($entityService->hasPlugin('learningResource')) {

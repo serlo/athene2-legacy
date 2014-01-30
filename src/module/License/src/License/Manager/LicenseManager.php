@@ -48,18 +48,18 @@ class LicenseManager implements LicenseManagerInterface
 
     protected function getDefaultLicense()
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $code = $instance->getName();
         $defaults = $this->getDefaultConfig()['defaults'];
         if (!array_key_exists($code, $defaults)) {
-            throw new Exception\RuntimeException(sprintf('No default license set for language `%s`', $code));
+            throw new Exception\RuntimeException(sprintf('No default license set for instance `%s`', $code));
         }
         $title = $defaults[$code];
 
-        return $this->findLicenseByTitleAndLanguage($title, $instance);
+        return $this->findLicenseByTitleAndInterface($title, $instance);
     }
 
-    public function findLicenseByTitleAndLanguage($title, InstanceInterface $instance)
+    public function findLicenseByTitleAndInterface($title, InstanceInterface $instance)
     {
         if (!is_string($title)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -72,13 +72,13 @@ class LicenseManager implements LicenseManagerInterface
         $license   = $this->getObjectManager()->getRepository($className)->findOneBy(
             [
                 'title'    => $title,
-                'language' => $instance->getId()
+                'instance' => $instance->getId()
             ]
         );
 
         if (!is_object($license)) {
             throw new Exception\LicenseNotFoundException(sprintf(
-                'License not found by title `%s` and language `%s`.',
+                'License not found by title `%s` and instance `%s`.',
                 $title,
                 $instance->getName()
             ));
@@ -154,13 +154,13 @@ class LicenseManager implements LicenseManagerInterface
         return $this->getObjectManager()->getRepository($className)->findAll();
     }
 
-    public function findLicensesByLanguage(InstanceInterface $instanceService)
+    public function findLicensesByInstance(InstanceInterface $instanceService)
     {
         $className = $this->getClassResolver()->resolveClassName('License\Entity\LicenseInterface');
 
         return $this->getObjectManager()->getRepository($className)->findBy(
             [
-                'language' => $instanceService
+                'instance' => $instanceService
             ]
         );
     }

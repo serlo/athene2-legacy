@@ -32,7 +32,7 @@ return array(
         'Term',
         'Uuid',
         'ClassResolver',
-        'Language',
+        'Instance',
         'Event',
         'Mailman',
         'Alias',

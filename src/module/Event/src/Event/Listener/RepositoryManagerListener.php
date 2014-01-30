@@ -63,7 +63,7 @@ class RepositoryManagerListener extends AbstractListener
         $repository = $e->getParam('repository')->getUuidEntity();
         $revision   = $e->getParam('revision');
         $user       = $this->getUserManager()->getUserFromAuthenticator();
-        $instance   = $this->getInstanceManager()->getTenantFromRequest();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'entity/revision/add',
@@ -84,7 +84,7 @@ class RepositoryManagerListener extends AbstractListener
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository')->getUuidEntity();
         $user       = $e->getParam('actor');
-        $instance   = $this->getInstanceManager()->getTenantFromRequest();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'entity/revision/checkout',
@@ -105,7 +105,7 @@ class RepositoryManagerListener extends AbstractListener
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository')->getUuidEntity();
         $user       = $e->getParam('actor');
-        $instance   = $this->getInstanceManager()->getTenantFromRequest();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
         $reason     = $e->getParam('reason');
 
         $this->logEvent(

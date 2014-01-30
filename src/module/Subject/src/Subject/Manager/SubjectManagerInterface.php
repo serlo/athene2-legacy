@@ -38,5 +38,5 @@ interface SubjectManagerInterface
      * @param InstanceInterface $instance
      * @return ArrayCollection
      */
-    public function findSubjectsByLanguage(InstanceInterface $instance);
+    public function findSubjectsByInstance(InstanceInterface $instance);
 }

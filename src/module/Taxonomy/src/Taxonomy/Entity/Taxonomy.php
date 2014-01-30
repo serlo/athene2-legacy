@@ -39,11 +39,6 @@ class Taxonomy implements TaxonomyInterface
      */
     protected $terms;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     */
-    protected $instance;
-
     public function __construct()
     {
         $this->terms = new ArrayCollection();

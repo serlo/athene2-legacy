@@ -26,7 +26,7 @@ class PageControllerListener extends AbstractListener
         $repositoryid = $e->getParam('repositoryid');
         $slug         = $e->getParam('slug');
         $repository   = $e->getParam('repository');
-        $instance     = $e->getParam('language');
+        $instance     = $e->getParam('instance');
         $entity       = $repository;
 
         $url = $e->getTarget()->url()->fromRoute(

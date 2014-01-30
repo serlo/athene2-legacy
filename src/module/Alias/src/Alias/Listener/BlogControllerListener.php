@@ -26,7 +26,7 @@ class BlogControllerListener extends AbstractListener
         $post     = $e->getParam('post');
         $actor    = $e->getParam('actor');
         $data     = $e->getParam('data');
-        $instance = $e->getParam('language');
+        $instance = $e->getParam('instance');
 
         $url = $e->getTarget()->url()->fromRoute(
             'blog/post/view',

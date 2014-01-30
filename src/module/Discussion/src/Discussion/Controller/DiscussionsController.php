@@ -41,7 +41,7 @@ class DiscussionsController extends AbstractController
 
     protected function getTaxonomy()
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $instance);
     }

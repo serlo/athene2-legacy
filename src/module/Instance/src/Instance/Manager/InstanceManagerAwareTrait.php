@@ -15,14 +15,14 @@ trait InstanceManagerAwareTrait
     /**
      * @var InstanceManagerInterface
      */
-    protected $tenantManager;
+    protected $instanceManager;
 
     /**
      * @return InstanceManagerInterface $instanceManager
      */
     public function getInstanceManager()
     {
-        return $this->tenantManager;
+        return $this->instanceManager;
     }
 
     /**
@@ -31,7 +31,7 @@ trait InstanceManagerAwareTrait
      */
     public function setInstanceManager(InstanceManagerInterface $tenantManager)
     {
-        $this->tenantManager = $tenantManager;
+        $this->instanceManager = $tenantManager;
 
         return $this;
     }

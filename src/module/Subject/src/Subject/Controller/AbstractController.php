@@ -27,7 +27,7 @@ class AbstractController extends AbstractActionController
         if ($id === NULL) {
             $subject = $this->params()->fromRoute('subject');
             return $this->getSubjectManager()->findSubjectByString($subject, $this->getInstanceManager()
-                ->getTenantFromRequest());
+                ->getInstanceFromRequest());
         } else {
             return $this->getSubjectManager()->getSubject($id);
         }

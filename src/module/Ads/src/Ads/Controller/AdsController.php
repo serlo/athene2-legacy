@@ -26,7 +26,7 @@ class AdsController extends AbstractActionController
     public function indexAction()
     {
         $ads = $this->getAdsManager()->findAllAds($this->getInstanceManager()
-            ->getTenantFromRequest());
+            ->getInstanceFromRequest());
         $view = new ViewModel(array(
             'ads' => $ads
         ));
@@ -39,7 +39,7 @@ class AdsController extends AbstractActionController
     {
         $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = new AdForm();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -55,7 +55,7 @@ class AdsController extends AbstractActionController
                 
                 $array['attachment'] = $upload;
                 $array['author'] = $user;
-                $array['language'] = $instance;
+                $array['instance'] = $instance;
                 
                 $this->getAdsManager()->createAd($array);
                 
@@ -86,7 +86,7 @@ class AdsController extends AbstractActionController
     public function shuffleAction()
     {
         $ads = $this->getAdsManager()->findShuffledAds($this->getInstanceManager()
-            ->getTenantFromRequest(), 3);
+            ->getInstanceFromRequest(), 3);
         $view = new ViewModel(array(
             'ads' => $ads
         ));

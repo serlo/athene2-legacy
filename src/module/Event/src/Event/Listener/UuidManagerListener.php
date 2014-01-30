@@ -19,7 +19,7 @@ class UuidManagerListener extends AbstractListener
     {
         $object   = $e->getParam('object');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent('uuid/restore', $instance, $user, $object);
     }
@@ -28,7 +28,7 @@ class UuidManagerListener extends AbstractListener
     {
         $object   = $e->getParam('object');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent('uuid/trash', $instance, $user, $object);
     }

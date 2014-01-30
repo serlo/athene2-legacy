@@ -22,7 +22,7 @@ class PostHydrator extends AbstractKeyHydrator
             'title',
             'publish',
             'content',
-            'language'
+            'instance'
         ];
     }
 

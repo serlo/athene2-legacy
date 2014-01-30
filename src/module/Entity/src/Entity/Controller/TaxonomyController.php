@@ -24,7 +24,7 @@ class TaxonomyController extends AbstractController
         $this->assertGranted('entity.link.create', $entity);
         $this->assertGranted('entity.link.purge', $entity);
 
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
 
         if ($this->getRequest()->isPost()) {

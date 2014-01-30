@@ -13,8 +13,8 @@ namespace Instance\Entity;
 trait InstanceAwareTrait
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Type\Entity\Type")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Instance\Entity\Instance")
+     * @ORM\JoinColumn(name="instance_id", referencedColumnName="id")
      * @var InstanceInterface
      */
     protected $instance;
@@ -22,7 +22,7 @@ trait InstanceAwareTrait
     /**
      * @return InstanceInterface
      */
-    public function getType()
+    public function getInstance()
     {
         return $this->instance;
     }
@@ -30,7 +30,7 @@ trait InstanceAwareTrait
     /**
      * @param InstanceInterface $instance
      */
-    public function setType(InstanceInterface $instance)
+    public function setInstance(InstanceInterface $instance)
     {
         $this->instance = $instance;
     }

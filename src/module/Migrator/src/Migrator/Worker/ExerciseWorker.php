@@ -113,7 +113,7 @@ class ExerciseWorker implements Worker
         $this->objectManager     = $objectManager;
         $this->entityManager     = $entityManager;
         $this->taxonomyManager   = $taxonomyManager;
-        $this->languageManager   = $instanceManager;
+        $this->instanceManager   = $instanceManager;
         $this->uuidManager       = $uuidManager;
         $this->userManager       = $userManagerInterface;
         $this->converterChain    = $converterChain;
@@ -127,7 +127,7 @@ class ExerciseWorker implements Worker
     public function migrate(array & $results, array &$workload)
     {
         $user     = $this->userManager->getUserFromAuthenticator();
-        $instance = $this->languageManager->getTenant(1);
+        $instance = $this->instanceManager->getInstance(1);
 
         /** @var $exercises \Migrator\Entity\ExerciseTranslation[] */
         $exercises = $this->objectManager->getRepository('Migrator\Entity\ExerciseTranslation')->findAll();

@@ -23,7 +23,7 @@ class AdHydrator implements HydratorInterface
         'title',
         'content',
         'attachment',
-        'language',
+        'instance',
         'frequency',
         'clicks',
         'url'

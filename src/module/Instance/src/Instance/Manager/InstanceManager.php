@@ -13,88 +13,89 @@ namespace Instance\Manager;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Instance\Entity\InstanceInterface;
 use Instance\Exception;
 
 class InstanceManager implements InstanceManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
-    private $defaultTenant = 1;
+    private $defaultInstance = 1;
 
     /**
-     * @var \Language\Entity\TenantInterface
+     * @var InstanceInterface
      */
     protected $requestTenant;
 
-    public function setDefaultTenant($id)
+    public function setDefaultInstance($id)
     {
-        $this->defaultTenant = $id;
+        $this->defaultInstance = $id;
 
         return $this;
     }
 
-    public function findAllTenants()
+    public function findAllInstances()
     {
         $collection = $this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface')
+            $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface')
         )->findAll();
 
         return new ArrayCollection($collection);
     }
 
-    public function getDefaultTenant()
+    public function getDefaultInstance()
     {
-        return $this->getTenant($this->defaultTenant);
+        return $this->getInstance($this->defaultInstance);
     }
 
-    public function getTenantFromRequest()
+    public function getInstanceFromRequest()
     {
         if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
-            $this->requestTenant = $this->getDefaultTenant();
+            $this->requestTenant = $this->getDefaultInstance();
         }
 
         if (!$this->requestTenant) {
             $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
 
             try {
-                $this->requestTenant = $this->findTenantByName($subdomain);
+                $this->requestTenant = $this->findInstanceByName($subdomain);
             } catch (Exception\InstanceNotFoundException $e) {
-                $this->requestTenant = $this->getDefaultTenant();
+                $this->requestTenant = $this->getDefaultInstance();
             }
         }
 
         return $this->requestTenant;
     }
 
-    public function getTenant($id)
+    public function getInstance($id)
     {
-        $className = $this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface');
+        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
 
         $instance = $this->getObjectManager()->find($className, $id);
 
         if (!is_object($instance)) {
-            throw new Exception\InstanceNotFoundException(sprintf('Language %s could not be found', $id));
+            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $id));
         }
 
         return $instance;
     }
 
-    public function findTenantByName($name)
+    public function findInstanceByName($name)
     {
         if (!is_string($name)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($name)));
         }
 
         $instance = $this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('Language\Entity\LanguageInterface')
+            $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface')
         )->findOneBy(
                 array(
-                    'code' => $name
+                    'name' => $name
                 )
             );
 
         if (!is_object($instance)) {
-            throw new Exception\InstanceNotFoundException(sprintf('Language %s could not be found', $name));
+            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $name));
         }
 
         return $instance;

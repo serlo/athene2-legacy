@@ -47,7 +47,7 @@ class PageRepositoryTest extends Model
         $roles=new ArrayCollection();
         $roles->add(new Role());
         return array(
-            'language' => new Instance(),
+            'instance' => new Instance(),
             'current_revision' => new PageRevision(),
             'roles' => $roles
         );
@@ -102,7 +102,7 @@ class PageRepositoryTest extends Model
     {
         $revision = new PageRevision();
         $this->getObject()->populate(array(
-            'language' => new Instance(),
+            'instance' => new Instance(),
             'current_revision' => $revision
         ));
         $this->assertEquals($revision, $this->getObject()->getCurrentRevision()

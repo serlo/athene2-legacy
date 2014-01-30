@@ -17,7 +17,7 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         $repositorys = $this->getPageManager()->findAllRepositorys($this->getInstanceManager()
-            ->getTenantFromRequest());
+            ->getInstanceFromRequest());
         $view = new ViewModel(array(
             'repositorys' => $repositorys
         ));
@@ -67,7 +67,7 @@ class IndexController extends AbstractActionController
         $form = new RepositoryForm($this->getObjectManager());
         
         $instance = $this->getInstanceManager()
-            ->getTenantFromRequest();
+            ->getInstanceFromRequest();
         $pageRepository = $this->getPageRepository();
         $form->get('slug')->setValue($this->getAliasManager()->findAliasByObject($pageRepository->getUuidEntity())->getAlias());
         $roles = array();
@@ -135,7 +135,7 @@ class IndexController extends AbstractActionController
     public function createRepositoryAction()
     {
         $instance = $this->getInstanceManager()
-            ->getTenantFromRequest();
+            ->getInstanceFromRequest();
         $form = new RepositoryForm($this->getObjectManager());
                
         if ($this->getRequest()->isPost()) {
@@ -148,7 +148,7 @@ class IndexController extends AbstractActionController
                
                 $this->getEventManager()->trigger('page.create', $this, array(
                     'repositoryid' => $repository->getId(),
-                    'language' => $instance,
+                    'instance' => $instance,
                     'repository' => $repository,
                 	'slug' => $array['slug']
                 

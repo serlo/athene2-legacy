@@ -157,7 +157,7 @@ class UserController extends AbstractUserController
                     $this,
                     array(
                         'user'     => $user,
-                        'language' => $this->getInstanceManager()->getTenantFromRequest(),
+                        'instance' => $this->getInstanceManager()->getInstanceFromRequest(),
                         'data'     => $data
                     )
                 );

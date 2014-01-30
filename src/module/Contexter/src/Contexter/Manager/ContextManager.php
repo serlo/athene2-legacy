@@ -85,7 +85,7 @@ class ContextManager implements ContextManagerInterface
 
     public function add($objectId, $type, $title)
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('contexter.context.add', $instance);
 
         $object = $this->getUuidManager()->getUuid($objectId);

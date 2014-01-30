@@ -38,7 +38,7 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
             ));
         }
         $this->eventManager    = $eventManager;
-        $this->tenantManager = $instanceManager;
+        $this->instanceManager = $instanceManager;
         $this->userManager     = $userManager;
     }
 

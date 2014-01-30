@@ -63,7 +63,7 @@ class FolderWorker implements Worker
     ) {
         $this->objectManager   = $objectManager;
         $this->taxonomyManager = $taxonomyManager;
-        $this->languageManager = $instanceManager;
+        $this->instanceManager = $instanceManager;
         $this->uuidManager     = $uuidManager;
         $this->userManager     = $userManagerInterface;
         $this->converterChain  = $converterChain;
@@ -72,7 +72,7 @@ class FolderWorker implements Worker
 
     public function migrate(array & $results, array &$workload)
     {
-        $instance      = $this->languageManager->getTenantFromRequest();
+        $instance      = $this->instanceManager->getInstanceFromRequest();
         $defaultParent = $this->taxonomyManager->getTerm(7);
 
         /* @var $folders \Migrator\Entity\Folder[] */

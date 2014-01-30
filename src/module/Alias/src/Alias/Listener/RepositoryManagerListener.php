@@ -38,7 +38,7 @@ class RepositoryManagerListener extends AbstractSharedListenerAggregate
         $entity = $e->getParam('repository');
 
         if ($entity instanceof EntityInterface && $entity->getType()->getName() == 'article') {
-            $instance = $this->getInstanceManager()->getTenantFromRequest();
+            $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
             $url = $this->getAliasManager()->getRouter()->assemble(
                 ['entity' => $entity->getId()],

@@ -21,11 +21,11 @@ class Module
     {
         $dir = __DIR__ . '/config/instances';
         $instances = array(
-            'de\mathe' => $dir . '/de/mathe/instance.config.php',
-            'de\physik' => $dir . '/de/physik/instance.config.php',
-            'de\permakultur' => $dir . '/de/permakultur/instance.config.php',
-            'en\math' => $dir . '/en/math/instance.config.php',
-            'en\physics' => $dir . '/en/physics/instance.config.php'
+            'de\mathe' => $dir . '/deutsch/mathe/instance.config.php',
+            'de\physik' => $dir . '/deutsch/physik/instance.config.php',
+            'de\permakultur' => $dir . '/deutsch/permakultur/instance.config.php',
+            'en\math' => $dir . '/english/math/instance.config.php',
+            'en\physics' => $dir . '/english/physics/instance.config.php'
         );
         $config = array();
         foreach ($instances as $instance) {

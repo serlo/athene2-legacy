@@ -28,7 +28,7 @@ class RoleAssertion implements AssertionInterface
         PermissionServiceInterface $permissionService
     ) {
         $this->permissionService = $permissionService;
-        $this->tenantManager   = $instanceManager;
+        $this->instanceManager   = $instanceManager;
     }
 
     public function assert(AuthorizationService $authorization, $role = null)

@@ -32,7 +32,7 @@ class Url extends ZendUrl
 
         try {
             $aliasManager = $this->getAliasManager();
-            $instance     = $this->getInstanceManager()->getTenantFromRequest();
+            $instance     = $this->getInstanceManager()->getInstanceFromRequest();
             $alias        = $aliasManager->findAliasBySource($link, $instance);
 
             return $this->getOption('uri_head') . '/' . $alias;

@@ -72,7 +72,7 @@ class AdsManager implements AdsManagerInterface
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Ads\Entity\AdInterface'))
             ->findBy(array(
-            'language' => $instance->getId()
+            'instance' => $instance->getId()
         ));
         
         return $ads;

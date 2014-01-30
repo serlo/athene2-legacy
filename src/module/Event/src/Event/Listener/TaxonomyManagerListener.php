@@ -19,7 +19,7 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent('taxonomy/term/create', $instance, $user, $term);
     }
@@ -28,7 +28,7 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent('taxonomy/term/update', $instance, $user, $term);
     }
@@ -37,7 +37,7 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'taxonomy/term/associate',
@@ -57,7 +57,7 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'taxonomy/term/dissociate',

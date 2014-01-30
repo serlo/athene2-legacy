@@ -14,13 +14,13 @@ namespace Ui\Provider;
 use Ui\Navigation\HydratorInterface;
 use Zend\Stdlib\ArrayUtils;
 
-class LanguageAwareProvider implements HydratorInterface
+class InstanceAwareProvider implements HydratorInterface
 {
     use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Instance\Manager\InstanceManagerAwareTrait;
 
     public function hydrateConfig(array &$config)
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $config = ArrayUtils::merge($config, include __DIR__ . '/../../../config/navigation/' . $instance->getName() . '.config.php');
         return $config;
     }

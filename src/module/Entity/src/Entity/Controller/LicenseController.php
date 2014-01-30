@@ -21,8 +21,8 @@ class LicenseController extends AbstractController
 
     public function updateAction()
     {
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
-        $licenses = $this->getLicenseManager()->findLicensesByLanguage($instance);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $licenses = $this->getLicenseManager()->findLicensesByInstance($instance);
         $entity   = $this->getEntity();
 
         $this->assertGranted('entity.license.update', $entity);

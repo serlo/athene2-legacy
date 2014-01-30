@@ -28,7 +28,7 @@ class AliasController extends AbstractActionController
     {
         $source = $this->getAliasManager()->findSourceByAlias(
             $this->params('alias'),
-            $this->getInstanceManager()->getTenantFromRequest()
+            $this->getInstanceManager()->getInstanceFromRequest()
         );
 
         $router = $this->getServiceLocator()->get('Router');

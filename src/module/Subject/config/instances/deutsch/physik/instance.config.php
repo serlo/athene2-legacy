@@ -2,7 +2,7 @@
 return [
     'subject' => [
         'instances' => [
-            'de' => [
+            'deutsch' => [
                 'physik' => [
                     'allowed_taxonomies' => [
                         'abstract-topic',

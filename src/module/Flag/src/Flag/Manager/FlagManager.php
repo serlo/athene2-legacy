@@ -99,7 +99,7 @@ class FlagManager implements FlagManagerInterface
         $flag->setContent($content);
         $flag->setReporter($reporter);
         $flag->setType($type);
-        $flag->setInstance($this->getInstanceManager()->getTenantFromRequest());
+        $flag->setInstance($this->getInstanceManager()->getInstanceFromRequest());
         $flag->setObject($object);
         $this->getObjectManager()->persist($flag);
 

@@ -10,8 +10,8 @@
  */
 namespace Alias;
 
-use Alias\Exception;
 use Alias\Exception\AliasNotFoundException;
+use Alias\Exception;
 use Alias\Options\ManagerOptions;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Filter\Slugify;
@@ -70,7 +70,7 @@ class AliasManager implements AliasManagerInterface
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'alias'    => $alias,
-                'language' => $instance->getId()
+                'instance' => $instance->getId()
             ]
         );
 
@@ -93,7 +93,7 @@ class AliasManager implements AliasManagerInterface
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'source'   => $source,
-                'language' => $instance->getId()
+                'instance' => $instance->getId()
             ]
         );
 

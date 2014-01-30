@@ -42,7 +42,7 @@ class SubjectManager implements SubjectManagerInterface
         return $term;
     }
 
-    public function findSubjectsByLanguage(InstanceInterface $instance)
+    public function findSubjectsByInstance(InstanceInterface $instance)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $instance);
 

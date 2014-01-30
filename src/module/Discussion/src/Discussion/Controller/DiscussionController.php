@@ -62,7 +62,7 @@ class DiscussionController extends AbstractController
                 $this->getRequest()->getPost()
             );
             if ($form->isValid()) {
-                $instance = $this->getInstanceManager()->getTenantFromRequest();
+                $instance = $this->getInstanceManager()->getInstanceFromRequest();
                 $author   = $this->getUserManager()->getUserFromAuthenticator();
                 $content  = $form->getData()['content'];
 
@@ -121,7 +121,7 @@ class DiscussionController extends AbstractController
             );
             if ($form->isValid()) {
                 $object = $this->getUuidManager()->getUuid($this->params('on'));
-                $instance = $this->getInstanceManager()->getTenantFromRequest();
+                $instance = $this->getInstanceManager()->getInstanceFromRequest();
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 $title = $form->getData()['title'];
                 $content = $form->getData()['content'];

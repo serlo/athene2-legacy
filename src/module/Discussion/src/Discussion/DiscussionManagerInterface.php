@@ -38,7 +38,7 @@ interface DiscussionManagerInterface extends Flushable
      * @param InstanceInterface $instance
      * @return CommentInterface[]
      */
-    public function findDiscussionsByLanguage(InstanceInterface $instance);
+    public function findDiscussionsByInstance(InstanceInterface $instance);
 
     /**
      * Finds discussions on a uuid

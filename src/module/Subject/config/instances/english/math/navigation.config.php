@@ -11,17 +11,17 @@
  */
 return array(
     array(
-        'label' => 'Physics',
+        'label' => 'Math',
         'route' => 'subject',
         'params' => array(
-            'subject' => 'physics'
+            'subject' => 'math'
         ),
         'pages' => array(
             array(
                 'label' => 'Home',
                 'route' => 'subject',
                 'params' => array(
-                    'subject' => 'physics'
+                    'subject' => 'math'
                 ),
                 'icon' => 'home'
             ),
@@ -29,22 +29,22 @@ return array(
                 'label' => 'Learn',
                 'route' => 'subject/plugin/taxonomy/topic',
                 'params' => array(
-                    'subject' => 'physics'
+                    'subject' => 'math'
                 ),
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => array(
                     'parent' => array(
-                        'name' => 'physics',
+                        'name' => 'math',
                         'type' => 'subject'
                     ),
                     'types' => array(
                         'topic'
                     ),
-                    'language' => 'en',
+                    'instance' => 'english',
                     'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,
                     'params' => array(
-                        'subject' => 'physics'
+                        'subject' => 'math'
                     )
                 ),
                 'icon' => 'book'

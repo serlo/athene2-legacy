@@ -27,7 +27,7 @@ class DiscussionManagerListener extends AbstractListener
      */
     public function onStart(Event $e)
     {
-        $instance   = $e->getParam('language');
+        $instance   = $e->getParam('instance');
         $user       = $e->getParam('author');
         $discussion = $e->getParam('discussion');
 
@@ -50,7 +50,7 @@ class DiscussionManagerListener extends AbstractListener
     public function onComment(Event $e)
     {
         $user       = $e->getParam('author');
-        $instance   = $e->getParam('language');
+        $instance   = $e->getParam('instance');
         $discussion = $e->getParam('discussion')->getUuidEntity();
 
         $params = array(

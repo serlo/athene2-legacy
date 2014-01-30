@@ -21,7 +21,7 @@ class AbstractController extends AbstractActionController
     protected function getTerm($id = NULL){
         if($id === NULL){
             if($this->params('id', NULL) === NULL) {
-                return $this->getTaxonomyManager()->findTaxonomyByName('root', $this->getInstanceManager()->getTenantFromRequest())->getChildren()->first();
+                return $this->getTaxonomyManager()->findTaxonomyByName('root', $this->getInstanceManager()->getInstanceFromRequest())->getChildren()->first();
             } else {
                 return $this->getTaxonomyManager()->getTerm($this->params('id'));
             }

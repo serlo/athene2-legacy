@@ -31,7 +31,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
                 'type' => '',
                 'slug' => ''
             ),
-            'language' => 'de',
+            'instance' => 'de',
             'max_depth' => 1,
             'types' => array(),
             'params' => array()
@@ -48,7 +48,7 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
     {
         if (! is_object($this->term)) {
             $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('parent')['type'], $this->getInstanceManager()
-                ->findTenantByName($this->getOption('language')));
+                ->findInstanceByName($this->getOption('instance')));
             
             $this->term = $this->getTaxonomyManager()->findTerm($taxonomy, (array) $this->getOption('parent')['slug']);
         }

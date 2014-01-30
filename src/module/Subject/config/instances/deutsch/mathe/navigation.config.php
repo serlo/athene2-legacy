@@ -41,7 +41,7 @@ return [
                         'school-type',
                         'curriculum'
                     ],
-                    'language' => 'de',
+                    'instance' => 'deutsch',
                     'route' => 'subject/taxonomy',
                     'max_depth' => 10,
                     'params' => [
@@ -66,7 +66,7 @@ return [
                         'abstract-topic',
                         'topic'
                     ],
-                    'language' => 'de',
+                    'instance' => 'deutsch',
                     'route' => 'subject/taxonomy',
                     'max_depth' => 10,
                     'params' => [

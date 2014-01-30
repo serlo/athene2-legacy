@@ -36,11 +36,11 @@ class ModuleOptions extends AbstractOptions
         $instance = strtolower($instance);
 
         if (!array_key_exists($instance, $this->instances)) {
-            throw new Exception\RuntimeException(sprintf('Language "%s" unkown.', $instance));
+            throw new Exception\RuntimeException(sprintf('Instance "%s" unknown.', $instance));
         }
 
         if (!array_key_exists($name, $this->instances[$instance])) {
-            throw new Exception\RuntimeException(sprintf('Subject "%s" unkown.', $name));
+            throw new Exception\RuntimeException(sprintf('Subject "%s" unknown.', $name));
         }
 
         $options = $this->instances[$instance][$name];

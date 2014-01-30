@@ -23,7 +23,7 @@ class Horizon extends AbstractHelper
 
     public function __invoke($number)
     {
-        $instance  = $this->getInstanceManager()->getTenantFromRequest();
+        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
         $this->ads = $this->getAdsManager()->findShuffledAds($instance, $number);
 
         return $this->getView()->partial(

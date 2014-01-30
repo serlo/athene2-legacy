@@ -23,7 +23,7 @@ class EntityController extends AbstractController
         $this->assertGranted('entity.create');
 
         $type     = $this->params('type');
-        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $query    = $this->params()->fromQuery();
         $entity   = $this->getEntityManager()->createEntity(
             $type,

@@ -156,7 +156,7 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         $this->createService();
         $this->assertInstanceOf('Page\Service\PageServiceInterface', $this->pageManager->createPageRepository(array(
             123,
-            456,123,'language'=>$this->languageMock,'roles'=>array('sysadmin')
+            456,123,'instance'=>$this->languageMock,'roles'=>array('sysadmin')
         ),$this->languageMock));
     
     
