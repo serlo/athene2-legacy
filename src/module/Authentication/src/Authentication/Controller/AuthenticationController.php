@@ -10,6 +10,7 @@
  */
 namespace Authentication\Controller;
 
+use Authentication\Form\ActivateForm;
 use Authorization\Service\RoleServiceAwareTrait;
 use Authorization\Service\RoleServiceInterface;
 use Common\Traits\AuthenticationServiceAwareTrait;
@@ -103,6 +104,7 @@ class AuthenticationController extends AbstractActionController
                 if ($form->isValid()) {
                     try {
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
+
                         $user->generateToken();
 
                         $this->getEventManager()->trigger(
@@ -173,22 +175,57 @@ class AuthenticationController extends AbstractActionController
 
     public function activateAction()
     {
-        try {
-            $user = $this->getUserManager()->findUserByToken($this->params('token'));
-            $role = $this->getRoleService()->findRoleByName('login');
-            $user->addRole($role);
-            $user->generateToken();
+        if ($this->params('token', false)) {
+            try {
+                $user = $this->getUserManager()->findUserByToken($this->params('token'));
+                $role = $this->getRoleService()->findRoleByName('login');
+                $user->addRole($role);
+                $user->generateToken();
 
-            $this->getUserManager()->persist($user);
-            $this->getUserManager()->flush();
-            $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
-        } catch (UserNotFoundException $e) {
-            $this->flashMessenger()->addErrorMessage('I couldn\'t find an account by that token.');
+                $this->getUserManager()->persist($user);
+                $this->getUserManager()->flush();
+                $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
+
+                $this->redirect()->toRoute('authentication/login');
+
+                return false;
+            } catch (UserNotFoundException $e) {
+                $this->flashMessenger()
+                    ->addErrorMessage('I couldn\'t find an account by that token. You can now try to re-activate your account.');
+                $this->redirect()->toRoute('authentication/activate');
+
+                return false;
+            }
+        } else {
+            $form     = new ActivateForm();
+            $messages = [];
+
+            if ($this->getRequest()->isPost()) {
+                $post = $this->params()->fromPost();
+                $form->setData($post);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    try {
+                        $user = $this->getUserManager()->findUserByEmail($data['email']);
+                        $this->getEventManager()->trigger('activate', $this, ['user' => $user]);
+                        $this->flashMessenger()->addSuccessMessage('Your have been sent an activation email.');
+                        $this->redirect()->toRoute('authentication/login');
+
+                        return false;
+                    } catch (UserNotFoundException $e) {
+                        $messages[] = 'No such user could be found.';
+                    }
+                }
+            }
+
+            $view = new ViewModel([
+                'form'     => $form,
+                'messages' => $messages
+            ]);
+            $view->setTemplate('authentication/activate');
+
+            return $view;
         }
-
-        $this->redirect()->toRoute('authentication/login');
-
-        return false;
     }
 
     public function changePasswordAction()

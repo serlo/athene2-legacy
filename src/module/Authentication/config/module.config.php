@@ -67,7 +67,7 @@ return array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options'       => array(
-                            'route'    => '/activate/:token',
+                            'route'    => '/activate[/:token]',
                             'defaults' => array(
                                 'action' => 'activate'
                             )

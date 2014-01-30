@@ -40,6 +40,27 @@ class AuthenticationControllerListener extends AbstractListener
         );
     }
 
+    public function onActivate(Event $e)
+    {
+        /* @var $user \User\Entity\UserInterface */
+        $user = $e->getParam('user');
+
+        $subject = new ViewModel();
+        $body    = new ViewModel(array(
+            'user' => $user
+        ));
+
+        $subject->setTemplate('mailman/messages/register/subject');
+        $body->setTemplate('mailman/messages/register/body');
+
+        $this->getMailman()->send(
+            $user->getEmail(),
+            $this->getMailman()->getDefaultSender(),
+            $this->getRenderer()->render($subject),
+            $this->getRenderer()->render($body)
+        );
+    }
+
     public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach(
@@ -48,6 +69,15 @@ class AuthenticationControllerListener extends AbstractListener
             array(
                 $this,
                 'onRestore'
+            ),
+            -1
+        );
+        $events->attach(
+            $this->getMonitoredClass(),
+            'activate',
+            array(
+                $this,
+                'onActivate'
             ),
             -1
         );
