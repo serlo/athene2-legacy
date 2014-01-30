@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="permission")
+ * @ORM\Table(name="instance_permission")
  */
 class Permission implements PermissionInterface
 {
@@ -25,15 +25,22 @@ class Permission implements PermissionInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string") *
-     */
-    protected $name;
-
-    /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="permissions")
      * @ORM\JoinTable(name="role_permission")
      */
     protected $roles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="PermissionKey")
+     * @ORM\JoinColumn(name="permission_id", referencedColumnName="id")
+     */
+    protected $permission;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Instance\Entity\Instance")
+     * @ORM\JoinColumn(name="instance_id", referencedColumnName="id", nullable=true)
+     */
+    protected $instance;
 
     /**
      * 
@@ -59,17 +66,6 @@ class Permission implements PermissionInterface
      */
     public function getName()
     {
-        return $this->name;
-    }
-
-    /**
-     *
-     * @param string $name            
-     * @return self
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
+        return $this->permission->getName();
     }
 }

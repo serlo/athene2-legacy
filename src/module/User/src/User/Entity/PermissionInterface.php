@@ -21,10 +21,4 @@ interface PermissionInterface extends \Rbac\Permission\PermissionInterface
      * @return string $name
      */
     public function getName();
-
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function setName($name);
 } 

@@ -108,11 +108,16 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
 
     public function hasPermission($permission)
     {
-        /* @var $permission PermissionInterface */
-        foreach($this->getPermissions() as $permission){
+        /* @var $instancePermission PermissionInterface */
+        foreach($this->getPermissions() as $instancePermission){
             if(is_numeric($permission) ){
+                if($instancePermission->getId() == $permission){
+                    return true;
+                }
             } else {
-
+                if($instancePermission->getName() == $permission){
+                    return true;
+                }
             }
         }
         return false;

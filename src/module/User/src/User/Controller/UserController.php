@@ -72,60 +72,6 @@ class UserController extends AbstractUserController
         return $this;
     }
 
-    public function loginAction()
-    {
-        $form          = $this->getForm('login');
-        $errorMessages = false;
-        $messages      = array();
-
-        $this->layout('layout/1-col');
-
-        if ($this->getRequest()->isPost()) {
-
-            $form->setData(
-                $this->params()->fromPost()
-            );
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $adapter = $this->getAuthenticationService()->getAdapter();
-                $adapter->setIdentity($data['email']);
-                $adapter->setCredential($data['password']);
-
-                $result = $this->getAuthenticationService()->authenticate();
-
-                if ($result->isValid()) {
-                    $user = $this->getUserManager()->getUser(
-                        $result->getIdentity()->getId()
-                    );
-                    $user->updateLoginData();
-
-                    $this->getEventManager()->trigger(
-                        'login',
-                        $this,
-                        array(
-                            'user'  => $user,
-                            'email' => $data['email']
-                        )
-                    );
-
-                    $this->getUserManager()->persist($user);
-                    $this->getUserManager()->flush();
-
-                    $this->redirect()->toUrl($this->params('ref', '/'));
-                }
-                $messages = $result->getMessages();
-            }
-        }
-        $view = new ViewModel(array(
-            'form'          => $form,
-            'errorMessages' => $messages
-        ));
-
-        return $view;
-    }
-
     public function logoutAction()
     {
         $this->getAuthenticationService()->clearIdentity();
@@ -248,7 +194,7 @@ class UserController extends AbstractUserController
                     $this->getUserManager()->persist($user);
                     $this->getUserManager()->flush();
 
-                    $this->redirect()->toRoute('user/login');
+                    $this->redirect()->toRoute('authentication/login');
                 }
             }
         }
@@ -274,7 +220,7 @@ class UserController extends AbstractUserController
             $this->flashMessenger()->addErrorMessage('I couldn\'t find an account by that token.');
         }
 
-        $this->redirect()->toRoute('user/login');
+        $this->redirect()->toRoute('authentication/login');
 
         return false;
     }

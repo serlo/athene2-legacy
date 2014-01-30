@@ -99,9 +99,5 @@ class UserAuthAdapter implements AdapterInterface
                 'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
             ));
         }
-
-        return new Result(RESULT::FAILURE, $this->email, array(
-            'Logischer Fehler beim Login.'
-        ));
     }
 }
