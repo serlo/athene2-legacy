@@ -11,12 +11,12 @@
 namespace Event\Entity;
 
 use Datetime;
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 
-interface EventLogInterface extends LanguageAwareInterface
+interface EventLogInterface extends InstanceAwareInterface
 
 {
 

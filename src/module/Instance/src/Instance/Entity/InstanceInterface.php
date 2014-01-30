@@ -8,13 +8,33 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Entity;
+namespace Instance\Entity;
 
-interface LanguageAwareInterface extends LanguageProviderInterface
+interface InstanceInterface
 {
+
     /**
-     * @param LanguageInterface $language
+     * Gets the id
+     *
+     * @return int $id
+     */
+    public function getId();
+
+    /**
+     * Returns the code.
+     * <code>
+     * echo $instance->getCode(); // prints: 'de'
+     * </code>
+     *
+     * @return string $code
+     */
+    public function getName();
+
+    /**
+     * Sets the code
+     *
+     * @param field_type $name
      * @return self
      */
-    public function setLanguage(LanguageInterface $language);
+    public function setName($name);
 }

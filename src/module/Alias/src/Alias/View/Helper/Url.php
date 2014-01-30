@@ -13,12 +13,12 @@ namespace Alias\View\Helper;
 use Alias\AliasManagerAwareTrait;
 use Alias\Exception\AliasNotFoundException;
 use Common\Traits\ConfigAwareTrait;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\View\Helper\Url as ZendUrl;
 
 class Url extends ZendUrl
 {
-    use AliasManagerAwareTrait, LanguageManagerAwareTrait;
+    use AliasManagerAwareTrait, InstanceManagerAwareTrait;
     use ConfigAwareTrait;
 
     protected function getDefaultConfig()
@@ -32,8 +32,8 @@ class Url extends ZendUrl
 
         try {
             $aliasManager = $this->getAliasManager();
-            $language     = $this->getLanguageManager()->getLanguageFromRequest();
-            $alias        = $aliasManager->findAliasBySource($link, $language);
+            $instance     = $this->getInstanceManager()->getTenantFromRequest();
+            $alias        = $aliasManager->findAliasBySource($link, $instance);
 
             return $this->getOption('uri_head') . '/' . $alias;
         } catch (AliasNotFoundException $e) {

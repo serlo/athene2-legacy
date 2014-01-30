@@ -62,7 +62,7 @@ return [
                     'setAliasManager'    => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -80,7 +80,7 @@ return [
                     'setAliasManager'    => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -118,7 +118,7 @@ return [
                     $view_helper->setRouter($serviceLocator->get($router));
 
                     $view_helper->setAliasManager($serviceLocator->get('Alias\AliasManager'));
-                    $view_helper->setLanguageManager($serviceLocator->get('Language\Manager\LanguageManager'));
+                    $view_helper->setInstanceManager($serviceLocator->get('Instance\Manager\InstanceManager'));
 
                     $match = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
 

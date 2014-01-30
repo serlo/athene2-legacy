@@ -14,7 +14,7 @@ use Blog\Exception;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use User\Entity\UserInterface;
@@ -29,6 +29,7 @@ use Uuid\Entity\UuidInterface;
  */
 class Post extends UuidEntity implements PostInterface
 {
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -36,12 +37,6 @@ class Post extends UuidEntity implements PostInterface
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -79,11 +74,6 @@ class Post extends UuidEntity implements PostInterface
     {
         $this->publish = new DateTime();
         $this->date    = new DateTime();
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     public function getAuthor()
@@ -154,13 +144,6 @@ class Post extends UuidEntity implements PostInterface
     public function setPublish(DateTime $publish = null)
     {
         $this->publish = $publish;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
 
         return $this;
     }

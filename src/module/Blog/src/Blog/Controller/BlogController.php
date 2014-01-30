@@ -18,12 +18,12 @@ use Zend\View\Model\ViewModel;
 class BlogController extends AbstractActionController
 {
     use\Blog\Manager\BlogManagerAwareTrait, \User\Manager\UserManagerAwareTrait,
-        \Language\Manager\LanguageManagerAwareTrait;
+        \Instance\Manager\InstanceManagerAwareTrait;
 
     public function indexAction()
     {
         $blogs = $this->getBlogManager()->findAllBlogs(
-            $this->getLanguageManager()->getLanguageFromRequest()
+            $this->getInstanceManager()->getTenantFromRequest()
         );
 
         $view = new ViewModel(array(
@@ -146,8 +146,8 @@ class BlogController extends AbstractActionController
 
     public function createAction()
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $this->assertGranted('blog.post.create', $language);
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $this->assertGranted('blog.post.create', $instance);
 
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
 

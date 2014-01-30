@@ -13,7 +13,7 @@ namespace Blog\Manager;
 use Blog\Entity\PostInterface;
 use ClassResolver\ClassResolverAwareTrait;
 use DateTime;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use User\Entity\UserInterface;
 
@@ -27,10 +27,10 @@ interface BlogManagerInterface
     public function getBlog($id);
 
     /**
-     * @param LanguageInterface $languageService
+     * @param InstanceInterface $instanceService
      * @return TaxonomyTermInterface[]
      */
-    public function findAllBlogs(LanguageInterface $languageService);
+    public function findAllBlogs(InstanceInterface $instanceService);
 
     /**
      * Make changes persistent

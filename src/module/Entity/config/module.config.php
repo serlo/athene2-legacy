@@ -13,7 +13,7 @@ namespace Entity;
 return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            'entity.license.update' => 'Authorization\Assertion\LanguageAssertion',
+            //'entity.license.update' => 'Authorization\Assertion\TenantAssertion',
         ]
     ],
     'class_resolver'  => [
@@ -38,7 +38,7 @@ return [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -57,7 +57,7 @@ return [
                     'setEntityManager'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ],
                     'setLicenseManager'  => [
@@ -68,7 +68,7 @@ return [
                     'setEntityManager'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -76,7 +76,7 @@ return [
                     'setEntityManager'        => [
                         'required' => true
                     ],
-                    'setLanguageManager'      => [
+                    'setInstanceManager'      => [
                         'required' => true
                     ],
                     'setUserManager'          => [

@@ -5,9 +5,9 @@
  * Date: 15.01.14
  * Time: 01:37
  */
-namespace Language\Factory;
+namespace Instance\Factory;
 
-use Language\Manager\LanguageManager;
+use Instance\Manager\InstanceManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -21,7 +21,7 @@ class LanguageManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instance      = new LanguageManager();
+        $instance      = new InstanceManager();
         $objectManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
 

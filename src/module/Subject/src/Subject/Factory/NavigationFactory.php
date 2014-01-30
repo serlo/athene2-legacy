@@ -10,14 +10,14 @@
  */
 namespace Subject\Factory;
 
-use Language\Factory\LanguageManagerFactoryTrait;
+use Instance\Factory\InstanceManagerFactoryTrait;
 use Subject\Hydrator\Navigation;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class NavigationFactory implements FactoryInterface
 {
-    use SubjectManagerFactoryTrait, LanguageManagerFactoryTrait;
+    use SubjectManagerFactoryTrait, InstanceManagerFactoryTrait;
 
     /**
      * Create service
@@ -27,9 +27,9 @@ class NavigationFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $languageManager = $this->getLanguageManager($serviceLocator);
+        $instanceManager = $this->getInstanceManager($serviceLocator);
         $subjectManager  = $this->getSubjectManager($serviceLocator);
-        $service         = new Navigation($languageManager, $subjectManager);
+        $service         = new Navigation($instanceManager, $subjectManager);
 
         return $service;
     }

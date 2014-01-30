@@ -18,7 +18,7 @@ use Page\Manager\PageManager;
 class PageManagerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $pageManager,$licenseManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $languageManagerMock,$languageServiceMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$languageMock;
+    protected $pageManager,$licenseManager,$pageManagerMock, $objectManagerMock, $uuidManagerMock, $classResolverMock, $serviceLocatorMock, $repositoryManagerMock, $instanceManagerMock,$instanceServiceMock, $pageRepositoryMock, $pageRevisionMock, $pageServiceMock, $repositoryMock, $userMock,$repositoryServiceMock,$instanceMock;
 
     public function setUp()
     {

@@ -10,7 +10,7 @@
  */
 namespace Authorization\Factory;
 
-use Authorization\Assertion\RequestLanguageAssertion;
+use Authorization\Assertion\RequestTenantAssertion;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -18,8 +18,8 @@ class RequestLanguageAssertionFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $languageManager = $serviceLocator->getServiceLocator()->get('Language\Manager\LanguageManager');
-        $instance        = new RequestLanguageAssertion($languageManager);
+        $instanceManager = $serviceLocator->getServiceLocator()->get('Instance\Manager\InstanceManager');
+        $instance        = new RequestLanguageAssertion($instanceManager);
 
         return $instance;
     }

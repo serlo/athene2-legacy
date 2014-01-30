@@ -16,12 +16,12 @@ use Zend\Stdlib\ArrayUtils;
 
 class LanguageAwareProvider implements HydratorInterface
 {
-    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Instance\Manager\InstanceManagerAwareTrait;
 
     public function hydrateConfig(array &$config)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $config = ArrayUtils::merge($config, include __DIR__ . '/../../../config/navigation/' . $language->getCode() . '.config.php');
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $config = ArrayUtils::merge($config, include __DIR__ . '/../../../config/navigation/' . $instance->getName() . '.config.php');
         return $config;
     }
 }

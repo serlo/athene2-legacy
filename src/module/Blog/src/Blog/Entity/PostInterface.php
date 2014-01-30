@@ -11,14 +11,14 @@
 namespace Blog\Entity;
 
 use DateTime;
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidHolder;
 
-interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, LanguageAwareInterface
+interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, InstanceAwareInterface
 {
 
     /**

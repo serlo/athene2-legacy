@@ -10,20 +10,10 @@
  */
 namespace License\Entity;
 
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareInterface;
 
-interface LicenseInterface
+interface LicenseInterface extends InstanceAwareInterface
 {
-
-    /**
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * @return string
-     */
-    public function getUrl();
 
     /**
      * @return string
@@ -33,29 +23,22 @@ interface LicenseInterface
     /**
      * @return string
      */
+    public function getIconHref();
+
+    /**
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * @return string
+     */
     public function getTitle();
 
     /**
      * @return string
      */
-    public function getIconHref();
-
-    /**
-     * @return LanguageInterface
-     */
-    public function getLanguage();
-
-    /**
-     * @param LanguageInterface $language
-     * @return self
-     */
-    public function setLanguage(LanguageInterface $language);
-
-    /**
-     * @param string $url
-     * @return self
-     */
-    public function setUrl($url);
+    public function getUrl();
 
     /**
      * @param string $content
@@ -64,14 +47,20 @@ interface LicenseInterface
     public function setContent($content);
 
     /**
+     * @param string $iconHref
+     * @return self
+     */
+    public function setIconHref($iconHref);
+
+    /**
      * @param string $title
      * @return self
      */
     public function setTitle($title);
 
     /**
-     * @param string $iconHref
+     * @param string $url
      * @return self
      */
-    public function setIconHref($iconHref);
+    public function setUrl($url);
 }

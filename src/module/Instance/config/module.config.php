@@ -8,7 +8,7 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c] 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/]
  */
-namespace Language;
+namespace Instance;
 
 return [
     'translator'      => [
@@ -39,17 +39,17 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Manager\LanguageManager' => __NAMESPACE__ . '\Factory\LanguageManagerFactory'
+            __NAMESPACE__ . '\Manager\InstanceManager' => __NAMESPACE__ . '\Factory\InstanceManagerFactory'
         ]
     ],
     'di'              => [
         'instance' => [
             'preferences' => [
-                __NAMESPACE__ . '\Manager\LanguageManagerInterface' => __NAMESPACE__ . '\Manager\LanguageManager'
+                __NAMESPACE__ . '\Manager\InstanceManagerInterface' => __NAMESPACE__ . '\Manager\InstanceManager'
             ],
         ]
     ],
     'class_resolver'  => [
-        __NAMESPACE__ . '\Entity\LanguageInterface' => __NAMESPACE__ . '\Entity\Language',
+        __NAMESPACE__ . '\Entity\InstanceInterface' => __NAMESPACE__ . '\Entity\Instance',
     ]
 ];

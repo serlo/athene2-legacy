@@ -13,7 +13,7 @@ namespace Entity\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Exception;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
@@ -29,6 +29,7 @@ use Versioning\Entity\RevisionInterface;
 class Entity extends UuidEntity implements EntityInterface
 {
     use\Type\Entity\TypeAwareTrait;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -79,12 +80,6 @@ class Entity extends UuidEntity implements EntityInterface
     protected $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
-
-    /**
      * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
      */
     protected $license;
@@ -111,11 +106,6 @@ class Entity extends UuidEntity implements EntityInterface
         return $this->license;
     }
 
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
     public function getTimestamp()
     {
         return $this->date;
@@ -139,13 +129,6 @@ class Entity extends UuidEntity implements EntityInterface
     public function setCurrentRevision(RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
 
         return $this;
     }

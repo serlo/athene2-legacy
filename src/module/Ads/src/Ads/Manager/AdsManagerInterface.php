@@ -2,7 +2,7 @@
 namespace Ads\Manager;
 
 use Ads\Entity\AdInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 
 interface AdsManagerInterface
 {
@@ -26,11 +26,11 @@ interface AdsManagerInterface
     public function removeAd(AdInterface $ad);
 
     /**
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @param numeric           $number
      * @return array
      */
-    public function findShuffledAds(LanguageInterface $language, $number);
+    public function findShuffledAds(InstanceInterface $instance, $number);
 
     /**
      * @param array $data
@@ -39,10 +39,10 @@ interface AdsManagerInterface
     public function createAd(array $data);
 
     /**
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return AdInterface
      */
-    public function findAllAds(LanguageInterface $language);
+    public function findAllAds(InstanceInterface $instance);
 
 }
 

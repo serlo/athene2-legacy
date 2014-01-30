@@ -18,7 +18,7 @@ use Discussion\Entity\CommentInterface;
 use Discussion\Exception;
 use Discussion\Hydrator\CommentHydrator;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
@@ -59,13 +59,13 @@ class DiscussionManager implements DiscussionManagerInterface
         return $comment;
     }
 
-    public function findDiscussionsByLanguage(LanguageInterface $language)
+    public function findDiscussionsByLanguage(InstanceInterface $instance)
     {
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
         $discussions      = $objectRepository->findAll(
             array(
-                'language' => $language->getId()
+                'language' => $instance->getId()
             )
         );
 
@@ -88,7 +88,7 @@ class DiscussionManager implements DiscussionManagerInterface
 
     public function startDiscussion(
         UuidInterface $object,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $author,
         $forum,
         $title,
@@ -111,7 +111,7 @@ class DiscussionManager implements DiscussionManagerInterface
         $hydrator->hydrate(
             [
                 'object'   => $object,
-                'language' => $language,
+                'language' => $instance,
                 'author'   => $author,
                 'title'    => $title,
                 'content'  => $content
@@ -128,7 +128,7 @@ class DiscussionManager implements DiscussionManagerInterface
                 'author'     => $author,
                 'on'         => $object,
                 'discussion' => $comment,
-                'language'   => $language,
+                'language'   => $instance,
                 'data'       => $data
             ]
         );
@@ -144,7 +144,7 @@ class DiscussionManager implements DiscussionManagerInterface
 
     public function commentDiscussion(
         CommentInterface $discussion,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $author,
         $content,
         $data = []
@@ -167,7 +167,7 @@ class DiscussionManager implements DiscussionManagerInterface
         $hydrator->hydrate(
             [
                 'parent'   => $discussion,
-                'language' => $language,
+                'language' => $instance,
                 'author'   => $author,
                 'content'  => $content
             ],
@@ -183,7 +183,7 @@ class DiscussionManager implements DiscussionManagerInterface
                 'author'     => $author,
                 'comment'    => $comment,
                 'discussion' => $discussion,
-                'language'   => $language,
+                'language'   => $instance,
                 'data'       => $data
             ]
         );

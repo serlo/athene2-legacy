@@ -11,12 +11,12 @@
  */
 namespace Taxonomy\Provider;
 
-use Zend\Stdlib\ArrayUtils;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Zend\Stdlib\ArrayUtils;
 
 class NavigationProvider implements \Ui\Navigation\ProviderInterface
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use\Taxonomy\Manager\TaxonomyManagerAwareTrait,\Common\Traits\ConfigAwareTrait,\Zend\ServiceManager\ServiceLocatorAwareTrait,\Common\Traits\ObjectManagerAwareTrait,\Instance\Manager\InstanceManagerAwareTrait;
 
     /**
      *
@@ -47,8 +47,8 @@ class NavigationProvider implements \Ui\Navigation\ProviderInterface
     public function getTerm()
     {
         if (! is_object($this->term)) {
-            $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('parent')['type'], $this->getLanguageManager()
-                ->findLanguageByCode($this->getOption('language')));
+            $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName($this->getOption('parent')['type'], $this->getInstanceManager()
+                ->findTenantByName($this->getOption('language')));
             
             $this->term = $this->getTaxonomyManager()->findTerm($taxonomy, (array) $this->getOption('parent')['slug']);
         }

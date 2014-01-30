@@ -178,7 +178,7 @@ return array(
         'definition'          => array(
             'class' => array(
                 __NAMESPACE__ . '\Controller\HomeController'     => array(
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(
@@ -186,7 +186,7 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Controller\TaxonomyController' => array(
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(
@@ -194,7 +194,7 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Controller\EntityController'   => array(
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(

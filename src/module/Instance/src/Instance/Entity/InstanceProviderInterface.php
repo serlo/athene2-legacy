@@ -9,12 +9,12 @@
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 
-namespace Language\Entity;
+namespace Instance\Entity;
 
-interface LanguageProviderInterface
+interface InstanceProviderInterface
 {
     /**
-     * @return LanguageInterface
+     * @return InstanceInterface
      */
-    public function getLanguage();
-} 
+    public function getInstance();
+}

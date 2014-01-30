@@ -8,19 +8,19 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Factory;
+namespace Instance\Factory;
 
-use Language\Manager\LanguageManagerInterface;
+use Instance\Manager\InstanceManagerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-trait LanguageManagerFactoryTrait
+trait InstanceManagerFactoryTrait
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return LanguageManagerInterface
+     * @return InstanceManagerInterface
      */
-    public function getLanguageManager(ServiceLocatorInterface $serviceLocator)
+    public function getInstanceManager(ServiceLocatorInterface $serviceLocator)
     {
-        return $serviceLocator->get('Language\Manager\LanguageManager');
+        return $serviceLocator->get('Instance\Manager\InstanceManager');
     }
 }

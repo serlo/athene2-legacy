@@ -11,11 +11,11 @@
  */
 namespace Taxonomy\Hydrator;
 
-use Zend\Stdlib\Hydrator\HydratorInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception;
-use Zend\Stdlib\ArrayUtils;
 use Taxonomy\Options\ModuleOptions;
+use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class TaxonomyTermHydrator implements HydratorInterface
 {
@@ -125,9 +125,9 @@ class TaxonomyTermHydrator implements HydratorInterface
         }
         
         try {
-            $data['term'] = $this->getTermManager()->findTermByName($data['term']['name'], $data['taxonomy']->getLanguage());
+            $data['term'] = $this->getTermManager()->findTermByName($data['term']['name'], $data['taxonomy']->getInstance());
         } catch (\Term\Exception\TermNotFoundException $e) {
-            $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], null, $data['taxonomy']->getLanguage());
+            $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], null, $data['taxonomy']->getInstance());
         }
         
         return $data;

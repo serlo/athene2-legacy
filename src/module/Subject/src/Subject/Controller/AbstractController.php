@@ -15,7 +15,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractController extends AbstractActionController
 {
-    use \Subject\Manager\SubjectManagerAwareTrait,\Language\Manager\LanguageManagerAwareTrait;
+    use \Subject\Manager\SubjectManagerAwareTrait,\Instance\Manager\InstanceManagerAwareTrait;
 
     /**
      *
@@ -26,8 +26,8 @@ class AbstractController extends AbstractActionController
     {
         if ($id === NULL) {
             $subject = $this->params()->fromRoute('subject');
-            return $this->getSubjectManager()->findSubjectByString($subject, $this->getLanguageManager()
-                ->getLanguageFromRequest());
+            return $this->getSubjectManager()->findSubjectByString($subject, $this->getInstanceManager()
+                ->getTenantFromRequest());
         } else {
             return $this->getSubjectManager()->getSubject($id);
         }

@@ -20,11 +20,11 @@ return [
         'assertion_manager' => [
             'factories' => [
                 'Authorization\Assertion\RoleAssertion'            => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
-                'Authorization\Assertion\RequestLanguageAssertion' => __NAMESPACE__ . '\Factory\RequestLanguageAssertionFactory',
+                //'Authorization\Assertion\RequestTenantAssertion' => __NAMESPACE__ . '\Factory\RequestTenantAssertionFactory',
             ]
         ],
         'assertion_map'     => [
-            'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion',
+            //'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion',
         ]
     ],
     'service_manager'    => [

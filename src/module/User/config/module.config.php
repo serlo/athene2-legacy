@@ -16,7 +16,7 @@ namespace User;
 return array(
     'zfc_rbac'        => [
         'assertion_map' => [
-            'user.create' => 'User\Assertion\HasNoIdentityAssertion'
+            //'user.create' => 'User\Assertion\HasNoIdentityAssertion'
         ]
     ],
     'service_manager' => array(
@@ -57,7 +57,7 @@ return array(
                     'setAuthenticationService' => array(
                         'required' => true
                     ),
-                    'setLanguageManager'       => array(
+                    'setInstanceManager'       => array(
                         'required' => true
                     )
                 )

@@ -28,7 +28,7 @@ return array(
                     $instance->setConfig($config);
                     $instance->setObjectManager($sl->get('Doctrine\ORM\EntityManager'));
                     $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
-                    $instance->setLanguageManager($sl->get('Language\Manager\LanguageManager'));
+                    $instance->setInstanceManager($sl->get('Instance\Manager\InstanceManager'));
                     $instance->setTypeManager($sl->get('Type\TypeManager'));
 
                     return $instance;

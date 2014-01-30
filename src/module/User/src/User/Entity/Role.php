@@ -40,7 +40,7 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
      */
     protected $users;
     /**
-     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles", indexBy="name", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="Permission", inversedBy="roles", indexBy="name")
      * @ORM\JoinTable(name="role_permission")
      */
     protected $permissions;
@@ -108,7 +108,14 @@ class Role extends \Rbac\Role\HierarchicalRole implements RoleInterface
 
     public function hasPermission($permission)
     {
-        return isset($this->permissions[(string)$permission]);
+        /* @var $permission PermissionInterface */
+        foreach($this->getPermissions() as $permission){
+            if(is_numeric($permission) ){
+            } else {
+
+            }
+        }
+        return false;
     }
 
     public function __toString()

@@ -21,7 +21,7 @@ return array(
         'definition' => [
             'class' => [
                 __NAMESPACE__ . '\Provider\LanguageAwareNavigationProvider' => [
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ]
@@ -63,17 +63,6 @@ return array(
     ),
     'view_helpers'          => array(
         'factories'  => array(
-            'currentLanguage' => function ($helperPluginManager) {
-                    $plugin          = new View\Helper\ActiveLanguage();
-                    $languageManager = $helperPluginManager->getServiceLocator()->get(
-                        'Language\Manager\LanguageManager'
-                    );
-
-                    // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
-                    $plugin->setLanguage($languageManager->getLanguageFromRequest());
-
-                    return $plugin;
-                },
             'pageHeader'      => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
                     $plugin = new PageHeader();

@@ -156,9 +156,9 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->term;
     }
 
-    public function getLanguage()
+    public function getInstance()
     {
-        return $this->getTaxonomy()->getLanguage();
+        return $this->getTaxonomy()->getInstance();
     }
 
     public function setTaxonomy(TaxonomyInterface $taxonomy)

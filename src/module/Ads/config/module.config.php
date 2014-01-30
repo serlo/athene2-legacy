@@ -101,13 +101,13 @@ return array(
         'factories' => array(
             'Horizon' => function ($helperPluginManager) {
 
-                    $languageManager = $helperPluginManager->getServiceLocator()->get(
-                        'Language\Manager\LanguageManager'
+                    $instanceManager = $helperPluginManager->getServiceLocator()->get(
+                        'Instance\Manager\InstanceManager'
                     );
                     $adsManager      = $helperPluginManager->getServiceLocator()->get('Ads\Manager\AdsManager');
                     $viewHelper      = new View\Helper\Horizon();
                     $viewHelper->setAdsManager($adsManager);
-                    $viewHelper->setLanguageManager($languageManager);
+                    $viewHelper->setInstanceManager($instanceManager);
 
                     return $viewHelper;
                 }
@@ -148,7 +148,7 @@ return array(
                     'setObjectManager'   => array(
                         'required' => 'true'
                     ),
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => 'true'
                     ),
                     'setUserManager'     => array(
@@ -163,7 +163,7 @@ return array(
                 ),
                 'Ads\Manager\AdsManager'       => array(
 
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => 'true'
                     ),
                     'setClassResolver'   => array(

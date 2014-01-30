@@ -15,7 +15,7 @@ use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Persistence\ObjectManager;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
@@ -79,7 +79,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $entity;
     }
 
-    public function findTaxonomyByName($name, LanguageInterface $language)
+    public function findTaxonomyByName($name, InstanceInterface $instance)
     {
         $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
 
@@ -88,14 +88,14 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $entity = $this->getObjectManager()->getRepository($className)->findOneBy(
             [
                 'type'     => $type->getId(),
-                'language' => $language->getId()
+                'language' => $instance->getId()
             ]
         );
 
         if (!is_object($entity)) {
             /* @var $entity \Taxonomy\Entity\TaxonomyInterface */
             $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyInterface');
-            $entity->setLanguage($language);
+            $entity->setInstance($instance);
             $entity->setType($type);
             $this->getObjectManager()->persist($entity);
         }
@@ -149,12 +149,12 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $found;
     }
 
-    public function createTerm(array $data, LanguageInterface $language)
+    public function createTerm(array $data, InstanceInterface $instance)
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
 
         if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
-            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $language);
+            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $instance);
         }
         if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
             $data['parent'] = $this->getTerm($data['parent']);
@@ -180,7 +180,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $term = $this->getTerm($id);
 
         if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
-            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $term->getLanguage());
+            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $term->getInstance());
         }
         if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
             $data['parent'] = $this->getTerm($data['parent']);

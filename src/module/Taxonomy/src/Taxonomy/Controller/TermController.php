@@ -11,8 +11,8 @@
  */
 namespace Taxonomy\Controller;
 
-use Zend\View\Model\ViewModel;
 use Taxonomy\Form\TermForm;
+use Zend\View\Model\ViewModel;
 
 class TermController extends AbstractController
 {
@@ -90,8 +90,8 @@ class TermController extends AbstractController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $term = $this->getTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
-                    ->getLanguageFromRequest());
+                $term = $this->getTaxonomyManager()->createTerm($form->getData(), $this->getInstanceManager()
+                    ->getTenantFromRequest());
                 
                 $this->getTaxonomyManager()->flush();
                 

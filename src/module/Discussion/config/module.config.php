@@ -13,12 +13,12 @@ namespace Discussion;
 return [
     'zfc_rbac'       => [
         'assertion_map' => [
-            'discussion.trash'         => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.purge'         => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.vote'          => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.archive'       => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.comment.trash' => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.comment.purge' => 'Authorization\Assertion\LanguageAssertion',
+            /*'discussion.trash'         => 'Authorization\Assertion\TenantAssertion',
+            'discussion.purge'         => 'Authorization\Assertion\TenantAssertion',
+            'discussion.vote'          => 'Authorization\Assertion\TenantAssertion',
+            'discussion.archive'       => 'Authorization\Assertion\TenantAssertion',
+            'discussion.comment.trash' => 'Authorization\Assertion\TenantAssertion',
+            'discussion.comment.purge' => 'Authorization\Assertion\TenantAssertion',*/
         ]
     ],
     'uuid_router'    => [
@@ -174,7 +174,7 @@ return [
                     'setDiscussionManager'     => [
                         'required' => true
                     ],
-                    'setLanguageManager'       => [
+                    'setInstanceManager'       => [
                         'required' => true
                     ],
                     'setTaxonomyManager'       => [
@@ -208,7 +208,7 @@ return [
                     'setUuidManager'       => [
                         'required' => true
                     ],
-                    'setLanguageManager'   => [
+                    'setInstanceManager'   => [
                         'required' => true
                     ],
                     'setUserManager'       => [

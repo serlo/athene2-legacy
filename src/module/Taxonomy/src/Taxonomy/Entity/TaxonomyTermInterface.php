@@ -10,9 +10,9 @@
  */
 namespace Taxonomy\Entity;
 
-use Language\Entity\LanguageProviderInterface;
+use Instance\Entity\InstanceProviderInterface;
 
-interface TaxonomyTermInterface extends LanguageProviderInterface
+interface TaxonomyTermInterface extends InstanceProviderInterface
 {
 
     /**
@@ -64,11 +64,6 @@ interface TaxonomyTermInterface extends LanguageProviderInterface
      * @return int
      */
     public function getPosition();
-
-    /**
-     * @return LanguageInterface
-     */
-    public function getLanguage();
 
     /**
      * @param string $association

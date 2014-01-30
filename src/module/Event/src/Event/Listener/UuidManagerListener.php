@@ -19,18 +19,18 @@ class UuidManagerListener extends AbstractListener
     {
         $object   = $e->getParam('object');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
 
-        $this->logEvent('uuid/restore', $language, $user, $object);
+        $this->logEvent('uuid/restore', $instance, $user, $object);
     }
 
     public function onTrash(Event $e)
     {
         $object   = $e->getParam('object');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
 
-        $this->logEvent('uuid/trash', $language, $user, $object);
+        $this->logEvent('uuid/trash', $instance, $user, $object);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

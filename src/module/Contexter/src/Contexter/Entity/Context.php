@@ -12,7 +12,8 @@ namespace Contexter\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
+use Type\Entity\TypeAwareTrait;
 use Uuid\Entity\UuidInterface;
 
 /**
@@ -23,7 +24,8 @@ use Uuid\Entity\UuidInterface;
  */
 class Context implements ContextInterface
 {
-    use\Type\Entity\TypeAwareTrait;
+    use TypeAwareTrait;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -48,20 +50,9 @@ class Context implements ContextInterface
      */
     protected $routes;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
-
     public function __construct()
     {
         $this->routes = new ArrayCollection();
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     public function getRoutes()
@@ -79,16 +70,16 @@ class Context implements ContextInterface
         return $this->object->getHolder();
     }
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
     public function setObject(UuidInterface $object)
     {
         $this->object = $object;
 
         return $this;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     public function setTitle($title)
@@ -101,13 +92,6 @@ class Context implements ContextInterface
     public function addRoute(RouteInterface $route)
     {
         $this->routes->add($route);
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
 
         return $this;
     }

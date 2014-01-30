@@ -12,7 +12,7 @@ namespace Event;
 
 use Event\Entity\EventInterface;
 use Event\Entity\EventLogInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -27,9 +27,11 @@ interface EventManagerInterface
      * $eventManager->logEvent('eventB', $LanguageB, $userEntityB, $objectEntityB);
      * $eventManager->getObjectManager()->flush(); // Making the changes above persistent
      * </code>
-     *
-     * @param string            $eventName
-     * @param LanguageInterface $language
+
+
+*
+*@param string            $eventName
+     * @param InstanceInterface $instance
      * @param UserInterface     $actor
      * @param UuidInterface     $uuid
      * @param array             $parameters
@@ -37,7 +39,7 @@ interface EventManagerInterface
      */
     public function logEvent(
         $eventName,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $actor,
         UuidInterface $uuid,
         array $parameters = array()

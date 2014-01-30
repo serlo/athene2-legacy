@@ -11,7 +11,7 @@
 namespace Entity\Manager;
 
 use Entity\Entity\EntityInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 
 interface EntityManagerInterface
 {
@@ -19,10 +19,10 @@ interface EntityManagerInterface
     /**
      * @param string            $type
      * @param array             $data
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return EntityInterface
      */
-    public function createEntity($type, array $data = array(), LanguageInterface $language);
+    public function createEntity($type, array $data = array(), InstanceInterface $instance);
 
     /**
      * @param int $id

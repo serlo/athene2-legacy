@@ -11,11 +11,11 @@
  */
 namespace Taxonomy\Manager;
 
-use Taxonomy\Entity\TaxonomyInterface;
-use Language\Entity\LanguageInterface;
-use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Common\ObjectManager\Flushable;
+use Instance\Entity\InstanceInterface;
+use Taxonomy\Entity\TaxonomyInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 interface TaxonomyManagerInterface extends Flushable
 {
@@ -43,20 +43,20 @@ interface TaxonomyManagerInterface extends Flushable
     public function getTaxonomy($id);
 
     /**
-     *
+
      * @param string $name            
-     * @param LanguageInterface $language            
+     * @param InstanceInterface $instance
      * @return TaxonomyInterface
      */
-    public function findTaxonomyByName($name, LanguageInterface $language);
+    public function findTaxonomyByName($name, InstanceInterface $instance);
 
     /**
-     *
+
      * @param array $data            
-     * @param LanguageInterface $language            
+     * @param InstanceInterface $instance
      * @return TaxonomyTermInterface
      */
-    public function createTerm(array $data, LanguageInterface $language);
+    public function createTerm(array $data, InstanceInterface $instance);
 
     /**
      *

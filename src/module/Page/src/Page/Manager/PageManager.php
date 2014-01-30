@@ -15,7 +15,7 @@ namespace Page\Manager;
 
 use ClassResolver\ClassResolverAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Page\Entity\Page;
 use Page\Entity\PageRepositoryInterface;
 use Page\Exception\InvalidArgumentException;
@@ -28,7 +28,7 @@ class PageManager implements PageManagerInterface
     use\Common\Traits\ObjectManagerAwareTrait,ClassResolverAwareTrait;
     use\Page\Manager\PageManagerAwareTrait;
     use\Uuid\Manager\UuidManagerAwareTrait;
-    use\Language\Manager\LanguageManagerAwareTrait;
+    use\Instance\Manager\InstanceManagerAwareTrait;
     use\User\Manager\UserManagerAwareTrait;
     use\License\Manager\LicenseManagerAwareTrait;
     use\Versioning\RepositoryManagerAwareTrait;
@@ -91,11 +91,11 @@ class PageManager implements PageManagerInterface
         return $pageRepository;
     }
 
-    public function createPageRepository(array $data, $language)
+    public function createPageRepository(array $data, $instance)
     {
         $pageRepository = $this->createPageRepositoryEntity();
         $pageRepository->populate($data);
-        $pageRepository->setLanguage($language);
+        $pageRepository->setInstance($instance);
         $this->setRoles($data,$pageRepository);
         $this->getObjectManager()->persist($pageRepository);
         return $pageRepository;
@@ -111,13 +111,13 @@ class PageManager implements PageManagerInterface
         return $repository;
     }
 
-    public function findAllRepositorys(LanguageInterface $language)
+    public function findAllRepositorys(InstanceInterface $instance)
     {
         $pageRepositorys = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Page\Entity\PageRepositoryInterface'))
             ->findBy(array(
-            'language' => $language->getId()
+            'language' => $instance->getId()
         ));
         $repositorys = array();
         foreach ($pageRepositorys as $repository) {

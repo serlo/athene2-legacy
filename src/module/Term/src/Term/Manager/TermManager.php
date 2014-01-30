@@ -1,7 +1,5 @@
 <?php
 /**
- *
- *
  * Athene2 - Advanced Learning Resources Manager
  * http://dev/
  *
@@ -14,7 +12,8 @@
 namespace Term\Manager;
 
 use Common\Filter\Slugify;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
+use Term\Entity\TermEntityInterface;
 use Term\Exception\TermNotFoundException;
 
 class TermManager implements TermManagerInterface
@@ -23,8 +22,10 @@ class TermManager implements TermManagerInterface
 
     public function getTerm($id)
     {
-        $instance = $this->getObjectManager()->find($this->getClassResolver()
-            ->resolveClassName('Term\Entity\TermEntityInterface'), $id);
+        $instance = $this->getObjectManager()->find(
+            $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface'),
+            $id
+        );
 
         if (!is_object($instance)) {
             throw new TermNotFoundException($id);
@@ -33,48 +34,51 @@ class TermManager implements TermManagerInterface
         return $instance;
     }
 
-    public function findTermBySlug($slug, LanguageInterface $language)
+    public function findTermBySlug($slug, InstanceInterface $instance)
     {
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-                ->resolveClassName('Term\Entity\TermEntityInterface'))
-            ->findOneBy(array(
-                'slug'     => $slug,
-                'language' => $language->getId()
-            ));
+        $entity = $this->getObjectManager()->getRepository(
+                $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface')
+            )->findOneBy(
+                array(
+                    'slug'     => $slug,
+                    'language' => $instance->getId()
+                )
+            );
 
         if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $slug, $language->getId()));
+            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $slug, $instance->getId()));
         }
 
         return $entity;
     }
 
-    public function findTermByName($name, LanguageInterface $language)
+    public function findTermByName($name, InstanceInterface $instance)
     {
-        $entity = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-                ->resolveClassName('Term\Entity\TermEntityInterface'))
-            ->findOneBy(array(
-                'name'     => $name,
-                'language' => $language->getId()
-            ));
+        $entity = $this->getObjectManager()->getRepository(
+                $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface')
+            )->findOneBy(
+                array(
+                    'name'     => $name,
+                    'language' => $instance->getId()
+                )
+            );
 
         if (!is_object($entity)) {
-            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $name, $language->getId()));
+            throw new TermNotFoundException(sprintf('Term %s with Language %s not found', $name, $instance->getId()));
         }
 
         return $entity;
     }
 
-    public function createTerm($name, $slug = null, LanguageInterface $language)
+    public function createTerm($name, $slug = null, InstanceInterface $instance)
     {
+        /* @var $entity TermEntityInterface */
         $filter = new Slugify();
         $slug   = ($slug ? $slug : $filter->filter($name));
         $entity = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
 
         $entity->setName($name);
-        $entity->setLanguage($language);
+        $entity->setInstance($instance);
         $entity->setSlug($slug);
         $this->getObjectManager()->persist($entity);
 

@@ -8,30 +8,30 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Manager;
+namespace Instance\Manager;
 
-trait LanguageManagerAwareTrait
+trait InstanceManagerAwareTrait
 {
     /**
-     * @var LanguageManagerInterface
+     * @var InstanceManagerInterface
      */
-    protected $languageManager;
+    protected $tenantManager;
 
     /**
-     * @return LanguageManagerInterface $languageManager
+     * @return InstanceManagerInterface $instanceManager
      */
-    public function getLanguageManager()
+    public function getInstanceManager()
     {
-        return $this->languageManager;
+        return $this->tenantManager;
     }
 
     /**
-     * @param LanguageManagerInterface $languageManager
+     * @param InstanceManagerInterface $tenantManager
      * @return self
      */
-    public function setLanguageManager(LanguageManagerInterface $languageManager)
+    public function setInstanceManager(InstanceManagerInterface $tenantManager)
     {
-        $this->languageManager = $languageManager;
+        $this->tenantManager = $tenantManager;
 
         return $this;
     }

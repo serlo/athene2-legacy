@@ -16,7 +16,7 @@ use Alias\Options\ManagerOptions;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Filter\Slugify;
 use Common\Traits;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Token\TokenizerAwareTrait;
 use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
@@ -33,7 +33,7 @@ class AliasManager implements AliasManagerInterface
      */
     protected $options;
 
-    public function autoAlias($name, $source, UuidHolder $object, LanguageInterface $language)
+    public function autoAlias($name, $source, UuidHolder $object, InstanceInterface $instance)
     {
         if (!is_string($name) || !is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -54,10 +54,10 @@ class AliasManager implements AliasManagerInterface
         $alias          = $this->getTokenizer()->transliterate($provider, $object, $tokenString);
         $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object, $fallbackString);
 
-        return $this->createAlias($source, $alias, $aliasFallback, $object->getUuidEntity(), $language);
+        return $this->createAlias($source, $alias, $aliasFallback, $object->getUuidEntity(), $instance);
     }
 
-    public function findSourceByAlias($alias, LanguageInterface $language)
+    public function findSourceByAlias($alias, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -70,7 +70,7 @@ class AliasManager implements AliasManagerInterface
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'alias'    => $alias,
-                'language' => $language->getId()
+                'language' => $instance->getId()
             ]
         );
 
@@ -81,7 +81,7 @@ class AliasManager implements AliasManagerInterface
         return $entity->getSource();
     }
 
-    public function findAliasBySource($source, LanguageInterface $language)
+    public function findAliasBySource($source, InstanceInterface $instance)
     {
         if (!is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -93,7 +93,7 @@ class AliasManager implements AliasManagerInterface
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'source'   => $source,
-                'language' => $language->getId()
+                'language' => $instance->getId()
             ]
         );
 
@@ -104,7 +104,7 @@ class AliasManager implements AliasManagerInterface
         return $entity->getAlias();
     }
 
-    public function updateAlias($alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
+    public function updateAlias($alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
@@ -121,7 +121,7 @@ class AliasManager implements AliasManagerInterface
         }
 
         try {
-            $this->findSourceByAlias($alias, $language);
+            $this->findSourceByAlias($alias, $instance);
             $alias = $aliasFallback;
         } catch (Exception\AliasNotFoundException $e) {
         }
@@ -141,7 +141,7 @@ class AliasManager implements AliasManagerInterface
 
     }
 
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
@@ -152,7 +152,7 @@ class AliasManager implements AliasManagerInterface
         }
 
         try {
-            $this->findSourceByAlias($alias, $language);
+            $this->findSourceByAlias($alias, $instance);
             $alias = $aliasFallback;
         } catch (Exception\AliasNotFoundException $e) {
         }
@@ -174,7 +174,7 @@ class AliasManager implements AliasManagerInterface
         $class = $this->getClassResolver()->resolve('Alias\Entity\AliasInterface');
 
         $class->setSource($source);
-        $class->setLanguage($language);
+        $class->setInstance($instance);
         $class->setAlias($alias);
         $class->setObject($uuid);
 

@@ -12,14 +12,14 @@ namespace Discussion\Controller;
 
 use Discussion\Form\CommentForm;
 use Discussion\Form\DiscussionForm;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class DiscussionController extends AbstractController
 {
-    use LanguageManagerAwareTrait, UserManagerAwareTrait, UuidManagerAwareTrait;
+    use InstanceManagerAwareTrait, UserManagerAwareTrait, UuidManagerAwareTrait;
 
     public function archiveAction()
     {
@@ -62,13 +62,13 @@ class DiscussionController extends AbstractController
                 $this->getRequest()->getPost()
             );
             if ($form->isValid()) {
-                $language = $this->getLanguageManager()->getLanguageFromRequest();
+                $instance = $this->getInstanceManager()->getTenantFromRequest();
                 $author   = $this->getUserManager()->getUserFromAuthenticator();
                 $content  = $form->getData()['content'];
 
                 $comment = $this->getDiscussionManager()->commentDiscussion(
                     $discussion,
-                    $language,
+                    $instance,
                     $author,
                     $content,
                     $form->getData()
@@ -121,7 +121,7 @@ class DiscussionController extends AbstractController
             );
             if ($form->isValid()) {
                 $object = $this->getUuidManager()->getUuid($this->params('on'));
-                $language = $this->getLanguageManager()->getLanguageFromRequest();
+                $instance = $this->getInstanceManager()->getTenantFromRequest();
                 $author = $this->getUserManager()->getUserFromAuthenticator();
                 $title = $form->getData()['title'];
                 $content = $form->getData()['content'];
@@ -129,7 +129,7 @@ class DiscussionController extends AbstractController
 
                 $discussion = $this->getDiscussionManager()->startDiscussion(
                     $object,
-                    $language,
+                    $instance,
                     $author,
                     $forum,
                     $title,

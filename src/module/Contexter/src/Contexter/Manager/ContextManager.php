@@ -17,13 +17,13 @@ use Contexter\Entity\ContextInterface;
 use Contexter\Exception;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Type\TypeManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 
 class ContextManager implements ContextManagerInterface
 {
-    use ObjectManagerAwareTrait, LanguageManagerAwareTrait;
+    use ObjectManagerAwareTrait, InstanceManagerAwareTrait;
     use Router\RouterAwareTrait, UuidManagerAwareTrait;
     use TypeManagerAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait;
@@ -85,18 +85,18 @@ class ContextManager implements ContextManagerInterface
 
     public function add($objectId, $type, $title)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $this->assertGranted('contexter.context.add', $language);
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $this->assertGranted('contexter.context.add', $instance);
 
         $object = $this->getUuidManager()->getUuid($objectId);
 
         $type = $this->findTypeByName($type);
 
-        /* @var $context Entity\ContextInterface */
+        /* @var $context ContextInterface */
         $context = $this->getClassResolver()->resolve('Contexter\Entity\ContextInterface');
         $context->setTitle($title);
         $context->setObject($object);
-        $context->setLanguage($language);
+        $context->setInstance($instance);
 
         $context->setType($type);
         $type->addContext($context);

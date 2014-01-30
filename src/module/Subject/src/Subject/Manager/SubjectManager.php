@@ -13,7 +13,7 @@ namespace Subject\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Entity\Entity\EntityInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
@@ -34,17 +34,17 @@ class SubjectManager implements SubjectManagerInterface
         return $term;
     }
 
-    public function findSubjectByString($name, LanguageInterface $language)
+    public function findSubjectByString($name, InstanceInterface $instance)
     {
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $language);
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $instance);
         $term     = $this->getTaxonomyManager()->findTerm($taxonomy, (array)$name);
 
         return $term;
     }
 
-    public function findSubjectsByLanguage(LanguageInterface $language)
+    public function findSubjectsByLanguage(InstanceInterface $instance)
     {
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $language);
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $instance);
 
         return $taxonomy->getChildren();
     }

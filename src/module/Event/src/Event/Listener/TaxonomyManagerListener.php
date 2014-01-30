@@ -19,29 +19,29 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
 
-        $this->logEvent('taxonomy/term/create', $language, $user, $term);
+        $this->logEvent('taxonomy/term/create', $instance, $user, $term);
     }
 
     public function onUpdate(Event $e)
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
 
-        $this->logEvent('taxonomy/term/update', $language, $user, $term);
+        $this->logEvent('taxonomy/term/update', $instance, $user, $term);
     }
 
     public function onAssociate(Event $e)
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
 
         $this->logEvent(
             'taxonomy/term/associate',
-            $language,
+            $instance,
             $user,
             $term,
             [
@@ -57,11 +57,11 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
 
         $this->logEvent(
             'taxonomy/term/dissociate',
-            $language,
+            $instance,
             $user,
             $term,
             [

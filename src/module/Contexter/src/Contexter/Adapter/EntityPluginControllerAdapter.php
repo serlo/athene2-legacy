@@ -10,11 +10,11 @@
  */
 namespace Contexter\Adapter;
 
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 
 class EntityPluginControllerAdapter extends AbstractAdapter
 {
-    use LanguageManagerAwareTrait;
+    use InstanceManagerAwareTrait;
 
     public function getProvidedParams()
     {
@@ -23,7 +23,7 @@ class EntityPluginControllerAdapter extends AbstractAdapter
 
         $array = [
             'type'     => $entityService->getType()->getName(),
-            'language' => $this->getLanguageManager()->getLanguageFromRequest()->getCode()
+            'language' => $this->getInstanceManager()->getTenantFromRequest()->getName()
         ];
 
         if ($entityService->hasPlugin('learningResource')) {

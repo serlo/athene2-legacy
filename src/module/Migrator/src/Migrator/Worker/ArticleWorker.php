@@ -13,7 +13,7 @@ namespace Migrator\Worker;
 use Doctrine\ORM\EntityManager;
 use Entity\Manager\EntityManager as LRManager;
 use Flag\Manager\FlagManagerInterface;
-use Language\Manager\LanguageManagerInterface;
+use Instance\Manager\InstanceManagerInterface;
 use Migrator\Converter\ConverterChain;
 use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
@@ -69,7 +69,7 @@ class ArticleWorker implements Worker
         EntityManager $objectManager,
         LRManager $entityManager,
         TaxonomyManagerInterface $taxonomyManager,
-        LanguageManagerInterface $languageManager,
+        InstanceManagerInterface $instanceManager,
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
         PreConverterChain $converterChain,
@@ -79,7 +79,7 @@ class ArticleWorker implements Worker
         $this->objectManager     = $objectManager;
         $this->entityManager     = $entityManager;
         $this->taxonomyManager   = $taxonomyManager;
-        $this->languageManager   = $languageManager;
+        $this->languageManager   = $instanceManager;
         $this->uuidManager       = $uuidManager;
         $this->userManager       = $userManagerInterface;
         $this->converterChain    = $converterChain;
@@ -92,7 +92,7 @@ class ArticleWorker implements Worker
         $i = 0;
 
         $user     = $this->userManager->getUserFromAuthenticator();
-        $language = $this->languageManager->getLanguage(1);
+        $instance = $this->languageManager->getTenant(1);
         /** @var $articles \Migrator\Entity\ArticleTranslation[] */
         $articles = $this->objectManager->getRepository('Migrator\Entity\ArticleTranslation')->findAll();
 
@@ -110,7 +110,7 @@ class ArticleWorker implements Worker
                 );
                 $title   = utf8_encode($revision->getTitle());
 
-                $entity = $this->entityManager->createEntity('article', [], $language);
+                $entity = $this->entityManager->createEntity('article', [], $instance);
 
                 $this->taxonomyManager->associateWith(8, 'entities', $entity);
 

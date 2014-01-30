@@ -18,9 +18,9 @@ use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
-use Language\Entity\LanguageInterface;
-use Language\Manager\LanguageManagerAwareTrait;
-use Language\Manager\LanguageManagerInterface;
+use Instance\Entity\InstanceInterface;
+use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
@@ -32,18 +32,18 @@ class BlogManager implements BlogManagerInterface
 {
     use TaxonomyManagerAwareTrait, ObjectManagerAwareTrait;
     use ClassResolverAwareTrait, UuidManagerAwareTrait;
-    use LanguageManagerAwareTrait, AuthorizationAssertionTrait;
+    use InstanceManagerAwareTrait, AuthorizationAssertionTrait;
 
     public function __construct(
         ClassResolverInterface $classResolver,
         TaxonomyManagerInterface $taxonomyManager,
         ObjectManager $objectManager,
-        LanguageManagerInterface $languageManager,
+        InstanceManagerInterface $instanceManager,
         AuthorizationService $authorizationService
     ) {
         $this->classResolver   = $classResolver;
         $this->taxonomyManager = $taxonomyManager;
-        $this->languageManager = $languageManager;
+        $this->tenantManager = $instanceManager;
         $this->objectManager   = $objectManager;
         $this->setAuthorizationService($authorizationService);
     }
@@ -53,9 +53,9 @@ class BlogManager implements BlogManagerInterface
         return $this->getTaxonomyManager()->getTerm($id);
     }
 
-    public function findAllBlogs(LanguageInterface $languageService)
+    public function findAllBlogs(InstanceInterface $instanceService)
     {
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $languageService);
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $instanceService);
 
         return $taxonomy->getChildren();
     }
@@ -112,8 +112,8 @@ class BlogManager implements BlogManagerInterface
         $content,
         DateTime $publish = null
     ) {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $this->assertGranted('blog.post.create', $language);
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $this->assertGranted('blog.post.create', $instance);
 
         /* @var $post PostInterface */
         $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
@@ -126,7 +126,7 @@ class BlogManager implements BlogManagerInterface
                 'title'    => $title,
                 'content'  => $content,
                 'publish'  => $publish ? $publish : new DateTime(),
-                'language' => $language
+                'language' => $instance
             ],
             $post
         );

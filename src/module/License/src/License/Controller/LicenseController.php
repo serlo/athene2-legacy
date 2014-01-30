@@ -10,22 +10,22 @@
  */
 namespace License\Controller;
 
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use License\Manager\LicenseManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class LicenseController extends AbstractActionController
 {
-    use LicenseManagerAwareTrait, LanguageManagerAwareTrait;
+    use LicenseManagerAwareTrait, InstanceManagerAwareTrait;
 
     public function manageAction()
     {
-        $languageService = $this->getLanguageManager()->getLanguageFromRequest();
-        $this->assertGranted('licenses.manage', $languageService);
+        $instanceService = $this->getInstanceManager()->getTenantFromRequest();
+        $this->assertGranted('licenses.manage', $instanceService);
 
         $view = new ViewModel(array(
-            'licenses' => $this->getLicenseManager()->findLicensesByLanguage($languageService)
+            'licenses' => $this->getLicenseManager()->findLicensesByLanguage($instanceService)
         ));
         $view->setTemplate('license/manage');
 
@@ -88,7 +88,7 @@ class LicenseController extends AbstractActionController
             if ($form->isValid()) {
                 $this->getLicenseManager()->addLicense(
                     $form,
-                    $this->getLanguageManager()->getLanguageFromRequest()
+                    $this->getInstanceManager()->getTenantFromRequest()
                 );
                 $this->getLicenseManager()->getObjectManager()->flush();
                 $this->redirect()->toUrl(

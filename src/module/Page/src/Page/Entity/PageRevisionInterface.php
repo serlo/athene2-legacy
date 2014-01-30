@@ -1,7 +1,8 @@
 <?php
 namespace Page\Entity;
 
-interface PageRevisionInterface {
-    
-    
+use Versioning\Entity\RevisionInterface;
+
+interface PageRevisionInterface extends RevisionInterface
+{
 }

@@ -18,7 +18,7 @@ class FlagManager implements FlagManagerInterface
 {
     use \Common\Traits\ObjectManagerAwareTrait, \Uuid\Manager\UuidManagerAwareTrait,
         \ClassResolver\ClassResolverAwareTrait, \Type\TypeManagerAwareTrait,
-        \Language\Manager\LanguageManagerAwareTrait;
+        \Instance\Manager\InstanceManagerAwareTrait;
 
     /**
      * @var ModuleOptions
@@ -99,7 +99,7 @@ class FlagManager implements FlagManagerInterface
         $flag->setContent($content);
         $flag->setReporter($reporter);
         $flag->setType($type);
-        $flag->setLanguage($this->getLanguageManager()->getLanguageFromRequest());
+        $flag->setInstance($this->getInstanceManager()->getTenantFromRequest());
         $flag->setObject($object);
         $this->getObjectManager()->persist($flag);
 

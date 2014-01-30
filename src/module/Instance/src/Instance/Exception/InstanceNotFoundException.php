@@ -8,8 +8,8 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Exception;
+namespace Instance\Exception;
 
-class LanguageNotFoundException extends \Exception
+class InstanceNotFoundException extends \Exception
 {
 }

@@ -11,9 +11,9 @@
  */
 namespace Taxonomy\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Entity\LanguageInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Instance\Entity\InstanceAwareTrait;
 
 /**
  * A Taxonomy.
@@ -24,6 +24,7 @@ use Language\Entity\LanguageInterface;
 class Taxonomy implements TaxonomyInterface
 {
     use \Type\Entity\TypeAwareTrait;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -41,16 +42,11 @@ class Taxonomy implements TaxonomyInterface
     /**
      * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
      */
-    protected $language;
+    protected $instance;
 
     public function __construct()
     {
         $this->terms = new ArrayCollection();
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     public function getId()
@@ -71,12 +67,6 @@ class Taxonomy implements TaxonomyInterface
     public function getName()
     {
         return $this->getType()->getName();
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-        return $this;
     }
 
     public function getChildren()

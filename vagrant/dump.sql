@@ -7,36 +7,34 @@ CREATE SCHEMA IF NOT EXISTS `serlo` DEFAULT CHARACTER SET utf8 COLLATE utf8_gene
 USE `serlo` ;
 
 -- -----------------------------------------------------
--- Table `serlo`.`permission`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`permission` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`permission` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `serlo`.`language`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`language` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`language` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `permission_id` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
-  `dateformat` VARCHAR(45) NOT NULL,
-  `timeformat` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`instance`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`instance` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`instance` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `language_id` INT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `subdomain` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC),
-  UNIQUE INDEX `code_UNIQUE` (`code` ASC),
-  INDEX `fk_language_permission1_idx` (`permission_id` ASC),
-  CONSTRAINT `fk_language_permission1`
-    FOREIGN KEY (`permission_id`)
-    REFERENCES `serlo`.`permission` (`id`)
+  INDEX `fk_instance_language1_idx` (`language_id` ASC),
+  CONSTRAINT `fk_instance_language1`
+    FOREIGN KEY (`language_id`)
+    REFERENCES `serlo`.`language` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -143,17 +141,17 @@ DROP TABLE IF EXISTS `serlo`.`license` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`license` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `url` VARCHAR(255) NOT NULL,
   `content` TEXT NULL,
   `icon_href` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_license_language1_idx` (`language_id` ASC),
-  UNIQUE INDEX `title_UNIQUE` (`title` ASC, `language_id` ASC),
+  INDEX `fk_license_language1_idx` (`instance_id` ASC),
+  UNIQUE INDEX `title_UNIQUE` (`title` ASC, `instance_id` ASC),
   CONSTRAINT `fk_license_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -167,18 +165,18 @@ DROP TABLE IF EXISTS `serlo`.`entity` ;
 CREATE TABLE IF NOT EXISTS `serlo`.`entity` (
   `id` BIGINT NOT NULL,
   `type_id` INT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `license_id` INT NOT NULL,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `current_revision_id` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_entity_language1_idx` (`language_id` ASC),
+  INDEX `fk_entity_language1_idx` (`instance_id` ASC),
   INDEX `fk_entity_entity_factory1_idx` (`type_id` ASC),
   INDEX `fk_entity_uuid_idx` (`id` ASC),
   INDEX `fk_entity_license1_idx` (`license_id` ASC),
   CONSTRAINT `fk_entity_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_entity_entity_factory1`
@@ -240,11 +238,11 @@ DROP TABLE IF EXISTS `serlo`.`page_repository` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`page_repository` (
   `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `license_id` INT NOT NULL DEFAULT 1,
   `current_revision_id` INT NULL,
   INDEX `fk_page_repository_uuid2_idx` (`id` ASC),
-  INDEX `fk_page_repository_language1_idx` (`language_id` ASC),
+  INDEX `fk_page_repository_language1_idx` (`instance_id` ASC),
   PRIMARY KEY (`id`),
   INDEX `fk_page_repository_license1_idx` (`license_id` ASC),
   CONSTRAINT `fk_page_repository_uuid2`
@@ -253,8 +251,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`page_repository` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_page_repository_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_page_repository_license1`
@@ -308,13 +306,13 @@ DROP TABLE IF EXISTS `serlo`.`taxonomy` ;
 CREATE TABLE IF NOT EXISTS `serlo`.`taxonomy` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `type_id` INT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_taxonomy_language1_idx` (`language_id` ASC),
+  INDEX `fk_taxonomy_language1_idx` (`instance_id` ASC),
   INDEX `fk_taxonomy_type1_idx` (`type_id` ASC),
   CONSTRAINT `fk_taxonomy_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_taxonomy_type1`
@@ -332,16 +330,16 @@ DROP TABLE IF EXISTS `serlo`.`term` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `slug` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uq_term_name_language` (`name` ASC),
   UNIQUE INDEX `uq_term_slug_language` (`slug` ASC),
-  INDEX `fk_term_language1_idx` (`language_id` ASC),
+  INDEX `fk_term_language1_idx` (`instance_id` ASC),
   CONSTRAINT `fk_term_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -396,7 +394,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
   `id` BIGINT NOT NULL,
   `author_id` BIGINT NOT NULL,
   `category_id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `content` LONGTEXT NOT NULL,
@@ -405,7 +403,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
   INDEX `fk_blog_post_term_taxonomy1_idx` (`category_id` ASC),
   INDEX `fk_blog_post_uuid1_idx` (`id` ASC),
   PRIMARY KEY (`id`),
-  INDEX `fk_blog_post_language1_idx` (`language_id` ASC),
+  INDEX `fk_blog_post_language1_idx` (`instance_id` ASC),
   CONSTRAINT `fk_blog_post_user1`
     FOREIGN KEY (`author_id`)
     REFERENCES `serlo`.`user` (`id`)
@@ -422,8 +420,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_blog_post_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -507,6 +505,43 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`permission`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`permission` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`permission` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`instance_permission`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`instance_permission` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`instance_permission` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `permission_id` INT NOT NULL,
+  `instance_id` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_tenant_permission_permission1_idx` (`permission_id` ASC),
+  INDEX `fk_tenant_permission_tenant1_idx` (`instance_id` ASC),
+  CONSTRAINT `fk_tenant_permission_permission1`
+    FOREIGN KEY (`permission_id`)
+    REFERENCES `serlo`.`permission` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tenant_permission_tenant1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `serlo`.`role_permission`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`role_permission` ;
@@ -524,7 +559,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_permission` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_role_has_permission_permission1`
     FOREIGN KEY (`permission_id`)
-    REFERENCES `serlo`.`permission` (`id`)
+    REFERENCES `serlo`.`instance_permission` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -563,7 +598,7 @@ DROP TABLE IF EXISTS `serlo`.`comment` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`comment` (
   `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `author_id` BIGINT NOT NULL,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `archived` TINYINT(1) NOT NULL DEFAULT FALSE,
@@ -573,7 +608,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`comment` (
   `content` LONGTEXT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_comment_uuid_idx` (`id` ASC),
-  INDEX `fk_comment_language1_idx` (`language_id` ASC),
+  INDEX `fk_comment_language1_idx` (`instance_id` ASC),
   INDEX `fk_comment_uuid2_idx` (`uuid_id` ASC),
   INDEX `fk_comment_user1_idx` (`author_id` ASC),
   INDEX `fk_comment_comment1_idx` (`parent_id` ASC),
@@ -583,8 +618,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`comment` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_comment_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_comment_uuid2`
@@ -653,12 +688,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_log` (
   `actor_id` BIGINT NOT NULL,
   `event_id` INT NOT NULL,
   `uuid_id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_event_fired_event1_idx` (`event_id` ASC),
   INDEX `fk_event_log_uuid1_idx` (`uuid_id` ASC),
-  INDEX `fk_event_log_language1_idx` (`language_id` ASC),
+  INDEX `fk_event_log_language1_idx` (`instance_id` ASC),
   INDEX `fk_event_log_user1_idx` (`actor_id` ASC),
   CONSTRAINT `fk_event_fired_event1`
     FOREIGN KEY (`event_id`)
@@ -671,8 +706,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_log` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_event_log_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_event_log_user1`
@@ -737,17 +772,17 @@ DROP TABLE IF EXISTS `serlo`.`url_alias` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`url_alias` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `uuid_id` BIGINT NOT NULL,
   `source` VARCHAR(255) NOT NULL,
   `alias` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `alias_UNIQUE` (`alias` ASC),
-  INDEX `fk_url_alias_language1_idx` (`language_id` ASC),
+  INDEX `fk_url_alias_language1_idx` (`instance_id` ASC),
   INDEX `fk_url_alias_uuid1_idx` (`uuid_id` ASC),
   CONSTRAINT `fk_url_alias_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_url_alias_uuid1`
@@ -816,11 +851,11 @@ DROP TABLE IF EXISTS `serlo`.`attachment_container` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
   `id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `type_id` INT NOT NULL,
   INDEX `fk_upload_uuid1_idx` (`id` ASC),
   PRIMARY KEY (`id`),
-  INDEX `fk_upload_language1_idx` (`language_id` ASC),
+  INDEX `fk_upload_language1_idx` (`instance_id` ASC),
   INDEX `fk_attachment_type1_idx` (`type_id` ASC),
   CONSTRAINT `fk_upload_uuid1`
     FOREIGN KEY (`id`)
@@ -828,8 +863,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_upload_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_attachment_type1`
@@ -947,12 +982,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uuid_id` BIGINT NOT NULL,
   `type_id` INT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_context_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_context_type1_idx` (`type_id` ASC),
-  INDEX `fk_context_language1_idx` (`language_id` ASC),
+  INDEX `fk_context_language1_idx` (`instance_id` ASC),
   CONSTRAINT `fk_context_uuid1`
     FOREIGN KEY (`uuid_id`)
     REFERENCES `serlo`.`uuid` (`id`)
@@ -964,8 +999,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_context_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1020,14 +1055,14 @@ CREATE TABLE IF NOT EXISTS `serlo`.`flag` (
   `uuid_id` BIGINT NOT NULL,
   `type_id` INT NOT NULL,
   `reporter_id` BIGINT NOT NULL,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `content` TEXT NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_Flag_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_flag_user1_idx` (`reporter_id` ASC),
   INDEX `fk_flag_type1_idx` (`type_id` ASC),
-  INDEX `fk_flag_language1_idx` (`language_id` ASC),
+  INDEX `fk_flag_language1_idx` (`instance_id` ASC),
   CONSTRAINT `fk_Flag_uuid1`
     FOREIGN KEY (`uuid_id`)
     REFERENCES `serlo`.`uuid` (`id`)
@@ -1044,8 +1079,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`flag` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_flag_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1175,7 +1210,7 @@ DROP TABLE IF EXISTS `serlo`.`ads` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `language_id` INT NOT NULL,
+  `instance_id` INT NOT NULL,
   `image_id` BIGINT NOT NULL,
   `author_id` BIGINT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
@@ -1184,12 +1219,12 @@ CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
   `clicks` INT NOT NULL DEFAULT 0,
   `url` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_ads_language1_idx` (`language_id` ASC),
+  INDEX `fk_ads_language1_idx` (`instance_id` ASC),
   INDEX `fk_ads_upload1_idx` (`image_id` ASC),
   INDEX `fk_ads_user1_idx` (`author_id` ASC),
   CONSTRAINT `fk_ads_language1`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `serlo`.`language` (`id`)
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ads_upload1`
@@ -1273,106 +1308,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`permission`
+-- Data for table `serlo`.`language`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (1, 'blog.post.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (2, 'blog.post.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (3, 'blog.post.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (4, 'blog.post.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (5, 'german');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (6, 'english');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (7, 'contexter.route.remove');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.context.remove');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.context.add');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (10, 'contexter.route.add');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (11, 'login');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (12, 'authorization.role.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (13, 'authorization.role.sysadmin.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.role.german.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.role.english.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.permission.add');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.permission.remove');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (18, 'contexter.context.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (19, 'blog.posts.view_all');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (20, 'discussion.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (21, 'discussion.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (22, 'discussion.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (23, 'discussion.vote');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (24, 'discussion.archive');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (25, 'discussion.comment.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (26, 'discussion.comment.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (27, 'discussion.comment.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (28, 'entity.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (29, 'entity.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (30, 'entity.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (31, 'entity.revision.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (32, 'entity.revision.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (33, 'entity.revision.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (34, 'entity.revision.checkout');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (35, 'entity.license.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (36, 'entity.link.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (37, 'entity.link.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (38, 'flag.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (39, 'flag.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (40, 'license.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (41, 'license.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (42, 'license.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (43, 'licenses.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (44, 'related_content.add');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (45, 'related_content.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (46, 'related_content.sort');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (47, 'taxonomy.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (48, 'taxonomy.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (49, 'taxonomy.term.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (50, 'taxonomy.term.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (51, 'taxonomy.term.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (52, 'taxonomy.term.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (53, 'taxonomy.term.associate');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (54, 'taxonomy.term.dissociate');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (55, 'taxonomy.term.sort');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (56, 'upload.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (57, 'upload.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (58, 'uuid.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (59, 'uuid.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (60, 'page.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (61, 'page.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (62, 'page.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (63, 'page.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (64, 'page.revision.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (65, 'page.revision.trash');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (66, 'page.revision.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (67, 'page.revision.checkout');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (68, 'contexter.context.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (69, 'entity.link.order');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (70, 'entity.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (71, 'entity.revision.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (72, 'page.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (73, 'page.revision.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (74, 'discussion.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (75, 'discussion.comment.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (76, 'blog.post.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (77, 'taxonomy.term.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (78, 'uuid.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (79, 'related_content.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (80, 'taxonomy.term.associated.sort');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'user.login');
+INSERT INTO `serlo`.`language` (`id`, `code`, `name`) VALUES (1, 'de', 'Deutsch');
+INSERT INTO `serlo`.`language` (`id`, `code`, `name`) VALUES (2, 'en', 'English');
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`language`
+-- Data for table `serlo`.`instance`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`language` (`id`, `permission_id`, `name`, `code`, `dateformat`, `timeformat`) VALUES (1, 5, 'Deutsch', 'de', 'DMY', 'Y:M');
-INSERT INTO `serlo`.`language` (`id`, `permission_id`, `name`, `code`, `dateformat`, `timeformat`) VALUES (2, 6, 'English', 'en', 'MDY', 'Y:M');
+INSERT INTO `serlo`.`instance` (`id`, `language_id`, `name`, `subdomain`) VALUES (1, 1, 'Deutsch', 'de');
+INSERT INTO `serlo`.`instance` (`id`, `language_id`, `name`, `subdomain`) VALUES (2, 2, 'English', 'en');
 
 COMMIT;
 
@@ -1470,14 +1422,14 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (7, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `language_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (7, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
 
 COMMIT;
 
@@ -1487,11 +1439,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `language_id`) VALUES (1, 17, 1);
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `language_id`) VALUES (2, 18, 1);
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `language_id`) VALUES (3, 13, 1);
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `language_id`) VALUES (4, 11, 1);
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `language_id`) VALUES (5, 12, 1);
+INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (1, 17, 1);
+INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (2, 18, 1);
+INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (3, 13, 1);
+INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (4, 11, 1);
+INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (5, 12, 1);
 
 COMMIT;
 
@@ -1501,11 +1453,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`term` (`id`, `language_id`, `name`, `slug`) VALUES (1, 1, 'Root', 'root');
-INSERT INTO `serlo`.`term` (`id`, `language_id`, `name`, `slug`) VALUES (2, 1, 'Discussions', 'discussions');
-INSERT INTO `serlo`.`term` (`id`, `language_id`, `name`, `slug`) VALUES (3, 1, 'Mathe', 'mathe');
-INSERT INTO `serlo`.`term` (`id`, `language_id`, `name`, `slug`) VALUES (4, 1, 'Legacy', 'legacy');
-INSERT INTO `serlo`.`term` (`id`, `language_id`, `name`, `slug`) VALUES (5, 1, 'Articles', 'articles');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (1, 1, 'Root', 'root');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (2, 1, 'Discussions', 'discussions');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (3, 1, 'Mathe', 'mathe');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (4, 1, 'Legacy', 'legacy');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (5, 1, 'Articles', 'articles');
 
 COMMIT;
 
@@ -1540,6 +1492,192 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `serlo`.`permission`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (1, 'blog.post.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (2, 'blog.post.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (3, 'blog.post.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (4, 'blog.post.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (5, 'german');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (6, 'english');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (7, 'contexter.route.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.context.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.context.add');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (10, 'contexter.route.add');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (11, 'login');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (12, 'authorization.role.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (13, 'authorization.role.sysadmin.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.role.german.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.role.english.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.permission.add');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.permission.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (18, 'contexter.context.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (19, 'blog.posts.view_all');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (20, 'discussion.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (21, 'discussion.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (22, 'discussion.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (23, 'discussion.vote');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (24, 'discussion.archive');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (25, 'discussion.comment.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (26, 'discussion.comment.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (27, 'discussion.comment.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (28, 'entity.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (29, 'entity.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (30, 'entity.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (31, 'entity.revision.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (32, 'entity.revision.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (33, 'entity.revision.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (34, 'entity.revision.checkout');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (35, 'entity.license.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (36, 'entity.link.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (37, 'entity.link.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (38, 'flag.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (39, 'flag.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (40, 'license.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (41, 'license.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (42, 'license.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (43, 'licenses.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (44, 'related_content.add');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (45, 'related_content.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (46, 'related_content.sort');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (47, 'taxonomy.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (48, 'taxonomy.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (49, 'taxonomy.term.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (50, 'taxonomy.term.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (51, 'taxonomy.term.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (52, 'taxonomy.term.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (53, 'taxonomy.term.associate');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (54, 'taxonomy.term.dissociate');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (55, 'taxonomy.term.sort');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (56, 'upload.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (57, 'upload.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (58, 'uuid.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (59, 'uuid.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (60, 'page.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (61, 'page.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (62, 'page.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (63, 'page.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (64, 'page.revision.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (65, 'page.revision.trash');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (66, 'page.revision.purge');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (67, 'page.revision.checkout');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (68, 'contexter.context.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (69, 'entity.link.order');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (70, 'entity.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (71, 'entity.revision.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (72, 'page.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (73, 'page.revision.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (74, 'discussion.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (75, 'discussion.comment.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (76, 'blog.post.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (77, 'taxonomy.term.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (78, 'uuid.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (79, 'related_content.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (80, 'taxonomy.term.associated.sort');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'user.login');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`instance_permission`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (1, 1, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (2, 2, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (3, 3, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (4, 4, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (7, 7, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (8, 8, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (9, 9, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (10, 10, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (11, 11, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (12, 12, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (13, 13, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (15, 15, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (16, 16, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (17, 17, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (18, 18, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (19, 19, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (20, 20, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (21, 21, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (22, 22, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (23, 23, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (24, 24, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (25, 25, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (26, 26, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (27, 27, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (28, 28, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (29, 29, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (30, 30, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (31, 31, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (32, 32, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (33, 33, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (34, 34, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (35, 35, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (36, 36, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (37, 37, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (38, 38, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (39, 39, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (40, 40, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (41, 41, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (42, 42, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (43, 43, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (44, 44, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (45, 45, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (46, 46, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (47, 47, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (48, 48, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (49, 49, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (50, 50, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (51, 51, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (52, 52, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (53, 53, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (54, 54, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (55, 55, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (56, 56, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (57, 57, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (58, 58, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (59, 59, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (60, 60, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (61, 61, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (62, 62, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (63, 63, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (64, 64, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (65, 65, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (66, 66, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (67, 67, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (68, 68, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (69, 69, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (70, 70, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (71, 71, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (72, 72, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (73, 73, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (74, 74, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (75, 75, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (76, 76, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (77, 77, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (78, 78, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (79, 79, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (80, 80, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (81, 81, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (82, 82, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (83, 83, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (84, 84, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (85, 85, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `serlo`.`role_permission`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1548,15 +1686,11 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 1)
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 2);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 3);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 4);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (12, 5);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (13, 6);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 7);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 8);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 9);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 10);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 11);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 5);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 6);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 12);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 13);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (12, 14);

@@ -18,7 +18,7 @@ use Zend\View\Model\ViewModel;
 class UserController extends AbstractUserController
 {
     use \Common\Traits\ConfigAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait,
-        \Common\Traits\ObjectManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+        \Common\Traits\ObjectManagerAwareTrait, \Instance\Manager\InstanceManagerAwareTrait;
 
     public function getObjectManager()
     {
@@ -157,7 +157,7 @@ class UserController extends AbstractUserController
                     $this,
                     array(
                         'user'     => $user,
-                        'language' => $this->getLanguageManager()->getLanguageFromRequest(),
+                        'language' => $this->getInstanceManager()->getTenantFromRequest(),
                         'data'     => $data
                     )
                 );

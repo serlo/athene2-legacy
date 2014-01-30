@@ -16,15 +16,15 @@ class Horizon extends AbstractHelper
 {
 
     use \Ads\Manager\AdsManagerAwareTrait;
-    use \Language\Manager\LanguageManagerAwareTrait;
+    use \Instance\Manager\InstanceManagerAwareTrait;
 
     protected $ads;
 
 
     public function __invoke($number)
     {
-        $language  = $this->getLanguageManager()->getLanguageFromRequest();
-        $this->ads = $this->getAdsManager()->findShuffledAds($language, $number);
+        $instance  = $this->getInstanceManager()->getTenantFromRequest();
+        $this->ads = $this->getAdsManager()->findShuffledAds($instance, $number);
 
         return $this->getView()->partial(
             'ads/helper/ads-helper',

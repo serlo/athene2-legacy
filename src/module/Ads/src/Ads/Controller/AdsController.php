@@ -11,12 +11,13 @@
 namespace Ads\Controller;
 
 use Ads\Form\AdForm;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class AdsController extends AbstractActionController
 {
-    use\Language\Manager\LanguageManagerAwareTrait;
+    use InstanceManagerAwareTrait;
     use\Common\Traits\ObjectManagerAwareTrait;
     use\User\Manager\UserManagerAwareTrait;
     use\Ads\Manager\AdsManagerAwareTrait;
@@ -24,8 +25,8 @@ class AdsController extends AbstractActionController
 
     public function indexAction()
     {
-        $ads = $this->getAdsManager()->findAllAds($this->getLanguageManager()
-            ->getLanguageFromRequest());
+        $ads = $this->getAdsManager()->findAllAds($this->getInstanceManager()
+            ->getTenantFromRequest());
         $view = new ViewModel(array(
             'ads' => $ads
         ));
@@ -38,7 +39,7 @@ class AdsController extends AbstractActionController
     {
         $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = new AdForm();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -54,7 +55,7 @@ class AdsController extends AbstractActionController
                 
                 $array['attachment'] = $upload;
                 $array['author'] = $user;
-                $array['language'] = $language;
+                $array['language'] = $instance;
                 
                 $this->getAdsManager()->createAd($array);
                 
@@ -84,8 +85,8 @@ class AdsController extends AbstractActionController
 
     public function shuffleAction()
     {
-        $ads = $this->getAdsManager()->findShuffledAds($this->getLanguageManager()
-            ->getLanguageFromRequest(), 3);
+        $ads = $this->getAdsManager()->findShuffledAds($this->getInstanceManager()
+            ->getTenantFromRequest(), 3);
         $view = new ViewModel(array(
             'ads' => $ads
         ));
@@ -99,7 +100,7 @@ class AdsController extends AbstractActionController
     {
         $form = new AdForm();
         $id = $this->params('id');
-        $language = $this->getLanguageManager();
+        $instance = $this->getInstanceManager();
         $ad = $this->getAdsManager()->getAd($id);
         
         $form->get('content')->setValue($ad->getContent());

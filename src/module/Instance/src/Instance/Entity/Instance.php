@@ -8,17 +8,15 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Entity;
+namespace Instance\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * A language.
- *
  * @ORM\Entity
- * @ORM\Table(name="language")
+ * @ORM\Table(name="instance")
  */
-class Language implements LanguageInterface
+class Instance implements InstanceInterface
 {
 
     /**
@@ -31,21 +29,21 @@ class Language implements LanguageInterface
     /**
      * @ORM\Column(type="string", length=2)
      */
-    protected $code;
+    protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User\Entity\Permission")
+     * @ORM\Column(type="string", length=255)
      */
-    protected $permission;
+    protected $subdomain;
 
-    public function getPermission()
+    public function getName()
     {
-        return $this->permission;
+        return $this->name;
     }
 
-    public function getCode()
+    public function setName($code)
     {
-        return $this->code;
+        $this->name = $code;
     }
 
     public function getId()
@@ -53,10 +51,19 @@ class Language implements LanguageInterface
         return $this->id;
     }
 
-    public function setCode($code)
+    /**
+     * @return string
+     */
+    public function getSubdomain()
     {
-        $this->code = $code;
+        return $this->subdomain;
+    }
 
-        return $this;
+    /**
+     * @param string $subdomain
+     */
+    public function setSubdomain($subdomain)
+    {
+        $this->subdomain = $subdomain;
     }
 }

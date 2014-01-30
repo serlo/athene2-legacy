@@ -8,38 +8,38 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language\Manager;
+namespace Instance\Manager;
 
 use Doctrine\Common\Collections\Collection;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 
-interface LanguageManagerInterface
+interface InstanceManagerInterface
 {
 
     /**
-     * @return LanguageInterface
+     * @return Collection InstanceInterface[]
      */
-    public function getFallbackLanugage();
+    public function findAllTenants();
 
     /**
-     * @return LanguageInterface
+     * @param string $name
+     * @return InstanceInterface
      */
-    public function getLanguageFromRequest();
+    public function findTenantByName($name);
+
+    /**
+     * @return InstanceInterface
+     */
+    public function getDefaultTenant();
 
     /**
      * @param int $id
-     * @return LanguageInterface
+     * @return InstanceInterface
      */
-    public function getLanguage($id);
+    public function getTenant($id);
 
     /**
-     * @param string $code
-     * @return LanguageInterface
+     * @return InstanceInterface
      */
-    public function findLanguageByCode($code);
-
-    /**
-     * @return Collection LanguageInterface[]
-     */
-    public function findAllLanguages();
+    public function getTenantFromRequest();
 }

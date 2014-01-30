@@ -11,7 +11,7 @@
 namespace License\Manager;
 
 use Common\ObjectManager\Flushable;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use License\Entity\LicenseAwareInterface;
 use License\Entity\LicenseInterface;
 use License\Form\LicenseForm;
@@ -27,9 +27,9 @@ interface LicenseManagerInterface extends Flushable
 
     /**
      * @param LicenseForm       $form
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      */
-    public function addLicense(LicenseForm $form, LanguageInterface $language);
+    public function addLicense(LicenseForm $form, InstanceInterface $instance);
 
     /**
      * @param int $id
@@ -43,10 +43,10 @@ interface LicenseManagerInterface extends Flushable
     public function findAllLicenses();
 
     /**
-     * @param LanguageInterface $languageService
+     * @param InstanceInterface $instanceService
      * @return LicenseInterface[]
      */
-    public function findLicensesByLanguage(LanguageInterface $languageService);
+    public function findLicensesByLanguage(InstanceInterface $instanceService);
 
     /**
      * @param LicenseForm $form

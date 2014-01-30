@@ -10,8 +10,8 @@
  */
 namespace Subject\Hydrator;
 
-use Language\Manager\LanguageManagerAwareTrait;
-use Language\Manager\LanguageManagerInterface;
+use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Subject\Manager\SubjectManagerAwareTrait;
 use Subject\Manager\SubjectManagerInterface;
 use Ui\Navigation\HydratorInterface;
@@ -19,24 +19,24 @@ use Zend\Stdlib\ArrayUtils;
 
 class Navigation implements HydratorInterface
 {
-    use SubjectManagerAwareTrait, LanguageManagerAwareTrait;
+    use SubjectManagerAwareTrait, InstanceManagerAwareTrait;
 
     protected $path;
 
-    public function __construct(LanguageManagerInterface $languageManager, SubjectManagerInterface $subjectManager)
+    public function __construct(InstanceManagerInterface $instanceManager, SubjectManagerInterface $subjectManager)
     {
         $this->subjectManager  = $subjectManager;
-        $this->languageManager = $languageManager;
+        $this->tenantManager = $instanceManager;
     }
 
     public function hydrateConfig(array &$config)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $subjects = $this->getSubjectManager()->findSubjectsByLanguage($language);
+        $instance = $this->getInstanceManager()->getTenantFromRequest();
+        $subjects = $this->getSubjectManager()->findSubjectsByLanguage($instance);
         foreach ($subjects as $subject) {
             $config = ArrayUtils::merge(
                 $config,
-                include $this->path . $language->getCode() . '/' . strtolower(
+                include $this->path . $instance->getName() . '/' . strtolower(
                         $subject->getName()
                     ) . '/navigation.config.php'
             );

@@ -12,7 +12,7 @@ namespace Discussion;
 
 use Common\ObjectManager\Flushable;
 use Discussion\Entity\CommentInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -20,7 +20,7 @@ interface DiscussionManagerInterface extends Flushable
 {
     /**
      * @param CommentInterface  $discussion
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @param UserInterface     $author
      * @param string            $content
      * @param array             $data
@@ -28,17 +28,17 @@ interface DiscussionManagerInterface extends Flushable
      */
     public function commentDiscussion(
         CommentInterface $discussion,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $author,
         $content,
         $data = []
     );
 
     /**
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return CommentInterface[]
      */
-    public function findDiscussionsByLanguage(LanguageInterface $language);
+    public function findDiscussionsByLanguage(InstanceInterface $instance);
 
     /**
      * Finds discussions on a uuid
@@ -64,7 +64,7 @@ interface DiscussionManagerInterface extends Flushable
 
     /**
      * @param UuidInterface     $object
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @param UserInterface     $author
      * @param                   $forum
      * @param                   $title
@@ -74,7 +74,7 @@ interface DiscussionManagerInterface extends Flushable
      */
     public function startDiscussion(
         UuidInterface $object,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $author,
         $forum,
         $title,

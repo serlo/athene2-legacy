@@ -8,7 +8,7 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Language;
+namespace Instance;
 
 use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorAwareInterface;
@@ -50,13 +50,6 @@ class Module
         $app            = $e->getTarget();
         $serviceManager = $app->getServiceManager();
 
-        // View Exception
-        // $serviceManager->get('Zend\Mvc\View\Http\ExceptionStrategy')->attach($app->getEventManager(), 1);
-        // $serviceManager->get('Zend\Mvc\View\Http\InjectViewModelListener')->attach($app->getEventManager(), -100);
-
-        // Load translator
-
-        // Route translator
         $app->getEventManager()->attach(
             'route',
             array(
@@ -79,8 +72,8 @@ class Module
             $router->setTranslator($translator);
         }
 
-        $lm   = $serviceManager->get('Language\Manager\LanguageManager');
-        $code = $lm->getLanguageFromRequest()->getCode();
+        //$lm   = $serviceManager->get('Instance\Manager\InstanceManager');
+        $code = 'de';//$lm->getLanguageFromRequest()->getCode();
 
         $translator->addTranslationFile('PhpArray', __DIR__ . '/language/routes/' . $code . '.php', 'default', $code);
         $translator->setLocale($code);
