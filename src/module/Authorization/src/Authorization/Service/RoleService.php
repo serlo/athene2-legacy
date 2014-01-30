@@ -48,6 +48,14 @@ class RoleService implements RoleServiceInterface, Flushable
         return $this->getObjectManager()->getRepository($className)->findAll();
     }
 
+    public function findRoleByName($name){
+        $className = $this->getClassResolver()->resolveClassName($this->interface);
+
+        return $this->getObjectManager()->getRepository($className)->findOneBy([
+            'name' => $name
+        ]);
+    }
+
     public function getRole($id)
     {
         $className = $this->getClassResolver()->resolveClassName($this->interface);

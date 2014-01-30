@@ -53,16 +53,6 @@ return array(
                             )
                         )
                     ),
-                    'register' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/register',
-                            'defaults' => array(
-                                'action' => 'register'
-                            )
-                        )
-                    ),
                     'logout'   => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
@@ -82,7 +72,35 @@ return array(
                                 'action' => 'activate'
                             )
                         )
-                    )
+                    ),
+                    'password' => array(
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => array(
+                            'route' => '/password'
+                        ),
+                        'child_routes' => array(
+                            'change' => array(
+                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options'       => array(
+                                    'route'    => '/change',
+                                    'defaults' => array(
+                                        'action' => 'changePassword'
+                                    )
+                                )
+                            ),
+                            'restore' => array(
+                                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                                'may_terminate' => true,
+                                'options'       => array(
+                                    'route'    => '/restore[/:token]',
+                                    'defaults' => array(
+                                        'action' => 'restorePassword'
+                                    )
+                                )
+                            )
+                        )
+                    ),
                 )
             )
         )

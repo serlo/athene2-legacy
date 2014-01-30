@@ -26,7 +26,7 @@ return array(
             ),
             array(
                 'label'         => 'Sign up',
-                'route'         => 'authentication/register',
+                'route'         => 'user/register',
                 'needsIdentity' => false
             ),
             array(

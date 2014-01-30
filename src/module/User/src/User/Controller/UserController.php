@@ -10,20 +10,13 @@
  */
 namespace User\Controller;
 
-use User\Exception\UserNotFoundException;
-use User\Form\ChangePasswordForm;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\ConfigAwareTrait, \Common\Traits\AuthenticationServiceAwareTrait,
-        \Common\Traits\ObjectManagerAwareTrait, \Instance\Manager\InstanceManagerAwareTrait;
-
-    public function getObjectManager()
-    {
-        return $this->getUserManager()->getObjectManager();
-    }
+    use \Common\Traits\ConfigAwareTrait;
+    use \Instance\Manager\InstanceManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -38,20 +31,14 @@ class UserController extends AbstractUserController
         );
     }
 
-    /**
-     * @var Form[]
-     */
     protected $forms = array();
 
-    /**
-     * @param Form $form
-     */
     public function getForm($name)
     {
         if (!array_key_exists($name, $this->forms)) {
             $form = $this->getOption('forms')[$name];
             if ($name == 'register' || $name = 'settings') {
-                $this->forms[$name] = new $form($this->getObjectManager());
+                $this->forms[$name] = new $form($this->getUserManager()->getObjectManager());
             } else {
                 $this->forms[$name] = new $form();
             }
@@ -72,19 +59,9 @@ class UserController extends AbstractUserController
         return $this;
     }
 
-    public function logoutAction()
-    {
-        $this->getAuthenticationService()->clearIdentity();
-        $this->redirect()->toReferer();
-
-        $this->getEventManager()->trigger('logout', $this, array());
-
-        return '';
-    }
-
     public function registerAction()
     {
-        if (! $this->isGranted('user.create')) {
+        if (!$this->isGranted('user.create')) {
             $this->redirect()->toReferer();
         }
 
@@ -113,7 +90,7 @@ class UserController extends AbstractUserController
 
                 $this->redirect()->toUrl($this->params('ref', '/'));
 
-                return '';
+                return false;
             }
         }
 
@@ -122,107 +99,6 @@ class UserController extends AbstractUserController
         ));
 
         return $view;
-    }
-
-    public function restorePasswordAction()
-    {
-        $messages = array();
-        $view     = new ViewModel();
-
-        $this->layout('layout/1-col');
-
-        if ($this->params('token', null) === null) {
-            $form = $this->getForm('user_select');
-            $form->setAttribute(
-                'action',
-                $this->url()->fromRoute('user/password/restore')
-            );
-            $view->setTemplate('user/user/reset-password/select');
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    try {
-                        $user = $this->getUserManager()->findUserByEmail($data['email']);
-                        $user->generateToken();
-
-                        $this->getEventManager()->trigger(
-                            'restore-password',
-                            $this,
-                            array(
-                                'user' => $user
-                            )
-                        );
-
-                        $this->getUserManager()->persist($user);
-                        $this->getUserManager()->flush();
-
-                        $this->flashmessenger()->addSuccessMessage(
-                            'You have been sent an email with instructions on how to restore your password!'
-                        );
-                        $this->redirect()->toRoute('home');
-                    } catch (UserNotFoundException $e) {
-                        $messages[] = 'Sorry, this email adress does not seem to be registered yet.';
-                    }
-                }
-            }
-        } else {
-            $form = $this->getForm('restore_password');
-            $form->setAttribute(
-                'action',
-                $this->url()->fromRoute(
-                    'user/password/restore',
-                    array(
-                        'token' => $this->params('token')
-                    )
-                )
-            );
-
-            $user = $this->getUserManager()->findUserByToken($this->params('token'));
-
-            $view->setTemplate('user/user/reset-password/restore');
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $user->setPassword($data['password']);
-                    $user->generateToken();
-
-                    $this->getUserManager()->persist($user);
-                    $this->getUserManager()->flush();
-
-                    $this->redirect()->toRoute('authentication/login');
-                }
-            }
-        }
-
-        $view->setVariable('form', $form);
-        $view->setVariable('messages', $messages);
-
-        return $view;
-    }
-
-    public function activateAction()
-    {
-        try {
-            $user = $this->getUserManager()->findUserByToken($this->params('token'));
-            $role = $this->getUserManager()->findRoleByName('login');
-            $user->addRole($role);
-            $user->generateToken();
-
-            $this->getUserManager()->persist($user);
-            $this->getUserManager()->flush();
-            $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
-        } catch (UserNotFoundException $e) {
-            $this->flashMessenger()->addErrorMessage('I couldn\'t find an account by that token.');
-        }
-
-        $this->redirect()->toRoute('authentication/login');
-
-        return false;
     }
 
     public function meAction()
@@ -273,54 +149,6 @@ class UserController extends AbstractUserController
         return $view;
     }
 
-    public function changePasswordAction()
-    {
-        $form     = new ChangePasswordForm();
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $messages = array();
-
-        if ($this->getRequest()->isPost()) {
-
-            $form->setData(
-                $this->params()->fromPost()
-            );
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $adapter = $this->getAuthenticationService()->getAdapter();
-                $adapter->setIdentity($user->getEmail());
-                $adapter->setCredential($data['currentPassword']);
-
-                $result = $adapter->authenticate();
-
-                if ($result->isValid()) {
-                    $user->setPassword($data['password']);
-
-                    $this->getUserManager()->persist($user);
-                    $this->getUserManager()->flush();
-                    $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
-                    $this->redirect()->toRoute('user/me');
-
-                    return '';
-                }
-
-                $messages = $result->getMessages();
-            }
-        }
-
-        $view = new ViewModel(array(
-            'user'     => $user,
-            'form'     => $form,
-            'messages' => $messages
-        ));
-
-        $this->layout('layout/1-col');
-        $view->setTemplate('user/user/change-password');
-
-        return $view;
-    }
-
     public function profileAction()
     {
         $user = $this->getUserManager()->getUser($this->params('id'));
@@ -335,6 +163,8 @@ class UserController extends AbstractUserController
 
     public function removeAction()
     {
+        throw new \Exception();
+
         $user = $this->getUserManager()->getUser($this->params('id', null));
         $user->setTrashed(true);
 

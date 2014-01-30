@@ -93,34 +93,6 @@ return array(
                     )
                 ),
                 'child_routes'  => array(
-                    'role'      => array(
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
-                            'route' => '/:user/role'
-                        ),
-                        'child_routes' => array(
-                            'add'    => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/add/:role',
-                                    'defaults' => array(
-                                        'action' => 'addRole'
-                                    )
-                                )
-                            ),
-                            'remove' => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/remove/:role',
-                                    'defaults' => array(
-                                        'action' => 'removeRole'
-                                    )
-                                )
-                            )
-                        )
-                    ),
                     'me'        => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
@@ -146,16 +118,6 @@ return array(
                                         'action' => 'restorePassword'
                                     )
                                 )
-                            ),
-                            'change'  => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/change',
-                                    'defaults' => array(
-                                        'action' => 'changePassword'
-                                    )
-                                )
                             )
                         )
                     ),
@@ -169,26 +131,6 @@ return array(
                             )
                         )
                     ),
-                    'login'     => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/login',
-                            'defaults' => array(
-                                'action' => 'login'
-                            )
-                        )
-                    ),
-                    'dashboard' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/dashboard',
-                            'defaults' => array(
-                                'action' => 'dashboard'
-                            )
-                        )
-                    ),
                     'register'  => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
@@ -196,26 +138,6 @@ return array(
                             'route'    => '/register',
                             'defaults' => array(
                                 'action' => 'register'
-                            )
-                        )
-                    ),
-                    'logout'    => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/logout',
-                            'defaults' => array(
-                                'action' => 'logout'
-                            )
-                        )
-                    ),
-                    'activate'  => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/activate/:token',
-                            'defaults' => array(
-                                'action' => 'activate'
                             )
                         )
                     ),

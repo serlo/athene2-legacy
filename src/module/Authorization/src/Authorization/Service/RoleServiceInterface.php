@@ -52,4 +52,10 @@ interface RoleServiceInterface
      * @return void
      */
     public function removeRolePermission($roleId, $permissionId);
+
+    /**
+     * @param $name
+     * @return RoleInterface
+     */
+    public function findRoleByName($name);
 } 

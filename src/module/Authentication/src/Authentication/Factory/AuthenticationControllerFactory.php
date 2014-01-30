@@ -30,7 +30,8 @@ class AuthenticationControllerFactory implements FactoryInterface
     {
         $authenticationService = $this->getAuthenticationService($serviceLocator->getServiceLocator());
         $userManager           = $this->getUserManager($serviceLocator->getServiceLocator());
-        $controller            = new AuthenticationController($authenticationService, $userManager);
+        $roleService           = $serviceLocator->getServiceLocator()->get('Authorization\Service\RoleService');
+        $controller            = new AuthenticationController($authenticationService, $roleService, $userManager);
 
         return $controller;
     }
