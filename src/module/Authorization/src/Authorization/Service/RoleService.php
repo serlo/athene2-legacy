@@ -71,7 +71,7 @@ class RoleService implements RoleServiceInterface, Flushable
     public function grantRolePermission($roleId, $permissionId)
     {
         $this->assertGranted('authorization.permission.add');
-        $permission = $this->getPermissionService()->getPermission($permissionId);
+        $permission = $this->getPermissionService()->getParametrizedPermission($permissionId);
         $role       = $this->getRole($roleId);
         $role->addPermission($permission);
     }
@@ -79,7 +79,7 @@ class RoleService implements RoleServiceInterface, Flushable
     public function removeRolePermission($roleId, $permissionId)
     {
         $this->assertGranted('authorization.permission.remove');
-        $permission = $this->getPermissionService()->getPermission($permissionId);
+        $permission = $this->getPermissionService()->getParametrizedPermission($permissionId);
         $role       = $this->getRole($roleId);
         $role->removePermission($permission);
     }

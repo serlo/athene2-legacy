@@ -10,16 +10,15 @@
  */
 namespace Authorization\Service;
 
+use Authorization\Entity\ParametrizedPermissionInterface;
 use Authorization\Entity\PermissionInterface;
 
 interface PermissionServiceInterface
 {
-
     /**
-     * @param int $id
-     * @return PermissionInterface
+     * @return PermissionInterface[]
      */
-    public function getPermission($id);
+    public function findAllPermissions();
 
     /**
      * @param string $name
@@ -28,7 +27,22 @@ interface PermissionServiceInterface
     public function findPermissionByName($name);
 
     /**
-     * @return PermissionInterface[]
+     * @param string $name
+     * @param string $parameterKey
+     * @param mixed  $parameterValue
+     * @return PermissionInterface
      */
-    public function findAllPermissions();
-} 
+    public function findPermissionByNameAndParameter($name, $parameterKey, $parameterValue);
+
+    /**
+     * @param int $id
+     * @return ParametrizedPermissionInterface
+     */
+    public function getParametrizedPermission($id);
+
+    /**
+     * @param int $id
+     * @return PermissionInterface
+     */
+    public function getPermission($id);
+}

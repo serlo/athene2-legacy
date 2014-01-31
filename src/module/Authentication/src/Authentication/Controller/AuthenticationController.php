@@ -40,161 +40,28 @@ class AuthenticationController extends AbstractActionController
         $this->roleService           = $roleService;
     }
 
-    public function loginAction()
-    {
-        $form     = new Login();
-        $messages = array();
-
-        $this->layout('layout/1-col');
-
-        if ($this->getRequest()->isPost()) {
-
-            $post = $this->params()->fromPost();
-            $form->setData($post);
-
-            if ($form->isValid()) {
-                $data    = $form->getData();
-                $adapter = $this->getAuthenticationService()->getAdapter();
-
-                $adapter->setIdentity($data['email']);
-                $adapter->setCredential($data['password']);
-
-                $result = $this->getAuthenticationService()->authenticate();
-
-                if ($result->isValid()) {
-                    $user = $this->getUserManager()->getUser(
-                        $result->getIdentity()->getId()
-                    );
-                    $user->updateLoginData();
-
-                    $this->getUserManager()->persist($user);
-                    $this->getUserManager()->flush();
-
-                    $this->redirect()->toUrl($this->params('ref', '/'));
-                }
-                $messages = $result->getMessages();
-            }
-        }
-
-        $view = new ViewModel(array(
-            'form'          => $form,
-            'errorMessages' => $messages
-        ));
-
-        $view->setTemplate('authentication/login');
-
-        return $view;
-    }
-
-    public function restorePasswordAction()
-    {
-        $messages = array();
-        $view     = new ViewModel();
-
-        $this->layout('layout/1-col');
-
-        if (!$this->params('token', false)) {
-            $form = new SelectUserForm();
-
-            $view->setTemplate('authentication/reset-password/select');
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    try {
-                        $user = $this->getUserManager()->findUserByEmail($data['email']);
-
-                        $user->generateToken();
-
-                        $this->getEventManager()->trigger(
-                            'restore-password',
-                            $this,
-                            array(
-                                'user' => $user
-                            )
-                        );
-
-                        $this->getUserManager()->persist($user);
-                        $this->getUserManager()->flush();
-
-                        $this->flashmessenger()->addSuccessMessage(
-                            'You have been sent an email with instructions on how to restore your password!'
-                        );
-                        $this->redirect()->toRoute('home');
-                    } catch (UserNotFoundException $e) {
-                        $messages[] = 'Sorry, this email adress does not seem to be registered yet.';
-                    }
-                }
-            }
-        } else {
-            $form = new LostPassword();
-            $url  = $this->url()->fromRoute(
-                'authentication/password/restore',
-                array(
-                    'token' => $this->params('token')
-                )
-            );
-            $form->setAttribute('action', $url);
-
-            $user = $this->getUserManager()->findUserByToken($this->params('token'));
-
-            $view->setTemplate('authentication/reset-password/restore');
-
-            if ($this->getRequest()->isPost()) {
-                $data = $this->params()->fromPost();
-                $form->setData($data);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $user->setPassword($data['password']);
-                    $user->generateToken();
-
-                    $this->getUserManager()->persist($user);
-                    $this->getUserManager()->flush();
-
-                    $this->redirect()->toRoute('authentication/login');
-                }
-            }
-        }
-
-        $view->setVariable('form', $form);
-        $view->setVariable('messages', $messages);
-
-        return $view;
-    }
-
-
-    public function logoutAction()
-    {
-        $this->getAuthenticationService()->clearIdentity();
-        $this->redirect()->toReferer();
-
-        return false;
-    }
-
-
     public function activateAction()
     {
         if ($this->params('token', false)) {
             try {
                 $user = $this->getUserManager()->findUserByToken($this->params('token'));
                 $role = $this->getRoleService()->findRoleByName('login');
-                $user->addRole($role);
-                $user->generateToken();
 
-                $this->getUserManager()->persist($user);
+                if(!$user->hasRole($role)){
+                    $user->addRole($role);
+                }
+
+                $this->getUserManager()->generateUserToken($user->getId());
                 $this->getUserManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Your account has been activated, you may now log in.');
 
-                $this->redirect()->toRoute('authentication/login');
-
-                return false;
+                return $this->redirect()->toRoute('authentication/login');
             } catch (UserNotFoundException $e) {
-                $this->flashMessenger()
-                    ->addErrorMessage('I couldn\'t find an account by that token. You can now try to re-activate your account.');
-                $this->redirect()->toRoute('authentication/activate');
+                $this->flashMessenger()->addErrorMessage(
+                    'I couldn\'t find an account by that token. You can now try to re-activate your account.'
+                );
 
-                return false;
+                return $this->redirect()->toRoute('authentication/activate');
             }
         } else {
             $form     = new ActivateForm();
@@ -209,9 +76,8 @@ class AuthenticationController extends AbstractActionController
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
                         $this->getEventManager()->trigger('activate', $this, ['user' => $user]);
                         $this->flashMessenger()->addSuccessMessage('Your have been sent an activation email.');
-                        $this->redirect()->toRoute('authentication/login');
 
-                        return false;
+                        return $this->redirect()->toRoute('authentication/login');
                     } catch (UserNotFoundException $e) {
                         $messages[] = 'No such user could be found.';
                     }
@@ -255,9 +121,8 @@ class AuthenticationController extends AbstractActionController
                     $this->getUserManager()->persist($user);
                     $this->getUserManager()->flush();
                     $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
-                    $this->redirect()->toRoute('user/me');
 
-                    return false;
+                    return $this->redirect()->toRoute('user/me');
                 }
 
                 $messages = $result->getMessages();
@@ -272,6 +137,120 @@ class AuthenticationController extends AbstractActionController
 
         $this->layout('layout/1-col');
         $view->setTemplate('authentication/change-password');
+
+        return $view;
+    }
+
+    public function loginAction()
+    {
+        $form     = new Login();
+        $messages = array();
+
+        $this->layout('layout/1-col');
+
+        if ($this->getRequest()->isPost()) {
+
+            $post = $this->params()->fromPost();
+            $form->setData($post);
+
+            if ($form->isValid()) {
+                $data    = $form->getData();
+                $adapter = $this->getAuthenticationService()->getAdapter();
+
+                $adapter->setIdentity($data['email']);
+                $adapter->setCredential($data['password']);
+
+                $result = $this->getAuthenticationService()->authenticate();
+
+                if ($result->isValid()) {
+                    $user = $this->getUserManager()->getUser(
+                        $result->getIdentity()->getId()
+                    );
+
+                    $user->updateLoginData();
+                    $this->getUserManager()->persist($user);
+                    $this->getUserManager()->flush();
+
+                    return $this->redirect()->toUrl($this->params('ref', '/'));
+                }
+                $messages = $result->getMessages();
+            }
+        }
+
+        $view = new ViewModel(array(
+            'form'          => $form,
+            'errorMessages' => $messages
+        ));
+
+        $view->setTemplate('authentication/login');
+
+        return $view;
+    }
+
+    public function logoutAction()
+    {
+        $this->getAuthenticationService()->clearIdentity();
+
+        return $this->redirect()->toReferer();
+    }
+
+    public function restorePasswordAction()
+    {
+        $messages = array();
+        $view     = new ViewModel();
+
+        $this->layout('layout/1-col');
+
+        if (!$this->params('token', false)) {
+            $form = new SelectUserForm();
+
+            $view->setTemplate('authentication/reset-password/select');
+
+            if ($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $form->setData($data);
+                if ($form->isValid()) {
+                    try {
+                        $user = $this->getUserManager()->findUserByEmail($data['email']);
+
+                        $this->getUserManager()->generateUserToken($user->getId());
+                        $this->getEventManager()->trigger('restore-password', $this, array('user' => $user));
+                        $this->getUserManager()->flush();
+                        $this->flashmessenger()->addSuccessMessage(
+                            'You have been sent an email with instructions on how to restore your password!'
+                        );
+
+                        return $this->redirect()->toRoute('home');
+                    } catch (UserNotFoundException $e) {
+                        $messages[] = 'Sorry, this email address does not seem to be registered yet.';
+                    }
+                }
+            }
+        } else {
+            $form  = new LostPassword();
+            $token = $this->params('token');
+            $url   = $this->url()->fromRoute('authentication/password/restore', array('token' => $token));
+            $user  = $this->getUserManager()->findUserByToken($token);
+
+            $view->setTemplate('authentication/reset-password/restore');
+            $form->setAttribute('action', $url);
+
+            if ($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $form->setData($data);
+                if ($form->isValid()) {
+                    $data = $form->getData();
+
+                    $this->getUserManager()->updateUserPassword($user->getId(), $data['password']);
+                    $this->getUserManager()->flush();
+
+                    return $this->redirect()->toRoute('authentication/login');
+                }
+            }
+        }
+
+        $view->setVariable('form', $form);
+        $view->setVariable('messages', $messages);
 
         return $view;
     }

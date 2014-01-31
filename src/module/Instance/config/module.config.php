@@ -21,6 +21,30 @@ return [
             ]
         ]
     ],
+    'router'          => [
+        'routes' => [
+            'instance' => [
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => [
+                    'route'    => '/instance',
+                    'defaults' => [
+                        'controller' => __NAMESPACE__ . '\Controller\InstanceController'
+                    ]
+                ],
+                'child_routes' => [
+                    'switch' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/switch/:instance',
+                            'defaults' => [
+                                'action' => 'switch'
+                            ]
+                        ]
+                    ],
+                ]
+            ]
+        ]
+    ],
     'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
@@ -35,6 +59,16 @@ return [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
             ]
+        ]
+    ],
+    'view_helpers'     => [
+        'factories' => [
+            'instance' => __NAMESPACE__ . '\Factory\InstanceHelperFactory'
+        ]
+    ],
+    'controllers'     => [
+        'factories' => [
+            __NAMESPACE__ . '\Controller\InstanceController' => __NAMESPACE__ . '\Factory\InstanceControllerFactory'
         ]
     ],
     'service_manager' => [

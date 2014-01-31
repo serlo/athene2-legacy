@@ -11,8 +11,8 @@
  */
 namespace Taxonomy\Listener;
 
-use Zend\EventManager\Event;
 use Common\Listener\AbstractSharedListenerAggregate;
+use Zend\EventManager\Event;
 
 class EntityManagerListener extends AbstractSharedListenerAggregate
 {
@@ -34,7 +34,7 @@ class EntityManagerListener extends AbstractSharedListenerAggregate
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'create', array(
+        $events->attach($this->getMonitoredClass(), 'create', array(
             $this,
             'onCreate'
         ), 2);

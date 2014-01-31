@@ -10,6 +10,8 @@
  */
 namespace User\Entity;
 
+use Authorization\Entity\PermissionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="permission")
  */
-class PermissionKey
+class PermissionKey implements PermissionInterface
 {
     /**
      * @ORM\Id
@@ -33,7 +35,42 @@ class PermissionKey
     protected $name;
 
     /**
-     * @return mixed
+     * @ORM\OneToMany(targetEntity="PermissionKey",mappedBy="permission")
+     */
+    protected $parametrizedPermissions;
+
+    public function __construct()
+    {
+        $this->parametrizedPermissions = new ArrayCollection();
+    }
+
+    /**
+     * @return \Authorization\Entity\ParametrizedPermissionInterface[]|ArrayCollection
+     */
+    public function getParametrizedPermissions()
+    {
+        return $this->parametrizedPermissions;
+    }
+
+    /**
+     * @return \Authorization\Entity\ParametrizedPermissionInterface[]|ArrayCollection
+     */
+    public function getRoles()
+    {
+        $return = new ArrayCollection();
+        foreach ($this->getParametrizedPermissions() as $permission) {
+            foreach ($permission->getRoles() as $role) {
+                if (!$return->contains($role)) {
+                    $return->add($role->getRoles());
+                }
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @return int
      */
     public function getId()
     {
@@ -41,7 +78,15 @@ class PermissionKey
     }
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @return string
      */
     public function getName()
     {

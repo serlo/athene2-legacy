@@ -13,7 +13,7 @@
 $exercise = $this->entity;
 ?>
 <?php if($exercise->hasCurrentRevision()): ?>
-    <div class="list-group-item">
+    <li>
         <?php echo $this->partial('entity/view/default', array('entity' => $this->entity, 'hideActions' => array('detail'))); ?>
-    </div>
+    </li>
 <?php endif; ?>

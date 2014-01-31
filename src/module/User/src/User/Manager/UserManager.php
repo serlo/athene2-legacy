@@ -29,25 +29,6 @@ class UserManager implements UserManagerInterface
      */
     protected $hydrator;
 
-    /**
-     * @return UserHydrator
-     */
-    public function getHydrator()
-    {
-        return $this->hydrator;
-    }
-
-    /**
-     * @param UserHydrator $hydrator
-     * @return self
-     */
-    public function setHydrator(UserHydrator $hydrator)
-    {
-        $this->hydrator = $hydrator;
-
-        return $this;
-    }
-
     public function getUser($id)
     {
         $user = $this->getObjectManager()->find(
@@ -143,11 +124,18 @@ class UserManager implements UserManagerInterface
         )->findAll());
     }
 
-    public function persist($object)
+    public function updateUserPassword($id, $password)
     {
-        $this->getObjectManager()->persist($object);
+        $user = $this->getUser($id);
+        $user->setPassword($password);
+        $this->getObjectManager()->persist($user);
+    }
 
-        return $this;
+    public function generateUserToken($id)
+    {
+        $user = $this->getUser($id);
+        $user->generateToken();
+        $this->getObjectManager()->persist($user);
     }
 
     public function flush()
@@ -162,5 +150,31 @@ class UserManager implements UserManagerInterface
         return $this->getObjectManager()->getRepository(
             $this->getClassResolver()->resolveClassName('User\Entity\UserInterface')
         );
+    }
+
+    /**
+     * @return UserHydrator
+     */
+    public function getHydrator()
+    {
+        return $this->hydrator;
+    }
+
+    /**
+     * @param UserHydrator $hydrator
+     * @return self
+     */
+    public function setHydrator(UserHydrator $hydrator)
+    {
+        $this->hydrator = $hydrator;
+
+        return $this;
+    }
+
+    public function persist($object)
+    {
+        $this->getObjectManager()->persist($object);
+
+        return $this;
     }
 }

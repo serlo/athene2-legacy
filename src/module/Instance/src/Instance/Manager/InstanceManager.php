@@ -15,24 +15,27 @@ use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Instance\Entity\InstanceInterface;
 use Instance\Exception;
+use Zend\Session\AbstractContainer;
+use Zend\Session\Container;
 
 class InstanceManager implements InstanceManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
-    private $defaultInstance = 1;
-
     /**
      * @var InstanceInterface
      */
-    protected $requestTenant;
+    protected $requestInstance;
 
-    public function setDefaultInstance($id)
-    {
-        $this->defaultInstance = $id;
+    /**
+     * @var AbstractContainer
+     */
+    protected $container;
 
-        return $this;
-    }
+    /**
+     * @var int
+     */
+    private $defaultInstance = 1;
 
     public function findAllInstances()
     {
@@ -48,23 +51,39 @@ class InstanceManager implements InstanceManagerInterface
         return $this->getInstance($this->defaultInstance);
     }
 
+    public function setDefaultInstance($id)
+    {
+        $this->defaultInstance = $id;
+    }
+
     public function getInstanceFromRequest()
     {
-        if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
-            $this->requestTenant = $this->getDefaultInstance();
+        /*if (!array_key_exists('HTTP_HOST', (array)$_SERVER)) {
+            $this->requestInstance = $this->getDefaultInstance();
         }
 
-        if (!$this->requestTenant) {
+        if (!$this->requestInstance) {
             $subdomain = explode('.', $_SERVER['HTTP_HOST'])[0];
 
             try {
-                $this->requestTenant = $this->findInstanceByName($subdomain);
+                $this->requestInstance = $this->findInstanceByName($subdomain);
             } catch (Exception\InstanceNotFoundException $e) {
-                $this->requestTenant = $this->getDefaultInstance();
+                $this->requestInstance = $this->getDefaultInstance();
             }
         }
 
-        return $this->requestTenant;
+        return $this->requestInstance;*/
+
+        if (!is_object($this->requestInstance)) {
+            $container = $this->getContainer();
+            if (!$container->offsetExists('instance')) {
+                $this->requestInstance = $this->getDefaultInstance();
+            } else {
+                $this->requestInstance = $this->getInstance($container->offsetGet('instance'));
+            }
+        }
+
+        return $this->requestInstance;
     }
 
     public function getInstance($id)
@@ -99,5 +118,24 @@ class InstanceManager implements InstanceManagerInterface
         }
 
         return $instance;
+    }
+
+    public function switchInstance($id)
+    {
+        $instance  = $this->getInstance($id);
+        $container = $this->getContainer();
+        $container->offsetSet('instance', $instance->getId());
+    }
+
+    /**
+     * @return AbstractContainer
+     */
+    public function getContainer()
+    {
+        if (!is_object($this->container)) {
+            $this->container = new Container('instance');
+        }
+
+        return $this->container;
     }
 }

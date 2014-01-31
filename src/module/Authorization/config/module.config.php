@@ -19,7 +19,7 @@ return [
         ],
         'assertion_manager' => [
             'factories' => [
-                'Authorization\Assertion\RoleAssertion'            => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
+                'Authorization\Assertion\RoleAssertion' => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
                 //'Authorization\Assertion\RequestTenantAssertion' => __NAMESPACE__ . '\Factory\RequestTenantAssertionFactory',
             ]
         ],
@@ -31,6 +31,7 @@ return [
         'factories' => [
             'Authorization\Service\RoleService'       => __NAMESPACE__ . '\Factory\RoleServiceFactory',
             'Authorization\Service\PermissionService' => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
+            'ZfcRbac\Service\AuthorizationService'    => __NAMESPACE__ . '\Factory\AuthorizationServiceFactory',
         ]
     ],
     'controller_plugins' => [
@@ -44,8 +45,9 @@ return [
         ]
     ],
     'class_resolver'     => [
-        __NAMESPACE__ . '\Entity\RoleInterface'       => 'User\Entity\Role',
-        __NAMESPACE__ . '\Entity\PermissionInterface' => 'User\Entity\Permission'
+        __NAMESPACE__ . '\Entity\RoleInterface'                   => 'User\Entity\Role',
+        __NAMESPACE__ . '\Entity\PermissionInterface'             => 'User\Entity\PermissionKey',
+        __NAMESPACE__ . '\Entity\ParametrizedPermissionInterface' => 'User\Entity\Permission'
     ],
     'di'                 => [
         'instance' => [

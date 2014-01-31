@@ -8,10 +8,11 @@
  */
 namespace User\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Uuid\Entity\UuidEntity;
+use Authorization\Entity\RoleInterface;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Uuid\Entity\UuidEntity;
 
 /**
  * A user.
@@ -200,12 +201,6 @@ class User extends UuidEntity implements UserInterface
 
     public function hasRole(RoleInterface $role)
     {
-        $roles = $this->getRoles();
-        foreach ($roles as $roleEntity) {
-            if ($role === $roleEntity) {
-                return true;
-            }
-        }
-        return false;
+        return $this->getRoles()->contains($role);
     }
 }

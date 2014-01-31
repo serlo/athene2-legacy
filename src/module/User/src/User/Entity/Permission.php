@@ -1,20 +1,22 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace User\Entity;
 
+use Authorization\Entity\ParametrizedPermissionInterface;
+use Authorization\Entity\PermissionInterface;
+use Authorization\Entity\RoleInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="instance_permission")
  */
-class Permission implements PermissionInterface
+class Permission implements ParametrizedPermissionInterface
 {
 
     /**
@@ -31,7 +33,7 @@ class Permission implements PermissionInterface
     protected $roles;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PermissionKey")
+     * @ORM\ManyToOne(targetEntity="PermissionKey",inversedBy="parametrizedPermissions")
      * @ORM\JoinColumn(name="permission_id", referencedColumnName="id")
      */
     protected $permission;
@@ -42,30 +44,62 @@ class Permission implements PermissionInterface
      */
     protected $instance;
 
-    /**
-     * 
-     * @return string
-     */
     public function __toString()
     {
         return $this->getName();
     }
 
-    /**
-     *
-     * @return field_type $id
-     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     *
-     * @return field_type $name
+     * @return string
      */
     public function getName()
     {
         return $this->permission->getName();
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function getParameter($key)
+    {
+        if ($key === 'instance') {
+            return $this->instance;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return PermissionInterface
+     */
+    public function getPermission()
+    {
+        return $this->permission;
+    }
+
+    /**
+     * @return RoleInterface[]
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     * @return void
+     */
+    public function setParameter($key, $value)
+    {
+        if ($key === 'instance') {
+            $this->instance = $value;
+        }
     }
 }

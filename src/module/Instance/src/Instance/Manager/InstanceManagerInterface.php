@@ -42,4 +42,10 @@ interface InstanceManagerInterface
      * @return InstanceInterface
      */
     public function getInstanceFromRequest();
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function switchInstance($id);
 }

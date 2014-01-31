@@ -21,6 +21,15 @@ class PermissionService implements PermissionServiceInterface
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
     /**
+     * @var string
+     */
+    protected $permissionInterface = 'Authorization\Entity\PermissionInterface';
+    /**
+     * @var string
+     */
+    protected $instancePermissionInterface = 'Authorization\Entity\ParametrizedPermissionInterface';
+
+    /**
      * @param ObjectManager          $objectManager
      * @param ClassResolverInterface $classResolver
      */
@@ -30,14 +39,9 @@ class PermissionService implements PermissionServiceInterface
         $this->classResolver = $classResolver;
     }
 
-    /**
-     * @var string
-     */
-    protected $interface = 'Authorization\Entity\PermissionInterface';
-
-    public function getPermission($id)
+    public function getParametrizedPermission($id)
     {
-        $className  = $this->getClassResolver()->resolveClassName($this->interface);
+        $className  = $this->getClassResolver()->resolveClassName($this->instancePermissionInterface);
         $permission = $this->getObjectManager()->find($className, $id);
 
         if (!is_object($permission)) {
@@ -47,9 +51,39 @@ class PermissionService implements PermissionServiceInterface
         return $permission;
     }
 
+    public function getPermission($id)
+    {
+        $className  = $this->getClassResolver()->resolveClassName($this->permissionInterface);
+        $permission = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($permission)) {
+            throw new PermissionNotFoundException(sprintf('Permission %d not found', $id));
+        }
+
+        return $permission;
+    }
+
+    public function findPermissionByNameAndParameter($name, $parameterKey, $parameterValue)
+    {
+        $className  = $this->getClassResolver()->resolveClassName($this->instancePermissionInterface);
+        $repository = $this->getObjectManager()->getRepository($className);
+        $permission = $repository->findOneBy([$parameterKey => $parameterValue]);
+
+        if (!is_object($permission)) {
+            throw new PermissionNotFoundException(sprintf(
+                'Permission %s with parameter %s = %s not found',
+                $name,
+                $parameterKey,
+                $parameterValue
+            ));
+        }
+
+        return $permission;
+    }
+
     public function findPermissionByName($name)
     {
-        $className  = $this->getClassResolver()->resolveClassName($this->interface);
+        $className  = $this->getClassResolver()->resolveClassName($this->permissionInterface);
         $repository = $this->getObjectManager()->getRepository($className);
         $permission = $repository->findOneBy(['name' => $name]);
 
@@ -62,7 +96,7 @@ class PermissionService implements PermissionServiceInterface
 
     public function findAllPermissions()
     {
-        $className  = $this->getClassResolver()->resolveClassName($this->interface);
+        $className  = $this->getClassResolver()->resolveClassName($this->permissionInterface);
         $repository = $this->getObjectManager()->getRepository($className);
 
         return $repository->findAll();

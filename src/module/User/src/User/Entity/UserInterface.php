@@ -11,10 +11,10 @@
  */
 namespace User\Entity;
 
-use Uuid\Entity\UuidHolder;
+use Authorization\Entity\RoleInterface;
 use DateTime;
-use User\Entity\RoleInterface;
 use Doctrine\Common\Collections\Collection;
+use Uuid\Entity\UuidHolder;
 use ZfcRbac\Identity\IdentityInterface;
 
 interface UserInterface extends UuidHolder, IdentityInterface
@@ -125,7 +125,7 @@ interface UserInterface extends UuidHolder, IdentityInterface
 
     /**
      *
-     * @param RoleInterface $id            
+     * @param RoleInterface $role
      */
     public function hasRole(RoleInterface $role);
 }

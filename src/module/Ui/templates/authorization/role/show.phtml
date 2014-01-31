@@ -51,6 +51,7 @@
     <?php foreach ($this->role->getPermissions() as $permission): ?>
         <div class="list-group-item">
             <?php echo $permission->getName(); ?>
+            <small>(<?php echo $this->translate('Instance:') . ' ' .  $permission->getParameter('instance')->getName(); ?>)</small>
             <?php if ($this->isGranted('authorization.permission.remove')): ?>
                 <a href="<?php echo $this->url('authorization/role/permission/remove', ['role' => $this->role->getId(), 'permission' => $permission->getId()]); ?>"
                    class="label label-danger pull-right">
