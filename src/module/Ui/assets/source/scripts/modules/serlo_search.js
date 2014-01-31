@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         this.setActiveItem();
     };
 
-    SearchResults.prototype.onKey = function (e, isSearching) {
+    SearchResults.prototype.onKey = function (e, isSearching, xhr) {
         switch (e.keyCode) {
         case Common.KeyCode.up:
             e.preventDefault();
@@ -66,6 +66,10 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         case Common.KeyCode.enter:
             if (isSearching) {
                 break;
+            }
+
+            if (xhr) {
+                xhr.abort('stop');
             }
 
             if (undefined !== this.$links && this.$links.length) {
@@ -162,7 +166,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
             .keyup(function (e) {
                 var value = Common.trim($(this).val() || "");
 
-                self.results.onKey(e, self.isSearching);
+                self.results.onKey(e, self.isSearching, self.ajax);
 
                 if (_.indexOf(self.options.ignoreKeys, e.keyCode) >= 0) {
                     return true;
@@ -222,7 +226,7 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
         }).error(function () {
                 // xhr object has been aborted
                 // simply ignore.
-                if (arguments[1] === 'abort') {
+                if (arguments[1] === 'abort' || arguments[1] === 'stop') {
                     return;
                 }
                 self.$input.blur();
