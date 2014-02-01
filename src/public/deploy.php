@@ -22,11 +22,11 @@
 
     // The commands
     $commands = array(
-        "echo $PWD 2>&1",
-        "whoami 2>&1",
-        "git pull --ff 2>&1",
-        "git status 2>&1",
-        "cd " . __DIR__ . "/../;sh hyperdrive.sh 2>&1",
+        "echo $PWD",
+        "whoami",
+        "git pull --ff",
+        "git status",
+        "cd " . __DIR__ . "/../;sh hyperdrive.sh",
         "cd " . __DIR__ . "/../module/Ui/assets/;npm cache clean",
         "cd " . __DIR__ . "/../module/Ui/assets/;npm install",
         "cd " . __DIR__ . "/../module/Ui/assets/;npm update",
