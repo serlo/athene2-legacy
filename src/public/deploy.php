@@ -25,7 +25,7 @@ $commands = array(
     "cd " . __DIR__ . "/../module/Ui/assets/;npm cache clean",
     "cd " . __DIR__ . "/../module/Ui/assets/;npm install",
     "cd " . __DIR__ . "/../module/Ui/assets/;npm update",
-    "cd " . __DIR__ . "/../module/Ui/assets/;pm2 start node_modules/athene2-editor/server/server.js",
+    "pm2 start ".__DIR__."/../module/Ui/assets/node_modules/athene2-editor/server/server.js",
     "cd " . __DIR__ . "/../module/Ui/assets/;bower cache clean",
     "cd " . __DIR__ . "/../module/Ui/assets/;bower install",
     "cd " . __DIR__ . "/../module/Ui/assets/;bower update",
