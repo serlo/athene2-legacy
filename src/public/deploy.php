@@ -21,7 +21,7 @@ $commands = array(
     "git submodule update",
     "git submodule status",
     "sh " . __DIR__ . "/../hyperdrive.sh",
-    "cd " . __DIR__ . "/../module/Ui/assets/;pm2 dump && pm2kill",
+    "cd " . __DIR__ . "/../module/Ui/assets/;pm2 dump && pm2 kill",
     "cd " . __DIR__ . "/../module/Ui/assets/;npm cache clean",
     "cd " . __DIR__ . "/../module/Ui/assets/;npm install",
     "cd " . __DIR__ . "/../module/Ui/assets/;npm update",
@@ -30,8 +30,8 @@ $commands = array(
     "cd " . __DIR__ . "/../module/Ui/assets/;bower install",
     "cd " . __DIR__ . "/../module/Ui/assets/;bower update",
     "cd " . __DIR__ . "/../module/Ui/assets/;grunt build",
-    "cd " . __DIR__ . "/../../;php composer.phar self-update",
-    "cd " . __DIR__ . "/../../;php composer.phar update",
+    "cd " . __DIR__ . "/../../;php-cli composer.phar self-update",
+    "cd " . __DIR__ . "/../../;php-cli composer.phar update",
 );
 
 // Run the commands for output
