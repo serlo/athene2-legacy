@@ -14,10 +14,10 @@ use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use Subject\Manager\SubjectManagerAwareTrait;
 use Subject\Manager\SubjectManagerInterface;
-use Ui\Navigation\HydratorInterface;
+use Ui\Navigation\NavigationHydrator;
 use Zend\Stdlib\ArrayUtils;
 
-class Navigation implements HydratorInterface
+class Navigation implements NavigationHydrator
 {
     use SubjectManagerAwareTrait, InstanceManagerAwareTrait;
 

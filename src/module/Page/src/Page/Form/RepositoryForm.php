@@ -3,18 +3,18 @@
 
 namespace Page\Form;
 
-use Zend\Form\Form;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Submit;
 use Zend\Form\Element\MultiCheckbox;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
+use Zend\Form\Form;
 
 class RepositoryForm extends Form {
     protected $objectManager;
     
-	public function __construct($objectManager) {
+	public function __construct($entityManager) {
 		parent::__construct ( 'createRepository' );
-		$filter = new CreateRepositoryFilter ( $objectManager );
-		$this->objectManager = $objectManager;
+		$filter = new CreateRepositoryFilter ( $entityManager );
+		$this->objectManager = $entityManager;
 		$this->setAttribute ( 'method', 'post' );
 		$this->setAttribute ( 'class', 'form-horizontal' );
 		$this->setInputFilter ( $filter );

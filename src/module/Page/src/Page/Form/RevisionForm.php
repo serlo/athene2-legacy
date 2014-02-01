@@ -1,18 +1,18 @@
 <?php
 namespace Page\Form;
 
-use Zend\Form\Form;
+use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
-use Zend\Form\Element\Submit;
+use Zend\Form\Form;
 
 class RevisionForm extends Form
 {
 
-    public function __construct($objectManager)
+    public function __construct($entityManager)
     {
         parent::__construct('createRepository');
-        $filter = new RevisionFilter($objectManager);
+        $filter = new RevisionFilter($entityManager);
         
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');

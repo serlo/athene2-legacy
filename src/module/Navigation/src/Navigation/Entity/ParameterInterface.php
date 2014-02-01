@@ -29,9 +29,9 @@ interface ParameterInterface
     public function getId();
 
     /**
-     * @return string
+     * @return ParameterKeyInterface
      */
-    public function getName();
+    public function getKey();
 
     /**
      * @return PageInterface
@@ -44,16 +44,21 @@ interface ParameterInterface
     public function getValue();
 
     /**
+     * @return bool
+     */
+    public function hasChildren();
+
+    /**
      * @param ParameterInterface $child
      * @return void
      */
     public function removeChild(self $child);
 
     /**
-     * @param mixed $name
+     * @param ParameterKeyInterface $key
      * @return void
      */
-    public function setName($name);
+    public function setKey(ParameterKeyInterface $key);
 
     /**
      * @param PageInterface $page

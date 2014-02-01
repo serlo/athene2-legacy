@@ -10,30 +10,26 @@
  */
 namespace Navigation\Entity;
 
-use Instance\Entity\InstanceAwareInterface;
-use Type\Entity\TypeAwareInterface;
-
-interface ContainerInterface extends InstanceAwareInterface, TypeAwareInterface
+interface ParameterKeyInterface
 {
-    /**
-     * @param PageInterface $page
-     * @return void
-     */
-    public function addPage(PageInterface $page);
-
     /**
      * @return int
      */
     public function getId();
 
     /**
-     * @return PageInterface[]
+     * @return string
      */
-    public function getPages();
+    public function getName();
 
     /**
-     * @param PageInterface $page
+     * @param string $name
      * @return void
      */
-    public function removePage(PageInterface $page);
+    public function setName($name);
+
+    /**
+     * @return string
+     */
+    public function __toString();
 }

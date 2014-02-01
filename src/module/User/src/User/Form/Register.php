@@ -11,23 +11,23 @@
  */
 namespace User\Form;
 
-use \Zend\Form\Form;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Submit;
+use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Email;
 use Zend\Form\Element\Password;
-use Zend\Form\Element\Checkbox;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
+use Zend\Form\Form;
 
 class Register extends Form
 {
 
-    public function __construct($objectManager)
+    public function __construct($entityManager)
     {
         parent::__construct('signUp');
         
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-        $filter = new RegisterFilter($objectManager);
+        $filter = new RegisterFilter($entityManager);
         $this->setInputFilter($filter);
         
         $this->add((new Text('username'))->setLabel('Username:'));

@@ -11,7 +11,7 @@
  */
 namespace Ui\Navigation;
 
-interface HydratorInterface
+interface NavigationHydrator
 {
     public function hydrateConfig(array &$config);
 }

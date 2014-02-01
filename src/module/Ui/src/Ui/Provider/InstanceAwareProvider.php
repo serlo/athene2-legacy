@@ -11,10 +11,10 @@
 */
 namespace Ui\Provider;
 
-use Ui\Navigation\HydratorInterface;
+use Ui\Navigation\NavigationHydrator;
 use Zend\Stdlib\ArrayUtils;
 
-class InstanceAwareProvider implements HydratorInterface
+class InstanceAwareProvider implements NavigationHydrator
 {
     use\Zend\ServiceManager\ServiceLocatorAwareTrait,\Instance\Manager\InstanceManagerAwareTrait;
 
