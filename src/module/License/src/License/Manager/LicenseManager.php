@@ -32,7 +32,7 @@ class LicenseManager implements LicenseManagerInterface
     {
         return array(
             'defaults' => array(
-                'de' => 'cc-by-sa-3.0'
+                'Deutsch' => 'cc-by-sa-3.0'
             )
         );
     }

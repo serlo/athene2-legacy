@@ -5,6 +5,7 @@
  */
 chdir(dirname(__DIR__));
 
+set_time_limit(20);
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', true);
 date_default_timezone_set('Europe/Berlin');

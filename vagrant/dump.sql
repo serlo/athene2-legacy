@@ -1308,6 +1308,101 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`navigation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`navigation` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`navigation` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `instance_id` INT NOT NULL,
+  `type_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_navigation_instance1_idx` (`instance_id` ASC),
+  INDEX `fk_navigation_type1_idx` (`type_id` ASC),
+  CONSTRAINT `fk_navigation_instance1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_navigation_type1`
+    FOREIGN KEY (`type_id`)
+    REFERENCES `serlo`.`type` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`navigation_entry`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`navigation_entry` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`navigation_entry` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `navigation_id` INT NOT NULL,
+  `parent_id` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_navigation_entry_navigation1_idx` (`navigation_id` ASC),
+  INDEX `fk_navigation_entry_navigation_entry1_idx` (`parent_id` ASC),
+  CONSTRAINT `fk_navigation_entry_navigation1`
+    FOREIGN KEY (`navigation_id`)
+    REFERENCES `serlo`.`navigation` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_navigation_entry_navigation_entry1`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `serlo`.`navigation_entry` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`navigation_parameter_key`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`navigation_parameter_key` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`navigation_parameter_key` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`navigation_parameter`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`navigation_parameter` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`navigation_parameter` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `navigation_entry_id` INT NOT NULL,
+  `navigation_parameter_key_id` INT NOT NULL,
+  `parent_id` INT NULL,
+  `value` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_navigation_parameter_navigation_parameter1_idx` (`parent_id` ASC),
+  INDEX `fk_navigation_parameter_navigation_entry1_idx` (`navigation_entry_id` ASC),
+  INDEX `fk_navigation_parameter_navigation_parameter_key1_idx` (`navigation_parameter_key_id` ASC),
+  CONSTRAINT `fk_navigation_parameter_navigation_parameter1`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `serlo`.`navigation_parameter` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_navigation_parameter_navigation_entry1`
+    FOREIGN KEY (`navigation_entry_id`)
+    REFERENCES `serlo`.`navigation_entry` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_navigation_parameter_navigation_parameter_key1`
+    FOREIGN KEY (`navigation_parameter_key_id`)
+    REFERENCES `serlo`.`navigation_parameter_key` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Data for table `serlo`.`language`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1413,6 +1508,11 @@ INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (25, 'help');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (26, 'guideline');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (27, 'file');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (28, 'geogebra');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (29, 'default');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (30, 'footer');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (31, 'top-center');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (32, 'top-left');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (33, 'top-right');
 
 COMMIT;
 
@@ -1779,6 +1879,77 @@ INSERT INTO `serlo`.`metadata_key` (`id`, `name`) VALUES (2, 'keywords');
 INSERT INTO `serlo`.`metadata_key` (`id`, `name`) VALUES (3, 'description');
 INSERT INTO `serlo`.`metadata_key` (`id`, `name`) VALUES (4, 'license');
 INSERT INTO `serlo`.`metadata_key` (`id`, `name`) VALUES (5, 'author');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`navigation`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`navigation` (`id`, `instance_id`, `type_id`) VALUES (1, 1, 29);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`navigation_entry`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (1, 1, NULL);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (2, 1, 1);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (3, 1, 1);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (4, 1, 1);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (5, 1, 4);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (6, 1, 5);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (7, 1, 5);
+INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (8, 1, 5);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`navigation_parameter_key`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (1, 'label');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (2, 'uri');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (3, 'route');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (4, 'icon');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (5, 'visible');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`navigation_parameter`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (1, 1, 1, NULL, 'Backend');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (2, 1, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (3, 2, 1, NULL, 'Home');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (4, 2, 3, NULL, 'backend');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (5, 2, 4, NULL, 'home');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (6, 3, 1, NULL, 'Pages');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (7, 3, 3, NULL, 'page');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (8, 3, 4, NULL, 'paperclip');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (9, 4, 1, NULL, 'Taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (10, 4, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (11, 4, 4, NULL, 'book');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (12, 5, 1, NULL, 'Manage taxonomies');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (13, 5, 3, NULL, 'taxonomy/term/organize-all');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (14, 6, 3, NULL, 'taxonomy/term/action');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (15, 6, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (16, 7, 3, NULL, 'taxonomy/term/create');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (17, 7, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (18, 8, 3, NULL, 'taxonomy/term/update');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (19, 8, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (20, 9, 3, NULL, 'taxonomy/term/sort-associated');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (21, 9, 5, NULL, 'false');
 
 COMMIT;
 
