@@ -71,9 +71,12 @@ class NavigationController extends AbstractActionController
 
     public function createContainerAction()
     {
+        $instance = $this->params('instance');
+        $this->assertGranted('navigation.manage', $this->instanceManager->getInstance($instance));
+
         $data = [
             'type'     => $this->params('type'),
-            'instance' => $this->params('instance')
+            'instance' => $instance
         ];
 
         $this->containerForm->setData($data);
@@ -90,8 +93,11 @@ class NavigationController extends AbstractActionController
 
     public function createPageAction()
     {
+        $container = $this->params('container');
+        $this->assertGranted('navigation.manage', $this->navigationManager->getContainer($container));
+
         $data = [
-            'container' => $this->params('container'),
+            'container' => $container,
             'parent'    => $this->params('parent', null)
         ];
 
@@ -109,6 +115,9 @@ class NavigationController extends AbstractActionController
 
     public function createParameterAction()
     {
+        $page = $this->params('page');
+        $this->assertGranted('navigation.manage', $this->navigationManager->getPage($page));
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $this->parameterForm->setData($data);
@@ -120,7 +129,7 @@ class NavigationController extends AbstractActionController
             }
         } else {
             $data = [
-                'page'   => $this->params('page'),
+                'page'   => $page,
                 'parent' => $this->params('parent', null)
             ];
             $this->parameterForm->setData($data);
@@ -135,6 +144,8 @@ class NavigationController extends AbstractActionController
 
     public function createParameterKeyAction()
     {
+        $this->assertGranted('navigation.manage', $this->instanceManager->getInstanceFromRequest());
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $this->parameterKeyForm->setData($data);
@@ -157,6 +168,8 @@ class NavigationController extends AbstractActionController
     public function getContainerAction()
     {
         $container = $this->navigationManager->getContainer($this->params('container'));
+        $this->assertGranted('navigation.manage', $container);
+
         $view      = new ViewModel([
             'container'    => $container,
             'positionForm' => $this->pageForm
@@ -170,6 +183,8 @@ class NavigationController extends AbstractActionController
     public function getPageAction()
     {
         $page = $this->navigationManager->getPage($this->params('page'));
+        $this->assertGranted('navigation.manage', $page);
+
         $view = new ViewModel(['page' => $page]);
 
         $view->setTemplate('navigation/page/get');
@@ -180,6 +195,8 @@ class NavigationController extends AbstractActionController
     public function indexAction()
     {
         $instance   = $this->instanceManager->getInstanceFromRequest();
+        $this->assertGranted('navigation.manage', $instance);
+
         $containers = $this->navigationManager->findContainersByInstance($instance);
         $view       = new ViewModel(['containers' => $containers]);
 
@@ -190,7 +207,10 @@ class NavigationController extends AbstractActionController
 
     public function removeContainerAction()
     {
-        $this->navigationManager->removeContainer($this->params('container'));
+        $container = $this->navigationManager->getContainer($this->params('container'));
+        $this->assertGranted('navigation.manage', $container);
+
+        $this->navigationManager->removeContainer($container->getId());
         $this->navigationManager->flush();
         $this->flashMessenger()->addSuccessMessage('The container was successfully removed');
 
@@ -199,7 +219,9 @@ class NavigationController extends AbstractActionController
 
     public function removePageAction()
     {
-        $this->navigationManager->removePage($this->params('page'));
+        $page = $this->navigationManager->getPage($this->params('page'));
+        $this->assertGranted('navigation.manage', $page);
+        $this->navigationManager->removePage($page->getId());
         $this->navigationManager->flush();
         $this->flashMessenger()->addSuccessMessage('The page was successfully removed');
 
@@ -208,7 +230,9 @@ class NavigationController extends AbstractActionController
 
     public function removeParameterAction()
     {
-        $this->navigationManager->removeParameter($this->params('parameter'));
+        $parameter = $this->navigationManager->getParameter($this->params('parameter'));
+        $this->assertGranted('navigation.manage', $parameter->getPage());
+        $this->navigationManager->removeParameter($parameter->getId());
         $this->navigationManager->flush();
         $this->flashMessenger()->addSuccessMessage('The parameter was successfully removed');
 
@@ -218,6 +242,7 @@ class NavigationController extends AbstractActionController
     public function updatePageAction()
     {
         $page = $this->navigationManager->getPage($this->params('page'));
+        $this->assertGranted('navigation.manage', $page);
         $this->pageForm->bind($page);
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -239,6 +264,7 @@ class NavigationController extends AbstractActionController
     public function updateParameterAction()
     {
         $parameter = $this->navigationManager->getParameter($this->params('parameter'));
+        $this->assertGranted('navigation.manage', $parameter->getPage());
         $this->parameterForm->bind($parameter);
 
         if ($this->getRequest()->isPost()) {

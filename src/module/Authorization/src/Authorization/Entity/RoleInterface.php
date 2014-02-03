@@ -33,7 +33,7 @@ interface RoleInterface extends HierarchicalRoleInterface
     public function getId();
 
     /**
-     * @return PermissionInterface[]
+     * @return ParametrizedPermissionInterface[]
      */
     public function getPermissions();
 

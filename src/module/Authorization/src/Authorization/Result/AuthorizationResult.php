@@ -10,6 +10,7 @@
  */
 namespace Authorization\Result;
 
+use Authorization\Service\AuthorizationService;
 use Rbac\Role\RoleInterface;
 use ZfcRbac\Identity\IdentityInterface;
 
@@ -29,6 +30,27 @@ class AuthorizationResult
      * @var RoleInterface[]
      */
     protected $roles = [];
+
+    /**
+     * @var AuthorizationService
+     */
+    protected $authorizationService;
+
+    /**
+     * @param AuthorizationService $authorizationService
+     */
+    public function setAuthorizationService(AuthorizationService $authorizationService)
+    {
+        $this->authorizationService = $authorizationService;
+    }
+
+    /**
+     * @return AuthorizationService
+     */
+    public function getAuthorizationService()
+    {
+        return $this->authorizationService;
+    }
 
     /**
      * @return null|IdentityInterface

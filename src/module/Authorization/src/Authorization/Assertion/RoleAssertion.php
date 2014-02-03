@@ -10,38 +10,70 @@
  */
 namespace Authorization\Assertion;
 
+use Authorization\Entity\RoleInterface;
+use Authorization\Exception\InvalidArgumentException;
 use Authorization\Exception\PermissionNotFoundException;
+use Authorization\Result\AuthorizationResult;
 use Authorization\Service\PermissionServiceAwareTrait;
 use Authorization\Service\PermissionServiceInterface;
 use Authorization\Service\RoleServiceAwareTrait;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
-use ZfcRbac\Assertion\AssertionInterface;
-use ZfcRbac\Service\AuthorizationService;
+use Rbac\Traversal\Strategy\TraversalStrategyInterface;
 
 class RoleAssertion implements AssertionInterface
 {
     use PermissionServiceAwareTrait, InstanceManagerAwareTrait;
 
+    /**
+     * @var TraversalStrategyInterface
+     */
+    protected $traversalStrategy;
+
     public function __construct(
         InstanceManagerInterface $instanceManager,
-        PermissionServiceInterface $permissionService
+        PermissionServiceInterface $permissionService,
+        TraversalStrategyInterface $traversalStrategy
     ) {
         $this->permissionService = $permissionService;
         $this->instanceManager   = $instanceManager;
+        $this->traversalStrategy = $traversalStrategy;
     }
 
-    public function assert(AuthorizationService $authorization, $role = null)
+    public function assert(AuthorizationResult $result, $role = null)
     {
-        $assertion = new RequestLanguageAssertion($this->getInstanceManager());
-        $checkName = 'authorization.role.' . $role->getName() . '.identity.modify';
+        if (!$role instanceof RoleInterface) {
+            throw new InvalidArgumentException;
+        }
+
+        $instanceManager   = $this->getInstanceManager();
+        $permissionService = $this->getPermissionService();
+        $assertion         = new InstanceAssertion($instanceManager, $permissionService, $this->traversalStrategy);
+        $checkPermission   = $result->getPermission() . '.1' . $role->getName();
+        $result            = clone $result;
+        $instancesToCheck  = [];
+        $rolesToCheck      = $assertion->flattenRoles([$role]);
+
+        foreach ($rolesToCheck as $roleToCheck) {
+            foreach ($roleToCheck->getPermissions() as $permission) {
+                $instancesToCheck[] = $permission->getParameter('instance');
+            }
+        }
 
         try {
-            $this->getPermissionService()->findPermissionByName($checkName);
-
-            return $authorization->isGranted($checkName) && $assertion->assert($authorization);
+            $this->getPermissionService()->findPermissionByName($checkPermission);
         } catch (PermissionNotFoundException $e) {
-            return $assertion->assert($authorization);
+            $checkPermission = $result->getPermission();
         }
+
+        $result->setPermission($checkPermission);
+
+        foreach ($instancesToCheck as $instance) {
+            if (!$assertion->assert($result, $instance)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

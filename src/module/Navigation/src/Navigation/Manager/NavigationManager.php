@@ -10,6 +10,8 @@
  */
 namespace Navigation\Manager;
 
+use Authorization\Service\AuthorizationAssertionTrait;
+use Authorization\Service\AuthorizationService;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,6 +31,8 @@ use Zend\Form\FormInterface;
 
 class NavigationManager implements NavigationManagerInterface
 {
+    use AuthorizationAssertionTrait;
+
     /**
      * @var ObjectManager
      */
@@ -71,15 +75,17 @@ class NavigationManager implements NavigationManagerInterface
     ];
 
     public function __construct(
+        AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
         InstanceManagerInterface $instanceManager,
         ObjectManager $objectManager,
         TypeManagerInterface $typeManager
     ) {
-        $this->objectManager   = $objectManager;
-        $this->typeManager     = $typeManager;
-        $this->instanceManager = $instanceManager;
-        $this->classResolver   = $classResolver;
+        $this->objectManager        = $objectManager;
+        $this->typeManager          = $typeManager;
+        $this->instanceManager      = $instanceManager;
+        $this->classResolver        = $classResolver;
+        $this->authorizationService = $authorizationService;
     }
 
     /**
@@ -144,6 +150,8 @@ class NavigationManager implements NavigationManagerInterface
      */
     public function findContainersByInstance(InstanceInterface $instance)
     {
+        $this->assertGranted('navigation.manage', $instance);
+
         $className  = $this->classResolver->resolveClassName($this->interfaces['container']);
         $repository = $this->objectManager->getRepository($className);
 
@@ -163,6 +171,8 @@ class NavigationManager implements NavigationManagerInterface
      */
     public function findContainerByNameAndInstance($name, InstanceInterface $instance)
     {
+        $this->assertGranted('navigation.manage', $instance);
+
         $className  = $this->classResolver->resolveClassName($this->interfaces['container']);
         $repository = $this->objectManager->getRepository($className);
         $type       = $this->typeManager->findTypeByName($name);
@@ -194,6 +204,8 @@ class NavigationManager implements NavigationManagerInterface
             throw new ContainerNotFoundException(sprintf("Container %s not found", $id));
         }
 
+        $this->assertGranted('navigation.manage', $container);
+
         return $container;
     }
 
@@ -205,13 +217,14 @@ class NavigationManager implements NavigationManagerInterface
     public function getPage($id)
     {
         $className = $this->classResolver->resolveClassName($this->interfaces['page']);
-        $container = $this->objectManager->find($className, $id);
+        $page = $this->objectManager->find($className, $id);
 
-        if (!is_object($container)) {
+        if (!is_object($page)) {
             throw new PageNotFoundException(sprintf("Container %s not found", $id));
         }
+        $this->assertGranted('navigation.manage', $page);
 
-        return $container;
+        return $page;
     }
 
     /**
@@ -222,13 +235,15 @@ class NavigationManager implements NavigationManagerInterface
     public function getParameter($id)
     {
         $className = $this->classResolver->resolveClassName($this->interfaces['parameter']);
-        $container = $this->objectManager->find($className, $id);
+        $parameter = $this->objectManager->find($className, $id);
 
-        if (!is_object($container)) {
+        if (!is_object($parameter)) {
             throw new ParameterNotFoundException(sprintf("Container %s not found", $id));
         }
 
-        return $container;
+        $this->assertGranted('navigation.manage', $parameter);
+
+        return $parameter;
     }
 
     /**
@@ -237,7 +252,6 @@ class NavigationManager implements NavigationManagerInterface
     public function getParameterKeys()
     {
         $className = $this->classResolver->resolveClassName($this->interfaces['key']);
-
         return $this->objectManager->getRepository($className)->findAll();
     }
 
@@ -266,6 +280,8 @@ class NavigationManager implements NavigationManagerInterface
     public function removeContainer($id)
     {
         $container = $this->getContainer($id);
+
+        $this->assertGranted('navigation.manage', $container);
         $this->objectManager->remove($container);
     }
 
@@ -276,6 +292,8 @@ class NavigationManager implements NavigationManagerInterface
     public function removePage($id)
     {
         $page = $this->getPage($id);
+
+        $this->assertGranted('navigation.manage', $page);
         $this->objectManager->remove($page);
     }
 
@@ -286,6 +304,8 @@ class NavigationManager implements NavigationManagerInterface
     public function removeParameter($id)
     {
         $parameter = $this->getParameter($id);
+
+        $this->assertGranted('navigation.manage', $parameter);
         $this->objectManager->remove($parameter);
     }
 
@@ -297,6 +317,8 @@ class NavigationManager implements NavigationManagerInterface
     public function updatePage(FormInterface $form)
     {
         $object = $form->getObject();
+
+        $this->assertGranted('navigation.manage', $object);
 
         if (!$form->isValid()) {
             throw new RuntimeException;
@@ -313,6 +335,8 @@ class NavigationManager implements NavigationManagerInterface
     public function updateParameter(FormInterface $form)
     {
         $object = $form->getObject();
+
+        $this->assertGranted('navigation.manage', $object);
 
         if (!$form->isValid()) {
             throw new RuntimeException;
@@ -336,6 +360,14 @@ class NavigationManager implements NavigationManagerInterface
         if (!$form->isValid()) {
             throw new RuntimeException;
         }
+
+        if ($object instanceof ParameterKeyInterface) {
+            $instance = $this->instanceManager->getInstanceFromRequest();
+        } else {
+            $instance = $object;
+        }
+
+        $this->assertGranted('navigation.manage', $instance);
 
         $this->objectManager->persist($object);
 

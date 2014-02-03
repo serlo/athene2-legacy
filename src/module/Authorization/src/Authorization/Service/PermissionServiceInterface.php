@@ -32,7 +32,7 @@ interface PermissionServiceInterface
      * @param mixed  $parameterValue
      * @return PermissionInterface
      */
-    public function findPermissionByNameAndParameter($name, $parameterKey, $parameterValue);
+    public function findParametrizedPermissionByNameAndParameter($name, $parameterKey, $parameterValue);
 
     /**
      * @param int $id

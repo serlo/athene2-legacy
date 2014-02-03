@@ -27,6 +27,9 @@ return [
             ]
         ]
     ],
+    'assertion_map'   => [
+        'navigation.manage' => 'Authorization\Assertion\InstanceAssertion',
+    ],
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Manager\NavigationManager' => __NAMESPACE__ . '\Factory\NavigationManagerFactory',
@@ -160,7 +163,7 @@ return [
                             'route' => '/parameter',
                         ],
                         'child_routes' => [
-                            'create'    => [
+                            'create' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route'    => '/create/:page[/:parent]',
@@ -169,7 +172,7 @@ return [
                                     ]
                                 ]
                             ],
-                            'remove'    => [
+                            'remove' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route'    => '/remove/:parameter',
@@ -178,7 +181,7 @@ return [
                                     ]
                                 ]
                             ],
-                            'update'    => [
+                            'update' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route'    => '/update/:parameter',
@@ -187,7 +190,7 @@ return [
                                     ]
                                 ]
                             ],
-                            'key' => [
+                            'key'    => [
                                 'type'         => 'Zend\Mvc\Router\Http\Segment',
                                 'options'      => [
                                     'route' => '/key',

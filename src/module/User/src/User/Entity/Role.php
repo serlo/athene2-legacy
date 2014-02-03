@@ -87,8 +87,8 @@ class Role implements RoleInterface
     {
         /* @var $instancePermission ParametrizedPermissionInterface */
         foreach ($this->getPermissions() as $instancePermission) {
-            if (is_numeric($permission)) {
-                if ($instancePermission->getId() == $permission) {
+            if ($permission instanceof ParametrizedPermissionInterface) {
+                if ($instancePermission === $permission) {
                     return true;
                 }
             } else {

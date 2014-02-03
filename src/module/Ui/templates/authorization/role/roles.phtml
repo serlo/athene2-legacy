@@ -22,4 +22,10 @@
             <p class="list-group-item-text"><?php echo $role->getDescription(); ?></p>
         </a>
     <?php endforeach; ?>
+    <li class="list-group-item">
+        <a class="btn btn-success" href="<?php echo $this->url('authorization/role/create'); ?>">
+            <span class="glyphicon glyphicon-plus"></span>
+            <?php echo $this->translate('role'); ?>
+        </a>
+    </li>
 </div>

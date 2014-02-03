@@ -8,9 +8,12 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Authorization\Assertion;
+namespace Authorization\Form;
 
-class TenantAssertion {
+use Zend\Form\Form;
 
+class RoleForm extends Form
+{
+    
 }
  

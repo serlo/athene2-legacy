@@ -11,6 +11,7 @@
 namespace Navigation\Factory;
 
 use ClassResolver\ClassResolverFactoryTrait;
+use Common\Factory\AuthorizationServiceFactoryTrait;
 use Common\Factory\EntityManagerFactoryTrait;
 use Instance\Factory\InstanceManagerFactoryTrait;
 use Navigation\Manager\NavigationManager;
@@ -22,6 +23,7 @@ class NavigationManagerFactory implements FactoryInterface
 {
     use ClassResolverFactoryTrait, EntityManagerFactoryTrait;
     use InstanceManagerFactoryTrait, TypeManagerFactoryTrait;
+    use AuthorizationServiceFactoryTrait;
 
     /**
      * Create service
@@ -31,11 +33,12 @@ class NavigationManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $classResolver   = $this->getClassResolver($serviceLocator);
-        $entityManager   = $this->getEntityManager($serviceLocator);
-        $instanceManager = $this->getInstanceManager($serviceLocator);
-        $typeManager     = $this->getTypeManager($serviceLocator);
-        $instance        = new NavigationManager($classResolver, $instanceManager, $entityManager, $typeManager);
+        $authorizationService = $this->getAuthorizationService($serviceLocator);
+        $classResolver        = $this->getClassResolver($serviceLocator);
+        $entityManager        = $this->getEntityManager($serviceLocator);
+        $instanceManager      = $this->getInstanceManager($serviceLocator);
+        $typeManager          = $this->getTypeManager($serviceLocator);
+        $instance             = new NavigationManager($authorizationService, $classResolver, $instanceManager, $entityManager, $typeManager);
 
         return $instance;
     }

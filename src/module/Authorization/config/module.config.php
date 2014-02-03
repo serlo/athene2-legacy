@@ -19,19 +19,21 @@ return [
         ],
         'assertion_manager' => [
             'factories' => [
-                'Authorization\Assertion\RoleAssertion' => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
-                //'Authorization\Assertion\RequestTenantAssertion' => __NAMESPACE__ . '\Factory\RequestTenantAssertionFactory',
+                'Authorization\Assertion\RoleAssertion'     => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
+                'Authorization\Assertion\InstanceAssertion' => __NAMESPACE__ . '\Factory\InstanceAssertionFactory',
             ]
         ],
         'assertion_map'     => [
-            //'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion',
+            'authorization.identity.grant.role' => 'Authorization\Assertion\RoleAssertion',
+            'authorization.identity.revoke.role' => 'Authorization\Assertion\RoleAssertion',
         ]
     ],
     'service_manager'    => [
         'factories' => [
-            'Authorization\Service\RoleService'       => __NAMESPACE__ . '\Factory\RoleServiceFactory',
-            'Authorization\Service\PermissionService' => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
-            'ZfcRbac\Service\AuthorizationService'    => __NAMESPACE__ . '\Factory\AuthorizationServiceFactory',
+            'Authorization\Service\RoleService'        => __NAMESPACE__ . '\Factory\RoleServiceFactory',
+            'Authorization\Service\PermissionService'  => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
+            'ZfcRbac\Service\AuthorizationService'     => __NAMESPACE__ . '\Factory\AuthorizationServiceFactory',
+            'ZfcRbac\Assertion\AssertionPluginManager' => __NAMESPACE__ . '\Factory\AssertionPluginManagerFactory',
         ]
     ],
     'controller_plugins' => [
@@ -89,6 +91,15 @@ return [
                                     'route'    => '/show/:role',
                                     'defaults' => [
                                         'action' => 'show'
+                                    ]
+                                ]
+                            ],
+                            'create'       => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/create',
+                                    'defaults' => [
+                                        'action' => 'create'
                                     ]
                                 ]
                             ],

@@ -1432,14 +1432,14 @@ START TRANSACTION;
 USE `serlo`;
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (1, 'guest', 2, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (2, 'login', 3, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (3, 'reviewer', 4, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (4, 'helper', 5, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (5, 'admin', 7, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (6, 'horizonhelper', NULL, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (7, 'moderator', 8, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (8, 'ambassador', 9, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (9, 'langhelper', 10, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (10, 'langadmin', 11, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (3, 'german_reviewer', 4, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (4, 'german_helper', 5, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (5, 'german_admin', 7, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (6, 'german_horizonhelper', NULL, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (7, 'german_moderator', 8, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (8, 'german_ambassador', 9, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (9, 'german_langhelper', 10, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (10, 'german_langadmin', 11, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (11, 'sysadmin', NULL, NULL);
 
 COMMIT;
@@ -1604,10 +1604,10 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.context.re
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.context.add');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (10, 'contexter.route.add');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (11, 'login');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (12, 'authorization.role.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (13, 'authorization.role.sysadmin.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.role.german.identity.modify');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.role.english.identity.modify');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (12, 'authorization.identity.grant.role');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (13, 'authorization.identity.revoke.role');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.identity.grant.role.sysadmin');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.identity.revoke.role.sysadmin');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.permission.add');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.permission.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (18, 'contexter.context.manage');
@@ -1776,6 +1776,8 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (87, 87, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (88, 88, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (15, 15, 1);
 
 COMMIT;
 
@@ -1795,7 +1797,7 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 9
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 10);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 11);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 12);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 13);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 13);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 16);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 17);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 18);
@@ -1870,6 +1872,8 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 8
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 87);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 88);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 89);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 14);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 15);
 
 COMMIT;
 

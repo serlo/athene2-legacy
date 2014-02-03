@@ -10,19 +10,19 @@
  */
 namespace Authorization\Factory;
 
-use Authorization\Assertion\RequestTenantAssertion;
+use Authorization\Assertion\InstanceAssertion;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class RequestLanguageAssertionFactory implements FactoryInterface
+class InstanceAssertionFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instanceManager = $serviceLocator->getServiceLocator()->get('Instance\Manager\InstanceManager');
-        $instance        = new RequestLanguageAssertion($instanceManager);
+        $serviceLocator    = $serviceLocator->getServiceLocator();
+        $instanceManager   = $serviceLocator->get('Instance\Manager\InstanceManager');
+        $permissionService = $serviceLocator->get('Authorization\Service\PermissionService');
+        $instance          = new InstanceAssertion($instanceManager, $permissionService);
 
         return $instance;
     }
 }
-
- 

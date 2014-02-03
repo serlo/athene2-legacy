@@ -10,33 +10,12 @@
  */
 namespace Authorization\Service;
 
+use Authorization\Assertion\AssertionInterface;
 use Authorization\Result\AuthorizationResult;
-use Rbac\Rbac;
-use ZfcRbac\Assertion\AssertionPluginManager;
 use ZfcRbac\Exception;
-use ZfcRbac\Service\RoleService;
 
 class AuthorizationService extends \ZfcRbac\Service\AuthorizationService
 {
-    /**
-     * @var AuthorizationResult
-     */
-    protected $authorizationResult;
-
-    public function __construct(Rbac $rbac, RoleService $roleService, AssertionPluginManager $assertionPluginManager)
-    {
-        parent::__construct($rbac, $roleService, $assertionPluginManager);
-        $this->authorizationResult = new AuthorizationResult();
-    }
-
-    /**
-     * @return AuthorizationResult
-     */
-    public function getAuthorizationResult()
-    {
-        return $this->authorizationResult;
-    }
-
     /**
      * @param \Rbac\Permission\PermissionInterface|string $permission
      * @param null                                        $context
@@ -46,7 +25,7 @@ class AuthorizationService extends \ZfcRbac\Service\AuthorizationService
     {
         $roles = $this->roleService->getIdentityRoles();
 
-        $this->updateResult($permission, $roles);
+        $result = $this->createResult($permission, $roles);
 
         if (empty($roles)) {
             return false;
@@ -57,10 +36,35 @@ class AuthorizationService extends \ZfcRbac\Service\AuthorizationService
         }
 
         if ($this->hasAssertion($permission)) {
-            return $this->assert($this->assertions[$permission], $context);
+            return $this->assertStrategy($this->assertions[$permission], $result, $context);
         }
 
         return true;
+    }
+
+    /**
+     * @param  string|callable|AssertionInterface $assertion
+     * @param  mixed                              $context
+     * @param  AuthorizationResult                $result
+     * @return bool
+     * @throws Exception\InvalidArgumentException If an invalid assertion is passed
+     */
+    protected function assertStrategy($assertion, AuthorizationResult $result, $context = null)
+    {
+        if (is_callable($assertion)) {
+            return $assertion($result, $context);
+        } elseif ($assertion instanceof AssertionInterface) {
+            return $assertion->assert($result, $context);
+        } elseif (is_string($assertion)) {
+            $assertion = $this->assertionPluginManager->get($assertion);
+
+            return $assertion->assert($result, $context);
+        }
+
+        throw new Exception\InvalidArgumentException(sprintf(
+            'Assertion must be callable, string or implement Authorization\Assertion\AssertionInterface, "%s" given',
+            is_object($assertion) ? get_class($assertion) : gettype($assertion)
+        ));
     }
 
     /**
@@ -68,12 +72,14 @@ class AuthorizationService extends \ZfcRbac\Service\AuthorizationService
      * @param array  $roles
      * @return void
      */
-    protected function updateResult($permission, $roles)
+    protected function createResult($permission, $roles)
     {
-        $this->authorizationResult->setPermission($permission);
-        $this->authorizationResult->setIdentity($this->getIdentity());
-        $this->authorizationResult->setRoles($roles);
+        $result = new AuthorizationResult();
+        $result->setPermission($permission);
+        $result->setIdentity($this->getIdentity());
+        $result->setRoles($roles);
+        $result->setAuthorizationService($this);
+
+        return $result;
     }
 }
-
- 
