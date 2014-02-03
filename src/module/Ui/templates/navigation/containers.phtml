@@ -1,0 +1,11 @@
+<?php echo $this->pageHeader('Manage navigation')->render(); ?>
+<ul>
+    <?php /* @var $container \Navigation\Entity\ContainerInterface */ ?>
+    <?php foreach ($this->containers as $container): ?>
+        <li>
+            <a href="<?php echo $this->url('navigation/container/get', ['container' => $container->getId()]); ?>">
+                <?php echo $container->getType()->getName(); ?>
+            </a>
+        </li>
+    <?php endforeach ?>
+</ul>

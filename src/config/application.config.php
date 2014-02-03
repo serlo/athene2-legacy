@@ -43,6 +43,7 @@ return array(
         'Attachment',
         'RelatedContent',
         'Contexter',
+        'Navigation',
         'Flag',
         'Search',
         'Metadata',

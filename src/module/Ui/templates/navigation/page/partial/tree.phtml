@@ -1,0 +1,54 @@
+<?php /* @var $pages \Navigation\Entity\PageInterface[] */ ?>
+<?php $pages = $this->pages; ?>
+<?php /* @var $positionForm \Navigation\Form\PositionPageForm */ ?>
+<?php $positionForm = $this->positionForm; ?>
+<ol>
+    <?php foreach ($pages as $page): ?>
+        <li class="row-fluid">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <?php $positionForm->bind($page); ?>
+                    <?php $positionForm->setAttribute('action', $this->url('navigation/page/update', ['page' => $page->getId()])); ?>
+                    <?php $positionForm->prepare(); ?>
+                    <?php echo $this->form()->render($positionForm, 'inline'); ?>
+                </li>
+                <?php foreach ($page->getParameters() as $parameter): ?>
+                    <li class="list-group-item">
+                        <div class="btn-group pull-right">
+                            <a class="btn btn-xs btn-default" href=""><span class="glyphicon glyphicon-plus"></span></a>
+                            <a class="btn btn-xs btn-default"
+                               href="<?php echo $this->url('navigation/parameter/update', ['parameter' => $parameter->getId()]); ?>">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                            <a class="btn btn-xs btn-danger"
+                               href="<?php echo $this->url('navigation/parameter/remove', ['parameter' => $parameter->getId()]); ?>">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </div>
+                        <?php echo $parameter->getKey(); ?>:
+                        <?php echo $parameter->getValue(); ?>
+                    </li>
+                <?php endforeach; ?>
+                <li class="list-group-item">
+                    <div class="btn-group">
+                        <a class="btn btn-xs btn-default" href="<?php echo $this->url('navigation/parameter/create', ['page' => $page->getId()]); ?>">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <?php echo $this->translate('parameter'); ?>
+                        </a>
+                        <a class="btn btn-xs btn-default"
+                           href="<?php echo $this->url('navigation/page/create', ['container' => $page->getContainer()->getId(), 'parent' => $page->getId()]); ?>">
+                            <span class="glyphicon glyphicon-plus"></span> <?php echo $this->translate('page'); ?>
+                        </a>
+                        <a class="btn btn-xs btn-danger"
+                           href="<?php echo $this->url('navigation/page/remove', ['page' => $page->getId()]); ?>">
+                            <span class="glyphicon glyphicon-trash"></span> <?php echo $this->translate('page'); ?>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <?php if ($page->hasChildren()): ?>
+                <?php echo $this->partial('navigation/page/partial/tree', ['pages' => $page->getChildren(), 'positionForm' => $positionForm]); ?>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ol>

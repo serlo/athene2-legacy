@@ -12,30 +12,47 @@ namespace Navigation\Form;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as ObjectHydrator;
+use Navigation\Manager\NavigationManagerInterface;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class PageForm extends Form
+class ParameterForm extends Form
 {
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, NavigationManagerInterface $navigationManager)
     {
-        parent::__construct('pageForm');
+        parent::__construct('parameter');
 
-        $filter   = new InputFilter();
         $hydrator = new ObjectHydrator($entityManager);
+        $filter   = new InputFilter();
+        $types    = [];
+
+        foreach ($navigationManager->getParameterKeys() as $type) {
+            $types[$type->getId()] = $type->getName();
+        }
 
         $this->setHydrator($hydrator);
         $this->setInputFilter($filter);
 
         $this->add(
+            (new Select('key'))->setLabel('Key:')->setOptions(
+                array(
+                    'value_options' => $types
+                )
+            )
+        );
+
+        $this->add((new Text('value'))->setLabel('Value:'));
+
+        $this->add(
             array(
                 'type'    => 'Common\Form\Element\ObjectHidden',
-                'name'    => 'container',
+                'name'    => 'page',
                 'options' => array(
                     'object_manager' => $entityManager,
-                    'target_class'   => 'Navigation\Entity\Container'
+                    'target_class'   => 'Navigation\Entity\Page'
                 )
             )
         );
@@ -45,33 +62,25 @@ class PageForm extends Form
                 'name'    => 'parent',
                 'options' => array(
                     'object_manager' => $entityManager,
-                    'target_class'   => 'Navigation\Entity\Page'
+                    'target_class'   => 'Navigation\Entity\Parameter'
                 )
             )
         );
-        $this->add((new Text('position'))->setLabel('Position'));
 
         $this->add(
-            (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-default')
+            (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')
         );
 
         $filter->add(
             [
-                'name'     => 'container',
-                'required' => true,
-                'filters'  => [
-                    ['name' => 'Int'],
-                ],
+                'name'     => 'page',
+                'required' => true
             ]
         );
-
         $filter->add(
             [
-                'name'    => 'position',
-                'required' => false,
-                'filters' => [
-                    ['name' => 'Int'],
-                ],
+                'name'     => 'value',
+                'required' => true
             ]
         );
     }

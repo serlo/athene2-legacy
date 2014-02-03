@@ -16,7 +16,7 @@ interface ParameterInterface
      * @param ParameterInterface $child
      * @return void
      */
-    public function addChild(self $child);
+    public function addChild(ParameterInterface $child);
 
     /**
      * @return self[]
@@ -39,7 +39,7 @@ interface ParameterInterface
     public function getPage();
 
     /**
-     * @return string|array
+     * @return string
      */
     public function getValue();
 
@@ -52,7 +52,7 @@ interface ParameterInterface
      * @param ParameterInterface $child
      * @return void
      */
-    public function removeChild(self $child);
+    public function removeChild(ParameterInterface $child);
 
     /**
      * @param ParameterKeyInterface $key
@@ -65,4 +65,10 @@ interface ParameterInterface
      * @return void
      */
     public function setPage(PageInterface $page);
+
+    /**
+     * @param string $value
+     * @return void
+     */
+    public function setValue($value);
 }

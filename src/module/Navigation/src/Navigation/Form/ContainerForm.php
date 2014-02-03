@@ -12,52 +12,33 @@ namespace Navigation\Form;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as ObjectHydrator;
+use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class PageForm extends Form
+class ContainerForm extends Form
 {
     public function __construct(EntityManager $entityManager)
     {
-        parent::__construct('pageForm');
+        parent::__construct('container');
 
-        $filter   = new InputFilter();
         $hydrator = new ObjectHydrator($entityManager);
+        $filter   = new InputFilter();
 
         $this->setHydrator($hydrator);
         $this->setInputFilter($filter);
 
-        $this->add(
-            array(
-                'type'    => 'Common\Form\Element\ObjectHidden',
-                'name'    => 'container',
-                'options' => array(
-                    'object_manager' => $entityManager,
-                    'target_class'   => 'Navigation\Entity\Container'
-                )
-            )
-        );
-        $this->add(
-            array(
-                'type'    => 'Common\Form\Element\ObjectHidden',
-                'name'    => 'parent',
-                'options' => array(
-                    'object_manager' => $entityManager,
-                    'target_class'   => 'Navigation\Entity\Page'
-                )
-            )
-        );
-        $this->add((new Text('position'))->setLabel('Position'));
+        $this->add((new Hidden('type')));
+        $this->add((new Hidden('instance')));
 
         $this->add(
-            (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-default')
+            (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')
         );
 
         $filter->add(
             [
-                'name'     => 'container',
+                'name'     => 'type',
                 'required' => true,
                 'filters'  => [
                     ['name' => 'Int'],
@@ -67,9 +48,9 @@ class PageForm extends Form
 
         $filter->add(
             [
-                'name'    => 'position',
-                'required' => false,
-                'filters' => [
+                'name'     => 'instance',
+                'required' => true,
+                'filters'  => [
                     ['name' => 'Int'],
                 ],
             ]

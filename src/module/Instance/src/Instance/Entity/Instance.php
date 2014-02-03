@@ -51,6 +51,11 @@ class Instance implements InstanceInterface
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @return string
      */

@@ -14,27 +14,23 @@ interface InstanceInterface
 {
 
     /**
-     * Gets the id
-     *
      * @return int $id
      */
     public function getId();
 
     /**
-     * Returns the code.
-     * <code>
-     * echo $instance->getCode(); // prints: 'de'
-     * </code>
-     *
-     * @return string $code
+     * @return string
      */
     public function getName();
 
     /**
-     * Sets the code
-     *
-     * @param field_type $name
-     * @return self
+     * @param string $name
+     * @return void
      */
     public function setName($name);
+
+    /**
+     * @return string
+     */
+    public function __toString();
 }

@@ -14,7 +14,7 @@ use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use Subject\Manager\SubjectManagerAwareTrait;
 use Subject\Manager\SubjectManagerInterface;
-use Ui\Navigation\NavigationHydrator;
+use Ui\Hydrator\NavigationHydrator;
 use Zend\Stdlib\ArrayUtils;
 
 class Navigation implements NavigationHydrator

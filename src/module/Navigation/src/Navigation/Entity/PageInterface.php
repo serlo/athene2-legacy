@@ -13,15 +13,10 @@ namespace Navigation\Entity;
 interface PageInterface
 {
     /**
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * @param self $page
+     * @param PageInterface $page
      * @return void
      */
-    public function addChild(self $page);
+    public function addChild(PageInterface $page);
 
     /**
      * @param ParameterInterface $parameter
@@ -40,6 +35,11 @@ interface PageInterface
     public function getContainer();
 
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return ParameterInterface[]
      */
     public function getParameters();
@@ -50,10 +50,20 @@ interface PageInterface
     public function getParent();
 
     /**
-     * @param self $page
+     * @return int
+     */
+    public function getPosition();
+
+    /**
+     * @return bool
+     */
+    public function hasChildren();
+
+    /**
+     * @param PageInterface $page
      * @return void
      */
-    public function removeChild(self $page);
+    public function removeChild(PageInterface $page);
 
     /**
      * @param ParameterInterface $parameter
@@ -68,8 +78,14 @@ interface PageInterface
     public function setContainer(ContainerInterface $container);
 
     /**
-     * @param self $page
+     * @param PageInterface $page
      * @return PageInterface
      */
-    public function setParent(self $page);
+    public function setParent(PageInterface $page);
+
+    /**
+     * @param $position
+     * @return void
+     */
+    public function setPosition($position);
 }

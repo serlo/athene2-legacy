@@ -10,6 +10,7 @@
  */
 namespace Navigation\Manager;
 
+use Common\ObjectManager\Flushable;
 use Instance\Entity\InstanceInterface;
 use Navigation\Entity\ContainerInterface;
 use Navigation\Entity\PageInterface;
@@ -19,14 +20,13 @@ use Navigation\Exception\ContainerNotFoundException;
 use Type\Entity\TypeInterface;
 use Zend\Form\FormInterface;
 
-interface NavigationManagerInterface
+interface NavigationManagerInterface extends Flushable
 {
     /**
-     * @param int           $id
      * @param FormInterface $form
      * @return ContainerInterface
      */
-    public function createContainer($id, FormInterface $form);
+    public function createContainer(FormInterface $form);
 
     /**
      * @param FormInterface $form
@@ -49,27 +49,37 @@ interface NavigationManagerInterface
     /**
      * @param string            $name
      * @param InstanceInterface $instance
-     * @throws ContainerNotFoundException
      * @return ContainerInterface
+     * @throws ContainerNotFoundException
      */
     public function findContainerByNameAndInstance($name, InstanceInterface $instance);
+
+    /**
+     * @param InstanceInterface $instance
+     * @return ContainerInterface[]
+     * @throws ContainerNotFoundException
+     */
+    public function findContainersByInstance(InstanceInterface $instance);
 
     /**
      * @param int $id
      * @throws ContainerNotFoundException
      * @return ContainerInterface
+     * @throws ContainerNotFoundException
      */
     public function getContainer($id);
 
     /**
      * @param int $id
      * @return PageInterface
+     * @throws PageNotFoundException
      */
     public function getPage($id);
 
     /**
      * @param int $id
      * @return ParameterInterface
+     * @throws ParameterNotFoundException
      */
     public function getParameter($id);
 
@@ -85,8 +95,8 @@ interface NavigationManagerInterface
 
     /**
      * @param int $id
-     * @throws ContainerNotFoundException
      * @return void
+     * @throws ContainerNotFoundException
      */
     public function removeContainer($id);
 
@@ -103,17 +113,15 @@ interface NavigationManagerInterface
     public function removeParameter($id);
 
     /**
-     * @param int           $id
      * @param FormInterface $form
      * @return void
      */
-    public function updatePage($id, FormInterface $form);
+    public function updatePage(FormInterface $form);
 
     /**
-     * @param int           $id
      * @param FormInterface $form
      * @return void
      */
-    public function updateParameter($id, FormInterface $form);
+    public function updateParameter(FormInterface $form);
 }
  
