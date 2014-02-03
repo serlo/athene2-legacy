@@ -48,16 +48,9 @@ DROP TABLE IF EXISTS `serlo`.`role` ;
 CREATE TABLE IF NOT EXISTS `serlo`.`role` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(32) NOT NULL,
-  `parent_id` INT(11) NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uniq_name` (`name` ASC),
-  INDEX `fk_role_role1_idx` (`parent_id` ASC),
-  CONSTRAINT `fk_role_role1`
-    FOREIGN KEY (`parent_id`)
-    REFERENCES `serlo`.`role` (`id`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE)
+  UNIQUE INDEX `uniq_name` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -1404,6 +1397,30 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`role_inheritance`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`role_inheritance` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`role_inheritance` (
+  `role_id` INT(11) NOT NULL,
+  `child_id` INT(11) NOT NULL,
+  PRIMARY KEY (`role_id`, `child_id`),
+  INDEX `fk_role_has_role_role2_idx` (`child_id` ASC),
+  INDEX `fk_role_has_role_role1_idx` (`role_id` ASC),
+  CONSTRAINT `fk_role_has_role_role1`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `serlo`.`role` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_role_has_role_role2`
+    FOREIGN KEY (`child_id`)
+    REFERENCES `serlo`.`role` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Data for table `serlo`.`language`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1430,17 +1447,17 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (1, 'guest', 2, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (2, 'login', 3, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (3, 'german_reviewer', 4, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (4, 'german_helper', 5, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (5, 'german_admin', 7, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (6, 'german_horizonhelper', NULL, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (7, 'german_moderator', 8, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (8, 'german_ambassador', 9, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (9, 'german_langhelper', 10, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (10, 'german_langadmin', 11, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (11, 'sysadmin', NULL, NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (1, 'guest', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (2, 'login', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (3, 'german_reviewer', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (4, 'german_helper', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (5, 'german_admin', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (6, 'german_horizonhelper', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (7, 'german_moderator', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (8, 'german_ambassador', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (9, 'german_langhelper', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (10, 'german_langadmin', NULL);
+INSERT INTO `serlo`.`role` (`id`, `name`, `description`) VALUES (11, 'sysadmin', NULL);
 
 COMMIT;
 
@@ -1608,8 +1625,8 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (12, 'authorization.ident
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (13, 'authorization.identity.revoke.role');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (14, 'authorization.identity.grant.role.sysadmin');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.identity.revoke.role.sysadmin');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.permission.add');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.permission.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.role.grant.permission');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.role.revoke.permission');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (18, 'contexter.context.manage');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (19, 'blog.posts.view_all');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (20, 'discussion.create');
@@ -1682,6 +1699,8 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (86, 'navigation.manage')
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (87, 'entity.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (88, 'uuid.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (89, 'entity.revision.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (90, 'authorization.role.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (91, 'authorization.role.remove');
 
 COMMIT;
 
@@ -1959,6 +1978,24 @@ INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_i
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (19, 8, 5, NULL, 'false');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (20, 9, 3, NULL, 'taxonomy/term/sort-associated');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (21, 9, 5, NULL, 'false');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`role_inheritance`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (2, 1);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (3, 2);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (4, 3);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (5, 4);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (7, 5);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (8, 7);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (9, 8);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (10, 9);
+INSERT INTO `serlo`.`role_inheritance` (`role_id`, `child_id`) VALUES (11, 10);
 
 COMMIT;
 

@@ -16,6 +16,12 @@ use User\Entity\UserInterface;
 interface RoleInterface extends HierarchicalRoleInterface
 {
     /**
+     * @param RoleInterface $child
+     * @return mixed
+     */
+    public function addChild(RoleInterface $child);
+
+    /**
      * @param ParametrizedPermissionInterface $permission
      * @return mixed
      */
@@ -41,6 +47,12 @@ interface RoleInterface extends HierarchicalRoleInterface
      * @return UserInterface[]
      */
     public function getUsers();
+
+    /**
+     * @param RoleInterface $child
+     * @return mixed
+     */
+    public function removeChild(RoleInterface $child);
 
     /**
      * @param ParametrizedPermissionInterface $permission

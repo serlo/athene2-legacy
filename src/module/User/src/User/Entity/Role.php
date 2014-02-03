@@ -51,15 +51,18 @@ class Role implements RoleInterface
     protected $permissions;
 
     /**
-     * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="parents")
+     * @ORM\JoinTable(name="role_inheritance",
+     *      joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="child_id", referencedColumnName="id")}
+     * )
      */
     protected $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Role", mappedBy="children")
      */
-    protected $parent;
+    protected $parents;
 
     public function __construct()
     {
@@ -75,7 +78,7 @@ class Role implements RoleInterface
 
     public function addChild(RoleInterface $child)
     {
-        $this->children[$child->getName()] = $child;
+        $this->children->add($child);
     }
 
     public function addPermission(ParametrizedPermissionInterface $permission)
@@ -159,5 +162,10 @@ class Role implements RoleInterface
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    public function removeChild(RoleInterface $child)
+    {
+        $this->children->removeElement($child);
     }
 }
