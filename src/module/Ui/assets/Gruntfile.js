@@ -15,7 +15,8 @@ module.exports = function (grunt) {
     // configurable paths
     var config = {
         app: 'source',
-        dist: 'build'
+        dist: 'build',
+        tmp: 'tmp'
     };
 
     grunt.initConfig({
@@ -23,30 +24,39 @@ module.exports = function (grunt) {
         watch: {
             compass: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['compass:server', 'autoprefixer', 'concurrent:dist']
             },
             styles: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.css'],
-                tasks: ['copy:styles', 'autoprefixer']
+                tasks: ['copy:styles', 'autoprefixer', 'concurrent:dist']
             },
             jsLang: {
                 files: ['<%= serlo.app %>/lang/*'],
-                tasks: ['i18n']
+                tasks: ['i18n', 'concurrent:dist']
             },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
-                tasks: ['jshint', 'copy:requirejs', 'requirejs:production']
+                tasks: ['jshint', 'copy:requirejs', 'requirejs:production', 'concurrent:dist']
             },
             images: {
                 files: ['<%= serlo.app %>/images/{,*/}*.{png,jpg,jpeg}'],
-                tasks: ['imagemin']
+                tasks: ['imagemin', 'concurrent:dist']
             },
             fonts: {
                 files: ['<%= serlo.app %>/styles/fonts/*'],
-                tasks: ['copy:dist']
+                tasks: ['copy:tmp', 'concurrent:dist']
             }
         },
         clean: {
+            tmp: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= serlo.tmp %>/*',
+                        '!<%= serlo.tmp %>/.git*'
+                    ]
+                }]
+            },
             dist: {
                 files: [{
                     dot: true,
@@ -56,7 +66,7 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '<%= serlo.dist %>'
+            server: '<%= serlo.tmp %>'
         },
         jshint: {
             options: {
@@ -74,8 +84,8 @@ module.exports = function (grunt) {
         compass: {
             options: {
                 sassDir: '<%= serlo.app %>/styles',
-                cssDir: '<%= serlo.dist %>/styles',
-                generatedImagesDir: '<%= serlo.dist %>/images/generated',
+                cssDir: '<%= serlo.tmp %>/styles',
+                generatedImagesDir: '<%= serlo.tmp %>/images/generated',
                 imagesDir: '<%= serlo.app %>/images',
                 javascriptsDir: '<%= serlo.app %>/scripts',
                 fontsDir: '<%= serlo.app %>/styles/fonts',
@@ -85,9 +95,9 @@ module.exports = function (grunt) {
                 httpFontsPath: '/styles/fonts',
                 relativeAssets: false
             },
-            dist: {
+            tmp: {
                 options: {
-                    generatedImagesDir: '<%= serlo.dist %>/images/generated'
+                    generatedImagesDir: '<%= serlo.tmp %>/images/generated'
                 }
             },
             server: {
@@ -100,12 +110,12 @@ module.exports = function (grunt) {
             options: {
                 browsers: ['last 2 version']
             },
-            dist: {
+            tmp: {
                 files: [{
                     expand: true,
-                    cwd: '<%= serlo.dist %>/styles/',
+                    cwd: '<%= serlo.tmp %>/styles/',
                     src: '{,*/}*.css',
-                    dest: '<%= serlo.dist %>/styles/'
+                    dest: '<%= serlo.tmp %>/styles/'
                 }]
             }
         },
@@ -116,7 +126,7 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
-            dist: {
+            tmp: {
                 options: {
                     banner: '/**\n' +
                             ' * \n' +
@@ -140,51 +150,51 @@ module.exports = function (grunt) {
                     mangle: true
                 },
                 // files: {
-                //     '<%= serlo.dist %>/scripts/main.js': '<%= serlo.dist %>/scripts/main.js'
+                //     '<%= serlo.tmp %>/scripts/main.js': '<%= serlo.tmp %>/scripts/main.js'
                 // }
                 files: [{
-                    '<%= serlo.dist %>/scripts/main.js': '<%= serlo.dist %>/scripts/main.js',
-                    '<%= serlo.dist %>/bower_components/requirejs/require.js': '<%= serlo.dist %>/bower_components/requirejs/require.js'
+                    '<%= serlo.tmp %>/scripts/main.js': '<%= serlo.tmp %>/scripts/main.js',
+                    '<%= serlo.tmp %>/bower_components/requirejs/require.js': '<%= serlo.tmp %>/bower_components/requirejs/require.js'
                 }]
             }
         },
         imagemin: {
-            dist: {
+            tmp: {
                 files: [{
                     expand: true,
                     cwd: '<%= serlo.app %>/images',
                     src: '{,*/}*.{png,jpg,jpeg}',
-                    dest: '<%= serlo.dist %>/images'
+                    dest: '<%= serlo.tmp %>/images'
                 }]
             }
         },
         svgmin: {
-            dist: {
+            tmp: {
                 files: [{
                     expand: true,
                     cwd: '<%= serlo.app %>/images',
                     src: '{,*/}*.svg',
-                    dest: '<%= serlo.dist %>/images'
+                    dest: '<%= serlo.tmp %>/images'
                 }]
             }
         },
         cssmin: {
             minify: {
                 expand: true,
-                cwd: '<%= serlo.dist %>/styles/',
+                cwd: '<%= serlo.tmp %>/styles/',
                 src: ['*.css', '!*.min.css'],
-                dest: '<%= serlo.dist %>/styles/',
+                dest: '<%= serlo.tmp %>/styles/',
                 ext: '.css'
             }
         },
         // Put files not handled in other tasks here
         copy: {
-            dist: {
+            tmp: {
                 files: [{
                     expand: true,
                     dot: true,
                     cwd: '<%= serlo.app %>',
-                    dest: '<%= serlo.dist %>',
+                    dest: '<%= serlo.tmp %>',
                     src: [
                         '.htaccess',
                         'styles/fonts/{,*/}*.*',
@@ -192,25 +202,36 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
+            dist: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= serlo.tmp %>',
+                    dest: '<%= serlo.dist %>',
+                    src: [
+                        '**'
+                    ]
+                }]
+            },
             styles: {
                 expand: true,
                 dot: true,
                 cwd: '<%= serlo.app %>/styles',
-                dest: '<%= serlo.dist %>/styles/',
+                dest: '<%= serlo.tmp %>/styles/',
                 src: '{,*/}*.css'
             },
             requirejs: {
                 expand: true,
                 dot: true,
                 cwd: '<%= serlo.app %>/bower_components/requirejs',
-                dest: '<%= serlo.dist %>/bower_components/requirejs',
+                dest: '<%= serlo.tmp %>/bower_components/requirejs',
                 src: 'require.js'
             },
             modernizr: {
                 expand: true,
                 dot: true,
                 cwd: '<%= serlo.app %>/bower_components/modernizr',
-                dest: '<%= serlo.dist %>/bower_components/modernizr',
+                dest: '<%= serlo.tmp %>/bower_components/modernizr',
                 src: 'modernizr.js'
             }
         },
@@ -219,16 +240,14 @@ module.exports = function (grunt) {
             dest: '<%= serlo.app %>/scripts/modules/serlo_i18n.js'
         },
         modernizr: {
-            
-                devFile: '<%= serlo.app %>/bower_components/modernizr/modernizr.js',
-                outputFile: '<%= serlo.dist %>/bower_components/modernizr/modernizr.js',
-                files: [
-                    '<%= serlo.dist %>/scripts/{,*/}*.js',
-                    '<%= serlo.dist %>/styles/{,*/}*.css',
-                    '!<%= serlo.dist %>/scripts/vendor/*'
-                ],
-                uglify: true
-            
+            devFile: '<%= serlo.app %>/bower_components/modernizr/modernizr.js',
+            outputFile: '<%= serlo.tmp %>/bower_components/modernizr/modernizr.js',
+            files: [
+                '<%= serlo.tmp %>/scripts/{,*/}*.js',
+                '<%= serlo.tmp %>/styles/{,*/}*.css',
+                '!<%= serlo.tmp %>/scripts/vendor/*'
+            ],
+            uglify: true
         },
         concurrent: {
             server: [
@@ -240,11 +259,15 @@ module.exports = function (grunt) {
                 'copy:styles',
                 'copy:requirejs'
             ],
-            dist: [
+            tmp: [
                 'compass',
                 'copy:styles',
                 'copy:requirejs',
                 'svgmin'
+            ],
+            dist: [
+                'clean:dist',
+                'copy:dist'
             ]
         },
         requirejs: {
@@ -252,7 +275,7 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: "<%= serlo.app %>/scripts",
                     mainConfigFile: "source/scripts/main.js",
-                    out: "<%= serlo.dist %>/scripts/main.js",
+                    out: "<%= serlo.tmp %>/scripts/main.js",
                     preserveLicenseComments: false,
                     optimize: 'none'
                 }
@@ -262,7 +285,7 @@ module.exports = function (grunt) {
                     name: 'ATHENE2-TEST',
                     baseUrl: "<%= serlo.app %>/tests/modules",
                     mainConfigFile: "source/tests/modules/specRunner.js",
-                    out: "<%= serlo.dist %>/scripts/main.js",
+                    out: "<%= serlo.tmp %>/scripts/main.js",
                     preserveLicenseComments: false,
                     optimize: 'none'
                 }
@@ -281,15 +304,15 @@ module.exports = function (grunt) {
             test: {
                 src: [
                     '<%= serlo.app %>/bower_components/jasmine/lib/jasmine-core/jasmine.css',
-                    '<%= serlo.dist %>/styles/main.css'
+                    '<%= serlo.tmp %>/styles/main.css'
                 ],
-                dest: '<%= serlo.dist %>/styles/main.css'
+                dest: '<%= serlo.tmp %>/styles/main.css'
             }
         }
     });
 
     grunt.registerTask('dev', function (target) {
-        if (target === 'dist') {
+        if (target === 'tmp') {
             return grunt.task.run(['build']);
         }
 
@@ -300,23 +323,26 @@ module.exports = function (grunt) {
             'copy:requirejs',
             'i18n',
             'requirejs:production',
-            'copy:dist',
+            'copy:tmp',
             'copy:modernizr',
+            'concurrent:dist',
             'watch'
         ]);
     });
 
     grunt.registerTask('build', [
-        'clean:dist',
-        'concurrent:dist',
+        'clean:tmp',
+        'concurrent:tmp',
         'autoprefixer',
-        'copy:dist',
+        'copy:tmp',
         'i18n',
         'cssmin',
         'imagemin',
         'requirejs:production',
         'modernizr',
-        'uglify'
+        'uglify',
+        'concurrent:dist',
+        'clean:tmp'
     ]);
 
     grunt.registerTask('default', [

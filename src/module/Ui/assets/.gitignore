@@ -3,6 +3,7 @@ source/bower_components
 .sass-cache
 .tmp
 .grunt
+/tmp
 /build
 !/.bowerrc
 !/.jshintrc
