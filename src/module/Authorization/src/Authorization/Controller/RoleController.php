@@ -74,7 +74,7 @@ class RoleController extends AbstractActionController
                 }
 
                 $permissionKey = $this->getPermissionService()->getPermission($data['permission']);
-                $permission    = $this->getPermissionService()->findParametrizedPermission(
+                $permission    = $this->getPermissionService()->findOrCreateParametrizedPermission(
                     $permissionKey->getName(),
                     'instance',
                     $instance

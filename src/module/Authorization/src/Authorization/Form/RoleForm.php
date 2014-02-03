@@ -33,7 +33,7 @@ class RoleForm extends Form
                 'type'    => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
                 'name'    => 'children',
                 'options' => array(
-                    'label'          => 'Select Children',
+                    'label'          => 'Inherits permissions from (be very careful!):',
                     'object_manager' => $objectManager,
                     'target_class'   => 'User\Entity\Role',
                     'property'       => 'name',

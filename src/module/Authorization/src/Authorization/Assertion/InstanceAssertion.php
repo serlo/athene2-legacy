@@ -11,7 +11,6 @@
 namespace Authorization\Assertion;
 
 use Authorization\Exception\InvalidArgumentException;
-use Authorization\Exception\PermissionNotFoundException;
 use Authorization\Result\AuthorizationResult;
 use Authorization\Service\PermissionServiceInterface;
 use Instance\Entity\InstanceInterface;
@@ -62,7 +61,8 @@ class InstanceAssertion implements AssertionInterface
     public function assert(AuthorizationResult $authorization, $context = null)
     {
         if ($context === null) {
-            $instance = $this->instanceManager->getInstanceFromRequest();
+            //$instance = $this->instanceManager->getInstanceFromRequest();
+            $instance = null;
         } elseif ($context instanceof InstanceProviderInterface) {
             $instance = $context->getInstance();
         } elseif ($context instanceof InstanceInterface) {
@@ -74,29 +74,27 @@ class InstanceAssertion implements AssertionInterface
         $permission = $authorization->getPermission();
         $roles      = $this->flattenRoles($authorization->getRoles());
 
-        try {
-            $permission = $this->permissionService->findParametrizedPermission(
+        $permissions = $this->permissionService->findParametrizedPermissions(
+            $permission,
+            'instance',
+            null
+        );
+
+        if($instance !== null){
+            $localPermissions = $this->permissionService->findParametrizedPermissions(
                 $permission,
                 'instance',
                 $instance
             );
-        } catch (PermissionNotFoundException $e) {
-            try {
-                // maybe the asked permission is granted globally?
-                $permission = $this->permissionService->findParametrizedPermission(
-                    $permission,
-                    'instance',
-                    null
-                );
-            } catch (PermissionNotFoundException $e) {
-                // couldn't find permission, so this isn't going to be authorized
-                return false;
-            }
+
+            $permissions = array_merge($permissions, $localPermissions);
         }
 
-        foreach ($roles as $role) {
-            if ($role->hasPermission($permission)) {
-                return true;
+        foreach ($permissions as $permission) {
+            foreach ($roles as $role) {
+                if ($role->hasPermission($permission)) {
+                    return true;
+                }
             }
         }
 

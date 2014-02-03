@@ -12,6 +12,7 @@ namespace Authorization\Service;
 
 use Authorization\Entity\ParametrizedPermissionInterface;
 use Authorization\Entity\PermissionInterface;
+use Authorization\Exception\PermissionNotFoundException;
 
 interface PermissionServiceInterface
 {
@@ -21,12 +22,29 @@ interface PermissionServiceInterface
     public function findAllPermissions();
 
     /**
+     * @param $name
+     * @param $parameterKey
+     * @param $parameterValue
+     * @return PermissionInterface
+     */
+    public function findOrCreateParametrizedPermission($name, $parameterKey, $parameterValue);
+
+    /**
      * @param PermissionInterface|string $name
      * @param string                     $parameterKey
      * @param mixed                      $parameterValue
+     * @throws PermissionNotFoundException
      * @return PermissionInterface
      */
     public function findParametrizedPermission($name, $parameterKey, $parameterValue);
+
+    /**
+     * @param PermissionInterface|string $name
+     * @param string                     $parameterKey
+     * @param mixed                      $parameterValue
+     * @return PermissionInterface[]
+     */
+    public function findParametrizedPermissions($name, $parameterKey, $parameterValue);
 
     /**
      * @param string $name
