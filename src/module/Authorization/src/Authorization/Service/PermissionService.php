@@ -10,6 +10,8 @@
  */
 namespace Authorization\Service;
 
+use Authorization\Entity\ParametrizedPermissionInterface;
+use Authorization\Entity\PermissionInterface;
 use Authorization\Exception\PermissionNotFoundException;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
@@ -63,27 +65,33 @@ class PermissionService implements PermissionServiceInterface
         return $permission;
     }
 
-    public function findParametrizedPermissionByNameAndParameter($name, $parameterKey, $parameterValue)
+    public function findParametrizedPermission($name, $parameterKey, $parameterValue)
     {
+        if (!$name instanceof PermissionInterface) {
+            $permission = $this->findPermissionByName($name);
+        } else {
+            $permission = $name;
+        }
+
         $className  = $this->getClassResolver()->resolveClassName($this->instancePermissionInterface);
         $repository = $this->getObjectManager()->getRepository($className);
-        $permission = $repository->findOneBy(
+        /* @var $parametrized ParametrizedPermissionInterface */
+        $parametrized = $repository->findOneBy(
             [
-                'permission'  => $this->findPermissionByName($name)->getId(),
+                'permission'  => $permission->getId(),
                 $parameterKey => $parameterValue
             ]
         );
 
-        if (!is_object($permission)) {
-            throw new PermissionNotFoundException(sprintf(
-                'Permission %s with parameter %s = %s not found',
-                $name,
-                $parameterKey,
-                $parameterValue
-            ));
+        if (!is_object($parametrized)) {
+            /* @var $parametrized ParametrizedPermissionInterface */
+            $parametrized = new $className;
+            $parametrized->setPermission($permission);
+            $parametrized->setParameter($parameterKey, $parameterValue);
+            $this->objectManager->persist($parametrized);
         }
 
-        return $permission;
+        return $parametrized;
     }
 
     public function findPermissionByName($name)

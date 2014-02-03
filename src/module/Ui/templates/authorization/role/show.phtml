@@ -13,9 +13,8 @@
 <?php if ($this->isGranted('authorization.identity.grant.role', $this->role)): ?>
     <div class="pull-right">
         <a class="btn btn-success btn-xs"
-           href="<?php echo $this->url('authorization/role/user/add', ['role' => $this->role->getId()]); ?>">
-            <span class="glyphicon glyphicon-plus"></span>
-        </a>
+           href="<?php echo $this->url('authorization/role/user/add', ['role' => $this->role->getId()]); ?>"> <span
+                class="glyphicon glyphicon-plus"></span> </a>
     </div>
 <?php endif; ?>
 <h3><?php echo $this->translate('Users'); ?></h3>
@@ -24,9 +23,10 @@
     <?php foreach ($this->users as $user): ?>
         <li class="list-group-item">
             <?php if ($this->isGranted('authorization.identity.revoke.role', $this->role)): ?>
-                <form
-                    action="<?php echo $this->url('authorization/role/user/remove', ['role' => $this->role->getId()]); ?>"
-                    method="post" class="pull-right">
+                <form action="<?php echo $this->url(
+                    'authorization/role/user/remove',
+                    ['role' => $this->role->getId()]
+                ); ?>" method="post" class="pull-right">
                     <input type="hidden" name="user" value="<?php echo $user->getUsername() ?>"/>
                     <button type="submit" class="btn btn-danger btn-xs">
                         <span class="glyphicon glyphicon-minus"></span>
@@ -41,8 +41,7 @@
     <div class="pull-right">
         <a class="btn btn-success btn-xs"
            href="<?php echo $this->url('authorization/role/permission/add', ['role' => $this->role->getId()]); ?>">
-            <span class="glyphicon glyphicon-plus"></span>
-        </a>
+            <span class="glyphicon glyphicon-plus"></span> </a>
     </div>
 <?php endif; ?>
 <h3><?php echo $this->translate('Permissions'); ?></h3>
@@ -51,21 +50,30 @@
     <?php foreach ($this->role->getPermissions() as $permission): ?>
         <div class="list-group-item">
             <?php echo $permission->getName(); ?>
-            <small>(<?php echo $this->translate('Instance:') . ' ' .  $permission->getParameter('instance')->getName(); ?>)</small>
+            <small>
+                (
+                <?php if ($permission->getParameter('instance')): ?>
+                    <?php echo $permission->getParameter('instance'); ?>
+                <?php else: ?>
+                    <?php echo $this->translate('Global'); ?>
+                <?php endif; ?>
+                )
+            </small>
             <?php if ($this->isGranted('authorization.role.revoke.permission')): ?>
-                <a href="<?php echo $this->url('authorization/role/permission/remove', ['role' => $this->role->getId(), 'permission' => $permission->getId()]); ?>"
-                   class="label label-danger pull-right">
-                    <span class="glyphicon glyphicon-minus"></span>
-                </a>
+                <a href="<?php echo $this->url(
+                    'authorization/role/permission/remove',
+                    ['role' => $this->role->getId(), 'permission' => $permission->getId()]
+                ); ?>" class="label label-danger pull-right"> <span class="glyphicon glyphicon-minus"></span> </a>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
-</div>
-<h3><?php echo $this->translate('Inherits from'); ?></h3>
+</div><h3><?php echo $this->translate('Inherits from'); ?></h3>
 <hr/>
 <div class="list-group">
     <?php foreach ($this->role->getChildren() as $child): ?>
-        <a class="list-group-item"
-           href="<?php echo $this->url('authorization/role/show', ['role' => $child->getId()]); ?>"><?php echo $child->getName(); ?></a>
+        <a class="list-group-item" href="<?php echo $this->url(
+            'authorization/role/show',
+            ['role' => $child->getId()]
+        ); ?>"><?php echo $child->getName(); ?></a>
     <?php endforeach; ?>
 </div>

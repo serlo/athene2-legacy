@@ -63,8 +63,24 @@ class RoleController extends AbstractActionController
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
+                // TODO use hydrator
+
                 $data = $form->getData();
-                $this->getRoleService()->grantRolePermission($this->params('role'), $data['permission']);
+
+                if ((int)$data['instance'] == -1) {
+                    $instance = null;
+                } else {
+                    $instance = $this->instanceManager->getInstance($data['instance']);
+                }
+
+                $permissionKey = $this->getPermissionService()->getPermission($data['permission']);
+                $permission    = $this->getPermissionService()->findParametrizedPermission(
+                    $permissionKey->getName(),
+                    'instance',
+                    $instance
+                );
+
+                $this->getRoleService()->grantRolePermission($this->params('role'), $permission);
                 $this->getRoleService()->flush();
 
                 return $this->redirect()->toUrl($this->referer()->fromStorage());

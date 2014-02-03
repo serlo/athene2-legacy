@@ -83,6 +83,11 @@ class Permission implements ParametrizedPermissionInterface
         return $this->permission;
     }
 
+    public function setPermission(PermissionInterface $permission)
+    {
+        $this->permission = $permission;
+    }
+
     /**
      * @return RoleInterface[]
      */

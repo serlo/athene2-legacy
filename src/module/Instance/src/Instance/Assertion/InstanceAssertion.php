@@ -39,7 +39,7 @@ class InstanceAssertion implements AssertionInterface
         }
         $result            = $authorization->getAuthorizationResult();
         $permission        = $result->getPermission();
-        $permissionToMatch = $this->getPermissionService()->findParametrizedPermissionByNameAndParameter(
+        $permissionToMatch = $this->getPermissionService()->findParametrizedPermission(
             (string)$permission,
             'instance',
             $context->getInstance()->getId()

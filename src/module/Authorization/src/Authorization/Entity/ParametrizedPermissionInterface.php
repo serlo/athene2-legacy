@@ -20,6 +20,11 @@ interface ParametrizedPermissionInterface extends RbacPermissionInterface
     public function getId();
 
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
      * @param string $key
      * @return mixed
      */
@@ -43,7 +48,8 @@ interface ParametrizedPermissionInterface extends RbacPermissionInterface
     public function setParameter($key, $value);
 
     /**
-     * @return string
+     * @param PermissionInterface $permission
+     * @return void
      */
-    public function getName();
+    public function setPermission(PermissionInterface $permission);
 }

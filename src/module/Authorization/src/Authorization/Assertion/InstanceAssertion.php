@@ -75,7 +75,7 @@ class InstanceAssertion implements AssertionInterface
         $roles      = $this->flattenRoles($authorization->getRoles());
 
         try {
-            $permission = $this->permissionService->findParametrizedPermissionByNameAndParameter(
+            $permission = $this->permissionService->findParametrizedPermission(
                 $permission,
                 'instance',
                 $instance
@@ -83,7 +83,7 @@ class InstanceAssertion implements AssertionInterface
         } catch (PermissionNotFoundException $e) {
             try {
                 // maybe the asked permission is granted globally?
-                $permission = $this->permissionService->findParametrizedPermissionByNameAndParameter(
+                $permission = $this->permissionService->findParametrizedPermission(
                     $permission,
                     'instance',
                     null

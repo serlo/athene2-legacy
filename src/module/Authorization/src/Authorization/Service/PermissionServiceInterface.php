@@ -21,18 +21,18 @@ interface PermissionServiceInterface
     public function findAllPermissions();
 
     /**
+     * @param PermissionInterface|string $name
+     * @param string                     $parameterKey
+     * @param mixed                      $parameterValue
+     * @return PermissionInterface
+     */
+    public function findParametrizedPermission($name, $parameterKey, $parameterValue);
+
+    /**
      * @param string $name
      * @return PermissionInterface
      */
     public function findPermissionByName($name);
-
-    /**
-     * @param string $name
-     * @param string $parameterKey
-     * @param mixed  $parameterValue
-     * @return PermissionInterface
-     */
-    public function findParametrizedPermissionByNameAndParameter($name, $parameterKey, $parameterValue);
 
     /**
      * @param int $id

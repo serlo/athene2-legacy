@@ -10,8 +10,10 @@
  */
 namespace Authorization\Service;
 
+use Authorization\Entity\PermissionInterface;
 use Common\ObjectManager\Flushable;
 use Rbac\Role\RoleInterface;
+use User\Entity\UserInterface;
 use Zend\Form\FormInterface;
 
 interface RoleServiceInterface extends Flushable
@@ -40,30 +42,30 @@ interface RoleServiceInterface extends Flushable
     public function getRole($id);
 
     /**
-     * @param int $roleId
-     * @param int $userId
+     * @param int|RoleInterface $role
+     * @param int|UserInterface $user
      * @return void
      */
-    public function grantIdentityRole($roleId, $userId);
+    public function grantIdentityRole($role, $user);
 
     /**
-     * @param int $roleId
-     * @param int $permissionId
+     * @param int|RoleInterface       $role
+     * @param int|PermissionInterface $permission
      * @return void
      */
-    public function grantRolePermission($roleId, $permissionId);
+    public function grantRolePermission($role, $permission);
 
     /**
-     * @param int $roleId
-     * @param int $userId
+     * @param int $role
+     * @param int $user
      * @return void
      */
-    public function removeIdentityRole($roleId, $userId);
+    public function removeIdentityRole($role, $user);
 
     /**
-     * @param int $roleId
-     * @param int $permissionId
+     * @param int $role
+     * @param int $permission
      * @return void
      */
-    public function removeRolePermission($roleId, $permissionId);
+    public function removeRolePermission($role, $permission);
 } 

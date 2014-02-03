@@ -10,12 +10,15 @@
  */
 namespace Authorization\Service;
 
+use Authorization\Entity\ParametrizedPermissionInterface;
+use Authorization\Entity\RoleInterface;
 use Authorization\Exception\RoleNotFoundException;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Persistence\ObjectManager;
 use User\Entity\Role;
+use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Zend\Form\FormInterface;
@@ -75,7 +78,7 @@ class RoleService implements RoleServiceInterface
     public function createRole(FormInterface $form)
     {
         $this->assertGranted('authorization.role.create');
-        
+
         $data = $form->getData();
 
         $form->bind(new Role());
@@ -88,37 +91,51 @@ class RoleService implements RoleServiceInterface
         return $form->getObject();
     }
 
-    public function grantRolePermission($roleId, $permissionId)
+    public function grantRolePermission($role, $permission)
     {
         $this->assertGranted('authorization.role.grant.permission');
-        $permission = $this->getPermissionService()->getParametrizedPermission($permissionId);
-        $role       = $this->getRole($roleId);
+
+        if(!$role instanceof RoleInterface){
+            $role = $this->getRole($role);
+        }
+
+        if(!$permission instanceof ParametrizedPermissionInterface){
+            $permission = $this->getPermissionService()->getParametrizedPermission($permission);
+        }
+
         $role->addPermission($permission);
     }
 
-    public function removeRolePermission($roleId, $permissionId)
+    public function removeRolePermission($role, $permission)
     {
         $this->assertGranted('authorization.role.revoke.permission');
-        $permission = $this->getPermissionService()->getParametrizedPermission($permissionId);
-        $role       = $this->getRole($roleId);
+        $permission = $this->getPermissionService()->getParametrizedPermission($permission);
+        $role       = $this->getRole($role);
         $role->removePermission($permission);
     }
 
-    public function grantIdentityRole($roleId, $userId)
+    public function grantIdentityRole($role, $user)
     {
-        $role = $this->getRole($roleId);
+        if(!$role instanceof RoleInterface){
+            $role = $this->getRole($role);
+        }
+
+        if(!$user instanceof UserInterface){
+            $user = $this->getUserManager()->getUser($user);
+        }
+
         $this->assertGranted('authorization.identity.grant.role', $role);
-        $user = $this->getUserManager()->getUser($userId);
+
         if (!$user->hasRole($role)) {
             $role->addUser($user);
         }
     }
 
-    public function removeIdentityRole($roleId, $userId)
+    public function removeIdentityRole($role, $user)
     {
-        $role = $this->getRole($roleId);
+        $role = $this->getRole($role);
         $this->assertGranted('authorization.identity.revoke.role', $role);
-        $user = $this->getUserManager()->getUser($userId);
+        $user = $this->getUserManager()->getUser($user);
         if ($user->hasRole($role)) {
             $role->removeUser($user);
         }
