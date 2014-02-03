@@ -50,7 +50,7 @@ class LicenseController extends AbstractController
             $this->referer()->store();
         }
 
-        $view->setTemplate('entity/plugin/license/update');
+        $view->setTemplate('entity/license/update');
 
         return $view;
     }
