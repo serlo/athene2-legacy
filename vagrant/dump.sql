@@ -1308,11 +1308,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`navigation`
+-- Table `serlo`.`navigation_container`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`navigation` ;
+DROP TABLE IF EXISTS `serlo`.`navigation_container` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`navigation` (
+CREATE TABLE IF NOT EXISTS `serlo`.`navigation_container` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `instance_id` INT NOT NULL,
   `type_id` INT NOT NULL,
@@ -1322,38 +1322,39 @@ CREATE TABLE IF NOT EXISTS `serlo`.`navigation` (
   CONSTRAINT `fk_navigation_instance1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_navigation_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`navigation_entry`
+-- Table `serlo`.`navigation_page`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`navigation_entry` ;
+DROP TABLE IF EXISTS `serlo`.`navigation_page` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`navigation_entry` (
+CREATE TABLE IF NOT EXISTS `serlo`.`navigation_page` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `navigation_id` INT NOT NULL,
+  `container_id` INT NOT NULL,
   `parent_id` INT NULL,
+  `position` INT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  INDEX `fk_navigation_entry_navigation1_idx` (`navigation_id` ASC),
+  INDEX `fk_navigation_entry_navigation1_idx` (`container_id` ASC),
   INDEX `fk_navigation_entry_navigation_entry1_idx` (`parent_id` ASC),
   CONSTRAINT `fk_navigation_entry_navigation1`
-    FOREIGN KEY (`navigation_id`)
-    REFERENCES `serlo`.`navigation` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    FOREIGN KEY (`container_id`)
+    REFERENCES `serlo`.`navigation_container` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_navigation_entry_navigation_entry1`
     FOREIGN KEY (`parent_id`)
-    REFERENCES `serlo`.`navigation_entry` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `serlo`.`navigation_page` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1376,29 +1377,29 @@ DROP TABLE IF EXISTS `serlo`.`navigation_parameter` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`navigation_parameter` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `navigation_entry_id` INT NOT NULL,
-  `navigation_parameter_key_id` INT NOT NULL,
+  `page_id` INT NOT NULL,
+  `key_id` INT NULL,
   `parent_id` INT NULL,
   `value` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_navigation_parameter_navigation_parameter1_idx` (`parent_id` ASC),
-  INDEX `fk_navigation_parameter_navigation_entry1_idx` (`navigation_entry_id` ASC),
-  INDEX `fk_navigation_parameter_navigation_parameter_key1_idx` (`navigation_parameter_key_id` ASC),
+  INDEX `fk_navigation_parameter_navigation_entry1_idx` (`page_id` ASC),
+  INDEX `fk_navigation_parameter_navigation_parameter_key1_idx` (`key_id` ASC),
   CONSTRAINT `fk_navigation_parameter_navigation_parameter1`
     FOREIGN KEY (`parent_id`)
     REFERENCES `serlo`.`navigation_parameter` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_navigation_parameter_navigation_entry1`
-    FOREIGN KEY (`navigation_entry_id`)
-    REFERENCES `serlo`.`navigation_entry` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    FOREIGN KEY (`page_id`)
+    REFERENCES `serlo`.`navigation_page` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_navigation_parameter_navigation_parameter_key1`
-    FOREIGN KEY (`navigation_parameter_key_id`)
+    FOREIGN KEY (`key_id`)
     REFERENCES `serlo`.`navigation_parameter_key` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1440,8 +1441,6 @@ INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (8,
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (9, 'langhelper', 10, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (10, 'langadmin', 11, NULL);
 INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (11, 'sysadmin', NULL, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (12, 'german', NULL, NULL);
-INSERT INTO `serlo`.`role` (`id`, `name`, `parent_id`, `description`) VALUES (13, 'english', NULL, NULL);
 
 COMMIT;
 
@@ -1600,8 +1599,6 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (1, 'blog.post.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (2, 'blog.post.update');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (3, 'blog.post.trash');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (4, 'blog.post.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (5, 'german');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (6, 'english');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (7, 'contexter.route.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (8, 'contexter.context.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (9, 'contexter.context.add');
@@ -1681,6 +1678,10 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'user.login');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (86, 'navigation.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (87, 'entity.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (88, 'uuid.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (89, 'entity.revision.restore');
 
 COMMIT;
 
@@ -1701,8 +1702,6 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (11, 11, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (12, 12, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (13, 13, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (15, 15, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (16, 16, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (17, 17, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (18, 18, 1);
@@ -1773,6 +1772,10 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (83, 83, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (84, 84, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (85, 85, NULL);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (86, 86, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (87, 87, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (88, 88, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, 1);
 
 COMMIT;
 
@@ -1793,8 +1796,6 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 1
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 11);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 12);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 13);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (12, 14);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (13, 15);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 16);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 17);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 18);
@@ -1865,6 +1866,10 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 82
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 83);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 84);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 85);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 86);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 87);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 88);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 89);
 
 COMMIT;
 
@@ -1884,28 +1889,28 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`navigation`
+-- Data for table `serlo`.`navigation_container`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`navigation` (`id`, `instance_id`, `type_id`) VALUES (1, 1, 29);
+INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (1, 1, 29);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`navigation_entry`
+-- Data for table `serlo`.`navigation_page`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (1, 1, NULL);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (2, 1, 1);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (3, 1, 1);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (4, 1, 1);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (5, 1, 4);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (6, 1, 5);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (7, 1, 5);
-INSERT INTO `serlo`.`navigation_entry` (`id`, `navigation_id`, `parent_id`) VALUES (8, 1, 5);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (1, 1, NULL, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (2, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (3, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (4, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (5, 1, 4, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (6, 1, 5, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (7, 1, 5, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (8, 1, 5, NULL);
 
 COMMIT;
 
@@ -1929,27 +1934,27 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (1, 1, 1, NULL, 'Backend');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (2, 1, 2, NULL, '#');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (3, 2, 1, NULL, 'Home');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (4, 2, 3, NULL, 'backend');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (5, 2, 4, NULL, 'home');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (6, 3, 1, NULL, 'Pages');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (7, 3, 3, NULL, 'page');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (8, 3, 4, NULL, 'paperclip');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (9, 4, 1, NULL, 'Taxonomy');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (10, 4, 2, NULL, '#');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (11, 4, 4, NULL, 'book');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (12, 5, 1, NULL, 'Manage taxonomies');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (13, 5, 3, NULL, 'taxonomy/term/organize-all');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (14, 6, 3, NULL, 'taxonomy/term/action');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (15, 6, 5, NULL, 'false');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (16, 7, 3, NULL, 'taxonomy/term/create');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (17, 7, 5, NULL, 'false');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (18, 8, 3, NULL, 'taxonomy/term/update');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (19, 8, 5, NULL, 'false');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (20, 9, 3, NULL, 'taxonomy/term/sort-associated');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `navigation_entry_id`, `navigation_parameter_key_id`, `parent_id`, `value`) VALUES (21, 9, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (1, 1, 1, NULL, 'Backend');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (2, 1, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (3, 2, 1, NULL, 'Home');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (4, 2, 3, NULL, 'backend');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (5, 2, 4, NULL, 'home');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (6, 3, 1, NULL, 'Pages');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (7, 3, 3, NULL, 'page');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (8, 3, 4, NULL, 'paperclip');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (9, 4, 1, NULL, 'Taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (10, 4, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (11, 4, 4, NULL, 'book');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (12, 5, 1, NULL, 'Manage taxonomies');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (13, 5, 3, NULL, 'taxonomy/term/organize-all');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (14, 6, 3, NULL, 'taxonomy/term/action');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (15, 6, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (16, 7, 3, NULL, 'taxonomy/term/create');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (17, 7, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (18, 8, 3, NULL, 'taxonomy/term/update');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (19, 8, 5, NULL, 'false');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (20, 9, 3, NULL, 'taxonomy/term/sort-associated');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (21, 9, 5, NULL, 'false');
 
 COMMIT;
 
