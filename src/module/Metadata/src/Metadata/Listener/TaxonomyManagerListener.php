@@ -94,7 +94,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'dissociate',
             array(
