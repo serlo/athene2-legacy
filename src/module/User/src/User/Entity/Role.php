@@ -76,6 +76,13 @@ class Role implements RoleInterface
         return $this->getName();
     }
 
+    public function addChildren($children)
+    {
+        foreach ($children as $child) {
+            $this->addChild($child);
+        }
+    }
+
     public function addChild(RoleInterface $child)
     {
         $this->children->add($child);
@@ -154,6 +161,11 @@ class Role implements RoleInterface
         $this->permissions->removeElement($permission);
     }
 
+    public function removeChild(RoleInterface $child)
+    {
+        $this->children->removeElement($child);
+    }
+
     public function getDescription()
     {
         return $this->description;
@@ -164,8 +176,10 @@ class Role implements RoleInterface
         $this->description = $description;
     }
 
-    public function removeChild(RoleInterface $child)
+    public function removeChildren($children)
     {
-        $this->children->removeElement($child);
+        foreach ($children as $child) {
+            $this->removeChild($child);
+        }
     }
 }

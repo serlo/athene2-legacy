@@ -17,19 +17,31 @@ interface RoleInterface extends HierarchicalRoleInterface
 {
     /**
      * @param RoleInterface $child
-     * @return mixed
+     * @return void
      */
     public function addChild(RoleInterface $child);
 
     /**
+     * @param RoleInterface[] $children
+     * @return void
+     */
+    public function addChildren($children);
+
+    /**
+     * @param RoleInterface[] $children
+     * @return void
+     */
+    public function removeChildren($children);
+
+    /**
      * @param ParametrizedPermissionInterface $permission
-     * @return mixed
+     * @return void
      */
     public function addPermission(ParametrizedPermissionInterface $permission);
 
     /**
      * @param UserInterface $user
-     * @return mixed
+     * @return void
      */
     public function addUser(UserInterface $user);
 

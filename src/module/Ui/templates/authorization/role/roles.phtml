@@ -22,10 +22,12 @@
             <p class="list-group-item-text"><?php echo $role->getDescription(); ?></p>
         </a>
     <?php endforeach; ?>
-    <li class="list-group-item">
-        <a class="btn btn-success" href="<?php echo $this->url('authorization/role/create'); ?>">
-            <span class="glyphicon glyphicon-plus"></span>
-            <?php echo $this->translate('role'); ?>
-        </a>
-    </li>
+    <?php if($this->isGranted('authorization.role.create')): ?>
+        <div class="list-group-item clearfix">
+            <a class="btn btn-success pull-right" href="<?php echo $this->url('authorization/role/create'); ?>">
+                <span class="glyphicon glyphicon-plus"></span>
+                <?php echo $this->translate('role'); ?>
+            </a>
+        </div>
+    <?php endif; ?>
 </div>

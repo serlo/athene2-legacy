@@ -11,6 +11,7 @@
 namespace Authorization\Controller;
 
 use Authorization\Form\PermissionForm;
+use Authorization\Form\RoleForm;
 use Authorization\Form\UserForm;
 use Authorization\Service\PermissionServiceAwareTrait;
 use Authorization\Service\PermissionServiceInterface;
@@ -30,20 +31,22 @@ class RoleController extends AbstractActionController
     use RoleServiceAwareTrait, UserManagerAwareTrait, PermissionServiceAwareTrait, InstanceManagerAwareTrait;
 
     /**
-     * @param PermissionServiceInterface $permissionService
-     * @param RoleServiceInterface       $roleService
-     * @param UserManagerInterface       $userManager
+     * @var RoleForm
      */
+    protected $roleForm;
+
     public function __construct(
         InstanceManagerInterface $instanceManager,
         PermissionServiceInterface $permissionService,
         RoleServiceInterface $roleService,
-        UserManagerInterface $userManager
+        UserManagerInterface $userManager,
+        RoleForm $roleForm
     ) {
         $this->roleService       = $roleService;
         $this->userManager       = $userManager;
         $this->permissionService = $permissionService;
         $this->instanceManager   = $instanceManager;
+        $this->roleForm          = $roleForm;
     }
 
     public function addPermissionAction()
@@ -63,9 +66,8 @@ class RoleController extends AbstractActionController
                 $data = $form->getData();
                 $this->getRoleService()->grantRolePermission($this->params('role'), $data['permission']);
                 $this->getRoleService()->flush();
-                $this->redirect()->toUrl($this->referer()->fromStorage());
 
-                return null;
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
@@ -98,9 +100,8 @@ class RoleController extends AbstractActionController
                     $user = $this->getUserManager()->findUserByUsername($data['user']);
                     $this->getRoleService()->grantIdentityRole($this->params('role'), $user->getId());
                     $this->getRoleService()->flush();
-                    $this->redirect()->toUrl($this->referer()->fromStorage());
 
-                    return null;
+                    return $this->redirect()->toUrl($this->referer()->fromStorage());
                 } catch (UserNotFoundException $e) {
                     $error = true;
                     $user  = $data['user'];
@@ -117,6 +118,30 @@ class RoleController extends AbstractActionController
         ]);
 
         $view->setTemplate('authorization/role/user/add');
+
+        return $view;
+    }
+
+    public function createRoleAction()
+    {
+        $this->assertGranted('authorization.role.create');
+
+        $view = new ViewModel(['form' => $this->roleForm]);
+        $view->setTemplate('authorization/role/create');
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $this->roleForm->setData($data);
+            if ($this->roleForm->isValid()) {
+                $this->roleService->createRole($this->roleForm);
+                $this->roleService->flush();
+                $this->flashmessenger()->addSuccessMessage('Role created.');
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
+            }
+        } else {
+            $this->referer()->store();
+        }
 
         return $view;
     }

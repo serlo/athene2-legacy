@@ -24,7 +24,7 @@ return [
             ]
         ],
         'assertion_map'     => [
-            'authorization.identity.grant.role' => 'Authorization\Assertion\RoleAssertion',
+            'authorization.identity.grant.role'  => 'Authorization\Assertion\RoleAssertion',
             'authorization.identity.revoke.role' => 'Authorization\Assertion\RoleAssertion',
         ]
     ],
@@ -34,6 +34,7 @@ return [
             'Authorization\Service\PermissionService'  => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
             'ZfcRbac\Service\AuthorizationService'     => __NAMESPACE__ . '\Factory\AuthorizationServiceFactory',
             'ZfcRbac\Assertion\AssertionPluginManager' => __NAMESPACE__ . '\Factory\AssertionPluginManagerFactory',
+            'Authorization\Form\RoleForm'              => __NAMESPACE__ . '\Factory\RoleFormFactory',
         ]
     ],
     'controller_plugins' => [
@@ -94,12 +95,12 @@ return [
                                     ]
                                 ]
                             ],
-                            'create'       => [
+                            'create'     => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route'    => '/create',
                                     'defaults' => [
-                                        'action' => 'create'
+                                        'action' => 'createRole'
                                     ]
                                 ]
                             ],

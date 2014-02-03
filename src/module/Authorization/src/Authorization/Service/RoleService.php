@@ -13,14 +13,15 @@ namespace Authorization\Service;
 use Authorization\Exception\RoleNotFoundException;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
-use Common\ObjectManager\Flushable;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Persistence\ObjectManager;
+use User\Entity\Role;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
+use Zend\Form\FormInterface;
 use ZfcRbac\Service\AuthorizationService;
 
-class RoleService implements RoleServiceInterface, Flushable
+class RoleService implements RoleServiceInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait, UserManagerAwareTrait, PermissionServiceAwareTrait,
         AuthorizationAssertionTrait;
@@ -48,12 +49,15 @@ class RoleService implements RoleServiceInterface, Flushable
         return $this->getObjectManager()->getRepository($className)->findAll();
     }
 
-    public function findRoleByName($name){
+    public function findRoleByName($name)
+    {
         $className = $this->getClassResolver()->resolveClassName($this->interface);
 
-        return $this->getObjectManager()->getRepository($className)->findOneBy([
-            'name' => $name
-        ]);
+        return $this->getObjectManager()->getRepository($className)->findOneBy(
+            [
+                'name' => $name
+            ]
+        );
     }
 
     public function getRole($id)
@@ -66,6 +70,22 @@ class RoleService implements RoleServiceInterface, Flushable
         }
 
         return $role;
+    }
+
+    public function createRole(FormInterface $form)
+    {
+        $this->assertGranted('authorization.role.create');
+        
+        $data = $form->getData();
+
+        $form->bind(new Role());
+        $form->setData($data);
+
+        if ($form->isValid()) {
+            $this->objectManager->persist($form->getObject());
+        }
+
+        return $form->getObject();
     }
 
     public function grantRolePermission($roleId, $permissionId)

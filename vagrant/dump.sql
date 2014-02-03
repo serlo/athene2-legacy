@@ -1797,6 +1797,8 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (15, 15, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (90, 90, NULL);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (91, 91, NULL);
 
 COMMIT;
 
@@ -1893,6 +1895,8 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 88
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 89);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 14);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 15);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 90);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 91);
 
 COMMIT;
 

@@ -10,10 +10,49 @@
  */
 namespace Authorization\Form;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class RoleForm extends Form
 {
-    
+    public function __construct(ObjectManager $objectManager)
+    {
+        parent::__construct('role');
+
+        $inputFilter = new InputFilter();
+
+        $this->setInputFilter($inputFilter);
+        $this->setHydrator(new DoctrineHydrator($objectManager));
+
+        $this->add(
+            array(
+                'type'    => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+                'name'    => 'children',
+                'options' => array(
+                    'label'          => 'Select Children',
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'User\Entity\Role',
+                    'property'       => 'name',
+                ),
+            )
+        );
+
+        $this->add((new Text('name'))->setLabel('Name:'));
+
+        $this->add(
+            (new Submit('submit'))->setValue('Add')->setAttribute('class', 'btn btn-success pull-right')
+        );
+
+        $inputFilter->add(
+            [
+                'name'     => 'name',
+                'required' => true
+            ]
+        );
+    }
 }
  
