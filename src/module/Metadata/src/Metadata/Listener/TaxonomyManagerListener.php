@@ -16,6 +16,7 @@ use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Uuid\Entity\UuidEntity;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class TaxonomyManagerListener extends AbstractListener
 {
@@ -64,9 +65,9 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'create',
             array(
@@ -75,7 +76,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+         $events->attach(
             $this->getMonitoredClass(),
             'update',
             array(
@@ -84,7 +85,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'associate',
             array(
@@ -93,7 +94,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        events->attach(
             $this->getMonitoredClass(),
             'dissociate',
             array(
@@ -123,7 +124,7 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
-    protected function removeMetdata($object, TaxonomyTermInterface $term)
+    protected function removeMetadata($object, TaxonomyTermInterface $term)
     {
         while ($term->hasParent()) {
             try {
