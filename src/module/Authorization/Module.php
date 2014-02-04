@@ -10,16 +10,13 @@
  */
 namespace Authorization;
 
+use Zend\EventManager\EventInterface;
+
 class Module
 {
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [
@@ -37,5 +34,19 @@ class Module
         }
 
         return $autoloader;
+    }
+
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function onBootstrap(EventInterface $e)
+    {
+        $t = $e->getTarget();
+
+        $t->getEventManager()->attach(
+            $t->getServiceManager()->get('ZfcRbac\View\Strategy\RedirectStrategy')
+        );
     }
 }

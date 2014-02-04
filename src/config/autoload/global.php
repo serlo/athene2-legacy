@@ -74,4 +74,12 @@ return array(
         'port' => 9306
     ),
     'zendDiCompiler'     => array(),
+    'zfc_rbac'           => [
+        'redirect_strategy' => [
+            'redirect_to_route_connected'    => 'home',
+            'redirect_to_route_disconnected' => 'authentication/login',
+            'append_previous_uri'            => true,
+            'previous_uri_query_key'         => 'redirectTo'
+        ]
+    ]
 );
