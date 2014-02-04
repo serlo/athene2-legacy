@@ -76,26 +76,33 @@ class BlogManager implements BlogManagerInterface
         $this->assertGranted('blog.post.update', $post);
         if ($form->isValid()) {
             $this->objectManager->persist($post);
+
+            return true;
         }
+
+        return false;
     }
 
     public function createPost(FormInterface $form)
     {
         $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
 
-        $data = $form->getData();
-        $form->bind($post);
-        $form->setData($data);
 
-        if($form->isValid()){
-            $this->assertGranted('blog.post.create', $post);
-            $this->getUuidManager()->injectUuid($post);
-            $category = $post->getBlog();
-            $this->getTaxonomyManager()->associateWith($category->getId(), 'blogPosts', $post);
-            $this->getObjectManager()->persist($post);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $form->bind($post);
+            $form->setData($data);
+            if ($form->isValid()) {
+                $this->assertGranted('blog.post.create', $post);
+                $this->getUuidManager()->injectUuid($post);
+                $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
+                $this->getObjectManager()->persist($post);
+
+                return $post;
+            }
         }
 
-        return $post;
+        return false;
     }
 
     public function flush()

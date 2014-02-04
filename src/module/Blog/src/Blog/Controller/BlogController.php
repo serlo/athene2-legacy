@@ -10,7 +10,8 @@
  */
 namespace Blog\Controller;
 
-use Blog\Form\PostForm;
+use Blog\Form\CreatePostForm;
+use Blog\Form\UpdatePostForm;
 use Blog\Manager\BlogManagerAwareTrait;
 use Blog\Manager\BlogManagerInterface;
 use DateTime;
@@ -26,39 +27,49 @@ class BlogController extends AbstractActionController
     use BlogManagerAwareTrait, UserManagerAwareTrait;
     use InstanceManagerAwareTrait;
 
+    /**
+     * @var CreatePostForm
+     */
+    protected $createPostForm;
+
+    /**
+     * @var UpdatePostForm
+     */
+    protected $updatePostForm;
+
     public function __construct(
         BlogManagerInterface $blogManager,
         InstanceManagerInterface $instanceManager,
         UserManagerInterface $userManager,
-        PostForm $postForm
+        CreatePostForm $createPostForm,
+        UpdatePostForm $updatePostForm
     ) {
         $this->blogManager     = $blogManager;
         $this->instanceManager = $instanceManager;
         $this->userManager     = $userManager;
-        $this->postForm        = $postForm;
+        $this->createPostForm  = $createPostForm;
+        $this->updatePostForm  = $updatePostForm;
     }
 
     public function createAction()
     {
         $blog     = $this->getBlogManager()->getBlog($this->params('id'));
         $identity = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        //$this->assertGranted('blog.post.create', $blog);
+        $this->assertGranted('blog.post.create', $blog);
 
-        $form = $this->postForm;
+        $form = $this->createPostForm;
 
         if ($this->getRequest()->isPost()) {
-            $data             = $this->params()->fromPost();
-            $data['blog']     = $blog;
-            $data['author']   = $identity;
-            $data['instance'] = $instance;
-
+            $data = array_merge(
+                $this->params()->fromPost(), [
+                    'blog'     => $blog,
+                    'author'   => $identity,
+                    'instance' => $blog->getInstance()
+                ]
+            );
             $form->setData($data);
 
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                $this->getBlogManager()->createPost($form);
+            if ($this->getBlogManager()->createPost($form) !== false) {
                 $this->getBlogManager()->flush();
                 $this->redirect()->toRoute('blog/view', ['id' => $this->params('id')]);
             }
@@ -105,42 +116,22 @@ class BlogController extends AbstractActionController
     public function updateAction()
     {
         $post = $this->getBlogManager()->getPost($this->params('post'));
+        $form = $this->updatePostForm;
+
         $this->assertGranted('blog.post.update', $post);
-
-        $form = new PostForm();
-
-        $form->setData(
-            array(
-                'title'   => $post->getTitle(),
-                'content' => $post->getContent(),
-                'publish' => $post->getPublish()->format('d.m.Y')
-            )
-        );
+        $form->bind($post);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
-            if ($form->isValid()) {
-                $data    = $form->getData();
-                $publish = $this->toDateTime($data['publish']);
 
-                $this->getBlogManager()->updatePost($post->getId(), $data['title'], $data['content'], $publish);
+            if ($this->getBlogManager()->updatePost($form)) {
                 $this->getBlogManager()->flush();
-
-                $this->redirect()->toRoute(
-                    'blog/post/view',
-                    array(
-                        'post' => $this->params('post')
-                    )
-                );
+                $this->redirect()->toRoute('blog/post/view', ['post' => $this->params('post')]);
             }
         }
 
-        $view = new ViewModel(array(
-            'post' => $post,
-            'form' => $form
-        ));
-
+        $view = new ViewModel(['post' => $post, 'form' => $form]);
         $view->setTemplate('blog/blog/post/update');
         $this->layout('athene2-editor');
 

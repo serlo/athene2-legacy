@@ -14,6 +14,7 @@ use Blog\Entity\PostInterface;
 use ClassResolver\ClassResolverAwareTrait;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use User\Entity\UserInterface;
 use Zend\Form\FormInterface;
 
 interface BlogManagerInterface
@@ -51,8 +52,8 @@ interface BlogManagerInterface
     public function updatePost(FormInterface $form);
 
     /**
-     * @param FormInterface $form
-     * @return PostInterface
+     * @param FormInterface         $form
+     * @return PostInterface|false
      */
     public function createPost(FormInterface $form);
 }

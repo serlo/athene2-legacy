@@ -12,13 +12,14 @@ namespace Blog\Form;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use Zend\Form\Element\DateTime;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class PostForm extends Form
+class UpdatePostForm extends Form
 {
 
     function __construct(ObjectManager $objectManager)
@@ -37,28 +38,6 @@ class PostForm extends Form
         $this->add(
             array(
                 'type'    => 'Common\Form\Element\ObjectHidden',
-                'name'    => 'blog',
-                'options' => array(
-                    'object_manager' => $objectManager,
-                    'target_class'   => 'Taxonomy\Entity\TaxonomyTerm'
-                )
-            )
-        );
-
-        $this->add(
-            array(
-                'type'    => 'Common\Form\Element\ObjectHidden',
-                'name'    => 'instance',
-                'options' => array(
-                    'object_manager' => $objectManager,
-                    'target_class'   => 'Instance\Entity\Instance'
-                )
-            )
-        );
-
-        $this->add(
-            array(
-                'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'author',
                 'options' => array(
                     'object_manager' => $objectManager,
@@ -70,7 +49,7 @@ class PostForm extends Form
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
-            (new Text('publish'))->setAttribute('id', 'publish')->setLabel('Publish date:')->setAttribute(
+            (new DateTime('publish'))->setAttribute('id', 'publish')->setLabel('Publish date:')->setAttribute(
                 'class',
                 'datepicker'
             )
@@ -86,6 +65,13 @@ class PostForm extends Form
                         'name' => 'HtmlEntities'
                     )
                 )
+            )
+        );
+
+        $inputFilter->add(
+            array(
+                'name'     => 'author',
+                'required' => true
             )
         );
 
