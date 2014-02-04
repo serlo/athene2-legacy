@@ -21,5 +21,11 @@
 }
 
 .is-light {
-    fot-weight: light;
+    font-weight: light;
+}
+
+.is-alpha-list {
+    > li {
+        list-style: lower-alpha;
+    }
 }
