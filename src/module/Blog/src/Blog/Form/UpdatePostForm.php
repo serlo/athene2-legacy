@@ -12,7 +12,7 @@ namespace Blog\Form;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Zend\Form\Element\DateTime;
+use Zend\Form\Element\DateTimeLocal;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -49,10 +49,7 @@ class UpdatePostForm extends Form
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
-            (new DateTime('publish'))->setAttribute('id', 'publish')->setLabel('Publish date:')->setAttribute(
-                'class',
-                'datepicker'
-            )
+            (new DateTimeLocal('publish'))->setAttribute('id', 'publish')->setLabel('Publish date:')
         );
         $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
 

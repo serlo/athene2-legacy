@@ -14,6 +14,41 @@ use Instance\Entity\InstanceProviderInterface;
 
 interface TaxonomyTermInterface extends InstanceProviderInterface
 {
+    /**
+     * @param string                     $association
+     * @param TaxonomyTermAwareInterface $object
+     * @return self
+     */
+    public function associateObject($association, TaxonomyTermAwareInterface $object);
+
+    /**
+     * @param string $association
+     * @return int
+     */
+    public function countAssociations($association);
+
+    /**
+     * @param string $name
+     * @return TaxonomyTermModelInterface
+     */
+    public function findAncestorByTypeName($name);
+
+    /**
+     * @param array $slugs
+     * @return self
+     */
+    public function findChildBySlugs(array $slugs);
+
+    /**
+     * @param string $association
+     * @return TaxonomyTermAwareInterface[]
+     */
+    public function getAssociated($association);
+
+    /**
+     * @return Collection
+     */
+    public function getChildren();
 
     /**
      * @return string
@@ -21,14 +56,29 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function getDescription();
 
     /**
-     * @return bool
+     * @return int
      */
-    public function hasParent();
+    public function getId();
 
     /**
-     * @return bool
+     * @return string
      */
-    public function hasChildren();
+    public function getName();
+
+    /**
+     * @return self
+     */
+    public function getParent();
+
+    /**
+     * @return int
+     */
+    public function getPosition();
+
+    /**
+     * @return string
+     */
+    public function getSlug();
 
     /**
      * @return TaxonomyInterface
@@ -41,41 +91,14 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function getType();
 
     /**
-     * @return Collection
+     * @return bool
      */
-    public function getChildren();
+    public function hasChildren();
 
     /**
-     * @return self
+     * @return bool
      */
-    public function getParent();
-
-    /**
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @return string
-     */
-    public function getSlug();
-
-    /**
-     * @return int
-     */
-    public function getPosition();
-
-    /**
-     * @param string $association
-     * @return TaxonomyTermAwareInterface[]
-     */
-    public function getAssociated($association);
-
-    /**
-     * @param string $association
-     * @return int
-     */
-    public function countAssociations($association);
+    public function hasParent();
 
     /**
      * @param string                     $association
@@ -85,11 +108,10 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function isAssociated($association, TaxonomyTermAwareInterface $object);
 
     /**
-     * @param string                     $association
-     * @param TaxonomyTermAwareInterface $object
-     * @return self
+     * @param self $ancestor
+     * @return bool
      */
-    public function associateObject($association, TaxonomyTermAwareInterface $object);
+    public function knowsAncestor(self $ancestor);
 
     /**
      * @param string $association
@@ -105,12 +127,6 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
      * @return self
      */
     public function removeAssociation($field, TaxonomyTermAwareInterface $object);
-
-    /**
-     * @param TaxonomyInterface $taxonomy
-     * @return self
-     */
-    public function setTaxonomy(TaxonomyInterface $taxonomy);
 
     /**
      * @param string $description
@@ -131,22 +147,10 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function setPosition($position);
 
     /**
-     * @param string $name
-     * @return TaxonomyTermModelInterface
-     */
-    public function findAncestorByTypeName($name);
-
-    /**
-     * @param array $slugs
+     * @param TaxonomyInterface $taxonomy
      * @return self
      */
-    public function findChildBySlugs(array $slugs);
-
-    /**
-     * @param self $ancestor
-     * @return bool
-     */
-    public function knowsAncestor(self $ancestor);
+    public function setTaxonomy(TaxonomyInterface $taxonomy);
 
     /**
      * @param string $stopAtType
