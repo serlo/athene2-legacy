@@ -9,5 +9,5 @@
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 ?>
-<?php echo $this->pageHeader('Update a blog post')->setSubtitle($this->blog->getName())->render(); ?>
+<?php echo $this->pageHeader('Update a blog post')->setSubtitle($this->post->getBlog()->getName())->render(); ?>
 <?php echo $this->form()->render($this->form); ?>
