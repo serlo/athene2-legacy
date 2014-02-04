@@ -47,7 +47,7 @@ class AuthenticationController extends AbstractActionController
                 $user = $this->getUserManager()->findUserByToken($this->params('token'));
                 $role = $this->getRoleService()->findRoleByName('login');
 
-                if(!$user->hasRole($role)){
+                if (!$user->hasRole($role)) {
                     $user->addRole($role);
                 }
 
@@ -171,10 +171,12 @@ class AuthenticationController extends AbstractActionController
                     $this->getUserManager()->persist($user);
                     $this->getUserManager()->flush();
 
-                    return $this->redirect()->toUrl($this->params('ref', '/'));
+                    return $this->redirect()->toUrl($this->params()->fromQuery('redir', $this->referer()->fromStorage()));
                 }
                 $messages = $result->getMessages();
             }
+        } else {
+            $this->referer()->store();
         }
 
         $view = new ViewModel(array(

@@ -11,14 +11,69 @@
 namespace Blog\Controller;
 
 use Blog\Form\PostForm;
+use Blog\Manager\BlogManagerAwareTrait;
+use Blog\Manager\BlogManagerInterface;
 use DateTime;
+use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
+use User\Manager\UserManagerAwareTrait;
+use User\Manager\UserManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class BlogController extends AbstractActionController
 {
-    use\Blog\Manager\BlogManagerAwareTrait, \User\Manager\UserManagerAwareTrait,
-        \Instance\Manager\InstanceManagerAwareTrait;
+    use BlogManagerAwareTrait, UserManagerAwareTrait;
+    use InstanceManagerAwareTrait;
+
+    public function __construct(
+        BlogManagerInterface $blogManager,
+        InstanceManagerInterface $instanceManager,
+        UserManagerInterface $userManager,
+        PostForm $postForm
+    ) {
+        $this->blogManager     = $blogManager;
+        $this->instanceManager = $instanceManager;
+        $this->userManager     = $userManager;
+        $this->postForm        = $postForm;
+    }
+
+    public function createAction()
+    {
+        $blog     = $this->getBlogManager()->getBlog($this->params('id'));
+        $identity = $this->getUserManager()->getUserFromAuthenticator();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        //$this->assertGranted('blog.post.create', $blog);
+
+        $form = $this->postForm;
+
+        if ($this->getRequest()->isPost()) {
+            $data             = $this->params()->fromPost();
+            $data['blog']     = $blog;
+            $data['author']   = $identity;
+            $data['instance'] = $instance;
+
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $this->getBlogManager()->createPost($form);
+                $this->getBlogManager()->flush();
+                $this->redirect()->toRoute('blog/view', ['id' => $this->params('id')]);
+            }
+        }
+
+        $view = new ViewModel(array(
+            'blog' => $blog,
+            'form' => $form
+        ));
+
+        $view->setTemplate('blog/blog/post/create');
+        $this->layout('athene2-editor');
+
+        return $view;
+    }
 
     public function indexAction()
     {
@@ -31,60 +86,6 @@ class BlogController extends AbstractActionController
         ));
 
         $view->setTemplate('blog/blog/blogs');
-
-        return $view;
-    }
-
-    public function viewPostAction()
-    {
-        $post = $this->getBlogManager()->getPost($this->params('post'));
-
-        $view = new ViewModel(array(
-            'blog' => $post->getBlog(),
-            'post' => $post
-        ));
-
-        $view->setTemplate('blog/blog/post/view');
-
-        return $view;
-    }
-
-    public function viewAllAction()
-    {
-        $blog = $this->getBlogManager()->getBlog($this->params('id'));
-        $this->assertGranted('blog.posts.view_all', $blog);
-
-        $posts = $blog->getAssociated('blogPosts')->filter(
-            function ($e) {
-                return !$e->isPublished() && !$e->isTrashed();
-            }
-        );
-
-        $view = new ViewModel(array(
-            'blog'  => $blog,
-            'posts' => $posts
-        ));
-
-        $view->setTemplate('blog/blog/view-all');
-
-        return $view;
-    }
-
-    public function viewAction()
-    {
-        $blog  = $this->getBlogManager()->getBlog($this->params('id'));
-        $posts = $blog->getAssociated('blogPosts')->filter(
-            function ($e) {
-                return $e->isPublished() && !$e->isTrashed();
-            }
-        );
-
-        $view = new ViewModel(array(
-            'blog'  => $blog,
-            'posts' => $posts
-        ));
-
-        $view->setTemplate('blog/blog/view');
 
         return $view;
     }
@@ -107,13 +108,15 @@ class BlogController extends AbstractActionController
         $this->assertGranted('blog.post.update', $post);
 
         $form = new PostForm();
-        
-        $form->setData(array(
-            'title' => $post->getTitle(),
-            'content' => $post->getContent(),
-            'publish' => $post->getPublish()->format('d.m.Y')
-        ));
-        
+
+        $form->setData(
+            array(
+                'title'   => $post->getTitle(),
+                'content' => $post->getContent(),
+                'publish' => $post->getPublish()->format('d.m.Y')
+            )
+        );
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
@@ -144,45 +147,6 @@ class BlogController extends AbstractActionController
         return $view;
     }
 
-    public function createAction()
-    {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $this->assertGranted('blog.post.create', $instance);
-
-        $blog = $this->getBlogManager()->getBlog($this->params('id'));
-
-        $form = new PostForm();
-
-        if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data    = $form->getData();
-                $author  = $this->getUserManager()->getUserFromAuthenticator();
-                $publish = $this->toDateTime($data['publish']);
-
-                $this->getBlogManager()->createPost($blog, $author, $data['title'], $data['content'], $publish);
-                $this->getBlogManager()->flush();
-                $this->redirect()->toRoute(
-                    'blog/view',
-                    array(
-                        'id' => $this->params('id')
-                    )
-                );
-            }
-        }
-
-        $view = new ViewModel(array(
-            'blog' => $blog,
-            'form' => $form
-        ));
-
-        $view->setTemplate('blog/blog/post/create');
-        $this->layout('athene2-editor');
-
-        return $view;
-    }
-
     protected function toDateTime($publish = null)
     {
         if ($publish) {
@@ -192,5 +156,59 @@ class BlogController extends AbstractActionController
         } else {
             return new DateTime();
         }
+    }
+
+    public function viewAction()
+    {
+        $blog  = $this->getBlogManager()->getBlog($this->params('id'));
+        $posts = $blog->getAssociated('blogPosts')->filter(
+            function ($e) {
+                return $e->isPublished() && !$e->isTrashed();
+            }
+        );
+
+        $view = new ViewModel(array(
+            'blog'  => $blog,
+            'posts' => $posts
+        ));
+
+        $view->setTemplate('blog/blog/view');
+
+        return $view;
+    }
+
+    public function viewAllAction()
+    {
+        $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        $this->assertGranted('blog.posts.view_all', $blog);
+
+        $posts = $blog->getAssociated('blogPosts')->filter(
+            function ($e) {
+                return !$e->isPublished() && !$e->isTrashed();
+            }
+        );
+
+        $view = new ViewModel(array(
+            'blog'  => $blog,
+            'posts' => $posts
+        ));
+
+        $view->setTemplate('blog/blog/view-all');
+
+        return $view;
+    }
+
+    public function viewPostAction()
+    {
+        $post = $this->getBlogManager()->getPost($this->params('post'));
+
+        $view = new ViewModel(array(
+            'blog' => $post->getBlog(),
+            'post' => $post
+        ));
+
+        $view->setTemplate('blog/blog/post/view');
+
+        return $view;
     }
 }

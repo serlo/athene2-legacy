@@ -97,7 +97,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
             $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyInterface');
             $entity->setInstance($instance);
             $entity->setType($type);
-            $this->getObjectManager()->persist($entity);
+
+            if($this->getObjectManager()->isOpen()){
+                // todo: use entitymanager
+                $this->getObjectManager()->persist($entity);
+            }
         }
 
         return $entity;

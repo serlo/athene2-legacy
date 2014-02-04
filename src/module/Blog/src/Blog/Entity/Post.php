@@ -48,7 +48,7 @@ class Post extends UuidEntity implements PostInterface
      * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    protected $category;
+    protected $blog;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -83,7 +83,7 @@ class Post extends UuidEntity implements PostInterface
 
     public function getBlog()
     {
-        return $this->category;
+        return $this->blog;
     }
 
     public function getTitle()
@@ -115,7 +115,7 @@ class Post extends UuidEntity implements PostInterface
 
     public function setBlog(TaxonomyTermInterface $category)
     {
-        $this->category = $category;
+        $this->blog = $category;
 
         return $this;
     }

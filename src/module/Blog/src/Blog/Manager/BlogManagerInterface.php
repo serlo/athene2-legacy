@@ -12,10 +12,9 @@ namespace Blog\Manager;
 
 use Blog\Entity\PostInterface;
 use ClassResolver\ClassResolverAwareTrait;
-use DateTime;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use User\Entity\UserInterface;
+use Zend\Form\FormInterface;
 
 interface BlogManagerInterface
 {
@@ -46,26 +45,14 @@ interface BlogManagerInterface
     public function getPost($id);
 
     /**
-     * @param int      $id
-     * @param string   $title
-     * @param string   $content
-     * @param DateTime $publish
-     * @return self
+     * @param FormInterface $form
+     * @return void
      */
-    public function updatePost($id, $title, $content, DateTime $publish = null);
+    public function updatePost(FormInterface $form);
 
     /**
-     * @param int      $id
-     * @param string   $title
-     * @param string   $content
-     * @param DateTime $publish
+     * @param FormInterface $form
      * @return PostInterface
      */
-    public function createPost(
-        TaxonomyTermInterface $taxonomy,
-        UserInterface $author,
-        $title,
-        $content,
-        DateTime $publish = null
-    );
+    public function createPost(FormInterface $form);
 }

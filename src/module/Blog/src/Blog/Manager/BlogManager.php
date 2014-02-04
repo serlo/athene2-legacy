@@ -16,16 +16,14 @@ use Blog\Hydrator\PostHydrator;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
-use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
-use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
-use User\Entity\UserInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
+use Zend\Form\FormInterface;
 use ZfcRbac\Service\AuthorizationService;
 
 class BlogManager implements BlogManagerInterface
@@ -72,6 +70,39 @@ class BlogManager implements BlogManagerInterface
         return $post;
     }
 
+    public function updatePost(FormInterface $form)
+    {
+        $post = $form->getObject();
+        $this->assertGranted('blog.post.update', $post);
+        if ($form->isValid()) {
+            $this->objectManager->persist($post);
+        }
+    }
+
+    public function createPost(FormInterface $form)
+    {
+        $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
+
+        $data = $form->getData();
+        $form->bind($post);
+        $form->setData($data);
+
+        if($form->isValid()){
+            $this->assertGranted('blog.post.create', $post);
+            $this->getUuidManager()->injectUuid($post);
+            $category = $post->getBlog();
+            $this->getTaxonomyManager()->associateWith($category->getId(), 'blogPosts', $post);
+            $this->getObjectManager()->persist($post);
+        }
+
+        return $post;
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+    }
+
     public function trashPost($id)
     {
         $post = $this->getPost($id);
@@ -80,68 +111,6 @@ class BlogManager implements BlogManagerInterface
 
         $post->setTrashed(true);
         $this->getObjectManager()->persist($post);
-
-        return $this;
-    }
-
-    public function updatePost($id, $title, $content, DateTime $publish = null)
-    {
-        $post = $this->getPost($id);
-
-        $this->assertGranted('blog.post.update', $post);
-
-        $hydrator = new PostHydrator();
-        $hydrator->hydrate(
-            [
-                'title'   => $title,
-                'content' => $content,
-                'publish' => $publish
-            ],
-            $post
-        );
-
-        $this->getObjectManager()->persist($post);
-
-        return $this;
-    }
-
-    public function createPost(
-        TaxonomyTermInterface $taxonomy,
-        UserInterface $author,
-        $title,
-        $content,
-        DateTime $publish = null
-    ) {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $this->assertGranted('blog.post.create', $instance);
-
-        /* @var $post PostInterface */
-        $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
-        $this->getUuidManager()->injectUuid($post);
-
-        $hydrator = new PostHydrator();
-        $hydrator->hydrate(
-            [
-                'author'   => $author,
-                'title'    => $title,
-                'content'  => $content,
-                'publish'  => $publish ? $publish : new DateTime(),
-                'instance' => $instance
-            ],
-            $post
-        );
-
-        $this->getTaxonomyManager()->associateWith($taxonomy->getId(), 'blogPosts', $post);
-
-        $this->getObjectManager()->persist($post);
-        $this->getObjectManager()->persist($taxonomy);
-
-        return $post;
-    }
-
-    public function flush()
-    {
-        $this->getObjectManager()->flush();
 
         return $this;
     }

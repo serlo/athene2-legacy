@@ -10,6 +10,8 @@
  */
 namespace Blog\Form;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -19,12 +21,51 @@ use Zend\InputFilter\InputFilter;
 class PostForm extends Form
 {
 
-    function __construct()
+    function __construct(ObjectManager $objectManager)
     {
         parent::__construct('post');
+
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
+
+        $hydrator    = new DoctrineHydrator($objectManager);
         $inputFilter = new InputFilter('post');
+
+        $this->setInputFilter($inputFilter);
+        $this->setHydrator($hydrator);
+
+        $this->add(
+            array(
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'blog',
+                'options' => array(
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'Taxonomy\Entity\TaxonomyTerm'
+                )
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'instance',
+                'options' => array(
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'Instance\Entity\Instance'
+                )
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'author',
+                'options' => array(
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'User\Entity\User'
+                )
+            )
+        );
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
@@ -54,7 +95,5 @@ class PostForm extends Form
                 'required' => true
             )
         );
-
-        $this->setInputFilter($inputFilter);
     }
 }

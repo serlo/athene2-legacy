@@ -15,8 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\UuidEntity;
 
@@ -91,7 +91,7 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
     protected $termTaxonomyEntities;
 
     /**
-     * @ORM\OneToMany(targetEntity="Blog\Entity\Post",mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Blog\Entity\Post",mappedBy="blog")
      * @ORM\OrderBy({"id"="DESC"})
      */
     protected $blogPosts;

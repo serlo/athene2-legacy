@@ -47,16 +47,9 @@ return [
         ],
         'definition'          => [
             'class' => [
+                __NAMESPACE__ . '\Form\PostForm' => [
+                ],
                 __NAMESPACE__ . '\Controller\BlogController' => [
-                    'setBlogManager'     => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
                 ],
                 __NAMESPACE__ . '\Manager\BlogManager'       => [
                     'setTaxonomyManager'      => [
