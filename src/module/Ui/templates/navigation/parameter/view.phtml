@@ -1,1 +1,33 @@
-<?php
+<?php /* @var $parameter \Navigation\Entity\ParameterInterface */ ?>
+<?php $parameter = $this->parameter; ?>
+<?php /* @var $page \Navigation\Entity\PageInterface */ ?>
+<?php $page = $this->page; ?>
+<div class="clearfix">
+    <div class="btn-group pull-right">
+        <a class="btn btn-xs btn-default"
+           href="<?php echo $this->url('navigation/parameter/create',
+               ['page' => $page->getId(), 'parent' => $parameter->getId()]); ?>">
+            <span class="glyphicon glyphicon-plus"></span></a>
+        <a class="btn btn-xs btn-default"
+           href="<?php echo $this->url('navigation/parameter/update', ['parameter' => $parameter->getId()]); ?>">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+        <a class="btn btn-xs btn-danger"
+           href="<?php echo $this->url('navigation/parameter/remove', ['parameter' => $parameter->getId()]); ?>">
+            <span class="glyphicon glyphicon-trash"></span>
+        </a>
+    </div>
+    <span class="label label-primary"><?php echo $parameter->getKey(); ?></span>
+<?php if ($parameter->hasChildren()): ?>
+    </div>
+    <ul class="list-group">
+        <?php foreach ($parameter->getChildren() as $child): ?>
+            <li class="list-group-item">
+                <?php echo $this->partial('navigation/parameter/view', ['parameter' => $child, 'page' => $page]); ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <?php echo $parameter->getValue(); ?>
+    </div>
+<?php endif; ?>

@@ -71,4 +71,15 @@ interface ParameterInterface
      * @return void
      */
     public function setValue($value);
+
+    /**
+     * @return ParameterInterface
+     */
+    public function getParent();
+
+    /**
+     * @param ParameterInterface $parent
+     * @return void
+     */
+    public function setParent(ParameterInterface $parent);
 }
