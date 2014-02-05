@@ -1506,16 +1506,16 @@ INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (7, 'module');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (8, 'module-page');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (9, 'link');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (10, 'dependency');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (11, 'abstract-topic');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (12, 'topic');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (11, 'topic');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (12, 'topic-folder');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (13, 'subject');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (14, 'curriculum');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (15, 'school-type');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (15, 'locale');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (16, 'curriculum-folder');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (17, 'root');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (18, 'forum-category');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (19, 'forum');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (20, 'topic-folder');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (20, 'topic-final-folder');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (21, 'blog');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (22, 'spam');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (23, 'offensive');
@@ -1529,6 +1529,7 @@ INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (30, 'footer');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (31, 'top-center');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (32, 'top-left');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (33, 'top-right');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (34, 'curriculum-final-folder');
 
 COMMIT;
 

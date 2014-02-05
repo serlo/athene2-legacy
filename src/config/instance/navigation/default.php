@@ -66,6 +66,11 @@ return [
                         ]
                     ],
                     [
+                        'label' => 'Navigation',
+                        'icon'  => 'list-alt',
+                        'route'   => 'navigation/manage',
+                    ],
+                    [
                         'label' => 'Users',
                         'icon'  => 'user',
                         'route' => 'users',

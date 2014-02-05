@@ -12,25 +12,46 @@ namespace Navigation\Form;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as ObjectHydrator;
-use Zend\Form\Element\Hidden;
+use Navigation\Manager\NavigationManagerInterface;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
 class ContainerForm extends Form
 {
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, NavigationManagerInterface $navigationManager)
     {
         parent::__construct('container');
 
         $hydrator = new ObjectHydrator($entityManager);
         $filter   = new InputFilter();
+        $types    = [];
+
+        foreach ($navigationManager->getTypes() as $type) {
+            $types[$type->getId()] = $type->getName();
+        }
 
         $this->setHydrator($hydrator);
         $this->setInputFilter($filter);
 
-        $this->add((new Hidden('type')));
-        $this->add((new Hidden('instance')));
+        $this->add(
+            (new Select('type'))->setLabel('Type:')->setOptions(
+                array(
+                    'value_options' => $types
+                )
+            )
+        );
+        $this->add(
+            array(
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'instance',
+                'options' => array(
+                    'object_manager' => $entityManager,
+                    'target_class'   => 'Navigation\Entity\Container'
+                )
+            )
+        );
 
         $this->add(
             (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')
@@ -39,20 +60,14 @@ class ContainerForm extends Form
         $filter->add(
             [
                 'name'     => 'type',
-                'required' => true,
-                'filters'  => [
-                    ['name' => 'Int'],
-                ],
+                'required' => true
             ]
         );
 
         $filter->add(
             [
                 'name'     => 'instance',
-                'required' => true,
-                'filters'  => [
-                    ['name' => 'Int'],
-                ],
+                'required' => true
             ]
         );
     }

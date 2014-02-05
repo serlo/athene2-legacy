@@ -10,8 +10,6 @@
  */
 namespace Subject;
 
-use Subject\View\Helper\SubjectHelper;
-
 return array(
     'navigation'      => array(
         'hydrateables' => array(
@@ -24,21 +22,14 @@ return array(
     ),
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Options\ModuleOptions'  => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
             __NAMESPACE__ . '\Manager\SubjectManager' => __NAMESPACE__ . '\Factory\SubjectManagerFactory',
-            __NAMESPACE__ . '\Hydrator\Navigation' => __NAMESPACE__ . '\Factory\NavigationFactory'
+            __NAMESPACE__ . '\Hydrator\Navigation'    => __NAMESPACE__ . '\Factory\NavigationFactory'
         ]
     ],
     'view_helpers'    => [
         'factories' => [
-            'subject' => function ($helperPluginManager) {
-                    $plugin = new SubjectHelper();
-                    $plugin->setModuleOptions(
-                        $helperPluginManager->getServiceLocator()->get('Subject\Options\ModuleOptions')
-                    );
-
-                    return $plugin;
-                }
+            'subject' => __NAMESPACE__ . '\Factory\SubjectHelperFactory'
         ]
     ],
     'term_router'     => array(
@@ -71,7 +62,16 @@ return array(
     ),
     'taxonomy'        => array(
         'types' => array(
-            'topic-folder'      => array(
+            'topic-final-folder'      => array(
+                'allowed_associations' => array(
+                    'entities'
+                ),
+                'allowed_parents'      => array(
+                    'topic-folder'
+                ),
+                'rootable'             => false
+            ),
+            'topic-folder'            => array(
                 'allowed_associations' => array(
                     'entities'
                 ),
@@ -80,47 +80,48 @@ return array(
                 ),
                 'rootable'             => false
             ),
-            'topic'             => array(
-                'allowed_associations' => array(
-                    'entities'
-                ),
-                'allowed_parents'      => array(
-                    'abstract-topic'
-                ),
-                'rootable'             => false
-            ),
-            'abstract-topic'    => array(
+            'topic'                   => array(
                 'allowed_parents' => array(
                     'subject',
-                    'abstract-topic'
+                    'topic'
                 ),
                 'rootable'        => false
             ),
-            'subject'           => array(
+            'subject'                 => array(
                 'allowed_parents' => array(
                     'root'
                 ),
                 'rootable'        => false
             ),
-            'school-type'       => array(
+            'locale'                  => array(
                 'allowed_parents' => array(
                     'subject',
-                    'school-type'
+                    'locale'
                 ),
                 'rootable'        => false
             ),
-            'curriculum'        => array(
+            'curriculum'              => array(
                 'allowed_parents' => array(
-                    'school-type'
+                    'subject',
+                    'locale'
                 ),
                 'rootable'        => false
             ),
-            'curriculum-folder' => array(
+            'curriculum-folder'       => array(
                 'allowed_associations' => array(
                     'entities'
                 ),
                 'allowed_parents'      => array(
                     'curriculum',
+                    'curriculum-folder'
+                ),
+                'rootable'             => false
+            ),
+            'curriculum-final-folder' => array(
+                'allowed_associations' => array(
+                    'entities'
+                ),
+                'allowed_parents'      => array(
                     'curriculum-folder'
                 ),
                 'rootable'             => false

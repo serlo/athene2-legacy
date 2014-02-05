@@ -1,11 +1,13 @@
 <?php echo $this->pageHeader('Manage navigation')->render(); ?>
-<ul>
+<div class="list-group">
     <?php /* @var $container \Navigation\Entity\ContainerInterface */ ?>
     <?php foreach ($this->containers as $container): ?>
-        <li>
-            <a href="<?php echo $this->url('navigation/container/get', ['container' => $container->getId()]); ?>">
-                <?php echo $container->getType()->getName(); ?>
-            </a>
-        </li>
+        <a class="list-group-item" href="<?php echo $this->url('navigation/container/get', ['container' => $container->getId()]); ?>">
+            <?php echo $container->getType()->getName(); ?>
+        </a>
     <?php endforeach ?>
-</ul>
+    <a class="list-group-item" href="<?php echo $this->url('navigation/container/create'); ?>">
+        <span class="glyphicon glyphicon-plus"></span>
+        <?php echo $this->translate('container'); ?>
+    </a>
+</div>

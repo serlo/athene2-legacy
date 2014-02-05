@@ -70,8 +70,7 @@ class NavigationManager implements NavigationManagerInterface
         'default',
         'footer',
         'top-center',
-        'top-left',
-        'top-right'
+        'top-left'
     ];
 
     public function __construct(

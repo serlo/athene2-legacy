@@ -71,24 +71,28 @@ class NavigationController extends AbstractActionController
 
     public function createContainerAction()
     {
-        $instance = $this->params('instance');
-        $this->assertGranted('navigation.manage', $this->instanceManager->getInstance($instance));
+        $form     = $this->containerForm;
+        $instance = $this->instanceManager->getInstanceFromRequest();
+        $this->assertGranted('navigation.manage', $instance);
 
-        $data = [
-            'type'     => $this->params('type'),
-            'instance' => $instance
-        ];
+        if ($this->getRequest()->isPost()) {
+            $data = array_merge($this->params()->fromPost(), ['instance' => $instance]);
+            $form->setData($data);
+            if ($form->isValid()) {
+                $this->navigationManager->createContainer($form);
+                $this->navigationManager->flush();
+                $this->flashMessenger()->addSuccessMessage('The container was successfully created');
 
-        $this->containerForm->setData($data);
-        if ($this->containerForm->isValid()) {
-            $this->navigationManager->createContainer($this->containerForm);
-            $this->navigationManager->flush();
-            $this->flashMessenger()->addSuccessMessage('The container was successfully created');
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
+            }
         } else {
-            $this->flashMessenger()->addErrorMessage('The container could not be created (validation failed)');
+            $this->referer()->store();
         }
 
-        return $this->redirect()->toReferer();
+        $view = new ViewModel(['form' => $form]);
+        $view->setTemplate('navigation/container/create');
+
+        return $view;
     }
 
     public function createPageAction()
@@ -170,7 +174,7 @@ class NavigationController extends AbstractActionController
         $container = $this->navigationManager->getContainer($this->params('container'));
         $this->assertGranted('navigation.manage', $container);
 
-        $view      = new ViewModel([
+        $view = new ViewModel([
             'container'    => $container,
             'positionForm' => $this->pageForm
         ]);
@@ -194,7 +198,7 @@ class NavigationController extends AbstractActionController
 
     public function indexAction()
     {
-        $instance   = $this->instanceManager->getInstanceFromRequest();
+        $instance = $this->instanceManager->getInstanceFromRequest();
         $this->assertGranted('navigation.manage', $instance);
 
         $containers = $this->navigationManager->findContainersByInstance($instance);

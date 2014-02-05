@@ -38,8 +38,9 @@ return [
                         'type' => 'subject'
                     ],
                     'types' => [
-                        'school-type',
-                        'curriculum'
+                        'locale',
+                        'curriculum',
+                        'curriculum-folder'
                     ],
                     'instance' => 'deutsch',
                     'route' => 'subject/taxonomy',
@@ -63,8 +64,8 @@ return [
                         'type' => 'subject'
                     ],
                     'types' => [
-                        'abstract-topic',
-                        'topic'
+                        'topic',
+                        'topic-folder'
                     ],
                     'instance' => 'deutsch',
                     'route' => 'subject/taxonomy',

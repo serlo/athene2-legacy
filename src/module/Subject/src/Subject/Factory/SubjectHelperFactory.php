@@ -8,29 +8,26 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Navigation\Factory;
+namespace Subject\Factory;
 
-use Common\Factory\EntityManagerFactoryTrait;
-use Navigation\Form\ContainerForm;
+use Subject\View\Helper\SubjectHelper;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ContainerFormFactory implements FactoryInterface
+class SubjectHelperFactory implements FactoryInterface
 {
-    use EntityManagerFactoryTrait, NavigationManagerFactoryTrait;
-
     /**
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return ContainerForm
+     * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $entityManager     = $this->getEntityManager($serviceLocator);
-        $navigationManager = $this->getNavigationManager($serviceLocator);
-        $form              = new ContainerForm($entityManager, $navigationManager);
+        $plugin        = new SubjectHelper();
+        $moduleOptions = $serviceLocator->getServiceLocator()->get('Subject\Options\ModuleOptions');
+        $plugin->setModuleOptions($moduleOptions);
 
-        return $form;
+        return $plugin;
     }
 }

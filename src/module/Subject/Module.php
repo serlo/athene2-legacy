@@ -1,13 +1,12 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Subject;
 
@@ -17,40 +16,42 @@ use Zend\Stdlib\ArrayUtils;
 class Module
 {
 
-    public function getInstanceConfig()
+    protected static function getInstanceConfigs()
     {
-        $dir = __DIR__ . '/config/instances';
-        $instances = array(
-            'de\mathe' => $dir . '/deutsch/mathe/instance.config.php',
-            'de\physik' => $dir . '/deutsch/physik/instance.config.php',
-            'de\permakultur' => $dir . '/deutsch/permakultur/instance.config.php',
-            'en\math' => $dir . '/english/math/instance.config.php',
-            'en\physics' => $dir . '/english/physics/instance.config.php'
-        );
-        $config = array();
-        foreach ($instances as $instance) {
-            $config = ArrayUtils::merge($config, include $instance);
+        $return = array();
+        $path   = self::findParentPath('config/instances');
+        $dir    = __DIR__ . '/';
+        if ($handle = opendir($path)) {
+            while (false !== ($file = readdir($handle))) {
+                echo $dir . $file . is_dir($dir . $file . '/') . '<br/>';
+                flush();
+                if ($file != "." && $file != ".." && is_dir($dir . $file)) {
+                    $return = ArrayUtils::merge($return, include $dir . $file . '/instance.config.php');
+                }
+            }
         }
-        return $config;
+
+        return $return;
     }
 
-    public function getConfig()
+    protected static function findParentPath($path)
     {
-        return ArrayUtils::merge(include __DIR__ . '/config/module.config.php', $this->getInstanceConfig());
-    }
+        $dir         = __DIR__ . '/';
+        $previousDir = '.';
+        while (!is_dir($dir . $path) && !file_exists($dir . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
 
-    public function onBootstrap(MvcEvent $e)
-    {
-        $app = $e->getTarget();
-        $serviceManager = $app->getServiceManager();
-        
-        $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
-        $hydrator->setPath(__DIR__ . '/config/instances/');
+        return $dir . $path;
     }
 
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [
@@ -64,39 +65,33 @@ class Module
                     __DIR__ . '/autoload_classmap.php',
                 ]
             ];
-
         }
 
         return $autoloader;
     }
 
-    protected static function getInstanceConfigs()
+    public function getConfig()
     {
-        $return = array();
-        $path = self::findParentPath('config/instances');
-        $dir = __DIR__ . '/';
-        if ($handle = opendir($path)) {
-            while (false !== ($file = readdir($handle))) {
-                echo $dir . $file . is_dir($dir . $file . '/') . '<br/>';
-                flush();
-                if ($file != "." && $file != ".." && is_dir($dir . $file)) {
-                    $return = ArrayUtils::merge($return, include $dir . $file . '/instance.config.php');
-                }
-            }
-        }
-        return $return;
+        return ArrayUtils::merge(include __DIR__ . '/config/module.config.php', $this->getInstanceConfig());
     }
 
-    protected static function findParentPath($path)
+    public function getInstanceConfig()
     {
-        $dir = __DIR__ . '/';
-        $previousDir = '.';
-        while (! is_dir($dir . $path) && ! file_exists($dir . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir)
-                return false;
-            $previousDir = $dir;
+        $instances = [__DIR__ . '/config/instances.config.php'];
+        $config    = array();
+        foreach ($instances as $instance) {
+            $config = ArrayUtils::merge($config, include $instance);
         }
-        return $dir . $path;
+
+        return $config;
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $app            = $e->getTarget();
+        $serviceManager = $app->getServiceManager();
+
+        $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
+        $hydrator->setPath(__DIR__ . '/config/instances/');
     }
 }

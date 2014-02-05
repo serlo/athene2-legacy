@@ -96,7 +96,7 @@ return [
                             'create' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route'    => '/create/:type/:instance',
+                                    'route'    => '/create',
                                     'defaults' => [
                                         'action' => 'createContainer'
                                     ]
