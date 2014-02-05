@@ -100,7 +100,7 @@ class Page implements PageInterface
      */
     public function getPosition()
     {
-        return (int) $this->position;
+        return (int)$this->position;
     }
 
     /**

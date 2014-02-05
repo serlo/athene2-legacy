@@ -151,4 +151,21 @@ class Parameter implements ParameterInterface
     {
         $this->children->removeElement($child);
     }
+
+    /**
+     * @return ParameterInterface
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param ParameterInterface $parent
+     * @return void
+     */
+    public function setParent(ParameterInterface $parent)
+    {
+        $this->parent = $parent;
+    }
 }

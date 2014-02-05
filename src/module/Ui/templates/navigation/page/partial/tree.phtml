@@ -14,21 +14,7 @@
                 </li>
                 <?php foreach ($page->getParameters() as $parameter): ?>
                     <li class="list-group-item">
-                        <div class="btn-group pull-right">
-                            <a class="btn btn-xs btn-default"
-                               href="<?php echo $this->url('navigation/parameter/create', ['page' => $page->getId(), 'parent' => $parameter->getId()]); ?>">
-                                <span class="glyphicon glyphicon-plus"></span></a>
-                            <a class="btn btn-xs btn-default"
-                               href="<?php echo $this->url('navigation/parameter/update', ['parameter' => $parameter->getId()]); ?>">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </a>
-                            <a class="btn btn-xs btn-danger"
-                               href="<?php echo $this->url('navigation/parameter/remove', ['parameter' => $parameter->getId()]); ?>">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a>
-                        </div>
-                        <?php echo $parameter->getKey(); ?>:
-                        <?php echo $parameter->getValue(); ?>
+                        <?php echo $this->partial('navigation/parameter/view', ['parameter' => $parameter, 'page' => $page]); ?>
                     </li>
                 <?php endforeach; ?>
                 <li class="list-group-item">
