@@ -12,12 +12,12 @@ namespace Subject\Hydrator;
 
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
+use Navigation\Provider\ContainerProviderInterface;
 use Subject\Manager\SubjectManagerAwareTrait;
 use Subject\Manager\SubjectManagerInterface;
-use Ui\Hydrator\NavigationHydrator;
 use Zend\Stdlib\ArrayUtils;
 
-class Navigation implements NavigationHydrator
+class Navigation implements ContainerProviderInterface
 {
     use SubjectManagerAwareTrait, InstanceManagerAwareTrait;
 
@@ -29,8 +29,9 @@ class Navigation implements NavigationHydrator
         $this->instanceManager = $instanceManager;
     }
 
-    public function hydrateConfig(array &$config)
+    public function provide($container)
     {
+        $config   = [];
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $subjects = $this->getSubjectManager()->findSubjectsByInstance($instance);
         foreach ($subjects as $subject) {

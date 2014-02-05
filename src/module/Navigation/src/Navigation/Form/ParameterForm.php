@@ -77,11 +77,5 @@ class ParameterForm extends Form
                 'required' => true
             ]
         );
-        $filter->add(
-            [
-                'name'     => 'value',
-                'required' => true
-            ]
-        );
     }
 }

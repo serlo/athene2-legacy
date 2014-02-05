@@ -149,8 +149,6 @@ class NavigationManager implements NavigationManagerInterface
      */
     public function findContainersByInstance(InstanceInterface $instance)
     {
-        $this->assertGranted('navigation.manage', $instance);
-
         $className  = $this->classResolver->resolveClassName($this->interfaces['container']);
         $repository = $this->objectManager->getRepository($className);
 
@@ -170,8 +168,6 @@ class NavigationManager implements NavigationManagerInterface
      */
     public function findContainerByNameAndInstance($name, InstanceInterface $instance)
     {
-        $this->assertGranted('navigation.manage', $instance);
-
         $className  = $this->classResolver->resolveClassName($this->interfaces['container']);
         $repository = $this->objectManager->getRepository($className);
         $type       = $this->typeManager->findTypeByName($name);

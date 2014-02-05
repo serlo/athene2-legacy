@@ -17,17 +17,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcRbac\Guard\GuardInterface;
 
 return array(
-    'di'                    => [
-        'definition' => [
-            'class' => [
-                __NAMESPACE__ . '\Provider\InstanceAwareNavigationProvider' => [
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ]
-            ]
-        ]
-    ],
     'navigation'            => array(
         'hydratables' => array(
             'default'    => array(
@@ -94,15 +83,6 @@ return array(
 
                     return $service;
                 },
-            'navigation'                   => function (ServiceLocatorInterface $sm) {
-                    // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
-                    return $sm->get('Ui\Navigation\DefaultNavigationFactory')->createService($sm);
-                },
-            'top_left_navigation'          => 'Ui\Navigation\TopLeftNavigationFactory',
-            'top_right_navigation'         => 'Ui\Navigation\TopRightNavigationFactory',
-            'top_center_navigation'        => 'Ui\Navigation\TopCenterNavigationFactory',
-            'footer_navigation'            => 'Ui\Navigation\FooterNavigationFactory',
-            'subject_navigation'           => 'Ui\Navigation\SubjectNavigationFactory'
         )
     ),
     'assetic_configuration' => array(

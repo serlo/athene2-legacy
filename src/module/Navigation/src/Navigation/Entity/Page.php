@@ -11,6 +11,7 @@
 namespace Navigation\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use Type\Entity\TypeAwareTrait;
@@ -133,7 +134,7 @@ class Page implements PageInterface
      */
     public function getParameters()
     {
-        return $this->parameters;
+        return $this->parameters->matching(Criteria::create()->where(Criteria::expr()->isNull('parent')));
     }
 
     /**

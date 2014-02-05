@@ -1927,23 +1927,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`navigation_page`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `serlo`;
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (1, 1, NULL, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (2, 1, 1, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (3, 1, 1, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (4, 1, 1, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (5, 1, 4, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (6, 1, 5, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (7, 1, 5, NULL);
-INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (8, 1, 5, NULL);
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `serlo`.`navigation_parameter_key`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1953,36 +1936,6 @@ INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (2, 'uri');
 INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (3, 'route');
 INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (4, 'icon');
 INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (5, 'visible');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `serlo`.`navigation_parameter`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `serlo`;
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (1, 1, 1, NULL, 'Backend');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (2, 1, 2, NULL, '#');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (3, 2, 1, NULL, 'Home');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (4, 2, 3, NULL, 'backend');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (5, 2, 4, NULL, 'home');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (6, 3, 1, NULL, 'Pages');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (7, 3, 3, NULL, 'page');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (8, 3, 4, NULL, 'paperclip');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (9, 4, 1, NULL, 'Taxonomy');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (10, 4, 2, NULL, '#');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (11, 4, 4, NULL, 'book');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (12, 5, 1, NULL, 'Manage taxonomies');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (13, 5, 3, NULL, 'taxonomy/term/organize-all');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (14, 6, 3, NULL, 'taxonomy/term/action');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (15, 6, 5, NULL, 'false');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (16, 7, 3, NULL, 'taxonomy/term/create');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (17, 7, 5, NULL, 'false');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (18, 8, 3, NULL, 'taxonomy/term/update');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (19, 8, 5, NULL, 'false');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (20, 9, 3, NULL, 'taxonomy/term/sort-associated');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (21, 9, 5, NULL, 'false');
 
 COMMIT;
 

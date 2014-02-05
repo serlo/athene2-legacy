@@ -11,6 +11,11 @@
 namespace Navigation;
 
 return [
+    'navigation'      => [
+        'providers' => [
+            'Navigation\Provider\ContainerRepositoryProvider'
+        ]
+    ],
     'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
@@ -32,12 +37,23 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Manager\NavigationManager' => __NAMESPACE__ . '\Factory\NavigationManagerFactory',
-            __NAMESPACE__ . '\Form\ContainerForm'        => __NAMESPACE__ . '\Factory\ContainerFormFactory',
-            __NAMESPACE__ . '\Form\PageForm'             => __NAMESPACE__ . '\Factory\PageFormFactory',
-            __NAMESPACE__ . '\Form\ParameterForm'        => __NAMESPACE__ . '\Factory\ParameterFormFactory',
-            __NAMESPACE__ . '\Form\ParameterKeyForm'     => __NAMESPACE__ . '\Factory\ParameterKeyFormFactory',
-            __NAMESPACE__ . '\Form\PositionPageForm'     => __NAMESPACE__ . '\Factory\PositionPageFormFactory',
+            __NAMESPACE__ . '\Manager\NavigationManager'            => __NAMESPACE__ . '\Factory\NavigationManagerFactory',
+            __NAMESPACE__ . '\Provider\ContainerRepositoryProvider' => __NAMESPACE__ . '\Factory\ContainerRepositoryProviderFactory',
+            __NAMESPACE__ . '\Form\ContainerForm'                   => __NAMESPACE__ . '\Factory\ContainerFormFactory',
+            __NAMESPACE__ . '\Form\PageForm'                        => __NAMESPACE__ . '\Factory\PageFormFactory',
+            __NAMESPACE__ . '\Form\ParameterForm'                   => __NAMESPACE__ . '\Factory\ParameterFormFactory',
+            __NAMESPACE__ . '\Form\ParameterKeyForm'                => __NAMESPACE__ . '\Factory\ParameterKeyFormFactory',
+            __NAMESPACE__ . '\Form\PositionPageForm'                => __NAMESPACE__ . '\Factory\PositionPageFormFactory',
+            'navigation'                                            => __NAMESPACE__ . '\Factory\DefaultNavigationFactory',
+            'top_left_navigation'                                   => __NAMESPACE__ . '\Factory\TopLeftNavigationFactory',
+            'top_right_navigation'                                  => __NAMESPACE__ . '\Factory\TopRightNavigationFactory',
+            'top_center_navigation'                                 => __NAMESPACE__ . '\Factory\TopCenterNavigationFactory',
+            'footer_navigation'                                     => __NAMESPACE__ . '\Factory\FooterNavigationFactory',
+            'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory'
+            /*function (ServiceLocatorInterface $sm) {
+                // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
+                return $sm->get('Ui\Navigation\DefaultNavigationFactory')->createService($sm);
+            },*/
         ]
     ],
     'controllers'     => [

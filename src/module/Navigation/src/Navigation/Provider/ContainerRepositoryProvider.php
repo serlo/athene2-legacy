@@ -16,7 +16,7 @@ use Navigation\Entity\ParameterInterface;
 use Navigation\Exception\ContainerNotFoundException;
 use Navigation\Manager\NavigationManagerInterface;
 
-class ContainerRepositoryProvider implements NavigationProviderInterface
+class ContainerRepositoryContainerProvider implements ContainerProviderInterface
 {
     /**
      * @var NavigationManagerInterface
@@ -38,6 +38,7 @@ class ContainerRepositoryProvider implements NavigationProviderInterface
     public function provide($container)
     {
         $instance = $this->instanceManager->getInstanceFromRequest();
+        $pages = [];
 
         try {
             $container = $this->navigationManager->findContainerByNameAndInstance($container, $instance);
@@ -46,7 +47,16 @@ class ContainerRepositoryProvider implements NavigationProviderInterface
         }
 
         foreach ($container->getPages() as $page) {
-            $pages[$container][] = $this->buildPage($page);
+            $addPage = $this->buildPage($page);
+
+            $hasUri = isset($options['uri']);
+            $hasMvc = isset($options['action']) || isset($options['controller'])
+                || isset($options['route']);
+            $hasProvider = isset($options['provider']);
+
+            if($hasMvc || $hasMvc || $hasProvider){
+                $pages[] = $addPage;
+            }
         }
 
         return $pages;
@@ -57,7 +67,7 @@ class ContainerRepositoryProvider implements NavigationProviderInterface
         $config = [];
 
         foreach ($page->getChildren() as $child) {
-            $config['pages'] = $this->buildPage($child);
+            $config['pages'][] = $this->buildPage($child);
         }
 
         foreach ($page->getParameters() as $parameter) {

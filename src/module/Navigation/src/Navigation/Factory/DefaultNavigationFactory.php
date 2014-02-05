@@ -9,12 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Ui\Navigation;
+namespace Navigation\Factory;
 
-class TopRightNavigationFactory extends AbstractNavigationFactory
-{    
+class DefaultNavigationFactory extends ProvideableNavigation
+{
     protected function getName()
     {
-        return 'top-right';
+        return 'default';
     }
 }

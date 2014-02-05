@@ -68,7 +68,17 @@ return [
                     [
                         'label' => 'Navigation',
                         'icon'  => 'list-alt',
-                        'route'   => 'navigation/manage',
+                        'route' => 'navigation/manage',
+                        'pages' => [
+                            [
+                                'route'   => 'navigation/container/get',
+                                'visible' => false
+                            ],
+                            [
+                                'route'   => 'navigation/page/get',
+                                'visible' => false
+                            ]
+                        ]
                     ],
                     [
                         'label' => 'Users',

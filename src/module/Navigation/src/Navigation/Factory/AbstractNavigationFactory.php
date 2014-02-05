@@ -9,23 +9,30 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Ui\Navigation;
+namespace Navigation\Factory;
 
 use Zend\Mvc\ApplicationInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Navigation\Service\AbstractNavigationFactory as ZendAbstractNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class AbstractNavigationFactory
+ *
+ * Works, even if no RouteMatch is returned by the Application.
+ *
+ * @package Navigation\Factory
+ */
 abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
 {    
     /**
-     * 
      * @var RouteMatch
      */
     protected $routeMatch;
-    
+
     /**
-     * @return RouteMatch $routeMatch
+     * @param ApplicationInterface $application
+     * @return RouteMatch
      */
     public function getRouteMatch (ApplicationInterface $application)
     {
@@ -41,17 +48,16 @@ abstract class AbstractNavigationFactory extends ZendAbstractNavigationFactory
 
 	/**
      * @param RouteMatch $routeMatch
-     * @return self
      */
     public function setRouteMatch (RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
-        return $this;
     }
+
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface   $serviceLocator
      * @param array|\Zend\Config\Config $pages
-     * @throws \Zend\Navigation\Exception\InvalidArgumentException
+     * @return mixed
      */
     protected function preparePages(ServiceLocatorInterface $serviceLocator, $pages)
     {

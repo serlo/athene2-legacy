@@ -9,27 +9,12 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Ui\Navigation;
+namespace Navigation\Factory;
 
-class TopCenterNavigationFactory extends AbstractHydratableNavigation
+class TopCenterNavigationFactory extends ProvideableNavigation
 {
-
     protected function getName()
     {
         return 'top-center';
-    }
-
-    protected function getDefaultConfig()
-    {
-        return array(
-            'navigation' => array(
-                'top-center' => array(),
-                'hydrateables' => array(
-                    'top-center' => array(
-                        'hydrators' => array()
-                    )
-                )
-            )
-        );
     }
 }

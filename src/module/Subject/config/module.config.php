@@ -11,15 +11,6 @@
 namespace Subject;
 
 return array(
-    'navigation'      => array(
-        'hydrateables' => array(
-            'default' => array(
-                'hydrators' => array(
-                    'Subject\Hydrator\Navigation'
-                )
-            )
-        )
-    ),
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Options\ModuleOptions'  => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
@@ -32,34 +23,6 @@ return array(
             'subject' => __NAMESPACE__ . '\Factory\SubjectHelperFactory'
         ]
     ],
-    'term_router'     => array(
-        'routes' => array(
-            'topic'             => array(
-                'route'          => 'subject/plugin/taxonomy/topic',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'topic-folder'      => array(
-                'route'          => 'subject/plugin/taxonomy/topic',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'abstract-topic'    => array(
-                'route'          => 'subject/plugin/taxonomy/topic',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'curriculum-folder' => array(
-                'route'          => 'subject/plugin/taxonomy/curriculum',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'school-type'       => array(
-                'route'          => 'subject/plugin/taxonomy/curriculum',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'curriculum'        => array(
-                'route'          => 'subject/plugin/taxonomy/curriculum',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            )
-        )
-    ),
     'taxonomy'        => array(
         'types' => array(
             'topic-final-folder'      => array(
