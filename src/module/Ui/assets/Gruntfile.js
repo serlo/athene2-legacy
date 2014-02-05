@@ -24,27 +24,27 @@ module.exports = function (grunt) {
         watch: {
             compass: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer', 'concurrent:dist']
+                tasks: ['compass:server', 'autoprefixer', 'clean:dist', 'copy:dist']
             },
             styles: {
                 files: ['<%= serlo.app %>/styles/{,*/}*.css'],
-                tasks: ['copy:styles', 'autoprefixer', 'concurrent:dist']
+                tasks: ['copy:styles', 'autoprefixer', 'clean:dist', 'copy:dist']
             },
             jsLang: {
                 files: ['<%= serlo.app %>/lang/*'],
-                tasks: ['i18n', 'concurrent:dist']
+                tasks: ['i18n', 'clean:dist', 'copy:dist']
             },
             scripts: {
                 files: ['<%= serlo.app %>/scripts/{,*/}*.js'],
-                tasks: ['jshint', 'copy:requirejs', 'requirejs:production', 'concurrent:dist']
+                tasks: ['jshint', 'copy:requirejs', 'requirejs:production', 'clean:dist', 'copy:dist']
             },
             images: {
                 files: ['<%= serlo.app %>/images/{,*/}*.{png,jpg,jpeg}'],
-                tasks: ['imagemin', 'concurrent:dist']
+                tasks: ['imagemin', 'clean:dist', 'copy:dist']
             },
             fonts: {
                 files: ['<%= serlo.app %>/styles/fonts/*'],
-                tasks: ['copy:tmp', 'concurrent:dist']
+                tasks: ['copy:tmp', 'clean:dist', 'copy:dist']
             }
         },
         clean: {
@@ -266,7 +266,6 @@ module.exports = function (grunt) {
                 'svgmin'
             ],
             dist: [
-                'clean:dist',
                 'copy:dist'
             ]
         },
@@ -325,7 +324,8 @@ module.exports = function (grunt) {
             'requirejs:production',
             'copy:tmp',
             'copy:modernizr',
-            'concurrent:dist',
+            'clean:dist',
+            'copy:dist',
             'watch'
         ]);
     });
@@ -341,7 +341,8 @@ module.exports = function (grunt) {
         'requirejs:production',
         'modernizr',
         'uglify',
-        'concurrent:dist',
+        'clean:dist',
+        'copy:dist',
         'clean:tmp'
     ]);
 
