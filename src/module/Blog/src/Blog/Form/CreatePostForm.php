@@ -12,7 +12,7 @@ namespace Blog\Form;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Zend\Form\Element\DateTimeLocal;
+use Zend\Form\Element\Date;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -71,7 +71,10 @@ class CreatePostForm extends Form
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
-            (new DateTimeLocal('publish'))->setAttribute('id', 'publish')->setLabel('Publish date:')
+            (new Date('publish'))->setAttribute('id', 'publish')->setAttribute('class', 'datepicker')->setAttribute(
+                'type',
+                'text'
+            )->setLabel('Publish date:')
         );
         $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
 

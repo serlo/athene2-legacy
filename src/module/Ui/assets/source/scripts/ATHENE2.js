@@ -40,11 +40,11 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 $('.dialog', $context).SerloModals();
                 // init datepicker
                 $('.datepicker', $context).datepicker({
-                    format: 'dd.mm.yyyy'
+                    format: 'yyyy-mm-dd'
                 });
                 // init datepicker for dateranges
                 $('.input-daterange', $context).datepicker({
-                    format: 'dd.mm.yyyy'
+                    format: 'yyyy-mm-dd'
                 });
                 // init spoilers
                 $('.spoiler').Spoiler();
