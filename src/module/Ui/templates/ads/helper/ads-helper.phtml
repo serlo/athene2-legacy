@@ -1,7 +1,7 @@
 <div class="container">
 <div class="row">
 	<div class="col-md-3 col-sm-4 col-xs-4 col-lg-2">
-		<small> <a href="">
+		<small> <a href="/">
         <?php echo $this->translate('Horizon'); ?>
         <span class="glyphicon glyphicon-info-sign"></span>
 		</a>
@@ -20,7 +20,7 @@
 				href="<?php echo $this->url('ads/ad/out',array('id'=>$ad->getId()));?>" target="__blank">
 				<button type="button" class="btn btn-default">
 				
-                    <span class="link"><?php echo $ad->getTitle();?></span>	
+                    <span class="link" style="color:#428bca;"><?php echo $ad->getTitle();?></span>	
                     <hr> <img alt="<?php echo $ad->getTitle();?>"
 						src="<?php echo $ad->getImage()->getLocation();?>"
 						class="img-responsive" /> <small>
