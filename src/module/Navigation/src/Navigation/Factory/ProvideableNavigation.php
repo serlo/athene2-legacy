@@ -11,9 +11,12 @@
 namespace Navigation\Factory;
 
 use Navigation\Provider\ContainerProviderInterface;
+use Navigation\Provider\PageProviderInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface as Router;
+use Zend\Navigation\Exception\InvalidArgumentException;
 use Zend\Navigation\Exception;
+use Zend\Navigation\Navigation;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
 
@@ -23,6 +26,15 @@ abstract class ProvideableNavigation extends AbstractNavigationFactory
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        try {
+            return parent::createService($serviceLocator);
+        } catch (InvalidArgumentException $e){
+            return new Navigation([]);
+        }
+    }
 
     protected function getPages(ServiceLocatorInterface $serviceLocator)
     {
@@ -46,7 +58,7 @@ abstract class ProvideableNavigation extends AbstractNavigationFactory
             // Where the container provisioning happens
             $pages = ArrayUtils::merge($this->provideContainer($configuration), $pages);
 
-            $this->pages = $this->preparePages($serviceLocator, $pages);
+            $this->pages = [];
         }
 
         return $this->pages;
@@ -83,15 +95,21 @@ abstract class ProvideableNavigation extends AbstractNavigationFactory
                 $className = $page['provider'];
                 $provider  = $this->serviceLocator->get($className);
 
-                $provider->setConfig($options);
-
-                if (isset($page['pages'])) {
-                    $page['pages'] = array_merge(
-                        $page['pages'],
-                        $this->injectComponentsFromProvider($provider, $routeMatch, $router)
-                    );
-                } else {
-                    $page['pages'] = $this->injectComponentsFromProvider($provider, $routeMatch, $router);
+                try {
+                    if (isset($page['pages'])) {
+                        $page['pages'] = array_merge(
+                            $page['pages'],
+                            $this->injectComponentsFromProvider($provider, $routeMatch, $router, (array)$options)
+                        );
+                    } else {
+                        $page['pages'] = $this->injectComponentsFromProvider(
+                            $provider,
+                            $routeMatch,
+                            $router,
+                            (array)$options
+                        );
+                    }
+                } catch (\Exception $e) {
                 }
 
                 if (isset($page['options'])) {
@@ -104,18 +122,6 @@ abstract class ProvideableNavigation extends AbstractNavigationFactory
         }
 
         return $pages;
-    }
-
-    protected function injectComponentsFromProvider(
-        ProviderInterface $provider,
-        RouteMatch $routeMatch = null,
-        Router $router = null
-    ) {
-        $pages = $provider->providePagesConfig();
-
-        $return = $this->injectComponents($pages, $routeMatch, $router);
-
-        return $return;
     }
 
     protected function provideContainer(array $configuration)
@@ -135,5 +141,18 @@ abstract class ProvideableNavigation extends AbstractNavigationFactory
         }
 
         return $containers;
+    }
+
+    protected function injectComponentsFromProvider(
+        PageProviderInterface $provider,
+        RouteMatch $routeMatch = null,
+        Router $router = null,
+        $options = []
+    ) {
+        $pages = $provider->provide($options);
+
+        $return = $this->injectComponents($pages, $routeMatch, $router);
+
+        return $return;
     }
 }
