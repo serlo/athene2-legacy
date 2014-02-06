@@ -49,12 +49,12 @@ class ContainerRepositoryContainerProvider implements ContainerProviderInterface
         foreach ($container->getPages() as $page) {
             $addPage = $this->buildPage($page);
 
-            $hasUri = isset($options['uri']);
-            $hasMvc = isset($options['action']) || isset($options['controller'])
-                || isset($options['route']);
-            $hasProvider = isset($options['provider']);
+            $hasUri = isset($addPage['uri']);
+            $hasMvc = isset($addPage['action']) || isset($addPage['controller'])
+                || isset($addPage['route']);
+            $hasProvider = isset($addPage['provider']);
 
-            if($hasMvc || $hasMvc || $hasProvider){
+            if($hasUri || $hasMvc || $hasProvider){
                 $pages[] = $addPage;
             }
         }
@@ -66,12 +66,21 @@ class ContainerRepositoryContainerProvider implements ContainerProviderInterface
     {
         $config = [];
 
-        foreach ($page->getChildren() as $child) {
-            $config['pages'][] = $this->buildPage($child);
-        }
-
         foreach ($page->getParameters() as $parameter) {
             $config = array_merge($config, $this->buildParameter($parameter));
+        }
+
+        foreach ($page->getChildren() as $child) {
+            $addPage = $this->buildPage($child);
+
+            $hasUri = isset($addPage['uri']);
+            $hasMvc = isset($addPage['action']) || isset($addPage['controller'])
+                || isset($addPage['route']);
+            $hasProvider = isset($addPage['provider']);
+
+            if($hasUri || $hasMvc || $hasProvider){
+                $config['pages'][] = $this->buildPage($child);
+            }
         }
 
         return $config;

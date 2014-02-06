@@ -179,7 +179,7 @@ class NavigationManager implements NavigationManagerInterface
         );
 
         if (!is_object($container)) {
-            throw new ContainerNotFoundException(sprintf("Container %s, %s not found", $name, $type->getName()));
+            throw new ContainerNotFoundException(sprintf("Container %s, %s not found", $type, $instance));
         }
 
         return $container;
