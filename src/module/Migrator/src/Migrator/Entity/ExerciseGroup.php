@@ -10,17 +10,17 @@
  */
 namespace Migrator\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="serlo_dev.exercise_folder_exercises")
+ * @ORM\Table(name="serlo_dev.exercise_groups")
  */
-class ExerciseFolder
+class ExerciseGroup
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -29,14 +29,14 @@ class ExerciseFolder
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Folder", inversedBy="exercises")
-     * @ORM\JoinColumn(name="exercise_folder_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Exercise", inversedBy="children")
+     * @ORM\JoinColumn(name="exercise_group_id", referencedColumnName="id", nullable=false)
      */
-    protected $folder;
+    protected $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Exercise", inversedBy="folders")
-     * @ORM\JoinColumn(name="exercise_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Exercise", inversedBy="parents")
+     * @ORM\JoinColumn(name="exercise_id", referencedColumnName="id", nullable=false)
      */
     protected $exercise;
 
@@ -46,7 +46,7 @@ class ExerciseFolder
     protected $chronology;
 
     /**
-     * @return Exercise
+     * @return mixed
      */
     public function getExercise()
     {
@@ -54,11 +54,11 @@ class ExerciseFolder
     }
 
     /**
-     * @return Folder
+     * @return mixed
      */
-    public function getFolder()
+    public function getGroup()
     {
-        return $this->folder;
+        return $this->group;
     }
 
     /**
@@ -68,9 +68,5 @@ class ExerciseFolder
     {
         return $this->id;
     }
-
-    public function getPosition()
-    {
-        return $this->chronology;
-    }
 }
+ 

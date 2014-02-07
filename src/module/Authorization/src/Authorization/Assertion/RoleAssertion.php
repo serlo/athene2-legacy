@@ -56,7 +56,10 @@ class RoleAssertion implements AssertionInterface
 
         foreach ($rolesToCheck as $roleToCheck) {
             foreach ($roleToCheck->getPermissions() as $permission) {
-                $instancesToCheck[] = $permission->getParameter('instance');
+                $instance = $permission->getParameter('instance');
+                if(!in_array($instance, $instancesToCheck)){
+                    $instancesToCheck[] = $instance;
+                }
             }
         }
 

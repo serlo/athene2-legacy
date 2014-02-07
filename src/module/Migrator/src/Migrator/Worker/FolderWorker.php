@@ -90,7 +90,8 @@ class FolderWorker implements Worker
                 'parent'   => $parent,
                 'term'     => [
                     'name' => $name
-                ]
+                ],
+                'position' => $folder->getPosition()
             ], $instance);
 
             $results['folder'][$folder->getId()] = $term;

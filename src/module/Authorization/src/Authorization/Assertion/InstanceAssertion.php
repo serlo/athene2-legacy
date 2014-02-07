@@ -61,40 +61,38 @@ class InstanceAssertion implements AssertionInterface
     public function assert(AuthorizationResult $authorization, $context = null)
     {
         if ($context === null) {
-            //$instance = $this->instanceManager->getInstanceFromRequest();
             $instance = null;
         } elseif ($context instanceof InstanceProviderInterface) {
-            $instance = $context->getInstance();
+            $instance = $context->getInstance()->getId();
         } elseif ($context instanceof InstanceInterface) {
-            $instance = $context;
+            $instance = $context->getId();
         } else {
             throw new InvalidArgumentException;
         }
 
-        $permission = $authorization->getPermission();
-        $roles      = $this->flattenRoles($authorization->getRoles());
+        $permissionToCheck = $authorization->getPermission();
+        $rolesToCheck      = $this->flattenRoles($authorization->getRoles());
 
         $permissions = $this->permissionService->findParametrizedPermissions(
-            $permission,
+            $permissionToCheck,
             'instance',
-            null
+            $instance
         );
 
-        if($instance !== null){
-            $localPermissions = $this->permissionService->findParametrizedPermissions(
-                $permission,
-                'instance',
-                $instance
-            );
-
-            $permissions = array_merge($permissions, $localPermissions);
+        if($this->isGranted($rolesToCheck, $permissions)){
+            return true;
         }
 
-        foreach ($permissions as $permission) {
-            foreach ($roles as $role) {
-                if ($role->hasPermission($permission)) {
-                    return true;
-                }
+        // Not found..well, that's unfortunate! Let's check if it's satisfiable with global permissions
+        if ($instance !== null) {
+            $permissions = $this->permissionService->findParametrizedPermissions(
+                $permissionToCheck,
+                'instance',
+                null
+            );
+
+            if($this->isGranted($rolesToCheck, $permissions)){
+                return true;
             }
         }
 
@@ -119,5 +117,23 @@ class InstanceAssertion implements AssertionInterface
         }
 
         return array_unique($roleNames);
+    }
+
+    /**
+     * @param array $roles
+     * @param array $permissions
+     * @return bool
+     */
+    protected function isGranted($roles, $permissions)
+    {
+        foreach ($permissions as $permission) {
+            foreach ($roles as $role) {
+                if ($role->hasPermission($permission)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

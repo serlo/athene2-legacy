@@ -14,6 +14,11 @@ namespace Taxonomy\Entity;
 interface TaxonomyTermAwareInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * 
      * @param TaxonomyTermInterface $taxonomyTerm
      * @param TaxonomyTermNodeInterface $node

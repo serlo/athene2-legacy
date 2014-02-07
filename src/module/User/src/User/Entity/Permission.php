@@ -68,7 +68,7 @@ class Permission implements ParametrizedPermissionInterface
      */
     public function getParameter($key)
     {
-        if ($key === 'instance') {
+        if ($key == 'instance') {
             return $this->instance;
         }
 

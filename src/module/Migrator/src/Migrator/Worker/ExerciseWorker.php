@@ -169,7 +169,7 @@ class ExerciseWorker implements Worker
                 foreach ($folders as $folder) {
                     $folder = $folder->getFolder();
                     $term   = $results['folder'][$folder->getId()];
-                    $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise);
+                    $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise, $folder->getPosition());
                 }
             }
 
@@ -247,22 +247,25 @@ class ExerciseWorker implements Worker
         return $this->workload;
     }
 
-    protected function doLink(EntityInterface $from, EntityInterface $to)
+    protected function doLink(EntityInterface $from, EntityInterface $to, $position = null)
     {
         //var_dump($to->getType()->getName());
         $options = $this->moduleOptions->getType(
             $from->getType()->getName()
         )->getComponent('link');
-        $this->linkService->associate($from, $to, $options);
+        $this->linkService->associate($from, $to, $options, $position);
     }
 
     protected function linkStuff(array $results)
     {
+        $position = 0;
         foreach ($this->linkWorkload as $work) {
+            $position++;
+
             $from = $results['exercise'][$work[0]->getId()];
             $to   = $results['exercise'][$work[1]->getId()];
 
-            $this->doLink($from, $to);
+            $this->doLink($from, $to, $position);
         }
     }
 }

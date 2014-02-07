@@ -29,7 +29,7 @@ class LatexConverter extends AbstractConverter
                 $replace = str_replace('»', '>', $replace);
                 $replace = str_replace('§', '&', $replace);
 
-                $url    = 'http://www.wiris.net/demo/editor/mathml2latex';
+                $url      = 'http://www.wiris.net/demo/editor/mathml2latex';
                 $postdata = http_build_query(
                     array(
                         'mml' => $replace
@@ -44,13 +44,21 @@ class LatexConverter extends AbstractConverter
                     )
                 );
 
-                $context  = stream_context_create($opts);
-                $response = file_get_contents($url, false, $context);
+                $context = stream_context_create($opts);
+
+                try {
+                    $response = file_get_contents($url, false, $context);
+                } catch (\Exception $e) {
+                }
 
                 $response = "%%" . $response . "%%";
                 $response = PHP_EOL . $response . PHP_EOL;
 
-                if(!isset($http_response_header) || empty($http_response_header) || stristr($http_response_header[0], '500')){
+                if (!isset($http_response_header) || empty($http_response_header) || stristr(
+                        $http_response_header[0],
+                        '500'
+                    )
+                ) {
                     $response = PHP_EOL . '**Could not convert formula (timeout or invalid formula).**' . PHP_EOL;
                     echo "\n $match[0] \n";
                     $this->needsFlagging = true;
@@ -65,13 +73,6 @@ class LatexConverter extends AbstractConverter
         }
 
         return $content;
-    }
-
-    protected function flag($response)
-    {
-        if (stristr('\color[rgb]', $response)) {
-            $this->needsFlagging = true;
-        }
     }
 
     protected function depr()
@@ -94,6 +95,13 @@ class LatexConverter extends AbstractConverter
         $response = trim($response);
         $response = '%%' . $response . '%%';
 
+    }
+
+    protected function flag($response)
+    {
+        if (stristr('\color[rgb]', $response)) {
+            $this->needsFlagging = true;
+        }
     }
 }
 

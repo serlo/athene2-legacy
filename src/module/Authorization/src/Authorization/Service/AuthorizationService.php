@@ -70,7 +70,7 @@ class AuthorizationService extends \ZfcRbac\Service\AuthorizationService
     /**
      * @param string $permission
      * @param array  $roles
-     * @return void
+     * @return AuthorizationResult
      */
     protected function createResult($permission, $roles)
     {

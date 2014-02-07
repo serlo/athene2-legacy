@@ -98,7 +98,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
             $entity->setInstance($instance);
             $entity->setType($type);
 
-            if($this->getObjectManager()->isOpen()){
+            if ($this->getObjectManager()->isOpen()) {
                 // todo: use entitymanager
                 $this->getObjectManager()->persist($entity);
             }
@@ -191,21 +191,13 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
 
         $this->getHydrator()->hydrate($data, $term);
-
-        $this->getEventManager()->trigger(
-            'update',
-            $this,
-            [
-                'term' => $term
-            ]
-        );
-
+        $this->getEventManager()->trigger('update', $this, ['term' => $term]);
         $this->getObjectManager()->persist($term);
 
         return $term;
     }
 
-    public function associateWith($id, $association, TaxonomyTermAwareInterface $object)
+    public function associateWith($id, $association, TaxonomyTermAwareInterface $object, $position = null)
     {
         $term = $this->getTerm($id);
 
@@ -220,6 +212,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
 
         $term->associateObject($association, $object);
+
+        if($position !== null){
+            $term->positionAssociatedObject($association, $object, (int) $position);
+        }
 
         $this->getEventManager()->trigger(
             'associate',
@@ -264,17 +260,6 @@ class TaxonomyManager implements TaxonomyManagerInterface
     }
 
     /**
-     * @param TaxonomyTermHydrator $hydrator
-     * @return self
-     */
-    public function setHydrator(TaxonomyTermHydrator $hydrator)
-    {
-        $this->hydrator = $hydrator;
-
-        return $this;
-    }
-
-    /**
      * @return ModuleOptions $moduleOptions
      */
     public function getModuleOptions()
@@ -289,6 +274,17 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function setModuleOptions(ModuleOptions $moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
+
+        return $this;
+    }
+
+    /**
+     * @param TaxonomyTermHydrator $hydrator
+     * @return self
+     */
+    public function setHydrator(TaxonomyTermHydrator $hydrator)
+    {
+        $this->hydrator = $hydrator;
 
         return $this;
     }

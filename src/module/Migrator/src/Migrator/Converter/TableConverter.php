@@ -56,9 +56,9 @@ class TableConverter extends AbstractConverter
 
             $fallback = '';
 
-            $columns = array();
-
             foreach ($tableRows as $tableRow) {
+
+                $columns = array();
                 $tableColumns = array();
 
                 // remove <tr>, </tr>
@@ -86,17 +86,19 @@ class TableConverter extends AbstractConverter
                     $fallback .= PHP_EOL . "<tr>" . $tableRow[0] . '</tr>' . PHP_EOL;
                     $this->needsFlagging = true;
                 }
-            }
 
-            if(!empty($columns)){
-                $layout[] = $columns;
-            }
+                if(!empty($columns)){
+                    $layout[] = $columns;
+                }
 
-            if(strlen($fallback)){
-                $layout[][] = array(
-                    'col'     => $this->maxcols,
-                    'content' => '<table>'.$fallback.'</table>'
-                );
+                if(strlen($fallback)){
+                    $layout[][] = array(
+                        'col'     => $this->maxcols,
+                        'content' => '<table>'.$fallback.'</table>'
+                    );
+
+                    $fallback = '';
+                }
             }
         }
 

@@ -39,16 +39,14 @@ class Exercise
     protected $group;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Exercise", mappedBy="children")
+     * @ORM\OneToMany(targetEntity="ExerciseGroup", mappedBy="exercise")
+     * @ORM\OrderBy({"chronology" = "ASC"})
      **/
     protected $parents;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Exercise", inversedBy="parents")
-     * @ORM\JoinTable(name="serlo_dev.exercise_groups",
-     *      joinColumns={@ORM\JoinColumn(name="exercise_group_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="exercise_id", referencedColumnName="id")}
-     *      )
+     * @ORM\OneToMany(targetEntity="ExerciseGroup", mappedBy="group")
+     * @ORM\OrderBy({"chronology" = "ASC"})
      **/
     protected $children;
 
@@ -75,7 +73,11 @@ class Exercise
      */
     public function getChildren()
     {
-        return $this->children;
+        $return = new ArrayCollection();
+        foreach($this->children as $child){
+            $return->add($child->getExercise());
+        }
+        return $return;
     }
 
     /**
@@ -107,7 +109,11 @@ class Exercise
      */
     public function getParents()
     {
-        return $this->parents;
+        $return = new ArrayCollection();
+        foreach($this->parents as $parent){
+            $return->add($parent->getGroup());
+        }
+        return $return;
     }
 
     /**

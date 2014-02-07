@@ -819,9 +819,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `serlo`.`term_taxonomy_comment` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_comment` (
+  `id` BIGINT NOT NULL,
   `comment_id` BIGINT NOT NULL,
   `term_taxonomy_id` BIGINT NOT NULL,
-  PRIMARY KEY (`comment_id`, `term_taxonomy_id`),
+  PRIMARY KEY (`id`),
   INDEX `fk_comment_has_term_taxonomy_term_taxonomy2_idx` (`term_taxonomy_id` ASC),
   INDEX `fk_comment_has_term_taxonomy_comment2_idx` (`comment_id` ASC),
   CONSTRAINT `fk_comment_has_term_taxonomy_comment2`
@@ -1695,13 +1696,12 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.histor
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'user.login');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (86, 'navigation.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (87, 'entity.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (88, 'uuid.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (89, 'entity.revision.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (90, 'authorization.role.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (91, 'authorization.role.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'navigation.manage');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (86, 'entity.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (87, 'uuid.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (88, 'entity.revision.restore');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (89, 'authorization.role.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (90, 'authorization.role.remove');
 
 COMMIT;
 
@@ -1791,13 +1791,12 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (82, 82, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (83, 83, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (84, 84, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (85, 85, NULL);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (85, 85, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (86, 86, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (87, 87, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (88, 88, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (90, 90, NULL);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (91, 91, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (15, 15, NULL);
 
@@ -1889,11 +1888,10 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 81
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 82);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 83);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 84);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 85);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 85);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 86);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 87);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 88);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 89);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 14);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 15);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 90);
@@ -1922,6 +1920,29 @@ COMMIT;
 START TRANSACTION;
 USE `serlo`;
 INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (1, 1, 29);
+INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (2, 1, 31);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`navigation_page`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (1, 1, NULL, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (2, 2, NULL, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (3, 2, NULL, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (4, 2, 2, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (5, 2, 3, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (6, 2, 3, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (7, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (8, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (9, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (10, 1, 1, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (11, 1, 10, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (12, 1, 10, NULL);
+INSERT INTO `serlo`.`navigation_page` (`id`, `container_id`, `parent_id`, `position`) VALUES (13, 1, 10, NULL);
 
 COMMIT;
 
@@ -1936,6 +1957,109 @@ INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (2, 'uri');
 INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (3, 'route');
 INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (4, 'icon');
 INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (5, 'visible');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (6, 'params');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (7, 'subject');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (8, 'options');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (9, 'provider');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (10, 'type');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (11, 'parent');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (12, 'slug');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (13, 'types');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (14, 'max_depth');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (15, 'instance');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (16, '0');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (17, '1');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (18, '2');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (19, 'action');
+INSERT INTO `serlo`.`navigation_parameter_key` (`id`, `name`) VALUES (20, 'id');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`navigation_parameter`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (1, 2, 1, NULL, 'FÃ¤cher');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (2, 2, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (3, 3, 1, NULL, 'Labor');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (4, 3, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (5, 4, 1, NULL, 'Mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (6, 4, 3, NULL, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (7, 4, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (8, 2, 7, 7, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (9, 5, 1, NULL, 'Physik');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (10, 5, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (11, 5, 3, NULL, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (12, 5, 7, 10, 'physik');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (13, 6, 1, NULL, 'Permakultur');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (14, 6, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (15, 6, 3, NULL, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (16, 6, 7, 14, 'permakultur');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (17, 1, 1, NULL, 'Mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (18, 1, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (19, 1, 7, 18, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (20, 1, 3, NULL, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (21, 7, 1, NULL, 'Startseite');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (22, 7, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (23, 7, 7, 22, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (24, 7, 3, NULL, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (25, 7, 4, NULL, 'home');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (26, 8, 1, NULL, 'Lehrplan');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (27, 8, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (28, 8, 4, NULL, 'map-marker');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (29, 8, 8, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (30, 8, 9, NULL, 'Taxonomy\\Provider\\NavigationProvider');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (31, 8, 7, 27, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (32, 8, 11, 29, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (33, 8, 13, 29, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (34, 8, 15, 29, 'Deutsch');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (35, 8, 3, 29, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (36, 8, 14, 29, '10');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (37, 8, 6, 29, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (38, 8, 12, 32, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (39, 8, 10, 32, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (40, 8, 16, 33, 'locale');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (41, 8, 17, 33, 'curriculum');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (42, 8, 18, 33, 'curriculum-folder');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (43, 8, 7, 37, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (44, 8, 3, NULL, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (45, 9, 1, NULL, 'Lernen');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (46, 9, 9, NULL, 'Taxonomy\\Provider\\NavigationProvider');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (47, 9, 8, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (48, 9, 4, NULL, 'book');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (49, 9, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (50, 9, 11, 47, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (51, 9, 13, 47, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (52, 9, 15, 47, 'deutsch');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (53, 9, 3, 47, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (54, 9, 14, 47, '10');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (55, 9, 6, 47, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (56, 9, 12, 50, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (57, 9, 10, 50, 'subject');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (58, 9, 16, 51, 'topic');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (59, 9, 17, 51, 'topic-folder');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (60, 9, 7, 55, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (61, 9, 7, 49, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (62, 9, 3, NULL, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (63, 10, 1, NULL, 'Verwalten');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (64, 10, 2, NULL, '#');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (65, 10, 4, NULL, 'cog');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (66, 11, 1, NULL, 'Neue Bearbeitungen');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (67, 11, 3, NULL, 'subject/entity');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (68, 11, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (69, 12, 1, NULL, 'Papierkorb');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (70, 12, 3, NULL, 'subject/entity');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (71, 12, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (72, 13, 1, NULL, 'Taxonomie verwalten');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (73, 13, 3, NULL, 'taxonomy/term/organize');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (74, 13, 6, NULL, '');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (75, 11, 7, 68, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (76, 12, 7, 71, 'mathe');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (77, 12, 19, 71, 'trash-bin');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (79, 13, 20, 74, '5');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (80, 11, 19, 68, 'unrevised');
 
 COMMIT;
 

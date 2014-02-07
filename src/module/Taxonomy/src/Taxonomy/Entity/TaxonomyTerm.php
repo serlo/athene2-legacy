@@ -15,8 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception;
 use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Exception;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\UuidEntity;
 
@@ -346,10 +346,16 @@ class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
         return $this->termTaxonomyEntities;
     }
 
-    protected function orderEntities($objectId, $position)
+    protected function orderEntities($object, $position)
     {
+        if($object instanceof TaxonomyTermAwareInterface){
+            $id = $object->getId();
+        } else {
+            $id = (int) $object;
+        }
+
         foreach ($this->getEntityNodes() as $rel) {
-            if ($rel->getObject()->getId() === (int) $objectId) {
+            if ($rel->getObject()->getId() === $id) {
                 $rel->setPosition($position);
                 break;
             }

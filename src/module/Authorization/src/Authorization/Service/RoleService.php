@@ -22,7 +22,6 @@ use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Zend\Form\FormInterface;
-use ZfcRbac\Service\AuthorizationService;
 
 class RoleService implements RoleServiceInterface
 {

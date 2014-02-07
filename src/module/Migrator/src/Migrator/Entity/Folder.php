@@ -46,6 +46,19 @@ class Folder
      */
     protected $exercises;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $chronology;
+
+    /**
+     * @return mixed
+     */
+    public function getPosition()
+    {
+        return $this->chronology;
+    }
+
     public function __construct()
     {
         $this->exercises = new ArrayCollection();
