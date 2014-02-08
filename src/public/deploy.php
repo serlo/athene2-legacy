@@ -26,7 +26,7 @@
         "whoami",
         "git pull --ff",
         "git status",
-        "cd " . __DIR__ . "/../;sh hyperdrive.sh",
+        "cd " . __DIR__ . "/../../bin/;sh hyperdrive.sh",
         "cd " . __DIR__ . "/../module/Ui/assets/;npm cache clean",
         "cd " . __DIR__ . "/../module/Ui/assets/;npm install",
         "cd " . __DIR__ . "/../module/Ui/assets/;npm update",
