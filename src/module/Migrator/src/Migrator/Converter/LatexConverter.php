@@ -48,20 +48,26 @@ class LatexConverter extends AbstractConverter
 
                 try {
                     $response = file_get_contents($url, false, $context);
+
+                    $response = "%%" . $response . "%%";
+                    $response = PHP_EOL . $response . PHP_EOL;
+
+                    if (!isset($http_response_header) || empty($http_response_header) || stristr(
+                            $http_response_header[0],
+                            '500'
+                        )
+                    ) {
+                        $response = PHP_EOL . '**Could not convert formula (timeout or invalid formula).**' . PHP_EOL;
+                        echo "\n $match[0] \n";
+                        $this->needsFlagging = true;
+
+                        print_r($match);
+                    }
                 } catch (\Exception $e) {
-                }
+                    echo $e->getMessage();
 
-                $response = "%%" . $response . "%%";
-                $response = PHP_EOL . $response . PHP_EOL;
-
-                if (!isset($http_response_header) || empty($http_response_header) || stristr(
-                        $http_response_header[0],
-                        '500'
-                    )
-                ) {
                     $response = PHP_EOL . '**Could not convert formula (timeout or invalid formula).**' . PHP_EOL;
                     echo "\n $match[0] \n";
-                    $this->needsFlagging = true;
 
                     print_r($match);
                 }

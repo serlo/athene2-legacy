@@ -16,10 +16,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class Migrator
 {
     protected $workers = [
+        'Migrator\Worker\UserWorker',
+        'Migrator\Worker\BlogWorker',
         'Migrator\Worker\FolderWorker',
         'Migrator\Worker\ExerciseWorker',
         'Migrator\Worker\ArticleWorker',
-        'Migrator\Worker\UserWorker'
     ];
 
     /**
