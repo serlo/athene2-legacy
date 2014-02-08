@@ -133,16 +133,6 @@ class BlogWorker implements Worker
                 $newPost = $this->blogManager->createPost($form);
                 $newPost->setTimestamp($post->getDate());
             }
-
-            $workload[] = [
-                'entity' => $post,
-                'work'   => [
-                    [
-                        'name'  => 'content',
-                        'value' => $content
-                    ],
-                ]
-            ];
         }
 
         $this->objectManager->flush();
