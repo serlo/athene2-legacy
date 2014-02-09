@@ -14,19 +14,51 @@ use Zend\Form\Element\File;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class AttachmentForm extends Form
 {
     public function __construct()
     {
         parent::__construct('upload');
-        $this->setAttribute('class', 'clearfix');
 
+        $filter = new InputFilter();
+
+        $this->setInputFilter($filter);
+        $this->setAttribute('class', 'clearfix');
         $this->add((new File('file'))->setLabel('Upload file:'));
         $this->add((new Text('type'))->setLabel('Set type:'));
-
         $this->add(
             (new Submit('submit'))->setValue('Upload')->setAttribute('class', 'btn btn-success pull-right')
+        );
+
+        $filter->add(
+            [
+                'name'       => 'file',
+                'required'   => true,
+                'validators' => [
+                    [
+                        'name'    => 'Zend\Validator\File\Size',
+                        'options' => [
+                            'max' => '4MB'
+                        ],
+                    ],
+                    [
+                        'name'    => 'Zend\Validator\File\Extension',
+                        'options' => [
+                            'jpg',
+                            'jpeg',
+                            'png',
+                            'pdf',
+                            'ggb',
+                            'gif',
+                            'tif',
+                            'tiff',
+                            'svg'
+                        ]
+                    ],
+                ]
+            ]
         );
     }
 }

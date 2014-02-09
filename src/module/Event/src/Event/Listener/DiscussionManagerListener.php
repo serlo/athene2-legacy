@@ -38,7 +38,7 @@ class DiscussionManagerListener extends AbstractListener
             )
         );
 
-        $this->logEvent('discussion/create', $instance, $user, $discussion, $params);
+        $this->logEvent('discussion/create', $instance, $discussion, $params);
     }
 
     /**
@@ -61,7 +61,7 @@ class DiscussionManagerListener extends AbstractListener
         );
 
         $comment = $e->getParam('comment');
-        $this->logEvent('discussion/comment/create', $instance, $user, $comment, $params);
+        $this->logEvent('discussion/comment/create', $instance, $comment, $params);
     }
 
     public function attachShared(SharedEventManagerInterface $events)

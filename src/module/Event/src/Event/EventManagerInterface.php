@@ -49,7 +49,6 @@ interface EventManagerInterface
     /**
      * @param string            $eventName
      * @param InstanceInterface $instance
-     * @param UserInterface     $actor
      * @param UuidInterface     $uuid
      * @param array             $parameters
      * @return EventLogInterface
@@ -57,7 +56,6 @@ interface EventManagerInterface
     public function logEvent(
         $eventName,
         InstanceInterface $instance,
-        UserInterface $actor,
         UuidInterface $uuid,
         array $parameters = array()
     );

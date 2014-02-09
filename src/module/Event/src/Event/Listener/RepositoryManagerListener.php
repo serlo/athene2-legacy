@@ -68,7 +68,7 @@ class RepositoryManagerListener extends AbstractListener
         $this->logEvent(
             'entity/revision/add',
             $instance,
-            $user,
+
             $revision,
             array(
                 array(
@@ -89,7 +89,6 @@ class RepositoryManagerListener extends AbstractListener
         $this->logEvent(
             'entity/revision/checkout',
             $instance,
-            $user,
             $revision,
             array(
                 array(
@@ -111,7 +110,6 @@ class RepositoryManagerListener extends AbstractListener
         $this->logEvent(
             'entity/revision/reject',
             $instance,
-            $user,
             $revision,
             array(
                 array(

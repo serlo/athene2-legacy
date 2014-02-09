@@ -10,6 +10,7 @@
  */
 namespace Event;
 
+use ZfcRbac\Service\AuthorizationService;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
@@ -17,8 +18,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Event\Exception;
 use Instance\Entity\InstanceInterface;
-use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
+use ZfcRbac\Exception\UnauthorizedException;
 
 class EventManager implements EventManagerInterface
 {
@@ -27,10 +28,19 @@ class EventManager implements EventManagerInterface
     protected $inMemoryEvents = array();
     protected $inMemoryParameterNames = array();
 
-    public function __construct(ClassResolverInterface $classResolver, ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-        $this->classResolver = $classResolver;
+    /**
+     * @var \Authorization\Service\AuthorizationService
+     */
+    protected $authorizationService;
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager
+    ) {
+        $this->objectManager        = $objectManager;
+        $this->lassResolver         = $classResolver;
+        $this->authorizationService = $authorizationService;
     }
 
     public function findEventsByActor($userId)
@@ -121,10 +131,15 @@ class EventManager implements EventManagerInterface
     public function logEvent(
         $uri,
         InstanceInterface $instance,
-        UserInterface $actor,
         UuidInterface $uuid,
         array $parameters = array()
     ) {
+        $actor = $this->authorizationService->getIdentity();
+
+        if ($actor === null) {
+            throw new UnauthorizedException;
+        }
+
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
 
         /* @var $log Entity\EventLogInterface */
