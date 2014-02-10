@@ -224,14 +224,13 @@ define(['jquery', 'underscore', 'common', 'translator', 'router'], function ($, 
                 self.isSearching = false;
             }
         }).error(function () {
-                // xhr object has been aborted
-                // simply ignore.
-                if (arguments[1] === 'abort' || arguments[1] === 'stop') {
-                    return;
-                }
-                self.$input.blur();
-                Common.genericError(arguments);
-            });
+            // xhr object has been aborted
+            // simply ignore.
+            if (arguments[1] === 'abort' || arguments[1] === 'stop') {
+                return;
+            }
+            self.$input.blur();
+        });
     };
 
     Search.prototype.onResult = function (result) {

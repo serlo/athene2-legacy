@@ -104,7 +104,7 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
     }
 
     $(function () {
-        Supporter.check();
         App.initialize($('body'));
+        Supporter.check();
     });
 });
