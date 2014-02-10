@@ -13,19 +13,29 @@ define(['jquery', 'underscore', 'system_notification', 'translator'], function (
         }
         // check for browser support
         _.each(checkSupportFor, function (value) {
-            if (!window[value]) {
+            if (typeof value === 'function') {
+                var check = value();
+                if (check.error) {
+                    fails.push(check.error);
+                }
+            } else if (!window[value]) {
                 fails.push('<strong>' + value + '</strong>');
             }
         });
 
         if (fails.length) {
-            SystemNotification.notify(t('Your browser doesnt support the following technologies: %s <br>Please update your browser!', fails.join(', ')), 'warning', true);
+            SystemNotification.notify(t('Your browser doesnt support the following technologies: %s <br>Please update your browser!', fails.join(', ')), 'warning', true, 'serlo-supporter');
         }
 
         return fails;
     }
 
+    function add(support) {
+        checkSupportFor.push(support);
+    }
+
     return {
-        check: check
+        check: check,
+        add: add
     };
 });
