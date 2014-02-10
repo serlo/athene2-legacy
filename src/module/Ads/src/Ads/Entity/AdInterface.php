@@ -12,39 +12,11 @@ namespace Ads\Entity;
 
 use Attachment\Entity\AttachmentInterface;
 use Attachment\Entity\FileInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareInterface;
 use User\Entity\UserInterface;
 
-interface AdInterface
+interface AdInterface extends InstanceAwareInterface
 {
-
-    /**
-     * Gets the id.
-     *
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * Gets the content.
-     *
-     * @return string
-     */
-    public function getContent();
-
-    /**
-     * Gets the title.
-     *
-     * @return string
-     */
-    public function getTitle();
-
-    /**
-     * Gets the language.
-     *
-     * @return LanguageInterface
-     */
-    public function getLanguage();
 
     /**
      * Gets the image.
@@ -54,18 +26,25 @@ interface AdInterface
     public function getAttachment();
 
     /**
-     * Gets the image.
-     *
-     * @return FileInterface
-     */
-    public function getImage();
-
-    /**
      * Gets the author.
      *
      * @return UserInterface
      */
     public function getAuthor();
+
+    /**
+     * Gets the clicks.
+     *
+     * @return int
+     */
+    public function getClicks();
+
+    /**
+     * Gets the content.
+     *
+     * @return string
+     */
+    public function getContent();
 
     /**
      * Gets the frequency.
@@ -75,12 +54,25 @@ interface AdInterface
     public function getFrequency();
 
     /**
-     * Gets the clicks.
+     * Gets the id.
      *
      * @return int
      */
-    public function getClicks();
+    public function getId();
 
+    /**
+     * Gets the image.
+     *
+     * @return FileInterface
+     */
+    public function getImage();
+
+    /**
+     * Gets the title.
+     *
+     * @return string
+     */
+    public function getTitle();
 
     /**
      * Gets the url.

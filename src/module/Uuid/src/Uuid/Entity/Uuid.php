@@ -163,4 +163,10 @@ class Uuid implements UuidInterface
 
         return $this;
     }
+
+    public function __toString()
+    {
+        // Dirty fix for many things
+        return (string)$this->getId();
+    }
 }

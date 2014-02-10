@@ -10,10 +10,10 @@
  */
 namespace Attachment\Entity;
 
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use Type\Entity\TypeAwareInterface;
 
-interface ContainerInterface extends LanguageAwareInterface, TypeAwareInterface
+interface ContainerInterface extends InstanceAwareInterface, TypeAwareInterface
 {
     /**
      * @return int

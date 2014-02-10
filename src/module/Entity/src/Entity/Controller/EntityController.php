@@ -11,24 +11,24 @@
 namespace Entity\Controller;
 
 use Entity\Result;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\EventManager\ResponseCollection;
 
 class EntityController extends AbstractController
 {
-    use LanguageManagerAwareTrait;
+    use InstanceManagerAwareTrait;
 
     public function createAction()
     {
         $this->assertGranted('entity.create');
 
         $type     = $this->params('type');
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $query    = $this->params()->fromQuery();
         $entity   = $this->getEntityManager()->createEntity(
             $type,
             $query,
-            $language
+            $instance
         );
 
         $this->getEntityManager()->flush();

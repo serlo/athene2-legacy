@@ -14,10 +14,9 @@ class UploadConverter extends AbstractConverter
 {
     public function convert($text)
     {
-        $pattern = '@\\\/uploads\\\/[^legacy]@isU';
-        $replace = '\\\/uploads\\\/legacy\\\/';
+        $pattern = '@\\\/uploads\\\/@isU';
+        $replace = '\/uploads\/legacy\/';
 
         return preg_replace($pattern, $replace, $text);
     }
 }
- 

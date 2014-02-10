@@ -1,7 +1,10 @@
 <?php
 namespace Page\Entity;
 
-interface PageRepositoryInterface {
-    
-    
+use Instance\Entity\InstanceAwareInterface;
+use License\Entity\LicenseAwareInterface;
+use Versioning\Entity\RepositoryInterface;
+
+interface PageRepositoryInterface extends RepositoryInterface, LicenseAwareInterface, InstanceAwareInterface
+{
 }

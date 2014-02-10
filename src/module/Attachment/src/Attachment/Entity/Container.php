@@ -12,7 +12,7 @@ namespace Attachment\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use Type\Entity\TypeAwareTrait;
 use Uuid\Entity\UuidEntity;
 
@@ -23,6 +23,7 @@ use Uuid\Entity\UuidEntity;
 class Container extends UuidEntity implements ContainerInterface
 {
     use TypeAwareTrait;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -30,12 +31,6 @@ class Container extends UuidEntity implements ContainerInterface
      * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
 
     /**
      * @ORM\OneToMany(targetEntity="File", mappedBy="attachment")
@@ -46,11 +41,6 @@ class Container extends UuidEntity implements ContainerInterface
     public function __construct()
     {
         $this->files = new ArrayCollection;
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     public function getFiles()
@@ -66,12 +56,5 @@ class Container extends UuidEntity implements ContainerInterface
     public function addFile(FileInterface $file)
     {
         $this->files->add($file);
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-
-        return $this;
     }
 }

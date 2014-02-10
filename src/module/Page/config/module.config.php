@@ -170,7 +170,7 @@ return array(
                     'setObjectManager' => array(
                         'required' => true
                     ),
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setPageManager'     => array(
@@ -187,7 +187,7 @@ return array(
                     'setRepositoryManager' => array(
                         'required' => true
                     ),
-                    'setLanguageManager'   => array(
+                    'setInstanceManager'   => array(
                         'required' => true
                     ),
                     'setUuidManager'       => array(

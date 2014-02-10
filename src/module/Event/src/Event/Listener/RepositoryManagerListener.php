@@ -63,11 +63,11 @@ class RepositoryManagerListener extends AbstractListener
         $repository = $e->getParam('repository')->getUuidEntity();
         $revision   = $e->getParam('revision');
         $user       = $this->getUserManager()->getUserFromAuthenticator();
-        $language   = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'entity/revision/add',
-            $language,
+            $instance,
             $user,
             $revision,
             array(
@@ -84,11 +84,11 @@ class RepositoryManagerListener extends AbstractListener
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository')->getUuidEntity();
         $user       = $e->getParam('actor');
-        $language   = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'entity/revision/checkout',
-            $language,
+            $instance,
             $user,
             $revision,
             array(
@@ -105,12 +105,12 @@ class RepositoryManagerListener extends AbstractListener
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository')->getUuidEntity();
         $user       = $e->getParam('actor');
-        $language   = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
         $reason     = $e->getParam('reason');
 
         $this->logEvent(
             'entity/revision/reject',
-            $language,
+            $instance,
             $user,
             $revision,
             array(

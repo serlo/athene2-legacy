@@ -12,7 +12,7 @@ namespace Event\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -22,6 +22,7 @@ use Uuid\Entity\UuidInterface;
  */
 class EventLog implements EventLogInterface
 {
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -47,12 +48,6 @@ class EventLog implements EventLogInterface
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $uuid;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
 
     /**
      * @ORM\OneToMany(targetEntity="EventParameter", mappedBy="log")
@@ -87,11 +82,6 @@ class EventLog implements EventLogInterface
         }
 
         return null;
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     public function getId()
@@ -137,11 +127,6 @@ class EventLog implements EventLogInterface
     public function setObject(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
     }
 
     public function addParameter(EventParameterInterface $parameter)

@@ -14,9 +14,9 @@ use Common\Listener\AbstractSharedListenerAggregate;
 use Event\EventManagerAwareTrait;
 use Event\EventManagerInterface;
 use Event\Exception\RuntimeException;
-use Language\Entity\LanguageInterface;
-use Language\Manager\LanguageManagerAwareTrait;
-use Language\Manager\LanguageManagerInterface;
+use Instance\Entity\InstanceInterface;
+use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
@@ -24,11 +24,11 @@ use Uuid\Entity\UuidHolder;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
-    use EventManagerAwareTrait, LanguageManagerAwareTrait, UserManagerAwareTrait;
+    use EventManagerAwareTrait, InstanceManagerAwareTrait, UserManagerAwareTrait;
 
     public function __construct(
         EventManagerInterface $eventManager,
-        LanguageManagerInterface $languageManager,
+        InstanceManagerInterface $instanceManager,
         UserManagerInterface $userManager
     ) {
         if (!class_exists($this->getMonitoredClass())) {
@@ -38,16 +38,16 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
             ));
         }
         $this->eventManager    = $eventManager;
-        $this->languageManager = $languageManager;
+        $this->instanceManager = $instanceManager;
         $this->userManager     = $userManager;
     }
 
-    public function logEvent($name, LanguageInterface $language, UserInterface $actor, $uuid, array $params = array())
+    public function logEvent($name, InstanceInterface $instance, UserInterface $actor, $uuid, array $params = array())
     {
         if ($uuid instanceof UuidHolder) {
             $uuid = $uuid->getUuidEntity();
         }
 
-        $this->getEventManager()->logEvent($name, $language, $actor, $uuid, $params);
+        $this->getEventManager()->logEvent($name, $instance, $actor, $uuid, $params);
     }
 }

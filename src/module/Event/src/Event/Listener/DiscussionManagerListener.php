@@ -27,7 +27,7 @@ class DiscussionManagerListener extends AbstractListener
      */
     public function onStart(Event $e)
     {
-        $language   = $e->getParam('language');
+        $instance   = $e->getParam('instance');
         $user       = $e->getParam('author');
         $discussion = $e->getParam('discussion');
 
@@ -38,7 +38,7 @@ class DiscussionManagerListener extends AbstractListener
             )
         );
 
-        $this->logEvent('discussion/create', $language, $user, $discussion, $params);
+        $this->logEvent('discussion/create', $instance, $user, $discussion, $params);
     }
 
     /**
@@ -50,7 +50,7 @@ class DiscussionManagerListener extends AbstractListener
     public function onComment(Event $e)
     {
         $user       = $e->getParam('author');
-        $language   = $e->getParam('language');
+        $instance   = $e->getParam('instance');
         $discussion = $e->getParam('discussion')->getUuidEntity();
 
         $params = array(
@@ -61,7 +61,7 @@ class DiscussionManagerListener extends AbstractListener
         );
 
         $comment = $e->getParam('comment');
-        $this->logEvent('discussion/comment/create', $language, $user, $comment, $params);
+        $this->logEvent('discussion/comment/create', $instance, $user, $comment, $params);
     }
 
     public function attachShared(SharedEventManagerInterface $events)

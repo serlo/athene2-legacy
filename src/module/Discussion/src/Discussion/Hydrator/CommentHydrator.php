@@ -20,7 +20,7 @@ class CommentHydrator extends AbstractKeyHydrator
      */
     protected function getKeys()
     {
-        return ['object', 'language', 'author', 'content', 'archived', 'parent', 'title'];
+        return ['object', 'instance', 'author', 'content', 'archived', 'parent', 'title'];
     }
 
     /**

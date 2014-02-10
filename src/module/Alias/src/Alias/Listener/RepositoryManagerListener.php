@@ -13,13 +13,13 @@ namespace Alias\Listener;
 use Alias\AliasManagerAwareTrait;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Entity\Entity\EntityInterface;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 
 class RepositoryManagerListener extends AbstractSharedListenerAggregate
 {
-    use AliasManagerAwareTrait, LanguageManagerAwareTrait;
+    use AliasManagerAwareTrait, InstanceManagerAwareTrait;
 
     public function attachShared(SharedEventManagerInterface $events)
     {
@@ -38,14 +38,14 @@ class RepositoryManagerListener extends AbstractSharedListenerAggregate
         $entity = $e->getParam('repository');
 
         if ($entity instanceof EntityInterface && $entity->getType()->getName() == 'article') {
-            $language = $this->getLanguageManager()->getLanguageFromRequest();
+            $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
             $url = $this->getAliasManager()->getRouter()->assemble(
                 ['entity' => $entity->getId()],
                 ['name' => 'entity/page']
             );
 
-            $this->getAliasManager()->autoAlias('entity', $url, $entity, $language);
+            $this->getAliasManager()->autoAlias('entity', $url, $entity, $instance);
         }
     }
 }

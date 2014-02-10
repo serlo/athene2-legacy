@@ -10,12 +10,12 @@
  */
 namespace Flag\Entity;
 
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use Type\Entity\TypeAwareInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
-interface FlagInterface extends TypeAwareInterface, LanguageAwareInterface
+interface FlagInterface extends TypeAwareInterface, InstanceAwareInterface
 {
 
     /**

@@ -11,10 +11,10 @@
  */
 namespace Taxonomy\Entity;
 
+use Instance\Entity\InstanceAwareInterface;
 use Type\Entity\TypeAwareInterface;
-use Language\Entity\LanguageAwareInterface;
 
-interface TaxonomyInterface extends TypeAwareInterface, LanguageAwareInterface
+interface TaxonomyInterface extends TypeAwareInterface, InstanceAwareInterface
 {
 
     /**

@@ -24,26 +24,26 @@ class ModuleOptions extends AbstractOptions
     protected $instances = [];
 
     /**
-     *
+
      * @param string $name
-     * @param string $language
+     * @param string $instance
      * @throws Exception\RuntimeException
      * @return SubjectOptions
      */
-    public function getInstance($name, $language)
+    public function getInstance($name, $instance)
     {
         $name = strtolower($name);
-        $language = strtolower($language);
+        $instance = strtolower($instance);
 
-        if (!array_key_exists($language, $this->instances)) {
-            throw new Exception\RuntimeException(sprintf('Language "%s" unkown.', $language));
+        if (!array_key_exists($instance, $this->instances)) {
+            throw new Exception\RuntimeException(sprintf('Instance "%s" unknown.', $instance));
         }
 
-        if (!array_key_exists($name, $this->instances[$language])) {
-            throw new Exception\RuntimeException(sprintf('Subject "%s" unkown.', $name));
+        if (!array_key_exists($name, $this->instances[$instance])) {
+            throw new Exception\RuntimeException(sprintf('Subject "%s" unknown.', $name));
         }
 
-        $options = $this->instances[$language][$name];
+        $options = $this->instances[$instance][$name];
         return new SubjectOptions($options);
     }
 

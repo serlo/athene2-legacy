@@ -57,6 +57,8 @@ class TableConverter extends AbstractConverter
             $fallback = '';
 
             foreach ($tableRows as $tableRow) {
+
+                $columns = array();
                 $tableColumns = array();
 
                 // remove <tr>, </tr>
@@ -66,8 +68,6 @@ class TableConverter extends AbstractConverter
                 // <td></td> == new column
                 $pattern = "~(?:.*)(?:<td(?:.*)>)(.*)(?:</td(?:.*)>)~isU";
                 preg_match_all($pattern, $tableRow[0], $tableColumns, PREG_SET_ORDER);
-
-                $columns = array();
 
                 $count = count($tableColumns);
                 if ($count < 4) {
@@ -86,17 +86,19 @@ class TableConverter extends AbstractConverter
                     $fallback .= PHP_EOL . "<tr>" . $tableRow[0] . '</tr>' . PHP_EOL;
                     $this->needsFlagging = true;
                 }
-            }
 
-            if(!empty($columns)){
-                $layout[] = $columns;
-            }
+                if(!empty($columns)){
+                    $layout[] = $columns;
+                }
 
-            if(strlen($fallback)){
-                $layout[][] = array(
-                    'col'     => $this->maxcols,
-                    'content' => '<table>'.$fallback.'</table>'
-                );
+                if(strlen($fallback)){
+                    $layout[][] = array(
+                        'col'     => $this->maxcols,
+                        'content' => '<table>'.$fallback.'</table>'
+                    );
+
+                    $fallback = '';
+                }
             }
         }
 

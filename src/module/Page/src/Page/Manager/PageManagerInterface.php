@@ -1,9 +1,9 @@
 <?php
 namespace Page\Manager;
 
-use Page\Entity\PageRevisionInterface;
+use Instance\Entity\InstanceInterface;
 use Page\Entity\PageRepositoryInterface;
-use Language\Entity\LanguageInterface;
+use Page\Entity\PageRevisionInterface;
 use User\Entity\UserInterface;
 
 interface PageManagerInterface
@@ -21,12 +21,12 @@ interface PageManagerInterface
      */
     public function getPageRepository($id);
     /**
-     *
+
      * @param array $data
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return PageRepositoryInterface;
      */
-	public function createPageRepository(array $data,$language);
+	public function createPageRepository(array $data,$instance);
 	/**
 	 *
 	 * @param RepositoryInterface $repository

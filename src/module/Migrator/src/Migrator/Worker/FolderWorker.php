@@ -12,7 +12,7 @@ namespace Migrator\Worker;
 
 use Doctrine\ORM\EntityManager;
 use Flag\Manager\FlagManagerInterface;
-use Language\Manager\LanguageManagerInterface;
+use Instance\Manager\InstanceManagerInterface;
 use Migrator\Converter\ConverterChain;
 use Migrator\Converter\PreConverterChain;
 use Taxonomy\Manager\TaxonomyManagerInterface;
@@ -55,7 +55,7 @@ class FolderWorker implements Worker
     public function __construct(
         EntityManager $objectManager,
         TaxonomyManagerInterface $taxonomyManager,
-        LanguageManagerInterface $languageManager,
+        InstanceManagerInterface $instanceManager,
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
         PreConverterChain $converterChain,
@@ -63,7 +63,7 @@ class FolderWorker implements Worker
     ) {
         $this->objectManager   = $objectManager;
         $this->taxonomyManager = $taxonomyManager;
-        $this->languageManager = $languageManager;
+        $this->instanceManager = $instanceManager;
         $this->uuidManager     = $uuidManager;
         $this->userManager     = $userManagerInterface;
         $this->converterChain  = $converterChain;
@@ -72,7 +72,7 @@ class FolderWorker implements Worker
 
     public function migrate(array & $results, array &$workload)
     {
-        $language      = $this->languageManager->getLanguageFromRequest();
+        $instance      = $this->instanceManager->getInstanceFromRequest();
         $defaultParent = $this->taxonomyManager->getTerm(7);
 
         /* @var $folders \Migrator\Entity\Folder[] */
@@ -86,12 +86,13 @@ class FolderWorker implements Worker
             }
 
             $term = $this->taxonomyManager->createTerm([
-                'taxonomy' => $folder->getExercises()->count() ? 'topic' : 'abstract-topic' ,
+                'taxonomy' => $folder->getExercises()->count() ? 'topic-folder' : 'topic' ,
                 'parent'   => $parent,
                 'term'     => [
                     'name' => $name
-                ]
-            ], $language);
+                ],
+                'position' => $folder->getPosition()
+            ], $instance);
 
             $results['folder'][$folder->getId()] = $term;
         }

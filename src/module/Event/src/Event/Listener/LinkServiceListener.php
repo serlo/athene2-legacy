@@ -19,7 +19,7 @@ class LinkServiceListener extends AbstractListener
     {
         $entity   = $e->getParam('entity');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $params = array(
             array(
@@ -28,14 +28,14 @@ class LinkServiceListener extends AbstractListener
             )
         );
 
-        $this->logEvent('entity/link/create', $language, $user, $entity, $params);
+        $this->logEvent('entity/link/create', $instance, $user, $entity, $params);
     }
 
     public function onUnLink(Event $e)
     {
         $entity   = $e->getParam('entity');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $params = array(
             array(
@@ -44,7 +44,7 @@ class LinkServiceListener extends AbstractListener
             )
         );
 
-        $this->logEvent('entity/link/remove', $language, $user, $entity, $params);
+        $this->logEvent('entity/link/remove', $instance, $user, $entity, $params);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

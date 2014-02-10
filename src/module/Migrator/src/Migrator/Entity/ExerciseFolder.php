@@ -41,6 +41,11 @@ class ExerciseFolder
     protected $exercise;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $chronology;
+
+    /**
      * @return Exercise
      */
     public function getExercise()
@@ -64,5 +69,8 @@ class ExerciseFolder
         return $this->id;
     }
 
-
+    public function getPosition()
+    {
+        return $this->chronology;
+    }
 }

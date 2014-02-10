@@ -15,7 +15,7 @@ use Entity\Entity\EntityInterface;
 use Entity\Manager\EntityManagerInterface as LRManager;
 use Entity\Options\ModuleOptions;
 use Flag\Manager\FlagManagerInterface;
-use Language\Manager\LanguageManagerInterface;
+use Instance\Manager\InstanceManagerInterface;
 use License\Manager\LicenseManagerInterface;
 use Link\Service\LinkServiceInterface;
 use Migrator\Converter\ConverterChain;
@@ -100,7 +100,7 @@ class ExerciseWorker implements Worker
         EntityManager $objectManager,
         LRManager $entityManager,
         TaxonomyManagerInterface $taxonomyManager,
-        LanguageManagerInterface $languageManager,
+        InstanceManagerInterface $instanceManager,
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
         PreConverterChain $converterChain,
@@ -113,7 +113,7 @@ class ExerciseWorker implements Worker
         $this->objectManager     = $objectManager;
         $this->entityManager     = $entityManager;
         $this->taxonomyManager   = $taxonomyManager;
-        $this->languageManager   = $languageManager;
+        $this->instanceManager   = $instanceManager;
         $this->uuidManager       = $uuidManager;
         $this->userManager       = $userManagerInterface;
         $this->converterChain    = $converterChain;
@@ -127,7 +127,7 @@ class ExerciseWorker implements Worker
     public function migrate(array & $results, array &$workload)
     {
         $user     = $this->userManager->getUserFromAuthenticator();
-        $language = $this->languageManager->getLanguage(1);
+        $instance = $this->instanceManager->getInstance(1);
 
         /** @var $exercises \Migrator\Entity\ExerciseTranslation[] */
         $exercises = $this->objectManager->getRepository('Migrator\Entity\ExerciseTranslation')->findAll();
@@ -143,11 +143,11 @@ class ExerciseWorker implements Worker
             );
 
             if ($exercise->getExercise()->getChildren()->count() > 0) {
-                $lrExercise = $this->entityManager->createEntity('text-exercise-group', [], $language);
+                $lrExercise = $this->entityManager->createEntity('text-exercise-group', [], $instance);
             } elseif ($exercise->getExercise()->getParents()->count() > 0) {
-                $lrExercise = $this->entityManager->createEntity('grouped-text-exercise', [], $language);
+                $lrExercise = $this->entityManager->createEntity('grouped-text-exercise', [], $instance);
             } else {
-                $lrExercise = $this->entityManager->createEntity('text-exercise', [], $language);
+                $lrExercise = $this->entityManager->createEntity('text-exercise', [], $instance);
             }
 
             if ($exercise->getExercise()->getLicense() !== null) {
@@ -169,7 +169,7 @@ class ExerciseWorker implements Worker
                 foreach ($folders as $folder) {
                     $folder = $folder->getFolder();
                     $term   = $results['folder'][$folder->getId()];
-                    $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise);
+                    $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise, $folder->getPosition());
                 }
             }
 
@@ -196,7 +196,7 @@ class ExerciseWorker implements Worker
                     )) && $exercise->getExercise()->getChildren()->count() == 0
             ) {
 
-                $lrSolution = $this->entityManager->createEntity('text-solution', [], $language);
+                $lrSolution = $this->entityManager->createEntity('text-solution', [], $instance);
 
                 $content = $this->converterChain->convert(
                     utf8_encode($solution->getContent())
@@ -247,22 +247,25 @@ class ExerciseWorker implements Worker
         return $this->workload;
     }
 
-    protected function doLink(EntityInterface $from, EntityInterface $to)
+    protected function doLink(EntityInterface $from, EntityInterface $to, $position = null)
     {
         //var_dump($to->getType()->getName());
         $options = $this->moduleOptions->getType(
             $from->getType()->getName()
         )->getComponent('link');
-        $this->linkService->associate($from, $to, $options);
+        $this->linkService->associate($from, $to, $options, $position);
     }
 
     protected function linkStuff(array $results)
     {
+        $position = 0;
         foreach ($this->linkWorkload as $work) {
+            $position++;
+
             $from = $results['exercise'][$work[0]->getId()];
             $to   = $results['exercise'][$work[1]->getId()];
 
-            $this->doLink($from, $to);
+            $this->doLink($from, $to, $position);
         }
     }
 }

@@ -61,7 +61,7 @@ return [
                     'setModuleOptions'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],

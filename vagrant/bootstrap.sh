@@ -99,6 +99,9 @@ sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
 sudo su - www-data -c "cd /var/www/src/module/Ui/assets/node_modules/athene2-editor && pm2 start server/server.js"
 ' > /home/vagrant/uicleaner.sh
 
+echo 'sudo su - www-data -c "(cd /var/www/bin;sh clear.sh)"' > /home/vagrant/develop.sh
+echo 'sudo su - www-data -c "(cd /var/www/bin;sh build.sh)"' > /home/vagrant/build.sh
+
 echo '
 # Listen and start after the vagrant-mounted event
 start on vagrant-mounted

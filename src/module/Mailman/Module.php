@@ -15,6 +15,7 @@ class Module
 
     public static $listeners = array(
         'Mailman\Listener\UserControllerListener',
+        'Mailman\Listener\AuthenticationControllerListener',
     );
 
     public function getConfig()
@@ -24,7 +25,7 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [

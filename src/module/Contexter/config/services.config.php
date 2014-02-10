@@ -23,7 +23,7 @@ return [
         'definition'          => [
             'class' => [
                 __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter' => [
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],

@@ -11,14 +11,14 @@
 namespace Event\Factory;
 
 use Event\Listener\AbstractListener;
-use Language\Factory\LanguageManagerFactoryTrait;
+use Instance\Factory\InstanceManagerFactoryTrait;
 use User\Factory\UserManagerFactoryTrait;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class AbstractListenerFactory implements FactoryInterface
 {
-    use UserManagerFactoryTrait, LanguageManagerFactoryTrait;
+    use UserManagerFactoryTrait, InstanceManagerFactoryTrait;
 
     /**
      * Create service
@@ -31,10 +31,10 @@ abstract class AbstractListenerFactory implements FactoryInterface
         $listener        = $this->getListenerClassName();
         $eventManager    = $serviceLocator->get('Event\EventManager');
         $userManager     = $this->getUserManager($serviceLocator);
-        $languageManager = $this->getLanguageManager($serviceLocator);
+        $instanceManager = $this->getInstanceManager($serviceLocator);
 
         /* @var $listener AbstractListener */
-        $listener = new $listener($eventManager, $languageManager, $userManager);
+        $listener = new $listener($eventManager, $instanceManager, $userManager);
 
         return $listener;
     }

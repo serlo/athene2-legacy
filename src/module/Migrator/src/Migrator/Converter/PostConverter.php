@@ -35,13 +35,13 @@ class PostConverter extends AbstractConverter
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
 
-            if(!isset($this->map['exercise'][$match[1]])){
+            if (!isset($this->map['exercise'][$match[1]])) {
                 $content = str_replace($match[0], " **Exercise $match[1] not found** ", $content);
                 continue;
             }
 
             $id   = $this->map['exercise'][$match[1]]->getId();
-            $view = " >[Übungsaufgabe](/ref/$id) ";
+            $view = '\n'.">[Übungsaufgabe](/ref/$id)".'\n';
 
             // replace the match with the view content
             $content = str_replace($match[0], $view, $content);
@@ -60,7 +60,7 @@ class PostConverter extends AbstractConverter
         foreach ($matches as $match) {
             // setting the "view" content
 
-            if(!isset($this->map['folder'][$match[1]])){
+            if (!isset($this->map['folder'][$match[1]])) {
                 $content = str_replace($match[0], " **Folder $match[1] not found** ", $content);
                 continue;
             }
@@ -83,7 +83,7 @@ class PostConverter extends AbstractConverter
         preg_match_all($reg_exercise, $content, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
 
-            if(!isset($this->map['article'][$match[1]])){
+            if (!isset($this->map['article'][$match[1]])) {
                 $content = str_replace($match[0], " **Article $match[1] not found** ", $content);
                 continue;
             }
@@ -109,7 +109,7 @@ class PostConverter extends AbstractConverter
         foreach ($matches as $match) {
 
             if (strlen($match[2])) {
-                if(!isset($this->map['article'][$match[1]])){
+                if (!isset($this->map['article'][$match[1]])) {
                     $content = str_replace($match[0], " **Article $match[2] ($match[1]) not found** ", $content);
                     continue;
                 }

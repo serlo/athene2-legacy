@@ -16,7 +16,7 @@ use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Event\Exception;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -120,7 +120,7 @@ class EventManager implements EventManagerInterface
 
     public function logEvent(
         $uri,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $actor,
         UuidInterface $uuid,
         array $parameters = array()
@@ -134,7 +134,7 @@ class EventManager implements EventManagerInterface
 
         $log->setObject($uuid);
         $log->setActor($actor);
-        $log->setLanguage($language);
+        $log->setInstance($instance);
 
         foreach ($parameters as $parameter) {
             $this->addParameter($log, $parameter);

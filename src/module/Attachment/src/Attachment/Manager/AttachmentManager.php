@@ -16,7 +16,7 @@ use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\ConfigAwareTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\Criteria;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Type\TypeManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Filter\File\RenameUpload;
@@ -25,7 +25,7 @@ class AttachmentManager implements AttachmentManagerInterface
 {
     use UuidManagerAwareTrait, ClassResolverAwareTrait;
     use ConfigAwareTrait, ObjectManagerAwareTrait;
-    use LanguageManagerAwareTrait, TypeManagerAwareTrait;
+    use InstanceManagerAwareTrait, TypeManagerAwareTrait;
 
     public function getDefaultConfig()
     {
@@ -115,8 +115,8 @@ class AttachmentManager implements AttachmentManagerInterface
         /* @var $attachment ContainerInterface */
         $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
         $this->getUuidManager()->injectUuid($attachment);
-        $attachment->setLanguage(
-            $this->getLanguageManager()->getLanguageFromRequest()
+        $attachment->setInstance(
+            $this->getInstanceManager()->getInstanceFromRequest()
         );
         $this->getObjectManager()->persist($attachment);
 

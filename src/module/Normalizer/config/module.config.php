@@ -28,6 +28,19 @@ return [
                 }
         ]
     ],
+    'normalizer'   => [
+        'strategies' => [
+            __NAMESPACE__ . '\Strategy\AttachmentStrategy'     => [],
+            __NAMESPACE__ . '\Strategy\CommentStrategy'        => [],
+            __NAMESPACE__ . '\Strategy\EntityRevisionStrategy' => [],
+            __NAMESPACE__ . '\Strategy\EntityStrategy'         => [],
+            __NAMESPACE__ . '\Strategy\PageRepositoryStrategy' => [],
+            __NAMESPACE__ . '\Strategy\PageRevisionStrategy'   => [],
+            __NAMESPACE__ . '\Strategy\PostStrategy'           => [],
+            __NAMESPACE__ . '\Strategy\TaxonomyTermStrategy'   => [],
+            __NAMESPACE__ . '\Strategy\UserStrategy'           => [],
+        ]
+    ],
     'di'           => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\SignpostController',
@@ -66,7 +79,7 @@ return [
                     'signpost' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/ref/:object',
+                            'route'    => '/ref/:object',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\SignpostController',
                                 'action'     => 'index'

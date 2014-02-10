@@ -11,9 +11,9 @@
  */
 namespace Subject\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Subject\Options\ModuleOptions;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Zend\View\Helper\AbstractHelper;
 
 class SubjectHelper extends AbstractHelper
 {
@@ -40,17 +40,15 @@ class SubjectHelper extends AbstractHelper
      */
     public function getOptions(TaxonomyTermInterface $subject)
     {
-        return $this->getModuleOptions()->getInstance($subject->getSlug(), $subject->getLanguage()->getCode());
+        return $this->getModuleOptions()->getInstance($subject->getSlug(), $subject->getInstance()->getName());
     }
 
     /**
-     *
      * @param ModuleOptions $moduleOptions            
      */
     public function setModuleOptions(ModuleOptions $moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
-        return $this;
     }
 
     /**

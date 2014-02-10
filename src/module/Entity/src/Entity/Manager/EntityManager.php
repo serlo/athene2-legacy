@@ -14,8 +14,9 @@ use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
+use Entity\Entity\EntityInterface;
 use Entity\Exception;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Type\TypeManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\EventManager\EventManagerAwareTrait;
@@ -39,9 +40,9 @@ class EntityManager implements EntityManagerInterface
         return $entity;
     }
 
-    public function createEntity($typeName, array $data = array(), LanguageInterface $language)
+    public function createEntity($typeName, array $data = array(), InstanceInterface $instance)
     {
-        $this->assertGranted('entity.create', $language);
+        $this->assertGranted('entity.create', $instance);
 
         $type = $this->getTypeManager()->findTypeByName($typeName);
 
@@ -49,11 +50,12 @@ class EntityManager implements EntityManagerInterface
             throw new Exception\RuntimeException(sprintf('Type "%s" not found', $typeName));
         }
 
+        /* @var $entity EntityInterface */
         $entity = $this->getClassResolver()->resolve('Entity\Entity\EntityInterface');
 
         $this->getUuidManager()->injectUuid($entity);
 
-        $entity->setLanguage($language);
+        $entity->setInstance($instance);
         $entity->setType($type);
 
         $this->getEventManager()->trigger(

@@ -11,14 +11,14 @@
  */
 namespace User\Form;
 
-use Zend\Form\Form;
-use Zend\Form\Element\Submit;
 use Zend\Form\Element\Email;
+use Zend\Form\Element\Submit;
+use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
 class SettingsForm extends Form
 {
-    public function __construct($objectManager)
+    public function __construct($entityManager)
     {        
         parent::__construct('settings');
         $this->setAttribute('method', 'post');
@@ -41,9 +41,9 @@ class SettingsForm extends Form
                 array(
                     'name' => 'User\Validator\UniqueUser',
                     'options' => array(
-                        'object_repository' => $objectManager->getRepository('User\Entity\User'),
+                        'object_repository' => $entityManager->getRepository('User\Entity\User'),
                         'fields' => array('email'),
-                        'object_manager' => $objectManager
+                        'object_manager' => $entityManager
                     )
                 )
             )

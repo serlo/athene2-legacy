@@ -51,11 +51,25 @@ class TaxonomyTermStrategy extends AbstractStrategy
 
     protected function getRouteName()
     {
-        return 'home';
+        $object = $this->getObject();
+        switch ($object->getType()->getName()) {
+            case 'blog':
+                return 'blog/view';
+                break;
+        }
+
+        return 'notfound';
     }
 
     protected function getRouteParams()
     {
+        $object = $this->getObject();
+        switch ($object->getType()->getName()) {
+            case 'blog':
+                return ['id' => $object->getId()];
+                break;
+        }
+
         return [];
     }
 

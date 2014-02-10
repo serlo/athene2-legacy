@@ -17,7 +17,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class AliasController extends AbstractActionController
 {
-    use Alias\AliasManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+    use Alias\AliasManagerAwareTrait, \Instance\Manager\InstanceManagerAwareTrait;
 
     /**
      * @var unknown
@@ -28,7 +28,7 @@ class AliasController extends AbstractActionController
     {
         $source = $this->getAliasManager()->findSourceByAlias(
             $this->params('alias'),
-            $this->getLanguageManager()->getLanguageFromRequest()
+            $this->getInstanceManager()->getInstanceFromRequest()
         );
 
         $router = $this->getServiceLocator()->get('Router');

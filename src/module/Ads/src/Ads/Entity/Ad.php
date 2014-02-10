@@ -11,7 +11,7 @@
 namespace Ads\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use User\Entity\UserInterface;
 
 /**
@@ -22,6 +22,7 @@ use User\Entity\UserInterface;
  */
 class Ad implements AdInterface
 {
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -29,11 +30,6 @@ class Ad implements AdInterface
      * @ORM\GeneratedValue
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language") *
-     */
-    protected $language;
 
     /**
      * @ORM\ManyToOne(targetEntity="Attachment\Entity\Container")
@@ -137,18 +133,6 @@ class Ad implements AdInterface
     public function getClicks()
     {
         return $this->clicks;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     public function setAttachment($attachment)

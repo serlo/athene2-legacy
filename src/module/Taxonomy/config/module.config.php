@@ -163,7 +163,7 @@ return [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ],
                     'setUserManager'     => [
@@ -199,7 +199,7 @@ return [
                     'setObjectManager'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ]

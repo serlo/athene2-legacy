@@ -14,7 +14,7 @@ namespace Ads\Manager;
 use Ads\Entity\AdInterface;
 use Ads\Exception\AdNotFoundException;
 use Ads\Hydrator\AdHydrator;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Page\Exception\InvalidArgumentException;
 
 class AdsManager implements AdsManagerInterface
@@ -66,13 +66,13 @@ class AdsManager implements AdsManagerInterface
         return $ad;
     }
 
-    public function findAllAds(LanguageInterface $language)
+    public function findAllAds(InstanceInterface $instance)
     {
         $ads = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Ads\Entity\AdInterface'))
             ->findBy(array(
-            'language' => $language->getId()
+            'instance' => $instance->getId()
         ));
         
         return $ads;
@@ -85,9 +85,9 @@ class AdsManager implements AdsManagerInterface
         return $this;
     }
 
-    public function findShuffledAds(LanguageInterface $language, $number)
+    public function findShuffledAds(InstanceInterface $instance, $number)
     {
-        $allAds = $this->findAllAds($language);
+        $allAds = $this->findAllAds($instance);
         $adsScaled = array();
         $ads = array();
         $numberDisabledAds = 0;

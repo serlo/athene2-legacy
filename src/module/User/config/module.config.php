@@ -16,7 +16,7 @@ namespace User;
 return array(
     'zfc_rbac'        => [
         'assertion_map' => [
-            'user.create' => 'User\Assertion\HasNoIdentityAssertion'
+            //'user.create' => 'User\Assertion\HasNoIdentityAssertion'
         ]
     ],
     'service_manager' => array(
@@ -57,7 +57,7 @@ return array(
                     'setAuthenticationService' => array(
                         'required' => true
                     ),
-                    'setLanguageManager'       => array(
+                    'setInstanceManager'       => array(
                         'required' => true
                     )
                 )
@@ -93,34 +93,6 @@ return array(
                     )
                 ),
                 'child_routes'  => array(
-                    'role'      => array(
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
-                            'route' => '/:user/role'
-                        ),
-                        'child_routes' => array(
-                            'add'    => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/add/:role',
-                                    'defaults' => array(
-                                        'action' => 'addRole'
-                                    )
-                                )
-                            ),
-                            'remove' => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/remove/:role',
-                                    'defaults' => array(
-                                        'action' => 'removeRole'
-                                    )
-                                )
-                            )
-                        )
-                    ),
                     'me'        => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
@@ -128,34 +100,6 @@ return array(
                             'route'    => '/me',
                             'defaults' => array(
                                 'action' => 'me'
-                            )
-                        )
-                    ),
-                    'password'  => array(
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
-                            'route' => '/password'
-                        ),
-                        'child_routes' => array(
-                            'restore' => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/restore[/:token]',
-                                    'defaults' => array(
-                                        'action' => 'restorePassword'
-                                    )
-                                )
-                            ),
-                            'change'  => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/change',
-                                    'defaults' => array(
-                                        'action' => 'changePassword'
-                                    )
-                                )
                             )
                         )
                     ),
@@ -169,26 +113,6 @@ return array(
                             )
                         )
                     ),
-                    'login'     => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/login',
-                            'defaults' => array(
-                                'action' => 'login'
-                            )
-                        )
-                    ),
-                    'dashboard' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/dashboard',
-                            'defaults' => array(
-                                'action' => 'dashboard'
-                            )
-                        )
-                    ),
                     'register'  => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
@@ -196,26 +120,6 @@ return array(
                             'route'    => '/register',
                             'defaults' => array(
                                 'action' => 'register'
-                            )
-                        )
-                    ),
-                    'logout'    => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/logout',
-                            'defaults' => array(
-                                'action' => 'logout'
-                            )
-                        )
-                    ),
-                    'activate'  => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/activate/:token',
-                            'defaults' => array(
-                                'action' => 'activate'
                             )
                         )
                     ),

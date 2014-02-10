@@ -10,7 +10,25 @@
  */
 namespace Authorization\Entity;
 
-interface PermissionInterface
+interface PermissionInterface extends \Rbac\Permission\PermissionInterface
 {
+    /**
+     * @return int
+     */
+    public function getId();
 
-} 
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return ParametrizedPermissionInterface[]
+     */
+    public function getParametrizedPermissions();
+
+    /**
+     * @return RoleInterface[]
+     */
+    public function getRoles();
+}

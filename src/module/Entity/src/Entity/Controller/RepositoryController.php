@@ -13,7 +13,7 @@ namespace Entity\Controller;
 
 use Entity\Entity\EntityInterface;
 use Entity\Options\ModuleOptions;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Versioning\Exception\RevisionNotFoundException;
 use Versioning\RepositoryManagerAwareTrait;
@@ -22,7 +22,7 @@ use Zend\View\Model\ViewModel;
 
 class RepositoryController extends AbstractController
 {
-    use UserManagerAwareTrait, LanguageManagerAwareTrait;
+    use UserManagerAwareTrait, InstanceManagerAwareTrait;
     use RepositoryManagerAwareTrait;
 
     /**
@@ -51,7 +51,7 @@ class RepositoryController extends AbstractController
             );
             if ($form->isValid()) {
                 $data     = $form->getData();
-                $language = $this->getLanguageManager()->getLanguageFromRequest();
+                $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
                 $this->getRepositoryManager()->getRepository($entity)->commitRevision($data);
                 $this->getEntityManager()->flush();
