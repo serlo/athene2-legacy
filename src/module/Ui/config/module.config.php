@@ -121,7 +121,7 @@ return array(
         ),
         'modules'          => array(
             'ui' => array(
-                'root_path'   => __DIR__ . '/../assets/build',
+                'root_path'   => __DIR__ . '/../../../assets/build',
                 'collections' => array(
                     'libs'           => array(
                         'assets' => array(
