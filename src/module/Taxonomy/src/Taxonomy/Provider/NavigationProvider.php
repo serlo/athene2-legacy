@@ -97,8 +97,9 @@ class NavigationProvider implements PageProviderInterface
                     )
                 );
 
-                $current['label'] = $term->getName();
-                $children         = $term->findChildrenByTaxonomyNames($this->options['types']);
+                $current['label']    = $term->getName();
+                $current['elements'] = $term->countElements();
+                $children            = $term->findChildrenByTaxonomyNames($this->options['types']);
                 if (count($children)) {
                     $current['pages'] = $this->iterTerms($children, $depth - 1);
                 }

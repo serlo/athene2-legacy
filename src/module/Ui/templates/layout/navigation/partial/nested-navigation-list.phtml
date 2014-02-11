@@ -18,6 +18,7 @@ foreach ($this->pages as $page) {
     if (! $page->isVisible() || !$this->navigation()->accept($page)) {
         continue;
     }
+
     if ($page->getLabel() == 'divider') {
         $html[] = '<li class="divider"></li>';
         continue;
@@ -29,7 +30,12 @@ foreach ($this->pages as $page) {
         $liClasses[] = 'active';
     }
 
-    $html[] = '<li' . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
+    $elements = '';
+    if ($page->get('elements') > 0) {
+        $elements = ' data-element-count="' . $page->get('elements') . '"';
+    }
+
+    $html[] = '<li' . $elements . (count($liClasses) ? (' class="' . implode(' ', $liClasses) . '">') : '>');
 
     $html[] = '<a href="' . rawurldecode($page->getHref()) . '">';
 

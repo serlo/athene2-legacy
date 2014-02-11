@@ -16,7 +16,7 @@ use Navigation\Entity\ParameterInterface;
 use Navigation\Exception\ContainerNotFoundException;
 use Navigation\Manager\NavigationManagerInterface;
 
-class ContainerRepositoryContainerProvider implements ContainerProviderInterface
+class ContainerRepositoryProvider implements ContainerProviderInterface
 {
     /**
      * @var NavigationManagerInterface

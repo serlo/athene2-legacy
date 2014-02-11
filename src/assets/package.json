@@ -1,5 +1,5 @@
 {
-    "name": "frontend-boilerplate",
+    "name": "athene2-assets",
     "version": "0.0.0",
     "dependencies": {
         "athene2-editor": "0.1.4"
@@ -31,17 +31,7 @@
         "load-grunt-tasks": "~0.1.0",
         "connect-livereload": "~0.2.0",
         "time-grunt": "~0.1.1",
-        "grunt-file-process": "~0.2.2",
-
-        "npmconf": "0.0.24",
-        "jpegtran-bin": "~0.1.7",
-        "optipng-bin": "~0.2.6",
-        "jshint": "2.1.11",
-        "globule": "~0.1.0",
-        "phantomjs": "1.9.7-1",
-        "mocha": "1.14.0",
-        "request": "2.27.0",
-        "svgo": "0.3.7"
+        "grunt-file-process": "~0.2.2"
     },
     "engines": {
         "node": ">=0.8.0"

@@ -10,7 +10,6 @@
  */
 namespace Event;
 
-use ZfcRbac\Service\AuthorizationService;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
@@ -20,6 +19,7 @@ use Event\Exception;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 use ZfcRbac\Exception\UnauthorizedException;
+use ZfcRbac\Service\AuthorizationService;
 
 class EventManager implements EventManagerInterface
 {
@@ -39,7 +39,7 @@ class EventManager implements EventManagerInterface
         ObjectManager $objectManager
     ) {
         $this->objectManager        = $objectManager;
-        $this->lassResolver         = $classResolver;
+        $this->classResolver         = $classResolver;
         $this->authorizationService = $authorizationService;
     }
 

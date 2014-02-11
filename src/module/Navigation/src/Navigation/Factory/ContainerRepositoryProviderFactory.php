@@ -11,7 +11,7 @@
 namespace Navigation\Factory;
 
 use Instance\Factory\InstanceManagerFactoryTrait;
-use Navigation\Provider\ContainerRepositoryContainerProvider;
+use Navigation\Provider\ContainerRepositoryProvider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -29,7 +29,7 @@ class ContainerRepositoryProviderFactory implements FactoryInterface
     {
         $instanceManager   = $this->getInstanceManager($serviceLocator);
         $navigationManager = $this->getNavigationManager($serviceLocator);
-        $instance          = new ContainerRepositoryContainerProvider($instanceManager, $navigationManager);
+        $instance          = new ContainerRepositoryProvider($instanceManager, $navigationManager);
 
         return $instance;
     }
