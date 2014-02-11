@@ -819,7 +819,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `serlo`.`term_taxonomy_comment` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_comment` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `comment_id` BIGINT NOT NULL,
   `term_taxonomy_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
