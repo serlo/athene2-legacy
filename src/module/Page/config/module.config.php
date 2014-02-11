@@ -2,11 +2,6 @@
 namespace Page;
 
 return array(
-    'uuid_router'    => array(
-        'routes' => array(
-            'pageRepository' => '/page/view/%d'
-        )
-    ),
     'router'         => array(
         'routes' => array(
             'page' => array(
@@ -169,10 +164,13 @@ return array(
             'class' => array(
 
                 'Page\Controller\IndexController' => array(
-                    'setObjectManager'   => array(
+                    'setAliasManager' => array(
                         'required' => true
                     ),
-                    'setLanguageManager' => array(
+                    'setObjectManager' => array(
+                        'required' => true
+                    ),
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setPageManager'     => array(
@@ -189,7 +187,7 @@ return array(
                     'setRepositoryManager' => array(
                         'required' => true
                     ),
-                    'setLanguageManager'   => array(
+                    'setInstanceManager'   => array(
                         'required' => true
                     ),
                     'setUuidManager'       => array(

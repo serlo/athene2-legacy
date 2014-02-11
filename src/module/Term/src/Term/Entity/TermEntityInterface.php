@@ -11,9 +11,9 @@
  */
 namespace Term\Entity;
 
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 
-interface TermEntityInterface extends LanguageAwareInterface
+interface TermEntityInterface extends InstanceAwareInterface
 {
 
     /**

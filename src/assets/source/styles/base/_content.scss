@@ -1,0 +1,11 @@
+// Spoilers
+.spoiler {
+    > a {
+        background: #eee;
+        padding: 4px 5px;
+    }
+}
+
+.spoiler-content {
+    display: none;
+}

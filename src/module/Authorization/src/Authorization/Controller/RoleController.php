@@ -11,11 +11,15 @@
 namespace Authorization\Controller;
 
 use Authorization\Form\PermissionForm;
+use Authorization\Form\RoleForm;
 use Authorization\Form\UserForm;
 use Authorization\Service\PermissionServiceAwareTrait;
 use Authorization\Service\PermissionServiceInterface;
 use Authorization\Service\RoleServiceAwareTrait;
 use Authorization\Service\RoleServiceInterface;
+use Instance\Entity\InstanceAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use User\Exception\UserNotFoundException;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
@@ -24,76 +28,62 @@ use Zend\View\Model\ViewModel;
 
 class RoleController extends AbstractActionController
 {
-    use RoleServiceAwareTrait, UserManagerAwareTrait, PermissionServiceAwareTrait;
+    use RoleServiceAwareTrait, UserManagerAwareTrait, PermissionServiceAwareTrait, InstanceManagerAwareTrait;
 
     /**
-     * @param PermissionServiceInterface $permissionService
-     * @param RoleServiceInterface       $roleService
-     * @param UserManagerInterface       $userManager
+     * @var RoleForm
      */
+    protected $roleForm;
+
     public function __construct(
+        InstanceManagerInterface $instanceManager,
         PermissionServiceInterface $permissionService,
         RoleServiceInterface $roleService,
-        UserManagerInterface $userManager
+        UserManagerInterface $userManager,
+        RoleForm $roleForm
     ) {
         $this->roleService       = $roleService;
         $this->userManager       = $userManager;
         $this->permissionService = $permissionService;
-    }
-
-    public function rolesAction()
-    {
-        $view = new ViewModel(array(
-            'roles' => $this->getRoleService()->findAllRoles()
-        ));
-        $view->setTemplate('authorization/role/roles');
-
-        return $view;
-    }
-
-    public function showAction()
-    {
-        $role = $this->params('role');
-        $role = $this->getRoleService()->getRole($role);
-
-        $view = new ViewModel(array(
-            'role'  => $role,
-            'users' => $role->getUsers()
-        ));
-
-        return $view;
-    }
-
-    public function removePermissionAction()
-    {
-        $this->assertGranted('authorization.permission.remove');
-
-        $this->getRoleService()->removeRolePermission($this->params('role'), $this->params('permission'));
-        $this->getRoleService()->flush();
-        $this->redirect()->toUrl($this->referer()->toUrl());
-
-        return null;
+        $this->instanceManager   = $instanceManager;
+        $this->roleForm          = $roleForm;
     }
 
     public function addPermissionAction()
     {
-        $this->assertGranted('authorization.permission.add');
+        $this->assertGranted('authorization.role.grant.permission');
 
         $permissions = $this->getPermissionService()->findAllPermissions();
         $role        = $this->getRoleService()->getRole($this->params('role'));
         $permissions = array_diff($permissions, $role->getPermissions()->toArray());
-        $form        = new PermissionForm($permissions);
+        $instances   = $this->getInstanceManager()->findAllInstances();
+        $form        = new PermissionForm($permissions, $instances);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $data = $form->getData();
-                $this->getRoleService()->grantRolePermission($this->params('role'), $data['permission']);
-                $this->getRoleService()->flush();
-                $this->redirect()->toUrl($this->referer()->fromStorage());
+                // TODO use hydrator
 
-                return null;
+                $data = $form->getData();
+
+                if ((int)$data['instance'] == -1) {
+                    $instance = null;
+                } else {
+                    $instance = $this->instanceManager->getInstance($data['instance']);
+                }
+
+                $permissionKey = $this->getPermissionService()->getPermission($data['permission']);
+                $permission    = $this->getPermissionService()->findOrCreateParametrizedPermission(
+                    $permissionKey->getName(),
+                    'instance',
+                    $instance
+                );
+
+                $this->getRoleService()->grantRolePermission($this->params('role'), $permission);
+                $this->getRoleService()->flush();
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
@@ -111,7 +101,7 @@ class RoleController extends AbstractActionController
     public function addUserAction()
     {
         $role = $this->getRoleService()->getRole($this->params('role'));
-        $this->assertGranted('authorization.role.identity.modify', $role);
+        $this->assertGranted('authorization.identity.grant.role', $role);
 
         $form  = new UserForm();
         $error = false;
@@ -126,9 +116,8 @@ class RoleController extends AbstractActionController
                     $user = $this->getUserManager()->findUserByUsername($data['user']);
                     $this->getRoleService()->grantIdentityRole($this->params('role'), $user->getId());
                     $this->getRoleService()->flush();
-                    $this->redirect()->toUrl($this->referer()->fromStorage());
 
-                    return null;
+                    return $this->redirect()->toUrl($this->referer()->fromStorage());
                 } catch (UserNotFoundException $e) {
                     $error = true;
                     $user  = $data['user'];
@@ -149,10 +138,45 @@ class RoleController extends AbstractActionController
         return $view;
     }
 
+    public function createRoleAction()
+    {
+        $this->assertGranted('authorization.role.create');
+
+        $view = new ViewModel(['form' => $this->roleForm]);
+        $view->setTemplate('authorization/role/create');
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $this->roleForm->setData($data);
+            if ($this->roleForm->isValid()) {
+                $this->roleService->createRole($this->roleForm);
+                $this->roleService->flush();
+                $this->flashmessenger()->addSuccessMessage('Role created.');
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
+            }
+        } else {
+            $this->referer()->store();
+        }
+
+        return $view;
+    }
+
+    public function removePermissionAction()
+    {
+        $this->assertGranted('authorization.role.revoke.permission');
+
+        $this->getRoleService()->removeRolePermission($this->params('role'), $this->params('permission'));
+        $this->getRoleService()->flush();
+        $this->redirect()->toUrl($this->referer()->toUrl());
+
+        return null;
+    }
+
     public function removeUserAction()
     {
         $role = $this->getRoleService()->getRole($this->params('role'));
-        $this->assertGranted('authorization.role.identity.modify', $role);
+        $this->assertGranted('authorization.identity.revoke.role', $role);
 
         $form  = new UserForm();
         $error = false;
@@ -186,6 +210,29 @@ class RoleController extends AbstractActionController
         ]);
 
         $view->setTemplate('authorization/role/user/remove');
+
+        return $view;
+    }
+
+    public function rolesAction()
+    {
+        $view = new ViewModel(array(
+            'roles' => $this->getRoleService()->findAllRoles()
+        ));
+        $view->setTemplate('authorization/role/roles');
+
+        return $view;
+    }
+
+    public function showAction()
+    {
+        $role = $this->params('role');
+        $role = $this->getRoleService()->getRole($role);
+
+        $view = new ViewModel(array(
+            'role'  => $role,
+            'users' => $role->getUsers()
+        ));
 
         return $view;
     }

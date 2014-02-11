@@ -11,7 +11,7 @@
 namespace Alias\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use Uuid\Entity\UuidInterface;
 
 /**
@@ -20,6 +20,7 @@ use Uuid\Entity\UuidInterface;
  */
 class Alias implements AliasInterface
 {
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -39,21 +40,10 @@ class Alias implements AliasInterface
     protected $source;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
-
-    /**
      * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid")
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $uuid;
-
-    public function getLanguage()
-    {
-        return $this->language;
-    }
 
     public function getObject()
     {
@@ -92,13 +82,6 @@ class Alias implements AliasInterface
     public function setObject(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
 
         return $this;
     }

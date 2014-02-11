@@ -62,7 +62,7 @@ $table = array(
             <?php switch($link->getType()->getName()){ 
                 case 'article': $table['left'] .= $partial; break; ?>
                 <?php case 'text-exercise': $table['bottom'] .= $partial; break; ?>
-                <?php case 'exercise-group': $table['bottom'] .= $partial; break; ?>
+                <?php case 'text-exercise-group': $table['bottom'] .= $partial; break; ?>
                 <?php case 'video': $table['middle'] .= $partial; break; ?>
                 <?php case 'module': $table['right'] .= $partial; break; ?>
                 <?php default: $table['left'] .= $partial; break;?>
@@ -116,15 +116,15 @@ $table = array(
     	<div class="row">
     		<div class="col-md-12">
     		    <h4><span class="glyphicon glyphicon-edit"></span> <strong><?php echo $this->translate('Exercises'); ?></strong></h4>
-    		    <div class="list-group">
+    		    <ol>
         		    <?php if(strlen($table['bottom']) > 0): ?>
                         <?php echo $table['bottom']; ?>
                     <?php else: ?>
-                    	<div class="list-group-item">
+                        </ol>
                     	   <p class="text-muted"><?php echo $this->translate('There are no exercises for this topic yet.'); ?></p>
-                    	</div>
+                    	<ol>
                     <?php endif; ?>
-                </div>
+                </ol>
             </div>
     	</div>
     </div>

@@ -20,7 +20,7 @@ use Zend\View\Model\ViewModel;
 
 class RelatedContentController extends AbstractActionController
 {
-    use RelatedContentManagerAwareTrait, AuthorizationAssertionTrait;
+    use RelatedContentManagerAwareTrait;
 
     public function addCategoryAction()
     {

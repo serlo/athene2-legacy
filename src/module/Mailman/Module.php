@@ -15,6 +15,7 @@ class Module
 
     public static $listeners = array(
         'Mailman\Listener\UserControllerListener',
+        'Mailman\Listener\AuthenticationControllerListener',
     );
 
     public function getConfig()
@@ -24,13 +25,24 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                )
-            )
-        );
+        $autoloader = [];
+
+        $autoloader['Zend\Loader\StandardAutoloader'] = [
+            'namespaces' => [
+                __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+            ]
+        ];
+
+        if (file_exists(__DIR__ . '/autoload_classmap.php')) {
+            return [
+                'Zend\Loader\ClassMapAutoloader' => [
+                    __DIR__ . '/autoload_classmap.php',
+                ]
+            ];
+
+        }
+
+        return $autoloader;
     }
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)

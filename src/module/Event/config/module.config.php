@@ -13,15 +13,15 @@ namespace Event;
 use Event\View\Helper\EventLog;
 
 return [
-    'event_manager'  => [],
-    'class_resolver' => [
+    'event_manager'   => [],
+    'class_resolver'  => [
         'Event\Entity\EventLogInterface'           => 'Event\Entity\EventLog',
         'Event\Entity\EventInterface'              => 'Event\Entity\Event',
         'Event\Entity\EventParameterInterface'     => 'Event\Entity\EventParameter',
         'Event\Entity\EventParameterNameInterface' => 'Event\Entity\EventParameterName',
         'Event\Service\EventServiceInterface'      => 'Event\Service\EventService'
     ],
-    'view_helpers'   => [
+    'view_helpers'    => [
         'factories' => [
             'events' => function ($sm) {
                     $instance = new EventLog();
@@ -33,13 +33,27 @@ return [
                 }
         ]
     ],
-    'di'             => [
+    'controllers'     => [
+        'invokables' => [__NAMESPACE__ . '\Controller\EventController']
+    ],
+    'service_manager' => [
+        'factories' => [
+            'Event\Listener\RepositoryManagerListener' => __NAMESPACE__ . '\Factory\RepositoryManagerListenerFactory',
+            'Event\Listener\DiscussionManagerListener' => __NAMESPACE__ . '\Factory\DiscussionManagerListenerFactory',
+            'Event\Listener\TaxonomyManagerListener'   => __NAMESPACE__ . '\Factory\TaxonomyManagerListenerFactory',
+            'Event\Listener\UuidManagerListener'       => __NAMESPACE__ . '\Factory\UuidManagerListenerFactory',
+            'Event\Listener\LinkServiceListener'       => __NAMESPACE__ . '\Factory\LinkServiceListenerFactory',
+            'Event\Listener\EntityManagerListener'     => __NAMESPACE__ . '\Factory\EntityManagerListenerFactory',
+            'Event\EventManager'                       => __NAMESPACE__ . '\Factory\EventManagerFactory'
+        ]
+    ],
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\EventController'
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\EventManager'                       => [
+                __NAMESPACE__ . '\EventManager' => [
                     'setClassResolver'  => [
                         'required' => true
                     ],
@@ -47,77 +61,6 @@ return [
                         'required' => true
                     ],
                     'setServiceLocator' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Service\EventService'               => [
-                    'setUuidManager'     => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\TaxonomyManagerListener'   => [
-                    'setEventManager'    => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\DiscussionManagerListener' => [
-                    'setEventManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\RepositoryManagerListener' => [
-                    'setEventManager'    => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\EntityManagerListener'     => [
-                    'setEventManager'    => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\LinkServiceListener'       => [
-                    'setEventManager'    => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\UuidManagerListener'       => [
-                    'setEventManager'    => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
                         'required' => true
                     ]
                 ]
@@ -132,7 +75,7 @@ return [
             ]
         ]
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -148,7 +91,7 @@ return [
             ]
         ]
     ],
-    'router'         => [
+    'router'          => [
         'routes' => [
             'event' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',

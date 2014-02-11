@@ -11,12 +11,12 @@
 namespace Discussion\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
-interface CommentInterface extends TaxonomyTermAwareInterface, LanguageAwareInterface
+interface CommentInterface extends TaxonomyTermAwareInterface, InstanceAwareInterface
 {
 
     /**

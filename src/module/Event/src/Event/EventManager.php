@@ -11,20 +11,37 @@
 namespace Event;
 
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
+use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Event\Collection\EventCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Event\Exception;
-use Language\Entity\LanguageInterface;
-use User\Entity\UserInterface;
+use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
+use ZfcRbac\Exception\UnauthorizedException;
+use ZfcRbac\Service\AuthorizationService;
 
 class EventManager implements EventManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
     protected $inMemoryEvents = array();
-
     protected $inMemoryParameterNames = array();
+
+    /**
+     * @var \Authorization\Service\AuthorizationService
+     */
+    protected $authorizationService;
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager
+    ) {
+        $this->objectManager        = $objectManager;
+        $this->classResolver         = $classResolver;
+        $this->authorizationService = $authorizationService;
+    }
 
     public function findEventsByActor($userId)
     {
@@ -71,16 +88,14 @@ class EventManager implements EventManagerInterface
         );
 
         if ($recursive) {
-            $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterInterface');
-
-            $parameters = $this->getObjectManager()->getRepository($className)->findBy(
+            $parameters = $this->getObjectManager()->getRepository('Event\Entity\EventParameterUuid')->findBy(
                 [
                     'uuid' => $objectId
                 ]
             );
 
-            /* @var $parameter \Event\Entity\EventParameterInterface */
             foreach ($parameters as $parameter) {
+                $parameter = $parameter->getEventParameter();
                 if (!empty($filters)) {
                     if (in_array($parameter->getName(), $filters)) {
                         $results[] = $parameter->getLog();
@@ -115,11 +130,16 @@ class EventManager implements EventManagerInterface
 
     public function logEvent(
         $uri,
-        LanguageInterface $language,
-        UserInterface $actor,
+        InstanceInterface $instance,
         UuidInterface $uuid,
         array $parameters = array()
     ) {
+        $actor = $this->authorizationService->getIdentity();
+
+        if ($actor === null) {
+            throw new UnauthorizedException;
+        }
+
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
 
         /* @var $log Entity\EventLogInterface */
@@ -129,7 +149,7 @@ class EventManager implements EventManagerInterface
 
         $log->setObject($uuid);
         $log->setActor($actor);
-        $log->setLanguage($language);
+        $log->setInstance($instance);
 
         foreach ($parameters as $parameter) {
             $this->addParameter($log, $parameter);
@@ -174,8 +194,8 @@ class EventManager implements EventManagerInterface
      */
     protected function addParameter(Entity\EventLogInterface $log, array $parameter)
     {
-        if (!array_key_exists('object', $parameter)) {
-            throw new Exception\RuntimeException(sprintf('No object given'));
+        if (!array_key_exists('value', $parameter)) {
+            throw new Exception\RuntimeException(sprintf('No value given'));
         }
         if (!array_key_exists('name', $parameter)) {
             throw new Exception\RuntimeException(sprintf('No name given'));
@@ -186,12 +206,6 @@ class EventManager implements EventManagerInterface
                 gettype($parameter['name'])
             ));
         }
-        if (!$parameter['object'] instanceof UuidInterface) {
-            throw new Exception\RuntimeException(sprintf(
-                'Parameter name should be UuidInterface, but got `%s`',
-                get_class($parameter['object'])
-            ));
-        }
 
         $name = $this->findParameterNameByName($parameter['name']);
 
@@ -199,7 +213,7 @@ class EventManager implements EventManagerInterface
         $entity = $this->getClassResolver()->resolve('Event\Entity\EventParameterInterface');
         $entity->setLog($log);
         $entity->setName($name);
-        $entity->setObject($parameter['object']);
+        $entity->setValue($parameter['value']);
         $log->addParameter($entity);
 
         $this->getObjectManager()->persist($entity);

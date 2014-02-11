@@ -92,7 +92,7 @@ class RegisterFilter extends InputFilter
             'required' => true,
             'filters' => array(
                 array(
-                    'name' => 'User\Authentication\HashFilter'
+                    'name' => 'Authentication\HashFilter'
                 )
             )
         ));

@@ -10,40 +10,63 @@
  */
 namespace Alias;
 
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
+use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 
 interface AliasManagerInterface
 {
     /**
      * @param string            $source
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return string
      */
-    public function findAliasBySource($source, LanguageInterface $language);
+    public function findAliasBySource($source, InstanceInterface $instance);
 
     /**
      * @param string            $alias
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return string
      */
-    public function findSourceByAlias($alias, LanguageInterface $language);
+    public function findSourceByAlias($alias, InstanceInterface $instance);
 
     /**
      * @param string            $source
      * @param string            $alias
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @param UuidInterface     $uuid
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
 
     /**
+
+     * @param string $alias
+     * @param string $aliasFallback
+     * @param InstanceInterface $instance
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function updateAlias( $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
+    
+    
+    /**
+
+     * @param string $name
+     * @param string $source
+     * @param UuidHolder $object
      * @param string            $name
      * @param string            $source
      * @param UuidInterface     $object
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @return self
      */
-    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language);
+    public function autoAlias($name, $source, UuidHolder $object, InstanceInterface $instance);
+
+    /**
+     *
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
+     */
+    public function findAliasByObject(UuidInterface $uuid);
 }

@@ -32,7 +32,7 @@ return [
                     'taxonomy'   => []
                 ]
             ],
-            'exercise-group'        => [
+            'text-exercise-group'        => [
                 'components' => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
@@ -66,7 +66,7 @@ return [
                             ]
                         ],
                         'parents'  => [
-                            'exercise-group' => [
+                            'text-exercise-group' => [
                                 'multiple' => false
                             ]
                         ]

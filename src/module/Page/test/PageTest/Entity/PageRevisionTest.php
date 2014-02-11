@@ -12,11 +12,8 @@
  */
 namespace PageTest\Entity;
 
-use AtheneTest\TestCase\Model;
-use Uuid\Entity\Uuid;
 use Page\Entity\PageRepository;
 use Page\Entity\PageRevision;
-use Language\Entity\Language;
 use User\Entity\User;
 
 

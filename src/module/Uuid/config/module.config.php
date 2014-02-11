@@ -29,12 +29,12 @@ return [
         'permissions' => [
             'entityRevision' => [
                 'trash'   => 'entity.revision.create',
-                'restore' => 'entity.revision.checkout',
+                'restore' => 'entity.revision.restore',
                 'purge' => 'entity.revision.purge'
             ],
             'entity'         => [
                 'trash'   => 'entity.create',
-                'restore' => 'entity.checkout',
+                'restore' => 'entity.restore',
                 'purge' => 'entity.purge'
             ]
         ]

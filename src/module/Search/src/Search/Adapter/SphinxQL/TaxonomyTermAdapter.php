@@ -22,7 +22,7 @@ class TaxonomyTermAdapter extends AbstractSphinxAdapter
     protected $types = [
         'topic',
         'topic-folder',
-        'abstract-topic'
+        'topic-final-folder'
     ];
 
     public function search($query, Result\Container $container)

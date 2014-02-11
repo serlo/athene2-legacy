@@ -68,8 +68,6 @@ class ZendMailAdapter implements AdapterInterface
         $message->setEncoding("UTF-8");
         $message->setSubject($subject);
         $this->queue[] = $message;
-
-        return $this;
     }
 
     /*
@@ -82,7 +80,5 @@ class ZendMailAdapter implements AdapterInterface
         foreach ($this->queue as $message) {
             $transport->send($message);
         }
-
-        return $this;
     }
 }

@@ -142,7 +142,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\TaxonomyManager' => __NAMESPACE__ . '\Factory\TaxonomyManagerFactory'
         ]
     ],
     'di'              => [
@@ -162,7 +163,7 @@ return [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ],
                     'setUserManager'     => [
@@ -183,23 +184,6 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Manager\TaxonomyManager'        => [
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setTypeManager'   => [
-                        'required' => true
-                    ],
-                    'setModuleOptions' => [
-                        'required' => true
-                    ],
-                    'setHydrator'      => [
-                        'required' => true
-                    ]
-                ],
                 __NAMESPACE__ . '\Controller\TaxonomyController'  => [
                     'setTaxonomyManager' => [
                         'required' => true
@@ -215,7 +199,7 @@ return [
                     'setObjectManager'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ]

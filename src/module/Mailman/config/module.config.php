@@ -46,6 +46,17 @@ return array(
                         'required' => true
                     )
                 ),
+                'Mailman\Listener\AuthenticationControllerListener' => array(
+                    'setMailman'    => array(
+                        'required' => true
+                    ),
+                    'setTranslator' => array(
+                        'required' => true
+                    ),
+                    'setRenderer'   => array(
+                        'required' => true
+                    )
+                ),
                 'Mailman\Adapter\ZendMailAdapter'         => array(
                     'setSmtpOptions' => array(
                         'required' => true

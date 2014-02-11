@@ -77,6 +77,15 @@ return [
                                     ]
                                 ]
                             ],
+                            'reject'      => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/reject/:entity/:revision',
+                                    'defaults' => [
+                                        'action' => 'reject'
+                                    ]
+                                ]
+                            ],
                             'compare'      => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [

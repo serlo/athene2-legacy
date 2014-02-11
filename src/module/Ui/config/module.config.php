@@ -17,17 +17,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcRbac\Guard\GuardInterface;
 
 return array(
-    'di'                    => [
-        'definition' => [
-            'class' => [
-                __NAMESPACE__ . '\Provider\LanguageAwareNavigationProvider' => [
-                    'setLanguageManager' => [
-                        'required' => true
-                    ]
-                ]
-            ]
-        ]
-    ],
     'navigation'            => array(
         'hydratables' => array(
             'default'    => array(
@@ -63,25 +52,14 @@ return array(
     ),
     'view_helpers'          => array(
         'factories'  => array(
-            'currentLanguage' => function ($helperPluginManager) {
-                    $plugin          = new View\Helper\ActiveLanguage();
-                    $languageManager = $helperPluginManager->getServiceLocator()->get(
-                        'Language\Manager\LanguageManager'
-                    );
-
-                    // $translator = $helperPluginManager->getServiceLocator()->get('Zend\I18n\Translator\Translator');
-                    $plugin->setLanguage($languageManager->getLanguageFromRequest());
-
-                    return $plugin;
-                },
-            'pageHeader'      => function ($helperPluginManager) {
+            'pageHeader' => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
                     $plugin = new PageHeader();
                     $plugin->setConfig($config);
 
                     return $plugin;
                 },
-            'brand'           => function ($helperPluginManager) {
+            'brand'      => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('config')['brand'];
                     $plugin = new Brand();
                     $plugin->setConfig($config);
@@ -91,7 +69,8 @@ return array(
         ),
         'invokables' => array(
             'timeago'  => 'Ui\View\Helper\Timeago',
-            'registry' => 'Ui\View\Helper\Registry'
+            'registry' => 'Ui\View\Helper\Registry',
+            'currentLanguage' => 'Ui\View\Helper\ActiveLanguage'
         )
     ),
     'page_header_helper'    => array(),
@@ -104,15 +83,6 @@ return array(
 
                     return $service;
                 },
-            'navigation'                   => function (ServiceLocatorInterface $sm) {
-                    // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
-                    return $sm->get('Ui\Navigation\DefaultNavigationFactory')->createService($sm);
-                },
-            'top_left_navigation'          => 'Ui\Navigation\TopLeftNavigationFactory',
-            'top_right_navigation'         => 'Ui\Navigation\TopRightNavigationFactory',
-            'top_center_navigation'        => 'Ui\Navigation\TopCenterNavigationFactory',
-            'footer_navigation'            => 'Ui\Navigation\FooterNavigationFactory',
-            'subject_navigation'           => 'Ui\Navigation\SubjectNavigationFactory'
         )
     ),
     'assetic_configuration' => array(
@@ -151,7 +121,7 @@ return array(
         ),
         'modules'          => array(
             'ui' => array(
-                'root_path'   => __DIR__ . '/../assets/build',
+                'root_path'   => __DIR__ . '/../../../assets/build',
                 'collections' => array(
                     'libs'           => array(
                         'assets' => array(

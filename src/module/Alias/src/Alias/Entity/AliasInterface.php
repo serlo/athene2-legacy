@@ -10,10 +10,10 @@
  */
 namespace Alias\Entity;
 
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use Uuid\Entity\UuidInterface;
 
-interface AliasInterface extends LanguageAwareInterface
+interface AliasInterface extends InstanceAwareInterface
 {
 
     /**

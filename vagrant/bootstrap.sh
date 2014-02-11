@@ -25,7 +25,8 @@ apt-get -y update
 
 # Install php
 
-apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin php5-xdebug php5-cli php-apc
+apt-get install -y libapache2-mod-php5 php5 php5-intl php5-mysql php5-curl php-pear phpmyadmin
+apt-get install -y php5-xdebug php5-cli php-apc php-xml-parser
 
 # Install nodejs related stuff
 
@@ -69,48 +70,20 @@ echo "<VirtualHost *:80>
 		Order allow,deny
 		allow from all
 	</Directory>
-</VirtualHost>" >> /etc/apache2/sites-available/athene2.conf
-
-echo '
-sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
-sudo indexer --all
-sudo searchd
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower cache clean"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm update --no-bin-links"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower update"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
-sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
-sudo su - www-data -c "cd /var/www/ && php composer.phar self-update"
-sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar install"
-sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar update"
-' >> /home/vagrant/startup.sh
-
-echo '
-sudo su - www-data -c "pm2 stop server.js"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower cache clean"
-sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/node_modules"
-sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/source/bower_components"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && grunt build"
-sudo su - www-data -c "pm2 start /var/www/src/module/Ui/assets/node_modules/athene2-editor/server/server.js"
-' >> /home/vagrant/uicleaner.sh
+</VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
 echo '
 # Listen and start after the vagrant-mounted event
 start on vagrant-mounted
 stop on runlevel [!2345]
 
-exec /home/vagrant/startup.sh
-' >> /etc/init/athene2startup.conf
-
-
-echo "sudo mysql -u root --password=\"athene2\" < /var/www/vagrant/dump.sql" > /home/vagrant/updatedb.sh
+exec /home/vagrant/bin/boot.sh
+' > /etc/init/athene2startup.conf
 
 # Xdebug fix
 sed -i '$ a\xdebug.max_nesting_level = 500' /etc/php5/apache2/php.ini
+
+ln -s /vagrant/bin/ /home/vagrant/bin
 
 # Enable apache mods
 a2enmod rewrite
@@ -130,21 +103,21 @@ mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'
 echo START=yes > /etc/default/sphinxsearch
 mkdir /var/lib/sphinxsearch/log
 
+# npm hack
+rm /var/www/src/assets/node_modules
+sudo su - vagrant -c "mkdir /home/vagrant/athene2-assets/node_modules -p"
+sudo su - vagrant -c "ln -s /var/www/src/assets/package.json /home/vagrant/athene2-assets/"
+sudo chown vagrant:vagrant /home/vagrant/athene2-assets * -R
+ln -s /home/vagrant/athene2-assets/node_modules /var/www/src/assets/node_modules
+
+
 # Install crontab
-echo "* * * * * indexer --all --rotate" > sphinxcron
-echo "@reboot /home/vagrant/reboot.sh" >> sphinxcron
-crontab sphinxcron
-rm sphinxcron
+echo "* * * * * indexer --all --rotate" > cron
+echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
+crontab cron
+rm cron
 
-# Run scripts
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm cache clean"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower cache clean"
-sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/node_modules"
-sudo su - www-data -c "rm -R /var/www/src/module/Ui/assets/source/bower_components"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && npm install --no-bin-links"
-sudo su - www-data -c "cd /var/www/src/module/Ui/assets && bower install"
-
-chmod +x /home/vagrant/updatedb.sh
-chmod +x /home/vagrant/startup.sh
-/home/vagrant/updatedb.sh
-/home/vagrant/startup.sh
+chmod +x /home/vagrant/bin/*
+/home/vagrant/bin/clean-ui.sh
+/home/vagrant/bin/boot.sh
+/home/vagrant/bin/update-mysql.sh

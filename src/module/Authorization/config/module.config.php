@@ -19,18 +19,22 @@ return [
         ],
         'assertion_manager' => [
             'factories' => [
-                'Authorization\Assertion\RoleAssertion'            => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
-                'Authorization\Assertion\RequestLanguageAssertion' => __NAMESPACE__ . '\Factory\RequestLanguageAssertionFactory',
+                'Authorization\Assertion\RoleAssertion'     => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
+                'Authorization\Assertion\InstanceAssertion' => __NAMESPACE__ . '\Factory\InstanceAssertionFactory',
             ]
         ],
         'assertion_map'     => [
-            'authorization.role.identity.modify' => 'Authorization\Assertion\RoleAssertion'
+            'authorization.identity.grant.role'  => 'Authorization\Assertion\RoleAssertion',
+            'authorization.identity.revoke.role' => 'Authorization\Assertion\RoleAssertion',
         ]
     ],
     'service_manager'    => [
         'factories' => [
-            'Authorization\Service\RoleService'       => __NAMESPACE__ . '\Factory\RoleServiceFactory',
-            'Authorization\Service\PermissionService' => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
+            'Authorization\Service\RoleService'        => __NAMESPACE__ . '\Factory\RoleServiceFactory',
+            'Authorization\Service\PermissionService'  => __NAMESPACE__ . '\Factory\PermissionServiceFactory',
+            'ZfcRbac\Service\AuthorizationService'     => __NAMESPACE__ . '\Factory\AuthorizationServiceFactory',
+            'ZfcRbac\Assertion\AssertionPluginManager' => __NAMESPACE__ . '\Factory\AssertionPluginManagerFactory',
+            'Authorization\Form\RoleForm'              => __NAMESPACE__ . '\Factory\RoleFormFactory',
         ]
     ],
     'controller_plugins' => [
@@ -44,8 +48,16 @@ return [
         ]
     ],
     'class_resolver'     => [
-        __NAMESPACE__ . '\Entity\RoleInterface'       => 'User\Entity\Role',
-        __NAMESPACE__ . '\Entity\PermissionInterface' => 'User\Entity\Permission'
+        __NAMESPACE__ . '\Entity\RoleInterface'                   => 'User\Entity\Role',
+        __NAMESPACE__ . '\Entity\PermissionInterface'             => 'User\Entity\PermissionKey',
+        __NAMESPACE__ . '\Entity\ParametrizedPermissionInterface' => 'User\Entity\Permission'
+    ],
+    'di'                 => [
+        'instance' => [
+            'preferences' => [
+                __NAMESPACE__ . '\Service\RoleServiceInterface' => __NAMESPACE__ . '\Service\RoleService'
+            ],
+        ]
     ],
     'router'             => [
         'routes' => [
@@ -80,6 +92,15 @@ return [
                                     'route'    => '/show/:role',
                                     'defaults' => [
                                         'action' => 'show'
+                                    ]
+                                ]
+                            ],
+                            'create'     => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/create',
+                                    'defaults' => [
+                                        'action' => 'createRole'
                                     ]
                                 ]
                             ],

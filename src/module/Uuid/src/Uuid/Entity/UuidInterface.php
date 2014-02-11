@@ -42,4 +42,9 @@ interface UuidInterface extends CacheableInterface
     public function getHolder();
 
     public function setHolder($key, $object);
+
+    /**
+     * @return string
+     */
+    public function __toString();
 }

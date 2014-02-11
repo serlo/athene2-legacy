@@ -1,0 +1,9 @@
+<div class="page-header">
+    <?php
+        echo "<h1>" . $this->title . "</h1>";
+    ?>
+</div>
+
+<?php
+    $this->form->prepare();
+    echo $this->form()->render($this->form);

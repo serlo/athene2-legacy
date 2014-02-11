@@ -16,12 +16,12 @@ use Zend\Mvc\Controller\AbstractActionController;
 class AbstractController extends AbstractActionController
 {
     use \Taxonomy\Manager\TaxonomyManagerAwareTrait;
-    use\Language\Manager\LanguageManagerAwareTrait;
+    use\Instance\Manager\InstanceManagerAwareTrait;
     
     protected function getTerm($id = NULL){
         if($id === NULL){
             if($this->params('id', NULL) === NULL) {
-                return $this->getTaxonomyManager()->findTaxonomyByName('root', $this->getLanguageManager()->getLanguageFromRequest())->getChildren()->first();            
+                return $this->getTaxonomyManager()->findTaxonomyByName('root', $this->getInstanceManager()->getInstanceFromRequest())->getChildren()->first();
             } else {
                 return $this->getTaxonomyManager()->getTerm($this->params('id'));
             }

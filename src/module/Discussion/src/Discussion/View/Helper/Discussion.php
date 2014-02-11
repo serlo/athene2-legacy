@@ -17,7 +17,7 @@ use Zend\View\Helper\AbstractHelper;
 class Discussion extends AbstractHelper
 {
     use \Discussion\DiscussionManagerAwareTrait, \Common\Traits\ConfigAwareTrait, \User\Manager\UserManagerAwareTrait,
-        \Taxonomy\Manager\TaxonomyManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+        \Taxonomy\Manager\TaxonomyManagerAwareTrait, \Instance\Manager\InstanceManagerAwareTrait;
 
     protected $discussions, $object;
 
@@ -128,8 +128,8 @@ class Discussion extends AbstractHelper
 
     public function findForum(array $forums)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
         $term     = $this->getTaxonomyManager()->findTerm(
             $taxonomy,
             [
@@ -168,8 +168,8 @@ class Discussion extends AbstractHelper
 
     protected function createForums(array $forums, TaxonomyTermInterface $current)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $language);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
 
         foreach ($forums as $forum) {
             $current = $this->getTaxonomyManager()->createTerm(
@@ -180,7 +180,7 @@ class Discussion extends AbstractHelper
                     'parent'   => $current,
                     'taxonomy' => $taxonomy
                 ],
-                $language
+                $instance
             );
         }
 

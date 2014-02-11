@@ -12,20 +12,20 @@
  */
 namespace Term\Manager;
 
+use Instance\Entity\InstanceInterface;
 use Term\Entity\TaxonomyTermInterface;
-use Language\Entity\LanguageInterface;
 
 interface TermManagerInterface
 {
 
     /**
-     *
+
      * @param string $name            
      * @param string $slug            
-     * @param LanguageInterface $language            
+     * @param InstanceInterface $instance
      * @return TaxonomyTermInterface
      */
-    public function createTerm($name, $slug = NULL, LanguageInterface $language);
+    public function createTerm($name, $slug = NULL, InstanceInterface $instance);
 
     /**
      *
@@ -35,18 +35,18 @@ interface TermManagerInterface
     public function getTerm($term);
 
     /**
-     *
+
      * @param unknown $name            
-     * @param LanguageInterface $language            
+     * @param InstanceInterface $instance
      * @return TaxonomyTermInterface
      */
-    public function findTermByName($name, LanguageInterface $language);
+    public function findTermByName($name, InstanceInterface $instance);
 
     /**
-     *
+
      * @param unknown $slug            
-     * @param LanguageInterface $language            
+     * @param InstanceInterface $instance
      * @return TaxonomyTermInterface
      */
-    public function findTermBySlug($slug, LanguageInterface $language);
+    public function findTermBySlug($slug, InstanceInterface $instance);
 }

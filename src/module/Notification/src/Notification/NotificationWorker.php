@@ -10,6 +10,9 @@
  */
 namespace Notification;
 
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidInterface;
+
 class NotificationWorker
 {
     use\Common\Traits\ObjectManagerAwareTrait, \User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait,
@@ -20,32 +23,36 @@ class NotificationWorker
      */
     public function run()
     {
+        if(!$this->getSubscriptionManager()->hasSubscriptions()){
+            return;
+        }
+
         /* @var $eventLog \Event\Entity\EventLogInterface */
         foreach ($this->getWorkload() as $eventLog) {
-            foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getObject()->getUuidEntity()) as
-                     $subscriber) {
-                /* @var $subscriber \Entity\UserInterface */
+            /* @var $subscribers UserInterface[] */
+            $object      = $eventLog->getObject()->getUuidEntity();
+            $subscribers = $this->getSubscriptionManager()->findSubscribersByUuid($object);
+
+            foreach ($subscribers as $subscriber) {
+                // Don't create notifications for myself
                 if ($subscriber !== $eventLog->getActor()) {
                     $this->getNotificationManager()->createNotification($subscriber, $eventLog);
                 }
             }
+
             foreach ($eventLog->getParameters() as $parameter) {
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($parameter->getObject()) as $subscriber)
-                {
-                    /* @var $subscriber \Entity\UserInterface */
-                    if ($subscriber !== $eventLog->getActor()) {
-                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                if ($parameter->getValue() instanceof UuidInterface) {
+                    /* @var $subscribers UserInterface[] */
+                    $object      = $parameter->getValue();
+                    $subscribers = $this->getSubscriptionManager()->findSubscribersByUuid($object);
+
+                    foreach ($subscribers as $subscriber) {
+                        if ($subscriber !== $eventLog->getActor()) {
+                            $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                        }
                     }
                 }
             }
-            /*if($eventLog->getReference() !== NULL){
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
-                    // @var $subscriber \Entity\UserInterface
-                    if($subscriber !== $eventLog->getActor()){
-                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
-                    }
-                }
-            }*/
         }
     }
 

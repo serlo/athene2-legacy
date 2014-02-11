@@ -13,15 +13,13 @@ namespace Entity\Listener;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Entity\Controller\AbstractController;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 
 abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
 {
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach(
             $this->getMonitoredClass(),
@@ -54,10 +52,11 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
                     'subject' => $subject->getSlug()
                 ));
                 $routeMatch->setMatchedRouteName('subject');
-                $controller->getServiceLocator()->get('Ui\Navigation\DefaultNavigationFactory')->setRouteMatch(
+                $controller->getServiceLocator()->get('Navigation\Factory\DefaultNavigationFactory')->setRouteMatch(
                     $routeMatch
                 );
             }
         }
     }
 }
+

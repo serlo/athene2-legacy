@@ -17,14 +17,14 @@ trait AuthenticationServiceAwareTrait
     /**
      * @var AuthenticationService
      */
-    protected $authService;
+    protected $authenticationService;
 
     /**
      * @return AuthenticationService $authService
      */
     public function getAuthenticationService()
     {
-        return $this->authService;
+        return $this->authenticationService;
     }
 
     /**
@@ -33,7 +33,7 @@ trait AuthenticationServiceAwareTrait
      */
     public function setAuthenticationService(AuthenticationService $authService)
     {
-        $this->authService = $authService;
+        $this->authenticationService = $authService;
 
         return $this;
     }

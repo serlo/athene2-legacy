@@ -1,26 +1,23 @@
 <?php
 namespace Page\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Page\Form\RepositoryForm;
 use Page\Form\RevisionForm;
-use User\Service\UserService;
-use Page\Exception\PageNotFoundException;
-use Zend\Form\Form;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    use\Language\Manager\LanguageManagerAwareTrait;
+    use\Instance\Manager\InstanceManagerAwareTrait;
     use \Page\Manager\PageManagerAwareTrait;
     use \Common\Traits\ObjectManagerAwareTrait;
     use\User\Manager\UserManagerAwareTrait;
-    
+    use \Alias\AliasManagerAwareTrait;
     
     public function indexAction()
     {
-        $repositorys = $this->getPageManager()->findAllRepositorys($this->getLanguageManager()
-            ->getLanguageFromRequest());
+        $repositorys = $this->getPageManager()->findAllRepositorys($this->getInstanceManager()
+            ->getInstanceFromRequest());
         $view = new ViewModel(array(
             'repositorys' => $repositorys
         ));
@@ -69,17 +66,23 @@ class IndexController extends AbstractActionController
     {
         $form = new RepositoryForm($this->getObjectManager());
         
-        $language_id = $this->getLanguageManager()
-            ->getLanguageFromRequest()
-            ->getId();
+        $instance = $this->getInstanceManager()
+            ->getInstanceFromRequest();
         $pageRepository = $this->getPageRepository();
-        
+        $form->get('slug')->setValue($this->getAliasManager()->findAliasByObject($pageRepository->getUuidEntity())->getAlias());
+        $roles = array();
+        foreach ($pageRepository->getRoles() as $role)
+        {
+            $roles[]=$role->getId();
+        }   
+        $form->get('roles')->setValue($roles);
         
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
+                $this->getAliasManager()->updateAlias($array[$slug], $array[$slug].$pageRepository->getId(),$pageRepository->getUuidEntity(),  $instance);
                 $this->getPageManager()->editPageRepository($array,$pageRepository);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toRoute('page/article', array(
@@ -101,9 +104,6 @@ class IndexController extends AbstractActionController
         $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = new RevisionForm($this->getObjectManager());
         $id = $this->params('id');
-        $language = $this->getLanguageManager()
-        ->getLanguageFromRequest();
-        $language_id = $language->getId();
         $pageRepository = $this->getPageRepository();
         
         if ($id != NULL) {
@@ -134,8 +134,8 @@ class IndexController extends AbstractActionController
 
     public function createRepositoryAction()
     {
-        $language = $this->getLanguageManager()
-            ->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()
+            ->getInstanceFromRequest();
         $form = new RepositoryForm($this->getObjectManager());
                
         if ($this->getRequest()->isPost()) {
@@ -143,12 +143,12 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $repository = $this->getPageManager()->createPageRepository($form->getData(), $language);
+                $repository = $this->getPageManager()->createPageRepository($form->getData(), $instance);
 
                
                 $this->getEventManager()->trigger('page.create', $this, array(
                     'repositoryid' => $repository->getId(),
-                    'language' => $language,
+                    'instance' => $instance,
                     'repository' => $repository,
                 	'slug' => $array['slug']
                 

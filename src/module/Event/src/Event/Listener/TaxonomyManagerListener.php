@@ -12,42 +12,41 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class TaxonomyManagerListener extends AbstractMvcListener
+class TaxonomyManagerListener extends AbstractListener
 {
 
     public function onCreate(Event $e)
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('taxonomy/term/create', $language, $user, $term);
+        $this->logEvent('taxonomy/term/create', $instance, $term);
     }
 
     public function onUpdate(Event $e)
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('taxonomy/term/update', $language, $user, $term);
+        $this->logEvent('taxonomy/term/update', $instance, $term);
     }
 
     public function onAssociate(Event $e)
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'taxonomy/term/associate',
-            $language,
-            $user,
+            $instance,
             $term,
             [
                 [
                     'name'   => 'object',
-                    'object' => $e->getParam('object')->getUuidEntity()
+                    'value' => $e->getParam('object')->getUuidEntity()
                 ]
             ]
         );
@@ -57,17 +56,16 @@ class TaxonomyManagerListener extends AbstractMvcListener
     {
         $term     = $e->getParam('term');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
         $this->logEvent(
             'taxonomy/term/dissociate',
-            $language,
-            $user,
+            $instance,
             $term,
             [
                 [
                     'name'   => 'object',
-                    'object' => $e->getParam('object')->getUuidEntity()
+                    'value' => $e->getParam('object')->getUuidEntity()
                 ]
             ]
         );

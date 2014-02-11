@@ -3,7 +3,7 @@
         <?php foreach ($this->revision->getFields() as $field): ?>
             <section>
                 <h3><?php echo $field->getField(); ?></h3>
-                <?php echo $this->markdown()->toHtml($field->getValue(), null, null); ?>
+                <?php echo $this->markdown()->toHtml($field->getValue()); ?>
             </section>
             <hr>
         <?php endforeach; ?>

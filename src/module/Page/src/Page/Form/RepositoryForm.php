@@ -3,55 +3,24 @@
 
 namespace Page\Form;
 
+use Zend\Form\Element\MultiCheckbox;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 
 class RepositoryForm extends Form {
     protected $objectManager;
     
-	public function __construct($objectManager) {
+	public function __construct($entityManager) {
 		parent::__construct ( 'createRepository' );
-		$filter = new CreateRepositoryFilter ( $objectManager );
-		$this->objectManager = $objectManager;
+		$filter = new CreateRepositoryFilter ( $entityManager );
+		$this->objectManager = $entityManager;
 		$this->setAttribute ( 'method', 'post' );
 		$this->setAttribute ( 'class', 'form-horizontal' );
-		
 		$this->setInputFilter ( $filter );
-		
-		
-		$this->add ( array (
-				'name' => 'slug',
-				'type' => 'text',
-				'attributes' => array (
-						'class' => 'form-control',
-						'placeholder' => 'Repository Url',
-						'required' => 'required' 
-				),
-				'options' => array (
-						'label' => 'Repository Url:' 
-				) 
-		) );
-		
-		$this->add ( array (
-				'type' => 'Zend\Form\Element\MultiCheckbox',
-				'name' => 'roles',
-				'options' => array (
-						'label' => 'Welche Benutzer sollen die Seite bearbeiten können?',
-						'value_options' => $this->findRolesArray() 
-				),
-				'attributes' => array (
-						'class' => 'form-control' 
-				) 
-		) );
-		
-		$this->add ( array (
-				'name' => 'submit',
-				'attributes' => array (
-						'class' => 'btn btn-success',
-						'type' => 'submit',
-						'value' => 'Go',
-						'id' => 'submitbutton' 
-				) 
-		) );
+        $this->add((new Text('slug'))->setLabel('Url:'));
+        $this->add((new MultiCheckbox('roles'))->setValueOptions($this->findRolesArray())->setLabel('Roles:'));
+        $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
 	}
 	
 	private function findRolesArray(){

@@ -13,7 +13,7 @@ namespace Entity\Controller;
 
 use Entity\Entity\EntityInterface;
 use Entity\Options\ModuleOptions;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Versioning\Exception\RevisionNotFoundException;
 use Versioning\RepositoryManagerAwareTrait;
@@ -22,24 +22,13 @@ use Zend\View\Model\ViewModel;
 
 class RepositoryController extends AbstractController
 {
-    use UserManagerAwareTrait, LanguageManagerAwareTrait;
+    use UserManagerAwareTrait, InstanceManagerAwareTrait;
     use RepositoryManagerAwareTrait;
 
     /**
      * @var ModuleOptions
      */
     protected $moduleOptions;
-
-    /**
-     * @param ModuleOptions $moduleOptions
-     * @return self
-     */
-    public function setModuleOptions(ModuleOptions $moduleOptions)
-    {
-        $this->moduleOptions = $moduleOptions;
-
-        return $this;
-    }
 
     public function addRevisionAction()
     {
@@ -62,9 +51,9 @@ class RepositoryController extends AbstractController
             );
             if ($form->isValid()) {
                 $data     = $form->getData();
-                $language = $this->getLanguageManager()->getLanguageFromRequest();
+                $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-                $this->getRepositoryManager()->getRepository($entity)->commitRevision($data, $user);
+                $this->getRepositoryManager()->getRepository($entity)->commitRevision($data);
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->addSuccessMessage(
                     'Your revision has been saved, it will be available once it get\'s approved'
@@ -87,38 +76,26 @@ class RepositoryController extends AbstractController
         return $view;
     }
 
-    public function compareAction()
+    /**
+     * @param EntityInterface $entity
+     * @return Form
+     */
+    protected function getForm(EntityInterface $entity)
     {
-        $entity = $this->getEntity();
+        $form = $this->moduleOptions->getType(
+            $entity->getType()->getName()
+        )->getComponent('repository')->getForm();
+        $form = $this->getServiceLocator()->get($form);
 
-        $revision        = $this->getRevision($entity, $this->params('revision'));
-        $currentRevision = $this->getRevision($entity);
+        if ($entity->hasCurrentRevision()) {
+            $data = [];
+            foreach ($entity->getCurrentRevision()->getFields() as $field) {
+                $data[$field->getField()] = $field->getValue();
+            }
+            $form->setData($data);
+        }
 
-        $view = new ViewModel(array(
-            'currentRevision' => $currentRevision,
-            'revision'        => $revision,
-            'entity'          => $entity
-        ));
-
-        $view->setTemplate('entity/repository/compare-revision');
-
-        return $view;
-    }
-
-    public function historyAction()
-    {
-        $entity          = $this->getEntity();
-        $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
-
-        $view = new ViewModel(array(
-            'entity'          => $entity,
-            'revisions'       => $entity->getRevisions(),
-            'currentRevision' => $currentRevision
-        ));
-
-        $view->setTemplate('entity/repository/history');
-
-        return $view;
+        return $form;
     }
 
     public function checkoutAction()
@@ -152,6 +129,24 @@ class RepositoryController extends AbstractController
         return false;
     }
 
+    public function compareAction()
+    {
+        $entity = $this->getEntity();
+
+        $revision        = $this->getRevision($entity, $this->params('revision'));
+        $currentRevision = $this->getRevision($entity);
+
+        $view = new ViewModel(array(
+            'currentRevision' => $currentRevision,
+            'revision'        => $revision,
+            'entity'          => $entity
+        ));
+
+        $view->setTemplate('entity/repository/compare-revision');
+
+        return $view;
+    }
+
     /**
      * @param EntityInterface $entity
      * @param string          $id
@@ -171,25 +166,41 @@ class RepositoryController extends AbstractController
         }
     }
 
-    /**
-     * @param EntityInterface $entity
-     * @return Form
-     */
-    protected function getForm(EntityInterface $entity)
+    public function historyAction()
     {
-        $form = $this->moduleOptions->getType(
-            $entity->getType()->getName()
-        )->getComponent('repository')->getForm();
-        $form = $this->getServiceLocator()->get($form);
+        $entity          = $this->getEntity();
+        $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
 
-        if ($entity->hasCurrentRevision()) {
-            $data = [];
-            foreach ($entity->getCurrentRevision()->getFields() as $field) {
-                $data[$field->getField()] = $field->getValue();
-            }
-            $form->setData($data);
-        }
+        $view = new ViewModel(array(
+            'entity'          => $entity,
+            'revisions'       => $entity->getRevisions(),
+            'currentRevision' => $currentRevision
+        ));
 
-        return $form;
+        $view->setTemplate('entity/repository/history');
+
+        return $view;
+    }
+
+    public function rejectAction()
+    {
+        $entity = $this->getEntity();
+        $this->assertGranted('entity.revision.trash', $entity);
+        $repository = $this->getRepositoryManager()->getRepository($entity);
+
+        $repository->rejectRevision($this->params('revision'), 'some reason');
+        $this->getEntityManager()->flush();
+        $this->redirect()->toReferer();
+
+        return false;
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     * @return void
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
     }
 }

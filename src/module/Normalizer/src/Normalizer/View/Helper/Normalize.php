@@ -45,7 +45,7 @@ class Normalize extends AbstractHelper
     {
         $normalized = $this->normalize($object);
 
-        return $this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams());
+        return rawurlencode($this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams()));
     }
 
     public function toAnchor($object)

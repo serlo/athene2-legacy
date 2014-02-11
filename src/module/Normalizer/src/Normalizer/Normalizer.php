@@ -20,6 +20,7 @@ class Normalizer implements NormalizerInterface
      * @var Strategy\StrategyInterface[]
      */
     protected $strategies = [
+        'Normalizer\Strategy\AttachmentStrategy',
         'Normalizer\Strategy\PageRepositoryStrategy',
         'Normalizer\Strategy\PageRevisionStrategy',
         'Normalizer\Strategy\EntityStrategy',
