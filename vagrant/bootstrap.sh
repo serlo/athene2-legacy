@@ -73,48 +73,17 @@ echo "<VirtualHost *:80>
 </VirtualHost>" > /etc/apache2/sites-available/athene2.conf
 
 echo '
-sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
-sudo indexer --all
-sudo searchd
-sudo su - www-data -c "cd /var/www/src/assets && npm cache clean"
-sudo su - www-data -c "cd /var/www/src/assets && bower cache clean"
-sudo su - www-data -c "cd /var/www/src/assets && npm update --no-bin-links"
-sudo su - www-data -c "cd /var/www/src/assets && bower update"
-sudo su - www-data -c "cd /var/www/src/assets && grunt build"
-sudo su - www-data -c "pm2 start /var/www/src/assets/node_modules/athene2-editor/server/server.js"
-sudo su - www-data -c "cd /var/www/ && php composer.phar self-update"
-sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar install"
-sudo su - www-data -c "cd /var/www/ && COMPOSER_PROCESS_TIMEOUT=2400 php composer.phar update"
-' > /home/vagrant/startup.sh
-
-echo '
-sudo su - www-data -c "pm2 dump && pm2 kill"
-sudo su - www-data -c "cd /var/www/src/assets && npm cache clean"
-sudo su - www-data -c "cd /var/www/src/assets && bower cache clean"
-sudo su - www-data -c "rm -R /var/www/src/assets/node_modules"
-sudo su - www-data -c "rm -R /var/www/src/assets/source/bower_components"
-sudo su - www-data -c "cd /var/www/src/assets && npm install --no-bin-links"
-sudo su - www-data -c "cd /var/www/src/assets && bower install"
-sudo su - www-data -c "cd /var/www/src/assets && grunt build"
-sudo su - www-data -c "cd /var/www/src/assets/node_modules/athene2-editor && pm2 start server/server.js"
-' > /home/vagrant/uicleaner.sh
-
-echo 'sudo su - www-data -c "(cd /var/www/bin;sh clear.sh)"' > /home/vagrant/develop.sh
-echo 'sudo su - www-data -c "(cd /var/www/bin;sh build.sh)"' > /home/vagrant/build.sh
-
-echo '
 # Listen and start after the vagrant-mounted event
 start on vagrant-mounted
 stop on runlevel [!2345]
 
-exec /home/vagrant/startup.sh
+exec /home/vagrant/bin/boot.sh
 ' > /etc/init/athene2startup.conf
-
-
-echo "sudo mysql -u root --password=\"athene2\" < /var/www/vagrant/dump.sql" > /home/vagrant/updatedb.sh
 
 # Xdebug fix
 sed -i '$ a\xdebug.max_nesting_level = 500' /etc/php5/apache2/php.ini
+
+ln -s /vagrant/bin/ /home/vagrant/bin
 
 # Enable apache mods
 a2enmod rewrite
@@ -137,19 +106,9 @@ mkdir /var/lib/sphinxsearch/log
 # Install crontab
 echo "* * * * * indexer --all --rotate" > cron
 echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
-echo "@reboot /home/vagrant/reboot.sh" >> cron
 crontab cron
 rm cron
 
-# Run scripts
-sudo su - www-data -c "cd /var/www/src/assets && npm cache clean"
-sudo su - www-data -c "cd /var/www/src/assets && bower cache clean"
-sudo su - www-data -c "rm -R /var/www/src/assets/node_modules"
-sudo su - www-data -c "rm -R /var/www/src/assets/source/bower_components"
-sudo su - www-data -c "cd /var/www/src/assets && npm install --no-bin-links"
-sudo su - www-data -c "cd /var/www/src/assets && bower install"
-
-chmod +x /home/vagrant/updatedb.sh
-chmod +x /home/vagrant/startup.sh
-/home/vagrant/updatedb.sh
-/home/vagrant/startup.sh
+chmod +x /home/vagrant/bin/*
+/home/vagrant/bin/update-mysql.sh
+/home/vagrant/bin/boot.sh
