@@ -55,7 +55,10 @@
                         </div>
                     </header>
                     <section class="panel-body">
-                        <?php echo $revision->get('content'); ?>
+                        <?php
+                        $content = $revision->get('content');
+                        echo $this->markdown()->toHtml($content);
+                        ?>
                     </section>
                 </article>
             <?php endif; ?>
