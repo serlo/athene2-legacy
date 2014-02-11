@@ -10,12 +10,13 @@
  */
 namespace Normalizer\View\Helper;
 
+use Normalizer\NormalizerAwareTrait;
 use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class Normalize extends AbstractHelper
 {
-    use \Normalizer\NormalizerAwareTrait;
+    use NormalizerAwareTrait;
 
     public function __invoke($object = null)
     {
@@ -45,7 +46,7 @@ class Normalize extends AbstractHelper
     {
         $normalized = $this->normalize($object);
 
-        return rawurlencode($this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams()));
+        return rawurldecode($this->getView()->url($normalized->getRouteName(), $normalized->getRouteParams()));
     }
 
     public function toAnchor($object)
