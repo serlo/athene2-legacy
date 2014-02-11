@@ -103,6 +103,14 @@ mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'
 echo START=yes > /etc/default/sphinxsearch
 mkdir /var/lib/sphinxsearch/log
 
+# npm hack
+rm /var/www/src/assets/node_modules
+sudo su - vagrant -c "mkdir /home/vagrant/athene2-assets/node_modules -p"
+sudo su - vagrant -c "ln -s /var/www/src/assets/package.json /home/vagrant/athene2-assets/"
+sudo chown vagrant:vagrant /home/vagrant/athene2-assets * -R
+ln -s /home/vagrant/athene2-assets/node_modules /var/www/src/assets/node_modules
+
+
 # Install crontab
 echo "* * * * * indexer --all --rotate" > cron
 echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
@@ -110,5 +118,6 @@ crontab cron
 rm cron
 
 chmod +x /home/vagrant/bin/*
-/home/vagrant/bin/update-mysql.sh
+/home/vagrant/bin/clean-ui.sh
 /home/vagrant/bin/boot.sh
+/home/vagrant/bin/update-mysql.sh
