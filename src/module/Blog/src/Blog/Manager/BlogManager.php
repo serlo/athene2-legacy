@@ -23,6 +23,7 @@ use Instance\Manager\InstanceManagerInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
+use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Form\FormInterface;
 use ZfcRbac\Service\AuthorizationService;
 
@@ -31,6 +32,7 @@ class BlogManager implements BlogManagerInterface
     use TaxonomyManagerAwareTrait, ObjectManagerAwareTrait;
     use ClassResolverAwareTrait, UuidManagerAwareTrait;
     use InstanceManagerAwareTrait, AuthorizationAssertionTrait;
+    use EventManagerAwareTrait;
 
     public function __construct(
         ClassResolverInterface $classResolver,
@@ -76,6 +78,9 @@ class BlogManager implements BlogManagerInterface
         $this->assertGranted('blog.post.update', $post);
         if ($form->isValid()) {
             $this->objectManager->persist($post);
+            $this->getEventManager()->trigger('update', $this, [
+                'post' => $post
+            ]);
 
             return true;
         }
@@ -87,7 +92,6 @@ class BlogManager implements BlogManagerInterface
     {
         $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
 
-
         if ($form->isValid()) {
             $data = $form->getData();
             $form->bind($post);
@@ -97,6 +101,10 @@ class BlogManager implements BlogManagerInterface
                 $this->getUuidManager()->injectUuid($post);
                 $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
                 $this->getObjectManager()->persist($post);
+
+                $this->getEventManager()->trigger('create', $this, [
+                    'post' => $post
+                ]);
 
                 return $post;
             }

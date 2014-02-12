@@ -19,13 +19,11 @@ use Zend\EventManager\SharedEventManagerInterface;
 
 class RepositoryManagerListener extends AbstractSharedListenerAggregate
 {
-    use AliasManagerAwareTrait, InstanceManagerAwareTrait;
+    use AliasManagerAwareTrait;
 
     public function attachShared(SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach($this->getMonitoredClass(), 'checkout', [$this, 'onCheckout']);
-
-        return $this;
+        $events->attach($this->getMonitoredClass(), 'checkout', [$this, 'onCheckout']);
     }
 
     protected function getMonitoredClass()
@@ -37,8 +35,8 @@ class RepositoryManagerListener extends AbstractSharedListenerAggregate
     {
         $entity = $e->getParam('repository');
 
-        if ($entity instanceof EntityInterface && $entity->getType()->getName() == 'article') {
-            $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        if ($entity instanceof EntityInterface) {
+            $instance = $entity->getInstance();
 
             $url = $this->getAliasManager()->getRouter()->assemble(
                 ['entity' => $entity->getId()],

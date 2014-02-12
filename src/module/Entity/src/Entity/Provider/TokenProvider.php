@@ -11,12 +11,13 @@
 namespace Entity\Provider;
 
 use Entity\Entity\EntityInterface;
+use Normalizer\NormalizerAwareTrait;
 use Token\Provider\AbstractProvider;
 use Token\Provider\ProviderInterface;
 
 class TokenProvider extends AbstractProvider implements ProviderInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait, NormalizerAwareTrait;
 
     protected $data = null;
 
@@ -30,9 +31,10 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
             break;
         }
 
-        $title = $this->getObject()->getHead()->get('title');
+        $normalized = $this->getNormalizer()->normalize($this->getObject());
 
-        $type = $this->getObject()->getType()->getName();
+        $title = $normalized->getTitle();
+        $type  = $normalized->getType();
 
         return [
             'path'  => $path,

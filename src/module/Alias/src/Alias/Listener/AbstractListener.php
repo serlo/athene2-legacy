@@ -10,9 +10,19 @@
  */
 namespace Alias\Listener;
 
+use Alias\AliasManagerAwareTrait;
+use Alias\AliasManagerInterface;
 use Common\Listener\AbstractSharedListenerAggregate;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
-    use \Alias\AliasManagerAwareTrait;
+    use AliasManagerAwareTrait;
+
+    /**
+     * @param AliasManagerInterface $aliasManager
+     */
+    public function __construct(AliasManagerInterface $aliasManager)
+    {
+        $this->aliasManager = $aliasManager;
+    }
 }

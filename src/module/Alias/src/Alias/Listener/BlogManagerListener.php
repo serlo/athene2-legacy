@@ -11,10 +11,10 @@
 namespace Alias\Listener;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
-class BlogControllerListener extends AbstractListener
+class BlogManagerListener extends AbstractListener
 {
-
     /**
      * Gets executed on post create & update
      *
@@ -23,35 +23,32 @@ class BlogControllerListener extends AbstractListener
      */
     public function onUpdate(Event $e)
     {
+        /* @var $post \Blog\Entity\PostInterface */
         $post     = $e->getParam('post');
-        $actor    = $e->getParam('actor');
-        $data     = $e->getParam('data');
-        $instance = $e->getParam('instance');
+        $instance = $post->getInstance();
 
-        $url = $e->getTarget()->url()->fromRoute(
-            'blog/post/view',
-            array(
-                'post' => $post->getId()
-            )
+        $url = $this->getAliasManager()->getRouter()->assemble(
+            ['post' => $post->getId()],
+            ['name' => 'blog/post/view']
         );
 
         $this->getAliasManager()->autoAlias('blogPost', $url, $post, $instance);
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
-            'post.create',
+            'create',
             array(
                 $this,
                 'onUpdate'
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
-            'post.update',
+            'update',
             array(
                 $this,
                 'onUpdate'
@@ -61,6 +58,6 @@ class BlogControllerListener extends AbstractListener
 
     protected function getMonitoredClass()
     {
-        return 'Blog\Controller\BlogController';
+        return 'Blog\Manager\BlogManager';
     }
 }
