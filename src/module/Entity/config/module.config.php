@@ -117,11 +117,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Provider\TokenProvider'          => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Provider\TokenProvider'          => []
             ]
         ],
         'instance'            => [

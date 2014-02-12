@@ -85,7 +85,7 @@ return [
                             'route'    => '/discussion/:id',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionController',
-                                'action'     => 'view'
+                                'action'     => 'show'
                             ]
                         ]
                     ],

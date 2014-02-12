@@ -11,16 +11,13 @@
 namespace Alias\Listener;
 
 use Alias\AliasManagerAwareTrait;
-use Common\Listener\AbstractSharedListenerAggregate;
 use Entity\Entity\EntityInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 
-class RepositoryManagerListener extends AbstractSharedListenerAggregate
+class RepositoryManagerListener extends AbstractListener
 {
-    use AliasManagerAwareTrait;
-
     public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach($this->getMonitoredClass(), 'checkout', [$this, 'onCheckout']);

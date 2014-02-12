@@ -12,14 +12,21 @@ namespace Entity\Provider;
 
 use Entity\Entity\EntityInterface;
 use Normalizer\NormalizerAwareTrait;
+use Normalizer\NormalizerInterface;
 use Token\Provider\AbstractProvider;
 use Token\Provider\ProviderInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class TokenProvider extends AbstractProvider implements ProviderInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait, NormalizerAwareTrait;
-
-    protected $data = null;
+    use ServiceLocatorAwareTrait, NormalizerAwareTrait;
+    
+    public function __construct(NormalizerInterface $normalizer, ServiceLocatorInterface $serviceLocator)
+    {
+        $this->normalizer     = $normalizer;
+        $this->serviceLocator = $serviceLocator;
+    }
 
     public function getData()
     {

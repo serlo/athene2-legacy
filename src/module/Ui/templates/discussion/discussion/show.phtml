@@ -15,7 +15,7 @@
                 <div class="btn-group btn-group-x">
                     <?php if ($this->discussion->isDiscussion()): ?>
                         <?php if ($this->isGranted('discussion.vote', $this->discussion)): ?>
-                            <?php $vote = $this->discussion->hasUserVoted($this->user) ? 'down' : 'up'; ?>
+                            <?php $vote = $this->discussion->hasUserVoted($this->discussion()->getUser()) ? 'down' : 'up'; ?>
                             <a href="<?php echo $this->url(
                                 'discussion/discussion/vote',
                                 array('comment' => $this->discussion->getId(), 'vote' => $vote)
@@ -57,7 +57,7 @@
                         <?php endif; ?>
                     <?php else: ?>
                         <?php if ($this->isGranted('discussion.comment.flag', $this->discussion)): ?>
-                            <a class="btn btn-xs btn-default" href="<?php echo $this->urL('flag/add', ['id' => $this->discussion->getId()]); ?>">
+                            <a class="btn btn-xs btn-default" href="<?php echo $this->url('flag/add', ['id' => $this->discussion->getId()]); ?>">
                                 <span class="glyphicon glyphicon-flag"></span>
                             </a>
                         <?php endif; ?>
@@ -93,14 +93,14 @@
                             <div class="list-group-item">
                                 <?php echo $this->partial(
                                     'discussion/discussion/show',
-                                    array('discussion' => $comment, 'user' => $this->user)
+                                    array('discussion' => $comment, 'user' => $this->discussion()->getUser())
                                 ); ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
-                    <?php if (!$this->plugin->getArchived()): ?>
+                    <?php if (!$this->discussion()->getArchived()): ?>
                         <?php if ($this->isGranted('discussion.comment.create')): ?>
-                            <?php $form = $this->plugin->getForm('comment'); ?>
+                            <?php $form = $this->discussion()->getForm('comment'); ?>
                             <?php $form->setAttribute(
                                 'action',
                                 $this->url(

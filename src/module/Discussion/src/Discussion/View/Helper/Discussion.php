@@ -109,17 +109,18 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
+    public function getUser(){
+        return $this->getUserManager()->getUserFromAuthenticator();
+    }
+
     public function render()
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
 
         return $this->getView()->partial(
             $this->getOption('template'),
             array(
-                'user'        => $user,
                 'discussions' => $this->discussions,
                 'isArchived'  => $this->archived,
-                'plugin'      => $this,
                 'object'      => $this->getObject(),
                 'forum'       => $this->getForum()
             )
