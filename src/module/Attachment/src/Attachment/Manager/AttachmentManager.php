@@ -75,7 +75,7 @@ class AttachmentManager implements AttachmentManagerInterface
         $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
         $hash      = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
 
-        $location    = $this->moduleOptions->getPath() . '/' . $hash;
+        $location    = $this->findParentPath($this->moduleOptions->getPath()) . '/' . $hash;
         $webLocation = $this->moduleOptions->getWebpath() . '/' . $hash;
         $filter      = new RenameUpload($location);
         $filter->filter($file);
@@ -152,5 +152,24 @@ class AttachmentManager implements AttachmentManagerInterface
         $this->getObjectManager()->persist($file);
 
         return $attachment;
+    }
+
+    /**
+     * @param $path
+     * @return bool|string
+     */
+    protected static function findParentPath($path)
+    {
+        $dir         = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+
+        return $dir . '/' . $path;
     }
 }

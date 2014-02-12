@@ -21,7 +21,7 @@ return array(
         'Attachment\Entity\ContainerInterface' => 'Attachment\Entity\Container',
         'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
     ),
-    'attachments'  => array(),
+    'attachment_manager'  => array(),
     'service_manager' => array(
         'factories' => array(
             __NAMESPACE__. '\Manager\AttachmentManager' => __NAMESPACE__ . '\Factory\AttachmentManagerFactory',

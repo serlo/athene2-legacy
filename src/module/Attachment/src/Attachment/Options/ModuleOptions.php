@@ -19,7 +19,7 @@ class ModuleOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $path;
+    protected $path = 'public/uploads';
 
     /**
      * @var string
@@ -55,29 +55,6 @@ class ModuleOptions extends AbstractOptions
      */
     public function getWebpath()
     {
-        if (!$this->webpath) {
-            $this->setWebpath(self::findParentPath('public/uploads'));
-        }
-
         return $this->webpath;
-    }
-
-    /**
-     * @param $path
-     * @return bool|string
-     */
-    protected static function findParentPath($path)
-    {
-        $dir         = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-
-        return $dir . '/' . $path;
     }
 }
