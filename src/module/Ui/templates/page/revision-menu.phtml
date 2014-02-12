@@ -3,25 +3,25 @@
     <!-- Only Visible for if User has Permission -->
     <div class="btn-group">
         <a href="<?php echo $this->url(
-            'page/article/createrevision',
-            array('repositoryid' => $this->repositoryid, 'id' => $id)
+            'page/view/createrevision',
+            array('repository' => $this->repositoryid->getId(), 'id' => $id)
         ) ?>" class="btn btn-link glyphicon glyphicon-plus">edit</a> <a href="<?php echo $this->url(
-            'page/article/revisions',
-            array('repositoryid' => $this->repositoryid)
+            'page/view/revisions',
+            array('repository' => $this->repositoryid->getId())
         ) ?>" class="btn btn-link glyphicon glyphicon-align-left"><?php echo $this->translate('revisions'); ?>
         </a>
         <?php if ($this->revision != '' && $this->revision->getRepository()->getCurrentRevision() != $this->revision
         ): ?>
             <a href="<?php echo $this->url(
-                'page/article/deleterevision',
-                array('repositoryid' => $this->repositoryid, 'revisionid' => $id)
+                'page/view/deleterevision',
+                array('repository' => $this->repositoryid->getId(), 'revisionid' => $id)
             ); ?>" class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('trash'); ?></a>
             <a href="<?php echo $this->url(
-                'page/article/revision/setCurrent',
-                array('repositoryid' => $this->repositoryid, 'id' => $id)
+                'page/view/revision/setCurrent',
+                array('repository' => $this->repositoryid->getId(), 'id' => $id)
             ) ?>" class="btn btn-link glyphicon glyphicon-ok"><?php echo $this->translate('setCurrent'); ?></a>
 
-            <a href="<?php echo $this->url('page/article', array('repositoryid' => $this->repositoryid)); ?>"
+            <a href="<?php echo $this->url('page/view', array('repository' => $this->repositoryid->getId())); ?>"
                class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current'); ?></a>
         <?php endif; ?>
     </div>

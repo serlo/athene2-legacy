@@ -1,33 +1,27 @@
-<div class="page-header">
-	<a href="<?php echo $this->url('page/createrepository');?>"
-		class="glyphicon glyphicon-plus"><?php echo $this->translate('new page');?></a>
-	<h1><?php echo $this->translate('Pages'); ?></h1>
-</div>
+<?php echo $this->pageHeader('Pages')->render(); ?>
 
 <div class="list-group">
-    <?php
-				
-foreach ( $this->repositorys as $repository ) :
-					$repositoryid = $repository->getId ();
-					?>
-    <a class="list-group-item"
-		href="<?php echo $this->url('page/article', array('repositoryid' => $repositoryid));?>">
-		
-		
-		<?php
-					
-if ($repository->hasCurrentRevision ())
-						echo $repository->getCurrentRevision ()->getTitle ();
-					else
-						echo $this->translate ( 'no current revision set' );
-					?>
-	</a> <a
-		href="<?php echo $this->url('page/article/editrepository',array('repositoryid'=>$repositoryid));?>"
-		class="glyphicon glyphicon-edit"><?php echo $this->translate('edit');?></a>
-	<a
-		href="<?php echo $this->url('page/article/deleterepository',array('repositoryid'=>$repositoryid));?>"
-		class="glyphicon glyphicon-remove"><?php echo $this->translate('delete'); ?></a>
-	<br>
-	<br>
+    <?php foreach ($this->repositorys as $repository) : ?>
+        <a class="list-group-item"
+           href="<?php echo $this->url('page/view', array('repository' => $repositoryid)); ?>">
+            <?php
+            if ($repository->hasCurrentRevision()) {
+                echo $repository->getCurrentRevision()->getTitle();
+            } else {
+                echo $this->translate('no current revision set');
+            }
+            ?>
+        </a> <a href="<?php echo $this->url(
+            'page/view/editrepository',
+            array('repository' => $repository->getId())
+        ); ?>" class="glyphicon glyphicon-edit"><?php echo $this->translate('edit'); ?></a>
+        <a href="<?php echo $this->url(
+            'page/view/deleterepository',
+            array('repository' => $repository->getId())
+        ); ?>" class="glyphicon glyphicon-remove"><?php echo $this->translate('delete'); ?></a>
+        <br>
+        <br>
     <?php endforeach; ?>
+    <a class="list-group-item" href="<?php echo $this->url('page/create'); ?>">
+        <span class="glyphicon glyphicon-plus"></span><?php echo $this->translate('Create a new page'); ?></a>
 </div>

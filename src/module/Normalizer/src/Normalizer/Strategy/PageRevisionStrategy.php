@@ -52,13 +52,13 @@ class PageRevisionStrategy extends AbstractStrategy
 
     protected function getRouteName()
     {
-        return 'page/article/revision';
+        return 'page/view/revision';
     }
 
     protected function getRouteParams()
     {
         return array(
-            'repositoryid' => $this->getObject()->getRepository()->getId(),
+            'repository' => $this->getObject()->getRepository()->getId(),
             'id'           => $this->getObject()->getId()
         );
     }

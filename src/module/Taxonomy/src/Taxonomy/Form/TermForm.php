@@ -11,18 +11,18 @@
  */
 namespace Taxonomy\Form;
 
-use Zend\Form\Form;
 use Term\Form\TermFieldset;
-use Zend\InputFilter\InputFilter;
-use Zend\Form\Element\Textarea;
 use Zend\Form\Element\Submit;
+use Zend\Form\Element\Textarea;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class TermForm extends Form
 {
 
     function __construct()
     {
-        parent::__construct('term_taxonomy');
+        parent::__construct('taxonomyTerm');
         $this->setAttribute('method', 'post');
         $filter = new InputFilter();
         $this->setInputFilter($filter);

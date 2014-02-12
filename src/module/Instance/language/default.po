@@ -353,7 +353,7 @@ msgstr ""
 msgid "Move resource"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/article.phtml:1
+#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/view.phtml:1
 msgid "Article"
 msgstr ""
 
