@@ -24,6 +24,7 @@ use Page\Entity\PageRepositoryInterface;
 use Page\Exception\InvalidArgumentException;
 use Page\Exception\PageNotFoundException;
 use User\Entity\UserInterface;
+use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\RepositoryManagerAwareTrait;
 
@@ -32,7 +33,7 @@ class PageManager implements PageManagerInterface
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
     use UuidManagerAwareTrait, InstanceManagerAwareTrait;
     use LicenseManagerAwareTrait, RepositoryManagerAwareTrait;
-    use RoleServiceAwareTrait;
+    use RoleServiceAwareTrait, UserManagerAwareTrait;
 
     public function editPageRepository(array $data, PageRepositoryInterface $pageRepository)
     {
@@ -47,7 +48,7 @@ class PageManager implements PageManagerInterface
     {
         for ($i = 0; $i <= $this->countRoles(); $i++) {
             if (array_key_exists($i, $data['roles'])) {
-                $role = $this->getUserManager()->findRole($data['roles'][$i]);
+                $role = $this->getRoleService()->getRole($data['roles'][$i]);
                 if ($role != null) {
                     $pageRepository->setRole($role);
                 }
@@ -64,7 +65,7 @@ class PageManager implements PageManagerInterface
 
     public function findAllRoles()
     {
-        return $this->getUserManager()->findAllRoles();
+        return $this->getRoleService()->findAllRoles();
     }
 
     public function findAllRepositorys(InstanceInterface $instance)

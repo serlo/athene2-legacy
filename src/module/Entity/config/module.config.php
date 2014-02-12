@@ -136,6 +136,15 @@ return [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
         ]
     ],
+    'versioning'      => [
+        'permissions' => [
+            'Entity\Entity\Entity' => [
+                'commit'   => 'entity.revision.create',
+                'checkout' => 'entity.revision.checkout',
+                'reject'   => 'entity.revision.trash'
+            ]
+        ]
+    ],
     'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [

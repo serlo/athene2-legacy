@@ -2,57 +2,66 @@
 $this->headTitle($this->translate('Revisions'));
 ?>
 
-<!-- buttons "create Revision" & "current Revision" -->
-<?php  if ($this->revisions[0]==null) $currentid = null; else $currentid = $this->revisions[0]->getRepository()->getCurrentRevision()->getId();?>
-<div class="page-header">
-	<div class="btn-group">
-		<a
-			href="<?php echo $this->url('page/article',array('repositoryid'=>$this->repositoryid));?>"
-			class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current');?></a>
-		<a
-			href="<?php echo $this->url('page/article/createrevision',array('repositoryid'=>$this->repositoryid,'id'=>$currentid))?>"
-			class="glyphicon glyphicon-plus btn btn-link"><?php echo $this->translate('new');?></a>
-	</div>
-	<h1><?php echo $this->translate('Revisions');?></h1>
-</div>
+    <!-- buttons "create Revision" & "current Revision" -->
+<?php if ($this->revisions[0] == null) {
+    $currentid = null;
+} else {
+    $currentid = $this->revisions[0]->getRepository()->getCurrentRevision()->getId();
+} ?>
+    <div class="page-header">
+        <div class="btn-group">
+            <a href="<?php echo $this->url('page/article', array('repositoryid' => $this->repositoryid)); ?>"
+               class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current'); ?></a>
+            <a href="<?php echo $this->url(
+                'page/article/createrevision',
+                array('repositoryid' => $this->repositoryid, 'id' => $currentid)
+            ) ?>" class="glyphicon glyphicon-plus btn btn-link"><?php echo $this->translate('new'); ?></a>
+        </div>
+        <h1><?php echo $this->translate('Revisions'); ?></h1>
+    </div>
 
-<!-- list of revisions -->
+    <!-- list of revisions -->
 <?php
 foreach ($this->revisions as $revision) :
-    if (! $revision->isTrashed()) :
+    if (!$revision->isTrashed()) :
         $id = $revision->getId();
         ?>
 
 
-<a
-	href="<?php echo $this->url('page/article/revision',array('repositoryid'=>$this->repositoryid,'id'=>$id));?>"
-	class="list-group-item btn btn-default" style="text-align: left"> <!-- title -->
-      <?php echo $this->translate('title'.':'); echo $revision->getTitle(); ?> 	
-        <!-- author -->
-        <?php echo $this->translate('author'.':'); echo $revision->getAuthor()->getUsername();?>
-        <!-- date -->	
-	<?php echo $this->timeago()->render($revision->getDate()); ?> 
-	</a>
+        <a href="<?php echo $this->url(
+            'page/article/revision',
+            array('repositoryid' => $this->repositoryid, 'id' => $id)
+        ); ?>" class="list-group-item btn btn-default" style="text-align: left"> <!-- title -->
+            <?php echo $this->translate('title' . ':');
+            echo $revision->getTitle(); ?>
+                                                                                 <!-- author -->
+            <?php echo $this->translate('author' . ':');
+            echo $revision->getAuthor()->getUsername(); ?>
+                                                                                 <!-- date -->
+            <?php echo $this->timeago()->render($revision->getDate()); ?>
+        </a>
 
-<!-- edit button -->
-<a
-	href="<?php echo $this->url('page/article/createrevision',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
-	class="glyphicon glyphicon-plus"><?php echo $this->translate('edit');?> </a>
+        <!-- edit button -->
+        <a href="<?php echo $this->url(
+            'page/article/createrevision',
+            array('repositoryid' => $this->repositoryid, 'id' => $id)
+        ) ?>" class="glyphicon glyphicon-plus"><?php echo $this->translate('edit'); ?> </a>
 
-<!--  delete and setCurrent buttons, hidden for current revision -->
-<?php if ($revision->getRepository()->getCurrentRevision()!=$revision):?>
-<a
-	href="<?php echo $this->url('page/article/deleterevision',array('repositoryid'=>$this->repositoryid,'revisionid'=>$id))?>"
-	class="glyphicon glyphicon-trash"><?php echo $this->translate('trash');?> </a>
-<a
-	href="<?php echo $this->url('page/article/revision/setCurrent',array('repositoryid'=>$this->repositoryid,'id'=>$id))?>"
-	class="glyphicon glyphicon-ok"><?php echo $this->translate('current') ?></a>
-<br>
-<br>
+        <!--  delete and setCurrent buttons, hidden for current revision -->
+        <?php if ($revision->getRepository()->getCurrentRevision() != $revision): ?>
+        <a href="<?php echo $this->url(
+            'page/article/deleterevision',
+            array('repositoryid' => $this->repositoryid, 'revisionid' => $id)
+        ) ?>" class="glyphicon glyphicon-trash"><?php echo $this->translate('trash'); ?> </a>
+        <a href="<?php echo $this->url(
+            'page/article/revision/setCurrent',
+            array('repositoryid' => $this->repositoryid, 'id' => $id)
+        ) ?>" class="glyphicon glyphicon-ok"><?php echo $this->translate('current') ?></a>
+        <br>
+        <br>
 
 
-        <?php endif;
-     
-          endif;
-endforeach
-; 
+    <?php endif;
+
+    endif;
+endforeach;

@@ -2,6 +2,15 @@
 namespace Page;
 
 return array(
+    'versioning' => [
+        'permissions' => [
+            'Page\Entity\PageRepository' => [
+                'commit'   => 'page.revision.create',
+                'checkout' => 'page.revision.checkout',
+                'reject'   => 'page.revision.trash'
+            ]
+        ]
+    ],
     'router'         => array(
         'routes' => array(
             'page' => array(
@@ -168,6 +177,9 @@ return array(
                 ),
                 'Page\Manager\PageManager'        => array(
                     'setRepositoryManager' => array(
+                        'required' => true
+                    ),
+                    'setRoleService'     => array(
                         'required' => true
                     ),
                     'setInstanceManager'   => array(

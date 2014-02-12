@@ -1,14 +1,6 @@
-<?php
-if ($this->revision != null) {
-    $id = $this->revision->getId();
-} else {
-    $id = $this->revision = '';
-}
-?>
-
+<?php if ($this->revision && $this->isGranted('page.revision.create', $this->revision)): ?>
+    <?php $id = $this->revision->getId(); ?>
     <!-- Only Visible for if User has Permission -->
-<?php if ($this->isGranted('page.revision.create', $this->revision)): ?>
-
     <div class="btn-group">
         <a href="<?php echo $this->url(
             'page/article/createrevision',
@@ -20,12 +12,10 @@ if ($this->revision != null) {
         </a>
         <?php if ($this->revision != '' && $this->revision->getRepository()->getCurrentRevision() != $this->revision
         ): ?>
-            <a href="<?php if ($id != null) {
-                echo $this->url(
-                    'page/article/deleterevision',
-                    array('repositoryid' => $this->repositoryid, 'revisionid' => $id)
-                )
-} ?>" class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('trash'); ?></a>
+            <a href="<?php echo $this->url(
+                'page/article/deleterevision',
+                array('repositoryid' => $this->repositoryid, 'revisionid' => $id)
+            ); ?>" class="btn btn-link glyphicon glyphicon-remove"><?php echo $this->translate('trash'); ?></a>
             <a href="<?php echo $this->url(
                 'page/article/revision/setCurrent',
                 array('repositoryid' => $this->repositoryid, 'id' => $id)
@@ -35,5 +25,4 @@ if ($this->revision != null) {
                class="glyphicon glyphicon-star btn btn-link"><?php echo $this->translate('current'); ?></a>
         <?php endif; ?>
     </div>
-
-<?php endif;
+<?php endif; ?>
