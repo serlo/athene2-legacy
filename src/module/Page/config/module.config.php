@@ -123,23 +123,6 @@ return array(
     'zfc_rbac'       => array(
 
         'guards' => array(
-            'ZfcRbac\Guard\ControllerGuard'                 => array(
-                array(
-                    'controller' => 'Page\Controller\IndexController',
-                    'actions'    => array(
-                        'createRepository',
-                        'index'
-                    ),
-                    'roles'      => 'moderator'
-                ),
-                array(
-                    'controller' => 'Page\Controller\IndexController',
-                    'actions'    => array(
-                        'article'
-                    ),
-                    'roles'      => 'guest'
-                )
-            ),
             'Authorization\Guard\HydratableControllerGuard' => array(
                 array(
                     'controller'    => 'Page\Controller\IndexController',
