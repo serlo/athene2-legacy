@@ -14,6 +14,6 @@ class PageControllerListenerFactory extends AbstractListenerFactory
 {
     protected function getClassName()
     {
-        return 'Blog\Listener\PageControllerListener';
+        return 'Alias\Listener\PageControllerListener';
     }
 }

@@ -14,6 +14,6 @@ class RepositoryManagerListenerFactory extends AbstractListenerFactory
 {
     protected function getClassName()
     {
-        return 'Blog\Listener\RepositoryManagerListener';
+        return 'Alias\Listener\RepositoryManagerListener';
     }
 }

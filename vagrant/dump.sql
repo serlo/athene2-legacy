@@ -1714,6 +1714,8 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (95, 'horizon.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (96, 'horizon.update');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (97, 'horizon.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (98, 'horizon.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (99, 'discussion.flag');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (100, 'discussion.comment.flag');
 
 COMMIT;
 
@@ -1819,6 +1821,8 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (96, 96, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (97, 97, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (98, 98, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (99, 99, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (100, 100, 1);
 
 COMMIT;
 
@@ -1923,6 +1927,8 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 95
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 96);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 97);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 98);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 99);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 100);
 
 COMMIT;
 

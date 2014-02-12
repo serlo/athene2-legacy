@@ -1,5 +1,6 @@
 #!/bin/bash
- for D in "../src/module/"*
+
+for D in "../src/module/"*
 do
     if [ -d "${D}/view" ]; then
         php ../src/vendor/zendframework/zendframework/bin/templatemap_generator.php -l "${D}" -v "${D}/view" -o "${D}/template_map.php" -w

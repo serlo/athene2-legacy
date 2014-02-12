@@ -1,4 +1,5 @@
 #!/bin/sh
+
 sudo cp /var/www/sphinxql/sphinx.conf.dist /etc/sphinxsearch/sphinx.conf
 sudo indexer --all
 sudo searchd

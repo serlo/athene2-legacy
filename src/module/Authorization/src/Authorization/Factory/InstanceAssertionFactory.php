@@ -21,7 +21,8 @@ class InstanceAssertionFactory implements FactoryInterface
         $serviceLocator    = $serviceLocator->getServiceLocator();
         $instanceManager   = $serviceLocator->get('Instance\Manager\InstanceManager');
         $permissionService = $serviceLocator->get('Authorization\Service\PermissionService');
-        $instance          = new InstanceAssertion($instanceManager, $permissionService);
+        $traversalStrategy = $serviceLocator->get('Rbac\Rbac')->getTraversalStrategy();
+        $instance          = new InstanceAssertion($instanceManager, $permissionService, $traversalStrategy);
 
         return $instance;
     }

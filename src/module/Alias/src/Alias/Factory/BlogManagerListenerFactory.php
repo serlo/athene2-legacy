@@ -14,6 +14,6 @@ class BlogManagerListenerFactory extends AbstractListenerFactory
 {
     protected function getClassName()
     {
-        return 'Blog\Listener\BlogManagerListener';
+        return 'Alias\Listener\BlogManagerListener';
     }
 }

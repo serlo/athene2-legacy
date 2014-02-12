@@ -11,8 +11,8 @@
 
 namespace Alias\Factory;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Alias\AliasManagerInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 trait AliasManagerFactoryTrait {
     /**
@@ -20,6 +20,6 @@ trait AliasManagerFactoryTrait {
      * @return AliasManagerInterface
      */
     public function getAliasManager(ServiceLocatorInterface $serviceLocator){
-        return $serviceLocator->get('Alias\Manager\AliasManager');
+        return $serviceLocator->get('Alias\AliasManager');
     }
 }

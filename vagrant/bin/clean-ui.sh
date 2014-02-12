@@ -1,4 +1,5 @@
 #!/bin/sh
+
 sudo su - www-data -c "pm2 kill"
 sudo su - www-data -c "(cd /var/www/src/assets;npm cache clean)"
 sudo su - www-data -c "(cd /var/www/src/assets;bower cache clean)"
