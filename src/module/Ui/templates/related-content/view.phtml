@@ -1,14 +1,18 @@
 <?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
-<ul class="list-group">
-    <?php foreach($this->aggregated as $related): ?>
-        <?php if($related->getType() == 'category'): ?>
-            </ul>
-            <ul class="list-group">
-            <li class="list-group-item"><h5><?php echo $related->getTitle(); ?></h5></li>
-        <?php elseif($related->getType() == 'internal'): ?>
-            <li class="list-group-item">><span class="glyphicon glyphicon-transfer"></span> <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
-        <?php elseif($related->getType() == 'external'): ?>
-            <li class="list-group-item">><span class="glyphicon glyphicon-globe"></span> <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
+<strong><?php echo $this->translate('Related content'); ?></strong>
+<ul>
+    <?php foreach ($this->aggregated as $related): ?>
+        <?php if ($related->getType() == 'category'): ?>
+        </ul>
+        <ul>
+            <li><h5><?php echo $related->getTitle(); ?></h5>
+        <?php elseif ($related->getType() == 'internal'): ?>
+            <li>
+            <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
+        <?php elseif ($related->getType() == 'external'): ?>
+            <li>
+            <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
         <?php endif; ?>
+        </li>
     <?php endforeach; ?>
 </ul>

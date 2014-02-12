@@ -1,0 +1,6 @@
+<strong><?php echo $this->translate('Related taxonomies'); ?></strong>
+<ul>
+    <?php foreach($this->terms as $term): ?>
+        <li><?php echo $this->normalize()->toAnchor($term); ?></li>
+    <?php endforeach; ?>
+</ul>

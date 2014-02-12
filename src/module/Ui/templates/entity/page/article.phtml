@@ -1,3 +1,4 @@
 <?php echo $this->pageHeader($this->entity->getCurrentRevision()->get('title'))->setSubtitle('Article')->render(); ?>
 <?php echo $this->partial('entity/view/default', ['entity' => $this->entity]); ?>
-<?php $this->registry()->add('gen', $this->related($this->entity)); ?>
+<?php $this->registry()->add('rnav', $this->partial('entity/page/aggregate/taxonomy', ['terms' => $this->entity->getTaxonomyTerms()])); ?>
+<?php $this->registry()->add('rnav', $this->related($this->entity)); ?>
