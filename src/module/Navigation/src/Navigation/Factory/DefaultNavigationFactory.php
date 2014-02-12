@@ -11,7 +11,7 @@
  */
 namespace Navigation\Factory;
 
-class DefaultNavigationFactory extends ProvideableNavigation
+class DefaultNavigationFactory extends ProvideableNavigationFactory
 {
     protected function getName()
     {

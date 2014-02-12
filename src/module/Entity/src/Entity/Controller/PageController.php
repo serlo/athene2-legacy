@@ -42,12 +42,11 @@ class PageController extends AbstractController
                 'entity' => $entity
             ));
             $model->setTemplate('entity/page/default');
+            $this->layout('layout/3-col');
 
             return $model;
         } catch (RevisionNotFoundException $e) {
-            $this->getResponse()->setStatusCode(404);
-
-            return;
+            return $this->getResponse()->setStatusCode(404);
         }
     }
 }

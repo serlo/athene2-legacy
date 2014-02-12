@@ -20,7 +20,7 @@ use Zend\Navigation\Navigation;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
 
-abstract class ProvideableNavigation extends AbstractNavigationFactory
+abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
 {
     /**
      * @var ServiceLocatorInterface

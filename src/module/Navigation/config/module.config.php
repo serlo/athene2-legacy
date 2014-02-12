@@ -10,6 +10,8 @@
  */
 namespace Navigation;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 return [
     'navigation'      => [
         'providers' => [
@@ -44,16 +46,15 @@ return [
             __NAMESPACE__ . '\Form\ParameterForm'                   => __NAMESPACE__ . '\Factory\ParameterFormFactory',
             __NAMESPACE__ . '\Form\ParameterKeyForm'                => __NAMESPACE__ . '\Factory\ParameterKeyFormFactory',
             __NAMESPACE__ . '\Form\PositionPageForm'                => __NAMESPACE__ . '\Factory\PositionPageFormFactory',
-            'navigation'                                            => __NAMESPACE__ . '\Factory\DefaultNavigationFactory',
             'top_left_navigation'                                   => __NAMESPACE__ . '\Factory\TopLeftNavigationFactory',
             'top_right_navigation'                                  => __NAMESPACE__ . '\Factory\TopRightNavigationFactory',
             'top_center_navigation'                                 => __NAMESPACE__ . '\Factory\TopCenterNavigationFactory',
             'footer_navigation'                                     => __NAMESPACE__ . '\Factory\FooterNavigationFactory',
-            'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory'
-            /*function (ServiceLocatorInterface $sm) {
-                // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
-                return $sm->get('Ui\Navigation\DefaultNavigationFactory')->createService($sm);
-            },*/
+            'subject_navigation'                                    => __NAMESPACE__ . '\Factory\SubjectNavigationFactory',
+            'navigation'                                            => function (ServiceLocatorInterface $sm) {
+                    // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
+                    return $sm->get(__NAMESPACE__ . '\Factory\DefaultNavigationFactory')->createService($sm);
+                },
         ]
     ],
     'controllers'     => [
