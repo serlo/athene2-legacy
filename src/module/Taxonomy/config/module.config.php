@@ -24,10 +24,10 @@ return [
     'view_helpers'    => [
         'factories' => [
             'taxonomy' => function ($helperPluginManager) {
-                    $plugin = new TaxonomyHelper();
-                    $plugin->setModuleOptions(
-                        $helperPluginManager->getServiceLocator()->get('Taxonomy\Options\ModuleOptions')
-                    );
+                    $serviceLocator  = $helperPluginManager->getServiceLocator();
+                    $moduleOptions   = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
+                    $taxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
+                    $plugin          = new TaxonomyHelper($moduleOptions, $taxonomyManager);
 
                     return $plugin;
                 }
@@ -142,15 +142,13 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Options\ModuleOptions'   => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
             __NAMESPACE__ . '\Manager\TaxonomyManager' => __NAMESPACE__ . '\Factory\TaxonomyManagerFactory'
         ]
     ],
     'di'              => [
         'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\TermController',
-            __NAMESPACE__ . '\Controller\TaxonomyController',
-            __NAMESPACE__ . '\Controller\TermRouterController'
+            __NAMESPACE__ . '\Controller\TermController'
         ],
         'definition'          => [
             'class' => [
@@ -159,6 +157,7 @@ return [
                         'required' => true
                     ]
                 ],
+                __NAMESPACE__ . '\Form\TermForm'                  => [],
                 __NAMESPACE__ . '\Controller\TermController'      => [
                     'setTaxonomyManager' => [
                         'required' => true
@@ -170,25 +169,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ],
-                    'setTermManager'     => [
-                        'required' => true
-                    ],
-                    'setUuidManager'     => [
-                        'required' => true
-                    ],
-                    'setModuleOptions'   => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Controller\TaxonomyController'  => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ]
-                ],
+                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => [],
                 __NAMESPACE__ . '\Provider\NavigationProvider'    => [
                     'setTaxonomyManager' => [
                         'required' => true

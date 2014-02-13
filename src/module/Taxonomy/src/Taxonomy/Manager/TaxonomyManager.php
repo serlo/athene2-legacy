@@ -18,13 +18,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
-use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
 use Type\TypeManagerAwareTrait;
 use Type\TypeManagerInterface;
 use Zend\EventManager\EventManagerAwareTrait;
+use Zend\Form\FormInterface;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {
@@ -45,13 +45,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
         ClassResolverInterface $classResolver,
         ModuleOptions $moduleOptions,
         ObjectManager $objectManager,
-        TaxonomyTermHydrator $hydrator,
         TypeManagerInterface $typeManager
     ) {
         $this->classResolver = $classResolver;
         $this->moduleOptions = $moduleOptions;
         $this->objectManager = $objectManager;
-        $this->hydrator      = $hydrator;
         $this->typeManager   = $typeManager;
     }
 
@@ -70,7 +68,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function getTaxonomy($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
-        $entity    = $this->getObjectManager()->find($className, (int)$id);
+        $entity    = $this->getObjectManager()->find($className, $id);
 
         if (!is_object($entity)) {
             throw new Exception\RuntimeException(sprintf('Term with id %s not found', $id));
@@ -101,6 +99,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
             if ($this->getObjectManager()->isOpen()) {
                 // todo: use entitymanager
                 $this->getObjectManager()->persist($entity);
+                $this->getObjectManager()->flush($entity);
             }
         }
 
@@ -153,46 +152,36 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $found;
     }
 
-    public function createTerm(array $data, InstanceInterface $instance)
+    public function createTerm(FormInterface $form)
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
+        $data = $form->getData();
 
-        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
-            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $instance);
+        $form->bind($term);
+        $form->setData($data);
+
+        if ($form->isValid()) {
+            $term = $form->getObject();
+
+            $this->getEventManager()->trigger('create', $this, ['term' => $term]);
+            $this->getObjectManager()->persist($term);
+
+            return $term;
+        } else {
+            throw new Exception\RuntimeException(sprintf('Validation failed'));
         }
-        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
-            $data['parent'] = $this->getTerm($data['parent']);
-        }
-
-        $this->getHydrator()->hydrate($data, $term);
-
-        $this->getEventManager()->trigger(
-            'create',
-            $this,
-            [
-                'term' => $term
-            ]
-        );
-
-        $this->getObjectManager()->persist($term);
-
-        return $term;
     }
 
-    public function updateTerm($id, array $data)
+    public function updateTerm(FormInterface $form)
     {
-        $term = $this->getTerm($id);
+        if ($form->isValid()) {
+            $term = $form->getObject();
 
-        if (isset($data['taxonomy']) && !$data['taxonomy'] instanceof TaxonomyInterface) {
-            $data['taxonomy'] = $this->findTaxonomyByName($data['taxonomy'], $term->getInstance());
+            $this->getEventManager()->trigger('update', $this, ['term' => $term]);
+            $this->getObjectManager()->persist($term);
+        } else {
+            throw new Exception\RuntimeException(sprintf('Validation failed'));
         }
-        if (isset($data['parent']) && !$data['parent'] instanceof TaxonomyTermInterface) {
-            $data['parent'] = $this->getTerm($data['parent']);
-        }
-
-        $this->getHydrator()->hydrate($data, $term);
-        $this->getEventManager()->trigger('update', $this, ['term' => $term]);
-        $this->getObjectManager()->persist($term);
 
         return $term;
     }
@@ -213,8 +202,8 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
         $term->associateObject($association, $object);
 
-        if($position !== null){
-            $term->positionAssociatedObject($association, $object, (int) $position);
+        if ($position !== null) {
+            $term->positionAssociatedObject($association, $object, (int)$position);
         }
 
         $this->getEventManager()->trigger(
@@ -252,14 +241,6 @@ class TaxonomyManager implements TaxonomyManagerInterface
     }
 
     /**
-     * @return TaxonomyTermHydrator $hydrator
-     */
-    public function getHydrator()
-    {
-        return $this->hydrator;
-    }
-
-    /**
      * @return ModuleOptions $moduleOptions
      */
     public function getModuleOptions()
@@ -274,17 +255,6 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function setModuleOptions(ModuleOptions $moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
-
-        return $this;
-    }
-
-    /**
-     * @param TaxonomyTermHydrator $hydrator
-     * @return self
-     */
-    public function setHydrator(TaxonomyTermHydrator $hydrator)
-    {
-        $this->hydrator = $hydrator;
 
         return $this;
     }
