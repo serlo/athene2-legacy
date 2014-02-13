@@ -32,7 +32,7 @@ class FirewallHydrator
         $this->setPageManager($this->getServiceLocator()
             ->get('Page\Manager\PageManager'));
         $routeMatch = $this->event->getRouteMatch();
-        $id = $routeMatch->getParam('repository');
+        $id = $routeMatch->getParam('page');
         if ($id === null) {
             $id = $routeMatch->getParam('id');
         }

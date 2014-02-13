@@ -136,6 +136,20 @@ return [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
         ]
     ],
+    'uuid'            => [
+        'permissions' => [
+            'entityRevision' => [
+                'trash'   => 'entity.revision.trash',
+                'restore' => 'entity.revision.restore',
+                'purge' => 'entity.revision.purge'
+            ],
+            'entity'         => [
+                'trash'   => 'entity.trash',
+                'restore' => 'entity.restore',
+                'purge' => 'entity.purge'
+            ]
+        ]
+    ],
     'versioning'      => [
         'permissions' => [
             'Entity\Entity\Entity' => [

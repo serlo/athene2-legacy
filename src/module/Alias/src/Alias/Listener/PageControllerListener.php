@@ -40,7 +40,7 @@ class PageControllerListener extends AbstractListener
         $url = $e->getTarget()->url()->fromRoute(
             'page/view',
             array(
-                'repository' => $repository->getId()
+                'page' => $repository->getId()
             )
         );
 

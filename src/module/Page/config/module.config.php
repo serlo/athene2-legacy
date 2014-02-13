@@ -11,6 +11,20 @@ return array(
             ]
         ]
     ],
+    'uuid'            => [
+        'permissions' => [
+            'pageRevision' => [
+                'trash'   => 'page.revision.trash',
+                'restore' => 'page.revision.restore',
+                'purge' => 'page.revision.purge'
+            ],
+            'pageRepository'         => [
+                'trash'   => 'page.trash',
+                'restore' => 'page.restore',
+                'purge' => 'page.purge'
+            ]
+        ]
+    ],
     'router'         => array(
         'routes' => array(
             'pages' => array(
@@ -47,7 +61,6 @@ return array(
                         'options' => array(
                             'route'    => '/update/:page',
                             'defaults' => array(
-                                'controller' => 'Page\Controller\IndexController',
                                 'action'     => 'update'
                             )
                         )
@@ -58,7 +71,6 @@ return array(
                         'options'       => array(
                             'route'    => '/view/:page',
                             'defaults' => array(
-                                'controller' => 'Page\Controller\IndexController',
                                 'action'     => 'view'
                             )
                         ),
@@ -69,55 +81,39 @@ return array(
                             'route'    => '/revision',
                         ),
                         'child_routes'  => array(
-                            'show'         => array(
+                            'view'         => array(
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
                                 'options'       => array(
                                     'route'    => '/:revision',
                                     'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'showRevision'
+                                        'action'     => 'viewRevision'
                                     )
                                 ),
-                                'child_routes'  => array(
-                                    'setCurrent' => array(
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                        'options' => array(
-                                            'route'    => '/setcurrent',
-                                            'defaults' => array(
-                                                'controller' => 'Page\Controller\IndexController',
-                                                'action'     => 'setCurrentRevision'
-                                            )
-                                        )
+                            ),
+                            'checkout' => array(
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/:page/checkout/:revision',
+                                    'defaults' => array(
+                                        'action'     => 'checkout'
                                     )
                                 )
                             ),
-                            'revisions'        => array(
+                            'view-all'        => array(
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route'    => '/revisions',
+                                    'route'    => '/revisions/:page',
                                     'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'showRevisions'
+                                        'action'     => 'viewRevisions'
                                     )
                                 )
                             ),
-                            'deleterevision'   => array(
+                            'create'   => array(
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route'    => '/:revisionid/delete',
+                                    'route'    => '/create/:page[/:revision]',
                                     'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'trashRevision'
-                                    )
-                                )
-                            ),
-                            'createrevision'   => array(
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route'    => '/edit[/:id]',
-                                    'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
                                         'action'     => 'createRevision'
                                     )
                                 )

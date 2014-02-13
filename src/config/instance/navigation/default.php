@@ -23,7 +23,7 @@ return [
                     
                     [
                         'label' => 'Pages',
-                        'route' => 'page',
+                        'route' => 'pages',
                         'icon' => 'paperclip'
                     ],
                     [

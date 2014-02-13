@@ -68,23 +68,19 @@ class PageManager implements PageManagerInterface
         return $this->getRoleService()->findAllRoles();
     }
 
-    public function findAllRepositorys(InstanceInterface $instance)
+    public function findAllRepositories(InstanceInterface $instance)
     {
-        $pageRepositorys = $this->getObjectManager()->getRepository(
-                $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface')
-            )->findBy(
-                array(
-                    'instance' => $instance->getId()
-                )
-            );
-        $repositorys     = array();
-        foreach ($pageRepositorys as $repository) {
+        $className    = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
+        $params       = array('instance' => $instance->getId());
+        $repositories = $this->getObjectManager()->getRepository($className)->findBy($params);
+        $return       = array();
+        foreach ($repositories as $repository) {
             if (!$repository->isTrashed()) {
-                $repositorys[] = $repository;
+                $return[] = $repository;
             }
         }
 
-        return $repositorys;
+        return $return;
     }
 
     public function getRevision($id)
