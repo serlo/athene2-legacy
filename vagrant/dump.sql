@@ -61,10 +61,10 @@ DROP TABLE IF EXISTS `serlo`.`uuid` ;
 
 CREATE TABLE IF NOT EXISTS `serlo`.`uuid` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `uuid` VARCHAR(56) NOT NULL,
+  `type` VARCHAR(45) NOT NULL,
   `trashed` TINYINT(1) NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC))
+  INDEX `uuid_type` (`type` ASC))
 ENGINE = InnoDB;
 
 
@@ -1468,15 +1468,15 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (1, 'aeneasr', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (2, 'devuser', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (3, 'id3', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (4, 'id4', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (5, 'id5', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (6, 'id6', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (7, 'id7', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (8, 'id8', 0);
-INSERT INTO `serlo`.`uuid` (`id`, `uuid`, `trashed`) VALUES (9, 'id9', 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (1, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (2, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (3, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (4, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (5, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (6, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (7, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (8, NULL, 0);
+INSERT INTO `serlo`.`uuid` (`id`, `type`, `trashed`) VALUES (9, NULL, 0);
 
 COMMIT;
 
@@ -1710,10 +1710,10 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (91, 'attachment.create')
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (92, 'attachment.append');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (93, 'attachment.trash');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (94, 'attachment.purge');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (95, 'horizon.create');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (96, 'horizon.update');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (97, 'horizon.get');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (98, 'horizon.remove');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (95, 'ad.create');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (96, 'ad.update');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (97, 'ad.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (98, 'ad.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (99, 'discussion.flag');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (100, 'discussion.comment.flag');
 

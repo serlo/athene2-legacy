@@ -117,25 +117,12 @@ return array(
         'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
     ),
     'zfc_rbac'       => array(
-
-        'guards' => array(
-            'ZfcRbac\Guard\ControllerGuard' => array(
-                array(
-                    'controller' => 'Ads\Controller\AdsController',
-                    'actions'    => array(
-                        'index'
-                    ),
-                    'roles'      => 'guest'
-                ),
-                array(
-                    'controller' => 'Ads\Controller\AdsController',
-                    'actions'    => array(
-                        'article'
-                    ),
-                    'roles'      => 'guest'
-                )
-            )
-        )
+        'assertion_map' => [
+            'ad.create' => 'Authorization\Assertion\InstanceAssertion',
+            'ad.update' => 'Authorization\Assertion\InstanceAssertion',
+            'ad.get'    => 'Authorization\Assertion\InstanceAssertion',
+            'ad.remove' => 'Authorization\Assertion\InstanceAssertion',
+        ]
     ),
     'di'             => array(
         'allowed_controllers' => array(
@@ -145,37 +132,37 @@ return array(
             'class' => array(
 
                 'Ads\Controller\AdsController' => array(
-                    'setObjectManager'   => array(
+                    'setObjectManager'     => array(
                         'required' => 'true'
                     ),
-                    'setInstanceManager' => array(
+                    'setInstanceManager'   => array(
                         'required' => 'true'
                     ),
-                    'setUserManager'     => array(
+                    'setUserManager'       => array(
                         'required' => 'true'
                     ),
-                    'setAdsManager'      => array(
+                    'setAdsManager'        => array(
                         'required' => true
                     ),
-                    'setAttachmentManager'   => array(
+                    'setAttachmentManager' => array(
                         'required' => true
                     )
                 ),
                 'Ads\Manager\AdsManager'       => array(
 
-                    'setInstanceManager' => array(
+                    'setInstanceManager'   => array(
                         'required' => 'true'
                     ),
-                    'setClassResolver'   => array(
+                    'setClassResolver'     => array(
                         'required' => 'true'
                     ),
-                    'setUserManager'     => array(
+                    'setUserManager'       => array(
                         'required' => true
                     ),
-                    'setObjectManager'   => array(
+                    'setObjectManager'     => array(
                         'required' => true
                     ),
-                    'setAttachmentManager'   => array(
+                    'setAttachmentManager' => array(
                         'required' => true
                     )
                 )
