@@ -1,21 +1,18 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace Versioning\Entity;
 
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidInterface;
 
-interface RevisionInterface extends UuidInterface
+interface RevisionInterface
 {
 
     /**
-     *
      * @return int
      */
     public function getId();
@@ -30,7 +27,7 @@ interface RevisionInterface extends UuidInterface
     /**
      * Sets the repository
      *
-     * @param RepositoryInterface $repository            
+     * @param RepositoryInterface $repository
      * @return self
      */
     public function setRepository(RepositoryInterface $repository);
@@ -38,7 +35,7 @@ interface RevisionInterface extends UuidInterface
     /**
      * Sets the author
      *
-     * @param UserInterface $user            
+     * @param UserInterface $user
      * @return self
      */
     public function setAuthor(UserInterface $user);

@@ -14,7 +14,6 @@ use Blog\Entity\PostInterface;
 use ClassResolver\ClassResolverAwareTrait;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use User\Entity\UserInterface;
 use Zend\Form\FormInterface;
 
 interface BlogManagerInterface

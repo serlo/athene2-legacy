@@ -13,7 +13,6 @@ namespace Event;
 use Event\Entity\EventInterface;
 use Event\Entity\EventLogInterface;
 use Instance\Entity\InstanceInterface;
-use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
 interface EventManagerInterface

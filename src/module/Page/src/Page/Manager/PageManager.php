@@ -31,7 +31,7 @@ use Versioning\RepositoryManagerAwareTrait;
 class PageManager implements PageManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
-    use UuidManagerAwareTrait, InstanceManagerAwareTrait;
+    use InstanceManagerAwareTrait;
     use LicenseManagerAwareTrait, RepositoryManagerAwareTrait;
     use RoleServiceAwareTrait, UserManagerAwareTrait;
 
@@ -152,7 +152,6 @@ class PageManager implements PageManagerInterface
     protected function createPageRepositoryEntity()
     {
         $repository = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
-        $this->getUuidManager()->injectUuid($repository);
         $license = $this->getLicenseManager()->getLicense(1); // Finds a license with the id 3
         $this->getLicenseManager()->injectLicense($repository, $license);
         $repository->setTrashed(false);

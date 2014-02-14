@@ -11,8 +11,8 @@
  */
 namespace Term\Form;
 
-use Zend\Form\Fieldset;
 use Zend\Form\Element\Text;
+use Zend\Form\Fieldset;
 
 class TermFieldset extends Fieldset
 {

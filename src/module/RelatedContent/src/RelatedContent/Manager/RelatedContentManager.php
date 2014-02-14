@@ -27,7 +27,7 @@ use Uuid\Manager\UuidManagerAwareTrait;
 class RelatedContentManager implements RelatedContentManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
-    use UuidManagerAwareTrait, RouterAwareTrait;
+    use RouterAwareTrait;
     use FlushableTrait, AuthorizationAssertionTrait;
 
     public function getContainer($id)
@@ -144,7 +144,6 @@ class RelatedContentManager implements RelatedContentManagerInterface
         $uuid      = $this->getUuidManager()->getUuid($id);
         $container = $this->getClassResolver()->resolve('RelatedContent\Entity\ContainerInterface');
 
-        $this->getUuidManager()->injectUuid($container, $uuid);
         $this->getObjectManager()->persist($container);
 
         return $container;

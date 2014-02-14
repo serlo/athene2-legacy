@@ -30,7 +30,7 @@ use ZfcRbac\Service\AuthorizationService;
 class BlogManager implements BlogManagerInterface
 {
     use TaxonomyManagerAwareTrait, ObjectManagerAwareTrait;
-    use ClassResolverAwareTrait, UuidManagerAwareTrait;
+    use ClassResolverAwareTrait;
     use InstanceManagerAwareTrait, AuthorizationAssertionTrait;
     use EventManagerAwareTrait;
 
@@ -98,7 +98,6 @@ class BlogManager implements BlogManagerInterface
             $form->setData($data);
             if ($form->isValid()) {
                 $this->assertGranted('blog.post.create', $post);
-                $this->getUuidManager()->injectUuid($post);
                 $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
                 $this->getObjectManager()->persist($post);
 

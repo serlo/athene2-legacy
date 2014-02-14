@@ -25,14 +25,13 @@ use Instance\Manager\InstanceManagerInterface;
 use Type\TypeManagerAwareTrait;
 use Type\TypeManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
-use Uuid\Manager\UuidManagerInterface;
 use Zend\Filter\File\RenameUpload;
 use ZfcRbac\Service\AuthorizationService;
 use ZfcRbac\Service\AuthorizationServiceAwareTrait;
 
 class AttachmentManager implements AttachmentManagerInterface
 {
-    use UuidManagerAwareTrait, ClassResolverAwareTrait;
+    use ClassResolverAwareTrait;
     use AuthorizationAssertionTrait, ObjectManagerAwareTrait;
     use InstanceManagerAwareTrait, TypeManagerAwareTrait;
 
@@ -47,7 +46,6 @@ class AttachmentManager implements AttachmentManagerInterface
         InstanceManagerInterface $instanceManager,
         ModuleOptions $moduleOptions,
         TypeManagerInterface $typeManager,
-        UuidManagerInterface $uuidManager,
         ObjectManager $objectManager
     ) {
         $this->authorizationService = $authorizationService;
@@ -55,7 +53,6 @@ class AttachmentManager implements AttachmentManagerInterface
         $this->instanceManager      = $instanceManager;
         $this->typeManager          = $typeManager;
         $this->objectManager        = $objectManager;
-        $this->uuidManager          = $uuidManager;
         $this->moduleOptions        = $moduleOptions;
     }
 
@@ -132,7 +129,6 @@ class AttachmentManager implements AttachmentManagerInterface
         $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
         $instance   = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->getUuidManager()->injectUuid($attachment);
         $attachment->setInstance($instance);
         $this->getObjectManager()->persist($attachment);
 

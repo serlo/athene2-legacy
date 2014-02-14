@@ -21,7 +21,7 @@ use Versioning\RepositoryManagerAwareTrait;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use ObjectManagerAwareTrait, UuidManagerAwareTrait;
+    use ObjectManagerAwareTrait;
     use AuthorizationAssertionTrait, RepositoryManagerAwareTrait;
     use UserManagerAwareTrait;
 
@@ -95,8 +95,6 @@ class RepositoryService implements RepositoryServiceInterface
         $this->assertGranted($permission, $repository);
 
         $revision = $repository->createRevision();
-
-        $this->getUuidManager()->injectUuid($revision);
 
         $revision->setAuthor($user);
 

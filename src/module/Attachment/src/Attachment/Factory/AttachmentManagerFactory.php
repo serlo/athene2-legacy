@@ -25,7 +25,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class AttachmentManagerFactory implements FactoryInterface
 {
     use ClassResolverFactoryTrait, EntityManagerFactoryTrait;
-    use UuidManagerFactoryTrait, InstanceManagerFactoryTrait;
+    use InstanceManagerFactoryTrait;
     use TypeManagerFactoryTrait, AuthorizationServiceFactoryTrait;
 
     /**
@@ -41,10 +41,9 @@ class AttachmentManagerFactory implements FactoryInterface
         $authService     = $this->getAuthorizationService($serviceLocator);
         $classResolver   = $this->getClassResolver($serviceLocator);
         $entityManager   = $this->getEntityManager($serviceLocator);
-        $uuidManager     = $this->getUuidManager($serviceLocator);
         $instanceManager = $this->getInstanceManager($serviceLocator);
         $typeManager     = $this->getTypeManager($serviceLocator);
-        $instance        = new AttachmentManager($authService, $classResolver, $instanceManager, $moduleOptions, $typeManager, $uuidManager, $entityManager);
+        $instance        = new AttachmentManager($authService, $classResolver, $instanceManager, $moduleOptions, $typeManager, $entityManager);
 
         return $instance;
     }
