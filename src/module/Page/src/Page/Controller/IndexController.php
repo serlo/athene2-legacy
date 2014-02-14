@@ -119,7 +119,7 @@ class IndexController extends AbstractActionController
         $instance       = $this->getInstanceManager()->getInstanceFromRequest();
         $pageRepository = $this->getPageRepository();
         $form->get('slug')->setValue(
-            $this->getAliasManager()->findAliasByObject($pageRepository->getUuidEntity())->getAlias()
+            $this->getAliasManager()->findAliasByObject($pageRepository)->getAlias()
         );
         $roles = array();
         foreach ($pageRepository->getRoles() as $role) {
@@ -137,7 +137,7 @@ class IndexController extends AbstractActionController
                     $source,
                     $array['slug'],
                     $array['slug'] . $pageRepository->getId(),
-                    $pageRepository->getUuidEntity(),
+                    $pageRepository,
                     $instance
                 );
                 $this->getPageManager()->editPageRepository($array, $pageRepository);

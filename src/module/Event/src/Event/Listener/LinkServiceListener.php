@@ -24,7 +24,7 @@ class LinkServiceListener extends AbstractListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'value' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')
             )
         );
 
@@ -40,7 +40,7 @@ class LinkServiceListener extends AbstractListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'value' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')
             )
         );
 

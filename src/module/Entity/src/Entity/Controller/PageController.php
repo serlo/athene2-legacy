@@ -31,7 +31,7 @@ class PageController extends AbstractController
 
         if (!$this->params('forwarded')) {
             try {
-                $alias = $this->getAliasManager()->findAliasByObject($entity->getUuidEntity());
+                $alias = $this->getAliasManager()->findAliasByObject($entity);
                 $this->redirect()->toUrl('/alias/' . $alias->getAlias());
             } catch (AliasNotFoundException $e) {
             }

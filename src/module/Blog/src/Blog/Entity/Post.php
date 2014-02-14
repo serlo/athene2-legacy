@@ -18,8 +18,7 @@ use Instance\Entity\InstanceAwareTrait;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
-use Uuid\Entity\UuidInterface;
+use Uuid\Entity\Uuid;
 
 /**
  * A blog post.
@@ -27,16 +26,9 @@ use Uuid\Entity\UuidInterface;
  * @ORM\Entity
  * @ORM\Table(name="blog_post")
  */
-class Post extends UuidEntity implements PostInterface
+class Post extends Uuid implements PostInterface
 {
     use InstanceAwareTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="blogPost")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -144,14 +136,6 @@ class Post extends UuidEntity implements PostInterface
     public function setPublish(DateTime $publish = null)
     {
         $this->publish = $publish;
-
-        return $this;
-    }
-
-    public function setUuid(UuidInterface $uuid)
-    {
-        $uuid->setHolder('blogPost', $this);
-        $this->id = $uuid;
 
         return $this;
     }

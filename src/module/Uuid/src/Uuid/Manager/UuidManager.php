@@ -17,11 +17,10 @@ use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
+use Uuid\Exception;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
-use Uuid\Exception;
 use Uuid\Options\ModuleOptions;
 use Zend\EventManager\EventManagerAwareTrait;
 use ZfcRbac\Service\AuthorizationService;
@@ -74,13 +73,13 @@ class UuidManager implements UuidManagerInterface
         return new ArrayCollection($entities);
     }
 
-    public function injectUuid(UuidHolder $entity, UuidInterface $uuid = null)
+    public function injectUuid(UuidInterface $entity, UuidInterface $uuid = null)
     {
+        return;
         if ($uuid === null) {
             $uuid = $this->createUuid();
+            $uuid->setType($entity);
         }
-
-        return $entity->setUuid($uuid);
     }
 
     public function getUuid($key)
@@ -117,7 +116,7 @@ class UuidManager implements UuidManagerInterface
     public function trashUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'trash');
+        $permission = $this->getModuleOptions()->getPermission(get_class($uuid), 'trash');
         $this->assertGranted($permission, $uuid);
 
         $uuid->setTrashed(true);
@@ -135,7 +134,7 @@ class UuidManager implements UuidManagerInterface
     public function restoreUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'restore');
+        $permission = $this->getModuleOptions()->getPermission(get_class($uuid), 'restore');
         $this->assertGranted($permission, $uuid);
 
         $uuid->setTrashed(false);
@@ -183,13 +182,13 @@ class UuidManager implements UuidManagerInterface
 
         if (is_int($idOrObject)) {
             $uuid = $this->getUuid($idOrObject);
-        } elseif ($idOrObject instanceof UuidHolder) {
-            $uuid = $idOrObject->getUuidEntity();
+        } elseif ($idOrObject instanceof UuidInterface) {
+            $uuid = $idOrObject;
         } elseif ($idOrObject instanceof UuidInterface) {
             $uuid = $idOrObject;
         } else {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Expected int, UuidHolder or UuidInterface but got "%s"',
+                'Expected int, UuidInterface or UuidInterface but got "%s"',
                 (is_object($idOrObject) ? get_class($idOrObject) : gettype($idOrObject))
             ));
         }

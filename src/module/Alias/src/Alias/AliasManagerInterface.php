@@ -11,7 +11,6 @@
 namespace Alias;
 
 use Instance\Entity\InstanceInterface;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 
 interface AliasManagerInterface
@@ -19,11 +18,11 @@ interface AliasManagerInterface
     /**
      * @param                   $name
      * @param                   $source
-     * @param UuidHolder        $object
+     * @param UuidInterface        $object
      * @param InstanceInterface $instance
      * @return void
      */
-    public function autoAlias($name, $source, UuidHolder $object, InstanceInterface $instance);
+    public function autoAlias($name, $source, UuidInterface $object, InstanceInterface $instance);
 
     /**
      * @param                   $source

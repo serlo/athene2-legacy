@@ -14,23 +14,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use Type\Entity\TypeAwareTrait;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="attachment_container")
  */
-class Container extends UuidEntity implements ContainerInterface
+class Container extends Uuid implements ContainerInterface
 {
     use TypeAwareTrait;
     use InstanceAwareTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="attachment", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="File", mappedBy="attachment")

@@ -51,7 +51,7 @@ class DiscussionManagerListener extends AbstractListener
     {
         $user       = $e->getParam('author');
         $instance   = $e->getParam('instance');
-        $discussion = $e->getParam('discussion')->getUuidEntity();
+        $discussion = $e->getParam('discussion');
 
         $params = array(
             array(

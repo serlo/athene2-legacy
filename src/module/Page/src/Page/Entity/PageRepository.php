@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 
 /**
  * A page repository.
@@ -14,16 +14,9 @@ use Uuid\Entity\UuidEntity;
  * @ORM\Entity
  * @ORM\Table(name="page_repository")
  */
-class PageRepository extends UuidEntity implements PageRepositoryInterface
+class PageRepository extends Uuid implements PageRepositoryInterface
 {
     use InstanceAwareTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRepository")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToMany(targetEntity="User\Entity\Role")

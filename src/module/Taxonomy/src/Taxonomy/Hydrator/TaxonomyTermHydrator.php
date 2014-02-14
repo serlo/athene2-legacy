@@ -58,7 +58,7 @@ class TaxonomyTermHydrator implements HydratorInterface
         $term = $object->getTerm();
 
         return [
-            'id'          => is_object($object->getUuidEntity()) ? $object->getId() : null,
+            'id'          => is_object($object) ? $object->getId() : null,
             'term'        => [
                 'id'   => is_object($term) ? $term->getId() : null,
                 'name' => is_object($term) ? $term->getName() : null,
@@ -73,9 +73,7 @@ class TaxonomyTermHydrator implements HydratorInterface
 
     public function hydrate(array $data, $object)
     {
-        $data = $this->validate($data, $object);
-
-        $this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
+        $data = $this->validate($data);
 
         foreach ($data as $key => $value) {
             $setter = 'set' . ucfirst($key);
@@ -89,11 +87,10 @@ class TaxonomyTermHydrator implements HydratorInterface
 
     /**
      * @param array                 $data
-     * @param TaxonomyTermInterface $object
      * @return array
      * @throws \Taxonomy\Exception\RuntimeException
      */
-    protected function validate(array $data, TaxonomyTermInterface $object)
+    protected function validate(array $data)
     {
         $taxonomy = $data['taxonomy'];
         $parent   = isset($data['parent']) ? $data['parent'] : null;

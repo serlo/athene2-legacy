@@ -14,10 +14,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception;
 use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Exception;
 use Term\Entity\TermEntityInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 
 /**
  * A
@@ -26,15 +26,8 @@ use Uuid\Entity\UuidEntity;
  * @ORM\Entity
  * @ORM\Table(name="term_taxonomy")
  */
-class TaxonomyTerm extends UuidEntity implements TaxonomyTermInterface
+class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="taxonomyTerm", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\Taxonomy",inversedBy="terms")

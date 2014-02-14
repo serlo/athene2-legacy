@@ -36,7 +36,7 @@ class UserHydrator implements HydratorInterface
         $object = $this->isValid($object);
     	$data = ArrayUtils::merge($this->extract($object), $data);
     	
-    	$this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
+    	$this->getUuidManager()->injectUuid($object, $object);
     	$object->setUsername($data['username']);
     	$object->setPassword($data['password']);
         $object->setEmail($data['email']);

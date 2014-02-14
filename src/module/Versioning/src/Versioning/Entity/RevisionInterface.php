@@ -9,9 +9,9 @@
 namespace Versioning\Entity;
 
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
-interface RevisionInterface extends UuidHolder
+interface RevisionInterface extends UuidInterface
 {
 
     /**

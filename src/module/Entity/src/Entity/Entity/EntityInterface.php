@@ -16,11 +16,11 @@ use License\Entity\LicenseAwareInterface;
 use Link\Entity\LinkableInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Type\Entity\TypeAwareInterface;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 use Versioning\Entity\RepositoryInterface;
 
 interface EntityInterface
-    extends UuidHolder, InstanceAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface,
+    extends UuidInterface, InstanceAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface,
             TaxonomyTermAwareInterface, TypeAwareInterface
 {
 

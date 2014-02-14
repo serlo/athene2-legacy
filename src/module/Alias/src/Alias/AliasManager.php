@@ -17,7 +17,6 @@ use Common\Filter\Slugify;
 use Common\Traits;
 use Instance\Entity\InstanceInterface;
 use Token\TokenizerAwareTrait;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 
@@ -32,7 +31,7 @@ class AliasManager implements AliasManagerInterface
      */
     protected $options;
 
-    public function autoAlias($name, $source, UuidHolder $object, InstanceInterface $instance)
+    public function autoAlias($name, $source, UuidInterface $object, InstanceInterface $instance)
     {
         if (!is_string($name) || !is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -53,7 +52,7 @@ class AliasManager implements AliasManagerInterface
         $alias          = $this->getTokenizer()->transliterate($provider, $object, $tokenString);
         $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object, $fallbackString);
 
-        return $this->createAlias($source, $alias, $aliasFallback, $object->getUuidEntity(), $instance);
+        return $this->createAlias($source, $alias, $aliasFallback, $object, $instance);
     }
 
     public function findCanonicalAlias($alias, InstanceInterface $instance)

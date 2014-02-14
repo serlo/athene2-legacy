@@ -187,8 +187,8 @@ class Discussion extends AbstractHelper
                     'term'        => [
                         'name' => $forum
                     ],
-                    'parent'      => $current->getId(),
-                    'taxonomy'    => $taxonomy->getId()
+                    'parent'      => $current,
+                    'taxonomy'    => $taxonomy
                 ]);
             $current = $this->getTaxonomyManager()->createTerm($form);
         }

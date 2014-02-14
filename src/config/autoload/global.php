@@ -20,14 +20,6 @@ return array(
         'name' => 'Serlo <sup><small>beta</small></sup>'
     ),
     'doctrine'           => array(
-        'configuration' => array(
-            'orm_default' => array(
-                'metadata_cache'  => 'apccache',
-                'query_cache'     => 'apccache',
-                'result_cache'    => 'apccache',
-                'hydration_cache' => 'apccache',
-            )
-        ),
         'entitymanager' => array(
             'orm_default' => array(
                 'connection'      => 'orm_default',

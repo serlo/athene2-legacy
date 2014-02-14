@@ -17,7 +17,7 @@ use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Versioning\Entity\RevisionInterface;
 
 /**
@@ -26,17 +26,10 @@ use Versioning\Entity\RevisionInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements EntityInterface
+class Entity extends Uuid implements EntityInterface
 {
     use\Type\Entity\TypeAwareTrait;
     use InstanceAwareTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entity", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist", "remove"},

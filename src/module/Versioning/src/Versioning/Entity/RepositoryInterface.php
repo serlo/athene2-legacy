@@ -9,9 +9,9 @@
 namespace Versioning\Entity;
 
 use Doctrine\ORM\PersistentCollection;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
-interface RepositoryInterface extends UuidHolder
+interface RepositoryInterface extends UuidInterface
 {
 
     /**

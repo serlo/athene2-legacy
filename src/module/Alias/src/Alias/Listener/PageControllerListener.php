@@ -48,7 +48,7 @@ class PageControllerListener extends AbstractListener
             $url,
             $slug,
             $slug . '-' . $repository->getId(),
-            $repository->getUuidEntity(),
+            $repository,
             $instance
         );
     }

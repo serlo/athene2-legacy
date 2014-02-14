@@ -59,7 +59,7 @@ class Normalize extends AbstractHelper
     protected function normalize($object)
     {
         if ($object instanceof UuidInterface) {
-            $object = $object->getHolder();
+            $object = $object;
         }
 
         return $this->getNormalizer()->normalize($object);

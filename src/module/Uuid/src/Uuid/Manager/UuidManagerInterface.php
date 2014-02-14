@@ -11,7 +11,6 @@
 namespace Uuid\Manager;
 
 use Common\ObjectManager\Flushable;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 
 interface UuidManagerInterface extends Flushable
@@ -76,11 +75,11 @@ interface UuidManagerInterface extends Flushable
      * $um->inject($entity, $um->get('1')); // Injects the UuidEntity with the ID 1 into $entity
      * </code>
      *
-     * @param UuidHolder    $entity
+     * @param UuidInterface    $entity
      * @param UuidInterface $uuid
-     * @return UuidHolder $entity
+     * @return UuidInterface $entity
      */
-    public function injectUuid(UuidHolder $entity, UuidInterface $uuid = null);
+    public function injectUuid(UuidInterface $entity, UuidInterface $uuid = null);
 
     /**
      * Finds Uuuids by their trashed attribute.
