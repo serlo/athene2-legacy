@@ -56,6 +56,29 @@ class AliasManager implements AliasManagerInterface
         return $this->createAlias($source, $alias, $aliasFallback, $object->getUuidEntity(), $instance);
     }
 
+    public function findCanonicalAlias($alias, InstanceInterface $instance)
+    {
+        /* @var $entity Entity\AliasInterface */
+        $entity = $this->getAliasRepository()->findOneBy(
+            [
+                'alias'    => $alias,
+                'instance' => $instance->getId()
+            ]
+        );
+
+        $canonical = $this->findAliasByObject($entity->getObject());
+
+        if($canonical !== $entity){
+            $router = $this->getRouter();
+            $url = $router->assemble(['alias' => $canonical->getAlias()], ['name' => 'alias']);
+            if($url !== $alias){
+                return $url;
+            }
+        }
+
+        throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
+    }
+
     public function findSourceByAlias($alias, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
@@ -75,12 +98,6 @@ class AliasManager implements AliasManagerInterface
 
         if (!is_object($entity)) {
             throw new Exception\AliasNotFoundException(sprintf('Alias `%s` not found.', $alias));
-        }
-
-        $canonical = $this->findAliasBySource($entity->getSource(), $instance);
-
-        if($canonical !== $entity){
-            return $canonical->getAlias();
         }
 
         return $entity->getSource();
