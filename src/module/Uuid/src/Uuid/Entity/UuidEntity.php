@@ -14,15 +14,6 @@ class UuidEntity implements UuidHolder
 {
     protected $id;
 
-    public function getUuid()
-    {
-        if ($this->getUuidEntity() === null) {
-            return null;
-        }
-
-        return $this->getUuidEntity()->getUuid();
-    }
-
     public function getId()
     {
         if ($this->getUuidEntity() === null) {

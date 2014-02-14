@@ -26,7 +26,8 @@
         "zendframework/zend-developer-tools": "dev-master",
         "dnode/dnode": "dev-master",
         "nickcernis/html-to-markdown": "dev-master",
-        "ryakad/pandoc-php": "dev-master"
+        "ryakad/pandoc-php": "dev-master",
+        "stroker/cache": "0.2.*"
     },
     "minimum-stability": "dev",
     "autoload": {

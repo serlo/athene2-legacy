@@ -23,11 +23,6 @@ interface UuidHolder extends CacheableInterface
     /**
      * @return string
      */
-    public function getUuid();
-
-    /**
-     * @return string
-     */
     public function getHolderName();
 
     /**

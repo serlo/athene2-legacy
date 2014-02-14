@@ -21,11 +21,6 @@ interface UuidInterface extends CacheableInterface
     public function getId();
 
     /**
-     * @return string $uuid
-     */
-    public function getUuid();
-
-    /**
      * @param string $uuid
      * @return self
      */

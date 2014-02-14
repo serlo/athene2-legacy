@@ -26,8 +26,6 @@ class Uuid implements UuidInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
-    protected $uuid;
 
     /**
      * @ORM\Column(type="boolean")
@@ -129,18 +127,6 @@ class Uuid implements UuidInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getUuid()
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid($uuid)
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function is($type)
