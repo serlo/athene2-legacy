@@ -38,16 +38,6 @@ interface AliasManagerInterface
      * @return Entity\AliasInterface
      */
     public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
-
-    /**
-
-     * @param string $alias
-     * @param string $aliasFallback
-     * @param InstanceInterface $instance
-     * @param UuidInterface $uuid
-     * @return Entity\AliasInterface
-     */
-    public function updateAlias( $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
     
     
     /**

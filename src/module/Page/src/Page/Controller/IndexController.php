@@ -132,7 +132,9 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $this->getAliasManager()->updateAlias(
+                $source = $this->url()->fromRoute('page/view', array('page' => $pageRepository->getId()));
+                $this->getAliasManager()->createAlias(
+                    $source,
                     $array['slug'],
                     $array['slug'] . $pageRepository->getId(),
                     $pageRepository->getUuidEntity(),
@@ -140,7 +142,7 @@ class IndexController extends AbstractActionController
                 );
                 $this->getPageManager()->editPageRepository($array, $pageRepository);
                 $this->getObjectManager()->flush();
-                $this->redirect()->toRoute('page/view', array('page' => $pageRepository->getId()));
+                $this->redirect()->toUrl($source);
             }
         }
 
