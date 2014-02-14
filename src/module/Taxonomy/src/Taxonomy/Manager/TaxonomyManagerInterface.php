@@ -15,11 +15,11 @@ use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Form\FormInterface;
 
-interface TaxonomyManagerInterface extends Flushable
+interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
 {
-
     /**
      * @param int                        $id
      * @param string                     $association

@@ -20,6 +20,15 @@ class TaxonomyManagerListener extends AbstractListener
     {
         $events->attach(
             $this->getMonitoredClass(),
+            'parent.change',
+            array(
+                $this,
+                'onParentChange'
+            )
+        );
+
+        $events->attach(
+            $this->getMonitoredClass(),
             'create',
             array(
                 $this,
@@ -102,6 +111,31 @@ class TaxonomyManagerListener extends AbstractListener
                 [
                     'name'  => 'object',
                     'value' => $e->getParam('object')
+                ]
+            ]
+        );
+    }
+
+    public function onParentChange(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term     = $e->getParam('term');
+        $from     = $e->getParam('from');
+        $to       = $e->getParam('to');
+        $instance = $term->getInstance();
+
+        $this->logEvent(
+            'taxonomy/term/parent/change',
+            $instance,
+            $term,
+            [
+                [
+                    'name'  => 'from',
+                    'value' => $from
+                ],
+                [
+                    'name'  => 'to',
+                    'value' => $to
                 ]
             ]
         );

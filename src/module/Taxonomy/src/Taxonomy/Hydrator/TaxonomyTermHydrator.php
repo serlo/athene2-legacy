@@ -72,13 +72,26 @@ class TaxonomyTermHydrator implements HydratorInterface
 
     public function hydrate(array $data, $object)
     {
-        $data = $this->validate($data);
+        $oldParent = $object->getParent();
+        $data      = $this->validate($data);
 
         foreach ($data as $key => $value) {
             $setter = 'set' . ucfirst($key);
             if (method_exists($object, $setter)) {
                 $object->$setter($value);
             }
+        }
+
+        if ($object->getParent() !== $oldParent) {
+            $this->taxonomyManager->getEventManager()->trigger(
+                'parent.change',
+                $this->taxonomyManager,
+                [
+                    'term' => $object,
+                    'from' => $oldParent,
+                    'to'   => $object->getParent()
+                ]
+            );
         }
 
         return $object;
