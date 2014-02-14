@@ -155,21 +155,16 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function createTerm(FormInterface $form)
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
-        $data = $form->getData();
-
         $form->bind($term);
-        $form->setData($data);
-
-        if ($form->isValid()) {
-            $term = $form->getObject();
-
-            $this->getEventManager()->trigger('create', $this, ['term' => $term]);
-            $this->getObjectManager()->persist($term);
-
-            return $term;
-        } else {
+        if (!$form->isValid()) {
             throw new Exception\RuntimeException(sprintf('Validation failed'));
         }
+        $term = $form->getObject();
+
+        $this->getEventManager()->trigger('create', $this, ['term' => $term]);
+        $this->getObjectManager()->persist($term);
+
+        return $term;
     }
 
     public function updateTerm(FormInterface $form)

@@ -26,10 +26,7 @@ class Uuid implements UuidInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @ORM\Column(type="string", length=30, unique=true)
-     */
+    
     protected $uuid;
 
     /**

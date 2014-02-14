@@ -76,11 +76,13 @@ class TaxonomyTermHydrator implements HydratorInterface
         $data = $this->validate($data, $object);
 
         $this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
-        $object->setTaxonomy($data['taxonomy']);
-        $object->setTerm($data['term']);
-        $object->setDescription($data['description']);
-        $object->setParent($data['parent']);
-        $object->setPosition($data['position']);
+
+        foreach ($data as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+            if (method_exists($object, $setter)) {
+                $object->$setter($value);
+            }
+        }
 
         return $object;
     }

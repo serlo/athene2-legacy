@@ -54,7 +54,8 @@ class AttachmentForm extends Form
                             'gif',
                             'tif',
                             'tiff',
-                            'svg'
+                            'svg',
+                            'xml'
                         ]
                     ],
                 ]
