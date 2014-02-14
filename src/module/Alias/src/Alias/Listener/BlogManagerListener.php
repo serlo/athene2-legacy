@@ -15,26 +15,6 @@ use Zend\EventManager\SharedEventManagerInterface;
 
 class BlogManagerListener extends AbstractListener
 {
-    /**
-     * Gets executed on post create & update
-     *
-     * @param Event $e
-     * @return void
-     */
-    public function onUpdate(Event $e)
-    {
-        /* @var $post \Blog\Entity\PostInterface */
-        $post     = $e->getParam('post');
-        $instance = $post->getInstance();
-
-        $url = $this->getAliasManager()->getRouter()->assemble(
-            ['post' => $post->getId()],
-            ['name' => 'blog/post/view']
-        );
-
-        $this->getAliasManager()->autoAlias('blogPost', $url, $post, $instance);
-    }
-
     public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach(
@@ -59,5 +39,29 @@ class BlogManagerListener extends AbstractListener
     protected function getMonitoredClass()
     {
         return 'Blog\Manager\BlogManager';
+    }
+
+    /**
+     * Gets executed on post create & update
+     *
+     * @param Event $e
+     * @return void
+     */
+    public function onUpdate(Event $e)
+    {
+        /* @var $post \Blog\Entity\PostInterface */
+        $post     = $e->getParam('post');
+        $instance = $post->getInstance();
+
+        if ($post->getId() === null) {
+            $this->getAliasManager()->flush($post);
+        }
+
+        $url = $this->getAliasManager()->getRouter()->assemble(
+            ['post' => $post->getId()],
+            ['name' => 'blog/post/view']
+        );
+
+        $this->getAliasManager()->autoAlias('blogPost', $url, $post, $instance);
     }
 }

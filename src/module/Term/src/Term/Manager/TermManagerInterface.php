@@ -20,12 +20,11 @@ interface TermManagerInterface
 
     /**
 
-     * @param string $name            
-     * @param string $slug            
+     * @param string $name
      * @param InstanceInterface $instance
      * @return TaxonomyTermInterface
      */
-    public function createTerm($name, $slug = NULL, InstanceInterface $instance);
+    public function createTerm($name, InstanceInterface $instance);
 
     /**
      *

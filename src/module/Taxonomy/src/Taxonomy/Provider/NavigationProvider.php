@@ -11,16 +11,20 @@
 namespace Taxonomy\Provider;
 
 use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Navigation\Provider\PageProviderInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
+use Taxonomy\Manager\TaxonomyManagerInterface;
+use Zend\Cache\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\ArrayUtils;
 
 class NavigationProvider implements PageProviderInterface
 {
-    use TaxonomyManagerAwareTrait, ServiceLocatorAwareTrait;
+    use TaxonomyManagerAwareTrait;
     use ObjectManagerAwareTrait, InstanceManagerAwareTrait;
 
     /**
@@ -38,30 +42,56 @@ class NavigationProvider implements PageProviderInterface
         'types'     => array(),
         'params'    => array()
     ];
-
     /**
      * @var array
      */
     protected $options;
-
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
     /**
      * @var TaxonomyTermInterface
      */
     protected $term;
 
+    public function __construct(
+        InstanceManagerInterface $instanceManager,
+        TaxonomyManagerInterface $taxonomyManager,
+        ObjectManager $objectManager,
+        StorageInterface $storage
+    ) {
+        $this->instanceManager = $instanceManager;
+        $this->taxonomyManager = $taxonomyManager;
+        $this->objectManager   = $objectManager;
+        $this->storage         = $storage;
+
+    }
+
     public function provide(array $options)
     {
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
+
+        $term = $this->getTerm();
+        $key = 'provider:taxonomy:' . $term->getId() . ':' . implode(':', $this->options['types']);
+
+        if ($this->storage->hasItem($key)) {
+            $pages = $this->storage->getItem($key);
+
+            return $pages;
+        }
 
         if ($this->getObjectManager()->isOpen()) {
             $this->getObjectManager()->refresh($this->getTerm());
         }
 
-        $terms      = $this->getTerm()->findChildrenByTaxonomyNames($this->options['types']);
-        $return     = $this->iterTerms($terms, $this->options['max_depth']);
-        $this->term = null;
+        $terms = $term->findChildrenByTaxonomyNames($this->options['types']);
+        $pages = $this->iterTerms($terms, $this->options['max_depth']);
 
-        return $return;
+        $this->term = null;
+        $this->storage->setItem($key, $pages);
+
+        return $pages;
     }
 
     public function getTerm()

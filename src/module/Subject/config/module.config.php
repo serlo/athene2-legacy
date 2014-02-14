@@ -64,22 +64,22 @@ return array(
                 ),
                 'rootable'        => false
             ),
-            'curriculum-folder'       => array(
+            'curriculum-topic'       => array(
                 'allowed_associations' => array(
                     'entities'
                 ),
                 'allowed_parents'      => array(
                     'curriculum',
-                    'curriculum-folder'
+                    'curriculum-topic'
                 ),
                 'rootable'             => false
             ),
-            'curriculum-final-folder' => array(
+            'curriculum-topic-folder' => array(
                 'allowed_associations' => array(
                     'entities'
                 ),
                 'allowed_parents'      => array(
-                    'curriculum-folder'
+                    'curriculum-topic-folder'
                 ),
                 'rootable'             => false
             )

@@ -15,6 +15,7 @@ use Common\Traits\ObjectManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\Entity\RepositoryInterface;
+use Versioning\Entity\RevisionInterface;
 use Versioning\Exception;
 use Versioning\Options\ModuleOptions;
 use Versioning\RepositoryManagerAwareTrait;
@@ -88,17 +89,15 @@ class RepositoryService implements RepositoryServiceInterface
      */
     public function commitRevision(array $data)
     {
-        $user = $this->getAuthorizationService()->getIdentity();
-
+        $user       = $this->getAuthorizationService()->getIdentity();
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'commit');
+        $revision   = $repository->createRevision();
+
         $this->assertGranted($permission, $repository);
-
-        $revision = $repository->createRevision();
-
         $revision->setAuthor($user);
-
         $repository->addRevision($revision);
+        $revision->setRepository($repository);
 
         foreach ($data as $key => $value) {
             if (is_string($key) && is_string($value)) {
@@ -125,10 +124,13 @@ class RepositoryService implements RepositoryServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function checkoutRevision($id)
+    public function checkoutRevision($revision)
     {
+        if (!$revision instanceof RevisionInterface) {
+            $revision = $this->findRevision($revision);
+        }
+
         $user       = $this->getAuthorizationService()->getIdentity();
-        $revision   = $this->findRevision($id);
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'checkout');
         $this->assertGranted($permission, $repository);
@@ -147,10 +149,13 @@ class RepositoryService implements RepositoryServiceInterface
         $this->getObjectManager()->persist($this->getRepository());
     }
 
-    public function rejectRevision($id, $reason = null)
+    public function rejectRevision($revision, $reason = null)
     {
+        if (!$revision instanceof RevisionInterface) {
+            $revision = $this->findRevision($revision);
+        }
+
         $user       = $this->getAuthorizationService()->getIdentity();
-        $revision   = $this->findRevision($id);
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'reject');
         $this->assertGranted($permission, $repository);
@@ -166,6 +171,6 @@ class RepositoryService implements RepositoryServiceInterface
             ]
         );
 
-        $this->getUuidManager()->trashUuid($id);
+        $this->getUuidManager()->trashUuid($revision);
     }
 }

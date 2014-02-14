@@ -67,10 +67,10 @@ class AliasManager implements AliasManagerInterface
 
         $canonical = $this->findAliasByObject($entity->getObject());
 
-        if($canonical !== $entity){
+        if ($canonical !== $entity) {
             $router = $this->getRouter();
-            $url = $router->assemble(['alias' => $canonical->getAlias()], ['name' => 'alias']);
-            if($url !== $alias){
+            $url    = $router->assemble(['alias' => $canonical->getAlias()], ['name' => 'alias']);
+            if ($url !== $alias) {
                 return $url;
             }
         }
@@ -146,19 +146,14 @@ class AliasManager implements AliasManagerInterface
             ));
         }
 
+        $alias = $this->slugify($alias);
+
         try {
             $this->findSourceByAlias($alias, $instance);
-            $alias = $aliasFallback;
+            $alias = $alias . ' ' . uniqid();
+            $alias = $this->slugify($alias);
         } catch (Exception\AliasNotFoundException $e) {
         }
-
-        $filter = new Slugify();
-
-        $slugified = array();
-        foreach (explode('/', $alias) as $token) {
-            $slugified[] = $filter->filter($token);
-        }
-        $alias = implode('/', $slugified);
 
         /* @var $class Entity\AliasInterface */
         $class = $this->getClassResolver()->resolve('Alias\Entity\AliasInterface');
@@ -190,6 +185,11 @@ class AliasManager implements AliasManagerInterface
         return $entity;
     }
 
+    public function flush($object = null)
+    {
+        $this->getObjectManager()->flush($object);
+    }
+
     /**
      * @return ManagerOptions $options
      */
@@ -215,5 +215,18 @@ class AliasManager implements AliasManagerInterface
     public function setOptions(ManagerOptions $options)
     {
         $this->options = $options;
+    }
+
+    protected function slugify($text)
+    {
+        $filter = new Slugify();
+        $slugified = array();
+
+        foreach (explode('/', $text) as $token) {
+            $slugified[] = $filter->filter($token);
+        }
+        $text = implode('/', $slugified);
+
+        return $text;
     }
 }

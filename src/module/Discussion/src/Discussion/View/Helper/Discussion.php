@@ -123,7 +123,6 @@ class Discussion extends AbstractHelper
 
     public function render()
     {
-
         return $this->getView()->partial(
             $this->getOption('template'),
             array(

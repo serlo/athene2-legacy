@@ -15,7 +15,7 @@
         "LGPL-3.0+"
     ],
     "require": {
-        "doctrine/doctrine-orm-module": "0.8",
+        "doctrine/doctrine-orm-module": "0.8.*",
         "widmogrod/zf2-assetic-module": "1.*",
         "zf-commons/zfc-rbac": "~2.1",
         "php": ">=5.4",

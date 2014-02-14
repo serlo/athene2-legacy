@@ -76,11 +76,9 @@ class BlogManager implements BlogManagerInterface
     {
         $post = $form->getObject();
         $this->assertGranted('blog.post.update', $post);
-        if ($form->isValid()) {
+        if (! $form->isValid()) {
             $this->objectManager->persist($post);
-            $this->getEventManager()->trigger('update', $this, [
-                'post' => $post
-            ]);
+            $this->getEventManager()->trigger('update', $this, ['post' => $post]);
 
             return true;
         }
@@ -100,10 +98,7 @@ class BlogManager implements BlogManagerInterface
                 $this->assertGranted('blog.post.create', $post);
                 $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
                 $this->getObjectManager()->persist($post);
-
-                $this->getEventManager()->trigger('create', $this, [
-                    'post' => $post
-                ]);
+                $this->getEventManager()->trigger('create', $this, ['post' => $post]);
 
                 return $post;
             }
@@ -122,7 +117,6 @@ class BlogManager implements BlogManagerInterface
         $post = $this->getPost($id);
 
         $this->assertGranted('blog.post.trash', $post);
-
         $post->setTrashed(true);
         $this->getObjectManager()->persist($post);
 

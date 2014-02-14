@@ -12,6 +12,7 @@ namespace RelatedContent\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Uuid\Entity\UuidInterface;
 
 /**
  * @ORM\Entity
@@ -34,8 +35,9 @@ class Container implements ContainerInterface
      */
     protected $holders;
 
-    public function __construct()
+    public function __construct(UuidInterface $id)
     {
+        $this->id                = $id;
         $this->holders           = new ArrayCollection();
         $this->internalRelations = new ArrayCollection();
     }
@@ -53,7 +55,5 @@ class Container implements ContainerInterface
     public function addHolder(HolderInterface $holder)
     {
         $this->holders->add($holder);
-
-        return $this;
     }
 }

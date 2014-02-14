@@ -18,6 +18,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
@@ -181,9 +182,11 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $term;
     }
 
-    public function associateWith($id, $association, TaxonomyTermAwareInterface $object, $position = null)
+    public function associateWith($term, $association, TaxonomyTermAwareInterface $object, $position = null)
     {
-        $term = $this->getTerm($id);
+        if(!$term instanceof TaxonomyTermInterface){
+            $term = $this->getTerm($term);
+        }
 
         $taxonomy = $term->getTaxonomy();
 

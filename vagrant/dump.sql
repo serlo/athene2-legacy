@@ -770,7 +770,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`url_alias` (
   `source` VARCHAR(255) NOT NULL,
   `alias` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `alias_UNIQUE` (`alias` ASC),
+  UNIQUE INDEX `alias_UNIQUE` (`alias` ASC, `instance_id` ASC),
   INDEX `fk_url_alias_language1_idx` (`instance_id` ASC),
   INDEX `fk_url_alias_uuid1_idx` (`uuid_id` ASC),
   CONSTRAINT `fk_url_alias_language1`
@@ -1476,7 +1476,6 @@ INSERT INTO `serlo`.`uuid` (`id`, `trashed`, `discriminator`) VALUES (5, 0, 'tax
 INSERT INTO `serlo`.`uuid` (`id`, `trashed`, `discriminator`) VALUES (6, 0, 'user');
 INSERT INTO `serlo`.`uuid` (`id`, `trashed`, `discriminator`) VALUES (7, 0, 'taxonomyTerm');
 INSERT INTO `serlo`.`uuid` (`id`, `trashed`, `discriminator`) VALUES (8, 0, 'taxonomyTerm');
-INSERT INTO `serlo`.`uuid` (`id`, `trashed`, `discriminator`) VALUES (9, 0, 'taxonomyTerm');
 
 COMMIT;
 
@@ -1513,25 +1512,24 @@ INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (12, 'topic-folder');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (13, 'subject');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (14, 'curriculum');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (15, 'locale');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (16, 'curriculum-folder');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (16, 'curriculum-topic');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (17, 'root');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (18, 'forum-category');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (19, 'forum');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (20, 'topic-final-folder');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (21, 'blog');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (22, 'spam');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (23, 'offensive');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (24, 'other');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (25, 'help');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (26, 'guideline');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (27, 'file');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (28, 'geogebra');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (29, 'default');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (30, 'footer');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (31, 'top-center');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (32, 'top-left');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (33, 'top-right');
-INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (34, 'curriculum-final-folder');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (20, 'blog');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (21, 'spam');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (22, 'offensive');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (23, 'other');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (24, 'help');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (25, 'guideline');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (26, 'file');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (27, 'geogebra');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (28, 'default');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (29, 'footer');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (30, 'top-center');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (31, 'top-left');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (32, 'top-right');
+INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (33, 'curriculum-topic-folder');
 
 COMMIT;
 
@@ -1562,8 +1560,7 @@ INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (1, 17, 1
 INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (2, 18, 1);
 INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (3, 13, 1);
 INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (4, 11, 1);
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (5, 12, 1);
-INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (6, 21, 1);
+INSERT INTO `serlo`.`taxonomy` (`id`, `type_id`, `instance_id`) VALUES (5, 20, 1);
 
 COMMIT;
 
@@ -1576,9 +1573,8 @@ USE `serlo`;
 INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (1, 1, 'Root', 'root');
 INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (2, 1, 'Discussions', 'discussions');
 INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (3, 1, 'Mathe', 'mathe');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (4, 1, 'Legacy', 'legacy');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (5, 1, 'Articles', 'articles');
-INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (6, 1, 'Deutsch', 'deutsch');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (4, 1, 'Articles', 'articles');
+INSERT INTO `serlo`.`term` (`id`, `instance_id`, `name`, `slug`) VALUES (5, 1, 'Deutsch', 'deutsch');
 
 COMMIT;
 
@@ -1591,9 +1587,8 @@ USE `serlo`;
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (3, 1, 1, NULL, NULL, NULL);
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (4, 2, 2, 3, NULL, NULL);
 INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (5, 3, 3, 3, NULL, NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (7, 4, 4, 5, 'Inhalte aus Serlo1', NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (8, 5, 5, 7, 'Artikel aus Serlo1', NULL);
-INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (9, 6, 6, 3, NULL, NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (7, 4, 4, 5, 'Artikel aus Serlo1', NULL);
+INSERT INTO `serlo`.`term_taxonomy` (`id`, `taxonomy_id`, `term_id`, `parent_id`, `description`, `weight`) VALUES (8, 5, 5, 3, NULL, NULL);
 
 COMMIT;
 
@@ -1952,8 +1947,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (1, 1, 29);
-INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (2, 1, 31);
+INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (1, 1, 28);
+INSERT INTO `serlo`.`navigation_container` (`id`, `instance_id`, `type_id`) VALUES (2, 1, 30);
 
 COMMIT;
 

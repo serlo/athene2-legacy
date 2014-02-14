@@ -143,7 +143,8 @@ return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Options\ModuleOptions'   => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
-            __NAMESPACE__ . '\Manager\TaxonomyManager' => __NAMESPACE__ . '\Factory\TaxonomyManagerFactory'
+            __NAMESPACE__ . '\Manager\TaxonomyManager' => __NAMESPACE__ . '\Factory\TaxonomyManagerFactory',
+            __NAMESPACE__ . '\Provider\NavigationProvider' => __NAMESPACE__ . '\Factory\NavigationProviderFactory',
         ]
     ],
     'di'              => [
@@ -169,21 +170,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => [],
-                __NAMESPACE__ . '\Provider\NavigationProvider'    => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ],
-                    'setServiceLocator'  => [
-                        'required' => true
-                    ],
-                    'setObjectManager'   => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => []
             ]
         ],
         'instance'            => [

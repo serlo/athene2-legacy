@@ -8,16 +8,19 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Navigation\Factory;
+namespace Taxonomy\Factory;
 
+use Common\Factory\EntityManagerFactoryTrait;
 use Instance\Factory\InstanceManagerFactoryTrait;
-use Navigation\Provider\ContainerRepositoryProvider;
+use Navigation\Factory\NavigationManagerFactoryTrait;
+use Taxonomy\Provider\NavigationProvider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ContainerRepositoryProviderFactory implements FactoryInterface
+class NavigationProviderFactory implements FactoryInterface
 {
-    use InstanceManagerFactoryTrait, NavigationManagerFactoryTrait;
+    use EntityManagerFactoryTrait;
+    use InstanceManagerFactoryTrait, TaxonomyManagerFactoryTrait;
 
     /**
      * Create service
@@ -27,11 +30,12 @@ class ContainerRepositoryProviderFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $objectManager     = $this->getEntityManager($serviceLocator);
+        $taxonomyManager   = $this->getTaxonomyManager($serviceLocator);
         $instanceManager   = $this->getInstanceManager($serviceLocator);
-        $navigationManager = $this->getNavigationManager($serviceLocator);
         $storage           = $serviceLocator->get('Navigation\Storage\Storage');
-        $instance          = new ContainerRepositoryProvider($instanceManager, $navigationManager, $storage);
+        $provider          = new NavigationProvider($instanceManager, $taxonomyManager, $objectManager, $storage);
 
-        return $instance;
+        return $provider;
     }
 }

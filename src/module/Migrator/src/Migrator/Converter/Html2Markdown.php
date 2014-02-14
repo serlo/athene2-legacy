@@ -104,6 +104,8 @@ class Html2Markdown extends AbstractConverter
 
         $html = $this->get_markdown($html);
 
+        $html = preg_replace('@^\s*$@ism', '', $html);
+
         return $html;
     }
 
@@ -246,16 +248,16 @@ class Html2Markdown extends AbstractConverter
                 $markdown = PHP_EOL . $this->convert_header($tag, $node);
                 break;
             case "h3":
-                $markdown = PHP_EOL . "### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "### " . trim($value) . PHP_EOL . PHP_EOL;
                 break;
             case "h4":
-                $markdown = PHP_EOL . "#### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "#### " . trim($value) . PHP_EOL . PHP_EOL;
                 break;
             case "h5":
-                $markdown = PHP_EOL . "##### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "##### " . trim($value) . PHP_EOL . PHP_EOL;
                 break;
             case "h6":
-                $markdown = PHP_EOL . "###### " . $value . PHP_EOL . PHP_EOL;
+                $markdown = PHP_EOL . "###### " . trim($value) . PHP_EOL . PHP_EOL;
                 break;
             case "em":
             case "i":
@@ -289,16 +291,16 @@ class Html2Markdown extends AbstractConverter
                 $markdown = $this->convert_anchor($node);
                 break;
             case "table":
-                $markdown = "<table class=\"table\">" . $value . '</table>' . PHP_EOL . PHP_EOL;
+                $markdown = "<table class=\"table\">" . trim($value) . '</table>' . PHP_EOL . PHP_EOL;
                 break;
             case "tr":
-                $markdown = "<tr> " . $value . ' </tr>' . PHP_EOL . PHP_EOL;
+                $markdown = "<tr> " . trim($value) . ' </tr>' . PHP_EOL . PHP_EOL;
                 break;
             case "td":
-                $markdown = "<td> " . $value . ' </td>' . PHP_EOL . PHP_EOL;
+                $markdown = "<td> " . trim($value) . ' </td>' . PHP_EOL . PHP_EOL;
                 break;
             case "th":
-                $markdown = "<th> " . $value . ' </th>' . PHP_EOL . PHP_EOL;
+                $markdown = "<th> " . trim($value) . ' </th>' . PHP_EOL . PHP_EOL;
                 break;
             case "#text":
                 $markdown = preg_replace('~\s+~', ' ', $value);
@@ -362,6 +364,8 @@ class Html2Markdown extends AbstractConverter
      */
     private function convert_emphasis($tag, $value)
     {
+        $value = trim($value);
+
         if ($tag == 'i' || $tag == 'em') {
             $markdown = $this->options['italic_style'] . $value . $this->options['italic_style'];
         } else {

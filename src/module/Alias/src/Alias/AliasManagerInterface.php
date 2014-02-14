@@ -10,15 +10,16 @@
  */
 namespace Alias;
 
+use Common\ObjectManager\Flushable;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 
-interface AliasManagerInterface
+interface AliasManagerInterface extends Flushable
 {
     /**
      * @param                   $name
      * @param                   $source
-     * @param UuidInterface        $object
+     * @param UuidInterface     $object
      * @param InstanceInterface $instance
      * @return void
      */

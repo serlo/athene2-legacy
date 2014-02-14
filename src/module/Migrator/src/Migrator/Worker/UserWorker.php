@@ -81,7 +81,7 @@ class UserWorker implements Worker
                 ]
             );
 
-            $this->roleService->grantIdentityRole(2, $entity->getId());
+            $this->roleService->grantIdentityRole(2, $entity);
 
             $results['user'][$user->getId()] = $entity;
         }

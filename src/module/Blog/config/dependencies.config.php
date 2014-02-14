@@ -16,7 +16,7 @@ return [
             'blogPost' => [
                 'tokenize' => 'blog/{blog}/{title}',
                 'provider' => 'Blog\Provider\TokenizerProvider',
-                'fallback' => 'blog/{blog}/{id}-{title}'
+                'fallback' => 'blog/{blog}/{title}-{id}'
             ]
         ]
     ],

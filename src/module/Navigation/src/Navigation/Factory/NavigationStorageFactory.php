@@ -10,15 +10,12 @@
  */
 namespace Navigation\Factory;
 
-use Instance\Factory\InstanceManagerFactoryTrait;
-use Navigation\Provider\ContainerRepositoryProvider;
+use Zend\Cache\StorageFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ContainerRepositoryProviderFactory implements FactoryInterface
+class NavigationStorageFactory implements FactoryInterface
 {
-    use InstanceManagerFactoryTrait, NavigationManagerFactoryTrait;
-
     /**
      * Create service
      *
@@ -27,11 +24,24 @@ class ContainerRepositoryProviderFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instanceManager   = $this->getInstanceManager($serviceLocator);
-        $navigationManager = $this->getNavigationManager($serviceLocator);
-        $storage           = $serviceLocator->get('Navigation\Storage\Storage');
-        $instance          = new ContainerRepositoryProvider($instanceManager, $navigationManager, $storage);
+        $cache = StorageFactory::factory(
+            [
+                'adapter' => [
+                    'name'    => 'apc',
+                    'options' => [
+                        'namespace' => __NAMESPACE__,
+                        'ttl'    => 5
+                    ]
+                ],
+                'plugins' => [
+                    'exception_handler' => [
+                        'throw_exceptions' => false
+                    ],
+                    'serializer'
+                ]
+            ]
+        );
 
-        return $instance;
+        return $cache;
     }
 }

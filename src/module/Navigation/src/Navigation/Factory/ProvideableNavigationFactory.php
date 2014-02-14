@@ -33,6 +33,7 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
             return parent::createService($serviceLocator);
         } catch (Exception $e) {
             var_dump(get_class($e) . ": " . $e->getMessage());
+
             return new Navigation([]);
         }
     }
@@ -55,11 +56,9 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
                 ));
             }
 
-            $pages = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
-
-            // Where the container provisioning happens
+            $pages     = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
             $container = $this->provideContainer($configuration);
-            $pages = ArrayUtils::merge($this->getPagesFromConfig($container), $pages);
+            $pages     = ArrayUtils::merge($this->getPagesFromConfig($container), $pages);
 
             $this->pages = $this->preparePages($serviceLocator, $pages);
         }
@@ -100,7 +99,7 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
                 $className = $page['provider'];
                 $provider  = $this->serviceLocator->get($className);
 
-                try{
+                try {
                     $pagesFromProvider = $this->injectComponentsFromProvider(
                         $provider,
                         $routeMatch,
@@ -141,7 +140,7 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
                 ));
             }
             $providedConfig = $provider->provide($this->getName());
-            $containers = ArrayUtils::merge($containers, $providedConfig);
+            $containers     = ArrayUtils::merge($containers, $providedConfig);
         }
 
         return $containers;

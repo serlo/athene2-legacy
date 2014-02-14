@@ -15,6 +15,7 @@ use Navigation\Entity\PageInterface;
 use Navigation\Entity\ParameterInterface;
 use Navigation\Exception\ContainerNotFoundException;
 use Navigation\Manager\NavigationManagerInterface;
+use Zend\Cache\Storage\StorageInterface;
 
 class ContainerRepositoryProvider implements ContainerProviderInterface
 {
@@ -27,12 +28,19 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
      */
     protected $instanceManager;
 
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
+
     public function __construct(
         InstanceManagerInterface $instanceManager,
-        NavigationManagerInterface $navigationManager
+        NavigationManagerInterface $navigationManager,
+        StorageInterface $storage
     ) {
         $this->navigationManager = $navigationManager;
         $this->instanceManager   = $instanceManager;
+        $this->storage           = $storage;
     }
 
     public function provide($container)
@@ -46,6 +54,12 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
             return [];
         }
 
+
+        $key = 'provider:container:' . $container->getId();
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
+
         foreach ($container->getPages() as $page) {
             $addPage = $this->buildPage($page);
 
@@ -57,6 +71,8 @@ class ContainerRepositoryProvider implements ContainerProviderInterface
                 $pages[] = $addPage;
             }
         }
+        
+        $this->storage->setItem($key, $pages);
 
         return $pages;
     }

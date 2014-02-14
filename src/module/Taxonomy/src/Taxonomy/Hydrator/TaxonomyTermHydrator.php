@@ -14,7 +14,6 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Options\ModuleOptions;
-use Term\Exception\TermNotFoundException;
 use Term\Manager\TermManagerAwareTrait;
 use Term\Manager\TermManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
@@ -86,7 +85,7 @@ class TaxonomyTermHydrator implements HydratorInterface
     }
 
     /**
-     * @param array                 $data
+     * @param array $data
      * @return array
      * @throws \Taxonomy\Exception\RuntimeException
      */
@@ -121,18 +120,7 @@ class TaxonomyTermHydrator implements HydratorInterface
             }
         }
 
-        try {
-            $data['term'] = $this->getTermManager()->findTermByName(
-                $data['term']['name'],
-                $taxonomy->getInstance()
-            );
-        } catch (TermNotFoundException $e) {
-            $data['term'] = $this->getTermManager()->createTerm(
-                $data['term']['name'],
-                null,
-                $taxonomy->getInstance()
-            );
-        }
+        $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], $taxonomy->getInstance());
 
         return $data;
     }

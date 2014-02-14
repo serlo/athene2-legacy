@@ -35,6 +35,10 @@ class RepositoryManagerListener extends AbstractListener
         if ($entity instanceof EntityInterface) {
             $instance = $entity->getInstance();
 
+            if ($entity->getId() === null) {
+                $this->getAliasManager()->flush($entity);
+            }
+
             $url = $this->getAliasManager()->getRouter()->assemble(
                 ['entity' => $entity->getId()],
                 ['name' => 'entity/page']
