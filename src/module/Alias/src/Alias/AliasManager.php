@@ -65,6 +65,10 @@ class AliasManager implements AliasManagerInterface
             ]
         );
 
+        if(!is_object($entity)){
+            throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
+        }
+
         $canonical = $this->findAliasByObject($entity->getObject());
 
         if ($canonical !== $entity) {
