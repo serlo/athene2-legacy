@@ -62,7 +62,6 @@ class VideoForm extends Form
         $inputFilter->add(
             array(
                 'name'     => 'reasoning',
-                'required' => true,
                 'filters'  => array(
                     array(
                         'name' => 'HtmlEntities'
