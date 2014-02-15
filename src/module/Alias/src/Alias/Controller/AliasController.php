@@ -36,10 +36,14 @@ class AliasController extends AbstractActionController
         } catch (CanonicalUrlNotFoundException $e) {
         }
 
-        $source = $this->getAliasManager()->findSourceByAlias(
-            $this->params('alias'),
-            $this->getInstanceManager()->getInstanceFromRequest()
-        );
+        try {
+            $source = $this->getAliasManager()->findSourceByAlias(
+                $this->params('alias'),
+                $this->getInstanceManager()->getInstanceFromRequest()
+            );
+        } catch (Alias\Exception\AliasNotFoundException $e) {
+            return $this->getResponse()->setStatusCode(404);
+        }
 
         $router = $this->getServiceLocator()->get('Router');
 
