@@ -26,7 +26,7 @@ class RepositoryManagerListener extends AbstractListener
                 $param = $params['subscription'];
                 if ($param['subscribe'] === '1') {
                     $notifyMailman = $param['mailman'] === '1' ? true : false;
-                    $this->subscribe($user, $repository->getUuidEntity(), $notifyMailman);
+                    $this->subscribe($user, $repository, $notifyMailman);
                 }
             }
         }

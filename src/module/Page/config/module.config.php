@@ -2,109 +2,118 @@
 namespace Page;
 
 return array(
+    'versioning'     => [
+        'permissions' => [
+            'Page\Entity\PageRepository' => [
+                'commit'   => 'page.revision.create',
+                'checkout' => 'page.revision.checkout',
+                'reject'   => 'page.revision.trash'
+            ]
+        ]
+    ],
+    'uuid'            => [
+        'permissions' => [
+            'pageRevision' => [
+                'trash'   => 'page.revision.trash',
+                'restore' => 'page.revision.restore',
+                'purge' => 'page.revision.purge'
+            ],
+            'pageRepository'         => [
+                'trash'   => 'page.trash',
+                'restore' => 'page.restore',
+                'purge' => 'page.purge'
+            ]
+        ]
+    ],
     'router'         => array(
         'routes' => array(
-            'page' => array(
+            'pages' => array(
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
                 'options'       => array(
-                    'route'    => '/page',
+                    'route'    => '/pages',
                     'defaults' => array(
                         'controller' => 'Page\Controller\IndexController',
                         'action'     => 'index'
                     )
                 ),
-                'child_routes'  => array(
-                    'createrepository' => array(
+            ),
+            'page'  => array(
+                'type'         => 'Zend\Mvc\Router\Http\Segment',
+                'options'      => array(
+                    'route'    => '/page',
+                    'defaults' => array(
+                        'controller' => 'Page\Controller\IndexController'
+                    )
+                ),
+                'child_routes' => array(
+                    'create'  => array(
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route'    => '/create-repository',
+                            'route'    => '/create',
                             'defaults' => array(
-                                'controller' => 'Page\Controller\IndexController',
-                                'action'     => 'createRepository'
+                                'action' => 'create'
                             )
                         )
                     ),
-                    'article'          => array(
+                    'update'   => array(
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route'    => '/update/:page',
+                            'defaults' => array(
+                                'action'     => 'update'
+                            )
+                        )
+                    ),
+                    'view' => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options'       => array(
-                            'route'    => '/view/:repositoryid',
+                            'route'    => '/view/:page',
                             'defaults' => array(
-                                'controller' => 'Page\Controller\IndexController',
-                                'action'     => 'article'
+                                'action'     => 'view'
                             )
                         ),
+                    ),
+                    'revision' => array(
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'options'       => array(
+                            'route'    => '/revision',
+                        ),
                         'child_routes'  => array(
-                            'revision'         => array(
+                            'view'         => array(
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
                                 'options'       => array(
-                                    'route'    => '/:id',
+                                    'route'    => '/:revision',
                                     'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'showRevision'
+                                        'action'     => 'viewRevision'
                                     )
                                 ),
-                                'child_routes'  => array(
-                                    'setCurrent' => array(
-                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                        'options' => array(
-                                            'route'    => '/setcurrent',
-                                            'defaults' => array(
-                                                'controller' => 'Page\Controller\IndexController',
-                                                'action'     => 'setCurrentRevision'
-                                            )
-                                        )
+                            ),
+                            'checkout' => array(
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route'    => '/:page/checkout/:revision',
+                                    'defaults' => array(
+                                        'action'     => 'checkout'
                                     )
                                 )
                             ),
-                            'revisions'        => array(
+                            'view-all'        => array(
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route'    => '/revisions',
+                                    'route'    => '/revisions/:page',
                                     'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'showRevisions'
+                                        'action'     => 'viewRevisions'
                                     )
                                 )
                             ),
-                            'deleterepository' => array(
+                            'create'   => array(
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
-                                    'route'    => '/delete',
+                                    'route'    => '/create/:page[/:revision]',
                                     'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'trashRepository'
-                                    )
-                                )
-                            ),
-                            'editrepository'   => array(
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route'    => '/editrepository',
-                                    'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'editRepository'
-                                    )
-                                )
-                            ),
-                            'deleterevision'   => array(
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route'    => '/:revisionid/delete',
-                                    'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
-                                        'action'     => 'trashRevision'
-                                    )
-                                )
-                            ),
-                            'createrevision'   => array(
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
-                                    'route'    => '/edit[/:id]',
-                                    'defaults' => array(
-                                        'controller' => 'Page\Controller\IndexController',
                                         'action'     => 'createRevision'
                                     )
                                 )
@@ -123,23 +132,6 @@ return array(
     'zfc_rbac'       => array(
 
         'guards' => array(
-            'ZfcRbac\Guard\ControllerGuard'                 => array(
-                array(
-                    'controller' => 'Page\Controller\IndexController',
-                    'actions'    => array(
-                        'createRepository',
-                        'index'
-                    ),
-                    'roles'      => 'moderator'
-                ),
-                array(
-                    'controller' => 'Page\Controller\IndexController',
-                    'actions'    => array(
-                        'article'
-                    ),
-                    'roles'      => 'guest'
-                )
-            ),
             'Authorization\Guard\HydratableControllerGuard' => array(
                 array(
                     'controller'    => 'Page\Controller\IndexController',
@@ -164,10 +156,10 @@ return array(
             'class' => array(
 
                 'Page\Controller\IndexController' => array(
-                    'setAliasManager' => array(
+                    'setAliasManager'    => array(
                         'required' => true
                     ),
-                    'setObjectManager' => array(
+                    'setObjectManager'   => array(
                         'required' => true
                     ),
                     'setInstanceManager' => array(
@@ -185,6 +177,9 @@ return array(
                 ),
                 'Page\Manager\PageManager'        => array(
                     'setRepositoryManager' => array(
+                        'required' => true
+                    ),
+                    'setRoleService'       => array(
                         'required' => true
                     ),
                     'setInstanceManager'   => array(

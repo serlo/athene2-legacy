@@ -14,10 +14,10 @@ namespace User\Entity;
 use Authorization\Entity\RoleInterface;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 use ZfcRbac\Identity\IdentityInterface;
 
-interface UserInterface extends UuidHolder, IdentityInterface
+interface UserInterface extends UuidInterface, IdentityInterface
 {
 
     /**

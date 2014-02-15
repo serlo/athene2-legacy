@@ -1,0 +1,62 @@
+<?php echo $this->pageHeader('Revisions')->render(); ?>
+
+<div class="list-group">
+    <?php foreach ($this->revisions as $revision) : ?>
+        <?php if ($revision->isTrashed()) {
+            continue;
+        } ?>
+        <div class="list-group-item">
+            <a href="<?php echo $this->url('page/revision/view', array('revision' => $revision->getId())); ?>">
+                <table class="table">
+                    <tr>
+                        <td><?php echo $this->translate('Title:'); ?></td>
+                        <td><?php echo $revision->getTitle(); ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $this->translate('Author:'); ?></td>
+                        <td><?php echo $revision->getAuthor()->getUsername(); ?></td>
+                    </tr>
+                    <tr>
+                        <td><?php echo $this->translate('Time:'); ?></td>
+                        <td><?php echo $this->timeago()->render($revision->getDate()); ?></td>
+                    </tr>
+                </table>
+            </a>
+            <hr>
+            <div class="btn-group">
+                <!-- edit button -->
+                <a href="<?php echo $this->url(
+                    'page/revision/create',
+                    array('page' => $this->page->getId(), 'revision' => $revision->getId())
+                ); ?>" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span> <?php echo $this->translate('Edit'); ?> </a>
+
+                <!--  delete and setCurrent buttons, hidden for current revision -->
+                <?php if ($revision->getRepository()->getCurrentRevision() != $revision): ?>
+                    <a href="<?php echo $this->url(
+                        'uuid/trash',
+                        array('id' => $revision->getId())
+                    ); ?>" class="btn btn-xs btn-default">
+                        <span class="glyphicon glyphicon-trash"></span> <?php echo $this->translate('Trash'); ?>
+                    </a>
+                    <a href="<?php echo $this->url(
+                        'page/revision/checkout',
+                        array('page' => $this->page->getId(), 'revision' => $revision->getId())
+                    ); ?>" class="btn btn-xs btn-default">
+                        <span class="glyphicon glyphicon-ok"></span> <?php echo $this->translate('Checkout') ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+<hr>
+<div class="btn-group">
+    <a href="<?php echo $this->url('page/view', array('page' => $this->page->getId())); ?>"
+       class="btn btn-xs btn-default"> <span class="glyphicon glyphicon-star"></span>
+        <?php echo $this->translate('current'); ?></a> <a href="<?php echo $this->url(
+        'page/revision/create',
+        array('page' => $this->page->getId(), 'revision' => $this->page->getCurrentRevision()->getId())
+    ) ?>" class="btn btn-xs btn-default"> <span class="glyphicon glyphicon-plus"></span>
+        <?php echo $this->translate('new'); ?></a>
+</div>

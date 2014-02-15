@@ -11,9 +11,8 @@
  */
 namespace PageTest\Entity;
 
-use Page\Entity\PageRepositoryInterface;
-use User\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Page\Entity\PageRepositoryInterface;
 use Page\Entity\PageRevisionInterface;
 
 /**

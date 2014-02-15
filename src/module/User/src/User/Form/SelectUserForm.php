@@ -11,10 +11,10 @@
  */
 namespace User\Form;
 
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\Form\Element\Email;
 use Zend\Form\Element\Submit;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class SelectUserForm extends Form
 {

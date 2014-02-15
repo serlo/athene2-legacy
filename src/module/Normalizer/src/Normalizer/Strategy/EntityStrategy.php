@@ -25,7 +25,7 @@ class EntityStrategy extends AbstractStrategy
 
     protected function getTitle()
     {
-        return $this->getField('title', 'content');
+        return $this->getField('title', 'id');
     }
 
     protected function getTimestamp()

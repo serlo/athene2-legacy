@@ -13,7 +13,6 @@ namespace Event;
 use Event\Entity\EventInterface;
 use Event\Entity\EventLogInterface;
 use Instance\Entity\InstanceInterface;
-use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
 interface EventManagerInterface
@@ -49,7 +48,6 @@ interface EventManagerInterface
     /**
      * @param string            $eventName
      * @param InstanceInterface $instance
-     * @param UserInterface     $actor
      * @param UuidInterface     $uuid
      * @param array             $parameters
      * @return EventLogInterface
@@ -57,7 +55,6 @@ interface EventManagerInterface
     public function logEvent(
         $eventName,
         InstanceInterface $instance,
-        UserInterface $actor,
         UuidInterface $uuid,
         array $parameters = array()
     );

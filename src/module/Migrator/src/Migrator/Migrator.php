@@ -19,8 +19,8 @@ class Migrator
         'Migrator\Worker\UserWorker',
         'Migrator\Worker\BlogWorker',
         'Migrator\Worker\FolderWorker',
-        'Migrator\Worker\ExerciseWorker',
         'Migrator\Worker\ArticleWorker',
+        'Migrator\Worker\ExerciseWorker',
     ];
 
     /**

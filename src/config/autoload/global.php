@@ -22,8 +22,8 @@ return array(
     'doctrine'           => array(
         'entitymanager' => array(
             'orm_default' => array(
-                'connection'    => 'orm_default',
-                'configuration' => 'orm_default'
+                'connection'      => 'orm_default',
+                'configuration'   => 'orm_default',
             )
         )
     ),
@@ -49,6 +49,10 @@ return array(
                     $config = $sm->get('config')['smtp_options'];
 
                     return new \Zend\Mail\Transport\SmtpOptions($config);
+                },
+            'doctrine.cache.apccache'      => function ($sm) {
+                    $cache    = new \Doctrine\Common\Cache\ApcCache();
+                    return $cache;
                 },
         )
     ),

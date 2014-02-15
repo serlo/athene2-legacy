@@ -10,29 +10,22 @@
  */
 namespace Attachment;
 
-use Attachment\Manager\AttachmentManager;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 return array(
+    'zfc_rbac' => [
+        'assertion_map' => [
+            'attachment.append' => 'Authorization\Assertion\InstanceAssertion',
+            'attachment.create' => 'Authorization\Assertion\InstanceAssertion'
+        ]
+    ],
     'class_resolver'  => array(
         'Attachment\Entity\ContainerInterface' => 'Attachment\Entity\Container',
         'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
     ),
-    'upload_manager'  => array(),
+    'attachment_manager'  => array(),
     'service_manager' => array(
         'factories' => array(
-            'Attachment\Manager\AttachmentManager' => function (ServiceLocatorInterface $sl) {
-                    $instance = new AttachmentManager();
-                    $config   = $sl->get('config')['upload_manager'];
-                    $instance->setClassResolver($sl->get('ClassResolver\ClassResolver'));
-                    $instance->setConfig($config);
-                    $instance->setObjectManager($sl->get('Doctrine\ORM\EntityManager'));
-                    $instance->setUuidManager($sl->get('Uuid\Manager\UuidManager'));
-                    $instance->setInstanceManager($sl->get('Instance\Manager\InstanceManager'));
-                    $instance->setTypeManager($sl->get('Type\TypeManager'));
-
-                    return $instance;
-                }
+            __NAMESPACE__. '\Manager\AttachmentManager' => __NAMESPACE__ . '\Factory\AttachmentManagerFactory',
+            __NAMESPACE__. '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
         )
     ),
     'di'              => array(

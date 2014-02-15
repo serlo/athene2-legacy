@@ -11,8 +11,6 @@
  */
 namespace Type;
 
-use Doctrine\Common\Collections\Collection;
-
 interface TypeManagerInterface
 {
 

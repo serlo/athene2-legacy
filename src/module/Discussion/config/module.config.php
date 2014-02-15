@@ -13,12 +13,14 @@ namespace Discussion;
 return [
     'zfc_rbac'       => [
         'assertion_map' => [
-            /*'discussion.trash'         => 'Authorization\Assertion\TenantAssertion',
-            'discussion.purge'         => 'Authorization\Assertion\TenantAssertion',
-            'discussion.vote'          => 'Authorization\Assertion\TenantAssertion',
-            'discussion.archive'       => 'Authorization\Assertion\TenantAssertion',
-            'discussion.comment.trash' => 'Authorization\Assertion\TenantAssertion',
-            'discussion.comment.purge' => 'Authorization\Assertion\TenantAssertion',*/
+            'discussion.trash'         => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.purge'         => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.vote'          => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.archive'       => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.flag'          => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.trash' => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.purge' => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.flag'  => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'uuid_router'    => [
@@ -83,7 +85,7 @@ return [
                             'route'    => '/discussion/:id',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionController',
-                                'action'     => 'view'
+                                'action'     => 'show'
                             ]
                         ]
                     ],
@@ -171,16 +173,16 @@ return [
         'definition'          => [
             'class' => [
                 'Discussion\Controller\DiscussionsController' => [
-                    'setDiscussionManager'     => [
+                    'setDiscussionManager' => [
                         'required' => true
                     ],
-                    'setInstanceManager'       => [
+                    'setInstanceManager'   => [
                         'required' => true
                     ],
-                    'setTaxonomyManager'       => [
+                    'setTaxonomyManager'   => [
                         'required' => true
                     ],
-                    'setUserManager'           => [
+                    'setUserManager'       => [
                         'required' => true
                     ]
                 ],

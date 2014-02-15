@@ -10,6 +10,7 @@
  */
 namespace Alias\Controller;
 
+use Alias\Exception\CanonicalUrlNotFoundException;
 use Alias;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -26,6 +27,15 @@ class AliasController extends AbstractActionController
 
     public function forwardAction()
     {
+        try {
+            $canonical = $this->getAliasManager()->findCanonicalAlias(
+                $this->params('alias'),
+                $this->getInstanceManager()->getInstanceFromRequest()
+            );
+            $this->redirect()->toUrl($canonical);
+        } catch (CanonicalUrlNotFoundException $e) {
+        }
+
         $source = $this->getAliasManager()->findSourceByAlias(
             $this->params('alias'),
             $this->getInstanceManager()->getInstanceFromRequest()
@@ -38,10 +48,6 @@ class AliasController extends AbstractActionController
         $request->setUri($source);
 
         $routeMatch = $router->match($request);
-        /*$this->getServiceLocator()
-            ->get('Application')
-            ->getMvcEvent()
-            ->setRouteMatch($routeMatch);*/
 
         if ($routeMatch === null) {
             throw new Alias\Exception\RuntimeException(sprintf(

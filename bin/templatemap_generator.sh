@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 for D in "../src/module/"*
 do
     if [ -d "${D}/view" ]; then

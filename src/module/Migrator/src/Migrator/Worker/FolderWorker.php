@@ -15,6 +15,7 @@ use Flag\Manager\FlagManagerInterface;
 use Instance\Manager\InstanceManagerInterface;
 use Migrator\Converter\ConverterChain;
 use Migrator\Converter\PreConverterChain;
+use Taxonomy\Form\TermForm;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerInterface;
@@ -52,6 +53,8 @@ class FolderWorker implements Worker
      */
     protected $flagManager;
 
+    protected $termForm;
+
     public function __construct(
         EntityManager $objectManager,
         TaxonomyManagerInterface $taxonomyManager,
@@ -59,7 +62,8 @@ class FolderWorker implements Worker
         UuidManagerInterface $uuidManager,
         UserManagerInterface $userManagerInterface,
         PreConverterChain $converterChain,
-        FlagManagerInterface $flagManager
+        FlagManagerInterface $flagManager,
+        TermForm $termForm
     ) {
         $this->objectManager   = $objectManager;
         $this->taxonomyManager = $taxonomyManager;
@@ -68,36 +72,41 @@ class FolderWorker implements Worker
         $this->userManager     = $userManagerInterface;
         $this->converterChain  = $converterChain;
         $this->flagManager     = $flagManager;
+        $this->termForm        = $termForm;
     }
 
     public function migrate(array & $results, array &$workload)
     {
         $instance      = $this->instanceManager->getInstanceFromRequest();
-        $defaultParent = $this->taxonomyManager->getTerm(7);
+        $defaultParent = $this->taxonomyManager->getTerm(5);
 
         /* @var $folders \Migrator\Entity\Folder[] */
         $folders = $this->objectManager->getRepository('Migrator\Entity\Folder')->findAll();
         foreach ($folders as $folder) {
             $parent = $defaultParent;
-            $name = utf8_encode($folder->getName());
+            $name   = utf8_encode($folder->getName());
 
-            if(!$name){
+            if (!$name) {
                 $name = 'empty name';
             }
 
-            $term = $this->taxonomyManager->createTerm([
-                'taxonomy' => $folder->getExercises()->count() ? 'topic-folder' : 'topic' ,
-                'parent'   => $parent,
-                'term'     => [
-                    'name' => $name
-                ],
-                'position' => $folder->getPosition()
-            ], $instance);
+            $this->termForm->setData(
+                [
+                    'taxonomy' => 4,
+                    'parent'   => $parent,
+                    'term'     => [
+                        'name' => $name
+                    ],
+                    'position' => $folder->getPosition()
+                ]
+            );
+
+            $term = $this->taxonomyManager->createTerm($this->termForm);
 
             $results['folder'][$folder->getId()] = $term;
         }
 
-        foreach($folders as $folder){
+        foreach ($folders as $folder) {
             $parent = $defaultParent;
             if ($folder->getParent() !== null) {
                 if (isset($results['folder'][$folder->getParent()->getId()])) {
@@ -114,7 +123,8 @@ class FolderWorker implements Worker
         return $results;
     }
 
-    public function getWorkload(){
+    public function getWorkload()
+    {
         return [];
     }
 }

@@ -17,7 +17,7 @@ use Instance\Entity\InstanceAwareTrait;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Uuid\Entity\UuidInterface;
 
 /**
@@ -26,16 +26,9 @@ use Uuid\Entity\UuidInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface
+class Comment extends Uuid implements CommentInterface
 {
     use InstanceAwareTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")

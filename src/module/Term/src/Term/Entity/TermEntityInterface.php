@@ -43,7 +43,7 @@ interface TermEntityInterface extends InstanceAwareInterface
 
     /**
      *
-     * @param string $slug            
+     * @param string $slug
      * @return self
      */
     public function setSlug($slug);

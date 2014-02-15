@@ -1,21 +1,18 @@
 <?php
 /**
- * 
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace Versioning\Entity;
 
 use Doctrine\ORM\PersistentCollection;
-use Uuid\Entity\UuidHolder;
 
-interface RepositoryInterface extends UuidHolder
+interface RepositoryInterface
 {
 
     /**
-     *
      * @return int
      */
     public function getId();
@@ -35,34 +32,29 @@ interface RepositoryInterface extends UuidHolder
     public function createRevision();
 
     /**
-     *
      * @return RevisionInterface
      */
     public function getCurrentRevision();
 
     /**
-     *
      * @return bool
      */
     public function hasCurrentRevision();
 
     /**
-     *
-     * @param RevisionInterface $revision            
+     * @param RevisionInterface $revision
      * @return self
      */
     public function setCurrentRevision(RevisionInterface $revision);
 
     /**
-     *
-     * @param RevisionInterface $revision            
+     * @param RevisionInterface $revision
      * @return self
      */
     public function addRevision(RevisionInterface $revision);
 
     /**
-     *
-     * @param RevisionInterface $revision            
+     * @param RevisionInterface $revision
      * @return self
      */
     public function removeRevision(RevisionInterface $revision);

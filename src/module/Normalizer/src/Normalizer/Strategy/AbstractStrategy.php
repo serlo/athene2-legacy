@@ -42,10 +42,11 @@ abstract class AbstractStrategy implements StrategyInterface
         $title  = $this->getTitle();
         $filter = new PreviewFilter(200, '...');
         $title  = $filter->filter($title);
+        $timestamp = $this->getTimestamp() ? $this->getTimestamp() : new \DateTime();
 
         $normalized = new Normalized();
         $normalized->setTitle($title);
-        $normalized->setTimestamp($this->getTimestamp());
+        $normalized->setTimestamp($timestamp);
         $normalized->setContent($this->getContent());
         $normalized->setPreview($preview);
         $normalized->setType($this->getType());

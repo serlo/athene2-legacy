@@ -24,4 +24,12 @@ trait RoleServiceAwareTrait
     {
         return $this->roleService;
     }
+
+    /**
+     * @param RoleServiceInterface $roleService
+     */
+    public function setRoleService(RoleServiceInterface $roleService)
+    {
+        $this->roleService = $roleService;
+    }
 }

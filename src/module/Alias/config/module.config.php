@@ -48,8 +48,12 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ManagerOptions' => __NAMESPACE__ . '\Factory\ManagerOptionsFactory',
-            __NAMESPACE__ . '\AliasManager'           => __NAMESPACE__ . '\Factory\AliasManagerFactory'
+            __NAMESPACE__ . '\Options\ManagerOptions'             => __NAMESPACE__ . '\Factory\ManagerOptionsFactory',
+            __NAMESPACE__ . '\AliasManager'                       => __NAMESPACE__ . '\Factory\AliasManagerFactory',
+            __NAMESPACE__ . '\Listener\BlogManagerListener'       => __NAMESPACE__ . '\Factory\BlogManagerListenerFactory',
+            __NAMESPACE__ . '\Listener\BlogManagerListener'       => __NAMESPACE__ . '\Factory\BlogManagerListenerFactory',
+            __NAMESPACE__ . '\Listener\RepositoryManagerListener' => __NAMESPACE__ . '\Factory\RepositoryManagerListenerFactory',
+            __NAMESPACE__ . '\ListenerPageControllerListener'     => __NAMESPACE__ . '\Factory\PageControllerListenerFactory'
         ]
     ],
     'di'              => [
@@ -58,32 +62,14 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\AliasController'         => [
+                __NAMESPACE__ . '\Controller\AliasController' => [
                     'setAliasManager'    => [
                         'required' => true
                     ],
                     'setInstanceManager' => [
                         'required' => true
                     ]
-                ],
-                __NAMESPACE__ . '\Listener\BlogControllerListener'    => [
-                    'setAliasManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\PageControllerListener'    => [
-                    'setAliasManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Listener\RepositoryManagerListener' => [
-                    'setAliasManager'    => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ],
+                ]
             ]
         ],
         'instance'            => [
@@ -110,27 +96,7 @@ return [
     ],
     'view_helpers'    => [
         'factories' => [
-            'url' => function ($helperPluginManager) {
-                    $serviceLocator = $helperPluginManager->getServiceLocator();
-                    $view_helper    = new \Alias\View\Helper\Url();
-
-                    $router = \Zend\Console\Console::isConsole() ? 'HttpRouter' : 'Router';
-                    $view_helper->setRouter($serviceLocator->get($router));
-
-                    $view_helper->setAliasManager($serviceLocator->get('Alias\AliasManager'));
-                    $view_helper->setInstanceManager($serviceLocator->get('Instance\Manager\InstanceManager'));
-
-                    $match = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
-
-                    $interface = 'Zend\Mvc\Router\\' . (\Zend\Console\Console::isConsole() ? 'Console' :
-                            'Http') . '\RouteMatch';
-
-                    if ($match instanceof $interface) {
-                        $view_helper->setRouteMatch($match);
-                    }
-
-                    return $view_helper;
-                }
+            'url' => __NAMESPACE__ . '\Factory\UrlHelperFactory'
         ]
     ]
 ];

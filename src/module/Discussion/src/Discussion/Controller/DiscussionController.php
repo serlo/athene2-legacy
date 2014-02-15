@@ -89,7 +89,8 @@ class DiscussionController extends AbstractController
     {
         $discussion = $this->getDiscussion();
         $view       = new ViewModel(array(
-            'discussion' => $discussion
+            'discussion' => $discussion,
+            'user'       => $this->getUserManager()->getUserFromAuthenticator()
         ));
         $view->setTemplate('discussion/discussion/show');
 
@@ -98,7 +99,7 @@ class DiscussionController extends AbstractController
 
     protected function getDiscussion()
     {
-        return $this->getDiscussionManager()->get($this->params('discussion'));
+        return $this->getDiscussionManager()->getComment($this->params('id'));
     }
 
     public function startAction()
@@ -120,12 +121,12 @@ class DiscussionController extends AbstractController
                 $this->getRequest()->getPost()
             );
             if ($form->isValid()) {
-                $object = $this->getUuidManager()->getUuid($this->params('on'));
+                $object   = $this->getUuidManager()->getUuid($this->params('on'));
                 $instance = $this->getInstanceManager()->getInstanceFromRequest();
-                $author = $this->getUserManager()->getUserFromAuthenticator();
-                $title = $form->getData()['title'];
-                $content = $form->getData()['content'];
-                $forum = $form->getData()['forum'];
+                $author   = $this->getUserManager()->getUserFromAuthenticator();
+                $title    = $form->getData()['title'];
+                $content  = $form->getData()['content'];
+                $forum    = $form->getData()['forum'];
 
                 $discussion = $this->getDiscussionManager()->startDiscussion(
                     $object,
