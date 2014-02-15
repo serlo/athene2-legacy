@@ -1,0 +1,15 @@
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+/* @var $options \Entity\Options\EntityOptions */
+$entity = $this->entity;
+$options = $this->entity()->getOptions($entity);
+$url = $this->url('entity/license/update', array('entity' => $entity->getId()));
+
+if ($options->hasComponent('license') && $this->isGranted('entity.license.update', $entity)): ?>
+    <li>
+        <a href="<?php echo $url; ?>">
+            <span class="glyphicon glyphicon-leaf"></span>
+            <?php echo $this->translate('Change license'); ?>
+        </a>
+    </li>
+<?php endif; ?>

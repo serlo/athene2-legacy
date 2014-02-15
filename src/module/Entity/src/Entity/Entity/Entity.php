@@ -11,6 +11,7 @@
 namespace Entity\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Exception;
 use Instance\Entity\InstanceAwareTrait;
@@ -94,9 +95,23 @@ class Entity extends Uuid implements EntityInterface
         return $this->currentRevision;
     }
 
+    public function setCurrentRevision(RevisionInterface $currentRevision)
+    {
+        $this->currentRevision = $currentRevision;
+
+        return $this;
+    }
+
     public function getLicense()
     {
         return $this->license;
+    }
+
+    public function setLicense(LicenseInterface $license)
+    {
+        $this->license = $license;
+
+        return $this;
     }
 
     public function getTimestamp()
@@ -119,23 +134,9 @@ class Entity extends Uuid implements EntityInterface
         return $this->childLinks;
     }
 
-    public function setCurrentRevision(RevisionInterface $currentRevision)
-    {
-        $this->currentRevision = $currentRevision;
-
-        return $this;
-    }
-
     public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function setLicense(LicenseInterface $license)
-    {
-        $this->license = $license;
 
         return $this;
     }
@@ -147,8 +148,18 @@ class Entity extends Uuid implements EntityInterface
 
     public function isUnrevised()
     {
-        return (!$this->hasCurrentRevision() && $this->getHead()) || ($this->hasCurrentRevision() && $this->getHead(
-            ) !== $this->getCurrentRevision());
+        $hasCurrentRevision = $this->hasCurrentRevision();
+        $head               = $this->getHead();
+        $currentRevision    = $this->getCurrentRevision();
+
+        return (!$hasCurrentRevision && $head) || ($hasCurrentRevision && $head !== $currentRevision);
+    }
+
+    public function countUnrevised()
+    {
+        $current = $this->getCurrentRevision() ? $this->getCurrentRevision()->getId() : 0;
+
+        return $this->revisions->matching(Criteria::create(Criteria::expr()->gt('id', $current)))->count();
     }
 
     public function createLink()

@@ -1,0 +1,21 @@
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+/* @var $options \Entity\Options\EntityOptions */
+$entity = $this->entity;
+$options = $this->entity()->getOptions($entity);
+
+if ($options->hasComponent('taxonomy')): ?>
+    <!-- Change taxonomy term(s) -->
+    <?php if ($this->isGranted('taxonomy.term.associate', $entity) && $this->isGranted(
+            'taxonomy.term.dissociate',
+            $entity
+        )
+    ): ?>
+        <li>
+            <a href="<?php echo $this->url('entity/taxonomy/update', array('entity' => $entity->getId())); ?>">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                <?php echo $this->translate('Update taxonomy'); ?>
+            </a>
+        </li>
+    <?php endif; ?>
+<?php endif; ?>

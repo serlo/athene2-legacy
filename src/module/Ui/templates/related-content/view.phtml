@@ -1,18 +1,25 @@
-<?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
-<strong><?php echo $this->translate('Related content'); ?></strong>
-<ul>
-    <?php foreach ($this->aggregated as $related): ?>
-        <?php if ($related->getType() == 'category'): ?>
+<?php if ($this->aggregated->count()): ?>
+    <div class="sidebar-content-group">
+        <ul class="nav nav-side">
+            <?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
+            <?php foreach ($this->aggregated as $related): ?>
+                <?php if ($related->getType() == 'category'): ?>
+                    <li class="nav-side-header">
+                        <?php echo $related->getTitle(); ?>
+                    </li>
+                <?php elseif ($related->getType() == 'internal'): ?>
+                    <li>
+                        <a href="<?php echo $related->getUrl(); ?>">
+                            <?php echo $related->getTitle(); ?></a>
+                    </li>
+                <?php
+                elseif ($related->getType() == 'external'): ?>
+                    <li>
+                        <a href="<?php echo $related->getUrl(); ?>">
+                            <?php echo $related->getTitle(); ?></a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </ul>
-        <ul>
-            <li><h5><?php echo $related->getTitle(); ?></h5>
-        <?php elseif ($related->getType() == 'internal'): ?>
-            <li>
-            <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
-        <?php elseif ($related->getType() == 'external'): ?>
-            <li>
-            <a href="<?php echo $related->getUrl(); ?>"><?php echo $related->getTitle(); ?></a>
-        <?php endif; ?>
-        </li>
-    <?php endforeach; ?>
-</ul>
+    </div>
+<?php endif; ?>

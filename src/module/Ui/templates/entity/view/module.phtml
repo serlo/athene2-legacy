@@ -1,12 +1,9 @@
 <?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
 <?php $entity = $this->entity; ?>
 <article>
-	<header>
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
-        </div>
-        <div class="clearfix"></div>
-	</header>
+    <header>
+        <?php echo $this->partial('entity/view/partials/actions/big', array('entity' => $entity)); ?>
+    </header>
 	
 	<!-- Overview -->
     <section>

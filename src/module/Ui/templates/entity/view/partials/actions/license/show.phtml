@@ -1,0 +1,15 @@
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+/* @var $options \Entity\Options\EntityOptions */
+$entity = $this->entity;
+$options = $this->entity()->getOptions($entity);
+$url = $this->url('license/detail', ['id' => $entity->getLicense()->getId()]);
+
+if ($options->hasComponent('license')): ?>
+    <li>
+        <a href="<?php echo $url; ?>">
+            <img class="license-intext" alt="<?php echo $this->translate('License'); ?>" src="<?php echo $entity->getLicense()->getIconHref(); ?>">
+            <?php echo $this->translate('License'); ?>
+        </a>
+    </li>
+<?php endif; ?>

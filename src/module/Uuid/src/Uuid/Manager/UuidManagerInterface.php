@@ -69,19 +69,6 @@ interface UuidManagerInterface extends Flushable
     public function createUuid();
 
     /**
-     * Injects a UuidEntity
-     * <code>
-     * $um->inject($entity); // Creates a new UuidEntity and injects it into $entity
-     * $um->inject($entity, $um->get('1')); // Injects the UuidEntity with the ID 1 into $entity
-     * </code>
-     *
-     * @param UuidInterface    $entity
-     * @param UuidInterface $uuid
-     * @return UuidInterface $entity
-     */
-    public function injectUuid(UuidInterface $entity, UuidInterface $uuid = null);
-
-    /**
      * Finds Uuuids by their trashed attribute.
      * <code>
      * $uuids = $um->findByTrashed(true);
