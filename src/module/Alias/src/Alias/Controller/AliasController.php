@@ -32,7 +32,7 @@ class AliasController extends AbstractActionController
                 $this->params('alias'),
                 $this->getInstanceManager()->getInstanceFromRequest()
             );
-            $this->redirect()->toUrl($canonical);
+            $this->redirect()->toUrl(rawurldecode($canonical));
         } catch (CanonicalUrlNotFoundException $e) {
         }
 
