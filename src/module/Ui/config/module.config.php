@@ -68,8 +68,8 @@ return array(
                 }
         ),
         'invokables' => array(
-            'timeago'  => 'Ui\View\Helper\Timeago',
-            'registry' => 'Ui\View\Helper\Registry',
+            'timeago'         => 'Ui\View\Helper\Timeago',
+            'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage'
         )
     ),
@@ -101,7 +101,12 @@ return array(
         'routes'           => array(
             'entity/repository/add-revision' => array(
                 '@libs',
-                // 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+                '@editor_scripts',
+                '@styles',
+                '@editor_styles'
+            ),
+            'page/revision/create'           => array(
+                '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'
@@ -121,7 +126,7 @@ return array(
         ),
         'modules'          => array(
             'ui' => array(
-                'root_path'   => __DIR__ . '/../assets/build',
+                'root_path'   => __DIR__ . '/../../../assets/build',
                 'collections' => array(
                     'libs'           => array(
                         'assets' => array(

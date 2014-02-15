@@ -11,6 +11,7 @@
 namespace Event\Factory;
 
 use ClassResolver\ClassResolverFactoryTrait;
+use Common\Factory\AuthorizationServiceFactoryTrait;
 use Common\Factory\EntityManagerFactoryTrait;
 use Event\EventManager;
 use Zend\ServiceManager\FactoryInterface;
@@ -18,7 +19,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EventManagerFactory implements FactoryInterface
 {
-    use ClassResolverFactoryTrait, EntityManagerFactoryTrait;
+    use ClassResolverFactoryTrait, EntityManagerFactoryTrait, AuthorizationServiceFactoryTrait;
 
     /**
      * Create service
@@ -28,9 +29,10 @@ class EventManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $classResolver = $this->getClassResolver($serviceLocator);
-        $entityManager = $this->getEntityManager($serviceLocator);
-        $service       = new EventManager($classResolver, $entityManager);
+        $authorizationService = $this->getAuthorizationService($serviceLocator);
+        $classResolver        = $this->getClassResolver($serviceLocator);
+        $entityManager        = $this->getEntityManager($serviceLocator);
+        $service              = new EventManager($authorizationService, $classResolver, $entityManager);
 
         return $service;
     }

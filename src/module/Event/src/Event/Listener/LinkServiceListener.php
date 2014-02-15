@@ -24,11 +24,11 @@ class LinkServiceListener extends AbstractListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'value' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')
             )
         );
 
-        $this->logEvent('entity/link/create', $instance, $user, $entity, $params);
+        $this->logEvent('entity/link/create', $instance, $entity, $params);
     }
 
     public function onUnLink(Event $e)
@@ -40,11 +40,11 @@ class LinkServiceListener extends AbstractListener
         $params = array(
             array(
                 'name'   => 'parent',
-                'value' => $e->getParam('parent')->getUuidEntity()
+                'value' => $e->getParam('parent')
             )
         );
 
-        $this->logEvent('entity/link/remove', $instance, $user, $entity, $params);
+        $this->logEvent('entity/link/remove', $instance, $entity, $params);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

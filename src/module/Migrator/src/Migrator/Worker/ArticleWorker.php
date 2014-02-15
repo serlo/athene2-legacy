@@ -112,13 +112,15 @@ class ArticleWorker implements Worker
 
                 $entity = $this->entityManager->createEntity('article', [], $instance);
 
-                $this->taxonomyManager->associateWith(8, 'entities', $entity);
+                $this->taxonomyManager->associateWith(7, 'entities', $entity);
+
+                $this->objectManager->flush($entity);
 
                 $repository = $this->repositoryManager->getRepository($entity);
                 $revision = $repository->commitRevision(
                     ['title' => $title, 'content' => $content]
                 );
-                $repository->checkoutRevision($revision->getId());
+                $repository->checkoutRevision($revision);
 
                 $workload[] = [
                     'entity' => $revision,

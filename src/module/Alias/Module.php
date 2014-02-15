@@ -16,7 +16,7 @@ class Module
 {
 
     public static $listeners = array(
-        'Alias\Listener\BlogControllerListener',
+        'Alias\Listener\BlogManagerListener',
         'Alias\Listener\PageControllerListener',
         'Alias\Listener\RepositoryManagerListener'
     );

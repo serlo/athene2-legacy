@@ -1,0 +1,7 @@
+<?php if ($this->revision != null): ?>
+    <?php echo $this->pageHeader($this->revision->getTitle())->render(); ?>
+    <?php echo $this->markdown()->toHtml($this->revision->getContent()); ?>
+<?php endif; ?>
+<hr>
+<?php $params = ['page' => $this->page, 'revision' => $this->revision]; ?>
+<?php echo $this->partial('page/revision/menu', $params); ?>

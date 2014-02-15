@@ -127,7 +127,8 @@ return [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
-                            'title'
+                            'title',
+                            'reasoning'
                         ]
                     ],
                     'link'       => [
@@ -147,7 +148,6 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
                         'fields' => [
                             'title',
-                            'reasoning',
                             'content'
                         ]
                     ],

@@ -11,7 +11,7 @@
  */
 namespace Navigation\Factory;
 
-class FooterNavigationFactory extends ProvideableNavigation
+class FooterNavigationFactory extends ProvideableNavigationFactory
 {    
     protected function getName()
     {

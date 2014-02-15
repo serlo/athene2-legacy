@@ -99,7 +99,7 @@ class BlogWorker implements Worker
             array(),
             array('publish' => 'desc')
         );
-        $category = $this->taxonomyManager->getTerm(9);
+        $category = $this->taxonomyManager->getTerm(8);
 
         $total = count($posts);
         $i     = 0;
@@ -116,6 +116,10 @@ class BlogWorker implements Worker
                 utf8_encode($post->getContent())
             );
             $title   = utf8_encode(html_entity_decode($post->getTitle()));
+            $date    = new \DateTime();
+            $t       = $date->getTimestamp();
+
+            $date->setDate(date("y", $t), date("m", $t), date("d", $t));
 
             $form->setData(
                 [
@@ -123,7 +127,7 @@ class BlogWorker implements Worker
                     'author'   => $author,
                     'title'    => $title,
                     'content'  => $content,
-                    'publish'  => $post->getPublish(),
+                    'publish'  => $date,
                     'instance' => 1
                 ]
             );
@@ -132,6 +136,7 @@ class BlogWorker implements Worker
             } else {
                 $newPost = $this->blogManager->createPost($form);
                 $newPost->setTimestamp($post->getDate());
+                $newPost->setPublish($post->getPublish());
             }
         }
 

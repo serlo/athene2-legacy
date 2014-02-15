@@ -26,18 +26,6 @@ return [
         ]
     ],
     'uuid'            => [
-        'permissions' => [
-            'entityRevision' => [
-                'trash'   => 'entity.revision.create',
-                'restore' => 'entity.revision.restore',
-                'purge' => 'entity.revision.purge'
-            ],
-            'entity'         => [
-                'trash'   => 'entity.create',
-                'restore' => 'entity.restore',
-                'purge' => 'entity.purge'
-            ]
-        ]
     ],
     'router'          => [
         'routes' => [

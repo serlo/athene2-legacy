@@ -21,7 +21,7 @@ class EntityManagerListener extends AbstractListener
         $user     = $this->getUserManager()->getUserFromAuthenticator();
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('entity/create', $instance, $user, $entity);
+        $this->logEvent('entity/create', $instance, $entity);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

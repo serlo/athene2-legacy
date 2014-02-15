@@ -1,4 +1,4 @@
-<?php echo $this->pageHeader('History')->setSubtitle($this->entity->getUuid())->render(); ?>
+<?php echo $this->pageHeader('History')->setSubtitle($this->normalize()->toTitle($this->entity))->render(); ?>
 
 <table class="table table-striped">
 	<thead>

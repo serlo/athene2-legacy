@@ -11,10 +11,10 @@
  */
 namespace User\Form;
 
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\Form\Element\Password;
 use Zend\Form\Element\Submit;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class LostPassword extends Form
 {

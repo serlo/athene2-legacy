@@ -67,7 +67,7 @@ class Context implements ContextInterface
 
     public function getObject()
     {
-        return $this->object->getHolder();
+        return $this->object;
     }
 
     public function setObject(UuidInterface $object)

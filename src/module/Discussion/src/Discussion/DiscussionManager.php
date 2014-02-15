@@ -28,7 +28,7 @@ use Zend\EventManager\EventManagerAwareTrait;
 class DiscussionManager implements DiscussionManagerInterface
 {
     use EventManagerAwareTrait, ObjectManagerAwareTrait;
-    use UuidManagerAwareTrait, TaxonomyManagerAwareTrait;
+    use TaxonomyManagerAwareTrait;
     use ClassResolverAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait;
 
@@ -105,7 +105,6 @@ class DiscussionManager implements DiscussionManagerInterface
         /* @var $comment Entity\CommentInterface */
         $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $comment   = new $className();
-        $this->getUuidManager()->injectUuid($comment);
 
         $hydrator = new CommentHydrator();
         $hydrator->hydrate(
@@ -157,7 +156,6 @@ class DiscussionManager implements DiscussionManagerInterface
         /* @var $comment Entity\CommentInterface */
         $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $comment   = new $className();
-        $this->getUuidManager()->injectUuid($comment);
 
         $hydrator = new CommentHydrator();
         $hydrator->hydrate(

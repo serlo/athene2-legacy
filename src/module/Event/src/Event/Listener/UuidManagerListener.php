@@ -21,7 +21,7 @@ class UuidManagerListener extends AbstractListener
         $user     = $this->getUserManager()->getUserFromAuthenticator();
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('uuid/restore', $instance, $user, $object);
+        $this->logEvent('uuid/restore', $instance, $object);
     }
 
     public function onTrash(Event $e)
@@ -30,7 +30,7 @@ class UuidManagerListener extends AbstractListener
         $user     = $this->getUserManager()->getUserFromAuthenticator();
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('uuid/trash', $instance, $user, $object);
+        $this->logEvent('uuid/trash', $instance, $object);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)

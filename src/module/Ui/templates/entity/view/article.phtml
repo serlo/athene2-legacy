@@ -1,18 +1,11 @@
 <?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
 <?php $entity = $this->entity; ?>
-<?php $revision = $entity->getCurrentRevision();?>
+<?php $revision = $entity->getCurrentRevision(); ?>
 <article class="content">
     <header>
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity, 'hide' => $this->hideActions)); ?>
-        </div>
+        <?php echo $this->partial('entity/view/partials/actions/big', array('entity' => $entity)); ?>
     </header>
-    <?php
-        $content = $revision->get('content');
-        echo $this->markdown()->toHtml($content);
-    ?>
+    <?php echo $this->markdown()->toHtml($revision->get('content')); ?>
     <hr>
-    <section>
-        <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
-    </section>
+    <?php echo $this->partial('entity/view/partials/discussions', array('entity' => $entity)); ?>
 </article>

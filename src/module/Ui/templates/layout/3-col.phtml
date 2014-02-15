@@ -27,7 +27,7 @@ echo $this->doctype();
                             <i class="glyphicon glyphicon-list"></i>
                         </div>
                         <div id="sidebar-content">
-                            <?php echo $this->registry()->get('gen'); ?>
+                            <?php echo $this->registry()->get('rnav'); ?>
                         </div>
                     </aside>
                     <div id="content">
@@ -41,6 +41,7 @@ echo $this->doctype();
             </section>
             <?php echo $this->partial('layout/partials/right-sidebar'); ?>
         </div>
+        <?php echo $this->Horizon(3);?>
         <?php /* sticky footer: */ ?>
         <div id="footer-push"></div>
     </div>

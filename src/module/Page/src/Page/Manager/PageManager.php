@@ -24,15 +24,16 @@ use Page\Entity\PageRepositoryInterface;
 use Page\Exception\InvalidArgumentException;
 use Page\Exception\PageNotFoundException;
 use User\Entity\UserInterface;
+use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\RepositoryManagerAwareTrait;
 
 class PageManager implements PageManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
-    use UuidManagerAwareTrait, InstanceManagerAwareTrait;
+    use InstanceManagerAwareTrait;
     use LicenseManagerAwareTrait, RepositoryManagerAwareTrait;
-    use RoleServiceAwareTrait;
+    use RoleServiceAwareTrait, UserManagerAwareTrait;
 
     public function editPageRepository(array $data, PageRepositoryInterface $pageRepository)
     {
@@ -47,7 +48,7 @@ class PageManager implements PageManagerInterface
     {
         for ($i = 0; $i <= $this->countRoles(); $i++) {
             if (array_key_exists($i, $data['roles'])) {
-                $role = $this->getUserManager()->findRole($data['roles'][$i]);
+                $role = $this->getRoleService()->getRole($data['roles'][$i]);
                 if ($role != null) {
                     $pageRepository->setRole($role);
                 }
@@ -64,26 +65,22 @@ class PageManager implements PageManagerInterface
 
     public function findAllRoles()
     {
-        return $this->getUserManager()->findAllRoles();
+        return $this->getRoleService()->findAllRoles();
     }
 
-    public function findAllRepositorys(InstanceInterface $instance)
+    public function findAllRepositories(InstanceInterface $instance)
     {
-        $pageRepositorys = $this->getObjectManager()->getRepository(
-                $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface')
-            )->findBy(
-                array(
-                    'instance' => $instance->getId()
-                )
-            );
-        $repositorys     = array();
-        foreach ($pageRepositorys as $repository) {
+        $className    = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
+        $params       = array('instance' => $instance->getId());
+        $repositories = $this->getObjectManager()->getRepository($className)->findBy($params);
+        $return       = array();
+        foreach ($repositories as $repository) {
             if (!$repository->isTrashed()) {
-                $repositorys[] = $repository;
+                $return[] = $repository;
             }
         }
 
-        return $repositorys;
+        return $return;
     }
 
     public function getRevision($id)
@@ -155,7 +152,6 @@ class PageManager implements PageManagerInterface
     protected function createPageRepositoryEntity()
     {
         $repository = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
-        $this->getUuidManager()->injectUuid($repository);
         $license = $this->getLicenseManager()->getLicense(1); // Finds a license with the id 3
         $this->getLicenseManager()->injectLicense($repository, $license);
         $repository->setTrashed(false);

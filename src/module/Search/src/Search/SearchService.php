@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -42,14 +41,17 @@ class SearchService implements SearchServiceInterface
         return $return;
     }
 
-    protected function iterContainer(Result\ContainerInterface $container, array & $return)
+    protected function iterContainer(Result\ContainerInterface $container, array & $return, $limit = 10)
     {
         $items = array();
 
         foreach ($container->getResults() as $result) {
-            $url     = $this->getRouter()->assemble($result->getRouteParams(), array(
-                'name' => $result->getRouteName()
-            ));
+            $url     = $this->getRouter()->assemble(
+                $result->getRouteParams(),
+                array(
+                    'name' => $result->getRouteName()
+                )
+            );
             $item    = array(
                 'title' => $result->getName(),
                 'url'   => rawurldecode($url)
@@ -64,11 +66,13 @@ class SearchService implements SearchServiceInterface
             ];
         }
 
+        if (count($return) > $limit) {
+            return;
+        }
+
         foreach ($container->getContainers() as $subContainer) {
             $this->iterContainer($subContainer, $return);
         }
-
-        return $this;
     }
 
     protected function getDefaultConfig()

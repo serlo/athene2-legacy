@@ -117,11 +117,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Provider\TokenProvider'          => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Provider\TokenProvider'          => []
             ]
         ],
         'instance'            => [
@@ -138,6 +134,29 @@ return [
     'view_helpers'    => [
         'factories' => [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
+        ]
+    ],
+    'uuid'            => [
+        'permissions' => [
+            'entityRevision' => [
+                'trash'   => 'entity.revision.trash',
+                'restore' => 'entity.revision.restore',
+                'purge' => 'entity.revision.purge'
+            ],
+            'entity'         => [
+                'trash'   => 'entity.trash',
+                'restore' => 'entity.restore',
+                'purge' => 'entity.purge'
+            ]
+        ]
+    ],
+    'versioning'      => [
+        'permissions' => [
+            'Entity\Entity\Entity' => [
+                'commit'   => 'entity.revision.create',
+                'checkout' => 'entity.revision.checkout',
+                'reject'   => 'entity.revision.trash'
+            ]
         ]
     ],
     'doctrine'        => [

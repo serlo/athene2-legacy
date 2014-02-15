@@ -16,10 +16,22 @@ use Uuid\Exception;
 /**
  * @ORM\Entity
  * @ORM\Table(name="uuid")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discriminator", type="string")
+ * @ORM\DiscriminatorMap({
+ * "taxonomyTerm" = "Taxonomy\Entity\TaxonomyTerm",
+ * "user" = "User\Entity\User",
+ * "attachment" = "Attachment\Entity\Container",
+ * "blogPost" = "Blog\Entity\Post",
+ * "entity" = "Entity\Entity\Entity",
+ * "entityRevision" = "Entity\Entity\Revision",
+ * "page" = "Page\Entity\PageRepository",
+ * "pageRevision" = "Page\Entity\PageRevision",
+ * "comment" = "Discussion\Entity\Comment"
+ * })
  */
 class Uuid implements UuidInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -28,105 +40,23 @@ class Uuid implements UuidInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=30, unique=true)
-     */
-    protected $uuid;
-
-    /**
      * @ORM\Column(type="boolean")
      */
-    protected $trashed;
+    protected $trashed = false;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Entity", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $entity;
+    public function isTrashed()
+    {
+        return $this->getTrashed();
+    }
 
-    /**
-     * @ORM\OneToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $taxonomyTerm;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Attachment\Entity\Container", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $attachment;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Discussion\Entity\Comment", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $comment;
-
-    /**
-     * @ORM\OneToOne(targetEntity="User\Entity\User", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $user;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Blog\Entity\Post", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $blogPost;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Entity\Entity\Revision", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $entityRevision;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRepository", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $pageRepository;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Page\Entity\PageRevision", mappedBy="id", fetch="EXTRA_LAZY")
-     */
-    protected $pageRevision;
-
-    /**
-     * @return field_type $trashed
-     */
     public function getTrashed()
     {
         return $this->trashed;
     }
 
-    /**
-     * @param bool $trashed
-     * @return self
-     */
     public function setTrashed($trashed)
     {
         $this->trashed = (bool)$trashed;
-
-        return $this;
-    }
-
-    public function getHolderName()
-    {
-        foreach (get_object_vars($this) as $key => $value) {
-            if ($this->is($key)) {
-                return $key;
-            }
-        }
-
-        throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
-    }
-
-    public function getHolder()
-    {
-        foreach (get_object_vars($this) as $key => $value) {
-            if ($this->is($key)) {
-                return $value;
-            }
-        }
-
-        throw new Exception\RuntimeException('Could not determine which holder this uuid belongs to.');
-    }
-
-    function __construct()
-    {
-        $this->uuid    = hash('sha224', uniqid('uuid.', true));
-        $this->trashed = false;
     }
 
     public function getId()
@@ -134,39 +64,8 @@ class Uuid implements UuidInterface
         return $this->id;
     }
 
-    public function getUuid()
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid($uuid)
-    {
-        $this->uuid = $uuid;
-
-        return $this;
-    }
-
-    public function is($type)
-    {
-        if (property_exists($this, $type)) {
-            return is_object($this->$type);
-        }
-
-        return false;
-    }
-
-    public function setHolder($key, $object)
-    {
-        if (property_exists($this, $key)) {
-            $this->$key = $object;
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
-        // Dirty fix for many things
         return (string)$this->getId();
     }
 }

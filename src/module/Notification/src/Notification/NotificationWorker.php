@@ -30,7 +30,7 @@ class NotificationWorker
         /* @var $eventLog \Event\Entity\EventLogInterface */
         foreach ($this->getWorkload() as $eventLog) {
             /* @var $subscribers UserInterface[] */
-            $object      = $eventLog->getObject()->getUuidEntity();
+            $object      = $eventLog->getObject();
             $subscribers = $this->getSubscriptionManager()->findSubscribersByUuid($object);
 
             foreach ($subscribers as $subscriber) {

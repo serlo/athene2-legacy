@@ -11,7 +11,7 @@
  */
 namespace Navigation\Factory;
 
-class TopLeftNavigationFactory extends ProvideableNavigation
+class TopLeftNavigationFactory extends ProvideableNavigationFactory
 {    
     protected function getName()
     {

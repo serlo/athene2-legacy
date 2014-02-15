@@ -12,40 +12,68 @@ namespace Attachment\Manager;
 
 use Attachment\Entity\ContainerInterface;
 use Attachment\Exception;
+use Attachment\Options\ModuleOptions;
+use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\ConfigAwareTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Type\TypeManagerAwareTrait;
+use Type\TypeManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Filter\File\RenameUpload;
+use ZfcRbac\Service\AuthorizationService;
+use ZfcRbac\Service\AuthorizationServiceAwareTrait;
 
 class AttachmentManager implements AttachmentManagerInterface
 {
-    use UuidManagerAwareTrait, ClassResolverAwareTrait;
-    use ConfigAwareTrait, ObjectManagerAwareTrait;
+    use ClassResolverAwareTrait;
+    use AuthorizationAssertionTrait, ObjectManagerAwareTrait;
     use InstanceManagerAwareTrait, TypeManagerAwareTrait;
 
-    public function getDefaultConfig()
-    {
-        return array(
-            'path'    => self::findParentPath('public/uploads'),
-            'webpath' => '/uploads'
-        );
+    /**
+     * @var \Attachment\Options\ModuleOptions
+     */
+    protected $moduleOptions;
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        InstanceManagerInterface $instanceManager,
+        ModuleOptions $moduleOptions,
+        TypeManagerInterface $typeManager,
+        ObjectManager $objectManager
+    ) {
+        $this->authorizationService = $authorizationService;
+        $this->classResolver        = $classResolver;
+        $this->instanceManager      = $instanceManager;
+        $this->typeManager          = $typeManager;
+        $this->objectManager        = $objectManager;
+        $this->moduleOptions        = $moduleOptions;
     }
 
     public function attach(array $file, $type = 'file', $appendId = null)
     {
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        if ($appendId !== null) {
+            $this->assertGranted('attachment.append', $instance);
+        } else {
+            $this->assertGranted('attachment.create', $instance);
+        }
+
         $filename  = $file['name'];
         $size      = $file['size'];
-        $filetype      = $file['type'];
+        $filetype  = $file['type'];
         $pathinfo  = pathinfo($filename);
         $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
         $hash      = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
 
-        $location    = $this->getOption('path') . '/' . $hash;
-        $webLocation = $this->getOption('webpath') . '/' . $hash;
+        $location    = $this->findParentPath($this->moduleOptions->getPath()) . '/' . $hash;
+        $webLocation = $this->moduleOptions->getWebpath() . '/' . $hash;
         $filter      = new RenameUpload($location);
         $filter->filter($file);
 
@@ -53,7 +81,7 @@ class AttachmentManager implements AttachmentManagerInterface
             $attachment = $this->getAttachment($appendId);
         } else {
             $attachment = $this->createAttachment();
-            $type = $this->getTypeManager()->findTypeByName($type);
+            $type       = $this->getTypeManager()->findTypeByName($type);
             $attachment->setType($type);
         }
 
@@ -95,7 +123,38 @@ class AttachmentManager implements AttachmentManagerInterface
         return $entity;
     }
 
-    public static function findParentPath($path)
+    protected function createAttachment()
+    {
+        /* @var $attachment ContainerInterface */
+        $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+
+        $attachment->setInstance($instance);
+        $this->getObjectManager()->persist($attachment);
+
+        return $attachment;
+    }
+
+    protected function attachFile(ContainerInterface $attachment, $filename, $location, $size, $type)
+    {
+        $file = $this->getClassResolver()->resolve('Attachment\Entity\FileInterface');
+
+        $file->setFilename($filename);
+        $file->setLocation($location);
+        $file->setSize($size);
+        $file->setType($type);
+        $file->setAttachment($attachment);
+        $attachment->addFile($file);
+        $this->getObjectManager()->persist($file);
+
+        return $attachment;
+    }
+
+    /**
+     * @param $path
+     * @return bool|string
+     */
+    protected static function findParentPath($path)
     {
         $dir         = __DIR__;
         $previousDir = '.';
@@ -108,34 +167,5 @@ class AttachmentManager implements AttachmentManagerInterface
         }
 
         return $dir . '/' . $path;
-    }
-
-    protected function createAttachment()
-    {
-        /* @var $attachment ContainerInterface */
-        $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
-        $this->getUuidManager()->injectUuid($attachment);
-        $attachment->setInstance(
-            $this->getInstanceManager()->getInstanceFromRequest()
-        );
-        $this->getObjectManager()->persist($attachment);
-
-        return $attachment;
-    }
-
-    protected function attachFile(ContainerInterface $attachment, $filename, $location, $size, $type)
-    {
-        $file = $this->getClassResolver()->resolve('Attachment\Entity\FileInterface');
-        $file->setFilename($filename);
-        $file->setLocation($location);
-        $file->setSize($size);
-        $file->setType($type);
-
-        $file->setAttachment($attachment);
-        $attachment->addFile($file);
-
-        $this->getObjectManager()->persist($file);
-
-        return $attachment;
     }
 }

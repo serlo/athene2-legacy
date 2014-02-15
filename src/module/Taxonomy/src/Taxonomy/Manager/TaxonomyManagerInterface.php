@@ -15,10 +15,11 @@ use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\Form\FormInterface;
 
-interface TaxonomyManagerInterface extends Flushable
+interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
 {
-
     /**
      * @param int                        $id
      * @param string                     $association
@@ -29,11 +30,10 @@ interface TaxonomyManagerInterface extends Flushable
     public function associateWith($id, $association, TaxonomyTermAwareInterface $with, $position = null);
 
     /**
-     * @param array             $data
-     * @param InstanceInterface $instance
-     * @return TaxonomyTermInterface
+     * @param FormInterface $form
+     * @return mixed
      */
-    public function createTerm(array $data, InstanceInterface $instance);
+    public function createTerm(FormInterface $form);
 
     /**
      * @param string            $name
@@ -70,9 +70,8 @@ interface TaxonomyManagerInterface extends Flushable
     public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object);
 
     /**
-     * @param int   $id
-     * @param array $data
-     * @return self
+     * @param FormInterface $form
+     * @return mixed
      */
-    public function updateTerm($id, array $data);
+    public function updateTerm(FormInterface $form);
 }

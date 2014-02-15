@@ -28,8 +28,8 @@ class GeogebraConverter extends AbstractConverter
         foreach ($matches as $match) {
             preg_match($reg2, $match[0], $altResult);
             preg_match($reg3, $match[0], $srcResult);
-            $srcResult[1] = str_replace('/uploads/', '/uploads/legacy/', $srcResult[1]);
-            $altResult[1] = '/uploads/legacy/'.$altResult[1];
+            $srcResult[1] = str_replace('/uploads/', '/uploads/', $srcResult[1]);
+            $altResult[1] = '/uploads/'.$altResult[1];
 
             $replace = '<img src="'.$srcResult[1].'" alt="legacy geogebra formula"></img>';
             $replace .= PHP_EOL . PHP_EOL . '<a href="'.$altResult[1].'">Download original Geogebra file</a>';

@@ -1,0 +1,19 @@
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+/* @var $options \Entity\Options\EntityOptions */
+$entity = $this->entity;
+$options = $this->entity()->getOptions($entity);
+$url = $this->url('entity/repository/history', ['entity' => $entity->getId()]);
+?>
+
+<?php if ($options->hasComponent('repository')): ?>
+    <li>
+        <a href="<?php echo $url; ?>">
+            <span class="glyphicon glyphicon-time"></span>
+            <?php echo $this->translate('History'); ?>
+            <?php if ($entity->isUnrevised()): ?>
+                <span class="label label-warning"><?php echo $entity->countUnrevised(); ?></span>
+            <?php endif; ?>
+        </a>
+    </li>
+<?php endif; ?>

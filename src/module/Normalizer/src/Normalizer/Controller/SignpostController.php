@@ -23,7 +23,7 @@ class SignpostController extends AbstractActionController
 
     public function indexAction()
     {
-        $object      = $this->getUuidManager()->getUuid($this->params('object'))->getHolder();
+        $object      = $this->getUuidManager()->getUuid($this->params('object'));
         $normalized  = $this->getNormalizer()->normalize($object);
         $routeName   = $normalized->getRouteName();
         $routeParams = $normalized->getRouteParams();

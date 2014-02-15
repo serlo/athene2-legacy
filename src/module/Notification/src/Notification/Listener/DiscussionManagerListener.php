@@ -50,8 +50,8 @@ class DiscussionManagerListener extends AbstractListener
             $param  = $params['subscription'];
             if ($param['subscribe'] === '1') {
                 $user          = $e->getParam('author');
-                $discussion    = $e->getParam('discussion')->getUuidEntity();
-                $comment       = $e->getParam('comment')->getUuidEntity();
+                $discussion    = $e->getParam('discussion');
+                $comment       = $e->getParam('comment');
                 $notifyMailman = $param['mailman'] === '1' ? true : false;
 
                 $this->subscribe($user, $discussion, $notifyMailman); // We want to subscribe to the discussion
@@ -71,7 +71,7 @@ class DiscussionManagerListener extends AbstractListener
             $param  = $params['subscription'];
             if ($param['subscribe'] === '1') {
                 $user          = $e->getParam('author');
-                $discussion    = $e->getParam('discussion')->getUuidEntity();
+                $discussion    = $e->getParam('discussion');
                 $notifyMailman = $param['mailman'] === '1' ? true : false;
                 $this->subscribe($user, $discussion, $notifyMailman);
             }

@@ -5,15 +5,52 @@
 
 # Commit rules
 
-* Open up new branches for your commits. Do not commit into `develop`, `master` or `ptr`. Those branches deploy atomatically and may break stuff.
-* Use appropriate names for your branches. Common keywords might be `refactor`, `feature`, `hotfix`, `fix`: `hotfix-113`, `fix-101`, `fix-layout`, `refactor-user`, `feature-someFeature`.
-* Create pull requests for your branches once you are done.
-* Please follow [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md). Future test will include php-codesniffer and will invalidate if PSR-2 is not complied correctly.
+## Branches
 
-# Guide
+Always open up new branches for your commits.
+Do not commit into `develop` (unstable), `master` (stable) or `ptr` (beta) directly.
+Those branches deploy automatically and may break stuff.
 
-You'll find a how-to guide here:
+### Branches for issues
 
-http://serlo-org.github.io/athene2-guide/
+If you're fixing an issue name the branch `issueid-my-description`.
 
-*Please not that many module guides are outdated due to a refactoring process*
+Example: `233-hydrator-fix`
+
+### Branches for new features
+
+If you're implementing a new feature name the branch `feature-my-feature`.
+
+Example: `feature-database-caching`
+
+### Create Pull Requests
+
+Use rebase to bring your branches up to speed with the latest develop, master or ptr branch.
+Now you can create a pull request which can be fast-forwarded (no merge necessary) instantly.
+
+## Commit Messages
+
+Example: Bad commit message
+> finally fixed this dumb rendering bug that Joe talked about ... LOL
+  -------------------------------------------------------------------
+  also added another form field for password validation
+
+Example: Good Commit Message
+> BUG Formatting through prepValueForDB()
+  -------------------------------------------------------------------
+  Added prepValueForDB() which is called on DBField->writeToManipulation()
+  to ensure formatting of value before insertion to DB on a per-DBField type basis (fixes #1234).
+  Added documentation for DBField->writeToManipulation() (related to a4bd42fd).
+
+# Code Rules
+
+* Strictly follow [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
+
+# Knowledge base
+
+* Common ZF2 knowledge: http://zf2cheatsheet.com/
+* ZF2 Docs: http://framework.zend.com/manual/2.2/en/index.html
+* Doctrine Docs: http://docs.doctrine-project.org/en/latest/
+* Doctrine ZF2 Module Docs: https://github.com/doctrine/DoctrineORMModule/tree/master/docs
+* ZfcRbac Docs: https://github.com/ZF-Commons/zfc-rbac/tree/master/docs
+* Athene2 Docs: http://serlo-org.github.io/athene2-guide

@@ -11,8 +11,8 @@
  */
 namespace Taxonomy\Options;
 
-use Zend\Stdlib\AbstractOptions;
 use Taxonomy\Exception;
+use Zend\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions
 {

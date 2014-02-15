@@ -12,8 +12,8 @@
 namespace PageTest;
 
 use Page\Service\PageService;
-use VersioningTest\Entity\RevisionFake;
 use VersioningTest\Entity\RepositoryFake;
+use VersioningTest\Entity\RevisionFake;
 
 class PageServiceTest extends \PHPUnit_Framework_TestCase
 {

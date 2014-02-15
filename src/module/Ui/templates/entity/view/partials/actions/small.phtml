@@ -1,0 +1,7 @@
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+$entity = $this->entity;
+?>
+<ul class="nav nav-pills">
+    <?php echo $this->partial('entity/view/partials/actions/small-essential', ['entity' => $entity]); ?>
+</ul>
