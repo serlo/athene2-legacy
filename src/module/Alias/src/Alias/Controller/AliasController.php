@@ -42,7 +42,8 @@ class AliasController extends AbstractActionController
                 $this->getInstanceManager()->getInstanceFromRequest()
             );
         } catch (Alias\Exception\AliasNotFoundException $e) {
-            return $this->getResponse()->setStatusCode(404);
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
 
         $router = $this->getServiceLocator()->get('Router');

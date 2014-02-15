@@ -21,12 +21,12 @@ class RouterFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceManager)
     {
         $config   = $serviceManager->get('config');
+        $routeMatch = $serviceManager->get('Application')->getMvcEvent()->getRouteMatch();
+        $routeMatch = $routeMatch !== null ? $routeMatch : new RouteMatch([]);
         $instance = new Router();
         $instance->setConfig($config['Manager\ContextManager']['router']);
         $instance->setServiceLocator($serviceManager);
         $instance->setRouter($serviceManager->get('Router'));
-        $routeMatch = $serviceManager->get('Application')->getMvcEvent()->getRouteMatch();
-        $routeMatch = $routeMatch ? : new RouteMatch([]);
         $instance->setRouteMatch($routeMatch);
         $instance->setObjectManager($serviceManager->get('Doctrine\ORM\EntityManager'));
         $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
