@@ -14,8 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\Uuid;
 
@@ -128,8 +128,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function setDescription($description)
     {
         $this->description = $description;
-
-        return $this;
     }
 
     public function getTaxonomy()
@@ -140,8 +138,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function setTaxonomy(TaxonomyInterface $taxonomy)
     {
         $this->taxonomy = $taxonomy;
-
-        return $this;
     }
 
     public function getChildren()
@@ -157,8 +153,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function setParent(TaxonomyTermInterface $parent)
     {
         $this->parent = $parent;
-
-        return $this;
     }
 
     public function getType()
@@ -189,8 +183,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function setPosition($position)
     {
         $this->weight = $position;
-
-        return $this;
     }
 
     public function hasParent()
@@ -225,8 +217,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
                 return $child->findChildBySlugs($slugs);
             }
         }
-
-        return $this;
     }
 
     public function isAssociated($association, TaxonomyTermAwareInterface $object)
@@ -264,8 +254,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         } else {
             $this->$method($entity);
         }
-
-        return $this;
     }
 
     public function positionAssociatedObject($association, $objectId, $order)
@@ -291,8 +279,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         } else {
             $this->$method($entity);
         }
-
-        return $this;
     }
 
     public function knowsAncestor(TaxonomyTermInterface $ancestor)
@@ -334,8 +320,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function setTerm(TermEntityInterface $term)
     {
         $this->term = $term;
-
-        return $this;
     }
 
     public function findChildrenByTaxonomyNames(array $names)
@@ -384,8 +368,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         // Add relation object to collection
         $this->getEntityNodes()->add($rel);
         $entity->addTaxonomyTerm($this, $rel);
-
-        return $this;
     }
 
     /**
@@ -435,7 +417,5 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
                 break;
             }
         }
-
-        return $this;
     }
 }

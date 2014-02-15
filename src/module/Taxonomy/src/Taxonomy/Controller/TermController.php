@@ -35,21 +35,21 @@ class TermController extends AbstractController
     {
         $form = $this->termForm;
 
-        $form->setData(
-            array(
-                'taxonomy' => $this->params('taxonomy'),
-                'parent'   => $this->params('parent', null)
-            )
-        );
-
         if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
+            $data = $this->params()->fromPost();
+            $data = array_merge(
+                $data,
+                [
+                    'taxonomy' => $this->params('taxonomy'),
+                    'parent'   => $this->params('parent', null)
+
+                ]
+            );
             $form->setData($data);
             if ($form->isValid()) {
-                $term = $this->getTaxonomyManager()->createTerm($form);
+                $this->getTaxonomyManager()->createTerm($form);
 
                 $this->getTaxonomyManager()->flush();
-
                 $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
                 $this->redirect()->toUrl(
                     $this->referer()->fromStorage()
