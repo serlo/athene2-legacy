@@ -1,6 +1,6 @@
 <?php foreach($this->term->getChildren() as $term): ?>    	
     <h4>
-        <a class="" href="<?php echo rawurldecode($this->url('subject/taxonomy', array('subject' => $this->subject->getSlug(), 'path' => $this->subject()->slugify($term)))); ?>">
+        <a class="" href="<?php echo $this->url('subject/taxonomy', array('subject' => $this->subject->getSlug(), 'path' => $this->subject()->slugify($term))); ?>">
             <?php echo $term->getName(); ?>
         </a>
     </h4>	    

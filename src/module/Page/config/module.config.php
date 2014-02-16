@@ -11,17 +11,17 @@ return array(
             ]
         ]
     ],
-    'uuid'            => [
+    'uuid'           => [
         'permissions' => [
-            'pageRevision' => [
+            'Page\Entity\PageRevision'   => [
                 'trash'   => 'page.revision.trash',
                 'restore' => 'page.revision.restore',
-                'purge' => 'page.revision.purge'
+                'purge'   => 'page.revision.purge'
             ],
-            'pageRepository'         => [
+            'Page\Entity\PageRepository' => [
                 'trash'   => 'page.trash',
                 'restore' => 'page.restore',
-                'purge' => 'page.purge'
+                'purge'   => 'page.purge'
             ]
         ]
     ],
@@ -47,7 +47,7 @@ return array(
                     )
                 ),
                 'child_routes' => array(
-                    'create'  => array(
+                    'create'   => array(
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
                             'route'    => '/create',
@@ -61,33 +61,33 @@ return array(
                         'options' => array(
                             'route'    => '/update/:page',
                             'defaults' => array(
-                                'action'     => 'update'
+                                'action' => 'update'
                             )
                         )
                     ),
-                    'view' => array(
+                    'view'     => array(
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
                         'options'       => array(
                             'route'    => '/view/:page',
                             'defaults' => array(
-                                'action'     => 'view'
+                                'action' => 'view'
                             )
                         ),
                     ),
                     'revision' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'options'       => array(
-                            'route'    => '/revision',
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => array(
+                            'route' => '/revision',
                         ),
-                        'child_routes'  => array(
-                            'view'         => array(
+                        'child_routes' => array(
+                            'view'     => array(
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
                                 'options'       => array(
                                     'route'    => '/:revision',
                                     'defaults' => array(
-                                        'action'     => 'viewRevision'
+                                        'action' => 'viewRevision'
                                     )
                                 ),
                             ),
@@ -96,16 +96,16 @@ return array(
                                 'options' => array(
                                     'route'    => '/:page/checkout/:revision',
                                     'defaults' => array(
-                                        'action'     => 'checkout'
+                                        'action' => 'checkout'
                                     )
                                 )
                             ),
-                            'view-all'        => array(
+                            'view-all' => array(
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => array(
                                     'route'    => '/revisions/:page',
                                     'defaults' => array(
-                                        'action'     => 'viewRevisions'
+                                        'action' => 'viewRevisions'
                                     )
                                 )
                             ),
@@ -114,7 +114,7 @@ return array(
                                 'options' => array(
                                     'route'    => '/create/:page[/:revision]',
                                     'defaults' => array(
-                                        'action'     => 'createRevision'
+                                        'action' => 'createRevision'
                                     )
                                 )
                             )

@@ -54,7 +54,7 @@ class SearchService implements SearchServiceInterface
             );
             $item    = array(
                 'title' => $result->getName(),
-                'url'   => rawurldecode($url)
+                'url'   => $url
             );
             $items[] = $item;
         }

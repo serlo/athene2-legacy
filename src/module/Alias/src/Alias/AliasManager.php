@@ -73,7 +73,8 @@ class AliasManager implements AliasManagerInterface
 
         if ($canonical !== $entity) {
             $router = $this->getRouter();
-            $url    = $router->assemble(['alias' => $canonical->getAlias()], ['name' => 'alias']);
+            $path = array_flip(explode('/', $canonical->getAlias()));
+            $url    = $router->assemble($path, ['name' => 'alias/path']);
             if ($url !== $alias) {
                 return $url;
             }

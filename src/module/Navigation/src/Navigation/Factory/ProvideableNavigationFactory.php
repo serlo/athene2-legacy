@@ -14,6 +14,7 @@ use Exception;
 use Navigation\Provider\ContainerProviderInterface;
 use Navigation\Provider\PageProviderInterface;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\Mvc\Router\RouteStackInterface;
 use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Navigation\Exception\InvalidArgumentException;
 use Zend\Navigation\Navigation;
@@ -71,7 +72,7 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
      *
      * @see \Zend\Navigation\Service\AbstractNavigationFactory::injectComponents()
      */
-    protected function injectComponents(array $pages, RouteMatch $routeMatch = null, Router $router = null)
+    protected function injectComponents(array $pages, RouteMatch $routeMatch = null, RouteStackInterface $router = null, $request = null)
     {
         foreach ($pages as &$page) {
             $hasMvc = isset($page['action']) || isset($page['controller']) || isset($page['route']);
@@ -85,7 +86,7 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
             }
 
             if (isset($page['pages']) && is_array($page['pages'])) {
-                $page['pages'] = $this->injectComponents($page['pages'], $routeMatch, $router);
+                $page['pages'] = $this->injectComponents($page['pages'], $routeMatch, $router, $request);
             }
 
             if (isset($page['provider'])) {

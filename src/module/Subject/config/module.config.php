@@ -99,9 +99,9 @@ return array(
                 ),
                 'child_routes'  => array(
                     'taxonomy' => array(
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'slashable',
                         'options' => array(
-                            'route'       => '[/:path/]',
+                            'route'       => '/:path',
                             'defaults'    => array(
                                 'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
                                 'action'     => 'index'

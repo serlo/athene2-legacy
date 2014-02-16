@@ -179,6 +179,15 @@ return [
             ]
         ]
     ],
+    'uuid'            => [
+        'permissions' => [
+            'Taxonomy\Entity\TaxonomyTerm' => [
+                'trash'   => 'taxonomy.term.trash',
+                'restore' => 'taxonomy.term.restore',
+                'purge' => 'taxonomy.term.purge'
+            ],
+        ]
+    ],
     'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [

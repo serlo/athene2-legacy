@@ -31,7 +31,7 @@ return [
     'router'          => [
         'routes' => [
             'alias' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'Common\Router\Slashable',
                 'options'       => [
                     'route'       => '/alias/:alias',
                     'defaults'    => [

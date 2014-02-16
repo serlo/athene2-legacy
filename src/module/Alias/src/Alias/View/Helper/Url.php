@@ -35,7 +35,7 @@ class Url extends ZendUrl
             $instance     = $this->getInstanceManager()->getInstanceFromRequest();
             $alias        = $aliasManager->findAliasBySource($link, $instance);
 
-            return $this->getOption('uri_head') . '/' . $alias;
+            return parent::__invoke('alias', ['alias' => $alias]);
         } catch (AliasNotFoundException $e) {
             return $link;
         }

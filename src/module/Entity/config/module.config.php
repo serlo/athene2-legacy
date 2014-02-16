@@ -138,12 +138,12 @@ return [
     ],
     'uuid'            => [
         'permissions' => [
-            'entityRevision' => [
+            'Entity\Entity\Revision' => [
                 'trash'   => 'entity.revision.trash',
                 'restore' => 'entity.revision.restore',
                 'purge' => 'entity.revision.purge'
             ],
-            'entity'         => [
+            'Entity\Entity\Entity'         => [
                 'trash'   => 'entity.trash',
                 'restore' => 'entity.restore',
                 'purge' => 'entity.purge'

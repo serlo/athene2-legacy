@@ -27,22 +27,19 @@ class AliasController extends AbstractActionController
 
     public function forwardAction()
     {
+        $alias    = $this->params('alias');
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         try {
-            $canonical = $this->getAliasManager()->findCanonicalAlias(
-                $this->params('alias'),
-                $this->getInstanceManager()->getInstanceFromRequest()
-            );
-            $this->redirect()->toUrl(rawurldecode($canonical));
+            $canonical = $this->getAliasManager()->findCanonicalAlias($alias, $instance);
+            $this->redirect()->toUrl($canonical);
         } catch (CanonicalUrlNotFoundException $e) {
         }
 
         try {
-            $source = $this->getAliasManager()->findSourceByAlias(
-                $this->params('alias'),
-                $this->getInstanceManager()->getInstanceFromRequest()
-            );
+            $source = $this->getAliasManager()->findSourceByAlias($alias, $instance);
         } catch (Alias\Exception\AliasNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
+
             return false;
         }
 

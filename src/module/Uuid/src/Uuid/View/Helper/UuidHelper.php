@@ -10,6 +10,7 @@
  */
 namespace Uuid\View\Helper;
 
+use Doctrine\Common\Util\ClassUtils;
 use Uuid\Entity\UuidInterface;
 use Uuid\Options\ModuleOptions;
 use Zend\View\Helper\AbstractHelper;
@@ -31,6 +32,7 @@ class UuidHelper extends AbstractHelper
 
     public function getPermission(UuidInterface $object, $action)
     {
-        return $this->moduleOptions->getPermission(get_class($object), $action);
+        $class      = ClassUtils::getClass($object);
+        return $this->moduleOptions->getPermission($class, $action);
     }
 }

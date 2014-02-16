@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`instance` (
   CONSTRAINT `fk_instance_language1`
     FOREIGN KEY (`language_id`)
     REFERENCES `serlo`.`language` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -91,8 +91,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user` (
   CONSTRAINT `fk_user_uuid1`
     FOREIGN KEY (`id`)
     REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -145,8 +145,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`license` (
   CONSTRAINT `fk_license_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -219,8 +219,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`entity_link` (
   CONSTRAINT `fk_entity_link_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -306,13 +306,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`taxonomy` (
   CONSTRAINT `fk_taxonomy_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_taxonomy_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -333,8 +333,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term` (
   CONSTRAINT `fk_term_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -415,8 +415,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
   CONSTRAINT `fk_blog_post_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -524,13 +524,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`instance_permission` (
   CONSTRAINT `fk_tenant_permission_permission1`
     FOREIGN KEY (`permission_id`)
     REFERENCES `serlo`.`permission` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tenant_permission_tenant1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -548,13 +548,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_permission` (
   CONSTRAINT `fk_role_has_permission_role1`
     FOREIGN KEY (`role_id`)
     REFERENCES `serlo`.`role` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_role_has_permission_permission1`
     FOREIGN KEY (`permission_id`)
     REFERENCES `serlo`.`instance_permission` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -803,13 +803,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`comment_vote` (
   CONSTRAINT `fk_comment_has_user_comment1`
     FOREIGN KEY (`comment_id`)
     REFERENCES `serlo`.`comment` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comment_has_user_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `serlo`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -990,13 +990,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context` (
   CONSTRAINT `fk_context_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_context_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1070,13 +1070,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`flag` (
   CONSTRAINT `fk_flag_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_flag_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1108,13 +1108,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter` (
   CONSTRAINT `fk_event_parameter_event_log1`
     FOREIGN KEY (`log_id`)
     REFERENCES `serlo`.`event_log` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_event_parameter_event_parameter_name1`
     FOREIGN KEY (`name_id`)
     REFERENCES `serlo`.`event_parameter_name` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1133,13 +1133,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`notification_event` (
   CONSTRAINT `fk_notification_event_notification1`
     FOREIGN KEY (`notification_id`)
     REFERENCES `serlo`.`notification` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_notification_event_event_log1`
     FOREIGN KEY (`event_log_id`)
     REFERENCES `serlo`.`event_log` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1172,13 +1172,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`metadata` (
   CONSTRAINT `fk_metadata_uuid1`
     FOREIGN KEY (`uuid_id`)
     REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_metadata_metadata_key1`
     FOREIGN KEY (`key_id`)
     REFERENCES `serlo`.`metadata_key` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1219,18 +1219,18 @@ CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
   CONSTRAINT `fk_ads_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_ads_upload1`
     FOREIGN KEY (`image_id`)
     REFERENCES `serlo`.`attachment_container` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_ads_user1`
     FOREIGN KEY (`author_id`)
     REFERENCES `serlo`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1277,8 +1277,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter_uuid` (
   CONSTRAINT `fk_event_parameter_uuid_event_parameter1`
     FOREIGN KEY (`event_parameter_id`)
     REFERENCES `serlo`.`event_parameter` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1411,13 +1411,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_inheritance` (
   CONSTRAINT `fk_role_has_role_role1`
     FOREIGN KEY (`role_id`)
     REFERENCES `serlo`.`role` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_role_has_role_role2`
     FOREIGN KEY (`child_id`)
     REFERENCES `serlo`.`role` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

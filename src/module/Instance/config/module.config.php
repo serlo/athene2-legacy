@@ -61,7 +61,7 @@ return [
             ]
         ]
     ],
-    'view_helpers'     => [
+    'view_helpers'    => [
         'factories' => [
             'instance' => __NAMESPACE__ . '\Factory\InstanceHelperFactory'
         ]
@@ -73,7 +73,9 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Manager\InstanceManager' => __NAMESPACE__ . '\Factory\InstanceManagerFactory'
+            __NAMESPACE__ . '\Manager\InstanceManager' => __NAMESPACE__ . '\Factory\InstanceManagerFactory',
+            // Required in case of upgrade to zf 2.3
+            //'Zend\I18n\Translator\TranslatorInterface' => 'Zend\I18n\Translator\TranslatorServiceFactory',
         ]
     ],
     'di'              => [

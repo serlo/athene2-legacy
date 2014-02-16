@@ -43,8 +43,11 @@ return [
         ]
     ],
     'controllers'        => [
-        'factories' => [
+        'factories'  => [
             __NAMESPACE__ . '\Controller\RoleController' => __NAMESPACE__ . '\Factory\RoleControllerFactory'
+        ],
+        'invokables' => [
+            __NAMESPACE__ . '\Controller\ForbiddenController' => __NAMESPACE__ . '\Controller\ForbiddenController'
         ]
     ],
     'class_resolver'     => [
@@ -67,7 +70,17 @@ return [
                     'route' => '/authorization',
                 ],
                 'child_routes' => [
-                    'roles' => [
+                    'forbidden' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/forbidden',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\ForbiddenController',
+                                'action'     => 'index'
+                            ]
+                        ],
+                    ],
+                    'roles'     => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
                             'route'    => '/roles',
@@ -77,7 +90,7 @@ return [
                             ]
                         ],
                     ],
-                    'role'  => [
+                    'role'      => [
                         'type'         => 'Zend\Mvc\Router\Http\Segment',
                         'options'      => [
                             'route'    => '/role',

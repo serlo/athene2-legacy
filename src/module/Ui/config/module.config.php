@@ -40,6 +40,7 @@ return array(
             'layout/layout'  => __DIR__ . '/../templates/layout/2-col.phtml',
             'layout/3-col'   => __DIR__ . '/../templates/layout/3-col.phtml',
             'error/404'      => __DIR__ . '/../templates/error/404.phtml',
+            'error/403'      => __DIR__ . '/../templates/error/403.phtml',
             'error/index'    => __DIR__ . '/../templates/error/index.phtml'
         ),
         'template_path_stack'      => array(

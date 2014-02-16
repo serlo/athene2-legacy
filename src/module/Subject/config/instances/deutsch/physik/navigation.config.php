@@ -27,10 +27,7 @@ return [
             ],
             [
                 'label' => 'Lernen',
-                'route' => 'subject/taxonomy',
-                'params' => [
-                    'subject' => 'physik'
-                ],
+                'uri' => '#',
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => [
                     'parent' => [
