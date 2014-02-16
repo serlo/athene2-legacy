@@ -1,7 +1,10 @@
 # Status
-* Master: [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=master)](https://magnum.travis-ci.com/serlo-org/athene2)
-* Develop: [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=develop)](https://magnum.travis-ci.com/serlo-org/athene2)
-* PTR: [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=ptr)](https://magnum.travis-ci.com/serlo-org/athene2)
+
+| Branch  | Status        | Coverage  | Quality |
+| ------- | ------------- | --------- | ------- |
+| Master        | [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=master)](https://magnum.travis-ci.com/serlo-org/athene2)              |           |         |
+| PTR        | [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=ptr)](https://magnum.travis-ci.com/serlo-org/athene2)              | [![Code Coverage](https://scrutinizer-ci.com/g/serlo-org/athene2/badges/coverage.png?s=edaa8c408fa5a756681cb65f91d1edc2c749f85c)](https://scrutinizer-ci.com/g/serlo-org/athene2/)          | [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/serlo-org/athene2/badges/quality-score.png?s=10f171040865279c15cfe136be5fbba32f6ed7ef)](https://scrutinizer-ci.com/g/serlo-org/athene2/)       |
+| Develop        | [![Build Status](https://magnum.travis-ci.com/serlo-org/athene2.png?token=gtodfPz6nLDS6xphYxdJ&branch=develop)](https://magnum.travis-ci.com/serlo-org/athene2)              |           |         |
 
 # Commit rules
 
