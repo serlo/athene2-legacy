@@ -57,6 +57,6 @@ class EventParameterString
 
     public function getValue()
     {
-        return $this->uuid;
+        return $this->value;
     }
 }

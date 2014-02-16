@@ -10,13 +10,15 @@
  */
 namespace User\Controller;
 
+use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
+use ZfcRbac\Exception\UnauthorizedException;
 
 class UserController extends AbstractUserController
 {
     use \Common\Traits\ConfigAwareTrait;
-    use \Instance\Manager\InstanceManagerAwareTrait;
+    use InstanceManagerAwareTrait;
 
     protected function getDefaultConfig()
     {
@@ -104,9 +106,15 @@ class UserController extends AbstractUserController
     public function meAction()
     {
         $user = $this->getUserManager()->getUserFromAuthenticator();
+
+        if(!$user){
+            throw new UnauthorizedException;
+        }
+
         $view = new ViewModel([
             'user' => $user
         ]);
+
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
 
