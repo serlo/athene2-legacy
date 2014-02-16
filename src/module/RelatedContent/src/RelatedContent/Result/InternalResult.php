@@ -58,7 +58,7 @@ class InternalResult extends AbstractResult
     {
         return $this->getRouter()->assemble(
             [
-                'id' => $this->getObject()->getReference()->getId()
+                'object' => $this->getObject()->getReference()->getId()
             ],
             [
                 'name' => 'normalizer/signpost'
