@@ -159,7 +159,7 @@ class Entity extends Uuid implements EntityInterface
     {
         $current = $this->getCurrentRevision() ? $this->getCurrentRevision()->getId() : 0;
 
-        return $this->revisions->matching(Criteria::create(Criteria::expr()->gt('id', $current)))->count();
+        return $this->revisions->matching(Criteria::create()->where(Criteria::expr()->gt('id', $current)))->count();
     }
 
     public function createLink()
