@@ -218,6 +218,8 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
                 return $child->findChildBySlugs($slugs);
             }
         }
+
+        return $this;
     }
 
     public function isAssociated($association, TaxonomyTermAwareInterface $object)

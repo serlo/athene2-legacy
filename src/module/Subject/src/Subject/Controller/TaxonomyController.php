@@ -21,9 +21,7 @@ class TaxonomyController extends AbstractController
     public function indexAction()
     {
         $subject = $this->getSubject();
-        $term = false;
         $entities = array();
-
         $term = $subject->findChildBySlugs(explode('/', $this->params('path')));
 
         if(!is_object($term)){
