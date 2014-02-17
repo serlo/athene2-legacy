@@ -3,6 +3,6 @@
 	   <small><?php echo $this->user->getUsername(); ?></small>
 	</h1>
 </div>
-<a href="<?php echo $this->url('user/password/change'); ?>"><?php echo $this->translate('Change your password'); ?></a>
+<a href="<?php echo $this->url('authentication/password/change'); ?>"><?php echo $this->translate('Change your password'); ?></a>
 <hr>
 <?php echo $this->form()->render($this->form); ?>

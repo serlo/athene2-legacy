@@ -11,7 +11,7 @@
 namespace Flag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -22,6 +22,7 @@ use Uuid\Entity\UuidInterface;
 class Flag implements FlagInterface
 {
     use\Type\Entity\TypeAwareTrait;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -29,12 +30,6 @@ class Flag implements FlagInterface
      * @ORM\GeneratedValue
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="flags")
@@ -57,11 +52,6 @@ class Flag implements FlagInterface
      */
     protected $timestamp;
 
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
     public function getTimestamp()
     {
         return $this->timestamp;
@@ -77,21 +67,16 @@ class Flag implements FlagInterface
         return $this->object;
     }
 
-    public function getReporter()
-    {
-        return $this->reporter;
-    }
-
-    public function getContent()
-    {
-        return $this->content;
-    }
-
     public function setObject(UuidInterface $object)
     {
         $this->object = $object;
 
         return $this;
+    }
+
+    public function getReporter()
+    {
+        return $this->reporter;
     }
 
     public function setReporter(UserInterface $reporter)
@@ -101,16 +86,14 @@ class Flag implements FlagInterface
         return $this;
     }
 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
     public function setContent($content)
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
 
         return $this;
     }

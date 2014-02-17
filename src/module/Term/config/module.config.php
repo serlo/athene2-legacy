@@ -28,7 +28,7 @@ return [
                     'setServiceLocator' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ],
                     'setClassResolver' => [

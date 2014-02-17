@@ -10,6 +10,7 @@
  */
 namespace Alias\Controller;
 
+use Alias\Exception\CanonicalUrlNotFoundException;
 use Alias;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -17,7 +18,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class AliasController extends AbstractActionController
 {
-    use Alias\AliasManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+    use Alias\AliasManagerAwareTrait, \Instance\Manager\InstanceManagerAwareTrait;
 
     /**
      * @var unknown
@@ -26,10 +27,21 @@ class AliasController extends AbstractActionController
 
     public function forwardAction()
     {
-        $source = $this->getAliasManager()->findSourceByAlias(
-            $this->params('alias'),
-            $this->getLanguageManager()->getLanguageFromRequest()
-        );
+        $alias    = $this->params('alias');
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        try {
+            $canonical = $this->getAliasManager()->findCanonicalAlias($alias, $instance);
+            $this->redirect()->toUrl($canonical);
+        } catch (CanonicalUrlNotFoundException $e) {
+        }
+
+        try {
+            $source = $this->getAliasManager()->findSourceByAlias($alias, $instance);
+        } catch (Alias\Exception\AliasNotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+
+            return false;
+        }
 
         $router = $this->getServiceLocator()->get('Router');
 
@@ -38,10 +50,6 @@ class AliasController extends AbstractActionController
         $request->setUri($source);
 
         $routeMatch = $router->match($request);
-        /*$this->getServiceLocator()
-            ->get('Application')
-            ->getMvcEvent()
-            ->setRouteMatch($routeMatch);*/
 
         if ($routeMatch === null) {
             throw new Alias\Exception\RuntimeException(sprintf(

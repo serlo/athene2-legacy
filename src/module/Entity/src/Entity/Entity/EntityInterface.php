@@ -11,16 +11,16 @@
 namespace Entity\Entity;
 
 use DateTime;
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use License\Entity\LicenseAwareInterface;
 use Link\Entity\LinkableInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Type\Entity\TypeAwareInterface;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 use Versioning\Entity\RepositoryInterface;
 
 interface EntityInterface
-    extends UuidHolder, LanguageAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface,
+    extends UuidInterface, InstanceAwareInterface, RepositoryInterface, LinkableInterface, LicenseAwareInterface,
             TaxonomyTermAwareInterface, TypeAwareInterface
 {
 
@@ -61,4 +61,9 @@ interface EntityInterface
      * @return RevisionInterface
      */
     public function getHead();
+
+    /**
+     * @return int
+     */
+    public function countUnrevised();
 }

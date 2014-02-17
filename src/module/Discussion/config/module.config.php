@@ -13,12 +13,14 @@ namespace Discussion;
 return [
     'zfc_rbac'       => [
         'assertion_map' => [
-            'discussion.trash'         => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.purge'         => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.vote'          => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.archive'       => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.comment.trash' => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.comment.purge' => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.trash'         => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.purge'         => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.vote'          => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.archive'       => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.flag'          => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.trash' => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.purge' => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.flag'  => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'uuid_router'    => [
@@ -83,7 +85,7 @@ return [
                             'route'    => '/discussion/:id',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionController',
-                                'action'     => 'view'
+                                'action'     => 'show'
                             ]
                         ]
                     ],
@@ -171,16 +173,16 @@ return [
         'definition'          => [
             'class' => [
                 'Discussion\Controller\DiscussionsController' => [
-                    'setDiscussionManager'     => [
+                    'setDiscussionManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager'       => [
+                    'setInstanceManager'   => [
                         'required' => true
                     ],
-                    'setTaxonomyManager'       => [
+                    'setTaxonomyManager'   => [
                         'required' => true
                     ],
-                    'setUserManager'           => [
+                    'setUserManager'       => [
                         'required' => true
                     ]
                 ],
@@ -208,7 +210,7 @@ return [
                     'setUuidManager'       => [
                         'required' => true
                     ],
-                    'setLanguageManager'   => [
+                    'setInstanceManager'   => [
                         'required' => true
                     ],
                     'setUserManager'       => [

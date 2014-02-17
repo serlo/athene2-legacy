@@ -17,5 +17,10 @@ return [
             'referer'  => 'Common\Controller\Plugin\RefererProvider',
             'redirect' => 'Common\Controller\Plugin\RedirectHelper'
         ]
+    ],
+    'route_manager' => [
+        'invokables' => [
+            'slashable' => __NAMESPACE__ . '\Router\Slashable'
+        ]
     ]
 ];

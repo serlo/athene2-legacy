@@ -27,7 +27,6 @@ class ModulePageForm extends Form
 
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Textarea('content'))->setLabel('Content:'));
-        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:'));
 
         $this->add(new Controls());
 
@@ -46,24 +45,7 @@ class ModulePageForm extends Form
         $inputFilter->add(
             array(
                 'name'     => 'content',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'reasoning',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
+                'required' => true
             )
         );
 

@@ -13,11 +13,11 @@ namespace Discussion\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Uuid\Entity\UuidInterface;
 
 /**
@@ -26,14 +26,9 @@ use Uuid\Entity\UuidInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface
+class Comment extends Uuid implements CommentInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
@@ -55,11 +50,6 @@ class Comment extends UuidEntity implements CommentInterface
      * @ORM\OneToMany(targetEntity="Vote", mappedBy="comment", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $votes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     */
-    protected $language;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -130,11 +120,6 @@ class Comment extends UuidEntity implements CommentInterface
         return $this->parent;
     }
 
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
     public function getAuthor()
     {
         return $this->author;
@@ -170,13 +155,6 @@ class Comment extends UuidEntity implements CommentInterface
     public function setParent(CommentInterface $comment)
     {
         $this->parent = $comment;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
 
         return $this;
     }

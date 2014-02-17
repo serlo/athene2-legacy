@@ -11,11 +11,12 @@
 namespace Event\Listener;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 /**
  * Event Listener for Discussion\Controller\DiscussionController
  */
-class DiscussionManagerListener extends AbstractMvcListener
+class DiscussionManagerListener extends AbstractListener
 {
 
     /**
@@ -26,18 +27,18 @@ class DiscussionManagerListener extends AbstractMvcListener
      */
     public function onStart(Event $e)
     {
-        $language   = $e->getParam('language');
-        $user       = $e->getParam('user');
+        $instance   = $e->getParam('instance');
+        $user       = $e->getParam('author');
         $discussion = $e->getParam('discussion');
 
         $params = array(
             array(
                 'name'   => 'on',
-                'object' => $e->getParam('on')
+                'value' => $e->getParam('on')
             )
         );
 
-        $this->logEvent('discussion/create', $language, $user, $discussion, $params);
+        $this->logEvent('discussion/create', $instance, $discussion, $params);
     }
 
     /**
@@ -48,25 +49,24 @@ class DiscussionManagerListener extends AbstractMvcListener
      */
     public function onComment(Event $e)
     {
-        $user       = $e->getParam('user');
-        $language   = $e->getParam('language');
-        $discussion = $e->getParam('discussion')->getUuidEntity();
+        $user       = $e->getParam('author');
+        $instance   = $e->getParam('instance');
+        $discussion = $e->getParam('discussion');
 
         $params = array(
             array(
                 'name'   => 'discussion',
-                'object' => $discussion
+                'value' => $discussion
             )
         );
 
         $comment = $e->getParam('comment');
-        $this->logEvent('discussion/comment/create', $language, $user, $comment, $params);
+        $this->logEvent('discussion/comment/create', $instance, $comment, $params);
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        // Listens 'start'
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'start',
             array(
@@ -75,8 +75,7 @@ class DiscussionManagerListener extends AbstractMvcListener
             )
         );
 
-        // Listens on 'comment'
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'comment',
             array(

@@ -14,8 +14,9 @@ use Metadata\Exception\DuplicateMetadata;
 use Metadata\Exception\MetadataNotFoundException;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\UuidInterface;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class TaxonomyManagerListener extends AbstractListener
 {
@@ -48,7 +49,7 @@ class TaxonomyManagerListener extends AbstractListener
         $term   = $e->getParam('term');
         $object = $e->getParam('object');
 
-        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidEntity) {
+        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
             $this->addMetadata($object, $term);
         }
     }
@@ -59,14 +60,14 @@ class TaxonomyManagerListener extends AbstractListener
         $term   = $e->getParam('term');
         $object = $e->getParam('object');
 
-        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidEntity) {
+        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
             $this->removeMetadata($object, $term);
         }
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'create',
             array(
@@ -75,7 +76,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+         $events->attach(
             $this->getMonitoredClass(),
             'update',
             array(
@@ -84,7 +85,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'associate',
             array(
@@ -93,7 +94,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'dissociate',
             array(
@@ -108,12 +109,12 @@ class TaxonomyManagerListener extends AbstractListener
         return 'Taxonomy\Manager\TaxonomyManager';
     }
 
-    protected function addMetadata(UuidEntity $object, TaxonomyTermInterface $term)
+    protected function addMetadata(UuidInterface $object, TaxonomyTermInterface $term)
     {
         while ($term->hasParent()) {
             try {
                 $this->getMetadataManager()->addMetadata(
-                    $object->getUuidEntity(),
+                    $object,
                     $term->getTaxonomy()->getName(),
                     $term->getName()
                 );
@@ -123,12 +124,12 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
-    protected function removeMetdata($object, TaxonomyTermInterface $term)
+    protected function removeMetadata($object, TaxonomyTermInterface $term)
     {
         while ($term->hasParent()) {
             try {
                 $metadata = $this->getMetadataManager()->findMetadataByObjectAndKeyAndValue(
-                    $object->getUuidEntity(),
+                    $object,
                     $term->getTaxonomy()->getName(),
                     $term->getName()
                 );

@@ -21,11 +21,12 @@ class TaxonomyController extends AbstractController
     public function indexAction()
     {
         $subject = $this->getSubject();
-        $term = false;
         $entities = array();
-        
-        if ($this->params('path', NULL)) {
-            $term = $subject->findChildBySlugs(explode('/', $this->params('path', NULL)));
+        $term = $subject->findChildBySlugs(explode('/', $this->params('path')));
+
+        if(!is_object($term)){
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
         
         if($term){

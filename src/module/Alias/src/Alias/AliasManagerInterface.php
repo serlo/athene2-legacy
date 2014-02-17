@@ -10,40 +10,55 @@
  */
 namespace Alias;
 
-use Language\Entity\LanguageInterface;
+use Common\ObjectManager\Flushable;
+use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 
-interface AliasManagerInterface
+interface AliasManagerInterface extends Flushable
 {
     /**
-     * @param string            $source
-     * @param LanguageInterface $language
-     * @return string
+     * @param                   $name
+     * @param                   $source
+     * @param UuidInterface     $object
+     * @param InstanceInterface $instance
+     * @return void
      */
-    public function findAliasBySource($source, LanguageInterface $language);
+    public function autoAlias($name, $source, UuidInterface $object, InstanceInterface $instance);
 
     /**
-     * @param string            $alias
-     * @param LanguageInterface $language
-     * @return string
-     */
-    public function findSourceByAlias($alias, LanguageInterface $language);
-
-    /**
-     * @param string            $source
-     * @param string            $alias
-     * @param LanguageInterface $language
+     * @param                   $source
+     * @param                   $alias
+     * @param                   $aliasFallback
      * @param UuidInterface     $uuid
+     * @param InstanceInterface $instance
      * @return Entity\AliasInterface
      */
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language);
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
 
     /**
-     * @param string            $name
-     * @param string            $source
-     * @param UuidInterface     $object
-     * @param LanguageInterface $language
-     * @return self
+     * @param UuidInterface $uuid
+     * @return Entity\AliasInterface
      */
-    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language);
+    public function findAliasByObject(UuidInterface $uuid);
+
+    /**
+     * @param string            $source
+     * @param InstanceInterface $instance
+     * @return string
+     */
+    public function findAliasBySource($source, InstanceInterface $instance);
+
+    /**
+     * @param                   $alias
+     * @param InstanceInterface $instance
+     * @return mixed
+     */
+    public function findCanonicalAlias($alias, InstanceInterface $instance);
+
+    /**
+     * @param string            $alias
+     * @param InstanceInterface $instance
+     * @return string
+     */
+    public function findSourceByAlias($alias, InstanceInterface $instance);
 }

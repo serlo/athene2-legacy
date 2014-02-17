@@ -31,13 +31,13 @@ return array(
             ),
             array(
                 'label'         => '',
-                'route'         => 'user/login',
+                'route'         => 'authentication/login',
                 'icon'          => 'log-in',
                 'needsIdentity' => false
             ),
             array(
                 'label'         => '',
-                'route'         => 'user/logout',
+                'route'         => 'authentication/logout',
                 'icon'          => 'log-out',
                 'needsIdentity' => true
             )

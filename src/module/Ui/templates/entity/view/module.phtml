@@ -1,12 +1,9 @@
 <?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
 <?php $entity = $this->entity; ?>
 <article>
-	<header>
-        <div class="pull-right btn-group">
-            <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
-        </div>
-        <div class="clearfix"></div>
-	</header>
+    <header>
+        <?php echo $this->partial('entity/view/partials/actions/big', array('entity' => $entity)); ?>
+    </header>
 	
 	<!-- Overview -->
     <section>
@@ -55,7 +52,10 @@
                         </div>
                     </header>
                     <section class="panel-body">
-                        <?php echo $revision->get('content'); ?>
+                        <?php
+                        $content = $revision->get('content');
+                        echo $this->markdown()->toHtml($content);
+                        ?>
                     </section>
                 </article>
             <?php endif; ?>

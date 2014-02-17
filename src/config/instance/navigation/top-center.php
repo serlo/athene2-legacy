@@ -10,7 +10,10 @@
  */
 return array(
     'navigation' => array(
-        'top-center' => array(
+        'top-center' => array()
+    )
+);
+/*
             array(
                 'label' => 'Fächer',
                 'uri'   => '#',
@@ -47,3 +50,4 @@ return array(
         )
     )
 );
+*/

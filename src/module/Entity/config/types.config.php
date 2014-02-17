@@ -32,7 +32,7 @@ return [
                     'taxonomy'   => []
                 ]
             ],
-            'exercise-group'        => [
+            'text-exercise-group'        => [
                 'components' => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
@@ -66,7 +66,7 @@ return [
                             ]
                         ],
                         'parents'  => [
-                            'exercise-group' => [
+                            'text-exercise-group' => [
                                 'multiple' => false
                             ]
                         ]
@@ -127,7 +127,8 @@ return [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
-                            'title'
+                            'title',
+                            'reasoning'
                         ]
                     ],
                     'link'       => [
@@ -147,7 +148,6 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
                         'fields' => [
                             'title',
-                            'reasoning',
                             'content'
                         ]
                     ],

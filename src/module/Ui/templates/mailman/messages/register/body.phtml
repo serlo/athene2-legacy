@@ -6,4 +6,4 @@ Please confirm your account:
     
 %s
 
-your %s Team. "), $this->user->getUsername(), $this->brand(), $this->url('user/activate', ['token' => $this->user->getToken()], array('force_canonical' => true)), $this->brand(), $this->brand());
+your %s Team. "), $this->user->getUsername(), $this->brand(), $this->url('authentication/activate', ['token' => $this->user->getToken()], array('force_canonical' => true)), $this->brand(), $this->brand());

@@ -1,0 +1,42 @@
+<?php echo $this->pageHeader('horizon')->render();?>
+<div class="clearfix">
+    <a href="<?php echo $this->url('ads/add');?>" class="btn btn-default pull-left"><span class="glyphicon glyphicon-pencil"></span>
+        <?php echo $this->translate('new'); ?> 
+    </a>
+</div>
+<div class="row">
+	<?php  foreach ($this->ads as $count => $ad) :?>
+        <?php if ($count !== 0 && $count % 4 === 0) : ?>
+            </div><div class="row">
+        <?php endif; ?>
+        <div class="col-xs-6 col-sm-3">
+            <div class="thumbnail">
+                <div class="btn-group pull-right">
+                    <a href="<?php echo $this->url('ads/ad/edit',array('id'=>$ad->getId()));?>" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="<?php echo $this->url('ads/ad/delete',array('id'=>$ad->getId()));?>" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></a>
+                </div>
+                <div>
+                    <img alt="<?php echo $ad->getTitle();?>" src="<?php echo $ad->getImage()->getLocation();?>"  class="img-responsive img-radio" />
+                </div>
+                <div class="caption">
+                    <h4><a href="<?php echo $ad->getUrl();?>" target="_blank"><?php echo $ad->getTitle(); ?></a></h4>
+                    <?php
+                        echo $this->translate('frequency');
+                        echo ' ';
+
+                        for ($i = 1; $i <= 3; $i ++) {
+                            if ($ad->getFrequency() >= $i)
+                                echo '<span class="glyphicon glyphicon-star"></span>';
+                            else
+                                echo '<span class="glyphicon glyphicon-star-empty"></span>';
+                        }
+
+                        ?><br>
+                    <?php echo $this->translate('clicks'); echo ' ' . $ad->getClicks(); ?><br>
+                    <hr>
+                    <?php echo $ad->getContent();?>
+                </div>
+            </div>
+        </div>
+<?php endforeach; ?>
+

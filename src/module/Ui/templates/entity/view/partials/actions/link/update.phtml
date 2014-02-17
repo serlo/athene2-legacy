@@ -1,0 +1,29 @@
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+/* @var $options \Entity\Options\EntityOptions */
+$entity = $this->entity;
+$options = $this->entity()->getOptions($entity);
+$url = $this->url('entity/repository/add-revision', ['entity' => $entity->getId()]);
+
+if ($options->hasComponent('link')): ?>
+    <?php foreach ($entity->getParents('link') as $parentLink): ?>
+        <!-- Change parents -->
+        <?php if ($this->isGranted('entity.link.purge', $entity) && $this->isGranted(
+                'entity.link.create',
+                $entity
+            )
+        ): ?>
+            <li>
+                <a href="<?php echo $this->url(
+                    'entity/link/move',
+                    array('entity' => $entity->getId(), 'from' => $parentLink->getId(), 'type' => 'link')
+                ); ?>"> <span class="glyphicon glyphicon-map-marker"></span>
+                    <?php echo sprintf(
+                        $this->translate('Change parent "%s"'),
+                        $parentLink->getType()->getName()
+                    ); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php endif; ?>

@@ -10,10 +10,11 @@
  */
 namespace Entity\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Versioning\Entity\RepositoryInterface;
 use Versioning\Entity\RevisionInterface;
 
@@ -23,15 +24,8 @@ use Versioning\Entity\RevisionInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends UuidEntity implements RevisionInterface
+class Revision extends Uuid implements RevisionInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
@@ -53,45 +47,28 @@ class Revision extends UuidEntity implements RevisionInterface
      */
     protected $date;
 
-    /**
-     * @return field_type $date
-     */
-    public function getTimestamp()
+    public function __construct()
     {
-        return $this->date;
+        $this->fields = new ArrayCollection();
     }
 
-    /**
-     * @param field_type $date
-     * @return self
-     */
-    public function setTimestamp(\DateTime $date)
+    public function delete()
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * @return field_type $author
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param field_type $author
-     * @return self
-     */
-    public function setAuthor(UserInterface $author)
-    {
-        $this->author = $author;
-
         return $this;
     }
 
     public function get($field)
+    {
+        $field = $this->getField($field);
+
+        if (!is_object($field)) {
+            return $field;
+        }
+
+        return $field->getValue();
+    }
+
+    protected function getField($field)
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))->setFirstResult(0)->setMaxResults(
             1
@@ -99,22 +76,21 @@ class Revision extends UuidEntity implements RevisionInterface
 
         $data = $this->fields->matching($criteria);
 
-        if (count($data) == 0) {
+        if (empty($data)) {
             return null;
         }
 
-        return $data[0]->get('value');
+        return $data[0];
     }
 
-    public function set($name, $value)
+    public function getAuthor()
     {
-        $entity = new RevisionField($name, $this->getId());
-        $entity->set('field', $name);
-        $entity->set('revision', $this);
-        $entity->set('value', $value);
-        $this->fields->add($entity);
+        return $this->author;
+    }
 
-        return $entity;
+    public function setAuthor(UserInterface $author)
+    {
+        $this->author = $author;
     }
 
     public function getFields()
@@ -122,31 +98,39 @@ class Revision extends UuidEntity implements RevisionInterface
         return $this->fields;
     }
 
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::delete()
-     */
-    public function delete()
+    public function getTimestamp()
     {
-        return $this;
+        return $this->date;
+    }
+
+    public function set($name, $value)
+    {
+        $entity = $this->getField($name);
+
+        if (!is_object($entity)) {
+            $entity = new RevisionField($name, $this->getId());
+            $this->fields->add($entity);
+        }
+
+        $entity->set('field', $name);
+        $entity->set('revision', $this);
+        $entity->set('value', $value);
+
+        return $entity;
+    }
+
+    public function setTimestamp(\DateTime $date)
+    {
+        $this->date = $date;
     }
 
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
-
-        return $this;
     }
 
-    /*
-     * (non-PHPdoc) @see \Versioning\Entity\RevisionInterface::getRepository()
-     */
     public function getRepository()
     {
         return $this->repository;
-    }
-
-    public function __construct()
-    {
-        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

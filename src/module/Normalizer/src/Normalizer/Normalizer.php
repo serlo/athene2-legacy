@@ -11,15 +11,17 @@
 namespace Normalizer;
 
 use Normalizer\Strategy\StrategyInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 class Normalizer implements NormalizerInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
 
     /**
      * @var Strategy\StrategyInterface[]
      */
     protected $strategies = [
+        'Normalizer\Strategy\AttachmentStrategy',
         'Normalizer\Strategy\PageRepositoryStrategy',
         'Normalizer\Strategy\PageRevisionStrategy',
         'Normalizer\Strategy\EntityStrategy',
@@ -30,8 +32,16 @@ class Normalizer implements NormalizerInterface
         'Normalizer\Strategy\PostStrategy'
     ];
 
+    protected $cache = [];
+
     public function normalize($object)
     {
+        $objectHash = spl_object_hash($object);
+
+        if (isset($this->cache[$objectHash])) {
+            return $this->cache[$objectHash];
+        }
+
         /* @var $strategy Strategy\StrategyInterface */
         foreach ($this->strategies as & $strategy) {
             if (!$strategy instanceof StrategyInterface) {
@@ -39,7 +49,10 @@ class Normalizer implements NormalizerInterface
             }
 
             if ($strategy->isValid($object)) {
-                return $strategy->normalize($object);
+                $normalized               = $strategy->normalize($object);
+                $this->cache[$objectHash] = $normalized;
+
+                return $normalized;
             }
         }
         throw new Exception\RuntimeException(sprintf('No strategy found for "%s"', get_class($object)));

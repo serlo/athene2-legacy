@@ -101,7 +101,7 @@ class ContextController extends AbstractActionController
             );
             if ($form->isValid()) {
                 $data = $form->getData();
-                $url  = rawurldecode($this->url()->fromRoute('contexter/add', array())) . '?uri=' . $data['uri'];
+                $url  = $this->url()->fromRoute('contexter/add', array()) . '?uri=' . $data['uri'];
                 $this->redirect()->toUrl($url);
 
                 return false;

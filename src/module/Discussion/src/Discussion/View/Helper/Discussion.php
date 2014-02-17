@@ -11,13 +11,14 @@
 namespace Discussion\View\Helper;
 
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Form\TermForm;
 use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class Discussion extends AbstractHelper
 {
     use \Discussion\DiscussionManagerAwareTrait, \Common\Traits\ConfigAwareTrait, \User\Manager\UserManagerAwareTrait,
-        \Taxonomy\Manager\TaxonomyManagerAwareTrait, \Language\Manager\LanguageManagerAwareTrait;
+        \Taxonomy\Manager\TaxonomyManagerAwareTrait, \Instance\Manager\InstanceManagerAwareTrait;
 
     protected $discussions, $object;
 
@@ -27,9 +28,15 @@ class Discussion extends AbstractHelper
 
     protected $forum;
 
-    public function __construct()
+    /**
+     * @var TermForm
+     */
+    protected $termForm;
+
+    public function __construct(TermForm $termForm)
     {
-        $this->form = array();
+        $this->form     = array();
+        $this->termForm = $termForm;
     }
 
     /**
@@ -109,17 +116,18 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
+    public function getUser()
+    {
+        return $this->getUserManager()->getUserFromAuthenticator();
+    }
+
     public function render()
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-
         return $this->getView()->partial(
             $this->getOption('template'),
             array(
-                'user'        => $user,
                 'discussions' => $this->discussions,
                 'isArchived'  => $this->archived,
-                'plugin'      => $this,
                 'object'      => $this->getObject(),
                 'forum'       => $this->getForum()
             )
@@ -128,8 +136,8 @@ class Discussion extends AbstractHelper
 
     public function findForum(array $forums)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
         $term     = $this->getTaxonomyManager()->findTerm(
             $taxonomy,
             [
@@ -168,20 +176,20 @@ class Discussion extends AbstractHelper
 
     protected function createForums(array $forums, TaxonomyTermInterface $current)
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $language);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
 
         foreach ($forums as $forum) {
-            $current = $this->getTaxonomyManager()->createTerm(
+            $form = $this->termForm;
+            $form->setData(
                 [
-                    'term'     => [
+                    'term'        => [
                         'name' => $forum
                     ],
-                    'parent'   => $current,
-                    'taxonomy' => $taxonomy
-                ],
-                $language
-            );
+                    'parent'      => $current,
+                    'taxonomy'    => $taxonomy
+                ]);
+            $current = $this->getTaxonomyManager()->createTerm($form);
         }
 
         $this->getTaxonomyManager()->getObjectManager()->flush();

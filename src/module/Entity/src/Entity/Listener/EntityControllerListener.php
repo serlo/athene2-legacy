@@ -13,9 +13,28 @@ namespace Entity\Listener;
 use Common\Listener\AbstractSharedListenerAggregate;
 use Entity\Result\UrlResult;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class EntityControllerListener extends AbstractSharedListenerAggregate
 {
+
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $events->attach(
+            $this->getMonitoredClass(),
+            'create.postFlush',
+            array(
+                $this,
+                'onCreate'
+            ),
+            -1000
+        );
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Entity\Controller\EntityController';
+    }
 
     public function onCreate(Event $e)
     {
@@ -33,23 +52,5 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         );
 
         return $result;
-    }
-
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
-    {
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'create.postFlush',
-            array(
-                $this,
-                'onCreate'
-            ),
-            -1000
-        );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'Entity\Controller\EntityController';
     }
 }

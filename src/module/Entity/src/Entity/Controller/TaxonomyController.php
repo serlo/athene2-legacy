@@ -10,13 +10,13 @@
  */
 namespace Entity\Controller;
 
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class TaxonomyController extends AbstractController
 {
-    use LanguageManagerAwareTrait, TaxonomyManagerAwareTrait;
+    use InstanceManagerAwareTrait, TaxonomyManagerAwareTrait;
 
     public function updateAction()
     {
@@ -24,8 +24,8 @@ class TaxonomyController extends AbstractController
         $this->assertGranted('entity.link.create', $entity);
         $this->assertGranted('entity.link.purge', $entity);
 
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $language);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();

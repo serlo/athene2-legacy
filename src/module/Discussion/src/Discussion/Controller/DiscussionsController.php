@@ -10,14 +10,14 @@
  */
 namespace Discussion\Controller;
 
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class DiscussionsController extends AbstractController
 {
-    use TaxonomyManagerAwareTrait, LanguageManagerAwareTrait, UserManagerAwareTrait;
+    use TaxonomyManagerAwareTrait, InstanceManagerAwareTrait, UserManagerAwareTrait;
 
     public function indexAction()
     {
@@ -41,9 +41,9 @@ class DiscussionsController extends AbstractController
 
     protected function getTaxonomy()
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $language);
+        return $this->getTaxonomyManager()->findTaxonomyByName('forum-category', $instance);
     }
 
     protected function getTermService($id = null)

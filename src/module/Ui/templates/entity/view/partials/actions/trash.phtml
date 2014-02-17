@@ -1,0 +1,11 @@
+
+
+<!-- Trash entity -->
+<?php if ($this->isGranted('entity.trash', $entity)): ?>
+    <li>
+        <a href="<?php echo $this->url('uuid/trash', array('id' => $entity->getId())); ?>">
+            <span class="glyphicon glyphicon-trash"></span>
+            <?php echo $this->translate('Move to trash'); ?>
+        </a>
+    </li>
+<?php endif; ?>

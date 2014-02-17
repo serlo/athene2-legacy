@@ -12,19 +12,33 @@ namespace Discussion;
 
 use Common\ObjectManager\Flushable;
 use Discussion\Entity\CommentInterface;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
 interface DiscussionManagerInterface extends Flushable
 {
     /**
-     * Returns a comment
-     *
-     * @param int $id
+     * @param CommentInterface  $discussion
+     * @param InstanceInterface $instance
+     * @param UserInterface     $author
+     * @param string            $content
+     * @param array             $data
      * @return CommentInterface
      */
-    public function getComment($id);
+    public function commentDiscussion(
+        CommentInterface $discussion,
+        InstanceInterface $instance,
+        UserInterface $author,
+        $content,
+        $data = []
+    );
+
+    /**
+     * @param InstanceInterface $instance
+     * @return CommentInterface[]
+     */
+    public function findDiscussionsByInstance(InstanceInterface $instance);
 
     /**
      * Finds discussions on a uuid
@@ -35,35 +49,37 @@ interface DiscussionManagerInterface extends Flushable
     public function findDiscussionsOn(UuidInterface $uuid);
 
     /**
+     * @param UserInterface $user
+     * @return CommentInterface[]
+     */
+    public function findParticipatedDiscussions(UserInterface $user);
+
+    /**
+     * Returns a comment
+     *
+     * @param int $id
+     * @return CommentInterface
+     */
+    public function getComment($id);
+
+    /**
      * @param UuidInterface     $object
-     * @param LanguageInterface $language
+     * @param InstanceInterface $instance
      * @param UserInterface     $author
      * @param                   $forum
      * @param                   $title
      * @param                   $content
+     * @param array             $data
      * @return CommentInterface
      */
     public function startDiscussion(
         UuidInterface $object,
-        LanguageInterface $language,
+        InstanceInterface $instance,
         UserInterface $author,
         $forum,
         $title,
-        $content
-    );
-
-    /**
-     * @param CommentInterface  $discussion
-     * @param LanguageInterface $language
-     * @param UserInterface     $author
-     * @param string            $content
-     * @return CommentInterface
-     */
-    public function commentDiscussion(
-        CommentInterface $discussion,
-        LanguageInterface $language,
-        UserInterface $author,
-        $content
+        $content,
+        $data = []
     );
 
     /**
@@ -71,16 +87,4 @@ interface DiscussionManagerInterface extends Flushable
      * @return void
      */
     public function toggleArchived($commentId);
-
-    /**
-     * @param UserInterface $user
-     * @return CommentInterface[]
-     */
-    public function findParticipatedDiscussions(UserInterface $user);
-
-    /**
-     * @param LanguageInterface $language
-     * @return CommentInterface[]
-     */
-    public function findDiscussionsByLanguage(LanguageInterface $language);
 }

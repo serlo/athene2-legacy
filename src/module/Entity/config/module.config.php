@@ -13,7 +13,7 @@ namespace Entity;
 return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            'entity.license.update' => 'Authorization\Assertion\LanguageAssertion',
+            //'entity.license.update' => 'Authorization\Assertion\TenantAssertion',
         ]
     ],
     'class_resolver'  => [
@@ -38,7 +38,7 @@ return [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -57,7 +57,7 @@ return [
                     'setEntityManager'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ],
                     'setLicenseManager'  => [
@@ -68,7 +68,7 @@ return [
                     'setEntityManager'   => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],
@@ -76,7 +76,7 @@ return [
                     'setEntityManager'        => [
                         'required' => true
                     ],
-                    'setLanguageManager'      => [
+                    'setInstanceManager'      => [
                         'required' => true
                     ],
                     'setUserManager'          => [
@@ -117,11 +117,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Provider\TokenProvider'          => [
-                    'setServiceLocator' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Provider\TokenProvider'          => []
             ]
         ],
         'instance'            => [
@@ -138,6 +134,29 @@ return [
     'view_helpers'    => [
         'factories' => [
             'entity' => __NAMESPACE__ . '\Factory\EntityHelperFactory'
+        ]
+    ],
+    'uuid'            => [
+        'permissions' => [
+            'Entity\Entity\Revision' => [
+                'trash'   => 'entity.revision.trash',
+                'restore' => 'entity.revision.restore',
+                'purge' => 'entity.revision.purge'
+            ],
+            'Entity\Entity\Entity'         => [
+                'trash'   => 'entity.trash',
+                'restore' => 'entity.restore',
+                'purge' => 'entity.purge'
+            ]
+        ]
+    ],
+    'versioning'      => [
+        'permissions' => [
+            'Entity\Entity\Entity' => [
+                'commit'   => 'entity.revision.create',
+                'checkout' => 'entity.revision.checkout',
+                'reject'   => 'entity.revision.trash'
+            ]
         ]
     ],
     'doctrine'        => [

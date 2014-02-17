@@ -11,11 +11,11 @@
 namespace Contexter\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use Type\Entity\TypeAwareInterface;
 use Uuid\Entity\UuidInterface;
 
-interface ContextInterface extends TypeAwareInterface, LanguageAwareInterface
+interface ContextInterface extends TypeAwareInterface, InstanceAwareInterface
 {
     /**
      * @return int

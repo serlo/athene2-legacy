@@ -10,66 +10,22 @@
  */
 namespace Subject;
 
-use Subject\View\Helper\SubjectHelper;
-
 return array(
-    'navigation'      => array(
-        'hydrateables' => array(
-            'default' => array(
-                'hydrators' => array(
-                    'Subject\Hydrator\Navigation'
-                )
-            )
-        )
-    ),
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions'  => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\SubjectManager' => __NAMESPACE__ . '\Factory\SubjectManagerFactory',
+            __NAMESPACE__ . '\Hydrator\Navigation'    => __NAMESPACE__ . '\Factory\NavigationFactory'
         ]
     ],
     'view_helpers'    => [
         'factories' => [
-            'subject' => function ($helperPluginManager) {
-                    $plugin = new SubjectHelper();
-                    $plugin->setModuleOptions(
-                        $helperPluginManager->getServiceLocator()->get('Subject\Options\ModuleOptions')
-                    );
-
-                    return $plugin;
-                }
+            'subject' => __NAMESPACE__ . '\Factory\SubjectHelperFactory'
         ]
     ],
-    'term_router'     => array(
-        'routes' => array(
-            'topic'             => array(
-                'route'          => 'subject/plugin/taxonomy/topic',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'topic-folder'      => array(
-                'route'          => 'subject/plugin/taxonomy/topic',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'abstract-topic'    => array(
-                'route'          => 'subject/plugin/taxonomy/topic',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'curriculum-folder' => array(
-                'route'          => 'subject/plugin/taxonomy/curriculum',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'school-type'       => array(
-                'route'          => 'subject/plugin/taxonomy/curriculum',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            ),
-            'curriculum'        => array(
-                'route'          => 'subject/plugin/taxonomy/curriculum',
-                'param_provider' => 'Subject\Provider\ParamProvider'
-            )
-        )
-    ),
     'taxonomy'        => array(
         'types' => array(
-            'topic-folder'      => array(
+            'topic-folder'            => array(
                 'allowed_associations' => array(
                     'entities'
                 ),
@@ -78,48 +34,52 @@ return array(
                 ),
                 'rootable'             => false
             ),
-            'topic'             => array(
+            'topic'                   => array(
+                'allowed_parents' => array(
+                    'subject',
+                    'topic'
+                ),
                 'allowed_associations' => array(
                     'entities'
                 ),
-                'allowed_parents'      => array(
-                    'abstract-topic'
-                ),
-                'rootable'             => false
-            ),
-            'abstract-topic'    => array(
-                'allowed_parents' => array(
-                    'subject',
-                    'abstract-topic'
-                ),
                 'rootable'        => false
             ),
-            'subject'           => array(
+            'subject'                 => array(
                 'allowed_parents' => array(
                     'root'
                 ),
                 'rootable'        => false
             ),
-            'school-type'       => array(
+            'locale'                  => array(
                 'allowed_parents' => array(
                     'subject',
-                    'school-type'
+                    'locale'
                 ),
                 'rootable'        => false
             ),
-            'curriculum'        => array(
+            'curriculum'              => array(
                 'allowed_parents' => array(
-                    'school-type'
+                    'subject',
+                    'locale'
                 ),
                 'rootable'        => false
             ),
-            'curriculum-folder' => array(
+            'curriculum-topic'       => array(
                 'allowed_associations' => array(
                     'entities'
                 ),
                 'allowed_parents'      => array(
                     'curriculum',
-                    'curriculum-folder'
+                    'curriculum-topic'
+                ),
+                'rootable'             => false
+            ),
+            'curriculum-topic-folder' => array(
+                'allowed_associations' => array(
+                    'entities'
+                ),
+                'allowed_parents'      => array(
+                    'curriculum-topic-folder'
                 ),
                 'rootable'             => false
             )
@@ -139,9 +99,9 @@ return array(
                 ),
                 'child_routes'  => array(
                     'taxonomy' => array(
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'type'    => 'slashable',
                         'options' => array(
-                            'route'       => '[/:path/]',
+                            'route'       => '/:path',
                             'defaults'    => array(
                                 'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
                                 'action'     => 'index'
@@ -176,7 +136,7 @@ return array(
         'definition'          => array(
             'class' => array(
                 __NAMESPACE__ . '\Controller\HomeController'     => array(
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(
@@ -184,7 +144,7 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Controller\TaxonomyController' => array(
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(
@@ -192,23 +152,10 @@ return array(
                     )
                 ),
                 __NAMESPACE__ . '\Controller\EntityController'   => array(
-                    'setLanguageManager' => array(
+                    'setInstanceManager' => array(
                         'required' => true
                     ),
                     'setSubjectManager'  => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Hydrator\Navigation'           => array(
-                    'setSubjectManager'  => array(
-                        'required' => true
-                    ),
-                    'setLanguageManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Manager\SubjectManager'        => array(
-                    'setTaxonomyManager' => array(
                         'required' => true
                     )
                 )

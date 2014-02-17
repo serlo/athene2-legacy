@@ -51,16 +51,56 @@ class TaxonomyTermStrategy extends AbstractStrategy
 
     protected function getRouteName()
     {
-        return 'home';
+        $object = $this->getObject();
+        switch ($object->getType()->getName()) {
+            case 'blog':
+                return 'blog/view';
+                break;
+            case 'topic':
+            case 'topic-folder':
+            case 'curriculum':
+            case 'locale':
+            case 'curriculum-folder':
+            case 'topic-final-folder':
+                return 'subject/taxonomy';
+                break;
+        }
+
+        return 'notfound';
     }
 
     protected function getRouteParams()
     {
+        $object = $this->getObject();
+        switch ($object->getType()->getName()) {
+            case 'blog':
+                return ['id' => $object->getId()];
+                break;
+            case 'topic':
+            case 'topic-folder':
+            case 'curriculum':
+            case 'locale':
+            case 'curriculum-folder':
+            case 'topic-final-folder':
+                return [
+                    'subject' => $object->findAncestorByTypeName('subject')->getSlug(),
+                    'path'    => substr($this->getPath($object, 'subject'), 0, -1)
+                ];
+                break;
+        }
+
         return [];
     }
 
     public function isValid($object)
     {
         return $object instanceof TaxonomyTermInterface;
+    }
+
+    protected function getPath(TaxonomyTermInterface $term, $stopType)
+    {
+        return $term->getTaxonomy()->getType()
+            ->getName() == $stopType || !$term->hasParent() ? '' : $this->getPath($term->getParent(),
+                $stopType) . $term->getSlug() . '/';
     }
 }

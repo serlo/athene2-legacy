@@ -11,20 +11,19 @@
  */
 namespace User\Hydrator;
 
-use Zend\Stdlib\Hydrator\HydratorInterface;
 use User\Entity\UserInterface;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class UserHydrator implements HydratorInterface
 {
-    use\Uuid\Manager\UuidManagerAwareTrait;
-
     public function extract($object)
     {
         $object = $this->isValid($object);
         
         return [
             'id' => $object->getId(),
+            'email' => $object->getEmail(),
             'username' => $object->getUsername(),
             'password' => $object->getPassword()
         ];
@@ -34,10 +33,10 @@ class UserHydrator implements HydratorInterface
     {
         $object = $this->isValid($object);
     	$data = ArrayUtils::merge($this->extract($object), $data);
-    	
-    	$this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
+
     	$object->setUsername($data['username']);
     	$object->setPassword($data['password']);
+        $object->setEmail($data['email']);
     	
     	return $object;
     }

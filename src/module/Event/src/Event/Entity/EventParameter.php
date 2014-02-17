@@ -38,9 +38,14 @@ class EventParameter implements EventParameterInterface
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
+     * @ORM\OneToOne(targetEntity="EventParameterUuid", mappedBy="eventParameter", cascade={"persist", "remove"})
      */
-    protected $uuid;
+    protected $object;
+
+    /**
+     * @ORM\OneToOne(targetEntity="EventParameterString", mappedBy="eventParameter", cascade={"persist", "remove"})
+     */
+    protected $string;
 
     public function getId()
     {
@@ -57,29 +62,34 @@ class EventParameter implements EventParameterInterface
         return $this->name;
     }
 
-    public function getObject()
+    public function getValue()
     {
-        return $this->uuid;
+        if(is_object($this->object)){
+            return $this->object->getValue();
+        } elseif (is_object($this->string)){
+            return $this->string->getValue();
+        }
+        return null;
     }
 
     public function setLog(EventLogInterface $log)
     {
         $this->log = $log;
-
-        return $this;
     }
 
     public function setName(EventParameterNameInterface $name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function setObject(UuidInterface $uuid)
+    public function setValue($value)
     {
-        $this->uuid = $uuid;
-
-        return $this;
+        if($value instanceof UuidInterface){
+            $param = new EventParameterUuid($this, $value);
+            $this->object = $param;
+        } else {
+            $param = new EventParameterString($this, $value);
+            $this->string = $param;
+        }
     }
 }

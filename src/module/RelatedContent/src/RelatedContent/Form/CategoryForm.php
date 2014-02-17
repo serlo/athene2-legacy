@@ -11,10 +11,11 @@
  */
 namespace RelatedContent\Form;
 
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Submit;
+
 class CategoryForm extends Form
 {
     function __construct()

@@ -12,6 +12,7 @@ namespace Entity\Form;
 
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
+use Zend\Form\Element\Url;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -26,8 +27,11 @@ class VideoForm extends Form
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setLabel('Title:'));
-        $this->add((new Textarea('content'))->setLabel('Video url:'));
-        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:'));
+        $this->add((new Url('content'))->setLabel('Video url:'));
+        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:')->setAttribute(
+            'class',
+            'plain'
+        ));
 
         $this->add(new Controls());
 
@@ -58,7 +62,6 @@ class VideoForm extends Form
         $inputFilter->add(
             array(
                 'name'     => 'reasoning',
-                'required' => true,
                 'filters'  => array(
                     array(
                         'name' => 'HtmlEntities'

@@ -18,9 +18,11 @@ class RoleAssertionFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $languageManager   = $serviceLocator->getServiceLocator()->get('Language\Manager\LanguageManager');
+        /* @var \Rbac\Traversal\Strategy\TraversalStrategyInterface $traversalStrategy */
+        $traversalStrategy = $serviceLocator->getServiceLocator()->get('Rbac\Rbac')->getTraversalStrategy();
+        $instanceManager   = $serviceLocator->getServiceLocator()->get('Instance\Manager\InstanceManager');
         $permissionService = $serviceLocator->getServiceLocator()->get('Authorization\Service\PermissionService');
-        $instance          = new RoleAssertion($languageManager, $permissionService);
+        $instance          = new RoleAssertion($instanceManager, $permissionService, $traversalStrategy);
 
         return $instance;
     }

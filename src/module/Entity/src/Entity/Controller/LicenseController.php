@@ -10,19 +10,19 @@
  */
 namespace Entity\Controller;
 
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use License\Form\UpdateLicenseForm;
 use License\Manager\LicenseManagerAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class LicenseController extends AbstractController
 {
-    use LanguageManagerAwareTrait, LicenseManagerAwareTrait;
+    use InstanceManagerAwareTrait, LicenseManagerAwareTrait;
 
     public function updateAction()
     {
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
-        $licenses = $this->getLicenseManager()->findLicensesByLanguage($language);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $licenses = $this->getLicenseManager()->findLicensesByInstance($instance);
         $entity   = $this->getEntity();
 
         $this->assertGranted('entity.license.update', $entity);
@@ -39,7 +39,8 @@ class LicenseController extends AbstractController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $this->getLicenseManager()->injectLicense($entity, (int)$data['license']);
+                $license = $this->getLicenseManager()->getLicense((int)$data['license']);
+                $this->getLicenseManager()->injectLicense($entity, $license);
                 $this->getLicenseManager()->flush();
 
                 $this->redirect()->toUrl(
@@ -50,7 +51,7 @@ class LicenseController extends AbstractController
             $this->referer()->store();
         }
 
-        $view->setTemplate('entity/plugin/license/update');
+        $view->setTemplate('entity/license/update');
 
         return $view;
     }

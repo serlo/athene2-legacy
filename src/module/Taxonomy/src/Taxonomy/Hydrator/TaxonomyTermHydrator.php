@@ -1,135 +1,148 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Taxonomy\Hydrator;
 
-use Zend\Stdlib\Hydrator\HydratorInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Exception;
-use Zend\Stdlib\ArrayUtils;
+use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use Taxonomy\Options\ModuleOptions;
+use Term\Manager\TermManagerAwareTrait;
+use Term\Manager\TermManagerInterface;
+use Uuid\Manager\UuidManagerAwareTrait;
+use Uuid\Manager\UuidManagerInterface;
+use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class TaxonomyTermHydrator implements HydratorInterface
 {
-    
-    use\Term\Manager\TermManagerAwareTrait,\Uuid\Manager\UuidManagerAwareTrait;
+
+    use TermManagerAwareTrait, UuidManagerAwareTrait;
 
     /**
-     *
      * @var ModuleOptions
      */
     protected $moduleOptions;
 
     /**
-     *
-     * @return ModuleOptions $moduleOptions
+     * @var \Taxonomy\Manager\TaxonomyManagerInterface
      */
-    public function getModuleOptions()
-    {
-        return $this->moduleOptions;
+    protected $taxonomyManager;
+
+    public function __construct(
+        ModuleOptions $moduleOptions,
+        TermManagerInterface $termManager,
+        UuidManagerInterface $uuidManager,
+        TaxonomyManagerInterface $taxonomyManager
+    ) {
+        $this->termManager     = $termManager;
+        $this->moduleOptions   = $moduleOptions;
+        $this->uuidManager     = $uuidManager;
+        $this->taxonomyManager = $taxonomyManager;
     }
 
     /**
-     *
-     * @param ModuleOptions $moduleOptions            
-     * @return self
-     */
-    public function setModuleOptions(ModuleOptions $moduleOptions)
-    {
-        $this->moduleOptions = $moduleOptions;
-        return $this;
-    }
-
-    /**
-     *
      * @see \Zend\Stdlib\Extractor\ExtractionInterface::extract()
-     *
-     * @param TaxonomyTermInterface $object            
+     * @param TaxonomyTermInterface $object
      * @return array
      */
     public function extract($object)
     {
         $term = $object->getTerm();
+
         return [
-            'id' => $object->getId(),
-            'term' => [
-                'id' => $term !== NULL ? $term->getId() : NULL,
-                'name' => $term !== NULL ? $term->getName() : NULL,
-                'slug' => $term !== NULL ? $term->getSlug() : NULL
+            'id'          => is_object($object) ? $object->getId() : null,
+            'term'        => [
+                'id'   => is_object($term) ? $term->getId() : null,
+                'name' => is_object($term) ? $term->getName() : null,
+                'slug' => is_object($term) ? $term->getSlug() : null
             ],
-            'taxonomy' => $object->getTaxonomy(),
-            'parent' => $object->getParent(),
+            'taxonomy'    => is_object($object->getTaxonomy()) ? $object->getTaxonomy()->getId() : null,
+            'parent'      => is_object($object->getParent()) ? $object->getParent()->getId() : null,
             'description' => $object->getDescription(),
-            'position' => $object->getPosition()
+            'position'    => $object->getPosition()
         ];
     }
 
-    /**
-     *
-     * @see \Zend\Stdlib\Extractor\ExtractionInterface::hydrate()
-     *
-     * @param TaxonomyTermInterface $object            
-     * @return TaxonomyTermInterface
-     */
     public function hydrate(array $data, $object)
     {
-        
-        $data = ArrayUtils::merge($this->extract($object), $data);
-        $data = $this->validate($data, $object);
-        
-        $this->getUuidManager()->injectUuid($object, $object->getUuidEntity());
-        $object->setTaxonomy($data['taxonomy']);
-        $object->setTerm($data['term']);
-        $object->setDescription($data['description']);
-        $object->setParent($data['parent']);
-        $object->setPosition($data['position']);
-        
+        $oldParent = $object->getParent();
+        $data      = $this->validate($data);
+
+        foreach ($data as $key => $value) {
+            $setter = 'set' . ucfirst($key);
+            if (method_exists($object, $setter)) {
+                $object->$setter($value);
+            }
+        }
+
+        if ($object->getParent() !== $oldParent && $object->getId()) {
+            $this->taxonomyManager->getEventManager()->trigger(
+                'parent.change',
+                $this->taxonomyManager,
+                [
+                    'term' => $object,
+                    'from' => $oldParent,
+                    'to'   => $object->getParent()
+                ]
+            );
+        }
+
         return $object;
     }
 
     /**
-     *
-     * @param array $data            
-     * @param TaxonomyTermInterface $object            
-     * @throws Exception\RuntimeException
+     * @param array $data
      * @return array
+     * @throws \Taxonomy\Exception\RuntimeException
      */
-    protected function validate(array $data, TaxonomyTermInterface $object)
+    protected function validate(array $data)
     {
-        if (isset($data['taxonomy'])) {
-            $options = $this->getModuleOptions()->getType($data['taxonomy']->getName());
+        $taxonomy = $data['taxonomy'];
+        $parent   = isset($data['parent']) ? $data['parent'] : null;
+        if (!is_object($taxonomy)) {
+            $taxonomy = $data['taxonomy'] = $this->taxonomyManager->getTaxonomy($taxonomy);
         }
-        
-        $parent = $data['parent'];
-        
-        if ($data['parent'] === NULL && ! $options->isRootable()) {
-            throw new Exception\RuntimeException(sprintf('Taxonomy "%s" is not rootable.', $data['taxonomy']->getName()));
-        } elseif ($data['parent'] instanceof TaxonomyTermInterface) {
-            $parentType = $data['parent']->getTaxonomy()->getName();
-            $objectType = $data['taxonomy']->getName();
+        if ($parent && !is_object($parent)) {
+            $parent = $data['parent'] = $this->taxonomyManager->getTerm($parent);
+        }
+        $options = $this->getModuleOptions()->getType($taxonomy->getName());
+
+        if ($parent === null && !$options->isRootable()) {
+            throw new RuntimeException(sprintf(
+                'Taxonomy "%s" is not rootable.',
+                $taxonomy->getName()
+            ));
+        } elseif ($parent instanceof TaxonomyTermInterface) {
+            $parentType    = $parent->getTaxonomy()->getName();
+            $objectType    = $taxonomy->getName();
             $objectOptions = $this->getModuleOptions()->getType($objectType);
-            
-            if (! $objectOptions->isParentAllowed($parentType)) {
-                throw new Exception\RuntimeException(sprintf('Parent "%s" does not allow child "%s"', $parentType, $objectType));
+
+            if (!$objectOptions->isParentAllowed($parentType)) {
+                throw new RuntimeException(sprintf(
+                    'Parent "%s" does not allow child "%s"',
+                    $parentType,
+                    $objectType
+                ));
             }
-        } else {
-            throw new Exception\RuntimeException('Parent must be TaxonomyTermInterface, got "%s"', is_object($data['parent']) ? get_class($data['parent']) : gettype($data['parent']));
         }
-        
-        try {
-            $data['term'] = $this->getTermManager()->findTermByName($data['term']['name'], $data['taxonomy']->getLanguage());
-        } catch (\Term\Exception\TermNotFoundException $e) {
-            $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], NULL, $data['taxonomy']->getLanguage());
-        }
-        
+
+        $data['term'] = $this->getTermManager()->createTerm($data['term']['name'], $taxonomy->getInstance());
+
         return $data;
+    }
+
+    /**
+     * @return ModuleOptions $moduleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
     }
 }

@@ -14,12 +14,11 @@ use Blog\Exception;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
-use Uuid\Entity\UuidInterface;
+use Uuid\Entity\Uuid;
 
 /**
  * A blog post.
@@ -27,21 +26,9 @@ use Uuid\Entity\UuidInterface;
  * @ORM\Entity
  * @ORM\Table(name="blog_post")
  */
-class Post extends UuidEntity implements PostInterface
+class Post extends Uuid implements PostInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="blogPost")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -53,7 +40,7 @@ class Post extends UuidEntity implements PostInterface
      * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    protected $category;
+    protected $blog;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -81,11 +68,6 @@ class Post extends UuidEntity implements PostInterface
         $this->date    = new DateTime();
     }
 
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
     public function getAuthor()
     {
         return $this->author;
@@ -93,7 +75,7 @@ class Post extends UuidEntity implements PostInterface
 
     public function getBlog()
     {
-        return $this->category;
+        return $this->blog;
     }
 
     public function getTitle()
@@ -125,7 +107,7 @@ class Post extends UuidEntity implements PostInterface
 
     public function setBlog(TaxonomyTermInterface $category)
     {
-        $this->category = $category;
+        $this->blog = $category;
 
         return $this;
     }
@@ -154,21 +136,6 @@ class Post extends UuidEntity implements PostInterface
     public function setPublish(DateTime $publish = null)
     {
         $this->publish = $publish;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    public function setUuid(UuidInterface $uuid)
-    {
-        $uuid->setHolder('blogPost', $this);
-        $this->id = $uuid;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php foreach($this->term->getChildren() as $term): ?>    	
     <h4>
-        <a class="" href="<?php echo rawurldecode($this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term)))); ?>">
+        <a class="" href="<?php echo $this->url($this->plugin->getRoute(), array('subject' => $this->subject->getSlug(), 'path' => $this->plugin->getPathToTermAsUri($term))); ?>">
             <?php echo $term->getName(); ?>
         </a>
     </h4>	    

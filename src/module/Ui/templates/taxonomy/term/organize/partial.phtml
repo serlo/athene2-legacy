@@ -16,11 +16,15 @@ if (!isset($this->isChild)) : ?>
             <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="glyphicon glyphicon-plus"></span> <span class="caret"></span> </a>
             <ul class="dropdown-menu">
-                <?php foreach ($this->taxonomy()->getOptions($this->term)->getAllowedChildren() as $taxonomy): ?>
-                    <li><a href="<?php echo $this->url(
+                <?php foreach ($this->taxonomy()->getAllowedChildren($this->term) as $taxonomy): ?>
+                    <li>
+                        <a href="<?php echo $this->url(
                             'taxonomy/term/create',
-                            array('taxonomy' => $taxonomy, 'parent' => $this->term->getId())
-                        ); ?>"><?php echo $taxonomy; ?></a></li>
+                            array('taxonomy' => $taxonomy->getId(), 'parent' => $this->term->getId())
+                        ); ?>">
+                            <?php echo $taxonomy->getName(); ?>
+                        </a>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -41,10 +45,7 @@ if (!isset($this->isChild)) : ?>
                     <?php echo $term->getName(); ?>
                     <?php echo $this->partial('taxonomy/term/organize/actions', array('term' => $term)); ?>
                 </div>
-                <?php echo $this->partial(
-                    'taxonomy/term/organize/partial',
-                    array('term' => $term, 'isChild' => true)
-                ); ?>
+                <?php echo $this->partial('taxonomy/term/organize/partial', ['term' => $term, 'isChild' => true]); ?>
             </li>
         <?php endforeach; ?>
     </ol>
@@ -54,13 +55,12 @@ if (!isset($this->isChild)) : ?>
             <h5 class="panel-title"><?php echo $this->translate('Tools'); ?></h5>
         </div>
         <div class="sortable-actions pull-right panel-body">
-            <button class="btn btn-default sortable-activate-action"><?php print $this->translate('Sort'); ?></button>
-            <button class="btn btn-success sortable-save-action is-hidden"><?php print $this->translate(
-                    'Save new order'
-                ); ?></button>
-            <button class="btn btn-default sortable-abort-action is-hidden"><?php print $this->translate(
-                    'Cancel'
-                ); ?></button>
+            <button class="btn btn-default sortable-activate-action">
+                <?php print $this->translate('Sort'); ?></button>
+            <button class="btn btn-success sortable-save-action is-hidden">
+                <?php print $this->translate('Save new order'); ?></button>
+            <button class="btn btn-default sortable-abort-action is-hidden">
+                <?php print $this->translate('Cancel'); ?></button>
         </div>
     </div>
     </div>

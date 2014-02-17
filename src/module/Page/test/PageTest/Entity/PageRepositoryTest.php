@@ -12,13 +12,11 @@
  */
 namespace PageTest\Entity;
 
-use AtheneTest\TestCase\Model;
-use Uuid\Entity\Uuid;
+use Doctrine\Common\Collections\ArrayCollection;
+use Instance\Entity\Instance;
 use Page\Entity\PageRepository;
 use Page\Entity\PageRevision;
-use Language\Entity\Language;
 use User\Entity\Role;
-use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
@@ -49,7 +47,7 @@ class PageRepositoryTest extends Model
         $roles=new ArrayCollection();
         $roles->add(new Role());
         return array(
-            'language' => new Language(),
+            'instance' => new Instance(),
             'current_revision' => new PageRevision(),
             'roles' => $roles
         );
@@ -104,7 +102,7 @@ class PageRepositoryTest extends Model
     {
         $revision = new PageRevision();
         $this->getObject()->populate(array(
-            'language' => new Language(),
+            'instance' => new Instance(),
             'current_revision' => $revision
         ));
         $this->assertEquals($revision, $this->getObject()->getCurrentRevision()

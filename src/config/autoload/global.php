@@ -22,8 +22,8 @@ return array(
     'doctrine'           => array(
         'entitymanager' => array(
             'orm_default' => array(
-                'connection'    => 'orm_default',
-                'configuration' => 'orm_default'
+                'connection'      => 'orm_default',
+                'configuration'   => 'orm_default',
             )
         )
     ),
@@ -50,6 +50,10 @@ return array(
 
                     return new \Zend\Mail\Transport\SmtpOptions($config);
                 },
+            'doctrine.cache.apccache'      => function ($sm) {
+                    $cache    = new \Doctrine\Common\Cache\ApcCache();
+                    return $cache;
+                },
         )
     ),
     'smtp_options'       => array(
@@ -74,4 +78,12 @@ return array(
         'port' => 9306
     ),
     'zendDiCompiler'     => array(),
+    'zfc_rbac'           => [
+        'redirect_strategy' => [
+            'redirect_to_route_connected'    => 'authorization/forbidden',
+            'redirect_to_route_disconnected' => 'authentication/login',
+            'append_previous_uri'            => true,
+            'previous_uri_query_key'         => 'redir'
+        ]
+    ]
 );

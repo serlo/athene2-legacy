@@ -16,8 +16,8 @@ use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Common\Traits\RouterAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use RelatedContent\Entity\ContainerInterface;
 use RelatedContent\Entity;
+use RelatedContent\Entity\ContainerInterface;
 use RelatedContent\Exception;
 use RelatedContent\Result\CategoryResult;
 use RelatedContent\Result\ExternalResult;
@@ -27,7 +27,7 @@ use Uuid\Manager\UuidManagerAwareTrait;
 class RelatedContentManager implements RelatedContentManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
-    use UuidManagerAwareTrait, RouterAwareTrait;
+    use RouterAwareTrait, UuidManagerAwareTrait;
     use FlushableTrait, AuthorizationAssertionTrait;
 
     public function getContainer($id)
@@ -142,9 +142,9 @@ class RelatedContentManager implements RelatedContentManagerInterface
     {
         /* @var $container Entity\ContainerInterface */
         $uuid      = $this->getUuidManager()->getUuid($id);
-        $container = $this->getClassResolver()->resolve('RelatedContent\Entity\ContainerInterface');
+        $container = $this->getClassResolver()->resolveClassName('RelatedContent\Entity\ContainerInterface');
+        $container = new $container($uuid);
 
-        $this->getUuidManager()->injectUuid($container, $uuid);
         $this->getObjectManager()->persist($container);
 
         return $container;

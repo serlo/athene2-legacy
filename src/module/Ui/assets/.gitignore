@@ -1,8 +1,0 @@
-node_modules
-source/bower_components
-.sass-cache
-.tmp
-.grunt
-/build
-!/.bowerrc
-!/.jshintrc

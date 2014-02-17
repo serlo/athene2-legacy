@@ -15,7 +15,7 @@ use Alias\Options\ManagerOptions;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Filter\Slugify;
 use Common\Traits;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Token\TokenizerAwareTrait;
 use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
@@ -24,32 +24,14 @@ class AliasManager implements AliasManagerInterface
 {
     use Traits\ObjectManagerAwareTrait, ClassResolverAwareTrait;
     use TokenizerAwareTrait, UuidManagerAwareTrait;
+    use Traits\RouterAwareTrait;
 
     /**
      * @var ManagerOptions
      */
     protected $options;
 
-    /**
-     * @return ManagerOptions $options
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param ManagerOptions $options
-     * @return self
-     */
-    public function setOptions(ManagerOptions $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    public function autoAlias($name, $source, UuidInterface $object, LanguageInterface $language)
+    public function autoAlias($name, $source, UuidInterface $object, InstanceInterface $instance)
     {
         if (!is_string($name) || !is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -67,13 +49,41 @@ class AliasManager implements AliasManagerInterface
         $provider       = $options['provider'];
         $tokenString    = $options['tokenize'];
         $fallbackString = $options['fallback'];
-        $alias          = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $tokenString);
-        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object->getHolder(), $fallbackString);
+        $alias          = $this->getTokenizer()->transliterate($provider, $object, $tokenString);
+        $aliasFallback  = $this->getTokenizer()->transliterate($provider, $object, $fallbackString);
 
-        return $this->createAlias($source, $alias, $aliasFallback, $object, $language);
+        return $this->createAlias($source, $alias, $aliasFallback, $object, $instance);
     }
 
-    public function findSourceByAlias($alias, LanguageInterface $language)
+    public function findCanonicalAlias($alias, InstanceInterface $instance)
+    {
+        /* @var $entity Entity\AliasInterface */
+        $entity = $this->getAliasRepository()->findOneBy(
+            [
+                'alias'    => $alias,
+                'instance' => $instance->getId()
+            ]
+        );
+
+        if(!is_object($entity)){
+            throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
+        }
+
+        $canonical = $this->findAliasByObject($entity->getObject());
+
+        if ($canonical !== $entity) {
+            $router = $this->getRouter();
+            $path = array_flip(explode('/', $canonical->getAlias()));
+            $url    = $router->assemble($path, ['name' => 'alias/path']);
+            if ($url !== $alias) {
+                return $url;
+            }
+        }
+
+        throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
+    }
+
+    public function findSourceByAlias($alias, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -86,7 +96,7 @@ class AliasManager implements AliasManagerInterface
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'alias'    => $alias,
-                'language' => $language->getId()
+                'instance' => $instance->getId()
             ]
         );
 
@@ -97,7 +107,7 @@ class AliasManager implements AliasManagerInterface
         return $entity->getSource();
     }
 
-    public function findAliasBySource($source, LanguageInterface $language)
+    public function findAliasBySource($source, InstanceInterface $instance)
     {
         if (!is_string($source)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -109,18 +119,21 @@ class AliasManager implements AliasManagerInterface
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'source'   => $source,
-                'language' => $language->getId()
+                'instance' => $instance->getId()
+            ],
+            [
+                'id' => 'desc'
             ]
         );
 
         if (!is_object($entity)) {
-            return false;
+            throw new Exception\AliasNotFoundException(sprintf('Alias `%s` not found.', $source));
         }
 
         return $entity->getAlias();
     }
 
-    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, LanguageInterface $language)
+    public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance)
     {
         if (!is_string($alias)) {
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($alias)));
@@ -130,47 +143,69 @@ class AliasManager implements AliasManagerInterface
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($source)));
         }
 
+        if ($alias == $source) {
+            throw new Exception\RuntimeException(sprintf(
+                'Alias and source should not be equal: %s, %s',
+                $alias,
+                $source
+            ));
+        }
+
+        $alias = $this->slugify($alias);
+
         try {
-            $this->findSourceByAlias($alias, $language);
-            $alias = $aliasFallback;
+            $this->findSourceByAlias($alias, $instance);
+            $alias = $alias . ' ' . uniqid();
+            $alias = $this->slugify($alias);
         } catch (Exception\AliasNotFoundException $e) {
-        }
-
-        $filter = new Slugify();
-
-        $slugified = array();
-        foreach (explode('/', $alias) as $token) {
-            $slugified[] = $filter->filter($token);
-        }
-        $alias = implode('/', $slugified);
-
-        if (is_object($this->findAliasByObject($uuid))) {
-            return $this;
         }
 
         /* @var $class Entity\AliasInterface */
         $class = $this->getClassResolver()->resolve('Alias\Entity\AliasInterface');
 
         $class->setSource($source);
-        $class->setLanguage($language);
+        $class->setInstance($instance);
         $class->setAlias($alias);
         $class->setObject($uuid);
 
         $this->getObjectManager()->persist($class);
 
-        return $this;
+        return $class;
     }
 
-    protected function findAliasByObject(UuidInterface $uuid)
+    public function findAliasByObject(UuidInterface $uuid)
     {
         /* @var $entity Entity\AliasInterface */
         $entity = $this->getAliasRepository()->findOneBy(
             [
                 'uuid' => $uuid->getId()
-            ]
+            ],
+            ['id' => 'desc']
         );
 
+        if (!is_object($entity)) {
+            throw new Exception\AliasNotFoundException();
+        }
+
         return $entity;
+    }
+
+    public function flush($object = null)
+    {
+        $this->getObjectManager()->flush($object);
+    }
+
+    /**
+     * @return ManagerOptions $options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    protected function getAliasRepository()
+    {
+        return $this->getObjectManager()->getRepository($this->getEntityClassName());
     }
 
     protected function getEntityClassName()
@@ -178,8 +213,25 @@ class AliasManager implements AliasManagerInterface
         return $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
     }
 
-    protected function getAliasRepository()
+    /**
+     * @param ManagerOptions $options
+     * @return void
+     */
+    public function setOptions(ManagerOptions $options)
     {
-        return $this->getObjectManager()->getRepository($this->getEntityClassName());
+        $this->options = $options;
+    }
+
+    protected function slugify($text)
+    {
+        $filter = new Slugify();
+        $slugified = array();
+
+        foreach (explode('/', $text) as $token) {
+            $slugified[] = $filter->filter($token);
+        }
+        $text = implode('/', $slugified);
+
+        return $text;
     }
 }
