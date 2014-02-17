@@ -37,6 +37,7 @@
         "cd " . __DIR__ . "/../assets/;bower update",
         "cd " . __DIR__ . "/../assets/;grunt build",
         "cd " . __DIR__ . "/../../;php composer.phar update",
+        "cd " . __DIR__ . "/../../;php composer.phar dump-autoload --optimize"
     );
 
     // Run the commands for output
