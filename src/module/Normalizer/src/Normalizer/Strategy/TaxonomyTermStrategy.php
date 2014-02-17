@@ -56,6 +56,13 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'blog':
                 return 'blog/view';
                 break;
+            case 'subject':
+                return 'subject';
+                break;
+            case 'forum':
+            case 'forum-category':
+                return 'discussion/discussions';
+                break;
             case 'topic':
             case 'topic-folder':
             case 'curriculum':
@@ -75,6 +82,17 @@ class TaxonomyTermStrategy extends AbstractStrategy
         switch ($object->getType()->getName()) {
             case 'blog':
                 return ['id' => $object->getId()];
+                break;
+            case 'subject':
+                return [
+                    'subject' => $object->getSlug(),
+                ];
+                break;
+            case 'forum':
+            case 'forum-category':
+                return [
+                    'id' => $object->getId(),
+                ];
                 break;
             case 'topic':
             case 'topic-folder':
