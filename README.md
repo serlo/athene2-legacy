@@ -16,15 +16,28 @@ Those branches deploy automatically and may break stuff.
 
 ### Branches for issues
 
-If you're fixing an issue name the branch `issueid-my-description`.
+If you're fixing an issue name the branch `solves-issueid`.
 
-Example: `233-hydrator-fix`
+Examples:
+* `solves-233`
+* `solves-313`
+
+### Branches implementing feature requests
+
+If you're implementing a new feature request, name the branch `implements-issueid`
+
+Example:
+* `implements-233`
+* `implements-131`
 
 ### Branches for new features
 
 If you're implementing a new feature name the branch `feature-my-feature`.
 
-Example: `feature-database-caching`
+Examples: 
+
+* `feature-database-caching`
+* `feature-authorization`
 
 ### Create Pull Requests
 
