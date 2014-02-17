@@ -65,7 +65,7 @@ class AliasManager implements AliasManagerInterface
             ]
         );
 
-        if(!is_object($entity)){
+        if (!is_object($entity)) {
             throw new Exception\CanonicalUrlNotFoundException(sprintf('No canonical url found'));
         }
 
@@ -73,7 +73,7 @@ class AliasManager implements AliasManagerInterface
 
         if ($canonical !== $entity) {
             $router = $this->getRouter();
-            $path = array_flip(explode('/', $canonical->getAlias()));
+            $path   = array_flip(explode('/', $canonical->getAlias()));
             $url    = $router->assemble($path, ['name' => 'alias/path']);
             if ($url !== $alias) {
                 return $url;
@@ -151,13 +151,20 @@ class AliasManager implements AliasManagerInterface
             ));
         }
 
-        $alias = $this->slugify($alias);
+        $alias       = $this->slugify($alias);
+        $useFallback = true;
 
-        try {
-            $this->findSourceByAlias($alias, $instance);
+        $aliases = $this->findAliases($uuid, $alias);
+        foreach ($aliases as $entity) {
+            if ($entity->getAlias() == $alias) {
+                $useFallback = false;
+                break;
+            }
+        }
+
+        if ($useFallback) {
             $alias = $alias . ' ' . uniqid();
             $alias = $this->slugify($alias);
-        } catch (Exception\AliasNotFoundException $e) {
         }
 
         /* @var $class Entity\AliasInterface */
@@ -195,12 +202,32 @@ class AliasManager implements AliasManagerInterface
         $this->getObjectManager()->flush($object);
     }
 
+    public function findAliases(UuidInterface $object, $alias)
+    {
+        $className = $this->getEntityClassName();
+        $criteria  = ['uuid' => $object->getId(), 'alias' => $alias];
+        $aliases   = $this->getObjectManager()->getRepository($className)->findBy(
+            $criteria
+        );
+
+        return $aliases;
+    }
+
     /**
      * @return ManagerOptions $options
      */
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @param ManagerOptions $options
+     * @return void
+     */
+    public function setOptions(ManagerOptions $options)
+    {
+        $this->options = $options;
     }
 
     protected function getAliasRepository()
@@ -213,18 +240,9 @@ class AliasManager implements AliasManagerInterface
         return $this->getClassResolver()->resolveClassName('Alias\Entity\AliasInterface');
     }
 
-    /**
-     * @param ManagerOptions $options
-     * @return void
-     */
-    public function setOptions(ManagerOptions $options)
-    {
-        $this->options = $options;
-    }
-
     protected function slugify($text)
     {
-        $filter = new Slugify();
+        $filter    = new Slugify();
         $slugified = array();
 
         foreach (explode('/', $text) as $token) {
