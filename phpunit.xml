@@ -10,20 +10,10 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src/module</directory>
             <exclude>
-                <directory suffix=".php">./src/assets</directory>
-                <directory suffix=".php">./src/config</directory>
-                <directory suffix=".php">./src/data</directory>
-                <directory suffix=".php">./src/public</directory>
-                <directory suffix=".php">./src/vendor</directory>
-                <directory suffix=".php">./src/test</directory>
                 <directory suffix="config.php">./src/module</directory>
                 <directory suffix="Module.php">./src/module</directory>
                 <directory suffix="Test.php">./src/module</directory>
             </exclude>
         </whitelist>
     </filter>
-    <logging>
-        <!-- and this is where your report will be written -->
-        <log type="coverage-clover" target="./coverage.clover"/>
-    </logging>
 </phpunit>
