@@ -13,6 +13,5 @@ before_script:
 script: phpunit --coverage-clover=coverage.clover
 
 after_script:
-  - phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --access-token="7e54d1ead90b79890c3046ac36bef26b338bc9f74eacd85dad042cf374ccaaa5" --format=php-clover coverage.clover
