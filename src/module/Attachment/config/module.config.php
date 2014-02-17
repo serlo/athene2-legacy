@@ -10,100 +10,100 @@
  */
 namespace Attachment;
 
-return array(
+return [
     'zfc_rbac' => [
         'assertion_map' => [
             'attachment.append' => 'Authorization\Assertion\InstanceAssertion',
             'attachment.create' => 'Authorization\Assertion\InstanceAssertion'
         ]
     ],
-    'class_resolver'  => array(
+    'class_resolver'  => [
         'Attachment\Entity\ContainerInterface' => 'Attachment\Entity\Container',
         'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
-    ),
-    'attachment_manager'  => array(),
-    'service_manager' => array(
-        'factories' => array(
+    ],
+    'attachment_manager'  => [],
+    'service_manager' => [
+        'factories' => [
             __NAMESPACE__. '\Manager\AttachmentManager' => __NAMESPACE__ . '\Factory\AttachmentManagerFactory',
             __NAMESPACE__. '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
-        )
-    ),
-    'di'              => array(
-        'allowed_controllers' => array(
+        ]
+    ],
+    'di'              => [
+        'allowed_controllers' => [
             'Attachment\Controller\AttachmentController',
             'Taxonomy\Controller\TaxonomyController'
-        ),
-        'definition'          => array(
-            'class' => array(
-                'Attachment\Controller\AttachmentController' => array(
-                    'setAttachmentManager' => array(
+        ],
+        'definition'          => [
+            'class' => [
+                'Attachment\Controller\AttachmentController' => [
+                    'setAttachmentManager' => [
                         'required' => true
-                    )
-                ),
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
+                    ]
+                ],
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 'Attachment\Manager\AttachmentManagerInterface' => 'Attachment\Manager\AttachmentManager'
-            ),
-        )
-    ),
-    'doctrine'        => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ],
+        ]
+    ],
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default'             => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    ),
-    'router'          => array(
-        'routes' => array(
-            'attachment' => array(
+                ]
+            ]
+        ]
+    ],
+    'router'          => [
+        'routes' => [
+            'attachment' => [
                 'type'         => 'Segment',
-                'options'      => array(
+                'options'      => [
                     'route'      => '/attachment',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Attachment\Controller\AttachmentController',
-                    )
-                ),
-                'child_routes' => array(
-                    'info'   => array(
+                    ]
+                ],
+                'child_routes' => [
+                    'info'   => [
                         'type'    => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/info/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'info'
-                            )
-                        ),
-                    ),
-                    'file'   => array(
+                            ]
+                        ],
+                    ],
+                    'file'   => [
                         'type'    => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/file/:id[/:file]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'file'
-                            )
-                        ),
-                    ),
-                    'upload' => array(
+                            ]
+                        ],
+                    ],
+                    'upload' => [
                         'type'    => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/upload[/:append]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'attach'
-                            )
-                        ),
-                    )
-                )
-            ),
-        )
-    )
-);
+                            ]
+                        ],
+                    ]
+                ]
+            ],
+        ]
+    ]
+];

@@ -71,9 +71,9 @@ class AdsManager implements AdsManagerInterface
         $ads = $this->getObjectManager()
             ->getRepository($this->getClassResolver()
             ->resolveClassName('Ads\Entity\AdInterface'))
-            ->findBy(array(
+            ->findBy([
             'instance' => $instance->getId()
-        ));
+        ]);
         
         return $ads;
     }
@@ -88,8 +88,8 @@ class AdsManager implements AdsManagerInterface
     public function findShuffledAds(InstanceInterface $instance, $number)
     {
         $allAds = $this->findAllAds($instance);
-        $adsScaled = array();
-        $ads = array();
+        $adsScaled = [];
+        $ads = [];
         $numberDisabledAds = 0;
         $numberAds = $y = 0;
         foreach ($allAds as $ad) {

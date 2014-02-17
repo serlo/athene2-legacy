@@ -38,33 +38,33 @@ class ParameterForm extends Form
 
         $this->add(
             (new Select('key'))->setLabel('Key:')->setOptions(
-                array(
+                [
                     'value_options' => $types
-                )
+                ]
             )
         );
 
         $this->add((new Text('value'))->setLabel('Value:'));
 
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'page',
-                'options' => array(
+                'options' => [
                     'object_manager' => $entityManager,
                     'target_class'   => 'Navigation\Entity\Page'
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'parent',
-                'options' => array(
+                'options' => [
                     'object_manager' => $entityManager,
                     'target_class'   => 'Navigation\Entity\Parameter'
-                )
-            )
+                ]
+            ]
         );
 
         $this->add(

@@ -19,11 +19,11 @@ class TaxonomyManagerListener extends AbstractListener
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $class = $this->getMonitoredClass();
-        $events->attach($class, 'parent.change', array($this, 'onParentChange'));
-        $events->attach($class, 'create', array($this, 'onCreate'));
-        $events->attach($class, 'update', array($this, 'onUpdate'));
-        $events->attach($class, 'associate', array($this, 'onAssociate'));
-        $events->attach($class, 'dissociate', array($this, 'onDissociate'));
+        $events->attach($class, 'parent.change', [$this, 'onParentChange']);
+        $events->attach($class, 'create', [$this, 'onCreate']);
+        $events->attach($class, 'update', [$this, 'onUpdate']);
+        $events->attach($class, 'associate', [$this, 'onAssociate']);
+        $events->attach($class, 'dissociate', [$this, 'onDissociate']);
     }
 
     protected function getMonitoredClass()

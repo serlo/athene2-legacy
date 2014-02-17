@@ -12,8 +12,8 @@ namespace Contexter\Form;
 
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element;
 use Zend\Form\Element\Text;
+use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -29,14 +29,14 @@ class ContextForm extends Form
         $this->setInputFilter($inputFilter);
 
         $this->add(
-            array(
+            [
                 'name'       => 'route',
                 'type'       => 'Hidden',
-                'attributes' => array()
-            )
+                'attributes' => []
+            ]
         );
 
-        $values = array();
+        $values = [];
         foreach ($types as $type) {
             $values[$type] = $type;
         }
@@ -51,27 +51,27 @@ class ContextForm extends Form
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'object',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
     }
 }

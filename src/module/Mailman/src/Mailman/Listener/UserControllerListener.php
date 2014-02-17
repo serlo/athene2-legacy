@@ -25,9 +25,9 @@ class UserControllerListener extends AbstractListener
         $user = $e->getParam('user');
 
         $subject = new ViewModel();
-        $body    = new ViewModel(array(
+        $body    = new ViewModel([
             'user' => $user
-        ));
+        ]);
 
         $subject->setTemplate('mailman/messages/register/subject');
         $body->setTemplate('mailman/messages/register/body');
@@ -45,10 +45,10 @@ class UserControllerListener extends AbstractListener
         $events->attach(
             $this->getMonitoredClass(),
             'register',
-            array(
+            [
                 $this,
                 'onRegister'
-            ),
+            ],
             -1
         );
     }

@@ -17,7 +17,7 @@ class PageControllerListener extends AbstractListener
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $events->attach($this->getMonitoredClass(), 'page.create', array($this, 'onUpdate'));
+        $events->attach($this->getMonitoredClass(), 'page.create', [$this, 'onUpdate']);
     }
 
     protected function getMonitoredClass()
@@ -39,9 +39,9 @@ class PageControllerListener extends AbstractListener
 
         $url = $e->getTarget()->url()->fromRoute(
             'page/view',
-            array(
+            [
                 'page' => $repository->getId()
-            )
+            ]
         );
 
         $this->getAliasManager()->createAlias(

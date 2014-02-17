@@ -64,9 +64,9 @@ class DiscussionManager implements DiscussionManagerInterface
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
         $discussions      = $objectRepository->findAll(
-            array(
+            [
                 'instance' => $instance->getId()
-            )
+            ]
         );
 
         return new ArrayCollection($discussions);
@@ -77,10 +77,10 @@ class DiscussionManager implements DiscussionManagerInterface
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
         $discussions      = $objectRepository->findBy(
-            array(
+            [
                 'object'   => $uuid->getId(),
                 'archived' => $archived
-            )
+            ]
         );
 
         return new ArrayCollection($discussions);

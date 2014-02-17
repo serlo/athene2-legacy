@@ -27,9 +27,9 @@ class AdsController extends AbstractActionController
     {
         $ads = $this->getAdsManager()->findAllAds($this->getInstanceManager()
             ->getInstanceFromRequest());
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'ads' => $ads
-        ));
+        ]);
         $view->setTemplate('ads/ads');
         
         return $view;
@@ -65,10 +65,10 @@ class AdsController extends AbstractActionController
             }
         }
         
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form,
             'title' => 'Ad erstellen'
-        ));
+        ]);
         $view->setTemplate('ads/form.phtml');
         
         return $view;
@@ -87,9 +87,9 @@ class AdsController extends AbstractActionController
     {
         $ads = $this->getAdsManager()->findShuffledAds($this->getInstanceManager()
             ->getInstanceFromRequest(), 3);
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'ads' => $ads
-        ));
+        ]);
         $view->setTemplate('ads/shuffle.phtml');
         $this->getObjectManager()->flush();
         
@@ -134,10 +134,10 @@ class AdsController extends AbstractActionController
             }
         }
         
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form,
             'title' => 'Ad bearbeiten'
-        ));
+        ]);
         $view->setTemplate('ads/form.phtml');
         
         return $view;

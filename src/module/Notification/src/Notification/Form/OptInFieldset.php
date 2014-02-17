@@ -37,15 +37,15 @@ class OptInFieldset extends Fieldset implements InputFilterProviderInterface
 
     public function getInputFilterSpecification()
     {
-        return array(
-            array(
+        return [
+            [
                 'name'     => 'subscribe',
                 'required' => true
-            ),
-            array(
+            ],
+            [
                 'name'     => 'mailman',
                 'required' => true
-            )
-        );
+            ]
+        ];
     }
 }

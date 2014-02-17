@@ -23,10 +23,10 @@ class EntityControllerListener extends AbstractSharedListenerAggregate
         $events->attach(
             $this->getMonitoredClass(),
             'create.postFlush',
-            array(
+            [
                 $this,
                 'onCreate'
-            ),
+            ],
             -1000
         );
     }

@@ -28,11 +28,11 @@ class DiscussionForm extends AbstractForm
         $inputFilter = new InputFilter('discussion');
 
         $this->add(
-            array(
+            [
                 'name'       => 'forum',
                 'type'       => 'Zend\Form\Element\Hidden',
-                'attributes' => array()
-            )
+                'attributes' => []
+            ]
         );
 
         $this->add((new Text('title'))->setLabel('Title:'));
@@ -45,34 +45,34 @@ class DiscussionForm extends AbstractForm
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'forum',
                 'required' => true
-            )
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->setInputFilter($inputFilter);

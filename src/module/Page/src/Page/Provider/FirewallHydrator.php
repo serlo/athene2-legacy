@@ -39,7 +39,7 @@ class FirewallHydrator
         $pageRepository = $this->getPageManager()->getPageRepository($id);
         
         $allRoles = $this->getPageManager()->findAllRoles();
-        $array = array();
+        $array = [];
         
        foreach ($allRoles as $role) {
             if ($pageRepository->hasRole($role))

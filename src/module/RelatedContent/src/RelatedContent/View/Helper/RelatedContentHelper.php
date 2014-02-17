@@ -54,8 +54,8 @@ class RelatedContentHelper extends AbstractHelper
     {
         $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->getObject()
             ->getId());
-        return $this->getView()->partial('related-content/view', array(
+        return $this->getView()->partial('related-content/view', [
             'aggregated' => $aggregated
-        ));
+        ]);
     }
 }

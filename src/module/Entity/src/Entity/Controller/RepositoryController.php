@@ -40,10 +40,10 @@ class RepositoryController extends AbstractController
         /* @var $form \Zend\Form\Form */
         $form = $this->getForm($entity);
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'entity' => $entity,
             'form'   => $form
-        ));
+        ]);
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -111,19 +111,19 @@ class RepositoryController extends AbstractController
         $this->getEventManager()->trigger(
             'checkout',
             $this,
-            array(
+            [
                 'entity'   => $entity,
                 'revision' => $revision
-            )
+            ]
         );
 
         $this->getEntityManager()->flush();
 
         $this->redirect()->toRoute(
             'entity/repository/history',
-            array(
+            [
                 'entity' => $entity->getId()
-            )
+            ]
         );
 
         return false;
@@ -136,11 +136,11 @@ class RepositoryController extends AbstractController
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'currentRevision' => $currentRevision,
             'revision'        => $revision,
             'entity'          => $entity
-        ));
+        ]);
 
         $view->setTemplate('entity/repository/compare-revision');
 
@@ -171,11 +171,11 @@ class RepositoryController extends AbstractController
         $entity          = $this->getEntity();
         $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'entity'          => $entity,
             'revisions'       => $entity->getRevisions(),
             'currentRevision' => $currentRevision
-        ));
+        ]);
 
         $view->setTemplate('entity/repository/history');
 

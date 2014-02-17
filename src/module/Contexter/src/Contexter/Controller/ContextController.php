@@ -26,9 +26,9 @@ class ContextController extends AbstractActionController
         $this->assertGranted('contexter.context.manage');
 
         $elements = $this->getContextManager()->findAll();
-        $view     = new ViewModel(array(
+        $view     = new ViewModel([
             'elements' => $elements
-        ));
+        ]);
         $view->setTemplate('contexter/manage');
 
         return $view;
@@ -51,9 +51,9 @@ class ContextController extends AbstractActionController
             $parameters = $this->getRouter()->getAdapter()->getProvidedParams();
             $form       = new ContextForm($parameters, $types->toArray());
             $form->setData(
-                array(
+                [
                     'route' => $routeMatch->getMatchedRouteName()
-                )
+                ]
             );
             if ($this->getRequest()->isPost()) {
                 $form->setData(
@@ -79,9 +79,9 @@ class ContextController extends AbstractActionController
                 }
             }
         }
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('contexter/add/form');
 
         return $view;
@@ -92,16 +92,16 @@ class ContextController extends AbstractActionController
         $this->assertGranted('contexter.context.add');
 
         $form = new UrlForm();
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         if ($this->getRequest()->isPost()) {
             $form->setData(
                 $this->getRequest()->getPost()
             );
             if ($form->isValid()) {
                 $data = $form->getData();
-                $url  = $this->url()->fromRoute('contexter/add', array()) . '?uri=' . $data['uri'];
+                $url  = $this->url()->fromRoute('contexter/add', []) . '?uri=' . $data['uri'];
                 $this->redirect()->toUrl($url);
 
                 return false;
@@ -118,9 +118,9 @@ class ContextController extends AbstractActionController
         $context = $this->getContextManager()->getContext($id);
         $this->assertGranted('contexter.context.update', $context);
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'context' => $context
-        ));
+        ]);
         $view->setTemplate('contexter/update');
 
         return $view;

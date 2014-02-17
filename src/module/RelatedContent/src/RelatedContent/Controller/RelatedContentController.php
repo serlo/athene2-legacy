@@ -30,15 +30,15 @@ class RelatedContentController extends AbstractActionController
             'action',
             $this->url()->fromRoute(
                 'related-content/add-category',
-                array(
+                [
                     'id' => $this->params('id')
-                )
+                ]
             )
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -50,9 +50,9 @@ class RelatedContentController extends AbstractActionController
                 $this->getRelatedContentManager()->getObjectManager()->flush();
                 $this->redirect()->toRoute(
                     'related-content/manage',
-                    array(
+                    [
                         'id' => $this->params('id')
-                    )
+                    ]
                 );
             }
         }
@@ -69,15 +69,15 @@ class RelatedContentController extends AbstractActionController
             'action',
             $this->url()->fromRoute(
                 'related-content/add-external',
-                array(
+                [
                     'id' => $this->params('id')
-                )
+                ]
             )
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -89,9 +89,9 @@ class RelatedContentController extends AbstractActionController
                 $this->getRelatedContentManager()->getObjectManager()->flush();
                 $this->redirect()->toRoute(
                     'related-content/manage',
-                    array(
+                    [
                         'id' => $this->params('id')
-                    )
+                    ]
                 );
             }
         }
@@ -108,15 +108,15 @@ class RelatedContentController extends AbstractActionController
             'action',
             $this->url()->fromRoute(
                 'related-content/add-internal',
-                array(
+                [
                     'id' => $this->params('id')
-                )
+                ]
             )
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -132,9 +132,9 @@ class RelatedContentController extends AbstractActionController
                 $this->getRelatedContentManager()->getObjectManager()->flush();
                 $this->redirect()->toRoute(
                     'related-content/manage',
-                    array(
+                    [
                         'id' => $this->params('id')
-                    )
+                    ]
                 );
             }
         }
@@ -148,10 +148,10 @@ class RelatedContentController extends AbstractActionController
         $this->assertGranted('related_content.manage');
 
         $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent((int)$this->params('id'));
-        $view       = new ViewModel(array(
+        $view       = new ViewModel([
             'aggregated' => $aggregated,
             'id'         => $this->params('id')
-        ));
+        ]);
         $view->setTemplate('related-content/manage');
 
         return $view;
@@ -163,7 +163,7 @@ class RelatedContentController extends AbstractActionController
 
         $position = 1;
         if ($this->getRequest()->isPost()) {
-            foreach ($this->params()->fromPost('sortable', array()) as $holder) {
+            foreach ($this->params()->fromPost('sortable', []) as $holder) {
                 $this->getRelatedContentManager()->positionHolder((int)$holder['id'], (int)$position);
                 $position++;
             }

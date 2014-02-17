@@ -38,9 +38,9 @@ class PageController extends AbstractController
         }
 
         try {
-            $model = new \Zend\View\Model\ViewModel(array(
+            $model = new \Zend\View\Model\ViewModel([
                 'entity' => $entity
-            ));
+            ]);
             $model->setTemplate('entity/page/default');
             $this->layout('layout/3-col');
 

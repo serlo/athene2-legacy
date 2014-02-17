@@ -25,9 +25,9 @@ class AuthenticationControllerListener extends AbstractListener
         $user = $e->getParam('user');
 
         $subject = new ViewModel();
-        $body    = new ViewModel(array(
+        $body    = new ViewModel([
             'user' => $user
-        ));
+        ]);
 
         $subject->setTemplate('mailman/messages/restore-password/subject');
         $body->setTemplate('mailman/messages/restore-password/body');
@@ -46,9 +46,9 @@ class AuthenticationControllerListener extends AbstractListener
         $user = $e->getParam('user');
 
         $subject = new ViewModel();
-        $body    = new ViewModel(array(
+        $body    = new ViewModel([
             'user' => $user
-        ));
+        ]);
 
         $subject->setTemplate('mailman/messages/register/subject');
         $body->setTemplate('mailman/messages/register/body');
@@ -66,19 +66,19 @@ class AuthenticationControllerListener extends AbstractListener
         $events->attach(
             $this->getMonitoredClass(),
             'restore-password',
-            array(
+            [
                 $this,
                 'onRestore'
-            ),
+            ],
             -1
         );
         $events->attach(
             $this->getMonitoredClass(),
             'activate',
-            array(
+            [
                 $this,
                 'onActivate'
-            ),
+            ],
             -1
         );
     }

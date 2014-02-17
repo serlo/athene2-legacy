@@ -36,27 +36,27 @@ class ModuleForm extends Form
         $this->add(new Controls());
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'reasoning',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->setInputFilter($inputFilter);

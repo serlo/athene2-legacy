@@ -46,9 +46,9 @@ class NotificationManager implements NotificationManagerInterface
         $notifications = $this->getObjectManager()->getRepository(
                 $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface')
             )->findBy(
-                array(
+                [
                     'user' => $userService->getId()
-                ),
+                ],
                 ['id' => 'desc']
             );
 

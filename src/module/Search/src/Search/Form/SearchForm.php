@@ -30,9 +30,9 @@ class SearchForm extends Form
         $this->add((new Submit('submit'))->setValue('search')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'q',
             'required' => true
-        ));
+        ]);
     }
 }

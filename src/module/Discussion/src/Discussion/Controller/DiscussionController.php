@@ -48,15 +48,15 @@ class DiscussionController extends AbstractController
             'action',
             $this->url()->fromRoute(
                 'discussion/discussion/start',
-                array(
+                [
                     'on' => $this->params('discussion')
-                )
+                ]
             ) . '?ref=' . $ref
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         if ($this->getRequest()->isPost()) {
             $form->setData(
                 $this->getRequest()->getPost()
@@ -88,10 +88,10 @@ class DiscussionController extends AbstractController
     public function showAction()
     {
         $discussion = $this->getDiscussion();
-        $view       = new ViewModel(array(
+        $view       = new ViewModel([
             'discussion' => $discussion,
             'user'       => $this->getUserManager()->getUserFromAuthenticator()
-        ));
+        ]);
         $view->setTemplate('discussion/discussion/show');
 
         return $view;
@@ -113,9 +113,9 @@ class DiscussionController extends AbstractController
             $this->referer()->toUrl('/')
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         if ($this->getRequest()->isPost()) {
             $form->setData(
                 $this->getRequest()->getPost()

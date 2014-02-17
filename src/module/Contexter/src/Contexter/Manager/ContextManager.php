@@ -28,7 +28,7 @@ class ContextManager implements ContextManagerInterface
     use TypeManagerAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait;
 
-    public function addRoute(ContextInterface $context, $routeName, array $params = array())
+    public function addRoute(ContextInterface $context, $routeName, array $params = [])
     {
         $this->assertGranted('contexter.route.add', $context);
 

@@ -28,7 +28,7 @@ class FlagForm extends Form
         $inputFilter = new InputFilter('context');
         $this->setInputFilter($inputFilter);
 
-        $values = array();
+        $values = [];
         /* @var $type \Flag\Entity\TypeInterface */
         foreach ($types as $type) {
             $values[$type->getId()] = $type->getName();
@@ -36,9 +36,9 @@ class FlagForm extends Form
 
         $this->add(
             (new Select('type'))->setLabel('Type:')->setOptions(
-                array(
+                [
                     'value_options' => $values
-                )
+                ]
             )
         );
 
@@ -49,22 +49,22 @@ class FlagForm extends Form
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'type',
                 'required' => true
-            )
+            ]
         );
     }
 }

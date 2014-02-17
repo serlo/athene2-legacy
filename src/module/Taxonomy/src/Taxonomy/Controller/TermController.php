@@ -59,10 +59,10 @@ class TermController extends AbstractController
             $this->referer()->store();
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form'       => $form,
             'isUpdating' => false
-        ));
+        ]);
 
         $view->setTemplate('taxonomy/term/form');
 
@@ -71,7 +71,7 @@ class TermController extends AbstractController
 
     public function orderAction()
     {
-        $data = $this->params()->fromPost('sortable', array());
+        $data = $this->params()->fromPost('sortable', []);
         $this->iterWeight($data, $this->params('term'));
         $this->getTaxonomyManager()->flush();
 
@@ -107,7 +107,7 @@ class TermController extends AbstractController
         $term        = $this->getTerm($this->params('term'));
 
         if ($this->getRequest()->isPost()) {
-            $associations = $this->params()->fromPost('sortable', array());
+            $associations = $this->params()->fromPost('sortable', []);
             $i            = 0;
 
             foreach ($associations as $a) {
@@ -121,11 +121,11 @@ class TermController extends AbstractController
         }
 
         $associations = $term->getAssociated($association);
-        $view         = new ViewModel(array(
+        $view         = new ViewModel([
             'term'         => $term,
             'associations' => $associations,
             'association'  => $association
-        ));
+        ]);
         $view->setTemplate('taxonomy/term/order-associated');
 
         return $view;
@@ -135,9 +135,9 @@ class TermController extends AbstractController
     {
         $term = $this->getTerm();
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'term' => $term
-        ));
+        ]);
 
         $view->setTemplate('taxonomy/term/organize');
 

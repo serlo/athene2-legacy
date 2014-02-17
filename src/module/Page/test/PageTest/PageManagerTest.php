@@ -29,7 +29,7 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         $this->languageMock = $this->getMock('Language\Entity\Language');
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->userMock = $this->getMock('User\Entity\User');
-        $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', [], [], '', false);
         $this->uuidManagerMock = $this->getMock('Uuid\Manager\UuidManager');
         $this->classResolverMock = $this->getMock('ClassResolver\ClassResolver');
         $this->serviceLocatorMock = $this->getMock('Zend\ServiceManager\ServiceManager');
@@ -71,20 +71,20 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->classResolverMock->expects($this->atLeastOnce())
             ->method('resolveClassName')
-            ->will($this->returnValueMap(array(
-            array(
+            ->will($this->returnValueMap([
+            [
                 'Page\Entity\PageRepositoryInterface',
                 'Page\Entity\PageRepository'
-            ),
-            array(
+            ],
+            [
                 'Page\Entity\PageRevisionInterface',
                 'Page\Entity\PageRevision'
-            ),
-            array(
+            ],
+            [
                 'Page\Service\PageServiceInterface',
                 'Page\Service\PageService'
-            )
-        )));
+            ]
+        ]));
         
         $this->serviceLocatorMock->expects($this->once())
             ->method('get')
@@ -140,10 +140,10 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         $this->repositoryManagerMock->expects($this->atLeastOnce())
         ->method('getRepository');
     
-        $this->assertInstanceOf('Page\Service\PageServiceInterface', $this->pageManager->createRevision($this->pageRepositoryMock, array(
+        $this->assertInstanceOf('Page\Service\PageServiceInterface', $this->pageManager->createRevision($this->pageRepositoryMock, [
             123,
             456,123,'author'=>$this->userMock
-        )));
+        ]));
         
 
     }
@@ -154,10 +154,10 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         $this->createPageRepositoryEntity();
         $this->pageRepositoryMock->expects($this->once())->method('setLanguage')->with($this->languageMock);
         $this->createService();
-        $this->assertInstanceOf('Page\Service\PageServiceInterface', $this->pageManager->createPageRepository(array(
+        $this->assertInstanceOf('Page\Service\PageServiceInterface', $this->pageManager->createPageRepository([
             123,
-            456,123,'instance'=>$this->languageMock,'roles'=>array('sysadmin')
-        ),$this->languageMock));
+            456,123,'instance'=>$this->languageMock,'roles'=>['sysadmin']
+        ],$this->languageMock));
     
     
     }
@@ -196,7 +196,7 @@ class PageManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->classResolverMock->expects($this->once())->method('resolveClassName')->will($this->returnValue('Page\Entity\PageRepository'));
         $this->objectManagerMock->expects($this->once())->method('getRepository')->will($this->returnValue($this->repositoryMock));
-        $this->repositoryMock->expects($this->once())->method('findBy')->will($this->returnValue(array($this->pageRepositoryMock)));
+        $this->repositoryMock->expects($this->once())->method('findBy')->will($this->returnValue([$this->pageRepositoryMock]));
         
         $this->assertNotNull($this->pageManager->findAllRepositorys($this->languageServiceMock));
     }

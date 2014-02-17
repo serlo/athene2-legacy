@@ -13,10 +13,10 @@ namespace Authentication;
 
 class HashService implements HashServiceInterface
 {
-    private $_config = array(
+    private $_config = [
         'salt_pattern' => '1,3,5,9,14,15,20,21,28,30',
 	    'hash_method'   => 'sha1',
-    );
+    ];
     
     
     public function __construct(){

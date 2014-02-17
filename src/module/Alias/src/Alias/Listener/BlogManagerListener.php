@@ -20,19 +20,19 @@ class BlogManagerListener extends AbstractListener
         $events->attach(
             $this->getMonitoredClass(),
             'create',
-            array(
+            [
                 $this,
                 'onUpdate'
-            )
+            ]
         );
 
         $events->attach(
             $this->getMonitoredClass(),
             'update',
-            array(
+            [
                 $this,
                 'onUpdate'
-            )
+            ]
         );
     }
 

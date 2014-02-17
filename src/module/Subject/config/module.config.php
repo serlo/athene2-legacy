@@ -10,7 +10,7 @@
  */
 namespace Subject;
 
-return array(
+return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Options\ModuleOptions'  => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
@@ -23,148 +23,148 @@ return array(
             'subject' => __NAMESPACE__ . '\Factory\SubjectHelperFactory'
         ]
     ],
-    'taxonomy'        => array(
-        'types' => array(
-            'topic-folder'            => array(
-                'allowed_associations' => array(
+    'taxonomy'        => [
+        'types' => [
+            'topic-folder'            => [
+                'allowed_associations' => [
                     'entities'
-                ),
-                'allowed_parents'      => array(
+                ],
+                'allowed_parents'      => [
                     'topic'
-                ),
+                ],
                 'rootable'             => false
-            ),
-            'topic'                   => array(
-                'allowed_parents' => array(
+            ],
+            'topic'                   => [
+                'allowed_parents' => [
                     'subject',
                     'topic'
-                ),
-                'allowed_associations' => array(
+                ],
+                'allowed_associations' => [
                     'entities'
-                ),
+                ],
                 'rootable'        => false
-            ),
-            'subject'                 => array(
-                'allowed_parents' => array(
+            ],
+            'subject'                 => [
+                'allowed_parents' => [
                     'root'
-                ),
+                ],
                 'rootable'        => false
-            ),
-            'locale'                  => array(
-                'allowed_parents' => array(
+            ],
+            'locale'                  => [
+                'allowed_parents' => [
                     'subject',
                     'locale'
-                ),
+                ],
                 'rootable'        => false
-            ),
-            'curriculum'              => array(
-                'allowed_parents' => array(
+            ],
+            'curriculum'              => [
+                'allowed_parents' => [
                     'subject',
                     'locale'
-                ),
+                ],
                 'rootable'        => false
-            ),
-            'curriculum-topic'       => array(
-                'allowed_associations' => array(
+            ],
+            'curriculum-topic'       => [
+                'allowed_associations' => [
                     'entities'
-                ),
-                'allowed_parents'      => array(
+                ],
+                'allowed_parents'      => [
                     'curriculum',
                     'curriculum-topic'
-                ),
+                ],
                 'rootable'             => false
-            ),
-            'curriculum-topic-folder' => array(
-                'allowed_associations' => array(
+            ],
+            'curriculum-topic-folder' => [
+                'allowed_associations' => [
                     'entities'
-                ),
-                'allowed_parents'      => array(
+                ],
+                'allowed_parents'      => [
                     'curriculum-topic-folder'
-                ),
+                ],
                 'rootable'             => false
-            )
-        )
-    ),
-    'router'          => array(
-        'routes' => array(
-            'subject' => array(
+            ]
+        ]
+    ],
+    'router'          => [
+        'routes' => [
+            'subject' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/{subject}/:subject',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\HomeController',
                         'action'     => 'index'
-                    )
-                ),
-                'child_routes'  => array(
-                    'taxonomy' => array(
+                    ]
+                ],
+                'child_routes'  => [
+                    'taxonomy' => [
                         'type'    => 'slashable',
-                        'options' => array(
+                        'options' => [
                             'route'       => '/:path',
-                            'defaults'    => array(
+                            'defaults'    => [
                                 'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
                                 'action'     => 'index'
-                            ),
-                            'constraints' => array(
+                            ],
+                            'constraints' => [
                                 'path' => '(.)+'
-                            )
-                        )
-                    ),
-                    'entity'   => array(
+                            ]
+                        ]
+                    ],
+                    'entity'   => [
                         'may_terminate' => true,
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/entity/:action',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\EntityController',
                                 'action'     => 'index',
                                 'plugin'     => 'entity'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'di'              => array(
-        'allowed_controllers' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'di'              => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\TaxonomyController',
             __NAMESPACE__ . '\Controller\EntityController',
             __NAMESPACE__ . '\Controller\HomeController'
-        ),
-        'definition'          => array(
-            'class' => array(
-                __NAMESPACE__ . '\Controller\HomeController'     => array(
-                    'setInstanceManager' => array(
+        ],
+        'definition'          => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\HomeController'     => [
+                    'setInstanceManager' => [
                         'required' => true
-                    ),
-                    'setSubjectManager'  => array(
+                    ],
+                    'setSubjectManager'  => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\TaxonomyController' => array(
-                    'setInstanceManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\TaxonomyController' => [
+                    'setInstanceManager' => [
                         'required' => true
-                    ),
-                    'setSubjectManager'  => array(
+                    ],
+                    'setSubjectManager'  => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\EntityController'   => array(
-                    'setInstanceManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\EntityController'   => [
+                    'setInstanceManager' => [
                         'required' => true
-                    ),
-                    'setSubjectManager'  => array(
+                    ],
+                    'setSubjectManager'  => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\SubjectManagerInterface' => __NAMESPACE__ . '\Manager\SubjectManager'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

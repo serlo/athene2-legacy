@@ -43,13 +43,13 @@ class PageRevisionTest extends Model
     protected function getData()
     {
         
-        return array(
+        return [
             'author' => new User(),
             'title' => 'title',
             'content' => 'content',
             'date' => new \DateTime(),
             'repository' => new PageRepository()
-        );
+        ];
     }
 
     
@@ -64,12 +64,12 @@ class PageRevisionTest extends Model
     
     public function testPopulate()
     {
-        $this->getObject()->populate(array(
+        $this->getObject()->populate([
             'author' => new User(),
             'title' => 'title',
             'content' => 'content',
             'date' => new \DateTime(),
-        ));
+        ]);
         $this->assertEquals('title', $this->getObject()->getTitle()
             );
         

@@ -13,152 +13,152 @@ namespace User;
 /**
  * @codeCoverageIgnore
  */
-return array(
+return [
     'zfc_rbac'        => [
         'assertion_map' => [
             //'user.create' => 'User\Assertion\HasNoIdentityAssertion'
         ]
     ],
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             __NAMESPACE__ . '\Manager\UserManager' => __NAMESPACE__ . '\Factory\UserManagerFactory',
             __NAMESPACE__ . '\Form\Register'       => function ($sm) {
                     $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
 
                     return $form;
                 },
-        )
-    ),
-    'class_resolver'  => array(
+        ]
+    ],
+    'class_resolver'  => [
         'User\Entity\UserInterface' => 'User\Entity\User',
         'User\Entity\RoleInterface' => 'User\Entity\Role'
-    ),
-    'di'              => array(
-        'allowed_controllers' => array(
+    ],
+    'di'              => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\UsersController',
             __NAMESPACE__ . '\Controller\UserController'
-        ),
-        'definition'          => array(
-            'class' => array(
-                __NAMESPACE__ . '\Controller\UsersController' => array(
-                    'setUserManager' => array(
+        ],
+        'definition'          => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\UsersController' => [
+                    'setUserManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Hydrator\UserHydrator'      => array(
-                    'setUuidManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Hydrator\UserHydrator'      => [
+                    'setUuidManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\UserController'  => array(
-                    'setUserManager'           => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\UserController'  => [
+                    'setUserManager'           => [
                         'required' => true
-                    ),
-                    'setAuthenticationService' => array(
+                    ],
+                    'setAuthenticationService' => [
                         'required' => true
-                    ),
-                    'setInstanceManager'       => array(
+                    ],
+                    'setInstanceManager'       => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\UserManagerInterface' => __NAMESPACE__ . '\Manager\UserManager'
-            )
-        )
-    ),
-    'router'          => array(
-        'routes' => array(
-            'users' => array(
+            ]
+        ]
+    ],
+    'router'          => [
+        'routes' => [
+            'users' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/users',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\UsersController',
                         'action'     => 'users'
-                    )
-                )
-            ),
-            'user'  => array(
+                    ]
+                ]
+            ],
+            'user'  => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/user',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\UserController',
                         'action'     => 'profile'
-                    )
-                ),
-                'child_routes'  => array(
-                    'me'        => array(
+                    ]
+                ],
+                'child_routes'  => [
+                    'me'        => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/me',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'me'
-                            )
-                        )
-                    ),
-                    'profile'   => array(
+                            ]
+                        ]
+                    ],
+                    'profile'   => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/profile/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'profile'
-                            )
-                        )
-                    ),
-                    'register'  => array(
+                            ]
+                        ]
+                    ],
+                    'register'  => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/register',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'register'
-                            )
-                        )
-                    ),
-                    'settings'  => array(
+                            ]
+                        ]
+                    ],
+                    'settings'  => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/settings',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'settings'
-                            )
-                        )
-                    ),
-                    'remove'    => array(
+                            ]
+                        ]
+                    ],
+                    'remove'    => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/remove/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'remove'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'doctrine'        => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default'             => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        ),
-    )
-);
+                ]
+            ]
+        ],
+    ]
+];

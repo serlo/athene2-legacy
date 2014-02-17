@@ -14,7 +14,7 @@ use Zend\Mvc\Router\Http\Segment;
 
 class Slashable extends Segment
 {
-    public function __construct($route, array $constraints = array(), array $defaults = array())
+    public function __construct($route, array $constraints = [], array $defaults = [])
     {
         parent::__construct($route, $constraints, $defaults);
 

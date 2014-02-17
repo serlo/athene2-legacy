@@ -71,9 +71,9 @@ class PageManager implements PageManagerInterface
     public function findAllRepositories(InstanceInterface $instance)
     {
         $className    = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
-        $params       = array('instance' => $instance->getId());
+        $params       = ['instance' => $instance->getId()];
         $repositories = $this->getObjectManager()->getRepository($className)->findBy($params);
-        $return       = array();
+        $return       = [];
         foreach ($repositories as $repository) {
             if (!$repository->isTrashed()) {
                 $return[] = $repository;

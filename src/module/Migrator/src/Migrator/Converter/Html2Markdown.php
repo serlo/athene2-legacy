@@ -25,7 +25,7 @@ class Html2Markdown extends AbstractConverter
     /**
      * @var array Class-wide options users can override.
      */
-    private $options = array(
+    private $options = [
         'header_style'    => 'atx',
         // Set to "atx" to output H1 and H2 headers as # Header1 and ## Header2
         'suppress_errors' => true,
@@ -36,7 +36,7 @@ class Html2Markdown extends AbstractConverter
         // Set to '__' if you prefer the underlined style
         'italic_style'    => '*',
         // Set to '_' if you prefer the underlined style
-    );
+    ];
 
 
     /**
@@ -199,7 +199,7 @@ class Html2Markdown extends AbstractConverter
             'UTF-8'
         ); // Double decode to cover cases like &amp;nbsp; http://www.php.net/manual/en/function.htmlentities.php#99984
         $markdown = preg_replace("/<!DOCTYPE [^>]+>/", "", $markdown); // Strip doctype declaration
-        $unwanted = array(
+        $unwanted = [
             '<html>',
             '</html>',
             '<body>',
@@ -208,7 +208,7 @@ class Html2Markdown extends AbstractConverter
             '</head>',
             '<?xml encoding="UTF-8">',
             '&#xD;'
-        );
+        ];
         $markdown = str_replace($unwanted, '', $markdown); // Strip unwanted tags
         //$markdown = trim($markdown, "\n\r\0\x0B");
         $markdown = trim($markdown, "\x00..\x1F");
@@ -471,7 +471,7 @@ class Html2Markdown extends AbstractConverter
         $markdown = '';
 
         $code_content = html_entity_decode($node->C14N());
-        $code_content = str_replace(array("<code>", "</code>"), "", $code_content);
+        $code_content = str_replace(["<code>", "</code>"], "", $code_content);
 
         $lines = preg_split('/\r\n|\r|\n/', $code_content);
         $total = count($lines);

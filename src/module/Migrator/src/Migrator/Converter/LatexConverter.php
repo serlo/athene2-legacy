@@ -31,18 +31,18 @@ class LatexConverter extends AbstractConverter
 
                 $url      = 'http://www.wiris.net/demo/editor/mathml2latex';
                 $postdata = http_build_query(
-                    array(
+                    [
                         'mml' => $replace
-                    )
+                    ]
                 );
 
-                $opts = array(
-                    'http' => array(
+                $opts = [
+                    'http' => [
                         'method'  => 'POST',
                         'header'  => 'Content-type: application/x-www-form-urlencoded',
                         'content' => $postdata
-                    )
-                );
+                    ]
+                ];
 
                 $context = stream_context_create($opts);
 

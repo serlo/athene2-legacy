@@ -23,7 +23,7 @@ class PageControllerTest extends Athene2ApplicationTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', [], [], '', false);
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->pageServiceMock = $this->getMock('Page\Service\PageService');
         $this->pageRevisionMock = $this->getMock('Page\Entity\PageRevision');
@@ -40,7 +40,7 @@ class PageControllerTest extends Athene2ApplicationTestCase
         $this->controller->getPageManager()
         ->expects($this->once())
         ->method('findAllRepositorys')
-        ->will($this->returnValue(array()));
+        ->will($this->returnValue([]));
         $this->dispatch('/page');
         $this->assertResponseStatusCode(200);
         

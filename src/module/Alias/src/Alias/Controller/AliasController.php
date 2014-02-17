@@ -66,9 +66,9 @@ class AliasController extends AbstractActionController
             $controller,
             ArrayUtils::merge(
                 $params,
-                array(
+                [
                     'forwarded' => true
-                )
+                ]
             )
         );
 

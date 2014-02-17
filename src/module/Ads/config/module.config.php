@@ -10,95 +10,95 @@
  */
 namespace Ads;
 
-return array(
-    'view_manager'   => array(
-        'template_path_stack' => array(
+return [
+    'view_manager'   => [
+        'template_path_stack' => [
             __DIR__ . '/../view'
-        )
-    ),
-    'router'         => array(
-        'routes' => array(
-            'ads' => array(
+        ]
+    ],
+    'router'         => [
+        'routes' => [
+            'ads' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/horizon',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Ads\Controller\AdsController',
                         'action'     => 'index'
-                    )
-                ),
-                'child_routes'  => array(
-                    'shuffle' => array(
+                    ]
+                ],
+                'child_routes'  => [
+                    'shuffle' => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/shuffle',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Ads\Controller\AdsController',
                                 'action'     => 'shuffle'
-                            )
-                        )
-                    ),
-                    'add'     => array(
+                            ]
+                        ]
+                    ],
+                    'add'     => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/add',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Ads\Controller\AdsController',
                                 'action'     => 'add'
-                            )
-                        )
-                    ),
-                    'ad'      => array(
+                            ]
+                        ]
+                    ],
+                    'ad'      => [
                         'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
+                        'options'      => [
                             'route'    => '/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'Ads\Controller\AdsController',
                                 'action'     => 'add'
-                            )
-                        ),
-                        'child_routes' => array(
-                            'delete' => array(
+                            ]
+                        ],
+                        'child_routes' => [
+                            'delete' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/delete',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
                                         'action'     => 'delete'
-                                    )
-                                )
-                            ),
-                            'out'    => array(
+                                    ]
+                                ]
+                            ],
+                            'out'    => [
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options'       => array(
+                                'options'       => [
                                     'route'    => '/out',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
                                         'action'     => 'out'
-                                    )
-                                )
-                            ),
-                            'edit'   => array(
+                                    ]
+                                ]
+                            ],
+                            'edit'   => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/edit',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'Ads\Controller\AdsController',
                                         'action'     => 'edit'
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'view_helpers'   => array(
-        'factories' => array(
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'view_helpers'   => [
+        'factories' => [
             'Horizon' => function ($helperPluginManager) {
 
                     $instanceManager = $helperPluginManager->getServiceLocator()->get(
@@ -111,83 +111,83 @@ return array(
 
                     return $viewHelper;
                 }
-        )
-    ),
-    'class_resolver' => array(
+        ]
+    ],
+    'class_resolver' => [
         'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
-    ),
-    'zfc_rbac'       => array(
+    ],
+    'zfc_rbac'       => [
         'assertion_map' => [
             'ad.create' => 'Authorization\Assertion\InstanceAssertion',
             'ad.update' => 'Authorization\Assertion\InstanceAssertion',
             'ad.get'    => 'Authorization\Assertion\InstanceAssertion',
             'ad.remove' => 'Authorization\Assertion\InstanceAssertion',
         ]
-    ),
-    'di'             => array(
-        'allowed_controllers' => array(
+    ],
+    'di'             => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\AdsController'
-        ),
-        'definition'          => array(
-            'class' => array(
+        ],
+        'definition'          => [
+            'class' => [
 
-                'Ads\Controller\AdsController' => array(
-                    'setObjectManager'     => array(
+                'Ads\Controller\AdsController' => [
+                    'setObjectManager'     => [
                         'required' => 'true'
-                    ),
-                    'setInstanceManager'   => array(
+                    ],
+                    'setInstanceManager'   => [
                         'required' => 'true'
-                    ),
-                    'setUserManager'       => array(
+                    ],
+                    'setUserManager'       => [
                         'required' => 'true'
-                    ),
-                    'setAdsManager'        => array(
+                    ],
+                    'setAdsManager'        => [
                         'required' => true
-                    ),
-                    'setAttachmentManager' => array(
+                    ],
+                    'setAttachmentManager' => [
                         'required' => true
-                    )
-                ),
-                'Ads\Manager\AdsManager'       => array(
+                    ]
+                ],
+                'Ads\Manager\AdsManager'       => [
 
-                    'setInstanceManager'   => array(
+                    'setInstanceManager'   => [
                         'required' => 'true'
-                    ),
-                    'setClassResolver'     => array(
+                    ],
+                    'setClassResolver'     => [
                         'required' => 'true'
-                    ),
-                    'setUserManager'       => array(
+                    ],
+                    'setUserManager'       => [
                         'required' => true
-                    ),
-                    'setObjectManager'     => array(
+                    ],
+                    'setObjectManager'     => [
                         'required' => true
-                    ),
-                    'setAttachmentManager' => array(
+                    ],
+                    'setAttachmentManager' => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\AdsManagerInterface' => __NAMESPACE__ . '\Manager\AdsManager'
-            )
-        )
-    ),
-    'doctrine'       => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine'       => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default'             => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

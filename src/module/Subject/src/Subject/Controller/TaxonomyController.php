@@ -21,7 +21,7 @@ class TaxonomyController extends AbstractController
     public function indexAction()
     {
         $subject = $this->getSubject();
-        $entities = array();
+        $entities = [];
         $term = $subject->findChildBySlugs(explode('/', $this->params('path')));
 
         if(!is_object($term)){
@@ -37,12 +37,12 @@ class TaxonomyController extends AbstractController
             }
         }
         
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'term' => $term,
             'terms' => $term ? $term->getChildren() : $subject->getChildren(),
             'subject' => $subject,
             'links' => $entities
-        ));
+        ]);
         
         $view->setTemplate('subject/taxonomy/page/default');
         return $view;

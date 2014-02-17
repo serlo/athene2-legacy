@@ -27,12 +27,12 @@ class LicenseHydrator implements HydratorInterface
             ));
         }
 
-        return array(
+        return [
             'title'    => $object->getTitle(),
             'url'      => $object->getUrl(),
             'content'  => $object->getContent(),
             'iconHref' => $object->getIconHref()
-        );
+        ];
     }
 
     public function hydrate(array $data, $object)

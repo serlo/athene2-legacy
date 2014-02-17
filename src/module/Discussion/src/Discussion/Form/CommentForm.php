@@ -34,15 +34,15 @@ class CommentForm extends AbstractForm
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->setInputFilter($inputFilter);

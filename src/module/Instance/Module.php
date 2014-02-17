@@ -52,10 +52,10 @@ class Module
 
         $app->getEventManager()->attach(
             'route',
-            array(
+            [
                 $this,
                 'onPreRoute'
-            ),
+            ],
             4
         );
     }

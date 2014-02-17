@@ -26,7 +26,7 @@ class Url extends ZendUrl
         return ['uri_head' => '/alias'];
     }
 
-    public function __invoke($name = null, $params = array(), $options = array(), $reuseMatchedParams = false)
+    public function __invoke($name = null, $params = [], $options = [], $reuseMatchedParams = false)
     {
         $link = parent::__invoke($name, $params, $options, $reuseMatchedParams);
 

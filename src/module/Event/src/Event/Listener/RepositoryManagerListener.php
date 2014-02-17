@@ -18,37 +18,37 @@ class RepositoryManagerListener extends AbstractListener
     /**
      * @var array
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
         $events->attach(
             $this->getMonitoredClass(),
             'commit',
-            array(
+            [
                 $this,
                 'onAddRevision'
-            ),
+            ],
             1
         );
 
         $events->attach(
             $this->getMonitoredClass(),
             'checkout',
-            array(
+            [
                 $this,
                 'onCheckout'
-            ),
+            ],
             -1
         );
 
         $events->attach(
             $this->getMonitoredClass(),
             'reject',
-            array(
+            [
                 $this,
                 'onReject'
-            ),
+            ],
             -1
         );
     }
@@ -70,12 +70,12 @@ class RepositoryManagerListener extends AbstractListener
             $instance,
 
             $revision,
-            array(
-                array(
+            [
+                [
                     'name'  => 'repository',
                     'value' => $repository
-                )
-            )
+                ]
+            ]
         );
     }
 
@@ -90,12 +90,12 @@ class RepositoryManagerListener extends AbstractListener
             'entity/revision/checkout',
             $instance,
             $revision,
-            array(
-                array(
+            [
+                [
                     'name'  => 'repository',
                     'value' => $repository
-                )
-            )
+                ]
+            ]
         );
     }
 
@@ -111,16 +111,16 @@ class RepositoryManagerListener extends AbstractListener
             'entity/revision/reject',
             $instance,
             $revision,
-            array(
-                array(
+            [
+                [
                     'name'  => 'repository',
                     'value' => $repository
-                ),
-                array(
+                ],
+                [
                     'name'  => 'reason',
                     'value' => $reason
-                )
-            )
+                ]
+            ]
         );
     }
 }

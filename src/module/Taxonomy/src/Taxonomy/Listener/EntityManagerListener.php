@@ -34,10 +34,10 @@ class EntityManagerListener extends AbstractSharedListenerAggregate
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $events->attach($this->getMonitoredClass(), 'create', array(
+        $events->attach($this->getMonitoredClass(), 'create', [
             $this,
             'onCreate'
-        ), 2);
+        ], 2);
     }
 
     protected function getMonitoredClass()

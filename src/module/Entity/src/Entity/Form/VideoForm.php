@@ -36,38 +36,38 @@ class VideoForm extends Form
         $this->add(new Controls());
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true,
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'reasoning',
-                'filters'  => array(
-                    array(
+                'filters'  => [
+                    [
                         'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
         );
 
         $this->setInputFilter($inputFilter);

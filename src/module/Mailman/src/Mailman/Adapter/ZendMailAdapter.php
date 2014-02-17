@@ -51,7 +51,7 @@ class ZendMailAdapter implements AdapterInterface
         }
 
         self::$instance = $this;
-        $this->queue    = array();
+        $this->queue    = [];
     }
 
     protected $queue;

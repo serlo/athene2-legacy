@@ -19,87 +19,87 @@ class RegisterFilter extends InputFilter
 
     public function __construct ($objectManager)
     {        
-        $this->add(array(
+        $this->add([
             'name' => 'email',
             'required' => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'EmailAddress'
-                ),
-                array(
+                ],
+                [
                     'name' => 'User\Validator\UniqueUser',
-                    'options' => array(
+                    'options' => [
                         'object_repository' => $objectManager->getRepository('User\Entity\User'),
-                        'fields' => array('email'),
+                        'fields' => ['email'],
                         'object_manager' => $objectManager
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         
-        $this->add(array(
+        $this->add([
             'name' => 'username',
             'required' => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'User\Validator\UniqueUser',
-                    'options' => array(
+                    'options' => [
                         'object_repository' => $objectManager->getRepository('User\Entity\User'),
-                        'fields' => array('username'),
+                        'fields' => ['username'],
                         'object_manager' => $objectManager
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         
-        $this->add(array(
+        $this->add([
             'name' => 'emailConfirm',
             'required' => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'EmailAddress'
-                ),
-                array(
+                ],
+                [
                     'name' => 'identical',
-                    'options' => array(
+                    'options' => [
                         'token' => 'email'
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         
-        $this->add(array(
+        $this->add([
             'name' => 'passwordConfirm',
             'required' => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'stringLength',
-                    'options' => array(
+                    'options' => [
                         'min' => 6
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'name' => 'identical',
-                    'options' => array(
+                    'options' => [
                         'token' => 'password'
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         
-        $this->add(array(
+        $this->add([
             'name' => 'password',
             'required' => true,
-            'filters' => array(
-                array(
+            'filters' => [
+                [
                     'name' => 'Authentication\HashFilter'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         
-        $this->add(array(
+        $this->add([
             'name' => 'tos',
             'required' => true
-        ));
+        ]);
     }
 }

@@ -13,14 +13,14 @@ namespace Event;
 class Module
 {
 
-    public static $listeners = array(
+    public static $listeners = [
         'Event\Listener\RepositoryManagerListener',
         'Event\Listener\DiscussionManagerListener',
         'Event\Listener\TaxonomyManagerListener',
         'Event\Listener\UuidManagerListener',
         'Event\Listener\LinkServiceListener',
         'Event\Listener\EntityManagerListener'
-    );
+    ];
 
     public function getConfig()
     {

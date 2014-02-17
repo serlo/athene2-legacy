@@ -14,10 +14,10 @@ use Zend\Mvc\MvcEvent;
 
 class Module
 {
-    public static $listeners = array(
+    public static $listeners = [
         'Metadata\Listener\TaxonomyManagerListener',
         //'Metadata\Listener\EntityTaxonomyPluginControllerListener'
-    );
+    ];
 
     public function getConfig()
     {

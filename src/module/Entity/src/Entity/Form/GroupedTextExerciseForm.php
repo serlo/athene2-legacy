@@ -29,10 +29,10 @@ class GroupedTextExerciseForm extends Form
         $this->add(new Controls());
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true
-            )
+            ]
         );
 
         $this->setInputFilter($inputFilter);

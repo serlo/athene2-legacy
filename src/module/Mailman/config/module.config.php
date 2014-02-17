@@ -15,14 +15,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * @codeCoverageIgnore
  */
-return array(
-    'mailman'         => array(
-        'adapters' => array(
+return [
+    'mailman'         => [
+        'adapters' => [
             'Mailman\Adapter\ZendMailAdapter'
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
             'Mailman\Mailman' => function (ServiceLocatorInterface $sm) {
                     $mailman = new \Mailman\Mailman();
                     $mailman->setConfig($sm->get('config')['mailman']);
@@ -30,44 +30,44 @@ return array(
 
                     return $mailman;
                 }
-        )
-    ),
-    'di'              => array(
-        'definition' => array(
-            'class' => array(
-                'Mailman\Listener\UserControllerListener' => array(
-                    'setMailman'    => array(
+        ]
+    ],
+    'di'              => [
+        'definition' => [
+            'class' => [
+                'Mailman\Listener\UserControllerListener' => [
+                    'setMailman'    => [
                         'required' => true
-                    ),
-                    'setTranslator' => array(
+                    ],
+                    'setTranslator' => [
                         'required' => true
-                    ),
-                    'setRenderer'   => array(
+                    ],
+                    'setRenderer'   => [
                         'required' => true
-                    )
-                ),
-                'Mailman\Listener\AuthenticationControllerListener' => array(
-                    'setMailman'    => array(
+                    ]
+                ],
+                'Mailman\Listener\AuthenticationControllerListener' => [
+                    'setMailman'    => [
                         'required' => true
-                    ),
-                    'setTranslator' => array(
+                    ],
+                    'setTranslator' => [
                         'required' => true
-                    ),
-                    'setRenderer'   => array(
+                    ],
+                    'setRenderer'   => [
                         'required' => true
-                    )
-                ),
-                'Mailman\Adapter\ZendMailAdapter'         => array(
-                    'setSmtpOptions' => array(
+                    ]
+                ],
+                'Mailman\Adapter\ZendMailAdapter'         => [
+                    'setSmtpOptions' => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'   => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'   => [
+            'preferences' => [
                 'Mailman\MailmanInterface' => 'Mailman\Mailman'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

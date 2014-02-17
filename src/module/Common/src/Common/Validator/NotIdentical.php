@@ -28,17 +28,17 @@ class NotIdentical extends AbstractValidator
      *
      * @var array
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::SAME          => "The two given tokens are not supposed to match",
         self::MISSING_TOKEN => 'No token was provided to match against',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $messageVariables = array(
+    protected $messageVariables = [
         'token' => 'tokenString'
-    );
+    ];
 
     /**
      * Original token against which to validate

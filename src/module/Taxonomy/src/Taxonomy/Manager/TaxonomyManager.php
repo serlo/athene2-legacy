@@ -209,10 +209,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->getEventManager()->trigger(
             'associate',
             $this,
-            array(
+            [
                 'object' => $object,
                 'term'   => $term
-            )
+            ]
         );
 
         $this->getObjectManager()->persist($term);
@@ -229,10 +229,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->getEventManager()->trigger(
             'dissociate',
             $this,
-            array(
+            [
                 'object' => $object,
                 'term'   => $term
-            )
+            ]
         );
 
         $this->getObjectManager()->persist($term);

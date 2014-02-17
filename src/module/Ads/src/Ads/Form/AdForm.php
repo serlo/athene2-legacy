@@ -40,12 +40,12 @@ class AdForm extends Form
 
         $this->add(
             (new Select('frequency'))->setValueOptions(
-                array(
+                [
                     '0' => 'Never',
                     '1' => 'Less',
                     '2' => 'Normal',
                     '3' => 'More'
-                )
+                ]
             )->setAttribute('required', 'required')->setLabel('frequency')->setValue('2')
         );
 

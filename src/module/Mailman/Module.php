@@ -13,10 +13,10 @@ namespace Mailman;
 class Module
 {
 
-    public static $listeners = array(
+    public static $listeners = [
         'Mailman\Listener\UserControllerListener',
         'Mailman\Listener\AuthenticationControllerListener',
-    );
+    ];
 
     public function getConfig()
     {

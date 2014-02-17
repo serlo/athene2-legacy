@@ -34,14 +34,14 @@ class Login extends Form
         $this->add((new Submit('submit'))->setValue('Login')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $filter->add(array(
+        $filter->add([
             'name' => 'email',
             'required' => true
-        ));
+        ]);
         
-        $filter->add(array(
+        $filter->add([
             'name' => 'password',
             'required' => true
-        ));
+        ]);
     }
 }

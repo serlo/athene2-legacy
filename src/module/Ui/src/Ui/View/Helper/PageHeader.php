@@ -20,9 +20,9 @@ class PageHeader extends AbstractHelper
 
     protected function getDefaultConfig()
     {
-        return array(
+        return [
             'template' => 'common/helper/page-header'
-        );
+        ];
     }
 
     protected $text = '';
@@ -53,9 +53,9 @@ class PageHeader extends AbstractHelper
             $filter = new StripTags();
             $this->getView()->headTitle($filter->filter($headTitle));
         }
-        return $this->getView()->partial($this->getOption('template'), array(
+        return $this->getView()->partial($this->getOption('template'), [
             'text' => $this->text,
             'subtext' => $this->subtext
-        ));
+        ]);
     }
 }

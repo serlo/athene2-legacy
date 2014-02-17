@@ -10,99 +10,99 @@
  */
 namespace Authentication;
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
+return [
+    'service_manager' => [
+        'factories' => [
             'Zend\Authentication\AuthenticationService'   => __NAMESPACE__ . '\Factory\AuthenticationServiceFactory',
             __NAMESPACE__ . '\Storage\UserSessionStorage' => __NAMESPACE__ . '\Factory\UserSessionStorageFactory',
             __NAMESPACE__ . '\HashService'                => __NAMESPACE__ . '\Factory\HashServiceFactory'
 
-        )
-    ),
+        ]
+    ],
     'controllers'     => [
         'factories' => [
             __NAMESPACE__ . '\Controller\AuthenticationController' => __NAMESPACE__ . '\Factory\AuthenticationControllerFactory'
         ]
     ],
-    'di'              => array(
-        'instance' => array(
-            'preferences' => array(
+    'di'              => [
+        'instance' => [
+            'preferences' => [
                 __NAMESPACE__ . '\HashServiceInterface'     => __NAMESPACE__ . '\HashService',
                 __NAMESPACE__ . '\Adapter\AdapterInterface' => __NAMESPACE__ . '\Adapter\UserAuthAdapter',
-            )
-        )
-    ),
-    'router'          => array(
-        'routes' => array(
-            'authentication' => array(
+            ]
+        ]
+    ],
+    'router'          => [
+        'routes' => [
+            'authentication' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
-                'options'      => array(
+                'options'      => [
                     'route'    => '/auth',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\AuthenticationController',
-                    )
-                ),
-                'child_routes' => array(
-                    'login'    => array(
+                    ]
+                ],
+                'child_routes' => [
+                    'login'    => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/login',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'login'
-                            )
-                        )
-                    ),
-                    'logout'   => array(
+                            ]
+                        ]
+                    ],
+                    'logout'   => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/logout',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'logout'
-                            )
-                        )
-                    ),
-                    'activate' => array(
+                            ]
+                        ]
+                    ],
+                    'activate' => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/activate[/:token]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'activate'
-                            )
-                        )
-                    ),
-                    'password' => array(
+                            ]
+                        ]
+                    ],
+                    'password' => [
                         'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
+                        'options'      => [
                             'route' => '/password'
-                        ),
-                        'child_routes' => array(
-                            'change' => array(
+                        ],
+                        'child_routes' => [
+                            'change' => [
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options'       => array(
+                                'options'       => [
                                     'route'    => '/change',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'changePassword'
-                                    )
-                                )
-                            ),
-                            'restore' => array(
+                                    ]
+                                ]
+                            ],
+                            'restore' => [
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options'       => array(
+                                'options'       => [
                                     'route'    => '/restore[/:token]',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'restorePassword'
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                )
-            )
-        )
-    )
-);
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                ]
+            ]
+        ]
+    ]
+];

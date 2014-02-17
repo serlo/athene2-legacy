@@ -21,9 +21,9 @@ class FlagController extends AbstractActionController
     public function manageAction()
     {
         $flags = $this->getFlagManager()->findAllFlags();
-        $view  = new ViewModel(array(
+        $view  = new ViewModel([
             'flags' => $flags
-        ));
+        ]);
         $view->setTemplate('flag/manage');
 
         return $view;
@@ -57,9 +57,9 @@ class FlagController extends AbstractActionController
 
         $this->referer()->store();
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('flag/add');
 
         return $view;
@@ -69,9 +69,9 @@ class FlagController extends AbstractActionController
     {
         $id   = (int)$this->params('id');
         $flag = $this->getFlagManager()->getFlag($id);
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'flag' => $flag
-        ));
+        ]);
         $view->setTemplate('flag/detail');
 
         return $view;

@@ -25,9 +25,9 @@ class SubscriptionManager implements SubscriptionManagerInterface
     public function findSubscribersByUuid(UuidInterface $uuid)
     {
         $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
-        $criteria      = array(
+        $criteria      = [
             'object' => $uuid->getId()
-        );
+        ];
         $subscriptions = $this->getObjectManager()->getRepository($className)->findBy($criteria);
 
         $collection = new ArrayCollection();
@@ -40,10 +40,10 @@ class SubscriptionManager implements SubscriptionManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
 
-        $criteria = array(
+        $criteria = [
             'user'   => $user->getId(),
             'object' => $object->getId()
-        );
+        ];
 
         $subscription = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 

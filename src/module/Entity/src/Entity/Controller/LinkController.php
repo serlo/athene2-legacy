@@ -71,9 +71,9 @@ class LinkController extends AbstractController
             $this->referer()->store();
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
 
         $view->setTemplate('entity/link/move');
         $this->layout('layout/1-col');

@@ -35,7 +35,7 @@ class Discussion extends AbstractHelper
 
     public function __construct(TermForm $termForm)
     {
-        $this->form     = array();
+        $this->form     = [];
         $this->termForm = $termForm;
     }
 
@@ -125,12 +125,12 @@ class Discussion extends AbstractHelper
     {
         return $this->getView()->partial(
             $this->getOption('template'),
-            array(
+            [
                 'discussions' => $this->discussions,
                 'isArchived'  => $this->archived,
                 'object'      => $this->getObject(),
                 'forum'       => $this->getForum()
-            )
+            ]
         );
     }
 
@@ -201,10 +201,10 @@ class Discussion extends AbstractHelper
     {
         return [
             'template'       => 'discussion/discussions',
-            'form'           => array(
+            'form'           => [
                 'discussion' => 'Discussion\Form\DiscussionForm',
                 'comment'    => 'Discussion\Form\CommentForm'
-            ),
+            ],
             'root'           => 'root',
             'forum'          => 'forum',
             'forum_category' => 'forum-category'

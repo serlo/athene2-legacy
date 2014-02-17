@@ -75,10 +75,10 @@ class BlogController extends AbstractActionController
             }
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'blog' => $blog,
             'form' => $form
-        ));
+        ]);
 
         $view->setTemplate('blog/blog/post/create');
         $this->layout('athene2-editor');
@@ -92,9 +92,9 @@ class BlogController extends AbstractActionController
             $this->getInstanceManager()->getInstanceFromRequest()
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'blogs' => $blogs
-        ));
+        ]);
 
         $view->setTemplate('blog/blog/blogs');
 
@@ -158,10 +158,10 @@ class BlogController extends AbstractActionController
             }
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'blog'  => $blog,
             'posts' => $posts
-        ));
+        ]);
 
         $view->setTemplate('blog/blog/view');
 
@@ -179,10 +179,10 @@ class BlogController extends AbstractActionController
             }
         );
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'blog'  => $blog,
             'posts' => $posts
-        ));
+        ]);
 
         $view->setTemplate('blog/blog/view-all');
 
@@ -193,10 +193,10 @@ class BlogController extends AbstractActionController
     {
         $post = $this->getBlogManager()->getPost($this->params('post'));
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'blog' => $post->getBlog(),
             'post' => $post
-        ));
+        ]);
 
         $view->setTemplate('blog/blog/post/view');
 

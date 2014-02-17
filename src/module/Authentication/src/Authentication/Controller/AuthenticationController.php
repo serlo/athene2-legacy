@@ -98,7 +98,7 @@ class AuthenticationController extends AbstractActionController
     {
         $form     = new ChangePasswordForm();
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $messages = array();
+        $messages = [];
 
         if ($this->getRequest()->isPost()) {
 
@@ -129,11 +129,11 @@ class AuthenticationController extends AbstractActionController
             }
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'user'     => $user,
             'form'     => $form,
             'messages' => $messages
-        ));
+        ]);
 
         $this->layout('layout/1-col');
         $view->setTemplate('authentication/change-password');
@@ -144,7 +144,7 @@ class AuthenticationController extends AbstractActionController
     public function loginAction()
     {
         $form     = new Login();
-        $messages = array();
+        $messages = [];
 
         $this->layout('layout/1-col');
 
@@ -179,10 +179,10 @@ class AuthenticationController extends AbstractActionController
             $this->referer()->store();
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form'          => $form,
             'errorMessages' => $messages
-        ));
+        ]);
 
         $view->setTemplate('authentication/login');
 
@@ -198,7 +198,7 @@ class AuthenticationController extends AbstractActionController
 
     public function restorePasswordAction()
     {
-        $messages = array();
+        $messages = [];
         $view     = new ViewModel();
 
         $this->layout('layout/1-col');
@@ -216,7 +216,7 @@ class AuthenticationController extends AbstractActionController
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
 
                         $this->getUserManager()->generateUserToken($user->getId());
-                        $this->getEventManager()->trigger('restore-password', $this, array('user' => $user));
+                        $this->getEventManager()->trigger('restore-password', $this, ['user' => $user]);
                         $this->getUserManager()->flush();
                         $this->flashmessenger()->addSuccessMessage(
                             'You have been sent an email with instructions on how to restore your password!'
@@ -231,7 +231,7 @@ class AuthenticationController extends AbstractActionController
         } else {
             $form  = new LostPassword();
             $token = $this->params('token');
-            $url   = $this->url()->fromRoute('authentication/password/restore', array('token' => $token));
+            $url   = $this->url()->fromRoute('authentication/password/restore', ['token' => $token]);
             $user  = $this->getUserManager()->findUserByToken($token);
 
             $view->setTemplate('authentication/reset-password/restore');

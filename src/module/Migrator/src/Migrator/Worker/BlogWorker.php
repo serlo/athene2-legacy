@@ -96,8 +96,8 @@ class BlogWorker implements Worker
         $instance = $this->instanceManager->getInstance(1);
         /** @var $posts \Migrator\Entity\Blog[] */
         $posts    = $this->objectManager->getRepository('Migrator\Entity\Blog')->findBy(
-            array(),
-            array('publish' => 'desc')
+            [],
+            ['publish' => 'desc']
         );
         $category = $this->taxonomyManager->getTerm(8);
 

@@ -25,8 +25,8 @@ class EventManager implements EventManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
-    protected $inMemoryEvents = array();
-    protected $inMemoryParameterNames = array();
+    protected $inMemoryEvents = [];
+    protected $inMemoryParameterNames = [];
 
     /**
      * @var \Authorization\Service\AuthorizationService
@@ -69,7 +69,7 @@ class EventManager implements EventManagerInterface
         return $collection;
     }
 
-    public function findEventsByObject($objectId, $recursive = true, array $filters = array())
+    public function findEventsByObject($objectId, $recursive = true, array $filters = [])
     {
         if (!is_numeric($objectId)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -132,7 +132,7 @@ class EventManager implements EventManagerInterface
         $uri,
         InstanceInterface $instance,
         UuidInterface $uuid,
-        array $parameters = array()
+        array $parameters = []
     ) {
         $actor = $this->authorizationService->getIdentity();
 
@@ -170,9 +170,9 @@ class EventManager implements EventManagerInterface
 
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
         $event     = $this->getObjectManager()->getRepository($className)->findOneBy(
-            array(
+            [
                 'name' => $name
-            )
+            ]
         );
         /* @var $event Entity\EventInterface */
 
@@ -236,9 +236,9 @@ class EventManager implements EventManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterNameInterface');
         /* @var $parameterName Entity\EventParameterNameInterface */
         $parameterName = $this->getObjectManager()->getRepository($className)->findOneBy(
-            array(
+            [
                 'name' => $name
-            )
+            ]
         );
 
         if (!is_object($parameterName)) {

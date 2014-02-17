@@ -37,9 +37,9 @@ class MetadataManager implements MetadataManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
 
         return $this->getObjectManager()->getRepository($className)->findBy(
-            array(
+            [
                 'object' => $object->getId()
-            )
+            ]
         );
     }
 
@@ -103,11 +103,11 @@ class MetadataManager implements MetadataManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
 
         $entity = $this->getObjectManager()->getRepository($className)->findOneBy(
-            array(
+            [
                 'object' => $object->getId(),
                 'key'    => $key->getId(),
                 'value'  => $value
-            )
+            ]
         );
 
         if (!is_object($entity)) {
@@ -136,10 +136,10 @@ class MetadataManager implements MetadataManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
 
         return $this->getObjectManager()->getRepository($className)->findBy(
-            array(
+            [
                 'object' => $object->getId(),
                 'key'    => $key->getId()
-            )
+            ]
         );
     }
 
@@ -160,9 +160,9 @@ class MetadataManager implements MetadataManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataKeyInterface');
 
         $entity = $this->getObjectManager()->getRepository($className)->findOneBy(
-            array(
+            [
                 'name' => $name
-            )
+            ]
         );
 
         if (!is_object($entity)) {

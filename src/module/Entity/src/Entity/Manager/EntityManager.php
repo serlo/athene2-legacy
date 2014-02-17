@@ -40,7 +40,7 @@ class EntityManager implements EntityManagerInterface
         return $entity;
     }
 
-    public function createEntity($typeName, array $data = array(), InstanceInterface $instance)
+    public function createEntity($typeName, array $data = [], InstanceInterface $instance)
     {
         $this->assertGranted('entity.create', $instance);
 

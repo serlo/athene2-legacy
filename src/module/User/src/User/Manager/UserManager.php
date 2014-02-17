@@ -64,9 +64,9 @@ class UserManager implements UserManagerInterface
     public function findUserByToken($username)
     {
         $user = $this->getUserEntityRepository()->findOneBy(
-            array(
+            [
                 'token' => $username
-            )
+            ]
         );
 
         if (!$user) {
@@ -79,9 +79,9 @@ class UserManager implements UserManagerInterface
     public function findUserByUsername($username)
     {
         $user = $this->getUserEntityRepository()->findOneBy(
-            array(
+            [
                 'username' => $username
-            )
+            ]
         );
 
         if (!$user) {
@@ -94,9 +94,9 @@ class UserManager implements UserManagerInterface
     public function findUserByEmail($email)
     {
         $user = $this->getUserEntityRepository()->findOneBy(
-            array(
+            [
                 'email' => $email
-            )
+            ]
         );
 
         if (!$user) {

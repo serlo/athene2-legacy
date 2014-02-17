@@ -16,24 +16,24 @@ use Zend\Mvc\Application;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcRbac\Guard\GuardInterface;
 
-return array(
-    'navigation'            => array(
-        'hydratables' => array(
-            'default'    => array(
-                'hydrators' => array()
-            ),
-            'top-center' => array(
-                'hydrators' => array()
-            )
-        )
-    ),
-    'view_manager'          => array(
+return [
+    'navigation'            => [
+        'hydratables' => [
+            'default'    => [
+                'hydrators' => []
+            ],
+            'top-center' => [
+                'hydrators' => []
+            ]
+        ]
+    ],
+    'view_manager'          => [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
-        'template_map'             => array(
+        'template_map'             => [
             'athene2-editor' => __DIR__ . '/../templates/editor/layout.phtml',
             'layout/home'    => __DIR__ . '/../templates/layout/serlo-home.phtml',
             'layout/1-col'   => __DIR__ . '/../templates/layout/1-col.phtml',
@@ -42,17 +42,17 @@ return array(
             'error/404'      => __DIR__ . '/../templates/error/404.phtml',
             'error/403'      => __DIR__ . '/../templates/error/403.phtml',
             'error/index'    => __DIR__ . '/../templates/error/index.phtml'
-        ),
-        'template_path_stack'      => array(
+        ],
+        'template_path_stack'      => [
             __DIR__ . '/../templates'
-        ),
-        'strategies'               => array(
+        ],
+        'strategies'               => [
             'Zend\View\Strategy\JsonStrategy',
             'Ui\Strategy\PhpRendererStrategy'
-        )
-    ),
-    'view_helpers'          => array(
-        'factories'  => array(
+        ]
+    ],
+    'view_helpers'          => [
+        'factories'  => [
             'pageHeader' => function ($helperPluginManager) {
                     $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
                     $plugin = new PageHeader();
@@ -67,16 +67,16 @@ return array(
 
                     return $plugin;
                 }
-        ),
-        'invokables' => array(
+        ],
+        'invokables' => [
             'timeago'         => 'Ui\View\Helper\Timeago',
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage'
-        )
-    ),
-    'page_header_helper'    => array(),
-    'service_manager'       => array(
-        'factories' => array(
+        ]
+    ],
+    'page_header_helper'    => [],
+    'service_manager'       => [
+        'factories' => [
             'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm) {
                     $service = new Renderer\PhpDebugRenderer();
                     $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
@@ -84,109 +84,109 @@ return array(
 
                     return $service;
                 },
-        )
-    ),
-    'assetic_configuration' => array(
+        ]
+    ],
+    'assetic_configuration' => [
         'webPath'          => realpath('public/assets'),
         'basePath'         => 'assets',
-        'default'          => array(
-            'assets'  => array(
+        'default'          => [
+            'assets'  => [
                 '@libs',
                 '@scripts',
                 '@styles'
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'mixin' => false
-            )
-        ),
-        'routes'           => array(
-            'entity/repository/add-revision' => array(
+            ]
+        ],
+        'routes'           => [
+            'entity/repository/add-revision' => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'
-            ),
-            'page/revision/create'           => array(
+            ],
+            'page/revision/create'           => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'
-            ),
-            'blog/post/create'               => array(
+            ],
+            'blog/post/create'               => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'
-            ),
-            'blog/post/update'               => array(
+            ],
+            'blog/post/update'               => [
                 '@libs',
                 '@editor_scripts',
                 '@styles',
                 '@editor_styles'
-            )
-        ),
-        'modules'          => array(
-            'ui' => array(
+            ]
+        ],
+        'modules'          => [
+            'ui' => [
                 'root_path'   => __DIR__ . '/../../../assets/build',
-                'collections' => array(
-                    'libs'           => array(
-                        'assets' => array(
+                'collections' => [
+                    'libs'           => [
+                        'assets' => [
                             'bower_components/modernizr/modernizr.js',
                             'bower_components/requirejs/require.js',
-                        )
-                    ),
-                    'scripts'        => array(
-                        'assets' => array(
+                        ]
+                    ],
+                    'scripts'        => [
+                        'assets' => [
                             'scripts/main.js'
-                        )
-                    ),
-                    'styles'         => array(
-                        'assets'  => array(
+                        ]
+                    ],
+                    'styles'         => [
+                        'assets'  => [
                             'styles/main.css'
-                        ),
-                        'filters' => array(
-                            'CssRewriteFilter' => array(
+                        ],
+                        'filters' => [
+                            'CssRewriteFilter' => [
                                 'name' => 'Assetic\Filter\CssRewriteFilter'
-                            )
-                        )
-                    ),
-                    'editor_scripts' => array(
-                        'assets' => array(
+                            ]
+                        ]
+                    ],
+                    'editor_scripts' => [
+                        'assets' => [
                             '../node_modules/athene2-editor/build/scripts/editor.js'
-                        )
-                    ),
-                    'editor_styles'  => array(
-                        'assets' => array(
+                        ]
+                    ],
+                    'editor_styles'  => [
+                        'assets' => [
                             '../node_modules/athene2-editor/build/styles/editor.css'
-                        )
-                    ),
-                    'main_fonts'     => array(
-                        'assets'  => array(
+                        ]
+                    ],
+                    'main_fonts'     => [
+                        'assets'  => [
                             'styles/fonts/*',
                             'styles/fonts/*.woff',
                             'styles/fonts/*.svg',
                             'styles/fonts/*.ttf'
-                        ),
-                        'options' => array(
+                        ],
+                        'options' => [
                             'move_raw' => true
-                        )
-                    ),
-                    'images'         => array(
-                        'assets'  => array(
+                        ]
+                    ],
+                    'images'         => [
+                        'assets'  => [
                             'images/*'
-                        ),
-                        'options' => array(
+                        ],
+                        'options' => [
                             'move_raw' => true
-                        )
-                    )
-                )
-            )
-        ),
-        'acceptableErrors' => array(
+                        ]
+                    ]
+                ]
+            ]
+        ],
+        'acceptableErrors' => [
             Application::ERROR_CONTROLLER_NOT_FOUND,
             Application::ERROR_CONTROLLER_INVALID,
             Application::ERROR_ROUTER_NO_MATCH,
             GuardInterface::GUARD_UNAUTHORIZED
-        )
-    )
-);
+        ]
+    ]
+];

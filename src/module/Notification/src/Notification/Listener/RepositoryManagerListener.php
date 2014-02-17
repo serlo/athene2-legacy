@@ -37,10 +37,10 @@ class RepositoryManagerListener extends AbstractListener
         $events->attach(
             $this->getMonitoredClass(),
             'commit',
-            array(
+            [
                 $this,
                 'onCommitRevision'
-            ),
+            ],
             2
         );
     }

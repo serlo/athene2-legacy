@@ -29,7 +29,7 @@ class PageServiceTest extends \PHPUnit_Framework_TestCase
         $this->pageManagerMock = $this->getMock('Page\Manager\PageManager');
         $this->userServiceMock = $this->getMock('User\Service\UserService');
         $this->objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', array(), array(), '', false);
+        $this->objectManagerMock = $this->getMock('Doctrine\ORM\EntityManager', [], [], '', false);
         $this->roleMock = $this->getMock('User\Entity\Role');
         $this->repositoryServiceMock = $this->getMock('Versioning\Service\RepositoryService');
         $this->pageRepositoryMock = $this->getMock('Page\Entity\PageRepository');
@@ -103,9 +103,9 @@ class PageServiceTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->objectRepositoryMock));
         $this->objectRepositoryMock->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array(
+            ->will($this->returnValue([
             $this->roleMock
-        )));
+        ]));
         $this->assertEquals(1, $this->pageService->countRoles());
     }
 

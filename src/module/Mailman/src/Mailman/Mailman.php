@@ -24,13 +24,13 @@ class Mailman implements MailmanInterface
 
     protected function getDefaultConfig()
     {
-        return array(
-            'adapters'       => array(),
+        return [
+            'adapters'       => [],
             'default_sender' => 'no-reply@serlo.org'
-        );
+        ];
     }
 
-    protected $adapters = array();
+    protected $adapters = [];
 
     public function send($to, $from, $subject, $body)
     {

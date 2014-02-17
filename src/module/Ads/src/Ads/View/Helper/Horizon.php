@@ -28,9 +28,9 @@ class Horizon extends AbstractHelper
 
         return $this->getView()->partial(
             'ads/helper/ads-helper',
-            array(
+            [
                 'ads' => $this->ads,
-            )
+            ]
         );
     }
 

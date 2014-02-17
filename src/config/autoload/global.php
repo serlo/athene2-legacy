@@ -11,40 +11,40 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *      control, so do not include passwords or other sensitive information in this
  *      file.
  */
-return array(
-    'page_header_helper' => array(
+return [
+    'page_header_helper' => [
         'brand'     => 'www.serlo.org',
         'delimiter' => ' - '
-    ),
-    'brand'              => array(
+    ],
+    'brand'              => [
         'name' => 'Serlo <sup><small>beta</small></sup>'
-    ),
-    'doctrine'           => array(
-        'entitymanager' => array(
-            'orm_default' => array(
+    ],
+    'doctrine'           => [
+        'entitymanager' => [
+            'orm_default' => [
                 'connection'      => 'orm_default',
                 'configuration'   => 'orm_default',
-            )
-        )
-    ),
-    'session'            => array(
-        'config'     => array(
+            ]
+        ]
+    ],
+    'session'            => [
+        'config'     => [
             'class'   => 'Zend\Session\Config\SessionConfig',
-            'options' => array(
+            'options' => [
                 'name'                => 'athene2',
                 'remember_me_seconds' => 6000,
                 'use_cookies'         => true,
                 'cookie_secure'       => false
-            )
-        ),
+            ]
+        ],
         'storage'    => 'Zend\Session\Storage\SessionArrayStorage',
-        'validators' => array(
+        'validators' => [
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent'
-        )
-    ),
-    'service_manager'    => array(
-        'factories' => array(
+        ]
+    ],
+    'service_manager'    => [
+        'factories' => [
             'Zend\Mail\Transport\SmtpOptions' => function (ServiceLocatorInterface $sm) {
                     $config = $sm->get('config')['smtp_options'];
 
@@ -54,30 +54,30 @@ return array(
                     $cache    = new \Doctrine\Common\Cache\ApcCache();
                     return $cache;
                 },
-        )
-    ),
-    'smtp_options'       => array(
+        ]
+    ],
+    'smtp_options'       => [
         'name'              => 'localhost.localdomain',
         'host'              => 'localhost',
         'connection_class'  => 'login',
-        'connection_config' => array(
+        'connection_config' => [
             'username' => 'postmaster',
             'password' => ''
-        )
-    ),
-    'di'                 => array(
-        'instance' => array(
-            'preferences' => array(
+        ]
+    ],
+    'di'                 => [
+        'instance' => [
+            'preferences' => [
                 'Zend\ServiceManager\ServiceLocatorInterface' => 'ServiceManager',
                 'Doctrine\Common\Persistence\ObjectManager'   => 'Doctrine\ORM\EntityManager'
-            )
-        )
-    ),
-    'sphinx'             => array(
+            ]
+        ]
+    ],
+    'sphinx'             => [
         'host' => '127.0.0.1',
         'port' => 9306
-    ),
-    'zendDiCompiler'     => array(),
+    ],
+    'zendDiCompiler'     => [],
     'zfc_rbac'           => [
         'redirect_strategy' => [
             'redirect_to_route_connected'    => 'authorization/forbidden',
@@ -86,4 +86,4 @@ return array(
             'previous_uri_query_key'         => 'redir'
         ]
     ]
-);
+];

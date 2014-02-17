@@ -108,9 +108,9 @@ class InstanceManager implements InstanceManagerInterface
         $instance = $this->getObjectManager()->getRepository(
             $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface')
         )->findOneBy(
-                array(
+                [
                     'name' => $name
-                )
+                ]
             );
 
         if (!is_object($instance)) {

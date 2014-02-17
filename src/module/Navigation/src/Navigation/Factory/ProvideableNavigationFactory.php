@@ -14,8 +14,8 @@ use Exception;
 use Navigation\Provider\ContainerProviderInterface;
 use Navigation\Provider\PageProviderInterface;
 use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\RouteStackInterface;
 use Zend\Mvc\Router\RouteStackInterface as Router;
+use Zend\Mvc\Router\RouteStackInterface;
 use Zend\Navigation\Exception\InvalidArgumentException;
 use Zend\Navigation\Navigation;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -90,7 +90,7 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
             }
 
             if (isset($page['provider'])) {
-                $options = array();
+                $options = [];
 
                 if (isset($page['options'])) {
                     $options = $page['options'];

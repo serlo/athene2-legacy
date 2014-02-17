@@ -33,24 +33,24 @@ class InternalForm extends Form
         $this->add((new Submit('submit'))->setValue('Add')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'title',
             'required' => true,
-            'filters' => array(
-                array(
+            'filters' => [
+                [
                     'name' => 'HtmlEntities'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'reference',
             'required' => true,
-            'filters' => array(
-                array(
+            'filters' => [
+                [
                     'name' => 'Digits'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
     }
 }

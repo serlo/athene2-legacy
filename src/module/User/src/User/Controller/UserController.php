@@ -22,18 +22,18 @@ class UserController extends AbstractUserController
 
     protected function getDefaultConfig()
     {
-        return array(
-            'forms' => array(
+        return [
+            'forms' => [
                 'register'         => 'User\Form\Register',
                 'login'            => 'User\Form\Login',
                 'user_select'      => 'User\Form\SelectUserForm',
                 'restore_password' => 'User\Form\LostPassword',
                 'settings'         => 'User\Form\SettingsForm'
-            )
-        );
+            ]
+        ];
     }
 
-    protected $forms = array();
+    protected $forms = [];
 
     public function getForm($name)
     {
@@ -80,11 +80,11 @@ class UserController extends AbstractUserController
                 $this->getEventManager()->trigger(
                     'register',
                     $this,
-                    array(
+                    [
                         'user'     => $user,
                         'instance' => $this->getInstanceManager()->getInstanceFromRequest(),
                         'data'     => $data
-                    )
+                    ]
                 );
 
                 $this->getUserManager()->persist($user);
@@ -96,9 +96,9 @@ class UserController extends AbstractUserController
             }
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
 
         return $view;
     }
@@ -141,16 +141,16 @@ class UserController extends AbstractUserController
                 $this->getUserManager()->flush();
             }
         } else {
-            $data = array(
+            $data = [
                 'email' => $user->getEmail()
-            );
+            ];
             $form->setData($data);
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'user' => $user,
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('user/user/settings');
         $this->layout('layout/1-col');
 

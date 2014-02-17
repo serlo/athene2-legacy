@@ -26,9 +26,9 @@ class AttachmentController extends AbstractActionController
     {
         $form = new AttachmentForm();
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('upload/form');
 
         $request = $this->getRequest();
@@ -85,11 +85,11 @@ class AttachmentController extends AbstractActionController
             ];
         }
 
-        return new JsonModel(array(
+        return new JsonModel([
             'success' => true,
             'id'      => $attachment->getId(),
             'type'    => $attachment->getType()->getName(),
             'files'   => $files
-        ));
+        ]);
     }
 }

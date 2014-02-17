@@ -243,7 +243,7 @@ class AliasManager implements AliasManagerInterface
     protected function slugify($text)
     {
         $filter    = new Slugify();
-        $slugified = array();
+        $slugified = [];
 
         foreach (explode('/', $text) as $token) {
             $slugified[] = $filter->filter($token);

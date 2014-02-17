@@ -61,15 +61,15 @@ class UserAuthAdapter implements AdapterInterface
     {
         try {
             $user = $this->getObjectManager()->getRepository('User\Entity\User')->findOneBy(
-                    array(
+                    [
                         'email' => $this->email
-                    )
+                    ]
                 );
 
             $role = $this->getObjectManager()->getRepository('User\Entity\Role')->findOneBy(
-                    array(
+                    [
                         'name' => 'login'
-                    )
+                    ]
                 );
 
             $hashedPassword = $user->getPassword();
@@ -79,25 +79,25 @@ class UserAuthAdapter implements AdapterInterface
             );
             if ($password === $hashedPassword) {
                 if ($user->isTrashed()) {
-                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
+                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, [
                         'Ihr Benutzerkonto wurde gelöscht.'
-                    ));
+                    ]);
                 } elseif (!$user->hasRole($role)) {
-                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
+                    return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, [
                         'Sie haben ihren Account noch nicht aktiviert.'
-                    ));
+                    ]);
                 } else {
                     return new Result(RESULT::SUCCESS, $user);
                 }
             } else {
-                return new Result(RESULT::FAILURE_CREDENTIAL_INVALID, $this->email, array(
+                return new Result(RESULT::FAILURE_CREDENTIAL_INVALID, $this->email, [
                     'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
-                ));
+                ]);
             }
         } catch (UserNotFoundException $e) {
-            return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, array(
+            return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, [
                 'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
-            ));
+            ]);
         }
     }
 }

@@ -9,46 +9,46 @@
  * @link		https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    array(
+return [
+    [
         'label' => 'Math',
         'route' => 'subject',
-        'params' => array(
+        'params' => [
             'subject' => 'math'
-        ),
-        'pages' => array(
-            array(
+        ],
+        'pages' => [
+            [
                 'label' => 'Home',
                 'route' => 'subject',
-                'params' => array(
+                'params' => [
                     'subject' => 'math'
-                ),
+                ],
                 'icon' => 'home'
-            ),
-            array(
+            ],
+            [
                 'label' => 'Learn',
                 'route' => 'subject/plugin/taxonomy/topic',
-                'params' => array(
+                'params' => [
                     'subject' => 'math'
-                ),
+                ],
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
-                'options' => array(
-                    'parent' => array(
+                'options' => [
+                    'parent' => [
                         'name' => 'math',
                         'type' => 'subject'
-                    ),
-                    'types' => array(
+                    ],
+                    'types' => [
                         'topic'
-                    ),
+                    ],
                     'instance' => 'english',
                     'route' => 'subject/plugin/taxonomy/topic',
                     'max_depth' => 10,
-                    'params' => array(
+                    'params' => [
                         'subject' => 'math'
-                    )
-                ),
+                    ]
+                ],
                 'icon' => 'book'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

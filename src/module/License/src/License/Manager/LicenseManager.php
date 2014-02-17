@@ -30,11 +30,11 @@ class LicenseManager implements LicenseManagerInterface
 
     protected function getDefaultConfig()
     {
-        return array(
-            'defaults' => array(
+        return [
+            'defaults' => [
                 'Deutsch' => 'cc-by-sa-3.0'
-            )
-        );
+            ]
+        ];
     }
 
     public function injectLicense(LicenseAwareInterface $object, LicenseInterface $license = null)
