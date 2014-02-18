@@ -61,7 +61,7 @@ class RevisionField
     }
 
     /**
-     * @return field_type $value
+     * @return mixed
      */
     public function getValue()
     {
@@ -69,14 +69,11 @@ class RevisionField
     }
 
     /**
-     * @param field_type $entityRevisionId
-     * @return self
+     * @param $entityRevision
      */
     public function setRevision($entityRevision)
     {
         $this->revision = $entityRevision;
-
-        return $this;
     }
 
     /**

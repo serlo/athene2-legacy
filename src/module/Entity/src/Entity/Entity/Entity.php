@@ -18,6 +18,7 @@ use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
+use Type\Entity\TypeAwareTrait;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RevisionInterface;
 
@@ -29,7 +30,7 @@ use Versioning\Entity\RevisionInterface;
  */
 class Entity extends Uuid implements EntityInterface
 {
-    use\Type\Entity\TypeAwareTrait;
+    use TypeAwareTrait;
     use InstanceAwareTrait;
 
     /**
@@ -80,13 +81,13 @@ class Entity extends Uuid implements EntityInterface
 
     public function __construct()
     {
-        $this->revisions            = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->childLinks           = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parentLinks          = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->children             = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parents              = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->issues               = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->terms                = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->revisions            = new ArrayCollection();
+        $this->childLinks           = new ArrayCollection();
+        $this->parentLinks          = new ArrayCollection();
+        $this->children             = new ArrayCollection();
+        $this->parents              = new ArrayCollection();
+        $this->issues               = new ArrayCollection();
+        $this->terms                = new ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
     }
 
@@ -175,15 +176,11 @@ class Entity extends Uuid implements EntityInterface
     public function addRevision(RevisionInterface $revision)
     {
         $this->revisions->add($revision);
-
-        return $this;
     }
 
     public function removeRevision(RevisionInterface $revision)
     {
         $this->revisions->removeElement($revision);
-
-        return $this;
     }
 
     public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
