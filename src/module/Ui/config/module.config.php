@@ -71,7 +71,8 @@ return [
         'invokables' => [
             'timeago'         => 'Ui\View\Helper\Timeago',
             'registry'        => 'Ui\View\Helper\Registry',
-            'currentLanguage' => 'Ui\View\Helper\ActiveLanguage'
+            'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
+            'toAlpha'         => 'Ui\View\Helper\ToAlpha'
         ]
     ],
     'page_header_helper'    => [],

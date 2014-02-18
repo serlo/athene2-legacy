@@ -13,9 +13,7 @@
 $video = $this->entity;
 if($video->hasCurrentRevision()): ?>
     <?php $revision = $video->getCurrentRevision(); ?>
-    <li class="list-group-item">
-        <a href="<?php echo $this->url('entity/page', array('entity' => $video->getId())); ?>">
-        	<?php echo $revision->get('title'); ?>
-        </a>
-    </li>
+    <a href="<?php echo $this->url('entity/page', array('entity' => $video->getId())); ?>">
+        <?php echo $revision->get('title'); ?>
+    </a>
 <?php endif; ?>

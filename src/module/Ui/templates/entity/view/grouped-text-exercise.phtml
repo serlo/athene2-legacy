@@ -1,28 +1,48 @@
-<?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
-<?php $entity = $this->entity; ?>
-<?php $solution = $entity->getChildren('link', 'text-solution')->first(); ?>
+<?php
+/* @var $entity \Entity\Entity\EntityInterface */
+$entity = $this->entity;
+$solution = $entity->getChildren('link', 'text-solution')->first();
+if(!is_object($solution) || !$solution->hasCurrentRevision() || $solution->getTrashed()) {
+    $solution = null;
+} else {
+    $revision = $solution->getCurrentRevision();
+    $hintContent = $revision->get('hint');
+    $hintContent = trim($this->markdown()->toHtml($hintContent));
+    $solutionContent = trim($revision->get('content'));
+    $solutionContent = trim($this->markdown()->toHtml($solutionContent));
+}
+?>
 <article>
-    <section>
-        <?php if($entity->hasCurrentRevision()): ?>
-            <?php
+    <section class="row">
+        <div class="col-md-8">
+            <?php if($entity->hasCurrentRevision()): ?>
+                <?php
                 $content = $entity->getCurrentRevision()->get('content');
                 echo $this->markdown()->toHtml($content);
-            ?>
-        <?php endif; ?>
+                ?>
+            <?php endif; ?>
+        </div>
+        <div class="col-md-4">
+            <ul class="nav nav-pills">
+                <?php if($solution): ?>
+                    <?php if($hintContent): ?>
+                        <li>
+                            <a data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#hint-<?php echo $solution->getId(); ?>">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <li>
+                        <a data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php echo $this->partial('entity/view/partials/actions/small-essential', array('entity' => $this->entity)); ?>
+            </ul>
+        </div>
     </section>
-    <ul class="nav nav-pills">
-        <?php if(is_object($solution)): ?>
-            <li>
-                <a data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-<?php echo $solution->getId(); ?>">
-                    <?php echo $this->translate('Show the solution'); ?>
-                </a>
-            </li>
-        <?php endif; ?>
-        <?php echo $this->partial('entity/view/partials/actions/small-essential', array('entity' => $this->entity)); ?>
-    </ul>
-    <?php if(is_object($solution)): ?>
-        <section class="panel-group" id="solutions-<?php echo $solution->getId(); ?>">
-    	   <?php echo $this->partial('entity/view/default',array('entity' => $solution, 'hideActions' => array('detail', 'taxonomy'))); ?>
-        </section>
+    <?php if($solution): ?>
+        <?php echo $this->partial('entity/view/default',array('entity' => $solution)); ?>
     <?php endif; ?>
 </article>

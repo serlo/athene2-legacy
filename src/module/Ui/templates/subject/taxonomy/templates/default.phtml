@@ -29,6 +29,7 @@ $data = array(
 <?php if ($this->resolver($template)): ?>
     <?php echo $this->partial($template, $data); ?>
 <?php else: ?>
+    <?php //echo $this->partial('subject/taxonomy/templates/partials/actions', $data); ?>
     <?php echo $this->partial('subject/taxonomy/templates/partials/entities', $data); ?>
     <?php echo $this->partial('subject/taxonomy/templates/partials/branches', $data); ?>
 <?php endif; ?>

@@ -1,27 +1,29 @@
 <?php /* @var $entity \Entity\Entity\EntityInterface */ ?>
 <?php $entity = $this->entity; ?>
 <article>
-    <section>
-        <?php if($entity->hasCurrentRevision()): ?>
-            <?php echo $this->markdown()->toHtml($entity->getCurrentRevision()->get('content')); ?>
-        <?php endif; ?>
-    </section>
-    <section class="clearfix">
-        <?php echo $this->partial('entity/view/partials/actions/small', array('entity' => $this->entity)); ?>
-        <div class="sortable" data-action="<?php echo $this->url('entity/link/order', array('type' => 'link', 'entity' => $entity->getId())); ?>" data-depth="1" data-active="false">
-            <ol class="sortable-list">
-                <?php foreach($entity->getChildren('link', 'grouped-text-exercise') as $child): ?>
-                    <li class="sortable-item" data-id="<?php echo $child->getId(); ?>">
-                        <span class="sortable-handle"></span>
-                        <div class="sortable-item-inner">
-                            <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $entity)); ?>
-                        </div>
-                    </li>
-                <?php endforeach; ?>
-            </ol>
-            <div class="sortable-actions pull-right btn-group">
-                <?php echo $this->partial('entity/view/partials/sortable-actions'); ?>
-            </div>
+    <section class="row">
+        <div class="col-md-8">
+            <?php if ($entity->hasCurrentRevision()): ?>
+                <?php
+                $content = $entity->getCurrentRevision()->get('content');
+                echo $this->markdown()->toHtml($content);
+                ?>
+            <?php endif; ?>
+        </div>
+        <div class="col-md-4">
+            <?php echo $this->partial('entity/view/partials/actions/small', array('entity' => $this->entity)); ?>
         </div>
     </section>
+    <?php foreach ($entity->getChildren('link', 'grouped-text-exercise') as $index => $child): ?>
+        <section class="row">
+            <div class="col-xs-1">
+                <em><?php echo $this->toAlpha($index); ?>) </em>
+            </div>
+            <div class="col-xs-11">
+                <?php echo $this->partial('entity/view/default', array('entity' => $child, 'parent' => $entity)); ?>
+                <hr>
+            </div>
+        </section>
+    <?php endforeach; ?>
 </article>
+<hr>

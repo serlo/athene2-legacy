@@ -13,9 +13,7 @@
 $article = $this->entity;
 if($article->hasCurrentRevision()): ?>
     <?php $revision = $article->getCurrentRevision(); ?>
-    <li class="list-group-item">
-    	<a href="<?php echo $this->url('entity/page', array('entity' => $article->getId())); ?>">
-           <?php echo $revision->get('title'); ?>
-        </a>
-    </li>
+    <a href="<?php echo $this->url('entity/page', array('entity' => $article->getId())); ?>">
+       <?php echo $revision->get('title'); ?>
+    </a>
 <?php endif; ?>
