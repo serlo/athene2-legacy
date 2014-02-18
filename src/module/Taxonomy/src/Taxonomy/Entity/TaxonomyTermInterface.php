@@ -10,7 +10,9 @@
  */
 namespace Taxonomy\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Instance\Entity\InstanceProviderInterface;
+use Type\Entity\TypeInterface;
 
 interface TaxonomyTermInterface extends InstanceProviderInterface
 {
@@ -34,7 +36,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
 
     /**
      * @param string $name
-     * @return TaxonomyTermModelInterface
+     * @return TaxonomyTermInterface
      */
     public function findAncestorByTypeName($name);
 
@@ -51,7 +53,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function getAssociated($association);
 
     /**
-     * @return Collection
+     * @return Collection|TaxonomyTermInterface[]
      */
     public function getChildren();
 
@@ -91,7 +93,7 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function getTaxonomy();
 
     /**
-     * @return TaxonomyTypeInterface
+     * @return TypeInterface
      */
     public function getType();
 
