@@ -8,14 +8,13 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Alias\Factory;
+namespace Markdown\Factory;
 
-use Alias\AliasManager;
-use Zend\Mvc\Service\RouterFactory;
+use Markdown\View\Helper\MarkdownHelper;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class AliasManagerFactory implements FactoryInterface
+class MarkdownHelperFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -25,15 +24,11 @@ class AliasManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options       = $serviceLocator->get('Alias\Options\ManagerOptions');
-        $objectManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $tokenizer     = $serviceLocator->get('Token\Tokenizer');
-        $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
-        $storage       = $serviceLocator->get('Alias\Storage\AliasStorage');
-        $router        = (new RouterFactory())->createService($serviceLocator);
-        $aliasManager  = new AliasManager($classResolver, $options, $objectManager, $router, $storage, $tokenizer);
+        $serviceLocator = $serviceLocator->getServiceLocator();
+        $renderer       = $serviceLocator->get('Markdown\Service\HtmlRenderService');
+        $plugin         = new MarkdownHelper($renderer);
 
-        return $aliasManager;
+        return $plugin;
     }
 }
  

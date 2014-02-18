@@ -11,19 +11,29 @@
 namespace Alias\View\Helper;
 
 use Alias\AliasManagerAwareTrait;
+use Alias\AliasManagerInterface;
 use Alias\Exception\AliasNotFoundException;
 use Common\Traits\ConfigAwareTrait;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
+use Zend\Cache\Storage\StorageInterface;
 use Zend\View\Helper\Url as ZendUrl;
 
 class Url extends ZendUrl
 {
     use AliasManagerAwareTrait, InstanceManagerAwareTrait;
-    use ConfigAwareTrait;
 
-    protected function getDefaultConfig()
-    {
-        return ['uri_head' => '/alias'];
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
+
+    public function __construct(
+        AliasManagerInterface $aliasManager,
+        InstanceManagerInterface $instanceManager
+    ) {
+        $this->aliasManager    = $aliasManager;
+        $this->instanceManager = $instanceManager;
     }
 
     public function __invoke($name = null, $params = [], $options = [], $reuseMatchedParams = false)
@@ -35,9 +45,11 @@ class Url extends ZendUrl
             $instance     = $this->getInstanceManager()->getInstanceFromRequest();
             $alias        = $aliasManager->findAliasBySource($link, $instance);
 
-            return parent::__invoke('alias', ['alias' => $alias]);
+            $link = parent::__invoke('alias', ['alias' => $alias]);
         } catch (AliasNotFoundException $e) {
-            return $link;
+            // No alias was found -> nothing to do
         }
+
+        return $link;
     }
 }

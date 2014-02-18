@@ -12,6 +12,8 @@
 namespace Alias\Factory;
 
 
+use Alias\View\Helper\Url;
+use Zend\Console\Console;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -26,23 +28,23 @@ class UrlHelperFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $helperPluginManager)
     {
         $serviceLocator = $helperPluginManager->getServiceLocator();
-        $view_helper    = new \Alias\View\Helper\Url();
+        $aliasManager   = $serviceLocator->get('Alias\AliasManager');
+        $tenantManager  = $serviceLocator->get('Instance\Manager\InstanceManager');
+        $isConsole      = Console::isConsole();
+        $router         = $isConsole ? 'HttpRouter' : 'Router';
+        $match          = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
+        $helper         = new Url($aliasManager, $tenantManager);
 
-        $router = \Zend\Console\Console::isConsole() ? 'HttpRouter' : 'Router';
-        $view_helper->setRouter($serviceLocator->get($router));
+        $helper->setRouter($serviceLocator->get($router));
 
-        $view_helper->setAliasManager($serviceLocator->get('Alias\AliasManager'));
-        $view_helper->setInstanceManager($serviceLocator->get('Instance\Manager\InstanceManager'));
-
-        $match = $serviceLocator->get('application')->getMvcEvent()->getRouteMatch();
-
-        $interface = 'Zend\Mvc\Router\\' . (\Zend\Console\Console::isConsole() ? 'Console' :
-                'Http') . '\RouteMatch';
+        $interface = 'Zend\Mvc\Router\\';
+        $interface = $interface . $isConsole ? 'Console' : 'Http';
+        $interface = $interface . '\RouteMatch';
 
         if ($match instanceof $interface) {
-            $view_helper->setRouteMatch($match);
+            $helper->setRouteMatch($match);
         }
 
-        return $view_helper;
+        return $helper;
     }
 }

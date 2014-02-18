@@ -1422,6 +1422,31 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`ads_page`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`ads_page` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`ads_page` (
+  `instance_id` INT NOT NULL,
+  `page_repository_id` BIGINT NOT NULL,
+  PRIMARY KEY (`instance_id`, `page_repository_id`),
+  INDEX `fk_ads__page_repository1_idx` (`page_repository_id` ASC),
+  UNIQUE INDEX `instance_id_UNIQUE` (`instance_id` ASC),
+  UNIQUE INDEX `page_repository_id_UNIQUE` (`page_repository_id` ASC),
+  CONSTRAINT `fk_ads__instance1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ads__page_repository1`
+    FOREIGN KEY (`page_repository_id`)
+    REFERENCES `serlo`.`page_repository` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Data for table `serlo`.`language`
 -- -----------------------------------------------------
 START TRANSACTION;

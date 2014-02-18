@@ -14,6 +14,7 @@ use DNode\DNode;
 use Markdown\Exception;
 use Markdown\Options\ModuleOptions;
 use React\EventLoop\StreamSelectLoop;
+use Zend\Cache\Storage\StorageInterface;
 
 class HtmlRenderService implements RenderServiceInterface
 {
@@ -34,31 +35,20 @@ class HtmlRenderService implements RenderServiceInterface
     protected $options;
 
     /**
-     * @return ModuleOptions $options
+     * @var StorageInterface
      */
-    public function getModuleOptions()
-    {
-        return $this->options;
-    }
+    protected $storage;
 
     /**
-     * @param ModuleOptions $options
-     * @return self
+     * @param ModuleOptions    $options
+     * @param StorageInterface $storage
      */
-    public function setModuleOptions(ModuleOptions $options)
+    public function __construct(ModuleOptions $options, StorageInterface $storage)
     {
+        $this->loop    = new StreamSelectLoop();
+        $this->dnode   = new DNode($this->loop);
         $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->loop  = new StreamSelectLoop();
-        $this->dnode = new DNode($this->loop);
+        $this->storage = $storage;
     }
 
     /**
@@ -66,7 +56,13 @@ class HtmlRenderService implements RenderServiceInterface
      */
     public function render($input)
     {
-        $rendered = 'BROKEN PIPE';
+        $key = hash('sha512', $input);
+
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
+
+        $rendered = null;
 
         $this->dnode->connect(
             $this->options->getHost(),
@@ -91,6 +87,12 @@ class HtmlRenderService implements RenderServiceInterface
         );
 
         $this->loop->run();
+
+        if ($rendered === null) {
+            throw new Exception\RuntimeException(sprintf('Broken pipe'));
+        }
+
+        $this->storage->setItem($key, $rendered);
 
         return $rendered;
     }
