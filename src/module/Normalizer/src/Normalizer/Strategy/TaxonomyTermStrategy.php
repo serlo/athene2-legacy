@@ -107,8 +107,11 @@ class TaxonomyTermStrategy extends AbstractStrategy
     protected function getPath(TaxonomyTermInterface $term, $stopType)
     {
         $type = $term->getTaxonomy()->getType();
-        $path = $this->getPath($term->getParent(), $stopType);
-
-        return $type->getName() == $stopType || !$term->hasParent() ? '' : $path . $term->getSlug() . '/';
+        if($type->getName() == $stopType || !$term->hasParent()){
+            return '';
+        } else {
+            $path = $this->getPath($term->getParent(), $stopType);
+            return !$term->hasParent() ? '' : $path . $term->getSlug() . '/';
+        }
     }
 }
