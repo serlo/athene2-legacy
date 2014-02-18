@@ -11,6 +11,7 @@
 namespace Normalizer\Strategy;
 
 use DateTime;
+use Normalizer\Exception\RuntimeException;
 use Taxonomy\Entity\TaxonomyTermInterface;
 
 class TaxonomyTermStrategy extends AbstractStrategy
@@ -55,14 +56,11 @@ class TaxonomyTermStrategy extends AbstractStrategy
         switch ($object->getType()->getName()) {
             case 'blog':
                 return 'blog/view';
-                break;
             case 'subject':
                 return 'subject';
-                break;
             case 'forum':
             case 'forum-category':
                 return 'discussion/discussions';
-                break;
             case 'topic':
             case 'topic-folder':
             case 'curriculum':
@@ -70,10 +68,9 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'curriculum-folder':
             case 'topic-final-folder':
                 return 'subject/taxonomy';
-                break;
         }
 
-        return 'notfound';
+        throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
     }
 
     protected function getRouteParams()
@@ -82,18 +79,11 @@ class TaxonomyTermStrategy extends AbstractStrategy
         switch ($object->getType()->getName()) {
             case 'blog':
                 return ['id' => $object->getId()];
-                break;
             case 'subject':
-                return [
-                    'subject' => $object->getSlug(),
-                ];
-                break;
+                return ['subject' => $object->getSlug(),];
             case 'forum':
             case 'forum-category':
-                return [
-                    'id' => $object->getId(),
-                ];
-                break;
+                return ['id' => $object->getId(),];
             case 'topic':
             case 'topic-folder':
             case 'curriculum':
@@ -104,10 +94,9 @@ class TaxonomyTermStrategy extends AbstractStrategy
                     'subject' => $object->findAncestorByTypeName('subject')->getSlug(),
                     'path'    => substr($this->getPath($object, 'subject'), 0, -1)
                 ];
-                break;
         }
 
-        return [];
+        throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
     }
 
     public function isValid($object)
@@ -117,8 +106,9 @@ class TaxonomyTermStrategy extends AbstractStrategy
 
     protected function getPath(TaxonomyTermInterface $term, $stopType)
     {
-        return $term->getTaxonomy()->getType()
-            ->getName() == $stopType || !$term->hasParent() ? '' : $this->getPath($term->getParent(),
-                $stopType) . $term->getSlug() . '/';
+        $type = $term->getTaxonomy()->getType();
+        $path = $this->getPath($term->getParent(), $stopType);
+
+        return $type->getName() == $stopType || !$term->hasParent() ? '' : $path . $term->getSlug() . '/';
     }
 }
