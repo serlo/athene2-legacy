@@ -30,7 +30,7 @@ class NavigationStorageFactory implements FactoryInterface
                     'name'    => 'apc',
                     'options' => [
                         'namespace' => __NAMESPACE__,
-                        'ttl'    => 60*2
+                        'ttl'    => 60*10
                     ]
                 ],
                 'plugins' => [
