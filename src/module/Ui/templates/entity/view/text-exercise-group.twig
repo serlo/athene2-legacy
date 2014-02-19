@@ -7,7 +7,7 @@
             {% include 'entity/view/partials/actions/small' %}
         </div>
     </section>
-    {% for index, child in entity.getChildren('link', 'grouped-text-exercise') %}
+    {% for index, child in entity.getChildren('link', 'grouped-text-exercise') if not child.isTrashed() and child.hasCurrentRevision() %}
         <section class="row">
             <div class="col-xs-1">
                 <em>{{ toAlpha(index) }}) </em>

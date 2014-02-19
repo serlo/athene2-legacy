@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-3">
         <div class="btn-group pull-right">
-            {% if isGranted('entity.create', term) and isGranted('taxonomy.term.associade', term) %}
+            {% if isGranted('entity.create', term) and isGranted('taxonomy.term.associate', term) %}
                 <div class="btn-group">
                     <a class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown" href="#">
                         <span class="glyphicon glyphicon-file"></span> <span class="caret"></span> </a>
@@ -31,14 +31,13 @@
 </div>
 <hr>
 <div class="entities">
-
     <!-- Articles -->
     <div class="row">
         <div class="col-md-12">
             <h4><span class="glyphicon glyphicon-book"></span> {{ translate('Articles') }}</h4>
             <hr>
         </div>
-        {% for link in links if link.getType().getName() == 'article' %}
+        {% for link in links if link.getType().getName() == 'article' and not link.isTrashed() and link.hasCurrentRevision() %}
         {% if loop.index % 3 == 0 %}
     </div>
     <hr>
@@ -57,7 +56,7 @@
             <h4><span class="glyphicon glyphicon-facetime-video"></span> {{ translate('Videos') }}</h4>
             <hr>
         </div>
-        {% for link in links if link.getType().getName() == 'video' %}
+        {% for link in links if link.getType().getName() == 'video' and not link.isTrashed() and link.hasCurrentRevision() %}
         {% if loop.index % 3 == 0 %}
     </div>
     <hr>
@@ -76,7 +75,7 @@
             <h4><span class="glyphicon glyphicon-list"></span> {{ translate('Modules') }}</h4>
             <hr>
         </div>
-        {% for link in links if link.getType().getName() == 'module' %}
+        {% for link in links if link.getType().getName() == 'module' and not link.isTrashed() and link.hasCurrentRevision() %}
         {% if loop.index % 3 == 0 %}
     </div>
     <hr>
@@ -92,7 +91,7 @@
     <!-- Rest -->
     <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
     <hr>
-    {% for link in links if link.getType().getName() == 'text-exercise' or link.getType().getName() == 'text-exercise-group' %}
+    {% for link in links if (link.getType().getName() == 'text-exercise' or link.getType().getName() == 'text-exercise-group') and not link.isTrashed() and link.hasCurrentRevision() %}
         <div class="row">
             <div class="col-xs-1">
                 <strong>{{ loop.index + 1 }}.</strong>
