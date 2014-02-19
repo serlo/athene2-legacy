@@ -51,7 +51,7 @@ class CacheablePartial extends Partial {
                 if($this->storage->hasItem($key)){
                     $content = $this->storage->getItem($key);
                     $this->storage->touchItem($key);
-                    return $content;
+                    //return $content;
                 }
             } catch (Exception $e){
             }
