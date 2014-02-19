@@ -13,7 +13,7 @@
                     <ul class="dropdown-menu">
                         {% for type in subject().getOptions(subject).getAllowedEntities() %}
                             <li>
-                                <a href="{{ url('entity/create', {'type': type, 'query': {'taxonomy': {'term': term.getId() }}}) }}">
+                                <a href="{{ url('entity/create', {'type': type}, {'query': {'taxonomy': {'term': term.getId() }}}) }}">
                                     {{ translate(type) }}
                                 </a>
                             </li>
