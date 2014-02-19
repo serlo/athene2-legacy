@@ -95,7 +95,7 @@ class DiscussionManager implements DiscussionManagerInterface
         $content,
         $data = []
     ) {
-        if ($object->is('comment')) {
+        if ($object instanceof CommentInterface) {
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
         }
 
