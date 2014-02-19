@@ -1,4 +1,5 @@
 {{ pageHeader(entity.getCurrentRevision().get('title')).setSubtitle('Article').render() }}
 {% include 'entity/view/default' %}
-{{ registry().add('rnav', include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()})) }}
-{{ registry().add('rnav', related(entity)) }}
+{% set taxonomy = include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()}) %}
+{% set temp = registry().add('rnav', taxonomy) %}
+{% set temp = registry().add('rnav', related(entity)) %}
