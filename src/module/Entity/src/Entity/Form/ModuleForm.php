@@ -50,7 +50,7 @@ class ModuleForm extends Form
         $inputFilter->add(
             [
                 'name'     => 'reasoning',
-                'required' => true,
+                'required' => false,
                 'filters'  => [
                     [
                         'name' => 'HtmlEntities'
