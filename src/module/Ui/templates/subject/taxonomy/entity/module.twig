@@ -1,6 +1,5 @@
 {% if entity.hasCurrentRevision() %}
     <a href="{{ url('entity/page', {'entity': entity.getId()}) }}">
-        <?php echo $revision->get('title'); ?>
         {{ entity.getCurrentRevision().get('title') }}
     </a>
 {% endif %}
