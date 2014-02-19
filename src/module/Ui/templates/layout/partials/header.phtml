@@ -11,7 +11,7 @@
  */
 ?>
 <header id="header">
-    <?php echo $this->partial('layout/partials/top-bar.phtml'); ?>
+    <?php echo $this->partial('layout/partials/top-bar'); ?>
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -34,7 +34,7 @@
                                      ->menu()
                                      ->setOnlyActiveBranch(false)
                                      ->setUlClass('dropdown-menu')
-                                     ->setPartial('layout/navigation/subject-navigation.phtml')
+                                     ->setPartial('layout/navigation/subject-navigation')
                                      ->render();
                         ?>
                         </div>

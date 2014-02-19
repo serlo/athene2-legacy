@@ -41,8 +41,12 @@ class Module
                 'template_map' => include __DIR__ . '/template_map.php'
             ];
 
-            $config = ArrayUtils::merge($config, $templates);
+            return ArrayUtils::merge($config, $templates);
         }
+
+        $config['view_manager']['template_path_stack'] = [
+            __DIR__ . '/../templates'
+        ];
 
         return $config;
     }

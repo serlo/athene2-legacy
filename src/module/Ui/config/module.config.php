@@ -43,9 +43,6 @@ return [
             'error/403'      => __DIR__ . '/../templates/error/403.phtml',
             'error/index'    => __DIR__ . '/../templates/error/index.phtml'
         ],
-        'template_path_stack'      => [
-            __DIR__ . '/../templates'
-        ],
         'strategies'               => [
             'Zend\View\Strategy\JsonStrategy',
             'Ui\Strategy\PhpRendererStrategy'

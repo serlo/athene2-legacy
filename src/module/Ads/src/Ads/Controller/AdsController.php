@@ -69,7 +69,7 @@ class AdsController extends AbstractActionController
             'form' => $form,
             'title' => 'Ad erstellen'
         ]);
-        $view->setTemplate('ads/form.phtml');
+        $view->setTemplate('ads/form');
         
         return $view;
     }
@@ -90,7 +90,7 @@ class AdsController extends AbstractActionController
         $view = new ViewModel([
             'ads' => $ads
         ]);
-        $view->setTemplate('ads/shuffle.phtml');
+        $view->setTemplate('ads/shuffle');
         $this->getObjectManager()->flush();
         
         return $view;
@@ -138,7 +138,7 @@ class AdsController extends AbstractActionController
             'form' => $form,
             'title' => 'Ad bearbeiten'
         ]);
-        $view->setTemplate('ads/form.phtml');
+        $view->setTemplate('ads/form');
         
         return $view;
     }
