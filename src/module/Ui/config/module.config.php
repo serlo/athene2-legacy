@@ -63,8 +63,7 @@ return [
                     $plugin->setConfig($config);
 
                     return $plugin;
-                },
-            'partial' => __NAMESPACE__ . '\Factory\CacheablePartialFactory'
+                }
         ],
         'invokables' => [
             'timeago'         => 'Ui\View\Helper\Timeago',
@@ -82,8 +81,7 @@ return [
                     $service->setHelperPluginManager($sm->get('ViewHelperManager'));
 
                     return $service;
-                },
-            __NAMESPACE__ . '\Storage\PartialStorage' => __NAMESPACE__ . '\Factory\PartialStorageFactory'
+                }
         ]
     ],
     'assetic_configuration' => [
