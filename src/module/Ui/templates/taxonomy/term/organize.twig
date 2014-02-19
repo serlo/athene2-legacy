@@ -1,4 +1,2 @@
-{% autoescape false %}
-{{ pageHeader('Organize %s').render() | format(term.getName()) }}
-{% endautoescape %}
+{{ pageHeader(term.getName()).setSubTitle(translate('Organize')).render() }}
 {% include 'taxonomy/term/organize/partial' with {'isChild' : false} %}

@@ -1,0 +1,8 @@
+{% set options = entity().getOptions(entity) %}
+{% if options.hasComponent('taxonomy') and isGranted('entity.revision.create', entity) %}
+    <li>
+        <a href="{{ url('entity/repository/add-revision', {'entity': entity.getId()}) }}">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+    </li>
+{% endif %}

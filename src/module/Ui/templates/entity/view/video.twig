@@ -1,0 +1,12 @@
+<article>
+    <header>
+        {% include 'entity/view/partials/actions/big' %}
+    </header>
+	<section>
+        {{ partial('entity/view/video/youtube', {'entity': entity}) }}
+    </section>
+	<hr>
+	<section>
+        {{ entity().renderDiscussions(entity) }}
+    </section>
+</article>

@@ -12,10 +12,13 @@
             {% endfor %}
         </ul>
     </div>
+
     <a href="{{ url('taxonomy/term/action', {'action':'update','id':term.getId()}) }}" class="btn btn-default btn-xs">
-        <span class="glyphicon glyphicon-pencil"></span> </a> <a class="btn btn-default btn-xs"
-                                                                 href="{{ url('event/history', {'id':term.getId()}) }}">
+        <span class="glyphicon glyphicon-pencil"></span> </a>
+
+    <a class="btn btn-default btn-xs" href="{{ url('event/history', {'id':term.getId()}) }}">
         <span class="glyphicon glyphicon-hdd"></span></a>
+
     {% if term.isTrashed() %}
         <a href="{{ url('uuid/restore', {'id':term.getId()}) }}" class="btn btn-warning btn-xs">
             <span class="glyphicon glyphicon-refresh"></span> </a>
@@ -23,4 +26,5 @@
         <a href="{{ url('uuid/trash', {'id':term.getId()}) }}"
            class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a>
     {% endif %}
+
 </div>

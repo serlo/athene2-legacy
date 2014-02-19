@@ -1,0 +1,12 @@
+{% set options = entity().getOptions(entity) %}
+{% if options.hasComponent('taxonomy') and isGranted('entity.revision.create', entity) %}
+    <li>
+        <a href="{{ url('entity/repository/history', {'entity': entity.getId()}) }}">
+            <span class="glyphicon glyphicon-time"></span>
+            {{ translate('History') }}
+            {% if entity.isUnrevised() %}
+                <span class="label label-warning">{{ entity.countUnrevised() }}</span>
+            {% endif %}
+        </a>
+    </li>
+{% endif %}

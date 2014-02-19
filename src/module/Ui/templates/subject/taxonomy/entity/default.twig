@@ -1,0 +1,11 @@
+{% set template = 'subject/taxonomy/entity/' ~ entity.getType().getName() %}
+{% set fallback = 'entity/view/default' %}
+{% set template = include(template, ignore_missing = true) %}
+{% set fallback = include(fallback, ignore_missing = true) %}
+{% if template %}
+    {{ template | raw }}
+{% elseif fallback %}
+    {{ fallback | raw }}
+{% else %}
+    {{ translate('Template for %s not found') | format(entity.getType().getName()) }}
+{% endif %}

@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-md-9">
+        {% if term.getDescription() %}
+            <em>{{ term.getDescription() }}</em>
+        {% endif %}
+    </div>
+    <div class="col-md-3">
+        <div class="btn-group pull-right">
+            {% if isGranted('entity.create', term) and isGranted('taxonomy.term.associade', term) %}
+                <div class="btn-group">
+                    <a class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown" href="#">
+                        <span class="glyphicon glyphicon-file"></span> <span class="caret"></span> </a>
+                    <ul class="dropdown-menu">
+                        {% for type in subject().getOptions(subject).getAllowedEntities() %}
+                            <li>
+                                <a href="{{ url('entity/create', {'type': type, 'query': {'taxonomy': {'term': term.getId() }}}) }}">
+                                    {{ translate(type) }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if isGranted('taxonomy.term.associated.sort', term) %}
+                <a class="btn btn-default btn-xs"
+                   href="{{ url('taxonomy/term/sort-associated', {'association': 'entities', 'term': term.getId()}) }}">
+                    <span class="glyphicon glyphicon-sort"></span> </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<hr>
+<div class="entities">
+
+    <!-- Articles -->
+    <div class="row">
+        <div class="col-md-12">
+            <h4><span class="glyphicon glyphicon-book"></span> {{ translate('Articles') }}</h4>
+            <hr>
+        </div>
+        {% for link in links if link.getType().getName() == 'article' %}
+        {% if loop.index % 3 == 0 %}
+    </div>
+    <hr>
+    <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Articles end -->
+    <hr>
+    <!-- Videos -->
+    <div class="row">
+        <div class="col-md-12">
+            <h4><span class="glyphicon glyphicon-facetime-video"></span> {{ translate('Videos') }}</h4>
+            <hr>
+        </div>
+        {% for link in links if link.getType().getName() == 'video' %}
+        {% if loop.index % 3 == 0 %}
+    </div>
+    <hr>
+    <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Videos end -->
+    <hr>
+    <!-- Modules -->
+    <div class="row">
+        <div class="col-md-12">
+            <h4><span class="glyphicon glyphicon-list"></span> {{ translate('Modules') }}</h4>
+            <hr>
+        </div>
+        {% for link in links if link.getType().getName() == 'module' %}
+        {% if loop.index % 3 == 0 %}
+    </div>
+    <hr>
+    <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Modules end -->
+    <hr>
+    <!-- Rest -->
+    <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
+    <hr>
+    {% for link in links if link.getType().getName() == 'text-exercise' or link.getType().getName() == 'text-exercise-group' %}
+        <div class="row">
+            <div class="col-xs-1">
+                <strong>{{ loop.index + 1 }}.</strong>
+            </div>
+            <div class="col-xs-11">
+                {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+    <!-- Rest end -->
+</div>

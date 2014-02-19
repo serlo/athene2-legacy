@@ -23,7 +23,8 @@ return [
     'zfctwig' => [
         'environment_options' => [
             'debug' => false,
-            'strict_variables' => false
+            'strict_variables' => false,
+            'autoescape' => false
         ],
     ]
 ];

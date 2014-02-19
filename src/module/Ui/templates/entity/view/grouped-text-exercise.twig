@@ -1,0 +1,31 @@
+{% set revision = entity.getCurrentRevision() %}
+{% set solution = entity.getChildren('link', 'text-solution').first() %}
+<article>
+    <section class="row">
+        <div class="col-md-8">
+            {{ markdown().toHtml(revision.get('content')) | raw }}
+        </div>
+        <div class="col-md-4">
+            <ul class="nav nav-pills">
+                {% if(solution) %}
+                    {% if solution.hasCurrentRevision() and solution.getCurrentRevision().get('hint') %}
+                        <li>
+                            <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#hint-{{ solution.getId() }}">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#solution-{{ solution.getId() }}">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% include 'entity/view/partials/actions/small-essential' %}
+            </ul>
+        </div>
+    </section>
+    {% if(solution) %}
+        {% include 'entity/view/default' with {'entity': solution} only %}
+    {% endif %}
+</article>

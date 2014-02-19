@@ -26,9 +26,14 @@ class MarkdownHelper extends AbstractHelper
         $this->renderService = $renderService;
     }
 
+    public function __invoke()
+    {
+        return $this;
+    }
+
     /**
-     * @param string      $content
-     * @param bool        $catch
+     * @param string $content
+     * @param bool   $catch
      * @return string
      */
     public function toHtml($content, $catch = true)

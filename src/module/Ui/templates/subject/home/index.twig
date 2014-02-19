@@ -1,9 +1,5 @@
-{% autoescape false %}
 {{ pageHeader(subject.getName()).render() }}
-{% endautoescape %}
-
 {{ translate('Start learning now!') }}
-
 <div class="row">
     {% set scopes = subject().getOptions(subject).getAllowedTaxonomies() %}
     <?php  ?>

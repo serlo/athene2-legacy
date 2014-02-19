@@ -1,4 +1,4 @@
-<?php parse_str( parse_url( $this->content, PHP_URL_QUERY ), $vars ); ?>
+<?php parse_str( parse_url( $this->entity->getCurrentRevision()->get('content'), PHP_URL_QUERY ), $vars ); ?>
 <?php $ytId = $vars['v'];  ?>
 
 <iframe type="text/html" width="640" height="390" src="http://www.youtube.com/embed/<?php echo $ytId;?>?html5=1" frameborder="0"></iframe>
