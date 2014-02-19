@@ -14,6 +14,7 @@ use Alias\AliasManagerAwareTrait;
 use Alias\Exception\AliasNotFoundException;
 use Entity\Exception\EntityNotFoundException;
 use Versioning\Exception\RevisionNotFoundException;
+use Zend\View\Model\ViewModel;
 
 class PageController extends AbstractController
 {
@@ -38,7 +39,7 @@ class PageController extends AbstractController
         }
 
         try {
-            $model = new \Zend\View\Model\ViewModel([
+            $model = new ViewModel([
                 'entity' => $entity
             ]);
             $model->setTemplate('entity/page/default');
