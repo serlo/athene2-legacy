@@ -10,20 +10,10 @@
  */
 
 return [
-    'doctrine' => array(
-        'configuration' => array(
-            'orm_default' => array(
-                'metadata_cache'  => 'apccache',
-                'query_cache'     => 'apccache',
-                'result_cache'    => 'apccache',
-                'hydration_cache' => 'apccache',
-            )
-        )
-    ),
     'zfctwig' => [
         'environment_options' => [
-            'debug' => false,
-            'strict_variables' => false
+            'debug' => true,
+            'strict_variables' => true
         ],
     ]
 ];

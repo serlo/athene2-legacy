@@ -27,7 +27,8 @@
         "dnode/dnode": "dev-master",
         "nickcernis/html-to-markdown": "dev-master",
         "ryakad/pandoc-php": "dev-master",
-        "stroker/cache": "0.2.*"
+        "stroker/cache": "0.2.*",
+        "zf-commons/zfc-twig": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {

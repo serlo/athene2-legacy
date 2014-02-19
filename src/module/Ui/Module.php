@@ -45,7 +45,7 @@ class Module
         }
 
         $config['view_manager']['template_path_stack'] = [
-            __DIR__ . '/../templates'
+            __DIR__ . '/templates'
         ];
 
         return $config;

@@ -17,7 +17,15 @@ use Zend\View\Model\ViewModel;
 
 class UserControllerListener extends AbstractListener
 {
-    use TranslatorAwareTrait;
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $events->attach($this->getMonitoredClass(), 'register', [$this, 'onRegister'], -1);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'User\Controller\UserController';
+    }
 
     public function onRegister(Event $e)
     {
@@ -39,23 +47,4 @@ class UserControllerListener extends AbstractListener
             $this->getRenderer()->render($body)
         );
     }
-
-    public function attachShared(SharedEventManagerInterface $events)
-    {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'register',
-            [
-                $this,
-                'onRegister'
-            ],
-            -1
-        );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'User\Controller\UserController';
-    }
-
 }

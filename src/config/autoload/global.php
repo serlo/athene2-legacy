@@ -19,6 +19,11 @@ return [
     'brand'              => [
         'name' => 'Serlo <sup><small>beta</small></sup>'
     ],
+    'zfctwig' => [
+        'environment_options' => [
+            'cache' => __DIR__ . '/../../data/twig'
+        ],
+    ],
     'doctrine'           => [
         'entitymanager' => [
             'orm_default' => [
@@ -26,6 +31,9 @@ return [
                 'configuration' => 'orm_default',
             ]
         ]
+    ],
+    'router' => [
+        'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack'
     ],
     'session'            => [
         'config'     => [

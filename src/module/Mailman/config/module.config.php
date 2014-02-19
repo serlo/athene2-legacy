@@ -10,11 +10,6 @@
  */
 namespace Mailman;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-/**
- * @codeCoverageIgnore
- */
 return [
     'mailman'         => [
         'adapters' => [
@@ -23,48 +18,14 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Mailman\Mailman' => function (ServiceLocatorInterface $sm) {
-                    $mailman = new \Mailman\Mailman();
-                    $mailman->setConfig($sm->get('config')['mailman']);
-                    $mailman->setServiceLocator($sm);
-
-                    return $mailman;
-                }
+            __NAMESPACE__ . '\Mailman'                                   => __NAMESPACE__ . '\Factory\MailmanFactory',
+            __NAMESPACE__ . '\Adapter\ZendMailAdapter'                   => __NAMESPACE__ . '\Factory\ZendMailAdapterFactory',
+            __NAMESPACE__ . '\Listener\AuthenticationControllerListener' => __NAMESPACE__ . '\Factory\AuthenticationControllerListenerFactory',
+            __NAMESPACE__ . '\Listener\UserControllerListener'           => __NAMESPACE__ . '\Factory\UserControllerListenerFactory'
         ]
     ],
     'di'              => [
-        'definition' => [
-            'class' => [
-                'Mailman\Listener\UserControllerListener' => [
-                    'setMailman'    => [
-                        'required' => true
-                    ],
-                    'setTranslator' => [
-                        'required' => true
-                    ],
-                    'setRenderer'   => [
-                        'required' => true
-                    ]
-                ],
-                'Mailman\Listener\AuthenticationControllerListener' => [
-                    'setMailman'    => [
-                        'required' => true
-                    ],
-                    'setTranslator' => [
-                        'required' => true
-                    ],
-                    'setRenderer'   => [
-                        'required' => true
-                    ]
-                ],
-                'Mailman\Adapter\ZendMailAdapter'         => [
-                    'setSmtpOptions' => [
-                        'required' => true
-                    ]
-                ]
-            ]
-        ],
-        'instance'   => [
+        'instance' => [
             'preferences' => [
                 'Mailman\MailmanInterface' => 'Mailman\Mailman'
             ]

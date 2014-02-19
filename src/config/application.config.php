@@ -19,6 +19,7 @@ return [
         'ZfcBase',
         'ZfcRbac',
         'TwbBundle',
+        'ZfcTwig',
         'Common',
         'Authentication',
         'Ui',
