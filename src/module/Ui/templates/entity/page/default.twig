@@ -1,0 +1,7 @@
+{% set template = 'entity/page/' ~ entity.getType().getName() %}
+{% set template = include(template, ignore_missing = true) %}
+{% if template %}
+    {{ template | raw }}
+{% else %}
+    {{ translate('Now view found for %s')|format(entity.getType().getName()) }}
+{% endif %}
