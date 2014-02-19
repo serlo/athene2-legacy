@@ -160,7 +160,7 @@ class RepositoryService implements RepositoryServiceInterface
         $permission = $this->getModuleOptions()->getPermission($repository, 'reject');
 
         $this->assertGranted($permission, $repository);
-        $revision->setTrahsed(true);
+        $revision->setTrashed(true);
         $this->objectManager->persist($revision);
         $this->getRepositoryManager()->getEventManager()->trigger(
             'reject',
