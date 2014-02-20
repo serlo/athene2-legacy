@@ -1,0 +1,4 @@
+<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+<?php $term = $this->normalize()->toAnchor($this->event->getObject()); ?>
+<?php $object = $this->normalize()->toAnchor($this->event->getParameter('object')); ?>
+<?php echo sprintf($this->translate('%s associated %s with taxonomy %s'), $user, $object, $term);?>
