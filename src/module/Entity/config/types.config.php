@@ -105,8 +105,10 @@ return [
                             'content',
                             'reasoning'
                         ]
-                    ]
-                ]
+                    ],
+                    'license'    => [],
+                    'taxonomy'   => []
+                ],
             ],
             'article'               => [
                 'components' => [

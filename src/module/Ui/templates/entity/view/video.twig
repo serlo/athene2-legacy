@@ -3,7 +3,9 @@
         {% include 'entity/view/partials/actions/big' %}
     </header>
 	<section>
-        {{ partial('entity/view/video/youtube', {'entity': entity}) }}
+        {% set id = entity.getCurrentRevision().get('content') %}
+        <iframe type="text/html" width="640" height="390" src="http://www.youtube.com/embed/{{ (id|split('?v='))|slice(1)|join }}?html5=1" frameborder="0">
+        </iframe>
     </section>
 	<hr>
 	<section>
