@@ -1,4 +1,5 @@
-{% if isGranted('related_content.manage', entity) %}
+{% set options = entity().getOptions(entity) %}
+{% if options.hasComponent('related_content') and isGranted('related_content.manage', entity) %}
     <li>
         <a href="{{ url('related-content/manage', {'id': entity.getId()}) }}">
             <span class="glyphicon glyphicon-link"></span>

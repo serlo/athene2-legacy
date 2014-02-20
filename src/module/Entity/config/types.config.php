@@ -32,7 +32,7 @@ return [
                     'taxonomy'   => []
                 ]
             ],
-            'text-exercise-group'        => [
+            'text-exercise-group'   => [
                 'components' => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
@@ -107,12 +107,13 @@ return [
                         ]
                     ],
                     'license'    => [],
-                    'taxonomy'   => []
+                    'taxonomy'   => [],
+                    'related_content' => []
                 ],
             ],
             'article'               => [
                 'components' => [
-                    'repository' => [
+                    'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\ArticleForm',
                         'fields' => [
                             'title',
@@ -120,8 +121,9 @@ return [
                             'content'
                         ]
                     ],
-                    'license'    => [],
-                    'taxonomy'   => []
+                    'license'         => [],
+                    'taxonomy'        => [],
+                    'related_content' => []
                 ]
             ],
             'module'                => [
@@ -141,7 +143,8 @@ return [
                         ]
                     ],
                     'license'    => [],
-                    'taxonomy'   => []
+                    'taxonomy'   => [],
+                    'related_content' => []
                 ]
             ],
             'module-page'           => [
