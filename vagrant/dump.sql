@@ -69,6 +69,50 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`type`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`type` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`type` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `className_UNIQUE` (`name` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`attachment_container`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`attachment_container` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
+  `id` BIGINT NOT NULL,
+  `instance_id` INT NOT NULL,
+  `type_id` INT NOT NULL,
+  INDEX `fk_upload_uuid1_idx` (`id` ASC),
+  PRIMARY KEY (`id`),
+  INDEX `fk_upload_language1_idx` (`instance_id` ASC),
+  INDEX `fk_attachment_type1_idx` (`type_id` ASC),
+  CONSTRAINT `fk_upload_uuid1`
+    FOREIGN KEY (`id`)
+    REFERENCES `serlo`.`uuid` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_upload_language1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_attachment_type1`
+    FOREIGN KEY (`type_id`)
+    REFERENCES `serlo`.`type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `serlo`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`user` ;
@@ -83,16 +127,24 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user` (
   `ads_enabled` TINYINT(1) NOT NULL DEFAULT 0,
   `token` VARCHAR(32) NOT NULL,
   `last_login` TIMESTAMP NULL,
+  `avatar_id` BIGINT NULL,
+  `description` TEXT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uniq_username` (`username` ASC),
   UNIQUE INDEX `uniq_email` (`email` ASC),
   INDEX `fk_user_uuid1_idx` (`id` ASC),
   UNIQUE INDEX `token_UNIQUE` (`token` ASC),
+  INDEX `fk_user_attachment_container1_idx` (`avatar_id` ASC),
   CONSTRAINT `fk_user_uuid1`
     FOREIGN KEY (`id`)
     REFERENCES `serlo`.`uuid` (`id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_attachment_container1`
+    FOREIGN KEY (`avatar_id`)
+    REFERENCES `serlo`.`attachment_container` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -112,19 +164,6 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user_token` (
   UNIQUE INDEX `uniq_token` (`token` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `serlo`.`type`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`type` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`type` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `className_UNIQUE` (`name` ASC))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -839,37 +878,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`attachment_container`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`attachment_container` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
-  `id` BIGINT NOT NULL,
-  `instance_id` INT NOT NULL,
-  `type_id` INT NOT NULL,
-  INDEX `fk_upload_uuid1_idx` (`id` ASC),
-  PRIMARY KEY (`id`),
-  INDEX `fk_upload_language1_idx` (`instance_id` ASC),
-  INDEX `fk_attachment_type1_idx` (`type_id` ASC),
-  CONSTRAINT `fk_upload_uuid1`
-    FOREIGN KEY (`id`)
-    REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_upload_language1`
-    FOREIGN KEY (`instance_id`)
-    REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_attachment_type1`
-    FOREIGN KEY (`type_id`)
-    REFERENCES `serlo`.`type` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `serlo`.`related_content_container`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`related_content_container` ;
@@ -1183,21 +1191,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`html_cache`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`html_cache` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`html_cache` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `guid` VARCHAR(255) NOT NULL,
-  `content` LONGTEXT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `html_cache_guid` (`guid` ASC),
-  UNIQUE INDEX `guid_UNIQUE` (`guid` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `serlo`.`ads`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`ads` ;
@@ -1506,18 +1499,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`user`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `serlo`;
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234', NULL);
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (2, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL);
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (6, 'legacy@serlo.org', 'Legacy', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '7646', NULL);
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `serlo`.`type`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1555,6 +1536,18 @@ INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (30, 'top-center');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (31, 'top-left');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (32, 'top-right');
 INSERT INTO `serlo`.`type` (`id`, `name`) VALUES (33, 'curriculum-topic-folder');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `serlo`.`user`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`, `avatar_id`, `description`) VALUES (1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234', NULL, NULL, NULL);
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`, `avatar_id`, `description`) VALUES (2, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL, NULL, NULL);
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`, `avatar_id`, `description`) VALUES (6, 'legacy@serlo.org', 'Legacy', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '7646', NULL, NULL, NULL);
 
 COMMIT;
 
