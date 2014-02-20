@@ -37,12 +37,14 @@
             <h4><span class="glyphicon glyphicon-book"></span> {{ translate('Articles') }}</h4>
             <hr>
         </div>
+        {% set index = 0 %}
         {% for link in links if link.getType().getName() == 'article' and not link.isTrashed() and link.hasCurrentRevision() %}
-        {% if loop.index % 3 == 0 %}
+        {% if index % 3 == 0 %}
     </div>
     <hr>
     <div class="row">
         {% endif %}
+        {% set index = index + 1 %}
         <div class="col-sm-4">
             {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
         </div>
@@ -56,12 +58,14 @@
             <h4><span class="glyphicon glyphicon-facetime-video"></span> {{ translate('Videos') }}</h4>
             <hr>
         </div>
+        {% set index = 0 %}
         {% for link in links if link.getType().getName() == 'video' and not link.isTrashed() and link.hasCurrentRevision() %}
-        {% if loop.index % 3 == 0 %}
+        {% if index % 3 == 0 %}
     </div>
     <hr>
     <div class="row">
         {% endif %}
+        {% set index = index + 1 %}
         <div class="col-sm-4">
             {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
         </div>
@@ -75,12 +79,14 @@
             <h4><span class="glyphicon glyphicon-list"></span> {{ translate('Modules') }}</h4>
             <hr>
         </div>
+        {% set index = 0 %}
         {% for link in links if link.getType().getName() == 'module' and not link.isTrashed() and link.hasCurrentRevision() %}
-        {% if loop.index % 3 == 0 %}
+        {% if index % 3 == 0 %}
     </div>
     <hr>
     <div class="row">
         {% endif %}
+        {% set index = index + 1 %}
         <div class="col-sm-4">
             {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
         </div>
