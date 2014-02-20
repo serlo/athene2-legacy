@@ -143,8 +143,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user` (
   CONSTRAINT `fk_user_attachment_container1`
     FOREIGN KEY (`avatar_id`)
     REFERENCES `serlo`.`attachment_container` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

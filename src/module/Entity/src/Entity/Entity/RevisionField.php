@@ -55,7 +55,7 @@ class RevisionField
     /**
      * @return field_type $field
      */
-    public function getField()
+    public function getName()
     {
         return $this->field;
     }
@@ -79,7 +79,7 @@ class RevisionField
     /**
      * @param field_type $field
      */
-    public function setField($field)
+    public function setName($field)
     {
         $this->field = $field;
     }

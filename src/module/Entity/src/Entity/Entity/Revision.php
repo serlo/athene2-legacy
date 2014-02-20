@@ -110,9 +110,9 @@ class Revision extends Uuid implements RevisionInterface
             $this->fields->add($entity);
         }
 
-        $entity->set('field', $name);
-        $entity->set('revision', $this);
-        $entity->set('value', $value);
+        $entity->setName($name);
+        $entity->setRevision($this);
+        $entity->setValue($value);
 
         return $entity;
     }
