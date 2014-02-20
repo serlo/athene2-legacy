@@ -90,7 +90,7 @@ class RepositoryController extends AbstractController
         if ($entity->hasCurrentRevision()) {
             $data = [];
             foreach ($entity->getCurrentRevision()->getFields() as $field) {
-                $data[$field->getField()] = $field->getValue();
+                $data[$field->getName()] = $field->getValue();
             }
             $form->setData($data);
         }
