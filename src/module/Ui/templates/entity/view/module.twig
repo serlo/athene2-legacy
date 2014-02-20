@@ -40,9 +40,7 @@
                     <div class="row">
                         <div class="col-md-6"><h4>{{ revision.get('title') }}</h4></div>
                         <div class="col-md-6">
-                            <div class="pull-right btn-group">
-                                {% include 'entity/view/partials/actions' with {'entity': page} only %}
-                            </div>
+                            {% include 'entity/view/partials/actions/small' with {'entity': page} only %}
                         </div>
                     </div>
                 </header>
