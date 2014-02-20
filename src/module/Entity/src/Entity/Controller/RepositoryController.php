@@ -35,15 +35,10 @@ class RepositoryController extends AbstractController
         $entity = $this->getEntity();
         $this->assertGranted('entity.revision.create', $entity);
 
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-
         /* @var $form \Zend\Form\Form */
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = $this->getForm($entity);
-
-        $view = new ViewModel([
-            'entity' => $entity,
-            'form'   => $form
-        ]);
+        $view = new ViewModel(['entity' => $entity, 'form' => $form]);
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -59,18 +54,13 @@ class RepositoryController extends AbstractController
                     'Your revision has been saved, it will be available once it get\'s approved'
                 );
 
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
-
-                return false;
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
 
         $this->layout('athene2-editor');
-
         $view->setTemplate('entity/repository/update-revision');
 
         return $view;
@@ -106,27 +96,11 @@ class RepositoryController extends AbstractController
         $user       = $this->getUserManager()->getUserFromAuthenticator();
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
+
         $repository->checkoutRevision($revision->getId());
-
-        $this->getEventManager()->trigger(
-            'checkout',
-            $this,
-            [
-                'entity'   => $entity,
-                'revision' => $revision
-            ]
-        );
-
         $this->getEntityManager()->flush();
 
-        $this->redirect()->toRoute(
-            'entity/repository/history',
-            [
-                'entity' => $entity->getId()
-            ]
-        );
-
-        return false;
+        return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
 
     public function compareAction()

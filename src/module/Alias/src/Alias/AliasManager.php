@@ -94,8 +94,7 @@ class AliasManager implements AliasManagerInterface
 
         if ($canonical !== $entity) {
             $router = $this->getRouter();
-            $path   = array_flip(explode('/', $canonical->getAlias()));
-            $url    = $router->assemble($path, ['name' => 'alias/path']);
+            $url    = $router->assemble(['alias' => $canonical->getAlias()], ['name' => 'alias']);
             if ($url !== $alias) {
                 return $url;
             }
@@ -196,19 +195,20 @@ class AliasManager implements AliasManagerInterface
         }
 
         $alias       = $this->slugify($alias);
-        $useFallback = true;
+        $useFallback = false;
 
-        $aliases = $this->findAliases($uuid, $alias);
+        $aliases = $this->findAliases($alias);
         foreach ($aliases as $entity) {
-            if ($entity->getAlias() == $alias) {
-                $useFallback = false;
+            if ($entity->getObject() === $uuid) {
+                return $entity;
+            } elseif ($entity->getObject() !== $uuid) {
+                $useFallback = true;
                 break;
             }
         }
 
         if ($useFallback) {
-            $alias = $alias . ' ' . uniqid();
-            $alias = $this->slugify($alias);
+            $alias = $alias . '-' . uniqid();
         }
 
         /* @var $class Entity\AliasInterface */
@@ -242,21 +242,21 @@ class AliasManager implements AliasManagerInterface
         $this->getObjectManager()->flush($object);
     }
 
-    public function findAliases(UuidInterface $object, $alias)
-    {
-        $className = $this->getEntityClassName();
-        $criteria  = ['uuid' => $object->getId(), 'alias' => $alias];
-        $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria);
-
-        return $aliases;
-    }
-
     /**
      * @return ManagerOptions $options
      */
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @param ManagerOptions $options
+     * @return void
+     */
+    public function setOptions(ManagerOptions $options)
+    {
+        $this->options = $options;
     }
 
     protected function getAliasRepository()
@@ -270,12 +270,16 @@ class AliasManager implements AliasManagerInterface
     }
 
     /**
-     * @param ManagerOptions $options
-     * @return void
+     * @param $alias
+     * @return Entity\AliasInterface[]
      */
-    public function setOptions(ManagerOptions $options)
+    protected function findAliases($alias)
     {
-        $this->options = $options;
+        $className = $this->getEntityClassName();
+        $criteria  = ['alias' => $alias];
+        $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+
+        return $aliases;
     }
 
     protected function slugify($text)

@@ -33,15 +33,8 @@ class EntityController extends AbstractController
 
         $this->getEntityManager()->flush();
 
-        $data     = [
-            'entity' => $entity,
-            'data'   => $query
-        ];
-        $response = $this->getEventManager()->trigger(
-            'create.postFlush',
-            $this,
-            $data
-        );
+        $data     = ['entity' => $entity, 'data' => $query];
+        $response = $this->getEventManager()->trigger('create.postFlush', $this, $data);
 
         $this->checkResponse($response);
 

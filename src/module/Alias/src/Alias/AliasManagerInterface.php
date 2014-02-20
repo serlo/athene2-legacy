@@ -50,13 +50,6 @@ interface AliasManagerInterface extends Flushable
     public function findAliasBySource($source, InstanceInterface $instance);
 
     /**
-     * @param UuidInterface $object
-     * @param               $alias
-     * @return AliasInterface[]
-     */
-    public function findAliases(UuidInterface $object, $alias);
-
-    /**
      * @param                   $alias
      * @param InstanceInterface $instance
      * @return mixed
