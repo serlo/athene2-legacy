@@ -25,11 +25,18 @@ class TextSolutionForm extends Form
 
         $this->add((new Textarea('hint'))->setLabel('Hint:'));
         $this->add((new Textarea('content'))->setLabel('Content:'));
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
         $inputFilter = new InputFilter('text-solution');
         $inputFilter->add(['name' => 'hint', 'required' => false]);
         $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
         $this->setInputFilter($inputFilter);
     }
 }

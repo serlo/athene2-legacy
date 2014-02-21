@@ -23,7 +23,6 @@ class ArticleForm extends Form
         parent::__construct('article');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-        $inputFilter = new InputFilter('article');
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
@@ -33,40 +32,19 @@ class ArticleForm extends Form
                 'plain'
             )
         );
-
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
-                    [
-                        'name' => 'HtmlEntities'
-                    ]
-                ]
-            ]
-        );
-
-        $inputFilter->add(
-            [
-                'name'     => 'reasoning',
-                'required' => false,
-                'filters'  => [
-                    [
-                        'name' => 'HtmlEntities'
-                    ]
-                ]
-            ]
-        );
-
-        $inputFilter->add(
-            [
-                'name'     => 'content',
-                'required' => true
-            ]
-        );
-
+        $inputFilter = new InputFilter('article');
+        $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'reasoning', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
         $this->setInputFilter($inputFilter);
     }
 }

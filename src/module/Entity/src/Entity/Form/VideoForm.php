@@ -23,54 +23,29 @@ class VideoForm extends Form
     {
         parent::__construct('video');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('video');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Url('content'))->setLabel('Video url:'));
-        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:')->setAttribute(
-            'class',
-            'plain'
-        ));
-
+        $this->add(
+            (new Textarea('reasoning'))->setLabel('Reasoning:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
-                    [
-                        'name' => 'HtmlEntities'
-                    ]
-                ]
-            ]
-        );
-
-        $inputFilter->add(
-            [
-                'name'     => 'content',
-                'required' => true,
-                'filters'  => [
-                    [
-                        'name' => 'HtmlEntities'
-                    ]
-                ]
-            ]
-        );
-
-        $inputFilter->add(
-            [
-                'name'     => 'reasoning',
-                'required' => false,
-                'filters'  => [
-                    [
-                        'name' => 'HtmlEntities'
-                    ]
-                ]
-            ]
-        );
-
+        $inputFilter = new InputFilter('video');
+        $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'content', 'required' => true, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'reasoning', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
         $this->setInputFilter($inputFilter);
     }
 }

@@ -21,20 +21,20 @@ class TextExerciseForm extends Form
     {
         parent::__construct('text-exercise');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('text-exercise');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Textarea('content'))->setLabel('Content:'));
-
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            [
-                'name'     => 'content',
-                'required' => true
-            ]
-        );
-
+        $inputFilter = new InputFilter('text-exercise');
+        $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
         $this->setInputFilter($inputFilter);
     }
 }

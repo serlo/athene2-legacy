@@ -22,33 +22,22 @@ class ModulePageForm extends Form
     {
         parent::__construct('module-page');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('module-page');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Textarea('content'))->setLabel('Content:'));
-
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
-                    [
-                        'name' => 'HtmlEntities'
-                    ]
-                ]
-            ]
-        );
-
-        $inputFilter->add(
-            [
-                'name'     => 'content',
-                'required' => true
-            ]
-        );
-
+        $inputFilter = new InputFilter('module-page');
+        $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
         $this->setInputFilter($inputFilter);
     }
 }
