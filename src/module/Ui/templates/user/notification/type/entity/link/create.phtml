@@ -4,5 +4,5 @@
 
 <a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('parent')); ?>">
     <?php echo sprintf($this->translate('<strong>%s</strong> added a new entity to "%s"'), $user, $object); ?>
-    <small> - <?php echo $this->timeago()->render($this->notification->getTimestamp()); ?></small>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>

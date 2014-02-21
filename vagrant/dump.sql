@@ -2070,7 +2070,7 @@ INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_i
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (41, 8, 17, 33, 'curriculum');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (42, 8, 18, 33, 'curriculum-folder');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (43, 8, 7, 37, 'mathe');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (44, 8, 3, NULL, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (44, 8, 3, NULL, 'subject');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (45, 9, 1, NULL, 'Lernen');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (46, 9, 9, NULL, 'Taxonomy\\Provider\\NavigationProvider');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (47, 9, 8, NULL, '');
@@ -2088,7 +2088,7 @@ INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_i
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (59, 9, 17, 51, 'topic-folder');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (60, 9, 7, 55, 'mathe');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (61, 9, 7, 49, 'mathe');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (62, 9, 3, NULL, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (62, 9, 3, NULL, 'subject');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (63, 10, 1, NULL, 'Verwalten');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (64, 10, 2, NULL, '#');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (65, 10, 4, NULL, 'cog');

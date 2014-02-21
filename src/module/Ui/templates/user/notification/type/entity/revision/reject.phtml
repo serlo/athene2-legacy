@@ -1,8 +1,8 @@
 <?php $event = $this->notification->getEvents()->current(); ?>
 <?php $user = $this->normalize()->toTitle($event->getActor()); ?>
 <?php $object = $this->normalize()->toTitle($event->getObject()); ?>
-
+<?php $reason = $event->getParameter('reason'); ?>
 <a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('repository')); ?>">
-    <?php echo sprintf($this->translate('<strong>%s</strong> accepted a revision of %s'), $user, $object); ?>
+    <?php echo sprintf($this->translate('<strong>%s</strong> rejectect a revision of %s: %s'), $user, $object, $reason); ?>
     <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>

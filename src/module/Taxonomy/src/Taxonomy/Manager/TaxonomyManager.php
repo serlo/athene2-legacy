@@ -161,11 +161,17 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
         $data = $form->getData();
 
+        if(is_object($data)){
+            var_dump(get_class($data));
+            die();
+        }
+
         $form->bind($term);
         $form->setData($data);
         $form->isValid();
         $this->getEventManager()->trigger('create', $this, ['term' => $term]);
         $this->getObjectManager()->persist($term);
+        $form->setData([]);
 
         return $term;
     }
