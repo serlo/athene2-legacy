@@ -11,9 +11,8 @@
 namespace RelatedContent\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Uuid\Entity\UuidHolder;
 
-interface ContainerInterface extends UuidHolder
+interface ContainerInterface
 {
     /**
      *

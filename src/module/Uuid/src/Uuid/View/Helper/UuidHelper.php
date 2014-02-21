@@ -10,9 +10,7 @@
  */
 namespace Uuid\View\Helper;
 
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
-use Uuid\Exception\InvalidArgumentException;
 use Uuid\Options\ModuleOptions;
 use Zend\View\Helper\AbstractHelper;
 
@@ -31,15 +29,8 @@ class UuidHelper extends AbstractHelper
         $this->moduleOptions = $moduleOptions;
     }
 
-    public function getPermission($object, $action)
+    public function getPermission(UuidInterface $object, $action)
     {
-        if ($object instanceof UuidHolder) {
-            $object = $object->getUuidEntity();
-        } elseif ($object instanceof UuidInterface) {
-        } else {
-            throw new InvalidArgumentException;
-        }
-
-        return $this->moduleOptions->getPermission($object->getHolderName(), $action);
+        return $this->moduleOptions->getPermission(get_class($object), $action);
     }
 }

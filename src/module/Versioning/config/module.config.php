@@ -44,14 +44,5 @@ return [
                 'shared' => false
             ]
         ]
-    ],
-    'versioning'      => [
-        'permissions' => [
-            'Entity\Entity\Entity' => [
-                'commit'   => 'entity.revision.create',
-                'checkout' => 'entity.revision.checkout',
-                'reject' => 'entity.revision.trash'
-            ]
-        ]
     ]
 ];

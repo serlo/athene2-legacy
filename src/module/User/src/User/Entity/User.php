@@ -12,7 +12,7 @@ use Authorization\Entity\RoleInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 
 /**
  * A user.
@@ -21,15 +21,8 @@ use Uuid\Entity\UuidEntity;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user")
  */
-class User extends UuidEntity implements UserInterface
+class User extends Uuid implements UserInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="user", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")

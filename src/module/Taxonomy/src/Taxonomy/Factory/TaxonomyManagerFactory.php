@@ -12,7 +12,6 @@ namespace Taxonomy\Factory;
 
 use ClassResolver\ClassResolverFactoryTrait;
 use Common\Factory\EntityManagerFactoryTrait;
-use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Manager\TaxonomyManager;
 use Taxonomy\Options\ModuleOptions;
 use Type\Factory\TypeManagerFactoryTrait;
@@ -34,13 +33,11 @@ class TaxonomyManagerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $moduleOptions ModuleOptions */
-        /* @var $hydrator TaxonomyTermHydrator */
         $classResolver = $this->getClassResolver($serviceLocator);
         $objectManager = $this->getEntityManager($serviceLocator);
         $typeManager   = $this->getTypeManager($serviceLocator);
         $moduleOptions = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
-        $hydrator      = $serviceLocator->get('Taxonomy\Hydrator\TaxonomyTermHydrator');
-        $service       = new TaxonomyManager($classResolver, $moduleOptions, $objectManager, $hydrator, $typeManager);
+        $service       = new TaxonomyManager($classResolver, $moduleOptions, $objectManager, $typeManager);
 
         return $service;
     }

@@ -1,5 +1,0 @@
-<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php $term = $this->event->getObject()->getName(); ?>
-<?php $old = $this->event->getParameter('old')->getName(); ?>
-<?php $new = $this->event->getParameter('new')->getName(); ?>
-<?php echo sprintf($this->translate('%s changed <i>"%s"\'s</i> parent from <strong>"%s"</strong> to <strong>"%s"</strong>'), $user ,$term, $old, $new);?>

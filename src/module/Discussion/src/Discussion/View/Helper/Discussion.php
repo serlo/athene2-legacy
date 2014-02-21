@@ -11,6 +11,7 @@
 namespace Discussion\View\Helper;
 
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Form\TermForm;
 use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
 
@@ -27,9 +28,15 @@ class Discussion extends AbstractHelper
 
     protected $forum;
 
-    public function __construct()
+    /**
+     * @var TermForm
+     */
+    protected $termForm;
+
+    public function __construct(TermForm $termForm)
     {
-        $this->form = array();
+        $this->form     = array();
+        $this->termForm = $termForm;
     }
 
     /**
@@ -109,17 +116,18 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
+    public function getUser()
+    {
+        return $this->getUserManager()->getUserFromAuthenticator();
+    }
+
     public function render()
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-
         return $this->getView()->partial(
             $this->getOption('template'),
             array(
-                'user'        => $user,
                 'discussions' => $this->discussions,
                 'isArchived'  => $this->archived,
-                'plugin'      => $this,
                 'object'      => $this->getObject(),
                 'forum'       => $this->getForum()
             )
@@ -172,16 +180,16 @@ class Discussion extends AbstractHelper
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
 
         foreach ($forums as $forum) {
-            $current = $this->getTaxonomyManager()->createTerm(
+            $form = $this->termForm;
+            $form->setData(
                 [
-                    'term'     => [
+                    'term'        => [
                         'name' => $forum
                     ],
-                    'parent'   => $current,
-                    'taxonomy' => $taxonomy
-                ],
-                $instance
-            );
+                    'parent'      => $current,
+                    'taxonomy'    => $taxonomy
+                ]);
+            $current = $this->getTaxonomyManager()->createTerm($form);
         }
 
         $this->getTaxonomyManager()->getObjectManager()->flush();

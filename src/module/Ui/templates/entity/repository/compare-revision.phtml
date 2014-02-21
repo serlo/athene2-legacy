@@ -1,4 +1,4 @@
-<?php echo $this->pageHeader('Compare revisions')->setSubtitle($this->entity->getUuid())->render(); ?>
+<?php echo $this->pageHeader('Compare revisions')->setSubtitle($this->normalize()->toTitle($this->entity))->render(); ?>
 <ul class="nav nav-tabs">
     <li class="active"><a href="#display" data-toggle="tab"><?php echo $this->translate('Revision'); ?>
             (#<?php echo $this->revision->getId(); ?>)</a></li>

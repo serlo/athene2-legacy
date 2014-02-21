@@ -12,6 +12,7 @@
 namespace RelatedContent\Result;
 
 use RelatedContent\Entity\TypeInterface;
+
 interface ResultInterface
 {
     /**

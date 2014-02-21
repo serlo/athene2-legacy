@@ -12,8 +12,8 @@
 namespace RelatedContent\Result;
 
 use RelatedContent\Entity\InternalInterface;
-use RelatedContent\Exception;
 use RelatedContent\Entity\TypeInterface;
+use RelatedContent\Exception;
 
 class InternalResult extends AbstractResult
 {

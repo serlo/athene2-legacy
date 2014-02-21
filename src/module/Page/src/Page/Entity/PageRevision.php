@@ -3,7 +3,7 @@ namespace Page\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Versioning\Entity\RepositoryInterface;
 
 /**
@@ -12,15 +12,8 @@ use Versioning\Entity\RepositoryInterface;
  * @ORM\Entity
  * @ORM\Table(name="page_revision")
  */
-class PageRevision extends UuidEntity implements PageRevisionInterface
+class PageRevision extends Uuid implements PageRevisionInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="pageRevision")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")

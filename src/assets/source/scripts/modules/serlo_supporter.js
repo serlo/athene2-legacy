@@ -14,9 +14,9 @@ define(['jquery', 'underscore', 'system_notification', 'translator'], function (
         // check for browser support
         _.each(checkSupportFor, function (value) {
             if (typeof value === 'function') {
-                var check = value();
-                if (check.error) {
-                    fails.push(check.error);
+                var failed = value();
+                if (failed) {
+                    fails.push(failed);
                 }
             } else if (!window[value]) {
                 fails.push('<strong>' + value + '</strong>');

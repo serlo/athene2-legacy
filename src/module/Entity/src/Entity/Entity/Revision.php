@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Versioning\Entity\RepositoryInterface;
 use Versioning\Entity\RevisionInterface;
 
@@ -24,15 +24,8 @@ use Versioning\Entity\RevisionInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity_revision")
  */
-class Revision extends UuidEntity implements RevisionInterface
+class Revision extends Uuid implements RevisionInterface
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entityRevision", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")

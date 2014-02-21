@@ -11,9 +11,9 @@
  */
 namespace Subject\Factory;
 
+use Subject\Options\ModuleOptions;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Subject\Options\ModuleOptions;
 
 class ModuleOptionsFactory implements FactoryInterface
 {

@@ -10,72 +10,24 @@
  */
 namespace Event\Listener;
 
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Zend\EventManager\Event;
 
 class TaxonomyManagerListener extends AbstractListener
 {
 
-    public function onCreate(Event $e)
-    {
-        $term     = $e->getParam('term');
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-
-        $this->logEvent('taxonomy/term/create', $instance, $user, $term);
-    }
-
-    public function onUpdate(Event $e)
-    {
-        $term     = $e->getParam('term');
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-
-        $this->logEvent('taxonomy/term/update', $instance, $user, $term);
-    }
-
-    public function onAssociate(Event $e)
-    {
-        $term     = $e->getParam('term');
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-
-        $this->logEvent(
-            'taxonomy/term/associate',
-            $instance,
-            $user,
-            $term,
-            [
-                [
-                    'name'   => 'object',
-                    'value' => $e->getParam('object')->getUuidEntity()
-                ]
-            ]
-        );
-    }
-
-    public function onDissociate(Event $e)
-    {
-        $term     = $e->getParam('term');
-        $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-
-        $this->logEvent(
-            'taxonomy/term/dissociate',
-            $instance,
-            $user,
-            $term,
-            [
-                [
-                    'name'   => 'object',
-                    'value' => $e->getParam('object')->getUuidEntity()
-                ]
-            ]
-        );
-    }
-
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
+        $events->attach(
+            $this->getMonitoredClass(),
+            'parent.change',
+            array(
+                $this,
+                'onParentChange'
+            )
+        );
+
+        $events->attach(
             $this->getMonitoredClass(),
             'create',
             array(
@@ -84,7 +36,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'update',
             array(
@@ -93,7 +45,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'associate',
             array(
@@ -102,7 +54,7 @@ class TaxonomyManagerListener extends AbstractListener
             )
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'dissociate',
             array(
@@ -115,5 +67,86 @@ class TaxonomyManagerListener extends AbstractListener
     protected function getMonitoredClass()
     {
         return 'Taxonomy\Manager\TaxonomyManager';
+    }
+
+    public function onAssociate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term     = $e->getParam('term');
+        $instance = $term->getInstance();
+
+        $this->logEvent(
+            'taxonomy/term/associate',
+            $instance,
+            $term,
+            [
+                [
+                    'name'  => 'object',
+                    'value' => $e->getParam('object')
+                ]
+            ]
+        );
+    }
+
+    public function onCreate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term     = $e->getParam('term');
+        $instance = $term->getInstance();
+
+        $this->logEvent('taxonomy/term/create', $instance, $term);
+    }
+
+    public function onDissociate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term     = $e->getParam('term');
+        $instance = $term->getInstance();
+
+        $this->logEvent(
+            'taxonomy/term/dissociate',
+            $instance,
+            $term,
+            [
+                [
+                    'name'  => 'object',
+                    'value' => $e->getParam('object')
+                ]
+            ]
+        );
+    }
+
+    public function onParentChange(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term     = $e->getParam('term');
+        $from     = $e->getParam('from');
+        $to       = $e->getParam('to');
+        $instance = $term->getInstance();
+
+        $this->logEvent(
+            'taxonomy/term/parent/change',
+            $instance,
+            $term,
+            [
+                [
+                    'name'  => 'from',
+                    'value' => $from ? $from : 'no parent'
+                ],
+                [
+                    'name'  => 'to',
+                    'value' => $to ? $from : 'no parent'
+                ]
+            ]
+        );
+    }
+
+    public function onUpdate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term     = $e->getParam('term');
+        $instance = $term->getInstance();
+
+        $this->logEvent('taxonomy/term/update', $instance, $term);
     }
 }

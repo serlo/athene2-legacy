@@ -39,7 +39,8 @@ class LicenseController extends AbstractController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $this->getLicenseManager()->injectLicense($entity, (int)$data['license']);
+                $license = $this->getLicenseManager()->getLicense((int)$data['license']);
+                $this->getLicenseManager()->injectLicense($entity, $license);
                 $this->getLicenseManager()->flush();
 
                 $this->redirect()->toUrl(

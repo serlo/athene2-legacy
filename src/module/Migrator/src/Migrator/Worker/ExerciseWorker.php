@@ -131,12 +131,14 @@ class ExerciseWorker implements Worker
 
         /** @var $exercises \Migrator\Entity\ExerciseTranslation[] */
         $exercises = $this->objectManager->getRepository('Migrator\Entity\ExerciseTranslation')->findAll();
-        $total = count($exercises);
-        $i = 0;
+        $total     = count($exercises);
+        $i         = 0;
 
         foreach ($exercises as $exercise) {
             $i++;
             echo (($i / $total) * 100) . " ($i of $total)\n";
+
+            if($i == 870) continue;
 
             $content = $this->converterChain->convert(
                 utf8_encode($exercise->getContent())
@@ -169,16 +171,16 @@ class ExerciseWorker implements Worker
                 foreach ($folders as $folder) {
                     $folder = $folder->getFolder();
                     $term   = $results['folder'][$folder->getId()];
-                    $this->taxonomyManager->associateWith($term->getId(), 'entities', $lrExercise, $folder->getPosition());
+                    $this->taxonomyManager->associateWith($term, 'entities', $lrExercise, $folder->getPosition());
                 }
             }
 
-            $repository = $this->repositoryManager->getRepository($lrExercise);
-            $revision   = $repository->commitRevision(
-                ['content' => $content]
-            );
-            $repository->checkoutRevision($revision->getId());
+            $this->objectManager->flush($lrExercise);
 
+            $repository = $this->repositoryManager->getRepository($lrExercise);
+            $revision   = $repository->commitRevision(['content' => $content]);
+
+            $repository->checkoutRevision($revision);
             $workload[] = [
                 'entity' => $revision,
                 'work'   => [
@@ -205,11 +207,13 @@ class ExerciseWorker implements Worker
                     utf8_encode($solution->getHint())
                 );
 
+                $this->objectManager->flush($lrSolution);
+
                 $repository = $this->repositoryManager->getRepository($lrSolution);
                 $revision   = $repository->commitRevision(
                     ['content' => $content, 'hint' => $hint]
                 );
-                $repository->checkoutRevision($revision->getId());
+                $repository->checkoutRevision($revision);
 
                 $workload[] = [
                     'entity' => $revision,

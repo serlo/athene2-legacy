@@ -17,10 +17,9 @@ use Event\Exception\RuntimeException;
 use Instance\Entity\InstanceInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
-use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
 abstract class AbstractListener extends AbstractSharedListenerAggregate
 {
@@ -42,12 +41,12 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
         $this->userManager     = $userManager;
     }
 
-    public function logEvent($name, InstanceInterface $instance, UserInterface $actor, $uuid, array $params = array())
+    public function logEvent($name, InstanceInterface $instance, $uuid, array $params = array())
     {
-        if ($uuid instanceof UuidHolder) {
-            $uuid = $uuid->getUuidEntity();
+        if ($uuid instanceof UuidInterface) {
+            $uuid = $uuid;
         }
 
-        $this->getEventManager()->logEvent($name, $instance, $actor, $uuid, $params);
+        $this->getEventManager()->logEvent($name, $instance, $uuid, $params);
     }
 }

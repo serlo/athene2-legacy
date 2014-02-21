@@ -11,9 +11,8 @@
  */
 namespace Ui\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
-use Zend\Config\Processor\Filter;
 use Zend\Filter\StripTags;
+use Zend\View\Helper\AbstractHelper;
 
 class PageHeader extends AbstractHelper
 {

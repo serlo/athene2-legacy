@@ -28,6 +28,11 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     public function countAssociations($association);
 
     /**
+     * @return int
+     */
+    public function countElements();
+
+    /**
      * @param string $name
      * @return TaxonomyTermModelInterface
      */

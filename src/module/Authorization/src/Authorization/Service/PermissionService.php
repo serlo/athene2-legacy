@@ -108,7 +108,7 @@ class PermissionService implements PermissionServiceInterface
 
     public function findParametrizedPermission($name, $parameterKey, $parameterValue)
     {
-        $parametrized = findParametrizedPermissions($name, $parameterKey, $parameterValue);
+        $parametrized = $this->findParametrizedPermissions($name, $parameterKey, $parameterValue);
 
         if (empty($parametrized)) {
             throw new PermissionNotFoundException;

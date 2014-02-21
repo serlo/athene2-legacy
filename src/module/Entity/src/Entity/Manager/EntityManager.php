@@ -24,7 +24,7 @@ use Zend\EventManager\EventManagerAwareTrait;
 class EntityManager implements EntityManagerInterface
 {
     use TypeManagerAwareTrait, ObjectManagerAwareTrait;
-    use UuidManagerAwareTrait, ClassResolverAwareTrait;
+    use ClassResolverAwareTrait;
     use EventManagerAwareTrait, FlushableTrait;
     use AuthorizationAssertionTrait;
 
@@ -52,8 +52,6 @@ class EntityManager implements EntityManagerInterface
 
         /* @var $entity EntityInterface */
         $entity = $this->getClassResolver()->resolve('Entity\Entity\EntityInterface');
-
-        $this->getUuidManager()->injectUuid($entity);
 
         $entity->setInstance($instance);
         $entity->setType($type);

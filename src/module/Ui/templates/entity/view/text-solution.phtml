@@ -21,9 +21,6 @@
         <?php endif; ?>
         <section class="panel panel-default">
             <div class="panel-heading">
-                <div class="pull-right btn-group">
-                    <?php echo $this->partial('entity/view/partials/actions', array('entity' => $entity)); ?>
-                </div>
                 <h4 class="panel-title">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#solutions-<?php echo $solution->getId(); ?>" href="#solution-content-<?php echo $solution->getId(); ?>"><?php echo $this->translate('Solution'); ?></a>
                 </h4>
@@ -34,6 +31,9 @@
                 </div>
             </div>
         </section>
+        <footer>
+            <?php echo $this->partial('entity/view/partials/actions/small', array('entity' => $this->entity)); ?>
+        </footer>
     </article>
 <?php elseif($entity->getHead()): ?>
     <?php echo $this->translate('This solution is waiting for approval. It will be soon available!'); ?>

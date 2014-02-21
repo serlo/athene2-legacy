@@ -16,9 +16,9 @@ use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Model\TaxonomyTermModelInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
+use Uuid\Entity\UuidInterface;
 
-interface PostInterface extends UuidHolder, TaxonomyTermAwareInterface, InstanceAwareInterface
+interface PostInterface extends UuidInterface, TaxonomyTermAwareInterface, InstanceAwareInterface
 {
 
     /**

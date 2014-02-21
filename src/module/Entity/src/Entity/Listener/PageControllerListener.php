@@ -12,7 +12,6 @@ namespace Entity\Listener;
 
 class PageControllerListener extends AbstractDispatchListener
 {
-
     protected function getMonitoredClass()
     {
         return 'Entity\Controller\PageController';
