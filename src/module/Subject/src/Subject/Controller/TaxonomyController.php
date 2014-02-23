@@ -1,17 +1,19 @@
 <?php
 
 /**
- * 
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Subject\Controller;
 
+use Entity\Entity\EntityInterface;
+use Taxonomy\Exception\TermNotFoundException;
 use Zend\View\Model\ViewModel;
 
 class TaxonomyController extends AbstractController
@@ -20,31 +22,36 @@ class TaxonomyController extends AbstractController
 
     public function indexAction()
     {
-        $subject = $this->getSubject();
-        $entities = [];
-        $term = $subject->findChildBySlugs(explode('/', $this->params('path')));
-
-        if(!is_object($term)){
-            $this->getResponse()->setStatusCode(404);
-            return false;
-        }
-        
-        if($term){
-            foreach ($term->getAssociated('entities') as $entity) {
-                if (! $entity->getTrashed()) {
-                    $entities[] = $entity;
-                }
+        try {
+            $subject = $this->getSubject();
+            $term    = $subject->findChildBySlugs(explode('/', $this->params('path')));
+            if (!is_object($term)) {
+                return $this->getResponse()->setStatusCode(404);
             }
+        } catch (TermNotFoundException $e) {
+            return $this->getResponse()->setStatusCode(404);
         }
-        
+
+        $entities = $term->getAssociated('entities')->filter(function (EntityInterface $e) {
+            return !$e->isTrahsed() && $e->hasCurrentRevision();
+        });
+
+        $types = $entities->map(function (EntityInterface $e) {
+            $array[$e->getType()->getName()][] = $e;
+
+            return $array;
+        });
+
         $view = new ViewModel([
-            'term' => $term,
+            'term'  => $term,
             'terms' => $term ? $term->getChildren() : $subject->getChildren(),
             'subject' => $subject,
-            'links' => $entities
+            'links' => $entities,
+            'types' => $types
         ]);
-        
+
         $view->setTemplate('subject/taxonomy/page/default');
+
         return $view;
     }
 }
