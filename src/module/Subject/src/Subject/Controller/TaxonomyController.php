@@ -1,7 +1,6 @@
 <?php
 
 /**
- *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
@@ -12,14 +11,14 @@
  */
 namespace Subject\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Entity\Entity\EntityInterface;
 use Taxonomy\Exception\TermNotFoundException;
+use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class TaxonomyController extends AbstractController
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait;
-
     public function indexAction()
     {
         try {
@@ -32,22 +31,23 @@ class TaxonomyController extends AbstractController
             return $this->getResponse()->setStatusCode(404);
         }
 
-        $entities = $term->getAssociated('entities')->filter(function (EntityInterface $e) {
-            return !$e->isTrashed() && $e->hasCurrentRevision();
-        });
+        $entities = $term->getAssociated('entities')->filter(
+            function (EntityInterface $e) {
+                return !$e->isTrashed() && $e->hasCurrentRevision();
+            }
+        );
 
-        $types = $entities->map(function (EntityInterface $e) {
-            $array[$e->getType()->getName()][] = $e;
-
-            return $array;
-        });
+        foreach($entities as $e){
+            $types[$e->getType()->getName()][] = $e;
+        }
+        $types = new ArrayCollection($types);
 
         $view = new ViewModel([
-            'term'  => $term,
-            'terms' => $term ? $term->getChildren() : $subject->getChildren(),
+            'term'    => $term,
+            'terms'   => $term ? $term->getChildren() : $subject->getChildren(),
             'subject' => $subject,
-            'links' => $entities,
-            'types' => $types
+            'links'   => $entities,
+            'types'   => $types
         ]);
 
         $view->setTemplate('subject/taxonomy/page/default');

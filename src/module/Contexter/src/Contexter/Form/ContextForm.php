@@ -12,8 +12,8 @@ namespace Contexter\Form;
 
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
 use Zend\Form\Element;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -25,7 +25,7 @@ class ContextForm extends Form
         parent::__construct('context');
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-        $inputFilter = new InputFilter('context');
+        $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
 
         $this->add(
@@ -52,11 +52,36 @@ class ContextForm extends Form
 
         $inputFilter->add(
             [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'HtmlEntities'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\- 0-9]+$~'
+                        ]
+                    ]
+                ]
+
+            ]
+        );
+
+        $inputFilter->add(
+            [
+                'name'        => 'object',
+                'required'    => true,
+                'allow_empty' => false,
+                'validators'  => [
+                    [
+                        'name'    => 'NotEmpty'
+                    ],
+                    [
+                        'name'    => 'Digits'
                     ]
                 ]
             ]
@@ -64,11 +89,14 @@ class ContextForm extends Form
 
         $inputFilter->add(
             [
-                'name'     => 'object',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'type',
+                'required'   => true,
+                'validators' => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z]*$~'
+                        ]
                     ]
                 ]
             ]

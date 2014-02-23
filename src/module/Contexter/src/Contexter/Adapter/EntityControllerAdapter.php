@@ -10,26 +10,42 @@
  */
 namespace Contexter\Adapter;
 
+use Entity\Controller\AbstractController;
 use Instance\Manager\InstanceManagerAwareTrait;
 
-class EntityPluginControllerAdapter extends AbstractAdapter
+/**
+ * Class EntityControllerAdapter
+ *
+ * @package Contexter\Adapter
+ * @method
+ */
+class EntityControllerAdapter extends AbstractAdapter
 {
     use InstanceManagerAwareTrait;
 
     public function getProvidedParams()
     {
+        /* @var $controller AbstractController */
         $params        = $this->getRouteParams();
-        $entityService = $this->getController()->getEntityService($params['entity']);
+        $controller    = $this->getController();
+        $entity = $controller->getEntity($params['entity']);
 
         $array = [
-            'type'     => $entityService->getType()->getName(),
+            'type'     => $entity->getType()->getName(),
             'instance' => $this->getInstanceManager()->getInstanceFromRequest()->getName()
         ];
 
-        if ($entityService->hasPlugin('learningResource')) {
-            $array['subject'] = $entityService->learningResource()->getDefaultSubject()->getSlug();
+        foreach($entity->getTaxonomyTerms() as $term){
+            while($term->hasParent()){
+                $array[$term->getTaxonomy()->getName()][] = $term->getSlug();
+                $term = $term->getParent();
+            }
         }
 
         return $array;
+    }
+
+    public function isValidController($controller){
+        return $controller instanceof AbstractController;
     }
 }
