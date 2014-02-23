@@ -11,6 +11,7 @@
 return [
     // This should be an array of module namespaces used in the application.
     'modules'                 => [
+        // Session needs to be the first entry, so db storage instead of php storage is used!
         'Session',
         'ZendDeveloperTools',
         'Application',
@@ -88,13 +89,10 @@ return [
         // If enabled, creates a module class map cache which will be used
         // by in future requests, to reduce the autoloading process.
         'module_map_cache_enabled' => false,
-
         // The key used to create the class map cache file name.
         'module_map_cache_key'     => "496fe9daf9bed5ab03314f04518b9268",
-
         // The path in which to cache merged configuration.
         'cache_dir'                => "./data",
-
         // Whether or not to enable modules dependency checking.
         // Enabled by default, prevents usage of modules that depend on other modules
         // that weren't loaded.
