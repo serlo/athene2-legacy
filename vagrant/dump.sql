@@ -1557,14 +1557,14 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (7, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (7, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
 
 COMMIT;
 

@@ -16,6 +16,12 @@ class TableConverter extends AbstractConverter
 
     public function convert($input)
     {
+        $input = trim($input);
+
+        if(!$input){
+            return '';
+        }
+
         $layout = [];
 
         $subpattern = [];
