@@ -1440,6 +1440,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`session`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`session` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`session` (
+  `id` VARCHAR(35) NOT NULL,
+  `name` VARCHAR(35) NOT NULL,
+  `modified` INT NOT NULL,
+  `lifetime` INT NOT NULL,
+  `data` TEXT NOT NULL,
+  PRIMARY KEY (`id`, `name`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Data for table `serlo`.`language`
 -- -----------------------------------------------------
 START TRANSACTION;

@@ -33,7 +33,7 @@ class TaxonomyController extends AbstractController
         }
 
         $entities = $term->getAssociated('entities')->filter(function (EntityInterface $e) {
-            return !$e->isTrahsed() && $e->hasCurrentRevision();
+            return !$e->isTrashed() && $e->hasCurrentRevision();
         });
 
         $types = $entities->map(function (EntityInterface $e) {
