@@ -21,19 +21,6 @@ class ContextController extends AbstractActionController
 {
     use ContextManagerAwareTrait, RouterAwareTrait;
 
-    public function manageAction()
-    {
-        $this->assertGranted('contexter.context.manage');
-
-        $elements = $this->getContextManager()->findAll();
-        $view     = new ViewModel([
-            'elements' => $elements
-        ]);
-        $view->setTemplate('contexter/manage');
-
-        return $view;
-    }
-
     public function addAction()
     {
         $this->assertGranted('contexter.context.add');
@@ -48,34 +35,25 @@ class ContextController extends AbstractActionController
             $routeMatch = $this->getRouter()->matchUri($uri);
             $this->getRouter()->setRouteMatch($routeMatch);
             $types      = $this->getContextManager()->findAllTypeNames();
-            $parameters = $this->getRouter()->getAdapter()->getProvidedParams();
+            $parameters = $this->getRouter()->getAdapter()->getParams();
             $form       = new ContextForm($parameters, $types->toArray());
-            $form->setData(
-                [
-                    'route' => $routeMatch->getMatchedRouteName()
-                ]
-            );
+            $form->setData(['route' => $routeMatch->getMatchedRouteName()]);
             if ($this->getRequest()->isPost()) {
-                $form->setData(
-                    $this->getRequest()->getPost()
-                );
+                $form->setData($this->getRequest()->getPost());
                 if ($form->isValid()) {
                     $data          = $form->getData();
-                    $useParameters = $this->getRouter()->getAdapter()->getRouteParams();
 
                     foreach ($data['parameters'] as $key => $value) {
-                        if ($value === '1' && array_key_exists($key, $parameters)) {
+                        if ($value == '1' && isset($parameters[$key])) {
                             $useParameters[$key] = $parameters[$key];
                         }
                     }
 
                     $context = $this->getContextManager()->add($data['object'], $data['type'], $data['title']);
-                    $this->getContextManager()->addRoute($context, $data['route'], $useParameters);
-
+                    $this->getContextManager()->addRoute($context, $data['route'], $data['parameters']);
                     $this->getContextManager()->flush();
-                    $this->redirect()->toUrl($uri);
 
-                    return false;
+                    return $this->redirect()->toUrl($uri);
                 }
             }
         }
@@ -85,6 +63,39 @@ class ContextController extends AbstractActionController
         $view->setTemplate('contexter/add/form');
 
         return $view;
+    }
+
+    public function manageAction()
+    {
+        $this->assertGranted('contexter.context.manage');
+
+        $elements = $this->getContextManager()->findAll();
+        $view     = new ViewModel([
+            'elements' => $elements
+        ]);
+        $view->setTemplate('contexter/manage');
+
+        return $view;
+    }
+
+    public function removeAction()
+    {
+        $id = $this->params('id');
+        $this->getContextManager()->removeContext($id);
+        $this->getContextManager()->flush();
+        $this->redirect()->toReferer();
+
+        return false;
+    }
+
+    public function removeRouteAction()
+    {
+        $id = $this->params('id');
+        $this->getContextManager()->removeRoute($id);
+        $this->getContextManager()->flush();
+        $this->redirect()->toReferer();
+
+        return false;
     }
 
     public function selectUriAction()
@@ -124,25 +135,5 @@ class ContextController extends AbstractActionController
         $view->setTemplate('contexter/update');
 
         return $view;
-    }
-
-    public function removeAction()
-    {
-        $id = $this->params('id');
-        $this->getContextManager()->removeContext($id);
-        $this->getContextManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
-    }
-
-    public function removeRouteAction()
-    {
-        $id = $this->params('id');
-        $this->getContextManager()->removeRoute($id);
-        $this->getContextManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
     }
 }

@@ -12,8 +12,8 @@ namespace Contexter\Form;
 
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element;
 use Zend\Form\Element\Text;
+use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -23,28 +23,21 @@ class ContextForm extends Form
     public function __construct(array $parameters, array $types)
     {
         parent::__construct('context');
+        $inputFilter = new InputFilter();
+
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-        $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
-
-        $this->add(
-            [
-                'name'       => 'route',
-                'type'       => 'Hidden',
-                'attributes' => []
-            ]
-        );
 
         $values = [];
         foreach ($types as $type) {
             $values[$type] = $type;
         }
 
+        $this->add(['name' => 'route', 'type' => 'Hidden',]);
         $this->add((new Select('type'))->setLabel('Select a type:')->setValueOptions($values));
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Text('object'))->setLabel('Object-ID:'));
-
         $this->add(new ParameterFieldset($parameters));
         $this->add(
             (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')
@@ -78,10 +71,10 @@ class ContextForm extends Form
                 'allow_empty' => false,
                 'validators'  => [
                     [
-                        'name'    => 'NotEmpty'
+                        'name' => 'NotEmpty'
                     ],
                     [
-                        'name'    => 'Digits'
+                        'name' => 'Digits'
                     ]
                 ]
             ]

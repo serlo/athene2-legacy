@@ -169,7 +169,7 @@ class Router implements RouterInterface
     {
         /* @var $parameter Entity\RouteParameterInterface */
         foreach ($route->getParameters() as $parameter) {
-            if(!$this->matchesParameter($parameter)){
+            if (!$this->matchesParameter($parameter)) {
                 return false;
             }
         }
@@ -182,8 +182,12 @@ class Router implements RouterInterface
         $parameters = $this->getAdapter()->getParams();
         $key        = $parameter->getKey();
 
-        if (isset($parameters[$key]) && strtolower($parameters[$key]) == strtolower($parameter->getValue())) {
-            return true;
+        if (isset($parameters[$key])) {
+            if (is_array($parameters[$key])) {
+                return in_array($parameter->getValue(), $parameters[$key]);
+            } else {
+                return strtolower($parameters[$key]) == strtolower($parameter->getValue());
+            }
         }
 
         return false;

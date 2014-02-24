@@ -33,22 +33,23 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
                 }
                 $this->add(
                     array(
-                        'type'          => 'Zend\Form\Element\Select',
-                        'options'       => array(
+                        'type'     => 'Zend\Form\Element\Select',
+                        'options'  => array(
                             'disable_inarray_validator' => true,
-                            'value_options' => $options,
-                            'empty_option'  => 'Ignore'
+                            'value_options'             => $options,
+                            'empty_option'              => 'Ignore',
+                            'label'                     => $key
                         ),
-                        'required'      => false,
-                        'name'          => $key,
+                        'required' => false,
+                        'name'     => $key,
                     )
                 );
             } else {
                 $this->add(
-                    (new Checkbox($key))->setLabel('<strong>' . $key . ':</strong> ' . $value . '')->setAttribute(
+                    (new Checkbox($key))->setLabel('<strong>' . $key . ':</strong> ' . $value)->setAttribute(
                         'checked',
                         true
-                    )
+                    )->setCheckedValue($value)
                 );
             }
         }
@@ -71,7 +72,7 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
                     [
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '~^[a-zA-Z\-_/0-9]*$~'
+                            'pattern' => '~^[a-zA-Z\-_\\\\/0-9]*$~'
                         ]
                     ]
                 ]

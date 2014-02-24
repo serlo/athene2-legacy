@@ -6,7 +6,7 @@
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
         <div class="col-sm-4">
-            <ul class="nav nav-pills">
+            <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
                     {% if solution.hasCurrentRevision() and solution.getCurrentRevision().get('hint') %}
                         <li>
