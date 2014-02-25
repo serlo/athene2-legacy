@@ -25,52 +25,48 @@ class AdsController extends AbstractActionController
 
     public function indexAction()
     {
-        $ads = $this->getAdsManager()->findAllAds($this->getInstanceManager()
-            ->getInstanceFromRequest());
-        $view = new ViewModel([
-            'ads' => $ads
-        ]);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $this->assertGranted('ad.get', $instance);
+        $ads  = $this->getAdsManager()->findAllAds($instance);
+        $view = new ViewModel(['ads' => $ads]);
         $view->setTemplate('ads/ads');
-        
+
         return $view;
     }
 
     public function addAction()
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-        $form = new AdForm();
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        
+        $user     = $this->getUserManager()->getUserFromAuthenticator();
+        $form     = new AdForm();
+        $this->assertGranted('ad.create', $instance);
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $data = array_merge($data, $this->getRequest()
                 ->getFiles()
                 ->toArray());
-            
+
             $form->setData($data);
             if ($form->isValid()) {
-                $array = $form->getData();
-                
+                $array  = $form->getData();
                 $upload = $this->getAttachmentManager()->attach($array['file']);
-                
-                $array['attachment'] = $upload;
-                $array['author'] = $user;
-                $array['instance'] = $instance;
-                
+                $array  = [
+                    'attachment' => $upload,
+                    'author'     => $user,
+                    'instance'   => $instance
+                ];
+
                 $this->getAdsManager()->createAd($array);
-                
-                $this->getObjectManager()->flush();
-                
-                $this->redirect()->toRoute('ads');
+                $this->getAdsManager()->flush();
+
+                return $this->redirect()->toRoute('ads');
             }
         }
-        
-        $view = new ViewModel([
-            'form' => $form,
-            'title' => 'Ad erstellen'
-        ]);
-        $view->setTemplate('ads/form');
-        
+
+        $view = new ViewModel(['form' => $form,]);
+        $view->setTemplate('ads/create');
+
         return $view;
     }
 
@@ -78,68 +74,64 @@ class AdsController extends AbstractActionController
     {
         $id = $this->params('id');
         $ad = $this->getAdsManager()->getAd($id);
+        $this->assertGranted('ad.remove', $ad);
         $this->getAdsManager()->removeAd($ad);
-        $this->getObjectManager()->flush();
-        $this->redirect()->toRoute('ads');
+        $this->getAdsManager()->flush();
+
+        return $this->redirect()->toRoute('ads');
     }
 
     public function shuffleAction()
     {
-        $ads = $this->getAdsManager()->findShuffledAds($this->getInstanceManager()
-            ->getInstanceFromRequest(), 3);
-        $view = new ViewModel([
-            'ads' => $ads
-        ]);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $this->assertGranted('ad.get', $instance);
+        $ads  = $this->getAdsManager()->findShuffledAds($instance, 3);
+        $view = new ViewModel(['ads' => $ads]);
         $view->setTemplate('ads/shuffle');
-        $this->getObjectManager()->flush();
-        
+
         return $view;
     }
 
     public function editAction()
     {
-        $form = new AdForm();
-        $id = $this->params('id');
+        $form     = new AdForm();
+        $id       = $this->params('id');
         $instance = $this->getInstanceManager();
-        $ad = $this->getAdsManager()->getAd($id);
-        
+        $ad       = $this->getAdsManager()->getAd($id);
+        $this->assertGranted('ad.update', $ad);
+
         $form->get('content')->setValue($ad->getContent());
         $form->get('title')->setValue($ad->getTitle());
         $form->get('frequency')->setValue($ad->getFrequency());
         $form->get('file')->setAttribute('required', false);
         $form->get('file')->setLabel('Edit Image');
         $form->get('url')->setValue($ad->getUrl());
-        
-        $ad = $this->getAdsManager()->getAd($id);
-        
+
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            
+
             $data = array_merge($data, $this->getRequest()
                 ->getFiles()
                 ->toArray());
-            
+
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                
-                if ($array['file']['error']==0) {
-                 
-                    $upload = $this->getAttachmentManager()->attach($array['file']);
+
+                if ($array['file']['error'] == 0) {
+
+                    $upload              = $this->getAttachmentManager()->attach($array['file']);
                     $array['attachment'] = $upload;
                 }
                 $this->getAdsManager()->updateAd($array, $ad);
-                $this->getObjectManager()->flush();
+                $this->getAdsManager()->flush();
                 $this->redirect()->toRoute('ads');
             }
         }
-        
-        $view = new ViewModel([
-            'form' => $form,
-            'title' => 'Ad bearbeiten'
-        ]);
-        $view->setTemplate('ads/form');
-        
+
+        $view = new ViewModel(['form' => $form]);
+        $view->setTemplate('ads/update');
+
         return $view;
     }
 
@@ -147,9 +139,9 @@ class AdsController extends AbstractActionController
     {
         $id = $this->params('id');
         $ad = $this->getAdsManager()->getAd($id);
-        $ad->setClicks($ad->getClicks() + 1);
-        $this->getObjectManager()->persist($ad);
-        $this->getObjectManager()->flush();
-        $this->redirect()->toUrl($ad->getUrl());
+        $this->getAdsManager()->clickAd($id);
+        $this->getAdsManager()->flush();
+
+        return $this->redirect()->toUrl($ad->getUrl());
     }
 }

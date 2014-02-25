@@ -76,8 +76,6 @@ class Ad implements AdInterface
     public function setContent($content)
     {
         $this->content = $content;
-
-        return $this;
     }
 
     public function getContent()
@@ -88,8 +86,6 @@ class Ad implements AdInterface
     public function setTitle($title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     public function getTitle()
@@ -105,15 +101,11 @@ class Ad implements AdInterface
     public function setFrequency($frequency)
     {
         $this->frequency = $frequency;
-
-        return $this;
     }
 
     public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
-
-        return $this;
     }
 
     public function getAuthor()
@@ -122,12 +114,9 @@ class Ad implements AdInterface
     }
 
 
-
     public function setClicks($clicks)
     {
         $this->clicks = $clicks;
-
-        return $this;
     }
 
     public function getClicks()
@@ -138,8 +127,6 @@ class Ad implements AdInterface
     public function setAttachment($attachment)
     {
         $this->image = $attachment;
-
-        return $this;
     }
 
     public function getAttachment()
@@ -155,13 +142,10 @@ class Ad implements AdInterface
     public function setUrl($url)
     {
         $this->url = $url;
-
-        return $this;
     }
 
     public function getUrl()
     {
         return $this->url;
     }
-
 }

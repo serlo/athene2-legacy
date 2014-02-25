@@ -50,7 +50,10 @@ class BlogManager implements BlogManagerInterface
 
     public function getBlog($id)
     {
-        return $this->getTaxonomyManager()->getTerm($id);
+        $blog = $this->getTaxonomyManager()->getTerm($id);
+        $this->assertGranted('blog.view', $blog);
+
+        return $blog;
     }
 
     public function findAllBlogs(InstanceInterface $instanceService)
@@ -64,6 +67,7 @@ class BlogManager implements BlogManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Blog\Entity\PostInterface');
         $post      = $this->getObjectManager()->find($className, $id);
+        $this->assertGranted('blog.post.view', $post);
 
         if (!is_object($post)) {
             throw new Exception\PostNotFoundException(sprintf('Could not find post "%d"', $id));
@@ -76,7 +80,7 @@ class BlogManager implements BlogManagerInterface
     {
         $post = $form->getObject();
         $this->assertGranted('blog.post.update', $post);
-        if (! $form->isValid()) {
+        if (!$form->isValid()) {
             $this->objectManager->persist($post);
             $this->getEventManager()->trigger('update', $this, ['post' => $post]);
 

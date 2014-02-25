@@ -14,108 +14,140 @@ namespace Ads\Manager;
 use Ads\Entity\AdInterface;
 use Ads\Exception\AdNotFoundException;
 use Ads\Hydrator\AdHydrator;
+use Attachment\Manager\AttachmentManagerAwareTrait;
+use Attachment\Manager\AttachmentManagerInterface;
+use Authorization\Service\AuthorizationAssertionTrait;
+use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
+use Common\Traits\ObjectManagerAwareTrait;
+use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Page\Exception\InvalidArgumentException;
+use ZfcRbac\Service\AuthorizationService;
 
 class AdsManager implements AdsManagerInterface
 {
-    
-    use\Common\Traits\ObjectManagerAwareTrait;
-    use \ClassResolver\ClassResolverAwareTrait;
-    use \Attachment\Manager\AttachmentManagerAwareTrait;
+
+    use ObjectManagerAwareTrait, AuthorizationAssertionTrait;
+    use ClassResolverAwareTrait, AttachmentManagerAwareTrait;
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        AttachmentManagerInterface $attachmentManager,
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager
+    ) {
+        $this->objectManager = $objectManager;
+        $this->classResolver = $classResolver;
+        $this->uploadManager = $attachmentManager;
+        $this->setAuthorizationService($authorizationService);
+    }
 
     public function getAd($id)
     {
-        if (! is_numeric($id)) {
+        if (!is_numeric($id)) {
             throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
         }
-        
-        $add = $this->getObjectManager()->find($this->getClassResolver()
-            ->resolveClassName('Ads\Entity\AdInterface'), $id);
-        if (! $add) {
+
+        $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
+        $ad        = $this->getObjectManager()->find($className, $id);
+        $this->assertGranted('ad.get', $ad);
+
+        if (!$ad) {
             throw new AdNotFoundException(sprintf('%s', $id));
         }
-        
-        return $add;
+
+        return $ad;
     }
 
     protected function createAdEntity()
     {
         $ad = $this->getClassResolver()->resolve('Ads\Entity\AdInterface');
-        
+
         return $ad;
     }
 
     public function updateAd(array $data, AdInterface $ad)
     {
+        $this->assertGranted('ad.update', $ad);
         $hydrator = new AdHydrator();
         $hydrator->hydrate($data, $ad);
         $this->getObjectManager()->persist($ad);
-        
+
         return $ad;
     }
 
     public function createAd(array $data)
     {
+        $this->assertGranted('ad.create');
         $data['clicks'] = 0;
         $ad = $this->createAdEntity();
         $hydrator = new AdHydrator();
         $hydrator->hydrate($data, $ad);
         $this->getObjectManager()->persist($ad);
-        
+
         return $ad;
     }
 
     public function findAllAds(InstanceInterface $instance)
     {
-        $ads = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()
-            ->resolveClassName('Ads\Entity\AdInterface'))
-            ->findBy([
-            'instance' => $instance->getId()
-        ]);
-        
+        $this->assertGranted('ad.get', $instance);
+        $criteria  = ['instance' => $instance->getId()];
+        $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
+        $ads       = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+
         return $ads;
     }
 
     public function removeAd(AdInterface $ad)
     {
+        $this->assertGranted('ad.remove', $ad);
         $this->getObjectManager()->remove($ad);
-        
-        return $this;
+    }
+
+    public function clickAd($id)
+    {
+        $ad = $this->getAd($id);
+        $ad->setClicks($ad->getClicks() + 1);
+        $this->getObjectManager()->persist($ad);
     }
 
     public function findShuffledAds(InstanceInterface $instance, $number)
     {
-        $allAds = $this->findAllAds($instance);
+        $allAds    = $this->findAllAds($instance);
         $adsScaled = [];
-        $ads = [];
+        $ads       = [];
         $numberDisabledAds = 0;
         $numberAds = $y = 0;
         foreach ($allAds as $ad) {
             if ($ad->getFrequency() == null) {
-                $numberDisabledAds ++;
+                $numberDisabledAds++;
             }
-            for ($i = 0; $i < $ad->getFrequency(); $i ++) {
+            for ($i = 0; $i < $ad->getFrequency(); $i++) {
                 $adsScaled[$numberAds + $i] = $y;
             }
             $numberAds = $numberAds + $ad->getFrequency();
-            $y ++;
+            $y++;
         }
-        
+
         if ((count($allAds) - $numberDisabledAds) < $number) {
             $number = count($allAds) - $numberDisabledAds;
         }
-        
-        for ($i = 0; $i < $number; $i ++) {
+
+        for ($i = 0; $i < $number; $i++) {
             $random = mt_rand(0, $numberAds - 1);
             while (in_array($allAds[$adsScaled[$random]], $ads)) {
                 $random = mt_rand(0, $numberAds - 1);
             }
-            
+
             $ads[$i] = $allAds[$adsScaled[$random]];
         }
-        
+
         return $ads;
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
     }
 }

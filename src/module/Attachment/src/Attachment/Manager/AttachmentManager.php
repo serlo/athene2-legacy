@@ -167,4 +167,9 @@ class AttachmentManager implements AttachmentManagerInterface
 
         return $attachment;
     }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+    }
 }
