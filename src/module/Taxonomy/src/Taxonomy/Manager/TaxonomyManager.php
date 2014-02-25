@@ -81,10 +81,8 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function findTaxonomyByName($name, InstanceInterface $instance)
     {
         $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
-
-        $type = $this->getTypeManager()->findTypeByName($name);
-
-        $entity = $this->getObjectManager()->getRepository($className)->findOneBy(
+        $type      = $this->getTypeManager()->findTypeByName($name);
+        $entity    = $this->getObjectManager()->getRepository($className)->findOneBy(
             [
                 'type'     => $type->getId(),
                 'instance' => $instance->getId()
@@ -159,18 +157,15 @@ class TaxonomyManager implements TaxonomyManagerInterface
             throw new Exception\RuntimeException(sprintf('Validation failed'));
         }
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
-        $data = $form->getData();
-
-        if(is_object($data)){
-            var_dump(get_class($data));
-            die();
-        }
+        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
 
         $form->bind($term);
         $form->setData($data);
         $form->isValid();
         $this->getEventManager()->trigger('create', $this, ['term' => $term]);
         $this->getObjectManager()->persist($term);
+
+        // clear form
         $form->setData([]);
 
         return $term;
@@ -178,21 +173,24 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
     public function updateTerm(FormInterface $form)
     {
-        if ($form->isValid()) {
-            $term = $form->getObject();
-
-            $this->getEventManager()->trigger('update', $this, ['term' => $term]);
-            $this->getObjectManager()->persist($term);
-        } else {
-            throw new Exception\RuntimeException(sprintf('Validation failed'));
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException($form->getMessages());
         }
+
+        if (!$form->getObject()) {
+            throw new Exception\RuntimeException(sprintf('No object set'));
+        }
+
+        $term = $form->getObject();
+        $this->getObjectManager()->persist($term);
+        $this->getEventManager()->trigger('update', $this, ['term' => $term]);
 
         return $term;
     }
 
     public function associateWith($term, $association, TaxonomyTermAwareInterface $object, $position = null)
     {
-        if(!$term instanceof TaxonomyTermInterface){
+        if (!$term instanceof TaxonomyTermInterface) {
             $term = $this->getTerm($term);
         }
 
@@ -207,20 +205,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
 
         $term->associateObject($association, $object);
-
         if ($position !== null) {
             $term->positionAssociatedObject($association, $object, (int)$position);
         }
-
-        $this->getEventManager()->trigger(
-            'associate',
-            $this,
-            [
-                'object' => $object,
-                'term'   => $term
-            ]
-        );
-
+        $this->getEventManager()->trigger('associate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
 
         return $this;
@@ -229,18 +217,8 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
-
         $term->removeAssociation($association, $object);
-
-        $this->getEventManager()->trigger(
-            'dissociate',
-            $this,
-            [
-                'object' => $object,
-                'term'   => $term
-            ]
-        );
-
+        $this->getEventManager()->trigger('dissociate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
 
         return $this;
@@ -261,7 +239,5 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function setModuleOptions(ModuleOptions $moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
-
-        return $this;
     }
 }

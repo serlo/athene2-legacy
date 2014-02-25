@@ -46,6 +46,8 @@ abstract class AbstractKeyHydrator implements HydratorInterface
                 $object->$method($value);
             }
         }
+
+        return $object;
     }
 
     /**

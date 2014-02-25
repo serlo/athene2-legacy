@@ -49,5 +49,7 @@ class LicenseHydrator implements HydratorInterface
         $object->setTitle($data['title']);
         $object->setUrl($data['url']);
         $object->setIconHref($data['iconHref']);
+
+        return $object;
     }
 }

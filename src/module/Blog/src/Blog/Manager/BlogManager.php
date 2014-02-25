@@ -96,7 +96,7 @@ class BlogManager implements BlogManagerInterface
             throw new Exception\RuntimeException($form->getMessages());
         }
 
-        $data = $form->getData();
+        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
         $form->bind($post);
         $form->setData($data);
         $form->isValid();
@@ -106,6 +106,10 @@ class BlogManager implements BlogManagerInterface
         $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
         $this->getObjectManager()->persist($post);
         $this->getEventManager()->trigger('create', $this, ['post' => $post]);
+
+        // clear form
+        $form->setObject(null);
+        $form->setData([]);
 
         return $post;
     }

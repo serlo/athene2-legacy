@@ -348,7 +348,7 @@ class NavigationManager implements NavigationManagerInterface
      */
     protected function bind($object, FormInterface $form)
     {
-        $data = $form->getData();
+        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
         $form->bind($object);
         $form->setData($data);
 
@@ -365,6 +365,10 @@ class NavigationManager implements NavigationManagerInterface
         $this->assertGranted('navigation.manage', $instance);
 
         $this->objectManager->persist($object);
+
+        // clear form
+        $form->setObject(null);
+        $form->setData([]);
 
         return $object;
     }

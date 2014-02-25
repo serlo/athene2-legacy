@@ -80,11 +80,19 @@ class CreatePostForm extends Form
 
         $inputFilter->add(
             [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
                     [
                         'name' => 'HtmlEntities'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9]+$~'
+                        ]
                     ]
                 ]
             ]
