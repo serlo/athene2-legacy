@@ -151,7 +151,9 @@ class BlogController extends AbstractActionController
 
     public function viewAction()
     {
-        $blog  = $this->getBlogManager()->getBlog($this->params('id'));
+        $blog = $this->getBlogManager()->getBlog($this->params('id'));
+        $this->assertGranted('blog.view', $blog);
+
         $posts = $blog->getAssociated('blogPosts')->filter(
             function ($e) {
                 return $e->isPublished() && !$e->isTrashed();
@@ -171,7 +173,7 @@ class BlogController extends AbstractActionController
     public function viewAllAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
-        $this->assertGranted('blog.posts.view_all', $blog);
+        $this->assertGranted('blog.posts.view.unpublished', $blog);
 
         $posts = $blog->getAssociated('blogPosts')->filter(
             function ($e) {
