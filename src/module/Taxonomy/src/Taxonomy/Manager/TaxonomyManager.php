@@ -20,6 +20,7 @@ use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
 use Type\TypeManagerAwareTrait;
@@ -37,6 +38,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
      * @var TaxonomyTermHydrator
      */
     protected $hydrator;
+
     /**
      * @var ModuleOptions
      */
@@ -82,12 +84,8 @@ class TaxonomyManager implements TaxonomyManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
         $type      = $this->getTypeManager()->findTypeByName($name);
-        $entity    = $this->getObjectManager()->getRepository($className)->findOneBy(
-            [
-                'type'     => $type->getId(),
-                'instance' => $instance->getId()
-            ]
-        );
+        $criteria  = ['type' => $type->getId(), 'instance' => $instance->getId()];
+        $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 
         if (!is_object($entity)) {
             /* @var $entity \Taxonomy\Entity\TaxonomyInterface */
@@ -153,36 +151,16 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
     public function createTerm(FormInterface $form)
     {
-        if (!$form->isValid()) {
-            throw new Exception\RuntimeException(sprintf('Validation failed'));
-        }
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
-        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-
-        $form->bind($term);
-        $form->setData($data);
-        $form->isValid();
+        $this->bind($term, $form);
         $this->getEventManager()->trigger('create', $this, ['term' => $term]);
-        $this->getObjectManager()->persist($term);
-
-        // clear form
-        $form->setData([]);
 
         return $term;
     }
 
     public function updateTerm(FormInterface $form)
     {
-        if (!$form->isValid()) {
-            throw new Exception\RuntimeException($form->getMessages());
-        }
-
-        if (!$form->getObject()) {
-            throw new Exception\RuntimeException(sprintf('No object set'));
-        }
-
-        $term = $form->getObject();
-        $this->getObjectManager()->persist($term);
+        $this->bind($form->getObject(), $form);
         $this->getEventManager()->trigger('update', $this, ['term' => $term]);
 
         return $term;
@@ -210,8 +188,6 @@ class TaxonomyManager implements TaxonomyManagerInterface
         }
         $this->getEventManager()->trigger('associate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
-
-        return $this;
     }
 
     public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object)
@@ -220,8 +196,19 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $term->removeAssociation($association, $object);
         $this->getEventManager()->trigger('dissociate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
+    }
 
-        return $this;
+    protected function bind(TaxonomyTermInterface $object, FormInterface $form)
+    {
+        if (!$form->isValid()) {
+            throw new RuntimeException($form->getData());
+        }
+        $processingForm = clone $form;
+        $data           = $form->getData(FormInterface::VALUES_AS_ARRAY);
+        $processingForm->bind($object);
+        $processingForm->setData($data);
+        $processingForm->isValid();
+        $this->objectManager->persist($object);
     }
 
     /**
