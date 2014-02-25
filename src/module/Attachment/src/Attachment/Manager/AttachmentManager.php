@@ -12,6 +12,7 @@ namespace Attachment\Manager;
 
 use Attachment\Entity\ContainerInterface;
 use Attachment\Exception;
+use Attachment\Form\AttachmentFieldsetProvider;
 use Attachment\Options\ModuleOptions;
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
@@ -56,21 +57,30 @@ class AttachmentManager implements AttachmentManagerInterface
         $this->moduleOptions        = $moduleOptions;
     }
 
-    public function attach(array $file, $type = 'file', $appendId = null)
+    public function attach(AttachmentFieldsetProvider $form, $type = 'file', $appendId = null)
     {
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException($form->getMessages());
+        }
+
         if ($appendId !== null) {
             $this->assertGranted('attachment.append');
         } else {
             $this->assertGranted('attachment.create');
         }
 
+        $data = $form->getData()['attachment'];
+        if (!isset($data['file']) || $data['file']['error']) {
+            throw new Exception\NoFileSent;
+        }
+
+        $file      = $data['file'];
         $filename  = $file['name'];
         $size      = $file['size'];
         $filetype  = $file['type'];
         $pathinfo  = pathinfo($filename);
         $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
         $hash      = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
-
         $location    = $this->findParentPath($this->moduleOptions->getPath()) . '/' . $hash;
         $webLocation = $this->moduleOptions->getWebpath() . '/' . $hash;
         $filter      = new RenameUpload($location);

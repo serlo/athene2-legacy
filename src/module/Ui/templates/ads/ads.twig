@@ -2,9 +2,8 @@
 <div class="clearfix">
     {% if isGranted('ad.create') %}
         <a href="{{ url('ads/add') }}" class="btn btn-default pull-left">
-            <span class="glyphicon glyphicon-pencil"></span>
+            <span class="glyphicon glyphicon-plus"></span>
             {{ translate('Create ad') }}
-            <?php echo $this->translate('new'); ?>
         </a>
     {% endif %}
 </div>
