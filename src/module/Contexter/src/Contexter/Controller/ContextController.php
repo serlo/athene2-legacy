@@ -81,6 +81,9 @@ class ContextController extends AbstractActionController
     public function removeAction()
     {
         $id = $this->params('id');
+        $context = $this->getContextManager()->getContext($id);
+        $this->assertGranted('contexter.context.remove', $context);
+
         $this->getContextManager()->removeContext($id);
         $this->getContextManager()->flush();
         $this->redirect()->toReferer();
@@ -91,6 +94,9 @@ class ContextController extends AbstractActionController
     public function removeRouteAction()
     {
         $id = $this->params('id');
+        $route = $this->getContextManager()->getRoute($id);
+        $this->assertGranted('contexter.route.remove', $route);
+
         $this->getContextManager()->removeRoute($id);
         $this->getContextManager()->flush();
         $this->redirect()->toReferer();

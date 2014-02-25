@@ -37,6 +37,7 @@ class TaxonomyController extends AbstractController
             }
         );
 
+        $types = [];
         foreach($entities as $e){
             $types[$e->getType()->getName()][] = $e;
         }

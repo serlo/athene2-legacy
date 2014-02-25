@@ -19,7 +19,8 @@ class Module
         'Event\Listener\TaxonomyManagerListener',
         'Event\Listener\UuidManagerListener',
         'Event\Listener\LinkServiceListener',
-        'Event\Listener\EntityManagerListener'
+        'Event\Listener\EntityManagerListener',
+        'Event\Listener\LicenseManagerListener'
     ];
 
     public function getConfig()
