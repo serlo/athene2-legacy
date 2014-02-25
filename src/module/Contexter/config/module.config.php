@@ -29,6 +29,14 @@ return [
                         [
                             'controller' => 'Entity\Controller\RepositoryController',
                             'action'     => 'addRevision'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\RepositoryController',
+                            'action'     => 'history'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\RepositoryController',
+                            'action'     => 'compare'
                         ]
                     ]
                 ]

@@ -12,8 +12,9 @@ namespace Attachment\Manager;
 
 use Attachment\Entity\ContainerInterface;
 use Attachment\Entity\FileInterface;
+use Common\ObjectManager\Flushable;
 
-interface AttachmentManagerInterface
+interface AttachmentManagerInterface extends Flushable
 {
     /**
      * @param array  $post

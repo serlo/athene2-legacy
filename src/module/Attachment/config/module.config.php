@@ -11,24 +11,25 @@
 namespace Attachment;
 
 return [
-    'zfc_rbac' => [
+    'zfc_rbac'           => [
         'assertion_map' => [
-            'attachment.append' => 'Authorization\Assertion\InstanceAssertion',
-            'attachment.create' => 'Authorization\Assertion\InstanceAssertion'
+            'attachment.append' => 'Authorization\Assertion\RequestInstanceAssertion',
+            'attachment.create' => 'Authorization\Assertion\RequestInstanceAssertion',
+            'attachment.get '   => 'Authorization\Assertion\InstanceAssertion'
         ]
     ],
-    'class_resolver'  => [
+    'class_resolver'     => [
         'Attachment\Entity\ContainerInterface' => 'Attachment\Entity\Container',
-        'Attachment\Entity\FileInterface'       => 'Attachment\Entity\File'
+        'Attachment\Entity\FileInterface'      => 'Attachment\Entity\File'
     ],
-    'attachment_manager'  => [],
-    'service_manager' => [
+    'attachment_manager' => [],
+    'service_manager'    => [
         'factories' => [
-            __NAMESPACE__. '\Manager\AttachmentManager' => __NAMESPACE__ . '\Factory\AttachmentManagerFactory',
-            __NAMESPACE__. '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Manager\AttachmentManager' => __NAMESPACE__ . '\Factory\AttachmentManagerFactory',
+            __NAMESPACE__ . '\Options\ModuleOptions'     => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
         ]
     ],
-    'di'              => [
+    'di'                 => [
         'allowed_controllers' => [
             'Attachment\Controller\AttachmentController',
             'Taxonomy\Controller\TaxonomyController'
@@ -48,7 +49,7 @@ return [
             ],
         ]
     ],
-    'doctrine'        => [
+    'doctrine'           => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -64,12 +65,12 @@ return [
             ]
         ]
     ],
-    'router'          => [
+    'router'             => [
         'routes' => [
             'attachment' => [
                 'type'         => 'Segment',
                 'options'      => [
-                    'route'      => '/attachment',
+                    'route'    => '/attachment',
                     'defaults' => [
                         'controller' => 'Attachment\Controller\AttachmentController',
                     ]

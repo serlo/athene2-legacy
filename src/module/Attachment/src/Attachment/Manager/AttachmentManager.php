@@ -58,11 +58,10 @@ class AttachmentManager implements AttachmentManagerInterface
 
     public function attach(array $file, $type = 'file', $appendId = null)
     {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         if ($appendId !== null) {
-            $this->assertGranted('attachment.append', $instance);
+            $this->assertGranted('attachment.append');
         } else {
-            $this->assertGranted('attachment.create', $instance);
+            $this->assertGranted('attachment.create');
         }
 
         $filename  = $file['name'];
@@ -91,11 +90,11 @@ class AttachmentManager implements AttachmentManagerInterface
     public function getFile($attachmentId, $fileId = null)
     {
         $attachment = $this->getAttachment($attachmentId);
+        $this->assertGranted('attachment.get', $attachment);
 
         if ($fileId) {
-            $matching = $attachment->getFiles()->matching(
-                Criteria::create()->where(Criteria::expr()->eq('id', $fileId))
-            );
+            $criteria = Criteria::create()->where(Criteria::expr()->eq('id', $fileId));
+            $matching = $attachment->getFiles()->matching($criteria);
             $file     = $matching->first();
 
             if (!is_object($file)) {
@@ -123,6 +122,25 @@ class AttachmentManager implements AttachmentManagerInterface
         return $entity;
     }
 
+    /**
+     * @param $path
+     * @return bool|string
+     */
+    protected static function findParentPath($path)
+    {
+        $dir         = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+
+        return $dir . '/' . $path;
+    }
+
     protected function createAttachment()
     {
         /* @var $attachment ContainerInterface */
@@ -148,24 +166,5 @@ class AttachmentManager implements AttachmentManagerInterface
         $this->getObjectManager()->persist($file);
 
         return $attachment;
-    }
-
-    /**
-     * @param $path
-     * @return bool|string
-     */
-    protected static function findParentPath($path)
-    {
-        $dir         = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-
-        return $dir . '/' . $path;
     }
 }
