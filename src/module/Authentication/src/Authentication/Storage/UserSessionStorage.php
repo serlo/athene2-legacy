@@ -21,12 +21,29 @@ class UserSessionStorage extends Session
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
-    public function __construct(ClassResolverInterface $classResolver, ObjectManager $objectManager)
-    {
+    protected $rememberTime;
+
+    public function __construct(
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager,
+        $rememberTime = 1209600
+    ) {
+        parent::__construct('authentication');
         $this->classResolver = $classResolver;
         $this->objectManager = $objectManager;
+        $this->rememberTime  = $rememberTime;
+    }
 
-        parent::__construct('authentication');
+    public function forgetMe()
+    {
+        $this->session->getManager()->forgetMe();
+    }
+
+    public function setRememberMe($rememberMe = false)
+    {
+        if ($rememberMe) {
+            $this->session->getManager()->rememberMe($this->rememberTime);
+        }
     }
 
     public function write($contents)
