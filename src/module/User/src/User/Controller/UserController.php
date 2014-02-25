@@ -20,45 +20,36 @@ class UserController extends AbstractUserController
     use \Common\Traits\ConfigAwareTrait;
     use InstanceManagerAwareTrait;
 
-    protected function getDefaultConfig()
-    {
-        return [
-            'forms' => [
-                'register'         => 'User\Form\Register',
-                'login'            => 'User\Form\Login',
-                'user_select'      => 'User\Form\SelectUserForm',
-                'restore_password' => 'User\Form\LostPassword',
-                'settings'         => 'User\Form\SettingsForm'
-            ]
-        ];
-    }
-
     protected $forms = [];
 
-    public function getForm($name)
+    public function meAction()
     {
-        if (!array_key_exists($name, $this->forms)) {
-            $form = $this->getOption('forms')[$name];
-            if ($name == 'register' || $name = 'settings') {
-                $this->forms[$name] = new $form($this->getUserManager()->getObjectManager());
-            } else {
-                $this->forms[$name] = new $form();
-            }
+        $user = $this->getUserManager()->getUserFromAuthenticator();
+
+        if (!$user) {
+            throw new UnauthorizedException;
         }
 
-        return $this->forms[$name];
+        $view = new ViewModel([
+            'user' => $user
+        ]);
+
+        $this->layout('layout/1-col');
+        $view->setTemplate('user/user/profile');
+
+        return $view;
     }
 
-    /**
-     * @param string $name
-     * @param Form   $form
-     * @return self
-     */
-    public function setForm($name, Form $form)
+    public function profileAction()
     {
-        $this->forms[$name] = $form;
+        $user = $this->getUserManager()->getUser($this->params('id'));
+        $view = new ViewModel([
+            'user' => $user
+        ]);
+        $this->layout('layout/1-col');
+        $view->setTemplate('user/user/profile');
 
-        return $this;
+        return $view;
     }
 
     public function registerAction()
@@ -103,32 +94,54 @@ class UserController extends AbstractUserController
         return $view;
     }
 
-    public function meAction()
+    public function getForm($name)
     {
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-
-        if(!$user){
-            throw new UnauthorizedException;
+        if (!array_key_exists($name, $this->forms)) {
+            $form = $this->getOption('forms')[$name];
+            if ($name == 'register' || $name = 'settings') {
+                $this->forms[$name] = new $form($this->getUserManager()->getObjectManager());
+            } else {
+                $this->forms[$name] = new $form();
+            }
         }
 
-        $view = new ViewModel([
-            'user' => $user
-        ]);
+        return $this->forms[$name];
+    }
 
-        $this->layout('layout/1-col');
-        $view->setTemplate('user/user/profile');
+    public function removeAction()
+    {
+        // todo: make sure this doesn't get abused and remove exception
+        throw new \Exception();
 
-        return $view;
+        $user = $this->getUserManager()->getUser($this->params('id', null));
+        $user->setTrashed(true);
+
+        $this->getUserManager()->persist($user);
+        $this->getUserManager()->flush();
+        $this->redirect()->toReferer();
+
+        return false;
+    }
+
+    /**
+     * @param string $name
+     * @param Form   $form
+     * @return self
+     */
+    public function setForm($name, Form $form)
+    {
+        $this->forms[$name] = $form;
+
+        return $this;
     }
 
     public function settingsAction()
     {
         $form = $this->getForm('settings');
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute('user/settings')
-        );
         $user = $this->getUserManager()->getUserFromAuthenticator();
+        if (!$user) {
+            throw new UnauthorizedException;
+        }
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -141,45 +154,27 @@ class UserController extends AbstractUserController
                 $this->getUserManager()->flush();
             }
         } else {
-            $data = [
-                'email' => $user->getEmail()
-            ];
+            $data = ['email' => $user->getEmail()];
             $form->setData($data);
         }
 
-        $view = new ViewModel([
-            'user' => $user,
-            'form' => $form
-        ]);
+        $view = new ViewModel(['user' => $user, 'form' => $form]);
         $view->setTemplate('user/user/settings');
         $this->layout('layout/1-col');
 
         return $view;
     }
 
-    public function profileAction()
+    protected function getDefaultConfig()
     {
-        $user = $this->getUserManager()->getUser($this->params('id'));
-        $view = new ViewModel([
-            'user' => $user
-        ]);
-        $this->layout('layout/1-col');
-        $view->setTemplate('user/user/profile');
-
-        return $view;
-    }
-
-    public function removeAction()
-    {
-        throw new \Exception();
-
-        $user = $this->getUserManager()->getUser($this->params('id', null));
-        $user->setTrashed(true);
-
-        $this->getUserManager()->persist($user);
-        $this->getUserManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
+        return [
+            'forms' => [
+                'register'         => 'User\Form\Register',
+                'login'            => 'User\Form\Login',
+                'user_select'      => 'User\Form\SelectUserForm',
+                'restore_password' => 'User\Form\LostPassword',
+                'settings'         => 'User\Form\SettingsForm'
+            ]
+        ];
     }
 }
