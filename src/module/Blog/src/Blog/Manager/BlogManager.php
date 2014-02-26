@@ -103,7 +103,7 @@ class BlogManager implements BlogManagerInterface
 
         $this->assertGranted('blog.post.create', $post);
 
-        $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
+        $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), $post);
         $this->getObjectManager()->persist($post);
         $this->getEventManager()->trigger('create', $this, ['post' => $post]);
 

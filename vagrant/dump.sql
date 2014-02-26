@@ -1750,6 +1750,7 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (104, 'blog.posts.get.unp
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (105, 'contexter.context.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (106, 'contexter.route.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (107, 'contexter.context.get.all');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (108, 'discussion.get');
 
 COMMIT;
 
@@ -1864,6 +1865,7 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (105, 105, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (106, 106, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (107, 107, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (108, 108, 1);
 
 COMMIT;
 
@@ -1976,6 +1978,7 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 10
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 105);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 106);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 107);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 108);
 
 COMMIT;
 

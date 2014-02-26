@@ -10,9 +10,10 @@
  */
 namespace Discussion\Form;
 
+use Common\Hydrator\HydratorPluginAwareDoctrineObject;
 use Doctrine\Common\Persistence\ObjectManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Notification\Form\OptInFieldset;
+use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -21,10 +22,9 @@ use Zend\InputFilter\InputFilter;
 class DiscussionForm extends AbstractForm
 {
 
-    function __construct(ObjectManager $objectManager)
+    function __construct(HydratorPluginAwareDoctrineObject $hydrator, ObjectManager $objectManager)
     {
         parent::__construct('discussion');
-        $hydrator    = new DoctrineObject($objectManager);
         $inputFilter = new InputFilter('discussion');
 
         $this->setInputFilter($inputFilter);
@@ -62,6 +62,7 @@ class DiscussionForm extends AbstractForm
                 ]
             ]
         );
+        $this->add(new Hidden('terms'));
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Textarea('content'))->setLabel('content:'));
         $this->add(new OptInFieldset());
@@ -75,8 +76,10 @@ class DiscussionForm extends AbstractForm
                 'required'   => true,
                 'filters'    => [['name' => 'HtmlEntities']],
                 'validators' => [
-                    'name'    => 'Regex',
-                    'options' => ['pattern' => '~^[a-zA-Z\-_ /0-9]*$~']
+                    [
+                        'name'    => 'Regex',
+                        'options' => ['pattern' => '~^[a-zA-Z\-_ /0-9]*$~']
+                    ]
                 ]
             ]
         );

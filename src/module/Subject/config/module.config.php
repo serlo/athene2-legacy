@@ -27,7 +27,7 @@ return [
         'types' => [
             'topic-folder'            => [
                 'allowed_associations' => [
-                    'entities'
+                    'Entity\Entity\EntityInterface'
                 ],
                 'allowed_parents'      => [
                     'topic'
@@ -40,7 +40,7 @@ return [
                     'topic'
                 ],
                 'allowed_associations' => [
-                    'entities'
+                    'Entity\Entity\EntityInterface'
                 ],
                 'rootable'        => false
             ],
@@ -66,7 +66,7 @@ return [
             ],
             'curriculum-topic'       => [
                 'allowed_associations' => [
-                    'entities'
+                    'Entity\Entity\EntityInterface'
                 ],
                 'allowed_parents'      => [
                     'curriculum',
@@ -76,7 +76,7 @@ return [
             ],
             'curriculum-topic-folder' => [
                 'allowed_associations' => [
-                    'entities'
+                    'Entity\Entity\EntityInterface'
                 ],
                 'allowed_parents'      => [
                     'curriculum-topic-folder'

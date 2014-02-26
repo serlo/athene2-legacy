@@ -34,10 +34,10 @@ class TaxonomyController extends AbstractController
                     $term = $this->getTaxonomyManager()->getTerm($termId);
 
                     if ($added == 1) {
-                        $this->getTaxonomyManager()->associateWith($termId, 'entities', $entity);
+                        $this->getTaxonomyManager()->associateWith($termId, $entity);
                         $event = 'addToTerm';
                     } elseif ($added == 0) {
-                        $this->getTaxonomyManager()->removeAssociation($termId, 'entities', $entity);
+                        $this->getTaxonomyManager()->removeAssociation($termId, $entity);
                         $event = 'removeFromTerm';
                     }
 

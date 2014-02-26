@@ -11,6 +11,8 @@
 namespace Authorization\Assertion;
 
 use Authorization\Result\AuthorizationResult;
+use Instance\Entity\InstanceInterface;
+use Instance\Entity\InstanceProviderInterface;
 
 class RequestInstanceAssertion extends InstanceAssertion
 {
@@ -23,7 +25,11 @@ class RequestInstanceAssertion extends InstanceAssertion
      */
     public function assert(AuthorizationResult $authorization, $context = null)
     {
-        $instance = $this->instanceManager->getInstanceFromRequest();
+        if ($context instanceof InstanceProviderInterface or $context instanceof InstanceInterface) {
+            $instance = $context;
+        } else {
+            $instance = $this->instanceManager->getInstanceFromRequest();
+        }
 
         return parent::assert($authorization, $instance);
     }

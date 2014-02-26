@@ -25,10 +25,12 @@ class TaxonomyController extends AbstractController
             $subject = $this->getSubject();
             $term    = $subject->findChildBySlugs(explode('/', $this->params('path')));
             if (!is_object($term)) {
-                return $this->getResponse()->setStatusCode(404);
+                $this->getResponse()->setStatusCode(404);
+                return false;
             }
         } catch (TermNotFoundException $e) {
-            return $this->getResponse()->setStatusCode(404);
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
 
         $entities = $term->getAssociated('entities')->filter(
@@ -42,7 +44,6 @@ class TaxonomyController extends AbstractController
             $types[$e->getType()->getName()][] = $e;
         }
         $types = new ArrayCollection($types);
-
         $view = new ViewModel([
             'term'    => $term,
             'terms'   => $term ? $term->getChildren() : $subject->getChildren(),

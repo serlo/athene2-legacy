@@ -160,13 +160,13 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
     public function updateTerm(FormInterface $form)
     {
-        $this->bind($form->getObject(), $form);
+        $term = $this->bind($form->getObject(), $form);
         $this->getEventManager()->trigger('update', $this, ['term' => $term]);
 
         return $term;
     }
 
-    public function associateWith($term, $association, TaxonomyTermAwareInterface $object, $position = null)
+    public function associateWith($term, TaxonomyTermAwareInterface $object, $position = null)
     {
         if (!$term instanceof TaxonomyTermInterface) {
             $term = $this->getTerm($term);
@@ -174,30 +174,36 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
         $taxonomy = $term->getTaxonomy();
 
-        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($association)) {
+        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
             throw new Exception\RuntimeException(sprintf(
-                'Taxonomy "%s" does not allow associations "%s"',
+                'Taxonomy "%s" can\'t be associated with "%s"',
                 $taxonomy->getName(),
-                $association
+                get_class($object)
             ));
         }
 
-        $term->associateObject($association, $object);
+        $term->associateObject($object);
         if ($position !== null) {
-            $term->positionAssociatedObject($association, $object, (int)$position);
+            $term->positionAssociatedObject($object, (int)$position);
         }
         $this->getEventManager()->trigger('associate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
     }
 
-    public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object)
+    public function removeAssociation($id, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
-        $term->removeAssociation($association, $object);
+        $term->removeAssociation($object);
         $this->getEventManager()->trigger('dissociate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
     }
 
+    /**
+     * @param TaxonomyTermInterface $object
+     * @param FormInterface         $form
+     * @return TaxonomyTermInterface
+     * @throws \Taxonomy\Exception\RuntimeException
+     */
     protected function bind(TaxonomyTermInterface $object, FormInterface $form)
     {
         if (!$form->isValid()) {
@@ -209,6 +215,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $processingForm->setData($data);
         $processingForm->isValid();
         $this->objectManager->persist($object);
+        return $object;
     }
 
     /**

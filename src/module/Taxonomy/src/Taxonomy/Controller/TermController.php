@@ -110,7 +110,7 @@ class TermController extends AbstractController
             $i            = 0;
 
             foreach ($associations as $a) {
-                $term->positionAssociatedObject($association, $a['id'], $i);
+                $term->positionAssociatedObject($a['id'], $i, $association);
                 $i++;
             }
 
