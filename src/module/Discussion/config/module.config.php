@@ -25,9 +25,13 @@ return [
             'discussion.comment.create' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
-    'uuid_router'     => [
-        'routes' => [
-            'comment' => '/discussion/%d'
+    'uuid'            => [
+        'permissions' => [
+            'Discussion\Entity\Comment' => [
+                'trash'   => 'discussion.comment.trash',
+                'restore' => 'discussion.comment.restore',
+                'purge'   => 'discussion.comment.purge'
+            ],
         ]
     ],
     'term_router'     => [
