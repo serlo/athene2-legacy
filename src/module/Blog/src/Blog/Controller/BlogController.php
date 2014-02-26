@@ -69,10 +69,10 @@ class BlogController extends AbstractActionController
                 ]
             );
             $form->setData($data);
-
-            if ($this->getBlogManager()->createPost($form) !== false) {
+            if ($form->isValid()) {
+                $this->getBlogManager()->createPost($form);
                 $this->getBlogManager()->flush();
-                $this->redirect()->toRoute('blog/view', ['id' => $this->params('id')]);
+                return $this->redirect()->toRoute('blog/view', ['id' => $this->params('id')]);
             }
         }
 

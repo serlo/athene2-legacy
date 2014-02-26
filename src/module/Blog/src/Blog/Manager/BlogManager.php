@@ -11,6 +11,7 @@
 namespace Blog\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
+use Blog\Entity\PostInterface;
 use Blog\Exception;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
@@ -79,11 +80,7 @@ class BlogManager implements BlogManagerInterface
     {
         $post = $form->getObject();
         $this->assertGranted('blog.post.update', $post);
-
-        if (!$form->isValid()) {
-            throw new Exception\RuntimeException($form->getMessages());
-        }
-
+        $this->bind($post, $form);
         $this->objectManager->persist($post);
         $this->getEventManager()->trigger('update', $this, ['post' => $post]);
     }
@@ -91,26 +88,10 @@ class BlogManager implements BlogManagerInterface
     public function createPost(FormInterface $form)
     {
         $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
-
-        if (!$form->isValid()) {
-            throw new Exception\RuntimeException($form->getMessages());
-        }
-
-        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
-        $form->bind($post);
-        $form->setData($data);
-        $form->isValid();
-
+        $this->bind($post, $form);
         $this->assertGranted('blog.post.create', $post);
-
-        $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), $post);
         $this->getObjectManager()->persist($post);
         $this->getEventManager()->trigger('create', $this, ['post' => $post]);
-
-        // clear form
-        $form->setObject(null);
-        $form->setData([]);
-
         return $post;
     }
 
@@ -128,5 +109,20 @@ class BlogManager implements BlogManagerInterface
         $this->getObjectManager()->persist($post);
 
         return $this;
+    }
+
+    protected function bind(PostInterface $comment, FormInterface $form)
+    {
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
+        }
+        $data        = $form->getData(FormInterface::VALUES_AS_ARRAY);
+        $processForm = clone $form;
+        $processForm->bind($comment);
+        $processForm->setData($data);
+        if (!$processForm->isValid()) {
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
+        }
+        return $comment;
     }
 }
