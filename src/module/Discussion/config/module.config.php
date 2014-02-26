@@ -109,7 +109,7 @@ return [
                             'start'   => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route'    => '/start/:on',
+                                    'route'    => '/start/:on/:forum',
                                     'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'start'

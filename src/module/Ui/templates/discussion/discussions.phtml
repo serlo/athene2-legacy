@@ -23,14 +23,15 @@
                 <?php $form = $this->discussion()->getForm('discussion'); ?>
                 <?php $form->setAttribute(
                     'action',
-                    $this->url('discussion/discussion/start', array('on' => $this->object->getId()))
+                    $this->url(
+                        'discussion/discussion/start',
+                        ['on' => $this->object->getId(), 'forum' => $form->getId()]
+                    )
                 ); ?>
                 <?php if (!$this->isArchived): ?>
                     <div class="list-group-item">
                         <h4><?php echo $this->translate('Start a new discussion'); ?></h4>
                         <hr>
-                        <?php $form->prepare(); ?>
-                        <?php $form->setData(array('forum' => $this->discussion()->getForum()->getId())); ?>
                         <?php echo $this->form()->render($form, null); ?>
                     </div>
                 <?php endif; ?>

@@ -15,6 +15,7 @@ use Discussion\Entity\CommentInterface;
 use Instance\Entity\InstanceInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
+use Zend\Form\FormInterface;
 
 interface DiscussionManagerInterface extends Flushable
 {
@@ -24,7 +25,8 @@ interface DiscussionManagerInterface extends Flushable
      * @param UserInterface     $author
      * @param string            $content
      * @param array             $data
-     * @return CommentInterface
+     *
+*@return CommentInterface
      */
     public function commentDiscussion(
         CommentInterface $discussion,
@@ -36,55 +38,50 @@ interface DiscussionManagerInterface extends Flushable
 
     /**
      * @param InstanceInterface $instance
-     * @return CommentInterface[]
+     *
+*@return CommentInterface[]
      */
     public function findDiscussionsByInstance(InstanceInterface $instance);
 
     /**
      * Finds discussions on a uuid
+
      *
-     * @param UuidInterface $uuid
-     * @return CommentInterface[]
+*@param UuidInterface $uuid
+     *
+*@return CommentInterface[]
      */
     public function findDiscussionsOn(UuidInterface $uuid);
 
     /**
      * @param UserInterface $user
-     * @return CommentInterface[]
+     *
+*@return CommentInterface[]
      */
     public function findParticipatedDiscussions(UserInterface $user);
 
     /**
      * Returns a comment
+
      *
-     * @param int $id
-     * @return CommentInterface
+*@param int $id
+     *
+*@return CommentInterface
      */
     public function getComment($id);
 
     /**
-     * @param UuidInterface     $object
-     * @param InstanceInterface $instance
-     * @param UserInterface     $author
-     * @param                   $forum
-     * @param                   $title
-     * @param                   $content
-     * @param array             $data
+     * @param int           $forum
+     * @param FormInterface $form
+     *
      * @return CommentInterface
      */
-    public function startDiscussion(
-        UuidInterface $object,
-        InstanceInterface $instance,
-        UserInterface $author,
-        $forum,
-        $title,
-        $content,
-        $data = []
-    );
+    public function startDiscussion($forum, FormInterface $form);
 
     /**
      * @param int $commentId
-     * @return void
+     *
+*@return void
      */
     public function toggleArchived($commentId);
 }
