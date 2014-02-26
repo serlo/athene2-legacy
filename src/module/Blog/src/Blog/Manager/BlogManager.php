@@ -12,7 +12,6 @@ namespace Blog\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use Blog\Exception;
-use Blog\Hydrator\PostHydrator;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
@@ -51,7 +50,7 @@ class BlogManager implements BlogManagerInterface
     public function getBlog($id)
     {
         $blog = $this->getTaxonomyManager()->getTerm($id);
-        $this->assertGranted('blog.view', $blog);
+        $this->assertGranted('blog.get', $blog);
 
         return $blog;
     }
@@ -67,7 +66,7 @@ class BlogManager implements BlogManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Blog\Entity\PostInterface');
         $post      = $this->getObjectManager()->find($className, $id);
-        $this->assertGranted('blog.post.view', $post);
+        $this->assertGranted('blog.post.get', $post);
 
         if (!is_object($post)) {
             throw new Exception\PostNotFoundException(sprintf('Could not find post "%d"', $id));
@@ -80,35 +79,39 @@ class BlogManager implements BlogManagerInterface
     {
         $post = $form->getObject();
         $this->assertGranted('blog.post.update', $post);
-        if (!$form->isValid()) {
-            $this->objectManager->persist($post);
-            $this->getEventManager()->trigger('update', $this, ['post' => $post]);
 
-            return true;
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException($form->getMessages());
         }
 
-        return false;
+        $this->objectManager->persist($post);
+        $this->getEventManager()->trigger('update', $this, ['post' => $post]);
     }
 
     public function createPost(FormInterface $form)
     {
         $post = $this->getClassResolver()->resolve('Blog\Entity\PostInterface');
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-            $form->bind($post);
-            $form->setData($data);
-            if ($form->isValid()) {
-                $this->assertGranted('blog.post.create', $post);
-                $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
-                $this->getObjectManager()->persist($post);
-                $this->getEventManager()->trigger('create', $this, ['post' => $post]);
-
-                return $post;
-            }
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException($form->getMessages());
         }
 
-        return false;
+        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
+        $form->bind($post);
+        $form->setData($data);
+        $form->isValid();
+
+        $this->assertGranted('blog.post.create', $post);
+
+        $this->getTaxonomyManager()->associateWith($post->getBlog()->getId(), 'blogPosts', $post);
+        $this->getObjectManager()->persist($post);
+        $this->getEventManager()->trigger('create', $this, ['post' => $post]);
+
+        // clear form
+        $form->setObject(null);
+        $form->setData([]);
+
+        return $post;
     }
 
     public function flush()
@@ -119,8 +122,8 @@ class BlogManager implements BlogManagerInterface
     public function trashPost($id)
     {
         $post = $this->getPost($id);
-
         $this->assertGranted('blog.post.trash', $post);
+
         $post->setTrashed(true);
         $this->getObjectManager()->persist($post);
 

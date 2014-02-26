@@ -64,6 +64,14 @@ class UpdatePostForm extends Form
                     [
                         'name' => 'HtmlEntities'
                     ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9]+$~'
+                        ]
+                    ]
                 ]
             ]
         );

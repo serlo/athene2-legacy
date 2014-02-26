@@ -30,8 +30,7 @@
     </div>
 </div>
 <hr>
-<div class="entities">
-
+<div>
     {% for i in 1..3 %}
         {% set type = cycle(['article', 'video', 'module'], i) %}
         {% if types.get(type) %}
@@ -46,7 +45,6 @@
             {% for link in types.get(type) %}
                 {% if index % 3 == 0 %}
                     </div>
-                    <hr>
                     <div class="row">
                 {% endif %}
                 {% set index = index + 1 %}
@@ -66,7 +64,7 @@
         {% for link in links if (link.getType().getName() == 'text-exercise' or link.getType().getName() == 'text-exercise-group') %}
             <div class="row">
                 <div class="col-xs-1">
-                    <strong>{{ loop.index + 1 }}.</strong>
+                    <strong>{{ loop.index }}.</strong>
                 </div>
                 <div class="col-xs-11">
                     {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}

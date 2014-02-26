@@ -93,6 +93,8 @@ class TaxonomyTermHydrator implements HydratorInterface
                 ]
             );
         }
+
+        return $object;
     }
 
     /**

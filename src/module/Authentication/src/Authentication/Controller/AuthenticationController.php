@@ -156,22 +156,24 @@ class AuthenticationController extends AbstractActionController
             if ($form->isValid()) {
                 $data    = $form->getData();
                 $adapter = $this->getAuthenticationService()->getAdapter();
+                $storage = $this->getAuthenticationService()->getStorage();
 
                 $adapter->setIdentity($data['email']);
                 $adapter->setCredential($data['password']);
+                $storage->setRememberMe($data['remember']);
 
                 $result = $this->getAuthenticationService()->authenticate();
 
                 if ($result->isValid()) {
-                    $user = $this->getUserManager()->getUser(
-                        $result->getIdentity()->getId()
-                    );
+                    $user = $this->getUserManager()->getUser($result->getIdentity()->getId());
 
                     $user->updateLoginData();
                     $this->getUserManager()->persist($user);
                     $this->getUserManager()->flush();
 
-                    return $this->redirect()->toUrl($this->params()->fromQuery('redir', $this->referer()->fromStorage()));
+                    $url = $this->params()->fromQuery('redir', $this->referer()->fromStorage());
+
+                    return $this->redirect()->toUrl($url);
                 }
                 $messages = $result->getMessages();
             }
@@ -191,6 +193,8 @@ class AuthenticationController extends AbstractActionController
 
     public function logoutAction()
     {
+        $storage = $this->getAuthenticationService()->getStorage();
+        $storage->forgetMe();
         $this->getAuthenticationService()->clearIdentity();
 
         return $this->redirect()->toReferer();

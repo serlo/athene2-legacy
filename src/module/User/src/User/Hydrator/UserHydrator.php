@@ -37,6 +37,8 @@ class UserHydrator implements HydratorInterface
     	$object->setUsername($data['username']);
     	$object->setPassword($data['password']);
         $object->setEmail($data['email']);
+
+        return $object;
     }
 
     /**

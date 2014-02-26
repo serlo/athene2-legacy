@@ -25,7 +25,7 @@
                         <?php echo $term->isAssociated('entities', $this->entity) ? 'checked="checked"' : ''; ?> />
                 <?php endif; ?>
                 <?php echo $term->getName(); ?>
-                <?php echo $this->partial('/entity/taxonomy/update',
+                <?php echo $this->partial('entity/taxonomy/update',
                     array('entity' => $this->entity, 'terms' => $term->getChildren(), 'isChild' => true)); ?>
             </li>
         <?php endforeach; ?>

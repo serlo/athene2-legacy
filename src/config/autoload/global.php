@@ -53,25 +53,11 @@ return [
     ],
     'service_manager'    => [
         'factories' => [
-            'Zend\Mail\Transport\SmtpOptions' => function (ServiceLocatorInterface $sm) {
-                    $config = $sm->get('config')['smtp_options'];
-
-                    return new \Zend\Mail\Transport\SmtpOptions($config);
-                },
             'doctrine.cache.apccache'         => function ($sm) {
                     $cache = new \Doctrine\Common\Cache\ApcCache();
 
                     return $cache;
                 },
-        ]
-    ],
-    'smtp_options'       => [
-        'name'              => 'localhost.localdomain',
-        'host'              => 'localhost',
-        'connection_class'  => 'login',
-        'connection_config' => [
-            'username' => 'postmaster',
-            'password' => ''
         ]
     ],
     'di'                 => [

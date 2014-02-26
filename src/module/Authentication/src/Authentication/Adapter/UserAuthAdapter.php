@@ -29,7 +29,7 @@ class UserAuthAdapter implements AdapterInterface
      */
     public function __construct(HashServiceInterface $hashService, ObjectManager $objectManager)
     {
-        $this->hashService = $hashService;
+        $this->hashService   = $hashService;
         $this->objectManager = $objectManager;
     }
 
@@ -59,19 +59,10 @@ class UserAuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {
-        try {
-            $user = $this->getObjectManager()->getRepository('User\Entity\User')->findOneBy(
-                    [
-                        'email' => $this->email
-                    ]
-                );
+        $user = $this->getObjectManager()->getRepository('User\Entity\User')->findOneBy(['email' => $this->email]);
+        $role = $this->getObjectManager()->getRepository('User\Entity\Role')->findOneBy(['name' => 'login']);
 
-            $role = $this->getObjectManager()->getRepository('User\Entity\Role')->findOneBy(
-                    [
-                        'name' => 'login'
-                    ]
-                );
-
+        if($user && $role){
             $hashedPassword = $user->getPassword();
             $password       = $this->getHashService()->hashPassword(
                 $this->password,
@@ -94,7 +85,7 @@ class UserAuthAdapter implements AdapterInterface
                     'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
                 ]);
             }
-        } catch (UserNotFoundException $e) {
+        } else {
             return new Result(RESULT::FAILURE_IDENTITY_NOT_FOUND, $this->email, [
                 'Mit dieser Kombination ist bei uns kein Benutzer registriert.'
             ]);

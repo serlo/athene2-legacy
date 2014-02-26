@@ -61,7 +61,8 @@ class BlogController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             $data = array_merge(
-                $this->params()->fromPost(), [
+                $this->params()->fromPost(),
+                [
                     'blog'     => $blog,
                     'author'   => $identity,
                     'instance' => $blog->getInstance()
@@ -88,14 +89,9 @@ class BlogController extends AbstractActionController
 
     public function indexAction()
     {
-        $blogs = $this->getBlogManager()->findAllBlogs(
-            $this->getInstanceManager()->getInstanceFromRequest()
-        );
-
-        $view = new ViewModel([
-            'blogs' => $blogs
-        ]);
-
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $blogs    = $this->getBlogManager()->findAllBlogs($instance);
+        $view     = new ViewModel(['blogs' => $blogs]);
         $view->setTemplate('blog/blog/blogs');
 
         return $view;
@@ -124,8 +120,8 @@ class BlogController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
-
-            if ($this->getBlogManager()->updatePost($form)) {
+            if ($form->isValid()) {
+                $this->getBlogManager()->updatePost($form);
                 $this->getBlogManager()->flush();
                 $this->redirect()->toRoute('blog/post/view', ['post' => $this->params('post')]);
             }
@@ -138,21 +134,10 @@ class BlogController extends AbstractActionController
         return $view;
     }
 
-    protected function toDateTime($publish = null)
-    {
-        if ($publish) {
-            $dateData = explode('.', $publish);
-
-            return (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
-        } else {
-            return new DateTime();
-        }
-    }
-
     public function viewAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
-        $this->assertGranted('blog.view', $blog);
+        $this->assertGranted('blog.get', $blog);
 
         $posts = $blog->getAssociated('blogPosts')->filter(
             function ($e) {
@@ -173,7 +158,7 @@ class BlogController extends AbstractActionController
     public function viewAllAction()
     {
         $blog = $this->getBlogManager()->getBlog($this->params('id'));
-        $this->assertGranted('blog.posts.view.unpublished', $blog);
+        $this->assertGranted('blog.posts.get.unpublished', $blog);
 
         $posts = $blog->getAssociated('blogPosts')->filter(
             function ($e) {
@@ -194,6 +179,7 @@ class BlogController extends AbstractActionController
     public function viewPostAction()
     {
         $post = $this->getBlogManager()->getPost($this->params('post'));
+        $this->assertGranted('blog.post.get', $post);
 
         $view = new ViewModel([
             'blog' => $post->getBlog(),
@@ -203,5 +189,16 @@ class BlogController extends AbstractActionController
         $view->setTemplate('blog/blog/post/view');
 
         return $view;
+    }
+
+    protected function toDateTime($publish = null)
+    {
+        if ($publish) {
+            $dateData = explode('.', $publish);
+
+            return (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
+        } else {
+            return new DateTime();
+        }
     }
 }

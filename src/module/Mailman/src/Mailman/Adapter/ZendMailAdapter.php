@@ -10,7 +10,6 @@
  */
 namespace Mailman\Adapter;
 
-use Mailman\Exception;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;

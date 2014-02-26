@@ -77,6 +77,7 @@ class ContextManager implements ContextManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $context   = $this->getObjectManager()->find($className, $id);
+        $this->assertGranted('contexter.context.get', $context);
 
         if (!is_object($context)) {
             throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
@@ -108,6 +109,7 @@ class ContextManager implements ContextManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $results   = $this->getObjectManager()->getRepository($className)->findAll();
+        $this->assertGranted('contexter.context.get.all');
 
         return new ArrayCollection($results);
     }

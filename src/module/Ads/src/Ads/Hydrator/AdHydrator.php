@@ -58,6 +58,8 @@ class AdHydrator implements HydratorInterface
                 $object->$method($value);
             }
         }
+
+        return $object;
     }
 
     protected function getKey(array $data, $key)
