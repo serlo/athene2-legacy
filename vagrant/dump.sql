@@ -1191,11 +1191,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`ads`
+-- Table `serlo`.`ad`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`ads` ;
+DROP TABLE IF EXISTS `serlo`.`ad` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
+CREATE TABLE IF NOT EXISTS `serlo`.`ad` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `instance_id` INT NOT NULL,
   `image_id` BIGINT NOT NULL,
@@ -1415,11 +1415,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`ads_page`
+-- Table `serlo`.`ad_page`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`ads_page` ;
+DROP TABLE IF EXISTS `serlo`.`ad_page` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`ads_page` (
+CREATE TABLE IF NOT EXISTS `serlo`.`ad_page` (
   `instance_id` INT NOT NULL,
   `page_repository_id` BIGINT NOT NULL,
   PRIMARY KEY (`instance_id`, `page_repository_id`),

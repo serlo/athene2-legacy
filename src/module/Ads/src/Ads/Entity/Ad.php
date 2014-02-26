@@ -18,7 +18,7 @@ use User\Entity\UserInterface;
  * An Ad for 'Bildung im Netz'
  *
  * @ORM\Entity
- * @ORM\Table(name="ads")
+ * @ORM\Table(name="ad")
  */
 class Ad implements AdInterface
 {
