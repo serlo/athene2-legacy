@@ -131,8 +131,6 @@ class UserController extends AbstractUserController
     public function setForm($name, Form $form)
     {
         $this->forms[$name] = $form;
-
-        return $this;
     }
 
     public function settingsAction()
