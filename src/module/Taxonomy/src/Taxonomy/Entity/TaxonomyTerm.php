@@ -16,8 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception;
 use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Exception;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\Uuid;
 
@@ -317,7 +317,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     protected function getAssociationFieldName(TaxonomyTermAwareInterface $object)
     {
         if ($object instanceof EntityInterface) {
-            return 'termTaxonomyEntities';
+            return 'entities';
         } elseif ($object instanceof CommentInterface) {
             return 'comments';
         } elseif ($object instanceof PostInterface) {
