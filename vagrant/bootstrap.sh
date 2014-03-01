@@ -118,6 +118,6 @@ crontab cron
 rm cron
 
 chmod +x /home/vagrant/bin/*
-/home/vagrant/bin/clean-ui.sh
-/home/vagrant/bin/boot.sh
-/home/vagrant/bin/update-mysql.sh
+sudo /home/vagrant/bin/clean-ui.sh
+sudo home/vagrant/bin/boot.sh
+sudo /home/vagrant/bin/update-mysql.sh

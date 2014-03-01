@@ -88,7 +88,7 @@ class CreatePostForm extends Form
                     [
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '~^[a-zA-Z\-_ 0-9]+$~'
+                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß]+$~'
                         ]
                     ]
                 ]

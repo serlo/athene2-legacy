@@ -544,7 +544,8 @@ DROP TABLE IF EXISTS `serlo`.`permission` ;
 CREATE TABLE IF NOT EXISTS `serlo`.`permission` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -1723,14 +1724,11 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (77, 'taxonomy.term.resto
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (78, 'uuid.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (79, 'related_content.manage');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (80, 'taxonomy.term.associated.sort');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'navigation.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (86, 'entity.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (87, 'uuid.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (88, 'entity.revision.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (89, 'authorization.role.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (90, 'authorization.role.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (91, 'attachment.create');
@@ -1751,9 +1749,8 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (105, 'contexter.context.
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (106, 'contexter.route.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (107, 'contexter.context.get.all');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (108, 'discussion.get');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (109, 'entity.associate.taxonomy.term');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (110, 'entity.dissociate.taxonomy.term');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (111, 'entity.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (109, 'entity.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (110, 'entity.repository.history');
 
 COMMIT;
 
@@ -1844,9 +1841,6 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (83, 83, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (84, 84, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (85, 85, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (86, 86, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (87, 87, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (88, 88, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (90, 90, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, NULL);
@@ -1871,7 +1865,6 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (108, 108, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (109, 109, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (110, 110, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (111, 111, 1);
 
 COMMIT;
 
@@ -1961,9 +1954,6 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 82
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 83);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 84);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 85);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 86);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 87);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 88);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 14);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 15);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 90);
@@ -1985,9 +1975,8 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 10
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 106);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 107);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 108);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 109);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 110);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 111);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 109);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 110);
 
 COMMIT;
 

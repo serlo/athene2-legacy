@@ -75,7 +75,8 @@ class BlogWorker implements Worker
         PreConverterChain $converterChain,
         FlagManagerInterface $flagManager,
         RepositoryManagerInterface $repositoryManager,
-        BlogManagerInterface $blogManager
+        BlogManagerInterface $blogManager,
+        CreatePostForm $createPostForm
     ) {
         $this->objectManager     = $objectManager;
         $this->taxonomyManager   = $taxonomyManager;
@@ -86,6 +87,7 @@ class BlogWorker implements Worker
         $this->flagManager       = $flagManager;
         $this->repositoryManager = $repositoryManager;
         $this->blogManager       = $blogManager;
+        $this->createPostForm    = $createPostForm;
     }
 
     public function migrate(array & $results, array &$workload)
@@ -110,7 +112,7 @@ class BlogWorker implements Worker
 
             $author = isset($results['user'][$post->getAuthor()]) ? $results['user'][$post->getAuthor()] : 1;
 
-            $form = new CreatePostForm($this->objectManager);
+            $form = clone $this->createPostForm;
 
             $content = $this->converterChain->convert(
                 utf8_encode($post->getContent())

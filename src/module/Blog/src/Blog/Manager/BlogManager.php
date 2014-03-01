@@ -52,14 +52,12 @@ class BlogManager implements BlogManagerInterface
     {
         $blog = $this->getTaxonomyManager()->getTerm($id);
         $this->assertGranted('blog.get', $blog);
-
         return $blog;
     }
 
     public function findAllBlogs(InstanceInterface $instanceService)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $instanceService);
-
         return $taxonomy->getChildren();
     }
 
@@ -107,8 +105,6 @@ class BlogManager implements BlogManagerInterface
 
         $post->setTrashed(true);
         $this->getObjectManager()->persist($post);
-
-        return $this;
     }
 
     protected function bind(PostInterface $comment, FormInterface $form)
@@ -121,7 +117,7 @@ class BlogManager implements BlogManagerInterface
         $processForm->bind($comment);
         $processForm->setData($data);
         if (!$processForm->isValid()) {
-            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
+            throw new Exception\RuntimeException(print_r($processForm->getMessages(), true));
         }
         return $comment;
     }
