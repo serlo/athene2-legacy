@@ -62,10 +62,8 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->commentDiscussion($form);
                 $this->getDiscussionManager()->flush();
-                return $this->redirect()->toUrl($this->referer()->fromStorage());
+                return $this->redirect()->toReferer();
             }
-        } else {
-            $this->referer()->store();
         }
 
         $view = new ViewModel(['form' => $form, 'discussion' => $discussion]);
@@ -110,10 +108,8 @@ class DiscussionController extends AbstractController
             if ($form->isValid()) {
                 $this->getDiscussionManager()->startDiscussion($form);
                 $this->getDiscussionManager()->flush();
-                return $this->redirect()->toUrl($this->referer()->fromStorage());
+                return $this->redirect()->toReferer();
             }
-        } else {
-            $this->referer()->store();
         }
 
         $view->setTemplate('discussion/discussion/start');
@@ -124,9 +120,8 @@ class DiscussionController extends AbstractController
     public function voteAction()
     {
         $discussion = $this->getDiscussionManager()->getComment($this->params('comment'));
+        $user       = $this->getUserManager()->getUserFromAuthenticator();
         $this->assertGranted('discussion.vote', $discussion);
-
-        $user = $this->getUserManager()->getUserFromAuthenticator();
 
         if ($this->params('vote') == 'down') {
             if ($discussion->downVote($user) === null) {
