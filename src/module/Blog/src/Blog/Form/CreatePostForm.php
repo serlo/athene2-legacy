@@ -10,8 +10,8 @@
  */
 namespace Blog\Form;
 
+use Common\Hydrator\HydratorPluginAwareDoctrineObject;
 use Doctrine\Common\Persistence\ObjectManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\Form\Element\Date;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
@@ -22,14 +22,13 @@ use Zend\InputFilter\InputFilter;
 class CreatePostForm extends Form
 {
 
-    function __construct(ObjectManager $objectManager)
+    function __construct(ObjectManager $objectManager, HydratorPluginAwareDoctrineObject $hydrator)
     {
         parent::__construct('post');
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
-        $hydrator    = new DoctrineHydrator($objectManager);
         $inputFilter = new InputFilter('post');
 
         $this->setInputFilter($inputFilter);
@@ -45,7 +44,6 @@ class CreatePostForm extends Form
                 ]
             ]
         );
-
         $this->add(
             [
                 'type'    => 'Common\Form\Element\ObjectHidden',
@@ -56,7 +54,6 @@ class CreatePostForm extends Form
                 ]
             ]
         );
-
         $this->add(
             [
                 'type'    => 'Common\Form\Element\ObjectHidden',
@@ -80,11 +77,19 @@ class CreatePostForm extends Form
 
         $inputFilter->add(
             [
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß]+$~'
+                        ]
                     ]
                 ]
             ]

@@ -99,7 +99,7 @@
                         <?php endforeach; ?>
                     </div>
                     <?php if (!$this->discussion()->getArchived()): ?>
-                        <?php if ($this->isGranted('discussion.comment.create')): ?>
+                        <?php if ($this->isGranted('discussion.comment.create', $this->discussion)): ?>
                             <?php $form = $this->discussion()->getForm('comment'); ?>
                             <?php $form->setAttribute(
                                 'action',

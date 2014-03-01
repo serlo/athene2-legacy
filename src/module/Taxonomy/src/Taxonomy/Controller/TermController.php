@@ -51,9 +51,8 @@ class TermController extends AbstractController
 
                 $this->getTaxonomyManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
@@ -111,7 +110,7 @@ class TermController extends AbstractController
             $i            = 0;
 
             foreach ($associations as $a) {
-                $term->positionAssociatedObject($association, $a['id'], $i);
+                $term->positionAssociatedObject($a['id'], $i, $association);
                 $i++;
             }
 
@@ -158,19 +157,14 @@ class TermController extends AbstractController
                 $this->getTaxonomyManager()->updateTerm($form);
                 $this->getTaxonomyManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
 
-        $view = new ViewModel([
-            'id'         => $id,
-            'isUpdating' => true,
-            'form'       => $form
-        ]);
+        $view = new ViewModel(['form' => $form]);
         $view->setTemplate('taxonomy/term/form');
 
         return $view;

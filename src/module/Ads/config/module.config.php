@@ -11,7 +11,7 @@
 namespace Ads;
 
 return [
-    'router'         => [
+    'router'          => [
         'routes' => [
             'ads' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
@@ -92,40 +92,33 @@ return [
             ]
         ]
     ],
-    'view_helpers'   => [
-        'factories' => [
-            'Horizon' => function ($helperPluginManager) {
-
-                    $instanceManager = $helperPluginManager->getServiceLocator()->get(
-                        'Instance\Manager\InstanceManager'
-                    );
-                    $adsManager      = $helperPluginManager->getServiceLocator()->get('Ads\Manager\AdsManager');
-                    $viewHelper      = new View\Helper\Horizon();
-                    $viewHelper->setAdsManager($adsManager);
-                    $viewHelper->setInstanceManager($instanceManager);
-
-                    return $viewHelper;
-                }
-        ]
-    ],
-    'class_resolver' => [
-        'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
-    ],
-    'zfc_rbac'       => [
+    'zfc_rbac'        => [
         'assertion_map' => [
-            'ad.create' => 'Authorization\Assertion\InstanceAssertion',
+            'ad.create' => 'Authorization\Assertion\RequestInstanceAssertion',
             'ad.update' => 'Authorization\Assertion\InstanceAssertion',
             'ad.get'    => 'Authorization\Assertion\InstanceAssertion',
             'ad.remove' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
-    'di'             => [
+    'view_helpers'    => [
+        'factories' => [
+            'horizon' => __NAMESPACE__ . '\Factory\HorizonHelperFactory'
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Manager\AdsManager' => __NAMESPACE__ . '\Factory\AdsManagerFactory'
+        ]
+    ],
+    'class_resolver'  => [
+        'Ads\Entity\AdInterface' => 'Ads\Entity\Ad'
+    ],
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\AdsController'
         ],
         'definition'          => [
             'class' => [
-
                 'Ads\Controller\AdsController' => [
                     'setObjectManager'     => [
                         'required' => 'true'
@@ -142,24 +135,6 @@ return [
                     'setAttachmentManager' => [
                         'required' => true
                     ]
-                ],
-                'Ads\Manager\AdsManager'       => [
-
-                    'setInstanceManager'   => [
-                        'required' => 'true'
-                    ],
-                    'setClassResolver'     => [
-                        'required' => 'true'
-                    ],
-                    'setUserManager'       => [
-                        'required' => true
-                    ],
-                    'setObjectManager'     => [
-                        'required' => true
-                    ],
-                    'setAttachmentManager' => [
-                        'required' => true
-                    ]
                 ]
             ]
         ],
@@ -169,7 +144,7 @@ return [
             ]
         ]
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

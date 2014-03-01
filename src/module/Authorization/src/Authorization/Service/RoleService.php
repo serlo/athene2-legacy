@@ -13,6 +13,7 @@ namespace Authorization\Service;
 use Authorization\Entity\ParametrizedPermissionInterface;
 use Authorization\Entity\RoleInterface;
 use Authorization\Exception\RoleNotFoundException;
+use Authorization\Exception\RuntimeException;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
@@ -55,11 +56,7 @@ class RoleService implements RoleServiceInterface
     {
         $className = $this->getClassResolver()->resolveClassName($this->interface);
 
-        return $this->getObjectManager()->getRepository($className)->findOneBy(
-            [
-                'name' => $name
-            ]
-        );
+        return $this->getObjectManager()->getRepository($className)->findOneBy(['name' => $name]);
     }
 
     public function getRole($id)
@@ -77,28 +74,30 @@ class RoleService implements RoleServiceInterface
     public function createRole(FormInterface $form)
     {
         $this->assertGranted('authorization.role.create');
+        $processingForm = clone $form;
+        $data = $processingForm->getData();
 
-        $data = $form->getData();
+        $processingForm->bind(new Role());
+        $processingForm->setData($data);
 
-        $form->bind(new Role());
-        $form->setData($data);
-
-        if ($form->isValid()) {
-            $this->objectManager->persist($form->getObject());
+        if ($processingForm->isValid()) {
+            throw new RuntimeException($processingForm->getMessages());
         }
 
-        return $form->getObject();
+        $this->objectManager->persist($processingForm->getObject());
+
+        return $processingForm->getObject();
     }
 
     public function grantRolePermission($role, $permission)
     {
         $this->assertGranted('authorization.role.grant.permission');
 
-        if(!$role instanceof RoleInterface){
+        if (!$role instanceof RoleInterface) {
             $role = $this->getRole($role);
         }
 
-        if(!$permission instanceof ParametrizedPermissionInterface){
+        if (!$permission instanceof ParametrizedPermissionInterface) {
             $permission = $this->getPermissionService()->getParametrizedPermission($permission);
         }
 
@@ -115,11 +114,11 @@ class RoleService implements RoleServiceInterface
 
     public function grantIdentityRole($role, $user)
     {
-        if(!$role instanceof RoleInterface){
+        if (!$role instanceof RoleInterface) {
             $role = $this->getRole($role);
         }
 
-        if(!$user instanceof UserInterface){
+        if (!$user instanceof UserInterface) {
             $user = $this->getUserManager()->getUser($user);
         }
 

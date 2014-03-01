@@ -26,15 +26,15 @@ class PageController extends AbstractController
             $entity = $this->getEntity();
         } catch (EntityNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
-
-            return;
+            return false;
         }
 
         if (!$this->params('forwarded')) {
             try {
                 $alias = $this->getAliasManager()->findAliasByObject($entity);
-                $this->redirect()->toRoute('alias', ['alias' => $alias->getAlias()]);
+                return $this->redirect()->toRoute('alias', ['alias' => $alias->getAlias()]);
             } catch (AliasNotFoundException $e) {
+                // No Alias found? Well, then we got nothing to do!
             }
         }
 
@@ -47,7 +47,8 @@ class PageController extends AbstractController
 
             return $model;
         } catch (RevisionNotFoundException $e) {
-            return $this->getResponse()->setStatusCode(404);
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
     }
 }

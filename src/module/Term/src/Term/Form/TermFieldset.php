@@ -13,8 +13,9 @@ namespace Term\Form;
 
 use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class TermFieldset extends Fieldset
+class TermFieldset extends Fieldset implements InputFilterProviderInterface
 {
 
     function __construct()
@@ -31,7 +32,18 @@ class TermFieldset extends Fieldset
                 'required' => true,
                 'filters' => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'NotEmpty'
+                    ],
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9üÜöÖäÄß]+$~'
+                        ]
                     ]
                 ]
             ]

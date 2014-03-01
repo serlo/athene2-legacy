@@ -62,7 +62,15 @@ class UpdatePostForm extends Form
                 'required' => true,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß]+$~'
+                        ]
                     ]
                 ]
             ]

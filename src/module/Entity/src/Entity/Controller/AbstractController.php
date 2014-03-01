@@ -25,7 +25,6 @@ abstract class AbstractController extends AbstractActionController
     public function getEntity($id = null)
     {
         $id = $id ? : $this->params('entity');
-
         return $this->getEntityManager()->getEntity($id);
     }
 }

@@ -11,6 +11,7 @@
 namespace Ads\Entity;
 
 use Attachment\Entity\AttachmentInterface;
+use Attachment\Entity\ContainerInterface;
 use Attachment\Entity\FileInterface;
 use Instance\Entity\InstanceAwareInterface;
 use User\Entity\UserInterface;
@@ -21,7 +22,7 @@ interface AdInterface extends InstanceAwareInterface
     /**
      * Gets the image.
      *
-     * @return AttachmentInterface
+     * @return ContainerInterface
      */
     public function getAttachment();
 

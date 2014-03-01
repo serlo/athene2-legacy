@@ -171,7 +171,7 @@ class ExerciseWorker implements Worker
                 foreach ($folders as $folder) {
                     $folder = $folder->getFolder();
                     $term   = $results['folder'][$folder->getId()];
-                    $this->taxonomyManager->associateWith($term, 'entities', $lrExercise, $folder->getPosition());
+                    $this->taxonomyManager->associateWith($term, $lrExercise, $folder->getPosition());
                 }
             }
 

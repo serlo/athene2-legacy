@@ -5,5 +5,5 @@
 
 <a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('on')); ?>">
     <?php echo sprintf($this->translate('<strong>%s</strong> started a discussion on "%s": <i>"%s"</i>'), $user, $object, $title); ?>
-    <small> - <?php echo $this->timeago()->render($this->notification->getTimestamp()); ?></small>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>

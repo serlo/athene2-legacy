@@ -1,0 +1,69 @@
+<?php $rows = 4; ?>
+<?php $col = 12 / $rows; ?>
+{% set rows = 4 %}
+{% set col = 12 / 4 %}
+{{ pageHeader(normalize().toTitle(container.getObject())).setSubtitle('Manage related content').setBackLink(normalize().toUrl(container.getObject())).render }}
+<div class="row">
+    <div class="col-md-{{ col }}">
+        <strong>{{ translate('Title') }}</strong>
+    </div>
+    <div class="col-md-{{ col }}">
+        <strong>{{ translate('Url') }}</strong>
+    </div>
+    <div class="col-md-{{ col }}">
+        <strong>{{ translate('Type') }}</strong>
+    </div>
+    <div class="col-md-{{ col }}">
+        <strong>{{ translate('Actions') }}</strong
+    </div>
+</div>
+<hr>
+<div class="clearfix sortable" data-action="{{ url('related-content/order') }}" data-depth="1" data-active="false">
+    <ol class="sortable-list">
+        {% for related in aggregated %}
+            <li class="sortable-item" data-id="{{ related.getId() }}">
+                <span class="sortable-handle"></span>
+                <div class="sortable-item-inner row">
+                    <div class="col-md-{{ col }}">
+                        {{ translate(related.getTitle()) }}
+                    </div>
+                    <div class="col-md-{{ col }}">
+                        {% if related.getUrl() %}
+                            <a href="{{ related.getUrl() }}">{{ related.getUrl() }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-{{ col }}">
+                        {{ translate(related.getType()) }}
+                    </div>
+                    <div class="col-md-{{ col }}">
+                        <a href="{{ url('related-content/remove', {'id': related.getId()}) }}" class="btn btn-xs btn-warning">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ol>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="sortable-actions btn-group">
+                <button class="btn btn-sm btn-default sortable-activate-action">
+                    <span class="glyphicon glyphicon-sort"></span>
+                </button>
+                <button class="btn btn-sm btn-success sortable-save-action is-hidden">
+                    <span class="glyphicon glyphicon-floppy-save"></span>
+                </button>
+                <button class="btn btn-sm btn-default sortable-abort-action is-hidden">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="btn-group">
+                <a class="btn btn-success btn-sm" href="{{ url('related-content/add-category', {'id': container.getId()}) }}">{{ translate('Add category') }}</a>
+                <a class="btn btn-success btn-sm" href="{{ url('related-content/add-internal', {'id': container.getId()}) }}">{{ translate('Add internal') }}</a>
+                <a class="btn btn-success btn-sm" href="{{ url('related-content/add-external', {'id': container.getId()}) }}">{{ translate('Add external') }}</a>
+            </div>
+        </div>
+    </div>
+</div>

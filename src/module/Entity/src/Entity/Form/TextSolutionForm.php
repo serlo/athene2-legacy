@@ -36,7 +36,7 @@ class TextSolutionForm extends Form
         $inputFilter = new InputFilter('text-solution');
         $inputFilter->add(['name' => 'hint', 'required' => false]);
         $inputFilter->add(['name' => 'content', 'required' => true]);
-        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'HtmlEntities']]]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $this->setInputFilter($inputFilter);
     }
 }

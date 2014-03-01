@@ -13,7 +13,20 @@ namespace Entity;
 return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            //'entity.license.update' => 'Authorization\Assertion\TenantAssertion',
+            'entity.create'             => 'Authorization\Assertion\InstanceAssertion',
+            'entity.get'                => 'Authorization\Assertion\InstanceAssertion',
+            'entity.trash'              => 'Authorization\Assertion\InstanceAssertion',
+            'entity.purge'              => 'Authorization\Assertion\InstanceAssertion',
+            'entity.restore'            => 'Authorization\Assertion\InstanceAssertion',
+            'entity.revision.create'    => 'Authorization\Assertion\InstanceAssertion',
+            'entity.revision.purge'     => 'Authorization\Assertion\InstanceAssertion',
+            'entity.revision.trash'     => 'Authorization\Assertion\InstanceAssertion',
+            'entity.revision.checkout'  => 'Authorization\Assertion\InstanceAssertion',
+            'entity.repository.history' => 'Authorization\Assertion\InstanceAssertion',
+            'entity.link.create'        => 'Authorization\Assertion\InstanceAssertion',
+            'entity.link.purge'         => 'Authorization\Assertion\InstanceAssertion',
+            'entity.link.order'         => 'Authorization\Assertion\InstanceAssertion',
+            'entity.event.history.get'  => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'class_resolver'  => [
@@ -141,12 +154,12 @@ return [
             'Entity\Entity\Revision' => [
                 'trash'   => 'entity.revision.trash',
                 'restore' => 'entity.revision.restore',
-                'purge' => 'entity.revision.purge'
+                'purge'   => 'entity.revision.purge'
             ],
-            'Entity\Entity\Entity'         => [
+            'Entity\Entity\Entity'   => [
                 'trash'   => 'entity.trash',
                 'restore' => 'entity.restore',
-                'purge' => 'entity.purge'
+                'purge'   => 'entity.purge'
             ]
         ]
     ],

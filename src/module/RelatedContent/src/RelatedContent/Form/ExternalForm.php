@@ -39,7 +39,7 @@ class ExternalForm extends Form
             'required' => true,
             'filters' => [
                 [
-                    'name' => 'HtmlEntities'
+                    'name' => 'StripTags'
                 ]
             ]
         ]);
@@ -49,7 +49,7 @@ class ExternalForm extends Form
             'required' => true,
             'filters' => [
                 [
-                    'name' => 'HtmlEntities'
+                    'name' => 'StripTags'
                 ]
             ]
         ]);

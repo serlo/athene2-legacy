@@ -22,7 +22,7 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter' => [
+                __NAMESPACE__ . '\Adapter\EntityControllerAdapter' => [
                     'setInstanceManager' => [
                         'required' => true
                     ]
@@ -52,6 +52,9 @@ return [
                         'required' => true
                     ],
                     'setAuthorizationService' => [
+                        'required' => true
+                    ],
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ]

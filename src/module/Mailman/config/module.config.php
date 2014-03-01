@@ -10,6 +10,9 @@
  */
 namespace Mailman;
 
+use Zend\Mail\Transport\SmtpOptions;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 return [
     'mailman'         => [
         'adapters' => [
@@ -21,7 +24,21 @@ return [
             __NAMESPACE__ . '\Mailman'                                   => __NAMESPACE__ . '\Factory\MailmanFactory',
             __NAMESPACE__ . '\Adapter\ZendMailAdapter'                   => __NAMESPACE__ . '\Factory\ZendMailAdapterFactory',
             __NAMESPACE__ . '\Listener\AuthenticationControllerListener' => __NAMESPACE__ . '\Factory\AuthenticationControllerListenerFactory',
-            __NAMESPACE__ . '\Listener\UserControllerListener'           => __NAMESPACE__ . '\Factory\UserControllerListenerFactory'
+            __NAMESPACE__ . '\Listener\UserControllerListener'           => __NAMESPACE__ . '\Factory\UserControllerListenerFactory',
+            'Zend\Mail\Transport\SmtpOptions' => function (ServiceLocatorInterface $sm) {
+                    $config = $sm->get('config')['smtp_options'];
+
+                    return new SmtpOptions($config);
+                },
+        ]
+    ],
+    'smtp_options'    => [
+        'name'              => 'localhost.localdomain',
+        'host'              => 'localhost',
+        'connection_class'  => 'smtp',
+        'connection_config' => [
+            'username' => 'postmaster',
+            'password' => ''
         ]
     ],
     'di'              => [

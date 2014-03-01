@@ -1,0 +1,5 @@
+<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
+<?php $revision = $this->normalize()->toAnchor($this->event->getObject()); ?>
+<?php $entity = $this->normalize()->toAnchor($this->event->getParameter('repository')); ?>
+<?php $reason = $this->event->getParameter('reason'); ?>
+<?php echo sprintf($this->translate('%s rejected a version of %s: <em>"%s"</em>'), $user, $entity, $reason); ?>

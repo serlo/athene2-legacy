@@ -19,7 +19,23 @@ use Zend\View\Model\ViewModel;
 
 class DiscussionController extends AbstractController
 {
-    use InstanceManagerAwareTrait, UserManagerAwareTrait, UuidManagerAwareTrait;
+    use InstanceManagerAwareTrait, UserManagerAwareTrait;
+
+    /**
+     * @var \Discussion\Form\CommentForm
+     */
+    protected $commentForm;
+
+    /**
+     * @var \Discussion\Form\DiscussionForm
+     */
+    protected $discussionForm;
+
+    public function __construct(CommentForm $commentForm, DiscussionForm $discussionForm)
+    {
+        $this->commentForm    = $commentForm;
+        $this->discussionForm = $discussionForm;
+    }
 
     public function archiveAction()
     {
@@ -27,60 +43,33 @@ class DiscussionController extends AbstractController
         $this->assertGranted('discussion.archive', $discussion);
         $this->getDiscussionManager()->toggleArchived($this->params('comment'));
         $this->getDiscussionManager()->flush();
-        $this->redirect()->toReferer();
-
-        return null;
+        return $this->redirect()->toReferer();
     }
 
     public function commentAction()
     {
         $discussion = $this->getDiscussionManager()->getDiscussion($this->params('discussion'));
+        $form       = $this->commentForm;
         $this->assertGranted('discussion.comment.create', $discussion);
 
-        $form = new CommentForm();
-
-        $ref = $this->params()->fromQuery(
-            'ref',
-            $this->referer()->toUrl('/')
-        );
-
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'discussion/discussion/start',
-                [
-                    'on' => $this->params('discussion')
-                ]
-            ) . '?ref=' . $ref
-        );
-
-        $view = new ViewModel([
-            'form' => $form
-        ]);
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $data = [
+                'instance' => $this->getInstanceManager()->getInstanceFromRequest(),
+                'parent'   => $this->params('discussion'),
+                'author'   => $this->getUserManager()->getUserFromAuthenticator()
+            ];
+            $form->setData(array_merge($this->params()->fromPost(), $data));
             if ($form->isValid()) {
-                $instance = $this->getInstanceManager()->getInstanceFromRequest();
-                $author   = $this->getUserManager()->getUserFromAuthenticator();
-                $content  = $form->getData()['content'];
-
-                $comment = $this->getDiscussionManager()->commentDiscussion(
-                    $discussion,
-                    $instance,
-                    $author,
-                    $content,
-                    $form->getData()
-                );
-
-                $this->getDiscussionManager()->getObjectManager()->flush();
-
-                $this->redirect()->toUrl($ref);
+                $this->getDiscussionManager()->commentDiscussion($form);
+                $this->getDiscussionManager()->flush();
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
+        } else {
+            $this->referer()->store();
         }
 
-        $view->setTemplate('discussion/discussion/start');
+        $view = new ViewModel(['form' => $form, 'discussion' => $discussion]);
+        $view->setTemplate('discussion/discussion/comment');
 
         return $view;
     }
@@ -104,44 +93,27 @@ class DiscussionController extends AbstractController
 
     public function startAction()
     {
-        $this->assertGranted('discussion.create');
+        $form     = $this->discussionForm;
+        $view     = new ViewModel(['form' => $form]);
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $author   = $this->getUserManager()->getUserFromAuthenticator();
+        $this->assertGranted('discussion.create', $instance);
 
-        $form = new DiscussionForm();
-
-        $ref = $this->params()->fromQuery(
-            'ref',
-            $this->referer()->toUrl('/')
-        );
-
-        $view = new ViewModel([
-            'form' => $form
-        ]);
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $data = [
+                'instance' => $instance,
+                'author'   => $author,
+                'terms'    => $this->params('forum'),
+                'object'   => $this->params('on')
+            ];
+            $form->setData(array_merge($this->params()->fromPost(), $data));
             if ($form->isValid()) {
-                $object   = $this->getUuidManager()->getUuid($this->params('on'));
-                $instance = $this->getInstanceManager()->getInstanceFromRequest();
-                $author   = $this->getUserManager()->getUserFromAuthenticator();
-                $title    = $form->getData()['title'];
-                $content  = $form->getData()['content'];
-                $forum    = $form->getData()['forum'];
-
-                $discussion = $this->getDiscussionManager()->startDiscussion(
-                    $object,
-                    $instance,
-                    $author,
-                    $forum,
-                    $title,
-                    $content,
-                    $form->getData()
-                );
-
-                $this->getDiscussionManager()->getObjectManager()->flush();
-
-                $this->redirect()->toUrl($ref);
+                $this->getDiscussionManager()->startDiscussion($form);
+                $this->getDiscussionManager()->flush();
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
+        } else {
+            $this->referer()->store();
         }
 
         $view->setTemplate('discussion/discussion/start');
@@ -171,8 +143,6 @@ class DiscussionController extends AbstractController
         }
 
         $this->getDiscussionManager()->flush();
-        $this->redirect()->toReferer();
-
-        return null;
+        return $this->redirect()->toReferer();
     }
 }

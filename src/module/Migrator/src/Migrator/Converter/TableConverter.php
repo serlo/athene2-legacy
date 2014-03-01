@@ -16,6 +16,12 @@ class TableConverter extends AbstractConverter
 
     public function convert($input)
     {
+        $input = trim($input);
+
+        if(!$input){
+            return '';
+        }
+
         $layout = [];
 
         $subpattern = [];
@@ -79,7 +85,7 @@ class TableConverter extends AbstractConverter
 
                         $columns[] = [
                             'col'     => $this->maxcols / $count,
-                            'content' => $tableColumn[0]
+                            'content' => implode("\n", array_map('trim', explode("\n", $tableColumn[0])))
                         ];
                     }
                 } else {
