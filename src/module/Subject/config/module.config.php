@@ -79,7 +79,7 @@ return [
                     'Entity\Entity\EntityInterface'
                 ],
                 'allowed_parents'      => [
-                    'curriculum-topic-folder'
+                    'curriculum-topic'
                 ],
                 'rootable'             => false
             ]

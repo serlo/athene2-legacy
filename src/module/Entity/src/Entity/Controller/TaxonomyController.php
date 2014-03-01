@@ -21,8 +21,8 @@ class TaxonomyController extends AbstractController
     public function updateAction()
     {
         $entity = $this->getEntity();
-        $this->assertGranted('entity.link.create', $entity);
-        $this->assertGranted('entity.link.purge', $entity);
+        $this->assertGranted('taxonomy.term.associate', $entity);
+        $this->assertGranted('taxonomy.term.dissociate', $entity);
 
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);

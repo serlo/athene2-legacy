@@ -36,6 +36,7 @@ class EntityManager implements EntityManagerInterface
         if (!is_object($entity)) {
             throw new Exception\EntityNotFoundException(sprintf('Entity "%d" not found.', $id));
         }
+        $this->assertGranted('entity.get', $entity);
 
         return $entity;
     }
@@ -44,27 +45,13 @@ class EntityManager implements EntityManagerInterface
     {
         $this->assertGranted('entity.create', $instance);
 
-        $type = $this->getTypeManager()->findTypeByName($typeName);
-
-        if (!is_object($type)) {
-            throw new Exception\RuntimeException(sprintf('Type "%s" not found', $typeName));
-        }
-
         /* @var $entity EntityInterface */
         $entity = $this->getClassResolver()->resolve('Entity\Entity\EntityInterface');
+        $type   = $this->getTypeManager()->findTypeByName($typeName);
 
         $entity->setInstance($instance);
         $entity->setType($type);
-
-        $this->getEventManager()->trigger(
-            'create',
-            $this,
-            [
-                'entity' => $entity,
-                'data'   => $data
-            ]
-        );
-
+        $this->getEventManager()->trigger('create', $this, ['entity' => $entity, 'data' => $data]);
         $this->getObjectManager()->persist($entity);
 
         return $entity;

@@ -29,27 +29,20 @@ class LicenseController extends AbstractController
 
         $form = new UpdateLicenseForm($licenses);
         $view = new ViewModel(['form' => $form]);
+        $view->setTemplate('entity/license/update');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->params()->fromPost());
             if ($form->isValid()) {
-                $data = $form->getData();
-
+                $data    = $form->getData();
                 $license = $this->getLicenseManager()->getLicense((int)$data['license']);
                 $this->getLicenseManager()->injectLicense($entity, $license);
                 $this->getLicenseManager()->flush();
-
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
-
-        $view->setTemplate('entity/license/update');
 
         return $view;
     }

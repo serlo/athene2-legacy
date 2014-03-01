@@ -60,7 +60,7 @@ class AttachmentManager implements AttachmentManagerInterface
     public function attach(AttachmentFieldsetProvider $form, $type = 'file', $appendId = null)
     {
         if (!$form->isValid()) {
-            throw new Exception\RuntimeException($form->getMessages());
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
         }
 
         if ($appendId !== null) {

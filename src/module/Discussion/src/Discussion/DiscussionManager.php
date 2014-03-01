@@ -153,8 +153,18 @@ class DiscussionManager implements DiscussionManagerInterface
     {
         $comment = $this->getComment($commentId);
         $this->assertGranted('discussion.archive', $comment);
+
+        if ($comment->hasParent()) {
+            throw new Exception\RuntimeException(sprintf('You can\'t archive a comment, only discussions.'));
+        }
+
         $comment->setArchived(!$comment->getArchived());
         $this->getObjectManager()->persist($comment);
+        $this->getEventManager()->trigger(
+            $comment->getArchived() ? 'archive' : 'restore',
+            $this,
+            ['discussion' => $comment]
+        );
     }
 
     /**
@@ -166,7 +176,7 @@ class DiscussionManager implements DiscussionManagerInterface
     protected function bind(CommentInterface $comment, FormInterface $form)
     {
         if (!$form->isValid()) {
-            throw new Exception\RuntimeException($form->getMessages());
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
         }
 
         $processForm = clone $form;

@@ -208,7 +208,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
 
     public function findChildBySlugs(array $slugs)
     {
-        if(empty($slugs)){
+        if (empty($slugs)) {
             return $this;
         }
         $slug = array_shift($slugs);
@@ -236,9 +236,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
 
     public function getAssociated($field)
     {
-        if (isset($this->allowedRelations[$field])) {
-            $field = $this->allowedRelations[$field];
-        } elseif (!in_array($field, $this->allowedRelations)) {
+        if (!in_array($field, $this->allowedRelations) && !isset($this->allowedRelations[$field])) {
             throw new RuntimeException(sprintf('Field %s is not whitelisted.', $field));
         }
 
@@ -314,6 +312,11 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         return $this->term;
     }
 
+    public function setTerm(TermEntityInterface $term)
+    {
+        $this->term = $term;
+    }
+
     protected function getAssociationFieldName(TaxonomyTermAwareInterface $object)
     {
         if ($object instanceof EntityInterface) {
@@ -338,11 +341,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         }
 
         return $slug;
-    }
-
-    public function setTerm(TermEntityInterface $term)
-    {
-        $this->term = $term;
     }
 
     public function findChildrenByTaxonomyNames(array $names)
@@ -433,7 +431,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         // Iterate over all join entities to find the correct
         foreach ($this->getEntityNodes() as $rel) {
             if ($rel->getObject() === $entity) {
-                $rel->removeElement($rel);
+                $this->getEntityNodes()->removeElement($rel);
                 $rel->getObject()->removeTaxonomyTerm($this, $rel);
                 break;
             }
