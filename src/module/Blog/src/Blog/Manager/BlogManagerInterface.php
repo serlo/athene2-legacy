@@ -20,10 +20,10 @@ interface BlogManagerInterface
 {
 
     /**
-     * @param int $id
-     * @return TaxonomyTermInterface
+     * @param FormInterface $form
+     * @return PostInterface|false
      */
-    public function getBlog($id);
+    public function createPost(FormInterface $form);
 
     /**
      * @param InstanceInterface $instanceService
@@ -40,19 +40,25 @@ interface BlogManagerInterface
 
     /**
      * @param int $id
+     * @return TaxonomyTermInterface
+     */
+    public function getBlog($id);
+
+    /**
+     * @param int $id
      * @return PostInterface
      */
     public function getPost($id);
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function trashPost($id);
 
     /**
      * @param FormInterface $form
      * @return void
      */
     public function updatePost(FormInterface $form);
-
-    /**
-     * @param FormInterface         $form
-     * @return PostInterface|false
-     */
-    public function createPost(FormInterface $form);
 }

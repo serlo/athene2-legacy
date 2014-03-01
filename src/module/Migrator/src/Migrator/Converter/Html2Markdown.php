@@ -83,7 +83,7 @@ class Html2Markdown extends AbstractConverter
             '~>\s+<~',
             '><',
             $html
-        ); // Strip white space between tags to prevent creation of empty #text nodes
+        );
 
         $this->document = new \DOMDocument();
 
@@ -103,8 +103,6 @@ class Html2Markdown extends AbstractConverter
         }
 
         $html = $this->get_markdown($html);
-
-        $html = preg_replace('@^\s*$@ism', '', $html);
 
         return $html;
     }
@@ -222,7 +220,7 @@ class Html2Markdown extends AbstractConverter
     {
         return $txt;
 
-        return implode("\n", array_map('trim', explode("\n", $txt)));
+//        return implode("\n", array_map('trim', explode("\n", $txt)));
     }
 
 

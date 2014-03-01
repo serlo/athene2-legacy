@@ -24,11 +24,19 @@ return [
         'router' => [
             'adapters' => [
                 [
-                    'adapter'     => __NAMESPACE__ . '\Adapter\EntityPluginControllerAdapter',
+                    'adapter'     => __NAMESPACE__ . '\Adapter\EntityControllerAdapter',
                     'controllers' => [
                         [
-                            'controller' => 'Entity\Plugin\Repository\Controller\RepositoryController',
+                            'controller' => 'Entity\Controller\RepositoryController',
                             'action'     => 'addRevision'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\RepositoryController',
+                            'action'     => 'history'
+                        ],
+                        [
+                            'controller' => 'Entity\Controller\RepositoryController',
+                            'action'     => 'compare'
                         ]
                     ]
                 ]

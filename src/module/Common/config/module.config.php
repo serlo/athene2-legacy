@@ -18,9 +18,15 @@ return [
             'redirect' => 'Common\Controller\Plugin\RedirectHelper'
         ]
     ],
-    'route_manager' => [
+    'route_manager'      => [
         'invokables' => [
             'slashable' => __NAMESPACE__ . '\Router\Slashable'
+        ]
+    ],
+    'service_manager'    => [
+        'factories' => [
+            __NAMESPACE__ . '\Hydrator\HydratorPluginAwareDoctrineObject' => __NAMESPACE__ . '\Factory\HydratorPluginAwareDoctrineObjectFactory',
+            __NAMESPACE__ . '\Hydrator\HydratorPluginManager'             => __NAMESPACE__ . '\Factory\HydratorPluginManagerFactory'
         ]
     ]
 ];

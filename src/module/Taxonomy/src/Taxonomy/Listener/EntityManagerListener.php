@@ -28,7 +28,7 @@ class EntityManagerListener extends AbstractSharedListenerAggregate
             $options = $data['taxonomy'];
             
             $term = $this->getTaxonomyManager()->getTerm($options['term']);
-            $this->getTaxonomyManager()->associateWith($options['term'], 'entities', $entity);
+            $this->getTaxonomyManager()->associateWith($options['term'], $entity);
         }
     }
 

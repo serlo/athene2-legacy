@@ -50,7 +50,7 @@ class LatexConverter extends AbstractConverter
                     $response = file_get_contents($url, false, $context);
 
                     $response = "%%" . $response . "%%";
-                    $response = PHP_EOL . $response . PHP_EOL;
+                    $response = PHP_EOL . trim($response) . PHP_EOL;
 
                     if (!isset($http_response_header) || empty($http_response_header) || stristr(
                             $http_response_header[0],

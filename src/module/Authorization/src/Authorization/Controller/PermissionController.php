@@ -27,6 +27,9 @@ class PermissionController extends AbstractActionController
         $this->permissionService = $permissionService;
     }
 
+    /**
+     * @return ViewModel
+     */
     public function permissionsAction()
     {
         $permissions = $this->getPermissionService()->findAllPermissions();
@@ -35,4 +38,4 @@ class PermissionController extends AbstractActionController
 
         return $view;
     }
-} 
+}

@@ -40,6 +40,7 @@ return [
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Storage\Storage'                      => __NAMESPACE__ . '\Factory\NavigationStorageFactory',
+            __NAMESPACE__ . '\Storage\NavigationHelperStorage'      => __NAMESPACE__ . '\Factory\NavigationHelperStorageFactory',
             __NAMESPACE__ . '\Manager\NavigationManager'            => __NAMESPACE__ . '\Factory\NavigationManagerFactory',
             __NAMESPACE__ . '\Provider\ContainerRepositoryProvider' => __NAMESPACE__ . '\Factory\ContainerRepositoryProviderFactory',
             __NAMESPACE__ . '\Form\ContainerForm'                   => __NAMESPACE__ . '\Factory\ContainerFormFactory',
@@ -56,6 +57,11 @@ return [
                     // This is neccessary because the ServiceManager would create multiple instances of the factory and thus injecting the RouteMatch wouldn't work
                     return $sm->get(__NAMESPACE__ . '\Factory\DefaultNavigationFactory')->createService($sm);
                 },
+        ]
+    ],
+    'view_helpers'    => [
+        'factories' => [
+            'navigation' => __NAMESPACE__ . '\Factory\NavigationHelperFactory'
         ]
     ],
     'controllers'     => [

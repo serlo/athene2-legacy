@@ -44,7 +44,7 @@ class LicenseForm extends Form
                 'required' => true,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]
@@ -56,7 +56,7 @@ class LicenseForm extends Form
                 'required' => false,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]
@@ -68,7 +68,7 @@ class LicenseForm extends Form
                 'required' => false,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]
@@ -80,7 +80,7 @@ class LicenseForm extends Form
                 'required' => true,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]

@@ -12,16 +12,18 @@ namespace Attachment\Manager;
 
 use Attachment\Entity\ContainerInterface;
 use Attachment\Entity\FileInterface;
+use Attachment\Form\AttachmentFieldsetProvider;
+use Common\ObjectManager\Flushable;
 
-interface AttachmentManagerInterface
+interface AttachmentManagerInterface extends Flushable
 {
     /**
-     * @param array  $post
-     * @param string $type
-     * @param int    $appendId
+     * @param AttachmentFieldsetProvider $form
+     * @param string                     $type
+     * @param int                        $appendId
      * @return ContainerInterface
      */
-    public function attach(array $post, $type = 'file', $appendId = null);
+    public function attach(AttachmentFieldsetProvider $form, $type = 'file', $appendId = null);
 
     /**
      * @param int $id

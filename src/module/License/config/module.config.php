@@ -40,6 +40,9 @@ return [
                     ],
                     'setInstanceManager' => [
                         'required' => true
+                    ],
+                    'setAuthorizationService' => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\LicenseController' => [

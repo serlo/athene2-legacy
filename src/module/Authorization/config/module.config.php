@@ -21,6 +21,7 @@ return [
             'factories' => [
                 'Authorization\Assertion\RoleAssertion'     => __NAMESPACE__ . '\Factory\RoleAssertionFactory',
                 'Authorization\Assertion\InstanceAssertion' => __NAMESPACE__ . '\Factory\InstanceAssertionFactory',
+                'Authorization\Assertion\RequestInstanceAssertion' => __NAMESPACE__ . '\Factory\RequestInstanceAssertionFactory',
             ]
         ],
         'assertion_map'     => [

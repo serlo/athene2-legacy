@@ -11,9 +11,11 @@
 namespace Contexter\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
+use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Contexter\Entity\ContextInterface;
+use Contexter\Entity\RouteInterface;
 use Contexter\Exception;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,13 +28,13 @@ class ContextManager implements ContextManagerInterface
     use ObjectManagerAwareTrait, InstanceManagerAwareTrait;
     use Router\RouterAwareTrait, UuidManagerAwareTrait;
     use TypeManagerAwareTrait, AuthorizationAssertionTrait;
-    use FlushableTrait;
+    use FlushableTrait, ClassResolverAwareTrait;
 
     public function addRoute(ContextInterface $context, $routeName, array $params = [])
     {
         $this->assertGranted('contexter.route.add', $context);
 
-        /* @var $route Entity\RouteInterface */
+        /* @var $route RouteInterface */
         $route = $this->getClassResolver()->resolve('Contexter\Entity\RouteInterface');
         $route->setName($routeName);
         $route->addParameters($params);
@@ -46,8 +48,8 @@ class ContextManager implements ContextManagerInterface
     public function removeRoute($id)
     {
         $route = $this->getRoute($id);
-        $this->assertGranted('contexter.route.remove', $route->getContext());
 
+        $this->assertGranted('contexter.route.remove', $route->getContext());
         $this->getObjectManager()->remove($route);
     }
 
@@ -55,6 +57,7 @@ class ContextManager implements ContextManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
         $object    = $this->getObjectManager()->find($className, $id);
+
         if (!is_object($object)) {
             throw new Exception\RuntimeException(sprintf('Could not find a route by the id of %d', $id));
         }
@@ -68,13 +71,13 @@ class ContextManager implements ContextManagerInterface
         $this->assertGranted('contexter.context.remove', $context);
 
         $this->getObjectManager()->remove($context);
-        $this->removeInstance($id);
     }
 
     public function getContext($id)
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $context   = $this->getObjectManager()->find($className, $id);
+        $this->assertGranted('contexter.context.get', $context);
 
         if (!is_object($context)) {
             throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
@@ -88,33 +91,25 @@ class ContextManager implements ContextManagerInterface
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $this->assertGranted('contexter.context.add', $instance);
 
-        $object = $this->getUuidManager()->getUuid($objectId);
-
-        $type = $this->findTypeByName($type);
-
         /* @var $context ContextInterface */
+        $object  = $this->getUuidManager()->getUuid($objectId);
+        $type    = $this->findTypeByName($type);
         $context = $this->getClassResolver()->resolve('Contexter\Entity\ContextInterface');
+
         $context->setTitle($title);
         $context->setObject($object);
         $context->setInstance($instance);
-
         $context->setType($type);
-        $type->addContext($context);
-
         $this->getObjectManager()->persist($context);
 
         return $context;
-    }
-
-    public function findTypeByName($name)
-    {
-        return $this->getTypeManager()->findTypeByName($name);
     }
 
     public function findAll()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $results   = $this->getObjectManager()->getRepository($className)->findAll();
+        $this->assertGranted('contexter.context.get.all');
 
         return new ArrayCollection($results);
     }
@@ -126,6 +121,11 @@ class ContextManager implements ContextManagerInterface
                 return $e->getName();
             }
         );
+    }
+
+    public function findTypeByName($name)
+    {
+        return $this->getTypeManager()->findTypeByName($name);
     }
 
     protected function findAllTypes()

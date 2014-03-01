@@ -144,6 +144,7 @@ class RepositoryController extends AbstractController
     {
         $entity          = $this->getEntity();
         $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
+        $this->assertGranted('entity.repository.history', $entity);
 
         $view = new ViewModel([
             'entity'          => $entity,

@@ -25,9 +25,20 @@ class PageHeader extends AbstractHelper
         ];
     }
 
+    /**
+     * @var string
+     */
     protected $text = '';
 
+    /**
+     * @var string
+     */
     protected $subtext = '';
+
+    /**
+     * @var string|null
+     */
+    protected $backLink = '';
 
     public function __invoke($text)
     {
@@ -38,6 +49,11 @@ class PageHeader extends AbstractHelper
     public function setSubtitle($subtext)
     {
         $this->subtext = $this->getView()->translate((string) $subtext);
+        return $this;
+    }
+
+    public function setBackLink($backLink){
+        $this->backLink = $backLink;
         return $this;
     }
 
@@ -53,9 +69,11 @@ class PageHeader extends AbstractHelper
             $filter = new StripTags();
             $this->getView()->headTitle($filter->filter($headTitle));
         }
+
         return $this->getView()->partial($this->getOption('template'), [
             'text' => $this->text,
-            'subtext' => $this->subtext
+            'subtext' => $this->subtext,
+            'backLink' => $this->backLink
         ]);
     }
 }

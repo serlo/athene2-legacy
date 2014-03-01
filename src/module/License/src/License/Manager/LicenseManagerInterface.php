@@ -43,10 +43,10 @@ interface LicenseManagerInterface extends Flushable
     public function findAllLicenses();
 
     /**
-     * @param InstanceInterface $instanceService
+     * @param InstanceInterface $instance
      * @return LicenseInterface[]
      */
-    public function findLicensesByInstance(InstanceInterface $instanceService);
+    public function findLicensesByInstance(InstanceInterface $instance);
 
     /**
      * @param LicenseForm $form

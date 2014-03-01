@@ -6,18 +6,18 @@
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
         <div class="col-md-4">
-            <ul class="nav nav-pills">
+            <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
                     {% if solution.hasCurrentRevision() and solution.getCurrentRevision().get('hint') %}
                         <li>
                             <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#hint-{{ solution.getId() }}">
-                                <span class="glyphicon glyphicon-question-sign"></span>
+                                {{ translate('Hint') }}
                             </a>
                         </li>
                     {% endif %}
                     <li>
                         <a data-toggle="collapse" data-parent="#solutions-{{ solution.getId() }}" href="#solution-{{ solution.getId() }}">
-                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            {{ translate('Solution') }}
                         </a>
                     </li>
                 {% endif %}

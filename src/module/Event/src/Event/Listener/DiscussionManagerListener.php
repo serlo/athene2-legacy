@@ -19,74 +19,83 @@ use Zend\EventManager\SharedEventManagerInterface;
 class DiscussionManagerListener extends AbstractListener
 {
 
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $class = $this->getMonitoredClass();
+        $events->attach($class, 'start', [$this, 'onStart']);
+        $events->attach($class, 'comment', [$this, 'onComment']);
+        $events->attach($class, 'archive', [$this, 'onArchive']);
+        $events->attach($class, 'restore', [$this, 'onRestore']);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Discussion\DiscussionManager';
+    }
+
     /**
-     * Gets executed on 'start'
+     * Gets executed on 'archive'
      *
      * @param Event $e
-     * @return null
+     * @return void
      */
-    public function onStart(Event $e)
+    public function onArchive(Event $e)
     {
-        $instance   = $e->getParam('instance');
-        $user       = $e->getParam('author');
         $discussion = $e->getParam('discussion');
-
-        $params = [
-            [
-                'name'   => 'on',
-                'value' => $e->getParam('on')
-            ]
-        ];
-
-        $this->logEvent('discussion/create', $instance, $discussion, $params);
+        $instance   = $discussion->getInstance();
+        $this->logEvent('discussion/comment/archive', $instance, $discussion);
     }
 
     /**
      * Gets executed on 'comment'
      *
      * @param Event $e
-     * @return null
+     * @return void
      */
     public function onComment(Event $e)
     {
-        $user       = $e->getParam('author');
         $instance   = $e->getParam('instance');
         $discussion = $e->getParam('discussion');
-
-        $params = [
+        $comment    = $e->getParam('comment');
+        $params     = [
             [
-                'name'   => 'discussion',
+                'name'  => 'discussion',
                 'value' => $discussion
             ]
         ];
-
-        $comment = $e->getParam('comment');
         $this->logEvent('discussion/comment/create', $instance, $comment, $params);
     }
 
-    public function attachShared(SharedEventManagerInterface $events)
+    /**
+     * Gets executed on 'restore'
+     *
+     * @param Event $e
+     * @return void
+     */
+    public function onRestore(Event $e)
     {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'start',
-            [
-                $this,
-                'onStart'
-            ]
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'comment',
-            [
-                $this,
-                'onComment'
-            ]
-        );
+        $discussion = $e->getParam('discussion');
+        $instance   = $discussion->getInstance();
+        $this->logEvent('discussion/restore', $instance, $discussion);
     }
 
-    protected function getMonitoredClass()
+    /**
+     * Gets executed on 'start'
+     *
+     * @param Event $e
+     * @return void
+     */
+    public function onStart(Event $e)
     {
-        return 'Discussion\DiscussionManager';
+        $instance   = $e->getParam('instance');
+        $discussion = $e->getParam('discussion');
+        $params     = [
+            [
+                'name'  => 'on',
+                'value' => $e->getParam('on')
+            ]
+        ];
+
+        $this->logEvent('discussion/create', $instance, $discussion, $params);
     }
 }

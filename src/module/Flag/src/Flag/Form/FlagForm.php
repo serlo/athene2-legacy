@@ -54,7 +54,7 @@ class FlagForm extends Form
                 'required' => true,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]

@@ -20,7 +20,16 @@ class AdFilter extends InputFilter
             [
                 'name'     => 'title',
                 'required' => true,
-
+                'filters'    => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name' => 'NotEmpty'
+                    ]
+                ]
             ]
         );
 
@@ -28,9 +37,17 @@ class AdFilter extends InputFilter
             [
                 'name'     => 'content',
                 'required' => true,
-
+                'filters'    => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name' => 'NotEmpty'
+                    ]
+                ]
             ]
         );
-
     }
 }

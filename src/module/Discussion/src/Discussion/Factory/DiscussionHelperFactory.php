@@ -30,7 +30,9 @@ class DiscussionHelperFactory implements FactoryInterface
         $instanceManager       = $serviceLocator->get('Instance\Manager\InstanceManager');
         $sharedTaxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
         $termForm              = $serviceLocator->get('Taxonomy\Form\TermForm');
-        $plugin                = new Discussion($termForm);
+        $discussionForm        = $serviceLocator->get('Discussion\Form\DiscussionForm');
+        $commentForm           = $serviceLocator->get('Discussion\Form\CommentForm');
+        $plugin                = new Discussion($termForm, $commentForm, $discussionForm);
 
         $plugin->setDiscussionManager($discussionManager);
         $plugin->setUserManager($userManager);

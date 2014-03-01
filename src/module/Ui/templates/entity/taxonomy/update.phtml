@@ -19,13 +19,13 @@
         <?php /* @var $term \Taxonomy\Entity\TaxonomyTermInterface */ ?>
         <?php foreach ($this->terms as $term): ?>
             <li class="term">
-                <?php if ($this->taxonomy()->getOptions($term)->isAssociationAllowed('entities')): ?>
+                <?php if ($this->taxonomy()->getOptions($term)->isAssociationAllowed('Entity\Entity\EntityInterface')): ?>
                     <input type="hidden" name="terms[<?php echo $term->getId(); ?>]" value="0"/>
                     <input type="checkbox" name="terms[<?php echo $term->getId(); ?>]" value="1"
-                        <?php echo $term->isAssociated('entities', $this->entity) ? 'checked="checked"' : ''; ?> />
+                        <?php echo $term->isAssociated($this->entity) ? 'checked="checked"' : ''; ?> />
                 <?php endif; ?>
                 <?php echo $term->getName(); ?>
-                <?php echo $this->partial('/entity/taxonomy/update',
+                <?php echo $this->partial('entity/taxonomy/update',
                     array('entity' => $this->entity, 'terms' => $term->getChildren(), 'isChild' => true)); ?>
             </li>
         <?php endforeach; ?>

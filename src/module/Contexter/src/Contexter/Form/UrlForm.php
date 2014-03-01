@@ -36,7 +36,7 @@ class UrlForm extends Form
                 'required' => true,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]

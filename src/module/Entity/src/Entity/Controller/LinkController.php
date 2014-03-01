@@ -24,15 +24,15 @@ class LinkController extends AbstractController
         $entity = $this->getEntity();
         $type   = $this->params('type');
         $form   = new MoveForm();
+        $view   = new ViewModel(['form' => $form]);
 
         $this->assertGranted('entity.link.create', $entity);
         $this->assertGranted('entity.link.purge', $entity);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->params()->fromPost());
             if ($form->isValid()) {
+                // todo this really should be done in a hydrator or similar
                 $data        = $form->getData();
                 $from        = $this->getEntityManager()->getEntity($this->params('from'));
                 $to          = $this->getEntityManager()->getEntity($data['to']);
@@ -51,13 +51,8 @@ class LinkController extends AbstractController
             $this->referer()->store();
         }
 
-        $view = new ViewModel([
-            'form' => $form
-        ]);
-
         $view->setTemplate('entity/link/move');
         $this->layout('layout/1-col');
-
         return $view;
     }
 
@@ -84,7 +79,6 @@ class LinkController extends AbstractController
         foreach ($data as $child) {
             $return[] = $child['id'];
         }
-
         return $return;
     }
 }
