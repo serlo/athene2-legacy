@@ -69,7 +69,7 @@ class TermForm extends Form
                 'required' => false,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ]
             ]

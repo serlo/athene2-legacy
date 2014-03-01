@@ -12,8 +12,8 @@ namespace Contexter\Form;
 
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
 use Zend\Form\Element;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -49,7 +49,7 @@ class ContextForm extends Form
                 'required'   => true,
                 'filters'    => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ],
                 'validators' => [

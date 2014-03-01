@@ -62,7 +62,7 @@ class UpdatePostForm extends Form
                 'required' => true,
                 'filters'  => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ],
                 'validators' => [

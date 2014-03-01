@@ -32,7 +32,7 @@ class TermFieldset extends Fieldset implements InputFilterProviderInterface
                 'required' => true,
                 'filters' => [
                     [
-                        'name' => 'HtmlEntities'
+                        'name' => 'StripTags'
                     ]
                 ],
                 'validators' => [

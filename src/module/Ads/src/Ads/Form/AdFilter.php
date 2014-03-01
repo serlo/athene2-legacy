@@ -22,7 +22,7 @@ class AdFilter extends InputFilter
                 'required' => true,
                 'filters'    => [
                     [
-                        'name' => 'htmlentities'
+                        'name' => 'StripTags'
                     ]
                 ],
                 'validators' => [
@@ -39,7 +39,7 @@ class AdFilter extends InputFilter
                 'required' => true,
                 'filters'    => [
                     [
-                        'name' => 'htmlentities'
+                        'name' => 'StripTags'
                     ]
                 ],
                 'validators' => [
