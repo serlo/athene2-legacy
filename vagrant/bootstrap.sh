@@ -119,5 +119,5 @@ rm cron
 
 chmod +x /home/vagrant/bin/*
 sudo /home/vagrant/bin/clean-ui.sh
-sudo home/vagrant/bin/boot.sh
+sudo /home/vagrant/bin/boot.sh
 sudo /home/vagrant/bin/update-mysql.sh
