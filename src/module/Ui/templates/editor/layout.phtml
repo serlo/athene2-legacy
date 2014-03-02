@@ -17,7 +17,9 @@ echo $this->doctype();
 <body>
     <header>
         <div id="serlo-menu" class="navbar navbar-default">
-            <div id="editor-helpers"><span class="helper pull-left"><?php echo $this->translate('Edit'); ?></span></div>
+            <div id="editor-helpers" class="pull-left">
+                <span class="helper"><?php echo $this->translate('Edit'); ?></span>
+            </div>
             <div id="help-navigation" class="pull-right">
                 <?php echo $this->partial('layout/partials/contexter'); ?>
             </div>

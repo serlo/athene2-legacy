@@ -20,7 +20,7 @@
                 <span class="caret"></span>
             </a>
     <?php endif; ?>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="dropdown-menu pull-right" role="menu">
             <?php /* @var $match \Contexter\Model\ContextModelInterface */ ?>
             <?php foreach ($this->matches as $context): ?>
                 <li><a href="<?php echo $this->normalize()->toUrl($context->getObject()); ?>">
@@ -32,7 +32,8 @@
                 <?php $url = $this->url($router->getRouteMatch()->getMatchedRouteName(), $router->getRouteMatch()->getParams()); ?>
                 <li>
                     <a href="<?php echo $this->url('contexter/add', array(), array('query' => array('uri' => $url))); ?>">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                        <?php echo $this->translate('Add'); ?>
                     </a>
                 </li>
             <?php endif; ?>
