@@ -104,7 +104,7 @@ class RepositoryController extends AbstractController
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
 
-        $repository->checkoutRevision($revision->getId());
+        $repository->checkoutRevision($revision->getId(), 'Approved');
         $this->getEntityManager()->flush();
 
         return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
@@ -177,7 +177,7 @@ class RepositoryController extends AbstractController
         $this->assertGranted('entity.revision.trash', $entity);
         $repository = $this->getRepositoryManager()->getRepository($entity);
 
-        $repository->rejectRevision($this->params('revision'), 'some reason');
+        $repository->rejectRevision($this->params('revision'), 'Rejected');
         $this->getEntityManager()->flush();
         $this->redirect()->toReferer();
 
