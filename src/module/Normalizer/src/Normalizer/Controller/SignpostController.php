@@ -47,7 +47,7 @@ class SignpostController extends AbstractActionController
                 ));
             }
 
-            $params     = $routeMatch->getParams();
+            $params = array_merge($routeMatch->getParams(), ['forwarded' => true]);
             $controller = $params['controller'];
             $response   = $this->forward()->dispatch($controller, $params);
 
@@ -70,9 +70,7 @@ class SignpostController extends AbstractActionController
 
             return $view;
         } else {
-            $this->redirect()->toRoute($routeName, $routeParams);
-
-            return false;
+            return $this->redirect()->toRoute($routeName, $routeParams);
         }
     }
 }
