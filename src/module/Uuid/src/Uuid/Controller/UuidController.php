@@ -21,48 +21,32 @@ class UuidController extends AbstractActionController
     public function recycleBinAction()
     {
         $entities = $this->getUuidManager()->findByTrashed(true);
-        $data     = [
-            'entities' => $entities
-        ];
-        $view     = new ViewModel($data);
-
+        $view     = new ViewModel(['entities' => $entities]);
         $view->setTemplate('uuid/recycle-bin');
-
         return $view;
     }
 
     public function trashAction()
     {
-        $id   = $this->params('id');
-        $uuid = $this->getUuidManager()->trashUuid($id);
-
+        $this->getUuidManager()->trashUuid($this->params('id'));
         $this->getUuidManager()->flush();
-
-        $this->redirect()->toReferer();
-
-        return null;
+        $this->flashMessenger()->addSuccessMessage('The content has been trashed.');
+        return $this->redirect()->toReferer();
     }
 
     public function restoreAction()
     {
-        $id = $this->params('id');
-
-        $this->getUuidManager()->restoreUuid($id);
+        $this->getUuidManager()->restoreUuid($this->params('id'));
         $this->getUuidManager()->flush();
-
-        $this->redirect()->toReferer();
-
-        return null;
+        $this->flashMessenger()->addSuccessMessage('The content has been restored.');
+        return $this->redirect()->toReferer();
     }
 
     public function purgeAction()
     {
-        $id = $this->params('id');
-
-        $this->getUuidManager()->purgeUuid($id);
+        $this->getUuidManager()->purgeUuid($this->params('id'));
         $this->getUuidManager()->getObjectManager()->flush();
-        $this->redirect()->toReferer();
-
-        return null;
+        $this->flashMessenger()->addSuccessMessage('The content has been removed.');
+        return $this->redirect()->toReferer();
     }
 }
