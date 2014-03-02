@@ -171,7 +171,7 @@ class ExerciseWorker implements Worker
                 foreach ($folders as $folder) {
                     $folder = $folder->getFolder();
                     $term   = $results['folder'][$folder->getId()];
-                    $this->taxonomyManager->associateWith($term, 'entities', $lrExercise, $folder->getPosition());
+                    $this->taxonomyManager->associateWith($term, $lrExercise, $folder->getPosition());
                 }
             }
 
@@ -201,10 +201,10 @@ class ExerciseWorker implements Worker
                 $lrSolution = $this->entityManager->createEntity('text-solution', [], $instance);
 
                 $content = $this->converterChain->convert(
-                    utf8_encode($solution->getContent())
+                    utf8_encode(trim($solution->getContent()))
                 );
                 $hint    = $this->converterChain->convert(
-                    utf8_encode($solution->getHint())
+                    utf8_encode(trim($solution->getHint()))
                 );
 
                 $this->objectManager->flush($lrSolution);

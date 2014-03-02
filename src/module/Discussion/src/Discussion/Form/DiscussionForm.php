@@ -10,7 +10,10 @@
  */
 namespace Discussion\Form;
 
+use Common\Hydrator\HydratorPluginAwareDoctrineObject;
+use Doctrine\Common\Persistence\ObjectManager;
 use Notification\Form\OptInFieldset;
+use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -19,62 +22,68 @@ use Zend\InputFilter\InputFilter;
 class DiscussionForm extends AbstractForm
 {
 
-    function __construct()
+    function __construct(HydratorPluginAwareDoctrineObject $hydrator, ObjectManager $objectManager)
     {
         parent::__construct('discussion');
+        $inputFilter = new InputFilter('discussion');
+
+        $this->setInputFilter($inputFilter);
+        $this->setHydrator($hydrator);
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
-        $inputFilter = new InputFilter('discussion');
-
         $this->add(
-            array(
-                'name'       => 'forum',
-                'type'       => 'Zend\Form\Element\Hidden',
-                'attributes' => array()
-            )
+            [
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'author',
+                'options' => [
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'User\Entity\User'
+                ]
+            ]
         );
-
+        $this->add(
+            [
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'object',
+                'options' => [
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'Uuid\Entity\Uuid'
+                ]
+            ]
+        );
+        $this->add(
+            [
+                'type'    => 'Common\Form\Element\ObjectHidden',
+                'name'    => 'instance',
+                'options' => [
+                    'object_manager' => $objectManager,
+                    'target_class'   => 'Instance\Entity\Instance'
+                ]
+            ]
+        );
+        $this->add(new Hidden('terms'));
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Textarea('content'))->setLabel('content:'));
-
         $this->add(new OptInFieldset());
-
         $this->add(
             (new Submit('submit'))->setValue('Start discussion')->setAttribute('class', 'btn btn-success pull-right')
         );
 
         $inputFilter->add(
-            array(
-                'name'     => 'forum',
-                'required' => true
-            )
+            [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [['name' => 'StripTags']],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => ['pattern' => '~^[a-zA-Z\-_ /0-9]*$~']
+                    ]
+                ]
+            ]
         );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'content',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $this->setInputFilter($inputFilter);
+        $inputFilter->add(['name' => 'instance', 'required' => true]);
+        $inputFilter->add(['name' => 'content', 'required' => true, 'filters' => [['name' => 'StripTags']]]);
     }
 }

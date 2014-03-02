@@ -21,17 +21,17 @@ class RevisionFilter extends InputFilter
     {        
 
        
-        $this->add(array(
+        $this->add([
             'name' => 'title',
             'required' => true,
           
-        ));
+        ]);
         
-        $this->add(array(
+        $this->add([
             'name' => 'content',
             'required' => true,
         
-        ));
+        ]);
      
     }
 }

@@ -55,7 +55,7 @@ class IndexController extends AbstractActionController
                 );
 
                 $this->getObjectManager()->flush();
-                $this->redirect()->toRoute('page/revision/create', array('page' => $repository->getId()));
+                $this->redirect()->toRoute('page/revision/create', ['page' => $repository->getId()]);
             }
         }
 
@@ -88,13 +88,13 @@ class IndexController extends AbstractActionController
                 $array['author'] = $user;
                 $this->getPageManager()->createRevision($page, $array, $user);
                 $this->getObjectManager()->flush();
-                $this->redirect()->toRoute('page/view', array('page' => $page->getId()));
+                $this->redirect()->toRoute('page/view', ['page' => $page->getId()]);
             }
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
 
         $view->setTemplate('page/revision/create');
         $this->layout('editor/layout');
@@ -106,7 +106,7 @@ class IndexController extends AbstractActionController
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $pages    = $this->getPageManager()->findAllRepositories($instance);
-        $view     = new ViewModel(array('pages' => $pages));
+        $view     = new ViewModel(['pages' => $pages]);
         $view->setTemplate('page/pages');
 
         return $view;
@@ -121,7 +121,7 @@ class IndexController extends AbstractActionController
         $form->get('slug')->setValue(
             $this->getAliasManager()->findAliasByObject($pageRepository)->getAlias()
         );
-        $roles = array();
+        $roles = [];
         foreach ($pageRepository->getRoles() as $role) {
             $roles[] = $role->getId();
         }
@@ -132,7 +132,7 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $array = $form->getData();
-                $source = $this->url()->fromRoute('page/view', array('page' => $pageRepository->getId()));
+                $source = $this->url()->fromRoute('page/view', ['page' => $pageRepository->getId()]);
                 $this->getAliasManager()->createAlias(
                     $source,
                     $array['slug'],
@@ -146,9 +146,9 @@ class IndexController extends AbstractActionController
             }
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form,
-        ));
+        ]);
 
         $view->setTemplate('page/create');
 
@@ -164,10 +164,10 @@ class IndexController extends AbstractActionController
             $revision = null;
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'revision' => $revision,
             'page'     => $pageRepository
-        ));
+        ]);
         $view->setTemplate('page/revision/view');
 
         return $view;
@@ -178,10 +178,10 @@ class IndexController extends AbstractActionController
         $id             = $this->params('revision');
         $pageRepository = $this->getPageRepository();
         $revision       = $this->getPageManager()->getRevision($id);
-        $view           = new ViewModel(array(
+        $view           = new ViewModel([
             'revision' => $revision,
             'page'     => $pageRepository
-        ));
+        ]);
 
         $view->setTemplate('page/revision/view');
 
@@ -192,10 +192,10 @@ class IndexController extends AbstractActionController
     {
         $pageRepository = $this->getPageRepository();
         $revisions      = $pageRepository->getRevisions();
-        $view           = new ViewModel(array(
+        $view           = new ViewModel([
             'revisions' => $revisions,
             'page'      => $pageRepository
-        ));
+        ]);
         $view->setTemplate('page/revisions');
 
         return $view;

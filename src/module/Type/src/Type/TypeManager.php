@@ -47,9 +47,9 @@ class TypeManager implements TypeManagerInterface
     {
         $repository = $this->getObjectManager()->getRepository($this->getEntityClassName());
         $type       = $repository->findOneBy(
-            array(
+            [
                 'name' => $name
-            )
+            ]
         );
 
         if (!is_object($type)) {

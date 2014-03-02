@@ -31,22 +31,22 @@ class SettingsForm extends Form
         $this->add((new Submit('submit'))->setValue('Update')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $filter->add(array(
+        $filter->add([
             'name' => 'email',
             'required' => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'EmailAddress'
-                ),
-                array(
+                ],
+                [
                     'name' => 'User\Validator\UniqueUser',
-                    'options' => array(
+                    'options' => [
                         'object_repository' => $entityManager->getRepository('User\Entity\User'),
-                        'fields' => array('email'),
+                        'fields' => ['email'],
                         'object_manager' => $entityManager
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
     }
 }

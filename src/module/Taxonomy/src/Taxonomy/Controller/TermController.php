@@ -35,34 +35,33 @@ class TermController extends AbstractController
     {
         $form = $this->termForm;
 
-        $form->setData(
-            array(
-                'taxonomy' => $this->params('taxonomy'),
-                'parent'   => $this->params('parent', null)
-            )
-        );
-
         if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
+            $data = $this->params()->fromPost();
+            $data = array_merge(
+                $data,
+                [
+                    'taxonomy' => $this->params('taxonomy'),
+                    'parent'   => $this->params('parent', null)
+
+                ]
+            );
             $form->setData($data);
             if ($form->isValid()) {
-                $term = $this->getTaxonomyManager()->createTerm($form);
+                $this->getTaxonomyManager()->createTerm($form);
 
                 $this->getTaxonomyManager()->flush();
-
                 $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form'       => $form,
             'isUpdating' => false
-        ));
+        ]);
 
         $view->setTemplate('taxonomy/term/form');
 
@@ -71,7 +70,7 @@ class TermController extends AbstractController
 
     public function orderAction()
     {
-        $data = $this->params()->fromPost('sortable', array());
+        $data = $this->params()->fromPost('sortable', []);
         $this->iterWeight($data, $this->params('term'));
         $this->getTaxonomyManager()->flush();
 
@@ -107,11 +106,11 @@ class TermController extends AbstractController
         $term        = $this->getTerm($this->params('term'));
 
         if ($this->getRequest()->isPost()) {
-            $associations = $this->params()->fromPost('sortable', array());
+            $associations = $this->params()->fromPost('sortable', []);
             $i            = 0;
 
             foreach ($associations as $a) {
-                $term->positionAssociatedObject($association, $a['id'], $i);
+                $term->positionAssociatedObject($a['id'], $i, $association);
                 $i++;
             }
 
@@ -121,11 +120,11 @@ class TermController extends AbstractController
         }
 
         $associations = $term->getAssociated($association);
-        $view         = new ViewModel(array(
+        $view         = new ViewModel([
             'term'         => $term,
             'associations' => $associations,
             'association'  => $association
-        ));
+        ]);
         $view->setTemplate('taxonomy/term/order-associated');
 
         return $view;
@@ -135,9 +134,9 @@ class TermController extends AbstractController
     {
         $term = $this->getTerm();
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'term' => $term
-        ));
+        ]);
 
         $view->setTemplate('taxonomy/term/organize');
 
@@ -158,19 +157,14 @@ class TermController extends AbstractController
                 $this->getTaxonomyManager()->updateTerm($form);
                 $this->getTaxonomyManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
 
-        $view = new ViewModel([
-            'id'         => $id,
-            'isUpdating' => true,
-            'form'       => $form
-        ]);
+        $view = new ViewModel(['form' => $form]);
         $view->setTemplate('taxonomy/term/form');
 
         return $view;

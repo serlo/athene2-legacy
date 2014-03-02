@@ -1,0 +1,13 @@
+{{ pageHeader(subject.getName()).render() }}
+{{ translate('Start learning now!') }}
+<div class="row">
+    {% set scopes = subject().getOptions(subject).getAllowedTaxonomies() %}
+    <?php  ?>
+    {% for scope in scopes %}
+        <div class="col-md-{{ 12 // (scopes|length) }}">
+            <div class="jumbotron">
+                {{ translate(scope) }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

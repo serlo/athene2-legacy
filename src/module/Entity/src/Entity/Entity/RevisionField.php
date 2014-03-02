@@ -35,9 +35,9 @@ class RevisionField
     protected $revision;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="field")
      */
-    protected $field;
+    protected $name;
 
     /**
      * @ORM\Column(type="string")
@@ -55,13 +55,13 @@ class RevisionField
     /**
      * @return field_type $field
      */
-    public function getField()
+    public function getName()
     {
-        return $this->field;
+        return $this->name;
     }
 
     /**
-     * @return field_type $value
+     * @return mixed
      */
     public function getValue()
     {
@@ -69,22 +69,19 @@ class RevisionField
     }
 
     /**
-     * @param field_type $entityRevisionId
-     * @return self
+     * @param $entityRevision
      */
     public function setRevision($entityRevision)
     {
         $this->revision = $entityRevision;
-
-        return $this;
     }
 
     /**
      * @param field_type $field
      */
-    public function setField($field)
+    public function setName($field)
     {
-        $this->field = $field;
+        $this->name = $field;
     }
 
     /**
@@ -98,16 +95,6 @@ class RevisionField
     public function __construct($revision, $field)
     {
         $this->revision = $revision;
-        $this->field    = $field;
-    }
-
-    public function get($property)
-    {
-        return $this->$property;
-    }
-
-    public function set($property, $value)
-    {
-        return $this->$property = $value;
+        $this->name    = $field;
     }
 }

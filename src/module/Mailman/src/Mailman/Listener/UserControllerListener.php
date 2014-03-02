@@ -17,7 +17,15 @@ use Zend\View\Model\ViewModel;
 
 class UserControllerListener extends AbstractListener
 {
-    use TranslatorAwareTrait;
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $events->attach($this->getMonitoredClass(), 'register', [$this, 'onRegister'], -1);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'User\Controller\UserController';
+    }
 
     public function onRegister(Event $e)
     {
@@ -25,9 +33,9 @@ class UserControllerListener extends AbstractListener
         $user = $e->getParam('user');
 
         $subject = new ViewModel();
-        $body    = new ViewModel(array(
+        $body    = new ViewModel([
             'user' => $user
-        ));
+        ]);
 
         $subject->setTemplate('mailman/messages/register/subject');
         $body->setTemplate('mailman/messages/register/body');
@@ -39,23 +47,4 @@ class UserControllerListener extends AbstractListener
             $this->getRenderer()->render($body)
         );
     }
-
-    public function attachShared(SharedEventManagerInterface $events)
-    {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'register',
-            array(
-                $this,
-                'onRegister'
-            ),
-            -1
-        );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'User\Controller\UserController';
-    }
-
 }

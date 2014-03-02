@@ -158,8 +158,10 @@ class RepositoryService implements RepositoryServiceInterface
         $user       = $this->getAuthorizationService()->getIdentity();
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'reject');
-        $this->assertGranted($permission, $repository);
 
+        $this->assertGranted($permission, $repository);
+        $revision->setTrashed(true);
+        $this->objectManager->persist($revision);
         $this->getRepositoryManager()->getEventManager()->trigger(
             'reject',
             $this,
@@ -170,7 +172,5 @@ class RepositoryService implements RepositoryServiceInterface
                 'reason'     => $reason
             ]
         );
-
-        $this->getUuidManager()->trashUuid($revision);
     }
 }

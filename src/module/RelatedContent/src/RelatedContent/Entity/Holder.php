@@ -69,11 +69,11 @@ class Holder implements HolderInterface
 
     public function getSpecific()
     {
-        $keys = array(
+        $keys = [
             'internal',
             'external',
             'category'
-        );
+        ];
         foreach ($keys as $key) {
             if (is_object($this->$key)) {
                 return $this->$key;

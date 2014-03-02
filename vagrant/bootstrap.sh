@@ -92,9 +92,6 @@ a2ensite athene2
 # Restart apache
 service apache2 restart
 
-# Remove automatically generated index.html
-rm /var/www/index.html
-
 # Mysql
 sudo sed -i "s/bind-address.*=.*/bind-address=0.0.0.0/" /etc/mysql/my.cnf
 mysql -u root -proot mysql -e "GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
@@ -118,6 +115,6 @@ crontab cron
 rm cron
 
 chmod +x /home/vagrant/bin/*
-/home/vagrant/bin/clean-ui.sh
-/home/vagrant/bin/boot.sh
-/home/vagrant/bin/update-mysql.sh
+sudo /home/vagrant/bin/clean-ui.sh
+sudo /home/vagrant/bin/boot.sh
+sudo /home/vagrant/bin/update-mysql.sh

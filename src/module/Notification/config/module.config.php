@@ -12,9 +12,9 @@ namespace Notification;
 
 use Notification\View\Helper\Notification;
 
-return array(
-    'view_helpers'   => array(
-        'factories' => array(
+return [
+    'view_helpers'   => [
+        'factories' => [
             'notifications' => function ($sm) {
                     $helper = new Notification();
                     $helper->setUserManager(
@@ -26,111 +26,111 @@ return array(
 
                     return $helper;
                 },
-        )
-    ),
-    'class_resolver' => array(
+        ]
+    ],
+    'class_resolver' => [
         __NAMESPACE__ . '\Entity\NotificationEventInterface' => __NAMESPACE__ . '\Entity\NotificationEvent',
         __NAMESPACE__ . '\Entity\NotificationInterface'      => __NAMESPACE__ . '\Entity\Notification',
         __NAMESPACE__ . '\Entity\SubscriptionInterface'      => __NAMESPACE__ . '\Entity\Subscription'
-    ),
-    'di'             => array(
-        'allowed_controllers' => array(
+    ],
+    'di'             => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\WorkerController'
-        ),
-        'definition'          => array(
-            'class' => array(
-                __NAMESPACE__ . '\Listener\DiscussionManagerListener' => array(
-                    'setSubscriptionManager' => array(
+        ],
+        'definition'          => [
+            'class' => [
+                __NAMESPACE__ . '\Listener\DiscussionManagerListener' => [
+                    'setSubscriptionManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Listener\RepositoryManagerListener'    => array(
-                    'setSubscriptionManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Listener\RepositoryManagerListener'    => [
+                    'setSubscriptionManager' => [
                         'required' => true
-                    ),
-                    'setUserManager'         => array(
+                    ],
+                    'setUserManager'         => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\SubscriptionManager'                   => array(
-                    'setClassResolver' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\SubscriptionManager'                   => [
+                    'setClassResolver' => [
                         'required' => true
-                    ),
-                    'setObjectManager' => array(
+                    ],
+                    'setObjectManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\NotificationManager'                   => array(
-                    'setClassResolver'  => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\NotificationManager'                   => [
+                    'setClassResolver'  => [
                         'required' => true
-                    ),
-                    'setObjectManager'  => array(
+                    ],
+                    'setObjectManager'  => [
                         'required' => true
-                    ),
-                    'setServiceLocator' => array(
+                    ],
+                    'setServiceLocator' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\NotificationWorker'                    => array(
-                    'setUserManager'         => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\NotificationWorker'                    => [
+                    'setUserManager'         => [
                         'required' => true
-                    ),
-                    'setObjectManager'       => array(
+                    ],
+                    'setObjectManager'       => [
                         'required' => true
-                    ),
-                    'setSubscriptionManager' => array(
+                    ],
+                    'setSubscriptionManager' => [
                         'required' => true
-                    ),
-                    'setNotificationManager' => array(
+                    ],
+                    'setNotificationManager' => [
                         'required' => true
-                    ),
-                    'setClassResolver'       => array(
+                    ],
+                    'setClassResolver'       => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\WorkerController'           => array(
-                    'setNotificationWorker' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\WorkerController'           => [
+                    'setNotificationWorker' => [
                         'required' => true
-                    )
-                ),
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
+                    ]
+                ],
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 __NAMESPACE__ . '\SubscriptionManagerInterface' => __NAMESPACE__ . '\SubscriptionManager',
                 __NAMESPACE__ . '\NotificationManagerInterface' => __NAMESPACE__ . '\NotificationManager'
-            )
-        )
-    ),
-    'console'        => array(
-        'router' => array(
-            'routes' => array(
-                'notification-worker' => array(
-                    'options' => array(
+            ]
+        ]
+    ],
+    'console'        => [
+        'router' => [
+            'routes' => [
+                'notification-worker' => [
+                    'options' => [
                         'route'    => 'notification worker',
-                        'defaults' => array(
+                        'defaults' => [
                             'controller' => __NAMESPACE__ . '\Controller\WorkerController',
                             'action'     => 'run'
-                        )
-                    )
-                ),
-            )
-        ),
-    ),
-    'doctrine'       => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+                        ]
+                    ]
+                ],
+            ]
+        ],
+    ],
+    'doctrine'       => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default'             => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

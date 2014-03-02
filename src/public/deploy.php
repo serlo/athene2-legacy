@@ -26,6 +26,7 @@
         "whoami",
         "git pull --ff",
         "git status",
+        "rm " . __DIR__ . "/../data/twig -rf",
         "cd " . __DIR__ . "/../../bin/;sh build.sh",
         "cd " . __DIR__ . "/../assets/;npm cache clean",
         "cd " . __DIR__ . "/../assets/;npm install",
@@ -36,7 +37,7 @@
         "cd " . __DIR__ . "/../assets/;bower install",
         "cd " . __DIR__ . "/../assets/;bower update",
         "cd " . __DIR__ . "/../assets/;grunt build",
-        "cd " . __DIR__ . "/../../;php composer.phar update",
+        "cd " . __DIR__ . "/../../;php composer.phar update -o"
     );
 
     // Run the commands for output

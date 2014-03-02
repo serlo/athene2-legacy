@@ -15,7 +15,6 @@ use Ui\Renderer\PhpDebugRenderer;
 
 class PhpRendererStrategy extends \Zend\View\Strategy\PhpRendererStrategy
 {
-
     public function __construct(PhpDebugRenderer $renderer)
     {
         $this->renderer = $renderer;

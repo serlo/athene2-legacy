@@ -1,7 +1,7 @@
 <?php
 namespace Page;
 
-return array(
+return [
     'versioning'     => [
         'permissions' => [
             'Page\Entity\PageRepository' => [
@@ -11,223 +11,223 @@ return array(
             ]
         ]
     ],
-    'uuid'            => [
+    'uuid'           => [
         'permissions' => [
-            'pageRevision' => [
+            'Page\Entity\PageRevision'   => [
                 'trash'   => 'page.revision.trash',
                 'restore' => 'page.revision.restore',
-                'purge' => 'page.revision.purge'
+                'purge'   => 'page.revision.purge'
             ],
-            'pageRepository'         => [
+            'Page\Entity\PageRepository' => [
                 'trash'   => 'page.trash',
                 'restore' => 'page.restore',
-                'purge' => 'page.purge'
+                'purge'   => 'page.purge'
             ]
         ]
     ],
-    'router'         => array(
-        'routes' => array(
-            'pages' => array(
+    'router'         => [
+        'routes' => [
+            'pages' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/pages',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Page\Controller\IndexController',
                         'action'     => 'index'
-                    )
-                ),
-            ),
-            'page'  => array(
+                    ]
+                ],
+            ],
+            'page'  => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
-                'options'      => array(
+                'options'      => [
                     'route'    => '/page',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Page\Controller\IndexController'
-                    )
-                ),
-                'child_routes' => array(
-                    'create'  => array(
+                    ]
+                ],
+                'child_routes' => [
+                    'create'   => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/create',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'create'
-                            )
-                        )
-                    ),
-                    'update'   => array(
+                            ]
+                        ]
+                    ],
+                    'update'   => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/update/:page',
-                            'defaults' => array(
-                                'action'     => 'update'
-                            )
-                        )
-                    ),
-                    'view' => array(
+                            'defaults' => [
+                                'action' => 'update'
+                            ]
+                        ]
+                    ],
+                    'view'     => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/view/:page',
-                            'defaults' => array(
-                                'action'     => 'view'
-                            )
-                        ),
-                    ),
-                    'revision' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'options'       => array(
-                            'route'    => '/revision',
-                        ),
-                        'child_routes'  => array(
-                            'view'         => array(
+                            'defaults' => [
+                                'action' => 'view'
+                            ]
+                        ],
+                    ],
+                    'revision' => [
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route' => '/revision',
+                        ],
+                        'child_routes' => [
+                            'view'     => [
                                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                                 'may_terminate' => true,
-                                'options'       => array(
+                                'options'       => [
                                     'route'    => '/:revision',
-                                    'defaults' => array(
-                                        'action'     => 'viewRevision'
-                                    )
-                                ),
-                            ),
-                            'checkout' => array(
+                                    'defaults' => [
+                                        'action' => 'viewRevision'
+                                    ]
+                                ],
+                            ],
+                            'checkout' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/:page/checkout/:revision',
-                                    'defaults' => array(
-                                        'action'     => 'checkout'
-                                    )
-                                )
-                            ),
-                            'view-all'        => array(
+                                    'defaults' => [
+                                        'action' => 'checkout'
+                                    ]
+                                ]
+                            ],
+                            'view-all' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/revisions/:page',
-                                    'defaults' => array(
-                                        'action'     => 'viewRevisions'
-                                    )
-                                )
-                            ),
-                            'create'   => array(
+                                    'defaults' => [
+                                        'action' => 'viewRevisions'
+                                    ]
+                                ]
+                            ],
+                            'create'   => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/create/:page[/:revision]',
-                                    'defaults' => array(
-                                        'action'     => 'createRevision'
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'class_resolver' => array(
+                                    'defaults' => [
+                                        'action' => 'createRevision'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'class_resolver' => [
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
         'Page\Entity\PageRevisionInterface'   => 'Page\Entity\PageRevision',
         'Page\Entity\PageInterface'           => 'Page\Entity\Page'
-    ),
-    'zfc_rbac'       => array(
+    ],
+    'zfc_rbac'       => [
 
-        'guards' => array(
-            'Authorization\Guard\HydratableControllerGuard' => array(
-                array(
+        'guards' => [
+            'Authorization\Guard\HydratableControllerGuard' => [
+                [
                     'controller'    => 'Page\Controller\IndexController',
-                    'actions'       => array(
+                    'actions'       => [
                         'editRepository',
                         'createRevision',
                         'trashRevision',
                         'deleteRevision',
                         'deleteRepository',
                         'showRevisions'
-                    ),
+                    ],
                     'role_provider' => 'Page\Provider\FirewallHydrator'
-                )
-            )
-        )
-    ),
-    'di'             => array(
-        'allowed_controllers' => array(
+                ]
+            ]
+        ]
+    ],
+    'di'             => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\IndexController'
-        ),
-        'definition'          => array(
-            'class' => array(
+        ],
+        'definition'          => [
+            'class' => [
 
-                'Page\Controller\IndexController' => array(
-                    'setAliasManager'    => array(
+                'Page\Controller\IndexController' => [
+                    'setAliasManager'    => [
                         'required' => true
-                    ),
-                    'setObjectManager'   => array(
+                    ],
+                    'setObjectManager'   => [
                         'required' => true
-                    ),
-                    'setInstanceManager' => array(
+                    ],
+                    'setInstanceManager' => [
                         'required' => true
-                    ),
-                    'setPageManager'     => array(
+                    ],
+                    'setPageManager'     => [
                         'required' => true
-                    ),
-                    'setUserManager'     => array(
+                    ],
+                    'setUserManager'     => [
                         'required' => true
-                    ),
-                    'setEventManager'    => array(
+                    ],
+                    'setEventManager'    => [
                         'required' => true
-                    )
-                ),
-                'Page\Manager\PageManager'        => array(
-                    'setRepositoryManager' => array(
+                    ]
+                ],
+                'Page\Manager\PageManager'        => [
+                    'setRepositoryManager' => [
                         'required' => true
-                    ),
-                    'setRoleService'       => array(
+                    ],
+                    'setRoleService'       => [
                         'required' => true
-                    ),
-                    'setInstanceManager'   => array(
+                    ],
+                    'setInstanceManager'   => [
                         'required' => true
-                    ),
-                    'setUuidManager'       => array(
+                    ],
+                    'setUuidManager'       => [
                         'required' => true
-                    ),
-                    'setObjectManager'     => array(
+                    ],
+                    'setObjectManager'     => [
                         'required' => true
-                    ),
-                    'setClassResolver'     => array(
+                    ],
+                    'setClassResolver'     => [
                         'required' => true
-                    ),
-                    'setServiceLocator'    => array(
+                    ],
+                    'setServiceLocator'    => [
                         'required' => true
-                    ),
-                    'setUserManager'       => array(
+                    ],
+                    'setUserManager'       => [
                         'required' => true
-                    ),
-                    'setLicenseManager'    => array(
+                    ],
+                    'setLicenseManager'    => [
                         'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
                 __NAMESPACE__ . '\Manager\PageManagerInterface' => __NAMESPACE__ . '\Manager\PageManager'
-            )
-        )
-    ),
-    'doctrine'       => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
+            ]
+        ]
+    ],
+    'doctrine'       => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default'             => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];
 
 

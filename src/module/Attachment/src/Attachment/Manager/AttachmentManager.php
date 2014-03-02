@@ -12,6 +12,7 @@ namespace Attachment\Manager;
 
 use Attachment\Entity\ContainerInterface;
 use Attachment\Exception;
+use Attachment\Form\AttachmentFieldsetProvider;
 use Attachment\Options\ModuleOptions;
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
@@ -56,22 +57,30 @@ class AttachmentManager implements AttachmentManagerInterface
         $this->moduleOptions        = $moduleOptions;
     }
 
-    public function attach(array $file, $type = 'file', $appendId = null)
+    public function attach(AttachmentFieldsetProvider $form, $type = 'file', $appendId = null)
     {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        if ($appendId !== null) {
-            $this->assertGranted('attachment.append', $instance);
-        } else {
-            $this->assertGranted('attachment.create', $instance);
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
         }
 
+        if ($appendId !== null) {
+            $this->assertGranted('attachment.append');
+        } else {
+            $this->assertGranted('attachment.create');
+        }
+
+        $data = $form->getData()['attachment'];
+        if (!isset($data['file']) || $data['file']['error']) {
+            throw new Exception\NoFileSent;
+        }
+
+        $file      = $data['file'];
         $filename  = $file['name'];
         $size      = $file['size'];
         $filetype  = $file['type'];
         $pathinfo  = pathinfo($filename);
         $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
         $hash      = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
-
         $location    = $this->findParentPath($this->moduleOptions->getPath()) . '/' . $hash;
         $webLocation = $this->moduleOptions->getWebpath() . '/' . $hash;
         $filter      = new RenameUpload($location);
@@ -91,11 +100,11 @@ class AttachmentManager implements AttachmentManagerInterface
     public function getFile($attachmentId, $fileId = null)
     {
         $attachment = $this->getAttachment($attachmentId);
+        $this->assertGranted('attachment.get', $attachment);
 
         if ($fileId) {
-            $matching = $attachment->getFiles()->matching(
-                Criteria::create()->where(Criteria::expr()->eq('id', $fileId))
-            );
+            $criteria = Criteria::create()->where(Criteria::expr()->eq('id', $fileId));
+            $matching = $attachment->getFiles()->matching($criteria);
             $file     = $matching->first();
 
             if (!is_object($file)) {
@@ -121,6 +130,25 @@ class AttachmentManager implements AttachmentManagerInterface
         }
 
         return $entity;
+    }
+
+    /**
+     * @param $path
+     * @return bool|string
+     */
+    protected static function findParentPath($path)
+    {
+        $dir         = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+
+        return $dir . '/' . $path;
     }
 
     protected function createAttachment()
@@ -150,22 +178,8 @@ class AttachmentManager implements AttachmentManagerInterface
         return $attachment;
     }
 
-    /**
-     * @param $path
-     * @return bool|string
-     */
-    protected static function findParentPath($path)
+    public function flush()
     {
-        $dir         = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-
-        return $dir . '/' . $path;
+        $this->getObjectManager()->flush();
     }
 }

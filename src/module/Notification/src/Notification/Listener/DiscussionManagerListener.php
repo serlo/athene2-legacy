@@ -20,20 +20,20 @@ class DiscussionManagerListener extends AbstractListener
         $events->attach(
             $this->getMonitoredClass(),
             'start',
-            array(
+            [
                 $this,
                 'onStartSubscribe'
-            ),
+            ],
             2
         );
 
         $events->attach(
             $this->getMonitoredClass(),
             'comment',
-            array(
+            [
                 $this,
                 'onCommentSubscribe'
-            ),
+            ],
             2
         );
     }

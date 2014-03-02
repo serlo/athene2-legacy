@@ -112,7 +112,7 @@ class ArticleWorker implements Worker
 
                 $entity = $this->entityManager->createEntity('article', [], $instance);
 
-                $this->taxonomyManager->associateWith(7, 'entities', $entity);
+                $this->taxonomyManager->associateWith(7, $entity);
 
                 $this->objectManager->flush($entity);
 

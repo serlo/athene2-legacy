@@ -25,20 +25,13 @@ class AliasManagerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $aliasManager  = new AliasManager();
         $options       = $serviceLocator->get('Alias\Options\ManagerOptions');
         $objectManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $uuidManager   = $serviceLocator->get('Uuid\Manager\UuidManager');
         $tokenizer     = $serviceLocator->get('Token\Tokenizer');
         $classResolver = $serviceLocator->get('ClassResolver\ClassResolver');
+        $storage       = $serviceLocator->get('Alias\Storage\AliasStorage');
         $router        = (new RouterFactory())->createService($serviceLocator);
-
-        $aliasManager->setOptions($options);
-        $aliasManager->setObjectManager($objectManager);
-        $aliasManager->setUuidManager($uuidManager);
-        $aliasManager->setTokenizer($tokenizer);
-        $aliasManager->setClassResolver($classResolver);
-        $aliasManager->setRouter($router);
+        $aliasManager  = new AliasManager($classResolver, $options, $objectManager, $router, $storage, $tokenizer);
 
         return $aliasManager;
     }

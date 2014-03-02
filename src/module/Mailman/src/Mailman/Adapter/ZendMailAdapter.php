@@ -10,14 +10,12 @@
  */
 namespace Mailman\Adapter;
 
-use Mailman\Exception;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;
 
 class ZendMailAdapter implements AdapterInterface
 {
-
     /**
      * @var SmtpOptions
      */
@@ -33,25 +31,15 @@ class ZendMailAdapter implements AdapterInterface
         return $this->smtpOptions;
     }
 
-    /**
-     * @param \Zend\Mail\Transport\SmtpOptions $smtpOptions
-     * @return self
-     */
-    public function setSmtpOptions(SmtpOptions $smtpOptions)
-    {
-        $this->smtpOptions = $smtpOptions;
-
-        return $this;
-    }
-
-    public function __construct()
+    public function __construct(SmtpOptions $smtpOptions)
     {
         if (self::$instance) {
             throw new Exception\RuntimeException('ZendMailAdapter does not allow multiple instances');
         }
 
         self::$instance = $this;
-        $this->queue    = array();
+        $this->smtpOptions = $smtpOptions;
+        $this->queue    = [];
     }
 
     protected $queue;

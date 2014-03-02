@@ -44,6 +44,11 @@ class Uuid implements UuidInterface
      */
     protected $trashed = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Flag\Entity\Flag", mappedBy="object")
+     */
+    protected $flags;
+
     public function isTrashed()
     {
         return $this->getTrashed();

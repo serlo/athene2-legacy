@@ -11,6 +11,7 @@
 namespace Contexter\Factory;
 
 use Contexter\Router\Router;
+use Zend\Mvc\Router\Http\RouteMatch;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -20,13 +21,13 @@ class RouterFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceManager)
     {
         $config   = $serviceManager->get('config');
+        $routeMatch = $serviceManager->get('Application')->getMvcEvent()->getRouteMatch();
+        $routeMatch = $routeMatch !== null ? $routeMatch : new RouteMatch([]);
         $instance = new Router();
         $instance->setConfig($config['Manager\ContextManager']['router']);
         $instance->setServiceLocator($serviceManager);
         $instance->setRouter($serviceManager->get('Router'));
-        $instance->setRouteMatch(
-            $serviceManager->get('Application')->getMvcEvent()->getRouteMatch()
-        );
+        $instance->setRouteMatch($routeMatch);
         $instance->setObjectManager($serviceManager->get('Doctrine\ORM\EntityManager'));
         $instance->setClassResolver($serviceManager->get('ClassResolver\ClassResolver'));
         $instance->setContextManager($serviceManager->get('Contexter\Manager\ContextManager'));

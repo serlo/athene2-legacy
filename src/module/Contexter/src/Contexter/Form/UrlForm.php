@@ -31,15 +31,15 @@ class UrlForm extends Form
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'uri',
                 'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ]
+            ]
         );
     }
 }

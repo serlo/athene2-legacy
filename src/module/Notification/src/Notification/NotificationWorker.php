@@ -23,32 +23,41 @@ class NotificationWorker
      */
     public function run()
     {
-        if(!$this->getSubscriptionManager()->hasSubscriptions()){
+        if (!$this->getSubscriptionManager()->hasSubscriptions()) {
             return;
         }
 
         /* @var $eventLog \Event\Entity\EventLogInterface */
         foreach ($this->getWorkload() as $eventLog) {
-            /* @var $subscribers UserInterface[] */
-            $object      = $eventLog->getObject();
-            $subscribers = $this->getSubscriptionManager()->findSubscribersByUuid($object);
+            /* @var $subscriptions UserInterface[] */
+            $object        = $eventLog->getObject();
+            $subscriptions = $this->getSubscriptionManager()->findSubscriptionsByUuid($object);
+            $subscribed    = [];
 
-            foreach ($subscribers as $subscriber) {
+            foreach ($subscriptions as $subscription) {
                 // Don't create notifications for myself
-                if ($subscriber !== $eventLog->getActor()) {
-                    $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                if ($subscription->getSubscriber() !== $eventLog->getActor() && $eventLog->getTimestamp(
+                    ) > $subscription->getTimestamp()
+                ) {
+                    $this->getNotificationManager()->createNotification($subscription->getSubscriber(), $eventLog);
+                    $subscribed[] = $subscription->getSubscriber();
                 }
             }
 
             foreach ($eventLog->getParameters() as $parameter) {
                 if ($parameter->getValue() instanceof UuidInterface) {
                     /* @var $subscribers UserInterface[] */
-                    $object      = $parameter->getValue();
-                    $subscribers = $this->getSubscriptionManager()->findSubscribersByUuid($object);
+                    $object        = $parameter->getValue();
+                    $subscriptions = $this->getSubscriptionManager()->findSubscriptionsByUuid($object);
 
-                    foreach ($subscribers as $subscriber) {
-                        if ($subscriber !== $eventLog->getActor()) {
-                            $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                    foreach ($subscriptions as $subscription) {
+                        if (!in_array($subscription->getSubscriber(), $subscribed) && $subscription->getSubscriber(
+                            ) !== $eventLog->getActor() && $eventLog->getTimestamp() > $subscription->getTimestamp()
+                        ) {
+                            $this->getNotificationManager()->createNotification(
+                                $subscription->getSubscriber(),
+                                $eventLog
+                            );
                         }
                     }
                 }

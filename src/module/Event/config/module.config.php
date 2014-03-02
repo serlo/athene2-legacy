@@ -44,6 +44,7 @@ return [
             'Event\Listener\UuidManagerListener'       => __NAMESPACE__ . '\Factory\UuidManagerListenerFactory',
             'Event\Listener\LinkServiceListener'       => __NAMESPACE__ . '\Factory\LinkServiceListenerFactory',
             'Event\Listener\EntityManagerListener'     => __NAMESPACE__ . '\Factory\EntityManagerListenerFactory',
+            'Event\Listener\LicenseManagerListener'    => __NAMESPACE__ . '\Factory\LicenseManagerListenerFactory',
             'Event\EventManager'                       => __NAMESPACE__ . '\Factory\EventManagerFactory'
         ]
     ],

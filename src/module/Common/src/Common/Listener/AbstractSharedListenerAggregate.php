@@ -20,7 +20,7 @@ abstract class AbstractSharedListenerAggregate implements SharedListenerAggregat
      *
      * @var array
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Returns the class, this listener is listening on

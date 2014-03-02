@@ -21,7 +21,8 @@ class EntityOptions extends AbstractOptions
      */
     protected $availableComponents = [
         'Entity\Options\RepositoryOptions',
-        'Entity\Options\LinkOptions'
+        'Entity\Options\LinkOptions',
+        'Entity\Options\RelatedContentOptions'
     ];
 
     /**
@@ -31,7 +32,8 @@ class EntityOptions extends AbstractOptions
 
     /**
      * @param string $component
-     * @return array $components
+     * @return AbstractOptions
+     * @throws \Entity\Exception\RuntimeException
      */
     public function getComponent($component)
     {
@@ -60,16 +62,6 @@ class EntityOptions extends AbstractOptions
     }
 
     /**
-     * @param array $components
-     */
-    public function setComponents($components)
-    {
-        $this->components = $components;
-
-        return $this;
-    }
-
-    /**
      * @param string $key
      * @throws Exception\RuntimeException
      * @return AbstractOptions
@@ -86,5 +78,13 @@ class EntityOptions extends AbstractOptions
         }
 
         throw new Exception\RuntimeException(sprintf('Could not find a suitable component for "%s"', $key));
+    }
+
+    /**
+     * @param array $components
+     */
+    public function setComponents($components)
+    {
+        $this->components = $components;
     }
 }

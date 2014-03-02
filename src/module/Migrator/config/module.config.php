@@ -45,9 +45,9 @@ return [
             ]
         ]
     ],
-    'console' => array(
-        'router' => array(
-            'routes' => array(
+    'console' => [
+        'router' => [
+            'routes' => [
                 'migrator' => [
                     //'type'    => 'Zend\Mvc\Router\Http\Segment',
                     'options' => [
@@ -58,34 +58,34 @@ return [
                         ]
                     ]
                 ]
-            )
-        )
-    ),
+            ]
+        ]
+    ],
     'router' => [
         'routes' => [
         ]
     ],
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             'Zend\Cache\Storage\Filesystem' => function ($sm) {
                     $cache = \Zend\Cache\StorageFactory::factory(
-                        array(
+                        [
                             'adapter' => 'filesystem',
-                            'plugins' => array(
-                                'exception_handler' => array('throw_exceptions' => false),
+                            'plugins' => [
+                                'exception_handler' => ['throw_exceptions' => false],
                                 'serializer'
-                            )
-                        )
+                            ]
+                        ]
                     );
 
                     $cache->setOptions(
-                        array(
+                        [
                             'cache_dir' => __DIR__ . '../../../data/migrator'
-                        )
+                        ]
                     );
 
                     return $cache;
                 }
-        ),
-    ),
+        ],
+    ],
 ];

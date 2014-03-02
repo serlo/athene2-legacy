@@ -11,6 +11,7 @@
  */
 namespace User\Form;
 
+use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Password;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
@@ -30,18 +31,19 @@ class Login extends Form
         
         $this->add((new Text('email'))->setLabel('Email address:'));
         $this->add((new Password('password'))->setLabel('Password:'));
+        $this->add((new Checkbox('remember'))->setLabel('Remember me')->setChecked(true));
         
         $this->add((new Submit('submit'))->setValue('Login')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $filter->add(array(
+        $filter->add([
             'name' => 'email',
             'required' => true
-        ));
+        ]);
         
-        $filter->add(array(
+        $filter->add([
             'name' => 'password',
             'required' => true
-        ));
+        ]);
     }
 }

@@ -29,10 +29,10 @@ class EntityManagerListener extends AbstractListener
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'create',
-            array(
+            [
                 $this,
                 'onCreate'
-            )
+            ]
         );
     }
 

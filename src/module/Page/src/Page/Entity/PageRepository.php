@@ -84,7 +84,7 @@ class PageRepository extends Uuid implements PageRepositoryInterface
 
     public function getRevisions()
     {
-        $revisions = array();
+        $revisions = [];
         foreach ($this->revisions as $revision) {
             if (!$revision->isTrashed()) {
                 $revisions[] = $revision;
@@ -173,7 +173,7 @@ class PageRepository extends Uuid implements PageRepositoryInterface
      * @see \Versioning\Entity\RepositoryInterface::addRevision()
      */
 
-    public function populate(array $data = array())
+    public function populate(array $data = [])
     {
         $this->injectFromArray('instance', $data);
         $this->injectFromArray('current_revision', $data);

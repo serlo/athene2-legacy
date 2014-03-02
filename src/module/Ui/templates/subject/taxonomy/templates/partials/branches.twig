@@ -1,0 +1,15 @@
+{% for child in term.getChildren() %}
+    <h4>
+        <a href="{{ url('subject/taxonomy', {'subject': subject.getSlug(), 'path': subject().slugify(child)}) }}">
+            {{ child.getName() }}
+        </a>
+    </h4>
+    <div class="list-group">
+        {% for entity in term.getAssociated('entities') %}
+            {% if not entity.getTrashed() %}
+                {% include 'subject/taxonomy/entity/default' with {'entity': entity} only %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <hr>
+{% endfor %}

@@ -1,2 +1,4 @@
 <?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php echo sprintf($this->translate('%s created a new entity.'), $user);?>
+<?php $object = $this->normalize()->toAnchor($this->event->getObject()); ?>
+<?php $type = $this->normalize()->toType($this->event->getObject()); ?>
+<?php echo sprintf($this->translate('%s created a new %s: %s'), $user, $type, $object);?>

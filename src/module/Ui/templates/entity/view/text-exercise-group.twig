@@ -1,0 +1,24 @@
+<article>
+    <section class="row">
+        <div class="col-md-8">
+            {{ markdown().toHtml(entity.getCurrentRevision().get('content')) }}
+        </div>
+        <div class="col-md-4">
+            {% include 'entity/view/partials/actions/small' %}
+        </div>
+    </section>
+    {% set index = 0 %}
+    {% for child in entity.getChildren('link', 'grouped-text-exercise') if not child.isTrashed() and child.hasCurrentRevision() %}
+        <section class="row">
+            <div class="col-xs-1">
+                <em>{{ toAlpha(index) }}) </em>
+                {% set index = index + 1 %}
+            </div>
+            <div class="col-xs-11">
+                {% include 'entity/view/default' with {'entity': child, 'parent': entity} only %}
+                <hr>
+            </div>
+        </section>
+    {% endfor %}
+</article>
+<hr>

@@ -10,6 +10,7 @@
  */
 namespace Alias;
 
+use Alias\Entity\AliasInterface;
 use Common\ObjectManager\Flushable;
 use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
@@ -31,13 +32,13 @@ interface AliasManagerInterface extends Flushable
      * @param                   $aliasFallback
      * @param UuidInterface     $uuid
      * @param InstanceInterface $instance
-     * @return Entity\AliasInterface
+     * @return AliasInterface
      */
     public function createAlias($source, $alias, $aliasFallback, UuidInterface $uuid, InstanceInterface $instance);
 
     /**
      * @param UuidInterface $uuid
-     * @return Entity\AliasInterface
+     * @return AliasInterface
      */
     public function findAliasByObject(UuidInterface $uuid);
 

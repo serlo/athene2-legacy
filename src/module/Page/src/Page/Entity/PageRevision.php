@@ -106,7 +106,7 @@ class PageRevision extends Uuid implements PageRevisionInterface
         return $this;
     }
 
-    public function populate(array $data = array())
+    public function populate(array $data = [])
     {
         $this->injectFromArray('author', $data);
         $this->injectFromArray('title', $data);

@@ -4,6 +4,6 @@
 <?php $content = $this->normalize()->toPreview($event->getObject()); ?>
 
 <a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('discussion')); ?>">
-    <?php echo sprintf($this->translate('<strong>%s</strong> commented on discussion "%s": "%s"'), $user , $discussion, $content);?>    
-    <small> - <?php echo $this->timeago()->render($this->notification->getTimestamp()); ?></small>
+    <?php echo sprintf($this->translate('<strong>%s</strong> commented on discussion "%s": "%s"'), $user , $discussion, $content);?>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>

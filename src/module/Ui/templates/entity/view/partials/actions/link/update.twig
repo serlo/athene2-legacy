@@ -1,0 +1,13 @@
+{% set options = entity().getOptions(entity) %}
+{% if options.hasComponent('link') %}
+    {% for parentLink in entity.getParents('link') %}
+        {% if isGranted('entity.link.purge', entity) and isGranted('entity.link.create', entity) %}
+            <li>
+                <a href="{{ url('entity/link/move', {'entity': entity.getId(), 'from': parentLink.getId(), 'type': 'link'}) }}">
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                    {{ translate('Change parent "%s"') | format(parentLink.getType().getName()) }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endif %}

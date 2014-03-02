@@ -43,19 +43,19 @@ class SearchService implements SearchServiceInterface
 
     protected function iterContainer(Result\ContainerInterface $container, array & $return, $limit = 10)
     {
-        $items = array();
+        $items = [];
 
         foreach ($container->getResults() as $result) {
             $url     = $this->getRouter()->assemble(
                 $result->getRouteParams(),
-                array(
+                [
                     'name' => $result->getRouteName()
-                )
+                ]
             );
-            $item    = array(
+            $item    = [
                 'title' => $result->getName(),
-                'url'   => rawurldecode($url)
-            );
+                'url'   => $url
+            ];
             $items[] = $item;
         }
 
@@ -77,11 +77,11 @@ class SearchService implements SearchServiceInterface
 
     protected function getDefaultConfig()
     {
-        return array(
-            'adapters' => array(
+        return [
+            'adapters' => [
                 'entity'       => __NAMESPACE__ . '\Adapter\SphinxQL\EntityAdapter',
                 'taxonomyTerm' => __NAMESPACE__ . '\Adapter\SphinxQL\TaxonomyTermAdapter'
-            )
-        );
+            ]
+        ];
     }
 }

@@ -36,14 +36,14 @@ class UpdatePostForm extends Form
         $this->setHydrator($hydrator);
 
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'author',
-                'options' => array(
+                'options' => [
                     'object_manager' => $objectManager,
                     'target_class'   => 'User\Entity\User'
-                )
-            )
+                ]
+            ]
         );
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
@@ -57,29 +57,37 @@ class UpdatePostForm extends Form
         $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß/&\.\,\!\?]+$~'
+                        ]
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'author',
                 'required' => true
-            )
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true
-            )
+            ]
         );
     }
 }

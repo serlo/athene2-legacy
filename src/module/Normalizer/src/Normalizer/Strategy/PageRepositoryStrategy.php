@@ -56,9 +56,9 @@ class PageRepositoryStrategy extends AbstractStrategy
 
     protected function getRouteParams()
     {
-        return array(
+        return [
             'page' => $this->getObject()->getId()
-        );
+        ];
     }
 
     public function isValid($object)

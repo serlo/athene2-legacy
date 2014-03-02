@@ -16,7 +16,7 @@ use Zend\View\Helper\AbstractHelper;
 class Registry extends AbstractHelper
 {
 
-    protected $registry = array();
+    protected $registry = [];
 
     public function __invoke()
     {
@@ -26,7 +26,7 @@ class Registry extends AbstractHelper
     public function add($key, $value)
     {
         if(!array_key_exists($key, $this->registry)){
-            $this->registry[$key] = array();
+            $this->registry[$key] = [];
         }
         $this->registry[$key][] = $value;
         return $this;

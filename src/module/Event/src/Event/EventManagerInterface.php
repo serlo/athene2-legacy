@@ -29,7 +29,7 @@ interface EventManagerInterface
      * @param array $filter
      * @return EventLogInterface[]
      */
-    public function findEventsByObject($objectId, $recursive = true, array $filter = array());
+    public function findEventsByObject($objectId, $recursive = true, array $filter = []);
 
     /**
      * Finds an event by it's name
@@ -56,6 +56,6 @@ interface EventManagerInterface
         $eventName,
         InstanceInterface $instance,
         UuidInterface $uuid,
-        array $parameters = array()
+        array $parameters = []
     );
 }

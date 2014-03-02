@@ -20,8 +20,7 @@ class EntityController extends AbstractController
 
     public function createAction()
     {
-        $this->assertGranted('entity.create');
-
+        // No assertion necessary, because no view. This is done in the manager logic
         $type     = $this->params('type');
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $query    = $this->params()->fromQuery();
@@ -30,22 +29,11 @@ class EntityController extends AbstractController
             $query,
             $instance
         );
-
         $this->getEntityManager()->flush();
 
-        $data     = [
-            'entity' => $entity,
-            'data'   => $query
-        ];
-        $response = $this->getEventManager()->trigger(
-            'create.postFlush',
-            $this,
-            $data
-        );
-
-        $this->checkResponse($response);
-
-        return false;
+        $data     = ['entity' => $entity, 'data' => $query];
+        $response = $this->getEventManager()->trigger('create.postFlush', $this, $data);
+        return $this->checkResponse($response);
     }
 
     public function checkResponse(ResponseCollection $response)
@@ -59,7 +47,8 @@ class EntityController extends AbstractController
         }
 
         if (!$redirected) {
-            $this->redirect()->toReferer();
+            return $this->redirect()->toReferer();
         }
+        return true;
     }
 }

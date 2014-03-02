@@ -22,7 +22,7 @@ interface EntityManagerInterface
      * @param InstanceInterface $instance
      * @return EntityInterface
      */
-    public function createEntity($type, array $data = array(), InstanceInterface $instance);
+    public function createEntity($type, array $data = [], InstanceInterface $instance);
 
     /**
      * @param int $id

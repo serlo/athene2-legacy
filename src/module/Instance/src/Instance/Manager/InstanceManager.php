@@ -105,13 +105,9 @@ class InstanceManager implements InstanceManagerInterface
             throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($name)));
         }
 
-        $instance = $this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface')
-        )->findOneBy(
-                array(
-                    'name' => $name
-                )
-            );
+        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
+        $criteria  = ['name' => $name];
+        $instance  = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 
         if (!is_object($instance)) {
             throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $name));

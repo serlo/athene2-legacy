@@ -32,7 +32,7 @@ class RepositoryForm extends Form
     {
         $repository = $this->objectManager->getRepository('User\Entity\Role');
         $roles      = $repository->findAll();
-        $array      = array();
+        $array      = [];
         foreach ($roles as $role) {
             $array[$role->getId()] = $role->getName();
         }

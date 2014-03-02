@@ -27,10 +27,7 @@ return [
             ],
             [
                 'label' => 'Lehrplan',
-                'route' => 'subject/taxonomy',
-                'params' => [
-                    'subject' => 'mathe'
-                ],
+                'uri' => '#',
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => [
                     'parent' => [
@@ -53,10 +50,7 @@ return [
             ],
             [
                 'label' => 'Lernen',
-                'route' => 'subject/taxonomy',
-                'params' => [
-                    'subject' => 'mathe'
-                ],
+                'uri' => '#',
                 'provider' => 'Taxonomy\Provider\NavigationProvider',
                 'options' => [
                     'parent' => [

@@ -18,7 +18,8 @@ return [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseForm',
                         'fields' => [
-                            'content'
+                            'content',
+                            'changes'
                         ]
                     ],
                     'link'       => [
@@ -32,12 +33,13 @@ return [
                     'taxonomy'   => []
                 ]
             ],
-            'text-exercise-group'        => [
+            'text-exercise-group'   => [
                 'components' => [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\TextExerciseGroupForm',
                         'fields' => [
-                            'content'
+                            'content',
+                            'changes'
                         ]
                     ],
                     'link'       => [
@@ -56,7 +58,8 @@ return [
                     'repository' => [
                         'form'   => __NAMESPACE__ . '\Form\GroupedTextExerciseForm',
                         'fields' => [
-                            'content'
+                            'content',
+                            'changes'
                         ]
                     ],
                     'link'       => [
@@ -80,7 +83,8 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\TextSolutionForm',
                         'fields' => [
                             'hint',
-                            'content'
+                            'content',
+                            'changes'
                         ]
                     ],
                     'link'       => [
@@ -103,23 +107,29 @@ return [
                         'fields' => [
                             'title',
                             'content',
-                            'reasoning'
-                        ]
-                    ]
-                ]
-            ],
-            'article'               => [
-                'components' => [
-                    'repository' => [
-                        'form'   => __NAMESPACE__ . '\Form\ArticleForm',
-                        'fields' => [
-                            'title',
                             'reasoning',
-                            'content'
+                            'changes'
                         ]
                     ],
                     'license'    => [],
-                    'taxonomy'   => []
+                    'taxonomy'   => [],
+                    'related_content' => []
+                ],
+            ],
+            'article'               => [
+                'components' => [
+                    'repository'      => [
+                        'form'   => __NAMESPACE__ . '\Form\ArticleForm',
+                        'fields' => [
+                            'title',
+                            'content',
+                            'reasoning',
+                            'changes'
+                        ]
+                    ],
+                    'license'         => [],
+                    'taxonomy'        => [],
+                    'related_content' => []
                 ]
             ],
             'module'                => [
@@ -128,7 +138,8 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
                             'title',
-                            'reasoning'
+                            'reasoning',
+                            'changes'
                         ]
                     ],
                     'link'       => [
@@ -139,7 +150,8 @@ return [
                         ]
                     ],
                     'license'    => [],
-                    'taxonomy'   => []
+                    'taxonomy'   => [],
+                    'related_content' => []
                 ]
             ],
             'module-page'           => [
@@ -148,7 +160,8 @@ return [
                         'form'   => __NAMESPACE__ . '\Form\ModulePageForm',
                         'fields' => [
                             'title',
-                            'content'
+                            'content',
+                            'changes'
                         ]
                     ],
                     'link'       => [

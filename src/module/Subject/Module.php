@@ -18,7 +18,7 @@ class Module
 
     protected static function getInstanceConfigs()
     {
-        $return = array();
+        $return = [];
         $path   = self::findParentPath('config/instances');
         $dir    = __DIR__ . '/';
         if ($handle = opendir($path)) {
@@ -78,7 +78,7 @@ class Module
     public function getInstanceConfig()
     {
         $instances = [__DIR__ . '/config/instances.config.php'];
-        $config    = array();
+        $config    = [];
         foreach ($instances as $instance) {
             $config = ArrayUtils::merge($config, include $instance);
         }

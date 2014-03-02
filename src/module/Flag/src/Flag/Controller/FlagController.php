@@ -18,48 +18,27 @@ class FlagController extends AbstractActionController
 {
     use\Flag\Manager\FlagManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
 
-    public function manageAction()
-    {
-        $flags = $this->getFlagManager()->findAllFlags();
-        $view  = new ViewModel(array(
-            'flags' => $flags
-        ));
-        $view->setTemplate('flag/manage');
-
-        return $view;
-    }
-
     public function addAction()
     {
         $this->layout('layout/1-col');
         $types = $this->getFlagManager()->findAllTypes();
         $form  = new FlagForm($types);
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data     = $form->getData();
                 $uuid     = $this->params('id');
                 $reporter = $this->getUserManager()->getUserFromAuthenticator();
                 $this->getFlagManager()->addFlag((int)$data['type'], $data['content'], (int)$uuid, $reporter);
                 $this->getFlagManager()->flush();
-
                 $this->flashMessenger()->addSuccessMessage('The content has been flagged.');
-
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
-
-                return false;
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
+        } else {
+            $this->referer()->store();
         }
 
-        $this->referer()->store();
-
-        $view = new ViewModel(array(
-            'form' => $form
-        ));
+        $view = new ViewModel(['form' => $form]);
         $view->setTemplate('flag/add');
 
         return $view;
@@ -69,11 +48,16 @@ class FlagController extends AbstractActionController
     {
         $id   = (int)$this->params('id');
         $flag = $this->getFlagManager()->getFlag($id);
-        $view = new ViewModel(array(
-            'flag' => $flag
-        ));
+        $view = new ViewModel(['flag' => $flag]);
         $view->setTemplate('flag/detail');
+        return $view;
+    }
 
+    public function manageAction()
+    {
+        $flags = $this->getFlagManager()->findAllFlags();
+        $view  = new ViewModel(['flags' => $flags]);
+        $view->setTemplate('flag/manage');
         return $view;
     }
 
@@ -82,11 +66,7 @@ class FlagController extends AbstractActionController
         $id = $this->params('id');
         $this->getFlagManager()->removeFlag((int)$id);
         $this->getFlagManager()->flush();
-
         $this->flashMessenger()->addSuccessMessage('Your action was successfull.');
-
-        $this->redirect()->toReferer();
-
-        return false;
+        return $this->redirect()->toReferer();
     }
 }

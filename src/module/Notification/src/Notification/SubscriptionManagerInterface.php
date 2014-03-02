@@ -10,6 +10,7 @@
  */
 namespace Notification;
 
+use Notification\Entity\SubscriptionInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -18,9 +19,9 @@ interface SubscriptionManagerInterface
 
     /**
      * @param UuidInterface $uuid
-     * @return UserCollection
+     * @return SubscriptionInterface[]
      */
-    public function findSubscribersByUuid(UuidInterface $uuid);
+    public function findSubscriptionsByUuid(UuidInterface $uuid);
 
     public function hasSubscriptions();
 

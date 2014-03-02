@@ -17,10 +17,11 @@ use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Uuid\Entity\UuidInterface;
-use Uuid\Exception;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
+use Uuid\Exception;
 use Uuid\Options\ModuleOptions;
 use Zend\EventManager\EventManagerAwareTrait;
 use ZfcRbac\Service\AuthorizationService;
@@ -95,7 +96,8 @@ class UuidManager implements UuidManagerInterface
     public function trashUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission(get_class($uuid), 'trash');
+        $class      = ClassUtils::getClass($uuid);
+        $permission = $this->getModuleOptions()->getPermission($class, 'trash');
         $this->assertGranted($permission, $uuid);
 
         if ($uuid->isTrashed()) {
@@ -111,7 +113,8 @@ class UuidManager implements UuidManagerInterface
     public function restoreUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission(get_class($uuid), 'restore');
+        $class      = ClassUtils::getClass($uuid);
+        $permission = $this->getModuleOptions()->getPermission($class, 'restore');
         $this->assertGranted($permission, $uuid);
 
         if (!$uuid->isTrashed()) {
@@ -127,7 +130,8 @@ class UuidManager implements UuidManagerInterface
     public function purgeUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid, 'purge');
+        $class      = ClassUtils::getClass($uuid);
+        $permission = $this->getModuleOptions()->getPermission($class, 'purge');
         $this->assertGranted($permission, $uuid);
 
         $this->getObjectManager()->remove($uuid);

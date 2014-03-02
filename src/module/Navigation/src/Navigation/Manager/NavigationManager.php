@@ -348,11 +348,13 @@ class NavigationManager implements NavigationManagerInterface
      */
     protected function bind($object, FormInterface $form)
     {
-        $data = $form->getData();
-        $form->bind($object);
-        $form->setData($data);
+        $processingForm = clone $form;
 
-        if (!$form->isValid()) {
+        $data = $processingForm->getData(FormInterface::VALUES_AS_ARRAY);
+        $processingForm->bind($object);
+        $processingForm->setData($data);
+
+        if (!$processingForm->isValid()) {
             throw new RuntimeException;
         }
 
@@ -365,6 +367,10 @@ class NavigationManager implements NavigationManagerInterface
         $this->assertGranted('navigation.manage', $instance);
 
         $this->objectManager->persist($object);
+
+        // clear form
+        $processingForm->setObject(null);
+        $processingForm->setData([]);
 
         return $object;
     }

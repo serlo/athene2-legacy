@@ -24,11 +24,17 @@ class AttachmentController extends AbstractActionController
 
     public function attachAction()
     {
+        if ($this->params('append')) {
+            $this->assertGranted('attachment.append');
+        } else {
+            $this->assertGranted('attachment.create');
+        }
+
         $form = new AttachmentForm();
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('upload/form');
 
         $request = $this->getRequest();
@@ -39,12 +45,8 @@ class AttachmentController extends AbstractActionController
             $form->setData($post);
             if ($form->isValid()) {
                 $data       = $form->getData();
-                $attachment = $this->getAttachmentManager()->attach(
-                    $data['file'],
-                    $data['type'],
-                    $this->params('append')
-                );
-                $this->getAttachmentManager()->getObjectManager()->flush();
+                $attachment = $this->getAttachmentManager()->attach($form, $data['type'], $this->params('append'));
+                $this->getAttachmentManager()->flush();
 
                 return $this->createJsonResponse($attachment);
             }
@@ -56,6 +58,7 @@ class AttachmentController extends AbstractActionController
     public function fileAction()
     {
         $upload = $this->getAttachmentManager()->getFile($this->params('id'), $this->params('file'));
+        $this->assertGranted('attachment.get', $upload);
         $this->redirect()->toUrl($upload->getLocation());
 
         return false;
@@ -64,6 +67,7 @@ class AttachmentController extends AbstractActionController
     public function infoAction()
     {
         $attachment = $this->getAttachmentManager()->getAttachment($this->params('id'));
+        $this->assertGranted('attachment.get', $attachment);
 
         return $this->createJsonResponse($attachment);
     }
@@ -85,11 +89,11 @@ class AttachmentController extends AbstractActionController
             ];
         }
 
-        return new JsonModel(array(
+        return new JsonModel([
             'success' => true,
             'id'      => $attachment->getId(),
             'type'    => $attachment->getType()->getName(),
             'files'   => $files
-        ));
+        ]);
     }
 }
