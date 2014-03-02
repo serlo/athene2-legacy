@@ -11,9 +11,11 @@
 namespace Entity\Entity;
 
 use DateTime;
+use Instance\Entity\InstanceProviderInterface;
 use User\Entity\UserInterface;
+use Versioning\Entity\RevisionInterface as VersioningRevision;
 
-interface RevisionInterface extends \Versioning\Entity\RevisionInterface
+interface RevisionInterface extends VersioningRevision, InstanceProviderInterface
 {
 
     /**
