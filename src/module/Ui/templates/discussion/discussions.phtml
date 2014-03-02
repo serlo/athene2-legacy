@@ -6,15 +6,9 @@
             <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
         </ul>
         <div class="tab-pane active" id="current">
-            <div class="alert alert-info"><?php echo $this->translate(
-                    'See what others have to say or participate in the process and start discussing!'
-                ); ?></div>
             <?php echo $this->discussion($this->object, $this->forum, false)->render(); ?>
         </div>
         <div class="tab-pane" id="archived">
-            <div class="alert alert-info"><?php echo $this->translate(
-                    'See what topics have been discussed and what results have been achieved!'
-                ); ?></div>
             <?php echo $this->discussion($this->object, $this->forum, true)->render(); ?>
         </div>
     <?php else: ?>
@@ -35,15 +29,20 @@
                         <?php echo $this->form()->render($form, null); ?>
                     </div>
                 <?php endif; ?>
-                <?php foreach ($this->discussions as $discussion): ?>
-                    <div class="list-group-item">
-                        <?php echo $this->partial(
-                            'discussion/discussion/show',
-                            array('discussion' => $discussion)
-                        ); ?>
-                    </div>
-                <?php endforeach; ?>
             <?php endif; ?>
+            <?php if (!count($this->discussions)): ?>
+                <div class="alert alert-info"><?php echo $this->translate(
+                        'There are no discussions on this topic yet.'
+                    ); ?></div>
+            <?php endif; ?>
+            <?php foreach ($this->discussions as $discussion): ?>
+                <div class="list-group-item">
+                    <?php echo $this->partial(
+                        'discussion/discussion/show',
+                        array('discussion' => $discussion)
+                    ); ?>
+                </div>
+            <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </div>

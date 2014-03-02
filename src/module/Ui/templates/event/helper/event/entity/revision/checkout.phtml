@@ -1,4 +1,5 @@
 <?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
 <?php $revision = $this->normalize()->toAnchor($this->event->getObject()); ?>
 <?php $entity = $this->normalize()->toAnchor($this->event->getParameter('repository')); ?>
-<?php echo sprintf($this->translate('%s checked out a new version of %s'), $user, $entity); ?>
+<?php $reason = $this->event->getParameter('reason'); ?>
+<?php echo sprintf($this->translate('%s checked out a new version of %s: <em>%s</em>'), $user, $entity, $reason); ?>
