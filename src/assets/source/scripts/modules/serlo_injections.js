@@ -10,7 +10,7 @@
  */
 
 /*global define, require, window*/
-define(['jquery', 'common', 'translator'], function ($, Common, t) {
+define(['jquery', 'common', 'translator', 'content'], function ($, Common, t) {
     "use strict";
     var Injections,
         cache = {},
@@ -84,6 +84,7 @@ define(['jquery', 'common', 'translator'], function ($, Common, t) {
                         data = JSON.parse(data);
                         if (data.response) {
                             $that.html(data.response);
+                            Common.trigger('new context', $that);
                         } else {
                             notSupportedYet($that);
                         }
