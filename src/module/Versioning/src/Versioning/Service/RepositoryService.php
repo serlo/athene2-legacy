@@ -124,7 +124,7 @@ class RepositoryService implements RepositoryServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function checkoutRevision($revision)
+    public function checkoutRevision($revision, $reason = '')
     {
         if (!$revision instanceof RevisionInterface) {
             $revision = $this->findRevision($revision);
@@ -142,14 +142,15 @@ class RepositoryService implements RepositoryServiceInterface
             [
                 'repository' => $this->getRepository(),
                 'revision'   => $revision,
-                'actor'      => $user
+                'actor'      => $user,
+                'reason'     => $reason
             ]
         );
 
         $this->getObjectManager()->persist($this->getRepository());
     }
 
-    public function rejectRevision($revision, $reason = null)
+    public function rejectRevision($revision, $reason = '')
     {
         if (!$revision instanceof RevisionInterface) {
             $revision = $this->findRevision($revision);

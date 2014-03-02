@@ -33,7 +33,7 @@ class ArticleForm extends Form
             )
         );
         $this->add(
-            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+            (new Textarea('Changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
                 'plain'
             )

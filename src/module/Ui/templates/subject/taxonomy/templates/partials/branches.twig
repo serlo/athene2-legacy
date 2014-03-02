@@ -5,7 +5,7 @@
         </a>
     </h4>
     <div class="list-group">
-        {% for entity in term.getAssociated('entities') %}
+        {% for entity in child.getAssociated('entities') %}
             {% if not entity.getTrashed() %}
                 {% include 'subject/taxonomy/entity/default' with {'entity': entity} only %}
             {% endif %}
