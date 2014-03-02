@@ -100,13 +100,10 @@ class RepositoryController extends AbstractController
         }
         $this->assertGranted('entity.revision.checkout', $entity);
 
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
-
         $repository->checkoutRevision($revision->getId(), 'Approved');
         $this->getEntityManager()->flush();
-
         return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
 
