@@ -11,6 +11,7 @@
 namespace Entity\Controller;
 
 use Entity\Entity\EntityInterface;
+use Entity\Exception\EntityNotFoundException;
 use Entity\Manager\EntityManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -20,11 +21,17 @@ abstract class AbstractController extends AbstractActionController
 
     /**
      * @param int $id
+     *
      * @return EntityInterface
      */
     public function getEntity($id = null)
     {
         $id = $id ? : $this->params('entity');
-        return $this->getEntityManager()->getEntity($id);
+        try {
+            return $this->getEntityManager()->getEntity($id);
+        } catch (EntityNotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
     }
 }

@@ -77,7 +77,7 @@ return [
                                     ]
                                 ]
                             ],
-                            'reject'      => [
+                            'reject'       => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
                                     'route'    => '/reject/:entity/:revision',
@@ -165,8 +165,8 @@ return [
                         ]
                     ],
                     'page'       => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'options'       => [
                             'route'    => '/view/:entity',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\PageController',

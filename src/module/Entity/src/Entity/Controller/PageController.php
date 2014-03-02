@@ -12,8 +12,6 @@ namespace Entity\Controller;
 
 use Alias\AliasManagerAwareTrait;
 use Alias\Exception\AliasNotFoundException;
-use Entity\Exception\EntityNotFoundException;
-use Versioning\Exception\RevisionNotFoundException;
 use Zend\View\Model\ViewModel;
 
 class PageController extends AbstractController
@@ -22,14 +20,13 @@ class PageController extends AbstractController
 
     public function indexAction()
     {
-        try {
-            $entity = $this->getEntity();
-        } catch (EntityNotFoundException $e) {
-            $this->getResponse()->setStatusCode(404);
+        $entity = $this->getEntity();
+
+        if (!$entity) {
             return false;
         }
 
-        if (!$this->params('forwarded')) {
+        if (!$this->params('forwarded', false) || $this->params('isXmlHttpRequest', false)) {
             try {
                 $alias = $this->getAliasManager()->findAliasByObject($entity);
                 return $this->redirect()->toRoute('alias', ['alias' => $alias->getAlias()]);
@@ -38,17 +35,14 @@ class PageController extends AbstractController
             }
         }
 
-        try {
-            $model = new ViewModel([
-                'entity' => $entity
-            ]);
-            $model->setTemplate('entity/page/default');
-            $this->layout('layout/3-col');
+        $model = new ViewModel(['entity' => $entity]);
+        $model->setTemplate('entity/page/default');
 
-            return $model;
-        } catch (RevisionNotFoundException $e) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
+        if ($this->params('isXmlHttpRequest', false)) {
+            $model->setTemplate('entity/view/default');
         }
+
+        $this->layout('layout/3-col');
+        return $model;
     }
 }

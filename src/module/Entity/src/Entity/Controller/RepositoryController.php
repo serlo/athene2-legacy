@@ -33,6 +33,9 @@ class RepositoryController extends AbstractController
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
         $this->assertGranted('entity.revision.create', $entity);
 
         /* @var $form \Zend\Form\Form */
@@ -68,6 +71,7 @@ class RepositoryController extends AbstractController
 
     /**
      * @param EntityInterface $entity
+     *
      * @return Form
      */
     protected function getForm(EntityInterface $entity)
@@ -91,6 +95,9 @@ class RepositoryController extends AbstractController
     public function checkoutAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
         $this->assertGranted('entity.revision.checkout', $entity);
 
         $user       = $this->getUserManager()->getUserFromAuthenticator();
@@ -106,6 +113,9 @@ class RepositoryController extends AbstractController
     public function compareAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
 
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
@@ -124,6 +134,7 @@ class RepositoryController extends AbstractController
     /**
      * @param EntityInterface $entity
      * @param string          $id
+     *
      * @return \Versioning\Service\RevisionInterface NULL
      */
     protected function getRevision(EntityInterface $entity, $id = null)
@@ -160,6 +171,9 @@ class RepositoryController extends AbstractController
     public function rejectAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
         $this->assertGranted('entity.revision.trash', $entity);
         $repository = $this->getRepositoryManager()->getRepository($entity);
 
@@ -172,6 +186,7 @@ class RepositoryController extends AbstractController
 
     /**
      * @param ModuleOptions $moduleOptions
+     *
      * @return void
      */
     public function setModuleOptions(ModuleOptions $moduleOptions)
