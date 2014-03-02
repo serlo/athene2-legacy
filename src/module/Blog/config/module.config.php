@@ -18,11 +18,11 @@ return [
     ],
     'zfc_rbac'       => [
         'assertion_map' => [
-            'blog.post.create'    => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.update'    => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.trash'     => 'Authorization\Assertion\LanguageAssertion',
-            'blog.post.delete'    => 'Authorization\Assertion\LanguageAssertion',
-            'blog.posts.view_all' => 'Authorization\Assertion\LanguageAssertion'
+            /*'blog.post.create'    => 'Authorization\Assertion\TenantAssertion',
+            'blog.post.update'    => 'Authorization\Assertion\TenantAssertion',
+            'blog.post.trash'     => 'Authorization\Assertion\TenantAssertion',
+            'blog.post.delete'    => 'Authorization\Assertion\TenantAssertion',
+            'blog.posts.view_all' => 'Authorization\Assertion\TenantAssertion'*/
         ]
     ],
     'doctrine'       => [
@@ -41,23 +41,24 @@ return [
             ]
         ]
     ],
+    'uuid'            => [
+        'permissions' => [
+            'Blog\Entity\Post' => [
+                'trash'   => 'blog.post.trash',
+                'restore' => 'blog.post.restore',
+                'purge' => 'blog.post.purge'
+            ],
+        ]
+    ],
     'di'             => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\BlogController'
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Controller\BlogController' => [
-                    'setBlogManager'     => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ]
-                ],
+                __NAMESPACE__ . '\Form\CreatePostForm'       => [],
+                __NAMESPACE__ . '\Form\UpdatePostForm'       => [],
+                __NAMESPACE__ . '\Controller\BlogController' => [],
                 __NAMESPACE__ . '\Manager\BlogManager'       => [
                     'setTaxonomyManager'      => [
                         'required' => true
@@ -71,7 +72,7 @@ return [
                     'setUuidManager'          => [
                         'required' => true
                     ],
-                    'setLanguageManager'      => [
+                    'setInstanceManager'      => [
                         'required' => true
                     ],
                     'setAuthorizationService' => [

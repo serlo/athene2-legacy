@@ -18,10 +18,21 @@ interface UserManagerInterface extends Flushable
 {
 
     /**
-     * @param numeric $id
+     * @param array $data
      * @return UserInterface
      */
-    public function getUser($id);
+    public function createUser(array $data);
+
+    /**
+     * @return EntityRepository
+     */
+    public function findAllUsers();
+
+    /**
+     * @param string $email
+     * @return UserInterface
+     */
+    public function findUserByEmail($email);
 
     /**
      * @param string $token
@@ -36,24 +47,26 @@ interface UserManagerInterface extends Flushable
     public function findUserByUsername($username);
 
     /**
-     * @param string $email
-     * @return UserInterface
+     * @param int $id
+     * @return mixed
      */
-    public function findUserByEmail($email);
+    public function generateUserToken($id);
 
     /**
-     * @param array $data
+     * @param numeric $id
      * @return UserInterface
      */
-    public function createUser(array $data);
-
-    /**
-     * @return EntityRepository
-     */
-    public function findAllUsers();
+    public function getUser($id);
 
     /**
      * @return UserInterface
      */
     public function getUserFromAuthenticator();
+
+    /**
+     * @param int    $id
+     * @param string $password
+     * @return mixed
+     */
+    public function updateUserPassword($id, $password);
 }

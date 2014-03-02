@@ -10,23 +10,23 @@
  */
 namespace License\Controller;
 
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use License\Manager\LicenseManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class LicenseController extends AbstractActionController
 {
-    use LicenseManagerAwareTrait, LanguageManagerAwareTrait;
+    use LicenseManagerAwareTrait, InstanceManagerAwareTrait;
 
     public function manageAction()
     {
-        $languageService = $this->getLanguageManager()->getLanguageFromRequest();
-        $this->assertGranted('licenses.manage', $languageService);
+        $instanceService = $this->getInstanceManager()->getInstanceFromRequest();
+        $this->assertGranted('licenses.manage', $instanceService);
 
-        $view = new ViewModel(array(
-            'licenses' => $this->getLicenseManager()->findLicensesByLanguage($languageService)
-        ));
+        $view = new ViewModel([
+            'licenses' => $this->getLicenseManager()->findLicensesByInstance($instanceService)
+        ]);
         $view->setTemplate('license/manage');
 
         return $view;
@@ -34,9 +34,9 @@ class LicenseController extends AbstractActionController
 
     public function detailAction()
     {
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'license' => $this->getLicenseManager()->getLicense($this->params('id'))
-        ));
+        ]);
         $view->setTemplate('license/detail');
 
         return $view;
@@ -48,9 +48,9 @@ class LicenseController extends AbstractActionController
         $this->assertGranted('license.update', $license);
 
         $form = $this->getLicenseManager()->getLicenseForm($this->params('id'));
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('license/update');
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -77,9 +77,9 @@ class LicenseController extends AbstractActionController
         $this->assertGranted('license.create');
 
         $form = $this->getLicenseManager()->getLicenseForm();
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'form' => $form
-        ));
+        ]);
         $view->setTemplate('license/add');
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -88,7 +88,7 @@ class LicenseController extends AbstractActionController
             if ($form->isValid()) {
                 $this->getLicenseManager()->addLicense(
                     $form,
-                    $this->getLanguageManager()->getLanguageFromRequest()
+                    $this->getInstanceManager()->getInstanceFromRequest()
                 );
                 $this->getLicenseManager()->getObjectManager()->flush();
                 $this->redirect()->toUrl(

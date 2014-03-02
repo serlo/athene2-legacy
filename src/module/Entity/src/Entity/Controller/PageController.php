@@ -14,6 +14,7 @@ use Alias\AliasManagerAwareTrait;
 use Alias\Exception\AliasNotFoundException;
 use Entity\Exception\EntityNotFoundException;
 use Versioning\Exception\RevisionNotFoundException;
+use Zend\View\Model\ViewModel;
 
 class PageController extends AbstractController
 {
@@ -25,29 +26,29 @@ class PageController extends AbstractController
             $entity = $this->getEntity();
         } catch (EntityNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
-
-            return;
+            return false;
         }
 
         if (!$this->params('forwarded')) {
             try {
-                $alias = $this->getAliasManager()->findAliasByObject($entity->getUuidEntity());
-                $this->redirect()->toUrl('/alias/' . $alias->getAlias());
+                $alias = $this->getAliasManager()->findAliasByObject($entity);
+                return $this->redirect()->toRoute('alias', ['alias' => $alias->getAlias()]);
             } catch (AliasNotFoundException $e) {
+                // No Alias found? Well, then we got nothing to do!
             }
         }
 
         try {
-            $model = new \Zend\View\Model\ViewModel(array(
+            $model = new ViewModel([
                 'entity' => $entity
-            ));
+            ]);
             $model->setTemplate('entity/page/default');
+            $this->layout('layout/3-col');
 
             return $model;
         } catch (RevisionNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
-
-            return;
+            return false;
         }
     }
 }

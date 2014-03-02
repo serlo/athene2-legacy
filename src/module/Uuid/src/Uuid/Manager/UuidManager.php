@@ -17,7 +17,7 @@ use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Uuid\Entity\UuidHolder;
+use Doctrine\Common\Util\ClassUtils;
 use Uuid\Entity\UuidInterface;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
@@ -55,32 +55,13 @@ class UuidManager implements UuidManagerInterface
         $this->moduleOptions        = $moduleOptions;
     }
 
-    /**
-     * @return ModuleOptions
-     */
-    public function getModuleOptions()
-    {
-        return $this->moduleOptions;
-    }
-
     public function findByTrashed($trashed)
     {
         $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
-        $criteria  = [
-            'trashed' => $trashed
-        ];
+        $criteria  = ['trashed' => $trashed];
         $entities  = $this->getObjectManager()->getRepository($className)->findBy($criteria);
 
         return new ArrayCollection($entities);
-    }
-
-    public function injectUuid(UuidHolder $entity, UuidInterface $uuid = null)
-    {
-        if ($uuid === null) {
-            $uuid = $this->createUuid();
-        }
-
-        return $entity->setUuid($uuid);
     }
 
     public function getUuid($key)
@@ -102,9 +83,7 @@ class UuidManager implements UuidManagerInterface
         }
 
         $className = $this->getClassResolver()->resolveClassName('Uuid\Entity\UuidInterface');
-        $criteria  = [
-            'uuid' => (string)$string
-        ];
+        $criteria  = ['uuid' => (string)$string];
         $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 
         if (!$entity) {
@@ -117,54 +96,47 @@ class UuidManager implements UuidManagerInterface
     public function trashUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'trash');
+        $class      = ClassUtils::getClass($uuid);
+        $permission = $this->getModuleOptions()->getPermission($class, 'trash');
         $this->assertGranted($permission, $uuid);
+
+        if ($uuid->isTrashed()) {
+            return;
+        }
 
         $uuid->setTrashed(true);
         $this->getObjectManager()->persist($uuid);
 
-        $this->getEventManager()->trigger(
-            'trash',
-            $this,
-            [
-                'object' => $uuid
-            ]
-        );
+        $this->getEventManager()->trigger('trash', $this, ['object' => $uuid]);
     }
 
     public function restoreUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid->getHolderName(), 'restore');
+        $class      = ClassUtils::getClass($uuid);
+        $permission = $this->getModuleOptions()->getPermission($class, 'restore');
         $this->assertGranted($permission, $uuid);
+
+        if (!$uuid->isTrashed()) {
+            return;
+        }
 
         $uuid->setTrashed(false);
         $this->getObjectManager()->persist($uuid);
 
-        $this->getEventManager()->trigger(
-            'restore',
-            $this,
-            [
-                'object' => $uuid
-            ]
-        );
+        $this->getEventManager()->trigger('restore', $this, ['object' => $uuid]);
     }
 
     public function purgeUuid($id)
     {
         $uuid       = $this->getUuid($id);
-        $permission = $this->getModuleOptions()->getPermission($uuid, 'purge');
+        $class      = ClassUtils::getClass($uuid);
+        $permission = $this->getModuleOptions()->getPermission($class, 'purge');
         $this->assertGranted($permission, $uuid);
 
         $this->getObjectManager()->remove($uuid);
 
-        $this->getEventManager()->trigger(
-            'purge',
-            $this,
-            [
-                'object' => $uuid
-            ]
-        );
+        $this->getEventManager()->trigger('purge', $this, ['object' => $uuid]);
     }
 
     public function createUuid()
@@ -177,19 +149,25 @@ class UuidManager implements UuidManagerInterface
         return $entity;
     }
 
+    /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
     protected function ambiguousToUuid($idOrObject)
     {
         $uuid = null;
 
         if (is_int($idOrObject)) {
             $uuid = $this->getUuid($idOrObject);
-        } elseif ($idOrObject instanceof UuidHolder) {
-            $uuid = $idOrObject->getUuidEntity();
         } elseif ($idOrObject instanceof UuidInterface) {
             $uuid = $idOrObject;
         } else {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Expected int, UuidHolder or UuidInterface but got "%s"',
+                'Expected int, UuidInterface or UuidInterface but got "%s"',
                 (is_object($idOrObject) ? get_class($idOrObject) : gettype($idOrObject))
             ));
         }

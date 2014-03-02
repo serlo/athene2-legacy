@@ -11,10 +11,10 @@
  */
 namespace User\Form;
 
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\Form\Element\Email;
 use Zend\Form\Element\Submit;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class SelectUserForm extends Form
 {
@@ -32,9 +32,9 @@ class SelectUserForm extends Form
         $this->add((new Submit('submit'))->setValue('Restore')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $filter->add(array(
+        $filter->add([
             'name' => 'email',
             'required' => true
-        ));
+        ]);
     }
 }

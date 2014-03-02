@@ -31,6 +31,6 @@ class Controls extends Fieldset implements InputFilterProviderInterface
 
     public function getInputFilterSpecification()
     {
-        return array();
+        return [];
     }
 }

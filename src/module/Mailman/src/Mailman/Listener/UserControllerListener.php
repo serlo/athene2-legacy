@@ -11,11 +11,21 @@
 namespace Mailman\Listener;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class UserControllerListener extends AbstractListener
 {
-    use\Zend\I18n\Translator\TranslatorAwareTrait;
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $events->attach($this->getMonitoredClass(), 'register', [$this, 'onRegister'], -1);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'User\Controller\UserController';
+    }
 
     public function onRegister(Event $e)
     {
@@ -23,9 +33,9 @@ class UserControllerListener extends AbstractListener
         $user = $e->getParam('user');
 
         $subject = new ViewModel();
-        $body    = new ViewModel(array(
+        $body    = new ViewModel([
             'user' => $user
-        ));
+        ]);
 
         $subject->setTemplate('mailman/messages/register/subject');
         $body->setTemplate('mailman/messages/register/body');
@@ -37,59 +47,4 @@ class UserControllerListener extends AbstractListener
             $this->getRenderer()->render($body)
         );
     }
-
-    public function onRestore(Event $e)
-    {
-        /* @var $user \User\Entity\UserInterface */
-        $user = $e->getParam('user');
-
-        $subject = new ViewModel();
-        $body    = new ViewModel(array(
-            'user' => $user
-        ));
-
-        $subject->setTemplate('mailman/messages/restore-password/subject');
-        $body->setTemplate('mailman/messages/restore-password/body');
-
-        $this->getMailman()->send(
-            $user->getEmail(),
-            $this->getMailman()->getDefaultSender(),
-            $this->getRenderer()->render($subject),
-            $this->getRenderer()->render($body)
-        );
-    }
-
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
-    {
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'register',
-            array(
-                $this,
-                'onRegister'
-            ),
-            -1
-        );
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'restore-password',
-            array(
-                $this,
-                'onRestore'
-            ),
-            -1
-        );
-    }
-
-    /* (non-PHPdoc)
-     * @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
-     */
-    protected function getMonitoredClass()
-    {
-        return 'User\Controller\UserController';
-    }
-
 }

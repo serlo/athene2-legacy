@@ -10,394 +10,155 @@
  */
 namespace User;
 
-use User\Authentication\AuthenticationService;
-use User\Authentication\HashFilter;
-use User\Authentication\Storage\UserRepository;
-use User\Entity\UserInterface;
-use User\View\Helper\Rbac;
-
 /**
  * @codeCoverageIgnore
  */
-return array(
-    'uuid_router'     => array(
-        'routes' => array(
-            'user' => '/user/profile/%d'
-        )
-    ),
+return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            'authorization.role.identity.modify' => 'User\Assertion\LoginAssertion'
+            //'user.create' => 'User\Assertion\HasNoIdentityAssertion'
         ]
     ],
-    'service_manager' => array(
-        'factories' => array(
-            __NAMESPACE__ . '\Manager\UserManager'                   => __NAMESPACE__ . '\Factory\UserManagerFactory',
-            'Zend\Authentication\AuthenticationService'              => function ($sm) {
-                    $instance = new AuthenticationService();
-                    $instance->setAdapter($sm->get('User\Authentication\Adapter\UserAuthAdapter'));
-                    $instance->setStorage($sm->get('User\Authentication\Storage\UserSessionStorage'));
-
-                    return $instance;
-                },
-            __NAMESPACE__ . '\Form\Register'                         => function ($sm) {
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Manager\UserManager' => __NAMESPACE__ . '\Factory\UserManagerFactory',
+            __NAMESPACE__ . '\Form\Register'       => function ($sm) {
                     $form = new Form\Register($sm->get('Doctrine\ORM\EntityManager'));
 
                     return $form;
                 },
-            __NAMESPACE__ . '\Authentication\Storage\UserRepository' => __NAMESPACE__ . '\Authentication\Storage\StorageFactory'
-        )
-    ),
-    'class_resolver'  => array(
-        'User\Entity\UserInterface'                           => 'User\Entity\User',
-        'User\Entity\RoleInterface'                           => 'User\Entity\Role',
-        'User\Notification\Entity\NotificationEventInterface' => 'User\Entity\NotificationEvent',
-        'User\Notification\Entity\NotificationInterface'      => 'User\Entity\Notification',
-        'User\Notification\Entity\SubscriptionInterface'      => 'User\Entity\Subscription',
-        'User\Notification\Entity\NotificationLogInterface'   => 'User\Entity\NotificationLog'
-    ),
-    'di'              => array(
-        'allowed_controllers' => array(
+        ]
+    ],
+    'class_resolver'  => [
+        'User\Entity\UserInterface' => 'User\Entity\User',
+        'User\Entity\RoleInterface' => 'User\Entity\Role'
+    ],
+    'di'              => [
+        'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\UsersController',
-            __NAMESPACE__ . '\Controller\UserController',
-            __NAMESPACE__ . '\Notification\Controller\WorkerController'
-        ),
-        'definition'          => array(
-            'class' => array(
-                __NAMESPACE__ . '\Notification\Listener\DiscussionControllerListener' => array(
-                    'setSubscriptionManager' => array(
+            __NAMESPACE__ . '\Controller\UserController'
+        ],
+        'definition'          => [
+            'class' => [
+                __NAMESPACE__ . '\Controller\UsersController' => [
+                    'setUserManager' => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\Listener\RepositoryManagerListener'    => array(
-                    'setSubscriptionManager' => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Hydrator\UserHydrator'      => [
+                    'setUuidManager' => [
                         'required' => true
-                    ),
-                    'setUserManager'         => array(
+                    ]
+                ],
+                __NAMESPACE__ . '\Controller\UserController'  => [
+                    'setUserManager'           => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\SubscriptionManager'                   => array(
-                    'setClassResolver' => array(
+                    ],
+                    'setAuthenticationService' => [
                         'required' => true
-                    ),
-                    'setObjectManager' => array(
+                    ],
+                    'setInstanceManager'       => [
                         'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\NotificationManager'                   => array(
-                    'setClassResolver'  => array(
-                        'required' => true
-                    ),
-                    'setObjectManager'  => array(
-                        'required' => true
-                    ),
-                    'setServiceLocator' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\NotificationLogManager'                => array(
-                    'setClassResolver' => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    ),
-                    'setEventManager'  => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\NotificationWorker'                    => array(
-                    'setUserManager'         => array(
-                        'required' => true
-                    ),
-                    'setObjectManager'       => array(
-                        'required' => true
-                    ),
-                    'setSubscriptionManager' => array(
-                        'required' => true
-                    ),
-                    'setNotificationManager' => array(
-                        'required' => true
-                    ),
-                    'setClassResolver'       => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Notification\Controller\WorkerController'           => array(
-                    'setNotificationWorker' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Authentication\Storage\UserSessionStorage'          => array(
-                    'setObjectManager' => array(
-                        'required' => true
-                    ),
-                    'setClassResolver' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter'             => array(
-                    'setHashService'   => array(
-                        'required' => true
-                    ),
-                    'setObjectManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Authentication\HashService'                         => array(),
-                __NAMESPACE__ . '\Controller\UsersController'                         => array(
-                    'setUserManager' => array(
-                        'required' => true
-                    )
-                ),
-                __NAMESPACE__ . '\Controller\UserController'                          => array(
-                    'setUserManager'           => array(
-                        'required' => true
-                    ),
-                    'setAuthenticationService' => array(
-                        'required' => true
-                    ),
-                    'setLanguageManager'       => array(
-                        'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'            => array(
-            'preferences' => array(
-                __NAMESPACE__ . '\Manager\UserManagerInterface'                 => __NAMESPACE__ . '\Manager\UserManager',
-                __NAMESPACE__ . '\Authentication\HashServiceInterface'          => __NAMESPACE__ . '\Authentication\HashService',
-                __NAMESPACE__ . '\Authentication\Adapter\AdapterInterface'      => __NAMESPACE__ . '\Authentication\Adapter\UserAuthAdapter',
-                __NAMESPACE__ . '\Notification\SubscriptionManagerInterface'    => __NAMESPACE__ . '\Notification\SubscriptionManager',
-                __NAMESPACE__ . '\Notification\NotificationManagerInterface'    => __NAMESPACE__ . '\Notification\NotificationManager',
-                __NAMESPACE__ . '\Notification\NotificationLogManagerInterface' => __NAMESPACE__ . '\Notification\NotificationLogManager'
-            )
-        )
-    ),
-    'router'          => array(
-        'routes' => array(
-            'notification' => array(
+                    ]
+                ]
+            ]
+        ],
+        'instance'            => [
+            'preferences' => [
+                __NAMESPACE__ . '\Manager\UserManagerInterface' => __NAMESPACE__ . '\Manager\UserManager'
+            ]
+        ]
+    ],
+    'router'          => [
+        'routes' => [
+            'users' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => true,
-                'options'       => array(
-                    'route' => '/notification'
-                ),
-                'child_routes'  => array(
-                    'worker' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/worker',
-                            'defaults' => array(
-                                'controller' => __NAMESPACE__ . '\Notification\Controller\WorkerController',
-                                'action'     => 'run'
-                            )
-                        )
-                    )
-                )
-            ),
-            'users'        => array(
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/users',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\UsersController',
                         'action'     => 'users'
-                    )
-                )
-            ),
-            'user'         => array(
+                    ]
+                ]
+            ],
+            'user'  => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'may_terminate' => false,
-                'options'       => array(
+                'options'       => [
                     'route'    => '/user',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\UserController',
                         'action'     => 'profile'
-                    )
-                ),
-                'child_routes'  => array(
-                    'role'      => array(
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
-                            'route' => '/:user/role'
-                        ),
-                        'child_routes' => array(
-                            'add'    => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/add/:role',
-                                    'defaults' => array(
-                                        'action' => 'addRole'
-                                    )
-                                )
-                            ),
-                            'remove' => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/remove/:role',
-                                    'defaults' => array(
-                                        'action' => 'removeRole'
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'me'        => array(
+                    ]
+                ],
+                'child_routes'  => [
+                    'me'        => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/me',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'me'
-                            )
-                        )
-                    ),
-                    'password'  => array(
-                        'type'         => 'Zend\Mvc\Router\Http\Segment',
-                        'options'      => array(
-                            'route' => '/password'
-                        ),
-                        'child_routes' => array(
-                            'restore' => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/restore[/:token]',
-                                    'defaults' => array(
-                                        'action' => 'restorePassword'
-                                    )
-                                )
-                            ),
-                            'change'  => array(
-                                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                                'may_terminate' => true,
-                                'options'       => array(
-                                    'route'    => '/change',
-                                    'defaults' => array(
-                                        'action' => 'changePassword'
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'profile'   => array(
+                            ]
+                        ]
+                    ],
+                    'profile'   => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/profile/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'profile'
-                            )
-                        )
-                    ),
-                    'login'     => array(
+                            ]
+                        ]
+                    ],
+                    'register'  => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/login',
-                            'defaults' => array(
-                                'action' => 'login'
-                            )
-                        )
-                    ),
-                    'dashboard' => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/dashboard',
-                            'defaults' => array(
-                                'action' => 'dashboard'
-                            )
-                        )
-                    ),
-                    'register'  => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/register',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'register'
-                            )
-                        )
-                    ),
-                    'logout'    => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/logout',
-                            'defaults' => array(
-                                'action' => 'logout'
-                            )
-                        )
-                    ),
-                    'activate'  => array(
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'may_terminate' => true,
-                        'options'       => array(
-                            'route'    => '/activate/:token',
-                            'defaults' => array(
-                                'action' => 'activate'
-                            )
-                        )
-                    ),
-                    'settings'  => array(
+                            ]
+                        ]
+                    ],
+                    'settings'  => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/settings',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'settings'
-                            )
-                        )
-                    ),
-                    'remove'    => array(
+                            ]
+                        ]
+                    ],
+                    'remove'    => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/remove/:id',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'remove'
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'doctrine'        => array(
-        'driver'         => array(
-            __NAMESPACE__ . '_driver' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'doctrine'        => [
+        'driver' => [
+            __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                )
-            ),
-            'orm_default'             => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default'             => [
+                'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        ),
-        'authentication' => array(
-            'orm_default' => array(
-                'object_manager'      => 'Doctrine\ORM\EntityManager',
-                'identity_class'      => 'User\Entity\User',
-                'identity_property'   => 'email',
-                'credential_property' => 'password',
-                'storage'             => 'User\Authentication\Storage\UserRepository',
-                'credential_callable' => function (UserInterface $user, $passwordGiven) {
-                        $filter        = new HashFilter();
-                        $salt          = $filter->findSalt($user->getPassword());
-                        $passwordGiven = $filter->hashPassword($passwordGiven, $salt);
-
-                        return $user->getPassword() === $passwordGiven && $user->hasRole('login') && !$user->isTrashed(
-                        );
-                    }
-            )
-        )
-    )
-);
+                ]
+            ]
+        ],
+    ]
+];

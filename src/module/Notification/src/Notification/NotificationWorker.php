@@ -10,6 +10,9 @@
  */
 namespace Notification;
 
+use User\Entity\UserInterface;
+use Uuid\Entity\UuidInterface;
+
 class NotificationWorker
 {
     use\Common\Traits\ObjectManagerAwareTrait, \User\Manager\UserManagerAwareTrait, SubscriptionManagerAwareTrait,
@@ -20,32 +23,45 @@ class NotificationWorker
      */
     public function run()
     {
+        if (!$this->getSubscriptionManager()->hasSubscriptions()) {
+            return;
+        }
+
         /* @var $eventLog \Event\Entity\EventLogInterface */
         foreach ($this->getWorkload() as $eventLog) {
-            foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getObject()->getUuidEntity()) as
-                     $subscriber) {
-                /* @var $subscriber \Entity\UserInterface */
-                if ($subscriber !== $eventLog->getActor()) {
-                    $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+            /* @var $subscriptions UserInterface[] */
+            $object        = $eventLog->getObject();
+            $subscriptions = $this->getSubscriptionManager()->findSubscriptionsByUuid($object);
+            $subscribed    = [];
+
+            foreach ($subscriptions as $subscription) {
+                // Don't create notifications for myself
+                if ($subscription->getSubscriber() !== $eventLog->getActor() && $eventLog->getTimestamp(
+                    ) > $subscription->getTimestamp()
+                ) {
+                    $this->getNotificationManager()->createNotification($subscription->getSubscriber(), $eventLog);
+                    $subscribed[] = $subscription->getSubscriber();
                 }
             }
+
             foreach ($eventLog->getParameters() as $parameter) {
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($parameter->getObject()) as $subscriber)
-                {
-                    /* @var $subscriber \Entity\UserInterface */
-                    if ($subscriber !== $eventLog->getActor()) {
-                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
+                if ($parameter->getValue() instanceof UuidInterface) {
+                    /* @var $subscribers UserInterface[] */
+                    $object        = $parameter->getValue();
+                    $subscriptions = $this->getSubscriptionManager()->findSubscriptionsByUuid($object);
+
+                    foreach ($subscriptions as $subscription) {
+                        if (!in_array($subscription->getSubscriber(), $subscribed) && $subscription->getSubscriber(
+                            ) !== $eventLog->getActor() && $eventLog->getTimestamp() > $subscription->getTimestamp()
+                        ) {
+                            $this->getNotificationManager()->createNotification(
+                                $subscription->getSubscriber(),
+                                $eventLog
+                            );
+                        }
                     }
                 }
             }
-            /*if($eventLog->getReference() !== NULL){
-                foreach ($this->getSubscriptionManager()->findSubscribersByUuid($eventLog->getReference()) as $subscriber) {
-                    // @var $subscriber \Entity\UserInterface
-                    if($subscriber !== $eventLog->getActor()){
-                        $this->getNotificationManager()->createNotification($subscriber, $eventLog);
-                    }
-                }
-            }*/
         }
     }
 

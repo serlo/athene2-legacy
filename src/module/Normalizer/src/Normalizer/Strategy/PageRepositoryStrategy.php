@@ -51,14 +51,14 @@ class PageRepositoryStrategy extends AbstractStrategy
 
     protected function getRouteName()
     {
-        return 'page/article';
+        return 'page/view';
     }
 
     protected function getRouteParams()
     {
-        return array(
-            'repositoryid' => $this->getObject()->getId()
-        );
+        return [
+            'page' => $this->getObject()->getId()
+        ];
     }
 
     public function isValid($object)

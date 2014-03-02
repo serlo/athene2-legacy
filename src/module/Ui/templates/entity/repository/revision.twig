@@ -1,0 +1,9 @@
+<article class="revision">
+    {% for field in revision.getFields() %}
+        <section>
+            <h2>{{ translate(field.getName()) }}</h2>
+            <hr>
+            {{ markdown().toHtml(field.getValue()) }}
+        </section>
+    {% endfor %}
+</article>

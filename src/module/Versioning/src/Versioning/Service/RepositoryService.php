@@ -12,17 +12,19 @@ namespace Versioning\Service;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use Common\Traits\ObjectManagerAwareTrait;
-use User\Entity\UserInterface;
+use User\Manager\UserManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\Entity\RepositoryInterface;
+use Versioning\Entity\RevisionInterface;
 use Versioning\Exception;
 use Versioning\Options\ModuleOptions;
 use Versioning\RepositoryManagerAwareTrait;
 
 class RepositoryService implements RepositoryServiceInterface
 {
-    use ObjectManagerAwareTrait, UuidManagerAwareTrait;
+    use ObjectManagerAwareTrait;
     use AuthorizationAssertionTrait, RepositoryManagerAwareTrait;
+    use UserManagerAwareTrait;
 
     /**
      * @var ModuleOptions
@@ -85,19 +87,17 @@ class RepositoryService implements RepositoryServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function commitRevision(array $data, UserInterface $user)
+    public function commitRevision(array $data)
     {
+        $user       = $this->getAuthorizationService()->getIdentity();
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'commit');
+        $revision   = $repository->createRevision();
+
         $this->assertGranted($permission, $repository);
-
-        $revision = $repository->createRevision();
-
-        $this->getUuidManager()->injectUuid($revision);
-
         $revision->setAuthor($user);
-
         $repository->addRevision($revision);
+        $revision->setRepository($repository);
 
         foreach ($data as $key => $value) {
             if (is_string($key) && is_string($value)) {
@@ -111,7 +111,8 @@ class RepositoryService implements RepositoryServiceInterface
             [
                 'repository' => $this->getRepository(),
                 'revision'   => $revision,
-                'data'       => $data
+                'data'       => $data,
+                'author'     => $user
             ]
         );
 
@@ -123,9 +124,13 @@ class RepositoryService implements RepositoryServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function checkoutRevision($id)
+    public function checkoutRevision($revision)
     {
-        $revision   = $this->findRevision($id);
+        if (!$revision instanceof RevisionInterface) {
+            $revision = $this->findRevision($revision);
+        }
+
+        $user       = $this->getAuthorizationService()->getIdentity();
         $repository = $this->getRepository();
         $permission = $this->getModuleOptions()->getPermission($repository, 'checkout');
         $this->assertGranted($permission, $repository);
@@ -136,12 +141,36 @@ class RepositoryService implements RepositoryServiceInterface
             $this,
             [
                 'repository' => $this->getRepository(),
-                'revision'   => $revision
+                'revision'   => $revision,
+                'actor'      => $user
             ]
         );
 
         $this->getObjectManager()->persist($this->getRepository());
+    }
 
-        return $this;
+    public function rejectRevision($revision, $reason = null)
+    {
+        if (!$revision instanceof RevisionInterface) {
+            $revision = $this->findRevision($revision);
+        }
+
+        $user       = $this->getAuthorizationService()->getIdentity();
+        $repository = $this->getRepository();
+        $permission = $this->getModuleOptions()->getPermission($repository, 'reject');
+
+        $this->assertGranted($permission, $repository);
+        $revision->setTrashed(true);
+        $this->objectManager->persist($revision);
+        $this->getRepositoryManager()->getEventManager()->trigger(
+            'reject',
+            $this,
+            [
+                'repository' => $this->getRepository(),
+                'revision'   => $revision,
+                'actor'      => $user,
+                'reason'     => $reason
+            ]
+        );
     }
 }

@@ -1,68 +1,62 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Notification;
 
+use ClassResolver\ClassResolverAwareTrait;
+use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
 class SubscriptionManager implements SubscriptionManagerInterface
 {
-    use\Common\Traits\ObjectManagerAwareTrait,\ClassResolver\ClassResolverAwareTrait;
-    
-    /*
-     * (non-PHPdoc) @see \Notification\SubscriptionManagerInterface::findSubscribersByUuid()
-     */
-    public function findSubscribersByUuid(\Uuid\Entity\UuidInterface $uuid)
+    use ObjectManagerAwareTrait, ClassResolverAwareTrait;
+
+    public function findSubscriptionsByUuid(UuidInterface $uuid)
     {
-        $subscriptions = $this->getObjectManager()
-            ->getRepository($this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface'))->findBy(array(
-            'object' => $uuid->getId()
-        ));
-        
-        $collection = new ArrayCollection();
-        $this->hydrate($collection, $subscriptions);
+        $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
+        $criteria      = ['object' => $uuid->getId()];
+        $subscriptions = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+        $collection    = new ArrayCollection($subscriptions);
         return $collection;
     }
 
     public function isUserSubscribed(UserInterface $user, UuidInterface $object)
     {
-        return is_object($this->getObjectManager()
-            ->getRepository($this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface'))->findOneBy(array(
-            'user' => $user->getId(),
+        $className    = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
+        $criteria     = [
+            'user'   => $user->getId(),
             'object' => $object->getId()
-        )));
+        ];
+        $subscription = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
+        return is_object($subscription);
     }
 
     public function subscribe(UserInterface $user, UuidInterface $object, $notifyMailman)
     {
-        if(!$this->isUserSubscribed($user, $object)){
+        if (!$this->isUserSubscribed($user, $object)) {
             $class = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
             /* @var $entity \Notification\Entity\SubscriptionInterface */
             $entity = new $class();
             $entity->setSubscriber($user);
             $entity->setSubscribedObject($object);
-            $entity->setNotifyMailman($notifyMailman === TRUE);
+            $entity->setNotifyMailman($notifyMailman === true);
             $this->getObjectManager()->persist($entity);
         }
-        return $this;
     }
 
-    private function hydrate(Collection $collection, array $subscriptions)
+    public function hasSubscriptions()
     {
-        foreach ($subscriptions as $subscription) {
-            /* @var $subscription Entity\SubscriptionInterface */
-            $collection->add($subscription->getSubscriber());
-        }
+        $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
+        $subscriptions = $this->getObjectManager()->getRepository($className)->findBy([], null, 1);
+        return count($subscriptions) > 0;
     }
 }

@@ -11,10 +11,11 @@
  */
 namespace RelatedContent\Form;
 
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Submit;
+
 class CategoryForm extends Form
 {
     function __construct()
@@ -30,14 +31,14 @@ class CategoryForm extends Form
         $this->add((new Submit('submit'))->setValue('Add')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'title',
             'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
-        ));
+            'filters' => [
+                [
+                    'name' => 'StripTags'
+                ]
+            ]
+        ]);
     }
 }

@@ -10,68 +10,25 @@
  */
 namespace Markdown;
 
-use Markdown\View\Helper\MarkdownHelper;
-
 return [
-    'doctrine'        => [
-        'driver' => [
-            __NAMESPACE__ . '_driver' => [
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => [
-                    __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                ]
-            ],
-            'orm_default'             => [
-                'drivers' => [
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                ]
-            ]
-        ]
-    ],
     'service_manager' => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions'     => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Storage\MarkdownStorage'   => __NAMESPACE__ . '\Factory\MarkdownStorageFactory',
+            __NAMESPACE__ . '\Service\HtmlRenderService' => __NAMESPACE__ . '\Factory\HtmlRenderServiceFactory'
         ]
     ],
     'view_helpers'    => [
         'factories' => [
-            'markdown' => function ($helperPluginManager) {
-                    $plugin   = new MarkdownHelper();
-                    $renderer = $helperPluginManager->getServiceLocator()->get('Markdown\Service\HtmlRenderService');
-
-                    $plugin->setRenderService($renderer);
-
-                    return $plugin;
-                }
+            'markdown' => __NAMESPACE__ . '\Factory\MarkdownHelperFactory'
         ]
     ],
     'di'              => [
-        'definition' => [
-            'class' => [
-                __NAMESPACE__ . '\Service\CacheService'      => [
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Service\HtmlRenderService' => [
-                    'setModuleOptions' => [
-                        'required' => true
-                    ]
-                ]
-            ]
-        ],
-        'instance'   => [
+        'instance' => [
             'preferences' => [
                 __NAMESPACE__ . '\Service\CacheServiceInterface'  => __NAMESPACE__ . '\Service\CacheService',
                 __NAMESPACE__ . '\Service\RenderServiceInterface' => __NAMESPACE__ . '\Service\HtmlRenderService'
             ]
         ]
-    ],
-    'class_resolver'  => [
-        __NAMESPACE__ . '\Entity\CacheInterface' => __NAMESPACE__ . '\Entity\HtmlCache'
     ]
 ];

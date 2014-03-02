@@ -1,0 +1,46 @@
+{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').render() }}
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a href="#display" data-toggle="tab">{{ translate("Revision #%s") | format(revision.getId()) }}</a>
+    </li>
+    {% if currentRevision and currentRevision is not sameas(revision) %}
+    <li>
+        <a href="#current" data-toggle="tab">{{ translate('Current revision #%s') | format(currentRevision.getId()) }}</a>
+    </li>
+    {% endif %}
+</ul>
+<div class="tab-content clearfix">
+    <div class="tab-pane active" id="display">
+        <article>
+            {% include 'entity/repository/revision' %}
+            {% if revision is not sameas(currentRevision) %}
+                <footer>
+                    <div class="btn-group pull-right">
+                        {% if not revision.isTrashed() and isGranted('entity.revision.checkout', revision) %}
+                            <a class="btn btn-success btn-sm" href="{{ url('entity/repository/checkout', {'entity': entity.getId(), 'revision': revision.getId()}) }}">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </a>
+                        {% endif %}
+
+                        {% if not revision.isTrashed() and isGranted('entity.revision.trash', revision) %}
+                            <a class="btn btn-danger btn-sm" href="{{ url('entity/repository/reject', {'entity': entity.getId(), 'revision': revision.getId()}) }}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        {% elseif revision.isTrashed() and isGranted('entity.revision.restore', revision) %}
+                            <a class="btn btn-success btn-sm" href="{{ url('uuid/restore', {'id': revision.getId()}) }}">
+                                <span class="glyphicon glyphicon-refresh"></span>
+                            </a>
+                        {% endif  %}
+                    </div>
+                </footer>
+            {% endif %}
+        </article>
+    </div>
+    {% if currentRevision %}
+    <div class="tab-pane" id="current">
+        <article class="current">
+            {% include 'entity/repository/revision' with {'revision': currentRevision} only %}
+        </article>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,35 @@
+{% set revision = entity.getCurrentRevision() %}
+<article>
+    {% if(revision.get('hint')) %}
+        <section class="collapse" id="hint-{{ entity.getId() }}">
+            <div class="row">
+                <div class="col-xs-9">
+                    <h5>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        {{ translate('Hint') }}
+                    </h5>
+                </div>
+                <div class="col-xs-3">
+                    {% include 'entity/view/partials/actions/small' %}
+                </div>
+            </div>
+            <hr>
+            {{ markdown().toHtml(revision.get('hint')) | raw }}
+        </section>
+    {% endif %}
+    <section class="collapse" id="solution-{{ entity.getId() }}">
+        <div class="row">
+            <div class="col-xs-9">
+                <h5>
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    {{ translate('Solution') }}
+                </h5>
+            </div>
+            <div class="col-xs-3">
+                {% include 'entity/view/partials/actions/small' %}
+            </div>
+        </div>
+        <hr>
+        {{ markdown().toHtml(revision.get('content')) | raw }}
+    </section>
+</article>

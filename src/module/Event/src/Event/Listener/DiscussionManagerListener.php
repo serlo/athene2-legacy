@@ -11,83 +11,91 @@
 namespace Event\Listener;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 /**
  * Event Listener for Discussion\Controller\DiscussionController
  */
-class DiscussionManagerListener extends AbstractMvcListener
+class DiscussionManagerListener extends AbstractListener
 {
 
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $class = $this->getMonitoredClass();
+        $events->attach($class, 'start', [$this, 'onStart']);
+        $events->attach($class, 'comment', [$this, 'onComment']);
+        $events->attach($class, 'archive', [$this, 'onArchive']);
+        $events->attach($class, 'restore', [$this, 'onRestore']);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Discussion\DiscussionManager';
+    }
+
     /**
-     * Gets executed on 'start'
+     * Gets executed on 'archive'
      *
      * @param Event $e
-     * @return null
+     * @return void
      */
-    public function onStart(Event $e)
+    public function onArchive(Event $e)
     {
-        $language   = $e->getParam('language');
-        $user       = $e->getParam('user');
         $discussion = $e->getParam('discussion');
-
-        $params = array(
-            array(
-                'name'   => 'on',
-                'object' => $e->getParam('on')
-            )
-        );
-
-        $this->logEvent('discussion/create', $language, $user, $discussion, $params);
+        $instance   = $discussion->getInstance();
+        $this->logEvent('discussion/comment/archive', $instance, $discussion);
     }
 
     /**
      * Gets executed on 'comment'
      *
      * @param Event $e
-     * @return null
+     * @return void
      */
     public function onComment(Event $e)
     {
-        $user       = $e->getParam('user');
-        $language   = $e->getParam('language');
-        $discussion = $e->getParam('discussion')->getUuidEntity();
-
-        $params = array(
-            array(
-                'name'   => 'discussion',
-                'object' => $discussion
-            )
-        );
-
-        $comment = $e->getParam('comment');
-        $this->logEvent('discussion/comment/create', $language, $user, $comment, $params);
+        $instance   = $e->getParam('instance');
+        $discussion = $e->getParam('discussion');
+        $comment    = $e->getParam('comment');
+        $params     = [
+            [
+                'name'  => 'discussion',
+                'value' => $discussion
+            ]
+        ];
+        $this->logEvent('discussion/comment/create', $instance, $comment, $params);
     }
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    /**
+     * Gets executed on 'restore'
+     *
+     * @param Event $e
+     * @return void
+     */
+    public function onRestore(Event $e)
     {
-        // Listens 'start'
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'start',
-            array(
-                $this,
-                'onStart'
-            )
-        );
-
-        // Listens on 'comment'
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'comment',
-            array(
-                $this,
-                'onComment'
-            )
-        );
+        $discussion = $e->getParam('discussion');
+        $instance   = $discussion->getInstance();
+        $this->logEvent('discussion/restore', $instance, $discussion);
     }
 
-    protected function getMonitoredClass()
+    /**
+     * Gets executed on 'start'
+     *
+     * @param Event $e
+     * @return void
+     */
+    public function onStart(Event $e)
     {
-        return 'Discussion\DiscussionManager';
+        $instance   = $e->getParam('instance');
+        $discussion = $e->getParam('discussion');
+        $params     = [
+            [
+                'name'  => 'on',
+                'value' => $e->getParam('on')
+            ]
+        ];
+
+        $this->logEvent('discussion/create', $instance, $discussion, $params);
     }
 }

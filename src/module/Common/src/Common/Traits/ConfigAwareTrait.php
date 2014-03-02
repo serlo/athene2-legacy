@@ -17,7 +17,7 @@ trait ConfigAwareTrait
 
     abstract protected function getDefaultConfig();
 
-    protected $config = array();
+    protected $config = [];
 
     /**
      * @return field_type $config
@@ -35,11 +35,11 @@ trait ConfigAwareTrait
     {
         $this->config = ArrayUtils::merge($this->getDefaultConfig(), $config);
 
-        $array = array(
+        $array = [
             $this->getDefaultConfig(),
             $config,
             $this->config
-        );
+        ];
 
         return $this;
     }
@@ -56,7 +56,7 @@ trait ConfigAwareTrait
         if (array_key_exists($key, $this->getConfig())) {
             return $this->getConfig()[$key];
         } else {
-            $this->setConfig(array());
+            $this->setConfig([]);
             if (array_key_exists($key, $this->getConfig())) {
                 return $this->getConfig()[$key];
             } else {

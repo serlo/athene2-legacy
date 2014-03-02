@@ -11,13 +11,15 @@
 namespace Entity\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Exception;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
-use Uuid\Entity\UuidEntity;
+use Type\Entity\TypeAwareTrait;
+use Uuid\Entity\Uuid;
 use Versioning\Entity\RevisionInterface;
 
 /**
@@ -26,16 +28,10 @@ use Versioning\Entity\RevisionInterface;
  * @ORM\Entity
  * @ORM\Table(name="entity")
  */
-class Entity extends UuidEntity implements EntityInterface
+class Entity extends Uuid implements EntityInterface
 {
-    use\Type\Entity\TypeAwareTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="entity", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
+    use TypeAwareTrait;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist", "remove"},
@@ -79,25 +75,19 @@ class Entity extends UuidEntity implements EntityInterface
     protected $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language", inversedBy="entities")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    protected $language;
-
-    /**
      * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
      */
     protected $license;
 
     public function __construct()
     {
-        $this->revisions            = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->childLinks           = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parentLinks          = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->children             = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parents              = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->issues               = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->terms                = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->revisions            = new ArrayCollection();
+        $this->childLinks           = new ArrayCollection();
+        $this->parentLinks          = new ArrayCollection();
+        $this->children             = new ArrayCollection();
+        $this->parents              = new ArrayCollection();
+        $this->issues               = new ArrayCollection();
+        $this->terms                = new ArrayCollection();
         $this->termTaxonomyEntities = new ArrayCollection();
     }
 
@@ -106,14 +96,23 @@ class Entity extends UuidEntity implements EntityInterface
         return $this->currentRevision;
     }
 
+    public function setCurrentRevision(RevisionInterface $currentRevision)
+    {
+        $this->currentRevision = $currentRevision;
+
+        return $this;
+    }
+
     public function getLicense()
     {
         return $this->license;
     }
 
-    public function getLanguage()
+    public function setLicense(LicenseInterface $license)
     {
-        return $this->language;
+        $this->license = $license;
+
+        return $this;
     }
 
     public function getTimestamp()
@@ -136,30 +135,9 @@ class Entity extends UuidEntity implements EntityInterface
         return $this->childLinks;
     }
 
-    public function setCurrentRevision(RevisionInterface $currentRevision)
-    {
-        $this->currentRevision = $currentRevision;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
     public function setTimestamp(\DateTime $date)
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function setLicense(LicenseInterface $license)
-    {
-        $this->license = $license;
 
         return $this;
     }
@@ -171,8 +149,18 @@ class Entity extends UuidEntity implements EntityInterface
 
     public function isUnrevised()
     {
-        return (!$this->hasCurrentRevision() && $this->getHead()) || ($this->hasCurrentRevision() && $this->getHead(
-            ) !== $this->getCurrentRevision());
+        $hasCurrentRevision = $this->hasCurrentRevision();
+        $head               = $this->getHead();
+        $currentRevision    = $this->getCurrentRevision();
+
+        return (!$hasCurrentRevision && $head) || ($hasCurrentRevision && $head !== $currentRevision);
+    }
+
+    public function countUnrevised()
+    {
+        $current = $this->getCurrentRevision() ? $this->getCurrentRevision()->getId() : 0;
+
+        return $this->revisions->matching(Criteria::create()->where(Criteria::expr()->gt('id', $current)))->count();
     }
 
     public function createLink()
@@ -188,15 +176,11 @@ class Entity extends UuidEntity implements EntityInterface
     public function addRevision(RevisionInterface $revision)
     {
         $this->revisions->add($revision);
-
-        return $this;
     }
 
     public function removeRevision(RevisionInterface $revision)
     {
         $this->revisions->removeElement($revision);
-
-        return $this;
     }
 
     public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)

@@ -28,4 +28,9 @@ interface MetadataKeyInterface
      * @return self
      */
     public function setName($name);
+
+    /**
+     * @return string
+     */
+    public function __toString();
 }

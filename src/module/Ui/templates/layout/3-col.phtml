@@ -16,7 +16,7 @@ echo $this->doctype();
 <?php print $this->partial('layout/partials/head'); ?>
 <body>
     <div class="wrap">
-        <?php echo $this->partial('layout/partials/header.phtml'); ?>
+        <?php echo $this->partial('layout/partials/header'); ?>
 
         <div id="page" class="container col-3">
             <?php echo $this->partial('layout/partials/left-sidebar'); ?>
@@ -27,13 +27,13 @@ echo $this->doctype();
                             <i class="glyphicon glyphicon-list"></i>
                         </div>
                         <div id="sidebar-content">
-                            <?php echo $this->registry()->get('gen'); ?>
+                            <?php echo $this->registry()->get('rnav'); ?>
                         </div>
                     </aside>
                     <div id="content">
-                        <?php echo $this->partial('layout/partials/notifications.phtml'); ?>
+                        <?php echo $this->partial('layout/partials/notifications'); ?>
                         <div id="content-container">
-                            <?php echo $this->partial('layout/partials/main.phtml'); ?>
+                            <?php echo $this->partial('layout/partials/main'); ?>
                         </div>
                     </div>
                 </div>
@@ -41,10 +41,11 @@ echo $this->doctype();
             </section>
             <?php echo $this->partial('layout/partials/right-sidebar'); ?>
         </div>
+        <?php echo $this->Horizon(3);?>
         <?php /* sticky footer: */ ?>
         <div id="footer-push"></div>
     </div>
-    <?php echo $this->partial('layout/partials/footer.phtml'); ?>
-    <?php echo $this->partial('layout/partials/default-modal.phtml'); ?>
+    <?php echo $this->partial('layout/partials/footer'); ?>
+    <?php echo $this->partial('layout/partials/default-modal'); ?>
 </body>
 </html>

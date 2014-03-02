@@ -21,38 +21,22 @@ class TextSolutionForm extends Form
     {
         parent::__construct('text-solution');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('text-solution');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Textarea('hint'))->setLabel('Hint:'));
         $this->add((new Textarea('content'))->setLabel('Content:'));
-
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            array(
-                'name'     => 'hint',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'content',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
+        $inputFilter = new InputFilter('text-solution');
+        $inputFilter->add(['name' => 'hint', 'required' => false]);
+        $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $this->setInputFilter($inputFilter);
     }
 }

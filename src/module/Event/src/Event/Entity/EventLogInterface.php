@@ -11,12 +11,11 @@
 namespace Event\Entity;
 
 use Datetime;
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidHolder;
 use Uuid\Entity\UuidInterface;
 
-interface EventLogInterface extends LanguageAwareInterface
+interface EventLogInterface extends InstanceAwareInterface
 
 {
 
@@ -30,7 +29,7 @@ interface EventLogInterface extends LanguageAwareInterface
     /**
      * Gets the associated object (uuid)
      *
-     * @return UuidHolder
+     * @return UuidInterface
      */
     public function getObject();
 
@@ -66,7 +65,7 @@ interface EventLogInterface extends LanguageAwareInterface
     public function getParameters();
 
     /**
-     * @return UuidHolder
+     * @return UuidInterface
      */
     public function getParameter($name);
 

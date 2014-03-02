@@ -10,6 +10,7 @@
  */
 namespace Contexter\Adapter;
 
+use Contexter\Exception\RuntimeException;
 use Contexter\Router\RouterAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Router\RouteMatch;
@@ -29,11 +30,6 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     protected $controller;
 
-    public function getRouteMatch()
-    {
-        return $this->routeMatch;
-    }
-
     public function getController()
     {
         return $this->controller;
@@ -41,9 +37,10 @@ abstract class AbstractAdapter implements AdapterInterface
 
     public function setController(AbstractActionController $controller)
     {
+        if (!$this->isValidController($controller)) {
+            throw new RuntimEexception(sprintf('Invalid controller type'));
+        }
         $this->controller = $controller;
-
-        return $this;
     }
 
     public function getKeys()
@@ -51,11 +48,16 @@ abstract class AbstractAdapter implements AdapterInterface
         return array_keys($this->getParameters());
     }
 
+    abstract protected function isValidController($controller);
+
+    public function getRouteMatch()
+    {
+        return $this->routeMatch;
+    }
+
     public function setRouteMatch(RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
-
-        return $this;
     }
 
     public function getRouteParams()

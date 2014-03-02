@@ -10,10 +10,10 @@ namespace License;
 return [
     'zfc_rbac'       => [
         'assertion_map' => [
-            'licenses.manage' => 'Authorization\Assertion\LanguageAssertion',
-            'license.create'  => 'Authorization\Assertion\RequestLanguageAssertion',
-            'license.update'  => 'Authorization\Assertion\LanguageAssertion',
-            'license.purge'   => 'Authorization\Assertion\LanguageAssertion',
+            /*'licenses.manage' => 'Authorization\Assertion\TenantAssertion',
+            'license.create'  => 'Authorization\Assertion\RequestTenantAssertion',
+            'license.update'  => 'Authorization\Assertion\TenantAssertion',
+            'license.purge'   => 'Authorization\Assertion\TenantAssertion',*/
         ]
     ],
     'license_manager' => [
@@ -38,7 +38,10 @@ return [
                     'setClassResolver' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
+                        'required' => true
+                    ],
+                    'setAuthorizationService' => [
                         'required' => true
                     ]
                 ],
@@ -46,7 +49,7 @@ return [
                     'setLicenseManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ]
                 ],

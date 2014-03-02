@@ -11,6 +11,7 @@
 namespace Normalizer\Strategy;
 
 use DateTime;
+use Normalizer\Exception\RuntimeException;
 use Taxonomy\Entity\TaxonomyTermInterface;
 
 class TaxonomyTermStrategy extends AbstractStrategy
@@ -51,16 +52,66 @@ class TaxonomyTermStrategy extends AbstractStrategy
 
     protected function getRouteName()
     {
-        return 'home';
+        $object = $this->getObject();
+        switch ($object->getType()->getName()) {
+            case 'blog':
+                return 'blog/view';
+            case 'subject':
+                return 'subject';
+            case 'forum':
+            case 'forum-category':
+                return 'discussion/discussions';
+            case 'topic':
+            case 'topic-folder':
+            case 'curriculum':
+            case 'locale':
+            case 'curriculum-folder':
+            case 'topic-final-folder':
+                return 'subject/taxonomy';
+        }
+
+        throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
     }
 
     protected function getRouteParams()
     {
-        return [];
+        $object = $this->getObject();
+        switch ($object->getType()->getName()) {
+            case 'blog':
+                return ['id' => $object->getId()];
+            case 'subject':
+                return ['subject' => $object->getSlug(),];
+            case 'forum':
+            case 'forum-category':
+                return ['id' => $object->getId(),];
+            case 'topic':
+            case 'topic-folder':
+            case 'curriculum':
+            case 'locale':
+            case 'curriculum-folder':
+            case 'topic-final-folder':
+                return [
+                    'subject' => $object->findAncestorByTypeName('subject')->getSlug(),
+                    'path'    => substr($this->getPath($object, 'subject'), 0, -1)
+                ];
+        }
+
+        throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
     }
 
     public function isValid($object)
     {
         return $object instanceof TaxonomyTermInterface;
+    }
+
+    protected function getPath(TaxonomyTermInterface $term, $stopType)
+    {
+        $type = $term->getTaxonomy()->getType();
+        if($type->getName() == $stopType || !$term->hasParent()){
+            return '';
+        } else {
+            $path = $this->getPath($term->getParent(), $stopType);
+            return !$term->hasParent() ? '' : $path . $term->getSlug() . '/';
+        }
     }
 }

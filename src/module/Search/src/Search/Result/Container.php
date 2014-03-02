@@ -58,7 +58,6 @@ class Container implements ContainerInterface
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
     }
 
     public function addResult(ResultInterface $result)

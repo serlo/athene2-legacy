@@ -20,40 +20,22 @@ use Zend\View\Model\ViewModel;
 
 class RelatedContentController extends AbstractActionController
 {
-    use RelatedContentManagerAwareTrait, AuthorizationAssertionTrait;
+    use RelatedContentManagerAwareTrait;
 
     public function addCategoryAction()
     {
         $this->assertGranted('related_content.add');
-        $form = new CategoryForm();
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'related-content/add-category',
-                array(
-                    'id' => $this->params('id')
-                )
-            )
-        );
 
-        $view = new ViewModel(array(
-            'form' => $form
-        ));
+        $form = new CategoryForm();
+        $view = new ViewModel(['form' => $form]);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->getRelatedContentManager()->addCategory((int)$this->params('id'), $data['title']);
                 $this->getRelatedContentManager()->getObjectManager()->flush();
-                $this->redirect()->toRoute(
-                    'related-content/manage',
-                    array(
-                        'id' => $this->params('id')
-                    )
-                );
+                $this->redirect()->toRoute('related-content/manage', ['id' => $this->params('id')]);
             }
         }
         $view->setTemplate('related-content/add-category');
@@ -65,34 +47,16 @@ class RelatedContentController extends AbstractActionController
     {
         $this->assertGranted('related_content.add');
         $form = new ExternalForm();
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'related-content/add-external',
-                array(
-                    'id' => $this->params('id')
-                )
-            )
-        );
 
-        $view = new ViewModel(array(
-            'form' => $form
-        ));
+        $view = new ViewModel(['form' => $form]);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->getRelatedContentManager()->addExternal((int)$this->params('id'), $data['title'], $data['url']);
                 $this->getRelatedContentManager()->getObjectManager()->flush();
-                $this->redirect()->toRoute(
-                    'related-content/manage',
-                    array(
-                        'id' => $this->params('id')
-                    )
-                );
+                $this->redirect()->toRoute('related-content/manage', ['id' => $this->params('id')]);
             }
         }
         $view->setTemplate('related-content/add-external');
@@ -104,24 +68,11 @@ class RelatedContentController extends AbstractActionController
     {
         $this->assertGranted('related_content.add');
         $form = new InternalForm();
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'related-content/add-internal',
-                array(
-                    'id' => $this->params('id')
-                )
-            )
-        );
 
-        $view = new ViewModel(array(
-            'form' => $form
-        ));
+        $view = new ViewModel(['form' => $form]);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->getRelatedContentManager()->addInternal(
@@ -130,12 +81,7 @@ class RelatedContentController extends AbstractActionController
                     $data['reference']
                 );
                 $this->getRelatedContentManager()->getObjectManager()->flush();
-                $this->redirect()->toRoute(
-                    'related-content/manage',
-                    array(
-                        'id' => $this->params('id')
-                    )
-                );
+                $this->redirect()->toRoute('related-content/manage', ['id' => $this->params('id')]);
             }
         }
         $view->setTemplate('related-content/add-internal');
@@ -147,11 +93,12 @@ class RelatedContentController extends AbstractActionController
     {
         $this->assertGranted('related_content.manage');
 
-        $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent((int)$this->params('id'));
-        $view       = new ViewModel(array(
+        $container  = $this->getRelatedContentManager()->getContainer($this->params('id'));
+        $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->params('id'));
+        $view       = new ViewModel([
             'aggregated' => $aggregated,
-            'id'         => $this->params('id')
-        ));
+            'container'  => $container
+        ]);
         $view->setTemplate('related-content/manage');
 
         return $view;
@@ -163,7 +110,7 @@ class RelatedContentController extends AbstractActionController
 
         $position = 1;
         if ($this->getRequest()->isPost()) {
-            foreach ($this->params()->fromPost('sortable', array()) as $holder) {
+            foreach ($this->params()->fromPost('sortable', []) as $holder) {
                 $this->getRelatedContentManager()->positionHolder((int)$holder['id'], (int)$position);
                 $position++;
             }

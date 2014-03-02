@@ -15,15 +15,11 @@ use Zend\View\Model\ViewModel;
 
 class EventController extends AbstractActionController
 {
-
     public function historyAction()
     {
         $id   = $this->params('id');
-        $view = new ViewModel(array(
-            'id' => $id
-        ));
+        $view = new ViewModel(['id' => $id]);
         $view->setTemplate('event/history');
-
         return $view;
     }
 }

@@ -13,27 +13,32 @@ namespace Taxonomy;
 use Taxonomy\View\Helper\TaxonomyHelper;
 
 return [
-    'term_router'     => [
+    'term_router'      => [
         'routes' => []
     ],
-    'class_resolver'  => [
+    'class_resolver'   => [
         __NAMESPACE__ . '\Entity\TaxonomyTypeInterface' => __NAMESPACE__ . '\Entity\TaxonomyType',
         __NAMESPACE__ . '\Entity\TaxonomyInterface'     => __NAMESPACE__ . '\Entity\Taxonomy',
         __NAMESPACE__ . '\Entity\TaxonomyTermInterface' => __NAMESPACE__ . '\Entity\TaxonomyTerm'
     ],
-    'view_helpers'    => [
+    'view_helpers'     => [
         'factories' => [
             'taxonomy' => function ($helperPluginManager) {
-                    $plugin = new TaxonomyHelper();
-                    $plugin->setModuleOptions(
-                        $helperPluginManager->getServiceLocator()->get('Taxonomy\Options\ModuleOptions')
-                    );
+                    $serviceLocator  = $helperPluginManager->getServiceLocator();
+                    $moduleOptions   = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
+                    $taxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
+                    $plugin          = new TaxonomyHelper($moduleOptions, $taxonomyManager);
 
                     return $plugin;
                 }
         ]
     ],
-    'taxonomy'        => [
+    'hydrator_plugins' => [
+        'factories' => [
+            __NAMESPACE__ . '\Hydrator\TaxonomyTermHydratorPlugin' => __NAMESPACE__ . '\Factory\TaxonomyTermHydratorPluginFactory'
+        ]
+    ],
+    'taxonomy'         => [
         'types' => [
             'root' => [
                 'allowed_parents' => [],
@@ -41,7 +46,7 @@ return [
             ]
         ]
     ],
-    'router'          => [
+    'router'           => [
         'routes' => [
             'taxonomy' => [
                 'type'          => 'Segment',
@@ -140,16 +145,16 @@ return [
             ]
         ]
     ],
-    'service_manager' => [
+    'service_manager'  => [
         'factories' => [
-            __NAMESPACE__ . '\Options\ModuleOptions' => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+            __NAMESPACE__ . '\Options\ModuleOptions'       => __NAMESPACE__ . '\Factory\ModuleOptionsFactory',
+            __NAMESPACE__ . '\Manager\TaxonomyManager'     => __NAMESPACE__ . '\Factory\TaxonomyManagerFactory',
+            __NAMESPACE__ . '\Provider\NavigationProvider' => __NAMESPACE__ . '\Factory\NavigationProviderFactory',
         ]
     ],
-    'di'              => [
+    'di'               => [
         'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\TermController',
-            __NAMESPACE__ . '\Controller\TaxonomyController',
-            __NAMESPACE__ . '\Controller\TermRouterController'
+            __NAMESPACE__ . '\Controller\TermController'
         ],
         'definition'          => [
             'class' => [
@@ -158,67 +163,19 @@ return [
                         'required' => true
                     ]
                 ],
+                __NAMESPACE__ . '\Form\TermForm'                  => [],
                 __NAMESPACE__ . '\Controller\TermController'      => [
                     'setTaxonomyManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager' => [
+                    'setInstanceManager' => [
                         'required' => true
                     ],
                     'setUserManager'     => [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ],
-                    'setTermManager'     => [
-                        'required' => true
-                    ],
-                    'setUuidManager'     => [
-                        'required' => true
-                    ],
-                    'setModuleOptions'   => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Manager\TaxonomyManager'        => [
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setTypeManager'   => [
-                        'required' => true
-                    ],
-                    'setModuleOptions' => [
-                        'required' => true
-                    ],
-                    'setHydrator'      => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Controller\TaxonomyController'  => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Provider\NavigationProvider'    => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ],
-                    'setServiceLocator'  => [
-                        'required' => true
-                    ],
-                    'setObjectManager'   => [
-                        'required' => true
-                    ],
-                    'setLanguageManager' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => []
             ]
         ],
         'instance'            => [
@@ -227,7 +184,16 @@ return [
             ]
         ]
     ],
-    'doctrine'        => [
+    'uuid'             => [
+        'permissions' => [
+            'Taxonomy\Entity\TaxonomyTerm' => [
+                'trash'   => 'taxonomy.term.trash',
+                'restore' => 'taxonomy.term.restore',
+                'purge'   => 'taxonomy.term.purge'
+            ],
+        ]
+    ],
+    'doctrine'         => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

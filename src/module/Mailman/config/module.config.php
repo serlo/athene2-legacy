@@ -10,53 +10,42 @@
  */
 namespace Mailman;
 
+use Zend\Mail\Transport\SmtpOptions;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-/**
- * @codeCoverageIgnore
- */
-return array(
-    'mailman'         => array(
-        'adapters' => array(
+return [
+    'mailman'         => [
+        'adapters' => [
             'Mailman\Adapter\ZendMailAdapter'
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Mailman\Mailman' => function (ServiceLocatorInterface $sm) {
-                    $mailman = new \Mailman\Mailman();
-                    $mailman->setConfig($sm->get('config')['mailman']);
-                    $mailman->setServiceLocator($sm);
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\Mailman'                                   => __NAMESPACE__ . '\Factory\MailmanFactory',
+            __NAMESPACE__ . '\Adapter\ZendMailAdapter'                   => __NAMESPACE__ . '\Factory\ZendMailAdapterFactory',
+            __NAMESPACE__ . '\Listener\AuthenticationControllerListener' => __NAMESPACE__ . '\Factory\AuthenticationControllerListenerFactory',
+            __NAMESPACE__ . '\Listener\UserControllerListener'           => __NAMESPACE__ . '\Factory\UserControllerListenerFactory',
+            'Zend\Mail\Transport\SmtpOptions' => function (ServiceLocatorInterface $sm) {
+                    $config = $sm->get('config')['smtp_options'];
 
-                    return $mailman;
-                }
-        )
-    ),
-    'di'              => array(
-        'definition' => array(
-            'class' => array(
-                'Mailman\Listener\UserControllerListener' => array(
-                    'setMailman'    => array(
-                        'required' => true
-                    ),
-                    'setTranslator' => array(
-                        'required' => true
-                    ),
-                    'setRenderer'   => array(
-                        'required' => true
-                    )
-                ),
-                'Mailman\Adapter\ZendMailAdapter'         => array(
-                    'setSmtpOptions' => array(
-                        'required' => true
-                    )
-                )
-            )
-        ),
-        'instance'   => array(
-            'preferences' => array(
+                    return new SmtpOptions($config);
+                },
+        ]
+    ],
+    'smtp_options'    => [
+        'name'              => 'localhost.localdomain',
+        'host'              => 'localhost',
+        'connection_class'  => 'smtp',
+        'connection_config' => [
+            'username' => 'postmaster',
+            'password' => ''
+        ]
+    ],
+    'di'              => [
+        'instance' => [
+            'preferences' => [
                 'Mailman\MailmanInterface' => 'Mailman\Mailman'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

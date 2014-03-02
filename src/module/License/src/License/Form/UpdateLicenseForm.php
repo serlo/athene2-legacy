@@ -26,15 +26,7 @@ class UpdateLicenseForm extends Form
         $inputFilter = new InputFilter('context');
         $this->setInputFilter($inputFilter);
 
-        $this->add(
-            array(
-                'name'       => 'route',
-                'type'       => 'Hidden',
-                'attributes' => array()
-            )
-        );
-
-        $values = array();
+        $values = [];
         foreach ($licenses as $license) {
             $values[$license->getId()] = $license->getTitle();
         }

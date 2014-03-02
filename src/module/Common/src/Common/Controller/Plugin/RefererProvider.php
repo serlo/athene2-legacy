@@ -15,6 +15,7 @@ use Zend\Session\Container;
 
 class RefererProvider extends AbstractPlugin
 {
+    protected $container;
 
     public function toUrl($default = '/')
     {
@@ -26,13 +27,15 @@ class RefererProvider extends AbstractPlugin
 
     public function store()
     {
-        $container      = new Container('ref');
-        $container->ref = $this->toUrl();
+        if(!$this->container){
+            $this->container      = new Container('ref');
+        }
+        $this->container->ref = $this->toUrl();
 
         return $this;
     }
 
-    public function fromStorage()
+    public function fromStorage($default = '/')
     {
         $container = new Container('ref');
 

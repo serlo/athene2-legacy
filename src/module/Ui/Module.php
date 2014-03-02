@@ -1,32 +1,53 @@
 <?php
 /**
- *
- * @author Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @author    Aeneas Rekkas (aeneas.rekkas@serlo.org)
  * @copyright 2013 by www.serlo.org
- * @license LGPL
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+ * @license   LGPL
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 namespace Ui;
 
-/**
- * @codeCoverageIgnore
- */
+use Zend\Stdlib\ArrayUtils;
+
 class Module
 {
 
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                )
-            )
-        );
+        if (file_exists(__DIR__ . '/autoload_classmap.php')) {
+            return [
+                'Zend\Loader\ClassMapAutoloader' => [
+                    __DIR__ . '/autoload_classmap.php',
+                ]
+            ];
+        } else {
+            return [
+                'Zend\Loader\StandardAutoloader' => [
+                    'namespaces' => [
+                        __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
+                    ]
+                ]
+            ];
+        }
+    }
+
+    public function getConfig()
+    {
+        $config = include __DIR__ . '/config/module.config.php';
+
+        if (file_exists(__DIR__ . '/template_map.php')) {
+            $templates                 = [];
+            $templates['view_manager'] = [
+                'template_map' => include __DIR__ . '/template_map.php'
+            ];
+
+            return ArrayUtils::merge($config, $templates);
+        }
+
+        $config['view_manager']['template_path_stack'] = [
+            __DIR__ . '/templates'
+        ];
+
+        return $config;
     }
 }

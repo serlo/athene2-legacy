@@ -11,6 +11,7 @@
 namespace Entity\Form;
 
 use Zend\Form\Element\Text;
+use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -21,25 +22,27 @@ class ModuleForm extends Form
     {
         parent::__construct('module');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('module');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setLabel('Title:'));
-
-        $this->add(new Controls());
-
-        $inputFilter->add(
-            array(
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
+        $this->add(
+            (new Textarea('reasoning'))->setLabel('Reasoning:')->setAttribute(
+                'class',
+                'plain'
             )
         );
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
+        $this->add(new Controls());
 
+        $inputFilter = new InputFilter('module');
+        $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'StripTags']]]);
+        $inputFilter->add(['name' => 'reasoning', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $this->setInputFilter($inputFilter);
     }
 }

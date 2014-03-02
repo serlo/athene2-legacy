@@ -14,8 +14,9 @@ use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
+use Entity\Entity\EntityInterface;
 use Entity\Exception;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceInterface;
 use Type\TypeManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\EventManager\EventManagerAwareTrait;
@@ -23,7 +24,7 @@ use Zend\EventManager\EventManagerAwareTrait;
 class EntityManager implements EntityManagerInterface
 {
     use TypeManagerAwareTrait, ObjectManagerAwareTrait;
-    use UuidManagerAwareTrait, ClassResolverAwareTrait;
+    use ClassResolverAwareTrait;
     use EventManagerAwareTrait, FlushableTrait;
     use AuthorizationAssertionTrait;
 
@@ -35,36 +36,22 @@ class EntityManager implements EntityManagerInterface
         if (!is_object($entity)) {
             throw new Exception\EntityNotFoundException(sprintf('Entity "%d" not found.', $id));
         }
+        $this->assertGranted('entity.get', $entity);
 
         return $entity;
     }
 
-    public function createEntity($typeName, array $data = array(), LanguageInterface $language)
+    public function createEntity($typeName, array $data = [], InstanceInterface $instance)
     {
-        $this->assertGranted('entity.create', $language);
+        $this->assertGranted('entity.create', $instance);
 
-        $type = $this->getTypeManager()->findTypeByName($typeName);
-
-        if (!is_object($type)) {
-            throw new Exception\RuntimeException(sprintf('Type "%s" not found', $typeName));
-        }
-
+        /* @var $entity EntityInterface */
         $entity = $this->getClassResolver()->resolve('Entity\Entity\EntityInterface');
+        $type   = $this->getTypeManager()->findTypeByName($typeName);
 
-        $this->getUuidManager()->injectUuid($entity);
-
-        $entity->setLanguage($language);
+        $entity->setInstance($instance);
         $entity->setType($type);
-
-        $this->getEventManager()->trigger(
-            'create',
-            $this,
-            [
-                'entity' => $entity,
-                'data'   => $data
-            ]
-        );
-
+        $this->getEventManager()->trigger('create', $this, ['entity' => $entity, 'data' => $data]);
         $this->getObjectManager()->persist($entity);
 
         return $entity;

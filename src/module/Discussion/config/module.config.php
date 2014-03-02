@@ -11,22 +11,30 @@
 namespace Discussion;
 
 return [
-    'zfc_rbac'       => [
+    'zfc_rbac'        => [
         'assertion_map' => [
-            'discussion.trash'         => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.purge'         => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.vote'          => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.archive'       => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.comment.trash' => 'Authorization\Assertion\LanguageAssertion',
-            'discussion.comment.purge' => 'Authorization\Assertion\LanguageAssertion',
+            'discussion.create'         => 'Authorization\Assertion\RequestInstanceAssertion',
+            'discussion.trash'          => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.purge'          => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.vote'           => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.archive'        => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.flag'           => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.trash'  => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.purge'  => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.flag'   => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.create' => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
-    'uuid_router'    => [
-        'routes' => [
-            'comment' => '/discussion/%d'
+    'uuid'            => [
+        'permissions' => [
+            'Discussion\Entity\Comment' => [
+                'trash'   => 'discussion.comment.trash',
+                'restore' => 'discussion.comment.restore',
+                'purge'   => 'discussion.comment.purge'
+            ],
         ]
     ],
-    'term_router'    => [
+    'term_router'     => [
         'routes' => [
             'forum'          => [
                 'route'          => 'discussion/discussions',
@@ -38,12 +46,17 @@ return [
             ]
         ]
     ],
-    'view_helpers'   => [
+    'view_helpers'    => [
         'factories' => [
             'discussion' => __NAMESPACE__ . '\Factory\DiscussionHelperFactory'
         ]
     ],
-    'taxonomy'       => [
+    'service_manager' => [
+        'factories' => [
+            __NAMESPACE__ . '\DiscussionManager' => __NAMESPACE__ . '\Factory\DiscussionManagerFactory'
+        ]
+    ],
+    'taxonomy'        => [
         'types' => [
             'forum-category' => [
                 'allowed_parents' => [
@@ -54,7 +67,7 @@ return [
             ],
             'forum'          => [
                 'allowed_associations' => [
-                    'comments'
+                    'Discussion\Entity\CommentInterface'
                 ],
                 'allowed_parents'      => [
                     'forum',
@@ -64,11 +77,11 @@ return [
             ]
         ]
     ],
-    'class_resolver' => [
+    'class_resolver'  => [
         'Discussion\Entity\CommentInterface' => 'Discussion\Entity\Comment',
         'Discussion\Entity\VoteInterface'    => 'Discussion\Entity\Vote'
     ],
-    'router'         => [
+    'router'          => [
         'routes' => [
             'discussion' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
@@ -83,7 +96,7 @@ return [
                             'route'    => '/discussion/:id',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionController',
-                                'action'     => 'view'
+                                'action'     => 'show'
                             ]
                         ]
                     ],
@@ -107,7 +120,7 @@ return [
                             'start'   => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route'    => '/start/:on',
+                                    'route'    => '/start/:on/:forum',
                                     'defaults' => [
                                         'controller' => 'Discussion\Controller\DiscussionController',
                                         'action'     => 'start'
@@ -163,41 +176,26 @@ return [
             ]
         ]
     ],
-    'di'             => [
+    'di'              => [
         'allowed_controllers' => [
             'Discussion\Controller\DiscussionController',
             'Discussion\Controller\DiscussionsController'
         ],
         'definition'          => [
             'class' => [
+                'Discussion\Form\DiscussionForm'              => [],
+                'Discussion\Form\CommentForm'                 => [],
                 'Discussion\Controller\DiscussionsController' => [
-                    'setDiscussionManager'     => [
+                    'setDiscussionManager' => [
                         'required' => true
                     ],
-                    'setLanguageManager'       => [
+                    'setInstanceManager'   => [
                         'required' => true
                     ],
-                    'setTaxonomyManager'       => [
+                    'setTaxonomyManager'   => [
                         'required' => true
                     ],
-                    'setUserManager'           => [
-                        'required' => true
-                    ]
-                ],
-                'Discussion\DiscussionManager'                => [
-                    'setObjectManager'        => [
-                        'required' => true
-                    ],
-                    'setUuidManager'          => [
-                        'required' => true
-                    ],
-                    'setClassResolver'        => [
-                        'required' => true
-                    ],
-                    'setTaxonomyManager'      => [
-                        'required' => true
-                    ],
-                    'setAuthorizationService' => [
+                    'setUserManager'       => [
                         'required' => true
                     ]
                 ],
@@ -208,7 +206,7 @@ return [
                     'setUuidManager'       => [
                         'required' => true
                     ],
-                    'setLanguageManager'   => [
+                    'setInstanceManager'   => [
                         'required' => true
                     ],
                     'setUserManager'       => [
@@ -223,7 +221,7 @@ return [
             ]
         ]
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

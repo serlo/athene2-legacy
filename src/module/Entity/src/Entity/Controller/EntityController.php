@@ -11,41 +11,29 @@
 namespace Entity\Controller;
 
 use Entity\Result;
-use Language\Manager\LanguageManagerAwareTrait;
+use Instance\Manager\InstanceManagerAwareTrait;
 use Zend\EventManager\ResponseCollection;
 
 class EntityController extends AbstractController
 {
-    use LanguageManagerAwareTrait;
+    use InstanceManagerAwareTrait;
 
     public function createAction()
     {
-        $this->assertGranted('entity.create');
-
+        // No assertion necessary, because no view. This is done in the manager logic
         $type     = $this->params('type');
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $query    = $this->params()->fromQuery();
         $entity   = $this->getEntityManager()->createEntity(
             $type,
             $query,
-            $language
+            $instance
         );
-
         $this->getEntityManager()->flush();
 
-        $data     = [
-            'entity' => $entity,
-            'data'   => $query
-        ];
-        $response = $this->getEventManager()->trigger(
-            'create.postFlush',
-            $this,
-            $data
-        );
-
-        $this->checkResponse($response);
-
-        return false;
+        $data     = ['entity' => $entity, 'data' => $query];
+        $response = $this->getEventManager()->trigger('create.postFlush', $this, $data);
+        return $this->checkResponse($response);
     }
 
     public function checkResponse(ResponseCollection $response)
@@ -59,7 +47,8 @@ class EntityController extends AbstractController
         }
 
         if (!$redirected) {
-            $this->redirect()->toReferer();
+            return $this->redirect()->toReferer();
         }
+        return true;
     }
 }

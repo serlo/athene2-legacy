@@ -20,17 +20,18 @@
     <?php else: ?>
         <div class="list-group">
             <?php if ($this->isGranted('discussion.create')): ?>
-                <?php $form = $this->plugin->getForm('discussion'); ?>
+                <?php $form = $this->discussion()->getForm('discussion'); ?>
                 <?php $form->setAttribute(
                     'action',
-                    $this->url('discussion/discussion/start', array('on' => $this->object->getId()))
+                    $this->url(
+                        'discussion/discussion/start',
+                        ['on' => $this->object->getId(), 'forum' => $this->forum->getId()]
+                    )
                 ); ?>
                 <?php if (!$this->isArchived): ?>
                     <div class="list-group-item">
                         <h4><?php echo $this->translate('Start a new discussion'); ?></h4>
                         <hr>
-                        <?php $form->prepare(); ?>
-                        <?php $form->setData(array('forum' => $this->plugin->getForum()->getId())); ?>
                         <?php echo $this->form()->render($form, null); ?>
                     </div>
                 <?php endif; ?>
@@ -38,7 +39,7 @@
                     <div class="list-group-item">
                         <?php echo $this->partial(
                             'discussion/discussion/show',
-                            array('discussion' => $discussion, 'user' => $this->user, 'plugin' => $this->plugin)
+                            array('discussion' => $discussion)
                         ); ?>
                     </div>
                 <?php endforeach; ?>

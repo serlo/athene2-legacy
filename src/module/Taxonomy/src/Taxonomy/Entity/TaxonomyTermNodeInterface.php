@@ -53,7 +53,7 @@ interface TaxonomyTermNodeInterface
     
     /**
      * 
-     * @return TaxonomyTermEntityAwareInterface
+     * @return TaxonomyTermAwareInterface
      */
     public function getObject();
 }

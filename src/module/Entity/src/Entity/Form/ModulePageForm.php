@@ -22,51 +22,22 @@ class ModulePageForm extends Form
     {
         parent::__construct('module-page');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('module-page');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Textarea('content'))->setLabel('Content:'));
-        $this->add((new Textarea('reasoning'))->setLabel('Reasoning:'));
-
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            array(
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'content',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'reasoning',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
+        $inputFilter = new InputFilter('module-page');
+        $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'StripTags']]]);
+        $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $this->setInputFilter($inputFilter);
     }
 }

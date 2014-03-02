@@ -12,35 +12,45 @@ namespace Discussion;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Discussion\Entity\CommentInterface;
 use Discussion\Exception;
-use Discussion\Hydrator\CommentHydrator;
 use Doctrine\Common\Collections\ArrayCollection;
-use Language\Entity\LanguageInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Instance\Entity\InstanceInterface;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
-use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\EventManager\EventManagerAwareTrait;
+use Zend\Form\FormInterface;
+use ZfcRbac\Service\AuthorizationService;
 
 class DiscussionManager implements DiscussionManagerInterface
 {
     use EventManagerAwareTrait, ObjectManagerAwareTrait;
-    use UuidManagerAwareTrait, TaxonomyManagerAwareTrait;
-    use ClassResolverAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait;
+    use ClassResolverAwareTrait, AuthorizationAssertionTrait;
 
     /**
      * @var string
      */
     protected $serviceInterface = 'Discussion\Service\DiscussionServiceInterface';
-
     /**
      * @var string
      */
     protected $entityInterface = 'Discussion\Entity\CommentInterface';
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager
+    ) {
+        $this->setAuthorizationService($authorizationService);
+        $this->classResolver = $classResolver;
+        $this->objectManager = $objectManager;
+    }
 
     public function getDiscussion($id)
     {
@@ -56,28 +66,17 @@ class DiscussionManager implements DiscussionManagerInterface
             throw new Exception\CommentNotFoundException(sprintf('Could not find a comment by the id of %s', $id));
         }
 
+        $this->assertGranted('discussion.get', $comment);
+
         return $comment;
     }
 
-    public function removeComment($id)
+    public function findDiscussionsByInstance(InstanceInterface $instance)
     {
-        $comment = $this->getComment($id);
-        $this->assertGranted('discussion.comment.remove', $comment);
-
-        $this->removeInstance($comment->getId());
-        $this->getObjectManager()->remove($comment);
-    }
-
-    public function findDiscussionsByLanguage(LanguageInterface $language)
-    {
+        $this->assertGranted('discussion.get', $instance);
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
-        $discussions      = $objectRepository->findAll(
-            array(
-                'language' => $language->getId()
-            )
-        );
-
+        $discussions      = $objectRepository->findAll(['instance' => $instance->getId()]);
         return new ArrayCollection($discussions);
     }
 
@@ -85,117 +84,67 @@ class DiscussionManager implements DiscussionManagerInterface
     {
         $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
         $objectRepository = $this->getObjectManager()->getRepository($className);
-        $discussions      = $objectRepository->findBy(
-            array(
-                'object'   => $uuid->getId(),
-                'archived' => $archived
-            )
-        );
+        $discussions      = $objectRepository->findBy(['object' => $uuid->getId(), 'archived' => $archived]);
+
+        foreach ($discussions as $discussion) {
+            $this->assertGranted('discussion.get', $discussion);
+        }
 
         return new ArrayCollection($discussions);
     }
 
-    /*
-     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::discuss()
-     */
-    public function startDiscussion(
-        UuidInterface $object,
-        LanguageInterface $language,
-        UserInterface $author,
-        $forum,
-        $title,
-        $content
-    ) {
-        if ($object->is('comment')) {
+    public function startDiscussion(FormInterface $form)
+    {
+        /* @var $comment Entity\CommentInterface */
+        $comment = $this->getClassResolver()->resolve($this->entityInterface);
+        $this->bind($comment, $form);
+
+        if ($comment->getObject() instanceof CommentInterface) {
             throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
         }
 
-        $forum = $this->getTaxonomyManager()->getTerm($forum);
-        $this->assertGranted('discussion.create', $forum);
-
-        /* @var $comment Entity\CommentInterface */
-        $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
-        $comment   = new $className();
-        $this->getUuidManager()->injectUuid($comment);
-
-        $hydrator = new CommentHydrator();
-        $hydrator->hydrate(
-            [
-                'object'   => $object,
-                'language' => $language,
-                'author'   => $author,
-                'title'    => $title,
-                'content'  => $content
-            ],
-            $comment
-        );
-
-        $this->getTaxonomyManager()->associateWith($forum->getId(), 'comments', $comment);
-
+        $this->assertGranted('discussion.create', $comment);
+        $this->getObjectManager()->persist($comment);
         $this->getEventManager()->trigger(
             'start',
             $this,
             [
-                'user'       => $author,
-                'on'         => $object,
+                'author'     => $comment->getAuthor(),
+                'on'         => $comment->getObject(),
                 'discussion' => $comment,
-                'language'   => $language
+                'instance'   => $comment->getInstance(),
+                'data'       => $form->getData()
             ]
         );
-
-        $this->getObjectManager()->persist($comment);
 
         return $comment;
     }
 
-    /*
-     * (non-PHPdoc) @see \Discussion\DiscussionManagerInterface::comment()
-     */
-    public function commentDiscussion(
-        CommentInterface $discussion,
-        LanguageInterface $language,
-        UserInterface $author,
-        $content
-    ) {
-        $this->assertGranted('discussion.comment.create', $discussion);
+    public function commentDiscussion(FormInterface $form)
+    {
+        /* @var $comment Entity\CommentInterface */
+        $comment = $this->getClassResolver()->resolve($this->entityInterface);
+        $this->bind($comment, $form);
 
-        if ($discussion->hasParent()) {
+        if ($comment->getParent()->hasParent()) {
             throw new Exception\RuntimeException(sprintf(
-                'You are trying to comment on a comment,
-                                        but only commenting a discussion is allowed (comments have parents whilst discussions do not).'
+                'You are trying to comment on a comment, but only commenting a discussion is allowed (comments have parents whilst discussions do not).'
             ));
         }
 
-        /* @var $comment Entity\CommentInterface */
-        $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
-        $comment   = new $className();
-        $this->getUuidManager()->injectUuid($comment);
-
-        $hydrator = new CommentHydrator();
-        $hydrator->hydrate(
-            [
-                'parent'   => $discussion,
-                'language' => $language,
-                'author'   => $author,
-                'content'  => $content
-            ],
-            $comment
-        );
-
-        $discussion->addChild($comment);
-
+        $this->assertGranted('discussion.comment.create', $comment);
+        $this->getObjectManager()->persist($comment);
         $this->getEventManager()->trigger(
             'comment',
             $this,
-            array(
-                'user'       => $author,
+            [
+                'author'     => $comment->getAuthor(),
                 'comment'    => $comment,
-                'discussion' => $discussion,
-                'language'   => $language
-            )
+                'discussion' => $comment->getParent(),
+                'instance'   => $comment->getInstance(),
+                'data'       => $form->getData()
+            ]
         );
-
-        $this->getObjectManager()->persist($comment);
 
         return $comment;
     }
@@ -205,12 +154,40 @@ class DiscussionManager implements DiscussionManagerInterface
         $comment = $this->getComment($commentId);
         $this->assertGranted('discussion.archive', $comment);
 
+        if ($comment->hasParent()) {
+            throw new Exception\RuntimeException(sprintf('You can\'t archive a comment, only discussions.'));
+        }
+
         $comment->setArchived(!$comment->getArchived());
         $this->getObjectManager()->persist($comment);
+        $this->getEventManager()->trigger(
+            $comment->getArchived() ? 'archive' : 'restore',
+            $this,
+            ['discussion' => $comment]
+        );
     }
 
-    public function findParticipatedDiscussions(\User\Entity\UserInterface $user)
+    /**
+     * @param CommentInterface $comment
+     * @param FormInterface    $form
+     * @return CommentInterface
+     * @throws Exception\RuntimeException
+     */
+    protected function bind(CommentInterface $comment, FormInterface $form)
     {
-        // TODO Auto-generated method stub
+        if (!$form->isValid()) {
+            throw new Exception\RuntimeException(print_r($form->getMessages(), true));
+        }
+
+        $processForm = clone $form;
+        $data        = $form->getData(FormInterface::VALUES_AS_ARRAY);
+        $processForm->bind($comment);
+        $processForm->setData($data);
+
+        if (!$processForm->isValid()) {
+            throw new Exception\RuntimeException($processForm->getMessages());
+        }
+
+        return $comment;
     }
 }

@@ -13,11 +13,11 @@ namespace Discussion\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
-use Language\Entity\LanguageInterface;
+use Instance\Entity\InstanceAwareTrait;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use User\Entity\UserInterface;
-use Uuid\Entity\UuidEntity;
+use Uuid\Entity\Uuid;
 use Uuid\Entity\UuidInterface;
 
 /**
@@ -26,14 +26,9 @@ use Uuid\Entity\UuidInterface;
  * @ORM\Entity
  * @ORM\Table(name="comment")
  */
-class Comment extends UuidEntity implements CommentInterface
+class Comment extends Uuid implements CommentInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\OneToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="comment", fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
-    protected $id;
+    use InstanceAwareTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
@@ -55,11 +50,6 @@ class Comment extends UuidEntity implements CommentInterface
      * @ORM\OneToMany(targetEntity="Vote", mappedBy="comment", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $votes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Language\Entity\Language")
-     */
-    protected $language;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -95,9 +85,32 @@ class Comment extends UuidEntity implements CommentInterface
      */
     protected $content;
 
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+        $this->votes    = new ArrayCollection();
+        $this->terms    = new ArrayCollection();
+        $this->archived = false;
+    }
+
     public function isDiscussion()
     {
         return !$this->hasParent();
+    }
+
+    public function hasParent()
+    {
+        return is_object($this->getParent());
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function setParent(CommentInterface $comment)
+    {
+        $this->parent = $comment;
     }
 
     public function getArchived()
@@ -108,16 +121,6 @@ class Comment extends UuidEntity implements CommentInterface
     public function setArchived($archived)
     {
         $this->archived = $archived;
-
-        return $this;
-    }
-
-    public function __construct()
-    {
-        $this->children = new ArrayCollection();
-        $this->votes    = new ArrayCollection();
-        $this->terms    = new ArrayCollection();
-        $this->archived = false;
     }
 
     public function getObject()
@@ -125,14 +128,9 @@ class Comment extends UuidEntity implements CommentInterface
         return $this->object;
     }
 
-    public function getParent()
+    public function setObject(UuidInterface $uuid)
     {
-        return $this->parent;
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
+        $this->object = $uuid;
     }
 
     public function getAuthor()
@@ -140,14 +138,14 @@ class Comment extends UuidEntity implements CommentInterface
         return $this->author;
     }
 
+    public function setAuthor(UserInterface $author)
+    {
+        $this->author = $author;
+    }
+
     public function getTimestamp()
     {
         return $this->date;
-    }
-
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     public function getTitle()
@@ -155,58 +153,19 @@ class Comment extends UuidEntity implements CommentInterface
         return $this->title;
     }
 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
     public function getContent()
     {
         return $this->content;
     }
 
-    public function setObject(UuidInterface $uuid)
-    {
-        $this->object = $uuid;
-
-        return $this;
-    }
-
-    public function setParent(CommentInterface $comment)
-    {
-        $this->parent = $comment;
-
-        return $this;
-    }
-
-    public function setLanguage(LanguageInterface $language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    public function setAuthor(UserInterface $author)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function setContent($content)
     {
         $this->content = $content;
-
-        return $this;
     }
 
     public function getChildren()
@@ -217,18 +176,6 @@ class Comment extends UuidEntity implements CommentInterface
     public function addChild(CommentInterface $comment)
     {
         $this->children->add($comment);
-
-        return $this;
-    }
-
-    public function hasParent()
-    {
-        return is_object($this->getParent());
-    }
-
-    public function getVotes()
-    {
-        return $this->votes;
     }
 
     public function countUpVotes()
@@ -240,6 +187,11 @@ class Comment extends UuidEntity implements CommentInterface
         )->count();
     }
 
+    public function getVotes()
+    {
+        return $this->votes;
+    }
+
     public function countDownVotes()
     {
         return $this->getVotes()->filter(
@@ -247,6 +199,22 @@ class Comment extends UuidEntity implements CommentInterface
                 return $v->getVote() === -1;
             }
         )->count();
+    }
+
+    public function upVote(UserInterface $user)
+    {
+        if ($this->findVotesByUser($user)->count() > 0) {
+            return null;
+        }
+
+        $this->createVote($user, 1);
+    }
+
+    protected function findVotesByUser(UserInterface $user)
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('user', $user))->setFirstResult(0)->setMaxResults(1);
+
+        return $this->getVotes()->matching($criteria);
     }
 
     protected function createVote(UserInterface $user, $vote)
@@ -260,24 +228,6 @@ class Comment extends UuidEntity implements CommentInterface
         return $entity;
     }
 
-    protected function findVotesByUser(UserInterface $user)
-    {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('user', $user))->setFirstResult(0)->setMaxResults(1);
-
-        return $this->getVotes()->matching($criteria);
-    }
-
-    public function upVote(UserInterface $user)
-    {
-        if ($this->findVotesByUser($user)->count() > 0) {
-            return null;
-        }
-
-        $this->createVote($user, 1);
-
-        return $this;
-    }
-
     public function downVote(UserInterface $user)
     {
         if ($this->findVotesByUser($user)->count() === 0) {
@@ -287,8 +237,6 @@ class Comment extends UuidEntity implements CommentInterface
         $this->getVotes()->removeElement(
             $this->findVotesByUser($user)->current()
         );
-
-        return $this;
     }
 
     public function hasUserVoted(UserInterface $user)
@@ -299,15 +247,11 @@ class Comment extends UuidEntity implements CommentInterface
     public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
     {
         $this->terms->add($taxonomyTerm);
-
-        return $this;
     }
 
     public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
     {
         $this->terms->removeElement($taxonomyTerm);
-
-        return $this;
     }
 
     public function getTaxonomyTerms()

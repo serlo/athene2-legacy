@@ -11,45 +11,36 @@
 namespace Notification\Listener;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class RepositoryManagerListener extends AbstractListener
 {
-    use \User\Manager\UserManagerAwareTrait;
-
-    /**
-     * @var array
-     */
-    protected $listeners = array();
-
     public function onCommitRevision(Event $e)
     {
         $repository = $e->getParam('repository');
         $data       = $e->getParam('data');
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
+        $user       = $e->getParam('author');
 
         foreach ($data as $params) {
             if (is_array($params) && array_key_exists('subscription', $params)) {
                 $param = $params['subscription'];
                 if ($param['subscribe'] === '1') {
                     $notifyMailman = $param['mailman'] === '1' ? true : false;
-                    $this->subscribe($user, $repository->getUuidEntity(), $notifyMailman);
+                    $this->subscribe($user, $repository, $notifyMailman);
                 }
             }
         }
     }
 
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'commit',
-            array(
+            [
                 $this,
                 'onCommitRevision'
-            ),
+            ],
             2
         );
     }

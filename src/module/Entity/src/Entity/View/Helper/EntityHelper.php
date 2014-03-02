@@ -19,6 +19,11 @@ class EntityHelper extends AbstractHelper
 {
     use \Entity\Options\ModuleOptionsAwareTrait;
 
+    public function __invoke()
+    {
+        return $this;
+    }
+
     /**
      * @param EntityInterface $entity
      * @return EntityOptions
@@ -33,7 +38,7 @@ class EntityHelper extends AbstractHelper
     public function renderDiscussions(EntityInterface $entity)
     {
         $view  = $this->getView();
-        $uuid  = $entity->getUuidEntity();
+        $uuid  = $entity;
         $forum = [
             $this->findTaxonomyTerm($entity, 'subject')->getName(),
             $entity->getType()->getName()

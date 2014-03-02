@@ -1,0 +1,124 @@
+.container {
+    @media only screen and (max-width: $navigationBreakPoint) {
+        width: auto;
+        max-width: 100%;
+    }
+}
+
+#page {
+    position: relative;
+    margin-top: 35px;
+    margin-bottom: 75px;
+
+    transform-style: preserve-3d;
+    transition: 0.15s transform 0.1s ease-in-out, 0.25s opacity 0.01s ease-in-out;
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+        margin-top: 54px;
+        width: auto;
+        max-width: 100%;
+    }
+}
+
+#main {
+    position: relative;
+
+    .col-2 &,
+    .col-3 & {
+        padding-left: $navigationWidth;
+
+        @media only screen and (max-width: $navigationBreakPoint) {
+            padding-left: 40px;
+
+            .slide-right & {
+                padding-left: $navigationWidth + 40;
+            }
+        }
+
+        @media only screen and (max-width: $sidebarBreakPoint) {
+            .slide-left & {
+                padding-right: $sidebarWidth + 40;
+            }
+        }
+    }
+}
+
+#content-container {
+    background: #FFF;
+    border: 1px solid #DFDFDF;
+    min-height: 620px;
+
+    padding: 0 20px;
+
+    @media only screen and (min-width: $sidebarBreakPoint) {
+        padding: 0 35px;
+    }
+}
+
+#content {
+    .col-3 & {
+        margin-right: $sidebarWidth;
+
+        @media only screen and (max-width: $sidebarBreakPoint) {
+            margin-right: 40px;
+        }
+    }
+}
+
+#sidebar {
+    position: relative;
+    width: $sidebarWidth;
+    margin-top: 20px;
+
+    float: right;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        width: 40px;
+    }
+}
+
+#sidebar-content {
+    width: $sidebarWidth;
+
+    color: white;
+    background: $gray;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        visibility: hidden;
+
+        .slide-left & {
+            visibility: visible;
+        }
+    }
+}
+
+#sidebar-toggle {
+    display: none;
+
+    @media only screen and (max-width: $sidebarBreakPoint) {
+        display: block;
+
+        .slide-left & {
+            left: $sidebarWidth;
+        }
+    }
+}
+
+.layout-toggle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    
+    width: 40px;
+    height: 100%;
+    padding: 10px 0;
+    
+    text-align: center;
+    color: white;
+
+    background: $gray;
+
+    cursor: pointer;
+
+    user-select: none;
+}

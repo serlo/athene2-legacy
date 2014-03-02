@@ -15,6 +15,16 @@ use Zend\EventManager\Event;
 class PageControllerListener extends AbstractListener
 {
 
+    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    {
+        $events->attach($this->getMonitoredClass(), 'page.create', [$this, 'onUpdate']);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Page\Controller\IndexController';
+    }
+
     /**
      * Gets executed on page create
      *
@@ -23,42 +33,23 @@ class PageControllerListener extends AbstractListener
      */
     public function onUpdate(Event $e)
     {
-        $repositoryid = $e->getParam('repositoryid');
-        $slug         = $e->getParam('slug');
-        $repository   = $e->getParam('repository');
-        $language     = $e->getParam('language');
-        $entity       = $repository;
+        $slug       = $e->getParam('slug');
+        $repository = $e->getParam('repository');
+        $instance   = $e->getParam('instance');
 
         $url = $e->getTarget()->url()->fromRoute(
-            'page/article',
-            array(
-                'repositoryid' => $repositoryid
-            )
+            'page/view',
+            [
+                'page' => $repository->getId()
+            ]
         );
 
         $this->getAliasManager()->createAlias(
             $url,
             $slug,
-            $slug . '-' . $repositoryid,
-            $repository->getUuidEntity(),
-            $language
+            $slug . '-' . $repository->getId(),
+            $repository,
+            $instance
         );
-    }
-
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
-    {
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'page.create',
-            array(
-                $this,
-                'onUpdate'
-            )
-        );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'Page\Controller\IndexController';
     }
 }

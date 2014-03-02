@@ -17,17 +17,26 @@ use Zend\InputFilter\InputFilter;
 
 class PermissionForm extends Form
 {
-    public function __construct($permissions)
+    public function __construct($permissions, $instances)
     {
         parent::__construct('add-permission');
         $inputFilter = new InputFilter('article');
 
-        $values = array();
+        $values = [];
         foreach ($permissions as $permission) {
             $values[$permission->getId()] = $permission->getName();
         }
 
         $this->add((new Select('permission'))->setLabel('Permission:')->setValueOptions($values));
+
+        $values = [
+            -1 => 'Global'
+        ];
+        foreach ($instances as $instance) {
+            $values[$instance->getId()] = $instance->getName();
+        }
+
+        $this->add((new Select('instance'))->setLabel('Instance:')->setValueOptions($values));
 
         $this->add(
             (new Submit('submit'))->setValue('Add')->setAttribute('class', 'btn btn-success pull-right')

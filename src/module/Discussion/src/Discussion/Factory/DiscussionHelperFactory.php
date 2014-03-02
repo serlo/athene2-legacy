@@ -24,16 +24,19 @@ class DiscussionHelperFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $plugin                = new Discussion();
         $serviceLocator        = $serviceLocator->getServiceLocator();
         $discussionManager     = $serviceLocator->get('Discussion\DiscussionManager');
         $userManager           = $serviceLocator->get('User\Manager\UserManager');
-        $languageManager       = $serviceLocator->get('Language\Manager\LanguageManager');
+        $instanceManager       = $serviceLocator->get('Instance\Manager\InstanceManager');
         $sharedTaxonomyManager = $serviceLocator->get('Taxonomy\Manager\TaxonomyManager');
+        $termForm              = $serviceLocator->get('Taxonomy\Form\TermForm');
+        $discussionForm        = $serviceLocator->get('Discussion\Form\DiscussionForm');
+        $commentForm           = $serviceLocator->get('Discussion\Form\CommentForm');
+        $plugin                = new Discussion($termForm, $commentForm, $discussionForm);
 
         $plugin->setDiscussionManager($discussionManager);
         $plugin->setUserManager($userManager);
-        $plugin->setLanguageManager($languageManager);
+        $plugin->setInstanceManager($instanceManager);
         $plugin->setTaxonomyManager($sharedTaxonomyManager);
 
         return $plugin;

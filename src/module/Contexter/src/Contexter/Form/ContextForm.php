@@ -23,55 +23,76 @@ class ContextForm extends Form
     public function __construct(array $parameters, array $types)
     {
         parent::__construct('context');
+        $inputFilter = new InputFilter();
+
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
-        $inputFilter = new InputFilter('context');
         $this->setInputFilter($inputFilter);
 
-        $this->add(
-            array(
-                'name'       => 'route',
-                'type'       => 'Hidden',
-                'attributes' => array()
-            )
-        );
-
-        $values = array();
+        $values = [];
         foreach ($types as $type) {
             $values[$type] = $type;
         }
 
+        $this->add(['name' => 'route', 'type' => 'Hidden',]);
         $this->add((new Select('type'))->setLabel('Select a type:')->setValueOptions($values));
         $this->add((new Text('title'))->setLabel('Title:'));
         $this->add((new Text('object'))->setLabel('Object-ID:'));
-
         $this->add(new ParameterFieldset($parameters));
         $this->add(
             (new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right')
         );
 
         $inputFilter->add(
-            array(
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+            [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\- 0-9]+$~'
+                        ]
+                    ]
+                ]
+
+            ]
         );
 
         $inputFilter->add(
-            array(
-                'name'     => 'object',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+            [
+                'name'        => 'object',
+                'required'    => true,
+                'allow_empty' => false,
+                'validators'  => [
+                    [
+                        'name' => 'NotEmpty'
+                    ],
+                    [
+                        'name' => 'Digits'
+                    ]
+                ]
+            ]
+        );
+
+        $inputFilter->add(
+            [
+                'name'       => 'type',
+                'required'   => true,
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z]*$~'
+                        ]
+                    ]
+                ]
+            ]
         );
     }
 }

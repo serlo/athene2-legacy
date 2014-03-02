@@ -1,0 +1,10 @@
+<div class="sidebar-content-group">
+    <ul class="nav nav-side">
+        <li class="nav-side-header">
+            {{ translate('Related taxonomies') }}
+        </li>
+        {% for term in terms %}
+           <li>{{ normalize().toAnchor(term) }}</li>
+        {% endfor %}
+    </ul>
+</div>

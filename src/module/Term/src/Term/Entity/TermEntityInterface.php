@@ -11,9 +11,9 @@
  */
 namespace Term\Entity;
 
-use Language\Entity\LanguageAwareInterface;
+use Instance\Entity\InstanceAwareInterface;
 
-interface TermEntityInterface extends LanguageAwareInterface
+interface TermEntityInterface extends InstanceAwareInterface
 {
 
     /**
@@ -43,7 +43,7 @@ interface TermEntityInterface extends LanguageAwareInterface
 
     /**
      *
-     * @param string $slug            
+     * @param string $slug
      * @return self
      */
     public function setSlug($slug);

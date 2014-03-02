@@ -27,7 +27,7 @@ use Uuid\Manager\UuidManagerAwareTrait;
 class RelatedContentManager implements RelatedContentManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
-    use UuidManagerAwareTrait, RouterAwareTrait;
+    use RouterAwareTrait, UuidManagerAwareTrait;
     use FlushableTrait, AuthorizationAssertionTrait;
 
     public function getContainer($id)
@@ -134,41 +134,6 @@ class RelatedContentManager implements RelatedContentManagerInterface
     }
 
     /**
-     *
-     * @param int $id
-     * @return Entity\ContainerInterface
-     */
-    protected function createContainer($id)
-    {
-        /* @var $container Entity\ContainerInterface */
-        $uuid      = $this->getUuidManager()->getUuid($id);
-        $container = $this->getClassResolver()->resolve('RelatedContent\Entity\ContainerInterface');
-
-        $this->getUuidManager()->injectUuid($container, $uuid);
-        $this->getObjectManager()->persist($container);
-
-        return $container;
-    }
-
-    /**
-     *
-     * @param Entity\ContainerInterface $container
-     * @return Entity\HolderInterface
-     */
-    protected function createHolder(Entity\ContainerInterface $container)
-    {
-        /* @var $holder Entity\HolderInterface */
-        $holder = $this->getClassResolver()->resolve('RelatedContent\Entity\HolderInterface');
-        $holder->setContainer($container);
-        $holder->setPosition(999);
-        $this->getObjectManager()->persist($holder);
-        $this->getObjectManager()->flush($holder);
-
-        return $holder;
-    }
-
-    /**
-     *
      * @param ContainerInterface $related
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -188,12 +153,46 @@ class RelatedContentManager implements RelatedContentManagerInterface
                 $result = new CategoryResult();
                 $result->setObject($specific);
             } else {
-                throw new Exception\RuntimeException(sprintf('Could not find a result type for `%s`',
-                    get_class($specific)));
+                throw new Exception\RuntimeException(sprintf(
+                    'Could not find a result type for `%s`',
+                    get_class($specific)
+                ));
             }
             $collection->add($result);
         }
 
         return $collection;
+    }
+
+    /**
+     * @param Entity\ContainerInterface $container
+     * @return Entity\HolderInterface
+     */
+    protected function createHolder(Entity\ContainerInterface $container)
+    {
+        /* @var $holder Entity\HolderInterface */
+        $holder = $this->getClassResolver()->resolve('RelatedContent\Entity\HolderInterface');
+        $holder->setContainer($container);
+        $holder->setPosition(999);
+        $this->getObjectManager()->persist($holder);
+        $this->getObjectManager()->flush($holder);
+
+        return $holder;
+    }
+
+    /**
+     * @param int $id
+     * @return Entity\ContainerInterface
+     */
+    protected function createContainer($id)
+    {
+        /* @var $container Entity\ContainerInterface */
+        $uuid      = $this->getUuidManager()->getUuid($id);
+        $container = $this->getClassResolver()->resolveClassName('RelatedContent\Entity\ContainerInterface');
+        $container = new $container($uuid);
+
+        $this->getObjectManager()->persist($container);
+
+        return $container;
     }
 }

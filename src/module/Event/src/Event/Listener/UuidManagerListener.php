@@ -12,25 +12,25 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class UuidManagerListener extends AbstractMvcListener
+class UuidManagerListener extends AbstractListener
 {
 
     public function onRestore(Event $e)
     {
         $object   = $e->getParam('object');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('uuid/restore', $language, $user, $object);
+        $this->logEvent('uuid/restore', $instance, $object);
     }
 
     public function onTrash(Event $e)
     {
         $object   = $e->getParam('object');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $this->logEvent('uuid/trash', $language, $user, $object);
+        $this->logEvent('uuid/trash', $instance, $object);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
@@ -38,18 +38,18 @@ class UuidManagerListener extends AbstractMvcListener
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'trash',
-            array(
+            [
                 $this,
                 'onTrash'
-            )
+            ]
         );
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'restore',
-            array(
+            [
                 $this,
                 'onRestore'
-            )
+            ]
         );
     }
 

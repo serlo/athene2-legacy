@@ -12,75 +12,43 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class RepositoryManagerListener extends AbstractMvcListener
+class RepositoryManagerListener extends AbstractListener
 {
 
     /**
      * @var array
      */
-    protected $listeners = array();
-
-    public function onAddRevision(Event $e)
-    {
-        $repository = $e->getParam('repository')->getUuidEntity();
-        $revision   = $e->getParam('revision');
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
-        $language   = $this->getLanguageManager()->getLanguageFromRequest();
-
-        $this->logEvent(
-            'entity/revision/add',
-            $language,
-            $user,
-            $revision,
-            array(
-                array(
-                    'name'   => 'repository',
-                    'object' => $repository
-                )
-            )
-        );
-    }
-
-    public function onCheckout(Event $e)
-    {
-        $revision   = $e->getParam('revision');
-        $repository = $e->getParam('repository')->getUuidEntity();
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
-        $language   = $this->getLanguageManager()->getLanguageFromRequest();
-
-        $this->logEvent(
-            'entity/revision/checkout',
-            $language,
-            $user,
-            $revision,
-            array(
-                array(
-                    'name'   => 'repository',
-                    'object' => $repository
-                )
-            )
-        );
-    }
+    protected $listeners = [];
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'commit',
-            array(
+            [
                 $this,
                 'onAddRevision'
-            ),
+            ],
             1
         );
 
-        $this->listeners[] = $events->attach(
+        $events->attach(
             $this->getMonitoredClass(),
             'checkout',
-            array(
+            [
                 $this,
                 'onCheckout'
-            ),
+            ],
+            -1
+        );
+
+        $events->attach(
+            $this->getMonitoredClass(),
+            'reject',
+            [
+                $this,
+                'onReject'
+            ],
             -1
         );
     }
@@ -88,5 +56,71 @@ class RepositoryManagerListener extends AbstractMvcListener
     protected function getMonitoredClass()
     {
         return 'Versioning\RepositoryManager';
+    }
+
+    public function onAddRevision(Event $e)
+    {
+        $repository = $e->getParam('repository');
+        $revision   = $e->getParam('revision');
+        $user       = $this->getUserManager()->getUserFromAuthenticator();
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+
+        $this->logEvent(
+            'entity/revision/add',
+            $instance,
+
+            $revision,
+            [
+                [
+                    'name'  => 'repository',
+                    'value' => $repository
+                ]
+            ]
+        );
+    }
+
+    public function onCheckout(Event $e)
+    {
+        $revision   = $e->getParam('revision');
+        $repository = $e->getParam('repository');
+        $user       = $e->getParam('actor');
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+
+        $this->logEvent(
+            'entity/revision/checkout',
+            $instance,
+            $revision,
+            [
+                [
+                    'name'  => 'repository',
+                    'value' => $repository
+                ]
+            ]
+        );
+    }
+
+    public function onReject(Event $e)
+    {
+        $revision   = $e->getParam('revision');
+        $repository = $e->getParam('repository');
+        $user       = $e->getParam('actor');
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+        $reason     = $e->getParam('reason');
+
+        $this->logEvent(
+            'entity/revision/reject',
+            $instance,
+            $revision,
+            [
+                [
+                    'name'  => 'repository',
+                    'value' => $repository
+                ],
+                [
+                    'name'  => 'reason',
+                    'value' => $reason
+                ]
+            ]
+        );
     }
 }

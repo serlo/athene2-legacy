@@ -60,9 +60,9 @@ class Router implements RouterInterface
 
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
 
-        $criteria = array(
+        $criteria = [
             'name' => $this->getRouteMatch()->getMatchedRouteName()
-        );
+        ];
 
         if ($type) {
             $type = $this->getContextManager()->findTypeByName($type);
@@ -149,26 +149,6 @@ class Router implements RouterInterface
         return $this;
     }
 
-    protected function getDefaultConfig()
-    {
-        return array(
-            'adapters' => array()
-        );
-    }
-
-    protected function clear()
-    {
-        if (is_object($this->factoryRouteMatch)) {
-            $this->setRouteMatch($this->factoryRouteMatch);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param array $routes
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
     protected function matchRoutes(array $routes, TypeInterface $type)
     {
         $result = new ArrayCollection();
@@ -187,33 +167,45 @@ class Router implements RouterInterface
 
     protected function matchesParameters(Entity\RouteInterface $route)
     {
-        $passed = false;
         /* @var $parameter Entity\RouteParameterInterface */
         foreach ($route->getParameters() as $parameter) {
-            $matching = $this->matchesParameter($parameter);
-            if (!$matching) {
-                $passed = false;
-                break;
-            } else {
-                $passed = true;
+            if (!$this->matchesParameter($parameter)) {
+                return false;
             }
         }
-        if ($passed === true) {
-            return true;
-        }
 
-        return $passed;
+        return true;
     }
 
     protected function matchesParameter(Entity\RouteParameterInterface $parameter)
     {
         $parameters = $this->getAdapter()->getParams();
-        if (array_key_exists($parameter->getKey(), $parameters) && $parameters[$parameter->getKey(
-            )] === $parameter->getValue()
-        ) {
-            return true;
+        $key        = $parameter->getKey();
+
+        if (isset($parameters[$key])) {
+            if (is_array($parameters[$key])) {
+                return in_array($parameter->getValue(), $parameters[$key]);
+            } else {
+                return strtolower($parameters[$key]) == strtolower($parameter->getValue());
+            }
         }
 
         return false;
+    }
+
+    protected function clear()
+    {
+        if (is_object($this->factoryRouteMatch)) {
+            $this->setRouteMatch($this->factoryRouteMatch);
+        }
+
+        return $this;
+    }
+
+    protected function getDefaultConfig()
+    {
+        return [
+            'adapters' => []
+        ];
     }
 }

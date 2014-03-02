@@ -32,14 +32,14 @@ class FirewallHydrator
         $this->setPageManager($this->getServiceLocator()
             ->get('Page\Manager\PageManager'));
         $routeMatch = $this->event->getRouteMatch();
-        $id = $routeMatch->getParam('repositoryid');
+        $id = $routeMatch->getParam('page');
         if ($id === null) {
             $id = $routeMatch->getParam('id');
         }
         $pageRepository = $this->getPageManager()->getPageRepository($id);
         
         $allRoles = $this->getPageManager()->findAllRoles();
-        $array = array();
+        $array = [];
         
        foreach ($allRoles as $role) {
             if ($pageRepository->hasRole($role))

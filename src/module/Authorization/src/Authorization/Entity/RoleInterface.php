@@ -10,12 +10,77 @@
  */
 namespace Authorization\Entity;
 
-interface RoleInterface
-{
+use Rbac\Role\HierarchicalRoleInterface;
+use User\Entity\UserInterface;
 
+interface RoleInterface extends HierarchicalRoleInterface
+{
+    /**
+     * @param RoleInterface $child
+     * @return void
+     */
+    public function addChild(RoleInterface $child);
+
+    /**
+     * @param RoleInterface[] $children
+     * @return void
+     */
+    public function addChildren($children);
+
+    /**
+     * @param RoleInterface[] $children
+     * @return void
+     */
+    public function removeChildren($children);
+
+    /**
+     * @param ParametrizedPermissionInterface $permission
+     * @return void
+     */
+    public function addPermission(ParametrizedPermissionInterface $permission);
+
+    /**
+     * @param UserInterface $user
+     * @return void
+     */
+    public function addUser(UserInterface $user);
+
+    /**
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * @return ParametrizedPermissionInterface[]
+     */
     public function getPermissions();
 
-    public function addPermission($permission);
+    /**
+     * @return UserInterface[]
+     */
+    public function getUsers();
 
-    public function removePermission($permission);
-} 
+    /**
+     * @param RoleInterface $child
+     * @return mixed
+     */
+    public function removeChild(RoleInterface $child);
+
+    /**
+     * @param ParametrizedPermissionInterface $permission
+     * @return mixed
+     */
+    public function removePermission(ParametrizedPermissionInterface $permission);
+
+    /**
+     * @param UserInterface $user
+     * @return mixed
+     */
+    public function removeUser(UserInterface $user);
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function setName($name);
+}

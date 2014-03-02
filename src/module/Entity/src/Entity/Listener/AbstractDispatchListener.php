@@ -12,24 +12,23 @@ namespace Entity\Listener;
 
 use Common\Listener\AbstractSharedListenerAggregate;
 use Entity\Controller\AbstractController;
+use Navigation\Factory\DefaultNavigationFactoryFactory;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 
 abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
 {
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
         $events->attach(
             $this->getMonitoredClass(),
             MvcEvent::EVENT_DISPATCH,
-            array(
+            [
                 $this,
                 'onDispatch'
-            )
+            ]
         );
     }
 
@@ -37,9 +36,7 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
     {
         $controller = $event->getTarget();
         if ($controller instanceof AbstractController) {
-            /* @var $controller AbstractController */
-
-            $entity  = $controller->getEntity();
+            $entity = $controller->getEntity();
             $subject = null;
 
             foreach ($entity->getTaxonomyTerms() as $term) {
@@ -50,13 +47,15 @@ abstract class AbstractDispatchListener extends AbstractSharedListenerAggregate
             }
 
             if ($subject !== null) {
-                $routeMatch = new RouteMatch(array(
-                    'subject' => $subject->getSlug()
-                ));
-                $routeMatch->setMatchedRouteName('subject');
-                $controller->getServiceLocator()->get('Ui\Navigation\DefaultNavigationFactory')->setRouteMatch(
-                    $routeMatch
+                /* @var $navigationFactory DefaultNavigationFactoryFactory */
+                $navigationFactory = $controller->getServiceLocator()->get(
+                    'Navigation\Factory\DefaultNavigationFactory'
                 );
+                $params            = ['subject' => $subject->getSlug()];
+                $routeMatch        = new RouteMatch($params);
+
+                $routeMatch->setMatchedRouteName('subject');
+                $navigationFactory->setRouteMatch($routeMatch);
             }
         }
     }

@@ -8,48 +8,48 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    'router'          => array(
-        'routes' => array(
-            'home'        => array(
+return [
+    'router'          => [
+        'routes' => [
+            'home'        => [
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
+                'options' => [
                     'route'    => '/',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Application\Controller\IndexController',
                         'action'     => 'index'
-                    )
-                )
-            ),
-            'application' => array(
+                    ]
+                ]
+            ],
+            'application' => [
                 'type'          => 'Literal',
-                'options'       => array(
+                'options'       => [
                     'route'    => '/application',
-                    'defaults' => array(
+                    'defaults' => [
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index'
-                    )
-                ),
+                    ]
+                ],
                 'may_terminate' => true,
-                'child_routes'  => array(
-                    'default' => array(
+                'child_routes'  => [
+                    'default' => [
                         'type'    => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route'       => '/[:controller[/:action]]',
-                            'constraints' => array(
+                            'constraints' => [
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*'
-                            ),
-                            'defaults'    => array()
-                        )
-                    )
-                )
-            )
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
+                            ],
+                            'defaults'    => []
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'MailMan'    => function ($sm) {
                     $config     = $sm->get('Config');
@@ -61,11 +61,11 @@ return array(
 
                     return $transport;
                 }
-        )
-    ),
-    'controllers'     => array(
-        'invokables' => array(
+        ]
+    ],
+    'controllers'     => [
+        'invokables' => [
             'Application\Controller\IndexController' => 'Application\Controller\IndexController'
-        )
-    )
-);
+        ]
+    ]
+];

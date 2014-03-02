@@ -10,7 +10,7 @@
  */
 namespace ClassResolver;
 
-return array(
+return [
     'service_manager' => [
         'factories' => [
             'ClassResolver\ClassResolver' => 'ClassResolver\ClassResolverFactory'
@@ -24,4 +24,4 @@ return array(
         ]
     ],
     'class_resolver'  => []
-);
+];

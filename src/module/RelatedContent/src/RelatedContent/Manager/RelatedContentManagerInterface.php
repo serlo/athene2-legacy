@@ -11,8 +11,8 @@
  */
 namespace RelatedContent\Manager;
 
-use RelatedContent\Entity;
 use Doctrine\Common\Collections\Collection;
+use RelatedContent\Entity;
 
 interface RelatedContentManagerInterface
 {

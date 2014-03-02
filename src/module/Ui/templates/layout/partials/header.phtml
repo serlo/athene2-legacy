@@ -11,7 +11,7 @@
  */
 ?>
 <header id="header">
-    <?php echo $this->partial('layout/partials/top-bar.phtml'); ?>
+    <?php echo $this->partial('layout/partials/top-bar'); ?>
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -25,7 +25,8 @@
                                             ->setOnlyActiveBranch(true)
                                             ->setMinDepth(0)
                                             ->setMaxDepth(0)
-                                            ->render(); ?>
+                                            ->render();
+                            ?>
                         <b class="caret"></b></a>
                         <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                             <?php
@@ -33,7 +34,7 @@
                                      ->menu()
                                      ->setOnlyActiveBranch(false)
                                      ->setUlClass('dropdown-menu')
-                                     ->setPartial('layout/navigation/subject-navigation.phtml')
+                                     ->setPartial('layout/navigation/subject-navigation')
                                      ->render();
                         ?>
                         </div>

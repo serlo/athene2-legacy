@@ -1,166 +1,172 @@
 <?php
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Taxonomy\Controller;
 
-use Zend\View\Model\ViewModel;
+use Instance\Manager\InstanceManagerInterface;
 use Taxonomy\Form\TermForm;
+use Taxonomy\Manager\TaxonomyManagerInterface;
+use Zend\View\Model\ViewModel;
 
 class TermController extends AbstractController
 {
-    use \User\Manager\UserManagerAwareTrait;
+    /**
+     * @var \Taxonomy\Form\TermForm
+     */
+    protected $termForm;
 
-    public function organizeAction()
-    {
-        $term = $this->getTerm();
-        
-        $view = new ViewModel(array(
-            'term' => $term
-        ));
-        
-        $view->setTemplate('taxonomy/term/organize');
-        return $view;
-    }
-
-    public function updateAction()
-    {
-        $id = $this->params('id');
-        $term = $this->getTerm($id);
-        
-        $view = new ViewModel(array(
-            'id' => $id,
-            'isUpdating' => true
-        ));
-        
-        $form = new TermForm();
-        
-        $form->setData($term->getArrayCopy());
-        $view->setVariable('form', $form);
-        
-        $view->setTemplate('/taxonomy/term/form');
-        
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()
-                ->getPost());
-            if ($form->isValid()) {
-                $this->getTaxonomyManager()->updateTerm($this->params('id'), $form->getData());
-                
-                $this->getTaxonomyManager()->flush();
-                $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
-                $this->redirect()->toUrl($this->referer()
-                    ->fromStorage());
-            }
-        }
-        $this->referer()->store();
-        
-        return $view;
+    public function __construct(
+        InstanceManagerInterface $instanceManager,
+        TaxonomyManagerInterface $taxonomyManager,
+        TermForm $termForm
+    ) {
+        $this->termForm = $termForm;
+        parent::__construct($instanceManager, $taxonomyManager);
     }
 
     public function createAction()
     {
-        $form = new TermForm();
-        
-        $form->setData(array(
-            'taxonomy' => $this->params('taxonomy'),
-            'parent' => $this->params('parent', null)
-        ));
-        
-        $form->setAttribute('action', $this->url()
-            ->fromRoute('taxonomy/term/create', array(
-            'parent' => $this->params('parent'),
-            'taxonomy' => $this->params('taxonomy')
-        )));
-        
-        $view = new ViewModel(array(
-            'form' => $form,
-            'isUpdating' => false
-        ));
-        
-        $view->setTemplate('/taxonomy/term/form');
-        
+        $form = $this->termForm;
+
         if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
+            $data = $this->params()->fromPost();
+            $data = array_merge(
+                $data,
+                [
+                    'taxonomy' => $this->params('taxonomy'),
+                    'parent'   => $this->params('parent', null)
+
+                ]
+            );
             $form->setData($data);
             if ($form->isValid()) {
-                $term = $this->getTaxonomyManager()->createTerm($form->getData(), $this->getLanguageManager()
-                    ->getLanguageFromRequest());
-                
-                $this->getTaxonomyManager()->flush();
-                
-                $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
-                $this->redirect()->toUrl($this->referer()
-                    ->fromStorage());
-            }
-        }
-        $this->referer()->store();
-        return $view;
-    }
+                $this->getTaxonomyManager()->createTerm($form);
 
-    public function orderAssociatedAction()
-    {
-        $association = $this->params('association');
-        $termService = $this->getTerm($this->params('term'));
-        
-        if ($this->getRequest()->isPost()) {
-            $associations = $this->params()->fromPost('sortable', array());
-            $i = 0;
-            
-            foreach ($associations as $a) {
-                $termService->positionAssociatedObject($association, $a['id'], $i);
-                $i ++;
+                $this->getTaxonomyManager()->flush();
+                $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
-            
-            $this->getTaxonomyManager()
-                ->getObjectManager()
-                ->flush();
-            
-            return '';
+        } else {
+            $this->referer()->store();
         }
-        
-        $associations = $termService->getAssociated($association);
-        $view = new ViewModel(array(
-            'term' => $termService,
-            'associations' => $associations,
-            'association' => $association
-        ));
-        $view->setTemplate('taxonomy/term/order-associated');
-        
+
+        $view = new ViewModel([
+            'form'       => $form,
+            'isUpdating' => false
+        ]);
+
+        $view->setTemplate('taxonomy/term/form');
+
         return $view;
     }
 
     public function orderAction()
     {
-        $data = $this->params()->fromPost('sortable', array());
+        $data = $this->params()->fromPost('sortable', []);
         $this->iterWeight($data, $this->params('term'));
-        $this->getTaxonomyManager()
-            ->getObjectManager()
-            ->flush();
-        return '';
+        $this->getTaxonomyManager()->flush();
+
+        return true;
     }
 
-    protected function iterWeight($terms, $parent = NULL)
+    protected function iterWeight($terms, $parent = null)
     {
         $position = 1;
+        $form     = $this->termForm;
         foreach ($terms as $term) {
-            
-            $this->getTaxonomyManager()->updateTerm($term['id'], [
-                'parent' => $parent,
-                'position' => $position
-            ]);
-            
+            $entity = $this->getTaxonomyManager()->getTerm($term['id']);
+            $data   = $form->getHydrator()->extract($entity);
+            $data   = array_merge($data, ['parent' => $parent, 'position' => $position]);
+            $form->bind($entity);
+            $form->setData($data);
+
+            $this->getTaxonomyManager()->updateTerm($form);
+
             if (isset($term['children'])) {
                 $this->iterWeight($term['children'], $term['id']);
             }
-            $position ++;
+
+            $position++;
         }
+
         return true;
+    }
+
+    public function orderAssociatedAction()
+    {
+        $association = $this->params('association');
+        $term        = $this->getTerm($this->params('term'));
+
+        if ($this->getRequest()->isPost()) {
+            $associations = $this->params()->fromPost('sortable', []);
+            $i            = 0;
+
+            foreach ($associations as $a) {
+                $term->positionAssociatedObject($a['id'], $i, $association);
+                $i++;
+            }
+
+            $this->getTaxonomyManager()->flush();
+
+            return true;
+        }
+
+        $associations = $term->getAssociated($association);
+        $view         = new ViewModel([
+            'term'         => $term,
+            'associations' => $associations,
+            'association'  => $association
+        ]);
+        $view->setTemplate('taxonomy/term/order-associated');
+
+        return $view;
+    }
+
+    public function organizeAction()
+    {
+        $term = $this->getTerm();
+
+        $view = new ViewModel([
+            'term' => $term
+        ]);
+
+        $view->setTemplate('taxonomy/term/organize');
+
+        return $view;
+    }
+
+    public function updateAction()
+    {
+        $id   = $this->params('id');
+        $term = $this->getTerm($id);
+        $form = $this->termForm;
+
+        $form->bind($term);
+        if ($this->getRequest()->isPost()) {
+            $post = $this->getRequest()->getPost();
+            $form->setData($post);
+            if ($form->isValid()) {
+                $this->getTaxonomyManager()->updateTerm($form);
+                $this->getTaxonomyManager()->flush();
+                $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
+
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
+            }
+        } else {
+            $this->referer()->store();
+        }
+
+        $view = new ViewModel(['form' => $form]);
+        $view->setTemplate('taxonomy/term/form');
+
+        return $view;
     }
 }

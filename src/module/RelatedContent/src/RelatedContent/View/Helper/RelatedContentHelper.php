@@ -11,8 +11,8 @@
  */
 namespace RelatedContent\View\Helper;
 
+use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
-use Uuid\Entity\UuidHolder;
 
 class RelatedContentHelper extends AbstractHelper
 {
@@ -20,13 +20,13 @@ class RelatedContentHelper extends AbstractHelper
 
     /**
      *
-     * @var UuidHolder
+     * @var UuidInterface
      */
     protected $object;
 
     /**
      *
-     * @return UuidHolder $object
+     * @return UuidInterface $object
      */
     public function getObject()
     {
@@ -35,16 +35,16 @@ class RelatedContentHelper extends AbstractHelper
 
     /**
      *
-     * @param UuidHolder $object            
+     * @param UuidInterface $object
      * @return self
      */
-    public function setObject(UuidHolder $object)
+    public function setObject(UuidInterface $object)
     {
         $this->object = $object;
         return $this;
     }
 
-    public function __invoke(UuidHolder $uuid)
+    public function __invoke(UuidInterface $uuid)
     {
         $this->setObject($uuid);
         return $this->render();
@@ -54,8 +54,8 @@ class RelatedContentHelper extends AbstractHelper
     {
         $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->getObject()
             ->getId());
-        return $this->getView()->partial('related-content/view', array(
+        return $this->getView()->partial('related-content/view', [
             'aggregated' => $aggregated
-        ));
+        ]);
     }
 }

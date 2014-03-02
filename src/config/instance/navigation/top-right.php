@@ -8,39 +8,39 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-return array(
-    'navigation' => array(
-        'top-right' => array(
+return [
+    'navigation' => [
+        'top-right' => [
 
-            array(
+            [
                 'label'         => '',
                 'route'         => 'user/me',
                 'icon'          => 'user',
                 'needsIdentity' => true
-            ),
-            array(
+            ],
+            [
                 'label'         => '',
                 'route'         => 'user/settings',
                 'icon'          => 'wrench',
                 'needsIdentity' => true
-            ),
-            array(
+            ],
+            [
                 'label'         => 'Sign up',
                 'route'         => 'user/register',
                 'needsIdentity' => false
-            ),
-            array(
+            ],
+            [
                 'label'         => '',
-                'route'         => 'user/login',
+                'route'         => 'authentication/login',
                 'icon'          => 'log-in',
                 'needsIdentity' => false
-            ),
-            array(
+            ],
+            [
                 'label'         => '',
-                'route'         => 'user/logout',
+                'route'         => 'authentication/logout',
                 'icon'          => 'log-out',
                 'needsIdentity' => true
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

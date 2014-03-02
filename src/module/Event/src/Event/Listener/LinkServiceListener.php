@@ -12,39 +12,39 @@ namespace Event\Listener;
 
 use Zend\EventManager\Event;
 
-class LinkServiceListener extends AbstractMvcListener
+class LinkServiceListener extends AbstractListener
 {
 
     public function onLink(Event $e)
     {
         $entity   = $e->getParam('entity');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $params = array(
-            array(
+        $params = [
+            [
                 'name'   => 'parent',
-                'object' => $e->getParam('parent')->getUuidEntity()
-            )
-        );
+                'value' => $e->getParam('parent')
+            ]
+        ];
 
-        $this->logEvent('entity/link/create', $language, $user, $entity, $params);
+        $this->logEvent('entity/link/create', $instance, $entity, $params);
     }
 
     public function onUnLink(Event $e)
     {
         $entity   = $e->getParam('entity');
         $user     = $this->getUserManager()->getUserFromAuthenticator();
-        $language = $this->getLanguageManager()->getLanguageFromRequest();
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $params = array(
-            array(
+        $params = [
+            [
                 'name'   => 'parent',
-                'object' => $e->getParam('parent')->getUuidEntity()
-            )
-        );
+                'value' => $e->getParam('parent')
+            ]
+        ];
 
-        $this->logEvent('entity/link/remove', $language, $user, $entity, $params);
+        $this->logEvent('entity/link/remove', $instance, $entity, $params);
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
@@ -52,19 +52,19 @@ class LinkServiceListener extends AbstractMvcListener
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'unlink',
-            array(
+            [
                 $this,
                 'onUnlink'
-            )
+            ]
         );
 
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'link',
-            array(
+            [
                 $this,
                 'onLink'
-            )
+            ]
         );
     }
 
