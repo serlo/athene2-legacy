@@ -35,7 +35,7 @@ class Context implements ContextInterface
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid", inversedBy="context")
+     * @ORM\ManyToOne(targetEntity="Uuid\Entity\Uuid")
      * @ORM\JoinColumn(name="uuid_id", referencedColumnName="id")
      */
     protected $object;
