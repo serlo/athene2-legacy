@@ -26,7 +26,7 @@
                                 $notification->getActors()->current()->getUsername(),
                                 $notification->getObjects()->current()->getId()
                             ); ?>
-                            <small><?php echo $this->timeago()->render($notification->getTimestamp()); ?></small>
+                            <small><?php echo $this->timeago()->render($notification->getEvents()->current()->getTimestamp()); ?></small>
                         </a>
                     <?php endif; ?>
                 </li>
