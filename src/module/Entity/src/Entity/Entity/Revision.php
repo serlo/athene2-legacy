@@ -70,11 +70,9 @@ class Revision extends Uuid implements RevisionInterface
 
     protected function getField($field)
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("field", $field))->setFirstResult(0)->setMaxResults(
-            1
-        );
-
-        $data = $this->fields->matching($criteria);
+        $expression = Criteria::expr()->eq("name", $field);
+        $criteria   = Criteria::create()->where($expression)->setFirstResult(0)->setMaxResults(1);
+        $data       = $this->fields->matching($criteria);
 
         if (empty($data)) {
             return null;
@@ -112,9 +110,9 @@ class Revision extends Uuid implements RevisionInterface
             $this->fields->add($entity);
         }
 
-        $entity->set('field', $name);
-        $entity->set('revision', $this);
-        $entity->set('value', $value);
+        $entity->setName($name);
+        $entity->setRevision($this);
+        $entity->setValue($value);
 
         return $entity;
     }

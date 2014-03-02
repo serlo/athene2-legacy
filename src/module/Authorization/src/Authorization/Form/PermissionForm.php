@@ -22,7 +22,7 @@ class PermissionForm extends Form
         parent::__construct('add-permission');
         $inputFilter = new InputFilter('article');
 
-        $values = array();
+        $values = [];
         foreach ($permissions as $permission) {
             $values[$permission->getId()] = $permission->getName();
         }

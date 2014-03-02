@@ -34,24 +34,24 @@ class ExternalForm extends Form
         $this->add((new Submit('submit'))->setValue('Add')
             ->setAttribute('class', 'btn btn-success pull-right'));
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'title',
             'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
-        ));
+            'filters' => [
+                [
+                    'name' => 'StripTags'
+                ]
+            ]
+        ]);
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'url',
             'required' => true,
-            'filters' => array(
-                array(
-                    'name' => 'HtmlEntities'
-                )
-            )
-        ));
+            'filters' => [
+                [
+                    'name' => 'StripTags'
+                ]
+            ]
+        ]);
     }
 }

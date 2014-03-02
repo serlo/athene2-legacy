@@ -46,10 +46,10 @@ class TermManager implements TermManagerInterface
         $entity = $this->getObjectManager()->getRepository(
             $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface')
         )->findOneBy(
-                array(
+                [
                     'slug'     => $slug,
                     'instance' => $instance->getId()
-                )
+                ]
             );
 
         if (!is_object($entity)) {
@@ -64,10 +64,10 @@ class TermManager implements TermManagerInterface
         $entity = $this->getObjectManager()->getRepository(
             $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface')
         )->findOneBy(
-                array(
+                [
                     'name'     => $name,
                     'instance' => $instance->getId()
-                )
+                ]
             );
 
         if (!is_object($entity)) {

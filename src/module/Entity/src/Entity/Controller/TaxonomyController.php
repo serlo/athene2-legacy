@@ -21,8 +21,8 @@ class TaxonomyController extends AbstractController
     public function updateAction()
     {
         $entity = $this->getEntity();
-        $this->assertGranted('entity.link.create', $entity);
-        $this->assertGranted('entity.link.purge', $entity);
+        $this->assertGranted('taxonomy.term.associate', $entity);
+        $this->assertGranted('taxonomy.term.dissociate', $entity);
 
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
@@ -34,10 +34,10 @@ class TaxonomyController extends AbstractController
                     $term = $this->getTaxonomyManager()->getTerm($termId);
 
                     if ($added == 1) {
-                        $this->getTaxonomyManager()->associateWith($termId, 'entities', $entity);
+                        $this->getTaxonomyManager()->associateWith($termId, $entity);
                         $event = 'addToTerm';
                     } elseif ($added == 0) {
-                        $this->getTaxonomyManager()->removeAssociation($termId, 'entities', $entity);
+                        $this->getTaxonomyManager()->removeAssociation($termId, $entity);
                         $event = 'removeFromTerm';
                     }
 
@@ -62,10 +62,10 @@ class TaxonomyController extends AbstractController
             $this->referer()->store();
         }
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'terms'  => $taxonomy->getChildren(),
             'entity' => $entity
-        ));
+        ]);
         $view->setTemplate('entity/taxonomy/update');
 
         return $view;

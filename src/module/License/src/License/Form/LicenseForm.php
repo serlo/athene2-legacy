@@ -39,51 +39,51 @@ class LicenseForm extends Form
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => false,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'iconHref',
                 'required' => false,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'url',
                 'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ]
+            ]
         );
     }
 }

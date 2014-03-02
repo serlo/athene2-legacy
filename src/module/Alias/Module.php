@@ -15,11 +15,11 @@ use Zend\Mvc\MvcEvent;
 class Module
 {
 
-    public static $listeners = array(
+    public static $listeners = [
         'Alias\Listener\BlogManagerListener',
         'Alias\Listener\PageControllerListener',
         'Alias\Listener\RepositoryManagerListener'
-    );
+    ];
 
     public function getConfig()
     {

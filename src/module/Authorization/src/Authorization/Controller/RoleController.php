@@ -216,9 +216,9 @@ class RoleController extends AbstractActionController
 
     public function rolesAction()
     {
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'roles' => $this->getRoleService()->findAllRoles()
-        ));
+        ]);
         $view->setTemplate('authorization/role/roles');
 
         return $view;
@@ -229,10 +229,10 @@ class RoleController extends AbstractActionController
         $role = $this->params('role');
         $role = $this->getRoleService()->getRole($role);
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'role'  => $role,
             'users' => $role->getUsers()
-        ));
+        ]);
 
         return $view;
     }

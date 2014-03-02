@@ -39,10 +39,10 @@ class SearchController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $container = $this->getSearchService()->search($data['q'], array(
+                $container = $this->getSearchService()->search($data['q'], [
                     'entity',
                     'taxonomyTerm'
-                ));
+                ]);
 
                 $view->setVariable('container', $container);
                 $view->setVariable('query', $data['q']);
@@ -62,10 +62,10 @@ class SearchController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 
-                $results = $this->getSearchService()->search($data['q'], array(
+                $results = $this->getSearchService()->search($data['q'], [
                     'entity',
                     'taxonomyTerm'
-                ));
+                ]);
 
                 $results = $this->getSearchService()->ajaxify($results);
 

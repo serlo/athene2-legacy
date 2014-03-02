@@ -21,12 +21,12 @@ class LinkServiceListener extends AbstractListener
         $user     = $this->getUserManager()->getUserFromAuthenticator();
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $params = array(
-            array(
+        $params = [
+            [
                 'name'   => 'parent',
                 'value' => $e->getParam('parent')
-            )
-        );
+            ]
+        ];
 
         $this->logEvent('entity/link/create', $instance, $entity, $params);
     }
@@ -37,12 +37,12 @@ class LinkServiceListener extends AbstractListener
         $user     = $this->getUserManager()->getUserFromAuthenticator();
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
 
-        $params = array(
-            array(
+        $params = [
+            [
                 'name'   => 'parent',
                 'value' => $e->getParam('parent')
-            )
-        );
+            ]
+        ];
 
         $this->logEvent('entity/link/remove', $instance, $entity, $params);
     }
@@ -52,19 +52,19 @@ class LinkServiceListener extends AbstractListener
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'unlink',
-            array(
+            [
                 $this,
                 'onUnlink'
-            )
+            ]
         );
 
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'link',
-            array(
+            [
                 $this,
                 'onLink'
-            )
+            ]
         );
     }
 

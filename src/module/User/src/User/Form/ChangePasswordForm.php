@@ -35,33 +35,33 @@ class ChangePasswordForm extends Form
             ->setAttribute('class', 'btn btn-success pull-right'));
 
 
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'passwordConfirm',
             'required' => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'stringLength',
-                    'options' => array(
+                    'options' => [
                         'min' => 6
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'name' => 'identical',
-                    'options' => array(
+                    'options' => [
                         'token' => 'password'
-                    )
-                )
-            )
-        ));
+                    ]
+                ]
+            ]
+        ]);
         
-        $inputFilter->add(array(
+        $inputFilter->add([
             'name' => 'password',
             'required' => true,
-            'filters' => array(
-                array(
+            'filters' => [
+                [
                     'name' => 'Authentication\HashFilter'
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
     }
 }

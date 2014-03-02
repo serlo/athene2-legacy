@@ -22,7 +22,6 @@ class ModuleForm extends Form
     {
         parent::__construct('module');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('module');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setLabel('Title:'));
@@ -32,33 +31,18 @@ class ModuleForm extends Form
                 'plain'
             )
         );
-
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
+            )
+        );
         $this->add(new Controls());
 
-        $inputFilter->add(
-            array(
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            array(
-                'name'     => 'reasoning',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
-        );
-
+        $inputFilter = new InputFilter('module');
+        $inputFilter->add(['name' => 'title', 'required' => true, 'filters' => [['name' => 'StripTags']]]);
+        $inputFilter->add(['name' => 'reasoning', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $this->setInputFilter($inputFilter);
     }
 }

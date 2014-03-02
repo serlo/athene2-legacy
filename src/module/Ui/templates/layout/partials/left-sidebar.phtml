@@ -4,11 +4,11 @@
             <i class="glyphicon glyphicon-list"></i>
         </div>
         <?php
-        echo $this->partial('layout/partials/search.phtml');
+        echo $this->partial('layout/partials/search');
 
         echo $this->navigation('navigation')
                     ->menu()
-                    ->setPartial('layout/navigation/side-navigation.phtml')
+                    ->setPartial('layout/navigation/side-navigation')
                     ->setOnlyActiveBranch(false)
                     ->setMinDepth(0)
                     ->setMaxDepth(0)

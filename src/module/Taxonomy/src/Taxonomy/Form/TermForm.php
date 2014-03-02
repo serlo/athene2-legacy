@@ -29,30 +29,30 @@ class TermForm extends Form
         $this->setHydrator($taxonomyTermHydrator);
 
         $this->add(
-            array(
+            [
                 'name'       => 'parent',
-                'attributes' => array(
+                'attributes' => [
                     'type' => 'hidden'
-                ),
-            )
+                ],
+            ]
         );
 
         $this->add(
-            array(
+            [
                 'name'       => 'position',
-                'attributes' => array(
+                'attributes' => [
                     'type' => 'hidden'
-                ),
-            )
+                ],
+            ]
         );
 
         $this->add(
-            array(
+            [
                 'name'       => 'taxonomy',
-                'attributes' => array(
+                'attributes' => [
                     'type' => 'hidden'
-                ),
-            )
+                ],
+            ]
         );
 
         $this->add(new TermFieldset());
@@ -64,21 +64,21 @@ class TermForm extends Form
         );
 
         $filter->add(
-            array(
+            [
                 'name'     => 'description',
                 'required' => false,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+                'filters'  => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ]
+            ]
         );
         $filter->add(
-            array(
+            [
                 'name'     => 'taxonomy',
                 'required' => true
-            )
+            ]
         );
     }
 }

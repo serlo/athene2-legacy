@@ -52,10 +52,10 @@ class Module
 
         $app->getEventManager()->attach(
             'route',
-            array(
+            [
                 $this,
                 'onPreRoute'
-            ),
+            ],
             4
         );
     }
@@ -66,7 +66,7 @@ class Module
         $serviceManager = $app->getServiceManager();
 
         /* @var $translator Translator */
-        $translator = $serviceManager->get('MvcTranslator');
+        $translator = $serviceManager->get('translator');
         $router     = $serviceManager->get('router');
         if ($router instanceof TranslatorAwareInterface) {
             $router->setTranslator($translator);

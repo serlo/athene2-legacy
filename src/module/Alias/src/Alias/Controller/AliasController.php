@@ -27,19 +27,21 @@ class AliasController extends AbstractActionController
 
     public function forwardAction()
     {
+        $alias    = $this->params('alias');
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
         try {
-            $canonical = $this->getAliasManager()->findCanonicalAlias(
-                $this->params('alias'),
-                $this->getInstanceManager()->getInstanceFromRequest()
-            );
+            $canonical = $this->getAliasManager()->findCanonicalAlias($alias, $instance);
             $this->redirect()->toUrl($canonical);
         } catch (CanonicalUrlNotFoundException $e) {
         }
 
-        $source = $this->getAliasManager()->findSourceByAlias(
-            $this->params('alias'),
-            $this->getInstanceManager()->getInstanceFromRequest()
-        );
+        try {
+            $source = $this->getAliasManager()->findSourceByAlias($alias, $instance);
+        } catch (Alias\Exception\AliasNotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+
+            return false;
+        }
 
         $router = $this->getServiceLocator()->get('Router');
 
@@ -64,9 +66,9 @@ class AliasController extends AbstractActionController
             $controller,
             ArrayUtils::merge(
                 $params,
-                array(
+                [
                     'forwarded' => true
-                )
+                ]
             )
         );
 

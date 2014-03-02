@@ -79,7 +79,7 @@ class ClassResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidArgumentException()
     {
-        $this->classResolver->resolveClassName(array());
+        $this->classResolver->resolveClassName([]);
     }
 
     /**

@@ -18,9 +18,9 @@ class Contexter extends AbstractHelper
 
     protected function getDefaultConfig()
     {
-        return array(
+        return [
             'template' => 'contexter/helper/default'
-        );
+        ];
     }
 
     public function __invoke()
@@ -35,11 +35,11 @@ class Contexter extends AbstractHelper
 
             return $this->getView()->partial(
                 $this->getOption('template'),
-                array(
+                [
                     'router'  => $this->getRouter(),
                     'matches' => $matches,
                     'type'    => $type
-                )
+                ]
             );
         }
     }

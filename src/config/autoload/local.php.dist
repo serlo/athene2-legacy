@@ -35,7 +35,8 @@ return array(
         'port' => $dbParams['port'],
         'user' => $dbParams['user'],
         'password' => $dbParams['password'],
-        'database' => $dbParams['database']
+        'database' => $dbParams['database'],
+       'driver' => 'mysqli'
     ),
     'smtp_options' => array(
     	'name' => 'localhost.localdomain',

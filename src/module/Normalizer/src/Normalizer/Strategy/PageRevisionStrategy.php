@@ -57,9 +57,9 @@ class PageRevisionStrategy extends AbstractStrategy
 
     protected function getRouteParams()
     {
-        return array(
+        return [
             'revision' => $this->getObject()->getId()
-        );
+        ];
     }
 
     public function isValid($object)

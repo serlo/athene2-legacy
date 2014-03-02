@@ -41,7 +41,7 @@ abstract class AbstractListener extends AbstractSharedListenerAggregate
         $this->userManager     = $userManager;
     }
 
-    public function logEvent($name, InstanceInterface $instance, $uuid, array $params = array())
+    public function logEvent($name, InstanceInterface $instance, $uuid, array $params = [])
     {
         if ($uuid instanceof UuidInterface) {
             $uuid = $uuid;

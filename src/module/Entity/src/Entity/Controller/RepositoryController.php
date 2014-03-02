@@ -35,15 +35,10 @@ class RepositoryController extends AbstractController
         $entity = $this->getEntity();
         $this->assertGranted('entity.revision.create', $entity);
 
-        $user = $this->getUserManager()->getUserFromAuthenticator();
-
         /* @var $form \Zend\Form\Form */
+        $user = $this->getUserManager()->getUserFromAuthenticator();
         $form = $this->getForm($entity);
-
-        $view = new ViewModel(array(
-            'entity' => $entity,
-            'form'   => $form
-        ));
+        $view = new ViewModel(['entity' => $entity, 'form' => $form]);
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -59,18 +54,13 @@ class RepositoryController extends AbstractController
                     'Your revision has been saved, it will be available once it get\'s approved'
                 );
 
-                $this->redirect()->toUrl(
-                    $this->referer()->fromStorage()
-                );
-
-                return false;
+                return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
 
         $this->layout('athene2-editor');
-
         $view->setTemplate('entity/repository/update-revision');
 
         return $view;
@@ -90,7 +80,7 @@ class RepositoryController extends AbstractController
         if ($entity->hasCurrentRevision()) {
             $data = [];
             foreach ($entity->getCurrentRevision()->getFields() as $field) {
-                $data[$field->getField()] = $field->getValue();
+                $data[$field->getName()] = $field->getValue();
             }
             $form->setData($data);
         }
@@ -106,27 +96,11 @@ class RepositoryController extends AbstractController
         $user       = $this->getUserManager()->getUserFromAuthenticator();
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
+
         $repository->checkoutRevision($revision->getId());
-
-        $this->getEventManager()->trigger(
-            'checkout',
-            $this,
-            array(
-                'entity'   => $entity,
-                'revision' => $revision
-            )
-        );
-
         $this->getEntityManager()->flush();
 
-        $this->redirect()->toRoute(
-            'entity/repository/history',
-            array(
-                'entity' => $entity->getId()
-            )
-        );
-
-        return false;
+        return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
 
     public function compareAction()
@@ -136,11 +110,11 @@ class RepositoryController extends AbstractController
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'currentRevision' => $currentRevision,
             'revision'        => $revision,
             'entity'          => $entity
-        ));
+        ]);
 
         $view->setTemplate('entity/repository/compare-revision');
 
@@ -170,12 +144,13 @@ class RepositoryController extends AbstractController
     {
         $entity          = $this->getEntity();
         $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
+        $this->assertGranted('entity.repository.history', $entity);
 
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'entity'          => $entity,
             'revisions'       => $entity->getRevisions(),
             'currentRevision' => $currentRevision
-        ));
+        ]);
 
         $view->setTemplate('entity/repository/history');
 

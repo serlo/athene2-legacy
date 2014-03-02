@@ -17,20 +17,37 @@ class AdFilter extends InputFilter
     public function __construct()
     {
         $this->add(
-            array(
+            [
                 'name'     => 'title',
                 'required' => true,
-
-            )
+                'filters'    => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name' => 'NotEmpty'
+                    ]
+                ]
+            ]
         );
 
         $this->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true,
-
-            )
+                'filters'    => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name' => 'NotEmpty'
+                    ]
+                ]
+            ]
         );
-
     }
 }

@@ -31,7 +31,7 @@ return [
     'router'          => [
         'routes' => [
             'alias' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'type'          => 'Common\Router\Slashable',
                 'options'       => [
                     'route'       => '/alias/:alias',
                     'defaults'    => [
@@ -53,7 +53,8 @@ return [
             __NAMESPACE__ . '\Listener\BlogManagerListener'       => __NAMESPACE__ . '\Factory\BlogManagerListenerFactory',
             __NAMESPACE__ . '\Listener\BlogManagerListener'       => __NAMESPACE__ . '\Factory\BlogManagerListenerFactory',
             __NAMESPACE__ . '\Listener\RepositoryManagerListener' => __NAMESPACE__ . '\Factory\RepositoryManagerListenerFactory',
-            __NAMESPACE__ . '\ListenerPageControllerListener'     => __NAMESPACE__ . '\Factory\PageControllerListenerFactory'
+            __NAMESPACE__ . '\ListenerPageControllerListener'     => __NAMESPACE__ . '\Factory\PageControllerListenerFactory',
+            __NAMESPACE__ . '\Storage\AliasStorage'               => __NAMESPACE__ . '\Factory\AliasStorageFactory'
         ]
     ],
     'di'              => [

@@ -26,7 +26,7 @@ class Notification extends AbstractHelper
 
     public function aggregateUsers(Collection $users)
     {
-        $this->aggregatedUsers = array();
+        $this->aggregatedUsers = [];
         foreach ($users as $actor) {
             if (!$actor instanceof \User\Entity\UserInterface) {
                 throw new \User\Exception\RuntimeException(sprintf(
@@ -45,7 +45,7 @@ class Notification extends AbstractHelper
 
     public function getAggregatedUsernames()
     {
-        $usernames = array();
+        $usernames = [];
         foreach ($this->aggregatedUsers as $user) {
             $usernames[] = $user->getUsername();
         }
@@ -67,9 +67,9 @@ class Notification extends AbstractHelper
         if ($user) {
             $output .= $this->getView()->partial(
                 $this->template,
-                array(
+                [
                     'notifications' => $this->getNotificationManager()->findNotificationsBySubsriber($user)
-                )
+                ]
             );
         }
 

@@ -2,9 +2,10 @@
 namespace Ads\Manager;
 
 use Ads\Entity\AdInterface;
+use Common\ObjectManager\Flushable;
 use Instance\Entity\InstanceInterface;
 
-interface AdsManagerInterface
+interface AdsManagerInterface extends Flushable
 {
     /**
      * @param numeric $id
@@ -21,9 +22,15 @@ interface AdsManagerInterface
 
     /**
      * @param AdInterface $ad
-     * @return this
+     * @return void
      */
     public function removeAd(AdInterface $ad);
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function clickAd($id);
 
     /**
      * @param InstanceInterface $instance

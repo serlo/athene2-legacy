@@ -19,5 +19,12 @@ return [
                 'hydration_cache' => 'apccache',
             )
         )
-    )
+    ),
+    'zfctwig' => [
+        'environment_options' => [
+            'debug' => false,
+            'strict_variables' => false,
+            'autoescape' => false
+        ],
+    ]
 ];

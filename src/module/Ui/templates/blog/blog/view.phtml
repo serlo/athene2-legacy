@@ -16,7 +16,7 @@
                href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
                     class="glyphicon glyphicon-file"></span></a>
         <?php endif; ?>
-        <?php if ($this->isGranted('blog.posts.view_all', $this->blog)): ?>
+        <?php if ($this->isGranted('blog.posts.view.unpublished', $this->blog)): ?>
             <a href="<?php echo $this->url('blog/view-all', array('id' => $this->blog->getId())); ?>"
                class="btn btn-default btn-sm"><span class="glyphicon glyphicon-calendar"></span></a>
         <?php endif; ?>

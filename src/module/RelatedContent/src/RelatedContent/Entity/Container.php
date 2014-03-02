@@ -56,4 +56,9 @@ class Container implements ContainerInterface
     {
         $this->holders->add($holder);
     }
+
+    public function getObject()
+    {
+        return $this->id;
+    }
 }

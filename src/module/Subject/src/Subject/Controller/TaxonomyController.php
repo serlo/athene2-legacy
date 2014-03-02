@@ -1,49 +1,59 @@
 <?php
 
 /**
- * 
  * Athene2 - Advanced Learning Resources Manager
  *
- * @author	Aeneas Rekkas (aeneas.rekkas@serlo.org)
- * @license	LGPL-3.0
- * @license	http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
- * @link		https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @author      Aeneas Rekkas (aeneas.rekkas@serlo.org)
+ * @license     LGPL-3.0
+ * @license     http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
+ * @link        https://github.com/serlo-org/athene2 for the canonical source repository
+ * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
 namespace Subject\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Entity\Entity\EntityInterface;
+use Taxonomy\Exception\TermNotFoundException;
+use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Zend\View\Model\ViewModel;
 
 class TaxonomyController extends AbstractController
 {
-    use\Taxonomy\Manager\TaxonomyManagerAwareTrait;
-
     public function indexAction()
     {
-        $subject = $this->getSubject();
-        $term = false;
-        $entities = array();
-        
-        if ($this->params('path', NULL)) {
-            $term = $subject->findChildBySlugs(explode('/', $this->params('path', NULL)));
-        }
-        
-        if($term){
-            foreach ($term->getAssociated('entities') as $entity) {
-                if (! $entity->getTrashed()) {
-                    $entities[] = $entity;
-                }
+        try {
+            $subject = $this->getSubject();
+            $term    = $subject->findChildBySlugs(explode('/', $this->params('path')));
+            if (!is_object($term)) {
+                $this->getResponse()->setStatusCode(404);
+                return false;
             }
+        } catch (TermNotFoundException $e) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
-        
-        $view = new ViewModel(array(
-            'term' => $term,
-            'terms' => $term ? $term->getChildren() : $subject->getChildren(),
+
+        $entities = $term->getAssociated('entities')->filter(
+            function (EntityInterface $e) {
+                return !$e->isTrashed() && $e->hasCurrentRevision();
+            }
+        );
+
+        $types = [];
+        foreach($entities as $e){
+            $types[$e->getType()->getName()][] = $e;
+        }
+        $types = new ArrayCollection($types);
+        $view = new ViewModel([
+            'term'    => $term,
+            'terms'   => $term ? $term->getChildren() : $subject->getChildren(),
             'subject' => $subject,
-            'links' => $entities
-        ));
-        
+            'links'   => $entities,
+            'types'   => $types
+        ]);
+
         $view->setTemplate('subject/taxonomy/page/default');
+
         return $view;
     }
 }

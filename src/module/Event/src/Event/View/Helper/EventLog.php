@@ -21,12 +21,12 @@ class EventLog extends AbstractHelper
 
     protected function getDefaultConfig()
     {
-        return array(
-            'templates' => array(
+        return [
+            'templates' => [
                 'events' => 'event/helper/events',
                 'event'  => 'event/helper/event/default'
-            )
-        );
+            ]
+        ];
     }
 
     public function renderObjectLog($id)
@@ -35,9 +35,9 @@ class EventLog extends AbstractHelper
 
         return $this->getView()->partial(
             $this->getOption('templates')['events'],
-            array(
+            [
                 'events' => $events
-            )
+            ]
         );
     }
 
@@ -47,9 +47,9 @@ class EventLog extends AbstractHelper
 
         return $this->getView()->partial(
             $this->getOption('templates')['events'],
-            array(
+            [
                 'events' => $events
-            )
+            ]
         );
     }
 
@@ -68,9 +68,9 @@ class EventLog extends AbstractHelper
 
         return $this->getView()->partial(
             $this->getOption('templates')['event'],
-            array(
+            [
                 'event' => $event
-            )
+            ]
         );
     }
 }

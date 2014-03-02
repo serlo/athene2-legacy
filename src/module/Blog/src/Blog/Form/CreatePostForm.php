@@ -10,8 +10,8 @@
  */
 namespace Blog\Form;
 
+use Common\Hydrator\HydratorPluginAwareDoctrineObject;
 use Doctrine\Common\Persistence\ObjectManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\Form\Element\Date;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
@@ -22,50 +22,47 @@ use Zend\InputFilter\InputFilter;
 class CreatePostForm extends Form
 {
 
-    function __construct(ObjectManager $objectManager)
+    function __construct(ObjectManager $objectManager, HydratorPluginAwareDoctrineObject $hydrator)
     {
         parent::__construct('post');
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
-        $hydrator    = new DoctrineHydrator($objectManager);
         $inputFilter = new InputFilter('post');
 
         $this->setInputFilter($inputFilter);
         $this->setHydrator($hydrator);
 
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'blog',
-                'options' => array(
+                'options' => [
                     'object_manager' => $objectManager,
                     'target_class'   => 'Taxonomy\Entity\TaxonomyTerm'
-                )
-            )
+                ]
+            ]
         );
-
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'instance',
-                'options' => array(
+                'options' => [
                     'object_manager' => $objectManager,
                     'target_class'   => 'Instance\Entity\Instance'
-                )
-            )
+                ]
+            ]
         );
-
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'author',
-                'options' => array(
+                'options' => [
                     'object_manager' => $objectManager,
                     'target_class'   => 'User\Entity\User'
-                )
-            )
+                ]
+            ]
         );
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
@@ -79,43 +76,51 @@ class CreatePostForm extends Form
         $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
 
         $inputFilter->add(
-            array(
-                'name'     => 'title',
-                'required' => true,
-                'filters'  => array(
-                    array(
-                        'name' => 'HtmlEntities'
-                    )
-                )
-            )
+            [
+                'name'       => 'title',
+                'required'   => true,
+                'filters'    => [
+                    [
+                        'name' => 'StripTags'
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'Regex',
+                        'options' => [
+                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß/&\.\,\!\?]+$~'
+                        ]
+                    ]
+                ]
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'author',
                 'required' => true
-            )
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'blog',
                 'required' => true
-            )
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'instance',
                 'required' => true
-            )
+            ]
         );
 
         $inputFilter->add(
-            array(
+            [
                 'name'     => 'content',
                 'required' => true
-            )
+            ]
         );
     }
 }

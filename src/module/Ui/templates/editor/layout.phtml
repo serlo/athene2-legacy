@@ -17,10 +17,11 @@ echo $this->doctype();
 <body>
     <header>
         <div id="serlo-menu" class="navbar navbar-default">
-            <div id="editor-helpers"><span class="helper">Athene2 Editor</span></div>
+            <div id="editor-helpers"><span class="helper"><?php echo $this->translate('Edit'); ?></span></div>
         </div>
     </header>
-    <?php echo $this->partial('layout/partials/main.phtml'); ?>
+    <?php echo $this->partial('layout/partials/main'); ?>
+    <?php echo $this->partial('layout/partials/contexter'); ?>
     <section id="editor-wrap">
         <div id="content"></div>
         <div id="main" class="editor-main">
@@ -35,8 +36,8 @@ echo $this->doctype();
         </div>
         <div id="editor-actions">
             <div class="pull-right">
-                <button class="btn btn-success">Save</button>
-                <a>Cancel</a>
+                <button class="btn btn-success"><?php echo $this->translate('Save'); ?></button>
+                <button class="btn btn-danger disabled"><?php echo $this->translate('Cancel'); ?></button>
             </div>
         </div>
     </section>

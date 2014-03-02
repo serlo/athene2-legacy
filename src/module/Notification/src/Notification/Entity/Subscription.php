@@ -43,57 +43,42 @@ class Subscription implements SubscriptionInterface
     protected $notifyMailman;
 
     /**
-     * @return field_type $notifyMailman
+     * @ORM\Column(type="datetime")
      */
+    protected $date;
+
     public function getNotifyMailman()
     {
         return $this->notifyMailman;
     }
 
-    /**
-     * @param field_type $notifyMailman
-     * @return self
-     */
     public function setNotifyMailman($notifyMailman)
     {
         $this->notifyMailman = $notifyMailman === true;
-
-        return $this;
     }
 
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::setSubscriber()
-     */
     public function setSubscriber(UserInterface $user)
     {
         $this->user = $user;
-
-        return $this;
     }
 
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::getSubscriber()
-     */
     public function getSubscriber()
     {
         return $this->user;
     }
 
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::setSubscribedObject()
-     */
     public function setSubscribedObject(UuidInterface $uuid)
     {
         $this->object = $uuid;
-
-        return $this;
     }
 
-    /*
-     * (non-PHPdoc) @see \User\Notification\Entity\SubscriptionInterface::getSubscribedObject()
-     */
     public function getSubscribedObject()
     {
         return $this->object;
+    }
+
+    public function getTimestamp()
+    {
+        return $this->date;
     }
 }

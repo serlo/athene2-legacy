@@ -10,13 +10,12 @@
  */
 namespace Attachment\Form;
 
-use Zend\Form\Element\File;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class AttachmentForm extends Form
+class AttachmentForm extends Form implements AttachmentFieldsetProvider
 {
     public function __construct()
     {
@@ -26,40 +25,10 @@ class AttachmentForm extends Form
 
         $this->setInputFilter($filter);
         $this->setAttribute('class', 'clearfix');
-        $this->add((new File('file'))->setLabel('Upload file:'));
+        $this->add(new AttachmentFieldset());
         $this->add((new Text('type'))->setLabel('Set type:'));
         $this->add(
             (new Submit('submit'))->setValue('Upload')->setAttribute('class', 'btn btn-success pull-right')
-        );
-
-        $filter->add(
-            [
-                'name'       => 'file',
-                'required'   => true,
-                'validators' => [
-                    [
-                        'name'    => 'Zend\Validator\File\Size',
-                        'options' => [
-                            'max' => '4MB'
-                        ],
-                    ],
-                    [
-                        'name'    => 'Zend\Validator\File\Extension',
-                        'options' => [
-                            'jpg',
-                            'jpeg',
-                            'png',
-                            'pdf',
-                            'ggb',
-                            'gif',
-                            'tif',
-                            'tiff',
-                            'svg',
-                            'xml'
-                        ]
-                    ],
-                ]
-            ]
         );
     }
 }

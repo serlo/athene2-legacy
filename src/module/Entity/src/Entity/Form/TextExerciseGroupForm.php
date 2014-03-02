@@ -21,20 +21,20 @@ class TextExerciseGroupForm extends Form
     {
         parent::__construct('text-exercise-group');
         $this->setAttribute('method', 'post');
-        $inputFilter = new InputFilter('text-exercise-group');
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Textarea('content'))->setLabel('Content:'));
-
-        $this->add(new Controls());
-
-        $inputFilter->add(
-            array(
-                'name'     => 'content',
-                'required' => true
+        $this->add(
+            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+                'class',
+                'plain'
             )
         );
+        $this->add(new Controls());
 
+        $inputFilter = new InputFilter('text-exercise-group');
+        $inputFilter->add(['name' => 'content', 'required' => true]);
+        $inputFilter->add(['name' => 'changes', 'required' => false, 'filters' => [['name' => 'StripTags']]]);
         $this->setInputFilter($inputFilter);
     }
 }

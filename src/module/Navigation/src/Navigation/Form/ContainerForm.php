@@ -37,20 +37,20 @@ class ContainerForm extends Form
 
         $this->add(
             (new Select('type'))->setLabel('Type:')->setOptions(
-                array(
+                [
                     'value_options' => $types
-                )
+                ]
             )
         );
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'instance',
-                'options' => array(
+                'options' => [
                     'object_manager' => $entityManager,
                     'target_class'   => 'Navigation\Entity\Container'
-                )
-            )
+                ]
+            ]
         );
 
         $this->add(

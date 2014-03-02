@@ -70,37 +70,37 @@ class TaxonomyManagerListener extends AbstractListener
         $events->attach(
             $this->getMonitoredClass(),
             'create',
-            array(
+            [
                 $this,
                 'onCreate'
-            )
+            ]
         );
 
          $events->attach(
             $this->getMonitoredClass(),
             'update',
-            array(
+            [
                 $this,
                 'onUpdate'
-            )
+            ]
         );
 
         $events->attach(
             $this->getMonitoredClass(),
             'associate',
-            array(
+            [
                 $this,
                 'onAssociate'
-            )
+            ]
         );
 
         $events->attach(
             $this->getMonitoredClass(),
             'dissociate',
-            array(
+            [
                 $this,
                 'onDissociate'
-            )
+            ]
         );
     }
 

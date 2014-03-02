@@ -22,12 +22,11 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
 {
     /**
      * @param int                        $id
-     * @param string                     $association
      * @param TaxonomyTermAwareInterface $with
      * @param int|null                   $position
      * @return self
      */
-    public function associateWith($id, $association, TaxonomyTermAwareInterface $with, $position = null);
+    public function associateWith($id, TaxonomyTermAwareInterface $with, $position = null);
 
     /**
      * @param FormInterface $form
@@ -63,11 +62,10 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
 
     /**
      * @param int                        $id
-     * @param string                     $association
      * @param TaxonomyTermAwareInterface $object
      * @return self
      */
-    public function removeAssociation($id, $association, TaxonomyTermAwareInterface $object);
+    public function removeAssociation($id, TaxonomyTermAwareInterface $object);
 
     /**
      * @param FormInterface $form

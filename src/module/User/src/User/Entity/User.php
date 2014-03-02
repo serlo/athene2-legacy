@@ -171,7 +171,7 @@ class User extends Uuid implements UserInterface
         return $this->roles;
     }
 
-    public function populate(array $data = array())
+    public function populate(array $data = [])
     {
         $this->injectArray('email', $data);
         $this->injectArray('password', $data);

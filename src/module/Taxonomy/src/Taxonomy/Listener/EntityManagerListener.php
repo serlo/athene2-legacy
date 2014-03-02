@@ -28,16 +28,16 @@ class EntityManagerListener extends AbstractSharedListenerAggregate
             $options = $data['taxonomy'];
             
             $term = $this->getTaxonomyManager()->getTerm($options['term']);
-            $this->getTaxonomyManager()->associateWith($options['term'], 'entities', $entity);
+            $this->getTaxonomyManager()->associateWith($options['term'], $entity);
         }
     }
 
     public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
     {
-        $events->attach($this->getMonitoredClass(), 'create', array(
+        $events->attach($this->getMonitoredClass(), 'create', [
             $this,
             'onCreate'
-        ), 2);
+        ], 2);
     }
 
     protected function getMonitoredClass()

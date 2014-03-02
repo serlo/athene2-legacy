@@ -10,6 +10,7 @@
  */
 namespace Notification\Entity;
 
+use DateTime;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -17,21 +18,9 @@ interface SubscriptionInterface
 {
 
     /**
-     * @param UserInterface $user
-     * @return self
+     * @return bool
      */
-    public function setSubscriber(UserInterface $user);
-
-    /**
-     * @return UserInterface
-     */
-    public function getSubscriber();
-
-    /**
-     * @param UuidInterface $uuid
-     * @return self
-     */
-    public function setSubscribedObject(UuidInterface $uuid);
+    public function getNotifyMailman();
 
     /**
      * @return UuidInterface
@@ -39,13 +28,30 @@ interface SubscriptionInterface
     public function getSubscribedObject();
 
     /**
-     * @return bool
+     * @return UserInterface
      */
-    public function getNotifyMailman();
+    public function getSubscriber();
+
+    /**
+     * @return DateTime
+     */
+    public function getTimestamp();
 
     /**
      * @var bool
-     * @return self
+     * @return void
      */
     public function setNotifyMailman($notifyMailman);
+
+    /**
+     * @param UuidInterface $uuid
+     * @return void
+     */
+    public function setSubscribedObject(UuidInterface $uuid);
+
+    /**
+     * @param UserInterface $user
+     * @return void
+     */
+    public function setSubscriber(UserInterface $user);
 }

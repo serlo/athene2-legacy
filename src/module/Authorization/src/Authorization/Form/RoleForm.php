@@ -29,16 +29,16 @@ class RoleForm extends Form
         $this->setHydrator(new DoctrineHydrator($objectManager));
 
         $this->add(
-            array(
+            [
                 'type'    => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
                 'name'    => 'children',
-                'options' => array(
+                'options' => [
                     'label'          => 'Inherits permissions from (be very careful!):',
                     'object_manager' => $objectManager,
                     'target_class'   => 'User\Entity\Role',
                     'property'       => 'name',
-                ),
-            )
+                ],
+            ]
         );
 
         $this->add((new Text('name'))->setLabel('Name:'));

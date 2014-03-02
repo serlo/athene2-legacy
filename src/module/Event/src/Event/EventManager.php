@@ -25,8 +25,8 @@ class EventManager implements EventManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
-    protected $inMemoryEvents = array();
-    protected $inMemoryParameterNames = array();
+    protected $inMemoryEvents = [];
+    protected $inMemoryParameterNames = [];
 
     /**
      * @var \Authorization\Service\AuthorizationService
@@ -39,7 +39,7 @@ class EventManager implements EventManagerInterface
         ObjectManager $objectManager
     ) {
         $this->objectManager        = $objectManager;
-        $this->classResolver         = $classResolver;
+        $this->classResolver        = $classResolver;
         $this->authorizationService = $authorizationService;
     }
 
@@ -54,22 +54,13 @@ class EventManager implements EventManagerInterface
 
         $className  = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         $repository = $this->getObjectManager()->getRepository($className);
-
-        $results = $repository->findBy(
-            [
-                'actor' => $userId
-            ],
-            [
-                'id' => 'desc'
-            ]
-        );
-
+        $results    = $repository->findBy(['actor' => $userId], ['id' => 'desc']);
         $collection = new ArrayCollection($results);
 
         return $collection;
     }
 
-    public function findEventsByObject($objectId, $recursive = true, array $filters = array())
+    public function findEventsByObject($objectId, $recursive = true, array $filters = [])
     {
         if (!is_numeric($objectId)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -80,19 +71,11 @@ class EventManager implements EventManagerInterface
 
         $className  = $this->getClassResolver()->resolveClassName('Event\Entity\EventLogInterface');
         $repository = $this->getObjectManager()->getRepository($className);
-
-        $results = $repository->findBy(
-            [
-                'uuid' => $objectId
-            ]
-        );
+        $results    = $repository->findBy(['uuid' => $objectId]);
 
         if ($recursive) {
-            $parameters = $this->getObjectManager()->getRepository('Event\Entity\EventParameterUuid')->findBy(
-                [
-                    'uuid' => $objectId
-                ]
-            );
+            $repository = $this->getObjectManager()->getRepository('Event\Entity\EventParameterUuid');
+            $parameters = $repository->findBy(['uuid' => $objectId]);
 
             foreach ($parameters as $parameter) {
                 $parameter = $parameter->getEventParameter();
@@ -132,7 +115,7 @@ class EventManager implements EventManagerInterface
         $uri,
         InstanceInterface $instance,
         UuidInterface $uuid,
-        array $parameters = array()
+        array $parameters = []
     ) {
         $actor = $this->authorizationService->getIdentity();
 
@@ -169,11 +152,7 @@ class EventManager implements EventManagerInterface
         }
 
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventInterface');
-        $event     = $this->getObjectManager()->getRepository($className)->findOneBy(
-            array(
-                'name' => $name
-            )
-        );
+        $event     = $this->getObjectManager()->getRepository($className)->findOneBy(['name' => $name]);
         /* @var $event Entity\EventInterface */
 
         if (!is_object($event)) {
@@ -207,15 +186,15 @@ class EventManager implements EventManagerInterface
             ));
         }
 
-        $name = $this->findParameterNameByName($parameter['name']);
 
         /* @var $entity \Event\Entity\EventParameterInterface */
+        $name   = $this->findParameterNameByName($parameter['name']);
         $entity = $this->getClassResolver()->resolve('Event\Entity\EventParameterInterface');
+
         $entity->setLog($log);
         $entity->setName($name);
         $entity->setValue($parameter['value']);
         $log->addParameter($entity);
-
         $this->getObjectManager()->persist($entity);
 
         return $this;
@@ -235,11 +214,7 @@ class EventManager implements EventManagerInterface
 
         $className = $this->getClassResolver()->resolveClassName('Event\Entity\EventParameterNameInterface');
         /* @var $parameterName Entity\EventParameterNameInterface */
-        $parameterName = $this->getObjectManager()->getRepository($className)->findOneBy(
-            array(
-                'name' => $name
-            )
-        );
+        $parameterName = $this->getObjectManager()->getRepository($className)->findOneBy(['name' => $name]);
 
         if (!is_object($parameterName)) {
             $parameterName = new $className();

@@ -33,14 +33,14 @@ class NavigationProvider implements PageProviderInterface
     protected $defaultOptions = [
         'name'      => 'default',
         'route'     => 'default',
-        'parent'    => array(
+        'parent'    => [
             'type' => '',
             'slug' => ''
-        ),
+        ],
         'instance'  => 'de',
         'max_depth' => 1,
-        'types'     => array(),
-        'params'    => array()
+        'types'     => [],
+        'params'    => []
     ];
     /**
      * @var array
@@ -117,14 +117,14 @@ class NavigationProvider implements PageProviderInterface
         $return = [];
         foreach ($terms as $term) {
             if (!$term->isTrashed()) {
-                $current          = array();
+                $current          = [];
                 $current['route'] = $this->options['route'];
 
                 $current['params'] = ArrayUtils::merge(
                     $this->options['params'],
-                    array(
+                    [
                         'path' => $term->slugify($this->options['parent']['type'])
-                    )
+                    ]
                 );
 
                 $current['label']    = $term->getName();

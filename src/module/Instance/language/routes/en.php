@@ -1,5 +1,5 @@
 <?php
-return array(
+return [
     'subject' => 'subject',
     'topic'   => 'topic'
-);
+];

@@ -39,4 +39,15 @@ interface RevisionInterface
      * @return self
      */
     public function setAuthor(UserInterface $user);
+
+    /**
+     * @param bool $trash
+     * @return void
+     */
+    public function setTrashed($trash);
+
+    /**
+     * @return bool
+     */
+    public function isTrashed();
 }

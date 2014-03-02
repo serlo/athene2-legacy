@@ -34,6 +34,14 @@ class TaxonomyHelper extends AbstractHelper
         $this->taxonomyManager = $taxonomyManager;
     }
 
+    /**
+     * @return self
+     */
+    public function __invoke()
+    {
+        return $this;
+    }
+
     public function getAllowedChildren($object)
     {
         if ($object instanceof TaxonomyInterface) {

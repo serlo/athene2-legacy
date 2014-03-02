@@ -19,6 +19,11 @@ class EntityHelper extends AbstractHelper
 {
     use \Entity\Options\ModuleOptionsAwareTrait;
 
+    public function __invoke()
+    {
+        return $this;
+    }
+
     /**
      * @param EntityInterface $entity
      * @return EntityOptions

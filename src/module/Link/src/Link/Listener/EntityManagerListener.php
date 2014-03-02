@@ -60,10 +60,10 @@ class EntityManagerListener extends AbstractSharedListenerAggregate
         $this->listeners[] = $events->attach(
             $this->getMonitoredClass(),
             'create',
-            array(
+            [
                 $this,
                 'onCreate'
-            ),
+            ],
             2
         );
     }

@@ -30,24 +30,24 @@ class PageForm extends Form
         $this->setInputFilter($filter);
 
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'container',
-                'options' => array(
+                'options' => [
                     'object_manager' => $entityManager,
                     'target_class'   => 'Navigation\Entity\Container'
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'    => 'Common\Form\Element\ObjectHidden',
                 'name'    => 'parent',
-                'options' => array(
+                'options' => [
                     'object_manager' => $entityManager,
                     'target_class'   => 'Navigation\Entity\Page'
-                )
-            )
+                ]
+            ]
         );
         $this->add((new Text('position'))->setLabel('Position'));
 

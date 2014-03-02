@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`instance` (
   CONSTRAINT `fk_instance_language1`
     FOREIGN KEY (`language_id`)
     REFERENCES `serlo`.`language` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -69,6 +69,50 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `serlo`.`type`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`type` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`type` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `className_UNIQUE` (`name` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`attachment_container`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`attachment_container` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
+  `id` BIGINT NOT NULL,
+  `instance_id` INT NOT NULL,
+  `type_id` INT NOT NULL,
+  INDEX `fk_upload_uuid1_idx` (`id` ASC),
+  PRIMARY KEY (`id`),
+  INDEX `fk_upload_language1_idx` (`instance_id` ASC),
+  INDEX `fk_attachment_type1_idx` (`type_id` ASC),
+  CONSTRAINT `fk_upload_uuid1`
+    FOREIGN KEY (`id`)
+    REFERENCES `serlo`.`uuid` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_upload_language1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_attachment_type1`
+    FOREIGN KEY (`type_id`)
+    REFERENCES `serlo`.`type` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `serlo`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`user` ;
@@ -83,16 +127,24 @@ CREATE TABLE IF NOT EXISTS `serlo`.`user` (
   `ads_enabled` TINYINT(1) NOT NULL DEFAULT 0,
   `token` VARCHAR(32) NOT NULL,
   `last_login` TIMESTAMP NULL,
+  `avatar_id` BIGINT NULL,
+  `description` TEXT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uniq_username` (`username` ASC),
   UNIQUE INDEX `uniq_email` (`email` ASC),
   INDEX `fk_user_uuid1_idx` (`id` ASC),
   UNIQUE INDEX `token_UNIQUE` (`token` ASC),
+  INDEX `fk_user_attachment_container1_idx` (`avatar_id` ASC),
   CONSTRAINT `fk_user_uuid1`
     FOREIGN KEY (`id`)
     REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_attachment_container1`
+    FOREIGN KEY (`avatar_id`)
+    REFERENCES `serlo`.`attachment_container` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -115,19 +167,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`type`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`type` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`type` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `className_UNIQUE` (`name` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `serlo`.`license`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `serlo`.`license` ;
@@ -145,8 +184,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`license` (
   CONSTRAINT `fk_license_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -219,8 +258,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`entity_link` (
   CONSTRAINT `fk_entity_link_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -306,13 +345,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`taxonomy` (
   CONSTRAINT `fk_taxonomy_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_taxonomy_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -333,8 +372,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term` (
   CONSTRAINT `fk_term_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -415,8 +454,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`blog_post` (
   CONSTRAINT `fk_blog_post_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -505,7 +544,8 @@ DROP TABLE IF EXISTS `serlo`.`permission` ;
 CREATE TABLE IF NOT EXISTS `serlo`.`permission` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
@@ -524,13 +564,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`instance_permission` (
   CONSTRAINT `fk_tenant_permission_permission1`
     FOREIGN KEY (`permission_id`)
     REFERENCES `serlo`.`permission` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_tenant_permission_tenant1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -548,13 +588,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_permission` (
   CONSTRAINT `fk_role_has_permission_role1`
     FOREIGN KEY (`role_id`)
     REFERENCES `serlo`.`role` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_role_has_permission_permission1`
     FOREIGN KEY (`permission_id`)
     REFERENCES `serlo`.`instance_permission` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -741,6 +781,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`subscription` (
   `uuid_id` BIGINT NOT NULL,
   `user_id` BIGINT NOT NULL,
   `notify_mailman` TINYINT(1) NOT NULL DEFAULT FALSE,
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_subscription_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_subscription_user1_idx` (`user_id` ASC),
@@ -803,13 +844,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`comment_vote` (
   CONSTRAINT `fk_comment_has_user_comment1`
     FOREIGN KEY (`comment_id`)
     REFERENCES `serlo`.`comment` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comment_has_user_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `serlo`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -833,37 +874,6 @@ CREATE TABLE IF NOT EXISTS `serlo`.`term_taxonomy_comment` (
   CONSTRAINT `fk_comment_has_term_taxonomy_term_taxonomy2`
     FOREIGN KEY (`term_taxonomy_id`)
     REFERENCES `serlo`.`term_taxonomy` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `serlo`.`attachment_container`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`attachment_container` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`attachment_container` (
-  `id` BIGINT NOT NULL,
-  `instance_id` INT NOT NULL,
-  `type_id` INT NOT NULL,
-  INDEX `fk_upload_uuid1_idx` (`id` ASC),
-  PRIMARY KEY (`id`),
-  INDEX `fk_upload_language1_idx` (`instance_id` ASC),
-  INDEX `fk_attachment_type1_idx` (`type_id` ASC),
-  CONSTRAINT `fk_upload_uuid1`
-    FOREIGN KEY (`id`)
-    REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_upload_language1`
-    FOREIGN KEY (`instance_id`)
-    REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_attachment_type1`
-    FOREIGN KEY (`type_id`)
-    REFERENCES `serlo`.`type` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -990,13 +1000,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`context` (
   CONSTRAINT `fk_context_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_context_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1070,13 +1080,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`flag` (
   CONSTRAINT `fk_flag_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `serlo`.`type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_flag_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1108,13 +1118,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter` (
   CONSTRAINT `fk_event_parameter_event_log1`
     FOREIGN KEY (`log_id`)
     REFERENCES `serlo`.`event_log` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_event_parameter_event_parameter_name1`
     FOREIGN KEY (`name_id`)
     REFERENCES `serlo`.`event_parameter_name` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1133,13 +1143,13 @@ CREATE TABLE IF NOT EXISTS `serlo`.`notification_event` (
   CONSTRAINT `fk_notification_event_notification1`
     FOREIGN KEY (`notification_id`)
     REFERENCES `serlo`.`notification` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_notification_event_event_log1`
     FOREIGN KEY (`event_log_id`)
     REFERENCES `serlo`.`event_log` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1172,37 +1182,22 @@ CREATE TABLE IF NOT EXISTS `serlo`.`metadata` (
   CONSTRAINT `fk_metadata_uuid1`
     FOREIGN KEY (`uuid_id`)
     REFERENCES `serlo`.`uuid` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_metadata_metadata_key1`
     FOREIGN KEY (`key_id`)
     REFERENCES `serlo`.`metadata_key` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `serlo`.`html_cache`
+-- Table `serlo`.`ad`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`html_cache` ;
+DROP TABLE IF EXISTS `serlo`.`ad` ;
 
-CREATE TABLE IF NOT EXISTS `serlo`.`html_cache` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `guid` VARCHAR(255) NOT NULL,
-  `content` LONGTEXT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `html_cache_guid` (`guid` ASC),
-  UNIQUE INDEX `guid_UNIQUE` (`guid` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `serlo`.`ads`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `serlo`.`ads` ;
-
-CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
+CREATE TABLE IF NOT EXISTS `serlo`.`ad` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `instance_id` INT NOT NULL,
   `image_id` BIGINT NOT NULL,
@@ -1219,18 +1214,18 @@ CREATE TABLE IF NOT EXISTS `serlo`.`ads` (
   CONSTRAINT `fk_ads_language1`
     FOREIGN KEY (`instance_id`)
     REFERENCES `serlo`.`instance` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_ads_upload1`
     FOREIGN KEY (`image_id`)
     REFERENCES `serlo`.`attachment_container` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_ads_user1`
     FOREIGN KEY (`author_id`)
     REFERENCES `serlo`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1277,8 +1272,8 @@ CREATE TABLE IF NOT EXISTS `serlo`.`event_parameter_uuid` (
   CONSTRAINT `fk_event_parameter_uuid_event_parameter1`
     FOREIGN KEY (`event_parameter_id`)
     REFERENCES `serlo`.`event_parameter` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -1411,13 +1406,53 @@ CREATE TABLE IF NOT EXISTS `serlo`.`role_inheritance` (
   CONSTRAINT `fk_role_has_role_role1`
     FOREIGN KEY (`role_id`)
     REFERENCES `serlo`.`role` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_role_has_role_role2`
     FOREIGN KEY (`child_id`)
     REFERENCES `serlo`.`role` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`ad_page`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`ad_page` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`ad_page` (
+  `instance_id` INT NOT NULL,
+  `page_repository_id` BIGINT NOT NULL,
+  PRIMARY KEY (`instance_id`, `page_repository_id`),
+  INDEX `fk_ads__page_repository1_idx` (`page_repository_id` ASC),
+  UNIQUE INDEX `instance_id_UNIQUE` (`instance_id` ASC),
+  UNIQUE INDEX `page_repository_id_UNIQUE` (`page_repository_id` ASC),
+  CONSTRAINT `fk_ads__instance1`
+    FOREIGN KEY (`instance_id`)
+    REFERENCES `serlo`.`instance` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ads__page_repository1`
+    FOREIGN KEY (`page_repository_id`)
+    REFERENCES `serlo`.`page_repository` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `serlo`.`session`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `serlo`.`session` ;
+
+CREATE TABLE IF NOT EXISTS `serlo`.`session` (
+  `id` VARCHAR(35) NOT NULL,
+  `name` VARCHAR(35) NOT NULL,
+  `modified` INT NOT NULL,
+  `lifetime` INT NOT NULL,
+  `data` TEXT NOT NULL,
+  PRIMARY KEY (`id`, `name`))
 ENGINE = InnoDB;
 
 
@@ -1481,18 +1516,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `serlo`.`user`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `serlo`;
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234', NULL);
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (2, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL);
-INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`) VALUES (6, 'legacy@serlo.org', 'Legacy', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '7646', NULL);
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `serlo`.`type`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1535,18 +1558,30 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `serlo`.`user`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `serlo`;
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`, `avatar_id`, `description`) VALUES (1, 'aeneas@q-mail.me', 'arekkas', '37fe351ad34e2398b82f97295c3817ba02dd8e1d5777e8467a', 486, NULL, 0, '1234', NULL, NULL, NULL);
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`, `avatar_id`, `description`) VALUES (2, 'dev@serlo.org', 'devuser', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '12345', NULL, NULL, NULL);
+INSERT INTO `serlo`.`user` (`id`, `email`, `username`, `password`, `logins`, `date`, `ads_enabled`, `token`, `last_login`, `avatar_id`, `description`) VALUES (6, 'legacy@serlo.org', 'Legacy', '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d', 0, NULL, 0, '7646', NULL, NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `serlo`.`license`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `serlo`;
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (7, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
-INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (1, 1, 'cc-by-sa-3.0', 'http://creativecommons.org/licenses/by-sa/3.0/', 'cc-by-sa erklärt', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (2, 1, 'Lizenzhinweis ISB Bayern', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (3, 1, 'Lizenzhinweis für SMART', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (4, 1, 'Lizenzhinweis für brinkmann-du', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (5, 1, 'Lizenzhinweis für das BOS Intranet', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (6, 1, 'Lizenzhinweis für Franz Strobl', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (7, 1, 'Lizenzhinweis für Günther Rasch', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
+INSERT INTO `serlo`.`license` (`id`, `instance_id`, `title`, `url`, `content`, `icon_href`) VALUES (8, 1, 'Lizenzhinweis für Thomas Unkelbach', 'pls', 'pls', 'http://mirrors.creativecommons.org/presskit/icons/cc.large.png');
 
 COMMIT;
 
@@ -1629,7 +1664,7 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (15, 'authorization.ident
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (16, 'authorization.role.grant.permission');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (17, 'authorization.role.revoke.permission');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (18, 'contexter.context.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (19, 'blog.posts.view_all');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (19, 'blog.posts.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (20, 'discussion.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (21, 'discussion.trash');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (22, 'discussion.purge');
@@ -1678,7 +1713,6 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (64, 'page.revision.creat
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (65, 'page.revision.trash');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (66, 'page.revision.purge');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (67, 'page.revision.checkout');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (68, 'contexter.context.manage');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (69, 'entity.link.order');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (70, 'entity.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (71, 'entity.revision.restore');
@@ -1691,14 +1725,11 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (77, 'taxonomy.term.resto
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (78, 'uuid.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (79, 'related_content.manage');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (80, 'taxonomy.term.associated.sort');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (81, 'entity.event.history.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (82, 'user.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (83, 'user.update');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (84, 'user.logout');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (85, 'navigation.manage');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (86, 'entity.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (87, 'uuid.restore');
-INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (88, 'entity.revision.restore');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (89, 'authorization.role.create');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (90, 'authorization.role.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (91, 'attachment.create');
@@ -1711,6 +1742,16 @@ INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (97, 'ad.get');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (98, 'ad.remove');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (99, 'discussion.flag');
 INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (100, 'discussion.comment.flag');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (101, 'attachment.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (102, 'blog.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (103, 'blog.post.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (104, 'blog.posts.get.unpublished');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (105, 'contexter.context.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (106, 'contexter.route.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (107, 'contexter.context.get.all');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (108, 'discussion.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (109, 'entity.get');
+INSERT INTO `serlo`.`permission` (`id`, `name`) VALUES (110, 'entity.repository.history');
 
 COMMIT;
 
@@ -1801,9 +1842,6 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (83, 83, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (84, 84, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (85, 85, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (86, 86, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (87, 87, 1);
-INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (88, 88, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (89, 89, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (90, 90, NULL);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (14, 14, NULL);
@@ -1818,6 +1856,16 @@ INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`)
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (98, 98, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (99, 99, 1);
 INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (100, 100, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (101, 101, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (102, 102, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (103, 103, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (104, 104, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (105, 105, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (106, 106, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (107, 107, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (108, 108, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (109, 109, 1);
+INSERT INTO `serlo`.`instance_permission` (`id`, `permission_id`, `instance_id`) VALUES (110, 110, 1);
 
 COMMIT;
 
@@ -1890,7 +1938,6 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 64
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 65);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 66);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 67);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 68);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 69);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 70);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (3, 71);
@@ -1908,9 +1955,6 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 82
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 83);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 84);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 85);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (10, 86);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 87);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (4, 88);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 14);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 15);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 90);
@@ -1920,10 +1964,20 @@ INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (5, 93
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (11, 94);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 95);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 96);
-INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 97);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 97);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (6, 98);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 99);
 INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (2, 100);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 101);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 102);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 103);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (9, 104);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 105);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 106);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 107);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 108);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 109);
+INSERT INTO `serlo`.`role_permission` (`role_id`, `permission_id`) VALUES (1, 110);
 
 COMMIT;
 
@@ -2052,7 +2106,7 @@ INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_i
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (41, 8, 17, 33, 'curriculum');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (42, 8, 18, 33, 'curriculum-folder');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (43, 8, 7, 37, 'mathe');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (44, 8, 3, NULL, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (44, 8, 3, NULL, 'subject');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (45, 9, 1, NULL, 'Lernen');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (46, 9, 9, NULL, 'Taxonomy\\Provider\\NavigationProvider');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (47, 9, 8, NULL, '');
@@ -2070,7 +2124,7 @@ INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_i
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (59, 9, 17, 51, 'topic-folder');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (60, 9, 7, 55, 'mathe');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (61, 9, 7, 49, 'mathe');
-INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (62, 9, 3, NULL, 'subject/taxonomy');
+INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (62, 9, 3, NULL, 'subject');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (63, 10, 1, NULL, 'Verwalten');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (64, 10, 2, NULL, '#');
 INSERT INTO `serlo`.`navigation_parameter` (`id`, `page_id`, `key_id`, `parent_id`, `value`) VALUES (65, 10, 4, NULL, 'cog');

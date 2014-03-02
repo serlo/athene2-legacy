@@ -19,7 +19,7 @@ trait InstanceManagerTrait
      *
      * @var array
      */
-    private $instances = array();
+    private $instances = [];
 
     private $checkClassInheritance = true;
 

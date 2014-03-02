@@ -18,9 +18,9 @@ class HomeController extends AbstractController
 
     public function indexAction()
     {
-        $view = new ViewModel(array(
+        $view = new ViewModel([
             'subject' => $this->getSubject()
-        ));
+        ]);
         $view->setTemplate('subject/home/index');
         return $view;
     }

@@ -24,7 +24,7 @@ return [
         'types' => [
             'blog' => [
                 'allowed_associations' => [
-                    'blogPosts'
+                    'Blog\Entity\PostInterface'
                 ],
                 'allowed_parents'      => [
                     'root'

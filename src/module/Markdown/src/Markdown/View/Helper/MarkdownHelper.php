@@ -11,35 +11,38 @@
 namespace Markdown\View\Helper;
 
 use Markdown\Exception;
-use Markdown\Service\CacheServiceAwareTrait;
 use Markdown\Service\RenderServiceAwareTrait;
+use Markdown\Service\RenderServiceInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class MarkdownHelper extends AbstractHelper
 {
     use RenderServiceAwareTrait;
-    use CacheServiceAwareTrait;
+
+    protected $storage;
+
+    public function __construct(RenderServiceInterface $renderService)
+    {
+        $this->renderService = $renderService;
+    }
+
+    public function __invoke()
+    {
+        return $this;
+    }
 
     /**
-     * @param string      $content
-     * @param mixed       $object
-     * @param string|null $field
-     * @param bool        $catch
+     * @param string $content
+     * @param bool   $catch
      * @return string
      */
-    public function toHtml($content, $object = null, $field = null, $catch = true)
+    public function toHtml($content, $catch = true)
     {
-        if ($object !== null && $field !== null) {
-            try {
-                $content = $this->getCacheService()->getCache($object, $field);
-            } catch (Exception\RuntimeException $e) {
-            }
-        }
-
         if ($catch) {
             try {
                 $content = $this->getRenderService()->render($content);
             } catch (Exception\RuntimeException $e) {
+                // Renderer could not process the input data, so we'll use the original data instead
             }
         } else {
             $content = $this->getRenderService()->render($content);
