@@ -51,6 +51,9 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 // init injections
                 $('.injection').Injections();
 
+                // init AjaxOverlay for /ref links
+                $('a[href^="/ref"]', $context).addClass('ajax-content');
+
                 // init Mathjax
                 MathJax.Hub.Typeset($context[0]);
             });
