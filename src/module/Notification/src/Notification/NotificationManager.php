@@ -14,6 +14,7 @@ use ClassResolver\ClassResolverAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Event\Entity\EventLogInterface;
 use Notification\Entity\NotificationLogInterface;
+use User\Entity\UserInterface;
 
 class NotificationManager implements NotificationManagerInterface
 {
@@ -55,15 +56,9 @@ class NotificationManager implements NotificationManagerInterface
         return new ArrayCollection($notifications);
     }
 
-    /**
-     * @param \Entity\UserInterface    $user
-     * @param NotificationLogInterface $log
-     * @return \Notification\Entity\NotificationInterface
-     */
-    protected function aggregateNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
+    protected function aggregateNotification(UserInterface $user, EventLogInterface $log)
     {
         $className = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface');
-
         return new $className();
     }
 }

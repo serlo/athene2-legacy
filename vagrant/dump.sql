@@ -781,6 +781,7 @@ CREATE TABLE IF NOT EXISTS `serlo`.`subscription` (
   `uuid_id` BIGINT NOT NULL,
   `user_id` BIGINT NOT NULL,
   `notify_mailman` TINYINT(1) NOT NULL DEFAULT FALSE,
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_subscription_uuid1_idx` (`uuid_id` ASC),
   INDEX `fk_subscription_user1_idx` (`user_id` ASC),

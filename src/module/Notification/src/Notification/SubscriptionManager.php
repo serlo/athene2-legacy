@@ -13,8 +13,6 @@ namespace Notification;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Notification\Entity\SubscriptionInterface;
 use User\Entity\UserInterface;
 use Uuid\Entity\UuidInterface;
 
@@ -22,31 +20,23 @@ class SubscriptionManager implements SubscriptionManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
 
-    public function findSubscribersByUuid(UuidInterface $uuid)
+    public function findSubscriptionsByUuid(UuidInterface $uuid)
     {
         $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
-        $criteria      = [
-            'object' => $uuid->getId()
-        ];
+        $criteria      = ['object' => $uuid->getId()];
         $subscriptions = $this->getObjectManager()->getRepository($className)->findBy($criteria);
-
-        $collection = new ArrayCollection();
-        $this->hydrate($collection, $subscriptions);
-
+        $collection    = new ArrayCollection($subscriptions);
         return $collection;
     }
 
     public function isUserSubscribed(UserInterface $user, UuidInterface $object)
     {
-        $className = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
-
-        $criteria = [
+        $className    = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
+        $criteria     = [
             'user'   => $user->getId(),
             'object' => $object->getId()
         ];
-
         $subscription = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
-
         return is_object($subscription);
     }
 
@@ -61,23 +51,12 @@ class SubscriptionManager implements SubscriptionManagerInterface
             $entity->setNotifyMailman($notifyMailman === true);
             $this->getObjectManager()->persist($entity);
         }
-
-        return $this;
     }
 
     public function hasSubscriptions()
     {
         $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\SubscriptionInterface');
         $subscriptions = $this->getObjectManager()->getRepository($className)->findBy([], null, 1);
-
         return count($subscriptions) > 0;
-    }
-
-    private function hydrate(Collection $collection, array $subscriptions)
-    {
-        foreach ($subscriptions as $subscription) {
-            /* @var $subscription SubscriptionInterface */
-            $collection->add($subscription->getSubscriber());
-        }
     }
 }
