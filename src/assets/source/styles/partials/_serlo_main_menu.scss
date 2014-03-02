@@ -145,7 +145,7 @@
         font-size: 17px;
         font-weight: bold;
         
-        padding: 16px 0 10px;
+        padding: 16px 0 0;
         margin-left: 24px;
 
         .glyphicon {
@@ -154,8 +154,8 @@
         }
     }
 
-    .sub-nav-footer {
-        margin-top: 12px;
+    .sub-nav-separator {
+        border-bottom: 1px solid white;
     }
 
     .slide-right & {
