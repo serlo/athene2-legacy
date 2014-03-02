@@ -50,6 +50,9 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 $('.spoiler').Spoiler();
                 // init injections
                 $('.injection').Injections();
+
+                // init Mathjax
+                MathJax.Hub.Typeset(context);
             });
 
             Common.addEventListener('new context', function ($context) {

@@ -1,22 +1,22 @@
 /*global define*/
-define(['jquery', 'router'], function ($, Router) {
+define(['jquery', 'router'], function ($, Router) {
     "use strict";
     var SerloModals,
         Modal,
         modals = {},
         modalTemplate = '#modalTemplate';
 
-    Modal = function (options) {
+    Modal = function (options, successCallback) {
         this.$el = $(modalTemplate).clone();
 
         this.type = options.type || false;
         this.title = options.title || false;
         this.content = options.content;
-        this.href = options.href || false;
+        this.href = options.href || false;
         this.cancel = options.cancel === undefined ? true : options.cancel;
-        this.okayLabel = options.okayLabel || false;
+        this.okayLabel = options.okayLabel || false;
 
-        this.render().show();
+        this.render().show(successCallback);
     };
 
     Modal.prototype.render = function () {
@@ -27,7 +27,12 @@ define(['jquery', 'router'], function ($, Router) {
         $('body').append(self.$el);
 
         $btn.click(function () {
-            if (self.href) {
+            if (self.successCallback) {
+                self.successCallback();
+                self.successCallback = null;
+
+                self.hide();
+            } else if (self.href) {
                 Router.navigate(self.href);
             } else {
                 self.hide();
@@ -53,7 +58,8 @@ define(['jquery', 'router'], function ($, Router) {
         return self;
     };
 
-    Modal.prototype.show = function () {
+    Modal.prototype.show = function (cb) {
+        this.successCallback = cb;
         this.$el.modal('show');
         return this;
     };
@@ -71,7 +77,7 @@ define(['jquery', 'router'], function ($, Router) {
                     title: $self.attr('data-title'),
                     content: $self.attr('data-content'),
                     href: $self.attr('href'),
-                    cancel: $self.attr('data-cancel') === "false" ? false : true,
+                    cancel: $self.attr('data-cancel') === "false" ? false : true,
                     label: $self.attr('data-label')
                 };
 
@@ -86,11 +92,11 @@ define(['jquery', 'router'], function ($, Router) {
     $.fn.SerloModals = SerloModals;
 
     return {
-        show: function (options, uid) {
+        show: function (options, uid, cb) {
             if (uid) {
-                return modals[uid] ? modals[uid].show() : (modals[uid] = new Modal(options));
+                return modals[uid] ? modals[uid].show(cb) : (modals[uid] = new Modal(options, cb));
             }
-            return new Modal(options);
+            return new Modal(options, cb);
         }
     };
 });
