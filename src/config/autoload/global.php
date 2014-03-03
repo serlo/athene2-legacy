@@ -42,7 +42,6 @@ return [
                 'cookie_lifetime'     => 2419200,
                 'remember_me_seconds' => 2419200,
                 'use_cookies'         => true,
-                'cookie_httponly'     => true,
                 'cookie_secure'       => false
             ]
         ],
@@ -51,10 +50,6 @@ return [
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent'
         ],
-        'remember_me_seconds' => 2419200,
-        'cookie_lifetime'     => 2419200,
-        'use_cookies'         => true,
-        'cookie_httponly'     => true,
     ],
     'service_manager'    => [
         'factories' => [
