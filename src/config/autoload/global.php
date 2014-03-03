@@ -41,7 +41,6 @@ return [
                 'name'                => 'athene2',
                 'cookie_lifetime'     => 2419200,
                 'remember_me_seconds' => 2419200,
-                'remember_me_seconds' => 6000,
                 'use_cookies'         => true,
                 'cookie_secure'       => false
             ]
