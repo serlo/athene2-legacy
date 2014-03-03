@@ -1,5 +1,4 @@
 <?php
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Global Configuration Override
@@ -19,7 +18,7 @@ return [
     'brand'              => [
         'name' => 'Serlo <sup><small>beta</small></sup>'
     ],
-    'zfctwig' => [
+    'zfctwig'            => [
         'environment_options' => [
             'cache' => __DIR__ . '/../../data/twig'
         ],
@@ -32,7 +31,7 @@ return [
             ]
         ]
     ],
-    'router' => [
+    'router'             => [
         'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack'
     ],
     'session'            => [
@@ -40,6 +39,8 @@ return [
             'class'   => 'Zend\Session\Config\SessionConfig',
             'options' => [
                 'name'                => 'athene2',
+                'cookie_lifetime'     => 2419200,
+                'remember_me_seconds' => 2419200,
                 'remember_me_seconds' => 6000,
                 'use_cookies'         => true,
                 'cookie_secure'       => false
@@ -53,7 +54,7 @@ return [
     ],
     'service_manager'    => [
         'factories' => [
-            'doctrine.cache.apccache'         => function ($sm) {
+            'doctrine.cache.apccache' => function ($sm) {
                     $cache = new \Doctrine\Common\Cache\ApcCache();
 
                     return $cache;
