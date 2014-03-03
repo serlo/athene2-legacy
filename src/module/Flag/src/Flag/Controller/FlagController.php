@@ -12,12 +12,18 @@ namespace Flag\Controller;
 
 use Flag\Form\FlagForm;
 use Flag\Manager\FlagManagerAwareTrait;
+use Flag\Manager\FlagManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class FlagController extends AbstractActionController
 {
     use FlagManagerAwareTrait;
+
+    public function __construct(FlagManagerInterface $flagManager)
+    {
+        $this->flagManager = $flagManager;
+    }
 
     public function addAction()
     {
@@ -29,8 +35,8 @@ class FlagController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $data     = $form->getData();
-                $uuid     = $this->params('id');
+                $data = $form->getData();
+                $uuid = $this->params('id');
                 $this->getFlagManager()->addFlag((int)$data['type'], $data['content'], $uuid);
                 $this->getFlagManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('The content has been flagged.');

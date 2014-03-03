@@ -69,29 +69,6 @@ class RepositoryController extends AbstractController
         return $view;
     }
 
-    /**
-     * @param EntityInterface $entity
-     *
-     * @return Form
-     */
-    protected function getForm(EntityInterface $entity)
-    {
-        $form = $this->moduleOptions->getType(
-            $entity->getType()->getName()
-        )->getComponent('repository')->getForm();
-        $form = $this->getServiceLocator()->get($form);
-
-        if ($entity->hasCurrentRevision()) {
-            $data = [];
-            foreach ($entity->getCurrentRevision()->getFields() as $field) {
-                $data[$field->getName()] = $field->getValue();
-            }
-            $form->setData($data);
-        }
-
-        return $form;
-    }
-
     public function checkoutAction()
     {
         $entity = $this->getEntity();
@@ -128,40 +105,17 @@ class RepositoryController extends AbstractController
         return $view;
     }
 
-    /**
-     * @param EntityInterface $entity
-     * @param string          $id
-     *
-     * @return \Versioning\Entity\RevisionInterface NULL
-     */
-    protected function getRevision(EntityInterface $entity, $id = null)
-    {
-        $repository = $this->getRepositoryManager()->getRepository($entity);
-        try {
-            if ($id === null) {
-                return $entity->getCurrentRevision();
-            } else {
-                return $repository->findRevision($id);
-            }
-        } catch (RevisionNotFoundException $e) {
-            return null;
-        }
-    }
-
     public function historyAction()
     {
         $entity          = $this->getEntity();
         $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
         $this->assertGranted('entity.repository.history', $entity);
-
         $view = new ViewModel([
             'entity'          => $entity,
             'revisions'       => $entity->getRevisions(),
             'currentRevision' => $currentRevision
         ]);
-
         $view->setTemplate('entity/repository/history');
-
         return $view;
     }
 
@@ -176,18 +130,55 @@ class RepositoryController extends AbstractController
 
         $repository->rejectRevision($this->params('revision'), 'Rejected');
         $this->getEntityManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
+        return $this->redirect()->toReferer();
     }
 
     /**
      * @param ModuleOptions $moduleOptions
-     *
      * @return void
      */
     public function setModuleOptions(ModuleOptions $moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @return Form
+     */
+    protected function getForm(EntityInterface $entity)
+    {
+        $type = $entity->getType()->getName();
+        $form = $this->moduleOptions->getType($type)->getComponent('repository')->getForm();
+        $form = $this->getServiceLocator()->get($form);
+
+        if ($entity->hasCurrentRevision()) {
+            $data = [];
+            foreach ($entity->getCurrentRevision()->getFields() as $field) {
+                $data[$field->getName()] = $field->getValue();
+            }
+            $form->setData($data);
+        }
+
+        return $form;
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @param string          $id
+     * @return \Versioning\Entity\RevisionInterface NULL
+     */
+    protected function getRevision(EntityInterface $entity, $id = null)
+    {
+        $repository = $this->getRepositoryManager()->getRepository($entity);
+        try {
+            if ($id === null) {
+                return $entity->getCurrentRevision();
+            } else {
+                return $repository->findRevision($id);
+            }
+        } catch (RevisionNotFoundException $e) {
+            return null;
+        }
     }
 }
