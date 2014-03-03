@@ -34,8 +34,10 @@ return [
             ]
         ]
     ],
-    'assertion_map'   => [
-        'navigation.manage' => 'Authorization\Assertion\InstanceAssertion',
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'navigation.manage' => 'Authorization\Assertion\InstanceAssertion',
+        ],
     ],
     'service_manager' => [
         'factories' => [

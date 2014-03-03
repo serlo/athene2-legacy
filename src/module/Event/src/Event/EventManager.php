@@ -10,6 +10,7 @@
  */
 namespace Event;
 
+use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
@@ -24,14 +25,10 @@ use ZfcRbac\Service\AuthorizationService;
 class EventManager implements EventManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use AuthorizationAssertionTrait;
 
     protected $inMemoryEvents = [];
     protected $inMemoryParameterNames = [];
-
-    /**
-     * @var \Authorization\Service\AuthorizationService
-     */
-    protected $authorizationService;
 
     public function __construct(
         AuthorizationService $authorizationService,
@@ -40,7 +37,7 @@ class EventManager implements EventManagerInterface
     ) {
         $this->objectManager        = $objectManager;
         $this->classResolver        = $classResolver;
-        $this->authorizationService = $authorizationService;
+        $this->setAuthorizationService($authorizationService);
     }
 
     public function findEventsByActor($userId)
@@ -56,6 +53,10 @@ class EventManager implements EventManagerInterface
         $repository = $this->getObjectManager()->getRepository($className);
         $results    = $repository->findBy(['actor' => $userId], ['id' => 'desc']);
         $collection = new ArrayCollection($results);
+
+        foreach ($collection as $result) {
+            $this->assertGranted('event.log.get', $result);
+        }
 
         return $collection;
     }
@@ -91,6 +92,7 @@ class EventManager implements EventManagerInterface
 
         $collection = [];
         foreach ($results as $result) {
+            $this->assertGranted('event.log.get', $result);
             $collection[$result->getId()] = $result;
         }
         ksort($collection);
@@ -107,7 +109,7 @@ class EventManager implements EventManagerInterface
         if (!is_object($event)) {
             throw new Exception\EntityNotFoundException(sprintf('Could not find an Entity by the ID of `%d`', $id));
         }
-
+        $this->assertGranted('event.log.get', $event);
         return $event;
     }
 
@@ -186,7 +188,6 @@ class EventManager implements EventManagerInterface
             ));
         }
 
-
         /* @var $entity \Event\Entity\EventParameterInterface */
         $name   = $this->findParameterNameByName($parameter['name']);
         $entity = $this->getClassResolver()->resolve('Event\Entity\EventParameterInterface');
@@ -196,8 +197,6 @@ class EventManager implements EventManagerInterface
         $entity->setValue($parameter['value']);
         $log->addParameter($entity);
         $this->getObjectManager()->persist($entity);
-
-        return $this;
     }
 
     /**

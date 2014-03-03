@@ -11,15 +11,18 @@
 namespace Flag\Controller;
 
 use Flag\Form\FlagForm;
+use Flag\Manager\FlagManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class FlagController extends AbstractActionController
 {
-    use\Flag\Manager\FlagManagerAwareTrait, \User\Manager\UserManagerAwareTrait;
+    use FlagManagerAwareTrait;
 
     public function addAction()
     {
+        $this->assertGranted('flag.create');
+
         $this->layout('layout/1-col');
         $types = $this->getFlagManager()->findAllTypes();
         $form  = new FlagForm($types);
@@ -28,8 +31,7 @@ class FlagController extends AbstractActionController
             if ($form->isValid()) {
                 $data     = $form->getData();
                 $uuid     = $this->params('id');
-                $reporter = $this->getUserManager()->getUserFromAuthenticator();
-                $this->getFlagManager()->addFlag((int)$data['type'], $data['content'], (int)$uuid, $reporter);
+                $this->getFlagManager()->addFlag((int)$data['type'], $data['content'], $uuid);
                 $this->getFlagManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('The content has been flagged.');
                 return $this->redirect()->toUrl($this->referer()->fromStorage());

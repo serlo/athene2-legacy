@@ -13,13 +13,13 @@ return [
         'top-right' => [
 
             [
-                'label'         => '',
+                'label'         => 'Profile',
                 'route'         => 'user/me',
                 'icon'          => 'user',
                 'needsIdentity' => true
             ],
             [
-                'label'         => '',
+                'label'         => 'Settings',
                 'route'         => 'user/settings',
                 'icon'          => 'wrench',
                 'needsIdentity' => true
@@ -30,13 +30,13 @@ return [
                 'needsIdentity' => false
             ],
             [
-                'label'         => '',
+                'label'         => 'Log in',
                 'route'         => 'authentication/login',
                 'icon'          => 'log-in',
                 'needsIdentity' => false
             ],
             [
-                'label'         => '',
+                'label'         => 'Log out',
                 'route'         => 'authentication/logout',
                 'icon'          => 'log-out',
                 'needsIdentity' => true

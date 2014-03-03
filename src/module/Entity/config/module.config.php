@@ -26,7 +26,6 @@ return [
             'entity.link.create'        => 'Authorization\Assertion\InstanceAssertion',
             'entity.link.purge'         => 'Authorization\Assertion\InstanceAssertion',
             'entity.link.order'         => 'Authorization\Assertion\InstanceAssertion',
-            'entity.event.history.get'  => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'class_resolver'  => [

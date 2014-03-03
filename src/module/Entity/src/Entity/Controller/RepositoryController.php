@@ -132,7 +132,7 @@ class RepositoryController extends AbstractController
      * @param EntityInterface $entity
      * @param string          $id
      *
-     * @return \Versioning\Service\RevisionInterface NULL
+     * @return \Versioning\Entity\RevisionInterface NULL
      */
     protected function getRevision(EntityInterface $entity, $id = null)
     {

@@ -11,20 +11,20 @@
 namespace Flag\Manager;
 
 use Common\ObjectManager\Flushable;
-use Flag\Entity\TypeInterface;
-use User\Entity\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Flag\Entity\FlagInterface;
+use Type\Entity\TypeInterface;
 
 interface FlagManagerInterface extends Flushable
 {
-
     /**
      * @param int $id
-     * @return FlagServiceInterface
+     * @return FlagInterface
      */
     public function getFlag($id);
 
     /**
-     * @return FlagCollection FlagServiceInterface[]
+     * @return FlagInterface[]|Collection
      */
     public function findAllFlags();
 
@@ -40,11 +40,10 @@ interface FlagManagerInterface extends Flushable
     public function removeFlag($id);
 
     /**
-     * @param int           $type
-     * @param string        $content
-     * @param int           $uuid
-     * @param UserInterface $reporter
-     * @return FlagServiceInterface
+     * @param int    $type
+     * @param string $content
+     * @param int    $uuid
+     * @return FlagInterface
      */
-    public function addFlag($type, $content, $uuid, UserInterface $reporter);
+    public function addFlag($type, $content, $uuid);
 }
