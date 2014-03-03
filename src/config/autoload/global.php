@@ -35,21 +35,26 @@ return [
         'router_class' => 'Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack'
     ],
     'session'            => [
-        'config'     => [
+        'config'              => [
             'class'   => 'Zend\Session\Config\SessionConfig',
             'options' => [
                 'name'                => 'athene2',
                 'cookie_lifetime'     => 2419200,
                 'remember_me_seconds' => 2419200,
                 'use_cookies'         => true,
+                'cookie_httponly'     => true,
                 'cookie_secure'       => false
             ]
         ],
-        'storage'    => 'Zend\Session\Storage\SessionArrayStorage',
-        'validators' => [
+        'storage'             => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators'          => [
             'Zend\Session\Validator\RemoteAddr',
             'Zend\Session\Validator\HttpUserAgent'
-        ]
+        ],
+        'remember_me_seconds' => 2419200,
+        'cookie_lifetime'     => 2419200,
+        'use_cookies'         => true,
+        'cookie_httponly'     => true,
     ],
     'service_manager'    => [
         'factories' => [
