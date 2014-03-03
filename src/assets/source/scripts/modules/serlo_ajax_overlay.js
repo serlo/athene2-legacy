@@ -289,10 +289,11 @@ define(['jquery', 'common'], function ($, Common) {
             page = pageCache[url];
 
         if (undefined !== page) {
-            instance.options.on.contentOpened.call(page, instance);
 
             activePage = page;
             self.$overlayInner.html(page.$el);
+
+            instance.options.on.contentOpened.call(page, instance);
         }
 
         return self.renderPageTabs();

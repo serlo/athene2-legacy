@@ -11,21 +11,23 @@
 namespace Versioning\Service;
 
 use Versioning\Entity\RepositoryInterface;
+use Versioning\Entity\RevisionInterface;
 
 interface RepositoryServiceInterface
 {
     /**
-     * Sets the current revision
+     * @param int|RevisionInterface $revision
+     * @param string                $reason
      *
-     * @param int $revision
-     * @return void
+     * @return mixed
      */
-    public function checkoutRevision($revision);
+    public function checkoutRevision($revision, $reason = '');
 
     /**
      * Creates a new revision and adds it to the repository
      *
      * @param array $data
+     *
      * @return RevisionInterface
      */
     public function commitRevision(array $data);
@@ -34,6 +36,7 @@ interface RepositoryServiceInterface
      * Finds an revision
      *
      * @param int|RevisionInterface $id
+     *
      * @return RevisionInterface
      */
     public function findRevision($id);
@@ -47,15 +50,17 @@ interface RepositoryServiceInterface
 
     /**
      * @param int|RevisionInterface $revision
-     * @param null                  $reason
+     * @param string                $reason
+     *
      * @return void
      */
-    public function rejectRevision($revision, $reason = null);
+    public function rejectRevision($revision, $reason = '');
 
     /**
      * Sets the repository
      *
      * @param RepositoryInterface $repository
+     *
      * @return void
      */
     public function setRepository(RepositoryInterface $repository);
