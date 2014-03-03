@@ -26,7 +26,7 @@ class PageController extends AbstractController
             return false;
         }
 
-        if (!$this->params('forwarded', false) || $this->params('isXmlHttpRequest', false)) {
+        if (!$this->params('forwarded', false)) {
             try {
                 $alias = $this->getAliasManager()->findAliasByObject($entity);
                 return $this->redirect()->toRoute('alias', ['alias' => $alias->getAlias()]);
