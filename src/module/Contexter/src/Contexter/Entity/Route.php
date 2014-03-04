@@ -64,32 +64,28 @@ class Route implements RouteInterface
         return $this->name;
     }
 
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
     public function getContext()
     {
         return $this->context;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function setContext(ContextInterface $context)
     {
         $this->context = $context;
-
-        return $this;
     }
 
     public function addParameters(array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            $this->addParameter($key, $value);
+            if (!empty($value)) {
+                $this->addParameter($key, $value);
+            }
         }
-
-        return $this;
     }
 
     public function addParameter($key, $value)
@@ -99,7 +95,5 @@ class Route implements RouteInterface
         $parameter->setValue($value);
         $parameter->setRoute($this);
         $this->parameters->add($parameter);
-
-        return $this;
     }
 }

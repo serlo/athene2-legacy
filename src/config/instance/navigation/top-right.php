@@ -27,6 +27,7 @@ return [
             [
                 'label'         => 'Sign up',
                 'route'         => 'user/register',
+                'icon'          => 'new-window',
                 'needsIdentity' => false
             ],
             [

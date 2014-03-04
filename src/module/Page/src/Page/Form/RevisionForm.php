@@ -25,7 +25,7 @@ class RevisionForm extends Form
         $textarea->setLabel('Content:')->setAttribute('required', 'required')->setAttribute('id', 'content');
         $this->add($textarea);
 
-        $submit = (new Submit('submit'));
+        $submit = new Submit('submit');
         $submit->setValue('Save')->setAttribute('class', 'btn btn-success pull-right');
         $this->add($submit);
     }

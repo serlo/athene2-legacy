@@ -11,24 +11,22 @@
 namespace RelatedContent\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Instance\Entity\InstanceAwareInterface;
 use Uuid\Entity\UuidInterface;
 
-interface ContainerInterface
+interface ContainerInterface extends InstanceAwareInterface
 {
     /**
-     *
      * @return int
      */
     public function getId();
 
     /**
-     *
      * @return Collection
      */
     public function getHolders();
 
     /**
-     *
      * @param HolderInterface $holder
      * @return self
      */

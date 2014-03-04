@@ -49,7 +49,7 @@ class ParameterFieldset extends Fieldset implements InputFilterProviderInterface
                     (new Checkbox($key))->setLabel('<strong>' . $key . ':</strong> ' . $value)->setAttribute(
                         'checked',
                         true
-                    )->setCheckedValue($value)
+                    )->setCheckedValue($value)->setUncheckedValue('')
                 );
             }
         }
