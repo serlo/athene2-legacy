@@ -37,7 +37,8 @@
         "cd " . __DIR__ . "/../assets/;bower install",
         "cd " . __DIR__ . "/../assets/;bower update",
         "cd " . __DIR__ . "/../assets/;grunt build",
-        "cd " . __DIR__ . "/../../;php composer.phar update -o"
+        "cd " . __DIR__ . "/../../;php composer.phar update -o",
+        "rm " . __DIR__ . "/assets/* -rf"
     );
 
     // Run the commands for output
