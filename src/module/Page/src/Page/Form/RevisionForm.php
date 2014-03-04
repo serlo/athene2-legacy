@@ -8,24 +8,25 @@ use Zend\Form\Form;
 
 class RevisionForm extends Form
 {
-
-    public function __construct($entityManager)
+    public function __construct()
     {
         parent::__construct('createRepository');
-        $filter = new RevisionFilter($entityManager);
-        
+        $filter = new RevisionFilter();
+
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
-        
         $this->setInputFilter($filter);
-        $this->add((new Text('title'))->setLabel('Title:'))
-            ->setAttribute('required', 'required');
-        
-        $this->add((new Textarea('content'))->setAttribute('class', 'ckeditor')
-            ->setLabel('Content:'))
-            ->setAttribute('required', 'required');
-        
-        $this->add((new Submit('submit'))->setValue('Save')
-            ->setAttribute('class', 'btn btn-success pull-right'));
+
+        $text = new Text('title');
+        $text->setLabel('Title:')->setAttribute('required', 'required')->setAttribute('id', 'title');
+        $this->add($text);
+
+        $textarea = new Textarea('content');
+        $textarea->setLabel('Content:')->setAttribute('required', 'required')->setAttribute('id', 'content');
+        $this->add($textarea);
+
+        $submit = (new Submit('submit'));
+        $submit->setValue('Save')->setAttribute('class', 'btn btn-success pull-right');
+        $this->add($submit);
     }
 }

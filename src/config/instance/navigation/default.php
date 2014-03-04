@@ -24,7 +24,17 @@ return [
                     [
                         'label' => 'Pages',
                         'route' => 'pages',
-                        'icon' => 'paperclip'
+                        'icon' => 'paperclip',
+                        'pages' => [
+                            [
+                                'route' => 'page/create',
+                                'visible' => false
+                            ],
+                            [
+                                'route' => 'page/update',
+                                'visible' => false
+                            ]
+                        ]
                     ],
                     [
                         'label' => 'Taxonomy',
@@ -58,13 +68,7 @@ return [
                     [
                         'label' => 'Authorization',
                         'icon' => 'lock',
-                        'uri' => '#',
-                        'pages' => [
-                            [
-                                'label' => 'Manage roles',
-                                'route' => 'authorization/roles'
-                            ]
-                        ]
+                        'route' => 'authorization/roles'
                     ],
                     [
                         'label' => 'Navigation',

@@ -10,19 +10,16 @@
  */
 namespace Alias\Listener;
 
+use Page\Entity\PageRepositoryInterface;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class PageControllerListener extends AbstractListener
 {
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $events->attach($this->getMonitoredClass(), 'page.create', [$this, 'onUpdate']);
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'Page\Controller\IndexController';
+        $events->attach($this->getMonitoredClass(), 'page.create.postFlush', [$this, 'onUpdate']);
     }
 
     /**
@@ -33,23 +30,22 @@ class PageControllerListener extends AbstractListener
      */
     public function onUpdate(Event $e)
     {
+        /* @var $repository PageRepositoryInterface */
         $slug       = $e->getParam('slug');
         $repository = $e->getParam('repository');
-        $instance   = $e->getParam('instance');
-
-        $url = $e->getTarget()->url()->fromRoute(
-            'page/view',
-            [
-                'page' => $repository->getId()
-            ]
-        );
-
-        $this->getAliasManager()->createAlias(
+        $url        = $e->getTarget()->url()->fromRoute('page/view', ['page' => $repository->getId()]);
+        $alias      = $this->getAliasManager()->createAlias(
             $url,
             $slug,
             $slug . '-' . $repository->getId(),
             $repository,
-            $instance
+            $repository->getInstance()
         );
+        $this->getAliasManager()->flush($alias);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Page\Controller\IndexController';
     }
 }

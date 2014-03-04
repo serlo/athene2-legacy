@@ -12,8 +12,8 @@ namespace Event\View\Helper;
 
 use Event\Entity\EventLogInterface;
 use Event\EventManagerAwareTrait;
+use Event\EventManagerInterface;
 use Event\Exception;
-use Zend\EventManager\EventManagerInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class EventLog extends AbstractHelper
