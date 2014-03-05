@@ -10,6 +10,7 @@
  */
 namespace Taxonomy\Manager;
 
+use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
@@ -19,20 +20,21 @@ use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
 use Type\TypeManagerAwareTrait;
 use Type\TypeManagerInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Form\FormInterface;
+use ZfcRbac\Service\AuthorizationService;
 
 class TaxonomyManager implements TaxonomyManagerInterface
 {
     use ClassResolverAwareTrait, ObjectManagerAwareTrait;
     use TypeManagerAwareTrait, EventManagerAwareTrait;
-    use FlushableTrait;
+    use FlushableTrait, AuthorizationAssertionTrait;
 
     /**
      * @var TaxonomyTermHydrator
@@ -45,6 +47,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     protected $moduleOptions;
 
     public function __construct(
+        AuthorizationService $authorizationService,
         ClassResolverInterface $classResolver,
         ModuleOptions $moduleOptions,
         ObjectManager $objectManager,
@@ -54,30 +57,40 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->moduleOptions = $moduleOptions;
         $this->objectManager = $objectManager;
         $this->typeManager   = $typeManager;
+        $this->setAuthorizationService($authorizationService);
     }
 
-    public function getTerm($id)
+    public function associateWith($term, TaxonomyTermAwareInterface $object, $position = null)
     {
-        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface');
-        $entity    = $this->getObjectManager()->find($className, $id);
+        if (!$term instanceof TaxonomyTermInterface) {
+            $term = $this->getTerm($term);
+        }
+        $taxonomy = $term->getTaxonomy();
+        $this->associateWith('taxonomy.term.associate', $term);
 
-        if (!is_object($entity)) {
-            throw new Exception\TermNotFoundException(sprintf('Term with id %s not found', $id));
+        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
+            throw new Exception\RuntimeException(sprintf(
+                'Taxonomy "%s" can\'t be associated with "%s"',
+                $taxonomy->getName(),
+                get_class($object)
+            ));
         }
 
-        return $entity;
+        $term->associateObject($object);
+        if ($position !== null) {
+            $term->positionAssociatedObject($object, (int)$position);
+        }
+        $this->getEventManager()->trigger('associate', $this, ['object' => $object, 'term' => $term]);
+        $this->getObjectManager()->persist($term);
     }
 
-    public function getTaxonomy($id)
+    public function createTerm(FormInterface $form)
     {
-        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
-        $entity    = $this->getObjectManager()->find($className, $id);
-
-        if (!is_object($entity)) {
-            throw new Exception\RuntimeException(sprintf('Term with id %s not found', $id));
-        }
-
-        return $entity;
+        $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
+        $this->bind($term, $form);
+        $this->associateWith('taxonomy.term.create', $term);
+        $this->getEventManager()->trigger('create', $this, ['term' => $term]);
+        return $term;
     }
 
     public function findTaxonomyByName($name, InstanceInterface $instance)
@@ -88,17 +101,20 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 
         if (!is_object($entity)) {
+            $this->assertGranted('taxonomy.create', $instance);
+
             /* @var $entity \Taxonomy\Entity\TaxonomyInterface */
             $entity = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyInterface');
             $entity->setInstance($instance);
             $entity->setType($type);
 
             if ($this->getObjectManager()->isOpen()) {
-                // todo: use entitymanager
                 $this->getObjectManager()->persist($entity);
                 $this->getObjectManager()->flush($entity);
             }
         }
+
+        $this->assertGranted('taxonomy.get', $entity);
 
         return $entity;
     }
@@ -149,53 +165,57 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $found;
     }
 
-    public function createTerm(FormInterface $form)
+    public function getModuleOptions()
     {
-        $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
-        $this->bind($term, $form);
-        $this->getEventManager()->trigger('create', $this, ['term' => $term]);
-
-        return $term;
+        return $this->moduleOptions;
     }
 
-    public function updateTerm(FormInterface $form)
+    public function setModuleOptions(ModuleOptions $moduleOptions)
     {
-        $term = $this->bind($form->getObject(), $form);
-        $this->getEventManager()->trigger('update', $this, ['term' => $term]);
-
-        return $term;
+        $this->moduleOptions = $moduleOptions;
     }
 
-    public function associateWith($term, TaxonomyTermAwareInterface $object, $position = null)
+    public function getTaxonomy($id)
     {
-        if (!$term instanceof TaxonomyTermInterface) {
-            $term = $this->getTerm($term);
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyInterface');
+        $entity    = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($entity)) {
+            throw new Exception\RuntimeException(sprintf('Term with id %s not found', $id));
         }
 
-        $taxonomy = $term->getTaxonomy();
+        return $entity;
+    }
 
-        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
-            throw new Exception\RuntimeException(sprintf(
-                'Taxonomy "%s" can\'t be associated with "%s"',
-                $taxonomy->getName(),
-                get_class($object)
-            ));
+    public function getTerm($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Taxonomy\Entity\TaxonomyTermInterface');
+        $entity    = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($entity)) {
+            throw new Exception\TermNotFoundException(sprintf('Term with id %s not found', $id));
         }
 
-        $term->associateObject($object);
-        if ($position !== null) {
-            $term->positionAssociatedObject($object, (int)$position);
-        }
-        $this->getEventManager()->trigger('associate', $this, ['object' => $object, 'term' => $term]);
-        $this->getObjectManager()->persist($term);
+        $this->assertGranted('taxonomy.term.get', $entity);
+
+        return $entity;
     }
 
     public function removeAssociation($id, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
+        $this->associateWith('taxonomy.term.dissociate', $term);
         $term->removeAssociation($object);
         $this->getEventManager()->trigger('dissociate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
+    }
+
+    public function updateTerm(FormInterface $form)
+    {
+        $term = $this->bind($form->getObject(), $form);
+        $this->associateWith('taxonomy.term.update', $term);
+        $this->getEventManager()->trigger('update', $this, ['term' => $term]);
+        return $term;
     }
 
     /**
@@ -216,22 +236,5 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $processingForm->isValid();
         $this->objectManager->persist($object);
         return $object;
-    }
-
-    /**
-     * @return ModuleOptions $moduleOptions
-     */
-    public function getModuleOptions()
-    {
-        return $this->moduleOptions;
-    }
-
-    /**
-     * @param ModuleOptions $moduleOptions
-     * @return self
-     */
-    public function setModuleOptions(ModuleOptions $moduleOptions)
-    {
-        $this->moduleOptions = $moduleOptions;
     }
 }
