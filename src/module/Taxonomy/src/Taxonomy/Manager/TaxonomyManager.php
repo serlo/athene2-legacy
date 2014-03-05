@@ -66,7 +66,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
             $term = $this->getTerm($term);
         }
         $taxonomy = $term->getTaxonomy();
-        $this->associateWith('taxonomy.term.associate', $term);
+        $this->assertGranted('taxonomy.term.associate', $term);
 
         if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
             throw new Exception\RuntimeException(sprintf(
@@ -88,7 +88,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     {
         $term = $this->getClassResolver()->resolve('Taxonomy\Entity\TaxonomyTermInterface');
         $this->bind($term, $form);
-        $this->associateWith('taxonomy.term.create', $term);
+        $this->assertGranted('taxonomy.term.create', $term);
         $this->getEventManager()->trigger('create', $this, ['term' => $term]);
         return $term;
     }
@@ -204,7 +204,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function removeAssociation($id, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
-        $this->associateWith('taxonomy.term.dissociate', $term);
+        $this->assertGranted('taxonomy.term.dissociate', $term);
         $term->removeAssociation($object);
         $this->getEventManager()->trigger('dissociate', $this, ['object' => $object, 'term' => $term]);
         $this->getObjectManager()->persist($term);
@@ -213,7 +213,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function updateTerm(FormInterface $form)
     {
         $term = $this->bind($form->getObject(), $form);
-        $this->associateWith('taxonomy.term.update', $term);
+        $this->assertGranted('taxonomy.term.update', $term);
         $this->getEventManager()->trigger('update', $this, ['term' => $term]);
         return $term;
     }
