@@ -58,6 +58,9 @@ class BlogManager implements BlogManagerInterface
     public function findAllBlogs(InstanceInterface $instanceService)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('blog', $instanceService);
+        foreach($taxonomy->getChildren() as $child){
+            $this->assertGranted('blog.get', $child);
+        }
         return $taxonomy->getChildren();
     }
 
@@ -96,15 +99,6 @@ class BlogManager implements BlogManagerInterface
     public function flush()
     {
         $this->getObjectManager()->flush();
-    }
-
-    public function trashPost($id)
-    {
-        $post = $this->getPost($id);
-        $this->assertGranted('blog.post.trash', $post);
-
-        $post->setTrashed(true);
-        $this->getObjectManager()->persist($post);
     }
 
     protected function bind(PostInterface $comment, FormInterface $form)
