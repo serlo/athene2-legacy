@@ -27,7 +27,7 @@ class ModulePageForm extends Form
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
-            (new Textarea('Changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
+            (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
                 'plain'
             )

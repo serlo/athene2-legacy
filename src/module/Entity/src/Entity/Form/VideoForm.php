@@ -34,7 +34,7 @@ class VideoForm extends Form
             )
         );
         $this->add(
-            (new Textarea('Changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
+            (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
                 'plain'
             )

@@ -25,7 +25,7 @@ class TextExerciseGroupForm extends Form
 
         $this->add((new Textarea('content'))->setAttribute('id', 'content')->setLabel('Content:'));
         $this->add(
-            (new Textarea('Changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
+            (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
                 'plain'
             )
