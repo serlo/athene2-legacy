@@ -55,12 +55,11 @@ class UserController extends AbstractUserController
 
     public function registerAction()
     {
-        if (!$this->isGranted('user.create')) {
-            $this->redirect()->toReferer();
+        if ($this->getUserManager()->getUserFromAuthenticator()) {
+            return $this->redirect()->toRoute('home');
         }
 
         $this->layout('layout/1-col');
-
         $form = $this->getForm('register');
 
         if ($this->getRequest()->isPost()) {

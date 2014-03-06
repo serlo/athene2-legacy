@@ -1,11 +1,5 @@
 <div class="page-header">
-    <div class="pull-right btn-group">
-        <?php if($this->isGranted('blog.post.create', $this->blog)): ?>
-            <a class="btn btn-default btn-sm" href="<?php echo $this->url('blog/post/create', array('id' => $this->blog->getId())); ?>"><span
-            	class="glyphicon glyphicon-file"></span></a>
-        <?php endif; ?>
-    </div>
-	<h1><?php echo $this->translate('Manage blog'); ?> <small><?php echo $this->blog->getName(); ?></small>
+	<h1><?php echo $this->translate('Unpublished posts'); ?> <small><?php echo $this->blog->getName(); ?></small>
 	</h1>
 </div>
 <?php echo $this->partial('blog/blog/view-partial', array('posts' => $this->posts, 'blog' => $this->blog)); ?>

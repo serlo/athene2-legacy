@@ -13,9 +13,7 @@ namespace Event;
 return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            'flag.get'    => 'Authorization\Assertion\InstanceAssertion',
-            'flag.create' => 'Authorization\Assertion\InstanceAssertion',
-            'flag.remove' => 'Authorization\Assertion\InstanceAssertion',
+            'event.log.get'    => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'event_manager'   => [],

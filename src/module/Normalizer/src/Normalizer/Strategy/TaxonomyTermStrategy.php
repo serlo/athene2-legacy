@@ -65,7 +65,8 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'topic-folder':
             case 'curriculum':
             case 'locale':
-            case 'curriculum-folder':
+            case 'curriculum-topic':
+            case 'curriculum-topic-folder':
             case 'topic-final-folder':
                 return 'subject/taxonomy';
         }
@@ -88,7 +89,8 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'topic-folder':
             case 'curriculum':
             case 'locale':
-            case 'curriculum-folder':
+            case 'curriculum-topic':
+            case 'curriculum-topic-folder':
             case 'topic-final-folder':
                 return [
                     'subject' => $object->findAncestorByTypeName('subject')->getSlug(),

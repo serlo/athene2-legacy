@@ -11,6 +11,11 @@
 namespace Instance;
 
 return [
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'instance.get' => 'Authorization\Assertion\InstanceAssertion',
+        ]
+    ],
     'translator'      => [
         'translation_file_patterns' => [
             [

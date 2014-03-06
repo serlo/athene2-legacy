@@ -20,8 +20,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
-use RelatedContent\Entity;
 use RelatedContent\Entity\ContainerInterface;
+use RelatedContent\Entity;
 use RelatedContent\Exception;
 use RelatedContent\Result\CategoryResult;
 use RelatedContent\Result\ExternalResult;
@@ -205,15 +205,14 @@ class RelatedContentManager implements RelatedContentManagerInterface
      */
     protected function createContainer($id)
     {
+        // No Authorization required for this.
+
         /* @var $container Entity\ContainerInterface */
         $uuid      = $this->getUuidManager()->getUuid($id);
         $container = $this->getClassResolver()->resolveClassName('RelatedContent\Entity\ContainerInterface');
         $instance  = $this->getInstanceManager()->getInstanceFromRequest();
         $container = new $container($uuid, $instance);
-
-        $this->assertGranted('related.content.create', $instance);
         $this->getObjectManager()->persist($container);
-
         return $container;
     }
 }

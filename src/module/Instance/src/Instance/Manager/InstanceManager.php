@@ -10,17 +10,23 @@
  */
 namespace Instance\Manager;
 
+use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Entity\InstanceInterface;
 use Instance\Exception;
 use Zend\Session\AbstractContainer;
 use Zend\Session\Container;
+use ZfcRbac\Service\AuthorizationService;
+use ZfcRbac\Service\AuthorizationServiceAwareTrait;
 
 class InstanceManager implements InstanceManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
+    use AuthorizationAssertionTrait;
 
     /**
      * @var InstanceInterface
@@ -37,13 +43,60 @@ class InstanceManager implements InstanceManagerInterface
      */
     private $defaultInstance = 1;
 
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        ObjectManager $objectManager
+    ) {
+        $this->setAuthorizationService($authorizationService);
+        $this->classResolver = $classResolver;
+        $this->objectManager = $objectManager;
+    }
+
     public function findAllInstances()
     {
-        $collection = $this->getObjectManager()->getRepository(
-            $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface')
-        )->findAll();
+        $className  = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
+        $collection = $this->getObjectManager()->getRepository($className)->findAll();
+        $return     = new ArrayCollection();
 
-        return new ArrayCollection($collection);
+        foreach ($collection as $instance) {
+            if ($this->getAuthorizationService()->isGranted('instance.get', $instance)) {
+                $return->add($instance);
+            }
+        }
+
+        return $return;
+    }
+
+    public function findInstanceByName($name)
+    {
+        if (!is_string($name)) {
+            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($name)));
+        }
+
+        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
+        $criteria  = ['name' => $name];
+        $instance  = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
+
+        if (!is_object($instance)) {
+            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $name));
+        }
+
+        $this->assertGranted('instance.get', $instance);
+
+        return $instance;
+    }
+
+    /**
+     * @return AbstractContainer
+     */
+    public function getContainer()
+    {
+        if (!is_object($this->container)) {
+            $this->container = new Container('instance');
+        }
+
+        return $this->container;
     }
 
     public function getDefaultInstance()
@@ -54,6 +107,19 @@ class InstanceManager implements InstanceManagerInterface
     public function setDefaultInstance($id)
     {
         $this->defaultInstance = $id;
+    }
+
+    public function getInstance($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
+        $instance  = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($instance)) {
+            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $id));
+        }
+        $this->assertGranted('instance.get', $instance);
+
+        return $instance;
     }
 
     public function getInstanceFromRequest()
@@ -86,52 +152,10 @@ class InstanceManager implements InstanceManagerInterface
         return $this->requestInstance;
     }
 
-    public function getInstance($id)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
-
-        $instance = $this->getObjectManager()->find($className, $id);
-
-        if (!is_object($instance)) {
-            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $id));
-        }
-
-        return $instance;
-    }
-
-    public function findInstanceByName($name)
-    {
-        if (!is_string($name)) {
-            throw new Exception\InvalidArgumentException(sprintf('Expected string but got %s', gettype($name)));
-        }
-
-        $className = $this->getClassResolver()->resolveClassName('Instance\Entity\InstanceInterface');
-        $criteria  = ['name' => $name];
-        $instance  = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
-
-        if (!is_object($instance)) {
-            throw new Exception\InstanceNotFoundException(sprintf('Instance %s could not be found', $name));
-        }
-
-        return $instance;
-    }
-
     public function switchInstance($id)
     {
         $instance  = $this->getInstance($id);
         $container = $this->getContainer();
         $container->offsetSet('instance', $instance->getId());
-    }
-
-    /**
-     * @return AbstractContainer
-     */
-    public function getContainer()
-    {
-        if (!is_object($this->container)) {
-            $this->container = new Container('instance');
-        }
-
-        return $this->container;
     }
 }

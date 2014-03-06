@@ -9,7 +9,7 @@
     			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/update', array('post' => $post->getId())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
     		             <?php endif; ?>
                         <?php if($this->isGranted('blog.post.trash', $post)): ?>
-    			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('blog/post/trash', array('post' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
+    			             <a class="btn btn-default btn-xs" href="<?php echo $this->url('uuid/trash', array('id' => $post->getId())); ?>"><span class="glyphicon glyphicon-trash"></span></a>
     			         <?php endif; ?>
     			    </div>
     				<h3><a href="<?php echo $this->url('blog/post/view', array('post' => $post->getId())); ?>"><?php echo $post->getTitle(); ?></a> <small><?php echo $post->getAuthor()->getUsername(); ?> - <?php echo $this->timeago()->render($post->getTimestamp()); ?><?php if(!$post->isPublished()) echo ' - <i>' . $this->translate('unpublished') . '</i>'; ?></small></h3>

@@ -23,10 +23,8 @@ class IndexController extends AbstractActionController
     {
         $id             = $this->params('revision');
         $pageRepository = $this->getPageRepository();
-        $pageRepository->setCurrentRevision($this->getPageManager()->getRevision($id));
-        $this->getObjectManager()->persist($pageRepository);
+        $this->getRepositoryManager()->getRepository($pageRepository)->checkoutRevision($id);
         $this->getObjectManager()->flush();
-
         return $this->redirect()->toReferer();
     }
 
@@ -88,6 +86,12 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
+    public function getPageRepository()
+    {
+        $id = $this->params('page');
+        return $this->getPageManager()->getPageRepository($id);
+    }
+
     public function indexAction()
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
@@ -107,7 +111,7 @@ class IndexController extends AbstractActionController
             function (RoleInterface $e) {
                 return $e->getId();
             },
-            $pageRepository->getRoles()
+            $pageRepository->getRoles()->toArray()
         );
 
         $this->assertGranted('page.update', $pageRepository);
@@ -173,11 +177,5 @@ class IndexController extends AbstractActionController
         $view->setTemplate('page/revisions');
 
         return $view;
-    }
-
-    public function getPageRepository()
-    {
-        $id = $this->params('page');
-        return $this->getPageManager()->getPageRepository($id);
     }
 }

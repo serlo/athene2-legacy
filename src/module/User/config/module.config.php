@@ -14,11 +14,6 @@ namespace User;
  * @codeCoverageIgnore
  */
 return [
-    'zfc_rbac'        => [
-        'assertion_map' => [
-            //'user.create' => 'User\Assertion\HasNoIdentityAssertion'
-        ]
-    ],
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Manager\UserManager' => __NAMESPACE__ . '\Factory\UserManagerFactory',
@@ -142,6 +137,15 @@ return [
                         ]
                     ]
                 ]
+            ]
+        ]
+    ],
+    'uuid'           => [
+        'permissions' => [
+            'User\Entity\User'   => [
+                'trash'   => 'user.trash',
+                'restore' => 'user.restore',
+                'purge'   => 'user.purge'
             ]
         ]
     ],

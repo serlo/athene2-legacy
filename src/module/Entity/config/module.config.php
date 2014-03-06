@@ -20,12 +20,14 @@ return [
             'entity.restore'            => 'Authorization\Assertion\InstanceAssertion',
             'entity.revision.create'    => 'Authorization\Assertion\InstanceAssertion',
             'entity.revision.purge'     => 'Authorization\Assertion\InstanceAssertion',
+            'entity.revision.restore'   => 'Authorization\Assertion\InstanceAssertion',
             'entity.revision.trash'     => 'Authorization\Assertion\InstanceAssertion',
             'entity.revision.checkout'  => 'Authorization\Assertion\InstanceAssertion',
             'entity.repository.history' => 'Authorization\Assertion\InstanceAssertion',
             'entity.link.create'        => 'Authorization\Assertion\InstanceAssertion',
             'entity.link.purge'         => 'Authorization\Assertion\InstanceAssertion',
             'entity.link.order'         => 'Authorization\Assertion\InstanceAssertion',
+            'entity.license.update'     => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'class_resolver'  => [

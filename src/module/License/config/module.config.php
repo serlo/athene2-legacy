@@ -13,6 +13,7 @@ return [
             'license.create'  => 'Authorization\Assertion\RequestInstanceAssertion',
             'license.update'  => 'Authorization\Assertion\InstanceAssertion',
             'license.purge'   => 'Authorization\Assertion\InstanceAssertion',
+            'license.get'   => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'license_manager' => [

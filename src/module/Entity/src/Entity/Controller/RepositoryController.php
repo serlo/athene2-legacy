@@ -44,9 +44,7 @@ class RepositoryController extends AbstractController
         $view = new ViewModel(['entity' => $entity, 'form' => $form]);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data     = $form->getData();
                 $instance = $this->getInstanceManager()->getInstanceFromRequest();

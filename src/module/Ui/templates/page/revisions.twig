@@ -48,8 +48,8 @@
     {% endfor %}
 </div>
 <hr>
-{% if isGranted('page.revision.create', page) %}
-    <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': page.getCurrentRevision().getId() }) }}" class="btn btn-xs btn-default">
+{% if isGranted('page.create', page) %}
+    <a href="{{ url('page/update', {'page': page.getId()}) }}" class="btn btn-xs btn-default">
         <span class="glyphicon glyphicon-pencil"></span>
         {{ translate('Edit page') }}
     </a>
