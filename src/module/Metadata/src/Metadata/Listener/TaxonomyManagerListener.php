@@ -21,26 +21,13 @@ use Zend\EventManager\SharedEventManagerInterface;
 class TaxonomyManagerListener extends AbstractListener
 {
 
-    public function onCreate(Event $e)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        /* @var $term TaxonomyTermInterface */
-        $term = $e->getParam('term');
-
-        if ($term->hasParent()) {
-            $parent = $term->getParent();
-            $this->addMetadata($parent, $term);
-        }
-    }
-
-    public function onUpdate(Event $e)
-    {
-        /* @var $term TaxonomyTermInterface */
-        $term = $e->getParam('term');
-
-        if ($term->hasParent()) {
-            $parent = $term->getParent();
-            $this->addMetadata($parent, $term);
-        }
+        $class = $this->getMonitoredClass();
+        $events->attach($class, 'create', [$this, 'onCreate']);
+        $events->attach($class, 'update', [$this, 'onUpdate']);
+        $events->attach($class, 'associate', [$this, 'onAssociate']);
+        $events->attach($class, 'dissociate', [$this, 'onDissociate']);
     }
 
     public function onAssociate(Event $e)
@@ -51,6 +38,17 @@ class TaxonomyManagerListener extends AbstractListener
 
         if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
             $this->addMetadata($object, $term);
+        }
+    }
+
+    public function onCreate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term = $e->getParam('term');
+
+        if ($term->hasParent()) {
+            $parent = $term->getParent();
+            $this->addMetadata($parent, $term);
         }
     }
 
@@ -65,48 +63,15 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
-    public function attachShared(SharedEventManagerInterface $events)
+    public function onUpdate(Event $e)
     {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'create',
-            [
-                $this,
-                'onCreate'
-            ]
-        );
+        /* @var $term TaxonomyTermInterface */
+        $term = $e->getParam('term');
 
-         $events->attach(
-            $this->getMonitoredClass(),
-            'update',
-            [
-                $this,
-                'onUpdate'
-            ]
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'associate',
-            [
-                $this,
-                'onAssociate'
-            ]
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'dissociate',
-            [
-                $this,
-                'onDissociate'
-            ]
-        );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'Taxonomy\Manager\TaxonomyManager';
+        if ($term->hasParent()) {
+            $parent = $term->getParent();
+            $this->addMetadata($parent, $term);
+        }
     }
 
     protected function addMetadata(UuidInterface $object, TaxonomyTermInterface $term)
@@ -124,6 +89,11 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
+    protected function getMonitoredClass()
+    {
+        return 'Taxonomy\Manager\TaxonomyManager';
+    }
+
     protected function removeMetadata($object, TaxonomyTermInterface $term)
     {
         while ($term->hasParent()) {
@@ -136,6 +106,7 @@ class TaxonomyManagerListener extends AbstractListener
                 $this->getMetadataManager()->removeMetadata($metadata->getId());
             } catch (MetadataNotFoundException $e) {
             }
+            $term = $term->getParent();
         }
     }
 }
