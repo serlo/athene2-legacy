@@ -157,7 +157,6 @@ class NavigationManager implements NavigationManagerInterface
                 'instance' => $instance->getId()
             ]
         );
-
     }
 
     /**

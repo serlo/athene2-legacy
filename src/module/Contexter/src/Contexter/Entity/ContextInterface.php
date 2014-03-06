@@ -39,19 +39,19 @@ interface ContextInterface extends TypeAwareInterface, InstanceAwareInterface
 
     /**
      * @param UuidInterface $uuid
-     * @return self
+     * @return void
      */
     public function setObject(UuidInterface $uuid);
 
     /**
      * @param string $title
-     * @return self
+     * @return void
      */
     public function setTitle($title);
 
     /**
      * @param RouteInterface $route
-     * @return self
+     * @return void
      */
     public function addRoute(RouteInterface $route);
 }

@@ -35,7 +35,6 @@ class PermissionController extends AbstractActionController
         $permissions = $this->getPermissionService()->findAllPermissions();
         $view        = new ViewModel(['permissions' => $permissions]);
         $view->setTemplate('authorization/permission/permissions');
-
         return $view;
     }
 }

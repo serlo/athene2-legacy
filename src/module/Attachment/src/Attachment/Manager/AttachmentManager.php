@@ -57,16 +57,39 @@ class AttachmentManager implements AttachmentManagerInterface
         $this->moduleOptions        = $moduleOptions;
     }
 
+    /**
+     * @param $path
+     * @return bool|string
+     */
+    protected static function findParentPath($path)
+    {
+        $dir         = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+
+        return $dir . '/' . $path;
+    }
+
     public function attach(AttachmentFieldsetProvider $form, $type = 'file', $appendId = null)
     {
         if (!$form->isValid()) {
             throw new Exception\RuntimeException(print_r($form->getMessages(), true));
         }
 
-        if ($appendId !== null) {
-            $this->assertGranted('attachment.append');
-        } else {
+        if (!$appendId) {
             $this->assertGranted('attachment.create');
+            $attachment = $this->createAttachment();
+            $type       = $this->getTypeManager()->findTypeByName($type);
+            $attachment->setType($type);
+        } else {
+            $attachment = $this->getAttachment($appendId);
+            $this->assertGranted('attachment.append', $attachment);
         }
 
         $data = $form->getData()['attachment'];
@@ -74,27 +97,39 @@ class AttachmentManager implements AttachmentManagerInterface
             throw new Exception\NoFileSent;
         }
 
-        $file      = $data['file'];
-        $filename  = $file['name'];
-        $size      = $file['size'];
-        $filetype  = $file['type'];
-        $pathinfo  = pathinfo($filename);
-        $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
-        $hash      = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
+        $file        = $data['file'];
+        $filename    = $file['name'];
+        $size        = $file['size'];
+        $filetype    = $file['type'];
+        $pathinfo    = pathinfo($filename);
+        $extension   = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
+        $hash        = uniqid() . '_' . hash('ripemd160', $filename) . $extension;
         $location    = $this->findParentPath($this->moduleOptions->getPath()) . '/' . $hash;
         $webLocation = $this->moduleOptions->getWebpath() . '/' . $hash;
         $filter      = new RenameUpload($location);
         $filter->filter($file);
 
-        if ($appendId) {
-            $attachment = $this->getAttachment($appendId);
-        } else {
-            $attachment = $this->createAttachment();
-            $type       = $this->getTypeManager()->findTypeByName($type);
-            $attachment->setType($type);
+        return $this->attachFile($attachment, $filename, $webLocation, $size, $filetype);
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
+    }
+
+    public function getAttachment($id)
+    {
+        /* @var $entity \Attachment\Entity\ContainerInterface */
+        $entity = $this->getObjectManager()->find(
+            $this->getClassResolver()->resolveClassName('Attachment\Entity\ContainerInterface'),
+            $id
+        );
+
+        if (!is_object($entity)) {
+            throw new Exception\AttachmentNotFoundException(sprintf('Upload "%s" not found', $id));
         }
 
-        return $this->attachFile($attachment, $filename, $webLocation, $size, $filetype);
+        return $entity;
     }
 
     public function getFile($attachmentId, $fileId = null)
@@ -117,52 +152,6 @@ class AttachmentManager implements AttachmentManagerInterface
         }
     }
 
-    public function getAttachment($id)
-    {
-        /* @var $entity \Attachment\Entity\ContainerInterface */
-        $entity = $this->getObjectManager()->find(
-            $this->getClassResolver()->resolveClassName('Attachment\Entity\ContainerInterface'),
-            $id
-        );
-
-        if (!is_object($entity)) {
-            throw new Exception\AttachmentNotFoundException(sprintf('Upload "%s" not found', $id));
-        }
-
-        return $entity;
-    }
-
-    /**
-     * @param $path
-     * @return bool|string
-     */
-    protected static function findParentPath($path)
-    {
-        $dir         = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path) && !file_exists($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-
-        return $dir . '/' . $path;
-    }
-
-    protected function createAttachment()
-    {
-        /* @var $attachment ContainerInterface */
-        $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
-        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
-
-        $attachment->setInstance($instance);
-        $this->getObjectManager()->persist($attachment);
-
-        return $attachment;
-    }
-
     protected function attachFile(ContainerInterface $attachment, $filename, $location, $size, $type)
     {
         $file = $this->getClassResolver()->resolve('Attachment\Entity\FileInterface');
@@ -178,8 +167,15 @@ class AttachmentManager implements AttachmentManagerInterface
         return $attachment;
     }
 
-    public function flush()
+    protected function createAttachment()
     {
-        $this->getObjectManager()->flush();
+        /* @var $attachment ContainerInterface */
+        $attachment = $this->getClassResolver()->resolve('Attachment\Entity\ContainerInterface');
+        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+
+        $attachment->setInstance($instance);
+        $this->getObjectManager()->persist($attachment);
+
+        return $attachment;
     }
 }

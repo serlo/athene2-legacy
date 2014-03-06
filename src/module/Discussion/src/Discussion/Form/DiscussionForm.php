@@ -78,7 +78,7 @@ class DiscussionForm extends AbstractForm
                 'validators' => [
                     [
                         'name'    => 'Regex',
-                        'options' => ['pattern' => '~^[a-zA-Z\-_ /0-9]*$~']
+                        'options' => ['pattern' => '~^[a-zA-Z\-_ /0-9äöüÄÖÜ?!.,]*$~']
                     ]
                 ]
             ]

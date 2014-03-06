@@ -51,12 +51,6 @@ interface BlogManagerInterface
     public function getPost($id);
 
     /**
-     * @param int $id
-     * @return void
-     */
-    public function trashPost($id);
-
-    /**
      * @param FormInterface $form
      * @return void
      */

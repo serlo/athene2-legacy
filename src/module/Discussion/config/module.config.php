@@ -13,16 +13,16 @@ namespace Discussion;
 return [
     'zfc_rbac'        => [
         'assertion_map' => [
-            'discussion.create'         => 'Authorization\Assertion\RequestInstanceAssertion',
-            'discussion.trash'          => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.purge'          => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.vote'           => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.archive'        => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.flag'           => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.comment.trash'  => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.comment.purge'  => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.comment.flag'   => 'Authorization\Assertion\InstanceAssertion',
-            'discussion.comment.create' => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.create'          => 'Authorization\Assertion\RequestInstanceAssertion',
+            'discussion.trash'           => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.restore'         => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.purge'           => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.vote'            => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.archive'         => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.trash'   => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.restore' => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.purge'   => 'Authorization\Assertion\InstanceAssertion',
+            'discussion.comment.create'  => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'uuid'            => [

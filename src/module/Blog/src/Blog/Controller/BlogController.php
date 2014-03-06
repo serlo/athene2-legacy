@@ -97,18 +97,6 @@ class BlogController extends AbstractActionController
         return $view;
     }
 
-    public function trashAction()
-    {
-        $post = $this->getBlogManager()->getPost($this->params('post'));
-        $this->assertGranted('blog.post.trash', $post);
-
-        $this->getBlogManager()->trashPost($this->params('post'));
-        $this->getBlogManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
-    }
-
     public function updateAction()
     {
         $post = $this->getBlogManager()->getPost($this->params('post'));
@@ -166,11 +154,7 @@ class BlogController extends AbstractActionController
             }
         );
 
-        $view = new ViewModel([
-            'blog'  => $blog,
-            'posts' => $posts
-        ]);
-
+        $view = new ViewModel([            'blog'  => $blog,            'posts' => $posts        ]);
         $view->setTemplate('blog/blog/view-all');
 
         return $view;
@@ -195,7 +179,6 @@ class BlogController extends AbstractActionController
     {
         if ($publish) {
             $dateData = explode('.', $publish);
-
             return (new Datetime())->setDate($dateData[2], $dateData[1], $dateData[0])->setTime(0, 0, 0);
         } else {
             return new DateTime();

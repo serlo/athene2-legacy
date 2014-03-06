@@ -15,12 +15,8 @@ use Zend\InputFilter\InputFilter;
 
 class RevisionFilter extends InputFilter
 {
-    use \Common\Traits\ObjectManagerAwareTrait;
-
-    public function __construct ($objectManager)
-    {        
-
-       
+    public function __construct ()
+    {
         $this->add([
             'name' => 'title',
             'required' => true,
@@ -32,6 +28,5 @@ class RevisionFilter extends InputFilter
             'required' => true,
         
         ]);
-     
     }
 }

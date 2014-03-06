@@ -1,6 +1,7 @@
 <?php
 namespace Page\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\Uuid;
@@ -50,7 +51,11 @@ class PageRevision extends Uuid implements PageRevisionInterface
     public function setRepository(RepositoryInterface $repository)
     {
         $this->page_repository = $repository;
-        return $this;
+    }
+
+    public function getInstance()
+    {
+        return $this->getRepository()->getInstance();
     }
 
     public function getDate()
@@ -58,18 +63,19 @@ class PageRevision extends Uuid implements PageRevisionInterface
         return $this->date;
     }
 
-    public function setContent($content){
-        $this->content=$content;
-        return $this;
+    public function setDate(DateTime $date)
+    {
+        $this->date = $date;
     }
+
     public function getContent()
     {
         return $this->content;
     }
-    
-    public function setTitle($title){
-        $this->title=$title;
-        return $this;
+
+    public function setContent($content)
+    {
+        $this->content = $content;
     }
 
     public function getTitle()
@@ -77,33 +83,19 @@ class PageRevision extends Uuid implements PageRevisionInterface
         return $this->title;
     }
 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
     public function getAuthor()
     {
         return $this->author;
     }
 
-    /**
-     * Sets the date
-     *
-     * @param mixed $date            
-     * @return $this
-     */
-    public function setDate(\DateTime $date)
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
-     * Sets the author
-     *
-     * @param EntityInterface $user            
-     * @return $this
-     */
     public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
-        return $this;
     }
 
     public function populate(array $data = [])
@@ -115,18 +107,17 @@ class PageRevision extends Uuid implements PageRevisionInterface
         return $this;
     }
 
-    private function injectFromArray($key, array $array, $default = NULL)
+    public function set($key, $value)
+    {
+        $this->$key = $value;
+    }
+
+    private function injectFromArray($key, array $array, $default = null)
     {
         if (array_key_exists($key, $array)) {
             $this->$key = $array[$key];
-        } elseif ($default !== NULL) {
+        } elseif ($default !== null) {
             $this->$key = $default;
         }
     }
-    public function set($key, $value)
-    {
-            $this->$key = $value;
-    }
-	
-
 }

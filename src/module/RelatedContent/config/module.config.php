@@ -11,6 +11,14 @@
 namespace RelatedContent;
 
 return [
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'related.content.create' => 'Authorization\Assertion\RequestInstanceAssertion',
+            'related.content.update' => 'Authorization\Assertion\InstanceAssertion',
+            'related.content.purge'  => 'Authorization\Assertion\InstanceAssertion',
+            'related.content.get'    => 'Authorization\Assertion\InstanceAssertion',
+        ]
+    ],
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Manager\RelatedContentManager' => __NAMESPACE__ . '\Factory\RelatedContentManagerFactory'

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
 use Uuid\Entity\Uuid;
+use Versioning\Entity\RevisionInterface;
 
 /**
  * A page repository.
@@ -52,11 +53,10 @@ class PageRepository extends Uuid implements PageRepositoryInterface
 
     }
 
-    public function addRevision(\Versioning\Entity\RevisionInterface $revision)
+    public function addRevision(RevisionInterface $revision)
     {
         $this->revisions->add($revision);
         $revision->setRepository($this);
-
         return $revision;
 
     }
@@ -65,7 +65,6 @@ class PageRepository extends Uuid implements PageRepositoryInterface
     {
         $revision = new PageRevision();
         $revision->setRepository($this);
-
         return $revision;
 
     }
@@ -78,8 +77,6 @@ class PageRepository extends Uuid implements PageRepositoryInterface
     public function setLicense(LicenseInterface $license)
     {
         $this->license = $license;
-
-        return $this;
     }
 
     public function getRevisions()
@@ -90,19 +87,7 @@ class PageRepository extends Uuid implements PageRepositoryInterface
                 $revisions[] = $revision;
             }
         }
-
         return $revisions;
-
-    }
-
-    /**
-     * @param field_type $revisions
-     */
-    public function setRevisions($revisions)
-    {
-        $this->revisions = $revisions;
-
-        return $this;
     }
 
     public function hasCurrentRevision()
@@ -115,42 +100,19 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         return $this->current_revision;
     }
 
-
-    /* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::getCurrentRevision()
-     */
-
-    public function setCurrentRevision(\Versioning\Entity\RevisionInterface $revision)
+    public function setCurrentRevision(RevisionInterface $revision)
     {
         $this->current_revision = $revision;
-
-        return $this;
-
     }
 
-    /* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::hasCurrentRevision()
-     */
-
-    public function removeRevision(\Versioning\Entity\RevisionInterface $revision)
+    public function removeRevision(RevisionInterface $revision)
     {
-
         if ($this->getCurrentRevision() == $revision) {
             $this->current_revision = null;
         }
         $this->revisions->removeElement($revision);
-
-        return $this;
-
     }
 
-    /* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::setCurrentRevision()
-     */
-
-    /**
-     * @return the $role
-     */
     public function getRoles()
     {
         return $this->roles;
@@ -160,8 +122,6 @@ class PageRepository extends Uuid implements PageRepositoryInterface
     {
         $this->roles->clear();
         $this->roles = $roles;
-
-        return $this;
     }
 
     public function hasRole(RoleInterface $role)
@@ -169,21 +129,16 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         return $this->roles->contains($role);
     }
 
-    /* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::addRevision()
-     */
-
     public function populate(array $data = [])
     {
         $this->injectFromArray('instance', $data);
         $this->injectFromArray('current_revision', $data);
-
-        return $this;
     }
 
-    /* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::removeRevision()
-     */
+    public function addRole(RoleInterface $role)
+    {
+        $this->roles->add($role);
+    }
 
     private function injectFromArray($key, array $array, $default = null)
     {
@@ -193,23 +148,4 @@ class PageRepository extends Uuid implements PageRepositoryInterface
             $this->$key = $default;
         }
     }
-
-
-    /* (non-PHPdoc)
-     * @see \Versioning\Entity\RepositoryInterface::createRevision()
-     */
-
-    /**
-     * @param field_type $role
-     */
-    public function setRole(RoleInterface $role)
-    {
-        $this->roles->add($role);
-
-        return $this;
-    }
-
-
 }
-
-

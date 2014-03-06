@@ -14,9 +14,19 @@ interface InstanceInterface
 {
 
     /**
+     * @return string
+     */
+    public function __toString();
+
+    /**
      * @return int $id
      */
     public function getId();
+
+    /**
+     * @return LanguageInterface
+     */
+    public function getLanguage();
 
     /**
      * @return string
@@ -28,9 +38,4 @@ interface InstanceInterface
      * @return void
      */
     public function setName($name);
-
-    /**
-     * @return string
-     */
-    public function __toString();
 }

@@ -11,6 +11,13 @@
 namespace Flag;
 
 return [
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'flag.create' => 'Authorization\Assertion\RequestInstanceAssertion',
+            'flag.get' => 'Authorization\Assertion\InstanceAssertion',
+            'flag.remove' => 'Authorization\Assertion\InstanceAssertion',
+        ]
+    ],
     'flag'            => [
         'types' => [
             'spam',
@@ -45,34 +52,8 @@ return [
         ],
         'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Manager\FlagManager'       => [
-                    'setClassResolver'   => [
-                        'required' => true
-                    ],
-                    'setTypeManager'     => [
-                        'required' => true
-                    ],
-                    'setObjectManager'   => [
-                        'required' => true
-                    ],
-                    'setUuidManager'     => [
-                        'required' => true
-                    ],
-                    'setModuleOptions'   => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Controller\FlagController' => [
-                    'setFlagManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager' => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Manager\FlagManager'       => [],
+                __NAMESPACE__ . '\Controller\FlagController' => []
             ]
         ],
         'instance'            => [

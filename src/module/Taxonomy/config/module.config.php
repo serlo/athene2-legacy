@@ -13,6 +13,23 @@ namespace Taxonomy;
 use Taxonomy\View\Helper\TaxonomyHelper;
 
 return [
+    'zfc_rbac'         => [
+        'assertion_map' => [
+            'taxonomy.get'                  => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.purge'                => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.create'               => 'Authorization\Assertion\RequestInstanceAssertion',
+            'taxonomy.term.get'             => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.create'          => 'Authorization\Assertion\RequestInstanceAssertion',
+            'taxonomy.term.update'          => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.trash'           => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.restore'         => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.sort'            => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.purge'           => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.associate'       => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.dissociate'      => 'Authorization\Assertion\InstanceAssertion',
+            'taxonomy.term.associated.sort' => 'Authorization\Assertion\InstanceAssertion',
+        ]
+    ],
     'term_router'      => [
         'routes' => []
     ],

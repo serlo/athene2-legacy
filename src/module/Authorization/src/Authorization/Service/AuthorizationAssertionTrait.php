@@ -28,7 +28,7 @@ trait AuthorizationAssertionTrait
     protected function assertGranted($permission, $context = null)
     {
         if (!$this->getAuthorizationService()->isGranted($permission, $context)) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(sprintf('Permission %s was not granted.', $permission));
         }
     }
 }

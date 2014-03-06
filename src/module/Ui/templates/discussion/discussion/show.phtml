@@ -28,7 +28,7 @@
                                 <b><?php echo $this->discussion->countUpVotes(); ?></b>
                             </div>
                         <?php endif; ?>
-                        <?php if ($this->isGranted('discussion.flag', $this->discussion)): ?>
+                        <?php if ($this->isGranted('flag.create', $this->discussion)): ?>
                             <a class="btn btn-xs btn-default" href="<?php echo $this->urL('flag/add', ['id' => $this->discussion->getId()]); ?>">
                                 <span class="glyphicon glyphicon-flag"></span>
                             </a>
@@ -56,7 +56,7 @@
                             </a>
                         <?php endif; ?>
                     <?php else: ?>
-                        <?php if ($this->isGranted('discussion.comment.flag', $this->discussion)): ?>
+                        <?php if ($this->isGranted('flag.create', $this->discussion)): ?>
                             <a class="btn btn-xs btn-default" href="<?php echo $this->url('flag/add', ['id' => $this->discussion->getId()]); ?>">
                                 <span class="glyphicon glyphicon-flag"></span>
                             </a>
@@ -90,12 +90,14 @@
                     <hr>
                     <div class="list-group">
                         <?php foreach ($this->discussion->getChildren() as $comment): ?>
-                            <div class="list-group-item">
-                                <?php echo $this->partial(
-                                    'discussion/discussion/show',
-                                    array('discussion' => $comment, 'user' => $this->discussion()->getUser())
-                                ); ?>
-                            </div>
+                            <?php if(!$comment->isTrashed()): ?>
+                                <div class="list-group-item">
+                                    <?php echo $this->partial(
+                                        'discussion/discussion/show',
+                                        array('discussion' => $comment, 'user' => $this->discussion()->getUser())
+                                    ); ?>
+                                </div>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
                     <?php if (!$this->discussion()->getArchived()): ?>

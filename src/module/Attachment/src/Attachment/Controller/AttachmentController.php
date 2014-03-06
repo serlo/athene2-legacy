@@ -25,16 +25,14 @@ class AttachmentController extends AbstractActionController
     public function attachAction()
     {
         if ($this->params('append')) {
-            $this->assertGranted('attachment.append');
+            $attachment = $this->getAttachmentManager()->getAttachment($this->params('append'));
+            $this->assertGranted('attachment.append', $attachment);
         } else {
             $this->assertGranted('attachment.create');
         }
 
         $form = new AttachmentForm();
-
-        $view = new ViewModel([
-            'form' => $form
-        ]);
+        $view = new ViewModel(['form' => $form]);
         $view->setTemplate('upload/form');
 
         $request = $this->getRequest();

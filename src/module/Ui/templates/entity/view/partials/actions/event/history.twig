@@ -1,4 +1,4 @@
-{% if isGranted('entity.event.history.get', entity) %}
+{% if isGranted('event.log.get', entity) %}
     <li>
         <a href="{{ url('event/history', {'id': entity.getId()}) }}">
             <span class="glyphicon glyphicon-hdd"></span>

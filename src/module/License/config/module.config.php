@@ -8,12 +8,12 @@
 namespace License;
 
 return [
-    'zfc_rbac'       => [
+    'zfc_rbac'        => [
         'assertion_map' => [
-            /*'licenses.manage' => 'Authorization\Assertion\TenantAssertion',
-            'license.create'  => 'Authorization\Assertion\RequestTenantAssertion',
-            'license.update'  => 'Authorization\Assertion\TenantAssertion',
-            'license.purge'   => 'Authorization\Assertion\TenantAssertion',*/
+            'license.create'  => 'Authorization\Assertion\RequestInstanceAssertion',
+            'license.update'  => 'Authorization\Assertion\InstanceAssertion',
+            'license.purge'   => 'Authorization\Assertion\InstanceAssertion',
+            'license.get'   => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'license_manager' => [
@@ -22,37 +22,17 @@ return [
     'service_manager' => [
         'factories' => []
     ],
-    'class_resolver' => [
+    'class_resolver'  => [
         __NAMESPACE__ . '\Entity\LicenseInterface' => __NAMESPACE__ . '\Entity\License'
     ],
-    'di'             => [
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\LicenseController'
         ],
-        'definition' => [
+        'definition'          => [
             'class' => [
-                __NAMESPACE__ . '\Manager\LicenseManager'       => [
-                    'setObjectManager' => [
-                        'required' => true
-                    ],
-                    'setClassResolver' => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ],
-                    'setAuthorizationService' => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Controller\LicenseController' => [
-                    'setLicenseManager' => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ]
-                ],
+                __NAMESPACE__ . '\Manager\LicenseManager'         => [],
+                __NAMESPACE__ . '\Controller\LicenseController'   => [],
                 __NAMESPACE__ . '\Listener\EntityManagerListener' => [
                     'setLicenseManager' => [
                         'required' => true
@@ -60,14 +40,14 @@ return [
                 ],
             ]
         ],
-        'instance'   => [
+        'instance'            => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\LicenseManagerInterface' => __NAMESPACE__ . '\Manager\LicenseManager'
             ]
         ]
     ],
-    'doctrine'       => [
-        'driver' => [
+    'doctrine'        => [
+        'driver'          => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
@@ -75,7 +55,7 @@ return [
                     __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
                 ]
             ],
-            'orm_default' => [
+            'orm_default'             => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
@@ -89,12 +69,12 @@ return [
             ]
         ]
     ],
-    'router'         => [
+    'router'          => [
         'routes' => [
             'license' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
                 'options'      => [
-                    'route' => '/license',
+                    'route'    => '/license',
                     'defaults' => [
                         'controller' => __NAMESPACE__ . '\Controller\LicenseController'
                     ]
@@ -103,7 +83,7 @@ return [
                     'manage' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/manage',
+                            'route'    => '/manage',
                             'defaults' => [
                                 'action' => 'manage'
                             ]
@@ -112,7 +92,7 @@ return [
                     'add'    => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/add',
+                            'route'    => '/add',
                             'defaults' => [
                                 'action' => 'add'
                             ]
@@ -121,7 +101,7 @@ return [
                     'detail' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/detail/:id',
+                            'route'    => '/detail/:id',
                             'defaults' => [
                                 'action' => 'detail'
                             ]
@@ -130,7 +110,7 @@ return [
                     'update' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/update/:id',
+                            'route'    => '/update/:id',
                             'defaults' => [
                                 'action' => 'update'
                             ]
@@ -139,7 +119,7 @@ return [
                     'remove' => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route' => '/remove/:id',
+                            'route'    => '/remove/:id',
                             'defaults' => [
                                 'action' => 'remove'
                             ]

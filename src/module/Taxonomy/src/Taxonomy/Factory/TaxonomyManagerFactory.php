@@ -11,6 +11,7 @@
 namespace Taxonomy\Factory;
 
 use ClassResolver\ClassResolverFactoryTrait;
+use Common\Factory\AuthorizationServiceFactoryTrait;
 use Common\Factory\EntityManagerFactoryTrait;
 use Taxonomy\Manager\TaxonomyManager;
 use Taxonomy\Options\ModuleOptions;
@@ -22,7 +23,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class TaxonomyManagerFactory implements FactoryInterface
 {
     use ClassResolverFactoryTrait, EntityManagerFactoryTrait;
-    use TypeManagerFactoryTrait;
+    use TypeManagerFactoryTrait, AuthorizationServiceFactoryTrait;
 
     /**
      * Create service
@@ -33,12 +34,12 @@ class TaxonomyManagerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $moduleOptions ModuleOptions */
-        $classResolver = $this->getClassResolver($serviceLocator);
-        $objectManager = $this->getEntityManager($serviceLocator);
-        $typeManager   = $this->getTypeManager($serviceLocator);
-        $moduleOptions = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
-        $service       = new TaxonomyManager($classResolver, $moduleOptions, $objectManager, $typeManager);
-
+        $authorizationService = $this->getAuthorizationService($serviceLocator);
+        $classResolver        = $this->getClassResolver($serviceLocator);
+        $objectManager        = $this->getEntityManager($serviceLocator);
+        $typeManager          = $this->getTypeManager($serviceLocator);
+        $moduleOptions        = $serviceLocator->get('Taxonomy\Options\ModuleOptions');
+        $service              = new TaxonomyManager($authorizationService, $classResolver, $moduleOptions, $objectManager, $typeManager);
         return $service;
     }
 }

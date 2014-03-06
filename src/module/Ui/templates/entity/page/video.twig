@@ -1,4 +1,5 @@
 {{ pageHeader(entity.getCurrentRevision().get('title')).setSubtitle('Video').render() }}
+{% include 'entity/view/partials/actions/big' %}
 {% include 'entity/view/default' %}
 {% set taxonomy = include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()}) %}
 {% set temp = registry().add('rnav', taxonomy) %}

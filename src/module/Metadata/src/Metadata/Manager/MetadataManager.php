@@ -13,7 +13,6 @@ namespace Metadata\Manager;
 use ClassResolver\ClassResolverAwareTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Metadata\Exception;
-use Uuid\Entity\UuidInterface;
 
 class MetadataManager implements MetadataManagerInterface
 {
@@ -52,7 +51,6 @@ class MetadataManager implements MetadataManagerInterface
         /* @var $entity \Metadata\Entity\MetadataInterface */
         $entity = $this->getClassResolver()->resolve('Metadata\Entity\MetadataInterface');
         $key    = $this->findKeyByName($key);
-
         $entity->setObject($object);
         $entity->setKey($key);
         $entity->setValue($value);
@@ -64,9 +62,7 @@ class MetadataManager implements MetadataManagerInterface
     public function findMetadataByObject(\Uuid\Entity\UuidInterface $object)
     {
         $className = $this->getClassResolver()->resolveClassName('Metadata\Entity\MetadataInterface');
-        $criteria  = [
-            'object' => $object->getId()
-        ];
+        $criteria  = ['object' => $object->getId()];
         return $this->getObjectManager()->getRepository($className)->findBy($criteria);
     }
 
@@ -85,11 +81,10 @@ class MetadataManager implements MetadataManagerInterface
             'object' => $object->getId(),
             'key'    => $key->getId()
         ];
-
         return $this->getObjectManager()->getRepository($className)->findBy($criteria);
     }
 
-    public function findMetadataByObjectAndKeyAndValue(UuidInterface $object, $key, $value)
+    public function findMetadataByObjectAndKeyAndValue(\Uuid\Entity\UuidInterface $object, $key, $value)
     {
         if (!is_string($key)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -141,8 +136,6 @@ class MetadataManager implements MetadataManagerInterface
     {
         $metadata = $this->getMetadata($id);
         $this->getObjectManager()->remove($metadata);
-
-        return $this;
     }
 
     /**
@@ -166,6 +159,7 @@ class MetadataManager implements MetadataManagerInterface
                 $entity = $this->inMemoryKeys[$name];
             }
         }
+
         return $entity;
     }
 }

@@ -73,8 +73,6 @@ class Context implements ContextInterface
     public function setObject(UuidInterface $object)
     {
         $this->object = $object;
-
-        return $this;
     }
 
     public function getTitle()
@@ -85,14 +83,10 @@ class Context implements ContextInterface
     public function setTitle($title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     public function addRoute(RouteInterface $route)
     {
         $this->routes->add($route);
-
-        return $this;
     }
 }

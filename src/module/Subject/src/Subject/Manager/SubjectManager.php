@@ -30,7 +30,6 @@ class SubjectManager implements SubjectManagerInterface
     public function getSubject($id)
     {
         $term = $this->getTaxonomyManager()->getTerm($id);
-
         return $term;
     }
 
@@ -38,14 +37,12 @@ class SubjectManager implements SubjectManagerInterface
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $instance);
         $term     = $this->getTaxonomyManager()->findTerm($taxonomy, (array)$name);
-
         return $term;
     }
 
     public function findSubjectsByInstance(InstanceInterface $instance)
     {
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('subject', $instance);
-
         return $taxonomy->getChildren();
     }
 
@@ -54,7 +51,6 @@ class SubjectManager implements SubjectManagerInterface
         $entities   = $this->getEntities($term);
         $collection = new ArrayCollection();
         $this->iterEntities($entities, $collection, 'isTrashed');
-
         return $collection;
     }
 
@@ -81,7 +77,6 @@ class SubjectManager implements SubjectManagerInterface
         $entities   = $this->getEntities($term);
         $collection = new ArrayCollection();
         $this->iterEntities($entities, $collection, 'isRevised');
-
         return $collection;
     }
 

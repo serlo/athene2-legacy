@@ -26,10 +26,9 @@ interface LicenseManagerInterface extends Flushable
     public function getLicense($id);
 
     /**
-     * @param LicenseForm       $form
-     * @param InstanceInterface $instance
+     * @param LicenseForm $form
      */
-    public function addLicense(LicenseForm $form, InstanceInterface $instance);
+    public function addLicense(LicenseForm $form);
 
     /**
      * @param int $id

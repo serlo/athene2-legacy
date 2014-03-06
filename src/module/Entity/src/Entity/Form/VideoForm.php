@@ -26,7 +26,8 @@ class VideoForm extends Form
         $this->setAttribute('class', 'clearfix');
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
-        $this->add((new Url('content'))->setAttribute('id', 'url')->setLabel('Video url:'));
+        $this->add((new Textarea('description'))->setAttribute('id', 'description')->setLabel('Description:'));
+        $this->add((new Url('content'))->setAttribute('id', 'content')->setLabel('Video url:'));
         $this->add(
             (new Textarea('reasoning'))->setAttribute('id', 'reasoning')->setLabel('Reasoning:')->setAttribute(
                 'class',
@@ -34,7 +35,7 @@ class VideoForm extends Form
             )
         );
         $this->add(
-            (new Textarea('Changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
+            (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
                 'plain'
             )

@@ -43,49 +43,21 @@ class AdsManager implements AdsManagerInterface
         $this->setAuthorizationService($authorizationService);
     }
 
-    public function getAd($id)
+    public function clickAd($id)
     {
-        if (!is_numeric($id)) {
-            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
-        }
-
-        $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
-        $ad        = $this->getObjectManager()->find($className, $id);
-        $this->assertGranted('ad.get', $ad);
-
-        if (!$ad) {
-            throw new AdNotFoundException(sprintf('%s', $id));
-        }
-
-        return $ad;
-    }
-
-    protected function createAdEntity()
-    {
-        $ad = $this->getClassResolver()->resolve('Ads\Entity\AdInterface');
-
-        return $ad;
-    }
-
-    public function updateAd(array $data, AdInterface $ad)
-    {
-        $this->assertGranted('ad.update', $ad);
-        $hydrator = new AdHydrator();
-        $hydrator->hydrate($data, $ad);
+        $ad = $this->getAd($id);
+        $ad->setClicks($ad->getClicks() + 1);
         $this->getObjectManager()->persist($ad);
-
-        return $ad;
     }
 
     public function createAd(array $data)
     {
         $this->assertGranted('ad.create');
         $data['clicks'] = 0;
-        $ad = $this->createAdEntity();
-        $hydrator = new AdHydrator();
+        $ad             = $this->createAdEntity();
+        $hydrator       = new AdHydrator();
         $hydrator->hydrate($data, $ad);
         $this->getObjectManager()->persist($ad);
-
         return $ad;
     }
 
@@ -95,30 +67,16 @@ class AdsManager implements AdsManagerInterface
         $criteria  = ['instance' => $instance->getId()];
         $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
         $ads       = $this->getObjectManager()->getRepository($className)->findBy($criteria);
-
         return $ads;
-    }
-
-    public function removeAd(AdInterface $ad)
-    {
-        $this->assertGranted('ad.remove', $ad);
-        $this->getObjectManager()->remove($ad);
-    }
-
-    public function clickAd($id)
-    {
-        $ad = $this->getAd($id);
-        $ad->setClicks($ad->getClicks() + 1);
-        $this->getObjectManager()->persist($ad);
     }
 
     public function findShuffledAds(InstanceInterface $instance, $number)
     {
-        $allAds    = $this->findAllAds($instance);
-        $adsScaled = [];
-        $ads       = [];
+        $allAds            = $this->findAllAds($instance);
+        $adsScaled         = [];
+        $ads               = [];
         $numberDisabledAds = 0;
-        $numberAds = $y = 0;
+        $numberAds         = $y = 0;
         foreach ($allAds as $ad) {
             if ($ad->getFrequency() == null) {
                 $numberDisabledAds++;
@@ -149,5 +107,43 @@ class AdsManager implements AdsManagerInterface
     public function flush()
     {
         $this->getObjectManager()->flush();
+    }
+
+    public function getAd($id)
+    {
+        if (!is_numeric($id)) {
+            throw new InvalidArgumentException(sprintf('Expected numeric but got %s', gettype($id)));
+        }
+
+        $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
+        $ad        = $this->getObjectManager()->find($className, $id);
+        $this->assertGranted('ad.get', $ad);
+
+        if (!$ad) {
+            throw new AdNotFoundException(sprintf('%s', $id));
+        }
+
+        return $ad;
+    }
+
+    public function removeAd(AdInterface $ad)
+    {
+        $this->assertGranted('ad.remove', $ad);
+        $this->getObjectManager()->remove($ad);
+    }
+
+    public function updateAd(array $data, AdInterface $ad)
+    {
+        $this->assertGranted('ad.update', $ad);
+        $hydrator = new AdHydrator();
+        $hydrator->hydrate($data, $ad);
+        $this->getObjectManager()->persist($ad);
+        return $ad;
+    }
+
+    protected function createAdEntity()
+    {
+        $ad = $this->getClassResolver()->resolve('Ads\Entity\AdInterface');
+        return $ad;
     }
 }

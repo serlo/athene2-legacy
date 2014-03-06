@@ -18,11 +18,23 @@ return [
     ],
     'zfc_rbac'       => [
         'assertion_map' => [
-            /*'blog.post.create'    => 'Authorization\Assertion\TenantAssertion',
-            'blog.post.update'    => 'Authorization\Assertion\TenantAssertion',
-            'blog.post.trash'     => 'Authorization\Assertion\TenantAssertion',
-            'blog.post.delete'    => 'Authorization\Assertion\TenantAssertion',
-            'blog.posts.view_all' => 'Authorization\Assertion\TenantAssertion'*/
+            'blog.get'                   => 'Authorization\Assertion\InstanceAssertion',
+            'blog.post.create'           => 'Authorization\Assertion\InstanceAssertion',
+            'blog.post.get'              => 'Authorization\Assertion\InstanceAssertion',
+            'blog.post.update'           => 'Authorization\Assertion\InstanceAssertion',
+            'blog.post.trash'            => 'Authorization\Assertion\InstanceAssertion',
+            'blog.post.delete'           => 'Authorization\Assertion\InstanceAssertion',
+            'blog.posts.get.unpublished' => 'Authorization\Assertion\InstanceAssertion',
+            'blog.posts.get'             => 'Authorization\Assertion\InstanceAssertion'
+        ]
+    ],
+    'uuid'           => [
+        'permissions' => [
+            'Blog\Entity\Post' => [
+                'trash'   => 'blog.post.trash',
+                'restore' => 'blog.post.restore',
+                'purge'   => 'blog.post.purge'
+            ],
         ]
     ],
     'doctrine'       => [
@@ -41,12 +53,12 @@ return [
             ]
         ]
     ],
-    'uuid'            => [
+    'uuid'           => [
         'permissions' => [
             'Blog\Entity\Post' => [
                 'trash'   => 'blog.post.trash',
                 'restore' => 'blog.post.restore',
-                'purge' => 'blog.post.purge'
+                'purge'   => 'blog.post.purge'
             ],
         ]
     ],

@@ -21,49 +21,7 @@ use Zend\EventManager\SharedEventManagerInterface;
 class TaxonomyManagerListener extends AbstractListener
 {
 
-    public function attachShared(SharedEventManagerInterface $events)
-    {
-        $class = $this->getMonitoredClass();
-        $events->attach($class, 'create', [$this, 'onCreate']);
-        $events->attach($class, 'update', [$this, 'onUpdate']);
-        $events->attach($class, 'associate', [$this, 'onAssociate']);
-        $events->attach($class, 'dissociate', [$this, 'onDissociate']);
-    }
-
-    public function onAssociate(Event $e)
-    {
-        /* @var $term TaxonomyTermInterface */
-        $term   = $e->getParam('term');
-        $object = $e->getParam('object');
-
-        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
-            $this->addMetadata($object, $term);
-        }
-    }
-
     public function onCreate(Event $e)
-    {
-        /* @var $term TaxonomyTermInterface */
-        $term = $e->getParam('term');
-
-        if ($term->hasParent()) {
-            $parent = $term->getParent();
-            $this->addMetadata($parent, $term);
-        }
-    }
-
-    public function onDissociate(Event $e)
-    {
-        /* @var $term TaxonomyTermInterface */
-        $term   = $e->getParam('term');
-        $object = $e->getParam('object');
-
-        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
-            $this->removeMetadata($object, $term);
-        }
-    }
-
-    public function onUpdate(Event $e)
     {
         /* @var $term TaxonomyTermInterface */
         $term = $e->getParam('term');
@@ -89,9 +47,37 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
-    protected function getMonitoredClass()
+    public function onUpdate(Event $e)
     {
-        return 'Taxonomy\Manager\TaxonomyManager';
+        /* @var $term TaxonomyTermInterface */
+        $term = $e->getParam('term');
+
+        if ($term->hasParent()) {
+            $parent = $term->getParent();
+            $this->addMetadata($parent, $term);
+        }
+    }
+
+    public function onAssociate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term   = $e->getParam('term');
+        $object = $e->getParam('object');
+
+        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
+            $this->addMetadata($object, $term);
+        }
+    }
+
+    public function onDissociate(Event $e)
+    {
+        /* @var $term TaxonomyTermInterface */
+        $term   = $e->getParam('term');
+        $object = $e->getParam('object');
+
+        if ($object instanceof TaxonomyTermAwareInterface && $object instanceof UuidInterface) {
+            $this->removeMetadata($object, $term);
+        }
     }
 
     protected function removeMetadata($object, TaxonomyTermInterface $term)
@@ -108,5 +94,19 @@ class TaxonomyManagerListener extends AbstractListener
             }
             $term = $term->getParent();
         }
+    }
+
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $monitoredClass = $this->getMonitoredClass();
+        $events->attach($monitoredClass, 'create', [$this, 'onCreate']);
+        $events->attach($monitoredClass, 'update', [$this, 'onUpdate']);
+        $events->attach($monitoredClass, 'associate', [$this, 'onAssociate']);
+        $events->attach($monitoredClass, 'dissociate', [$this, 'onDissociate']);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Taxonomy\Manager\TaxonomyManager';
     }
 }

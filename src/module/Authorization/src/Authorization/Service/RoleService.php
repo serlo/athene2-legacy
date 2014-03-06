@@ -45,71 +45,53 @@ class RoleService implements RoleServiceInterface
         $this->permissionService    = $permissionService;
     }
 
+    public function createRole(FormInterface $form)
+    {
+        $this->assertGranted('authorization.role.create');
+
+        if (!$form->isValid()) {
+            throw new RuntimeException(print_r($form->getMessages(), true));
+        }
+
+        $processingForm = clone $form;
+        $data           = $processingForm->getData(FormInterface::VALUES_AS_ARRAY);
+        $processingForm->bind(new Role());
+        $processingForm->setData($data);
+
+        if (!$processingForm->isValid()) {
+            throw new RuntimeException(print_r($processingForm->getMessages(), true));
+        }
+
+        $this->objectManager->persist($processingForm->getObject());
+        return $processingForm->getObject();
+    }
+
     public function findAllRoles()
     {
         $className = $this->getClassResolver()->resolveClassName($this->interface);
-
         return $this->getObjectManager()->getRepository($className)->findAll();
     }
 
     public function findRoleByName($name)
     {
         $className = $this->getClassResolver()->resolveClassName($this->interface);
-
         return $this->getObjectManager()->getRepository($className)->findOneBy(['name' => $name]);
+    }
+
+    public function flush()
+    {
+        $this->getObjectManager()->flush();
     }
 
     public function getRole($id)
     {
         $className = $this->getClassResolver()->resolveClassName($this->interface);
         $role      = $this->getObjectManager()->find($className, $id);
-
         if (!is_object($role)) {
             throw new RoleNotFoundException(sprintf('Role `%d` not found', $id));
         }
 
         return $role;
-    }
-
-    public function createRole(FormInterface $form)
-    {
-        $this->assertGranted('authorization.role.create');
-        $processingForm = clone $form;
-        $data = $processingForm->getData();
-
-        $processingForm->bind(new Role());
-        $processingForm->setData($data);
-
-        if ($processingForm->isValid()) {
-            throw new RuntimeException($processingForm->getMessages());
-        }
-
-        $this->objectManager->persist($processingForm->getObject());
-
-        return $processingForm->getObject();
-    }
-
-    public function grantRolePermission($role, $permission)
-    {
-        $this->assertGranted('authorization.role.grant.permission');
-
-        if (!$role instanceof RoleInterface) {
-            $role = $this->getRole($role);
-        }
-
-        if (!$permission instanceof ParametrizedPermissionInterface) {
-            $permission = $this->getPermissionService()->getParametrizedPermission($permission);
-        }
-
-        $role->addPermission($permission);
-    }
-
-    public function removeRolePermission($role, $permission)
-    {
-        $this->assertGranted('authorization.role.revoke.permission');
-        $permission = $this->getPermissionService()->getParametrizedPermission($permission);
-        $role       = $this->getRole($role);
-        $role->removePermission($permission);
     }
 
     public function grantIdentityRole($role, $user)
@@ -129,6 +111,21 @@ class RoleService implements RoleServiceInterface
         }
     }
 
+    public function grantRolePermission($role, $permission)
+    {
+        $this->assertGranted('authorization.role.grant.permission');
+
+        if (!$role instanceof RoleInterface) {
+            $role = $this->getRole($role);
+        }
+
+        if (!$permission instanceof ParametrizedPermissionInterface) {
+            $permission = $this->getPermissionService()->getParametrizedPermission($permission);
+        }
+
+        $role->addPermission($permission);
+    }
+
     public function removeIdentityRole($role, $user)
     {
         $role = $this->getRole($role);
@@ -139,8 +136,11 @@ class RoleService implements RoleServiceInterface
         }
     }
 
-    public function flush()
+    public function removeRolePermission($role, $permission)
     {
-        $this->getObjectManager()->flush();
+        $this->assertGranted('authorization.role.revoke.permission');
+        $permission = $this->getPermissionService()->getParametrizedPermission($permission);
+        $role       = $this->getRole($role);
+        $role->removePermission($permission);
     }
 }
