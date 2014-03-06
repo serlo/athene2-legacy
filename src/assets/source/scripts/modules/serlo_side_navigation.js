@@ -177,7 +177,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
         _.each(self.levels, function (level) {
             var $div = $('<div>'),
-                $ul = $('<ul>');
+                $ul = $('<ul>'),
+                elementCount = 0;
 
             // add back btns
             if (level[0].data.parent) {
@@ -200,13 +201,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     });
 
                 } else {
-
-                    if (parentData.url !== '' && parentData.url !== '#') {
+                    elementCount = parentData.$li.data('element-count');
+                    if (parentData.url !== '' && parentData.url !== '#' && elementCount > 0) {
                         parentLink = new MenuItem($.extend({}, parentData, {
                             icon: 'eye-open',
                             cssClass: 'sub-nav-footer',
                             level: -1,
-                            title: t('Show %d contents for \"%s\"', 2, parentData.title)
+                            title: t('Show %d contents for \"%s\"', elementCount, parentData.title)
                         }));
 
                         parentLink.$el.unbind('click').click(function (e) {
