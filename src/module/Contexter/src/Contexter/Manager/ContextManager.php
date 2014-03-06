@@ -69,7 +69,6 @@ class ContextManager implements ContextManagerInterface
     {
         $context = $this->getContext($id);
         $this->assertGranted('contexter.context.remove', $context);
-
         $this->getObjectManager()->remove($context);
     }
 
@@ -109,8 +108,9 @@ class ContextManager implements ContextManagerInterface
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $results   = $this->getObjectManager()->getRepository($className)->findAll();
-        $this->assertGranted('contexter.context.get.all');
-
+        foreach($results as $result){
+            $this->assertGranted('contexter.context.get', $result);
+        }
         return new ArrayCollection($results);
     }
 
@@ -136,7 +136,6 @@ class ContextManager implements ContextManagerInterface
     protected function getTypeRepository()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-
         return $this->getObjectManager()->getRepository($className);
     }
 }

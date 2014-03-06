@@ -101,7 +101,7 @@ class RoleController extends AbstractActionController
     public function addUserAction()
     {
         $role = $this->getRoleService()->getRole($this->params('role'));
-        $this->assertGranted('authorization.identity.grant.role', $role);
+        //$this->assertGranted('authorization.identity.grant.role', $role);
 
         $form  = new UserForm();
         $error = false;
@@ -216,9 +216,8 @@ class RoleController extends AbstractActionController
 
     public function rolesAction()
     {
-        $view = new ViewModel([
-            'roles' => $this->getRoleService()->findAllRoles()
-        ]);
+        $roles = $this->getRoleService()->findAllRoles();
+        $view  = new ViewModel(['roles' => $roles]);
         $view->setTemplate('authorization/role/roles');
 
         return $view;

@@ -19,9 +19,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Uuid\Entity\UuidInterface;
+use Uuid\Exception;
 use Uuid\Exception\InvalidArgumentException;
 use Uuid\Exception\NotFoundException;
-use Uuid\Exception;
 use Uuid\Options\ModuleOptions;
 use Zend\EventManager\EventManagerAwareTrait;
 use ZfcRbac\Service\AuthorizationService;
@@ -133,9 +133,7 @@ class UuidManager implements UuidManagerInterface
         $class      = ClassUtils::getClass($uuid);
         $permission = $this->getModuleOptions()->getPermission($class, 'purge');
         $this->assertGranted($permission, $uuid);
-
         $this->getObjectManager()->remove($uuid);
-
         $this->getEventManager()->trigger('purge', $this, ['object' => $uuid]);
     }
 
