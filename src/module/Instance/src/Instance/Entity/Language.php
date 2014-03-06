@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="instance")
+ * @ORM\Table(name="language")
  */
-class Instance implements InstanceInterface
+class Language implements LanguageInterface
 {
 
     /**
@@ -29,23 +29,21 @@ class Instance implements InstanceInterface
     /**
      * @ORM\Column(type="string", length=2)
      */
+    protected $code;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    protected $locale;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $subdomain;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Instance\Entity\Language")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-     * @var LanguageInterface
-     */
-    protected $language;
-
-    public function __toString()
+    public function getCode()
     {
-        return $this->getName();
+        return $this->code;
     }
 
     public function getId()
@@ -53,28 +51,13 @@ class Instance implements InstanceInterface
         return $this->id;
     }
 
-    public function getLanguage()
+    public function getLocale()
     {
-        return $this->language;
+        return $this->locale;
     }
 
     public function getName()
     {
         return $this->name;
-    }
-
-    public function setName($code)
-    {
-        $this->name = $code;
-    }
-
-    public function getSubdomain()
-    {
-        return $this->subdomain;
-    }
-
-    public function setSubdomain($subdomain)
-    {
-        $this->subdomain = $subdomain;
     }
 }

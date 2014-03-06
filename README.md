@@ -70,3 +70,8 @@ Example: Good Commit Message
 * Doctrine ZF2 Module Docs: https://github.com/doctrine/DoctrineORMModule/tree/master/docs
 * ZfcRbac Docs: https://github.com/ZF-Commons/zfc-rbac/tree/master/docs
 * Athene2 Docs: http://serlo-org.github.io/athene2-guide
+
+# Server Install
+
+* Make sure to use fastmod-cgi
+* Install all locales: `apt-get install locales-all`

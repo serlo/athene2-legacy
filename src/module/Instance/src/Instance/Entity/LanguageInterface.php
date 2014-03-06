@@ -10,23 +10,15 @@
  */
 namespace Instance\Entity;
 
-interface InstanceInterface
+use Doctrine\ORM\Mapping as ORM;
+
+interface LanguageInterface
 {
 
     /**
-     * @return string
-     */
-    public function __toString();
-
-    /**
-     * @return int $id
+     * @return int
      */
     public function getId();
-
-    /**
-     * @return LanguageInterface
-     */
-    public function getLanguage();
 
     /**
      * @return string
@@ -34,8 +26,12 @@ interface InstanceInterface
     public function getName();
 
     /**
-     * @param string $name
-     * @return void
+     * @return string
      */
-    public function setName($name);
+    public function getLocale();
+
+    /**
+     * @return string
+     */
+    public function getCode();
 }
