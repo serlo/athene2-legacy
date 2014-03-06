@@ -198,7 +198,25 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                             menuItem: backBtn
                         });
                     });
+
                 } else {
+
+                    if (parentData.url !== '' && parentData.url !== '#') {
+                        parentLink = new MenuItem($.extend({}, parentData, {
+                            icon: 'eye-open',
+                            cssClass: 'sub-nav-footer',
+                            level: -1,
+                            title: t('Show %d contents for \"%s\"', 2, parentData.title)
+                        }));
+
+                        parentLink.$el.unbind('click').click(function (e) {
+                            self.trigger('navigate', {
+                                original: e,
+                                menuItem: parentLink
+                            });
+                        });
+                    }
+
                     backBtn = new MenuItem($.extend({}, parentData, {
                         icon: 'circle-arrow-left',
                         cssClass: 'sub-nav-header'
@@ -211,35 +229,22 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                         });
                     });
                 }
-
-                if (parentData.url !== '' && parentData.url !== '#') {
-                    parentLink = new MenuItem($.extend({}, parentData, {
-                        icon: 'th-list',
-                        cssClass: 'sub-nav-footer',
-                        level: -1,
-                        title: t('Visit %s overview', parentData.title)
-                    }));
-
-                    parentLink.$el.unbind('click').click(function (e) {
-                        self.trigger('navigate', {
-                            original: e,
-                            menuItem: parentLink
-                        });
-                    });
-                }
             }
 
             $ul.append(backBtn.$el);
-
-            // add nav links
-            _.each(level, function (menuItem) {
-                $ul.append(menuItem.render().$el);
-            });
 
             // add parent link
             if (parentLink) {
                 $ul.append(parentLink.$el);
             }
+
+            // separator
+            $ul.append('<li class="sub-nav-separator">');
+
+            // add nav links
+            _.each(level, function (menuItem) {
+                $ul.append(menuItem.render().$el);
+            });
 
             $div.addClass('sub-nav-slider').append($ul);
             self.$el.append($div);

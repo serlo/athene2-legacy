@@ -12,6 +12,8 @@ namespace RelatedContent\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Instance\Entity\InstanceAwareTrait;
+use Instance\Entity\InstanceInterface;
 use Uuid\Entity\UuidInterface;
 
 /**
@@ -20,6 +22,7 @@ use Uuid\Entity\UuidInterface;
  */
 class Container implements ContainerInterface
 {
+    use InstanceAwareTrait;
 
     /**
      * @ORM\Id
@@ -35,11 +38,12 @@ class Container implements ContainerInterface
      */
     protected $holders;
 
-    public function __construct(UuidInterface $id)
+    public function __construct(UuidInterface $id, InstanceInterface $instance)
     {
         $this->id                = $id;
         $this->holders           = new ArrayCollection();
         $this->internalRelations = new ArrayCollection();
+        $this->instance          = $instance;
     }
 
     public function getId()

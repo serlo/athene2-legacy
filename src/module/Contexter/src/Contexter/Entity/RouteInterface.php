@@ -11,8 +11,9 @@
 namespace Contexter\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Instance\Entity\InstanceProviderInterface;
 
-interface RouteInterface
+interface RouteInterface extends InstanceProviderInterface
 {
 
     /**

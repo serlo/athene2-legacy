@@ -14,9 +14,6 @@ use Zend\Filter\FilterInterface;
 
 class Slugify implements FilterInterface
 {
-    /*
-     * (non-PHPdoc) @see \Zend\Filter\FilterInterface::filter()
-     */
     public function filter($value)
     {
         return self::slugify($value);
@@ -31,9 +28,7 @@ class Slugify implements FilterInterface
         $text = trim($text, '-');
 
         // transliterate
-        if (function_exists('iconv')) {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        }
+        $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
 
         // lowercase
         $text = strtolower($text);

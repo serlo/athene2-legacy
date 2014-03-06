@@ -20,7 +20,7 @@ class Module
 
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [
@@ -50,14 +50,7 @@ class Module
         $app            = $e->getTarget();
         $serviceManager = $app->getServiceManager();
 
-        $app->getEventManager()->attach(
-            'route',
-            [
-                $this,
-                'onPreRoute'
-            ],
-            4
-        );
+        $app->getEventManager()->attach('route', [$this, 'onPreRoute'], 4);
     }
 
     public function onPreRoute($e)
@@ -68,17 +61,22 @@ class Module
         /* @var $translator Translator */
         $translator = $serviceManager->get('translator');
         $router     = $serviceManager->get('router');
+
+        /* @var $instanceManager Manager\InstanceManager */
+        $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+        $instance        = $instanceManager->getInstanceFromRequest();
+        $language        = $instance->getLanguage();
+        $code            = $language->getCode();
+        $locale          = $language->getLocale() . '.UTF-8';
+
         if ($router instanceof TranslatorAwareInterface) {
             $router->setTranslator($translator);
         }
 
-        //$lm   = $serviceManager->get('Instance\Manager\InstanceManager');
-        $code = 'de';//$lm->getLanguageFromRequest()->getCode();
-
+        setlocale(LC_ALL, $locale);
         $translator->addTranslationFile('PhpArray', __DIR__ . '/language/routes/' . $code . '.php', 'default', $code);
         $translator->setLocale($code);
         $translator->setFallbackLocale('default');
-
 
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();

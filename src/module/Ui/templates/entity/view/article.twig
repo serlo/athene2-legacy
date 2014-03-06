@@ -1,9 +1,8 @@
 {% set revision = entity.getCurrentRevision() %}
 <article>
-    <header>
-        {% include 'entity/view/partials/actions/big' %}
-    </header>
+    <section>
         {{ markdown().toHtml(revision.get('content')) | raw }}
+    </section>
     <hr>
     <section>
         {{ entity().renderDiscussions(entity) }}

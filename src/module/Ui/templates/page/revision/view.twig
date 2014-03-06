@@ -1,0 +1,6 @@
+{% if revision %}
+    {{ pageHeader(revision.getTitle()).render() }}
+    {{ markdown().toHtml(revision.getContent()) }}
+{% endif %}
+<hr>
+{% include 'page/revision/menu' %}

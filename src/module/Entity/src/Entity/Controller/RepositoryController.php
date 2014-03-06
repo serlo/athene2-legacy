@@ -33,6 +33,9 @@ class RepositoryController extends AbstractController
     public function addRevisionAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
         $this->assertGranted('entity.revision.create', $entity);
 
         /* @var $form \Zend\Form\Form */
@@ -41,9 +44,7 @@ class RepositoryController extends AbstractController
         $view = new ViewModel(['entity' => $entity, 'form' => $form]);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                $this->getRequest()->getPost()
-            );
+            $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data     = $form->getData();
                 $instance = $this->getInstanceManager()->getInstanceFromRequest();
@@ -66,46 +67,27 @@ class RepositoryController extends AbstractController
         return $view;
     }
 
-    /**
-     * @param EntityInterface $entity
-     * @return Form
-     */
-    protected function getForm(EntityInterface $entity)
-    {
-        $form = $this->moduleOptions->getType(
-            $entity->getType()->getName()
-        )->getComponent('repository')->getForm();
-        $form = $this->getServiceLocator()->get($form);
-
-        if ($entity->hasCurrentRevision()) {
-            $data = [];
-            foreach ($entity->getCurrentRevision()->getFields() as $field) {
-                $data[$field->getName()] = $field->getValue();
-            }
-            $form->setData($data);
-        }
-
-        return $form;
-    }
-
     public function checkoutAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
         $this->assertGranted('entity.revision.checkout', $entity);
 
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
         $repository = $this->getRepositoryManager()->getRepository($entity);
         $revision   = $repository->findRevision($this->params('revision'));
-
-        $repository->checkoutRevision($revision->getId());
+        $repository->checkoutRevision($revision->getId(), 'Approved');
         $this->getEntityManager()->flush();
-
         return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
     }
 
     public function compareAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
 
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
@@ -121,10 +103,68 @@ class RepositoryController extends AbstractController
         return $view;
     }
 
+    public function historyAction()
+    {
+        $entity          = $this->getEntity();
+        $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
+        $this->assertGranted('entity.repository.history', $entity);
+        $view = new ViewModel([
+            'entity'          => $entity,
+            'revisions'       => $entity->getRevisions(),
+            'currentRevision' => $currentRevision
+        ]);
+        $view->setTemplate('entity/repository/history');
+        return $view;
+    }
+
+    public function rejectAction()
+    {
+        $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
+        $this->assertGranted('entity.revision.trash', $entity);
+        $repository = $this->getRepositoryManager()->getRepository($entity);
+
+        $repository->rejectRevision($this->params('revision'), 'Rejected');
+        $this->getEntityManager()->flush();
+        return $this->redirect()->toReferer();
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     * @return void
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+    }
+
+    /**
+     * @param EntityInterface $entity
+     * @return Form
+     */
+    protected function getForm(EntityInterface $entity)
+    {
+        $type = $entity->getType()->getName();
+        $form = $this->moduleOptions->getType($type)->getComponent('repository')->getForm();
+        $form = $this->getServiceLocator()->get($form);
+
+        if ($entity->hasCurrentRevision()) {
+            $data = [];
+            foreach ($entity->getCurrentRevision()->getFields() as $field) {
+                $data[$field->getName()] = $field->getValue();
+            }
+            $form->setData($data);
+        }
+
+        return $form;
+    }
+
     /**
      * @param EntityInterface $entity
      * @param string          $id
-     * @return \Versioning\Service\RevisionInterface NULL
+     * @return \Versioning\Entity\RevisionInterface NULL
      */
     protected function getRevision(EntityInterface $entity, $id = null)
     {
@@ -138,44 +178,5 @@ class RepositoryController extends AbstractController
         } catch (RevisionNotFoundException $e) {
             return null;
         }
-    }
-
-    public function historyAction()
-    {
-        $entity          = $this->getEntity();
-        $currentRevision = $entity->hasCurrentRevision() ? $entity->getCurrentRevision() : null;
-        $this->assertGranted('entity.repository.history', $entity);
-
-        $view = new ViewModel([
-            'entity'          => $entity,
-            'revisions'       => $entity->getRevisions(),
-            'currentRevision' => $currentRevision
-        ]);
-
-        $view->setTemplate('entity/repository/history');
-
-        return $view;
-    }
-
-    public function rejectAction()
-    {
-        $entity = $this->getEntity();
-        $this->assertGranted('entity.revision.trash', $entity);
-        $repository = $this->getRepositoryManager()->getRepository($entity);
-
-        $repository->rejectRevision($this->params('revision'), 'some reason');
-        $this->getEntityManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
-    }
-
-    /**
-     * @param ModuleOptions $moduleOptions
-     * @return void
-     */
-    public function setModuleOptions(ModuleOptions $moduleOptions)
-    {
-        $this->moduleOptions = $moduleOptions;
     }
 }

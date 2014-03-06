@@ -13,9 +13,12 @@ namespace Attachment;
 return [
     'zfc_rbac'           => [
         'assertion_map' => [
-            'attachment.append' => 'Authorization\Assertion\RequestInstanceAssertion',
+            'attachment.append' => 'Authorization\Assertion\InstanceAssertion',
             'attachment.create' => 'Authorization\Assertion\RequestInstanceAssertion',
-            'attachment.get '   => 'Authorization\Assertion\InstanceAssertion'
+            'attachment.get'   => 'Authorization\Assertion\InstanceAssertion',
+            'attachment.trash'   => 'Authorization\Assertion\InstanceAssertion',
+            'attachment.purge'   => 'Authorization\Assertion\InstanceAssertion',
+            'attachment.restore'   => 'Authorization\Assertion\InstanceAssertion'
         ]
     ],
     'class_resolver'     => [
@@ -27,6 +30,15 @@ return [
         'factories' => [
             __NAMESPACE__ . '\Manager\AttachmentManager' => __NAMESPACE__ . '\Factory\AttachmentManagerFactory',
             __NAMESPACE__ . '\Options\ModuleOptions'     => __NAMESPACE__ . '\Factory\ModuleOptionsFactory'
+        ]
+    ],
+    'uuid'            => [
+        'permissions' => [
+            'Attachment\Entity\Container' => [
+                'trash'   => 'attachment.trash',
+                'restore' => 'attachment.restore',
+                'purge'   => 'attachment.purge'
+            ],
         ]
     ],
     'di'                 => [

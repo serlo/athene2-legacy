@@ -32,6 +32,21 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
+    protected function addMetadata(UuidInterface $object, TaxonomyTermInterface $term)
+    {
+        while ($term->hasParent()) {
+            try {
+                $this->getMetadataManager()->addMetadata(
+                    $object,
+                    $term->getTaxonomy()->getName(),
+                    $term->getName()
+                );
+            } catch (DuplicateMetadata $e) {
+            }
+            $term = $term->getParent();
+        }
+    }
+
     public function onUpdate(Event $e)
     {
         /* @var $term TaxonomyTermInterface */
@@ -65,65 +80,6 @@ class TaxonomyManagerListener extends AbstractListener
         }
     }
 
-    public function attachShared(SharedEventManagerInterface $events)
-    {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'create',
-            [
-                $this,
-                'onCreate'
-            ]
-        );
-
-         $events->attach(
-            $this->getMonitoredClass(),
-            'update',
-            [
-                $this,
-                'onUpdate'
-            ]
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'associate',
-            [
-                $this,
-                'onAssociate'
-            ]
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'dissociate',
-            [
-                $this,
-                'onDissociate'
-            ]
-        );
-    }
-
-    protected function getMonitoredClass()
-    {
-        return 'Taxonomy\Manager\TaxonomyManager';
-    }
-
-    protected function addMetadata(UuidInterface $object, TaxonomyTermInterface $term)
-    {
-        while ($term->hasParent()) {
-            try {
-                $this->getMetadataManager()->addMetadata(
-                    $object,
-                    $term->getTaxonomy()->getName(),
-                    $term->getName()
-                );
-            } catch (DuplicateMetadata $e) {
-            }
-            $term = $term->getParent();
-        }
-    }
-
     protected function removeMetadata($object, TaxonomyTermInterface $term)
     {
         while ($term->hasParent()) {
@@ -136,6 +92,21 @@ class TaxonomyManagerListener extends AbstractListener
                 $this->getMetadataManager()->removeMetadata($metadata->getId());
             } catch (MetadataNotFoundException $e) {
             }
+            $term = $term->getParent();
         }
+    }
+
+    public function attachShared(SharedEventManagerInterface $events)
+    {
+        $monitoredClass = $this->getMonitoredClass();
+        $events->attach($monitoredClass, 'create', [$this, 'onCreate']);
+        $events->attach($monitoredClass, 'update', [$this, 'onUpdate']);
+        $events->attach($monitoredClass, 'associate', [$this, 'onAssociate']);
+        $events->attach($monitoredClass, 'dissociate', [$this, 'onDissociate']);
+    }
+
+    protected function getMonitoredClass()
+    {
+        return 'Taxonomy\Manager\TaxonomyManager';
     }
 }

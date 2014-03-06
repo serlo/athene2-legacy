@@ -29,7 +29,6 @@ class ContextController extends AbstractActionController
 
         if ($uri === null) {
             $this->redirect()->toRoute('contexter/select-uri');
-
             return false;
         } else {
             $routeMatch = $this->getRouter()->matchUri($uri);
@@ -41,7 +40,7 @@ class ContextController extends AbstractActionController
             if ($this->getRequest()->isPost()) {
                 $form->setData($this->getRequest()->getPost());
                 if ($form->isValid()) {
-                    $data          = $form->getData();
+                    $data = $form->getData();
 
                     foreach ($data['parameters'] as $key => $value) {
                         if ($value == '1' && isset($parameters[$key])) {
@@ -57,9 +56,7 @@ class ContextController extends AbstractActionController
                 }
             }
         }
-        $view = new ViewModel([
-            'form' => $form
-        ]);
+        $view = new ViewModel(['form' => $form]);
         $view->setTemplate('contexter/add/form');
 
         return $view;
@@ -67,20 +64,15 @@ class ContextController extends AbstractActionController
 
     public function manageAction()
     {
-        $this->assertGranted('contexter.context.manage');
-
         $elements = $this->getContextManager()->findAll();
-        $view     = new ViewModel([
-            'elements' => $elements
-        ]);
+        $view     = new ViewModel(['elements' => $elements]);
         $view->setTemplate('contexter/manage');
-
         return $view;
     }
 
     public function removeAction()
     {
-        $id = $this->params('id');
+        $id      = $this->params('id');
         $context = $this->getContextManager()->getContext($id);
         $this->assertGranted('contexter.context.remove', $context);
 
@@ -93,7 +85,7 @@ class ContextController extends AbstractActionController
 
     public function removeRouteAction()
     {
-        $id = $this->params('id');
+        $id    = $this->params('id');
         $route = $this->getContextManager()->getRoute($id);
         $this->assertGranted('contexter.route.remove', $route);
 
@@ -109,9 +101,7 @@ class ContextController extends AbstractActionController
         $this->assertGranted('contexter.context.add');
 
         $form = new UrlForm();
-        $view = new ViewModel([
-            'form' => $form
-        ]);
+        $view = new ViewModel(['form' => $form]);
         if ($this->getRequest()->isPost()) {
             $form->setData(
                 $this->getRequest()->getPost()
@@ -119,9 +109,7 @@ class ContextController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $url  = $this->url()->fromRoute('contexter/add', []) . '?uri=' . $data['uri'];
-                $this->redirect()->toUrl($url);
-
-                return false;
+                return $this->redirect()->toUrl($url);
             }
         }
         $view->setTemplate('contexter/add/url-form');
@@ -134,12 +122,8 @@ class ContextController extends AbstractActionController
         $id      = $this->params('id');
         $context = $this->getContextManager()->getContext($id);
         $this->assertGranted('contexter.context.update', $context);
-
-        $view = new ViewModel([
-            'context' => $context
-        ]);
+        $view = new ViewModel(['context' => $context]);
         $view->setTemplate('contexter/update');
-
         return $view;
     }
 }

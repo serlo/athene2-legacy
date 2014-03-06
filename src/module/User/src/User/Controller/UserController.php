@@ -17,10 +17,15 @@ use ZfcRbac\Exception\UnauthorizedException;
 
 class UserController extends AbstractUserController
 {
-    use \Common\Traits\ConfigAwareTrait;
     use InstanceManagerAwareTrait;
 
-    protected $forms = [];
+    protected $forms = [
+        'register'         => 'User\Form\Register',
+        'login'            => 'User\Form\Login',
+        'user_select'      => 'User\Form\SelectUserForm',
+        'restore_password' => 'User\Form\LostPassword',
+        'settings'         => 'User\Form\SettingsForm'
+    ];
 
     public function meAction()
     {
@@ -30,9 +35,7 @@ class UserController extends AbstractUserController
             throw new UnauthorizedException;
         }
 
-        $view = new ViewModel([
-            'user' => $user
-        ]);
+        $view = new ViewModel(['user' => $user]);
 
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
@@ -43,9 +46,7 @@ class UserController extends AbstractUserController
     public function profileAction()
     {
         $user = $this->getUserManager()->getUser($this->params('id'));
-        $view = new ViewModel([
-            'user' => $user
-        ]);
+        $view = new ViewModel(['user' => $user]);
         $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
 
@@ -54,12 +55,11 @@ class UserController extends AbstractUserController
 
     public function registerAction()
     {
-        if (!$this->isGranted('user.create')) {
-            $this->redirect()->toReferer();
+        if ($this->getUserManager()->getUserFromAuthenticator()) {
+            return $this->redirect()->toRoute('home');
         }
 
         $this->layout('layout/1-col');
-
         $form = $this->getForm('register');
 
         if ($this->getRequest()->isPost()) {
@@ -80,10 +80,12 @@ class UserController extends AbstractUserController
 
                 $this->getUserManager()->persist($user);
                 $this->getUserManager()->flush();
-
-                $this->redirect()->toUrl($this->params('ref', '/'));
-
-                return false;
+                $this->flashMessenger()->addSuccessMessage(
+                    'You have registered successfully and
+                     will soon receive an email with instructions on
+                     how to activate your account.'
+                );
+                return $this->redirect()->toUrl($this->params('ref', '/'));
             }
         }
 
@@ -96,8 +98,8 @@ class UserController extends AbstractUserController
 
     public function getForm($name)
     {
-        if (!array_key_exists($name, $this->forms)) {
-            $form = $this->getOption('forms')[$name];
+        if (!is_object($this->forms[$name])) {
+            $form = $this->forms[$name];
             if ($name == 'register' || $name = 'settings') {
                 $this->forms[$name] = new $form($this->getUserManager()->getObjectManager());
             } else {
@@ -161,18 +163,5 @@ class UserController extends AbstractUserController
         $this->layout('layout/1-col');
 
         return $view;
-    }
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'forms' => [
-                'register'         => 'User\Form\Register',
-                'login'            => 'User\Form\Login',
-                'user_select'      => 'User\Form\SelectUserForm',
-                'restore_password' => 'User\Form\LostPassword',
-                'settings'         => 'User\Form\SettingsForm'
-            ]
-        ];
     }
 }

@@ -36,6 +36,28 @@ class Instance implements InstanceInterface
      */
     protected $subdomain;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Instance\Entity\Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     * @var LanguageInterface
+     */
+    protected $language;
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
     public function getName()
     {
         return $this->name;
@@ -46,27 +68,11 @@ class Instance implements InstanceInterface
         $this->name = $code;
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
-    }
-
-    /**
-     * @return string
-     */
     public function getSubdomain()
     {
         return $this->subdomain;
     }
 
-    /**
-     * @param string $subdomain
-     */
     public function setSubdomain($subdomain)
     {
         $this->subdomain = $subdomain;

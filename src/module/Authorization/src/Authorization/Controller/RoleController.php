@@ -89,9 +89,7 @@ class RoleController extends AbstractActionController
             $this->referer()->store();
         }
 
-        $view = new ViewModel([
-            'form' => $form,
-        ]);
+        $view = new ViewModel(['form' => $form,]);
 
         $view->setTemplate('authorization/role/permission/add');
 
@@ -152,7 +150,6 @@ class RoleController extends AbstractActionController
                 $this->roleService->createRole($this->roleForm);
                 $this->roleService->flush();
                 $this->flashmessenger()->addSuccessMessage('Role created.');
-
                 return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
@@ -216,9 +213,8 @@ class RoleController extends AbstractActionController
 
     public function rolesAction()
     {
-        $view = new ViewModel([
-            'roles' => $this->getRoleService()->findAllRoles()
-        ]);
+        $roles = $this->getRoleService()->findAllRoles();
+        $view  = new ViewModel(['roles' => $roles]);
         $view->setTemplate('authorization/role/roles');
 
         return $view;

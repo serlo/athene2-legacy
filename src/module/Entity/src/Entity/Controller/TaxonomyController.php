@@ -21,6 +21,9 @@ class TaxonomyController extends AbstractController
     public function updateAction()
     {
         $entity = $this->getEntity();
+        if (!$entity) {
+            return false;
+        }
         $this->assertGranted('taxonomy.term.associate', $entity);
         $this->assertGranted('taxonomy.term.dissociate', $entity);
 

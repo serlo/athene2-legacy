@@ -49,49 +49,6 @@ class Route implements RouteInterface
         $this->parameters = new ArrayCollection();
     }
 
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getContext()
-    {
-        return $this->context;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function setContext(ContextInterface $context)
-    {
-        $this->context = $context;
-
-        return $this;
-    }
-
-    public function addParameters(array $parameters)
-    {
-        foreach ($parameters as $key => $value) {
-            $this->addParameter($key, $value);
-        }
-
-        return $this;
-    }
-
     public function addParameter($key, $value)
     {
         $parameter = new RouteParameter();
@@ -99,7 +56,49 @@ class Route implements RouteInterface
         $parameter->setValue($value);
         $parameter->setRoute($this);
         $this->parameters->add($parameter);
+    }
 
-        return $this;
+    public function addParameters(array $parameters)
+    {
+        foreach ($parameters as $key => $value) {
+            if (!empty($value)) {
+                $this->addParameter($key, $value);
+            }
+        }
+    }
+
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    public function setContext(ContextInterface $context)
+    {
+        $this->context = $context;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getInstance()
+    {
+        return $this->getContext()->getInstance();
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 }

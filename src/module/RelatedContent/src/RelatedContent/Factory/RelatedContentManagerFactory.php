@@ -10,26 +10,30 @@
  */
 namespace RelatedContent\Factory;
 
+use ClassResolver\ClassResolverFactoryTrait;
+use Common\Factory\AuthorizationServiceFactoryTrait;
+use Common\Factory\EntityManagerFactoryTrait;
+use Instance\Factory\InstanceManagerFactoryTrait;
 use RelatedContent\Manager\RelatedContentManager;
+use Uuid\Factory\UuidManagerFactoryTrait;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class RelatedContentManagerFactory implements FactoryInterface
 {
+    use ClassResolverFactoryTrait, UuidManagerFactoryTrait;
+    use EntityManagerFactoryTrait, AuthorizationServiceFactoryTrait;
+    use InstanceManagerFactoryTrait;
+
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $instance             = new RelatedContentManager();
-        $classResolver        = $serviceLocator->get('ClassResolver\ClassResolver');
-        $authorizationService = $serviceLocator->get('ZfcRbac\Service\AuthorizationService');
-        $uuidManager          = $serviceLocator->get('Uuid\Manager\UuidManager');
-        $objectManager        = $serviceLocator->get('Doctrine\ORM\EntityManager');
+        $classResolver        = $this->getClassResolver($serviceLocator);
+        $authorizationService = $this->getAuthorizationService($serviceLocator);
+        $uuidManager          = $this->getUuidManager($serviceLocator);
+        $objectManager        = $this->getEntityManager($serviceLocator);
         $router               = $serviceLocator->get('router');
-
-        $instance->setClassResolver($classResolver);
-        $instance->setUuidManager($uuidManager);
-        $instance->setObjectManager($objectManager);
-        $instance->setRouter($router);
-        $instance->setAuthorizationService($authorizationService);
+        $instanceManager      = $this->getInstanceManager($serviceLocator);
+        $instance             = new RelatedContentManager($authorizationService, $classResolver, $instanceManager, $router, $objectManager, $uuidManager);
 
         return $instance;
     }

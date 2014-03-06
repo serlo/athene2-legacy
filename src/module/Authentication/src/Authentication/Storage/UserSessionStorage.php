@@ -26,7 +26,7 @@ class UserSessionStorage extends Session
     public function __construct(
         ClassResolverInterface $classResolver,
         ObjectManager $objectManager,
-        $rememberTime = 1209600
+        $rememberTime = 2419200
     ) {
         parent::__construct('authentication');
         $this->classResolver = $classResolver;

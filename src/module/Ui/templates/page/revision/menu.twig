@@ -1,0 +1,23 @@
+<div class="btn-group">
+    {% if isGranted('page.revision.create', page) %}
+        <a href="{{ url('page/revision/create', {'page': page.getId(), 'revision': revision.getId()}) }}" class="btn btn-xs btn-default">
+            <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
+        </a>
+    {% endif %}
+    <a class="btn btn-xs btn-default" href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
+        <span class="glyphicon glyphicon-align-left"></span> {{ translate('History') }}
+    </a>
+    {% if isGranted('event.log.get', page) %}
+        <a class="btn btn-xs btn-default" href="{{ url('event/history', {'id': page.getId()}) }}">
+            <span class="glyphicon glyphicon-time"></span> {{ translate('Log') }}
+        </a>
+    {% endif %}
+    {% if page.getCurrentRevision() is not same as (revision) %}
+        <a href="{{ url('uuid/trash', {'id': revision.getId()}) }}" class="btn btn-link">
+            <span class="glyphicon glyphicon-trash"></span> {{ translate('Trash') }}
+        </a>
+        <a href="{{ url('page/revision/checkout', {'repository': page.getId(), 'revision': revision.getId()}) }}" class="btn btn-link">
+            <span class="glyphicon glyphicon-ok"> {{ translate('Set as base revision') }}
+        </a>
+    {% endif %}
+</div>

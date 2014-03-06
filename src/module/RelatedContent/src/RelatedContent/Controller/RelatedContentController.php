@@ -24,7 +24,7 @@ class RelatedContentController extends AbstractActionController
 
     public function addCategoryAction()
     {
-        $this->assertGranted('related_content.add');
+        $this->assertGranted('related.content.create');
 
         $form = new CategoryForm();
         $view = new ViewModel(['form' => $form]);
@@ -39,44 +39,44 @@ class RelatedContentController extends AbstractActionController
             }
         }
         $view->setTemplate('related-content/add-category');
-
+        $this->layout('layout/1-col');
         return $view;
     }
 
     public function addExternalAction()
     {
-        $this->assertGranted('related_content.add');
-        $form = new ExternalForm();
-
-        $view = new ViewModel(['form' => $form]);
+        $container = $this->getRelatedContentManager()->getContainer($this->params('id'));
+        $form      = new ExternalForm();
+        $view      = new ViewModel(['form' => $form]);
+        $this->assertGranted('related.content.create', $container);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->getRelatedContentManager()->addExternal((int)$this->params('id'), $data['title'], $data['url']);
+                $this->getRelatedContentManager()->addExternal($container->getId(), $data['title'], $data['url']);
                 $this->getRelatedContentManager()->getObjectManager()->flush();
                 $this->redirect()->toRoute('related-content/manage', ['id' => $this->params('id')]);
             }
         }
         $view->setTemplate('related-content/add-external');
-
+        $this->layout('layout/1-col');
         return $view;
     }
 
     public function addInternalAction()
     {
-        $this->assertGranted('related_content.add');
-        $form = new InternalForm();
-
-        $view = new ViewModel(['form' => $form]);
+        $container = $this->getRelatedContentManager()->getContainer($this->params('id'));
+        $form      = new InternalForm();
+        $view      = new ViewModel(['form' => $form]);
+        $this->assertGranted('related.content.create', $container);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->getRelatedContentManager()->addInternal(
-                    (int)$this->params('id'),
+                    $container->getId(),
                     $data['title'],
                     $data['reference']
                 );
@@ -85,14 +85,12 @@ class RelatedContentController extends AbstractActionController
             }
         }
         $view->setTemplate('related-content/add-internal');
-
+        $this->layout('layout/1-col');
         return $view;
     }
 
     public function manageAction()
     {
-        $this->assertGranted('related_content.manage');
-
         $container  = $this->getRelatedContentManager()->getContainer($this->params('id'));
         $aggregated = $this->getRelatedContentManager()->aggregateRelatedContent($this->params('id'));
         $view       = new ViewModel([
@@ -100,14 +98,12 @@ class RelatedContentController extends AbstractActionController
             'container'  => $container
         ]);
         $view->setTemplate('related-content/manage');
-
+        $this->layout('layout/1-col');
         return $view;
     }
 
     public function orderAction()
     {
-        $this->assertGranted('related_content.sort');
-
         $position = 1;
         if ($this->getRequest()->isPost()) {
             foreach ($this->params()->fromPost('sortable', []) as $holder) {
@@ -122,12 +118,8 @@ class RelatedContentController extends AbstractActionController
 
     public function removeAction()
     {
-        $this->assertGranted('related_content.purge');
-
         $this->getRelatedContentManager()->removeRelatedContent((int)$this->params('id'));
         $this->getRelatedContentManager()->getObjectManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
+        return $this->redirect()->toReferer();
     }
 }

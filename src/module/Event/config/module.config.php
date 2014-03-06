@@ -10,9 +10,12 @@
  */
 namespace Event;
 
-use Event\View\Helper\EventLog;
-
 return [
+    'zfc_rbac'        => [
+        'assertion_map' => [
+            'event.log.get'    => 'Authorization\Assertion\InstanceAssertion',
+        ]
+    ],
     'event_manager'   => [],
     'class_resolver'  => [
         'Event\Entity\EventLogInterface'           => 'Event\Entity\EventLog',
@@ -23,14 +26,7 @@ return [
     ],
     'view_helpers'    => [
         'factories' => [
-            'events' => function ($sm) {
-                    $instance = new EventLog();
-                    $instance->setEventManager(
-                        $sm->getServiceLocator()->get('Event\EventManager')
-                    );
-
-                    return $instance;
-                }
+            'events' => __NAMESPACE__ . '\Factory\EventLogHelperFactory'
         ]
     ],
     'controllers'     => [

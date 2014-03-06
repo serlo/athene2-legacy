@@ -10,8 +10,8 @@
  */
 namespace Attachment\Form;
 
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -25,10 +25,15 @@ class AttachmentForm extends Form implements AttachmentFieldsetProvider
 
         $this->setInputFilter($filter);
         $this->setAttribute('class', 'clearfix');
+
         $this->add(new AttachmentFieldset());
-        $this->add((new Text('type'))->setLabel('Set type:'));
+        $this->add(
+            (new Select('type'))->setLabel('Set type:')->setValueOptions(['file' => 'File', 'geogebra' => 'Geogebra'])
+        );
         $this->add(
             (new Submit('submit'))->setValue('Upload')->setAttribute('class', 'btn btn-success pull-right')
         );
+
+        $filter->add(['name' => 'type', 'required' => true]);
     }
 }

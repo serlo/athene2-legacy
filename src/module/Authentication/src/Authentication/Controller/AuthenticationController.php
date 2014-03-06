@@ -42,6 +42,10 @@ class AuthenticationController extends AbstractActionController
 
     public function activateAction()
     {
+        if ($this->authenticationService->getIdentity()) {
+            return $this->redirect()->toRoute('home');
+        }
+
         if ($this->params('token', false)) {
             try {
                 $user = $this->getUserManager()->findUserByToken($this->params('token'));
@@ -101,30 +105,20 @@ class AuthenticationController extends AbstractActionController
         $messages = [];
 
         if ($this->getRequest()->isPost()) {
-
-            $form->setData(
-                $this->params()->fromPost()
-            );
-
+            $form->setData($this->params()->fromPost());
             if ($form->isValid()) {
-                $data = $form->getData();
-
+                $data    = $form->getData();
                 $adapter = $this->getAuthenticationService()->getAdapter();
                 $adapter->setIdentity($user->getEmail());
                 $adapter->setCredential($data['currentPassword']);
-
                 $result = $adapter->authenticate();
-
                 if ($result->isValid()) {
                     $user->setPassword($data['password']);
-
                     $this->getUserManager()->persist($user);
                     $this->getUserManager()->flush();
                     $this->flashmessenger()->addSuccessMessage('Your password has successfully been changed.');
-
                     return $this->redirect()->toRoute('user/me');
                 }
-
                 $messages = $result->getMessages();
             }
         }
@@ -143,6 +137,10 @@ class AuthenticationController extends AbstractActionController
 
     public function loginAction()
     {
+        if ($this->authenticationService->getIdentity()) {
+            return $this->redirect()->toRoute('home');
+        }
+
         $form     = new Login();
         $messages = [];
 
@@ -196,12 +194,15 @@ class AuthenticationController extends AbstractActionController
         $storage = $this->getAuthenticationService()->getStorage();
         $storage->forgetMe();
         $this->getAuthenticationService()->clearIdentity();
-
         return $this->redirect()->toReferer();
     }
 
     public function restorePasswordAction()
     {
+        if ($this->authenticationService->getIdentity()) {
+            return $this->redirect()->toRoute('home');
+        }
+
         $messages = [];
         $view     = new ViewModel();
 

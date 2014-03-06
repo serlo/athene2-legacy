@@ -12,10 +12,14 @@ namespace RelatedContent\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Common\Traits\RouterAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
+use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use RelatedContent\Entity\ContainerInterface;
 use RelatedContent\Entity;
 use RelatedContent\Exception;
@@ -23,12 +27,32 @@ use RelatedContent\Result\CategoryResult;
 use RelatedContent\Result\ExternalResult;
 use RelatedContent\Result\InternalResult;
 use Uuid\Manager\UuidManagerAwareTrait;
+use Uuid\Manager\UuidManagerInterface;
+use Zend\Mvc\Router\RouteInterface;
+use ZfcRbac\Service\AuthorizationService;
 
 class RelatedContentManager implements RelatedContentManagerInterface
 {
     use ObjectManagerAwareTrait, ClassResolverAwareTrait;
     use RouterAwareTrait, UuidManagerAwareTrait;
     use FlushableTrait, AuthorizationAssertionTrait;
+    use InstanceManagerAwareTrait;
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        InstanceManagerInterface $instanceManager,
+        RouteInterface $route,
+        ObjectManager $objectManager,
+        UuidManagerInterface $uuidManager
+    ) {
+        $this->setAuthorizationService($authorizationService);
+        $this->classResolver   = $classResolver;
+        $this->instanceManager = $instanceManager;
+        $this->router          = $route;
+        $this->objectManager   = $objectManager;
+        $this->uuidManager     = $uuidManager;
+    }
 
     public function getContainer($id)
     {
@@ -40,29 +64,28 @@ class RelatedContentManager implements RelatedContentManagerInterface
             return $this->createContainer($id);
         }
 
+        $this->assertGranted('related.content.get', $related);
+
         return $related;
     }
 
     public function aggregateRelatedContent($id)
     {
         $related = $this->getContainer($id);
-
         return $results = $this->aggregate($related);
     }
 
     public function addExternal($container, $title, $url)
     {
-        $this->assertGranted('related_content.add');
-
         /* @var $external Entity\ExternalInterface */
         $external  = $this->getClassResolver()->resolve('RelatedContent\Entity\ExternalInterface');
         $container = $this->getContainer($container);
         $holder    = $this->createHolder($container);
 
+        $this->assertGranted('related.content.create', $container);
         $external->setTitle($title);
         $external->setHolder($holder);
         $external->setUrl($url);
-
         $this->getObjectManager()->persist($external);
 
         return $external;
@@ -70,18 +93,16 @@ class RelatedContentManager implements RelatedContentManagerInterface
 
     public function addInternal($container, $title, $reference)
     {
-        $this->assertGranted('related_content.add');
-
         /* @var $internal Entity\InternalInterface */
         $internal  = $this->getClassResolver()->resolve('RelatedContent\Entity\InternalInterface');
         $object    = $this->getUuidManager()->getUuid($reference);
         $container = $this->getContainer($container);
         $holder    = $this->createHolder($container);
 
+        $this->assertGranted('related.content.create', $container);
         $internal->setTitle($title);
         $internal->setHolder($holder);
         $internal->setReference($object);
-
         $this->getObjectManager()->persist($internal);
 
         return $internal;
@@ -89,12 +110,14 @@ class RelatedContentManager implements RelatedContentManagerInterface
 
     public function addCategory($container, $name)
     {
-        $this->assertGranted('related_content.add');
+        $this->assertGranted('related.content.create');
 
         $container = $this->getContainer($container);
         $holder    = $this->createHolder($container);
         /* @var $internal Entity\CategoryInterface */
         $internal = $this->getClassResolver()->resolve('RelatedContent\Entity\CategoryInterface');
+
+        $this->assertGranted('related.content.create', $container);
         $internal->setTitle($name);
         $internal->setHolder($holder);
         $this->getObjectManager()->persist($internal);
@@ -104,8 +127,6 @@ class RelatedContentManager implements RelatedContentManagerInterface
 
     public function removeRelatedContent($id)
     {
-        $this->assertGranted('related_content.purge');
-
         /* @var $object Entity\HolderInterface */
         $className = $this->getClassResolver()->resolveClassName('RelatedContent\Entity\HolderInterface');
         $object    = $this->getObjectManager()->find($className, $id);
@@ -114,13 +135,12 @@ class RelatedContentManager implements RelatedContentManagerInterface
             throw new Exception\RelationNotFoundException(sprintf('Could not find internal by id `%d`', $id));
         }
 
+        $this->assertGranted('related.content.purge', $object->getContainer());
         $this->getObjectManager()->remove($object);
     }
 
     public function positionHolder($holder, $position)
     {
-        $this->assertGranted('related_content.sort');
-
         /* @var $holder Entity\HolderInterface */
         $className = $this->getClassResolver()->resolveClassName('RelatedContent\Entity\HolderInterface');
         $holder    = $this->getObjectManager()->find($className, $holder);
@@ -129,14 +149,11 @@ class RelatedContentManager implements RelatedContentManagerInterface
             throw new Exception\RuntimeException(sprintf('Holder not found by id `%d`', $holder));
         }
 
+        $this->assertGranted('related.content.update', $holder->getContainer());
         $holder->setPosition($position);
         $this->getObjectManager()->persist($holder);
     }
 
-    /**
-     * @param ContainerInterface $related
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
     protected function aggregate(ContainerInterface $related)
     {
         $collection = new ArrayCollection();
@@ -170,6 +187,8 @@ class RelatedContentManager implements RelatedContentManagerInterface
      */
     protected function createHolder(Entity\ContainerInterface $container)
     {
+        $this->assertGranted('related.content.create', $container);
+
         /* @var $holder Entity\HolderInterface */
         $holder = $this->getClassResolver()->resolve('RelatedContent\Entity\HolderInterface');
         $holder->setContainer($container);
@@ -186,13 +205,14 @@ class RelatedContentManager implements RelatedContentManagerInterface
      */
     protected function createContainer($id)
     {
+        // No Authorization required for this.
+
         /* @var $container Entity\ContainerInterface */
         $uuid      = $this->getUuidManager()->getUuid($id);
         $container = $this->getClassResolver()->resolveClassName('RelatedContent\Entity\ContainerInterface');
-        $container = new $container($uuid);
-
+        $instance  = $this->getInstanceManager()->getInstanceFromRequest();
+        $container = new $container($uuid, $instance);
         $this->getObjectManager()->persist($container);
-
         return $container;
     }
 }

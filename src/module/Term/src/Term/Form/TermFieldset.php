@@ -42,7 +42,7 @@ class TermFieldset extends Fieldset implements InputFilterProviderInterface
                     [
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß/&]+$~'
+                            'pattern' => '~^[a-zA-Z\-_ 0-9äöüÄÖÜß]+$~'
                         ]
                     ]
                 ]

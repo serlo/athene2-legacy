@@ -20,6 +20,7 @@ use Contexter\Exception;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Type\Entity\TypeInterface;
 use Type\TypeManagerAwareTrait;
 use Uuid\Manager\UuidManagerAwareTrait;
 
@@ -29,62 +30,6 @@ class ContextManager implements ContextManagerInterface
     use Router\RouterAwareTrait, UuidManagerAwareTrait;
     use TypeManagerAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait, ClassResolverAwareTrait;
-
-    public function addRoute(ContextInterface $context, $routeName, array $params = [])
-    {
-        $this->assertGranted('contexter.route.add', $context);
-
-        /* @var $route RouteInterface */
-        $route = $this->getClassResolver()->resolve('Contexter\Entity\RouteInterface');
-        $route->setName($routeName);
-        $route->addParameters($params);
-        $route->setContext($context);
-        $context->addRoute($route);
-        $this->getObjectManager()->persist($route);
-
-        return $route;
-    }
-
-    public function removeRoute($id)
-    {
-        $route = $this->getRoute($id);
-
-        $this->assertGranted('contexter.route.remove', $route->getContext());
-        $this->getObjectManager()->remove($route);
-    }
-
-    public function getRoute($id)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
-        $object    = $this->getObjectManager()->find($className, $id);
-
-        if (!is_object($object)) {
-            throw new Exception\RuntimeException(sprintf('Could not find a route by the id of %d', $id));
-        }
-
-        return $object;
-    }
-
-    public function removeContext($id)
-    {
-        $context = $this->getContext($id);
-        $this->assertGranted('contexter.context.remove', $context);
-
-        $this->getObjectManager()->remove($context);
-    }
-
-    public function getContext($id)
-    {
-        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
-        $context   = $this->getObjectManager()->find($className, $id);
-        $this->assertGranted('contexter.context.get', $context);
-
-        if (!is_object($context)) {
-            throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
-        }
-
-        return $context;
-    }
 
     public function add($objectId, $type, $title)
     {
@@ -105,19 +50,35 @@ class ContextManager implements ContextManagerInterface
         return $context;
     }
 
+    public function addRoute(ContextInterface $context, $routeName, array $params = [])
+    {
+        $this->assertGranted('contexter.route.add', $context);
+
+        /* @var $route RouteInterface */
+        $route = $this->getClassResolver()->resolve('Contexter\Entity\RouteInterface');
+        $route->setName($routeName);
+        $route->addParameters($params);
+        $route->setContext($context);
+        $context->addRoute($route);
+        $this->getObjectManager()->persist($route);
+
+        return $route;
+    }
+
     public function findAll()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
         $results   = $this->getObjectManager()->getRepository($className)->findAll();
-        $this->assertGranted('contexter.context.get.all');
-
+        foreach ($results as $result) {
+            $this->assertGranted('contexter.context.get', $result);
+        }
         return new ArrayCollection($results);
     }
 
     public function findAllTypeNames()
     {
         return $this->findAllTypes()->map(
-            function (\Type\Entity\TypeInterface $e) {
+            function (TypeInterface $e) {
                 return $e->getName();
             }
         );
@@ -128,6 +89,46 @@ class ContextManager implements ContextManagerInterface
         return $this->getTypeManager()->findTypeByName($name);
     }
 
+    public function getContext($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\ContextInterface');
+        $context   = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($context)) {
+            throw new Exception\ContextNotFoundException(sprintf('Could not find a context by the id of %d', $id));
+        }
+
+        $this->assertGranted('contexter.context.get', $context);
+        return $context;
+    }
+
+    public function getRoute($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\RouteInterface');
+        $object    = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($object)) {
+            throw new Exception\RuntimeException(sprintf('Could not find a route by the id of %d', $id));
+        }
+
+        $this->assertGranted('contexter.route.get', $object);
+        return $object;
+    }
+
+    public function removeContext($id)
+    {
+        $context = $this->getContext($id);
+        $this->assertGranted('contexter.context.remove', $context);
+        $this->getObjectManager()->remove($context);
+    }
+
+    public function removeRoute($id)
+    {
+        $route = $this->getRoute($id);
+        $this->assertGranted('contexter.route.remove', $route->getContext());
+        $this->getObjectManager()->remove($route);
+    }
+
     protected function findAllTypes()
     {
         return $this->getTypeManager()->findAllTypes();
@@ -136,7 +137,6 @@ class ContextManager implements ContextManagerInterface
     protected function getTypeRepository()
     {
         $className = $this->getClassResolver()->resolveClassName('Contexter\Entity\TypeInterface');
-
         return $this->getObjectManager()->getRepository($className);
     }
 }

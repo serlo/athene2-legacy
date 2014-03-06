@@ -11,38 +11,26 @@
 namespace License\Listener;
 
 use Common\Listener\AbstractSharedListenerAggregate;
+use License\Manager\LicenseManagerAwareTrait;
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class EntityManagerListener extends AbstractSharedListenerAggregate
 {
-    use \License\Manager\LicenseManagerAwareTrait;
+    use LicenseManagerAwareTrait;
 
     public function onCreate(Event $e)
     {
-        /* var $entity \Entity\Entity\EntityInterface */
+        /* @var $entity \Entity\Entity\EntityInterface */
         $entity = $e->getParam('entity');
         $this->getLicenseManager()->injectLicense($entity);
     }
 
-    /*
-     * (non-PHPdoc) @see \Zend\EventManager\SharedListenerAggregateInterface::attachShared()
-     */
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(
-            $this->getMonitoredClass(),
-            'create',
-            [
-                $this,
-                'onCreate'
-            ],
-            2
-        );
+        $events->attach($this->getMonitoredClass(), 'create', [$this, 'onCreate'], 2);
     }
 
-    /*
-     * (non-PHPdoc) @see \Common\Listener\AbstractSharedListenerAggregate::getMonitoredClass()
-     */
     protected function getMonitoredClass()
     {
         return 'Entity\Manager\EntityManager';

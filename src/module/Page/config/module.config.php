@@ -2,6 +2,26 @@
 namespace Page;
 
 return [
+    'zfc_rbac'       => [
+        'assertion_manager' => [
+            'factories' => [
+                __NAMESPACE__ . '\Assertion\PageAssertion' => __NAMESPACE__ . '\Factory\PageAssertionFactory',
+            ]
+        ],
+        'assertion_map'     => [
+            'page.create'            => 'Authorization\Assertion\RequestInstanceAssertion',
+            'page.purge'             => 'Authorization\Assertion\InstanceAssertion',
+            'page.restore'           => 'Authorization\Assertion\InstanceAssertion',
+            'page.trash'             => 'Authorization\Assertion\InstanceAssertion',
+            'page.update'            => 'Authorization\Assertion\InstanceAssertion',
+            'page.get'               => 'Authorization\Assertion\InstanceAssertion',
+            'page.revision.purge'    => 'Authorization\Assertion\InstanceAssertion',
+            'page.revision.checkout' => __NAMESPACE__ . '\Assertion\PageAssertion',
+            'page.revision.create'   => __NAMESPACE__ . '\Assertion\PageAssertion',
+            'page.revision.restore'  => __NAMESPACE__ . '\Assertion\PageAssertion',
+            'page.revision.trash'    => __NAMESPACE__ . '\Assertion\PageAssertion',
+        ]
+    ],
     'versioning'     => [
         'permissions' => [
             'Page\Entity\PageRepository' => [
@@ -129,32 +149,12 @@ return [
         'Page\Entity\PageRevisionInterface'   => 'Page\Entity\PageRevision',
         'Page\Entity\PageInterface'           => 'Page\Entity\Page'
     ],
-    'zfc_rbac'       => [
-
-        'guards' => [
-            'Authorization\Guard\HydratableControllerGuard' => [
-                [
-                    'controller'    => 'Page\Controller\IndexController',
-                    'actions'       => [
-                        'editRepository',
-                        'createRevision',
-                        'trashRevision',
-                        'deleteRevision',
-                        'deleteRepository',
-                        'showRevisions'
-                    ],
-                    'role_provider' => 'Page\Provider\FirewallHydrator'
-                ]
-            ]
-        ]
-    ],
     'di'             => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\IndexController'
         ],
         'definition'          => [
             'class' => [
-
                 'Page\Controller\IndexController' => [
                     'setAliasManager'    => [
                         'required' => true
@@ -175,35 +175,7 @@ return [
                         'required' => true
                     ]
                 ],
-                'Page\Manager\PageManager'        => [
-                    'setRepositoryManager' => [
-                        'required' => true
-                    ],
-                    'setRoleService'       => [
-                        'required' => true
-                    ],
-                    'setInstanceManager'   => [
-                        'required' => true
-                    ],
-                    'setUuidManager'       => [
-                        'required' => true
-                    ],
-                    'setObjectManager'     => [
-                        'required' => true
-                    ],
-                    'setClassResolver'     => [
-                        'required' => true
-                    ],
-                    'setServiceLocator'    => [
-                        'required' => true
-                    ],
-                    'setUserManager'       => [
-                        'required' => true
-                    ],
-                    'setLicenseManager'    => [
-                        'required' => true
-                    ]
-                ]
+                'Page\Manager\PageManager'        => []
             ]
         ],
         'instance'            => [
@@ -229,5 +201,3 @@ return [
         ]
     ]
 ];
-
-

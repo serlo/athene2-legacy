@@ -11,53 +11,50 @@
 namespace Event\View\Helper;
 
 use Event\Entity\EventLogInterface;
+use Event\EventManagerAwareTrait;
+use Event\EventManagerInterface;
 use Event\Exception;
-use Event\Service\EventServiceInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class EventLog extends AbstractHelper
 {
-    use \Event\EventManagerAwareTrait, \Common\Traits\ConfigAwareTrait;
+    use EventManagerAwareTrait;
 
-    protected function getDefaultConfig()
+    /**
+     * @var string
+     */
+    protected $eventsTemplate = 'event/helper/events';
+
+    /**
+     * @var string
+     */
+    protected $eventTemplate = 'event/helper/event/default';
+
+    /**
+     * @param EventManagerInterface $eventManager
+     */
+    public function __construct(EventManagerInterface $eventManager)
     {
-        return [
-            'templates' => [
-                'events' => 'event/helper/events',
-                'event'  => 'event/helper/event/default'
-            ]
-        ];
+        $this->eventManager = $eventManager;
     }
 
     public function renderObjectLog($id)
     {
         $events = $this->getEventManager()->findEventsByObject($id);
-
-        return $this->getView()->partial(
-            $this->getOption('templates')['events'],
-            [
-                'events' => $events
-            ]
-        );
+        return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
     }
 
     public function renderUserLog($id)
     {
         $events = $this->getEventManager()->findEventsByActor($id);
-
-        return $this->getView()->partial(
-            $this->getOption('templates')['events'],
-            [
-                'events' => $events
-            ]
-        );
+        return $this->getView()->partial($this->eventsTemplate, ['events' => $events]);
     }
 
     public function renderEvent($id)
     {
         if (is_numeric($id)) {
             $event = $this->getEventManager()->getEvent($id);
-        } elseif ($id instanceof EventLogInterface || $id instanceof EventServiceInterface) {
+        } elseif ($id instanceof EventLogInterface) {
             $event = $id;
         } else {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -66,11 +63,6 @@ class EventLog extends AbstractHelper
             ));
         }
 
-        return $this->getView()->partial(
-            $this->getOption('templates')['event'],
-            [
-                'event' => $event
-            ]
-        );
+        return $this->getView()->partial($this->eventTemplate, ['event' => $event]);
     }
 }

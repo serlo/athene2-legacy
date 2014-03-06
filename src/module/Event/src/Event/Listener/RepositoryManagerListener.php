@@ -11,6 +11,7 @@
 namespace Event\Listener;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class RepositoryManagerListener extends AbstractListener
 {
@@ -20,37 +21,12 @@ class RepositoryManagerListener extends AbstractListener
      */
     protected $listeners = [];
 
-    public function attachShared(\Zend\EventManager\SharedEventManagerInterface $events)
+    public function attachShared(SharedEventManagerInterface $events)
     {
-        $events->attach(
-            $this->getMonitoredClass(),
-            'commit',
-            [
-                $this,
-                'onAddRevision'
-            ],
-            1
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'checkout',
-            [
-                $this,
-                'onCheckout'
-            ],
-            -1
-        );
-
-        $events->attach(
-            $this->getMonitoredClass(),
-            'reject',
-            [
-                $this,
-                'onReject'
-            ],
-            -1
-        );
+        $class = $this->getMonitoredClass();
+        $events->attach($class, 'commit', [$this, 'onAddRevision'], 1);
+        $events->attach($class, 'checkout', [$this, 'onCheckout'], -1);
+        $events->attach($class, 'reject', [$this, 'onReject'], -1);
     }
 
     protected function getMonitoredClass()
@@ -62,13 +38,11 @@ class RepositoryManagerListener extends AbstractListener
     {
         $repository = $e->getParam('repository');
         $revision   = $e->getParam('revision');
-        $user       = $this->getUserManager()->getUserFromAuthenticator();
-        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+        $instance   = $repository->getInstance();
 
         $this->logEvent(
             'entity/revision/add',
             $instance,
-
             $revision,
             [
                 [
@@ -83,8 +57,8 @@ class RepositoryManagerListener extends AbstractListener
     {
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository');
-        $user       = $e->getParam('actor');
-        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+        $reason     = $e->getParam('reason');
+        $instance   = $repository->getInstance();
 
         $this->logEvent(
             'entity/revision/checkout',
@@ -94,6 +68,10 @@ class RepositoryManagerListener extends AbstractListener
                 [
                     'name'  => 'repository',
                     'value' => $repository
+                ],
+                [
+                    'name'  => 'reason',
+                    'value' => $reason
                 ]
             ]
         );
@@ -103,8 +81,7 @@ class RepositoryManagerListener extends AbstractListener
     {
         $revision   = $e->getParam('revision');
         $repository = $e->getParam('repository');
-        $user       = $e->getParam('actor');
-        $instance   = $this->getInstanceManager()->getInstanceFromRequest();
+        $instance   = $repository->getInstance();
         $reason     = $e->getParam('reason');
 
         $this->logEvent(

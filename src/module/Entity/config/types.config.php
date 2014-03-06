@@ -102,17 +102,18 @@ return [
             ],
             'video'                 => [
                 'components' => [
-                    'repository' => [
+                    'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\VideoForm',
                         'fields' => [
                             'title',
+                            'description',
                             'content',
                             'reasoning',
                             'changes'
                         ]
                     ],
-                    'license'    => [],
-                    'taxonomy'   => [],
+                    'license'         => [],
+                    'taxonomy'        => [],
                     'related_content' => []
                 ],
             ],
@@ -134,7 +135,7 @@ return [
             ],
             'module'                => [
                 'components' => [
-                    'repository' => [
+                    'repository'      => [
                         'form'   => __NAMESPACE__ . '\Form\ModuleForm',
                         'fields' => [
                             'title',
@@ -142,15 +143,15 @@ return [
                             'changes'
                         ]
                     ],
-                    'link'       => [
+                    'link'            => [
                         'children' => [
                             'module-page' => [
                                 'multiple' => true
                             ]
                         ]
                     ],
-                    'license'    => [],
-                    'taxonomy'   => [],
+                    'license'         => [],
+                    'taxonomy'        => [],
                     'related_content' => []
                 ]
             ],

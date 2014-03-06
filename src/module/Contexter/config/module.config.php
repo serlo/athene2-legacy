@@ -13,11 +13,13 @@ namespace Contexter;
 return [
     'zfc_rbac'               => [
         'assertion_map' => [
-            /*'contexter.context.add'    => 'Authorization\Assertion\RequestTenantAssertion',
-            'contexter.context.remove' => 'Authorization\Assertion\TenantAssertion',
-            'contexter.context.manage' => 'Authorization\Assertion\TenantAssertion',
-            'contexter.route.add'      => 'Authorization\Assertion\TenantAssertion',
-            'contexter.route.add'      => 'Authorization\Assertion\TenantAssertion',*/
+            'contexter.context.add'    => 'Authorization\Assertion\RequestInstanceAssertion',
+            'contexter.context.remove' => 'Authorization\Assertion\InstanceAssertion',
+            'contexter.context.manage' => 'Authorization\Assertion\InstanceAssertion',
+            'contexter.context.get'    => 'Authorization\Assertion\InstanceAssertion',
+            'contexter.route.add'      => 'Authorization\Assertion\InstanceAssertion',
+            'contexter.route.get'      => 'Authorization\Assertion\InstanceAssertion',
+            'contexter.route.remove'   => 'Authorization\Assertion\InstanceAssertion',
         ]
     ],
     'Manager\ContextManager' => [

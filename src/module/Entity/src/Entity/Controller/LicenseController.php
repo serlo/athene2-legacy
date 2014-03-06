@@ -24,6 +24,9 @@ class LicenseController extends AbstractController
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $licenses = $this->getLicenseManager()->findLicensesByInstance($instance);
         $entity   = $this->getEntity();
+        if(!$entity){
+            return false;
+        }
 
         $this->assertGranted('entity.license.update', $entity);
 

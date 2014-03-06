@@ -24,15 +24,15 @@ class ModuleForm extends Form
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'clearfix');
 
-        $this->add((new Text('title'))->setLabel('Title:'));
+        $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add(
-            (new Textarea('reasoning'))->setLabel('Reasoning:')->setAttribute(
+            (new Textarea('reasoning'))->setAttribute('id', 'reasoning')->setLabel('Reasoning:')->setAttribute(
                 'class',
                 'plain'
             )
         );
         $this->add(
-            (new Textarea('Changes'))->setLabel('Changes:')->setAttribute(
+            (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(
                 'class',
                 'plain'
             )

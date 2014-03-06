@@ -33,6 +33,7 @@ class TermController extends AbstractController
 
     public function createAction()
     {
+        $this->assertGranted('taxonomy.term.create');
         $form = $this->termForm;
 
         if ($this->getRequest()->isPost()) {
@@ -48,55 +49,25 @@ class TermController extends AbstractController
             $form->setData($data);
             if ($form->isValid()) {
                 $this->getTaxonomyManager()->createTerm($form);
-
                 $this->getTaxonomyManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('The node has been added successfully!');
-
                 return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {
             $this->referer()->store();
         }
-
-        $view = new ViewModel([
-            'form'       => $form,
-            'isUpdating' => false
-        ]);
-
+        $view = new ViewModel(['form' => $form, 'isUpdating' => false]);
         $view->setTemplate('taxonomy/term/form');
-
         return $view;
     }
 
     public function orderAction()
     {
+        $term = $this->getTaxonomyManager()->getTerm($this->params('term'));
+        $this->assertGranted('taxonomy.term.update', $term);
         $data = $this->params()->fromPost('sortable', []);
         $this->iterWeight($data, $this->params('term'));
         $this->getTaxonomyManager()->flush();
-
-        return true;
-    }
-
-    protected function iterWeight($terms, $parent = null)
-    {
-        $position = 1;
-        $form     = $this->termForm;
-        foreach ($terms as $term) {
-            $entity = $this->getTaxonomyManager()->getTerm($term['id']);
-            $data   = $form->getHydrator()->extract($entity);
-            $data   = array_merge($data, ['parent' => $parent, 'position' => $position]);
-            $form->bind($entity);
-            $form->setData($data);
-
-            $this->getTaxonomyManager()->updateTerm($form);
-
-            if (isset($term['children'])) {
-                $this->iterWeight($term['children'], $term['id']);
-            }
-
-            $position++;
-        }
-
         return true;
     }
 
@@ -104,6 +75,7 @@ class TermController extends AbstractController
     {
         $association = $this->params('association');
         $term        = $this->getTerm($this->params('term'));
+        $this->assertGranted('taxonomy.term.associated.sort', $term);
 
         if ($this->getRequest()->isPost()) {
             $associations = $this->params()->fromPost('sortable', []);
@@ -126,20 +98,14 @@ class TermController extends AbstractController
             'association'  => $association
         ]);
         $view->setTemplate('taxonomy/term/order-associated');
-
         return $view;
     }
 
     public function organizeAction()
     {
         $term = $this->getTerm();
-
-        $view = new ViewModel([
-            'term' => $term
-        ]);
-
+        $view = new ViewModel(['term' => $term]);
         $view->setTemplate('taxonomy/term/organize');
-
         return $view;
     }
 
@@ -148,8 +114,9 @@ class TermController extends AbstractController
         $id   = $this->params('id');
         $term = $this->getTerm($id);
         $form = $this->termForm;
-
+        $this->assertGranted('taxonomy.term.update', $term);
         $form->bind($term);
+
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost();
             $form->setData($post);
@@ -166,7 +133,25 @@ class TermController extends AbstractController
 
         $view = new ViewModel(['form' => $form]);
         $view->setTemplate('taxonomy/term/form');
-
         return $view;
+    }
+
+    protected function iterWeight($terms, $parent = null)
+    {
+        $position = 1;
+        $form     = $this->termForm;
+        foreach ($terms as $term) {
+            $entity = $this->getTaxonomyManager()->getTerm($term['id']);
+            $data   = $form->getHydrator()->extract($entity);
+            $data   = array_merge($data, ['parent' => $parent, 'position' => $position]);
+            $form->bind($entity);
+            $form->setData($data);
+            $this->getTaxonomyManager()->updateTerm($form);
+            if (isset($term['children'])) {
+                $this->iterWeight($term['children'], $term['id']);
+            }
+            $position++;
+        }
+        return true;
     }
 }

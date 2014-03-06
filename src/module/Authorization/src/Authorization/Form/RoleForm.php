@@ -53,6 +53,11 @@ class RoleForm extends Form
                 'required' => true
             ]
         );
+        $inputFilter->add(
+            [
+                'name'     => 'children',
+                'required' => false
+            ]
+        );
     }
 }
- 

@@ -22,9 +22,12 @@ class LinkController extends AbstractController
     public function moveAction()
     {
         $entity = $this->getEntity();
-        $type   = $this->params('type');
-        $form   = new MoveForm();
-        $view   = new ViewModel(['form' => $form]);
+        if (!$entity) {
+            return false;
+        }
+        $type = $this->params('type');
+        $form = new MoveForm();
+        $view = new ViewModel(['form' => $form]);
 
         $this->assertGranted('entity.link.create', $entity);
         $this->assertGranted('entity.link.purge', $entity);

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * Athene2 - Advanced Learning Resources Manager
  *
  * @author  Julian Kempff (julian.kempff@serlo.org)
@@ -50,6 +50,13 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 $('.spoiler').Spoiler();
                 // init injections
                 $('.injection').Injections();
+
+                // NOTE: deactivated for now
+                // init AjaxOverlay for /ref links
+                // $('a[href^="/ref"]', $context).addClass('ajax-content');
+
+                // init Mathjax
+                MathJax.Hub.Typeset($context[0]);
             });
 
             Common.addEventListener('new context', function ($context) {
@@ -98,7 +105,15 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
                 inlineMath: [["%%", "%%"]]
             },
             "HTML-CSS": {
-                scale: 100
+                scale: 100,
+                linebreaks: {
+                    automatic: true
+                }
+            },
+            SVG: {
+                linebreaks: {
+                    automatic: true
+                }
             }
         });
     }

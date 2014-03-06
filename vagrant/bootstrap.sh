@@ -15,6 +15,7 @@ echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf
 apt-get -y update
 apt-get install -y python-software-properties python g++ make python-software-properties
 apt-get install -y apache2 mysql-server-5.5 git sphinxsearch
+apt-get install -y language-pack-de-base
 
 # Add repositories with current versions
 sudo add-apt-repository -y ppa:chris-lea/node.js

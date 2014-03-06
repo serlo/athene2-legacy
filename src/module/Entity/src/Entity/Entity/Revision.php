@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RepositoryInterface;
-use Versioning\Entity\RevisionInterface;
 
 /**
  * An entity link.
@@ -26,7 +25,6 @@ use Versioning\Entity\RevisionInterface;
  */
 class Revision extends Uuid implements RevisionInterface
 {
-
     /**
      * @ORM\ManyToOne(targetEntity="Entity", inversedBy="revisions")
      */
@@ -122,13 +120,18 @@ class Revision extends Uuid implements RevisionInterface
         $this->date = $date;
     }
 
-    public function setRepository(RepositoryInterface $repository)
+    public function getInstance()
     {
-        $this->repository = $repository;
+        return $this->getRepository()->getInstance();
     }
 
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    public function setRepository(RepositoryInterface $repository)
+    {
+        $this->repository = $repository;
     }
 }
