@@ -61,14 +61,34 @@ class File implements FileInterface
         return $this->id;
     }
 
+    public function getInstance()
+    {
+        return $this->getAttachment()->getInstance();
+    }
+
+
     public function getLocation()
     {
         return $this->location;
     }
 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
     public function getSize()
     {
         return $this->size;
+    }
+
+    public function setSize($size)
+    {
+        $this->size = $size;
+
+        return $this;
     }
 
     public function getFilename()
@@ -81,14 +101,16 @@ class File implements FileInterface
         return $this->type;
     }
 
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
     public function getDateTime()
     {
         return $this->timestamp;
-    }
-
-    public function setAttachment(ContainerInterface $attachment)
-    {
-        $this->attachment = $attachment;
     }
 
     public function getAttachment()
@@ -96,30 +118,14 @@ class File implements FileInterface
         return $this->attachment;
     }
 
-    public function setLocation($location)
+    public function setAttachment(ContainerInterface $attachment)
     {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    public function setSize($size)
-    {
-        $this->size = $size;
-
-        return $this;
+        $this->attachment = $attachment;
     }
 
     public function setFilename($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function setType($type)
-    {
-        $this->type = $type;
 
         return $this;
     }

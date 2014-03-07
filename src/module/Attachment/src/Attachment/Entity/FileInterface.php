@@ -10,7 +10,9 @@
  */
 namespace Attachment\Entity;
 
-interface FileInterface
+use Instance\Entity\InstanceProviderInterface;
+
+interface FileInterface extends InstanceProviderInterface
 {
 
     /**
