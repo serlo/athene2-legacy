@@ -62,7 +62,7 @@
         <!-- Rest -->
         <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
         <hr>
-        {% for link in links if link.getType() in ['text-exercise', 'text-exercise-group'] %}
+        {% for link in links if link.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
             <div class="row">
                 <div class="col-xs-1">
                     <strong>{{ loop.index }}.</strong>
