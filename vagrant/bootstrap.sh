@@ -108,7 +108,6 @@ sudo su - vagrant -c "ln -s /var/www/src/assets/package.json /home/vagrant/athen
 sudo chown vagrant:vagrant /home/vagrant/athene2-assets * -R
 ln -s /home/vagrant/athene2-assets/node_modules /var/www/src/assets/node_modules
 
-
 # Install crontab
 echo "* * * * * indexer --all --rotate" > cron
 echo "* * * * * cd /var/www/src && php public/index.php notification worker" >> cron
