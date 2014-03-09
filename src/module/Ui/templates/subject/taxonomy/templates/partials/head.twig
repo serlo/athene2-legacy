@@ -24,6 +24,13 @@
                         </a>
                     </li>
                 {% endif %}
+                {% if isGranted('taxonomy.term.create', term) %}
+                    <li>
+                        <a href="{{ url('taxonomy/term/organize', {'id': term.getId()}) }}">
+                            <span class="glyphicon glyphicon-th-list"></span> {{ translate('Organize') }}
+                        </a>
+                    </li>
+                {% endif %}
                 {% if isGranted('event.log.get', term) %}
                     <li>
                         <a href="{{ url('event/history', {'id': term.getId()}) }}">

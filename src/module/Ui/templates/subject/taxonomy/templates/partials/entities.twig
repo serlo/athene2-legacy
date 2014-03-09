@@ -32,17 +32,19 @@
     {% if types.get('text-exercise') or types.get('text-exercise-group') %}
         <!-- Rest -->
         <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
-        <hr>
         {% for link in links if link.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
-            <div class="row">
-                <div class="col-xs-1">
-                    <strong>{{ loop.index }}.</strong>
-                </div>
-                <div class="col-xs-11">
-                    {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <strong>{{ loop.index }}.</strong>
+                        </div>
+                        <div class="col-xs-11">
+                            {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr>
         {% endfor %}
     {% endif %}
     <!-- Rest end -->
