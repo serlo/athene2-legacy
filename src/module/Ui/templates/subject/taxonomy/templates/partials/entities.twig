@@ -2,27 +2,30 @@
     {% for i in 0..2 %}
         {% set type = cycle(['article', 'video', 'module'], i) %}
         {% if types.get(type) %}
-            <div class="row">
-            <div class="col-md-12">
-                <h4>
-                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Modules'], i)) }}
-                </h4>
-                <hr>
-            </div>
-            {% set index = 0 %}
-            {% for link in types.get(type) %}
-                {% if index % 3 == 0 and index != 0 %}
-                    </div>
-                    <hr>
+            <div class="panel panel-default">
+                <div class="panel-body">
                     <div class="row">
-                {% endif %}
-                {% set index = index + 1 %}
-                <div class="col-sm-4">
-                    {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                    <div class="col-md-12">
+                        <h4>
+                            <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Modules'], i)) }}
+                        </h4>
+                        <hr>
+                    </div>
+                    {% set index = 0 %}
+                    {% for link in types.get(type) %}
+                        {% if index % 3 == 0 and index != 0 %}
+                            </div>
+                            <hr>
+                            <div class="row">
+                        {% endif %}
+                        {% set index = index + 1 %}
+                        <div class="col-sm-4">
+                            {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                        </div>
+                    {% endfor %}
+                    </div>
                 </div>
-            {% endfor %}
             </div>
-            <hr>
         {% endif %}
     {% endfor %}
 
