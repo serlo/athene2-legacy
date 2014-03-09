@@ -20,6 +20,7 @@ class EventController extends AbstractActionController
         $id   = $this->params('id');
         $view = new ViewModel(['id' => $id]);
         $view->setTemplate('event/history');
+        $this->layout('layout/1-col');
         return $view;
     }
 }

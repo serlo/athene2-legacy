@@ -8,6 +8,7 @@
 {% if template %}
     {{ template | raw }}
 {% else %}
+    {% include 'subject/taxonomy/templates/partials/head' %}
     {% include 'subject/taxonomy/templates/partials/entities' %}
     {% include 'subject/taxonomy/templates/partials/branches' %}
 {% endif %}
