@@ -60,7 +60,9 @@
 </nav>
 
 {% if term.getDescription() %}
-    <p>
-        <strong>{{ term.getDescription() | nl2br }}</strong>
-    </p>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ term.getDescription() | nl2br }}
+        </div>
+    </div>
 {% endif %}
