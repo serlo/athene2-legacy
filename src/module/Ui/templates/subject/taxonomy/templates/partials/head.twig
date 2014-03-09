@@ -20,7 +20,7 @@
                 {% if isGranted('taxonomy.term.update', term) %}
                     <li>
                         <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">
-                            <span class="glyphicon glyphicon-pencil"></span> {{ translate('Update') }}
+                            <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
                         </a>
                     </li>
                 {% endif %}

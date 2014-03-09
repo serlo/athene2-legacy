@@ -2,32 +2,40 @@
 <article class="panel-group">
     {% if(revision.get('hint')) %}
         <section class="collapse panel panel-default" id="hint-{{ entity.getId() }}">
-            <div class="row panel-heading">
-                <h6 class="panel-title">
+            <div class="panel-body">
+                <strong>
                     <span class="glyphicon glyphicon-question-sign"></span>
                     {{ translate('Hint') }}
-                </h6>
+                </strong>
             </div>
-            <div class="panel-body">
-                {{ markdown().toHtml(revision.get('hint')) | raw }}
-            </div>
-            <div class="panel-footer clearfix">
-                {% include 'entity/view/partials/actions/small' %}
+            <div class="list-group">
+                <div class="list-group-item">
+                    <ul class="nav nav-pills">
+                        {% include 'entity/view/partials/actions/small-essential' %}
+                    </ul>
+                </div>
+                <div class="list-group-item">
+                    {{ markdown().toHtml(revision.get('hint')) | raw }}
+                </div>
             </div>
         </section>
     {% endif %}
     <section class="collapse panel panel-default" id="solution-{{ entity.getId() }}">
-        <div class="row panel-heading">
-            <h6 class="panel-title">
+        <div class="panel-body">
+            <strong>
                 <span class="glyphicon glyphicon-question-sign"></span>
                 {{ translate('Solution') }}
-            </h6>
+            </strong>
         </div>
-        <div class="panel-body">
-            {{ markdown().toHtml(revision.get('content')) | raw }}
-        </div>
-        <div class="panel-footer clearfix">
-            {% include 'entity/view/partials/actions/small' %}
+        <div class="list-group">
+            <div class="list-group-item">
+                <ul class="nav nav-pills">
+                    {% include 'entity/view/partials/actions/small-essential' %}
+                </ul>
+            </div>
+            <div class="list-group-item">
+                {{ markdown().toHtml(revision.get('content')) | raw }}
+            </div>
         </div>
     </section>
 </article>
