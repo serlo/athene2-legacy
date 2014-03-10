@@ -12,17 +12,24 @@ namespace Contexter\Manager;
 
 use Authorization\Service\AuthorizationAssertionTrait;
 use ClassResolver\ClassResolverAwareTrait;
+use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Contexter\Entity\ContextInterface;
 use Contexter\Entity\RouteInterface;
 use Contexter\Exception;
+use Contexter\Options\ModuleOptions;
 use Contexter\Router;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Instance\Manager\InstanceManagerAwareTrait;
+use Instance\Manager\InstanceManagerInterface;
 use Type\Entity\TypeInterface;
 use Type\TypeManagerAwareTrait;
+use Type\TypeManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
+use Uuid\Manager\UuidManagerInterface;
+use ZfcRbac\Service\AuthorizationService;
 
 class ContextManager implements ContextManagerInterface
 {
@@ -30,6 +37,31 @@ class ContextManager implements ContextManagerInterface
     use Router\RouterAwareTrait, UuidManagerAwareTrait;
     use TypeManagerAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait, ClassResolverAwareTrait;
+
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    public function __construct(
+        AuthorizationService $authorizationService,
+        ClassResolverInterface $classResolver,
+        InstanceManagerInterface $instanceManager,
+        ModuleOptions $moduleOptions,
+        Router\RouterInterface $router,
+        TypeManagerInterface $typeManager,
+        ObjectManager $objectManager,
+        UuidManagerInterface $uuidManager
+    ) {
+        $this->setAuthorizationService($authorizationService);
+        $this->classResolver   = $classResolver;
+        $this->instanceManager = $instanceManager;
+        $this->router          = $router;
+        $this->typeManager     = $typeManager;
+        $this->objectManager   = $objectManager;
+        $this->uuidManager     = $uuidManager;
+        $this->moduleOptions   = $moduleOptions;
+    }
 
     public function add($objectId, $type, $title)
     {
@@ -131,7 +163,8 @@ class ContextManager implements ContextManagerInterface
 
     protected function findAllTypes()
     {
-        return $this->getTypeManager()->findAllTypes();
+        $types = $this->moduleOptions->getTypes();
+        return $this->getTypeManager()->findTypesByNames($types);
     }
 
     protected function getTypeRepository()

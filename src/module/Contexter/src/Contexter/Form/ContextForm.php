@@ -10,17 +10,18 @@
  */
 namespace Contexter\Form;
 
+use Contexter\Options\ModuleOptions;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Text;
 use Zend\Form\Element;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
 class ContextForm extends Form
 {
 
-    public function __construct(array $parameters, array $types)
+    public function __construct(array $parameters, ModuleOptions $options)
     {
         parent::__construct('context');
         $inputFilter = new InputFilter();
@@ -30,7 +31,7 @@ class ContextForm extends Form
         $this->setInputFilter($inputFilter);
 
         $values = [];
-        foreach ($types as $type) {
+        foreach ($options->getTypes() as $type) {
             $values[$type] = $type;
         }
 

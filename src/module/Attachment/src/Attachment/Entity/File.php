@@ -66,7 +66,6 @@ class File implements FileInterface
         return $this->getAttachment()->getInstance();
     }
 
-
     public function getLocation()
     {
         return $this->location;
@@ -75,8 +74,6 @@ class File implements FileInterface
     public function setLocation($location)
     {
         $this->location = $location;
-
-        return $this;
     }
 
     public function getSize()
@@ -87,8 +84,6 @@ class File implements FileInterface
     public function setSize($size)
     {
         $this->size = $size;
-
-        return $this;
     }
 
     public function getFilename()
@@ -104,8 +99,6 @@ class File implements FileInterface
     public function setType($type)
     {
         $this->type = $type;
-
-        return $this;
     }
 
     public function getDateTime()
@@ -126,7 +119,5 @@ class File implements FileInterface
     public function setFilename($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 }
