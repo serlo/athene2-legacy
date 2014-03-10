@@ -60,7 +60,7 @@ class TypeManager implements TypeManagerInterface
     {
         $className  = $this->getEntityClassName();
         $repository = $this->getObjectManager()->getRepository($className);
-        return $repository->findOneBy(['name' => $names]);
+        return new ArrayCollection($repository->findBy(['name' => $names]));
     }
 
     protected function getEntityClassName()

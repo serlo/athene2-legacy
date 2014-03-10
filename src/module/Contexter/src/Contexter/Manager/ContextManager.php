@@ -34,7 +34,7 @@ use ZfcRbac\Service\AuthorizationService;
 class ContextManager implements ContextManagerInterface
 {
     use ObjectManagerAwareTrait, InstanceManagerAwareTrait;
-    use Router\RouterAwareTrait, UuidManagerAwareTrait;
+    use UuidManagerAwareTrait;
     use TypeManagerAwareTrait, AuthorizationAssertionTrait;
     use FlushableTrait, ClassResolverAwareTrait;
 

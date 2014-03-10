@@ -28,37 +28,8 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\ContextController'    => [
-                    'setContextManager' => [
-                        'required' => true
-                    ],
-                    'setRouter'         => [
-                        'required' => true
-                    ]
-                ],
-                __NAMESPACE__ . '\Manager\ContextManager'          => [
-                    'setServiceLocator'       => [
-                        'required' => true
-                    ],
-                    'setTypeManager'          => [
-                        'required' => true
-                    ],
-                    'setObjectManager'        => [
-                        'required' => true
-                    ],
-                    'setClassResolver'        => [
-                        'required' => true
-                    ],
-                    'setUuidManager'          => [
-                        'required' => true
-                    ],
-                    'setAuthorizationService' => [
-                        'required' => true
-                    ],
-                    'setInstanceManager'      => [
-                        'required' => true
-                    ]
-                ]
+                __NAMESPACE__ . '\Controller\ContextController'    => [],
+                __NAMESPACE__ . '\Manager\ContextManager'          => []
             ]
         ],
         'instance'            => [
