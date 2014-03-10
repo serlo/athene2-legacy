@@ -48,7 +48,6 @@ class ContextManager implements ContextManagerInterface
         ClassResolverInterface $classResolver,
         InstanceManagerInterface $instanceManager,
         ModuleOptions $moduleOptions,
-        Router\RouterInterface $router,
         TypeManagerInterface $typeManager,
         ObjectManager $objectManager,
         UuidManagerInterface $uuidManager
@@ -56,7 +55,6 @@ class ContextManager implements ContextManagerInterface
         $this->setAuthorizationService($authorizationService);
         $this->classResolver   = $classResolver;
         $this->instanceManager = $instanceManager;
-        $this->router          = $router;
         $this->typeManager     = $typeManager;
         $this->objectManager   = $objectManager;
         $this->uuidManager     = $uuidManager;
