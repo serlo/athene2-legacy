@@ -22,7 +22,7 @@ return [
                         'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
+                        'text-exercise-group'
                     ]
                 ],
                 'permakultur' => [
@@ -45,7 +45,7 @@ return [
                         'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
+                        'text-exercise-group'
                     ]
                 ]
             ],
@@ -60,7 +60,7 @@ return [
                         'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
+                        'text-exercise-group'
                     ]
                 ]
             ]

@@ -50,7 +50,7 @@ class TypeManager implements TypeManagerInterface
         $type       = $repository->findOneBy(['name' => $name]);
 
         if (!is_object($type)) {
-            throw new Exception\TypeNotFoundException(sprintf('Type "%d" not found.', $name));
+            throw new Exception\TypeNotFoundException(sprintf('Type "%s" not found.', $name));
         }
 
         return $type;
