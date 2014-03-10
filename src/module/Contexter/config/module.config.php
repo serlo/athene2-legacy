@@ -45,6 +45,12 @@ return [
             ]
         ]
     ],
+    'contexter' => [
+        'types' => [
+            'help',
+            'guideline'
+        ]
+    ],
     'view_helpers'           => [
         'factories' => [
             'contexter' => __NAMESPACE__ . '\Factory\ContexterHelperFactory'

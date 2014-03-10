@@ -28,35 +28,39 @@ class TypeManager implements TypeManagerInterface
 
     public function getType($id)
     {
-        $type = $this->getObjectManager()->find($this->getEntityClassName(), $id);
+        $className = $this->getEntityClassName();
+        $type      = $this->getObjectManager()->find($className, $id);
         if (!is_object($type)) {
             throw new Exception\TypeNotFoundException(sprintf('Type "%d" not found.', $id));
         }
-
         return $type;
     }
 
     public function findAllTypes()
     {
-        $repository = $this->getObjectManager()->getRepository($this->getEntityClassName());
-
+        $className  = $this->getEntityClassName();
+        $repository = $this->getObjectManager()->getRepository($className);
         return new ArrayCollection($repository->findAll());
     }
 
     public function findTypeByName($name)
     {
-        $repository = $this->getObjectManager()->getRepository($this->getEntityClassName());
-        $type       = $repository->findOneBy(
-            [
-                'name' => $name
-            ]
-        );
+        $className  = $this->getEntityClassName();
+        $repository = $this->getObjectManager()->getRepository($className);
+        $type       = $repository->findOneBy(['name' => $name]);
 
         if (!is_object($type)) {
-            throw new Exception\TypeNotFoundException(sprintf('Type "%d" not found.', $name));
+            throw new Exception\TypeNotFoundException(sprintf('Type "%s" not found.', $name));
         }
 
         return $type;
+    }
+
+    public function findTypesByNames(array $names)
+    {
+        $className  = $this->getEntityClassName();
+        $repository = $this->getObjectManager()->getRepository($className);
+        return new ArrayCollection($repository->findBy(['name' => $names]));
     }
 
     protected function getEntityClassName()

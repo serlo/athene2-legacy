@@ -1,5 +1,5 @@
 <div class="list-group">
-    {% for child in term.getChildren() %}
+    {% for child in term.getChildren() if child.getType().getName() not in ['topic-folder' , 'curriculum-topic-folder'] %}
         <a href="{{ url('subject/taxonomy', {'subject': subject.getSlug(), 'path': subject().slugify(child)}) }}" class="list-group-item">
             <h4 class="list-group-item-heading">{{ child.getName() }}</h4>
             <p class="list-group-item-text">{{ child.getDescription() | nl2br }}</p>

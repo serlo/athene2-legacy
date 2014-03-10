@@ -11,3 +11,12 @@ img.license-intext {
   max-height: 18px;
   opacity: 0.5;
 }
+
+.navbar-weak {
+  background-color: white;
+  color: #444444;
+}
+
+.navbar-weak > .active {
+  background-color: #EFEFEF;
+}
