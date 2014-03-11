@@ -59,6 +59,11 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 MathJax.Hub.Typeset($context[0]);
             });
 
+            // Tooltips opt in
+            $('[data-toggle="tooltip"]').tooltip({
+                container: 'body'
+            });
+
             Common.addEventListener('new context', function ($context) {
                 Content.init($context);
             });
