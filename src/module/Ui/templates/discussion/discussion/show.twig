@@ -37,14 +37,14 @@
                             <strong>{{ discussion.countUpVotes() }}</strong>
                         </button>
                     {% endif %}
+                    {% if isGranted('discussion.archive', discussion) %}
+                        <a href="{{ url('discussion/discussion/archive', {'comment': discussion.getId()}) }}"
+                           class="btn btn-xs btn-default">
+                            <span class="glyphicon glyphicon-{{ discussion.getArchived() ? 'refresh' : 'ok' }}"></span> </a>
+                    {% endif %}
                     {% if isGranted('flag.create', discussion) %}
                         <a class="btn btn-xs btn-default" href="{{ url('flag/add', {'id': discussion.getId()}) }}">
                             <span class="glyphicon glyphicon-flag"></span> </a>
-                    {% endif %}
-                    {% if isGranted('discussion.archive', discussion) %}
-                        <a href="{{ url('discussion/discussion/archive', {'comment': discussion.getId()}) }}"
-                           class="btn btn-xs btn-{{ discussion.getArchived() ? 'primary' : 'default' }}">
-                            <span class="glyphicon glyphicon-inbox"></span> </a>
                     {% endif %}
                     {% if isGranted('discussion.trash', discussion) %}
                         <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
