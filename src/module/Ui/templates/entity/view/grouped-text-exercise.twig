@@ -2,10 +2,10 @@
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
 <article>
     <section class="row">
-        <div class="col-md-7">
+        <div class="col-md-6">
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
                     {% if solution.hasCurrentRevision() and solution.getCurrentRevision().get('hint') %}
