@@ -52,74 +52,6 @@ class DiscussionManager implements DiscussionManagerInterface
         $this->objectManager = $objectManager;
     }
 
-    public function getDiscussion($id)
-    {
-        return $this->getComment($id);
-    }
-
-    public function getComment($id)
-    {
-        $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
-        $comment   = $this->getObjectManager()->find($className, $id);
-
-        if (!is_object($comment)) {
-            throw new Exception\CommentNotFoundException(sprintf('Could not find a comment by the id of %s', $id));
-        }
-
-        $this->assertGranted('discussion.get', $comment);
-
-        return $comment;
-    }
-
-    public function findDiscussionsByInstance(InstanceInterface $instance)
-    {
-        $this->assertGranted('discussion.get', $instance);
-        $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
-        $objectRepository = $this->getObjectManager()->getRepository($className);
-        $discussions      = $objectRepository->findAll(['instance' => $instance->getId()]);
-        return new ArrayCollection($discussions);
-    }
-
-    public function findDiscussionsOn(UuidInterface $uuid, $archived = false)
-    {
-        $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
-        $objectRepository = $this->getObjectManager()->getRepository($className);
-        $discussions      = $objectRepository->findBy(['object' => $uuid->getId(), 'archived' => $archived]);
-
-        foreach ($discussions as $discussion) {
-            $this->assertGranted('discussion.get', $discussion);
-        }
-
-        return new ArrayCollection($discussions);
-    }
-
-    public function startDiscussion(FormInterface $form)
-    {
-        /* @var $comment Entity\CommentInterface */
-        $comment = $this->getClassResolver()->resolve($this->entityInterface);
-        $this->bind($comment, $form);
-
-        if ($comment->getObject() instanceof CommentInterface) {
-            throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
-        }
-
-        $this->assertGranted('discussion.create', $comment);
-        $this->getObjectManager()->persist($comment);
-        $this->getEventManager()->trigger(
-            'start',
-            $this,
-            [
-                'author'     => $comment->getAuthor(),
-                'on'         => $comment->getObject(),
-                'discussion' => $comment,
-                'instance'   => $comment->getInstance(),
-                'data'       => $form->getData()
-            ]
-        );
-
-        return $comment;
-    }
-
     public function commentDiscussion(FormInterface $form)
     {
         /* @var $comment Entity\CommentInterface */
@@ -141,6 +73,78 @@ class DiscussionManager implements DiscussionManagerInterface
                 'author'     => $comment->getAuthor(),
                 'comment'    => $comment,
                 'discussion' => $comment->getParent(),
+                'instance'   => $comment->getInstance(),
+                'data'       => $form->getData()
+            ]
+        );
+
+        return $comment;
+    }
+
+    public function findDiscussionsByInstance(InstanceInterface $instance)
+    {
+        $this->assertGranted('discussion.get', $instance);
+        $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
+        $objectRepository = $this->getObjectManager()->getRepository($className);
+        $discussions      = $objectRepository->findAll(['instance' => $instance->getId()]);
+        return new ArrayCollection($discussions);
+    }
+
+    public function findDiscussionsOn(UuidInterface $uuid, $archived = null)
+    {
+        $className        = $this->getClassResolver()->resolveClassName($this->entityInterface);
+        $objectRepository = $this->getObjectManager()->getRepository($className);
+        $criteria         = ['object' => $uuid->getId()];
+        if ($archived !== null) {
+            $criteria['archived'] = $archived;
+        }
+        $discussions = $objectRepository->findBy($criteria);
+
+        foreach ($discussions as $discussion) {
+            $this->assertGranted('discussion.get', $discussion);
+        }
+
+        return new ArrayCollection($discussions);
+    }
+
+    public function getComment($id)
+    {
+        $className = $this->getClassResolver()->resolveClassName($this->entityInterface);
+        $comment   = $this->getObjectManager()->find($className, $id);
+
+        if (!is_object($comment)) {
+            throw new Exception\CommentNotFoundException(sprintf('Could not find a comment by the id of %s', $id));
+        }
+
+        $this->assertGranted('discussion.get', $comment);
+
+        return $comment;
+    }
+
+    public function getDiscussion($id)
+    {
+        return $this->getComment($id);
+    }
+
+    public function startDiscussion(FormInterface $form)
+    {
+        /* @var $comment Entity\CommentInterface */
+        $comment = $this->getClassResolver()->resolve($this->entityInterface);
+        $this->bind($comment, $form);
+
+        if ($comment->getObject() instanceof CommentInterface) {
+            throw new Exception\RuntimeException(sprintf('You can\'t discuss a comment!'));
+        }
+
+        $this->assertGranted('discussion.create', $comment);
+        $this->getObjectManager()->persist($comment);
+        $this->getEventManager()->trigger(
+            'start',
+            $this,
+            [
+                'author'     => $comment->getAuthor(),
+                'on'         => $comment->getObject(),
+                'discussion' => $comment,
                 'instance'   => $comment->getInstance(),
                 'data'       => $form->getData()
             ]

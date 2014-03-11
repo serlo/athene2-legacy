@@ -1,0 +1,103 @@
+<div class="timeline-badge {{ discussion.getArchived() ? 'success' : 'info' }}">
+    {% if discussion.getArchived() %}
+        <span class="glyphicon glyphicon-ok"></span>
+    {% else %}
+        <strong>?</strong>
+    {% endif %}
+</div>
+<div class="timeline-panel">
+    <div class="timeline-heading">
+        <div class="row">
+            <div class="col-md-8">
+                <h4 class="timeline-title">{{ discussion.getTitle() }}</h4>
+
+                <p>
+                    <small class="text-muted">
+                        <i class="glyphicon glyphicon-time"></i> {{ timeago().render(discussion.getTimestamp()) }} {{ translate('by') }}
+                        <strong>{{ discussion.getAuthor().getUsername() }}</strong></small>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group pull-right">
+                    {% if isGranted('discussion.vote', discussion) %}
+                        {% if discussion.hasUserVoted(discussion().getUser()) %}
+                            {% set vote = 'down' %}
+                            {% set button = 'default' %}
+                        {% else %}
+                            {% set vote = 'up' %}
+                            {% set button = 'success' %}
+                        {% endif %}
+                        <a href="{{ url('discussion/discussion/vote', {'comment': discussion.getId(), 'vote': vote}) }}"
+                           class="btn btn-xs btn-{{ button }}">
+                            <span class="glyphicon glyphicon-chevron-{{ vote }}"></span>
+                            <strong>{{ discussion.countUpVotes() }}</strong> </a>
+                    {% else %}
+                        <button class="btn btn-default btn-xs" disabled>
+                            <span class="glyphicon glyphicon-chevron-{{ vote }}"></span>
+                            <strong>{{ discussion.countUpVotes() }}</strong>
+                        </button>
+                    {% endif %}
+                    {% if isGranted('flag.create', discussion) %}
+                        <a class="btn btn-xs btn-default" href="{{ url('flag/add', {'id': discussion.getId()}) }}">
+                            <span class="glyphicon glyphicon-flag"></span> </a>
+                    {% endif %}
+                    {% if isGranted('discussion.archive', discussion) %}
+                        <a href="{{ url('discussion/discussion/archive', {'comment': discussion.getId()}) }}"
+                           class="btn btn-xs btn-{{ discussion.getArchived() ? 'primary' : 'default' }}">
+                            <span class="glyphicon glyphicon-inbox"></span> </a>
+                    {% endif %}
+                    {% if isGranted('discussion.trash', discussion) %}
+                        <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
+                           class="btn btn-xs btn-default dialog"
+                           data-content="{{ translate('Do you really want to delete this discussion?') }}">
+                            <span class="glyphicon glyphicon-trash"></span> </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline-body">
+        {{ discussion.getContent() }}
+    </div>
+    <div class="panel-group">
+        {% for comment in discussion.getChildren() if not comment.isTrashed() %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p> <strong>{{ comment.getAuthor().getUsername() }}</strong>
+                                <small class="text-muted">
+                                    <span class="glyphicon glyphicon-time"></span> {{ timeago().render(comment.getTimestamp()) }} {{ translate('by') }}
+                                </small>
+                            </p>
+                        </div>
+                        <div class="col-md-4 clearfix">
+                            <div class="btn-group pull-right">
+                                {% if isGranted('flag.create', discussion) %}
+                                    <a class="btn btn-xs btn-default"
+                                       href="{{ url('flag/add', {'id': discussion.getId()}) }}">
+                                        <span class="glyphicon glyphicon-flag"></span> </a>
+                                {% endif %}
+                                {% if isGranted('discussion.comment.trash', discussion) %}
+                                    <a href="{{ url('uuid/trash', {'id': discussion.getId()}) }}"
+                                       class="btn btn-xs btn-default dialog"
+                                       data-content="{{ translate('Do you really want to delete this comment?') }}">
+                                        <span class="glyphicon glyphicon-trash"></span> </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    {{ comment.getContent() }}
+                </div>
+            </div>
+        {% endfor %}
+        {% if not discussion.getArchived() and isGranted('discussion.comment.create', discussion) %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form().render(discussion().getForm('comment', discussion)) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

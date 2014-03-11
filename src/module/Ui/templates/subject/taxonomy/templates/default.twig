@@ -12,4 +12,8 @@
     {% include 'subject/taxonomy/templates/partials/entities' %}
     {% include 'subject/taxonomy/templates/partials/branches' %}
 {% endif %}
-{{ discussion(term).findForum([subject.getName(), term.getTaxonomy().getName()]).render() }}
+<div class="panel">
+    <div class="panel-body">
+        {{ discussion(term).findForum([subject.getName(), term.getTaxonomy().getName()]).render() }}
+    </div>
+</div>
