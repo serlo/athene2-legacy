@@ -18,14 +18,12 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
 {
     /**
      * @param TaxonomyTermAwareInterface $object
-     *
      * @return self
      */
     public function associateObject(TaxonomyTermAwareInterface $object);
 
     /**
      * @param string $association
-     *
      * @return int
      */
     public function countAssociations($association);
@@ -37,21 +35,24 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
 
     /**
      * @param string $name
-     *
      * @return TaxonomyTermInterface
      */
     public function findAncestorByTypeName($name);
 
     /**
      * @param array $slugs
-     *
      * @return self
      */
     public function findChildBySlugs(array $slugs);
 
     /**
+     * @param array|string[] $names
+     * @return self[]|Collection
+     */
+    public function findChildrenByTaxonomyNames(array $names);
+
+    /**
      * @param string $association
-     *
      * @return TaxonomyTermAwareInterface[]
      */
     public function getAssociated($association);
@@ -113,14 +114,12 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
 
     /**
      * @param TaxonomyTermAwareInterface $object
-     *
      * @return bool
      */
     public function isAssociated(TaxonomyTermAwareInterface $object);
 
     /**
      * @param self $ancestor
-     *
      * @return bool
      */
     public function knowsAncestor(self $ancestor);
@@ -129,42 +128,36 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
      * @param TaxonomyTermAwareInterface|int $object
      * @param int                            $position
      * @param string                         $association
-     *
      * @return self
      */
     public function positionAssociatedObject($object, $position, $association = null);
 
     /**
      * @param TaxonomyTermAwareInterface $object
-     *
      * @return self
      */
     public function removeAssociation(TaxonomyTermAwareInterface $object);
 
     /**
      * @param string $description
-     *
      * @return self
      */
     public function setDescription($description);
 
     /**
      * @param self $parent
-     *
      * @return self
      */
     public function setParent(self $parent);
 
     /**
      * @param int $position
-     *
      * @return self
      */
     public function setPosition($position);
 
     /**
      * @param TaxonomyInterface $taxonomy
-     *
      * @return self
      */
     public function setTaxonomy(TaxonomyInterface $taxonomy);
@@ -172,7 +165,6 @@ interface TaxonomyTermInterface extends InstanceProviderInterface
     /**
      * @param string $stopAtType
      * @param string $delimiter
-     *
      * @return string
      */
     public function slugify($stopAtType = null, $delimiter = '/');
