@@ -1,17 +1,10 @@
 <div class="tab-content">
-    <?php if ($this->isArchived === NULL): ?>
-        <h3><?php echo $this->translate('Discussions'); ?></h3>
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#current" data-toggle="tab"><?php echo $this->translate('Current'); ?></a></li>
-            <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
-        </ul>
-        <div class="tab-pane active" id="current">
-            <?php echo $this->discussion($this->object, $this->forum, false)->render(); ?>
-        </div>
-        <div class="tab-pane" id="archived">
-            <?php echo $this->discussion($this->object, $this->forum, true)->render(); ?>
-        </div>
-    <?php else: ?>
+    <h3><?php echo $this->translate('Discussions'); ?></h3>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#current" data-toggle="tab"><?php echo $this->translate('Current'); ?></a></li>
+        <li><a href="#archived" data-toggle="tab"><?php echo $this->translate('Archived'); ?></a></li>
+    </ul>
+    <div class="tab-pane active" id="current">
         <div class="list-group">
             <?php if ($this->isGranted('discussion.create')): ?>
                 <?php $form = $this->discussion()->getForm('discussion'); ?>
@@ -22,20 +15,19 @@
                         ['on' => $this->object->getId(), 'forum' => $this->forum->getId()]
                     )
                 ); ?>
-                <?php if (!$this->isArchived): ?>
                     <div class="list-group-item">
                         <h4><?php echo $this->translate('Start a new discussion'); ?></h4>
                         <hr>
                         <?php echo $this->form()->render($form, null); ?>
                     </div>
-                <?php endif; ?>
             <?php endif; ?>
-            <?php if (!count($this->discussions)): ?>
+            <?php $discussions = $this->discussion()->getDiscussions($this->object); ?>
+            <?php if (!count($discussions)): ?>
                 <div class="alert alert-info"><?php echo $this->translate(
                         'There are no discussions on this topic yet.'
                     ); ?></div>
             <?php endif; ?>
-            <?php foreach ($this->discussions as $discussion): ?>
+            <?php foreach ($discussions as $discussion): ?>
                 <div class="list-group-item">
                     <?php echo $this->partial(
                         'discussion/discussion/show',
@@ -44,5 +36,33 @@
                 </div>
             <?php endforeach; ?>
         </div>
-    <?php endif; ?>
+    </div>
+    <div class="tab-pane" id="archived">
+        <div class="list-group">
+            <?php if ($this->isGranted('discussion.create')): ?>
+                <?php $form = $this->discussion()->getForm('discussion'); ?>
+                <?php $form->setAttribute(
+                    'action',
+                    $this->url(
+                        'discussion/discussion/start',
+                        ['on' => $this->object->getId(), 'forum' => $this->forum->getId()]
+                    )
+                ); ?>
+            <?php endif; ?>
+            <?php $discussions = $this->discussion()->getArchivedDiscussions($this->object); ?>
+            <?php if (!count($discussions)): ?>
+                <div class="alert alert-info"><?php echo $this->translate(
+                        'There are no discussions on this topic yet.'
+                    ); ?></div>
+            <?php endif; ?>
+            <?php foreach ($discussions as $discussion): ?>
+                <div class="list-group-item">
+                    <?php echo $this->partial(
+                        'discussion/discussion/show',
+                        array('discussion' => $discussion)
+                    ); ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
 </div>

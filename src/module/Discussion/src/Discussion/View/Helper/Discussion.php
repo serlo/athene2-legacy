@@ -62,12 +62,6 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    public function setObject(UuidInterface $object)
-    {
-        $this->object = $object;
-        return $this;
-    }
-
     public function findForum(array $forums)
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
@@ -83,28 +77,89 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    protected function iterForums(array $forums, TaxonomyTermInterface $current)
+    /**
+     * @return boolean $archived
+     */
+    public function getArchived()
     {
-        if (empty($forums)) {
-            return $current;
-        }
+        return $this->archived;
+    }
 
-        $forum    = current($forums);
-        $children = $current->findChildrenByTaxonomyNames(
+    /**
+     * @param boolean $archived
+     * @return self
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+        return $this;
+    }
+
+    public function getArchivedDiscussions(UuidInterface $object)
+    {
+        return $this->getDiscussionManager()->findDiscussionsOn($object, true);
+    }
+
+    public function getDiscussions(UuidInterface $object)
+    {
+        return $this->getDiscussionManager()->findDiscussionsOn($object, false);
+    }
+
+    public function getForm($type)
+    {
+        switch ($type) {
+            case 'discussion':
+                return $this->discussionForm;
+                break;
+            case 'comment':
+                return $this->commentForm;
+                break;
+            default:
+                throw new RuntimeException();
+        }
+    }
+
+    public function getForum()
+    {
+        return $this->forum;
+    }
+
+    public function setForum(TaxonomyTermInterface $forum)
+    {
+        $this->forum = $forum;
+        return $this;
+    }
+
+    /**
+     * @return field_type $reference
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    public function getUser()
+    {
+        return $this->getUserManager()->getUserFromAuthenticator();
+    }
+
+    public function render()
+    {
+        return $this->getView()->partial(
+            $this->getOption('template'),
             [
-                'forum'
+                'discussions' => $this->discussions,
+                'isArchived'  => $this->archived,
+                'object'      => $this->getObject(),
+                'forum'       => $this->getForum()
             ]
         );
+    }
 
-        foreach ($children as $child) {
-            if ($child->getName() == $forum || $child->getSlug() == $forum) {
-                array_shift($forums);
-
-                return $this->iterForums($forums, $child);
-            }
-        }
-
-        return $this->createForums($forums, $current);
+    public function setObject(UuidInterface $object)
+    {
+        $this->object = $object;
+        return $this;
     }
 
     protected function createForums(array $forums, TaxonomyTermInterface $current)
@@ -131,75 +186,6 @@ class Discussion extends AbstractHelper
         return $this->getTaxonomyManager()->getTerm($current);
     }
 
-    /**
-     * @return boolean $archived
-     */
-    public function getArchived()
-    {
-        return $this->archived;
-    }
-
-    /**
-     * @param boolean $archived
-     * @return self
-     */
-    public function setArchived($archived)
-    {
-        $this->archived = $archived;
-        return $this;
-    }
-
-    public function getForm($type)
-    {
-        switch ($type) {
-            case 'discussion':
-                return $this->discussionForm;
-                break;
-            case 'comment':
-                return $this->commentForm;
-                break;
-            default:
-                throw new RuntimeException();
-        }
-    }
-
-    public function getUser()
-    {
-        return $this->getUserManager()->getUserFromAuthenticator();
-    }
-
-    public function render()
-    {
-        return $this->getView()->partial(
-            $this->getOption('template'),
-            [
-                'discussions' => $this->discussions,
-                'isArchived'  => $this->archived,
-                'object'      => $this->getObject(),
-                'forum'       => $this->getForum()
-            ]
-        );
-    }
-
-    /**
-     * @return field_type $reference
-     */
-    public function getObject()
-    {
-        return $this->object;
-    }
-
-    public function getForum()
-    {
-        return $this->forum;
-    }
-
-    public function setForum(TaxonomyTermInterface $forum)
-    {
-        $this->forum = $forum;
-        return $this;
-    }
-
     protected function getDefaultConfig()
     {
         return [
@@ -208,5 +194,29 @@ class Discussion extends AbstractHelper
             'forum'          => 'forum',
             'forum_category' => 'forum-category'
         ];
+    }
+
+    protected function iterForums(array $forums, TaxonomyTermInterface $current)
+    {
+        if (empty($forums)) {
+            return $current;
+        }
+
+        $forum    = current($forums);
+        $children = $current->findChildrenByTaxonomyNames(
+            [
+                'forum'
+            ]
+        );
+
+        foreach ($children as $child) {
+            if ($child->getName() == $forum || $child->getSlug() == $forum) {
+                array_shift($forums);
+
+                return $this->iterForums($forums, $child);
+            }
+        }
+
+        return $this->createForums($forums, $current);
     }
 }

@@ -37,5 +37,10 @@
                 {{ markdown().toHtml(revision.get('content')) | raw }}
             </div>
         </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                {{ entity().renderDiscussions(entity) }}
+            </div>
+        </div>
     </section>
 </article>

@@ -21,11 +21,25 @@
                         </a>
                     </li>
                 {% endif %}
+                <li>
+                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
+                        <span class="glyphicon glyphicon-comment"></span>
+                    </a>
+                </li>
                 {% include 'entity/view/partials/actions/small-essential' %}
             </ul>
         </div>
     </section>
-    {% if(solution) %}
-        {% include 'entity/view/default' with {'entity': solution} only %}
-    {% endif %}
+    <div class="panel-group">
+        <div class="collapse panel panel-default" id="discussions-{{ entity.getId() }}">
+            <div class="panel-body">
+                {{ entity().renderDiscussions(entity) }}
+            </div>
+        </div>
+    </div>
+    <section>
+        {% if(solution) %}
+            {% include 'entity/view/default' with {'entity': solution} only %}
+        {% endif %}
+    </section>
 </article>

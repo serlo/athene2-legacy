@@ -2,10 +2,10 @@
 {% set solution = entity.getChildren('link', 'text-solution').first() %}
 <article>
     <section class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             {{ markdown().toHtml(revision.get('content')) | raw }}
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <ul class="nav nav-pills pull-right">
                 {% if(solution) %}
                     {% if solution.hasCurrentRevision() and solution.getCurrentRevision().get('hint') %}
@@ -21,10 +21,22 @@
                         </a>
                     </li>
                 {% endif %}
+                <li>
+                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
+                        <span class="glyphicon glyphicon-comment"></span>
+                    </a>
+                </li>
                 {% include 'entity/view/partials/actions/small-essential' %}
             </ul>
         </div>
     </section>
+    <div class="panel-group">
+        <div class="collapse panel panel-default" id="discussions-{{ entity.getId() }}">
+            <div class="panel-body">
+                {{ entity().renderDiscussions(entity) }}
+            </div>
+        </div>
+    </div>
     {% if(solution) %}
         {% include 'entity/view/default' with {'entity': solution} only %}
     {% endif %}
