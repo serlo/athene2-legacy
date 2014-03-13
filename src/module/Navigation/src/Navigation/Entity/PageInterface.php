@@ -10,7 +10,9 @@
  */
 namespace Navigation\Entity;
 
-interface PageInterface
+use Instance\Entity\InstanceProviderInterface;
+
+interface PageInterface extends InstanceProviderInterface
 {
     /**
      * @param PageInterface $page
