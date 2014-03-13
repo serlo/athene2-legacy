@@ -10,7 +10,9 @@
  */
 namespace Navigation\Entity;
 
-interface ParameterInterface
+use Instance\Entity\InstanceProviderInterface;
+
+interface ParameterInterface extends InstanceProviderInterface
 {
     /**
      * @param ParameterInterface $child
