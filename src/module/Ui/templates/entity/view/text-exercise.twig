@@ -30,12 +30,8 @@
             </ul>
         </div>
     </section>
-    <div class="panel-group">
-        <div class="collapse panel panel-default" id="discussions-{{ entity.getId() }}">
-            <div class="panel-body">
-                {{ entity().renderDiscussions(entity) }}
-            </div>
-        </div>
+    <div class="collapse" id="discussions-{{ entity.getId() }}">
+        {{ entity().renderDiscussions(entity) }}
     </div>
     {% if(solution) %}
         {% include 'entity/view/default' with {'entity': solution} only %}

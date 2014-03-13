@@ -1,6 +1,4 @@
 <div class="tab-content">
-    <h3>{{ translate('Discussions') }}</h3>
-    <hr>
     <ul class="timeline">
         {% if isGranted('discussion.create') %}
             {% set form = discussion().getForm('discussion', object, forum) %}
