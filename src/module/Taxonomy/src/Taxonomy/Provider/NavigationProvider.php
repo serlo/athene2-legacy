@@ -73,11 +73,10 @@ class NavigationProvider implements PageProviderInterface
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
 
         $term = $this->getTerm();
-        $key = 'provider:taxonomy:' . $term->getId() . ':' . implode(':', $this->options['types']);
+        $key  = 'provider.' . serialize($term);
 
         if ($this->storage->hasItem($key)) {
             $pages = $this->storage->getItem($key);
-
             return $pages;
         }
 
@@ -85,9 +84,8 @@ class NavigationProvider implements PageProviderInterface
             $this->getObjectManager()->refresh($this->getTerm());
         }
 
-        $terms = $term->findChildrenByTaxonomyNames($this->options['types']);
-        $pages = $this->iterTerms($terms, $this->options['max_depth']);
-
+        $terms      = $term->findChildrenByTaxonomyNames($this->options['types']);
+        $pages      = $this->iterTerms($terms, $this->options['max_depth']);
         $this->term = null;
         $this->storage->setItem($key, $pages);
 
