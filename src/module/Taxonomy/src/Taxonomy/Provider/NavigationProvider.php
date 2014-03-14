@@ -73,7 +73,7 @@ class NavigationProvider implements PageProviderInterface
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
 
         $term = $this->getTerm();
-        $key  = 'provider.' . serialize($term);
+        $key  = hash('sha256',serialize($term));
 
         if ($this->storage->hasItem($key)) {
             $pages = $this->storage->getItem($key);
