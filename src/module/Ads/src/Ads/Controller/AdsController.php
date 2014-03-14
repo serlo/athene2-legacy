@@ -141,9 +141,8 @@ class AdsController extends AbstractActionController
     {
         $id = $this->params('id');
         $ad = $this->getAdsManager()->getAd($id);
-        $this->getAdsManager()->clickAd($id);
+        $this->getAdsManager()->clickAd($ad);
         $this->getAdsManager()->flush();
-
         return $this->redirect()->toUrl($ad->getUrl());
     }
 }

@@ -20,6 +20,13 @@ interface AdInterface extends InstanceAwareInterface
 {
 
     /**
+     * Upcounts the click counter
+     *
+     * @return void
+     */
+    public function click();
+
+    /**
      * Gets the image.
      *
      * @return ContainerInterface
