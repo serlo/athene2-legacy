@@ -25,6 +25,17 @@ return [
                         'text-exercise-group'
                     ]
                 ],
+                'chemie' => [
+                    'allowed_taxonomies' => [
+                        'topic'
+                    ],
+                    'allowed_entities' => [
+                        'article',
+                        'text-exercise',
+                        'video',
+                        'text-exercise-group'
+                    ]
+                ],
                 'permakultur' => [
                     'allowed_taxonomies' => [
                         'topic'
