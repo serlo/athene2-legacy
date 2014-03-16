@@ -42,12 +42,14 @@ class AdsManager implements AdsManagerInterface
         $this->uploadManager = $attachmentManager;
         $this->setAuthorizationService($authorizationService);
     }
-
-    public function clickAd($id)
+    
+    public function clickAd($ad)
     {
-        $ad = $this->getAd($id);
-        $ad->setClicks($ad->getClicks() + 1);
-        $this->getObjectManager()->persist($ad);
+        if (!$ad instanceof AdInterface) {
+            $ad = $this->getAd($ad);
+        }
+        $ad->click();
+        $this->objectManager->persist($ad);
     }
 
     public function createAd(array $data)
@@ -64,44 +66,40 @@ class AdsManager implements AdsManagerInterface
     public function findAllAds(InstanceInterface $instance)
     {
         $this->assertGranted('ad.get', $instance);
-        $criteria  = ['instance' => $instance->getId()];
+        $criteria  = [
+            'instance' => $instance->getId()
+        ];
         $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
         $ads       = $this->getObjectManager()->getRepository($className)->findBy($criteria);
         return $ads;
     }
 
+    public function getAdPage(InstanceInterface $instance)
+    {
+        $this->assertGranted('ad.get', $instance);
+    }
+
     public function findShuffledAds(InstanceInterface $instance, $number)
     {
-        $allAds            = $this->findAllAds($instance);
-        $adsScaled         = [];
-        $ads               = [];
-        $numberDisabledAds = 0;
-        $numberAds         = $y = 0;
-        foreach ($allAds as $ad) {
-            if ($ad->getFrequency() == null) {
-                $numberDisabledAds++;
-            }
-            for ($i = 0; $i < $ad->getFrequency(); $i++) {
-                $adsScaled[$numberAds + $i] = $y;
-            }
-            $numberAds = $numberAds + $ad->getFrequency();
-            $y++;
+        $sql  = 'SELECT * FROM ad WHERE  `instance_id` =' . $instance->getId(
+            ) . ' ORDER BY RAND( ) * frequency DESC LIMIT ' . $number;
+        $stmt = $this->getObjectManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $adArray      = $stmt->fetchAll();
+        $adCollection = array();
+
+        $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdInterface');
+
+        foreach ($adArray as $ad) {
+            $addCollection[] = $this->getObjectManager()->getRepository($className)->find($ad['id']);
+        }
+        if (!empty($addCollection)) {
+            return $addCollection;
+        } else {
+            return null;
         }
 
-        if ((count($allAds) - $numberDisabledAds) < $number) {
-            $number = count($allAds) - $numberDisabledAds;
-        }
-
-        for ($i = 0; $i < $number; $i++) {
-            $random = mt_rand(0, $numberAds - 1);
-            while (in_array($allAds[$adsScaled[$random]], $ads)) {
-                $random = mt_rand(0, $numberAds - 1);
-            }
-
-            $ads[$i] = $allAds[$adsScaled[$random]];
-        }
-
-        return $ads;
     }
 
     public function flush()

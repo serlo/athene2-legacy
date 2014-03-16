@@ -94,6 +94,12 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes'  => [
+                            'update'          => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route' => '/update/:term'
+                                ]
+                            ],
                             'action'          => [
                                 'type'    => 'Segment',
                                 'options' => [

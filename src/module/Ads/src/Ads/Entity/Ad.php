@@ -114,9 +114,9 @@ class Ad implements AdInterface
     }
 
 
-    public function setClicks($clicks)
+    public function click()
     {
-        $this->clicks = $clicks;
+        $this->clicks++;
     }
 
     public function getClicks()

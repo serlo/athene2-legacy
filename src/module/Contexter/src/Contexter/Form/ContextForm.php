@@ -12,8 +12,8 @@ namespace Contexter\Form;
 
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element;
 use Zend\Form\Element\Text;
+use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
@@ -56,7 +56,7 @@ class ContextForm extends Form
                     [
                         'name'    => 'Regex',
                         'options' => [
-                            'pattern' => '~^[a-zA-Z\- 0-9]+$~'
+                            'pattern' => '~^[a-zA-Z\- 0-9üöäÜÖÄ!]+$~'
                         ]
                     ]
                 ]

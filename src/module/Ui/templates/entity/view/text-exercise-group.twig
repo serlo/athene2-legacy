@@ -4,9 +4,19 @@
             {{ markdown().toHtml(entity.getCurrentRevision().get('content')) }}
         </div>
         <div class="col-md-4">
-            {% include 'entity/view/partials/actions/small' %}
+            <ul class="nav nav-pills pull-right">
+                <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to comment this') }}">
+                    <a data-toggle="collapse" data-parent="#discussions-{{ entity.getId() }}" href="#discussions-{{ entity.getId() }}">
+                        <span class="glyphicon glyphicon-comment"></span>
+                    </a>
+                </li>
+                {% include 'entity/view/partials/actions/small-essential' %}
+            </ul>
         </div>
     </section>
+    <div class="collapse" id="discussions-{{ entity.getId() }}">
+        {{ entity().renderDiscussions(entity) }}
+    </div>
     {% set index = 0 %}
     {% for child in entity.getChildren('link', 'grouped-text-exercise') if not child.isTrashed() and child.hasCurrentRevision() %}
         <section class="row">
@@ -21,4 +31,3 @@
         </section>
     {% endfor %}
 </article>
-<hr>

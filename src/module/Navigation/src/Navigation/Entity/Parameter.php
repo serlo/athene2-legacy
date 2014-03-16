@@ -13,6 +13,7 @@ namespace Navigation\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
+use Instance\Entity\InstanceInterface;
 use Type\Entity\TypeAwareTrait;
 
 /**
@@ -31,6 +32,7 @@ class Parameter implements ParameterInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Page", inversedBy="parameters")
+     * @var PageInterface
      */
     protected $page;
 
@@ -85,6 +87,14 @@ class Parameter implements ParameterInterface
     }
 
     /**
+     * @return InstanceInterface
+     */
+    public function getInstance()
+    {
+        return $this->page->getInstance();
+    }
+
+    /**
      * @return ParameterKeyInterface
      */
     public function getKey()
@@ -99,15 +109,6 @@ class Parameter implements ParameterInterface
     public function setKey(ParameterKeyInterface $key)
     {
         $this->key = $key;
-    }
-
-    /**
-     * @param string $value
-     * @return void
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
     }
 
     /**
@@ -128,11 +129,37 @@ class Parameter implements ParameterInterface
     }
 
     /**
+     * @return ParameterInterface
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param ParameterInterface $parent
+     * @return void
+     */
+    public function setParent(ParameterInterface $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
      * @return string
      */
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param string $value
+     * @return void
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
     }
 
     /**
@@ -150,22 +177,5 @@ class Parameter implements ParameterInterface
     public function removeChild(ParameterInterface $child)
     {
         $this->children->removeElement($child);
-    }
-
-    /**
-     * @return ParameterInterface
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param ParameterInterface $parent
-     * @return void
-     */
-    public function setParent(ParameterInterface $parent)
-    {
-        $this->parent = $parent;
     }
 }

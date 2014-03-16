@@ -13,13 +13,23 @@ namespace Contexter\Controller;
 use Contexter\Form\ContextForm;
 use Contexter\Form\UrlForm;
 use Contexter\Manager\ContextManagerAwareTrait;
+use Contexter\Manager\ContextManagerInterface;
 use Contexter\Router\RouterAwareTrait;
+use Contexter\Router\RouterInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class ContextController extends AbstractActionController
 {
     use ContextManagerAwareTrait, RouterAwareTrait;
+
+    public function __construct(
+        ContextManagerInterface $contextManager,
+        RouterInterface $router
+    ) {
+        $this->contextManager = $contextManager;
+        $this->router         = $router;
+    }
 
     public function addAction()
     {

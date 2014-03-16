@@ -11,9 +11,11 @@
 namespace Navigation\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
+use Instance\Entity\InstanceInterface;
 use Type\Entity\TypeAwareTrait;
 
 /**
@@ -31,27 +33,32 @@ class Page implements PageInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Container", inversedBy="pages")
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
      * @ORM\OneToMany(targetEntity="Page", mappedBy="parent")
      * @ORM\OrderBy({"position" = "ASC"})
+     * @var PageInterface[]|Collection
      */
     protected $children;
 
     /**
      * @ORM\ManyToOne(targetEntity="Page", inversedBy="children")
+     * @var PageInterface
      */
     protected $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="Parameter", mappedBy="page")
+     * @var ParameterInterface[]|Collection
      */
     protected $parameters;
 
     /**
      * @ORM\Column(type="integer")
+     * @var int
      */
     protected $position;
 
@@ -59,14 +66,6 @@ class Page implements PageInterface
     {
         $this->children   = new ArrayCollection;
         $this->parameters = new ArrayCollection;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasChildren()
-    {
-        return $this->children->count() > 0;
     }
 
     /**
@@ -96,23 +95,6 @@ class Page implements PageInterface
     }
 
     /**
-     * @return int
-     */
-    public function getPosition()
-    {
-        return (int)$this->position;
-    }
-
-    /**
-     * @param $position
-     * @return void
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-    }
-
-    /**
      * @return ContainerInterface
      */
     public function getContainer()
@@ -127,6 +109,22 @@ class Page implements PageInterface
     public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return InstanceInterface
+     */
+    public function getInstance()
+    {
+        return $this->container->getInstance();
     }
 
     /**
@@ -155,6 +153,31 @@ class Page implements PageInterface
     }
 
     /**
+     * @return int
+     */
+    public function getPosition()
+    {
+        return (int)$this->position;
+    }
+
+    /**
+     * @param $position
+     * @return void
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasChildren()
+    {
+        return $this->children->count() > 0;
+    }
+
+    /**
      * @param PageInterface $page
      * @return void
      */
@@ -170,13 +193,5 @@ class Page implements PageInterface
     public function removeParameter(ParameterInterface $parameter)
     {
         $this->parameters->removeElement($parameter);
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }

@@ -17,6 +17,7 @@ use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Form\TermForm;
 use Uuid\Entity\UuidInterface;
 use Zend\View\Helper\AbstractHelper;
+use ZfcTwig\View\TwigRenderer;
 
 class Discussion extends AbstractHelper
 {
@@ -39,8 +40,18 @@ class Discussion extends AbstractHelper
     protected $commentForm;
     protected $discussionForm;
 
-    public function __construct(TermForm $termForm, CommentForm $commentForm, DiscussionForm $discussionForm)
-    {
+    /**
+     * @var \ZfcTwig\View\TwigRenderer
+     */
+    protected $renderer;
+
+    public function __construct(
+        TermForm $termForm,
+        CommentForm $commentForm,
+        DiscussionForm $discussionForm,
+        TwigRenderer $renderer
+    ) {
+        $this->renderer       = $renderer;
         $this->form           = [];
         $this->termForm       = $termForm;
         $this->commentForm    = $commentForm;
@@ -62,12 +73,6 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    public function setObject(UuidInterface $object)
-    {
-        $this->object = $object;
-        return $this;
-    }
-
     public function findForum(array $forums)
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
@@ -81,54 +86,6 @@ class Discussion extends AbstractHelper
         );
         $this->setForum($this->iterForums($forums, $term));
         return $this;
-    }
-
-    protected function iterForums(array $forums, TaxonomyTermInterface $current)
-    {
-        if (empty($forums)) {
-            return $current;
-        }
-
-        $forum    = current($forums);
-        $children = $current->findChildrenByTaxonomyNames(
-            [
-                'forum'
-            ]
-        );
-
-        foreach ($children as $child) {
-            if ($child->getName() == $forum || $child->getSlug() == $forum) {
-                array_shift($forums);
-
-                return $this->iterForums($forums, $child);
-            }
-        }
-
-        return $this->createForums($forums, $current);
-    }
-
-    protected function createForums(array $forums, TaxonomyTermInterface $current)
-    {
-        $instance = $this->getInstanceManager()->getInstanceFromRequest();
-        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
-
-        foreach ($forums as $forum) {
-            $form = $this->termForm;
-            $form->setData(
-                [
-                    'term'     => [
-                        'name' => $forum
-                    ],
-                    'parent'   => $current,
-                    'taxonomy' => $taxonomy
-                ]
-            );
-            $current = $this->getTaxonomyManager()->createTerm($form);
-        }
-
-        $this->getTaxonomyManager()->getObjectManager()->flush();
-
-        return $this->getTaxonomyManager()->getTerm($current);
     }
 
     /**
@@ -149,44 +106,39 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    public function getForm($type)
+    public function getDiscussions(UuidInterface $object)
+    {
+        return $this->getDiscussionManager()->findDiscussionsOn($object);
+    }
+
+    public function getForm($type, $object, $forum = null)
     {
         switch ($type) {
             case 'discussion':
-                return $this->discussionForm;
+                $form = clone $this->discussionForm;
+                $form->setAttribute(
+                    'action',
+                    $this->getView()->url(
+                        'discussion/discussion/start',
+                        ['on' => $object->getId(), 'forum' => $forum->getId()]
+                    )
+                );
+                return $form;
                 break;
             case 'comment':
-                return $this->commentForm;
+                $form = clone $this->commentForm;
+                $form->setAttribute(
+                    'action',
+                    $this->getView()->url(
+                        'discussion/discussion/comment',
+                        ['discussion' => $object->getId()]
+                    )
+                );
+                return $form;
                 break;
             default:
                 throw new RuntimeException();
         }
-    }
-
-    public function getUser()
-    {
-        return $this->getUserManager()->getUserFromAuthenticator();
-    }
-
-    public function render()
-    {
-        return $this->getView()->partial(
-            $this->getOption('template'),
-            [
-                'discussions' => $this->discussions,
-                'isArchived'  => $this->archived,
-                'object'      => $this->getObject(),
-                'forum'       => $this->getForum()
-            ]
-        );
-    }
-
-    /**
-     * @return field_type $reference
-     */
-    public function getObject()
-    {
-        return $this->object;
     }
 
     public function getForum()
@@ -200,6 +152,58 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    public function getUser()
+    {
+        return $this->getUserManager()->getUserFromAuthenticator();
+    }
+
+    public function render()
+    {
+        return $this->renderer->render(
+            $this->getOption('template'),
+            [
+                'discussions' => $this->discussions,
+                'isArchived'  => $this->archived,
+                'object'      => $this->getObject(),
+                'forum'       => $this->getForum()
+            ]
+        );
+    }
+
+    public function setObject(UuidInterface $object)
+    {
+        $this->object = $object;
+        return $this;
+    }
+
+    protected function createForums(array $forums, TaxonomyTermInterface $current)
+    {
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
+
+        foreach ($forums as $forum) {
+            $form = clone $this->termForm;
+            $form->setData(
+                [
+                    'term'     => [
+                        'name' => $forum
+                    ],
+                    'parent'   => $current,
+                    'taxonomy' => $taxonomy
+                ]
+            );
+            $current = $this->getTaxonomyManager()->createTerm($form);
+            unset($form);
+        }
+        $this->getTaxonomyManager()->flush($current);
+        return $this->getTaxonomyManager()->getTerm($current);
+    }
+
     protected function getDefaultConfig()
     {
         return [
@@ -208,5 +212,29 @@ class Discussion extends AbstractHelper
             'forum'          => 'forum',
             'forum_category' => 'forum-category'
         ];
+    }
+
+    /**
+     * @param TaxonomyTermInterface[] $forums
+     * @param TaxonomyTermInterface   $current
+     * @return TaxonomyTermInterface
+     */
+    protected function iterForums(array $forums, TaxonomyTermInterface $current)
+    {
+        if (empty($forums)) {
+            return $current;
+        }
+
+        /* @var TaxonomyTermInterface $current */
+        $forum    = current($forums);
+        $children = $current->findChildrenByTaxonomyNames(['forum']);
+
+        foreach ($children as $child) {
+            if ($child->getName() == $forum || $child->getSlug() == $forum) {
+                array_shift($forums);
+                return $this->iterForums($forums, $child);
+            }
+        }
+        return $this->createForums($forums, $current);
     }
 }

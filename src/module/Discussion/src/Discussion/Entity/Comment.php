@@ -95,12 +95,12 @@ class Comment extends Uuid implements CommentInterface
 
     public function isDiscussion()
     {
-        return !$this->hasParent();
+        return !is_object($this->parent);
     }
 
     public function hasParent()
     {
-        return is_object($this->getParent());
+        return is_object($this->parent);
     }
 
     public function getParent()
@@ -180,11 +180,12 @@ class Comment extends Uuid implements CommentInterface
 
     public function countUpVotes()
     {
-        return $this->getVotes()->filter(
+        $collection = $this->votes->filter(
             function (VoteInterface $v) {
                 return $v->getVote() === 1;
             }
-        )->count();
+        );
+        return $collection->count();
     }
 
     public function getVotes()
@@ -194,38 +195,21 @@ class Comment extends Uuid implements CommentInterface
 
     public function countDownVotes()
     {
-        return $this->getVotes()->filter(
+        $collection = $this->votes->filter(
             function (VoteInterface $v) {
                 return $v->getVote() === -1;
             }
-        )->count();
+        );
+        return $collection->count();
     }
 
     public function upVote(UserInterface $user)
     {
-        if ($this->findVotesByUser($user)->count() > 0) {
+        if ($this->findVotesByUser($user)->count()) {
             return null;
         }
 
         $this->createVote($user, 1);
-    }
-
-    protected function findVotesByUser(UserInterface $user)
-    {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('user', $user))->setFirstResult(0)->setMaxResults(1);
-
-        return $this->getVotes()->matching($criteria);
-    }
-
-    protected function createVote(UserInterface $user, $vote)
-    {
-        $entity = new Vote();
-        $entity->setUser($user);
-        $entity->setVote($vote);
-        $entity->setComment($this);
-        $this->getVotes()->add($entity);
-
-        return $entity;
     }
 
     public function downVote(UserInterface $user)
@@ -233,10 +217,8 @@ class Comment extends Uuid implements CommentInterface
         if ($this->findVotesByUser($user)->count() === 0) {
             return null;
         }
-
-        $this->getVotes()->removeElement(
-            $this->findVotesByUser($user)->current()
-        );
+        $element = $this->findVotesByUser($user)->current();
+        $this->getVotes()->removeElement($element);
     }
 
     public function hasUserVoted(UserInterface $user)
@@ -257,5 +239,21 @@ class Comment extends Uuid implements CommentInterface
     public function getTaxonomyTerms()
     {
         return $this->terms;
+    }
+
+    protected function findVotesByUser(UserInterface $user)
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('user', $user))->setFirstResult(0)->setMaxResults(1);
+        return $this->getVotes()->matching($criteria);
+    }
+
+    protected function createVote(UserInterface $user, $vote)
+    {
+        $entity = new Vote();
+        $entity->setUser($user);
+        $entity->setVote($vote);
+        $entity->setComment($this);
+        $this->getVotes()->add($entity);
+        return $entity;
     }
 }

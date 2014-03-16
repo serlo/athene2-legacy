@@ -16,8 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\Uuid;
 
@@ -151,6 +151,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     public function setParent(TaxonomyTermInterface $parent)
     {
         $this->parent = $parent;
+        $parent->getChildren()->add($this);
     }
 
     public function getType()

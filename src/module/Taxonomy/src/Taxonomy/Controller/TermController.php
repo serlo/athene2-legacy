@@ -57,7 +57,7 @@ class TermController extends AbstractController
             $this->referer()->store();
         }
         $view = new ViewModel(['form' => $form, 'isUpdating' => false]);
-        $view->setTemplate('taxonomy/term/form');
+        $view->setTemplate('taxonomy/term/create');
         return $view;
     }
 
@@ -132,7 +132,7 @@ class TermController extends AbstractController
         }
 
         $view = new ViewModel(['form' => $form]);
-        $view->setTemplate('taxonomy/term/form');
+        $view->setTemplate('taxonomy/term/update');
         return $view;
     }
 

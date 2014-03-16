@@ -26,10 +26,7 @@ class ModuleForm extends Form
 
         $this->add((new Text('title'))->setAttribute('id', 'title')->setLabel('Title:'));
         $this->add(
-            (new Textarea('reasoning'))->setAttribute('id', 'reasoning')->setLabel('Reasoning:')->setAttribute(
-                'class',
-                'plain'
-            )
+            (new Textarea('reasoning'))->setAttribute('id', 'reasoning')->setLabel('Reasoning:')
         );
         $this->add(
             (new Textarea('changes'))->setAttribute('id', 'changes')->setLabel('Changes:')->setAttribute(

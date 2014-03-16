@@ -22,7 +22,18 @@ return [
                         'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
+                        'text-exercise-group'
+                    ]
+                ],
+                'chemie' => [
+                    'allowed_taxonomies' => [
+                        'topic'
+                    ],
+                    'allowed_entities' => [
+                        'article',
+                        'text-exercise',
+                        'video',
+                        'text-exercise-group'
                     ]
                 ],
                 'permakultur' => [
@@ -45,7 +56,7 @@ return [
                         'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
+                        'text-exercise-group'
                     ]
                 ]
             ],
@@ -60,7 +71,7 @@ return [
                         'text-exercise',
                         'video',
                         'module',
-                        'exercise-group'
+                        'text-exercise-group'
                     ]
                 ]
             ]
