@@ -1,0 +1,22 @@
+{{ pageHeader('Discussions').setSubtitle(forum ? forum.getName() : '').render() }}
+<div class="list-group">
+    {% for forum in forums if not forum.isTrashed() %}
+        <a class="list-group-item" href="{{ url('discussion/discussions', {'id': forum.getId()}) }}">
+            {% set discussions = forum.getAssociatedRecursive('comments', ['forum']) %}
+            <span class="badge pull-right">{{ discussions.count() }}</span>
+            {{ translate(forum.getName()) }}
+        </a>
+    {% endfor %}
+</div>
+{% if forum %}
+        <h2>{{ translate(forum.getName()) }} <small>{{ translate('Discussions from self and subtopics') }}</small></h2>
+        <hr>
+        <ul class="timeline">
+            {% set discussions = forum.getAssociatedRecursive('comments', ['forum']) %}
+            {% for discussion in discussions if not discussion.isTrashed() %}
+                <li>
+                    {% include 'discussion/discussion/show' with {'discussion': discussion} %}
+                </li>
+            {% endfor %}
+        </ul>
+{% endif %}

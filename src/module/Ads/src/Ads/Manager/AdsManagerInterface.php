@@ -26,11 +26,6 @@ interface AdsManagerInterface extends Flushable
      */
     public function removeAd(AdInterface $ad);
 
-    /**
-     * @param int $id
-     * @return void
-     */
-    public function clickAd($id);
 
     /**
      * @param InstanceInterface $instance
@@ -51,5 +46,9 @@ interface AdsManagerInterface extends Flushable
      */
     public function findAllAds(InstanceInterface $instance);
 
+    /**
+     * @param AdInterface|int $id
+     * @return void
+     */
+    public function clickAd($id);
 }
-

@@ -1,35 +1,46 @@
 {% set revision = entity.getCurrentRevision() %}
-<article>
+<article class="panel-group">
     {% if(revision.get('hint')) %}
-        <section class="collapse" id="hint-{{ entity.getId() }}">
-            <div class="row">
-                <div class="col-xs-9">
-                    <h5>
-                        <span class="glyphicon glyphicon-question-sign"></span>
-                        {{ translate('Hint') }}
-                    </h5>
+        <section class="collapse panel panel-default" id="hint-{{ entity.getId() }}">
+            <div class="panel-body">
+                <strong>
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                    {{ translate('Hint') }}
+                </strong>
+            </div>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <ul class="nav nav-pills">
+                        {% include 'entity/view/partials/actions/small-essential' %}
+                    </ul>
                 </div>
-                <div class="col-xs-3">
-                    {% include 'entity/view/partials/actions/small' %}
+                <div class="list-group-item">
+                    {{ markdown().toHtml(revision.get('hint')) | raw }}
                 </div>
             </div>
-            <hr>
-            {{ markdown().toHtml(revision.get('hint')) | raw }}
         </section>
     {% endif %}
-    <section class="collapse" id="solution-{{ entity.getId() }}">
-        <div class="row">
-            <div class="col-xs-9">
-                <h5>
-                    <span class="glyphicon glyphicon-exclamation-sign"></span>
-                    {{ translate('Solution') }}
-                </h5>
+    <section class="collapse panel panel-default" id="solution-{{ entity.getId() }}">
+        <div class="panel-body">
+            <strong>
+                <span class="glyphicon glyphicon-question-sign"></span>
+                {{ translate('Solution') }}
+            </strong>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                <ul class="nav nav-pills">
+                    {% include 'entity/view/partials/actions/small-essential' %}
+                </ul>
             </div>
-            <div class="col-xs-3">
-                {% include 'entity/view/partials/actions/small' %}
+            <div class="list-group-item">
+                {{ markdown().toHtml(revision.get('content')) | raw }}
             </div>
         </div>
-        <hr>
-        {{ markdown().toHtml(revision.get('content')) | raw }}
+        <div class="list-group">
+            <div class="list-group-item">
+                {{ entity().renderDiscussions(entity) }}
+            </div>
+        </div>
     </section>
 </article>

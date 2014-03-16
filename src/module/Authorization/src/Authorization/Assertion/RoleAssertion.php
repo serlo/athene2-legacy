@@ -49,7 +49,7 @@ class RoleAssertion implements AssertionInterface
         $instanceManager   = $this->getInstanceManager();
         $permissionService = $this->getPermissionService();
         $assertion         = new InstanceAssertion($instanceManager, $permissionService, $this->traversalStrategy);
-        $checkPermission   = $result->getPermission() . '.1' . $role->getName();
+        $checkPermission   = $result->getPermission() . '.' . $role->getName();
         $result            = clone $result;
         $instancesToCheck  = [];
         $rolesToCheck      = $assertion->flattenRoles([$role]);
