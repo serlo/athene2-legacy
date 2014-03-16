@@ -55,10 +55,8 @@ class RepositoryController extends AbstractController
                     'Your revision has been saved, it will be available once it get\'s approved'
                 );
 
-                return $this->redirect()->toUrl($this->referer()->fromStorage());
+                return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
             }
-        } else {
-            $this->referer()->store();
         }
 
         $this->layout('athene2-editor');
