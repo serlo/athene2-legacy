@@ -25,7 +25,6 @@ class AdHydrator implements HydratorInterface
         'attachment',
         'instance',
         'frequency',
-        'clicks',
         'url'
     ];
 
