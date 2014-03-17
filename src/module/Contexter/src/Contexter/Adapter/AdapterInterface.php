@@ -39,7 +39,7 @@ interface AdapterInterface
     /**
      * @return AbstractActionController
      */
-    public function getController();
+    public function getAdaptee();
 
     /**
      * @param RouteMatch $routeMatch
@@ -48,8 +48,8 @@ interface AdapterInterface
     public function setRouteMatch(RouteMatch $routeMatch);
 
     /**
-     * @param AbstractActionController $controller
+     * @param AdaptableInterface $adapter
      * @return self
      */
-    public function setController(AbstractActionController $controller);
+    public function setAdaptee(AdaptableInterface $adapter);
 }

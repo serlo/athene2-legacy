@@ -49,13 +49,13 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
     public function findTerm(TaxonomyInterface $taxonomy, array $ancestors);
 
     /**
-     * @param numeric $id
+     * @param int $id
      * @return TaxonomyInterface
      */
     public function getTaxonomy($id);
 
     /**
-     * @param numeric $id
+     * @param int $id
      * @return TaxonomyTermInterface
      */
     public function getTerm($id);

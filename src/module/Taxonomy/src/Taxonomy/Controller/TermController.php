@@ -124,7 +124,6 @@ class TermController extends AbstractController
                 $this->getTaxonomyManager()->updateTerm($form);
                 $this->getTaxonomyManager()->flush();
                 $this->flashMessenger()->addSuccessMessage('Your changes have been saved!');
-
                 return $this->redirect()->toUrl($this->referer()->fromStorage());
             }
         } else {

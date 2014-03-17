@@ -101,7 +101,7 @@ class Router implements RouterInterface
                     /* @var $adapter AdapterInterface */
                     $adapter = $this->getServiceLocator()->get($adapter['adapter']);
                     $adapter->setRouteMatch($this->getRouteMatch());
-                    $adapter->setController(
+                    $adapter->setAdaptee(
                         $this->getServiceLocator()->get($controller)
                     );
 
