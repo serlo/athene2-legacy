@@ -41,6 +41,15 @@ return [
                             'action'     => 'compare'
                         ]
                     ]
+                ],
+                [
+                    'adapter'     => __NAMESPACE__ . '\Adapter\TaxonomyTermControllerAdapter',
+                    'controllers' => [
+                        [
+                            'controller' => 'Taxonomy\Controller\TermController',
+                            'action'     => 'organize'
+                        ],
+                    ]
                 ]
             ]
         ]

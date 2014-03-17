@@ -318,6 +318,25 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         $this->term = $term;
     }
 
+    public function findChildrenByTaxonomyNames(array $names)
+    {
+        return $this->getChildren()->filter(
+            function (TaxonomyTermInterface $term) use ($names) {
+                return in_array(
+                    $term->getTaxonomy()->getName(),
+                    $names
+                );
+            }
+        );
+    }
+
+    public function getAssociatedRecursive($association, array $allowedTaxonomies = [])
+    {
+        $collection = new ArrayCollection();
+        $this->iterAssociationNodes($collection, $this, $association, $allowedTaxonomies);
+        return $collection;
+    }
+
     protected function getAssociationFieldName(TaxonomyTermAwareInterface $object)
     {
         if ($object instanceof EntityInterface) {
@@ -342,25 +361,6 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
         }
 
         return $slug;
-    }
-
-    public function findChildrenByTaxonomyNames(array $names)
-    {
-        return $this->getChildren()->filter(
-            function (TaxonomyTermInterface $term) use ($names) {
-                return in_array(
-                    $term->getTaxonomy()->getName(),
-                    $names
-                );
-            }
-        );
-    }
-
-    public function getAssociatedRecursive($association, array $allowedTaxonomies = [])
-    {
-        $collection = new ArrayCollection();
-        $this->iterAssociationNodes($collection, $this, $association, $allowedTaxonomies);
-        return $collection;
     }
 
     protected function iterAssociationNodes(

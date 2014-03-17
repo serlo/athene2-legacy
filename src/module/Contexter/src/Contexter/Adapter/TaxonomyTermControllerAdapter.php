@@ -10,18 +10,17 @@
  */
 namespace Contexter\Adapter;
 
-use Entity\Controller\AbstractController;
-use Entity\Entity\EntityInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Link\Service\LinkServiceAwareTrait;
+use Taxonomy\Controller\AbstractController;
+use Taxonomy\Entity\TaxonomyTermInterface;
 
 /**
- * Class EntityControllerAdapter
+ * Class TaxonomyTermControllerAdapter
  *
  * @package Contexter\Adapter
- *          @method
  */
-class EntityControllerAdapter extends AbstractAdapter
+class TaxonomyTermControllerAdapter extends AbstractAdapter
 {
     use InstanceManagerAwareTrait, LinkServiceAwareTrait;
 
@@ -33,7 +32,7 @@ class EntityControllerAdapter extends AbstractAdapter
         /* @var $controller AbstractController */
         $params     = $this->getRouteParams();
         $controller = $this->getAdaptee();
-        $entity     = $controller->getEntity($params['entity']);
+        $entity     = $controller->getTerm($params['id']);
         $array      = [
             'type'     => $entity->getType()->getName(),
             'instance' => $entity->getInstance()->getName()
@@ -54,35 +53,15 @@ class EntityControllerAdapter extends AbstractAdapter
     }
 
     /**
-     * @param EntityInterface $entity
-     * @param array           $array
+     * @param TaxonomyTermInterface $term
+     * @param array                 $array
      */
-    protected function retrieveTerms(EntityInterface $entity, array &$array)
+    protected function retrieveTerms(TaxonomyTermInterface $term, array &$array)
     {
-        foreach ($entity->getTaxonomyTerms() as $term) {
-            while ($term->hasParent()) {
-                $name           = $term->getTaxonomy()->getName();
-                $array[$name][] = $term->getSlug();
-                $term           = $term->getParent();
-            }
-        }
-
-        $this->retrieveTermsThroughParents($entity, $array);
-    }
-
-    /**
-     * @todo improve logic
-     * @param EntityInterface $entity
-     * @param array           $array
-     */
-    protected function retrieveTermsThroughParents(EntityInterface $entity, array &$array)
-    {
-        foreach ($entity->getParentLinks() as $link) {
-            if ($link->getType()->getName() == 'link') {
-                /* @var $parent EntityInterface */
-                $parent = $link->getParent();
-                $this->retrieveTerms($parent, $array);
-            }
+        while ($term->hasParent()) {
+            $name           = $term->getTaxonomy()->getName();
+            $array[$name][] = $term->getSlug();
+            $term           = $term->getParent();
         }
     }
 }

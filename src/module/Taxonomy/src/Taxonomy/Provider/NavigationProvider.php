@@ -55,6 +55,12 @@ class NavigationProvider implements PageProviderInterface
      */
     protected $term;
 
+    /**
+     * @param InstanceManagerInterface $instanceManager
+     * @param TaxonomyManagerInterface $taxonomyManager
+     * @param ObjectManager            $objectManager
+     * @param StorageInterface         $storage
+     */
     public function __construct(
         InstanceManagerInterface $instanceManager,
         TaxonomyManagerInterface $taxonomyManager,
@@ -68,6 +74,10 @@ class NavigationProvider implements PageProviderInterface
 
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function provide(array $options)
     {
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
@@ -92,6 +102,9 @@ class NavigationProvider implements PageProviderInterface
         return $pages;
     }
 
+    /**
+     * @return TaxonomyTermInterface
+     */
     public function getTerm()
     {
         if (!is_object($this->term)) {
@@ -106,6 +119,12 @@ class NavigationProvider implements PageProviderInterface
         return $this->term;
     }
 
+
+    /**
+     * @param TaxonomyTermInterface[] $terms
+     * @param int $depth
+     * @return array
+     */
     protected function iterTerms($terms, $depth)
     {
         if ($depth < 1) {
