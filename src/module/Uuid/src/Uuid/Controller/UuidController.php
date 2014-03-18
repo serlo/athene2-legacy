@@ -45,7 +45,7 @@ class UuidController extends AbstractActionController
     public function purgeAction()
     {
         $this->getUuidManager()->purgeUuid($this->params('id'));
-        $this->getUuidManager()->getObjectManager()->flush();
+        $this->getUuidManager()->flush();
         $this->flashMessenger()->addSuccessMessage('The content has been removed.');
         return $this->redirect()->toReferer();
     }
