@@ -67,15 +67,34 @@ class Ad implements AdInterface
      */
     protected $clicks;
 
-
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        $this->clicks = 0;
     }
 
-    public function setContent($content)
+    public function click()
     {
-        $this->content = $content;
+        $this->clicks++;
+    }
+
+    public function getAttachment()
+    {
+        return $this->image;
+    }
+
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(UserInterface $author)
+    {
+        $this->author = $author;
+    }
+
+    public function getClicks()
+    {
+        return $this->clicks;
     }
 
     public function getContent()
@@ -83,14 +102,9 @@ class Ad implements AdInterface
         return $this->content;
     }
 
-    public function setTitle($title)
+    public function setContent($content)
     {
-        $this->title = $title;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
+        $this->content = $content;
     }
 
     public function getFrequency()
@@ -103,35 +117,9 @@ class Ad implements AdInterface
         $this->frequency = $frequency;
     }
 
-    public function setAuthor(UserInterface $author)
+    public function getId()
     {
-        $this->author = $author;
-    }
-
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-
-    public function click()
-    {
-        $this->clicks++;
-    }
-
-    public function getClicks()
-    {
-        return $this->clicks;
-    }
-
-    public function setAttachment($attachment)
-    {
-        $this->image = $attachment;
-    }
-
-    public function getAttachment()
-    {
-        return $this->image;
+        return $this->id;
     }
 
     public function getImage()
@@ -139,13 +127,28 @@ class Ad implements AdInterface
         return $this->getAttachment()->getFirstFile();
     }
 
-    public function setUrl($url)
+    public function getTitle()
     {
-        $this->url = $url;
+        return $this->title;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     public function getUrl()
     {
         return $this->url;
+    }
+
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    public function setAttachment($attachment)
+    {
+        $this->image = $attachment;
     }
 }
