@@ -65,6 +65,13 @@ class TermManager implements TermManagerInterface
             throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $name, $instance->getId()));
         }
 
+        // Since we can not search case sensitive in mysql (without side effects) we need to do this manually.
+        if ($entity->getName() !== $name && strtolower($entity->getName()) == strtolower($name)) {
+            $entity->setName($name);
+            $this->persist($entity);
+            $this->flush($entity);
+        }
+
         return $entity;
     }
 
