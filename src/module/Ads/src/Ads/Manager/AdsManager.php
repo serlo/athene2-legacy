@@ -77,6 +77,10 @@ class AdsManager implements AdsManagerInterface
     public function getAdPage(InstanceInterface $instance)
     {
         $this->assertGranted('ad.get', $instance);
+        $className = $this->getClassResolver()->resolveClassName('Ads\Entity\AdPageInterface');
+        $adPage = $this->getObjectManager()->getRepository($className)->findOneBy(array('instance_id' => $instance));
+        return $adPage;
+        
     }
 
     public function findShuffledAds(InstanceInterface $instance, $number)
