@@ -4,3 +4,9 @@
 {% endif %}
 <hr>
 {% include 'page/revision/menu' %}
+<hr>
+<div class="panel">
+    <div class="panel-body">
+        {{ discussion(revision.getRepository()).findForum([revision.getTitle()]).render() }}
+    </div>
+</div>
