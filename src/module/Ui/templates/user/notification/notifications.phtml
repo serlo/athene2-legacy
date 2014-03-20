@@ -11,7 +11,7 @@
                     ); ?></a></li>
         <?php else: ?>
             <?php foreach ($this->notifications as $notification): ?>
-                <?php if($this->isGranted('event.log.get', $notification->getEvents()->current())): ?>
+                <?php if($notification->getEvents()->count() && $this->isGranted('event.log.get', $notification->getEvents()->current())): ?>
                     <?php $name = $notification->getEventName(); ?>
                     <li role="presentation" class="<?php $notification->getSeen() ? '' : 'active ' ?>">
                         <?php if ($this->resolver('user/notification/type/' . $name)): ?>
