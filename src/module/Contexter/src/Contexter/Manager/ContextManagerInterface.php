@@ -11,14 +11,15 @@
 namespace Contexter\Manager;
 
 use Common\ObjectManager\Flushable;
-use Contexter\Router;
+use Contexter\Entity\ContextInterface;
+use Contexter\Entity\RouteInterface;
 
-interface ContextManagerInterface extends Router\RouterAwareInterface, Flushable
+interface ContextManagerInterface extends Flushable
 {
 
     /**
      * @param int $id
-     * @return Entity\ContextInterface
+     * @return ContextInterface
      */
     public function getContext($id);
 
@@ -32,12 +33,12 @@ interface ContextManagerInterface extends Router\RouterAwareInterface, Flushable
      * @param int    $objectId
      * @param string $type
      * @param string $title
-     * @return Entity\ContextInterface
+     * @return ContextInterface
      */
     public function add($objectId, $type, $title);
 
     /**
-     * @return Entity\ContextInterface[]
+     * @return ContextInterface[]
      */
     public function findAll();
 

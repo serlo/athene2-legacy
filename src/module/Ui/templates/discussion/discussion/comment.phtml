@@ -1,5 +1,0 @@
-<?php if ($this->isGranted('discussion.comment.create', $this->discussion())): ?>
-    <h4><?php echo $this->translate('Comment a discussion'); ?></h4>
-    <hr>
-    <?php echo $this->form()->render($this->form, null); ?>
-<?php endif; ?>

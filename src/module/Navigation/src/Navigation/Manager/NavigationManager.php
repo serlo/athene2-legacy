@@ -136,30 +136,6 @@ class NavigationManager implements NavigationManagerInterface
     }
 
     /**
-     * @return void
-     */
-    public function flush()
-    {
-        $this->objectManager->flush();
-    }
-
-    /**
-     * @param InstanceInterface $instance
-     * @return ContainerInterface[]
-     */
-    public function findContainersByInstance(InstanceInterface $instance)
-    {
-        $className  = $this->classResolver->resolveClassName($this->interfaces['container']);
-        $repository = $this->objectManager->getRepository($className);
-
-        return $repository->findBy(
-            [
-                'instance' => $instance->getId()
-            ]
-        );
-    }
-
-    /**
      * @param string            $name
      * @param InstanceInterface $instance
      * @throws ContainerNotFoundException
@@ -182,6 +158,30 @@ class NavigationManager implements NavigationManagerInterface
         }
 
         return $container;
+    }
+
+    /**
+     * @param InstanceInterface $instance
+     * @return ContainerInterface[]
+     */
+    public function findContainersByInstance(InstanceInterface $instance)
+    {
+        $className  = $this->classResolver->resolveClassName($this->interfaces['container']);
+        $repository = $this->objectManager->getRepository($className);
+
+        return $repository->findBy(
+            [
+                'instance' => $instance->getId()
+            ]
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function flush()
+    {
+        $this->objectManager->flush();
     }
 
     /**
@@ -211,7 +211,7 @@ class NavigationManager implements NavigationManagerInterface
     public function getPage($id)
     {
         $className = $this->classResolver->resolveClassName($this->interfaces['page']);
-        $page = $this->objectManager->find($className, $id);
+        $page      = $this->objectManager->find($className, $id);
 
         if (!is_object($page)) {
             throw new PageNotFoundException(sprintf("Container %s not found", $id));
@@ -348,13 +348,13 @@ class NavigationManager implements NavigationManagerInterface
     protected function bind($object, FormInterface $form)
     {
         $processingForm = clone $form;
+        $data           = $processingForm->getData(FormInterface::VALUES_AS_ARRAY);
 
-        $data = $processingForm->getData(FormInterface::VALUES_AS_ARRAY);
         $processingForm->bind($object);
         $processingForm->setData($data);
 
         if (!$processingForm->isValid()) {
-            throw new RuntimeException;
+            throw new RuntimeException(print_r($processingForm->getMessages(), true));
         }
 
         if ($object instanceof ParameterKeyInterface) {
@@ -364,13 +364,7 @@ class NavigationManager implements NavigationManagerInterface
         }
 
         $this->assertGranted('navigation.manage', $instance);
-
         $this->objectManager->persist($object);
-
-        // clear form
-        $processingForm->setObject(null);
-        $processingForm->setData([]);
-
         return $object;
     }
 }

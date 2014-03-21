@@ -1,6 +1,6 @@
 {% set options = entity().getOptions(entity) %}
 {% if options.hasComponent('repository') and isGranted('entity.revision.create', entity) %}
-    <li>
+    <li data-toggle="tooltip" data-placement="bottom" title="{{ translate('I want to edit this') }}">
         <a href="{{ url('entity/repository/add-revision', {'entity': entity.getId()}) }}">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>

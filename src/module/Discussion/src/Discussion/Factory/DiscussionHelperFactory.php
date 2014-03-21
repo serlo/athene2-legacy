@@ -32,7 +32,8 @@ class DiscussionHelperFactory implements FactoryInterface
         $termForm              = $serviceLocator->get('Taxonomy\Form\TermForm');
         $discussionForm        = $serviceLocator->get('Discussion\Form\DiscussionForm');
         $commentForm           = $serviceLocator->get('Discussion\Form\CommentForm');
-        $plugin                = new Discussion($termForm, $commentForm, $discussionForm);
+        $renderer              = $serviceLocator->get('ZfcTwig\View\TwigRenderer');
+        $plugin                = new Discussion($termForm, $commentForm, $discussionForm, $renderer);
 
         $plugin->setDiscussionManager($discussionManager);
         $plugin->setUserManager($userManager);
