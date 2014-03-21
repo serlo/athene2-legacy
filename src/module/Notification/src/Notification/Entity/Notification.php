@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use User\Entity\UserInterface;
 
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="notification")
