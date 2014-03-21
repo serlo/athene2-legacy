@@ -22,7 +22,7 @@
         "zf-commons/zfc-base": "0.*",
         "zendframework/zendframework": "2.2.*",
         "foolz/sphinxql-query-builder": "dev-master",
-        "neilime/zf2-twb-bundle": "dev-master",
+        "neilime/zf2-twb-bundle": "2.0.*",
         "zendframework/zend-developer-tools": "dev-master",
         "dnode/dnode": "dev-master",
         "nickcernis/html-to-markdown": "dev-master",

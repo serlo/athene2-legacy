@@ -55,6 +55,12 @@ class NavigationProvider implements PageProviderInterface
      */
     protected $term;
 
+    /**
+     * @param InstanceManagerInterface $instanceManager
+     * @param TaxonomyManagerInterface $taxonomyManager
+     * @param ObjectManager            $objectManager
+     * @param StorageInterface         $storage
+     */
     public function __construct(
         InstanceManagerInterface $instanceManager,
         TaxonomyManagerInterface $taxonomyManager,
@@ -68,23 +74,27 @@ class NavigationProvider implements PageProviderInterface
 
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function provide(array $options)
     {
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
+        $term          = $this->getTerm();
 
-        $term = $this->getTerm();
-        $key  = hash('sha256',serialize($term));
+        if ($this->getObjectManager()->isOpen()) {
+            $this->getObjectManager()->refresh($term);
+        }
+
+        $terms = $term->findChildrenByTaxonomyNames($this->options['types']);
+        $key   = hash('sha256', serialize($terms));
 
         if ($this->storage->hasItem($key)) {
             $pages = $this->storage->getItem($key);
             return $pages;
         }
 
-        if ($this->getObjectManager()->isOpen()) {
-            $this->getObjectManager()->refresh($this->getTerm());
-        }
-
-        $terms      = $term->findChildrenByTaxonomyNames($this->options['types']);
         $pages      = $this->iterTerms($terms, $this->options['max_depth']);
         $this->term = null;
         $this->storage->setItem($key, $pages);
@@ -92,6 +102,9 @@ class NavigationProvider implements PageProviderInterface
         return $pages;
     }
 
+    /**
+     * @return TaxonomyTermInterface
+     */
     public function getTerm()
     {
         if (!is_object($this->term)) {
@@ -106,6 +119,12 @@ class NavigationProvider implements PageProviderInterface
         return $this->term;
     }
 
+
+    /**
+     * @param TaxonomyTermInterface[] $terms
+     * @param int                     $depth
+     * @return array
+     */
     protected function iterTerms($terms, $depth)
     {
         if ($depth < 1) {

@@ -12,6 +12,7 @@
 namespace Subject\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Entity\Entity\EntityInterface;
 use Taxonomy\Exception\TermNotFoundException;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
@@ -33,18 +34,19 @@ class TaxonomyController extends AbstractController
             return false;
         }
 
+        /* @var $entities Collection|EntityInterface[] */
+        $types    = [];
         $entities = $term->getAssociated('entities')->filter(
             function (EntityInterface $e) {
                 return !$e->isTrashed() && $e->hasCurrentRevision();
             }
         );
-
-        $types = [];
-        foreach($entities as $e){
+        foreach ($entities as $e) {
             $types[$e->getType()->getName()][] = $e;
         }
+
         $types = new ArrayCollection($types);
-        $view = new ViewModel([
+        $view  = new ViewModel([
             'term'    => $term,
             'terms'   => $term ? $term->getChildren() : $subject->getChildren(),
             'subject' => $subject,
@@ -53,7 +55,6 @@ class TaxonomyController extends AbstractController
         ]);
 
         $view->setTemplate('subject/taxonomy/page/default');
-
         return $view;
     }
 }

@@ -11,6 +11,7 @@
  */
 namespace Entity\Controller;
 
+use Contexter\Adapter\AdaptableInterface;
 use Entity\Entity\EntityInterface;
 use Entity\Options\ModuleOptions;
 use Instance\Manager\InstanceManagerAwareTrait;
@@ -20,7 +21,7 @@ use Versioning\RepositoryManagerAwareTrait;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 
-class RepositoryController extends AbstractController
+class RepositoryController extends AbstractController implements AdaptableInterface
 {
     use UserManagerAwareTrait, InstanceManagerAwareTrait;
     use RepositoryManagerAwareTrait;
@@ -55,10 +56,8 @@ class RepositoryController extends AbstractController
                     'Your revision has been saved, it will be available once it get\'s approved'
                 );
 
-                return $this->redirect()->toUrl($this->referer()->fromStorage());
+                return $this->redirect()->toRoute('entity/repository/history', ['entity' => $entity->getId()]);
             }
-        } else {
-            $this->referer()->store();
         }
 
         $this->layout('athene2-editor');

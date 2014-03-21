@@ -28,6 +28,10 @@ class TaxonomyHelper extends AbstractHelper
      */
     protected $moduleOptions;
 
+    /**
+     * @param ModuleOptions            $moduleOptions
+     * @param TaxonomyManagerInterface $taxonomyManager
+     */
     public function __construct(ModuleOptions $moduleOptions, TaxonomyManagerInterface $taxonomyManager)
     {
         $this->moduleOptions   = $moduleOptions;
@@ -42,6 +46,11 @@ class TaxonomyHelper extends AbstractHelper
         return $this;
     }
 
+    /**
+     * @param TaxonomyTermInterface|TaxonomyInterface $object
+     * @return TaxonomyTermInterface
+     * @throws \Taxonomy\Exception\InvalidArgumentException
+     */
     public function getAllowedChildren($object)
     {
         if ($object instanceof TaxonomyInterface) {
@@ -51,12 +60,12 @@ class TaxonomyHelper extends AbstractHelper
         } else {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Expected $nameOrObject to be TaxonomyInterface, TaxonomyTermInterface or string but got "%s"',
-                is_object($nameOrObject) ? get_class($nameOrObject) : gettype($nameOrObject)
+                is_object($object) ? get_class($object) : gettype($object)
             ));
         }
 
         $taxonomies = [];
-        $children   = $this->getOptions($name)->getAllowedChildren();
+        $children   = $this->moduleOptions->getType($name)->getAllowedChildren();
         $instance   = $object->getInstance();
         foreach ($children as $child) {
             $taxonomies[] = $this->taxonomyManager->findTaxonomyByName($child, $instance);
