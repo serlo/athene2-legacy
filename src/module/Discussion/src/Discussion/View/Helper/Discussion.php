@@ -73,7 +73,7 @@ class Discussion extends AbstractHelper
         return $this;
     }
 
-    public function findForum(array $forums)
+    public function findForum(array $path)
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
@@ -84,7 +84,7 @@ class Discussion extends AbstractHelper
                 'discussions'
             ]
         );
-        $this->setForum($this->iterForums($forums, $term));
+        $this->setForum($this->iterForums($path, $term));
         return $this;
     }
 

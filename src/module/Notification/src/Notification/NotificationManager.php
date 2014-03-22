@@ -52,7 +52,7 @@ class NotificationManager implements NotificationManagerInterface
 
         /* @var $notification NotificationInterface */
         foreach ($notifications as $notification) {
-            if (!$notification->getEvents()->count()) {
+            if ($notification->getEvents()->count() < 1) {
                 $this->objectManager->remove($notification);
                 $this->objectManager->flush($notification);
                 continue;

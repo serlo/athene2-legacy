@@ -6,8 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RevisionInterface;
+use Zend\Feed\Reader\Collection;
 
 /**
  * A page repository.
@@ -28,18 +30,21 @@ class PageRepository extends Uuid implements PageRepositoryInterface
      */
     protected $roles;
 
-
     /**
      * @ORM\OneToOne(targetEntity="PageRevision")
      * @ORM\JoinColumn(name="current_revision_id", referencedColumnName="id")
      */
     protected $current_revision;
 
-
     /**
      * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="page_repository", cascade="persist")
      */
     protected $revisions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm")
+     */
+    protected $forum;
 
     /**
      * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
@@ -51,6 +56,19 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         $this->revisions = new ArrayCollection();
         $this->roles     = new ArrayCollection();
 
+    }
+
+    public function getForum()
+    {
+        /* ALTER TABLE  `page_repository` ADD FOREIGN KEY (  `forum_id` ) REFERENCES  `serlo`.`term_taxonomy` (
+        `id`
+        ) ON DELETE SET NULL ON UPDATE CASCADE ; */
+        return $this->forum;
+    }
+
+    public function setForum(TaxonomyTermInterface $forum)
+    {
+        $this->forum = $forum;
     }
 
     public function addRevision(RevisionInterface $revision)
@@ -131,8 +149,23 @@ class PageRepository extends Uuid implements PageRepositoryInterface
 
     public function populate(array $data = [])
     {
+        $this->injectFromArray('forum', $data);
         $this->injectFromArray('instance', $data);
         $this->injectFromArray('current_revision', $data);
+    }
+
+    public function addRoles(Collection $roles)
+    {
+        foreach ($roles as $role) {
+            $this->roles->add($role);
+        }
+    }
+
+    public function removeRoles(Collection $roles)
+    {
+        foreach ($roles as $role) {
+            $this->roles->removeElement($role);
+        }
     }
 
     public function addRole(RoleInterface $role)

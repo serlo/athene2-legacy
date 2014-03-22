@@ -36,10 +36,11 @@ class IndexController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
+            $data = array_merge($data, ['instance' => $instance]);
             $form->setData($data);
             if ($form->isValid()) {
+                $repository = $this->getPageManager()->createPageRepository($form);
                 $data       = $form->getData();
-                $repository = $this->getPageManager()->createPageRepository($form->getData(), $instance);
                 $params     = ['repository' => $repository, 'slug' => $data['slug']];
                 $this->getEventManager()->trigger('page.create', $this, $params);
                 $this->getObjectManager()->flush();
@@ -57,7 +58,7 @@ class IndexController extends AbstractActionController
     public function createRevisionAction()
     {
         $user = $this->getUserManager()->getUserFromAuthenticator();
-        $form = new RevisionForm();
+        $form = new RevisionForm($this->getObjectManager());
         $id   = $this->params('revision');
         $page = $this->getPageRepository();
         $this->assertGranted('page.revision.create', $page);

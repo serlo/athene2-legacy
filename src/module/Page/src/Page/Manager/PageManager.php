@@ -25,16 +25,17 @@ use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use License\Manager\LicenseManagerAwareTrait;
 use License\Manager\LicenseManagerInterface;
-use Page\Entity\Page;
 use Page\Entity\PageRepositoryInterface;
 use Page\Exception\InvalidArgumentException;
 use Page\Exception\PageNotFoundException;
+use Page\Exception\RuntimeException;
 use User\Entity\UserInterface;
 use User\Manager\UserManagerAwareTrait;
 use User\Manager\UserManagerInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Versioning\RepositoryManagerAwareTrait;
 use Versioning\RepositoryManagerInterface;
+use Zend\Form\FormInterface;
 use ZfcRbac\Service\AuthorizationService;
 
 class PageManager implements PageManagerInterface
@@ -67,8 +68,8 @@ class PageManager implements PageManagerInterface
     public function editPageRepository(array $data, PageRepositoryInterface $pageRepository)
     {
         $this->assertGranted('page.update', $pageRepository);
-        $pageRepository->setRoles(new ArrayCollection());
         $this->setRoles($data, $pageRepository);
+        $pageRepository->populate($data);
         $this->getObjectManager()->persist($pageRepository);
         return $pageRepository;
     }
@@ -82,16 +83,9 @@ class PageManager implements PageManagerInterface
     {
         $this->assertGranted('page.get', $instance);
         $className    = $this->getClassResolver()->resolveClassName('Page\Entity\PageRepositoryInterface');
-        $params       = ['instance' => $instance->getId()];
+        $params       = ['instance' => $instance->getId(), 'trashed' => false];
         $repositories = $this->getObjectManager()->getRepository($className)->findBy($params);
-        $return       = [];
-        foreach ($repositories as $repository) {
-            if (!$repository->isTrashed()) {
-                $return[] = $repository;
-            }
-        }
-
-        return $return;
+        return $repositories;
     }
 
     public function getRevision($id)
@@ -134,19 +128,19 @@ class PageManager implements PageManagerInterface
         return $pageRepository;
     }
 
-    public function createPageRepository(array $data, InstanceInterface $instance)
+    public function createPageRepository(FormInterface $form)
     {
-        $this->assertGranted('page.create', $instance);
-
-        $page = $this->getClassResolver()->resolve('Page\Entity\PageRepositoryInterface');
-        $page->populate($data);
-        $page->setInstance($instance);
-        $page->setTrashed(false);
-        $this->setRoles($data, $page);
-        $this->getLicenseManager()->injectLicense($page);
-        $this->getObjectManager()->persist($page);
-
-        return $page;
+        $formClone = clone $form;
+        $entity = $this->classResolver->resolve('Page\Entity\PageRepositoryInterface');
+        $formClone->setObject($entity);
+        if(!$formClone->isValid()){
+            throw new RuntimeException(print_r($formClone->getMessages(), true));
+        }
+        var_dump($entity);
+        die();
+        $this->assertGranted('page.create', $entity);
+        $this->getObjectManager()->persist($entity);
+        return $entity;
     }
 
     public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user)
@@ -156,7 +150,6 @@ class PageManager implements PageManagerInterface
         $repository = $this->getRepositoryManager()->getRepository($repository);
         $revision   = $repository->commitRevision($data);
         $this->getObjectManager()->persist($revision);
-        $this->getObjectManager()->persist($revision);
         $this->getObjectManager()->persist($repository->getRepository());
         $repository->checkoutRevision($revision->getId());
 
@@ -165,6 +158,7 @@ class PageManager implements PageManagerInterface
 
     protected function setRoles(array $data, PageRepositoryInterface $pageRepository)
     {
+        $pageRepository->setRoles(new ArrayCollection());
         for ($i = 0; $i <= $this->countRoles(); $i++) {
             if (array_key_exists($i, $data['roles'])) {
                 $role = $this->getRoleService()->getRole($data['roles'][$i]);
