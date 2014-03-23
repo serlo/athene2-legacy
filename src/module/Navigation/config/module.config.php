@@ -13,12 +13,12 @@ namespace Navigation;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 return [
-    'navigation'      => [
+    'navigation'         => [
         'providers' => [
             'Navigation\Provider\ContainerRepositoryProvider'
         ]
     ],
-    'doctrine'        => [
+    'doctrine'           => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
@@ -34,13 +34,20 @@ return [
             ]
         ]
     ],
-    'zfc_rbac'        => [
+    'zfc_rbac'           => [
         'assertion_map' => [
             'navigation.manage' => 'Authorization\Assertion\InstanceAssertion',
         ],
     ],
-    'service_manager' => [
+    'navigation_helpers' => [
         'factories' => [
+            'menu' => __NAMESPACE__ . '\Factory\NavigationMenuHelperFactory',
+        ]
+    ],
+    'service_manager'    => [
+        'factories' => [
+            'Zend\View\Helper\Navigation\PluginManager'             => __NAMESPACE__ . '\Factory\NavigationHelperPluginManagerFactory',
+            __NAMESPACE__ . '\View\Helper\Menu'                     => __NAMESPACE__ . '\Factory\NavigationMenuHelperFactory',
             __NAMESPACE__ . '\Storage\Storage'                      => __NAMESPACE__ . '\Factory\NavigationStorageFactory',
             __NAMESPACE__ . '\Storage\NavigationHelperStorage'      => __NAMESPACE__ . '\Factory\NavigationHelperStorageFactory',
             __NAMESPACE__ . '\Manager\NavigationManager'            => __NAMESPACE__ . '\Factory\NavigationManagerFactory',
@@ -61,30 +68,30 @@ return [
                 },
         ]
     ],
-    'view_helpers'    => [
+    'view_helpers'       => [
         'factories' => [
             'navigation' => __NAMESPACE__ . '\Factory\NavigationHelperFactory'
         ]
     ],
-    'controllers'     => [
+    'controllers'        => [
         'factories' => [
             __NAMESPACE__ . '\Controller\NavigationController' => __NAMESPACE__ . '\Factory\NavigationControllerFactory'
         ]
     ],
-    'di'              => [
+    'di'                 => [
         'instance' => [
             'preferences' => [
                 __NAMESPACE__ . '\Manager\NavigationManagerInterface' => __NAMESPACE__ . '\Manager\NavigationManager'
             ]
         ]
     ],
-    'class_resolver'  => [
+    'class_resolver'     => [
         __NAMESPACE__ . '\Entity\ContainerInterface'    => __NAMESPACE__ . '\Entity\Container',
         __NAMESPACE__ . '\Entity\PageInterface'         => __NAMESPACE__ . '\Entity\Page',
         __NAMESPACE__ . '\Entity\ParameterInterface'    => __NAMESPACE__ . '\Entity\Parameter',
         __NAMESPACE__ . '\Entity\ParameterKeyInterface' => __NAMESPACE__ . '\Entity\ParameterKey'
     ],
-    'router'          => [
+    'router'             => [
         'routes' => [
             'navigation' => [
                 'type'         => 'Zend\Mvc\Router\Http\Segment',
