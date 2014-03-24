@@ -42,7 +42,8 @@ class PageRepository extends Uuid implements PageRepositoryInterface
     protected $revisions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm")
+     * @ORM\JoinColumn(name="forum_id", referencedColumnName="id", nullable=true)
      */
     protected $forum;
 
