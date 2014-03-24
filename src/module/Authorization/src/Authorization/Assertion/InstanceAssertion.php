@@ -11,6 +11,7 @@
 namespace Authorization\Assertion;
 
 use Authorization\Exception\InvalidArgumentException;
+use Authorization\Exception\RuntimeException;
 use Authorization\Result\AuthorizationResult;
 use Authorization\Service\PermissionServiceInterface;
 use Instance\Entity\InstanceInterface;
@@ -55,6 +56,7 @@ class InstanceAssertion implements AssertionInterface
      *
      * @param  AuthorizationResult $authorization
      * @param  mixed               $context
+     * @throws RuntimeException
      * @throws InvalidArgumentException
      * @return bool
      */
@@ -63,11 +65,17 @@ class InstanceAssertion implements AssertionInterface
         if ($context === null) {
             $instance = null;
         } elseif ($context instanceof InstanceProviderInterface) {
-            $instance = $context->getInstance()->getId();
+            $instance = $context->getInstance();
+            if(!is_object($instance)){
+                throw new RuntimeException(sprintf('%s provides an instance of null', get_class($context)));
+            }
         } elseif ($context instanceof InstanceInterface) {
-            $instance = $context->getId();
+            $instance = $context;
         } else {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException(sprintf(
+                'Expected null, InstanceProviderInterface or InstanceInterface but got %s',
+                is_object($context) ? get_class($context) : gettype($context)
+            ));
         }
 
         $permissionToCheck = $authorization->getPermission();
@@ -79,7 +87,7 @@ class InstanceAssertion implements AssertionInterface
             $instance
         );
 
-        if($this->isGranted($rolesToCheck, $permissions)){
+        if ($this->isGranted($rolesToCheck, $permissions)) {
             return true;
         }
 
@@ -91,7 +99,7 @@ class InstanceAssertion implements AssertionInterface
                 null
             );
 
-            if($this->isGranted($rolesToCheck, $permissions)){
+            if ($this->isGranted($rolesToCheck, $permissions)) {
                 return true;
             }
         }

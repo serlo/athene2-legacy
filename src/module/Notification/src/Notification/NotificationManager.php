@@ -11,9 +11,10 @@
 namespace Notification;
 
 use ClassResolver\ClassResolverAwareTrait;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Event\Entity\EventLogInterface;
-use Notification\Entity\NotificationLogInterface;
+use Notification\Entity\NotificationInterface;
 use User\Entity\UserInterface;
 
 class NotificationManager implements NotificationManagerInterface
@@ -21,19 +22,18 @@ class NotificationManager implements NotificationManagerInterface
 
     use ClassResolverAwareTrait, \Common\Traits\ObjectManagerAwareTrait;
 
-    public function createNotification(\User\Entity\UserInterface $user, EventLogInterface $log)
+    public function createNotification(UserInterface $user, EventLogInterface $log)
     {
         $notification = $this->aggregateNotification($user, $log);
 
         $className = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationEventInterface');
+
         /* @var $notificationLog \Notification\Entity\NotificationEventInterface */
         $notificationLog = new $className();
-
-        // $notification->addEvent($notificationLog);
         $notificationLog->setNotification($notification);
         $notification->setUser($user);
         $notification->setSeen(false);
-        $notification->setTimestamp(new \DateTime('NOW'));
+        $notification->setTimestamp(new DateTime());
         $notificationLog->setEventLog($log);
 
         $this->getObjectManager()->persist($notification);
@@ -42,20 +42,32 @@ class NotificationManager implements NotificationManagerInterface
         return $this;
     }
 
-    public function findNotificationsBySubsriber(\User\Entity\UserInterface $userService)
+    public function findNotificationsBySubscriber(UserInterface $user)
     {
-        $notifications = $this->getObjectManager()->getRepository(
-                $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface')
-            )->findBy(
-                [
-                    'user' => $userService->getId()
-                ],
-                ['id' => 'desc']
-            );
+        $className     = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface');
+        $criteria      = ['user' => $user->getId()];
+        $order         = ['id' => 'desc'];
+        $notifications = $this->getObjectManager()->getRepository($className)->findBy($criteria, $order);
+        $collection    = new ArrayCollection;
 
-        return new ArrayCollection($notifications);
+        /* @var $notification NotificationInterface */
+        foreach ($notifications as $notification) {
+            if ($notification->getEvents()->count() < 1) {
+                $this->objectManager->remove($notification);
+                $this->objectManager->flush($notification);
+                continue;
+            }
+            $collection->add($notification);
+        }
+
+        return $collection;
     }
 
+    /**
+     * @param UserInterface     $user
+     * @param EventLogInterface $log
+     * @return NotificationInterface
+     */
     protected function aggregateNotification(UserInterface $user, EventLogInterface $log)
     {
         $className = $this->getClassResolver()->resolveClassName('Notification\Entity\NotificationInterface');

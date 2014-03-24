@@ -3,9 +3,11 @@ namespace Page\Entity;
 
 use Authorization\Entity\RoleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
+use Taxonomy\Entity\TaxonomyTermInterface;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RevisionInterface;
 
@@ -28,18 +30,21 @@ class PageRepository extends Uuid implements PageRepositoryInterface
      */
     protected $roles;
 
-
     /**
      * @ORM\OneToOne(targetEntity="PageRevision")
      * @ORM\JoinColumn(name="current_revision_id", referencedColumnName="id")
      */
     protected $current_revision;
 
-
     /**
      * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="page_repository", cascade="persist")
      */
     protected $revisions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Taxonomy\Entity\TaxonomyTerm", nullable=true)
+     */
+    protected $forum;
 
     /**
      * @ORM\ManyToOne(targetEntity="License\Entity\LicenseInterface")
@@ -58,7 +63,18 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         $this->revisions->add($revision);
         $revision->setRepository($this);
         return $revision;
+    }
 
+    public function addRole(RoleInterface $role)
+    {
+        $this->roles->add($role);
+    }
+
+    public function addRoles(Collection $roles)
+    {
+        foreach ($roles as $role) {
+            $this->roles->add($role);
+        }
     }
 
     public function createRevision()
@@ -66,7 +82,26 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         $revision = new PageRevision();
         $revision->setRepository($this);
         return $revision;
+    }
 
+    public function getCurrentRevision()
+    {
+        return $this->current_revision;
+    }
+
+    public function setCurrentRevision(RevisionInterface $revision)
+    {
+        $this->current_revision = $revision;
+    }
+
+    public function getForum()
+    {
+        return $this->forum;
+    }
+
+    public function setForum(TaxonomyTermInterface $forum = null)
+    {
+        $this->forum = $forum;
     }
 
     public function getLicense()
@@ -90,29 +125,6 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         return $revisions;
     }
 
-    public function hasCurrentRevision()
-    {
-        return $this->getCurrentRevision() !== null;
-    }
-
-    public function getCurrentRevision()
-    {
-        return $this->current_revision;
-    }
-
-    public function setCurrentRevision(RevisionInterface $revision)
-    {
-        $this->current_revision = $revision;
-    }
-
-    public function removeRevision(RevisionInterface $revision)
-    {
-        if ($this->getCurrentRevision() == $revision) {
-            $this->current_revision = null;
-        }
-        $this->revisions->removeElement($revision);
-    }
-
     public function getRoles()
     {
         return $this->roles;
@@ -124,6 +136,11 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         $this->roles = $roles;
     }
 
+    public function hasCurrentRevision()
+    {
+        return $this->getCurrentRevision() !== null;
+    }
+
     public function hasRole(RoleInterface $role)
     {
         return $this->roles->contains($role);
@@ -131,13 +148,24 @@ class PageRepository extends Uuid implements PageRepositoryInterface
 
     public function populate(array $data = [])
     {
+        $this->injectFromArray('forum', $data);
         $this->injectFromArray('instance', $data);
         $this->injectFromArray('current_revision', $data);
     }
 
-    public function addRole(RoleInterface $role)
+    public function removeRevision(RevisionInterface $revision)
     {
-        $this->roles->add($role);
+        if ($this->getCurrentRevision() == $revision) {
+            $this->current_revision = null;
+        }
+        $this->revisions->removeElement($revision);
+    }
+
+    public function removeRoles(Collection $roles)
+    {
+        foreach ($roles as $role) {
+            $this->roles->removeElement($role);
+        }
     }
 
     private function injectFromArray($key, array $array, $default = null)

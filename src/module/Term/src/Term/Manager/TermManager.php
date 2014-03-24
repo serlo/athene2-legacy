@@ -34,11 +34,6 @@ class TermManager implements TermManagerInterface
         try {
             return $this->findTermByName($name, $instance);
         } catch (TermNotFoundException $e) {
-            foreach ($this->terms as $term) {
-                if ($term->getName() == $name) {
-                    return $term;
-                }
-            }
         }
 
         /* @var $entity TermEntityInterface */
@@ -62,11 +57,19 @@ class TermManager implements TermManagerInterface
         $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
 
         if (!is_object($entity)) {
+            foreach ($this->terms as $term) {
+                if ($term->getName() == $name) {
+                    return $term;
+                }
+            }
+        }
+
+        if (!is_object($entity)) {
             throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $name, $instance->getId()));
         }
 
         // Since we can not search case sensitive in mysql (without side effects) we need to do this manually.
-        if ($entity->getName() !== $name && strtolower($entity->getName()) == strtolower($name)) {
+        if ($entity->getName() != $name && strcasecmp($entity->getName(), $name) == 0) {
             $entity->setName($name);
             $this->persist($entity);
             $this->flush($entity);
@@ -80,6 +83,14 @@ class TermManager implements TermManagerInterface
         $className = $this->getClassResolver()->resolveClassName('Term\Entity\TermEntityInterface');
         $criteria  = ['slug' => $slug, 'instance' => $instance->getId()];
         $entity    = $this->getObjectManager()->getRepository($className)->findOneBy($criteria);
+
+        if (!is_object($entity)) {
+            foreach ($this->terms as $term) {
+                if ($term->getSlug() == $slug) {
+                    return $term;
+                }
+            }
+        }
 
         if (!is_object($entity)) {
             throw new TermNotFoundException(sprintf('Term %s with instance %s not found', $slug, $instance->getId()));

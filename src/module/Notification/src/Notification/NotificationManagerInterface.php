@@ -25,8 +25,8 @@ interface NotificationManagerInterface
     public function createNotification(UserInterface $user, EventLogInterface $eventLog);
 
     /**
-     * @param UserInterface $userService
+     * @param UserInterface $user
      * @return ArrayCollection
      */
-    public function findNotificationsBySubsriber(UserInterface $userService);
+    public function findNotificationsBySubscriber(UserInterface $user);
 }

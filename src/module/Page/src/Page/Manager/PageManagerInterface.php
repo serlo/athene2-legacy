@@ -1,18 +1,32 @@
 <?php
 namespace Page\Manager;
 
-use Instance\Entity\InstanceInterface;
 use Page\Entity\PageRepositoryInterface;
 use Page\Entity\PageRevisionInterface;
 use User\Entity\UserInterface;
+use Zend\Form\FormInterface;
 
 interface PageManagerInterface
 {
     /**
-     * @param numeric $id
-     * @return PageRevisionInterface;
+     * @param FormInterface $form
+     * @return PageRepositoryInterface
      */
-    public function getRevision($id);
+    public function createPageRepository(FormInterface $form);
+
+    /**
+     * @param PageRepositoryInterface $repository
+     * @param array                   $data
+     * @param UserInterface           $user
+     * @return PageRepositoryInterface
+     */
+    public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user);
+
+    /**
+     * @param FormInterface           $form
+     * @return mixed
+     */
+    public function editPageRepository(FormInterface $form);
 
     /**
      * @param numeric $id
@@ -21,17 +35,9 @@ interface PageManagerInterface
     public function getPageRepository($id);
 
     /**
-     * @param array             $data
-     * @param InstanceInterface $instance
-     * @return PageRepositoryInterface;
+     * @param numeric $id
+     * @return PageRevisionInterface;
      */
-    public function createPageRepository(array $data, InstanceInterface $instance);
-
-    /**
-     * @param RepositoryInterface $repository
-     * @param array               $data
-     * @return PageRepositoryInterface;
-     */
-    public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user);
+    public function getRevision($id);
 }
 
