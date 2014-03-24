@@ -2,7 +2,6 @@
 namespace Page\Controller;
 
 use Alias\AliasManagerAwareTrait;
-use Authorization\Entity\RoleInterface;
 use Common\Traits\ObjectManagerAwareTrait;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Page\Form\RepositoryForm;
@@ -10,6 +9,7 @@ use Page\Form\RevisionForm;
 use Page\Manager\PageManagerAwareTrait;
 use User\Manager\UserManagerAwareTrait;
 use Versioning\RepositoryManagerAwareTrait;
+use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -36,7 +36,7 @@ class IndexController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $data = array_merge($data, ['instance' => $instance]);
+            $data = array_merge($data, ['instance' => $instance->getId()]);
             $form->setData($data);
             if ($form->isValid()) {
                 $repository = $this->getPageManager()->createPageRepository($form);
@@ -104,42 +104,36 @@ class IndexController extends AbstractActionController
 
     public function updateAction()
     {
-        $instance       = $this->getInstanceManager()->getInstanceFromRequest();
-        $pageRepository = $this->getPageRepository();
-        $alias          = $this->getAliasManager()->findAliasByObject($pageRepository)->getAlias();
-        $form           = new RepositoryForm($this->getObjectManager(), $pageRepository);
-        $roles          = array_map(
-            function (RoleInterface $e) {
-                return $e->getId();
-            },
-            $pageRepository->getRoles()->toArray()
-        );
+        $instance = $this->getInstanceManager()->getInstanceFromRequest();
+        $page     = $this->getPageRepository();
+        $alias    = $this->getAliasManager()->findAliasByObject($page)->getAlias();
+        $form     = new RepositoryForm($this->getObjectManager());
 
-        $this->assertGranted('page.update', $pageRepository);
+        $this->assertGranted('page.update', $page);
+        $form->bind($page);
         $form->get('slug')->setValue($alias);
-        $form->get('roles')->setValue($roles);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $array  = $form->getData();
-                $source = $this->url()->fromRoute('page/view', ['page' => $pageRepository->getId()]);
+                $array  = $form->getData(FormInterface::VALUES_AS_ARRAY);
+                $source = $this->url()->fromRoute('page/view', ['page' => $page->getId()]);
                 $this->getAliasManager()->createAlias(
                     $source,
                     $array['slug'],
-                    $array['slug'] . $pageRepository->getId(),
-                    $pageRepository,
+                    $array['slug'] . $page->getId(),
+                    $page,
                     $instance
                 );
-                $this->getPageManager()->editPageRepository($array, $pageRepository);
+                $this->getPageManager()->editPageRepository($form);
                 $this->getObjectManager()->flush();
                 $this->redirect()->toUrl($source);
             }
         }
 
-        $view = new ViewModel(['form' => $form,]);
-        $view->setTemplate('page/create');
+        $view = new ViewModel(['form' => $form]);
+        $view->setTemplate('page/update');
         return $view;
     }
 

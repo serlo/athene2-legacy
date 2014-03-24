@@ -29,8 +29,8 @@ interface PageRepositoryInterface
     public function getForum();
 
     /**
-     * @param TaxonomyTermInterface $forum
+     * @param TaxonomyTermInterface|null $forum
      * @return void
      */
-    public function setForum(TaxonomyTermInterface $forum);
+    public function setForum(TaxonomyTermInterface $forum = null);
 }

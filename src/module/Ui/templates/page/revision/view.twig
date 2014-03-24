@@ -5,8 +5,10 @@
 <hr>
 {% include 'page/revision/menu' %}
 <hr>
-<div class="panel">
-    <div class="panel-body">
-        {{ discussion(page).findForum(page.getForumPath()).render() }}
+{% if page.getForum() %}
+    <div class="panel">
+        <div class="panel-body">
+            {{ discussion(page).setForum(page.getForum()).render() }}
+        </div>
     </div>
-</div>
+{% endif %}

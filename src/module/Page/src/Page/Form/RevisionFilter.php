@@ -33,7 +33,7 @@ class RevisionFilter extends InputFilter
         $this->add(
             [
                 'name'     => 'forum',
-                'required' => true,
+                'required' => false,
             ]
         );
     }

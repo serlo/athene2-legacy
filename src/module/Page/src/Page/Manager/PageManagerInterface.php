@@ -9,10 +9,24 @@ use Zend\Form\FormInterface;
 interface PageManagerInterface
 {
     /**
-     * @param numeric $id
-     * @return PageRevisionInterface;
+     * @param FormInterface $form
+     * @return PageRepositoryInterface
      */
-    public function getRevision($id);
+    public function createPageRepository(FormInterface $form);
+
+    /**
+     * @param PageRepositoryInterface $repository
+     * @param array                   $data
+     * @param UserInterface           $user
+     * @return PageRepositoryInterface
+     */
+    public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user);
+
+    /**
+     * @param FormInterface           $form
+     * @return mixed
+     */
+    public function editPageRepository(FormInterface $form);
 
     /**
      * @param numeric $id
@@ -21,16 +35,9 @@ interface PageManagerInterface
     public function getPageRepository($id);
 
     /**
-     * @param FormInterface $form
-     * @return PageRepositoryInterface
+     * @param numeric $id
+     * @return PageRevisionInterface;
      */
-    public function createPageRepository(FormInterface $form);
-
-    /**
-     * @param RepositoryInterface $repository
-     * @param array               $data
-     * @return PageRepositoryInterface;
-     */
-    public function createRevision(PageRepositoryInterface $repository, array $data, UserInterface $user);
+    public function getRevision($id);
 }
 

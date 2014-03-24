@@ -17,8 +17,9 @@ class RepositoryForm extends Form
     {
         parent::__construct('createPage');
 
+        // Hydration does not work with byValue (why?)
+        $hydrator = new DoctrineObject($objectManager, false);
         $filter   = new InputFilter();
-        $hydrator = new DoctrineObject($objectManager);
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
@@ -37,6 +38,19 @@ class RepositoryForm extends Form
                     'target_class'   => 'Instance\Entity\Instance'
                 ]
             ]
+        );
+
+        $this->add(
+            array(
+                'type'    => 'DoctrineModule\Form\Element\ObjectSelect',
+                'name'    => 'license',
+                'options' => array(
+                    'object_manager' => $objectManager,
+                    'label'          => 'License',
+                    'target_class'   => 'License\Entity\License',
+                    'property'       => 'title'
+                )
+            )
         );
 
         $this->add(
