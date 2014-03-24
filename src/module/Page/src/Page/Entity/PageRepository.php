@@ -56,7 +56,6 @@ class PageRepository extends Uuid implements PageRepositoryInterface
     {
         $this->revisions = new ArrayCollection();
         $this->roles     = new ArrayCollection();
-
     }
 
     public function addRevision(RevisionInterface $revision)
