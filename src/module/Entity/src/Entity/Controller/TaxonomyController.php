@@ -39,7 +39,7 @@ class TaxonomyController extends AbstractController
                     if ($added == 1) {
                         $this->getTaxonomyManager()->associateWith($termId, $entity);
                         $event = 'addToTerm';
-                    } elseif ($added == 0) {
+                    } else {
                         $this->getTaxonomyManager()->removeAssociation($termId, $entity);
                         $event = 'removeFromTerm';
                     }
