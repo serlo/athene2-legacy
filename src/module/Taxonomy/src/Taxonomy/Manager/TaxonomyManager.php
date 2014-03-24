@@ -76,6 +76,10 @@ class TaxonomyManager implements TaxonomyManagerInterface
             ));
         }
 
+        if ($term->isAssociated($object)) {
+            return;
+        }
+
         $term->associateObject($object);
         if ($position !== null) {
             $term->positionAssociatedObject($object, (int)$position);
@@ -204,6 +208,9 @@ class TaxonomyManager implements TaxonomyManagerInterface
     public function removeAssociation($id, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
+        if(!$term->isAssociated($object)){
+            return;
+        }
         $this->assertGranted('taxonomy.term.dissociate', $term);
         $term->removeAssociation($object);
         $this->getEventManager()->trigger('dissociate', $this, ['object' => $object, 'term' => $term]);

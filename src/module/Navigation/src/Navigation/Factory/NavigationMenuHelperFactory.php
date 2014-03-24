@@ -6,15 +6,17 @@
  * @license   LGPL-3.0
  * @license   http://opensource.org/licenses/LGPL-3.0 The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
- * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
+ * @copyright Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
+
 namespace Navigation\Factory;
 
-use Navigation\View\Helper\Navigation;
+
+use Navigation\View\Helper\Menu;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class NavigationHelperFactory implements FactoryInterface
+class NavigationMenuHelperFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -26,11 +28,7 @@ class NavigationHelperFactory implements FactoryInterface
     {
         $serviceLocator = $serviceLocator->getServiceLocator();
         $storage        = $serviceLocator->get('Navigation\Storage\NavigationHelperStorage');
-        $pluginManager  = $serviceLocator->get('Zend\View\Helper\Navigation\PluginManager');
-        $renderer       = $serviceLocator->get('Ui\Renderer\PhpDebugRenderer');
-        $helper         = new Navigation($storage);
-        $helper->setView($renderer);
-        $helper->setPluginManager($pluginManager);
+        $helper         = new Menu($storage);
         return $helper;
     }
 }

@@ -20,19 +20,4 @@ class Navigation extends \Zend\View\Helper\Navigation
     {
         $this->storage = $storage;
     }
-
-    public function render($container = null)
-    {
-        $container = $container ? $container : $this->getContainer();
-        $key       = hash('sha256', serialize($container));
-
-        if ($this->storage->hasItem($key)) {
-            return $this->storage->getItem($key);
-        }
-
-        $output = parent::render($container);
-        $this->storage->setItem($key, $output);
-
-        return $output;
-    }
 }
