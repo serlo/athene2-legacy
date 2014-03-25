@@ -17,8 +17,7 @@ class RepositoryForm extends Form
     {
         parent::__construct('createPage');
 
-        // Hydration does not work with byValue (why?)
-        $hydrator = new DoctrineObject($objectManager, false);
+        $hydrator = new DoctrineObject($objectManager);
         $filter   = new InputFilter();
 
         $this->setAttribute('method', 'post');
