@@ -22,6 +22,15 @@ return [
             'page.revision.trash'    => __NAMESPACE__ . '\Assertion\PageAssertion',
         ]
     ],
+    'taxonomy'       => [
+        'types' => [
+            'forum' => [
+                'allowed_associations' => [
+                    'Page\Entity\PageRepositoryInterface'
+                ],
+            ]
+        ]
+    ],
     'versioning'     => [
         'permissions' => [
             'Page\Entity\PageRepository' => [
@@ -155,27 +164,9 @@ return [
         ],
         'definition'          => [
             'class' => [
-                'Page\Controller\IndexController' => [
-                    'setAliasManager'    => [
-                        'required' => true
-                    ],
-                    'setObjectManager'   => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ],
-                    'setPageManager'     => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ],
-                    'setEventManager'    => [
-                        'required' => true
-                    ]
-                ],
-                'Page\Manager\PageManager'        => []
+                'Page\Controller\IndexController' => [],
+                'Page\Manager\PageManager'        => [],
+                'Page\Form\RepositoryForm'        => []
             ]
         ],
         'instance'            => [

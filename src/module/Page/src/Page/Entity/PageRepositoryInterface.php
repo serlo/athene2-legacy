@@ -5,12 +5,13 @@ use Authorization\Entity\RoleInterface;
 use Doctrine\Common\Collections\Collection;
 use Instance\Entity\InstanceAwareInterface;
 use License\Entity\LicenseAwareInterface;
+use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Uuid\Entity\UuidInterface;
 use Versioning\Entity\RepositoryInterface;
 
 interface PageRepositoryInterface
-    extends RepositoryInterface, LicenseAwareInterface, InstanceAwareInterface, UuidInterface
+    extends RepositoryInterface, LicenseAwareInterface, InstanceAwareInterface, UuidInterface, TaxonomyTermAwareInterface
 {
     /**
      * @return RoleInterface[]|Collection

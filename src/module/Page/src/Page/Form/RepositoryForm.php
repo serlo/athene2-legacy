@@ -5,6 +5,7 @@ namespace Page\Form;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
@@ -13,7 +14,7 @@ use Zend\InputFilter\InputFilter;
 class RepositoryForm extends Form
 {
 
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, TaxonomyManagerInterface $taxonomyManager)
     {
         parent::__construct('createPage');
 
@@ -65,5 +66,22 @@ class RepositoryForm extends Form
         );
 
         $this->add((new Submit('submit'))->setValue('Save')->setAttribute('class', 'btn btn-success pull-right'));
+
+        $filter->add(
+            [
+
+                'name'       => 'forum',
+                'required'   => false,
+                'validators' => [
+                    [
+                        'name'    => 'Taxonomy\Validator\ValidAssociation',
+                        'options' => [
+                            'target'           => $this,
+                            'taxonomy_manager' => $taxonomyManager
+                        ]
+                    ]
+                ]
+            ]
+        );
     }
 }

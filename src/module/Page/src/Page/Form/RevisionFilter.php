@@ -29,12 +29,5 @@ class RevisionFilter extends InputFilter
                 'required' => true,
             ]
         );
-
-        $this->add(
-            [
-                'name'     => 'forum',
-                'required' => false,
-            ]
-        );
     }
 }

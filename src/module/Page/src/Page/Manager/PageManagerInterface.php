@@ -1,12 +1,13 @@
 <?php
 namespace Page\Manager;
 
+use Common\ObjectManager\Flushable;
 use Page\Entity\PageRepositoryInterface;
 use Page\Entity\PageRevisionInterface;
 use User\Entity\UserInterface;
 use Zend\Form\FormInterface;
 
-interface PageManagerInterface
+interface PageManagerInterface extends Flushable
 {
     /**
      * @param FormInterface $form

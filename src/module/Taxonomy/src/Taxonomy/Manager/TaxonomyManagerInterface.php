@@ -21,12 +21,12 @@ use Zend\Form\FormInterface;
 interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
 {
     /**
-     * @param int                        $id
+     * @param int|TaxonomyTermInterface  $term
      * @param TaxonomyTermAwareInterface $with
      * @param int|null                   $position
      * @return self
      */
-    public function associateWith($id, TaxonomyTermAwareInterface $with, $position = null);
+    public function associateWith($term, TaxonomyTermAwareInterface $with, $position = null);
 
     /**
      * @param FormInterface $form
@@ -59,6 +59,13 @@ interface TaxonomyManagerInterface extends Flushable, EventManagerAwareInterface
      * @return TaxonomyTermInterface
      */
     public function getTerm($id);
+
+    /**
+     * @param int|TaxonomyTermInterface  $term
+     * @param TaxonomyTermAwareInterface $object
+     * @return mixed
+     */
+    public function isAssociableWith($term, TaxonomyTermAwareInterface $object);
 
     /**
      * @param int                        $id

@@ -20,8 +20,8 @@ use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Exception;
 use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Exception;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
 use Type\TypeManagerAwareTrait;
@@ -60,18 +60,33 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->setAuthorizationService($authorizationService);
     }
 
+    public function isAssociableWith($term, TaxonomyTermAwareInterface $object){
+        if (!$term instanceof TaxonomyTermInterface) {
+            $term = $this->getTerm($term);
+        }
+
+        $taxonomy = $term->getTaxonomy();
+        $this->assertGranted('taxonomy.term.associate', $term);
+
+        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function associateWith($term, TaxonomyTermAwareInterface $object, $position = null)
     {
         if (!$term instanceof TaxonomyTermInterface) {
             $term = $this->getTerm($term);
         }
-        $taxonomy = $term->getTaxonomy();
+
         $this->assertGranted('taxonomy.term.associate', $term);
 
-        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
+        if (!$this->isAssociableWith($term, $object)) {
             throw new Exception\RuntimeException(sprintf(
                 'Taxonomy "%s" can\'t be associated with "%s"',
-                $taxonomy->getName(),
+                $term->getTaxonomy()->getName(),
                 get_class($object)
             ));
         }

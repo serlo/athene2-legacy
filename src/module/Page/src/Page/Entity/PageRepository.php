@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use License\Entity\LicenseInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Entity\TaxonomyTermNodeInterface;
 use Uuid\Entity\Uuid;
 use Versioning\Entity\RevisionInterface;
 
@@ -77,6 +78,16 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         }
     }
 
+    /**
+     * @param TaxonomyTermInterface     $taxonomyTerm
+     * @param TaxonomyTermNodeInterface $node
+     * @return self
+     */
+    public function addTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
+    {
+        $this->setForum($taxonomyTerm);
+    }
+
     public function createRevision()
     {
         $revision = new PageRevision();
@@ -136,6 +147,14 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         $this->roles = $roles;
     }
 
+    /**
+     * @return TaxonomyTermInterface[]
+     */
+    public function getTaxonomyTerms()
+    {
+        return new ArrayCollection([$this->forum]);
+    }
+
     public function hasCurrentRevision()
     {
         return $this->getCurrentRevision() !== null;
@@ -166,6 +185,16 @@ class PageRepository extends Uuid implements PageRepositoryInterface
         foreach ($roles as $role) {
             $this->roles->removeElement($role);
         }
+    }
+
+    /**
+     * @param TaxonomyTermInterface     $taxonomyTerm
+     * @param TaxonomyTermNodeInterface $node
+     * @return self
+     */
+    public function removeTaxonomyTerm(TaxonomyTermInterface $taxonomyTerm, TaxonomyTermNodeInterface $node = null)
+    {
+        $this->setForum(null);
     }
 
     private function injectFromArray($key, array $array, $default = null)

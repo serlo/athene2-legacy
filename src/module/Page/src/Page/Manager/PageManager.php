@@ -17,6 +17,7 @@ use Authorization\Service\RoleServiceAwareTrait;
 use Authorization\Service\RoleServiceInterface;
 use ClassResolver\ClassResolverAwareTrait;
 use ClassResolver\ClassResolverInterface;
+use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -44,6 +45,7 @@ class PageManager implements PageManagerInterface
     use InstanceManagerAwareTrait, AuthorizationAssertionTrait;
     use LicenseManagerAwareTrait, RepositoryManagerAwareTrait;
     use RoleServiceAwareTrait, UserManagerAwareTrait;
+    use FlushableTrait;
 
     public function __construct(
         AuthorizationService $authorizationService,
