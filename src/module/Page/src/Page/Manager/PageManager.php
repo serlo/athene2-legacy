@@ -96,11 +96,15 @@ class PageManager implements PageManagerInterface
 
     public function editPageRepository(FormInterface $form)
     {
-        $formClone = clone $form;
-        if (!$formClone->isValid()) {
-            throw new RuntimeException(print_r($formClone->getMessages(), true));
+        $page      = $form->getObject();
+        if (!$form->isValid()) {
+            throw new RuntimeException(print_r($form->getMessages(), true));
         }
-        $page = $formClone->getObject();
+        $data      = $form->getData(FormInterface::VALUES_AS_ARRAY);
+        $formClone = clone $form;
+        $formClone->bind($page);
+        $formClone->setData($data);
+        $formClone->isValid();
         $this->assertGranted('page.update', $page);
         $this->getObjectManager()->persist($page);
         return $page;
