@@ -79,7 +79,7 @@ class DiscussionController extends AbstractController
             'discussion' => $discussion,
             'user'       => $this->getUserManager()->getUserFromAuthenticator()
         ]);
-        $view->setTemplate('discussion/discussion/show');
+        $view->setTemplate('discussion/discussion/index');
 
         return $view;
     }
