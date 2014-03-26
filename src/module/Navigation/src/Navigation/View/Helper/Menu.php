@@ -30,6 +30,7 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
     public function render($container = null)
     {
         $container = $container ? $container : $this->getContainer();
+
         try {
             $output = parent::render($container);
             return $output;
