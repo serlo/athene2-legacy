@@ -37,13 +37,25 @@ class Discussion extends AbstractHelper
      */
     protected $termForm;
 
+    /**
+     * @var \Discussion\Form\CommentForm
+     */
     protected $commentForm;
+
+    /**
+     * @var \Discussion\Form\DiscussionForm
+     */
     protected $discussionForm;
 
     /**
      * @var \ZfcTwig\View\TwigRenderer
      */
     protected $renderer;
+
+    /**
+     * @var array
+     */
+    protected $inMemory = [];
 
     public function __construct(
         TermForm $termForm,
@@ -187,18 +199,21 @@ class Discussion extends AbstractHelper
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('forum', $instance);
 
         foreach ($forums as $forum) {
-            $form = clone $this->termForm;
-            $form->setData(
-                [
-                    'term'     => [
-                        'name' => $forum
-                    ],
-                    'parent'   => $current,
-                    'taxonomy' => $taxonomy
-                ]
-            );
-            $current = $this->getTaxonomyManager()->createTerm($form);
-            unset($form);
+            $data = [
+                'term'     => [
+                    'name' => $forum
+                ],
+                'parent'   => $current,
+                'taxonomy' => $taxonomy
+            ];
+            $key  = hash('sha512', serialize($data));
+            if (!isset($this->inMemory[$key])) {
+                $form = clone $this->termForm;
+                $form->setData($data);
+                $current              = $this->getTaxonomyManager()->createTerm($form);
+                $this->inMemory[$key] = $current;
+                unset($form);
+            }
         }
         $this->getTaxonomyManager()->flush($current);
         return $this->getTaxonomyManager()->getTerm($current);
