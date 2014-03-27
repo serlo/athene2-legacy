@@ -24,29 +24,36 @@ class PageRepositoryStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getObject()->getCurrentRevision()->getTitle();
-    }
-
-    protected function getTimestamp()
-    {
-        return $this->getObject()->getCurrentRevision()->getDate();
+        return $object instanceof PageRepositoryInterface;
     }
 
     protected function getContent()
     {
-        return $this->getObject()->getCurrentRevision()->getContent();
+        $revision = $this->getRevision();
+        if ($revision) {
+            return $revision->getContent();
+        }
+        return '';
     }
 
     protected function getPreview()
     {
-        return $this->getObject()->getCurrentRevision()->getContent();
+        $revision = $this->getRevision();
+        if ($revision) {
+            return $revision->getContent();
+        }
+        return '';
     }
 
-    protected function getType()
+    protected function getRevision()
     {
-        return 'Page repository';
+        $revision = $this->getObject()->getCurrentRevision();
+        if (!$revision) {
+            $revision = $this->getObject()->getRevisions()->current();
+        }
+        return $revision;
     }
 
     protected function getRouteName()
@@ -61,8 +68,26 @@ class PageRepositoryStrategy extends AbstractStrategy
         ];
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof PageRepositoryInterface;
+        $revision = $this->getRevision();
+        if ($revision) {
+            return $revision->getDate();
+        }
+        return new \DateTime;
+    }
+
+    protected function getTitle()
+    {
+        $revision = $this->getRevision();
+        if ($revision) {
+            return $revision->getTitle();
+        }
+        return '';
+    }
+
+    protected function getType()
+    {
+        return 'Page repository';
     }
 }
