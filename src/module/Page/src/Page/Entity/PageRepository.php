@@ -127,13 +127,7 @@ class PageRepository extends Uuid implements PageRepositoryInterface
 
     public function getRevisions()
     {
-        $revisions = [];
-        foreach ($this->revisions as $revision) {
-            if (!$revision->isTrashed()) {
-                $revisions[] = $revision;
-            }
-        }
-        return $revisions;
+        return $this->revisions;
     }
 
     public function getRoles()
