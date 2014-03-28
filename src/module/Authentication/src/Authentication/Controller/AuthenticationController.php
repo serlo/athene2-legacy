@@ -79,7 +79,7 @@ class AuthenticationController extends AbstractActionController
                     try {
                         $user = $this->getUserManager()->findUserByEmail($data['email']);
                         $this->getEventManager()->trigger('activate', $this, ['user' => $user]);
-                        $this->flashMessenger()->addSuccessMessage('Your have been sent an activation email.');
+                        $this->flashMessenger()->addSuccessMessage('Your have been sent an activation email. Please check your spam folder as well.');
 
                         return $this->redirect()->toRoute('authentication/login');
                     } catch (UserNotFoundException $e) {
@@ -224,7 +224,7 @@ class AuthenticationController extends AbstractActionController
                         $this->getEventManager()->trigger('restore-password', $this, ['user' => $user]);
                         $this->getUserManager()->flush();
                         $this->flashmessenger()->addSuccessMessage(
-                            'You have been sent an email with instructions on how to restore your password!'
+                            'You have been sent an email with instructions on how to restore your password! Please check your spam folder as well.'
                         );
 
                         return $this->redirect()->toRoute('home');
