@@ -16,8 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Entity\Entity\EntityInterface;
-use Taxonomy\Exception;
 use Taxonomy\Exception\RuntimeException;
+use Taxonomy\Exception;
 use Term\Entity\TermEntityInterface;
 use Uuid\Entity\Uuid;
 
@@ -43,7 +43,7 @@ class TaxonomyTerm extends Uuid implements TaxonomyTermInterface
     protected $term;
 
     /**
-     * @ORM\OneToMany(targetEntity="TaxonomyTerm",mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="TaxonomyTerm", mappedBy="parent", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"weight"="ASC"})
      */
     protected $children;
