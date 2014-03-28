@@ -32,9 +32,9 @@ echo $this->doctype();
         </div>
         <?php echo $this->horizon(4);?>
         <?php /* sticky footer: */ ?>
-        <div id="footer-push"></div>
+        <!-- <div id="footer-push"></div> -->
+        <?php echo $this->partial('layout/partials/footer'); ?>
     </div>
-    <?php echo $this->partial('layout/partials/footer'); ?>
     <?php echo $this->partial('layout/partials/default-modal'); ?>
 </body>
 </html>

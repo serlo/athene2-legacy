@@ -37,9 +37,9 @@ echo $this->doctype();
             <?php echo $this->partial('layout/partials/right-sidebar'); ?>
     	</div>
         <?php /* sticky footer: */ ?>
-        <div id="footer-push"></div>
+        <!-- <div id="footer-push"></div> -->
+        <?php echo $this->partial('layout/partials/footer'); ?>
     </div>
-    <?php echo $this->partial('layout/partials/footer'); ?>
     <?php echo $this->partial('layout/partials/default-modal'); ?>
 </body>
 </html>
