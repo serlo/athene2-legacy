@@ -5,7 +5,7 @@
 
     @include bar();
 
-    font-size: 0.9em;
+    font-size: 0.89em;
     border-radius: 0;
     min-height: 0;
 
@@ -13,11 +13,10 @@
         > li {
             line-height: 23px;
             float: left;
-        }
-
-        > a {
-            padding-top: 6px;
-            padding-bottom: 4px;
+            > a {
+              padding-top: 6px;
+              padding-bottom: 4px;
+            }
         }
     }
 
