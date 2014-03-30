@@ -1,2 +1,8 @@
-{{ pageHeader(term.getName()).render() | raw }}
+<div class="page-header">
+    <div class="pull-right">
+        {% include 'subject/taxonomy/templates/partials/controls' %}
+    </div>
+    <h1>{{ term.getName() }}</h1>
+    {% include 'subject/taxonomy/templates/partials/actions' %}
+</div>
 {% include 'subject/taxonomy/templates/default' %}
