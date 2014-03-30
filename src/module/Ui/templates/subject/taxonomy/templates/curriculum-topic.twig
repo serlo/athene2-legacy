@@ -1,8 +1,4 @@
 {% include 'subject/taxonomy/templates/partials/head' %}
-{% if term.getAssociated('entities').count %}
-    {% include 'subject/taxonomy/templates/partials/entities' %}
-    {% include 'subject/taxonomy/templates/partials/branches' %}
-{% else %}
-    {% include 'subject/taxonomy/templates/partials/subfolders' %}
-    {% include 'subject/taxonomy/templates/partials/entities' %}
-{% endif %}
+{% include 'subject/taxonomy/templates/partials/subfolders' %}
+{% include 'subject/taxonomy/templates/partials/entities' %}
+{% include 'subject/taxonomy/templates/partials/branches' %}
