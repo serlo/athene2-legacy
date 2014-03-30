@@ -95,6 +95,12 @@ class NavigationProvider implements PageProviderInterface
      */
     public function provide(array $options)
     {
+        $key = hash('sha256', serialize($this->options));
+
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
+
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
         $term          = $this->getTerm();
 
@@ -102,13 +108,7 @@ class NavigationProvider implements PageProviderInterface
             $this->getObjectManager()->refresh($term);
         }
 
-        $terms = $term->findChildrenByTaxonomyNames($this->options['types']);
-        $key   = hash('sha256', serialize($this->options));
-
-        if ($this->storage->hasItem($key)) {
-            return $this->storage->getItem($key);
-        }
-
+        $terms      = $term->findChildrenByTaxonomyNames($this->options['types']);
         $pages      = $this->iterTerms($terms, $this->options['max_depth']);
         $this->term = null;
         $this->storage->setItem($key, $pages);
