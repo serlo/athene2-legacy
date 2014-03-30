@@ -20,8 +20,8 @@ use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
-use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Exception;
+use Taxonomy\Exception\RuntimeException;
 use Taxonomy\Hydrator\TaxonomyTermHydrator;
 use Taxonomy\Options\ModuleOptions;
 use Type\TypeManagerAwareTrait;
@@ -249,7 +249,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     protected function bind(TaxonomyTermInterface $object, FormInterface $form)
     {
         if (!$form->isValid()) {
-            throw new RuntimeException(print_r($form->getMessages(), true));
+            throw new RuntimeException(print_r([$form->getMessages(), $form->getData()], true));
         }
         $processingForm = clone $form;
         $data           = $form->getData(FormInterface::VALUES_AS_ARRAY);
