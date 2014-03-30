@@ -39,30 +39,23 @@ class AliasController extends AbstractActionController
             $source = $this->getAliasManager()->findSourceByAlias($alias, $instance);
         } catch (Alias\Exception\AliasNotFoundException $e) {
             $this->getResponse()->setStatusCode(404);
-
             return false;
         }
 
-        $router = $this->getServiceLocator()->get('Router');
-
+        $router  = $this->getServiceLocator()->get('Router');
         $request = new Request();
         $request->setMethod(Request::METHOD_GET);
         $request->setUri($source);
-
         $routeMatch = $router->match($request);
 
         if ($routeMatch === null) {
-            throw new Alias\Exception\RuntimeException(sprintf(
-                'Could not match a route for `%s`',
-                $source
-            ));
+            $this->getResponse()->setStatusCode(404);
+            return false;
         }
 
-        $params = $routeMatch->getParams();
-
+        $params     = $routeMatch->getParams();
         $controller = $params['controller'];
-
-        $return = $this->forward()->dispatch(
+        $return     = $this->forward()->dispatch(
             $controller,
             ArrayUtils::merge(
                 $params,

@@ -10,7 +10,10 @@
  */
 namespace Alias;
 
+use Common\Router\Slashable;
+use Exception;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RouteMatch;
 
 class Module
 {
@@ -21,14 +24,9 @@ class Module
         'Alias\Listener\RepositoryManagerListener'
     ];
 
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
     public function getAutoloaderConfig()
     {
-        $autoloader                                   = [];
+        $autoloader = [];
 
         $autoloader['Zend\Loader\StandardAutoloader'] = [
             'namespaces' => [
@@ -48,12 +46,68 @@ class Module
         return $autoloader;
     }
 
+    public function getConfig()
+    {
+        return include __DIR__ . '/config/module.config.php';
+    }
+
     public function onBootstrap(MvcEvent $e)
     {
+        $eventManager       = $e->getApplication()->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+        $router             = $e->getRouter();
+        $route              = Slashable::factory(
+            [
+                'route'       => '/:alias',
+                'defaults'    => [
+                    'controller' => 'Alias\Controller\AliasController',
+                    'action'     => 'forward'
+                ],
+                'constraints' => [
+                    'alias' => '(.)+'
+                ]
+            ]
+        );
+
+        $router->addRoute('alias', $route, -10000);
+        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
+
         foreach (self::$listeners as $listener) {
-            $e->getApplication()->getEventManager()->getSharedManager()->attachAggregate(
+            $sharedEventManager->attachAggregate(
                 $e->getApplication()->getServiceManager()->get($listener)
             );
+        }
+    }
+
+    public function onRender(MvcEvent $e)
+    {
+        $response = $e->getResponse();
+        if ($response->getStatusCode() == 404) {
+            /* @var $aliasManager AliasManager */
+            $application     = $e->getApplication();
+            $eventManager    = $application->getEventManager();
+            $serviceManager  = $application->getServiceManager();
+            $aliasManager    = $serviceManager->get('Alias\AliasManager');
+            $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+            /* @var $uriObject \Zend\Uri\Http */
+            $uriObject = $application->getRequest()->getUri();
+            $uri       = $uriObject->makeRelative('/')->getPath();
+            try {
+                $aliasManager->findSourceByAlias($uri, $instanceManager->getInstanceFromRequest());
+            } catch (Exception $ex) {
+                // We need to be doing this here, because otherwise we mess up the layout in some cases
+                $e->getViewModel()->setTemplate('layout/1-col');
+                return;
+            }
+            $response->setStatusCode(200);
+            $newEvent   = clone $e;
+            $routeMatch = new RouteMatch([
+                'controller' => 'Alias\Controller\AliasController',
+                'action'     => 'forward',
+                'alias'      => $uri
+            ]);
+            $newEvent->setRouteMatch($routeMatch);
+            $eventManager->trigger('dispatch', $newEvent);
         }
     }
 }
