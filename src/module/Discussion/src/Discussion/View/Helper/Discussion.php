@@ -218,8 +218,7 @@ class Discussion extends AbstractHelper
         return [
             'template'       => 'discussion/discussions',
             'root'           => 'root',
-            'forum'          => 'forum',
-            'forum_category' => 'forum-category'
+            'forum'          => 'forum'
         ];
     }
 

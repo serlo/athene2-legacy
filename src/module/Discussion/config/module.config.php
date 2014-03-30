@@ -40,10 +40,6 @@ return [
                 'route'          => 'discussion/discussions',
                 'param_provider' => 'Discussion\Provider\ParamProvider'
             ],
-            'forum-category' => [
-                'route'          => 'discussion/discussions',
-                'param_provider' => 'Discussion\Provider\ParamProvider'
-            ]
         ]
     ],
     'view_helpers'    => [
@@ -58,12 +54,6 @@ return [
     ],
     'taxonomy'        => [
         'types' => [
-            'forum-category' => [
-                'allowed_parents' => [
-                    'root'
-                ],
-                'rootable'        => false
-            ],
             'forum'          => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
