@@ -10,7 +10,7 @@
  */
 namespace Markdown\View\Helper;
 
-use Markdown\Exception;
+use Exception;
 use Markdown\Service\RenderServiceAwareTrait;
 use Markdown\Service\RenderServiceInterface;
 use Zend\View\Helper\AbstractHelper;
@@ -41,7 +41,7 @@ class MarkdownHelper extends AbstractHelper
         if ($catch) {
             try {
                 $content = $this->getRenderService()->render($content);
-            } catch (Exception\RuntimeException $e) {
+            } catch (Exception $e) {
                 // Renderer could not process the input data, so we'll use the original data instead
             }
         } else {
