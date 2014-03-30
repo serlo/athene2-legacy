@@ -89,13 +89,7 @@ class Discussion extends AbstractHelper
     {
         $instance = $this->getInstanceManager()->getInstanceFromRequest();
         $taxonomy = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance);
-        $term     = $this->getTaxonomyManager()->findTerm(
-            $taxonomy,
-            [
-                'root',
-                'discussions'
-            ]
-        );
+        $term     = $this->getTaxonomyManager()->findTerm($taxonomy, ['root']);
         $this->setForum($this->iterForums($path, $term));
         return $this;
     }
