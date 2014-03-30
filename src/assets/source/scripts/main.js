@@ -24,6 +24,7 @@ require.config({
         "events": "libs/eventscope",
         "cache": "libs/cache",
         "polyfills": "libs/polyfills",
+        "event_extensions": "libs/event_extensions",
         "referrer_history" : "modules/serlo_referrer_history",
         "side_navigation" : "modules/serlo_side_navigation",
         "ajax_overlay": "modules/serlo_ajax_overlay",
@@ -62,7 +63,7 @@ require.config({
             deps: ['jquery']
         },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable', 'polyfills', 'datepicker']
+            deps: ['bootstrap', 'easing', 'nestable', 'polyfills', 'datepicker', 'event_extensions']
         }
     },
     waitSeconds: 2

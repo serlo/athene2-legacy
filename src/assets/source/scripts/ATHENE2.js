@@ -59,7 +59,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
 
                 // init Mathjax
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, $('.math, .mathInline', $context).filter(':visible').toArray()]);
-                $($context).MathjaxTrigger();
+                $context.MathjaxTrigger();
             });
 
             // Tooltips opt in
