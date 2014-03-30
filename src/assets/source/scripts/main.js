@@ -42,7 +42,8 @@ require.config({
         "support" : "modules/serlo_supporter",
         "modals" : "modules/serlo_modals",
         "router" : "modules/serlo_router",
-        "toggle_controls" : "modules/serlo_toggle_controls"
+        "toggle_controls" : "modules/serlo_toggle_controls",
+        "mathjax_trigger" : "modules/serlo_mathjax_trigger"
     },
     shim: {
         underscore: {

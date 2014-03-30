@@ -11,7 +11,8 @@ define(['jquery'], function ($) {
                     .unbind('click')
                     .click(function (e) {
                         e.preventDefault();
-                        $(this).toggleClass('active');
+                        var $that = $(this);
+                        $that.toggleClass('active');
                         $('.edit-control').toggleClass('hidden');
                         return;
                     });

@@ -10,7 +10,7 @@
  */
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'content', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'toggle_controls', 'modals', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de'],
+                    'moment', 'ajax_overlay', 'toggle_controls', 'modals', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger'],
     function ($, Common, SideNavigation, t, Layout, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
@@ -58,7 +58,8 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 // $('a[href^="/ref"]', $context).addClass('ajax-content');
 
                 // init Mathjax
-                MathJax.Hub.Typeset($context[0]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $('.math, .mathInline', $context).filter(':visible').toArray()]);
+                $($context).MathjaxTrigger();
             });
 
             // Tooltips opt in
@@ -108,6 +109,7 @@ require(['jquery', 'ATHENE2', 'support'], function ($, App, Supporter) {
             displayAlign: 'left',
             extensions: ["tex2jax.js"],
             jax: ["input/TeX", "output/HTML-CSS"],
+            skipStartupTypeset: 'true',
             tex2jax: {
                 inlineMath: [["%%", "%%"]]
             },
