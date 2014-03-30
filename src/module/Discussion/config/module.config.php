@@ -58,6 +58,12 @@ return [
     ],
     'taxonomy'        => [
         'types' => [
+            'forum-category' => [
+                'allowed_parents' => [
+                    'root'
+                ],
+                'rootable'        => false
+            ],
             'forum'          => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
