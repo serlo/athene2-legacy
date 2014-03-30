@@ -179,6 +179,9 @@ return [
                     [
                         'label' => 'Diskussionen',
                         'route' => 'discussion/discussions',
+                        'params' => [
+                            'id' => null
+                        ],
                         'icon' => 'comment'
                     ],
                     [
