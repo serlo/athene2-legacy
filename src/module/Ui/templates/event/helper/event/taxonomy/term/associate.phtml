@@ -5,6 +5,6 @@ $object = $this->event->getParameter('object');
 if ($object) {
     $object = $this->normalize()->toAnchor($object);
 } else {
-    $object = '<strong>' . $this->translate('removed content') . '<strong>';
+    $object = '<strong>' . $this->translate('removed content') . '</strong>';
 }
 echo sprintf($this->translate('%s associated %s with taxonomy %s'), $user, $object, $term);
