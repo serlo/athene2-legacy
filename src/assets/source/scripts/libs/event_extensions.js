@@ -3,7 +3,6 @@
     $.each(['show', 'hide', 'toggle', 'fadeIn', 'slideDown'], function (i, ev) {
         var el = $.fn[ev];
         $.fn[ev] = function () {
-            console.log(ev);
             this.trigger(ev + '.before');
             var ret = el.apply(this, arguments);
             this.trigger(ev + '.after');

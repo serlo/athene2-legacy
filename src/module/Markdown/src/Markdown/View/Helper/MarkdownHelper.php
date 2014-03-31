@@ -11,6 +11,7 @@
 namespace Markdown\View\Helper;
 
 use Exception;
+use Markdown\Exception\RuntimeException;
 use Markdown\Service\RenderServiceAwareTrait;
 use Markdown\Service\RenderServiceInterface;
 use Zend\View\Helper\AbstractHelper;
@@ -41,10 +42,11 @@ class MarkdownHelper extends AbstractHelper
         if ($catch) {
             try {
                 return $this->getRenderService()->render($content);
+            } catch (RuntimeException $e) {
+                return $content;
             } catch (Exception $e) {
                 $message = $this->getView()->translate('Rendering failed:');
                 return '<div class="alert alert-error"><strong>'.$message.'</strong> '.$e->getMessage().'</div>'.$content;
-                // Renderer could not process the input data, so we'll use the original data instead
             }
         } else {
             return $this->getRenderService()->render($content);
