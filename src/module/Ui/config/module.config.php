@@ -91,7 +91,7 @@ return [
                 }
         ],
         'invokables' => [
-            'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
+            //'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
         ]
     ],
     'assetic_configuration' => [
