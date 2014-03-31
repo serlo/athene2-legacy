@@ -9,6 +9,10 @@ $themeColor: #007EC1;
 // $themeColor: #00A0DF; //visionsummit-logo blue
 $themeColorLight: lighten($themeColor, 5%);
 
+$secondaryColor: #2f6c61;
+
+$white: white;
+$grayDark: #333333;
 $gray: #4B4D4C;
 $darkGray: darken($gray, 8%);
 $darkerGray: darken($gray, 18%);
@@ -46,3 +50,23 @@ $gridColumnWidthSidebar: 61px;
 $fullStackBreakPoint: 1350px;
 $gridGutterWidthFullStack: 30px;
 $gridColumnWidthFullStack: 85px;
+
+
+// NAVBAR LIGHT
+$navbarLightBackground:                $white;
+$navbarLightBackgroundHighlight:       $secondaryColor;
+$navbarLightBorder:                    $white;
+
+$navbarLightText:                      $secondaryColor;
+$navbarLightLinkColor:                 $secondaryColor;
+$navbarLightLinkColorHover:            $white;
+$navbarLightLinkColorActive:           $navbarLightLinkColorHover;
+$navbarLightLinkBackgroundHover:       $secondaryColor;
+$navbarLightLinkBackgroundActive:      $secondaryColor;
+
+$navbarLightSearchBackground:          lighten($navbarLightBackground, 25%);
+$navbarLightSearchBackgroundFocus:     $white;
+$navbarLightSearchBorder:              $navbarLightBackground;
+$navbarLightSearchPlaceholderColor:    #ccc;
+
+$navbarLightBrandColor:                $navbarLightLinkColor;

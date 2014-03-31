@@ -99,7 +99,7 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                 .appendTo(self.$el);
 
             if (self.data.icon) {
-                $a.html('<i class="glyphicon glyphicon-' + self.data.icon + '"></i> <span>' + self.data.title + '</span>');
+                $a.html('<span class="glyphicon glyphicon-' + self.data.icon + '"></span> <span>' + self.data.title + '</span>');
             }
 
             if (self.data.cssClass) {
@@ -178,7 +178,8 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
         _.each(self.levels, function (level) {
             var $div = $('<div>'),
                 $ul = $('<ul>'),
-                elementCount = 0;
+                msg,
+                elementCount;
 
             // add back btns
             if (level[0].data.parent) {
@@ -202,12 +203,17 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 } else {
                     elementCount = parentData.$li.data('element-count');
-                    if (parentData.url !== '' && parentData.url !== '#' && elementCount > 0) {
+                    if (parentData.url !== '' && parentData.url !== '#' && typeof elementCount !== "undefined") {
+                        msg = t('Show content for \"%s\"', parentData.title);
+                        if (elementCount > 0) {
+                            msg = t('Show %d contents for \"%s\"', elementCount, parentData.title);
+                        }
+
                         parentLink = new MenuItem($.extend({}, parentData, {
                             icon: 'eye-open',
                             cssClass: 'sub-nav-footer',
                             level: -1,
-                            title: t('Show %d contents for \"%s\"', elementCount, parentData.title)
+                            title: msg
                         }));
 
                         parentLink.$el.unbind('click').click(function (e) {
@@ -302,7 +308,13 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
 
                 var $listItem = $(this),
                     $link = $listItem.children().filter('a').first(),
-                    position = [].concat(deepness);
+                    position = [].concat(deepness),
+                    hasChildren = $listItem.children().filter('ul').find('> li').length,
+                    icon = 'th-list';
+
+                if (hasChildren) {
+                    icon = 'chevron-right';
+                }
 
                 dataHierarchy[i] = new MenuItem({
                     url: $link.attr('href'),
@@ -312,10 +324,10 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
                     position: position,
                     level: level,
                     parent: parent,
-                    icon: 'chevron-right'
+                    icon: icon
                 });
 
-                if ($listItem.children().filter('ul').find('> li').length) {
+                if (hasChildren) {
                     dataHierarchy[i].children = [];
                     loop($listItem.children().filter('ul').first(), dataHierarchy[i].children, level + 1, dataHierarchy[i]);
                 }

@@ -41,7 +41,8 @@ require.config({
         "search" : "modules/serlo_search",
         "support" : "modules/serlo_supporter",
         "modals" : "modules/serlo_modals",
-        "router" : "modules/serlo_router"
+        "router" : "modules/serlo_router",
+        "toggle_controls" : "modules/serlo_toggle_controls"
     },
     shim: {
         underscore: {

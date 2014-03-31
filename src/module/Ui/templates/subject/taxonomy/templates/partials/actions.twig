@@ -1,0 +1,66 @@
+<nav class="navbar navbar-light edit-control hidden" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#taxonomy-term-navbar-collapse-1">
+                <span class="sr-only">{{ translate('Toggle navigation') }}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="taxonomy-term-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#"><span class="glyphicon glyphicon-eye-open"></span> {{ translate('View') }}</a>
+                </li>
+                {% if isGranted('taxonomy.term.update', term) %}
+                    <li>
+                        <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">
+                            <span class="glyphicon glyphicon-pencil"></span> {{ translate('Edit') }}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if isGranted('taxonomy.term.create', term) %}
+                    <li>
+                        <a href="{{ url('taxonomy/term/organize', {'id': term.getId()}) }}">
+                            <span class="glyphicon glyphicon-th-list"></span> {{ translate('Organize') }}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if isGranted('event.log.get', term) %}
+                    <li>
+                        <a href="{{ url('event/history', {'id': term.getId()}) }}">
+                            <span class="glyphicon glyphicon-time"></span> {{ translate('History') }}
+                        </a>
+                    </li>
+                {% endif %}
+                {% if taxonomy().getOptions(term).isAssociationAllowed('Entity\\Entity\\EntityInterface') and isGranted('entity.create', term) and isGranted('taxonomy.term.associate', term) %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-file"></span> {{ translate('Add content') }} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for type in subject().getOptions(subject).getAllowedEntities() %}
+                                <li>
+                                    <a href="{{ url('entity/create', {'type': type}, {'query': {'taxonomy': {'term': term.getId() }}}) }}">
+                                        {{ translate(type) }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if isGranted('taxonomy.term.associated.sort', term) %}
+                    <li>
+                        <a href="{{ url('taxonomy/term/sort-associated', {'association': 'entities', 'term': term.getId()}) }}">
+                            <span class="glyphicon glyphicon-sort"></span> {{ translate('Order content') }}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

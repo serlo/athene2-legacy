@@ -17,14 +17,6 @@ return [
                 'icon'  => 'home'
             ],
             [
-                'label' => 'Blog',
-                'route' => 'blog'
-            ],
-            [
-                'label' => 'Community',
-                'route' => 'discussion/discussions'
-            ],
-            [
                 'label' => 'Backend',
                 'route' => 'backend'
             ]

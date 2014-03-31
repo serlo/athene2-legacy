@@ -18,7 +18,8 @@ foreach ($this->container as $page) {
     $html[] = '<div class="inner">';
     $html[] = '<ul class="nav">';
     // header
-    $html[] = '<li class="nav-header">';
+    // $html[] = '<li class="nav-header">';
+    $html[] = '<li>';
     $html[] = '<a href="' . $page->getHref() . '">';
     if ($page->get('icon')) {
         $html[] = '<i class="icon-' . $page->get('icon') . '"></i>';

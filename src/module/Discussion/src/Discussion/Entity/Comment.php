@@ -37,7 +37,7 @@ class Comment extends Uuid implements CommentInterface
     protected $object;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children", cascade={"persist", "remove"})
      */
     protected $parent;
 

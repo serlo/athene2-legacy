@@ -249,7 +249,7 @@ class TaxonomyManager implements TaxonomyManagerInterface
     protected function bind(TaxonomyTermInterface $object, FormInterface $form)
     {
         if (!$form->isValid()) {
-            throw new RuntimeException(print_r($form->getMessages(), true));
+            throw new RuntimeException(print_r([$form->getMessages(), $form->getData(FormInterface::VALUES_AS_ARRAY)], true));
         }
         $processingForm = clone $form;
         $data           = $form->getData(FormInterface::VALUES_AS_ARRAY);
