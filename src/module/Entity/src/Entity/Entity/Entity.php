@@ -93,8 +93,6 @@ class Entity extends Uuid implements EntityInterface
     public function setCurrentRevision(RevisionInterface $currentRevision)
     {
         $this->currentRevision = $currentRevision;
-
-        return $this;
     }
 
     public function getLicense()
@@ -105,8 +103,6 @@ class Entity extends Uuid implements EntityInterface
     public function setLicense(LicenseInterface $license)
     {
         $this->license = $license;
-
-        return $this;
     }
 
     public function getTimestamp()

@@ -38,7 +38,7 @@ class PageRepository extends Uuid implements PageRepositoryInterface
     protected $current_revision;
 
     /**
-     * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="page_repository", cascade="persist")
+     * @ORM\OneToMany(targetEntity="PageRevision", mappedBy="page_repository",  cascade={"remove", "persist"}, orphanRemoval=true)
      */
     protected $revisions;
 
