@@ -1,6 +1,6 @@
 /*global jQuery*/
 (function ($) {
-    $.each(['show', 'hide', 'toggle', 'fadeIn', 'slideDown'], function (i, ev) {
+    $.each(['show', 'hide'], function (i, ev) {
         var el = $.fn[ev];
         $.fn[ev] = function () {
             this.trigger(ev + '.before');
