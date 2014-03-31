@@ -82,18 +82,6 @@ class TaxonomyTermHydrator implements HydratorInterface
             }
         }
 
-        if ($object->getParent() !== $oldParent && $object->getId()) {
-            $this->taxonomyManager->getEventManager()->trigger(
-                'parent.change',
-                $this->taxonomyManager,
-                [
-                    'term' => $object,
-                    'from' => $oldParent,
-                    'to'   => $object->getParent()
-                ]
-            );
-        }
-
         return $object;
     }
 

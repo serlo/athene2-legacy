@@ -16,6 +16,7 @@ use ClassResolver\ClassResolverInterface;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Instance\Entity\InstanceInterface;
 use Taxonomy\Entity\TaxonomyInterface;
 use Taxonomy\Entity\TaxonomyTermAwareInterface;
@@ -58,21 +59,6 @@ class TaxonomyManager implements TaxonomyManagerInterface
         $this->objectManager = $objectManager;
         $this->typeManager   = $typeManager;
         $this->setAuthorizationService($authorizationService);
-    }
-
-    public function isAssociableWith($term, TaxonomyTermAwareInterface $object){
-        if (!$term instanceof TaxonomyTermInterface) {
-            $term = $this->getTerm($term);
-        }
-
-        $taxonomy = $term->getTaxonomy();
-        $this->assertGranted('taxonomy.term.associate', $term);
-
-        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
-            return false;
-        }
-
-        return true;
     }
 
     public function associateWith($term, TaxonomyTermAwareInterface $object, $position = null)
@@ -220,10 +206,26 @@ class TaxonomyManager implements TaxonomyManagerInterface
         return $entity;
     }
 
+    public function isAssociableWith($term, TaxonomyTermAwareInterface $object)
+    {
+        if (!$term instanceof TaxonomyTermInterface) {
+            $term = $this->getTerm($term);
+        }
+
+        $taxonomy = $term->getTaxonomy();
+        $this->assertGranted('taxonomy.term.associate', $term);
+
+        if (!$this->getModuleOptions()->getType($taxonomy->getName())->isAssociationAllowed($object)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function removeAssociation($id, TaxonomyTermAwareInterface $object)
     {
         $term = $this->getTerm($id);
-        if(!$term->isAssociated($object)){
+        if (!$term->isAssociated($object)) {
             return;
         }
         $this->assertGranted('taxonomy.term.dissociate', $term);
@@ -234,9 +236,31 @@ class TaxonomyManager implements TaxonomyManagerInterface
 
     public function updateTerm(FormInterface $form)
     {
-        $term = $this->bind($form->getObject(), $form);
+        /* @var $objectManager EntityManager */
+        $objectManager = $this->objectManager;
+        $term          = $this->bind($form->getObject(), $form);
+        $unitOfWork    = $objectManager->getUnitOfWork();
+
         $this->assertGranted('taxonomy.term.update', $term);
-        $this->getEventManager()->trigger('update', $this, ['term' => $term]);
+        $unitOfWork->computeChangeSets();
+
+        $changeSet = $unitOfWork->getEntityChangeSet($term);
+
+        if (!empty($changeSet)) {
+            $this->getEventManager()->trigger('update', $this, ['term' => $term]);
+            if(isset($changeSet['parent'])){
+                $this->getEventManager()->trigger(
+                    'parent.change',
+                    $this,
+                    [
+                        'term' => $term,
+                        'from' => $changeSet['parent'][0]->getParent(),
+                        'to'   => $changeSet['parent'][1]->getParent()
+                    ]
+                );
+            }
+        }
+
         return $term;
     }
 
