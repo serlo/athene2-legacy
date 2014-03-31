@@ -171,16 +171,10 @@ return [
                     ]
                 ]
             ],
-            'community' => [
-                'label' => 'Community',
-                'route' => 'discussion',
-                'params' => [],
+            'me' => [
+                'label' => 'Me',
+                'uri' => '#',
                 'pages' => [
-                    [
-                        'label' => 'Diskussionen',
-                        'route' => 'discussion/discussions',
-                        'icon' => 'comment'
-                    ],
                     [
                         'route' => 'user/login',
                         'visible' => false

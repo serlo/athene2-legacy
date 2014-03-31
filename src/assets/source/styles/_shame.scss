@@ -18,3 +18,13 @@ img.license-intext {
   margin-left: 0px;
   margin-right: 0px;
 }
+
+#serlo-menu {
+  .nav {
+    /* this is really hacky */
+    .dropdown-menu {
+      word-wrap: normal;
+      min-width: 500px;
+    }
+  }
+}

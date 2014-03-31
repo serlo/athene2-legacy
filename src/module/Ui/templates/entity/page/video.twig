@@ -1,5 +1,10 @@
-{{ pageHeader(entity.getCurrentRevision().get('title')).setSubtitle('Video').render() }}
-{% include 'entity/view/partials/actions/big' %}
+<div class="page-header">
+    <div class="pull-right">
+        {% include 'entity/view/partials/actions/toggle-controls' %}
+    </div>
+    <h1>{{ entity.getCurrentRevision().get('title') }} <small>{{ translate('Article') }}</small></h1>
+    {% include 'entity/view/partials/actions/big' %}
+</div>
 {% include 'entity/view/default' %}
 {% set taxonomy = include('entity/page/aggregate/taxonomy', {'terms': entity.getTaxonomyTerms()}) %}
 {% set temp = registry().add('rnav', taxonomy) %}

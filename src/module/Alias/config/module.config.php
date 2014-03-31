@@ -28,24 +28,6 @@ return [
     'class_resolver'  => [
         __NAMESPACE__ . '\Entity\AliasInterface' => __NAMESPACE__ . '\Entity\Alias'
     ],
-    'router'          => [
-        'routes' => [
-            'alias' => [
-                'type'          => 'Common\Router\Slashable',
-                'options'       => [
-                    'route'       => '/alias/:alias',
-                    'defaults'    => [
-                        'controller' => 'Alias\Controller\AliasController',
-                        'action'     => 'forward'
-                    ],
-                    'constraints' => [
-                        'alias' => '(.)+'
-                    ]
-                ],
-                'may_terminate' => true
-            ]
-        ]
-    ],
     'service_manager' => [
         'factories' => [
             __NAMESPACE__ . '\Options\ManagerOptions'             => __NAMESPACE__ . '\Factory\ManagerOptionsFactory',

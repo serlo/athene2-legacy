@@ -96,19 +96,19 @@ class NavigationProvider implements PageProviderInterface
     public function provide(array $options)
     {
         $this->options = ArrayUtils::merge($this->defaultOptions, $options);
+        $key = hash('sha256', serialize($this->options));
+
+        if ($this->storage->hasItem($key)) {
+            return $this->storage->getItem($key);
+        }
+
         $term          = $this->getTerm();
 
         if ($this->getObjectManager()->isOpen()) {
             $this->getObjectManager()->refresh($term);
         }
 
-        $terms = $term->findChildrenByTaxonomyNames($this->options['types']);
-        $key   = hash('sha256', serialize($this->options));
-
-        if ($this->storage->hasItem($key)) {
-            return $this->storage->getItem($key);
-        }
-
+        $terms      = $term->findChildrenByTaxonomyNames($this->options['types']);
         $pages      = $this->iterTerms($terms, $this->options['max_depth']);
         $this->term = null;
         $this->storage->setItem($key, $pages);
