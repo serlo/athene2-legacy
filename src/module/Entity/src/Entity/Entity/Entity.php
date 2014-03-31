@@ -34,8 +34,7 @@ class Entity extends Uuid implements EntityInterface
     use InstanceAwareTrait;
 
     /**
-     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist", "remove"},
-     * orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="EntityLink", mappedBy="child", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"order" = "ASC"})
      */
     protected $parentLinks;
@@ -48,7 +47,7 @@ class Entity extends Uuid implements EntityInterface
     protected $childLinks;
 
     /**
-     * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository")
+     * @ORM\OneToMany(targetEntity="Revision", mappedBy="repository", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      */
     protected $revisions;
@@ -60,12 +59,7 @@ class Entity extends Uuid implements EntityInterface
     protected $currentRevision;
 
     /**
-     * @ORM\OneToMany(
-     * targetEntity="Taxonomy\Entity\TaxonomyTermEntity",
-     * mappedBy="entity",
-     * cascade={"persist", "remove"},
-     * orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTermEntity", mappedBy="entity", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $termTaxonomyEntities;
 

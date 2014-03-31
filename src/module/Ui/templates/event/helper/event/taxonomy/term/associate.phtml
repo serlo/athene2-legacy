@@ -1,4 +1,10 @@
-<?php $user = $this->normalize()->toAnchor($this->event->getActor()); ?>
-<?php $term = $this->normalize()->toAnchor($this->event->getObject()); ?>
-<?php $object = $this->normalize()->toAnchor($this->event->getParameter('object')); ?>
-<?php echo sprintf($this->translate('%s associated %s with taxonomy %s'), $user, $object, $term);?>
+<?php
+$user   = $this->normalize()->toAnchor($this->event->getActor());
+$term   = $this->normalize()->toAnchor($this->event->getObject());
+$object = $this->event->getParameter('object');
+if ($object) {
+    $object = $this->normalize()->toAnchor($object);
+} else {
+    $object = '<strong>' . $this->translate('removed content') . '<strong>';
+}
+echo sprintf($this->translate('%s associated %s with taxonomy %s'), $user, $object, $term);
