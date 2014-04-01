@@ -12,6 +12,7 @@ namespace Alias;
 
 use Common\Router\Slashable;
 use Exception;
+use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 
@@ -53,24 +54,9 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
+        $this->registerRoute($e);
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
-        $router             = $e->getRouter();
-        $route              = Slashable::factory(
-            [
-                'route'       => '/:alias',
-                'defaults'    => [
-                    'controller' => 'Alias\Controller\AliasController',
-                    'action'     => 'forward'
-                ],
-                'constraints' => [
-                    'alias' => '(.)+'
-                ]
-            ]
-        );
-
-        $router->addRoute('alias', $route, -10000);
-        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
 
         foreach (self::$listeners as $listener) {
             $sharedEventManager->attachAggregate(
@@ -109,5 +95,29 @@ class Module
             $newEvent->setRouteMatch($routeMatch);
             $eventManager->trigger('dispatch', $newEvent);
         }
+    }
+
+    protected function registerRoute(MvcEvent $e)
+    {
+        if (!$e->getRequest() instanceof HttpRequest) {
+            return;
+        }
+        $eventManager = $e->getApplication()->getEventManager();
+        $router       = $e->getRouter();
+        $route        = Slashable::factory(
+            [
+                'route'       => '/:alias',
+                'defaults'    => [
+                    'controller' => 'Alias\Controller\AliasController',
+                    'action'     => 'forward'
+                ],
+                'constraints' => [
+                    'alias' => '(.)+'
+                ]
+            ]
+        );
+
+        $router->addRoute('alias', $route, -10000);
+        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
     }
 }
