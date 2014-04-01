@@ -64,6 +64,12 @@ interface TaxonomyTermInterface extends InstanceProviderInterface, UuidInterface
     public function getChildren();
 
     /**
+     * @param bool $trashed
+     * @return Collection|TaxonomyTermInterface[]
+     */
+    public function findChildrenByTrashed($trashed);
+
+    /**
      * @return string
      */
     public function getDescription();

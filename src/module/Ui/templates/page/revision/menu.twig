@@ -16,7 +16,7 @@
         <a href="{{ url('uuid/trash', {'id': revision.getId()}) }}" class="btn btn-link">
             <span class="glyphicon glyphicon-trash"></span> {{ translate('Trash') }}
         </a>
-        <a href="{{ url('page/revision/checkout', {'repository': page.getId(), 'revision': revision.getId()}) }}" class="btn btn-link">
+        <a href="{{ url('page/revision/checkout', {'page': page.getId(), 'revision': revision.getId()}) }}" class="btn btn-link">
             <span class="glyphicon glyphicon-ok"> {{ translate('Set as base revision') }}
         </a>
     {% endif %}

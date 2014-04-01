@@ -1,5 +1,5 @@
 <div class="panel-group" id="accordion{{ term.getId() }}">
-    {% for child in term.getChildren() %}
+    {% for child in term.findChildrenByTrashed(false) %}
         {% if child.getType().getName() in ['topic-folder' , 'curriculum-topic-folder'] %}
             <div class="panel panel-default">
                 <div class="panel-heading">
