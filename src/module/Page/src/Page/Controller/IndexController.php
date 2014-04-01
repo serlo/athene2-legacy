@@ -178,8 +178,8 @@ class IndexController extends AbstractActionController
     public function viewRevisionAction()
     {
         $id             = $this->params('revision');
-        $pageRepository = $this->getPageRepository();
         $revision       = $this->getPageManager()->getRevision($id);
+        $pageRepository = $revision->getRepository();
         $view           = new ViewModel(['revision' => $revision, 'page' => $pageRepository]);
 
         $this->assertGranted('page.get', $pageRepository);
