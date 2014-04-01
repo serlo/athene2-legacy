@@ -24,6 +24,7 @@ require.config({
         "events": "libs/eventscope",
         "cache": "libs/cache",
         "polyfills": "libs/polyfills",
+        "event_extensions": "libs/event_extensions",
         "referrer_history" : "modules/serlo_referrer_history",
         "side_navigation" : "modules/serlo_side_navigation",
         "ajax_overlay": "modules/serlo_ajax_overlay",
@@ -42,7 +43,8 @@ require.config({
         "support" : "modules/serlo_supporter",
         "modals" : "modules/serlo_modals",
         "router" : "modules/serlo_router",
-        "toggle_controls" : "modules/serlo_toggle_controls"
+        "toggle_controls" : "modules/serlo_toggle_controls",
+        "mathjax_trigger" : "modules/serlo_mathjax_trigger"
     },
     shim: {
         underscore: {
@@ -61,7 +63,7 @@ require.config({
             deps: ['jquery']
         },
         ATHENE2: {
-            deps: ['bootstrap', 'easing', 'nestable', 'polyfills', 'datepicker']
+            deps: ['bootstrap', 'easing', 'nestable', 'polyfills', 'datepicker', 'event_extensions']
         }
     },
     waitSeconds: 2

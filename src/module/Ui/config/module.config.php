@@ -81,7 +81,7 @@ return [
     ],
     'page_header_helper'    => [],
     'service_manager'       => [
-        'factories' => [
+        'factories'  => [
             'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm) {
                     $service = new Renderer\PhpDebugRenderer();
                     $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
@@ -89,6 +89,9 @@ return [
 
                     return $service;
                 }
+        ],
+        'invokables' => [
+            //'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
         ]
     ],
     'assetic_configuration' => [
