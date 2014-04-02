@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light edit-control hidden" role="navigation">
+<nav class="navbar navbar-light" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -13,9 +13,6 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="taxonomy-term-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="#"><span class="glyphicon glyphicon-eye-open"></span> {{ translate('View') }}</a>
-                </li>
                 {% if isGranted('taxonomy.term.update', term) %}
                     <li>
                         <a href="{{ url('taxonomy/term/update', {'term': term.getId()}) }}">

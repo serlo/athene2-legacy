@@ -10,6 +10,9 @@
                     </h4>
                 </div>
                 <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
+                    <div class="list-group-item edit-control hidden">
+                        {% include 'subject/taxonomy/templates/partials/actions' %}
+                    </div>
                     {% if child.getDescription() %}
                         <div class="list-group-item">
                             <strong>
