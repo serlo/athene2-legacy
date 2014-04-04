@@ -1,2 +1,7 @@
-{{ pageHeader(entity.getId()).setSubtitle('Text exercise').render() }}
+<div class="page-header">
+    <div class="pull-right">
+        {% include 'entity/view/partials/actions/toggle-controls' %}
+    </div>
+    <h1>{{ entity.getId() }} <small>{{ translate('Text exercise') }}</small></h1>
+</div>
 {% include 'entity/view/default' %}
