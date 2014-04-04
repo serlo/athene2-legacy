@@ -66,8 +66,11 @@ class IndexController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $repository = $this->getPageManager()->createPageRepository($form);
-                $data       = $form->getData();
-                $params     = ['repository' => $repository, 'slug' => $data['slug']];
+                $data       = $form->getData(FormInterface::VALUES_AS_ARRAY);
+                $params     = [
+                    'repository' => $repository,
+                    'slug' => $data['slug']
+                ];
                 $this->getEventManager()->trigger('page.create', $this, $params);
                 $this->getPageManager()->flush();
                 $this->getEventManager()->trigger('page.create.postFlush', $this, $params);

@@ -5,6 +5,7 @@ namespace Page\Form;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use Page\Entity\PageRepositoryInterface;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
@@ -14,7 +15,7 @@ use Zend\InputFilter\InputFilter;
 class RepositoryForm extends Form
 {
 
-    public function __construct(ObjectManager $objectManager, TaxonomyManagerInterface $taxonomyManager)
+    public function __construct(ObjectManager $objectManager, PageRepositoryInterface $pageRepository, TaxonomyManagerInterface $taxonomyManager)
     {
         parent::__construct('createPage');
 
@@ -25,6 +26,7 @@ class RepositoryForm extends Form
         $this->setAttribute('class', 'form-horizontal');
         $this->setInputFilter($filter);
         $this->setHydrator($hydrator);
+        $this->setObject($pageRepository);
 
         $this->add((new Text('slug'))->setLabel('Url:'));
         $this->add((new Text('forum'))->setLabel('Forum Id:')->setAttribute('placeholder', '123'));

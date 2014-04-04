@@ -2,7 +2,7 @@
 namespace Page;
 
 return [
-    'zfc_rbac'       => [
+    'zfc_rbac'        => [
         'assertion_manager' => [
             'factories' => [
                 __NAMESPACE__ . '\Assertion\PageAssertion' => __NAMESPACE__ . '\Factory\PageAssertionFactory',
@@ -22,7 +22,7 @@ return [
             'page.revision.trash'    => __NAMESPACE__ . '\Assertion\PageAssertion',
         ]
     ],
-    'taxonomy'       => [
+    'taxonomy'        => [
         'types' => [
             'forum' => [
                 'allowed_associations' => [
@@ -31,7 +31,7 @@ return [
             ]
         ]
     ],
-    'versioning'     => [
+    'versioning'      => [
         'permissions' => [
             'Page\Entity\PageRepository' => [
                 'commit'   => 'page.revision.create',
@@ -40,7 +40,7 @@ return [
             ]
         ]
     ],
-    'uuid'           => [
+    'uuid'            => [
         'permissions' => [
             'Page\Entity\PageRevision'   => [
                 'trash'   => 'page.revision.trash',
@@ -54,7 +54,7 @@ return [
             ]
         ]
     ],
-    'router'         => [
+    'router'          => [
         'routes' => [
             'pages' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
@@ -153,12 +153,17 @@ return [
             ]
         ]
     ],
-    'class_resolver' => [
+    'class_resolver'  => [
         'Page\Entity\PageRepositoryInterface' => 'Page\Entity\PageRepository',
         'Page\Entity\PageRevisionInterface'   => 'Page\Entity\PageRevision',
         'Page\Entity\PageInterface'           => 'Page\Entity\Page'
     ],
-    'di'             => [
+    'service_manager' => [
+        'factories' => [
+            'Page\Form\RepositoryForm' => 'Page\Factory\RepositoryFormFactory'
+        ]
+    ],
+    'di'              => [
         'allowed_controllers' => [
             __NAMESPACE__ . '\Controller\IndexController'
         ],
@@ -166,7 +171,6 @@ return [
             'class' => [
                 'Page\Controller\IndexController' => [],
                 'Page\Manager\PageManager'        => [],
-                'Page\Form\RepositoryForm'        => []
             ]
         ],
         'instance'            => [
@@ -175,7 +179,7 @@ return [
             ]
         ]
     ],
-    'doctrine'       => [
+    'doctrine'        => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

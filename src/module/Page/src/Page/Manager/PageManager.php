@@ -73,9 +73,8 @@ class PageManager implements PageManagerInterface
         if (!$formClone->isValid()) {
             throw new RuntimeException(print_r($formClone->getMessages(), true));
         }
-        $entity = $this->classResolver->resolve('Page\Entity\PageRepositoryInterface');
         $data   = $formClone->getData(FormInterface::VALUES_AS_ARRAY);
-        $formClone->bind($entity);
+        $entity = $formClone->getObject();
         $formClone->setData($data);
         $formClone->isValid();
         $this->assertGranted('page.create', $entity);
