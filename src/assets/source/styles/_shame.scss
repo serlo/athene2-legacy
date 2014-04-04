@@ -25,6 +25,8 @@ img.license-intext {
     .dropdown-menu {
       word-wrap: normal;
       min-width: 500px;
+      max-height: 300px;
+      overflow-y: scroll;
     }
   }
 }

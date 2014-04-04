@@ -1,9 +1,9 @@
 /*global define*/
 define(['jquery'], function ($) {
     "use strict";
-    var ToggleControls;
+    var ToggleAction;
 
-    ToggleControls = function () {
+    ToggleAction = function () {
         return $(this).each(function () {
             // Edit mode toggle
             if ($(this).data('toggle') === 'edit-controls') {
@@ -20,5 +20,5 @@ define(['jquery'], function ($) {
         });
     };
 
-    $.fn.ToggleControls = ToggleControls;
+    $.fn.ToggleAction = ToggleAction;
 });

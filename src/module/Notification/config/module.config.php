@@ -28,6 +28,31 @@ return [
                 },
         ]
     ],
+    'router'          => [
+        'routes' => [
+            'notification' => [
+                'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'options'       => [
+                    'route' => '/notification',
+                    'defaults' => [
+                        'controller' => 'Notification\Controller\NotificationController',
+                    ]
+                ],
+                'may_terminate' => false,
+                'child_routes'  => [
+                    'read'        => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
+                            'route'    => '/read',
+                            'defaults' => [
+                                'action'     => 'read'
+                            ]
+                        ]
+                    ],
+                ]
+            ]
+        ]
+    ],
     'class_resolver' => [
         __NAMESPACE__ . '\Entity\NotificationEventInterface' => __NAMESPACE__ . '\Entity\NotificationEvent',
         __NAMESPACE__ . '\Entity\NotificationInterface'      => __NAMESPACE__ . '\Entity\Notification',
@@ -35,7 +60,8 @@ return [
     ],
     'di'             => [
         'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\WorkerController'
+            __NAMESPACE__ . '\Controller\WorkerController',
+            __NAMESPACE__ . '\Controller\NotificationController'
         ],
         'definition'          => [
             'class' => [
@@ -44,7 +70,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Listener\RepositoryManagerListener'    => [
+                __NAMESPACE__ . '\Listener\RepositoryManagerListener' => [
                     'setSubscriptionManager' => [
                         'required' => true
                     ],
@@ -52,7 +78,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\SubscriptionManager'                   => [
+                __NAMESPACE__ . '\SubscriptionManager'                => [
                     'setClassResolver' => [
                         'required' => true
                     ],
@@ -60,7 +86,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\NotificationManager'                   => [
+                __NAMESPACE__ . '\NotificationManager'                => [
                     'setClassResolver'  => [
                         'required' => true
                     ],
@@ -71,7 +97,7 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\NotificationWorker'                    => [
+                __NAMESPACE__ . '\NotificationWorker'                 => [
                     'setUserManager'         => [
                         'required' => true
                     ],
@@ -88,11 +114,12 @@ return [
                         'required' => true
                     ]
                 ],
-                __NAMESPACE__ . '\Controller\WorkerController'           => [
+                __NAMESPACE__ . '\Controller\WorkerController'        => [
                     'setNotificationWorker' => [
                         'required' => true
                     ]
                 ],
+                __NAMESPACE__ . '\Controller\NotificationController'  => [],
             ]
         ],
         'instance'            => [

@@ -30,6 +30,7 @@ require.config({
         "ajax_overlay": "modules/serlo_ajax_overlay",
         "sortable_list" : "modules/serlo_sortable_list",
         "timeago" : "modules/serlo_timeago",
+        "trigger" : "modules/serlo_trigger",
         "system_notification" : "modules/serlo_system_notification",
         "nestable" : "thirdparty/jquery.nestable",
         "datepicker" : "../bower_components/bootstrap-datepicker/js/bootstrap-datepicker",
@@ -43,7 +44,7 @@ require.config({
         "support" : "modules/serlo_supporter",
         "modals" : "modules/serlo_modals",
         "router" : "modules/serlo_router",
-        "toggle_controls" : "modules/serlo_toggle_controls",
+        "toggle_action" : "modules/serlo_toggle",
         "mathjax_trigger" : "modules/serlo_mathjax_trigger"
     },
     shim: {

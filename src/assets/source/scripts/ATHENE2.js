@@ -10,7 +10,7 @@
  */
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout', 'content', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'toggle_controls', 'modals', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger'],
+                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger'],
     function ($, Common, SideNavigation, t, Layout, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
@@ -51,7 +51,9 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'layout'
                 // init injections
                 $('.injection').Injections();
                 // init edit controls
-                $('[data-toggle*="-controls"]').ToggleControls();
+                $('[data-toggle*="-controls"]').ToggleAction();
+                // init triggers
+                $('[data-trigger]').TriggerAction();
 
                 // NOTE: deactivated for now
                 // init AjaxOverlay for /ref links
