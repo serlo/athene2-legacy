@@ -209,6 +209,10 @@
 
         color: white;
         font-size: 0.85em;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     + li {
