@@ -3,7 +3,7 @@
 <?php $object = $this->normalize()->toTitle($event->getParameter('on')); ?>
 <?php $title = $this->normalize()->toTitle($event->getObject());?>
 
-<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('on')); ?>">
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getParameter('on'), true); ?>">
     <?php echo sprintf($this->translate('<strong>%s</strong> started a discussion on "%s": <i>"%s"</i>'), $user, $object, $title); ?>
     <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
 </a>

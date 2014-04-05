@@ -18,27 +18,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Event\Entity\EventLogInterface;
 use Notification\Entity\NotificationInterface;
 use User\Entity\UserInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 
 class NotificationManager implements NotificationManagerInterface
 {
-
     use ClassResolverAwareTrait, ObjectManagerAwareTrait;
     use FlushableTrait;
 
     public function createNotification(UserInterface $user, EventLogInterface $log)
     {
-
         /* @var $notificationLog \Notification\Entity\NotificationEventInterface */
         $notification    = $this->aggregateNotification($user, $log);
         $class           = 'Notification\Entity\NotificationEventInterface';
         $className       = $this->getClassResolver()->resolveClassName($class);
         $notificationLog = new $className();
 
-        $notificationLog->setNotification($notification);
         $notification->setUser($user);
         $notification->setSeen(false);
         $notification->setTimestamp(new DateTime());
+        $notification->addEvent($notificationLog);
         $notificationLog->setEventLog($log);
+        $notificationLog->setNotification($notification);
 
         $this->getObjectManager()->persist($notification);
         $this->getObjectManager()->persist($notificationLog);

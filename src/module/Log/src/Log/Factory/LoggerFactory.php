@@ -8,14 +8,14 @@
  * @link      https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright Copyright (c) 2013-2014 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Mailman\Factory;
+namespace Log\src\Log\Factory;
 
-use Mailman\Mailman;
+use Zend\Log\Logger;
+use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class MailmanFactory implements FactoryInterface
-{
+class LoggerFactory implements FactoryInterface {
     /**
      * Create service
      *
@@ -24,7 +24,15 @@ class MailmanFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options = $serviceLocator->get('Mailman\Options\ModuleOptions');
-        return new Mailman($options, $serviceLocator);
+        $logger = new Logger();
+        $file = __DIR__ . '../../../../data/log' . date('Y-m-d') . '-error.log';
+        $writer = new Stream($file);
+
+        $logger->addWriter($writer);
+
+        Logger::registerErrorHandler($logger);
+        Logger::registerExceptionHandler($logger);
+
+        return $logger;
     }
 }

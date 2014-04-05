@@ -8,19 +8,13 @@
  * @link        https://github.com/serlo-org/athene2 for the canonical source repository
  * @copyright   Copyright (c) 2013 Gesellschaft für freie Bildung e.V. (http://www.open-education.eu/)
  */
-namespace Mailman;
+namespace Log;
 
-use Zend\Console\Request;
+use Zend\EventManager\Event;
 use Zend\Mvc\MvcEvent;
-use Zend\Uri\Http;
 
 class Module
 {
-    public static $listeners = [
-        'Mailman\Listener\UserControllerListener',
-        'Mailman\Listener\AuthenticationControllerListener',
-        'Mailman\Listener\NotificationWorkerListener'
-    ];
 
     public function getAutoloaderConfig()
     {
@@ -56,15 +50,13 @@ class Module
         $serviceLocator     = $application->getServiceManager();
         $sharedEventManager = $eventManager->getSharedManager();
 
-        foreach (static::$listeners as $listener) {
-            $sharedEventManager->attachAggregate($serviceLocator->get($listener));
-        }
-
-        if ($e->getRequest() instanceof Request) {
-            /* @var $moduleOptions Options\ModuleOptions */
-            $moduleOptions = $serviceLocator->get('Mailman\Options\ModuleOptions');
-            $uri           = new Http($moduleOptions->getLocation());
-            $serviceLocator->get('HttpRouter')->setRequestUri($uri);
-        }
+        $sharedEventManager->attach(
+            'Zend\Mvc\Application',
+            'dispatch.error',
+            function (Event $e) use ($serviceLocator) {
+                $exception = $e->getParam('exception');
+                $serviceLocator->get('Zend\Log\Logger')->crit($exception);
+            }
+        );
     }
 }

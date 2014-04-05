@@ -29,5 +29,8 @@ return [
     ],
     'assetic_configuration' => [
         'buildOnRequest' => false
+    ],
+    'log' => [
+        'exceptions' => true
     ]
 ];

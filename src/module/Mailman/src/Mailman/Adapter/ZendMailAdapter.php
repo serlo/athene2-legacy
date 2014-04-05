@@ -10,26 +10,21 @@
  */
 namespace Mailman\Adapter;
 
+use Mailman\Exception;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Part as MimePart;
 
 class ZendMailAdapter implements AdapterInterface
 {
+    private static $instance;
     /**
      * @var SmtpOptions
      */
     protected $smtpOptions;
-
-    private static $instance;
-
-    /**
-     * @return \Zend\Mail\Transport\SmtpOptions $smtpOptions
-     */
-    public function getSmtpOptions()
-    {
-        return $this->smtpOptions;
-    }
+    protected $queue;
 
     public function __construct(SmtpOptions $smtpOptions)
     {
@@ -37,30 +32,31 @@ class ZendMailAdapter implements AdapterInterface
             throw new Exception\RuntimeException('ZendMailAdapter does not allow multiple instances');
         }
 
-        self::$instance = $this;
+        self::$instance    = $this;
         $this->smtpOptions = $smtpOptions;
-        $this->queue    = [];
+        $this->queue       = [];
     }
 
-    protected $queue;
-
-    /*
-     * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::addMail()
-     */
     public function addMail($to, $from, $subject, $body)
     {
-        $message = new Message();
-        $message->setBody($body);
+        $message           = new Message();
+        $bodyPart          = new MimeMessage();
+        $bodyMessage       = new MimePart($body);
+        $bodyMessage->type = 'text/html';
+        $bodyPart->setParts([$bodyMessage]);
         $message->setFrom($from);
         $message->addTo($to);
         $message->setEncoding("UTF-8");
         $message->setSubject($subject);
+        $message->setBody($bodyPart);
+        $message->type = 'text/html';
         $this->queue[] = $message;
     }
 
     /*
-     * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::flush()
+     * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::addMail()
      */
+
     public function flush()
     {
         $transport = new Smtp();
@@ -68,5 +64,18 @@ class ZendMailAdapter implements AdapterInterface
         foreach ($this->queue as $message) {
             $transport->send($message);
         }
+        $this->queue = [];
+    }
+
+    /*
+     * (non-PHPdoc) @see \Mailman\Adapter\AdapterInterface::flush()
+     */
+
+    /**
+     * @return \Zend\Mail\Transport\SmtpOptions $smtpOptions
+     */
+    public function getSmtpOptions()
+    {
+        return $this->smtpOptions;
     }
 }

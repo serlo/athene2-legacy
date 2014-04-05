@@ -10,21 +10,10 @@
  */
 namespace Mailman\Factory;
 
-use Mailman\Mailman;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class MailmanFactory implements FactoryInterface
+class NotificationWorkerListenerFactory extends AbstractListenerFactory
 {
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    protected function getClassName()
     {
-        $options = $serviceLocator->get('Mailman\Options\ModuleOptions');
-        return new Mailman($options, $serviceLocator);
+        return 'Mailman\Listener\NotificationWorkerListener';
     }
 }

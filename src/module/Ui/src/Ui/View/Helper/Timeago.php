@@ -11,6 +11,7 @@
  */
 namespace Ui\View\Helper;
 
+use DateTime;
 use Zend\View\Helper\AbstractHelper;
 
 class Timeago extends AbstractHelper
@@ -23,7 +24,7 @@ class Timeago extends AbstractHelper
         return $datetime->format('Y-m-d H:i:s');
     }
     
-    public function render(\Datetime $datetime){
-        return '<span class="timeago" title="'.$this->format($datetime).'"></span>';
+    public function render(Datetime $datetime){
+        return '<abbr class="timeago" title="'.$this->format($datetime).'">'.$this->format($datetime).'</abbr>';
     }
 }

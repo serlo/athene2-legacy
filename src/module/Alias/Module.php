@@ -12,7 +12,7 @@ namespace Alias;
 
 use Common\Router\Slashable;
 use Exception;
-use Zend\Http\Request as HttpRequest;
+use Zend\Console\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 
@@ -68,6 +68,11 @@ class Module
     public function onRender(MvcEvent $e)
     {
         $response = $e->getResponse();
+
+        if ($response instanceof Response) {
+            return;
+        }
+
         if ($response->getStatusCode() == 404) {
             /* @var $aliasManager AliasManager */
             $application     = $e->getApplication();
@@ -99,12 +104,10 @@ class Module
 
     protected function registerRoute(MvcEvent $e)
     {
-        if (!$e->getRequest() instanceof HttpRequest) {
-            return;
-        }
-        $eventManager = $e->getApplication()->getEventManager();
-        $router       = $e->getRouter();
-        $route        = Slashable::factory(
+        $eventManager   = $e->getApplication()->getEventManager();
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $router         = $serviceManager->get('HttpRouter');
+        $route          = Slashable::factory(
             [
                 'route'       => '/:alias',
                 'defaults'    => [

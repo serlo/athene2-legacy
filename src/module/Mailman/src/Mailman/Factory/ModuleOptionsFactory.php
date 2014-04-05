@@ -10,11 +10,11 @@
  */
 namespace Mailman\Factory;
 
-use Mailman\Mailman;
+use Mailman\Options\ModuleOptions;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class MailmanFactory implements FactoryInterface
+class ModuleOptionsFactory implements FactoryInterface
 {
     /**
      * Create service
@@ -24,7 +24,12 @@ class MailmanFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options = $serviceLocator->get('Mailman\Options\ModuleOptions');
-        return new Mailman($options, $serviceLocator);
+        $config = $serviceLocator->get('config');
+
+        if (!isset($config['mailman'])) {
+            $config['mailman'] = [];
+        }
+
+        return new ModuleOptions($config['mailman']);
     }
 }

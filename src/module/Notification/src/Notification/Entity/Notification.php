@@ -10,6 +10,7 @@ namespace Notification\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Notification\Exception;
 use User\Entity\UserInterface;
 
 
@@ -53,58 +54,9 @@ class Notification implements NotificationInterface
         $this->events = new ArrayCollection();
     }
 
-    public function getTimestamp()
-    {
-        return $this->date;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    public function setUser(UserInterface $user)
-    {
-        $this->user = $user;
-    }
-
-    public function getSeen()
-    {
-        return $this->seen;
-    }
-
-    public function setSeen($seen)
-    {
-        $this->seen = $seen;
-
-        return $this;
-    }
-
-    public function getEvents()
-    {
-        $events = new ArrayCollection();
-        foreach ($this->events as $event) {
-            $events->add($event->getEventLog());
-        }
-
-        return $events;
-    }
-
-    public function getEventName()
-    {
-        return $this->getEvents()->current()->getEvent()->getName();
-    }
-
     public function addEvent(NotificationEventInterface $event)
     {
         $this->events->add($event);
-
-        return $this;
     }
 
     public function getActors()
@@ -116,6 +68,29 @@ class Notification implements NotificationInterface
         }
 
         return $collection;
+    }
+
+    public function getEventName()
+    {
+        $first = $this->getEvents()->first();
+        if (!$first) {
+            throw new Exception\RuntimeException('No events found');
+        }
+        return $first->getEvent()->getName();
+    }
+
+    public function getEvents()
+    {
+        $events = new ArrayCollection();
+        foreach ($this->events as $event) {
+            $events->add($event->getEventLog());
+        }
+        return $events;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getObjects()
@@ -138,6 +113,31 @@ class Notification implements NotificationInterface
         }
 
         return $collection;
+    }
+
+    public function getSeen()
+    {
+        return $this->seen;
+    }
+
+    public function setSeen($seen)
+    {
+        $this->seen = $seen;
+    }
+
+    public function getTimestamp()
+    {
+        return $this->date;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
     }
 
     public function setTimestamp(DateTime $timestamp)
