@@ -206,7 +206,7 @@ class Comment extends Uuid implements CommentInterface
     public function upVote(UserInterface $user)
     {
         if ($this->findVotesByUser($user)->count()) {
-            return null;
+            return false;
         }
 
         $this->createVote($user, 1);
@@ -215,7 +215,7 @@ class Comment extends Uuid implements CommentInterface
     public function downVote(UserInterface $user)
     {
         if ($this->findVotesByUser($user)->count() === 0) {
-            return null;
+            return false;
         }
         $element = $this->findVotesByUser($user)->current();
         $this->getVotes()->removeElement($element);

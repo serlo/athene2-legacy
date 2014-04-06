@@ -84,11 +84,6 @@ class DiscussionController extends AbstractController
         return $view;
     }
 
-    protected function getDiscussion()
-    {
-        return $this->getDiscussionManager()->getComment($this->params('id'));
-    }
-
     public function startAction()
     {
         $form     = $this->discussionForm;
@@ -124,20 +119,25 @@ class DiscussionController extends AbstractController
         $this->assertGranted('discussion.vote', $discussion);
 
         if ($this->params('vote') == 'down') {
-            if ($discussion->downVote($user) === null) {
-                $this->flashMessenger()->addErrorMessage('You can\'t downvote this comment.');
-            } else {
+            if ($discussion->downVote($user)) {
                 $this->flashMessenger()->addSuccessMessage('You have downvoted this comment.');
+            } else {
+                $this->flashMessenger()->addErrorMessage('You can\'t downvote this comment.');
             }
         } else {
-            if ($discussion->upVote($user) === null) {
-                $this->flashMessenger()->addErrorMessage('You can\'t upvote this comment.');
-            } else {
+            if ($discussion->upVote($user)) {
                 $this->flashMessenger()->addSuccessMessage('You have upvoted this comment.');
+            } else {
+                $this->flashMessenger()->addErrorMessage('You can\'t upvote this comment.');
             }
         }
 
         $this->getDiscussionManager()->flush();
         return $this->redirect()->toReferer();
+    }
+
+    protected function getDiscussion()
+    {
+        return $this->getDiscussionManager()->getComment($this->params('id'));
     }
 }
