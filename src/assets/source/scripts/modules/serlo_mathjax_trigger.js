@@ -5,7 +5,10 @@ define(['jquery'], function ($) {
 
     MathjaxTrigger = function () {
         return $(this).on('shown.bs.collapse show.after shown.bs.tab shown.bs.popover shown.bs.modal', function () {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, $('.math, .mathInline', this).filter(':visible').toArray()]);
+            var elements = $('.math, .mathInline', this).filter(':visible').toArray();
+            if (elements.length) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, elements]);
+            }
         });
     };
 

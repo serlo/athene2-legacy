@@ -32,6 +32,8 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
             // initialize contextuals whenever a new context is added
 
             Content.add(function ($context) {
+                var elements = $('.math, .mathInline', this).filter(':visible').toArray();
+
                 // init sortable lists in context
                 $('.sortable', $context).SortableList();
                 // init timeago fields in context
@@ -60,7 +62,9 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 // $('a[href^="/ref"]', $context).addClass('ajax-content');
 
                 // init Mathjax
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, $('.math, .mathInline', $context).filter(':visible').toArray()]);
+                if (elements.length) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, elements]);
+                }
                 $context.MathjaxTrigger();
             });
 

@@ -1,11 +1,11 @@
 <?php if ($this->aggregated->count()): ?>
     <div class="sidebar-content-group">
-        <ul class="nav nav-side">
+        <ul class="nav nav-aside">
             <?php /* @var $related \RelatedContent\Result\ResultInterface */ ?>
             <?php foreach ($this->aggregated as $related): ?>
                 <?php if ($related->getType() == 'category'): ?>
-                    <li class="nav-side-header">
-                        <?php echo $related->getTitle(); ?>
+                    <li class="nav-aside-header">
+                        <strong><?php echo $related->getTitle(); ?></strong>
                     </li>
                 <?php elseif ($related->getType() == 'internal'): ?>
                     <li>

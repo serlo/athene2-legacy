@@ -1,7 +1,7 @@
 <div class="sidebar-content-group">
-    <ul class="nav nav-side">
-        <li class="nav-side-header">
-            {{ translate('Related taxonomies') }}
+    <ul class="nav nav-aside">
+        <li class="nav-aside-header">
+            <strong>{{ translate('Related taxonomies') }}</strong> <small>({{ terms.count() }})</small>
         </li>
         {% for term in terms %}
            <li>{{ normalize().toAnchor(term) }}</li>
