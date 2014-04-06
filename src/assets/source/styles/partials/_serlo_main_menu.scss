@@ -148,7 +148,7 @@
         margin-left: 24px;
 
         .glyphicon {
-            top: 25px;
+            top: 28px;
             left: -10px;
         }
     }
@@ -204,7 +204,7 @@
 #serlo-side-navigation-breadcrumbs {
     a {
         padding: 5px 15px 5px 30px;
-        
+
         background: $themeColor;
         //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
 
@@ -218,5 +218,13 @@
 
     + li {
         margin-top: 2px;
+    }
+
+    li:last-child:after {
+      content: ' ';
+      position: absolute;
+      right: -13px;
+      top: 0px;
+      @include triangle(right, $themeColor, 13px);
     }
 }

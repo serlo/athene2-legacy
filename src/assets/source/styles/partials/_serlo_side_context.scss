@@ -2,6 +2,14 @@
   padding: 12px 0;
   line-height: 20px;
 
+  &:before {
+    content: ' ';
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    @include triangle(right, $white, 13px);
+  }
+
   li.nav-aside-header {
     padding: 3px 12px;
     font-size: 14px;

@@ -520,9 +520,9 @@ define("side_navigation", ["jquery", "underscore", "referrer_history", "events",
             }
 
             if (parents.length) {
-                _.each(parents, function (menuItem, index) {
+                _.each(parents, function (menuItem) {
                     var breadcrumb = new MenuItem(_.extend({}, menuItem.data, {
-                        icon: (index === parents.length - 1) ? 'arrow-right' : false
+                        icon: false,
                     }));
 
                     // breadcrumb.alwaysPrevent = true;
