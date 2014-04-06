@@ -32,7 +32,7 @@
         "cd " . __DIR__ . "/../assets/;npm install",
         "cd " . __DIR__ . "/../assets/;npm update",
         "pm2 dump && pm2 kill",
-        "pm2 start \"" . __DIR__ . "/../assets/node_modules/athene2-editor/server/server.js\"",
+        "pm2 start \"" . __DIR__ . "/../assets/node_modules/athene2-editor/server/server.js\" > /dev/null 2>/dev/null &",
         "cd " . __DIR__ . "/../assets/;bower cache clean",
         "cd " . __DIR__ . "/../assets/;bower install",
         "cd " . __DIR__ . "/../assets/;bower update",
