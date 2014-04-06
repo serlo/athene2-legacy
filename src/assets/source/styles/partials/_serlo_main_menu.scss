@@ -14,6 +14,7 @@
     width: $navigationWidth;
     height: auto;
     margin: 0;
+    top: 1px;
 
     @media only screen and (max-width: $navigationBreakPoint) {
         width: 40px;
@@ -34,7 +35,7 @@
     @media only screen and (max-width: $navigationBreakPoint) {
         display: block;
 
-        @include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
+        //include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
 
         &:hover {
             box-shadow: -2px 0 4px darken($themeColor, 8%) inset;
@@ -68,11 +69,11 @@
             color: white;
             
             background: $gray;
-            @include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
+            //@include background(linear-gradient(right, darken($gray, 3%), $gray 12px, $gray));
             
             &:hover {
                 background: $themeColor;
-                @include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
+                //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
                 color: white;
             }
 
@@ -92,7 +93,7 @@
 
     .is-active > a {
         background: $themeColor;
-        @include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
+        //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
         color: white;
     }
 
@@ -205,7 +206,7 @@
         padding: 5px 15px 5px 30px;
         
         background: $themeColor;
-        @include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
+        //@include background(linear-gradient(right, darken($themeColor, 4%), $themeColor 12px, $themeColor));
 
         color: white;
         font-size: 0.85em;
