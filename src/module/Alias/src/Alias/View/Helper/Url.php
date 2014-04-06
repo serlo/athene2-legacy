@@ -44,8 +44,7 @@ class Url extends ZendUrl
             $aliasManager = $this->getAliasManager();
             $instance     = $this->getInstanceManager()->getInstanceFromRequest();
             $alias        = $aliasManager->findAliasBySource($link, $instance);
-
-            $link = parent::__invoke('alias', ['alias' => $alias]);
+            $link         = parent::__invoke('alias', ['alias' => $alias]);
         } catch (AliasNotFoundException $e) {
             // No alias was found -> nothing to do
         }

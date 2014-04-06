@@ -15,6 +15,7 @@ use Exception;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RouteInterface;
 use Zend\Mvc\Router\RouteMatch;
 
 class Module
@@ -74,8 +75,10 @@ class Module
 
         if (!$response instanceof HttpResponse) {
             return;
-        } else if (!$request instanceof HttpRequest) {
-            return;
+        } else {
+            if (!$request instanceof HttpRequest) {
+                return;
+            }
         }
 
         if ($response->getStatusCode() == 404) {
@@ -110,7 +113,7 @@ class Module
     {
         $eventManager   = $e->getApplication()->getEventManager();
         $serviceManager = $e->getApplication()->getServiceManager();
-        $router         = $serviceManager->get('HttpRouter');
+        $router         = $e->getRouter();
         $route          = Slashable::factory(
             [
                 'route'       => '/:alias',
@@ -123,6 +126,10 @@ class Module
                 ]
             ]
         );
+
+        if (!$router instanceof RouteInterface) {
+            $router = $serviceManager->get('HttpRouter');
+        }
 
         $router->addRoute('alias', $route, -10000);
         $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
