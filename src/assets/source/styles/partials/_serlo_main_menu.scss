@@ -1,5 +1,13 @@
 @import "compass/css3";
 
+.side-navigation {
+    &.visible {
+        .side-element-inner {
+            background: #FFF;
+            width: 200px;
+        }
+    }
+}
 
 #main-nav {
     @include theme-font();
@@ -58,7 +66,7 @@
 
 #serlo-side-sub-navigation {
     position: absolute;
-    top: -70px;
+    top: -3px;
     left: $navigationWidth;
     background: $themeColor;
     width: 300px;
@@ -69,6 +77,10 @@
     
     box-shadow: 0 0 3px rgba(90, 90, 90, 0.6);
     transform: translateZ(0);
+
+    @media only screen and (max-width: $navigationBreakPoint) {
+        left: 240px;
+    }
 
     a {
         color: white;

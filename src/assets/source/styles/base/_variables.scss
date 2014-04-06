@@ -31,8 +31,8 @@ $footerBackground: #FFF;
 // MAIN LAYOUT
 $navigationWidth: 200px;
 $navigationMargin: 0;
-$contentWidth: 680px;
-$contentPadding: 30px;
+$contentWidth: 700px;
+$contentPadding: 20px;
 $sidebarWidth: 200px;
 
 $footerHeight: 320px;
@@ -40,19 +40,13 @@ $footerHeight: 320px;
 $sideElementWidthCollapsed: 40px;
 
 // Navigation Breakpoint Grid
-$navigationBreakPoint: 1200px;
-$gridGutterWidthNavigation: 16px;
-$gridColumnWidthNavigation: 67px;
+$navigationBreakPoint: 1002px;
 
 // Sidebar Breakpoint Grid
-$sidebarBreakPoint: 992px;
-// $gridGutterWidthSidebar: 8px;
-$gridColumnWidthSidebar: 61px;
+$sidebarBreakPoint: 1200px;
 
 // Full Stack Breakpoint Grid
 $fullStackBreakPoint: 1350px;
-$gridGutterWidthFullStack: 30px;
-$gridColumnWidthFullStack: 85px;
 
 $pagePaddingSmall: 15px;
 $pagePaddingMedium: 20px;
@@ -81,6 +75,7 @@ $navbarLightBrandColor:                $navbarLightLinkColor;
 /* Z INDEXES */
 
 $sideElementZIndex: 12;
+$headerZIndex: 13;
 
 /* SIDE NAVS */
 $sideNavTopOffset: 26px;
