@@ -10,7 +10,7 @@
  */
 /*global define, require, MathJax*/
 define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_element', 'content', 'search', 'system_notification',
-                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger'],
+                    'moment', 'ajax_overlay', 'toggle_action', 'modals', 'trigger', 'sortable_list', 'timeago', 'spoiler', 'injections', 'moment_de', 'mathjax_trigger', 'affix'],
     function ($, Common, SideNavigation, t, SideElement, Content, Search, SystemNotification, moment, AjaxOverlay) {
         "use strict";
         var languageFromDOM,
@@ -30,6 +30,10 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 SystemNotification.error();
             });
             // initialize contextuals whenever a new context is added
+
+            $('.side-element').SerloAffix({
+                
+            });
 
             Content.add(function ($context) {
                 var elements = $('.math, .mathInline', this).filter(':visible').toArray();

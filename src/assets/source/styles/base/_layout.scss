@@ -3,11 +3,11 @@
 %pageMargin {
     padding: 0 $pagePaddingSmall;
 
-    @media only screen and (min-width: $sidebarBreakPoint) {
+    @media only screen and (min-width: $navigationBreakPoint) {
         padding: 0 $pagePaddingMedium;
     }
 
-    @media only screen and (min-width: $navigationBreakPoint) {
+    @media only screen and (min-width: $sidebarBreakPoint) {
         padding: 0 $pagePaddingLarge;
     }
 }
@@ -23,6 +23,12 @@
 #header,
 #horizon {
     margin-bottom: 30px;
+    clear: both;
+}
+
+#header {
+    position: relative;
+    z-index: $headerZIndex;
 }
 
 /* Side Elements (Navigation && Context) */
@@ -122,7 +128,7 @@
 
     .has-context & {
 
-        @media only screen and (min-width: $navigationBreakPoint + 150px) {
+        @media only screen and (min-width: $sidebarBreakPoint + 150px) {
             width: $contentWidth + $sidebarWidth + 150px;
         }
     }
@@ -144,7 +150,7 @@
         // }
 
 
-        // @media only screen and (min-width: $navigationBreakPoint + 150px) {
+        // @media only screen and (min-width: $sidebarBreakPoint + 150px) {
         //     margin-right: $sidebarWidth + 150px;
         // }
     }
@@ -176,7 +182,7 @@
         }
     }
 
-    @media only screen and (min-width: $navigationBreakPoint + 150px) {
+    @media only screen and (min-width: $sidebarBreakPoint + 150px) {
         width: $sidebarWidth + 150px - $pagePaddingLarge;
     }
 
