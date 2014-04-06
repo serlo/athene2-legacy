@@ -36,7 +36,7 @@ require.config({
         "datepicker" : "../bower_components/bootstrap-datepicker/js/bootstrap-datepicker",
         "translator" : "modules/serlo_translator",
         "i18n" : "modules/serlo_i18n",
-        "layout" : "modules/serlo_layout",
+        "side_element" : "modules/serlo_side_element",
         "content" : "modules/serlo_content",
         "spoiler" : "modules/serlo_spoiler",
         "injections" : "modules/serlo_injections",

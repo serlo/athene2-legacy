@@ -29,12 +29,15 @@ $footerBackground: #FFF;
 
 
 // MAIN LAYOUT
-$navigationWidth: 201px;
+$navigationWidth: 200px;
 $navigationMargin: 0;
-$contentWidth: 740px;
+$contentWidth: 700px;
+$contentPadding: 20px;
 $sidebarWidth: 200px;
 
 $footerHeight: 320px;
+
+$sideElementWidthCollapsed: 40px;
 
 // Navigation Breakpoint Grid
 $navigationBreakPoint: 1200px;
@@ -50,6 +53,10 @@ $gridColumnWidthSidebar: 61px;
 $fullStackBreakPoint: 1350px;
 $gridGutterWidthFullStack: 30px;
 $gridColumnWidthFullStack: 85px;
+
+$pagePaddingSmall: 15px;
+$pagePaddingMedium: 20px;
+$pagePaddingLarge: 30px;
 
 
 // NAVBAR LIGHT
@@ -70,3 +77,7 @@ $navbarLightSearchBorder:              $navbarLightBackground;
 $navbarLightSearchPlaceholderColor:    #ccc;
 
 $navbarLightBrandColor:                $navbarLightLinkColor;
+
+/* Z INDEXES */
+
+$sideElementZIndex: 12;

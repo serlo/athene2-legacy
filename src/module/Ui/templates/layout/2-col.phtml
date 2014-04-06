@@ -18,20 +18,15 @@ echo $this->doctype();
     <div class="wrap">
     	<?php echo $this->partial('layout/partials/header'); ?>
 
-    	<div id="page" class="container  col-2">
+    	<div id="page" class="has-navigation col-2">
     		<?php echo $this->partial('layout/partials/left-sidebar'); ?>
-    		<section id="main">
-    			<div id="main-container">
-    				<div id="content" class="content">
-                        <?php echo $this->partial('layout/partials/notifications'); ?>
-                        <div id="content-container" class="content">
-                        <?php echo $this->partial('layout/partials/main'); ?>
-    					</div>
-    				</div>
-    			</div>
+    		<section class="main">
+				<div id="content" class="content clearfix">
+                    <?php echo $this->partial('layout/partials/notifications'); ?>
+                    <?php echo $this->partial('layout/partials/main'); ?>
+                </div>
                 <?php echo $this->partial('layout/partials/contexter'); ?>
     		</section>
-            <?php echo $this->partial('layout/partials/right-sidebar'); ?>
     	</div>
         <?php echo $this->horizon(4);?>
         <?php /* sticky footer: */ ?>

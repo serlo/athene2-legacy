@@ -30,3 +30,12 @@ img.license-intext {
     }
   }
 }
+
+
+#content-container {
+  .panel-group {
+    .panel {
+      overflow: visible; // Do not crop contents (solves #383)
+    }
+  }
+}
