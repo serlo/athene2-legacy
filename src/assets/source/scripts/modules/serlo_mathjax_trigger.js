@@ -1,4 +1,4 @@
-/*global define, MathJax*/
+/*global define*/
 define(['jquery'], function ($) {
     "use strict";
     var MathjaxTrigger;
