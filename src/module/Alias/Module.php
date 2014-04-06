@@ -12,7 +12,8 @@ namespace Alias;
 
 use Common\Router\Slashable;
 use Exception;
-use Zend\Console\Response;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 
@@ -67,21 +68,24 @@ class Module
 
     public function onRender(MvcEvent $e)
     {
-        $response = $e->getResponse();
+        $application = $e->getApplication();
+        $response    = $e->getResponse();
+        $request     = $application->getRequest();
 
-        if ($response instanceof Response) {
+        if (!$response instanceof HttpResponse) {
+            return;
+        } else if (!$request instanceof HttpRequest) {
             return;
         }
 
         if ($response->getStatusCode() == 404) {
             /* @var $aliasManager AliasManager */
-            $application     = $e->getApplication();
             $eventManager    = $application->getEventManager();
             $serviceManager  = $application->getServiceManager();
             $aliasManager    = $serviceManager->get('Alias\AliasManager');
             $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
             /* @var $uriObject \Zend\Uri\Http */
-            $uriObject = $application->getRequest()->getUri();
+            $uriObject = $request->getUri();
             $uri       = $uriObject->makeRelative('/')->getPath();
             try {
                 $aliasManager->findSourceByAlias($uri, $instanceManager->getInstanceFromRequest());

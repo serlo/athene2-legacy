@@ -58,18 +58,12 @@ return [
     'view_helpers'          => [
         'factories'  => [
             'pageHeader' => function ($helperPluginManager) {
-                    $config = $helperPluginManager->getServiceLocator()->get('config')['page_header_helper'];
-                    $plugin = new PageHeader();
-                    $plugin->setConfig($config);
-
-                    return $plugin;
+                    $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\PageHeaderHelperOptions');
+                    return new PageHeader($config);
                 },
             'brand'      => function ($helperPluginManager) {
-                    $config = $helperPluginManager->getServiceLocator()->get('config')['brand'];
-                    $plugin = new Brand();
-                    $plugin->setConfig($config);
-
-                    return $plugin;
+                    $config = $helperPluginManager->getServiceLocator()->get('Ui\Options\BrandHelperOptions');
+                    return new Brand($config);
                 }
         ],
         'invokables' => [
@@ -82,13 +76,15 @@ return [
     'page_header_helper'    => [],
     'service_manager'       => [
         'factories'  => [
-            'Ui\Renderer\PhpDebugRenderer' => function (ServiceLocatorInterface $sm) {
+            'Ui\Renderer\PhpDebugRenderer'                     => function (ServiceLocatorInterface $sm) {
                     $service = new Renderer\PhpDebugRenderer();
                     $service->setResolver($sm->get('Zend\View\Resolver\AggregateResolver'));
                     $service->setHelperPluginManager($sm->get('ViewHelperManager'));
 
                     return $service;
-                }
+                },
+            __NAMESPACE__ . '\Options\BrandHelperOptions'      => __NAMESPACE__ . '\Factory\BrandHelperOptionsFactory',
+            __NAMESPACE__ . '\Options\PageHeaderHelperOptions' => __NAMESPACE__ . '\Factory\PageHeaderHelperOptionsFactory',
         ],
         'invokables' => [
             //'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',

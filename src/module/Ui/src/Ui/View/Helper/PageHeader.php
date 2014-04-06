@@ -11,47 +11,69 @@
 namespace Ui\View\Helper;
 
 use Common\Traits\ConfigAwareTrait;
+use Ui\Options\PageHeaderHelperOptions;
 use Zend\Filter\StripTags;
 use Zend\View\Helper\AbstractHelper;
 
 class PageHeader extends AbstractHelper
 {
-    use ConfigAwareTrait;
-
     /**
      * @var string
      */
     protected $text = '';
+
     /**
      * @var string
      */
     protected $subtext = '';
+
     /**
      * @var string|null
      */
     protected $backLink = '';
 
+    /**
+     * @var PageHeaderHelperOptions
+     */
+    protected $options;
+
+    /**
+     * @param PageHeaderHelperOptions $pageHeaderHelperOptions
+     */
+    public function __construct(PageHeaderHelperOptions $pageHeaderHelperOptions)
+    {
+        $this->options = $pageHeaderHelperOptions;
+    }
+
+    /**
+     * @param string $text
+     * @return $this
+     */
     public function __invoke($text)
     {
         $this->text = $this->getView()->translate((string)$text);
         return $this;
     }
 
+    /**
+     * @param bool $setHeadTitle
+     * @return string
+     */
     public function render($setHeadTitle = true)
     {
         if ($setHeadTitle) {
-            $delimiter = $this->getOption('delimiter');
+            $delimiter = $this->options->getDelimiter();
             if (strlen($this->subtext) > 0) {
                 $headTitle = $this->text . $delimiter . $this->subtext . $delimiter . $this->getView()->brand();
             } else {
-                $headTitle = $this->text . $delimiter . $this->getOption('brand');
+                $headTitle = $this->text . $delimiter . $this->options->getBrand();
             }
             $filter = new StripTags();
             $this->getView()->headTitle($filter->filter($headTitle));
         }
 
         return $this->getView()->partial(
-            $this->getOption('template'),
+            $this->options->getTemplate(),
             [
                 'text'     => $this->text,
                 'subtext'  => $this->subtext,
@@ -60,24 +82,23 @@ class PageHeader extends AbstractHelper
         );
     }
 
+    /**
+     * @param string $backLink
+     * @return $this
+     */
     public function setBackLink($backLink)
     {
         $this->backLink = $backLink;
         return $this;
     }
 
+    /**
+     * @param string $subtext
+     * @return $this
+     */
     public function setSubtitle($subtext)
     {
         $this->subtext = $this->getView()->translate((string)$subtext);
         return $this;
-    }
-
-    protected function getDefaultConfig()
-    {
-        return [
-            'template'  => 'common/helper/page-header',
-            'delimiter' => ' - ',
-            'brand'     => 'athene2'
-        ];
     }
 }

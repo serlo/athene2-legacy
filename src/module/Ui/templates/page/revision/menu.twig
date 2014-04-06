@@ -5,11 +5,11 @@
         </a>
     {% endif %}
     <a class="btn btn-xs btn-default" href="{{ url('page/revision/view-all', {'page': page.getId()}) }}">
-        <span class="glyphicon glyphicon-align-left"></span> {{ translate('History') }}
+        <span class="glyphicon glyphicon-time"></span> {{ translate('History') }}
     </a>
     {% if isGranted('event.log.get', page) %}
         <a class="btn btn-xs btn-default" href="{{ url('event/history', {'id': page.getId()}) }}">
-            <span class="glyphicon glyphicon-time"></span> {{ translate('Log') }}
+            <span class="glyphicon glyphicon-hdd"></span> {{ translate('Log') }}
         </a>
     {% endif %}
     {% if page.getCurrentRevision() is not same as (revision) %}
@@ -18,6 +18,12 @@
         </a>
         <a href="{{ url('page/revision/checkout', {'page': page.getId(), 'revision': revision.getId()}) }}" class="btn btn-link">
             <span class="glyphicon glyphicon-ok"> {{ translate('Set as base revision') }}
+        </a>
+    {% endif %}
+    {% if isGranted('page.create', page) %}
+        <a href="{{ url('page/update', {'page': page.getId()}) }}" class="btn btn-xs btn-default">
+            <span class="glyphicon glyphicon-edit"></span>
+            {{ translate('Edit page') }}
         </a>
     {% endif %}
 </div>
