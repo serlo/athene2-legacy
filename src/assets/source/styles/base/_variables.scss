@@ -17,7 +17,7 @@ $gray: #4B4D4C;
 $darkGray: darken($gray, 8%);
 $darkerGray: darken($gray, 18%);
 $lightGray: lighten($gray, 34%);
-$lighterGray: lighten($gray, 50%);
+$lighterGray: #F8F8F8;
 $backgroundColor: #E4E6E6;
 
 // TOP NAV BAR
@@ -31,8 +31,8 @@ $footerBackground: #FFF;
 // MAIN LAYOUT
 $navigationWidth: 200px;
 $navigationMargin: 0;
-$contentWidth: 700px;
-$contentPadding: 20px;
+$contentWidth: 680px;
+$contentPadding: 30px;
 $sidebarWidth: 200px;
 
 $footerHeight: 320px;
@@ -81,3 +81,6 @@ $navbarLightBrandColor:                $navbarLightLinkColor;
 /* Z INDEXES */
 
 $sideElementZIndex: 12;
+
+/* SIDE NAVS */
+$sideNavTopOffset: 26px;

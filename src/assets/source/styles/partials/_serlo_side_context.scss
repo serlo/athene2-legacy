@@ -2,16 +2,8 @@
   padding: 12px 0;
   line-height: 20px;
 
-  &:before {
-    content: ' ';
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    @include triangle(right, $white, 13px);
-  }
-
   li.nav-aside-header {
-    padding: 3px 12px;
+    padding: 3px 10px 3px 20px;
     font-size: 14px;
     small {
       font-style: italic;
@@ -20,14 +12,14 @@
 
   & > li > a {
     padding: 3px 10px 3px 20px;
-    color: $white;
+    color: $grayDark;
     font-size: 13px;
 
     &.active,
     &:hover,
     &:focus {
-      color: $white;
-      background: $darkGray;
+      color: $grayDark;
+      background: $white;
     }
   }
 }

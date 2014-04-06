@@ -136,14 +136,22 @@
 
     li {
         position: relative;
-        
-        margin-left: 14px;
 
         list-style: none;
         font-size: 12px;
         a {
             display: block;
-            padding: 8px 35px 8px 14px;
+            padding: 8px 35px 8px 28px;
+
+            &:hover, &:active, &:focus {
+                background-color: lighten($themeColor, 5%);
+            }
+        }
+        &.sub-nav-header>a {
+            padding-left: 14px;
+            &:hover, &:active, &:focus {
+              background-color: $themeColor;
+            }
         }
     }
 }
@@ -170,8 +178,8 @@
     li:last-child:after {
       content: ' ';
       position: absolute;
-      right: -13px;
-      top: 0px;
-      @include triangle(right, $themeColor, 13px);
+      right: -12px;
+      bottom: 1px;
+      @include triangle(right, $themeColor, 12px);
     }
 }

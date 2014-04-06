@@ -25,7 +25,7 @@
 
     z-index: 1;
     
-    background: white;
+    background: $lighterGray;
 
     &.is-in-focus {
         width: 386px;
@@ -101,7 +101,7 @@
 
     .glyphicon-search {
         position: absolute;
-        top: 12px;
+        top: 15px;
         right: 11px;
 
         color: $gray;

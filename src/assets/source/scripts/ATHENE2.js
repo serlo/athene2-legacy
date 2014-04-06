@@ -32,7 +32,7 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
             // initialize contextuals whenever a new context is added
 
             Content.add(function ($context) {
-                var elements = $('.math, .mathInline', this).filter(':visible').toArray();
+                var elements = $('.math, .mathInline', $context).filter(':visible').toArray();
 
                 // init sortable lists in context
                 $('.sortable', $context).SortableList();
