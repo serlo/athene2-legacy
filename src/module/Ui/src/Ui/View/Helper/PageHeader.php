@@ -64,7 +64,7 @@ class PageHeader extends AbstractHelper
         if ($setHeadTitle) {
             $delimiter = $this->options->getDelimiter();
             if (strlen($this->subtext) > 0) {
-                $headTitle = $this->text . $delimiter . $this->subtext . $delimiter . $this->getView()->brand();
+                $headTitle = $this->text . $delimiter . $this->subtext . $delimiter . $this->options->getBrand();
             } else {
                 $headTitle = $this->text . $delimiter . $this->options->getBrand();
             }
