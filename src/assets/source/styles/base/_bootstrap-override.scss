@@ -19,11 +19,3 @@ $navbarHeight: 25px;
 
 /* Base Font */
 $sansFontFamily: 'Open Sans', sans-serif;
-
-#content-container {
-  .panel-group {
-    .panel {
-      overflow: visible; // Do not crop contents (solves #383)
-    }
-  }
-}

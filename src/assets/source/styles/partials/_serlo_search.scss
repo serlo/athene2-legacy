@@ -27,21 +27,6 @@
     
     background: white;
 
-    @media only screen and (max-width: $navigationBreakPoint) {
-        position: absolute;
-        top: -62px;
-        left: 40px;
-
-        width: 220px;
-        input {
-            border: none;
-        }
-
-        .slide-right & {
-            left: $navigationWidth + 40;
-        }
-    }
-
     &.is-in-focus {
         width: 386px;
 
