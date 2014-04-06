@@ -17,7 +17,7 @@ echo $this->doctype();
     <div class="wrap">
         <?php echo $this->partial('layout/partials/header'); ?>
 
-        <div id="page" class="col-1">
+        <div id="page" class="col-1 clearfix">
             <?php echo $this->partial('layout/partials/search'); ?>
             <section class="main">
                 <div id="content" class="content clearfix">
@@ -26,8 +26,8 @@ echo $this->doctype();
                 </div>
                 <?php echo $this->partial('layout/partials/contexter'); ?>
             </section>
+            <?php echo $this->horizon(4);?>
         </div>
-        <?php echo $this->horizon(4);?>
         <?php /* sticky footer: */ ?>
         <!-- <div id="footer-push"></div> -->
         <?php echo $this->partial('layout/partials/footer'); ?>

@@ -1,16 +1,28 @@
 /* MAIN PAGE LAYOUT */
 
-#page {
-    margin: 0 $pagePaddingSmall;
+%pageMargin {
+    padding: 0 $pagePaddingSmall;
 
     @media only screen and (min-width: $sidebarBreakPoint) {
-        margin: 0 $pagePaddingMedium;
+        padding: 0 $pagePaddingMedium;
     }
 
     @media only screen and (min-width: $navigationBreakPoint) {
-        margin: 0 $pagePaddingLarge;
+        padding: 0 $pagePaddingLarge;
     }
+}
 
+#subject-nav,
+#serlo-menu,
+#page,
+#horizon,
+#footer {
+    @extend %pageMargin;
+}
+
+#header,
+#horizon {
+    margin-bottom: 30px;
 }
 
 /* Side Elements (Navigation && Context) */
@@ -149,8 +161,14 @@
         width: $sideElementWidthCollapsed;
 
         .side-element-inner {
+            position: relative;
+
             visibility: hidden;
             margin-right: $sideElementWidthCollapsed;
+
+            width: 200px;
+            right: 200px;
+            background: $lighterGray;
         }
 
         .layout-toggle {
