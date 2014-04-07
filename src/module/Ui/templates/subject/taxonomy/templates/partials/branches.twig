@@ -11,7 +11,7 @@
                 </div>
                 <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
                     <div class="list-group-item edit-control hidden">
-                        {% include 'subject/taxonomy/templates/partials/actions' with {'term': child} only %}
+                        {% include 'subject/taxonomy/templates/partials/actions' with {'term': child} %}
                     </div>
                     {% if child.getDescription() %}
                         <div class="list-group-item">
