@@ -35,6 +35,10 @@ define("ATHENE2", ['jquery', 'common', 'side_navigation', 'translator', 'side_el
                 
             });
 
+            $('.page-header').SerloAffix({
+
+            });
+
             Content.add(function ($context) {
                 var elements = $('.math, .mathInline', $context).filter(':visible').toArray();
 
