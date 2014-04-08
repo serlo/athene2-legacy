@@ -9,8 +9,12 @@
     <div class="timeline-heading">
         <div class="row">
             <div class="col-md-8">
-                <h4 class="timeline-title">{{ discussion.getTitle() }}</h4>
-
+                <h4 class="timeline-title">{{ discussion.getTitle() }}
+                    <small>
+                        {{ translate('on') }}
+                        {{ normalize().toAnchor(discussion.getObject()) }} <small>({{ normalize().toType(discussion.getObject()) }})</small>
+                    </small>
+                </h4>
                 <p>
                     <small class="text-muted">
                         <i class="glyphicon glyphicon-time"></i> {{ timeago().render(discussion.getTimestamp()) }} {{ translate('by') }}
@@ -22,10 +26,10 @@
                     {% if isGranted('discussion.vote', discussion) %}
                         {% if discussion.hasUserVoted(discussion().getUser()) %}
                             {% set vote = 'down' %}
-                            {% set button = 'default' %}
+                            {% set button = 'success' %}
                         {% else %}
                             {% set vote = 'up' %}
-                            {% set button = 'success' %}
+                            {% set button = 'default' %}
                         {% endif %}
                         <a href="{{ url('discussion/discussion/vote', {'comment': discussion.getId(), 'vote': vote}) }}"
                            class="btn btn-xs btn-{{ button }}">
@@ -67,7 +71,7 @@
                         <div class="col-md-8">
                             <p> <strong>{{ comment.getAuthor().getUsername() }}</strong>
                                 <small class="text-muted">
-                                    <span class="glyphicon glyphicon-time"></span> {{ timeago().render(comment.getTimestamp()) }} {{ translate('by') }}
+                                    <span class="glyphicon glyphicon-time"></span> {{ timeago().render(comment.getTimestamp()) }}
                                 </small>
                             </p>
                         </div>
