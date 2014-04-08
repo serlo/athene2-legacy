@@ -20,10 +20,16 @@
     @extend %pageMargin;
 }
 
-#header,
-#horizon {
+#header {
     margin-bottom: 30px;
     clear: both;
+}
+
+#horizon {
+    clear: both;
+    max-width: 740px;
+    margin: 40px 0 40px 200px;
+    padding: 0;
 }
 
 #header {
@@ -36,7 +42,7 @@
 .side-element {
     position: relative;
     z-index: $sideElementZIndex;
-    
+
     &.visible {
 
         .side-element-inner {
@@ -53,7 +59,7 @@
             }
         }
     }
-    
+
     .layout-toggle {
         display: none;
 
@@ -81,14 +87,14 @@
 
     background: $darkGray;
     color: white;
-    
+
     &:hover {
         background: $darkerGray;
     }
 
     .glyphicon {
         display: block;
-        
+
         margin: 0 auto;
 
         line-height: $sideElementWidthCollapsed;
@@ -136,7 +142,7 @@
 }
 
 /* Content */
-.content {
+#content {
     width: $contentWidth;
     padding: 0 $contentPadding;
 
@@ -205,5 +211,32 @@
             clear: none;
             display: none;
         }
+    }
+}
+
+
+
+.page-header {
+    margin: 20px 0;
+    .navbar {
+        margin: 0px;
+        .navbar-collapse {
+            padding: 0px;
+        }
+    }
+}
+
+.page-header {
+    margin: 0 0 20px 0;
+    padding-top: 20px;
+    position: relative;
+    z-index: 1;
+    background-color: $white;
+    .navbar {
+        min-height: 0;
+        margin: 5px 0 0 0;
+    }
+    &>h1 {
+        margin: 0;
     }
 }

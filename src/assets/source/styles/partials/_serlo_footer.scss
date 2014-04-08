@@ -1,9 +1,10 @@
 #footer {
     @include bar('bottom');
 
-    padding-top: 1em;
-
     font-size: 0.9em;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 
     small {
         color: $gray;
@@ -18,13 +19,10 @@
             text-decoration: underline;
         }
     }
-
 }
 
 #footer,
 #footer-push {
-    height: $footerHeight;
-
     @media only screen and (max-width: $screen-sm) {
         height: auto;
     }

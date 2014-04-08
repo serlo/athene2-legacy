@@ -162,16 +162,3 @@
     border-color: 1f4840;
   }
 }
-
-.page-header {
-  margin: 20px 0;
-  position: relative;
-  z-index: 1;
-  background-color: $white;
-  .navbar {
-    margin: 0px;
-    .navbar-collapse {
-      padding: 0px;
-    }
-  }
-}
