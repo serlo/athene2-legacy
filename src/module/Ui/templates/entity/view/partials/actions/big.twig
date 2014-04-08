@@ -2,42 +2,29 @@
 <div class="edit-control hidden">
     <nav class="navbar navbar-light" role="navigation">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-{{ entity.getId() }}">
-                    <span class="sr-only">{{ translate('Toggle navigation') }}</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar-collapse-{{ entity.getId() }}">
-                <ul class="nav navbar-nav">
-                    {% include 'entity/view/partials/actions/versioning/edit' %}
-                    {% include 'entity/view/partials/actions/versioning/history' %}
-                    {% include 'entity/view/partials/actions/license/show' %}
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ translate('More') }}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% include 'entity/view/partials/actions/link/add' %}
-                            {% include 'entity/view/partials/actions/link/update' %}
-                            {% include 'entity/view/partials/actions/taxonomy/update' %}
-                            {% include 'entity/view/partials/actions/related-content/manage' %}
-                            {% include 'entity/view/partials/actions/license/update' %}
-                            {% include 'entity/view/partials/actions/flag/create' %}
-                            {% include 'entity/view/partials/actions/event/history' %}
-                            {% include 'entity/view/partials/actions/trash' %}
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav navbar-nav">
+                {% include 'entity/view/partials/actions/versioning/edit' %}
+                {% include 'entity/view/partials/actions/versioning/history' %}
+                {% include 'entity/view/partials/actions/license/show' %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        {{ translate('More') }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% include 'entity/view/partials/actions/link/add' %}
+                        {% include 'entity/view/partials/actions/link/update' %}
+                        {% include 'entity/view/partials/actions/taxonomy/update' %}
+                        {% include 'entity/view/partials/actions/related-content/manage' %}
+                        {% include 'entity/view/partials/actions/license/update' %}
+                        {% include 'entity/view/partials/actions/flag/create' %}
+                        {% include 'entity/view/partials/actions/event/history' %}
+                        {% include 'entity/view/partials/actions/trash' %}
+                    </ul>
+                </li>
+            </ul>
         </div>
     </nav>
 </div>
