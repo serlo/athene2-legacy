@@ -12,7 +12,6 @@
 namespace Term\Manager;
 
 use ClassResolver\ClassResolverAwareTrait;
-use Common\Filter\Slugify;
 use Common\Traits\FlushableTrait;
 use Common\Traits\ObjectManagerAwareTrait;
 use Instance\Entity\InstanceInterface;
@@ -37,14 +36,11 @@ class TermManager implements TermManagerInterface
         }
 
         /* @var $entity TermEntityInterface */
-        $filter        = new Slugify();
-        $slug          = $filter->filter($name);
         $entity        = $this->getClassResolver()->resolve('Term\Entity\TermEntityInterface');
         $this->terms[] = $entity;
 
         $entity->setName($name);
         $entity->setInstance($instance);
-        $entity->setSlug($slug);
         $this->getObjectManager()->persist($entity);
 
         return $entity;

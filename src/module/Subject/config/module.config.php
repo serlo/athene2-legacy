@@ -89,37 +89,37 @@ return [
         'routes' => [
             'subject' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'may_terminate' => true,
                 'options'       => [
-                    'route'    => '/{subject}/:subject',
-                    'defaults' => [
-                        'controller' => __NAMESPACE__ . '\Controller\HomeController',
-                        'action'     => 'index'
-                    ]
+                    'route'    => '/{subject}',
                 ],
                 'child_routes'  => [
                     'taxonomy' => [
-                        'type'    => 'slashable',
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'       => '/:path',
+                            'route'       => '/taxonomy/:id',
                             'defaults'    => [
                                 'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
                                 'action'     => 'index'
                             ],
-                            'constraints' => [
-                                'path' => '(.)+'
-                            ]
                         ]
                     ],
                     'entity'   => [
-                        'may_terminate' => true,
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'options'       => [
-                            'route'    => '/entity/:action',
+                            'route'    => '/:subject/entity/:action',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\EntityController',
                                 'action'     => 'index',
-                                'plugin'     => 'entity'
+                            ]
+                        ]
+                    ],
+                    'home'   => [
+                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                        'options'       => [
+                            'route'    => '/:subject',
+                            'defaults' => [
+                                'controller' => __NAMESPACE__ . '\Controller\HomeController',
+                                'action'     => 'index',
                             ]
                         ]
                     ]
@@ -141,6 +141,9 @@ return [
                     ],
                     'setSubjectManager'  => [
                         'required' => true
+                    ],
+                    'setTaxonomyManager'  => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\TaxonomyController' => [
@@ -149,6 +152,9 @@ return [
                     ],
                     'setSubjectManager'  => [
                         'required' => true
+                    ],
+                    'setTaxonomyManager'  => [
+                        'required' => true
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\EntityController'   => [
@@ -156,6 +162,9 @@ return [
                         'required' => true
                     ],
                     'setSubjectManager'  => [
+                        'required' => true
+                    ],
+                    'setTaxonomyManager'  => [
                         'required' => true
                     ]
                 ]

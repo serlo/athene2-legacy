@@ -132,8 +132,7 @@ class NavigationProvider implements PageProviderInterface
             if (!$term->isTrashed()) {
                 $current             = [];
                 $current['route']    = $this->options['route'];
-                $path                = ['path' => $term->slugify($this->options['parent']['type'])];
-                $current['params']   = ArrayUtils::merge($this->options['params'], $path);
+                $current['params']   = ['id' => $term->getId()];
                 $current['label']    = $term->getName();
                 $current['elements'] = $term->countElements();
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);

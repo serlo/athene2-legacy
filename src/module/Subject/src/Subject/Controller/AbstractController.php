@@ -12,11 +12,12 @@ namespace Subject\Controller;
 
 use Instance\Manager\InstanceManagerAwareTrait;
 use Subject\Manager\SubjectManagerAwareTrait;
+use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractController extends AbstractActionController
 {
-    use SubjectManagerAwareTrait, InstanceManagerAwareTrait;
+    use SubjectManagerAwareTrait, InstanceManagerAwareTrait, TaxonomyManagerAwareTrait;
 
     /**
      * @param null $id
@@ -34,5 +35,10 @@ class AbstractController extends AbstractActionController
         } else {
             return $this->getSubjectManager()->getSubject($id);
         }
+    }
+
+    public function getTerm($id = null){
+        $id = $this->params()->fromRoute('id', $id);
+        return $this->taxonomyManager->getTerm($id);
     }
 }

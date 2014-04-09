@@ -22,6 +22,11 @@ return [
                 'tokenize' => '{path}/{title}',
                 'fallback' => '{path}/{type}/{title}-{id}',
                 'provider' => 'Entity\Provider\TokenProvider'
+            ],
+            'taxonomyTerm'   => [
+                'tokenize' => '{path}',
+                'fallback' => '{path}-{id}',
+                'provider' => 'Taxonomy\Provider\TokenProvider'
             ]
         ]
     ],
