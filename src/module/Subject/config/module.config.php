@@ -90,7 +90,10 @@ return [
             'subject' => [
                 'type'          => 'Zend\Mvc\Router\Http\Segment',
                 'options'       => [
-                    'route'    => '/{subject}',
+                    'route'    => '/:subject',
+                    'constraints' => [
+                        'subject' => '[mathe|physik|chemie|permakultur]+'
+                    ]
                 ],
                 'child_routes'  => [
                     'taxonomy' => [
@@ -101,12 +104,15 @@ return [
                                 'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
                                 'action'     => 'index'
                             ],
+                            'constraints' => [
+                                'id' => '[0-9]+'
+                            ]
                         ]
                     ],
                     'entity'   => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'options'       => [
-                            'route'    => '/:subject/entity/:action',
+                            'route'    => '/entity/:action',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\EntityController',
                                 'action'     => 'index',
@@ -116,7 +122,7 @@ return [
                     'home'   => [
                         'type'          => 'Zend\Mvc\Router\Http\Segment',
                         'options'       => [
-                            'route'    => '/:subject',
+                            'route'    => '',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\HomeController',
                                 'action'     => 'index',

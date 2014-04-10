@@ -132,7 +132,7 @@ class NavigationProvider implements PageProviderInterface
             if (!$term->isTrashed()) {
                 $current             = [];
                 $current['route']    = $this->options['route'];
-                $current['params']   = ['id' => $term->getId()];
+                $current['params']   = ['subject' => $term->findAncestorByTypeName('subject')->getSlug(), 'id' => $term->getId()];
                 $current['label']    = $term->getName();
                 $current['elements'] = $term->countElements();
                 $children            = $term->findChildrenByTaxonomyNames($this->options['types']);

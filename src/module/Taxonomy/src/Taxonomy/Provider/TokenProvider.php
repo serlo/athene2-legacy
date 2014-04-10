@@ -10,6 +10,7 @@
  */
 namespace Taxonomy\Provider;
 
+use Common\Filter\Slugify;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Taxonomy\Exception;
 use Token\Provider\AbstractProvider;
@@ -17,11 +18,34 @@ use Token\Provider\ProviderInterface;
 
 class TokenProvider extends AbstractProvider implements ProviderInterface
 {
+    protected $filter;
+
+    public function __construct()
+    {
+        $this->filter = new Slugify();
+    }
+
     public function getData()
     {
         return [
-            'id'    => $this->getObject()->getId()
+            'path' => $this->getPath($this->getObject()),
+            'id'   => $this->getObject()->getId()
         ];
+    }
+
+    protected function getPath(TaxonomyTermInterface $taxonomyTerm, $string = null)
+    {
+        $name   = $taxonomyTerm->getName();
+        $filter = $this->filter;
+        $slug   = $filter->filter($name);
+        $parent = $taxonomyTerm->getParent();
+        $string .= $slug . '/';
+
+        if ($parent && $parent->getTaxonomy()->getName() != 'root') {
+            return $this->getPath($parent, $string);
+        }
+
+        return $string;
     }
 
     protected function validObject($object)

@@ -10,6 +10,7 @@
  */
 namespace Alias\Listener;
 
+use Alias\AliasManagerInterface;
 use Normalizer\NormalizerInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
 use Zend\EventManager\Event;
@@ -23,11 +24,13 @@ class TaxonomyManagerListener extends AbstractListener
     protected $normalizer;
 
     /**
-     * @param NormalizerInterface $normalizer
+     * @param AliasManagerInterface $aliasManager
+     * @param NormalizerInterface   $normalizer
      */
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(AliasManagerInterface $aliasManager, NormalizerInterface $normalizer)
     {
         $this->normalizer = $normalizer;
+        parent::__construct($aliasManager);
     }
 
     /**
@@ -81,7 +84,7 @@ class TaxonomyManagerListener extends AbstractListener
 
         $this->getAliasManager()->autoAlias('taxonomyTerm', $url, $term, $instance);
 
-        foreach($term->getChildren() as $child){
+        foreach ($term->getChildren() as $child) {
             $this->process($child);
         }
     }

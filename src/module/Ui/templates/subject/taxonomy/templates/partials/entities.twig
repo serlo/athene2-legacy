@@ -2,54 +2,43 @@
     {% for i in 0..2 %}
         {% set type = cycle(['article', 'video', 'module'], i) %}
         {% if types.get(type) %}
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="row">
+            <div class="col-md-12">
+                <h4>
+                    <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Modules'], i)) }}
+                </h4>
+                <hr>
+            </div>
+            {% set index = 0 %}
+            {% for link in types.get(type) %}
+                {% if index % 3 == 0 and index != 0 %}
+                    </div>
                     <div class="row">
-                    <div class="col-md-12">
-                        <h4>
-                            <span class="glyphicon glyphicon-{{ cycle(['book', 'facetime-video', 'list'], i) }}"></span> {{ translate(cycle(['Articles', 'Videos', 'Modules'], i)) }}
-                        </h4>
-                        <hr>
-                    </div>
-                    {% set index = 0 %}
-                    {% for link in types.get(type) %}
-                        {% if index % 3 == 0 and index != 0 %}
-                            </div>
-                            <hr>
-                            <div class="row">
-                        {% endif %}
-                        {% set index = index + 1 %}
-                        <div class="col-sm-4">
-                            {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
-                        </div>
-                    {% endfor %}
-                    </div>
+                {% endif %}
+                {% set index = index + 1 %}
+                <div class="col-sm-4">
+                    <p>
+                        {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                    </p>
                 </div>
+            {% endfor %}
             </div>
         {% endif %}
     {% endfor %}
 
     {% if types.get('text-exercise') or types.get('text-exercise-group') %}
         <!-- Rest -->
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
-            </div>
-            <div class="list-group">
-                {% for link in links if link.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
-                    <div class="list-group-item">
-                        <div class="row">
-                            <div class="col-xs-1">
-                                <strong>{{ loop.index }}.</strong>
-                            </div>
-                            <div class="col-xs-11">
-                                {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
-                            </div>
-                        </div>
+        <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
+        {% for link in links if link.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
+                <div class="row">
+                    <div class="col-xs-1">
+                        <strong>{{ loop.index }}.</strong>
                     </div>
-                {% endfor %}
-            </div>
-        </div>
+                    <div class="col-xs-11">
+                        {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                    </div>
+                </div>
+        {% endfor %}
     {% endif %}
     <!-- Rest end -->
 </div>
