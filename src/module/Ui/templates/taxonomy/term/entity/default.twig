@@ -1,4 +1,4 @@
-{% set template = include(['subject/taxonomy/entity/' ~ entity.getType().getName(), 'entity/view/default'], ignore_missing = true) %}
+{% set template = include(['taxonomy/term/entity/' ~ entity.getType().getName(), 'entity/view/default'], ignore_missing = true) %}
 {% if template %}
     {{ template }}
 {% else %}

@@ -35,14 +35,14 @@ return [
                 'rootable'             => false
             ],
             'topic'                   => [
-                'allowed_parents' => [
+                'allowed_parents'      => [
                     'subject',
                     'topic'
                 ],
                 'allowed_associations' => [
                     'Entity\Entity\EntityInterface'
                 ],
-                'rootable'        => false
+                'rootable'             => false
             ],
             'subject'                 => [
                 'allowed_parents' => [
@@ -64,7 +64,7 @@ return [
                 ],
                 'rootable'        => false
             ],
-            'curriculum-topic'       => [
+            'curriculum-topic'        => [
                 'allowed_associations' => [
                     'Entity\Entity\EntityInterface'
                 ],
@@ -88,30 +88,15 @@ return [
     'router'          => [
         'routes' => [
             'subject' => [
-                'type'          => 'Zend\Mvc\Router\Http\Segment',
-                'options'       => [
-                    'route'    => '/:subject',
-                    'constraints' => [
-                        'subject' => '[mathe|physik|chemie|permakultur]+'
-                    ]
+                'type'         => 'subject',
+                'options'      => [
+                    'route'      => '/:subject',
+                    'identifier' => 'subject'
                 ],
-                'child_routes'  => [
-                    'taxonomy' => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
+                'child_routes' => [
+                    'entity' => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
                         'options' => [
-                            'route'       => '/taxonomy/:id',
-                            'defaults'    => [
-                                'controller' => __NAMESPACE__ . '\Controller\TaxonomyController',
-                                'action'     => 'index'
-                            ],
-                            'constraints' => [
-                                'id' => '[0-9]+'
-                            ]
-                        ]
-                    ],
-                    'entity'   => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'options'       => [
                             'route'    => '/entity/:action',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\EntityController',
@@ -120,8 +105,8 @@ return [
                         ]
                     ],
                     'home'   => [
-                        'type'          => 'Zend\Mvc\Router\Http\Segment',
-                        'options'       => [
+                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => [
                             'route'    => '',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\HomeController',
@@ -131,7 +116,12 @@ return [
                     ]
                 ]
             ]
-        ]
+        ],
+    ],
+    'route_manager' =>[
+        'invokables' => [
+            'subject' => __NAMESPACE__ . '\Route\SubjectRoute'
+        ],
     ],
     'di'              => [
         'allowed_controllers' => [
@@ -148,7 +138,7 @@ return [
                     'setSubjectManager'  => [
                         'required' => true
                     ],
-                    'setTaxonomyManager'  => [
+                    'setTaxonomyManager' => [
                         'required' => true
                     ]
                 ],
@@ -159,7 +149,7 @@ return [
                     'setSubjectManager'  => [
                         'required' => true
                     ],
-                    'setTaxonomyManager'  => [
+                    'setTaxonomyManager' => [
                         'required' => true
                     ]
                 ],
@@ -170,7 +160,7 @@ return [
                     'setSubjectManager'  => [
                         'required' => true
                     ],
-                    'setTaxonomyManager'  => [
+                    'setTaxonomyManager' => [
                         'required' => true
                     ]
                 ]

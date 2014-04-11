@@ -39,7 +39,8 @@ class AbstractController extends AbstractActionController implements AdaptableIn
      */
     public function getTerm($id = null)
     {
-        $id = $id ? : $this->params('id');
+        $id = $this->params('id', $id);
+        $id = $this->params('term', $id);
         if ($id === null) {
             $instance = $this->getInstanceManager()->getInstanceFromRequest();
             return $this->getTaxonomyManager()->findTaxonomyByName('root', $instance)->getChildren()->first();

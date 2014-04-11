@@ -1,3 +1,5 @@
+{% set subject = term.findAncestorByTypeName('subject') %}
+{% set entities = term.getAssociated('entities') %}
 <nav class="navbar navbar-light" role="navigation">
     <div class="container-fluid">
         <ul class="nav navbar-nav">

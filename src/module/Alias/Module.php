@@ -74,12 +74,8 @@ class Module
         $response    = $e->getResponse();
         $request     = $application->getRequest();
 
-        if (!$response instanceof HttpResponse) {
+        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
             return;
-        } else {
-            if (!$request instanceof HttpRequest) {
-                return;
-            }
         }
 
         if ($response->getStatusCode() == 404) {

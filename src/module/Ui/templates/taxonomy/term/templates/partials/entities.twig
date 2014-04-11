@@ -1,3 +1,6 @@
+{% set entities = term.getAssociated('entities') %}
+{% set entities = entity().getVisible(entities) %}
+{% set types = entity().asTypeCollection(entities) %}
 <div>
     {% for i in 0..2 %}
         {% set type = cycle(['article', 'video', 'module'], i) %}
@@ -18,7 +21,7 @@
                 {% set index = index + 1 %}
                 <div class="col-sm-4">
                     <p>
-                        {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                        {% include 'taxonomy/term/entity/default' with {'entity': link} only %}
                     </p>
                 </div>
             {% endfor %}
@@ -29,13 +32,13 @@
     {% if types.get('text-exercise') or types.get('text-exercise-group') %}
         <!-- Rest -->
         <h4><span class="glyphicon glyphicon-ok-sign"></span> <strong>{{ translate('Exercises') }}</strong></h4>
-        {% for link in links if link.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
+        {% for entity in entities if entity.getType().getName() in ['text-exercise', 'text-exercise-group'] %}
                 <div class="row">
                     <div class="col-xs-1">
                         <strong>{{ loop.index }}.</strong>
                     </div>
                     <div class="col-xs-11">
-                        {% include 'subject/taxonomy/entity/default' with {'entity': link} only %}
+                        {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
                     </div>
                 </div>
         {% endfor %}

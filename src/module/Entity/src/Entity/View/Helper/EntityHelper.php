@@ -10,9 +10,10 @@
  */
 namespace Entity\View\Helper;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Entity\Entity\EntityInterface;
 use Entity\Exception;
-use Entity\Options\EntityOptions;
 use Entity\Options\ModuleOptionsAwareTrait;
 use Zend\View\Helper\AbstractHelper;
 
@@ -38,10 +39,25 @@ class EntityHelper extends AbstractHelper
         return null;
     }
 
-    /**
-     * @param EntityInterface $entity
-     * @return EntityOptions
-     */
+    public function getVisible(Collection $entities)
+    {
+        return $entities->filter(
+            function (EntityInterface $e) {
+                return !$e->isTrashed() && $e->hasCurrentRevision();
+            }
+        );
+    }
+
+    public function asTypeCollection(Collection $entities)
+    {
+        $types = [];
+        foreach ($entities as $e) {
+            $types[$e->getType()->getName()][] = $e;
+        }
+
+        return new ArrayCollection($types);
+    }
+
     public function getOptions(EntityInterface $entity)
     {
         return $this->getModuleOptions()->getType(

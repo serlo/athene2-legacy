@@ -57,7 +57,7 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'curriculum-topic':
             case 'curriculum-topic-folder':
             case 'topic-final-folder':
-                return 'subject/taxonomy';
+                return 'taxonomy/term/get';
         }
 
         throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
@@ -80,7 +80,7 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'curriculum-topic':
             case 'curriculum-topic-folder':
             case 'topic-final-folder':
-                return ['id' => $object->getId()];
+                return ['term' => $object->getId()];
         }
 
         throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
