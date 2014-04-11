@@ -17,7 +17,7 @@ foreach ($this->container as $page) {
     // header
     // $html[] = '<li class="nav-header">';
     $html[] = '<li>';
-    $html[] = '<a href="' . $page->getHref() . '">';
+    $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
     if ($page->get('icon')) {
         $html[] = '<i class="icon-' . $page->get('icon') . '"></i>';
     }
@@ -37,7 +37,7 @@ foreach ($this->container as $page) {
                 continue;
             }
             $html[] = '<li' . ($subpage->isActive() ? ' class="active"' : '') . '>';
-            $html[] = '<a href="' . $subpage->getHref() . '">';
+            $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
             
             if ($subpage->get('icon')) {
                 $html[] = '<i class="icon-' . $subpage->get('icon') . '"></i>';

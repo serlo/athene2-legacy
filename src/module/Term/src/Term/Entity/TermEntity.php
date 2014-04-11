@@ -11,6 +11,7 @@
  */
 namespace Term\Entity;
 
+use Common\Filter\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 
@@ -57,7 +58,8 @@ class TermEntity implements TermEntityInterface
 
     public function getSlug()
     {
-        return $this->slug;
+        $filter = new Slugify();
+        return $filter->filter($this->getName());
     }
 
     public function setName($name)

@@ -85,7 +85,8 @@ return [
     ],
     'view_helpers'    => [
         'factories' => [
-            'url' => __NAMESPACE__ . '\Factory\UrlHelperFactory'
+            'url' => __NAMESPACE__ . '\Factory\UrlHelperFactory',
+            'alias' => __NAMESPACE__ . '\Factory\AliasHelperFactory'
         ]
     ]
 ];

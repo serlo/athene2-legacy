@@ -103,10 +103,11 @@ return [
                             'update'          => [
                                 'type'     => 'Segment',
                                 'options'  => [
-                                    'route' => '/update/:term'
+                                    'route' => '/update/:term',
+                                    'defaults' => [
+                                        'action' => 'update'
+                                    ]
                                 ],
-                                'defaults' => [
-                                ]
                             ],
                             'create'          => [
                                 'type'    => 'Segment',

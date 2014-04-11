@@ -107,9 +107,6 @@ return [
                     ]
                 ],
                 __NAMESPACE__ . '\Controller\PageController'       => [
-                    'setAliasManager'  => [
-                        'required' => true
-                    ],
                     'setEntityManager' => [
                         'required' => true
                     ]

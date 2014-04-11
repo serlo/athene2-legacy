@@ -35,11 +35,9 @@ class TokenProvider extends AbstractProvider implements ProviderInterface
 
     protected function getPath(TaxonomyTermInterface $taxonomyTerm, $string = null)
     {
-        $name   = $taxonomyTerm->getName();
-        $filter = $this->filter;
-        $slug   = $filter->filter($name);
+        $slug   = $taxonomyTerm->getSlug();
         $parent = $taxonomyTerm->getParent();
-        $string .= $slug . '/';
+        $string =  $slug . '/' . $string;
 
         if ($parent && $parent->getTaxonomy()->getName() != 'root') {
             return $this->getPath($parent, $string);

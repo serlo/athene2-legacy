@@ -112,7 +112,6 @@ class SubjectRoute extends Segment implements ServiceLocatorAwareInterface
             $this->getSubjectManager()->findSubjectByString($subject, $this->getInstanceManager()->getInstanceFromRequest());
             return $routeMatch;
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
             return null;
         }
     }
