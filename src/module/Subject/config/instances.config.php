@@ -58,6 +58,19 @@ return [
                         'module',
                         'text-exercise-group'
                     ]
+                ],
+                'biologie' => [
+                    'allowed_taxonomies' => [
+                        'topic',
+                        'locale'
+                    ],
+                    'allowed_entities' => [
+                        'article',
+                        'text-exercise',
+                        'video',
+                        'module',
+                        'text-exercise-group'
+                    ]
                 ]
             ],
             'english' => [
