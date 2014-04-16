@@ -14,6 +14,7 @@ use Alias;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Mvc\ApplicationInterface;
 
 class AliasController extends AbstractActionController
 {
@@ -47,6 +48,7 @@ class AliasController extends AbstractActionController
             return false;
         }
 
+        $this->getEvent()->setRouteMatch($routeMatch);
         $params     = $routeMatch->getParams();
         $controller = $params['controller'];
         $return     = $this->forward()->dispatch(

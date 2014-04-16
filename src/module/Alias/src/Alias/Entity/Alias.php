@@ -10,6 +10,7 @@
  */
 namespace Alias\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Instance\Entity\InstanceAwareTrait;
 use Uuid\Entity\UuidInterface;
@@ -45,6 +46,16 @@ class Alias implements AliasInterface
      */
     protected $uuid;
 
+    /**
+     * @ORM\Column(name="`timestamp`", type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     */
+    protected $timestamp;
+
+    public function __construct()
+    {
+        $this->timestamp = new DateTime;
+    }
+
     public function getObject()
     {
         return $this->uuid;
@@ -60,29 +71,31 @@ class Alias implements AliasInterface
         return $this->alias;
     }
 
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    }
+
     public function getSource()
     {
         return $this->source;
     }
 
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
-
-        return $this;
-    }
-
     public function setSource($source)
     {
         $this->source = $source;
-
-        return $this;
     }
 
     public function setObject(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
+    }
 
-        return $this;
+    /**
+     * @return DateTime
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 }

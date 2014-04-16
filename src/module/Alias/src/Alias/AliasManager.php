@@ -24,6 +24,7 @@ use Uuid\Entity\UuidInterface;
 use Uuid\Manager\UuidManagerAwareTrait;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\Mvc\Router\RouteInterface;
+use Alias\Entity\AliasInterface;
 
 class AliasManager implements AliasManagerInterface
 {
@@ -41,6 +42,11 @@ class AliasManager implements AliasManagerInterface
      * @var StorageInterface
      */
     protected $storage;
+
+    /**
+     * @var array|AliasInterface[]
+     */
+    protected $inMemoryAliases = [];
 
     public function __construct(
         ClassResolverInterface $classResolver,
@@ -120,7 +126,7 @@ class AliasManager implements AliasManagerInterface
         }
 
         if ($useFallback) {
-            $alias = $alias . '-' . uniqid();
+            $alias = $aliasFallback;
         }
 
         /* @var $class Entity\AliasInterface */
@@ -128,9 +134,10 @@ class AliasManager implements AliasManagerInterface
 
         $class->setSource($source);
         $class->setInstance($instance);
-        $class->setAlias($alias);
         $class->setObject($uuid);
+        $class->setAlias($alias);
         $this->getObjectManager()->persist($class);
+        $this->inMemoryAliases[] = $class;
 
         return $class;
     }
@@ -244,6 +251,9 @@ class AliasManager implements AliasManagerInterface
 
     public function flush($object = null)
     {
+        if($object === null){
+            $this->inMemoryAliases = [];
+        }
         $this->getObjectManager()->flush($object);
     }
 
@@ -273,6 +283,15 @@ class AliasManager implements AliasManagerInterface
         $className = $this->getEntityClassName();
         $criteria  = ['alias' => $alias];
         $aliases   = $this->getObjectManager()->getRepository($className)->findBy($criteria);
+
+        $inMemory = [];
+        foreach($this->inMemoryAliases as $memoryAlias){
+            if($memoryAlias->getAlias() == $alias){
+                $inMemory[] = $memoryAlias;
+            }
+        }
+
+        $aliases = array_merge($aliases, $inMemory);
 
         return $aliases;
     }

@@ -34,14 +34,6 @@ return [
             ],
         ]
     ],
-    'term_router'     => [
-        'routes' => [
-            'forum'          => [
-                'route'          => 'discussion/discussions',
-                'param_provider' => 'Discussion\Provider\ParamProvider'
-            ],
-        ]
-    ],
     'view_helpers'    => [
         'factories' => [
             'discussion' => __NAMESPACE__ . '\Factory\DiscussionHelperFactory'

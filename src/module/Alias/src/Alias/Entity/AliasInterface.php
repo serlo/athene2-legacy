@@ -12,6 +12,7 @@ namespace Alias\Entity;
 
 use Instance\Entity\InstanceAwareInterface;
 use Uuid\Entity\UuidInterface;
+use DateTime;
 
 interface AliasInterface extends InstanceAwareInterface
 {
@@ -48,7 +49,7 @@ interface AliasInterface extends InstanceAwareInterface
      * Sets the source
      *
      * @param string $source
-     * @return self
+     * @return void
      */
     public function setSource($source);
 
@@ -56,7 +57,7 @@ interface AliasInterface extends InstanceAwareInterface
      * Sets the alias
      *
      * @param string $alias
-     * @return self
+     * @return void
      */
     public function setAlias($alias);
 
@@ -64,8 +65,12 @@ interface AliasInterface extends InstanceAwareInterface
      * Sets the object
      *
      * @param UuidInterface $uuid
-     * @return self
+     * @return void
      */
     public function setObject(UuidInterface $uuid);
 
+    /**
+     * @return DateTime
+     */
+    public function getTimestamp();
 }

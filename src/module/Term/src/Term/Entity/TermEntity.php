@@ -37,11 +37,6 @@ class TermEntity implements TermEntityInterface
     protected $name;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    protected $slug;
-
-    /**
      * @ORM\OneToMany(targetEntity="Taxonomy\Entity\TaxonomyTerm", mappedBy="term")
      */
     protected $termTaxonomies;
@@ -65,12 +60,6 @@ class TermEntity implements TermEntityInterface
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
         return $this;
     }
 }
