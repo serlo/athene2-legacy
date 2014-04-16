@@ -99,6 +99,10 @@ class Module
             }
         }
 
+        if(!$location) {
+            return null;
+        }
+
         $response->getHeaders()->addHeaderLine('Location', $location);
         $response->setStatusCode(302);
         $response->sendHeaders();
