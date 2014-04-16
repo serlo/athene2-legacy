@@ -13,7 +13,7 @@
         </ul>
     </div>
 
-    <a href="{{ url('taxonomy/term/update', {'update':term.getId()}) }}" class="btn btn-default btn-xs">
+    <a href="{{ url('taxonomy/term/update', {'term':term.getId()}) }}" class="btn btn-default btn-xs">
         <span class="glyphicon glyphicon-pencil"></span> </a>
 
     <a class="btn btn-default btn-xs" href="{{ url('event/history', {'id':term.getId()}) }}">
@@ -26,5 +26,4 @@
         <a href="{{ url('uuid/trash', {'id':term.getId()}) }}"
            class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-trash"></span> </a>
     {% endif %}
-
 </div>
