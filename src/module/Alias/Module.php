@@ -74,7 +74,6 @@ class Module
     {
         $application    = $e->getApplication();
         $response       = $e->getResponse();
-        $router         = $e->getRouter();
         $request        = $application->getRequest();
         $serviceManager = $application->getServiceManager();
         /* @var $aliasManager AliasManagerInterface */
@@ -84,23 +83,19 @@ class Module
             return null;
         }
 
-        /* @var $uriObject \Zend\Uri\Http */
-        $uriObject = $request->getUri();
-        $uri       = $uriObject->getPath();
+        /* @var $uriClone \Zend\Uri\Http */
+        $uriClone = clone $request->getUri();
+        $uri      = $uriClone->getPath();
 
         try {
             $location = $aliasManager->findAliasBySource($uri, $instanceManager->getInstanceFromRequest());
         } catch (Exception $ex) {
             try {
-                $uri       = $uriObject->makeRelative('/')->getPath();
+                $uri      = $uriClone->makeRelative('/')->getPath();
                 $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
             } catch (Exception $ex) {
                 return null;
             }
-        }
-
-        if(!$location) {
-            return null;
         }
 
         $response->getHeaders()->addHeaderLine('Location', $location);
