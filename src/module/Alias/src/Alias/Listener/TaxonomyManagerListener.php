@@ -71,17 +71,16 @@ class TaxonomyManagerListener extends AbstractListener
 
     protected function process(TaxonomyTermInterface $term)
     {
+        if ($term->getId() === null) {
+            $this->getAliasManager()->flush($term);
+        }
+
         $instance    = $term->getInstance();
         $normalizer  = $this->normalizer->normalize($term);
         $routeName   = $normalizer->getRouteName();
         $routeParams = $normalizer->getRouteParams();
         $router      = $this->getAliasManager()->getRouter();
         $url         = $router->assemble($routeParams, ['name' => $routeName]);
-
-        if ($term->getId() === null) {
-            $this->getAliasManager()->flush($term);
-        }
-
         $this->getAliasManager()->autoAlias('taxonomyTerm', $url, $term, $instance);
 
         foreach ($term->getChildren() as $child) {
