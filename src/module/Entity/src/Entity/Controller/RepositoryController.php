@@ -19,6 +19,7 @@ use User\Manager\UserManagerAwareTrait;
 use Versioning\Exception\RevisionNotFoundException;
 use Versioning\RepositoryManagerAwareTrait;
 use Zend\Form\Form;
+use Zend\Mvc\Exception;
 use Zend\View\Model\ViewModel;
 
 class RepositoryController extends AbstractController implements AdaptableInterface
@@ -84,12 +85,19 @@ class RepositoryController extends AbstractController implements AdaptableInterf
     public function compareAction()
     {
         $entity = $this->getEntity();
+
         if (!$entity) {
+            $this->getResponse()->setStatusCode(404);
             return false;
         }
 
         $revision        = $this->getRevision($entity, $this->params('revision'));
         $currentRevision = $this->getRevision($entity);
+
+        if (!$revision) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
 
         $view = new ViewModel([
             'currentRevision' => $currentRevision,
