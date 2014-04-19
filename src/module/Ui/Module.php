@@ -7,7 +7,10 @@
  */
 namespace Ui;
 
+use Zend\EventManager\Event;
+use Zend\Mvc\MvcEvent;
 use Zend\Stdlib\ArrayUtils;
+
 
 class Module
 {
@@ -49,5 +52,33 @@ class Module
         ];
 
         return $config;
+    }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $application  = $e->getApplication();
+        $eventManager = $application->getEventManager();
+        $eventManager->getSharedManager()->attach(
+            'Zend\Mvc\Controller\AbstractController',
+            MvcEvent::EVENT_DISPATCH,
+            array($this, 'onDispatch'),
+            -1000
+        );
+    }
+
+    public function onDispatch(Event $e)
+    {
+        $controller     = $e->getTarget();
+        $serviceManager = $controller->getServiceLocator();
+        $container      = $serviceManager->get('navigation');
+
+        // If no active navigation is found, we revert to 1-col layout
+        foreach ($container as $page) {
+            if ($page->isVisible(false) && $page->isActive(true)) {
+                // At least one item is active, nothing to do.
+                return;
+            }
+        }
+        $controller->layout('layout/1-col');
     }
 }
