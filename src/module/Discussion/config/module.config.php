@@ -69,7 +69,6 @@ return [
                 'options'       => [
                     'route' => ''
                 ],
-                'may_terminate' => false,
                 'child_routes'  => [
                     'view'        => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
@@ -90,6 +89,7 @@ return [
                                 'action'     => 'index'
                             ]
                         ],
+                        'may_terminate' => false,
                         'child_routes' => [
                             'get' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
