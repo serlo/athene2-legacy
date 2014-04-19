@@ -49,7 +49,7 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'subject':
                 return 'subject/home';
             case 'forum':
-                return 'discussion/discussions';
+                return 'discussion/discussions/get';
             case 'topic':
             case 'topic-folder':
             case 'curriculum':
