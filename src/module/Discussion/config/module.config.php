@@ -94,11 +94,7 @@ return [
                             'get' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
-                                    'route'    => '/:id',
-                                    'defaults' => [
-                                        'controller' => 'Discussion\Controller\DiscussionController',
-                                        'action'     => 'show'
-                                    ]
+                                    'route'    => '/:id'
                                 ]
                             ],
                         ]
