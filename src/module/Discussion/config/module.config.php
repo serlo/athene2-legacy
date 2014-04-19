@@ -46,7 +46,7 @@ return [
     ],
     'taxonomy'        => [
         'types' => [
-            'forum'          => [
+            'forum' => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
                 ],
@@ -82,13 +82,25 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route'    => '/discussions[/:id]',
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route'    => '/discussions',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionsController',
                                 'action'     => 'index'
                             ]
+                        ],
+                        'child_routes' => [
+                            'get' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/:id',
+                                    'defaults' => [
+                                        'controller' => 'Discussion\Controller\DiscussionController',
+                                        'action'     => 'show'
+                                    ]
+                                ]
+                            ],
                         ]
                     ],
                     'discussion'  => [
