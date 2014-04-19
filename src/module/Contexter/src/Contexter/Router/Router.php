@@ -44,9 +44,6 @@ class Router implements RouterInterface
      */
     protected $adapters;
 
-    /*
-     * (non-PHPdoc) @see \Contexter\Router\RouterInterface::match()
-     */
     public function match($uri = null, $type = null)
     {
         if ($uri !== null) {
@@ -85,9 +82,6 @@ class Router implements RouterInterface
         return $this->getRouter()->match($request);
     }
 
-    /**
-     * @return AdapterInterface
-     */
     public function getAdapter()
     {
         $requestedController = $this->getRouteMatch()->getParam('controller');
@@ -149,12 +143,12 @@ class Router implements RouterInterface
         return $this;
     }
 
-    protected function matchRoutes(array $routes, TypeInterface $type)
+    protected function matchRoutes(array $routes, TypeInterface $type = null)
     {
         $result = new ArrayCollection();
         /* @var $route Entity\RouteInterface */
         foreach ($routes as $route) {
-            if ($route->getContext()->getType() === $type && $this->matchesParameters($route)) {
+            if ((!$type || $route->getContext()->getType() === $type) && $this->matchesParameters($route)) {
                 $context = $this->getContextManager()->getContext(
                     $route->getContext()->getId()
                 );

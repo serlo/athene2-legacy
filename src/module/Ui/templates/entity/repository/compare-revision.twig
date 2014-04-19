@@ -1,4 +1,4 @@
-{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
+{{ pageHeader(normalize().toTitle(entity)).setSubtitle('Compare versions').append(contexter().renderButton()).setBacklink(url('entity/repository/history', {'entity': entity.getId()})).render() }}
 <ul class="nav nav-tabs">
     <li class="active">
         <a href="#display" data-toggle="tab">{{ translate("Revision #%s") | format(revision.getId()) }}</a>

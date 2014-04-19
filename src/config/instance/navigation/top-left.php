@@ -15,10 +15,6 @@ return [
                 'label' => 'Home',
                 'route' => 'home',
                 'icon'  => 'home'
-            ],
-            [
-                'label' => 'Backend',
-                'route' => 'backend'
             ]
         ]
     ]

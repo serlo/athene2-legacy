@@ -38,6 +38,16 @@ class PageHeader extends AbstractHelper
     protected $options;
 
     /**
+     * @var string
+     */
+    protected $append = '';
+
+    /**
+     * @var string
+     */
+    protected $prepend = '';
+
+    /**
      * @param PageHeaderHelperOptions $pageHeaderHelperOptions
      */
     public function __construct(PageHeaderHelperOptions $pageHeaderHelperOptions)
@@ -52,6 +62,26 @@ class PageHeader extends AbstractHelper
     public function __invoke($text)
     {
         $this->text = $this->getView()->translate((string)$text);
+        return $this;
+    }
+
+    /**
+     * @param string $string
+     * @return $this
+     */
+    public function append($string)
+    {
+        $this->append .= $string;
+        return $this;
+    }
+
+    /**
+     * @param string $string
+     * @return $this
+     */
+    public function prepend($string)
+    {
+        $this->prepend .= $string;
         return $this;
     }
 
@@ -77,7 +107,9 @@ class PageHeader extends AbstractHelper
             [
                 'text'     => $this->text,
                 'subtext'  => $this->subtext,
-                'backLink' => $this->backLink
+                'backLink' => $this->backLink,
+                'append'   => $this->append,
+                'prepend'  => $this->prepend
             ]
         );
     }

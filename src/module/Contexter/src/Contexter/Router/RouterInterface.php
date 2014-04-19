@@ -21,7 +21,7 @@ interface RouterInterface
      * @param string $type
      * @return RouteMatchInterface[]
      */
-    public function match($url, $type);
+    public function match($url = null, $type = null);
 
     /**
      * @return AdapterInterface
