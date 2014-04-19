@@ -210,6 +210,7 @@ class Comment extends Uuid implements CommentInterface
         }
 
         $this->createVote($user, 1);
+        return true;
     }
 
     public function downVote(UserInterface $user)
@@ -219,6 +220,7 @@ class Comment extends Uuid implements CommentInterface
         }
         $element = $this->findVotesByUser($user)->current();
         $this->getVotes()->removeElement($element);
+        return true;
     }
 
     public function hasUserVoted(UserInterface $user)
