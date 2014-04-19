@@ -89,7 +89,7 @@ return [
                                 'action'     => 'index'
                             ]
                         ],
-                        'may_terminate' => false,
+                        'may_terminate' => true,
                         'child_routes' => [
                             'get' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
