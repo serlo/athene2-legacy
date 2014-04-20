@@ -62,7 +62,7 @@ class Module
             'Zend\Mvc\Controller\AbstractController',
             MvcEvent::EVENT_DISPATCH,
             array($this, 'onDispatch'),
-            -1000
+            1000
         );
     }
 
