@@ -34,7 +34,7 @@
         {{ entity().renderDiscussions(entity) }}
     </div>
     <section>
-        {% if(solution and solution.hasCurrentRevision()) %}
+        {% if solution %}
             {% include 'entity/view/default' with {'entity': solution} only %}
         {% endif %}
     </section>
