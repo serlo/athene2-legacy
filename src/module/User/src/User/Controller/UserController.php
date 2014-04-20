@@ -34,12 +34,8 @@ class UserController extends AbstractUserController
         if (!$user) {
             throw new UnauthorizedException;
         }
-
         $view = new ViewModel(['user' => $user]);
-
-        $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
-
         return $view;
     }
 
@@ -47,9 +43,7 @@ class UserController extends AbstractUserController
     {
         $user = $this->getUserManager()->getUser($this->params('id'));
         $view = new ViewModel(['user' => $user]);
-        $this->layout('layout/1-col');
         $view->setTemplate('user/user/profile');
-
         return $view;
     }
 
@@ -110,21 +104,6 @@ class UserController extends AbstractUserController
         return $this->forms[$name];
     }
 
-    public function removeAction()
-    {
-        // todo: make sure this doesn't get abused and remove exception
-        throw new \Exception();
-
-        $user = $this->getUserManager()->getUser($this->params('id', null));
-        $user->setTrashed(true);
-
-        $this->getUserManager()->persist($user);
-        $this->getUserManager()->flush();
-        $this->redirect()->toReferer();
-
-        return false;
-    }
-
     /**
      * @param string $name
      * @param Form   $form
@@ -160,7 +139,6 @@ class UserController extends AbstractUserController
 
         $view = new ViewModel(['user' => $user, 'form' => $form]);
         $view->setTemplate('user/user/settings');
-        $this->layout('layout/1-col');
 
         return $view;
     }

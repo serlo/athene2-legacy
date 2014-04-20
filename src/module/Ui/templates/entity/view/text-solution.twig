@@ -33,7 +33,7 @@
                 {% if revision %}
                     {{ markdown().toHtml(revision.get('content')) | raw }}
                 {% elseif not entity.getHead() %}
-                    {{ translate('A solution has been created but no content has been added') }}
+                    {{ translate('A solution has been created but no content has been added yet or it is pending approval.') }}
                 {% endif %}
             </div>
         </div>
