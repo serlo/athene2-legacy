@@ -14,6 +14,7 @@ use Contexter\Adapter\AdaptableInterface;
 use Instance\Manager\InstanceManagerAwareTrait;
 use Instance\Manager\InstanceManagerInterface;
 use Taxonomy\Entity\TaxonomyTermInterface;
+use Taxonomy\Form\TermForm;
 use Taxonomy\Manager\TaxonomyManagerAwareTrait;
 use Taxonomy\Manager\TaxonomyManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -24,13 +25,20 @@ class AbstractController extends AbstractActionController implements AdaptableIn
     use InstanceManagerAwareTrait;
 
     /**
+     * @var \Taxonomy\Form\TermForm
+     */
+    protected $termForm;
+
+    /**
      * @param InstanceManagerInterface $instanceManager
      * @param TaxonomyManagerInterface $taxonomyManager
+     * @param TermForm                 $termForm
      */
-    public function __construct(InstanceManagerInterface $instanceManager, TaxonomyManagerInterface $taxonomyManager)
+    public function __construct(InstanceManagerInterface $instanceManager, TaxonomyManagerInterface $taxonomyManager, TermForm $termForm)
     {
         $this->instanceManager = $instanceManager;
         $this->taxonomyManager = $taxonomyManager;
+        $this->termForm        = $termForm;
     }
 
     /**
@@ -39,10 +47,16 @@ class AbstractController extends AbstractActionController implements AdaptableIn
      */
     public function getTerm($id = null)
     {
-        $id = $id ? : $this->params('id');
+        $id = $this->params('id', $id);
+        $id = $this->params('term', $id);
         if ($id === null) {
             $instance = $this->getInstanceManager()->getInstanceFromRequest();
-            return $this->getTaxonomyManager()->findTaxonomyByName('root', $instance)->getChildren()->first();
+            $root     = $this->getTaxonomyManager()->findTaxonomyByName('root', $instance)->getChildren()->first();
+            if (!is_object($root)) {
+                $root = $this->getTaxonomyManager()->createRoot($this->termForm);
+                $this->getTaxonomyManager()->flush();
+            }
+            return $root;
         } else {
             return $this->getTaxonomyManager()->getTerm($id);
         }

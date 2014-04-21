@@ -68,7 +68,8 @@ class Tokenizer implements TokenizerInterface
         }
         
         // WHY DO YOU NOT WORK WHEN { IS THE FIRST CHAR
-        return substr($returnString, 1);
+        $return = substr($returnString, 1);
+        return $return;
     }
 
     protected function transliterateToken($token)

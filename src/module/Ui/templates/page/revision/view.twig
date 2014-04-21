@@ -1,10 +1,7 @@
 {% if revision %}
-    {{ pageHeader(revision.getTitle()).render() }}
+    {% include 'page/partials/head' %}
     {{ markdown().toHtml(revision.getContent()) }}
 {% endif %}
-<hr>
-{% include 'page/revision/menu' %}
-<hr>
 {% if page.getForum() %}
     <div class="panel">
         <div class="panel-body">

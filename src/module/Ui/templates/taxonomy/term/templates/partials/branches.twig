@@ -1,0 +1,40 @@
+{% set entities = term.getAssociated('entities') %}
+<div class="panel-group" id="accordion{{ term.getId() }}">
+    {% for child in term.findChildrenByTrashed(false) %}
+        {% if child.getType().getName() in ['topic-folder' , 'curriculum-topic-folder'] %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ term.getId() }}" href="#branch{{ child.getId() }}">
+                            {{ child.getName() }}
+                        </a>
+                    </h4>
+                </div>
+                <div class="panel-collapse collapse list-group" id="branch{{ child.getId() }}">
+                    <div class="list-group-item edit-control hidden">
+                        {% include 'taxonomy/term/templates/partials/actions' with {'term': child} %}
+                    </div>
+                    {% if child.getDescription() %}
+                        <div class="list-group-item">
+                            <strong>
+                                {{ child.getDescription() }}
+                            </strong>
+                        </div>
+                    {% endif %}
+                        {% for entity in child.getAssociated('entities') if not entity.getTrashed() %}
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <strong>{{ loop.index }}.</strong>
+                                    </div>
+                                    <div class="col-xs-11">
+                                        {% include 'taxonomy/term/entity/default' with {'entity': entity} only %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

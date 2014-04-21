@@ -13,12 +13,7 @@ return [
         'top-left' => [
             [
                 'label' => 'Home',
-                'route' => 'home',
-                'icon'  => 'home'
-            ],
-            [
-                'label' => 'Backend',
-                'route' => 'backend'
+                'route' => 'home'
             ]
         ]
     ]

@@ -26,7 +26,6 @@ echo $this->doctype();
                     <?php echo $this->partial('layout/partials/main'); ?>
                 </div>
                 <?php echo $this->partial('layout/partials/right-sidebar'); ?>
-                <?php echo $this->partial('layout/partials/contexter'); ?>
             </section>
             <?php echo $this->horizon(4);?>
         </div>
@@ -35,5 +34,6 @@ echo $this->doctype();
         <?php echo $this->partial('layout/partials/footer'); ?>
     </div>
     <?php echo $this->partial('layout/partials/default-modal'); ?>
+    <?php echo $this->placeholder('modals'); ?>
 </body>
 </html>

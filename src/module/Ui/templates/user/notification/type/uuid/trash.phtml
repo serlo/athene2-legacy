@@ -1,0 +1,7 @@
+<?php $event = $this->notification->getEvents()->current(); ?>
+<?php $user = $this->normalize()->toTitle($event->getActor()); ?>
+<?php $object = $this->normalize()->toTitle($event->getObject()); ?>
+<a role="menuitem" tabindex="-1" href="<?php echo $this->normalize()->toUrl($event->getObject(), true); ?>">
+    <?php echo sprintf($this->translate('<strong>%s</strong> trashed %s'), $user, $object); ?>
+    <small> - <?php echo $this->timeago()->render($event->getTimestamp()); ?></small>
+</a>

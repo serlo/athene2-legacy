@@ -1,706 +1,904 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Athene2\n"
-"POT-Creation-Date: 2013-12-04 10:59+0100\n"
-"PO-Revision-Date: 2013-12-04 10:59+0100\n"
+"POT-Creation-Date: 2014-04-21 11:41+0100\n"
+"PO-Revision-Date: 2014-04-21 11:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;translate;pageHeader;"
 "setSubtitle;addMessage;addSuccessMessage;addErrorMessage;setLabel;setLegend;"
 "setValue\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: D:\\workspace\\athene2\\src\\module\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: /Library/WebServer/Documents/workspace/athene2/src/"
+"module\n"
 
-#: D:\workspace\athene2\src\module/Blog/src/Blog/Form/PostForm.php:30
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ContextForm.php:44
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Form/DiscussionForm.php:38
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ArticleForm.php:29
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ModuleForm.php:28
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ModulePageForm.php:29
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/VideoForm.php:29
-#: D:\workspace\athene2\src\module/License/src/License/Form/LicenseForm.php:33
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:28
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:31
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/InternalForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:68
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:49
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:39
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:66
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:23
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:30
 msgid "Title:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Blog/src/Blog/Form/PostForm.php:31
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Form/CommentForm.php:30
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ArticleForm.php:30
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:26
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ModulePageForm.php:30
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/TextExerciseForm.php:26
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/TextExerciseGroupForm.php:26
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/TextSolutionForm.php:29
-#: D:\workspace\athene2\src\module/Flag/src/Flag/Form/FlagForm.php:42
-#: D:\workspace\athene2\src\module/License/src/License/Form/LicenseForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:32
+msgid "Url:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:69
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:50
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/CommentForm.php:64
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseForm.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseGroupForm.php:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:45
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:27
 msgid "Content:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Blog/src/Blog/Form/PostForm.php:32
-msgid "Publish date:"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:43
+msgid "frequency"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Blog/src/Blog/Form/PostForm.php:33
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ContextForm.php:48
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/Controls.php:28
-#: D:\workspace\athene2\src\module/License/src/License/Form/LicenseForm.php:38
-#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Form/TermForm.php:62
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:43
+msgid "2"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ads/src/Ads/Form/AdForm.php:47
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:76
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:57
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:43
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/Controls.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ContainerForm.php:57
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/PageForm.php:55
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:71
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterKeyForm.php:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:70
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RevisionForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Form/TermForm.php:63
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:43
 msgid "Save"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ContextForm.php:43
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentFieldset.php:29
+msgid "Attach file:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentForm.php:31
+msgid "Set type:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Attachment/src/Attachment/Form/AttachmentForm.php:34
+msgid "Upload"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:60
+msgid "Your account has been activated, you may now log in."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:65
+msgid ""
+"I couldn't find an account by that token. You can now try to re-activate "
+"your account."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:82
+msgid ""
+"Your have been sent an activation email. Please check your spam folder as "
+"well."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:119
+msgid "Your password has successfully been changed."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Controller/AuthenticationController.php:227
+msgid ""
+"You have been sent an email with instructions on how to restore your "
+"password! Please check your spam folder as well."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Form/ActivateForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SelectUserForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SettingsForm.php:29
+msgid "Email:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authentication/src/Authentication/Form/ActivateForm.php:30
+msgid "Activate"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Controller/RoleController.php:152
+msgid "Role created."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:30
+msgid "Permission:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:39
+msgid "Instance:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/PermissionForm.php:42
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/RoleForm.php:47
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/UserForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/button.phtml:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/default.phtml:36
+msgid "Add"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/RoleForm.php:44
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Term/src/Term/Form/TermFieldset.php:25
+msgid "Name:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Authorization/src/Authorization/Form/UserForm.php:25
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:33
+msgid "Username:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/CreatePostForm.php:74
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Blog/src/Blog/Form/UpdatePostForm.php:55
+msgid "Publish date:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:38
 msgid "Select a type:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ContextForm.php:45
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ContextForm.php:40
 msgid "Object-ID:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ParameterFieldset.php:24
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ParameterFieldset.php:26
 msgid "Which parameters should be matched?"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/ParameterFieldset.php:27
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/ParameterFieldset.php:49
 msgid "<strong>"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/UrlForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/UrlForm.php:28
 msgid "Uri:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Contexter/src/Contexter/Form/UrlForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Contexter/src/Contexter/Form/UrlForm.php:30
 msgid "Select"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:123
-msgid "You can't downvote this comment."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:125
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:123
 msgid "You have downvoted this comment."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:129
-msgid "You can't upvote this comment."
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:125
+msgid "You can't downvote this comment."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Controller/DiscussionController.php:131
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:129
 msgid "You have upvoted this comment."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Form/CommentForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Controller/DiscussionController.php:131
+msgid "You can't upvote this comment."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/CommentForm.php:67
 msgid "Comment"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Form/DiscussionForm.php:39
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:67
 msgid "content:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Discussion/src/Discussion/Form/DiscussionForm.php:43
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Discussion/src/Discussion/Form/DiscussionForm.php:70
 msgid "Start discussion"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ArticleForm.php:31
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/ModulePageForm.php:31
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/VideoForm.php:31
-msgid "Reasoning:"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Controller/LinkController.php:50
+msgid "Your changes have been saved."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/TextSolutionForm.php:28
-msgid "Hint:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Form/VideoForm.php:30
-msgid "Video url:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Entity/src/Entity/Plugin/Repository/Controller/RepositoryController.php:54
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Controller/RepositoryController.php:57
 msgid ""
 "Your revision has been saved, it will be available once it get's approved"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Flag/src/Flag/Controller/FlagController.php:48
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:32
+msgid "Reasoning:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ArticleForm.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/GroupedTextExerciseForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModuleForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/ModulePageForm.php:30
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextExerciseGroupForm.php:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:35
+msgid "Changes:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/TextSolutionForm.php:26
+msgid "Hint:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:29
+msgid "Description:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Entity/src/Entity/Form/VideoForm.php:30
+msgid "Video url:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Controller/FlagController.php:42
 msgid "The content has been flagged."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Flag/src/Flag/Controller/FlagController.php:79
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Controller/FlagController.php:77
 msgid "Your action was successfull."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Flag/src/Flag/Form/FlagForm.php:37
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ContainerForm.php:39
 msgid "Type:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Flag/src/Flag/Form/FlagForm.php:44
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Flag/src/Flag/Form/FlagForm.php:48
 msgid "Report"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/License/src/License/Form/LicenseForm.php:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:34
 msgid "License url:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/License/src/License/Form/LicenseForm.php:36
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/LicenseForm.php:35
 msgid "Icon url:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/CategoryForm.php:30
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:34
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/InternalForm.php:33
-msgid "Add"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/UpdateLicenseForm.php:34
+msgid "Select a license:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/ExternalForm.php:32
-msgid "Url:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/RelatedContent/src/RelatedContent/Form/InternalForm.php:31
-msgid "Reference:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Search/src/Search/Form/SearchForm.php:30
-msgid "search"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:65
-msgid "Your changes have been saved!"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:114
-msgid "The node has been added successfully!"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Controller/TermController.php:126
-msgid "The node has been deleted successfully!"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Taxonomy/src/Taxonomy/Form/TermForm.php:60
-msgid "description:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Term/src/Term/Form/TermFieldset.php:24
-msgid "Name:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Upload/src/Upload/Form/UploadForm.php:26
-msgid "Upload file:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Upload/src/Upload/Form/UploadForm.php:27
-msgid "Upload"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:196
-msgid ""
-"You have been sent an email with instructions on how to restore your "
-"password!"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:247
-msgid "Your account has been activated, you may now log in."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Controller/UserController.php:317
-msgid "Your password has successfully been changed."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Form/ChangePasswordForm.php:30
-msgid "Current password:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Form/ChangePasswordForm.php:31
-#: D:\workspace\athene2\src\module/User/src/User/Form/LostPassword.php:30
-msgid "New password:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Form/ChangePasswordForm.php:32
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:37
-msgid "Confirm password:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Form/ChangePasswordForm.php:34
-#: D:\workspace\athene2\src\module/User/src/User/Form/LostPassword.php:33
-#: D:\workspace\athene2\src\module/User/src/User/Form/SettingsForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/License/src/License/Form/UpdateLicenseForm.php:37
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SettingsForm.php:31
 msgid "Update"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/Login.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Markdown/src/Markdown/View/Helper/MarkdownHelper.php:48
+msgid "Rendering failed:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:84
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:112
+msgid "The container was successfully created"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:114
+msgid "The container could not be created (validation failed)"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:219
+msgid "The container was successfully removed"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:230
+msgid "The page was successfully removed"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:241
+msgid "The parameter was successfully removed"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:257
+msgid "The page was successfully updated"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:259
+msgid "The page could not be updated"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Controller/NavigationController.php:262
+msgid "No post data was sent - the page could not be updated"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/PageForm.php:52
+msgid "Position"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:40
+msgid "Key:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Navigation/src/Navigation/Form/ParameterForm.php:47
+msgid "Value:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Notification/src/Notification/Form/OptInFieldset.php:26
+msgid "Add to watchlist"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Notification/src/Notification/Form/OptInFieldset.php:31
+msgid "Get email notifications as well"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Page/src/Page/Form/RepositoryForm.php:32
+msgid "Forum Id:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/RelatedContent/src/RelatedContent/Form/InternalForm.php:31
+msgid "Reference:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Search/src/Search/Form/SearchForm.php:30
+msgid "search"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Controller/TermController.php:53
+msgid "The node has been added successfully!"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Controller/TermController.php:126
+msgid "Your changes have been saved!"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Taxonomy/src/Taxonomy/Form/TermForm.php:60
+msgid "description:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Controller/UserController.php:78
+msgid ""
+"You have registered successfully and\n"
+"                     will soon receive an email with instructions on\n"
+"                     how to activate your account."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:30
+msgid "Current password:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:30
+msgid "New password:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/ChangePasswordForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:37
+msgid "Confirm password:"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:32
 msgid "Email address:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/Login.php:32
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:36
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:33
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:36
 msgid "Password:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/Login.php:34
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/login.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:34
+msgid "Remember me"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Login.php:36
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/login.phtml:15
 msgid "Login"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/LostPassword.php:31
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/LostPassword.php:31
 msgid "Repeat new password:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:33
-msgid "Username:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:34
-#: D:\workspace\athene2\src\module/User/src/User/Form/SelectUserForm.php:30
-#: D:\workspace\athene2\src\module/User/src/User/Form/SettingsForm.php:29
-msgid "Email:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:35
 msgid "Confirm email:"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:38
 msgid "I've read and understood the terms of service."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/Register.php:40
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/register.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/Register.php:40
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/register.phtml:2
 msgid "Sign up"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/User/src/User/Form/SelectUserForm.php:32
+#: /Library/WebServer/Documents/workspace/athene2/src/module/User/src/User/Form/SelectUserForm.php:32
 msgid "Restore"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/admin/home/index.phtml:3
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:33
+msgid "The content has been trashed."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:41
+msgid "The content has been restored."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Uuid/src/Uuid/Controller/UuidController.php:49
+msgid "The content has been removed."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/admin/home/index.phtml:12
 msgid "Backend"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/application/index/index.phtml:1
-#, php-format
-msgid "Welcome to %s"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/admin/home/index.phtml:15
+msgid "Welcome to the backend. Explore the possiblities on the right!"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/blogs.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/ads/helper/ads-helper.phtml:4
+msgid "Horizon"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/activate.phtml:1
+msgid "Activate an account"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/change-password.phtml:2
+msgid "Settings"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/login.phtml:24
+#, php-format
+msgid "Did you forget your %spassword%s?"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/reset-password/restore.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authentication/reset-password/select.phtml:1
+msgid "Restore password"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/create.phtml:2
+msgid "Create role"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:16
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:17
+msgid "Username"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:17
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/roles.phtml:12
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:18
+msgid "Roles"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:18
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:19
+msgid "Last login"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/partial/users-table.phtml:19
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/partial/users-table.phtml:20
+msgid "Logins"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/permission/add.phtml:12
+msgid "Add permission"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/roles.phtml:29
+msgid "role"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:12
+msgid "Role"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:20
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/users/users.phtml:14
+msgid "Users"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:47
+msgid "Permissions"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:58
+msgid "Global"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/show.phtml:70
+msgid "Inherits from"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/add.phtml:12
+msgid "Add user"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/partial.phtml:14
+#, php-format
+msgid "User %s not found"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/authorization/role/user/remove.phtml:12
+msgid "Remove user"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/blogs.phtml:13
 msgid "Blogs"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/view-all.phtml:8
-msgid "Manage blog"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/view-partial.phtml:14
-msgid "unpublished"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/view.phtml:11
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/post/view.phtml:4
-msgid "Blog"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/post/create.phtml:2
-msgid "Create a blog post"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/blog/blog/post/update.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/post/update.phtml:12
 msgid "Update a blog post"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/contexter/manage.phtml:1
-msgid "Manage context links"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view-all.phtml:2
+msgid "Unpublished posts"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/contexter/manage.phtml:5
-msgid "Link"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view-partial.phtml:15
+msgid "unpublished"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/contexter/manage.phtml:6
-msgid "Matching"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/blog/blog/view.phtml:24
+msgid "Blog"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/contexter/add/form.phtml:1
-#: D:\workspace\athene2\src\module/Ui/templates/contexter/add/url-form.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/form.phtml:12
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/url-form.phtml:12
 msgid "Add context"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/contexter/add/url-form.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/add/url-form.phtml:12
 msgid "Select uri"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/discussion/discussions.phtml:6
-#: D:\workspace\athene2\src\module/Ui/templates/discussion/discussion/comment.phtml:1
-msgid "Start a new discussion"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/helper/button.phtml:23
+msgid "There is no help available for this page yet."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/discussion/discussion/show.phtml:26
-msgid "Do you really want to delete this discussion?"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:12
+msgid "Manage context links"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/discussion/discussion/start.phtml:1
-msgid "Start a discussion"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:16
+msgid "Link"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/discussion/discussions/index.phtml:2
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/partials/discussions.phtml:3
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/templates/default.phtml:32
-msgid "Discussions"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/contexter/manage.phtml:17
+msgid "Matching"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/link/move.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:21
+msgid "Edit"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/editor/layout.phtml:44
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:18
+msgid "Cancel"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/license/update.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/update.phtml:1
+msgid "Update license"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/link/move.phtml:2
 msgid "Move resource"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/view.phtml:1
-msgid "Article"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/exercise-group.phtml:2
-msgid "Exercise group"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/grouped-text-exercise.phtml:2
-msgid "Grouped text exercise"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/module-page.phtml:2
-msgid "Module page"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/module.phtml:2
-msgid "Module"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/text-exercise.phtml:2
-msgid "Text exercise"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/text-solution.phtml:2
-msgid "Text solution"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/video.phtml:1
-msgid "Video"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/page/aggregation/default.phtml:1
-msgid "Related"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/compare-revision.phtml:1
-msgid "Compare revisions"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/compare-revision.phtml:3
-msgid "Revision"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/compare-revision.phtml:5
-msgid "Aktuelle Revision"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:1
-msgid "History"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:3
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:2
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:16
-msgid "Revisions"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:4
-msgid "Trashed revisions"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:11
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:36
-#: D:\workspace\athene2\src\module/Ui/templates/flag/manage.phtml:5
-msgid "#"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:12
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/partials/discussions.phtml:5
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/templates/default.phtml:34
-msgid "Current"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:13
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:37
-msgid "Author"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:14
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:38
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:32
-#: D:\workspace\athene2\src\module/Ui/templates/flag/manage.phtml:8
-msgid "Timestamp"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:24
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/history.phtml:46
-msgid "show"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/revision.phtml:13
-msgid "There is no current revision."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/repository/update-revision.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/repository/update-revision.phtml:1
 msgid "Update revision"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/plugin/taxonomy/update.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/entity/taxonomy/update.phtml:13
 msgid "Assign a resource"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:5
-msgid "Hint"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:6
+msgid "Forbidden"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:6
-msgid "Solution"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:8
+msgid "It looks like you went somewhere you weren't supposed to be."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:22
-msgid "This solution is waiting for approval. It will be soon available!"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/403.phtml:11
+msgid "Take the blue pill and return home"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/text-solution.phtml:24
-#, php-format
-msgid "This solution has no content. Do you want to create %sone%s?"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/minimalistic/content.phtml:4
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/minimalistic/default.phtml:8
-msgid "Pending review:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/entity/view/partials/discussions.phtml:6
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/templates/default.phtml:35
-msgid "Archived"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:1
-msgid "A 404 error occurred"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:10
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:33
 msgid "The requested controller was unable to dispatch the request."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:13
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:37
 msgid ""
 "The requested controller could not be mapped to an existing controller class."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:16
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:41
 msgid "The requested controller was not dispatchable."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:19
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:44
 msgid "The requested URL could not be matched by routing."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:22
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:47
 msgid "We cannot determine at this time why a 404 was generated."
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:34
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:59
 msgid "Controller"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:41
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:65
 #, php-format
 msgid "resolves to %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:53
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:79
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:8
 msgid "Additional information"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:56
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:80
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:11
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:82
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:107
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:11
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:35
 msgid "File"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:60
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:84
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:15
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:39
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:87
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:112
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:39
 msgid "Message"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:64
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:88
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:19
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:43
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:91
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:116
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:19
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:43
 msgid "Stack trace"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:74
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:29
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/404.phtml:101
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:29
 msgid "Previous exceptions"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/error/404.phtml:103
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:58
-msgid "No Exception available"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/error/index.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:1
 msgid "An error occurred"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/history.phtml:1
-msgid "Event log"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/error/index.phtml:58
+msgid "No Exception available"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/helper/event/discussion/create.phtml:4
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/discussion/comment/create.phtml:4
+#, php-format
+msgid "%s commented \"%s\": %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/discussion/create.phtml:4
 #, php-format
 msgid "%s started a new discussion \"%s\" on %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/helper/event/entity/revision/add.phtml:4
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/create.phtml:4
 #, php-format
-msgid "%s edited %s: %s"
+msgid "%s created a new %s: %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:4
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/link/create.phtml:6
 #, php-format
-msgid "%s set head of repository \"%s\" to \"%s\""
+msgid "%s added %s to %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/helper/event/taxonomy/term/create.phtml:3
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/add.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/reject.phtml:5
+msgid "trashed content"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/add.phtml:9
+#, php-format
+msgid "%s created a new version of %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/checkout.phtml:10
+#, php-format
+msgid "%s checked out a new version of %s: <strong>\"%s\"</strong>"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/entity/revision/reject.phtml:10
+#, php-format
+msgid "%s rejected a version of %s: <em>\"%s\"</em>"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/license/object/set.phtml:5
+#, php-format
+msgid "%s changed the license of %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/link/create.phtml:9
+msgid "removed content"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/associate.phtml:10
+#, php-format
+msgid "%s associated %s with taxonomy %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/create.phtml:3
 #, php-format
 msgid "%s created a new taxonomy term: <strong>\"%s\"</strong>"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/helper/event/taxonomy/term/parent-change.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/parent/change.phtml:7
 #, php-format
 msgid ""
 "%s changed <i>\"%s\"'s</i> parent from <strong>\"%s\"</strong> to <strong>"
 "\"%s\"</strong>"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/event/helper/event/taxonomy/term/update.phtml:3
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/taxonomy/term/update.phtml:3
 #, php-format
 msgid "%s updated a taxonomy term: <strong>\"%s\"</strong>"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/add.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/uuid/restore.phtml:3
+#, php-format
+msgid "%s restored \"%s\""
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/helper/event/uuid/trash.phtml:3
+#, php-format
+msgid "%s trashed \"%s\""
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/event/history.phtml:1
+msgid "Event log"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/add.phtml:1
 msgid "Flag content"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:5
 msgid "Flag detail"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:8
-msgid "Id"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:16
-#: D:\workspace\athene2\src\module/Ui/templates/flag/manage.phtml:6
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:6
 msgid "Object"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:24
-#: D:\workspace\athene2\src\module/Ui/templates/flag/manage.phtml:7
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:14
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/trash-bin.phtml:22
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/unrevised.phtml:22
-#: D:\workspace\athene2\src\module/Ui/templates/uuid/recycle-bin.phtml:7
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:17
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:7
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:22
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:22
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:7
 msgid "Type"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:40
-#: D:\workspace\athene2\src\module/Ui/templates/flag/manage.phtml:9
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:8
+msgid "Timestamp"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:35
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:9
 msgid "Reporter"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/detail.phtml:48
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/detail.phtml:44
 msgid "Content"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/flag/manage.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:1
 msgid "Manage flags"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/layout/partials/default-modal.phtml:10
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/flag/manage.phtml:5
+msgid "#"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/default-modal.phtml:10
 msgid "Close"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/layout/partials/default-modal.phtml:11
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/default-modal.phtml:11
 msgid "Okay"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/layout/partials/header.phtml:41
-msgid "The free learning page"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/layout/partials/search.phtml:2
-#: D:\workspace\athene2\src\module/Ui/templates/search/form.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/layout/partials/search.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/search/form.phtml:1
 msgid "Search"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/add.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/add.phtml:1
 msgid "Add license"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/detail.phtml:3
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/detail.phtml:3
 msgid "License"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:1
 msgid "Manage licenses"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:5
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:8
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/trash-bin.phtml:21
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/unrevised.phtml:21
-#: D:\workspace\athene2\src\module/Ui/templates/uuid/recycle-bin.phtml:6
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:21
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:21
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:6
 msgid "Title"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:6
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:11
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:6
 msgid "Url"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:7
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:7
 msgid "Icon"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:8
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:17
-#: D:\workspace\athene2\src\module/Ui/templates/uuid/recycle-bin.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:8
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:8
 msgid "Actions"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:22
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:22
 msgid ""
 "Caution, deleting a license has serious consequences. You are going to "
 "delete a great amount of content, you need to know exactly what you are "
 "doing! THIS ACTION CAN NOT BE UNDONE"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/manage.phtml:22
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/license/manage.phtml:22
 msgid ""
 "DANGER: You are going to delete all contents associated with this license!"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/license/update.phtml:1
-msgid "Update license"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/notification/body.phtml:6
+#, php-format
+msgid ""
+"Hello %s,<br>\n"
+"<br>\n"
+"here's a heads up of what has happened on %s:<br>\n"
+"<br>\n"
+"<ul>\n"
+"    %s\n"
+"</ul>"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/mailman/messages/register/body.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/register/body.phtml:2
 #, php-format
 msgid ""
 "Hello %s,\n"
@@ -713,7 +911,7 @@ msgid ""
 "your %s Team. "
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/mailman/messages/restore-password/body.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/restore-password/body.phtml:2
 #, php-format
 msgid ""
 "Hi %s,\n"
@@ -724,295 +922,198 @@ msgid ""
 "%s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/mailman/messages/restore-password/subject.phtml:1
-msgid "Restore your password"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/mailman/messages/restore-password/subject.phtml:1
+#, php-format
+msgid "Restore your password on %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/pages.phtml:3
-msgid "new page"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/create.phtml:1
+msgid "Create container"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/pages.phtml:4
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:3
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/containers.phtml:1
+msgid "Manage navigation"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:4
+msgid "Information"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:7
+msgid "Instance: "
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:10
+msgid "Name: "
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:28
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:32
+msgid "page"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/container/get.phtml:17
 msgid "Pages"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/pages.phtml:22
-msgid "no current revision set"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/containers.phtml:11
+msgid "container"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/pages.phtml:26
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:40
-msgid "edit"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/page/partial/tree.phtml:24
+msgid "parameter"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/pages.phtml:29
-#: D:\workspace\athene2\src\module/Ui/templates/page/revision-menu.phtml:21
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:46
-msgid "delete"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/create.phtml:1
+msgid "Create parameter"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/revision-menu.phtml:17
-msgid "revisions"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/create.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/update.phtml:5
+msgid "Key"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/revision-menu.phtml:24
-msgid "setCurrent"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/key/create.phtml:1
+msgid "Create parameter key"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/revision-menu.phtml:28
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:11
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:49
-msgid "current"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/navigation/parameter/update.phtml:1
+msgid "Update parameter"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:14
-msgid "new"
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/search/results.phtml:1
+msgid "Search results"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:30
-msgid "title:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/page/show-revisions.phtml:32
-msgid "author:"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/add-category.phtml:2
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/add-external.phtml:2
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/add-internal.phtml:2
-msgid "Add related content"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/add-category.phtml:2
-msgid "category"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/add-external.phtml:2
-msgid "external"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/add-internal.phtml:2
-msgid "internal"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:4
-msgid "Manage related content"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:62
-msgid "Add category"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:63
-msgid "Add internal"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/related-content/manage.phtml:64
-msgid "Add external"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/search/results.phtml:1
-msgid "Searchresults"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/trash-bin.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:15
 msgid "Trashed learning resources"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/trash-bin.phtml:23
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:23
 msgid "Action"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/trash-bin.phtml:38
-#: D:\workspace\athene2\src\module/Ui/templates/uuid/recycle-bin.phtml:26
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/trash-bin.phtml:38
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:26
 msgid ""
 "Do you really want to purge this item? It and all references to it will be "
 "lost forever!"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/entity/unrevised.phtml:15
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/subject/entity/unrevised.phtml:15
 msgid "Unrevised learning resources"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:68
-msgid "Articles"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:74
-msgid "There are no articles for this topic yet."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:82
-msgid "Videos"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:88
-msgid "There are no videos for this topic yet."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:96
-msgid "Modules"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:102
-msgid "There are no modules for this topic yet."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:111
-msgid "Exercises"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entities.phtml:117
-msgid "There are no exercises for this topic yet."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/entity/default.phtml:9
-msgid "Entity is not a learning resource."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/templates/curriculum/index.phtml:22
-msgid "Curriculum"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/subject/plugin/taxonomy/templates/topic/index.phtml:22
-msgid "Topic"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/create.phtml:13
-msgid "Taxonomie erstellen"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/form.phtml:14
-msgid "Edit taxonomy term"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/form.phtml:16
-msgid "Add taxonomy term"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/order-associated.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:2
 msgid "Sort entities"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/order-associated.phtml:19
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize/partial.phtml:22
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize/partial.phtml:42
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:16
 msgid "Sort"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/order-associated.phtml:20
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize/partial.phtml:23
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize/partial.phtml:43
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/taxonomy/term/order-associated.phtml:17
 msgid "Save new order"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/order-associated.phtml:21
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize/partial.phtml:24
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize/partial.phtml:44
-msgid "Cancel"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/taxonomy/term/organize.phtml:13
-msgid "Organize taxonomy"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/upload/form.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/upload/form.phtml:2
 msgid "Upload a file"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/notification/notifications.phtml:10
-msgid "You have no notifications."
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/notification/notifications.phtml:19
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notification.phtml:11
 #, php-format
 msgid "Event %s, User %s, Uuid %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/notification/type/discussion/create.phtml:7
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notifications.phtml:4
+msgid "Notifications"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/notifications.phtml:13
+msgid "You have no notifications."
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/discussion/comment/create.phtml:7
+#, php-format
+msgid "<strong>%s</strong> commented on discussion \"%s\": \"%s\""
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/discussion/create.phtml:7
 #, php-format
 msgid "<strong>%s</strong> started a discussion on \"%s\": <i>\"%s\"</i>"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/notification/type/entity/link/create.phtml:6
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/link/create.phtml:14
 #, php-format
-msgid "<strong>%s</strong> added a new entity to \"%s\""
+msgid "<strong>%s</strong> added %s to %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/notification/type/entity/revision/checkout.phtml:6
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/add.phtml:9
 #, php-format
-msgid "<strong>%s</strong> accepted your revision on \"%s\""
+msgid "<strong>%s</strong> edited %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/change-password.phtml:2
-msgid "Settings"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/login.phtml:24
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/checkout.phtml:10
 #, php-format
-msgid "Did you forget your %spassword%s?"
+msgid "<strong>%s</strong> accepted a revision of %s"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/profile.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/entity/revision/reject.phtml:6
+#, php-format
+msgid "<strong>%s</strong> rejectect a revision of %s: %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/associate.phtml:6
+#, php-format
+msgid "<strong>%s</strong> associated %s with %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/parent/change.phtml:8
+#, php-format
+msgid "<strong>%s</strong> changed parent of %s from %s to %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/taxonomy/term/update.phtml:4
+#, php-format
+msgid "<strong>%s</strong> updated %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/uuid/restore.phtml:5
+#, php-format
+msgid "<strong>%s</strong> restored %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/notification/type/uuid/trash.phtml:5
+#, php-format
+msgid "<strong>%s</strong> trashed %s"
+msgstr ""
+
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:1
 msgid "Profile"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/profile.phtml:7
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:5
 msgid "Last seen"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/profile.phtml:17
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/roles.phtml:14
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/partial/users-table.phtml:18
-msgid "Roles"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/profile.phtml:30
-msgid "Remove role"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/profile.phtml:44
-msgid "Add role"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/profile.phtml:60
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/profile.phtml:30
 msgid "Activity log"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/settings.phtml:2
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/settings.phtml:2
 msgid "Change password"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/settings.phtml:6
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/user/user/settings.phtml:6
 msgid "Change your password"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/reset-password/restore.phtml:2
-#: D:\workspace\athene2\src\module/Ui/templates/user/user/reset-password/select.phtml:2
-msgid "Restore password"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/role.phtml:14
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/users.phtml:14
-msgid "Users"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/partial/users-table.phtml:17
-msgid "Username"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/partial/users-table.phtml:19
-msgid "Last login"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/user/users/partial/users-table.phtml:20
-msgid "Logins"
-msgstr ""
-
-#: D:\workspace\athene2\src\module/Ui/templates/uuid/recycle-bin.phtml:1
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:1
 msgid "Uuid recycle bin"
 msgstr ""
 
-#: D:\workspace\athene2\src\module/Ui/templates/uuid/recycle-bin.phtml:5
+#: /Library/WebServer/Documents/workspace/athene2/src/module/Ui/templates/uuid/recycle-bin.phtml:5
 msgid "ID"
 msgstr ""

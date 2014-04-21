@@ -1,0 +1,10 @@
+<div class="page-header">
+    <div class="pull-right">
+        {% include 'taxonomy/term/templates/partials/controls' %}
+    </div>
+    <h1>{{ term.getName() }}</h1>
+    <div class="edit-control hidden">
+        {% include 'taxonomy/term/templates/partials/actions' %}
+    </div>
+</div>
+{% include 'taxonomy/term/templates/default' %}

@@ -19,7 +19,7 @@ foreach ($this->container as $page) {
         $html[] = '<i class="glyphicon glyphicon-' . $page->get('icon') . '"></i>';
     }
 
-    $html[] = '<a href="' . $page->getHref() . '">';
+    $html[] = '<a href="' . $this->alias($page->getHref()) . '">';
     $html[] = $page->getLabel();
     $html[] = '</a>';
     

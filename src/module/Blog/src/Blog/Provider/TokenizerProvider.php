@@ -17,7 +17,6 @@ use Token\Provider\ProviderInterface;
 
 class TokenizerProvider extends AbstractProvider implements ProviderInterface
 {
-
     public function getData()
     {
         return [

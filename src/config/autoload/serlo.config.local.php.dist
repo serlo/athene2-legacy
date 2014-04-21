@@ -5,7 +5,8 @@ return [
         'delimiter' => ' - '
     ],
     'brand'              => [
-        'name' => 'Serlo <sup><small>beta</small></sup>'
+        'name' => 'Serlo <sup><small>beta</small></sup>',
+        'slogan' => 'Freie Bildung.'
     ],
     'mailman'            => [
         'sender'   => 'no-reply@serlo.org',

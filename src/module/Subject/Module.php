@@ -11,11 +11,11 @@
 namespace Subject;
 
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RoutePluginManager;
 use Zend\Stdlib\ArrayUtils;
 
 class Module
 {
-
     protected static function getInstanceConfigs()
     {
         $return = [];
@@ -84,14 +84,5 @@ class Module
         }
 
         return $config;
-    }
-
-    public function onBootstrap(MvcEvent $e)
-    {
-        $app            = $e->getTarget();
-        $serviceManager = $app->getServiceManager();
-
-        $hydrator = $serviceManager->get('Subject\Hydrator\Navigation');
-        $hydrator->setPath(__DIR__ . '/config/instances/');
     }
 }

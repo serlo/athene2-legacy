@@ -14,8 +14,8 @@ use Exception;
 use Navigation\Provider\ContainerProviderInterface;
 use Navigation\Provider\PageProviderInterface;
 use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Mvc\Router\RouteStackInterface;
+use Zend\Mvc\Router\RouteStackInterface as Router;
 use Zend\Navigation\Exception\InvalidArgumentException;
 use Zend\Navigation\Navigation;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -57,10 +57,9 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
                 ));
             }
 
-            $pages     = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
-            $container = $this->provideContainer($configuration);
-            $pages     = ArrayUtils::merge($pages, $this->getPagesFromConfig($container));
-
+            $pages       = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
+            $container   = $this->provideContainer($configuration);
+            $pages       = ArrayUtils::merge($pages, $this->getPagesFromConfig($container));
             $this->pages = $this->preparePages($serviceLocator, $pages);
         }
 
@@ -150,8 +149,6 @@ abstract class ProvideableNavigationFactory extends AbstractNavigationFactory
 
         return $containers;
     }
-
-
 
     protected function injectComponentsFromProvider(
         PageProviderInterface $provider,

@@ -66,15 +66,11 @@ return [
     'router'           => [
         'routes' => [
             'taxonomy' => [
-                'type'          => 'Segment',
-                'options'       => [
-                    'route'    => '/taxonomy',
-                    'defaults' => [
-                        'controller' => __NAMESPACE__ . '\Controller\404'
-                    ]
+                'type'         => 'Segment',
+                'options'      => [
+                    'route' => '/taxonomy'
                 ],
-                'may_terminate' => true,
-                'child_routes'  => [
+                'child_routes' => [
                     'taxonomy' => [
                         'type'    => 'Segment',
                         'options' => [
@@ -85,43 +81,40 @@ return [
                         ]
                     ],
                     'term'     => [
-                        'type'          => 'Segment',
-                        'options'       => [
+                        'type'         => 'Segment',
+                        'options'      => [
                             'route'    => '/term',
                             'defaults' => [
                                 'controller' => __NAMESPACE__ . '\Controller\TermController'
-                            ]
+                            ],
                         ],
-                        'may_terminate' => true,
-                        'child_routes'  => [
-                            'update'          => [
+                        'child_routes' => [
+                            'get'             => [
                                 'type'    => 'Segment',
                                 'options' => [
-                                    'route' => '/update/:term'
-                                ]
-                            ],
-                            'action'          => [
-                                'type'    => 'Segment',
-                                'options' => [
-                                    'route' => '/:action[/:id]'
-                                ]
-                            ],
-                            'route'           => [
-                                'type'    => 'Segment',
-                                'options' => [
-                                    'route'    => '/route/:id',
-                                    'defaults' => [
-                                        'controller' => __NAMESPACE__ . '\Controller\TermRouterController',
+                                    'route'      => '/get/:term',
+                                    'constrains' => ['term' => '[0-9]+'],
+                                    'defaults'   => [
+                                        'controller' => __NAMESPACE__ . '\Controller\GetController',
                                         'action'     => 'index'
                                     ]
                                 ]
+                            ],
+                            'update'          => [
+                                'type'     => 'Segment',
+                                'options'  => [
+                                    'route' => '/update/:term',
+                                    'defaults' => [
+                                        'action' => 'update'
+                                    ]
+                                ],
                             ],
                             'create'          => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/create/:taxonomy/:parent',
                                     'defaults' => [
-                                        'action' => 'create'
+                                        'action' => 'create',
                                     ]
                                 ]
                             ],
@@ -157,8 +150,7 @@ return [
                                 'options' => [
                                     'route'    => '/sort/:association/:term',
                                     'defaults' => [
-                                        'controller' => __NAMESPACE__ . '\Controller\TermController',
-                                        'action'     => 'orderAssociated'
+                                        'action' => 'orderAssociated'
                                     ]
                                 ]
                             ]
@@ -177,7 +169,8 @@ return [
     ],
     'di'               => [
         'allowed_controllers' => [
-            __NAMESPACE__ . '\Controller\TermController'
+            __NAMESPACE__ . '\Controller\TermController',
+            __NAMESPACE__ . '\Controller\GetController'
         ],
         'definition'          => [
             'class' => [
@@ -187,17 +180,8 @@ return [
                     ]
                 ],
                 __NAMESPACE__ . '\Form\TermForm'                  => [],
-                __NAMESPACE__ . '\Controller\TermController'      => [
-                    'setTaxonomyManager' => [
-                        'required' => true
-                    ],
-                    'setInstanceManager' => [
-                        'required' => true
-                    ],
-                    'setUserManager'     => [
-                        'required' => true
-                    ]
-                ],
+                __NAMESPACE__ . '\Controller\GetController'       => [],
+                __NAMESPACE__ . '\Controller\TermController'      => [],
                 __NAMESPACE__ . '\Hydrator\TaxonomyTermHydrator'  => []
             ]
         ],

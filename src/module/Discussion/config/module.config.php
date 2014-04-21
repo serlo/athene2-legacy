@@ -34,14 +34,6 @@ return [
             ],
         ]
     ],
-    'term_router'     => [
-        'routes' => [
-            'forum'          => [
-                'route'          => 'discussion/discussions',
-                'param_provider' => 'Discussion\Provider\ParamProvider'
-            ],
-        ]
-    ],
     'view_helpers'    => [
         'factories' => [
             'discussion' => __NAMESPACE__ . '\Factory\DiscussionHelperFactory'
@@ -54,7 +46,7 @@ return [
     ],
     'taxonomy'        => [
         'types' => [
-            'forum'          => [
+            'forum' => [
                 'allowed_associations' => [
                     'Discussion\Entity\CommentInterface'
                 ],
@@ -77,7 +69,6 @@ return [
                 'options'       => [
                     'route' => ''
                 ],
-                'may_terminate' => false,
                 'child_routes'  => [
                     'view'        => [
                         'type'    => 'Zend\Mvc\Router\Http\Segment',
@@ -90,13 +81,22 @@ return [
                         ]
                     ],
                     'discussions' => [
-                        'type'    => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => [
-                            'route'    => '/discussions[/:id]',
+                        'type'         => 'Zend\Mvc\Router\Http\Segment',
+                        'options'      => [
+                            'route'    => '/discussions',
                             'defaults' => [
                                 'controller' => 'Discussion\Controller\DiscussionsController',
                                 'action'     => 'index'
                             ]
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'get' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => '/:id'
+                                ]
+                            ],
                         ]
                     ],
                     'discussion'  => [

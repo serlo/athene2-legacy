@@ -70,7 +70,8 @@ return [
             'timeago'         => 'Ui\View\Helper\Timeago',
             'registry'        => 'Ui\View\Helper\Registry',
             'currentLanguage' => 'Ui\View\Helper\ActiveLanguage',
-            'toAlpha'         => 'Ui\View\Helper\ToAlpha'
+            'toAlpha'         => 'Ui\View\Helper\ToAlpha',
+            'diff'            => 'Ui\View\Helper\DiffHelper'
         ]
     ],
     'page_header_helper'    => [],

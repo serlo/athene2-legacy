@@ -15,7 +15,7 @@ use Exception;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\RouteInterface;
+use Zend\Mvc\Router\Http\TreeRouteStack;
 use Zend\Mvc\Router\RouteMatch;
 
 class Module
@@ -24,7 +24,8 @@ class Module
     public static $listeners = [
         'Alias\Listener\BlogManagerListener',
         'Alias\Listener\PageControllerListener',
-        'Alias\Listener\RepositoryManagerListener'
+        'Alias\Listener\RepositoryManagerListener',
+        'Alias\Listener\TaxonomyManagerListener'
     ];
 
     public function getAutoloaderConfig()
@@ -56,9 +57,11 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $this->registerRoute($e);
         $eventManager       = $e->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
+        $this->registerRoute($e);
+        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 1000);
 
         foreach (self::$listeners as $listener) {
             $sharedEventManager->attachAggregate(
@@ -67,18 +70,49 @@ class Module
         }
     }
 
+    public function onDispatch(MvcEvent $e)
+    {
+        $application    = $e->getApplication();
+        $response       = $e->getResponse();
+        $request        = $application->getRequest();
+        $serviceManager = $application->getServiceManager();
+        /* @var $aliasManager AliasManagerInterface */
+        $aliasManager    = $serviceManager->get('Alias\AliasManager');
+        $instanceManager = $serviceManager->get('Instance\Manager\InstanceManager');
+        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
+            return null;
+        }
+
+        /* @var $uriClone \Zend\Uri\Http */
+        $uriClone = clone $request->getUri();
+        $uri      = $uriClone->getPath();
+
+        try {
+            $location = $aliasManager->findAliasBySource($uri, $instanceManager->getInstanceFromRequest());
+        } catch (Exception $ex) {
+            try {
+                $uri      = $uriClone->makeRelative('/')->getPath();
+                $location = $aliasManager->findCanonicalAlias($uri, $instanceManager->getInstanceFromRequest());
+            } catch (Exception $ex) {
+                return null;
+            }
+        }
+
+        $response->getHeaders()->addHeaderLine('Location', $location);
+        $response->setStatusCode(302);
+        $response->sendHeaders();
+        $e->stopPropagation();
+        return $response;
+    }
+
     public function onRender(MvcEvent $e)
     {
         $application = $e->getApplication();
         $response    = $e->getResponse();
         $request     = $application->getRequest();
 
-        if (!$response instanceof HttpResponse) {
+        if (!($response instanceof HttpResponse && $request instanceof HttpRequest)) {
             return;
-        } else {
-            if (!$request instanceof HttpRequest) {
-                return;
-            }
         }
 
         if ($response->getStatusCode() == 404) {
@@ -111,7 +145,6 @@ class Module
 
     protected function registerRoute(MvcEvent $e)
     {
-        $eventManager   = $e->getApplication()->getEventManager();
         $serviceManager = $e->getApplication()->getServiceManager();
         $router         = $e->getRouter();
         $route          = Slashable::factory(
@@ -127,11 +160,10 @@ class Module
             ]
         );
 
-        if (!$router instanceof RouteInterface) {
+        if (!$router instanceof TreeRouteStack) {
             $router = $serviceManager->get('HttpRouter');
         }
 
         $router->addRoute('alias', $route, -10000);
-        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), -1000);
     }
 }

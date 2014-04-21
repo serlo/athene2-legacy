@@ -25,14 +25,9 @@ class TaxonomyTermStrategy extends AbstractStrategy
         return $this->object;
     }
 
-    protected function getTitle()
+    public function isValid($object)
     {
-        return $this->getObject()->getName();
-    }
-
-    protected function getTimestamp()
-    {
-        return new DateTime();
+        return $object instanceof TaxonomyTermInterface;
     }
 
     protected function getContent()
@@ -45,11 +40,6 @@ class TaxonomyTermStrategy extends AbstractStrategy
         return $this->getObject()->getName();
     }
 
-    protected function getType()
-    {
-        return $this->getObject()->getTaxonomy()->getName();
-    }
-
     protected function getRouteName()
     {
         $object = $this->getObject();
@@ -57,9 +47,9 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'blog':
                 return 'blog/view';
             case 'subject':
-                return 'subject';
+                return 'subject/home';
             case 'forum':
-                return 'discussion/discussions';
+                return 'discussion/discussions/get';
             case 'topic':
             case 'topic-folder':
             case 'curriculum':
@@ -67,7 +57,7 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'curriculum-topic':
             case 'curriculum-topic-folder':
             case 'topic-final-folder':
-                return 'subject/taxonomy';
+                return 'taxonomy/term/get';
         }
 
         throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
@@ -80,9 +70,9 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'blog':
                 return ['id' => $object->getId()];
             case 'subject':
-                return ['subject' => $object->getSlug(),];
+                return ['subject' => $object->getSlug()];
             case 'forum':
-                return ['id' => $object->getId(),];
+                return ['id' => $object->getId()];
             case 'topic':
             case 'topic-folder':
             case 'curriculum':
@@ -90,28 +80,24 @@ class TaxonomyTermStrategy extends AbstractStrategy
             case 'curriculum-topic':
             case 'curriculum-topic-folder':
             case 'topic-final-folder':
-                return [
-                    'subject' => $object->findAncestorByTypeName('subject')->getSlug(),
-                    'path'    => substr($this->getPath($object, 'subject'), 0, -1)
-                ];
+                return ['term' => $object->getId()];
         }
 
         throw new RuntimeException(sprintf('No strategy found for %s', $object->getType()->getName()));
     }
 
-    public function isValid($object)
+    protected function getTimestamp()
     {
-        return $object instanceof TaxonomyTermInterface;
+        return new DateTime();
     }
 
-    protected function getPath(TaxonomyTermInterface $term, $stopType)
+    protected function getTitle()
     {
-        $type = $term->getTaxonomy()->getType();
-        if($type->getName() == $stopType || !$term->hasParent()){
-            return '';
-        } else {
-            $path = $this->getPath($term->getParent(), $stopType);
-            return !$term->hasParent() ? '' : $path . $term->getSlug() . '/';
-        }
+        return $this->getObject()->getName();
+    }
+
+    protected function getType()
+    {
+        return $this->getObject()->getTaxonomy()->getName();
     }
 }
